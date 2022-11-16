@@ -176,6 +176,17 @@ public sealed class Aisling : Creature
             obj.Client.SendHealthBar(this, hitSound);
     }
 
+    public override void ApplyHealing(Creature source, int amount)
+    {
+        StatSheet.AddHp(amount);
+        Client.SendAttributes(StatUpdateType.Vitality);
+
+        foreach (var obj in MapInstance.GetEntitiesWithinRange<Aisling>(this)
+                                       .ThatCanSee(this))
+            obj.Client.SendHealthBar(this);
+    }
+
+
     public void BeginObserving()
     {
         //add observers

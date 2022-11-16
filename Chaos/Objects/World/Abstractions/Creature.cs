@@ -77,6 +77,11 @@ public abstract class Creature : NamedEntity, IAffected
         byte? hitSound = 1
     );
 
+    public abstract void ApplyHealing(
+    Creature source,
+    int amount
+);
+
     public virtual bool CanUse(PanelObjectBase panelObject) => panelObject.CanUse();
 
     public void Chant(string message) => ShowPublicMessage(PublicMessageType.Chant, message);
@@ -147,6 +152,29 @@ public abstract class Creature : NamedEntity, IAffected
             return;
 
         Walk(direction);
+    }
+
+    public void SendServerMessage(ServerMessageType serverMessageType, string message, uint id)
+    {
+        foreach (var obj in MapInstance.GetEntitiesWithinRange<Aisling>(this)
+                                       .ThatCanSee(this))
+        {
+            if (obj.Id == id)
+                obj.Client.SendServerMessage(serverMessageType, message);
+        }
+    }
+
+    public void SendAttributes(uint id)
+    {
+        foreach (var obj in MapInstance.GetEntitiesWithinRange<Aisling>(this)
+                               .ThatCanSee(this))
+        {
+            if (obj.Id == id)
+            {
+                obj.Client.SendAttributes(StatUpdateType.Vitality);
+                obj.Client.SendHealthBar(this);
+            }
+        }
     }
 
     public void Say(string message) => ShowPublicMessage(PublicMessageType.Normal, message);
