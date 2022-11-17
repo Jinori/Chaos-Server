@@ -186,7 +186,6 @@ public sealed class Aisling : Creature
             obj.Client.SendHealthBar(this);
     }
 
-
     public void BeginObserving()
     {
         //add observers
