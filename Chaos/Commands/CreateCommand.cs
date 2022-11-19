@@ -21,7 +21,7 @@ public class CreateCommand : ICommand<Aisling>
 
         var amount = 1;
 
-        if (args.TryGet<int>(0, out var amountArg))
+        if (args.TryGet<int>(1, out var amountArg))
             amount = amountArg;
 
         var item = ItemFactory.Create(itemTemplateKey);
