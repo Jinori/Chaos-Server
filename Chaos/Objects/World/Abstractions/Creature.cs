@@ -154,16 +154,6 @@ public abstract class Creature : NamedEntity, IAffected
         Walk(direction);
     }
 
-    public void SendServerMessage(ServerMessageType serverMessageType, string message, uint id)
-    {
-        foreach (var obj in MapInstance.GetEntitiesWithinRange<Aisling>(this)
-                                       .ThatCanSee(this))
-        {
-            if (obj.Id == id)
-                obj.Client.SendServerMessage(serverMessageType, message);
-        }
-    }
-
     public void SendAttributes(uint id)
     {
         foreach (var obj in MapInstance.GetEntitiesWithinRange<Aisling>(this)

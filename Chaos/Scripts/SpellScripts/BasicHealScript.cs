@@ -3,6 +3,7 @@ using Chaos.Formulae;
 using Chaos.Geometry.Abstractions;
 using Chaos.Objects;
 using Chaos.Objects.Panel;
+using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.SpellScripts.Abstractions;
 using System;
@@ -30,7 +31,7 @@ namespace Chaos.Scripts.SpellScripts
             foreach (var target in targetEntities)
             {
                 var heals = CalculateHealing(context, target);
-                target.ApplyHealing(context.Source, heals);
+                target.ApplyHealing(target, heals);
             }
         }
 
@@ -64,12 +65,12 @@ namespace Chaos.Scripts.SpellScripts
                 //Require mana
                 if (context.Source.StatSheet.CurrentMp < manaSpent.Value)
                 {
-                    context.Source.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this spell.", context.Source.Id);
+                    context.AislingSource?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this cast.");
                     return;
                 }
                 //Subtract mana and update user
                 context.Source.StatSheet.SubtractMp(manaSpent.Value);
-                context.Source.SendAttributes(context.Source.Id);
+                context.AislingSource?.SendAttributes(context.Source.Id);
             }
 
             ShowBodyAnimation(context);

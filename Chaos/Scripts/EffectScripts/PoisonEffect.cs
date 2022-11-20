@@ -32,10 +32,10 @@ public sealed class PoisonEffect : AnimatingEffectBase
     {
         Subject = target;
         AislingSubject = target as Aisling;
-        AislingSubject?.SendServerMessage(ServerMessageType.OrangeBar1, "You feel a creeping feeling of death.", AislingSubject.Id);
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel a creeping feeling of death.");
     }
 
-    public override void OnTerminated() => AislingSubject?.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.", AislingSubject.Id);
+    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.");
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
