@@ -40,7 +40,7 @@ public sealed class PoisonEffect : AnimatingEffectBase
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
-        Subject?.StatSheet.SubtractHealthPct(5);
+        Subject?.StatSheet.SubtractHealthPct(2);
         //if the subject was a player, update their vit
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
     }

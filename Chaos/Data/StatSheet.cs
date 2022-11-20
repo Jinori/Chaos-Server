@@ -248,8 +248,8 @@ public record StatSheet : Attributes
     }
 
     public void SubtractHealthPct(int pct) => InterlockedEx.SetValue(
-        ref _currentMp,
-        () => (int)Math.Clamp(EffectiveMaximumMp * (HealthPercent - pct) / 100f, 0, EffectiveMaximumMp));
+        ref _currentHp,
+        () => (int)Math.Clamp(EffectiveMaximumHp * (HealthPercent - pct) / 100f, 0, EffectiveMaximumHp));
 
     public void SubtractHp(int amount)
     {
