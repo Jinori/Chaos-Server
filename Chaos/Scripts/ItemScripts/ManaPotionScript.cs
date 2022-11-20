@@ -23,12 +23,12 @@ namespace Chaos.Scripts.ItemScripts
         {
             if (source.IsAlive)
             {
-                if (source.StatSheet.CurrentMp < source.StatSheet.MaximumMp)
+                if (source.StatSheet.CurrentMp < source.StatSheet.EffectiveMaximumMp)
                 {
-                    var amount = ManaAmount ?? (source.StatSheet.MaximumMp / 100) * ManaPercent;
+                    var amount = ManaAmount ?? (source.StatSheet.EffectiveMaximumMp / 100) * ManaPercent;
 
                     //Let's add HP
-                    source.StatSheet.AddMp(amount!.Value);
+                    source.StatSheet.AddMp((int)amount!.Value);
 
                     //Refresh the users health bar
                     source.Client.SendAttributes(StatUpdateType.Vitality);
