@@ -70,7 +70,7 @@ namespace Chaos.Scripts.SpellScripts
                 }
                 //Subtract mana and update user
                 context.Source.StatSheet.SubtractMp(manaSpent.Value);
-                context.AislingSource?.SendAttributes(context.Source.Id);
+                context.AislingSource?.Client.SendAttributes(StatUpdateType.Vitality);
             }
 
             ShowBodyAnimation(context);
