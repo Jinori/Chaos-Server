@@ -15,7 +15,7 @@ namespace Chaos.Scripts.EffectScripts
 {
     public class MorCradhEffect : EffectBase
     {
-        public override byte Icon => 20;
+        public override byte Icon => 83;
         public override string Name => "ard cradh";
 
         protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
@@ -52,7 +52,7 @@ namespace Chaos.Scripts.EffectScripts
         {
             if (target.Effects.Contains("ard cradh") || target.Effects.Contains("mor cradh") || target.Effects.Contains("cradh") || target.Effects.Contains("beag cradh"))
             {
-                AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Another curse has already been applied.");
+                (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Another curse has already been applied.");
                 return false;
             }
             else

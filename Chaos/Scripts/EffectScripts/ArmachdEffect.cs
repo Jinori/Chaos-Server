@@ -50,7 +50,7 @@ namespace Chaos.Scripts.EffectScripts
         {
             if (target.Effects.Contains("armachd"))
             {
-                AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor has already been applied.");
+                (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor has already been applied.");
                 return false;
             }
             else
