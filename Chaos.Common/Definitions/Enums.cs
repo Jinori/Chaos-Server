@@ -37,7 +37,8 @@ public enum QuestFlag3 : ulong { }
 public enum Status : ulong
 {
     None = 0,
-    Dead = 1
+    Dead = 1,
+    Suain = 2,
     //add more statuses here, double each time
 }
 

@@ -19,7 +19,6 @@ namespace Chaos.Scripts.DialogScripts
     {
 
         public int Hairstyle;
-        private Item? hairItem;
         private readonly IItemFactory ItemFactory;
         private static List<string> femaleHairstyles = new List<string> { "female_hairstyle_1", "female_hairstyle_2", "female_hairstyle_3", "female_hairstyle_4"
         , "female_hairstyle_5", "female_hairstyle_6", "female_hairstyle_7", "female_hairstyle_8", "female_hairstyle_9", "female_hairstyle_10", "female_hairstyle_11",

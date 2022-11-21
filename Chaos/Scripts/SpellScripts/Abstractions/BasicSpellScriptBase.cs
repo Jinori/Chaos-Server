@@ -60,6 +60,14 @@ public abstract class BasicSpellScriptBase : ConfigurableSpellScriptBase
         context.Map.PlaySound(Sound.Value, affectedPoints);
     }
 
+    protected virtual void PlaySound(SpellContext context, IPoint affectedPoint)
+    {
+        if (!Sound.HasValue)
+            return;
+
+        context.Map.PlaySound(Sound.Value, affectedPoint);
+    }
+
     protected virtual void ShowAnimation(SpellContext context, IEnumerable<IPoint> affectedPoints)
     {
         if (Animation == null)

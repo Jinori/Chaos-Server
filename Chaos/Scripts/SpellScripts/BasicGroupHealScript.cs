@@ -1,4 +1,7 @@
 ﻿using Chaos.Common.Definitions;
+using Chaos.Containers;
+using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Geometry.Abstractions;
 using Chaos.Objects;
@@ -9,12 +12,13 @@ using Chaos.Scripts.SpellScripts.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Chaos.Scripts.SpellScripts
 {
-    internal class BasicHealScript : BasicSpellScriptBase
+    internal class BasicGroupHealScript : BasicSpellScriptBase
     {
         protected int? BaseHealing { get; init; }
         protected Stat? HealStat { get; init; }
@@ -22,17 +26,8 @@ namespace Chaos.Scripts.SpellScripts
         protected int? manaSpent { get; init; }
 
 
-        public BasicHealScript(Spell subject) : base(subject)
+        public BasicGroupHealScript(Spell subject) : base(subject)
         {
-        }
-
-        protected virtual void ApplyHealing(SpellContext context, IEnumerable<Creature> targetEntities)
-        {
-            foreach (var target in targetEntities)
-            {
-                var heals = CalculateHealing(context, target);
-                target.ApplyHealing(target, heals);
-            }
         }
 
         protected virtual int CalculateHealing(SpellContext context, Creature target)
@@ -41,21 +36,25 @@ namespace Chaos.Scripts.SpellScripts
 
             if (HealStat.HasValue)
             {
-                var multiplier = HealStatMultiplier ?? 1;
+                if (context.Source == target)
+                {
+                    var multiplier = HealStatMultiplier ?? 1;
 
-                heals += Convert.ToInt32(context.Source.StatSheet.GetEffectiveStat(HealStat.Value) * multiplier);
+                    heals += Convert.ToInt32(context.Source.StatSheet.GetEffectiveStat(HealStat.Value) * multiplier);
+                    //Divide by two for healing yourself
+                    heals = Convert.ToInt32(heals / 2);
+                }
+                else
+                {
+                    var multiplier = HealStatMultiplier ?? 1;
+
+                    heals += Convert.ToInt32(context.Source.StatSheet.GetEffectiveStat(HealStat.Value) * multiplier);
+                }
             }
 
             return heals;
         }
 
-        /// <inheritdoc />
-        protected override IEnumerable<T> GetAffectedEntities<T>(SpellContext context, IEnumerable<IPoint> affectedPoints)
-        {
-            var entities = base.GetAffectedEntities<T>(context, affectedPoints);
-
-            return entities;
-        }
 
         /// <inheritdoc />
         public override void OnUse(SpellContext context)
@@ -66,6 +65,7 @@ namespace Chaos.Scripts.SpellScripts
                 context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your hands are frozen.");
                 return;
             }
+
             if (manaSpent.HasValue)
             {
                 //Require mana
@@ -79,14 +79,23 @@ namespace Chaos.Scripts.SpellScripts
                 context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
             }
 
-            ShowBodyAnimation(context);
+            var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint));
 
-            var affectedPoints = GetAffectedPoints(context).Cast<IPoint>().ToList();
-            var affectedEntities = GetAffectedEntities<Creature>(context, affectedPoints);
-
-            ShowAnimation(context, affectedPoints);
-            PlaySound(context, affectedPoints);
-            ApplyHealing(context, affectedEntities);
+            if (group is null && BaseHealing.HasValue)
+            {
+                context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are not in a group.");
+                context.SourceAisling?.ApplyHealing(context.Source, CalculateHealing(context, context.Source));
+                ShowBodyAnimation(context);
+                PlaySound(context, context.SourcePoint);
+                return;
+            }
+            if (group is not null && BaseHealing.HasValue)
+            {
+                group.ToList().ForEach(n => n.ApplyHealing(n, CalculateHealing(context, n)));
+                PlaySound(context, context.TargetPoint);
+                ShowAnimation(context, group);
+                ShowBodyAnimation(context);
+            }
         }
     }
 }
