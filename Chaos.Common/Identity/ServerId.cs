@@ -48,6 +48,7 @@ public sealed class SerializableUniqueId
 
             return obj;
         }
+
         var num = JsonSerializer.Deserialize<ulong>(fileStream)!;
 
         return new SerializableUniqueId(num);

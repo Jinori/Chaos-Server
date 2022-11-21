@@ -344,7 +344,6 @@ public abstract class Creature : NamedEntity, IAffected
 
         foreach (var creature in creaturesAfter.Except(creaturesBefore))
             Helpers.HandleApproach(creature, this);
-
         Display();
     }
 

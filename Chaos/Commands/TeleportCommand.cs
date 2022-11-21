@@ -43,16 +43,16 @@ public sealed class TeleportCommand : ICommand<Aisling>
 
                     return;
                 }
-
+                
                 aisling.TraverseMap(player.MapInstance, player);
 
                 break;
             case "map":
-                if (!args.TryGetNext<string>(out var mapInstanceId))
+                if(!args.TryGetNext<string>(out var mapInstanceId))
                     return;
 
                 var mapInstance = Cache.Get<MapInstance>(mapInstanceId);
-
+                
                 Point point;
 
                 if (args.TryGetNext<int>(out var xPos) && args.TryGetNext<int>(out var yPos))

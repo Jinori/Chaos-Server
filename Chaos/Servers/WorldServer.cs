@@ -42,6 +42,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
     private readonly ISaveManager<Aisling> UserSaveManager;
     private readonly DeltaMonitor DeltaMonitor;
     private readonly DeltaTime DeltaTime;
+
     public IEnumerable<Aisling> Aislings => Clients
                                             .Select(kvp => kvp.Value.Aisling)
                                             .Where(user => user != null!);

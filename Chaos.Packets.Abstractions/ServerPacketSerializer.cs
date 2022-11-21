@@ -15,6 +15,7 @@ public abstract record ServerPacketSerializer<T> : IServerPacketSerializer<T> wh
         if (args is T tArgs)
             Serialize(ref writer, tArgs);
     }
+
     /// <inheritdoc />
     public abstract void Serialize(ref SpanWriter writer, T args);
 }
