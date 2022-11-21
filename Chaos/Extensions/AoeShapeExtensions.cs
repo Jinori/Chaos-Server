@@ -31,7 +31,7 @@ public static class AoeShapeExtensions
 
                 var endPoint = sourcePoint.DirectionalOffset(direction.Value, range);
 
-                    points = sourcePoint.GetDirectPath(endPoint);
+                points = sourcePoint.GetDirectPath(endPoint);
 
                 break;
             }

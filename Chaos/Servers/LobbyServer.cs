@@ -81,8 +81,7 @@ public sealed class LobbyServer : ServerBase<ILobbyClient>, ILobbyServer<ILobbyC
                         serverInfo.Port);
 
                     client.SendRedirect(redirect);
-                }
-                else
+                } else
                     throw new InvalidOperationException($"Server id \"{serverId}\" requested, but does not exist.");
 
                 break;

@@ -129,7 +129,7 @@ public record StatSheet : Attributes
 
     public byte EffectiveInt => (byte)Math.Clamp(Int + IntMod, byte.MinValue, byte.MaxValue);
 
-    public byte EffectiveMagicResistance => (byte)Math.Clamp(MagicResistance + MagicResistanceMod, sbyte.MinValue, sbyte.MaxValue);
+    public byte EffectiveMagicResistance => (byte)Math.Clamp(MagicResistance + MagicResistanceMod, byte.MinValue, byte.MaxValue);
 
     public uint EffectiveMaximumHp => (uint)Math.Max(MaximumHp + MaximumHpMod, 0);
 
@@ -192,8 +192,15 @@ public record StatSheet : Attributes
         ref _currentMp,
         () => (int)Math.Clamp(_currentMp + amount, 0, EffectiveMaximumMp));
 
-    public int CalculateEffectiveAssailInterval(int baseAssailIntervalMs) =>
-        Convert.ToInt32(baseAssailIntervalMs / (1 + EffectiveAttackSpeedPct / 100.0f));
+    public int CalculateEffectiveAssailInterval(int baseAssailIntervalMs)
+    {
+        var modifier = EffectiveAttackSpeedPct / 100.0f;
+
+        if (modifier < 0)
+            return Convert.ToInt32(baseAssailIntervalMs * Math.Abs(modifier - 1));
+
+        return Convert.ToInt32(baseAssailIntervalMs / (1 + modifier));
+    }
 
     public int GetBaseStat(Stat stat) => stat switch
     {

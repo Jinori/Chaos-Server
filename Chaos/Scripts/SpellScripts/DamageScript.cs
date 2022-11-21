@@ -23,7 +23,7 @@ public class DamageScript : BasicSpellScriptBase
         foreach (var target in targetEntities)
         {
             var damage = CalculateDamage(context, target);
-            target.ApplyDamage(target, damage);
+            target.ApplyDamage(context.Source, damage);
         }
     }
 

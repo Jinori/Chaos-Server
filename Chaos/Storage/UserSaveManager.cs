@@ -1,5 +1,4 @@
 using System.Text.Json;
-using Chaos.Common.Synchronization;
 using Chaos.Containers;
 using Chaos.Objects.World;
 using Chaos.Schemas.Aisling;
@@ -14,7 +13,6 @@ namespace Chaos.Storage;
 
 public sealed class UserSaveManager : ISaveManager<Aisling>
 {
-    private static readonly AutoReleasingSemaphoreSlim Sync = new(1, 1);
     private readonly JsonSerializerOptions JsonSerializerOptions;
     private readonly ILogger Logger;
     private readonly ITypeMapper Mapper;
@@ -39,7 +37,17 @@ public sealed class UserSaveManager : ISaveManager<Aisling>
     private async ValueTask<T> DesierlizeAsync<T>(string directory, string fileName)
     {
         var path = Path.Combine(directory, fileName);
-        await using var stream = File.OpenRead(path);
+
+        await using var stream = File.Open(
+            path,
+            new FileStreamOptions
+            {
+                Access = FileAccess.Read,
+                Mode = FileMode.Open,
+                Options = FileOptions.Asynchronous | FileOptions.SequentialScan,
+                Share = FileShare.Read
+            });
+
         var ret = await JsonSerializer.DeserializeAsync<T>(stream, JsonSerializerOptions);
 
         return ret!;
@@ -47,8 +55,6 @@ public sealed class UserSaveManager : ISaveManager<Aisling>
 
     public async Task<Aisling> LoadAsync(string name)
     {
-        await using var sync = await Sync.WaitAsync();
-
         Logger.LogTrace("Loading aisling {Name}", name);
 
         var directory = Path.Combine(Options.Directory, name.ToLower());
@@ -86,22 +92,20 @@ public sealed class UserSaveManager : ISaveManager<Aisling>
         return aisling;
     }
 
-    public async Task SaveAsync(Aisling aisling)
+    public async Task SaveAsync(Aisling obj)
     {
-        await using var sync = await Sync.WaitAsync();
+        Logger.LogTrace("Saving aisling {Name}", obj.Name);
 
-        Logger.LogTrace("Saving aisling {Name}", aisling.Name);
+        var aislingSchema = Mapper.Map<AislingSchema>(obj);
+        var bankSchema = Mapper.Map<BankSchema>(obj.Bank);
+        var equipmentSchema = Mapper.MapMany<ItemSchema>(obj.Equipment).ToList();
+        var inventorySchema = Mapper.MapMany<ItemSchema>(obj.Inventory).ToList();
+        var skillsSchemas = Mapper.MapMany<SkillSchema>(obj.SkillBook).ToList();
+        var spellsSchemas = Mapper.MapMany<SpellSchema>(obj.SpellBook).ToList();
+        var legendSchema = Mapper.MapMany<LegendMarkSchema>(obj.Legend).ToList();
+        var effectsSchemas = Mapper.MapMany<IEffect, EffectSchema>(obj.Effects).ToList();
 
-        var aislingSchema = Mapper.Map<AislingSchema>(aisling);
-        var bankSchema = Mapper.Map<BankSchema>(aisling.Bank);
-        var equipmentSchema = Mapper.MapMany<ItemSchema>(aisling.Equipment).ToList();
-        var inventorySchema = Mapper.MapMany<ItemSchema>(aisling.Inventory).ToList();
-        var skillsSchemas = Mapper.MapMany<SkillSchema>(aisling.SkillBook).ToList();
-        var spellsSchemas = Mapper.MapMany<SpellSchema>(aisling.SpellBook).ToList();
-        var legendSchema = Mapper.MapMany<LegendMarkSchema>(aisling.Legend).ToList();
-        var effectsSchemas = Mapper.MapMany<IEffect, EffectSchema>(aisling.Effects).ToList();
-
-        var directory = Path.Combine(Options.Directory, aisling.Name.ToLower());
+        var directory = Path.Combine(Options.Directory, obj.Name.ToLower());
 
         if (!Directory.Exists(directory))
             Directory.CreateDirectory(directory);
@@ -116,13 +120,23 @@ public sealed class UserSaveManager : ISaveManager<Aisling>
             SerializeAsync(directory, "spells.json", spellsSchemas),
             SerializeAsync(directory, "legend.json", legendSchema));
 
-        Logger.LogTrace("Saved aisling {Name}", aisling.Name);
+        Logger.LogTrace("Saved aisling {Name}", obj.Name);
     }
 
     private async Task SerializeAsync(string directory, string fileName, object value)
     {
         var path = Path.Combine(directory, fileName);
-        await using var stream = new FileStream(path, FileMode.Create, FileAccess.ReadWrite);
+
+        await using var stream = File.Open(
+            path,
+            new FileStreamOptions
+            {
+                Access = FileAccess.ReadWrite,
+                Mode = FileMode.Truncate,
+                Options = FileOptions.Asynchronous | FileOptions.SequentialScan,
+                Share = FileShare.None
+            });
+
         await JsonSerializer.SerializeAsync(stream, value, JsonSerializerOptions);
     }
 }

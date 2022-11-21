@@ -117,7 +117,7 @@ public abstract class Creature : NamedEntity, IAffected
 
     public virtual bool IsFriendlyTo(Creature other) => other switch
     {
-        Monster  => this is Monster,
+        Monster  => false,
         Aisling  => this is Aisling or Merchant, //could also check if map is pvp enabled or something
         Merchant => this is not Monster,
         _        => false
@@ -152,19 +152,6 @@ public abstract class Creature : NamedEntity, IAffected
             return;
 
         Walk(direction);
-    }
-
-    public void SendAttributes(uint id)
-    {
-        foreach (var obj in MapInstance.GetEntitiesWithinRange<Aisling>(this)
-                               .ThatCanSee(this))
-        {
-            if (obj.Id == id)
-            {
-                obj.Client.SendAttributes(StatUpdateType.Vitality);
-                obj.Client.SendHealthBar(this);
-            }
-        }
     }
 
     public void Say(string message) => ShowPublicMessage(PublicMessageType.Normal, message);
@@ -283,7 +270,7 @@ public abstract class Creature : NamedEntity, IAffected
         var startPoint = Point.From(this);
         var endPoint = ((IPoint)this).DirectionalOffset(direction);
 
-        if (!MapInstance.IsWalkable(endPoint, Type == CreatureType.WalkThrough))
+        if (!MapInstance.IsWalkable(endPoint, Type))
             return;
 
         var visibleBefore = MapInstance.GetEntitiesWithinRange<Creature>(this)
@@ -380,4 +367,11 @@ public abstract class Creature : NamedEntity, IAffected
 
     public virtual bool WithinLevelRange(Creature other) =>
         LevelRangeFormulae.Default.WithinLevelRange(StatSheet.Level, other.StatSheet.Level);
+    
+    public virtual void ShowHealth(byte? sound = null)
+    {
+        foreach (var aisling in MapInstance.GetEntitiesWithinRange<Aisling>(this)
+                                           .ThatCanSee(this))
+            aisling.Client.SendHealthBar(this, sound);
+    }
 }

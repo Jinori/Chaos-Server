@@ -1,4 +1,4 @@
-﻿using Chaos.Definitions;
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
@@ -36,7 +36,7 @@ public class AmbushScript : SkillScriptBase
         //if the target is standing on a wall, return
         if (context.Map.IsWall(targetCreature))
             return;
-
+        
         //if any point on the path to the creature is a wall, return
         if (context.Source.GetDirectPath(targetCreature).Any(pt => context.Map.IsWall(pt)))
             return;
@@ -50,10 +50,10 @@ public class AmbushScript : SkillScriptBase
             //get the point in that direction
             var destinationPoint = targetCreature.DirectionalOffset(direction);
 
-            /*//if that point is not talkable, continue
+            //if that point is not talkable, continue
             if (!context.Map.IsWalkable(destinationPoint, context.Source.Type))
-                continue;*/
-
+                continue;
+            
             //if it is walkable, warp to that point and turn to face the target
             context.Source.WarpTo(destinationPoint);
             var newDirection = targetCreature.DirectionalRelationTo(context.Source);

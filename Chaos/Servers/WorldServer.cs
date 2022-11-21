@@ -1,7 +1,6 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Chaos.Clients.Abstractions;
 using Chaos.CommandInterceptor.Abstractions;
 using Chaos.Common.Abstractions;
@@ -15,7 +14,6 @@ using Chaos.Data;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Factories.Abstractions;
-using Chaos.Geometry.JsonConverters;
 using Chaos.Networking.Abstractions;
 using Chaos.Networking.Entities.Client;
 using Chaos.Networking.Options;
@@ -42,7 +40,8 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
     private readonly PeriodicTimer PeriodicTimer;
     private readonly IIntervalTimer SaveTimer;
     private readonly ISaveManager<Aisling> UserSaveManager;
-
+    private readonly DeltaMonitor DeltaMonitor;
+    private readonly DeltaTime DeltaTime;
     public IEnumerable<Aisling> Aislings => Clients
                                             .Select(kvp => kvp.Value.Aisling)
                                             .Where(user => user != null!);
@@ -66,7 +65,10 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             logger)
     {
         Options = options.Value;
-        PeriodicTimer = new PeriodicTimer(TimeSpan.FromMilliseconds(1000.0 / options.Value.UpdatesPerSecond));
+        var delta = 1000.0 / options.Value.UpdatesPerSecond;
+        PeriodicTimer = new PeriodicTimer(TimeSpan.FromMilliseconds(delta));
+        DeltaTime = new DeltaTime();
+        DeltaMonitor = new DeltaMonitor(logger, TimeSpan.FromMinutes(1), delta);
         SaveTimer = new IntervalTimer(TimeSpan.FromMinutes(Options.SaveIntervalMins), false);
         ClientFactory = clientFactory;
         CacheProvider = cacheProvider;
@@ -77,7 +79,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
 
         ParallelOptions = new ParallelOptions
         {
-            MaxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount / 2)
+            MaxDegreeOfParallelism = Environment.ProcessorCount,
         };
 
         IndexHandlers();
@@ -94,48 +96,63 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         Socket.Listen(20);
         Socket.BeginAccept(OnConnection, Socket);
         Logger.LogInformation("Listening on {EndPoint}", endPoint);
-
-        var deltaTime = new DeltaTime();
         
         while (true)
+        {
+            if (stoppingToken.IsCancellationRequested)
+                return;
+
+            await PeriodicTimer.WaitForNextTickAsync(stoppingToken);
+            
             try
             {
-                if (stoppingToken.IsCancellationRequested)
-                    return;
+                DeltaTime.SetDelta();
 
-                await PeriodicTimer.WaitForNextTickAsync(stoppingToken);
-                var delta = deltaTime.ElapsedSpan;
-                
-                await ParallelUpdateAsync(delta);
+                var start = ValueStopwatch.GetTimestamp();
+                await ParallelUpdateAsync();
+                var end = ValueStopwatch.GetTimestamp();
+
+                var executionDelta = ValueStopwatch.GetElapsedTime(start, end);
+                DeltaMonitor.AddExecutionDelta(executionDelta);
+                DeltaMonitor.Update(DeltaTime.DeltaSpan);
             } catch (Exception e)
             {
                 Logger.LogError(e, "Server update loop had an unhandled exception");
             }
+        }
     }
 
-    private Task ParallelUpdateAsync(TimeSpan delta)
+    private Task ParallelUpdateAsync()
     {
-        SaveTimer.Update(delta);
-        
-        return Parallel.ForEachAsync(
-            CacheProvider.GetCache<MapInstance>(),
-            ParallelOptions,
-            async (mapInstance, _) =>
-            {
-                try
-                {
-                    await using var sync = await mapInstance.Sync.WaitAsync();
-                    mapInstance.Update(delta);
+        SaveTimer.Update(DeltaTime.DeltaSpan);
 
-                    if (SaveTimer.IntervalElapsed)
-                        await Task.WhenAll(
-                            mapInstance.GetEntities<Aisling>()
-                                       .Select(SaveUserAsync));
-                } catch (Exception e)
-                {
-                    Logger.LogCritical(e, "Failed to update map instance {MapInstance}", mapInstance.InstanceId);
-                }
-            });
+        /*
+        foreach (var map in CacheProvider.GetCache<MapInstance>())
+        {
+            await using var sync = await map.Sync.WaitAsync();
+            map.Update(delta);
+
+            if (SaveTimer.IntervalElapsed)
+                await Task.WhenAll(map.GetEntities<Aisling>().Select(SaveUserAsync));
+        }*/
+
+        return Parallel.ForEachAsync(CacheProvider.GetCache<MapInstance>(), ParallelOptions, UpdateMap);
+
+    }
+
+    private async ValueTask UpdateMap(MapInstance map, CancellationToken token)
+    {
+        try
+        {
+            await using var sync = await map.Sync.WaitAsync();
+            map.Update(DeltaTime.DeltaSpan);
+
+            if (SaveTimer.IntervalElapsed)
+                await Task.WhenAll(map.GetEntities<Aisling>().Select(SaveUserAsync));
+        } catch (Exception e)
+        {
+            Logger.LogCritical(e, "Failed to update map instance {MapInstance}", map.InstanceId);
+        }
     }
     
     private async Task SaveUserAsync(Aisling aisling)
@@ -154,7 +171,6 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 AllowTrailingCommas = true
             };
-
 
             Logger.LogCritical(e, "Exception while saving user. {User}", JsonSerializer.Serialize(aisling, jsonSerializerOptions));
         }
@@ -296,6 +312,9 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
 
         static ValueTask InnerOnClientWalk(IWorldClient localClient, ClientWalkArgs localArgs)
         {
+            if (localClient.Aisling.UserState.HasFlag(UserState.InWorldMap))
+                return default;
+            
             localClient.Aisling.Walk(localArgs.Direction);
 
             return default;
@@ -1170,6 +1189,9 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
 
         static ValueTask InnerOnWorldMapClick(IWorldClient localClient, WorldMapClickArgs localArgs)
         {
+            if (!localClient.Aisling.UserState.HasFlag(UserState.InWorldMap))
+                return default;
+            
             var worldMapTile = localClient.Aisling.MapInstance.GetEntitiesAtPoint<WorldMapTile>(localClient.Aisling)
                                           .FirstOrDefault();
 
@@ -1255,14 +1277,14 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         //ClientHandlers[(byte)ClientOpCode.DisplayObjectRequest] =
         ClientHandlers[(byte)ClientOpCode.Ignore] = OnIgnore;
         ClientHandlers[(byte)ClientOpCode.PublicMessage] = OnPublicMessage;
-        ClientHandlers[(byte)ClientOpCode.SpellUse] = OnUseSpell;
+        ClientHandlers[(byte)ClientOpCode.UseSpell] = OnUseSpell;
         ClientHandlers[(byte)ClientOpCode.ClientRedirected] = OnClientRedirected;
         ClientHandlers[(byte)ClientOpCode.Turn] = OnTurn;
         ClientHandlers[(byte)ClientOpCode.SpaceBar] = OnSpacebar;
-        ClientHandlers[(byte)ClientOpCode.RequestWorldList] = OnWorldListRequest;
+        ClientHandlers[(byte)ClientOpCode.WorldListRequest] = OnWorldListRequest;
         ClientHandlers[(byte)ClientOpCode.Whisper] = OnWhisper;
         ClientHandlers[(byte)ClientOpCode.UserOptionToggle] = OnUserOptionToggle;
-        ClientHandlers[(byte)ClientOpCode.ItemUse] = OnUseItem;
+        ClientHandlers[(byte)ClientOpCode.UseItem] = OnUseItem;
         ClientHandlers[(byte)ClientOpCode.Emote] = OnEmote;
         ClientHandlers[(byte)ClientOpCode.GoldDrop] = OnGoldDropped;
         ClientHandlers[(byte)ClientOpCode.ItemDroppedOnCreature] = OnItemDroppedOnCreature;
@@ -1275,7 +1297,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         ClientHandlers[(byte)ClientOpCode.PursuitRequest] = OnPursuitRequest;
         ClientHandlers[(byte)ClientOpCode.DialogResponse] = OnDialogResponse;
         ClientHandlers[(byte)ClientOpCode.BoardRequest] = OnBoardRequest;
-        ClientHandlers[(byte)ClientOpCode.SkillUse] = OnUseSkill;
+        ClientHandlers[(byte)ClientOpCode.UseSkill] = OnUseSkill;
         ClientHandlers[(byte)ClientOpCode.WorldMapClick] = OnWorldMapClick;
         ClientHandlers[(byte)ClientOpCode.Click] = OnClick;
         ClientHandlers[(byte)ClientOpCode.Unequip] = OnUnequip;

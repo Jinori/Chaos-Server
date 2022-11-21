@@ -7,9 +7,9 @@ namespace Chaos.Objects;
 
 public sealed record SpellContext(Creature Target, Creature Source, string? Prompt = null)
 {
-    public Aisling? AislingTarget { get; } = Target as Aisling;
-    public Aisling? AislingSource { get; } = Target as Aisling;
     public MapInstance Map { get; } = Target.MapInstance;
     public IPoint SourcePoint { get; } = Point.From(Source);
     public IPoint TargetPoint { get; } = Point.From(Target);
+    public Aisling? TargetAisling { get; } = Target as Aisling;
+    public Aisling? SourceAisling { get; } = Source as Aisling;
 }

@@ -19,7 +19,7 @@ public static class AbstractCommonExtensions
 
         return services.AddOptions<T>()
                        .Configure<IConfiguration, IStagingDirectory>(
-					   
+
                            (options, config, stagingDir) =>
                            {
                                config.GetRequiredSection(path).Bind(options, binder => binder.ErrorOnUnknownConfiguration = true);

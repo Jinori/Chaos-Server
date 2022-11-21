@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Containers;
@@ -39,6 +40,7 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>
     public MonsterTemplate Template { get; }
     public override CreatureType Type { get; }
     public IIntervalTimer WanderTimer { get; }
+    public LootTable? LootTable { get; set; }
     protected override ILogger<Monster> Logger { get; }
 
     public Monster(
@@ -97,6 +99,8 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>
         foreach (var obj in MapInstance.GetEntitiesWithinRange<Aisling>(this)
                                        .ThatCanSee(this))
             obj.Client.SendHealthBar(this);
+        StatSheet.SubtractHp(amount);
+        ShowHealth(hitSound);
     }
 
     /// <inheritdoc />
@@ -154,10 +158,10 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>
     {
         base.Update(delta);
 
-        foreach (var skill in Skills)
+        foreach (ref var skill in CollectionsMarshal.AsSpan(Skills))
             skill.Update(delta);
 
-        foreach (var spell in Spells)
+        foreach (ref var spell in CollectionsMarshal.AsSpan(Spells))
             spell.Update(delta);
 
         WanderTimer.Update(delta);

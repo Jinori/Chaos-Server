@@ -2,52 +2,49 @@
 
 A configurable Dark Ages server emulator
 
-# Configuration (appsettings.json)
 
-You can configure the Login and Lobby servers via appsettings.json file  
-Here are a few quick tips, but there are more options available than are listed
-
-- It's recommended to keep the [staging data](#folder-structure) out of the repo, this base staging directory can be changed at Options:
-  ChaosOptions:StagingDirectory
-- Username/Password rules can be changed via Options:ActiveDirectoryCreentialManagerOptions
-- If you want to spin up multiple worlds, or offer redirects to other people's worlds, you can add additional servers via Options:
-  LobbyOptions:Servers
-- If you want to accept redirects from other people, you need to communicate a reserved redirect id, and configure it via Options:
-  LoginOptions:ReservedRedirects
-- Edit your login notice message via Options:LoginOptions:NoticeMessage
-- Edit your new character initial spawn point via Options:LoginOptions:StartingMapInstanceId and StartingPointStr
-
-General world options are also changed via Options:WorldOptions
-
-### World Options
-
-| Name                    |     Type/Values     | Description                                                                                                                   |
-|:------------------------|:-------------------:|:------------------------------------------------------------------------------------------------------------------------------|
-| AislingAssailIntervalMs |       number        | The base assail interval for aislings<br/>This value is modified by the AtkSpeedPct attribute                                 |
-| DropRange               |  number<br/>0-255   | The tile range around an aisling that they can drop items                                                                     |
-| MaxActionsPerSecond     |       number        | The maximum number of assails/skills/spells combined that an aisling can use per second                                       |
-| MaxGoldHeld             |       number        | The maximum amount of gold an aisling can hold                                                                                |
-| MaximumAislingAc        | number<br/>-255-255 | The highest AC an aisling can have<br/>Higher AC = Takes more damage                                                          |
-| MaximumMonsterAc        | number<br/>-255-255 | The highest AC a monster can have<br/>Higher AC = Takes more damage                                                           |
-| MaxLevel                |  number<br/>0-255   | The aisling level cap                                                                                                         |
-| MinimumAislingAc        | number<br/>-255-255 | The lowest AC an aisling can have<br/>Lower AC = Takes less damage                                                            |
-| MinimumMonsterAc        | number<br/>-255-255 | The lowest AC a monster can have<br/>Lower AC = Takes less damage                                                             |
-| PickupRange             |  number<br/>0-255   | The tile range around an aisling that they can pick up items                                                                  |
-| RefreshIntervalMs       |       number        | The minimum number of milliseconds allowed between each refresh request                                                       |
-| SaveIntervalMins        |       number        | The number of minutes between aisling saves                                                                                   |
-| TradeRange              |  number<br/>0-255   | The tiles range around an aisling that they can engage a trade with another aisling                                           |
-| UpdatesPerSecond        |       number        | The number of server updates executed per second<br/>The server uses a time delta, so this number doesnt need to be very high |
 
 # Folder Structure
 
-📂Data ┣📂[LootTables](#loottables-folder)  ┃ ┗📜testAreaRats.json ┣📂[MapData](#mapdata-folder)  ┃ ┣📜lod3043.map ┃ ┣📜lod3044.map ┃
-┗📜lod5219.map ┣📂[MapInstances](#mapinstances-folder)  ┃ ┣📂testTown ┃ ┃ ┣📜instance.json ┃ ┃ ┗📜spawns.json ┃ ┣📂testRoom ┃ ┃
-┣📜instance.json ┃ ┃ ┗📜spawns.json ┃ ┗📂testArea ┃ ┣📜instance.json ┃ ┗📜spawns.json ┣📂[WorldMaps](#worldMaps-folder)  ┃
-┣📂[Nodes](#nodes-folder)  ┃ ┃ ┣📜testTown.json ┃ ┃ ┗📜testArea.json ┃ ┗📜field001.json ┣📂Metafiles (TODO)  ┣📂Saved ┃ ┗📂bonk ┃
-┣📜aisling.json ┃ ┣📜bank.json ┃ ┣📜equipment.json ┃ ┣📜inventory.json ┃ ┣📜legend.json ┃ ┣📜password.txt (hashed)  ┃ ┣📜skills.json ┃
-┗📜spells.json ┗📂[Templates](#templates-folder)  ┣📂[Items](#items-folder)  ┃ ┗📜stick.json ┣📂[Maps](#maps-folder)  ┃ ┣📜3043.json ┃
-┣📜3044.json ┃ ┗📜5219.json ┣📂[Monsters](#monsters-folder)  ┃ ┗📜common_rat.json ┣📂[Skills](#skills-folder)  ┃ ┗📜assail.json  
-┗📂[Spells](#spells-folder)  ┗📜fire_breath.json
+📂Data  
+ ┣📂[LootTables](#loottables-folder)  
+ ┃ ┗📜rat__stick_apple.json  
+ ┣📂[MapData](#mapdata-folder)  
+ ┃ ┣📜lod500.map  
+ ┃ ┗📜lod3006.map  
+ ┣📂[MapInstances](#mapinstances-folder)  
+ ┃ ┣📂test1  
+ ┃ ┃ ┣📜instance.json  
+ ┃ ┃ ┗📜spawns.json  
+ ┃ ┗📂test2  
+ ┃   ┣📜instance.json  
+ ┃   ┗📜spawns.json  
+ ┣📂[WorldMaps](#worldMap-folder)  
+ ┃ ┣📂[Nodes](#nodes-folder)  
+ ┃ ┃ ┗📜test2.json  
+ ┃ ┗📜field001.json  
+ ┣📂Metafiles (TODO)  
+ ┣📂Saved  
+ ┃ ┗📂bonk  
+ ┃   ┣📜aisling.json  
+ ┃   ┣📜bank.json  
+ ┃   ┣📜equipment.json  
+ ┃   ┣📜inventory.json  
+ ┃   ┣📜legend.json  
+ ┃   ┣📜password.txt (hashed)  
+ ┃   ┣📜skills.json  
+ ┃   ┗📜spells.json  
+ ┗📂[Templates](#templates-folder)  
+   ┣📂[Items](#items-folder)  
+   ┃ ┗📜stick.json  
+   ┣📂[Maps](#maps-folder)  
+   ┃ ┗📜500.json  
+   ┣📂[Monsters](#monsters-folder)  
+   ┃ ┗📜common_rat.json  
+   ┣📂[Skills](#skills-folder)  
+   ┃ ┗📜assail.json  
+   ┗📂[Spells](#spells-folder)  
+     ┗📜fire_breath.json
 
 # LootTables Folder
 
@@ -120,7 +117,7 @@ spawns.json contains a collection of spawn objects
 | ScriptKeys    |                                array{string}                                | A collection of script keys to load for this map (TODO: scripts section)                                                                                      |
 | TemplateKey   |                            string<br/>(0-32767)                             | A string representation of the map id. Ex. 500 for mileth                                                                                                     |
 | Warps         |                       array{[warp](#warp-properties)}                       | A collection of warps                                                                                                                                         |
-| WorldMapWarps |               array{[worldMapWarp](#warpMapWarp-properties)}                | A collection fo world map warps                                                                                                                               |
+| WorldMapWarps |               array{[worldMapWarp](#worldmapwarp-properties)}               | A collection fo world map warps                                                                                                                               |
 
 ### Warp Properties
 

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 namespace Chaos.Storage.Abstractions;
 
 public abstract class SimpleFileCacheBase<T, TSchema, TOptions> : ISimpleCache<T> where TSchema: class
-                                                                                  where TOptions: class, IFileCacheOptions
+                                                                                  where TOptions: class, ISimpleFileCacheOptions
 {
     protected ConcurrentDictionary<string, T> Cache { get; }
     protected JsonSerializerOptions JsonSerializerOptions { get; }
@@ -59,18 +59,18 @@ public abstract class SimpleFileCacheBase<T, TSchema, TOptions> : ISimpleCache<T
     {
         var searchPattern = Options.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
-        var files = Options.SearchType switch
+        var sources = Options.SearchType switch
         {
             SearchType.Files       => Directory.GetFiles(Options.Directory, Options.FilePattern ?? string.Empty, searchPattern),
             SearchType.Directories => Directory.GetDirectories(Options.Directory, Options.FilePattern ?? string.Empty, searchPattern)
-            .Where(src => Directory.EnumerateFiles(src).Any()),
+                                               .Where(src => Directory.EnumerateFiles(src).Any()),
             _                      => throw new ArgumentOutOfRangeException()
         };
 
         var objName = typeof(T).Name;
 
         await Parallel.ForEachAsync(
-            files,
+            sources,
             new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
             async (path, _) =>
             {
