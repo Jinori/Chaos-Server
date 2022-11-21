@@ -65,12 +65,12 @@ namespace Chaos.Scripts.SpellScripts
                 //Require mana
                 if (context.Source.StatSheet.CurrentMp < manaSpent.Value)
                 {
-                    context.AislingSource?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this cast.");
+                    context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this cast.");
                     return;
                 }
                 //Subtract mana and update user
                 context.Source.StatSheet.SubtractMp(manaSpent.Value);
-                context.AislingSource?.Client.SendAttributes(StatUpdateType.Vitality);
+                context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
             }
 
             ShowBodyAnimation(context);

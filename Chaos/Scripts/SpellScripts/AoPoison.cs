@@ -31,12 +31,12 @@ namespace Chaos.Scripts.SpellScripts
                 //Require mana
                 if (context.Source.StatSheet.CurrentMp < manaSpent.Value)
                 {
-                    context.AislingSource?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this cast.");
+                    context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this cast.");
                     return;
                 }
                 //Subtract mana and update user
                 context.Source.StatSheet.SubtractMp(manaSpent.Value);
-                context.AislingSource?.Client.SendAttributes(StatUpdateType.Vitality);
+                context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
             }
 
             ShowBodyAnimation(context);
@@ -47,14 +47,14 @@ namespace Chaos.Scripts.SpellScripts
             if (context.Target.Effects.Contains("poison"))
             {
                 context.Target.Effects.Dispel("poison");
-                context.AislingTarget?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{context.Source.Name} has healed your poison. You feel fine now.");
-                context.AislingTarget?.Client.SendAttributes(StatUpdateType.Full);
+                context.TargetAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{context.Source.Name} has healed your poison. You feel fine now.");
+                context.TargetAisling?.Client.SendAttributes(StatUpdateType.Full);
                 ShowAnimation(context, affectedPoints);
                 PlaySound(context, affectedPoints);
             }
             else
             {
-                context.AislingSource?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "This target isn't affected by poison.");
+                context.TargetAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "This target isn't affected by poison.");
                 return;
             }
         }

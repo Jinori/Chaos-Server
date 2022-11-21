@@ -183,7 +183,6 @@ public sealed class Aisling : Creature
         foreach (var obj in MapInstance.GetEntitiesWithinRange<Aisling>(this)
                                        .ThatCanSee(this))
             obj.Client.SendHealthBar(this);
-        ShowHealth(hitSound);
     }
 
     public void BeginObserving()

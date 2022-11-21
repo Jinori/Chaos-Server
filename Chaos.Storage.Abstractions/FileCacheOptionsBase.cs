@@ -1,6 +1,6 @@
 namespace Chaos.Storage.Abstractions;
 
-public abstract class FileCacheOptionsBase : IFileCacheOptions
+public abstract class FileCacheOptionsBase : ISimpleFileCacheOptions
 {
     /// <inheritdoc />
     public required string Directory { get; set; }

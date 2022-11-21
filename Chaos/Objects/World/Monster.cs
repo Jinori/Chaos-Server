@@ -82,25 +82,16 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>
     public override void ApplyDamage(Creature source, int amount, byte? hitSound = 1)
     {
         Script.OnAttacked(source, ref amount);
-
         StatSheet.SubtractHp(amount);
-
-        foreach (var obj in MapInstance.GetEntitiesWithinRange<Aisling>(this)
-                                       .ThatCanSee(this))
-            obj.Client.SendHealthBar(this, hitSound);
+        ShowHealth(hitSound);
     }
 
     public override void ApplyHealing(Creature source, int amount)
     {
         Script.OnAttacked(source, ref amount);
-
         StatSheet.AddHp(amount);
-
-        foreach (var obj in MapInstance.GetEntitiesWithinRange<Aisling>(this)
-                                       .ThatCanSee(this))
-            obj.Client.SendHealthBar(this);
         StatSheet.SubtractHp(amount);
-        ShowHealth(hitSound);
+        ShowHealth();
     }
 
     /// <inheritdoc />

@@ -1,3 +1,8 @@
+using Chaos.Clients.Abstractions;
+using Chaos.CommandInterceptor;
+using Chaos.CommandInterceptor.Abstractions;
+using Chaos.Common.Collections;
+using Chaos.Containers;
 using Chaos.Extensions;
 using Chaos.Networking.Abstractions;
 using Chaos.Objects.World;
@@ -38,16 +43,16 @@ public sealed class TeleportCommand : ICommand<Aisling>
 
                     return;
                 }
-                
+
                 aisling.TraverseMap(player.MapInstance, player);
 
                 break;
             case "map":
-                if(!args.TryGetNext<string>(out var mapInstanceId))
+                if (!args.TryGetNext<string>(out var mapInstanceId))
                     return;
 
                 var mapInstance = Cache.Get<MapInstance>(mapInstanceId);
-                
+
                 Point point;
 
                 if (args.TryGetNext<int>(out var xPos) && args.TryGetNext<int>(out var yPos))
