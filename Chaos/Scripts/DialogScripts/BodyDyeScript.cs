@@ -1,4 +1,5 @@
 ﻿using Chaos.Common.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Factories;
 using Chaos.Factories.Abstractions;
@@ -31,7 +32,7 @@ namespace Chaos.Scripts.DialogScripts
             {
                 var item = ItemFactory.CreateFaux("hairDyeContainer");
                 item.DisplayName = $"{color} Body Dye";
-                item.Color = Chaos.Extensions.ColorSwap.ConvertToDisplayColor(color);
+                item.Color = ColorSwap.ConvertToDisplayColor(color);
                 Subject.Items.Add(item);
             }
         }
@@ -54,7 +55,7 @@ namespace Chaos.Scripts.DialogScripts
                 Subject.Close(source);
                 return;
             }
-            source.BodyColor = Chaos.Extensions.ColorSwap.ConvertToBodyColor(Item.Color);
+            source.BodyColor = ColorSwap.ConvertToBodyColor(Item.Color);
             source.Refresh(true);
         }
     }
