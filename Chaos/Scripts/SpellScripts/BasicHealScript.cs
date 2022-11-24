@@ -60,12 +60,6 @@ namespace Chaos.Scripts.SpellScripts
         /// <inheritdoc />
         public override void OnUse(SpellContext context)
         {
-            //Status Related
-            if (context.Source.Status.HasFlag(Status.Suain))
-            {
-                context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your hands are frozen.");
-                return;
-            }
             if (manaSpent.HasValue)
             {
                 //Require mana

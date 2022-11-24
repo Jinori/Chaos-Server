@@ -37,13 +37,6 @@ public class CascadeDamageScript : DamageScript
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
     {
-        //Status Related
-        if (context.Source.Status.HasFlag(Status.Suain))
-        {
-            context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your hands are frozen.");
-            return;
-        }
-
         var direction = context.Source.Direction;
         var sourcePoint = Point.From(context.Source);
 
