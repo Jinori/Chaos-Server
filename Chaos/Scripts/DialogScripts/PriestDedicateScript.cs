@@ -1,5 +1,7 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Data;
+using Chaos.Factories;
+using Chaos.Factories.Abstractions;
 using Chaos.Objects.Legend;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
@@ -9,8 +11,10 @@ namespace Chaos.Scripts.DialogScripts
 {
     public class PriestDedicateScript : DialogScriptBase
     {
-        public PriestDedicateScript(Dialog subject) : base(subject)
+        private readonly IItemFactory ItemFactory;
+        public PriestDedicateScript(Dialog subject, IItemFactory itemFactory) : base(subject)
         {
+            ItemFactory = itemFactory;
         }
 
         public override void OnDisplayed(Aisling source)
@@ -25,6 +29,10 @@ namespace Chaos.Scripts.DialogScripts
             };
             source.UserStatSheet.SetBaseClass(BaseClass.Priest);
             source.Animate(ani, source.Id);
+            if (source.Gender is Gender.Female)
+                source.TryGiveItems(ItemFactory.Create("gorgetgown"));
+            if (source.Gender is Gender.Male)
+                source.TryGiveItems(ItemFactory.Create("cowl"));
             source.Legend.AddOrAccumulate(new LegendMark("Priest Class Devotion", "base", MarkIcon.Priest, MarkColor.Blue, 1, Time.GameTime.Now));
         }
     }

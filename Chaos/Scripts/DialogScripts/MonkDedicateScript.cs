@@ -1,5 +1,6 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Data;
+using Chaos.Factories.Abstractions;
 using Chaos.Objects.Legend;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
@@ -9,8 +10,10 @@ namespace Chaos.Scripts.DialogScripts
 {
     public class MonkDedicateScript : DialogScriptBase
     {
-        public MonkDedicateScript(Dialog subject) : base(subject)
+        private readonly IItemFactory ItemFactory;
+        public MonkDedicateScript(Dialog subject, IItemFactory itemFactory) : base(subject)
         {
+            ItemFactory = itemFactory;
         }
 
         public override void OnDisplayed(Aisling source)
@@ -25,6 +28,10 @@ namespace Chaos.Scripts.DialogScripts
             };
             source.UserStatSheet.SetBaseClass(BaseClass.Monk);
             source.Animate(ani, source.Id);
+            if (source.Gender is Gender.Female)
+                source.TryGiveItems(ItemFactory.Create("earthbodice"));
+            if (source.Gender is Gender.Male)
+                source.TryGiveItems(ItemFactory.Create("dobok"));
             source.Legend.AddOrAccumulate(new LegendMark("Monk Class Devotion", "base", MarkIcon.Monk, MarkColor.Blue, 1, Time.GameTime.Now));
         }
     }
