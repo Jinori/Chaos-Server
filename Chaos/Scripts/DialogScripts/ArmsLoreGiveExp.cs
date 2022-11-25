@@ -1,4 +1,5 @@
-﻿using Chaos.Factories.Abstractions;
+﻿using Chaos.Common.Definitions;
+using Chaos.Factories.Abstractions;
 using Chaos.Objects.Legend;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
@@ -19,11 +20,13 @@ namespace Chaos.Scripts.DialogScripts
 
         public override void OnDisplayed(Aisling source)
         {
-            if (source.Legend.TryGetValue("arms", out var legendMark) && (legendMark.Count >= 6))
+            if (source.Flags.HasFlag(QuestFlag1.Arms))
+            {
                 return;
+            }
 
-            source.Legend.AddOrAccumulate(new LegendMark("Learned Arms from Torrance", "arms", Common.Definitions.MarkIcon.Heart, Common.Definitions.MarkColor.White, 1, Time.GameTime.Now));
-            source.GiveExp(250);
+            source.Flags.AddFlag(QuestFlag1.Arms);
+            source.GiveExp(1500);
         }
     }
 }

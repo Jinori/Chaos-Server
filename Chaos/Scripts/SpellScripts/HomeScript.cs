@@ -32,13 +32,6 @@ namespace Chaos.Scripts.SpellScripts
 
         public override void OnUse(SpellContext context)
         {
-            //Status Related
-            if (context.Source.Status.HasFlag(Status.Suain))
-            {
-                context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your hands are frozen.");
-                return;
-            }
-
             //Lots to unpack here. This could use the players legend to grab their home, randomly put them on any of the World's Inn Maps, could be a guild house or whatever. For now, it functions like the scrolls.
 
             var source = context.Source;

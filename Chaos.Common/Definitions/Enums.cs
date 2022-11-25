@@ -17,7 +17,9 @@ public enum RandomizationType
 [Flags]
 public enum QuestFlag1 : ulong
 {
-    None = 0
+    None = 0,
+    Arms = 1,
+    
     //add more quest flags here, double each time
 }
 
@@ -39,6 +41,7 @@ public enum Status : ulong
     None = 0,
     Dead = 1,
     Suain = 2,
+    AsgallFaileas = 4,
     //add more statuses here, double each time
 }
 

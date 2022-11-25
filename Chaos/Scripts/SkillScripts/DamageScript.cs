@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
 using Chaos.Formulae;
 using Chaos.Geometry.Abstractions;
 using Chaos.Objects;
@@ -22,6 +23,16 @@ public class DamageScript : BasicSkillScriptBase
     {
         foreach (var target in targetEntities)
         {
+            if (target.Status.HasFlag(Status.AsgallFaileas))
+            {
+                //Let's reflect damage back at a 70% chance and take no damage ourselves.
+                if (Randomizer.RollChance(70))
+                {
+                    var reflectDamage = CalculateDamage(context, target);
+                    context.Source.ApplyDamage(context.Source, reflectDamage);
+                    return;
+                }
+            }
             var damage = CalculateDamage(context, target);
             target.ApplyDamage(context.Source, damage);
         }
