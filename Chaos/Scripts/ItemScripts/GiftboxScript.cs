@@ -31,7 +31,7 @@ namespace Chaos.Scripts.ItemScripts
                     //Give Legend Mark
                     source.Legend.AddOrAccumulate(new LegendMark("Opened a " + Subject.DisplayName + "!", "giftbox1", Common.Definitions.MarkIcon.Yay, Common.Definitions.MarkColor.White, 1, Time.GameTime.Now));
                     //Remove box from Inventory
-                    source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
+                    source.Inventory.RemoveQuantity(Subject.DisplayName, 1, out _);
                     //Display confirmation to user
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've received " + GoldAmount.Value + " from " + Subject.DisplayName +  "!");
                 }

@@ -20,9 +20,9 @@ namespace Chaos.Scripts.EffectScripts
 
         protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(3);
 
-        public override void OnApplied(Creature target)
+        public override void OnApplied()
         {
-            base.OnApplied(target);
+            base.OnApplied();
 
             var attributes = new Attributes
             {

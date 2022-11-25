@@ -8,14 +8,16 @@ using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Storage;
+using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripts.DialogScripts
 {
     public class WarriorDedicateScript : DialogScriptBase
     {
         private readonly IItemFactory ItemFactory;
-        private readonly SimpleCache SimpleCache;
-        public WarriorDedicateScript(Dialog subject, IItemFactory itemFactory, SimpleCache simpleCache) : base(subject)
+        private readonly ISimpleCache SimpleCache;
+
+        public WarriorDedicateScript(Dialog subject, IItemFactory itemFactory, ISimpleCache simpleCache) : base(subject)
         {
             ItemFactory = itemFactory;
             SimpleCache = simpleCache;
@@ -32,16 +34,16 @@ namespace Chaos.Scripts.DialogScripts
                 TargetAnimation = 78,
             };
             source.UserStatSheet.SetBaseClass(BaseClass.Warrior);
-            source.Animate(ani, source.Id);
             if (source.Gender is Gender.Female)
                 source.TryGiveItems(ItemFactory.Create("leatherbliaut"));
             if (source.Gender is Gender.Male)
                 source.TryGiveItems(ItemFactory.Create("leathertunic"));
             source.Legend.AddOrAccumulate(new LegendMark("Warrior Class Devotion", "base", MarkIcon.Warrior, MarkColor.Blue, 1, Time.GameTime.Now));
 
-            var mapInstance = SimpleCache.Get<MapInstance>("toclobby");
-            var point = new Point(9, 6);
+            var mapInstance = SimpleCache.Get<MapInstance>("toc");
+            var point = new Point(8, 5);
             source.TraverseMap(mapInstance, point);
+            source.Animate(ani, source.Id);
         }
     }
 }

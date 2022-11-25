@@ -33,16 +33,16 @@ namespace Chaos.Scripts.DialogScripts
                 TargetAnimation = 78,
             };
             source.UserStatSheet.SetBaseClass(BaseClass.Priest);
-            source.Animate(ani, source.Id);
             if (source.Gender is Gender.Female)
                 source.TryGiveItems(ItemFactory.Create("gorgetgown"));
             if (source.Gender is Gender.Male)
                 source.TryGiveItems(ItemFactory.Create("cowl"));
             source.Legend.AddOrAccumulate(new LegendMark("Priest Class Devotion", "base", MarkIcon.Priest, MarkColor.Blue, 1, Time.GameTime.Now));
 
-            var mapInstance = SimpleCache.Get<MapInstance>("toclobby");
-            var point = new Point(9, 6);
+            var mapInstance = SimpleCache.Get<MapInstance>("toc");
+            var point = new Point(8, 5);
             source.TraverseMap(mapInstance, point);
+            source.Animate(ani, source.Id);
         }
     }
 }

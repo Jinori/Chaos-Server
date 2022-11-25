@@ -35,7 +35,7 @@ namespace Chaos.Scripts.ItemScripts
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A foul taste stings your tounge. Lose " + amount + " health.");
 
                 //Update inventory quantity
-                source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
+                source.Inventory.RemoveQuantity(Subject.DisplayName, 1, out _);
             }
         }
     }

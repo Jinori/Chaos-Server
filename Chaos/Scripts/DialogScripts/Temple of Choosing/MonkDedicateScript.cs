@@ -31,17 +31,18 @@ namespace Chaos.Scripts.DialogScripts
                 AnimationSpeed = 100,
                 TargetAnimation = 78,
             };
+
             source.UserStatSheet.SetBaseClass(BaseClass.Monk);
-            source.Animate(ani, source.Id);
             if (source.Gender is Gender.Female)
                 source.TryGiveItems(ItemFactory.Create("earthbodice"));
             if (source.Gender is Gender.Male)
                 source.TryGiveItems(ItemFactory.Create("dobok"));
             source.Legend.AddOrAccumulate(new LegendMark("Monk Class Devotion", "base", MarkIcon.Monk, MarkColor.Blue, 1, Time.GameTime.Now));
 
-            var mapInstance = SimpleCache.Get<MapInstance>("toclobby");
-            var point = new Point(9, 6);
+            var mapInstance = SimpleCache.Get<MapInstance>("toc");
+            var point = new Point(8, 5);
             source.TraverseMap(mapInstance, point);
+            source.Animate(ani, source.Id);
         }
     }
 }

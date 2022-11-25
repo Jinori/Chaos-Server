@@ -35,7 +35,7 @@ namespace Chaos.Scripts.ItemScripts
                 if (BodyAnimation.HasValue)
                     source.AnimateBody(BodyAnimation.Value);
 
-                source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
+                source.Inventory.RemoveQuantity(Subject.DisplayName, 1, out _);
             }
         }
     }

@@ -37,7 +37,7 @@ namespace Chaos.Scripts.ItemScripts
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your mana reserves grow a wee bit stronger.");
 
                     //Update inventory quantity
-                    source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
+                    source.Inventory.RemoveQuantity(Subject.DisplayName, 1, out _);
                 }
             }
         }

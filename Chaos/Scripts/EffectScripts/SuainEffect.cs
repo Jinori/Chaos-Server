@@ -28,10 +28,8 @@ public sealed class SuainEffect : AnimatingEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
 
-    public override void OnApplied(Creature target)
+    public override void OnApplied()
     {
-        Subject = target;
-        AislingSubject = target as Aisling;
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel ice run through your veins.");
         if (!Subject.Status.HasFlag(Status.Suain))
             Subject.Status = Status.Suain;  

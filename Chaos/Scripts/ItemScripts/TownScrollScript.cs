@@ -27,7 +27,7 @@ namespace Chaos.Scripts.ItemScripts
             {
                 var MapInsance = simpleC.Get<MapInstance>(destination.Map);
                 source.TraverseMap(MapInsance, destination);
-                source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
+                source.Inventory.RemoveQuantity(Subject.DisplayName, 1, out _);
             }
         }
     }
