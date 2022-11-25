@@ -32,7 +32,7 @@ namespace Chaos.Scripts.SpellScripts
 
         protected virtual int CalculateHealing(SpellContext context, Creature target)
         {
-            var heals = target.StatSheet.MaximumHp;
+            var heals = (int)target.StatSheet.EffectiveMaximumHp;
 
             return heals;
         }

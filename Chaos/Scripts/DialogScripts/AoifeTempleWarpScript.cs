@@ -23,11 +23,12 @@ namespace Chaos.Scripts.DialogScripts
 
         public override void OnDisplayed(Aisling source)
         {
-            if (source.Legend.TryGetValue("base", out var legendMark))
+            if (!source.UserStatSheet.BaseClass.HasFlag(BaseClass.None))
             {
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You have already chosen a class. Luck be with you.");
                 return;
             }
+
             var mapInstance = SimpleCache.Get<MapInstance>("tocinner");
             var point = new Point(22, 13);
             source.TraverseMap(mapInstance, point);

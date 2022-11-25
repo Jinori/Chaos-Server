@@ -24,12 +24,12 @@ namespace Chaos.Scripts.ItemScripts
         {
             if (source.IsAlive)
             {
-                if (source.StatSheet.CurrentHp < source.StatSheet.MaximumHp)
+                if (source.StatSheet.CurrentHp < source.StatSheet.EffectiveMaximumHp)
                 {
-                    var amount = HealAmount ?? (source.StatSheet.MaximumHp / 100) * HealPercent;
+                    var amount = HealAmount ?? (source.StatSheet.EffectiveMaximumHp / 100) * HealPercent;
 
                     //Let's add HP
-                    source.StatSheet.AddHp(amount!.Value);
+                    source.StatSheet.AddHp((int)amount!.Value);
 
                     //Refresh the users health bar
                     source.Client.SendAttributes(StatUpdateType.Vitality);

@@ -90,7 +90,6 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>
     {
         Script.OnAttacked(source, ref amount);
         StatSheet.AddHp(amount);
-        StatSheet.SubtractHp(amount);
         ShowHealth();
     }
 

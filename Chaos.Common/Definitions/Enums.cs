@@ -608,7 +608,8 @@ public enum BaseClass : byte
     Rogue = 2,
     Wizard = 3,
     Priest = 4,
-    Monk = 5
+    Monk = 5,
+    None = 6,
 }
 
 /// <summary>

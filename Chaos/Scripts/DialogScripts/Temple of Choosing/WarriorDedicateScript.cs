@@ -25,25 +25,25 @@ namespace Chaos.Scripts.DialogScripts
 
         public override void OnDisplayed(Aisling source)
         {
-            if (source.Legend.TryGetValue("base", out var legendMark))
-                return;
-
-            var ani = new Animation
+            if (source.UserStatSheet.BaseClass.HasFlag(BaseClass.None))
             {
-                AnimationSpeed = 100,
-                TargetAnimation = 78,
-            };
-            source.UserStatSheet.SetBaseClass(BaseClass.Warrior);
-            if (source.Gender is Gender.Female)
-                source.TryGiveItems(ItemFactory.Create("leatherbliaut"));
-            if (source.Gender is Gender.Male)
-                source.TryGiveItems(ItemFactory.Create("leathertunic"));
-            source.Legend.AddOrAccumulate(new LegendMark("Warrior Class Devotion", "base", MarkIcon.Warrior, MarkColor.Blue, 1, Time.GameTime.Now));
+                var ani = new Animation
+                {
+                    AnimationSpeed = 100,
+                    TargetAnimation = 78,
+                };
+                source.UserStatSheet.SetBaseClass(BaseClass.Warrior);
+                if (source.Gender is Gender.Female)
+                    source.TryGiveItems(ItemFactory.Create("leatherbliaut"));
+                if (source.Gender is Gender.Male)
+                    source.TryGiveItems(ItemFactory.Create("leathertunic"));
+                source.Legend.AddOrAccumulate(new LegendMark("Warrior Class Devotion", "base", MarkIcon.Warrior, MarkColor.Blue, 1, Time.GameTime.Now));
 
-            var mapInstance = SimpleCache.Get<MapInstance>("toc");
-            var point = new Point(8, 5);
-            source.TraverseMap(mapInstance, point);
-            source.Animate(ani, source.Id);
+                var mapInstance = SimpleCache.Get<MapInstance>("toc");
+                var point = new Point(8, 5);
+                source.TraverseMap(mapInstance, point);
+                source.Animate(ani, source.Id);
+            }
         }
     }
 }
