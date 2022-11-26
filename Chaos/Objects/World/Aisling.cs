@@ -349,6 +349,8 @@ public sealed class Aisling : Creature
 
         while (amount > 0)
         {
+            if (UserStatSheet.Level >= WorldOptions.Instance.MaxLevel)
+                break;
             var expToGive = Math.Min(amount, UserStatSheet.ToNextLevel);
             UserStatSheet.AddTotalExp(expToGive);
             UserStatSheet.AddTNL(-expToGive);
