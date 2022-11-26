@@ -29,7 +29,6 @@ namespace Chaos.Scripts.EffectScripts
                 Ac = -20,
             };
 
-            AislingSubject?.StatSheet.SubtractMp(60);
             Subject?.StatSheet.SubtractBonus(attributes);
             AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
             AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've been cursed by beag cradh! AC lowered!");

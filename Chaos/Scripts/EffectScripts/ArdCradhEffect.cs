@@ -22,6 +22,7 @@ namespace Chaos.Scripts.EffectScripts
 
         public override void OnApplied()
         {
+
             base.OnApplied();
 
             var attributes = new Attributes

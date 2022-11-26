@@ -93,7 +93,7 @@ public sealed record UserStatSheet : StatSheet
         _maximumMp = 50,
         _level = 1,
         _master = false,
-        _baseClass = BaseClass.None,
+        _baseClass = BaseClass.Peasant,
         _advClass = AdvClass.None,
         _atkSpeedPct = 1500
     };

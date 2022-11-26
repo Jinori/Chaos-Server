@@ -18,7 +18,8 @@ public enum RandomizationType
 public enum QuestFlag1 : ulong
 {
     None = 0,
-    Arms = 1,
+    ChosenClass = 1,
+    Arms = 2,
     
     //add more quest flags here, double each time
 }
@@ -42,6 +43,7 @@ public enum Status : ulong
     Dead = 1,
     Suain = 2,
     AsgallFaileas = 4,
+    PreventAffliction = 5,
     //add more statuses here, double each time
 }
 
@@ -608,8 +610,7 @@ public enum BaseClass : byte
     Rogue = 2,
     Wizard = 3,
     Priest = 4,
-    Monk = 5,
-    None = 6,
+    Monk = 5
 }
 
 /// <summary>

@@ -23,7 +23,7 @@ namespace Chaos.Scripts.DialogScripts
 
         public override void OnDisplayed(Aisling source)
         {
-            if (!source.UserStatSheet.BaseClass.HasFlag(BaseClass.None))
+            if (source.Flags.HasFlag(QuestFlag1.ChosenClass))
             {
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You have already chosen a class. Luck be with you.");
                 return;

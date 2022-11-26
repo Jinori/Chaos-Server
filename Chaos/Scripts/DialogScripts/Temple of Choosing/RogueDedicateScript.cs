@@ -24,7 +24,7 @@ namespace Chaos.Scripts.DialogScripts
 
         public override void OnDisplayed(Aisling source)
         {
-            if (source.UserStatSheet.BaseClass.HasFlag(BaseClass.None))
+            if (!source.Flags.HasFlag(QuestFlag1.ChosenClass))
             {
                 var ani = new Animation
                 {
@@ -39,6 +39,7 @@ namespace Chaos.Scripts.DialogScripts
                     source.TryGiveItems(ItemFactory.Create("scoutleather"));
 
                 source.Legend.AddOrAccumulate(new LegendMark("Rogue Class Devotion", "base", MarkIcon.Rogue, MarkColor.Blue, 1, Time.GameTime.Now));
+                source.Flags.AddFlag(QuestFlag1.ChosenClass);
                 var mapInstance = SimpleCache.Get<MapInstance>("toc");
                 var point = new Point(8, 5);
                 source.TraverseMap(mapInstance, point);

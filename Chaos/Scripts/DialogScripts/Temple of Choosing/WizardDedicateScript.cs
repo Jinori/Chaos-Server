@@ -24,7 +24,7 @@ namespace Chaos.Scripts.DialogScripts
 
         public override void OnDisplayed(Aisling source)
         {
-            if (source.UserStatSheet.BaseClass.HasFlag(BaseClass.None))
+            if (!source.Flags.HasFlag(QuestFlag1.ChosenClass))
             {
                 var ani = new Animation
                 {
@@ -38,7 +38,7 @@ namespace Chaos.Scripts.DialogScripts
                 if (source.Gender is Gender.Male)
                     source.TryGiveItems(ItemFactory.Create("gardcorp"));
                 source.Legend.AddOrAccumulate(new LegendMark("Wizard Class Devotion", "base", MarkIcon.Wizard, MarkColor.Blue, 1, Time.GameTime.Now));
-
+                source.Flags.AddFlag(QuestFlag1.ChosenClass);
                 var mapInstance = SimpleCache.Get<MapInstance>("toc");
                 var point = new Point(8, 5);
                 source.TraverseMap(mapInstance, point);
