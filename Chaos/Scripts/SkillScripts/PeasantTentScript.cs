@@ -32,9 +32,8 @@ namespace Chaos.Scripts.SkillScripts
                 var point = new Point(context.Source.X, context.Source.Y);
 
                 var merchant = MerchantFactory.Create("tent", context.Source.MapInstance, point);
-
                 var dialog = DialogFactory.Create("tent_initial", merchant);
-                dialog.Display(context.SourceAisling);                
+                dialog.Display(context.SourceAisling!);               
             }
         }
     }
