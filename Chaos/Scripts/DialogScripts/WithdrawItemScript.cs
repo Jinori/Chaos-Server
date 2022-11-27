@@ -41,7 +41,7 @@ namespace Chaos.Scripts.DialogScripts
         {
             if (!Subject.Items.Any())
             {
-                Subject.Items.AddRange(source.Bank);
+                Subject.Items.AddRange(source.Bank.Select(x => new Data.ItemDetails { Item = x, AmountOrPrice = x.Count }));
             }
         }
 
@@ -86,14 +86,14 @@ namespace Chaos.Scripts.DialogScripts
                     return;
 
                 var itemName = Subject.MenuArgs.First();
-                ShopItem = Subject.Items.FirstOrDefault(i => i.DisplayName.EqualsI(itemName));
+                ShopItem = Subject.Items.Select(i => i.Item).FirstOrDefault(i => i.DisplayName.EqualsI(itemName));
 
                 if (ShopItem == null)
                     return;
             }
             if (source.Bank.CountOf(ShopItem!.DisplayName) == 1)
             {
-                source.Bank.TryWithdraw(ShopItem.DisplayName, Amount.Value, out var Items);
+                source.Bank.TryWithdraw(ShopItem.DisplayName, 1, out var Items);
                 foreach (var itemS in Items!)
                 {
                     source.Inventory.TryAddToNextSlot(itemS);

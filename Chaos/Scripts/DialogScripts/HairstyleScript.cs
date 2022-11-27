@@ -1,4 +1,5 @@
 ﻿using Chaos.Common.Definitions;
+using Chaos.Data;
 using Chaos.Extensions.Common;
 using Chaos.Factories;
 using Chaos.Factories.Abstractions;
@@ -55,7 +56,7 @@ namespace Chaos.Scripts.DialogScripts
                 {
                     var item = ItemFactory.CreateFaux(s);
                     item.Color = source.HairColor;
-                    Subject.Items.Add(item);
+                    Subject.Items.Add(ItemDetails.Default(item));
                 }
             }
             if (source.Gender.Equals(Gender.Female))
@@ -64,7 +65,7 @@ namespace Chaos.Scripts.DialogScripts
                 {
                     var item = ItemFactory.CreateFaux(s);
                     item.Color = source.HairColor;
-                    Subject.Items.Add(item);
+                    Subject.Items.Add(ItemDetails.Default(item));
                 }
             }
         }
@@ -76,13 +77,15 @@ namespace Chaos.Scripts.DialogScripts
                 Subject.Reply(source, DialogString.UnknownInput.Value);
                 return;
             }
-            var Item = Subject.Items.FirstOrDefault(x => x.DisplayName.EqualsI(hairStyleName));
+            var ItemDetails = Subject.Items.FirstOrDefault(x => x.Item.DisplayName.EqualsI(hairStyleName));
+            var Item = ItemDetails?.Item;
             if (Item == null)
+
             {
                 Subject.Reply(source, DialogString.UnknownInput.Value);
                 return;
             }
-            if (!source.TryTakeGold(Item.Template.BuyCost))
+            if (!source.TryTakeGold(ItemDetails!.AmountOrPrice))
             {
                 Subject.Close(source);
                 return;

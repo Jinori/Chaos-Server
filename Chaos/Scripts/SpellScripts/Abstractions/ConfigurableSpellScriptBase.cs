@@ -23,20 +23,4 @@ public abstract class ConfigurableSpellScriptBase : ConfigurableScriptBase<Spell
 
     /// <inheritdoc />
     public virtual void OnUse(SpellContext context) { }
-	
-    /// <inheritdoc />
-    public virtual bool CanUse(SpellContext context)
-    {
-        if (context.Source.IsAlive && context.Target.IsAlive)
-        {
-            if (context.Source.Status.HasFlag(Status.Suain))
-            {
-                context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your hands are frozen.");
-                return false;
-            }
-            return true;
-        }
-        else
-            return false;
-    }
 }
