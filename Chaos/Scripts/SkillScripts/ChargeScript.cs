@@ -54,14 +54,6 @@ namespace Chaos.Scripts.SkillScripts
                 context.Source.WarpTo(points.Last());
             }
 
-            if (targetCreature is not null)
-            {
-
-            }
-
-            ApplyDamage(context, targetCreature);
-            ShowBodyAnimation(context);
-
             return;
         }
 

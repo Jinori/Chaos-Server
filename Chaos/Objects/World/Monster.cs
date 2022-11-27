@@ -93,6 +93,12 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>
         ShowHealth();
     }
 
+    public override void ApplyMana(Creature source, int amount)
+    {
+        Script.OnAttacked(source, ref amount);
+        StatSheet.AddMp(amount);
+    }
+
     /// <inheritdoc />
     public override void OnApproached(Creature creature) => Script.OnApproached(creature);
 

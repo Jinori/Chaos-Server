@@ -78,8 +78,11 @@ public abstract class Creature : NamedEntity, IAffected
 
     public abstract void ApplyHealing(
     Creature source,
-    int amount
-);
+    int amount);
+
+    public abstract void ApplyMana(
+        Creature source,
+        int amount);
 
     public virtual bool CanUse(Skill skill, [MaybeNullWhen(false)] out SkillContext skillContext)
     {

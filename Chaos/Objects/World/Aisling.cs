@@ -179,6 +179,12 @@ public sealed class Aisling : Creature
         ShowHealth();
     }
 
+    public override void ApplyMana(Creature source, int amount)
+    {
+        StatSheet.AddMp(amount);
+        Client.SendAttributes(StatUpdateType.Vitality);
+    }
+
     public void BeginObserving()
     {
         //add observers

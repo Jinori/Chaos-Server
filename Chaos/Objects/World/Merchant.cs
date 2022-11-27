@@ -60,7 +60,12 @@ public sealed class Merchant : Creature, IScripted<IMerchantScript>
     public override void ApplyHealing(
     Creature source,
     int amount
-) => Script.OnAttacked(source, ref amount);
+    ) => Script.OnAttacked(source, ref amount);
+
+    public override void ApplyMana(
+    Creature source,
+    int amount
+    ) => Script.OnAttacked(source, ref amount);
 
     /// <inheritdoc />
     public override void OnApproached(Creature creature) => Script.OnApproached(creature);
