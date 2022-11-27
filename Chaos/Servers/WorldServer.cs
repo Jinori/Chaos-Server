@@ -36,12 +36,12 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
     private readonly ISimpleCacheProvider CacheProvider;
     private readonly IClientFactory<IWorldClient> ClientFactory;
     private readonly ICommandInterceptor<Aisling> CommandInterceptor;
+    private readonly DeltaMonitor DeltaMonitor;
+    private readonly DeltaTime DeltaTime;
     private readonly ParallelOptions ParallelOptions;
     private readonly PeriodicTimer PeriodicTimer;
     private readonly IIntervalTimer SaveTimer;
     private readonly ISaveManager<Aisling> UserSaveManager;
-    private readonly DeltaMonitor DeltaMonitor;
-    private readonly DeltaTime DeltaTime;
 
     public IEnumerable<Aisling> Aislings => Clients
                                             .Select(kvp => kvp.Value.Aisling)
@@ -80,7 +80,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
 
         ParallelOptions = new ParallelOptions
         {
-            MaxDegreeOfParallelism = Environment.ProcessorCount,
+            MaxDegreeOfParallelism = Environment.ProcessorCount
         };
 
         IndexHandlers();
@@ -97,14 +97,14 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         Socket.Listen(20);
         Socket.BeginAccept(OnConnection, Socket);
         Logger.LogInformation("Listening on {EndPoint}", endPoint);
-        
+
         while (true)
         {
             if (stoppingToken.IsCancellationRequested)
                 return;
 
             await PeriodicTimer.WaitForNextTickAsync(stoppingToken);
-            
+
             try
             {
                 DeltaTime.SetDelta();
@@ -138,7 +138,6 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         }*/
 
         return Parallel.ForEachAsync(CacheProvider.GetCache<MapInstance>(), ParallelOptions, UpdateMap);
-
     }
 
     private async ValueTask UpdateMap(MapInstance map, CancellationToken token)
@@ -155,7 +154,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             Logger.LogCritical(e, "Failed to update map instance {MapInstance}", map.InstanceId);
         }
     }
-    
+
     private async Task SaveUserAsync(Aisling aisling)
     {
         try
@@ -210,7 +209,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
 
             return default;
         }
-        
+
         /*
         //this packet is literally retarded
         private void Board(Client client, ClientPacket packet)
@@ -378,8 +377,8 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         client.SendUserId();
         aisling.MapInstance.AddObject(aisling, aisling);
         client.SendProfileRequest();
-        
-        foreach(var reactor in aisling.MapInstance.GetEntitiesAtPoint<ReactorTile>(Point.From(aisling)))
+
+        foreach (var reactor in aisling.MapInstance.GetEntitiesAtPoint<ReactorTile>(Point.From(aisling)))
             reactor.OnWalkedOn(aisling);
     }
 
@@ -392,7 +391,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             //if player is in a world map, dont allow them to walk
             if (localClient.Aisling.ActiveObject.TryGet<WorldMap>() != null)
                 return default;
-            
+
             localClient.Aisling.Walk(localArgs.Direction);
 
             return default;
@@ -551,7 +550,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         {
             (var amount, var destinationPoint) = localArgs;
             var map = localClient.Aisling.MapInstance;
-            
+
             if (!localClient.Aisling.WithinRange(destinationPoint, Options.DropRange))
                 return default;
 
@@ -824,7 +823,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
 
                     break;
             }
-            
+
             return default;
         }
 
@@ -1126,11 +1125,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
                 //if we expect the spell we're casting to be more than 0 lines
                 //it should have started a chant... so we check the chant timer for validation
                 if ((spell.CastLines > 0) && !localClient.Aisling.ChantTimer.Validate(spell.CastLines))
-                {
-                    localClient.SendCancelCasting();
-
                     return default;
-                }
 
                 //it's impossible to know what kind of spell is being used during deserialization
                 //there is no spell type specified in the packet, so we arent sure if the packet will
@@ -1165,8 +1160,6 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
                     case SpellType.Prompt2Nums:
                     case SpellType.Prompt3Nums:
                     case SpellType.Prompt4Nums:
-                        break;
-
                     case SpellType.NoTarget:
                         targetId = source.Id;
 
@@ -1416,16 +1409,16 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             disposable = await mapInstance.Sync.WaitAsync();
 
         await using var sync = disposable;
-        
+
         //remove client from client list
         Clients.TryRemove(client.Id, out _);
-        
+
         if (aisling != null)
         {
             //if the player has an exchange open, cancel it so items are returned
             var activeExchange = aisling.ActiveObject.TryGet<Exchange>();
             activeExchange?.Cancel(aisling);
-            
+
             //remove aisling from map
             mapInstance?.RemoveObject(client.Aisling);
             //save aisling

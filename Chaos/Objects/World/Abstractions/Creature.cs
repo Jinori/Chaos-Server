@@ -87,7 +87,7 @@ public abstract class Creature : NamedEntity, IAffected
     public virtual bool CanUse(Skill skill, [MaybeNullWhen(false)] out SkillContext skillContext)
     {
         skillContext = null;
-        
+
         if (!skill.CanUse())
             return false;
 
@@ -95,11 +95,17 @@ public abstract class Creature : NamedEntity, IAffected
 
         return skill.Script.CanUse(skillContext);
     }
-    
-    public virtual bool CanUse(Spell spell, Creature target, string? prompt, [MaybeNullWhen(false)] out SpellContext spellContext)
+
+    public virtual bool CanUse(
+        Spell spell,
+        Creature target,
+        string? prompt,
+        [MaybeNullWhen(false)]
+        out SpellContext spellContext
+    )
     {
         spellContext = null;
-        
+
         if (!spell.CanUse())
             return false;
 
@@ -107,7 +113,7 @@ public abstract class Creature : NamedEntity, IAffected
 
         return spell.Script.CanUse(spellContext);
     }
-    
+
     public void Chant(string message) => ShowPublicMessage(PublicMessageType.Chant, message);
 
     public virtual void Drop(IPoint point, IEnumerable<Item> items)
@@ -141,7 +147,7 @@ public abstract class Creature : NamedEntity, IAffected
             return;
 
         Gold -= amount;
-        
+
         var money = new Money(amount, MapInstance, point);
 
         MapInstance.AddObject(money, point);
@@ -195,6 +201,13 @@ public abstract class Creature : NamedEntity, IAffected
         !LastClicked.TryGetValue(fromId, out var lastClick) || (DateTime.UtcNow.Subtract(lastClick).TotalMilliseconds > 500);
 
     public void Shout(string message) => ShowPublicMessage(PublicMessageType.Shout, message);
+
+    public virtual void ShowHealth(byte? sound = null)
+    {
+        foreach (var aisling in MapInstance.GetEntitiesWithinRange<Aisling>(this)
+                                           .ThatCanSee(this))
+            aisling.Client.SendHealthBar(this, sound);
+    }
 
     public void ShowPublicMessage(PublicMessageType publicMessageType, string message)
     {
@@ -262,9 +275,9 @@ public abstract class Creature : NamedEntity, IAffected
     {
         if (!CanUse(skill, out var context))
             return false;
-        
+
         skill.Use(context);
-        
+
         return true;
     }
 
@@ -280,8 +293,12 @@ public abstract class Creature : NamedEntity, IAffected
             target = this;
         } else if (!MapInstance.TryGetObject(targetId.Value, out target))
             return false;
-        
-        if (!CanUse(spell, target!, prompt, out var context))
+
+        if (!CanUse(
+                spell,
+                target!,
+                prompt,
+                out var context))
             return false;
 
         spell.Use(context);
@@ -336,7 +353,7 @@ public abstract class Creature : NamedEntity, IAffected
         foreach (var aisling in visibleAfter.Intersect(visibleBefore).OfType<Aisling>())
             aisling.Client.SendCreatureWalk(Id, startPoint, Direction);
 
-        foreach(var reactor in MapInstance.GetEntitiesAtPoint<ReactorTile>(Point.From(this)))
+        foreach (var reactor in MapInstance.GetEntitiesAtPoint<ReactorTile>(Point.From(this)))
             reactor.OnWalkedOn(this);
     }
 
@@ -381,6 +398,7 @@ public abstract class Creature : NamedEntity, IAffected
 
         foreach (var creature in creaturesAfter.Except(creaturesBefore))
             Helpers.HandleApproach(creature, this);
+
         Display();
     }
 
@@ -388,11 +406,4 @@ public abstract class Creature : NamedEntity, IAffected
 
     public virtual bool WithinLevelRange(Creature other) =>
         LevelRangeFormulae.Default.WithinLevelRange(StatSheet.Level, other.StatSheet.Level);
-    
-    public virtual void ShowHealth(byte? sound = null)
-    {
-        foreach (var aisling in MapInstance.GetEntitiesWithinRange<Aisling>(this)
-                                           .ThatCanSee(this))
-            aisling.Client.SendHealthBar(this, sound);
-    }
 }

@@ -1,6 +1,6 @@
 using Chaos.Common.Collections;
 using Chaos.Objects.Menu;
-using Chaos.Schemas.Content;
+using Chaos.Schemas.Templates;
 using Chaos.Templates;
 using Chaos.TypeMapper.Abstractions;
 

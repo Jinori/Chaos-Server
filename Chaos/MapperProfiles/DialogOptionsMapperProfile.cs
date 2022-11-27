@@ -1,5 +1,5 @@
 using Chaos.Objects.Menu;
-using Chaos.Schemas.Content;
+using Chaos.Schemas.Data;
 using Chaos.TypeMapper.Abstractions;
 
 namespace Chaos.MapperProfiles;
