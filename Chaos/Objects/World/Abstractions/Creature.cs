@@ -132,7 +132,7 @@ public abstract class Creature : NamedEntity, IAffected
         foreach (var groundItem in groundItems)
         {
             groundItem.Item.Script.OnDropped(this, MapInstance);
-            Logger.LogDebug("{Name} dropped {Item}", Name, groundItem);
+            Logger.LogDebug("{Creature} dropped {Item}", this, groundItem);
 
             foreach (var reactor in reactors)
                 reactor.OnItemDroppedOn(this, groundItem);
