@@ -20,6 +20,8 @@ public enum QuestFlag1 : ulong
     None = 0,
     ChosenClass = 1,
     Arms = 2,
+    GatheringSticks = 4,
+    SpareAStickComplete = 8,
     
     //add more quest flags here, double each time
 }
