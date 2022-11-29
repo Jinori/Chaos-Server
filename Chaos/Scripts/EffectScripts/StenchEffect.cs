@@ -54,5 +54,10 @@ namespace Chaos.Scripts.EffectScripts
                 target.ShowHealth();
             }
         }
+
+        public override void OnTerminated()
+        {
+            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A foul stench begins to dissipate.");
+        }
     }
 }

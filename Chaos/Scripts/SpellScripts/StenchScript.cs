@@ -25,6 +25,11 @@ namespace Chaos.Scripts.SpellScripts
 
         public override void OnUse(SpellContext context)
         {
+            if (context.SourceAisling!.Effects.Contains("stench"))
+            {
+                context.SourceAisling?.Effects.Terminate("stench");
+                return;
+            }
             ShowBodyAnimation(context);
 
             var affectedPoints = GetAffectedPoints(context).Cast<IPoint>().ToList();
@@ -35,6 +40,7 @@ namespace Chaos.Scripts.SpellScripts
 
             var effect = EffectFactory.Create("stench");
             context.Source.Effects.Apply(context.Source, effect);
+            context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A foul stench rolls off your body...");
         }
     }
 }
