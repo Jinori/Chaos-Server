@@ -22,6 +22,8 @@ public enum QuestFlag1 : ulong
     Arms = 2,
     GatheringSticks = 4,
     SpareAStickComplete = 8,
+    HeadedToBeautyShop = 16,
+    TalkedToJosephine = 32,
     
     //add more quest flags here, double each time
 }

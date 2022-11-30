@@ -14,9 +14,9 @@ using System.Threading.Tasks;
 
 namespace Chaos.Scripts.SkillScripts
 {
-    public class StudyCreatureElementScript : BasicSkillScriptBase
+    public class StudyCreatureScript : BasicSkillScriptBase
     {
-        public StudyCreatureElementScript(Skill subject) : base(subject)
+        public StudyCreatureScript(Skill subject) : base(subject)
         {
         }
 
@@ -33,17 +33,23 @@ namespace Chaos.Scripts.SkillScripts
             PlaySound(context, affectedPoints);
 
             var mob = affectedEntities.FirstOrDefault();
-            mob?.Chant(mob.StatSheet.DefenseElement.ToString());
-
-            var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint));
-            if (group is not null)
+            if (mob is not null)
             {
-                foreach (var entity in group)
+                context.SourceAisling?.Client.SendServerMessage(Common.Definitions.ServerMessageType.ScrollWindow, "Name: " + mob?.Name + "\nLevel: " + mob?.StatSheet.Level + "\nCurrent Health: " + mob?.StatSheet.CurrentHp + "\nCurrent Mana: " + mob?.StatSheet.CurrentMp
+    + "\nOffensive Element: " + mob?.StatSheet.OffenseElement + "\nDefensive Element: " + mob?.StatSheet.DefenseElement);
+                var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint));
+                if (group is not null)
                 {
-                    var showMobEle = entity.MapInstance.GetEntities<Creature>().Where(x => x.Equals(mob)).FirstOrDefault();
-                    showMobEle?.Chant(showMobEle.StatSheet.DefenseElement.ToString());
+                    foreach (var entity in group)
+                    {
+                        var showMobEle = entity.MapInstance.GetEntities<Creature>().Where(x => x.Equals(mob)).FirstOrDefault();
+                        showMobEle?.Chant(showMobEle.StatSheet.DefenseElement.ToString());
+                    }
                 }
             }
+            if (mob is null)
+                context.SourceAisling?.Client.SendServerMessage(Common.Definitions.ServerMessageType.OrangeBar1, "Your attempt to examine failed.");
+
         }
     }
 }
