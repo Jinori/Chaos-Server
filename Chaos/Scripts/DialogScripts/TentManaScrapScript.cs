@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Chaos.Scripts.DialogScripts.Abstractions;
 
-namespace Chaos.Scripts
+namespace Chaos.Scripts.DialogScripts
 {
     public class TentManaScrapScript : DialogScriptBase
     {
@@ -47,7 +47,7 @@ namespace Chaos.Scripts
             source.Inventory.RemoveQuantity(ask.Slot, amount, out var Items);
             foreach (var Item in Items!)
             {
-                var item = ItemFactory.Create("peasantMpPot");
+                var item = ItemFactory.Create("peasantMpPotion");
                 item.Count = amount;
                 source.TryGiveItems(item);
             }
@@ -83,7 +83,7 @@ namespace Chaos.Scripts
                 source.Inventory.RemoveQuantity(ask.Slot, 1, out var Items);
                 foreach (var Item in Items!)
                 {
-                    var item = ItemFactory.Create("peasantMpPot", null);
+                    var item = ItemFactory.Create("peasantMpPotion", null);
                     item.Count = 1;
                     source.TryGiveItems(item);
                 }

@@ -10,19 +10,19 @@ using System.Threading.Tasks;
 
 namespace Chaos.Scripts.DialogScripts
 {
-    public class HideRionaOptionsScript : DialogScriptBase
+    public class HideCalloOptionsScript : DialogScriptBase
     {
-        public HideRionaOptionsScript(Dialog subject) : base(subject)
+        public HideCalloOptionsScript(Dialog subject) : base(subject)
         {
         }
 
         public override void OnDisplaying(Aisling source)
         {
-            if (source.Flags.HasFlag(QuestFlag1.HeadedToBeautyShop) || source.Flags.HasFlag(QuestFlag1.TalkedToJosephine))
+            if (source.Flags.HasFlag(QuestFlag1.SpareAStickComplete))
             {
-                if (Subject.GetOptionIndex("Beauty Shop").HasValue)
+                if (Subject.GetOptionIndex("Spare A Stick").HasValue)
                 {
-                    int s = Subject.GetOptionIndex("Beauty Shop")!.Value;
+                    int s = Subject.GetOptionIndex("Spare A Stick")!.Value;
                     Subject.Options.RemoveAt(s);
                 }      
             }

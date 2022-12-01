@@ -47,7 +47,7 @@ namespace Chaos.Scripts.DialogScripts
             source.Inventory.RemoveQuantity(ask.Slot, amount, out var Items);
             foreach (var Item in Items!)
             {
-                var item = ItemFactory.Create("peasantHpPot");
+                var item = ItemFactory.Create("peasantHpPotion");
                 item.Count = amount;
                 source.TryGiveItems(item);
             }
@@ -83,7 +83,7 @@ namespace Chaos.Scripts.DialogScripts
                 source.Inventory.RemoveQuantity(ask.Slot, 1, out var Items);
                 foreach (var Item in Items!)
                 {
-                    var item = ItemFactory.Create("peasantHpPot", null);
+                    var item = ItemFactory.Create("peasantHpPotion", null);
                     item.Count = 1;
                     source.TryGiveItems(item);
                 }
