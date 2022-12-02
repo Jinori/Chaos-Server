@@ -1,15 +1,9 @@
-﻿using Chaos.Factories.Abstractions;
-using Chaos.Factories;
-using Chaos.Objects.Menu;
+﻿using Chaos.Objects.Menu;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Chaos.Scripts.DialogScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripts.DialogScripts
 {

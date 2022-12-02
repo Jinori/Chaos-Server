@@ -1,14 +1,7 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Factories.Abstractions;
-using Chaos.Objects.Legend;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chaos.Scripts.DialogScripts
 {
