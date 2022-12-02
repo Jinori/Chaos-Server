@@ -41,6 +41,11 @@ namespace Chaos.Scripts.EffectScripts
 
         public override bool ShouldApply(Creature source, Creature target)
         {
+            if (source.StatSheet.CurrentMp < 310)
+            {
+                (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana.");
+                return false;
+            }
             if (target.Effects.Contains("asgallfaileas"))
             {
                 (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");

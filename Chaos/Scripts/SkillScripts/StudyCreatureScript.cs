@@ -35,8 +35,8 @@ namespace Chaos.Scripts.SkillScripts
             var mob = affectedEntities.FirstOrDefault();
             if (mob is not null)
             {
-                context.SourceAisling?.Client.SendServerMessage(Common.Definitions.ServerMessageType.ScrollWindow, "Name: " + mob?.Name + "\nLevel: " + mob?.StatSheet.Level + "\nCurrent Health: " + mob?.StatSheet.CurrentHp + "\nCurrent Mana: " + mob?.StatSheet.CurrentMp
-    + "\nOffensive Element: " + mob?.StatSheet.OffenseElement + "\nDefensive Element: " + mob?.StatSheet.DefenseElement);
+                context.SourceAisling?.Client.SendServerMessage(Common.Definitions.ServerMessageType.ScrollWindow, "Name: " + mob?.Name + "\nLevel: " + mob?.StatSheet.Level + "\nCurrent Health: {=b" + mob?.StatSheet.CurrentHp + "\n{=hCurrent Mana: {=v" + mob?.StatSheet.CurrentMp
+    + "\n{=hOffensive Element: " + mob?.StatSheet.OffenseElement + "\nDefensive Element: " + mob?.StatSheet.DefenseElement);
                 var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint));
                 if (group is not null)
                 {

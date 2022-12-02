@@ -16,6 +16,8 @@ namespace Chaos.Scripts.ReactorTileScripts
 
         public override void OnWalkedOn(Creature source)
         {
+            if (source is not Aisling)
+                return;
             var aisling = source as Aisling;
             if (aisling!.Flags.HasFlag(QuestFlag1.GatheringSticks))
             {

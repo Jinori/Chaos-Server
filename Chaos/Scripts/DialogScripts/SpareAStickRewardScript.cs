@@ -30,7 +30,7 @@ namespace Chaos.Scripts.DialogScripts
                 source.Flags.RemoveFlag(QuestFlag1.GatheringSticks);
                 source.Flags.AddFlag(QuestFlag1.SpareAStickComplete);
                 source.GiveExp(3000);
-                if (Randomizer.RollChance(15))
+                if (Randomizer.RollChance(8))
                 {
                     source.Legend.AddOrAccumulate(new Objects.Legend.LegendMark("Loved by Mileth Mundanes", "milethLoved", MarkIcon.Heart, MarkColor.Blue, 1, Time.GameTime.Now));
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
