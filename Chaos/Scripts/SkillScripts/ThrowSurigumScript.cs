@@ -1,5 +1,6 @@
-using Chaos.Common.Definitions;
+﻿using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Extensions.Common;
 using Chaos.Formulae;
 using Chaos.Geometry.Abstractions;
 using Chaos.Objects;
@@ -9,14 +10,14 @@ using Chaos.Scripts.SkillScripts.Abstractions;
 
 namespace Chaos.Scripts.SkillScripts;
 
-public class DamageScript : BasicSkillScriptBase
+public class ThrowSurigumScript : BasicSkillScriptBase
 {
     protected int? BaseDamage { get; init; }
     protected Stat? DamageStat { get; init; }
     protected decimal? DamageStatMultiplier { get; init; }
 
     /// <inheritdoc />
-    public DamageScript(Skill subject)
+    public ThrowSurigumScript(Skill subject)
         : base(subject) { }
 
     protected virtual void ApplyDamage(SkillContext context, IEnumerable<Creature> targetEntities)
@@ -60,6 +61,15 @@ public class DamageScript : BasicSkillScriptBase
     /// <inheritdoc />
     public override void OnUse(SkillContext context)
     {
+        if (context.SourceAisling?.Equipment[EquipmentSlot.Weapon]?.Slot is not null)
+        {
+            if (context.SourceAisling?.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey.ContainsI("soori") is false)
+            {
+                context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "In an attempt to throw your weapon, you have failed.");
+                return;
+            }
+        }
+
         ShowBodyAnimation(context);
 
         var affectedPoints = GetAffectedPoints(context).Cast<IPoint>().ToList();
