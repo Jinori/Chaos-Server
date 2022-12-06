@@ -40,7 +40,7 @@ namespace Chaos.Scripts.EffectScripts
             if (!Subject.Status.HasFlag(Status.ClawFist))
                 Subject.Status = Status.ClawFist;
             AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your first rush with a burst of energy.");
+            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your fists rush with a burst of energy.");
         }
 
         public override void OnTerminated()

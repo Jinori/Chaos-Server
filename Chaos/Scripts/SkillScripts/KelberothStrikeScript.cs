@@ -21,14 +21,14 @@ public class KelberothStrikeScript : BasicSkillScriptBase
             var damage = CalculateDamage(context, target);
             target.ApplyDamage(context.Source, damage);
         }
-        int sac = Convert.ToInt32(.66 * context.Source.StatSheet.EffectiveMaximumHp);
+        int sac = Convert.ToInt32(.6 * context.Source.StatSheet.CurrentHp);
         context.Source.StatSheet.SubtractHp(sac);
         context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
     }
 
     protected virtual int CalculateDamage(SkillContext context, Creature target)
     {
-        int damage = Convert.ToInt32(.33 * context.Source.StatSheet.EffectiveMaximumHp);
+        int damage = Convert.ToInt32(.3 * context.Source.StatSheet.CurrentHp);
 
         return damage;
     }

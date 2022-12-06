@@ -42,16 +42,16 @@ public class DamageScript : BasicSkillScriptBase
     {
         var damage = BaseDamage ?? 0;
 
-        if (context.Source.Status.HasFlag(Status.ClawFist) && Subject.Template.IsAssail)
-        {
-            damage = Convert.ToInt32(BaseDamage * 1.3);
-        }
-
         if (DamageStat.HasValue)
         {
             var multiplier = DamageStatMultiplier ?? 1;
 
             damage += Convert.ToInt32(context.Source.StatSheet.GetEffectiveStat(DamageStat.Value) * multiplier);
+        }
+
+        if (context.Source.Status.HasFlag(Status.ClawFist) && Subject.Template.IsAssail)
+        {
+            damage += Convert.ToInt32(damage * 0.3);
         }
 
         return DamageFormulae.Default.Calculate(context.Source, target, damage);

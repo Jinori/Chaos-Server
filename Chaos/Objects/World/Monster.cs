@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
@@ -80,6 +81,9 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>
     /// <inheritdoc />
     public override void ApplyDamage(Creature source, int amount, byte? hitSound = 1)
     {
+        if (amount == 61)
+                        Debugger.Break();
+        Say($"Damage: {amount}");
         Script.OnAttacked(source, ref amount);
         StatSheet.SubtractHp(amount);
         ShowHealth(hitSound);

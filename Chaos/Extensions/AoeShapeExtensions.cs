@@ -36,7 +36,7 @@ public static class AoeShapeExtensions
                 break;
             }
             case AoeShape.AllAround:
-                points = sourcePoint.SpiralSearch(range);
+                points = sourcePoint.SpiralSearch(range).Skip(1);
 
                 break;
             case AoeShape.FrontalCone:

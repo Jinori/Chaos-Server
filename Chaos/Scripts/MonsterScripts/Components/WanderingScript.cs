@@ -1,5 +1,7 @@
+using Chaos.Common.Definitions;
 using Chaos.Objects.World;
 using Chaos.Scripts.MonsterScripts.Abstractions;
+using Chaos.Templates.Abstractions;
 
 namespace Chaos.Scripts.MonsterScripts.Components;
 
@@ -8,7 +10,7 @@ public class WanderingScript : MonsterScriptBase
 {
     /// <inheritdoc />
     public WanderingScript(Monster subject)
-        : base(subject) { }
+    : base(subject) { }
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
