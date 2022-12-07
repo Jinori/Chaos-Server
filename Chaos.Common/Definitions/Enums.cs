@@ -24,6 +24,7 @@ public enum QuestFlag1 : ulong
     SpareAStickComplete = 8,
     HeadedToBeautyShop = 16,
     TalkedToJosephine = 32,
+    TerrorOfCryptHunt = 64,
     
     //add more quest flags here, double each time
 }
