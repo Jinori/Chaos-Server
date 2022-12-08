@@ -54,8 +54,8 @@ namespace Chaos.Scripts.DialogScripts
                     foreach (var member in group)
                     {
                         MapInstance mapInstance;
-                        mapInstance = SimpleCache.Get<MapInstance>("mileth_tavern");
-                        Point pointS = new Point(9, 10);
+                        mapInstance = SimpleCache.Get<MapInstance>("cryptTerror");
+                        Point pointS = new Point(13, 8);
                         member.TraverseMap(mapInstance, pointS);
                         member.Animate(ani);
                     }
