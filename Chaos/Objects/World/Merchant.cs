@@ -78,6 +78,8 @@ public sealed class Merchant : Creature, IScripted<IMerchantScript>
     public override void OnGoldDroppedOn(Aisling source, int amount) => Script.OnGoldDroppedOn(source, amount);
 
     public override void OnItemDroppedOn(Aisling source, byte slot, byte count) => Script.OnItemDroppedOn(source, slot, count);
+
+    /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         base.Update(delta);

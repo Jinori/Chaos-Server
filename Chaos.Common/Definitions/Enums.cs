@@ -616,7 +616,9 @@ public enum BaseClass : byte
     Rogue = 2,
     Wizard = 3,
     Priest = 4,
-    Monk = 5
+    Monk = 5,
+    Any = 6,
+    Diacht = 255
 }
 
 /// <summary>
@@ -940,8 +942,7 @@ public enum BodyAnimation : byte
 public enum ClickType : byte
 {
     TargetId = 1,
-    TargetPoint = 3,
-    Unknown = 86
+    TargetPoint = 3
 }
 
 /// <summary>

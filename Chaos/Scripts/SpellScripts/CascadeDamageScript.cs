@@ -60,6 +60,7 @@ public class CascadeDamageScript : DamageScript
                             i)
                         .ToList();
 
+                    // ReSharper disable once RemoveRedundantBraces
                     await using (_ = await context.Map.Sync.WaitAsync())
                     {
                         try
