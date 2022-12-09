@@ -23,7 +23,7 @@ public class DefaultLevelUpFormula : ILevelUpFormula
         return levelUpAttribs;
     }
 
-    protected virtual int GetNewTnl(Aisling aisling) => Convert.ToInt32(Math.Pow(aisling.UserStatSheet.Level, 2) * 200);
+    public virtual int GetNewTnl(Aisling aisling) => Convert.ToInt32(Math.Pow(aisling.UserStatSheet.Level, 2) * 200);
 
     /// <inheritdoc />
     public virtual void LevelUp(Aisling aisling)

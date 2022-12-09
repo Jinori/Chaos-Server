@@ -38,6 +38,11 @@ namespace Chaos.Scripts.MapScripts
             Spawn(aisling!);
         }
 
+        public override void Update(TimeSpan delta)
+        {
+            
+        }
+
         public void Spawn(Aisling aisling)
         {
             var group = aisling.Group?.Where(x => x.WithinRange(new Point(8, 8)));
@@ -84,10 +89,7 @@ namespace Chaos.Scripts.MapScripts
                            var monster = MonsterFactory.Create("terrorLowInsight", Subject, new Point(4, 8));
                            await using (_ = await aisling!.MapInstance.Sync.WaitAsync())
                            {
-                               if (Subject.GetEntities<Creature>().Where(x => x.Name.Equals("Terror Of The Crypt")).Count() < 1)
-                               {
-                                   Subject.AddObject(monster, new Point(8, 8));
-                               }
+                               Subject.AddObject(monster, new Point(8, 8));
                            }
                        }
                    }
