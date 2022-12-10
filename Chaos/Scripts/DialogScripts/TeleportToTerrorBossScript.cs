@@ -27,11 +27,6 @@ namespace Chaos.Scripts.DialogScripts
 
         public override void OnDisplaying(Aisling source)
         {
-            var ani = new Animation
-            {
-                AnimationSpeed = 100,
-                TargetAnimation = 78,
-            };
             var point = new Point(source.X, source.Y);
             var group = source.Group?.Where(x => x.WithinRange(point));
 
@@ -57,7 +52,6 @@ namespace Chaos.Scripts.DialogScripts
                         mapInstance = SimpleCache.Get<MapInstance>("cryptTerror");
                         Point pointS = new Point(13, 8);
                         member.TraverseMap(mapInstance, pointS);
-                        member.Animate(ani);
                     }
                 }
                 else

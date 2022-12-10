@@ -1,5 +1,7 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Containers;
+using Chaos.Extensions.Geometry;
+using Chaos.Geometry.Abstractions;
 using Chaos.Objects.World;
 using Chaos.Scripts.MerchantScripts.Abstractions;
 using Chaos.Services.Factories;
@@ -17,11 +19,19 @@ public class WanderScript : ConfigurableMerchantScriptBase
 
     private readonly IIntervalTimer WanderTimer;
     protected int WanderIntervalMs { get; init; }
+    protected Rectangle? PathingBounds { get; init; }
+    private readonly ICollection<IPoint>? PathingBoundsOutline;
     private bool ShouldWander => WanderTimer.IntervalElapsed;
 
     /// <inheritdoc />
     public WanderScript(Merchant subject)
-    : base(subject) { WanderTimer = new IntervalTimer(TimeSpan.FromMilliseconds(WanderIntervalMs)); }
+    : base(subject)
+    {
+        WanderTimer = new IntervalTimer(TimeSpan.FromMilliseconds(WanderIntervalMs));
+
+        if (PathingBounds != null)
+            PathingBoundsOutline = PathingBounds.GetOutline().Cast<IPoint>().ToList();
+    }
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
@@ -36,6 +46,9 @@ public class WanderScript : ConfigurableMerchantScriptBase
         if (!Map.GetEntitiesWithinRange<Aisling>(Subject).Any())
             return;
 
-        Subject.Wander();
+        if (PathingBoundsOutline != null)
+            Subject.Wander(PathingBoundsOutline);
+        else
+            Subject.Wander();
     }
 }

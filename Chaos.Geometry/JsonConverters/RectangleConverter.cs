@@ -23,6 +23,7 @@ public sealed class RectangleConverter : JsonConverter<Rectangle>
             var pName = reader.GetString()!.ToLower();
             reader.Read(); //read separator
             var value = reader.GetInt32();
+            reader.Read();
 
             switch (pName)
             {
@@ -48,8 +49,8 @@ public sealed class RectangleConverter : JsonConverter<Rectangle>
         reader.Read();
 
         return new Rectangle(
-            top,
             left,
+            top,
             width,
             height);
     }
