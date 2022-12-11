@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Chaos.Common.Utilities;
+using Chaos.Data;
 
 namespace Chaos.Scripts.SpellScripts
 {
@@ -21,6 +23,8 @@ namespace Chaos.Scripts.SpellScripts
         protected decimal? DamageStatMultiplier { get; init; }
         protected Element? OffensiveElement { get; init; }
         protected int? ManaSpent { get; init; }
+        protected bool Missed { get; set; }
+
 
         /// <inheritdoc />
         public WizardElementalScript(Spell subject)
@@ -30,6 +34,18 @@ namespace Chaos.Scripts.SpellScripts
         {
             foreach (var target in targetEntities)
             {
+                if (!Randomizer.RollChance(100 - (target.StatSheet.EffectiveMagicResistance / 2)))
+                {
+                    var ani = new Animation
+                    {
+                        AnimationSpeed = 100,
+                        TargetAnimation = 115,
+                    };
+                    target.Animate(ani);
+                    context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"Your {Subject.Template.Name} has missed!");
+                    Missed = true;
+                    return;
+                }
                 var damage = CalculateDamage(context, target);
                 target.ApplyDamage(context.Source, damage);
             }
@@ -85,9 +101,12 @@ namespace Chaos.Scripts.SpellScripts
             var affectedPoints = GetAffectedPoints(context).Cast<IPoint>().ToList();
             var affectedEntities = GetAffectedEntities<Creature>(context, affectedPoints);
 
-            ShowAnimation(context, affectedPoints);
             PlaySound(context, affectedPoints);
             ApplyDamage(context, affectedEntities);
+            if (!Missed)
+                ShowAnimation(context, affectedPoints);
+            if (Missed)
+                Missed = false;
         }
     }
 }
