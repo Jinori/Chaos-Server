@@ -18,14 +18,17 @@ public enum RandomizationType
 public enum QuestFlag1 : ulong
 {
     None = 0,
-    ChosenClass = 1,
-    Arms = 2,
-    GatheringSticks = 4,
-    SpareAStickComplete = 8,
-    HeadedToBeautyShop = 16,
-    TalkedToJosephine = 32,
-    TerrorOfCryptHunt = 64,
-    TerrorOfCryptComplete = 128,
+    ChosenClass = 1 << 1,
+    Arms = 1 << 2,
+    GatheringSticks = 1 << 3,
+    SpareAStickComplete = 1 << 4,
+    HeadedToBeautyShop = 1 << 5,
+    TalkedToJosephine = 1 << 6,
+    TerrorOfCryptHunt = 1 << 7,
+    TerrorOfCryptComplete = 1 << 8,
+    IsabelleQuest = 1 << 9,
+    IsabelleMantisDead = 1 << 10,
+    IsabelleComplete = 1 << 11,
     //add more quest flags here, double each time
 }
 
