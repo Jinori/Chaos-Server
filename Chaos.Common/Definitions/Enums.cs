@@ -53,6 +53,7 @@ public enum Status : ulong
     AsgallFaileas = 4,
     PreventAffliction = 8,
     ClawFist = 16,
+    BeagSuain = 32,
     //add more statuses here, double each time
 }
 
