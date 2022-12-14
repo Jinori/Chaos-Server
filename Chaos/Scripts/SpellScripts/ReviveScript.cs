@@ -22,6 +22,7 @@ namespace Chaos.Scripts.SpellScripts
         }
         public override bool CanUse(SpellContext context)
         {
+            context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You can only cast this spell when you are dead.");
             return context.Source.Equals(context.Target) && !context.Source.IsAlive;
         }
     }
@@ -32,6 +33,7 @@ namespace Chaos.Scripts.SpellScripts
 
         public override bool CanUse(SpellContext context)
         {
+            context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You cannot use this spell while dead.");
             return context.Source.IsAlive;
         }
 
