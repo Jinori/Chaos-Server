@@ -7,11 +7,11 @@ using Chaos.Scripts.SkillScripts.Abstractions;
 
 namespace Chaos.Scripts.SpellScripts;
 
-public class CrasherScript : BasicSkillScriptBase
+public class ExecuteScript : BasicSkillScriptBase
 {
 
     /// <inheritdoc />
-    public CrasherScript(Skill subject)
+    public ExecuteScript(Skill subject)
         : base(subject) { }
 
     protected virtual void ApplyDamage(SkillContext context, IEnumerable<Creature> targetEntities)
@@ -19,19 +19,25 @@ public class CrasherScript : BasicSkillScriptBase
         foreach (var target in targetEntities)
         {
             var damage = CalculateDamage(context, target);
-            target.ApplyDamage(context.Source, damage);
-        }
+            target.ApplyDamage(target, damage);
 
-        int sac = Convert.ToInt32(.9 * context.Source.StatSheet.CurrentHp);
-        context.Source.StatSheet.SubtractHp(sac);
-        context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
+            int tenPercent = Convert.ToInt32(.1 * target.StatSheet.MaximumHp);
+            if (tenPercent >= target.StatSheet.CurrentHp)
+            {
+                target.ApplyDamage(context.Source, target.StatSheet.CurrentHp);
+                int fivePercent = Convert.ToInt32(.05 * context.Source.StatSheet.EffectiveMaximumHp);
+                context.Source.ApplyHealing(context.Source, fivePercent);
+                context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
+                Subject.Cooldown = new TimeSpan(0, 0, 15);
+            }
+        }
     }
 
     protected virtual int CalculateDamage(SkillContext context, Creature target)
     {
-        int damage = Convert.ToInt32(1.5 * context.Source.StatSheet.EffectiveMaximumHp);
+        int tenPercent = Convert.ToInt32(.1 * context.Source.StatSheet.EffectiveMaximumHp);
 
-        return damage;
+        return tenPercent;
     }
 
     /// <inheritdoc />
