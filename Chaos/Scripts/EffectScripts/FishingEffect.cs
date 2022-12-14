@@ -65,7 +65,7 @@ namespace Chaos.Scripts.EffectScripts
             //0.3%
             if (chance >= 4985)
             {
-                var item = ItemFactory.CreateFaux("giftbox");
+                var item = ItemFactory.Create("giftbox");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a giftbox!");
                 return;
@@ -73,7 +73,7 @@ namespace Chaos.Scripts.EffectScripts
             //0.5%
             else if (chance >= 4975 && chance < 4985)
             {
-                var item = ItemFactory.CreateFaux("purplewhopper");
+                var item = ItemFactory.Create("purplewhopper");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Purple Whopper");
                 return;
@@ -81,7 +81,7 @@ namespace Chaos.Scripts.EffectScripts
             //.8%
             else if (chance >= 4960 && chance < 4975)
             {
-                var item = ItemFactory.CreateFaux("lionfish");
+                var item = ItemFactory.Create("lionfish");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Lion Fish");
                 return;
@@ -89,7 +89,7 @@ namespace Chaos.Scripts.EffectScripts
             //1%
             else if (chance >= 4950 && chance < 4960)
             {
-                var item = ItemFactory.CreateFaux("rockfish");
+                var item = ItemFactory.Create("rockfish");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Rock Fish");
                 return;
@@ -97,7 +97,7 @@ namespace Chaos.Scripts.EffectScripts
             //1.5%
             else if (chance >= 4925 && chance < 4950)
             {
-                var item = ItemFactory.CreateFaux("pike");
+                var item = ItemFactory.Create("pike");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Pike");
                 return;
@@ -105,7 +105,7 @@ namespace Chaos.Scripts.EffectScripts
             //2%
             else if (chance >= 4900 && chance < 4925)
             {
-                var item = ItemFactory.CreateFaux("Perch");
+                var item = ItemFactory.Create("Perch");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Perch");
                 return;
@@ -113,7 +113,7 @@ namespace Chaos.Scripts.EffectScripts
             //2.5%
             else if (chance >= 4875 && chance < 4900)
             {
-                var item = ItemFactory.CreateFaux("Bass");
+                var item = ItemFactory.Create("Bass");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Bass");
                 return;
@@ -121,7 +121,7 @@ namespace Chaos.Scripts.EffectScripts
             //3%
             else if (chance >= 4850 && chance < 4875)
             {
-                var item = ItemFactory.CreateFaux("Bass");
+                var item = ItemFactory.Create("Bass");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Trout");
                 return;

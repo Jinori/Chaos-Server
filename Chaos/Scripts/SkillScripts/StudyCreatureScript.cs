@@ -1,16 +1,9 @@
-﻿using Chaos.Definitions;
-using Chaos.Extensions;
+﻿using Chaos.Extensions;
 using Chaos.Geometry.Abstractions;
 using Chaos.Objects;
 using Chaos.Objects.Panel;
-using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.SkillScripts.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chaos.Scripts.SkillScripts
 {
