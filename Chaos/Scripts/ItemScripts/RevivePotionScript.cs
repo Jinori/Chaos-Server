@@ -24,7 +24,7 @@ namespace Chaos.Scripts.ItemScripts
             {
                 //Let's restore their maximums
                 source.StatSheet.AddHp(source.StatSheet.MaximumHp);
-                source.StatSheet.AddHp(source.StatSheet.MaximumMp);
+                source.StatSheet.AddMp(source.StatSheet.MaximumMp);
 
                 //Refresh the users health bar
                 source.Client.SendAttributes(StatUpdateType.Vitality);

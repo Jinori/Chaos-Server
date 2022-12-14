@@ -26,7 +26,7 @@ namespace Chaos.Scripts.EffectScripts
 
             var attributes = new Attributes
             {
-                Ac = -15,
+                Ac = 15,
             };
 
             AislingSubject?.StatSheet.SubtractMp(100);
@@ -41,7 +41,7 @@ namespace Chaos.Scripts.EffectScripts
             {
                 Ac = -15,
             };
-            Subject?.StatSheet.AddBonus(attributes);
+            Subject?.StatSheet.SubtractBonus(attributes);
             AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
             AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor has returned to normal.");
         }
