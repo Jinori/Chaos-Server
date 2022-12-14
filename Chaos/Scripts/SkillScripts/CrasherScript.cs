@@ -22,14 +22,14 @@ public class CrasherScript : BasicSkillScriptBase
             target.ApplyDamage(context.Source, damage);
         }
 
-        int sac = Convert.ToInt32(.9 * context.Source.StatSheet.CurrentHp);
+        int sac = Convert.ToInt32(.8 * context.Source.StatSheet.CurrentHp);
         context.Source.StatSheet.SubtractHp(sac);
         context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
     }
 
     protected virtual int CalculateDamage(SkillContext context, Creature target)
     {
-        int damage = Convert.ToInt32(1.5 * context.Source.StatSheet.EffectiveMaximumHp);
+        int damage = Convert.ToInt32(1.6 * context.Source.StatSheet.CurrentHp);
 
         return damage;
     }
