@@ -6,7 +6,8 @@ public enum AoeShape
     Front,
     AllAround,
     FrontalCone,
-    FrontalDiamond
+    FrontalDiamond,
+    Cleave
 }
 
 public enum TargetFilter

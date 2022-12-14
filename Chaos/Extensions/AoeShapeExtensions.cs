@@ -50,6 +50,21 @@ public static class AoeShapeExtensions
 
                 points = sourcePoint.ConalSearch(direction.Value, range)
                                     .Where(p => p.WithinRange(sourcePoint, range));
+                break;
+
+            case AoeShape.Cleave:
+                ArgumentNullException.ThrowIfNull(direction, nameof(direction));
+
+                Func<Point, bool> filterPredicate = direction.Value switch
+                {
+                    Direction.Up => pt => pt.Y <= sourcePoint.Y,
+                    Direction.Right => pt => pt.X >= sourcePoint.X,
+                    Direction.Down => pt => pt.Y >= sourcePoint.Y,
+                    Direction.Left => pt => pt.X <= sourcePoint.X,
+                    _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
+                };
+
+                points = sourcePoint.SpiralSearch(range).Skip(1).Where(filterPredicate);
 
                 break;
             default:
