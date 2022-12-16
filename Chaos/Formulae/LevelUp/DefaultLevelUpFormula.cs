@@ -14,9 +14,9 @@ public class DefaultLevelUpFormula : ILevelUpFormula
         {
             //each level, add (Level * 0.3) + 10 hp
             //MaximumHp = Convert.ToInt32(aisling.UserStatSheet.Level * 0.3m) + 10,
-            MaximumHp = Convert.ToInt32((aisling.UserStatSheet.Con / (aisling.UserStatSheet.Level + 1) * 50) + 25),
+            MaximumHp = Convert.ToInt32((aisling.UserStatSheet.Con * 50 / aisling.UserStatSheet.Level) + 25),
             //each level, add (Level * 0.15) + 5 mp
-            MaximumMp = Convert.ToInt32((aisling.UserStatSheet.Wis / (aisling.UserStatSheet.Level + 1) * 50) + 25),
+            MaximumMp = Convert.ToInt32((aisling.UserStatSheet.Wis * 50 / aisling.UserStatSheet.Level) + 25),
             //MaximumMp = Convert.ToInt32(aisling.UserStatSheet.Level * 0.15m) + 5,
             //every 3 levels, subtract 1 ac
             Ac = aisling.StatSheet.Level % 3 == 0 ? -1 : 0
