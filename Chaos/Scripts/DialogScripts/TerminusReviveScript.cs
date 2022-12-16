@@ -21,9 +21,9 @@ namespace Chaos.Scripts.DialogScripts
             if (!source.IsAlive)
             {
                 if (source.Gender is Gender.Male && source.BodySprite is not BodySprite.Male)
-                    source.BodySprite = BodySprite.MaleGhost;
+                    source.BodySprite = BodySprite.Male;
                 if (source.Gender is Gender.Female && source.BodySprite is not BodySprite.Female)
-                    source.BodySprite = BodySprite.FemaleGhost;
+                    source.BodySprite = BodySprite.Female;
 
                 //Let's restore their hp/mp to %20
                 source?.StatSheet.AddHealthPct(20);

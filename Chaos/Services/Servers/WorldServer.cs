@@ -1190,49 +1190,78 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         ValueTask InnerOnWhisper(IWorldClient localClient, WhisperArgs localArgs)
         {
             (var targetName, var message) = localArgs;
-            var targetUser = Aislings.FirstOrDefault(user => user.Name.EqualsI(targetName));
 
-            if (message.Length > 100)
-                return default;
-
-            if (targetUser == null)
+            if (targetName == "!")
             {
-                localClient.SendServerMessage(ServerMessageType.ActiveMessage, $"{targetName} is not online");
+                if (message.Length > 100)
+                    return default;
 
-                return default;
+                if (localClient.Aisling.GuildName is null)
+                {
+                    localClient.SendServerMessage(ServerMessageType.ActiveMessage, "You are not in a guild.");
+                    return default;
+                }
+
+                var getGuildmates = Aislings.Where(user => user.GuildName == localClient.Aisling.GuildName).ToList();
+
+                if (getGuildmates.Count < 2)
+                {
+                    localClient.SendServerMessage(ServerMessageType.ActiveMessage, $"No one else in {localClient.Aisling.GuildName} is online.");
+
+                    return default;
+                }
+                else
+                {
+                    foreach (var guildmate in getGuildmates)
+                        guildmate.Client.SendServerMessage(ServerMessageType.GuildChat, $"[{localClient.Aisling.Name}]! {message}");
+                }
             }
-
-            if (targetUser.Equals(localClient.Aisling))
+            else
             {
-                localClient.SendServerMessage(ServerMessageType.Whisper, "Talking to yourself?");
+                var targetUser = Aislings.FirstOrDefault(user => user.Name.EqualsI(targetName));
 
-                return default;
-            }
+                if (message.Length > 100)
+                    return default;
 
-            if (targetUser.SocialStatus == SocialStatus.DoNotDisturb)
-            {
-                localClient.SendServerMessage(ServerMessageType.Whisper, $"{targetUser.Name} doesn't want to be bothered");
+                if (targetUser == null)
+                {
+                    localClient.SendServerMessage(ServerMessageType.ActiveMessage, $"{targetName} is not online");
 
-                return default;
-            }
+                    return default;
+                }
 
-            //if someone is being ignored, they shouldnt know it
-            //let them waste their time typing for no reason
-            if (targetUser.IgnoreList.ContainsI(localClient.Aisling.Name))
-            {
-                Logger.LogInformation(
-                    "Message sent by {FromName} was ignored by {TargetName} (Message: \"{Message}\")",
-                    localClient.Aisling.Name,
-                    targetUser.Name,
-                    message);
+                if (targetUser.Equals(localClient.Aisling))
+                {
+                    localClient.SendServerMessage(ServerMessageType.Whisper, "Talking to yourself?");
+
+                    return default;
+                }
+
+                if (targetUser.SocialStatus == SocialStatus.DoNotDisturb)
+                {
+                    localClient.SendServerMessage(ServerMessageType.Whisper, $"{targetUser.Name} doesn't want to be bothered");
+
+                    return default;
+                }
+
+                //if someone is being ignored, they shouldnt know it
+                //let them waste their time typing for no reason
+                if (targetUser.IgnoreList.ContainsI(localClient.Aisling.Name))
+                {
+                    Logger.LogInformation(
+                        "Message sent by {FromName} was ignored by {TargetName} (Message: \"{Message}\")",
+                        localClient.Aisling.Name,
+                        targetUser.Name,
+                        message);
+
+                    localClient.SendServerMessage(ServerMessageType.Whisper, $"[{targetUser.Name}] > {message}");
+
+                    return default;
+                }
 
                 localClient.SendServerMessage(ServerMessageType.Whisper, $"[{targetUser.Name}] > {message}");
-
-                return default;
+                targetUser.Client.SendServerMessage(ServerMessageType.Whisper, $"[{localClient.Aisling.Name}] < {message}");
             }
-
-            localClient.SendServerMessage(ServerMessageType.Whisper, $"[{targetUser.Name}] > {message}");
-            targetUser.Client.SendServerMessage(ServerMessageType.Whisper, $"[{localClient.Aisling.Name}] < {message}");
 
             return default;
         }
