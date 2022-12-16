@@ -5,6 +5,7 @@ using Chaos.Objects.Legend;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
+using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
@@ -14,11 +15,13 @@ namespace Chaos.Scripts.DialogScripts
     {
         private readonly IItemFactory ItemFactory;
         private readonly ISimpleCache SimpleCache;
+        private readonly ISkillFactory SkillFactory;
 
-        public MonkDedicateScript(Dialog subject, IItemFactory itemFactory, ISimpleCache simpleCache) : base(subject)
+        public MonkDedicateScript(Dialog subject, IItemFactory itemFactory, ISimpleCache simpleCache, ISkillFactory skillFactory) : base(subject)
         {
             ItemFactory = itemFactory;
             SimpleCache = simpleCache;
+            SkillFactory = skillFactory;
         }
 
         public override void OnDisplayed(Aisling source)
@@ -38,6 +41,11 @@ namespace Chaos.Scripts.DialogScripts
                     source.TryGiveItems(ItemFactory.Create("dobok"));
                 source.Legend.AddOrAccumulate(new LegendMark("Monk Class Devotion", "base", MarkIcon.Monk, MarkColor.Blue, 1, Time.GameTime.Now));
                 source.Flags.AddFlag(QuestFlag1.ChosenClass);
+                var skill = SkillFactory.Create("assail");
+                if (!source.SkillBook.Contains(skill))
+                {
+                    source.SkillBook.TryAddToNextSlot(skill);
+                }
                 var mapInstance = SimpleCache.Get<MapInstance>("toc");
                 var point = new Point(8, 5);
                 source.TraverseMap(mapInstance, point);

@@ -32,14 +32,14 @@ public class EquipmentScript : ConfigurableItemScriptBase
             && (BaseClass != BaseClass.Any)
             && (BaseClass != source.UserStatSheet.BaseClass))
         {
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{Subject.DisplayName} does not seem to fit you");
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{Subject.DisplayName} is not suited for your path.");
 
             return;
         }
 
         if ((AdvClass != AdvClass.None) && (AdvClass != source.UserStatSheet.AdvClass))
         {
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{Subject.DisplayName} does not seem to fit you");
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{Subject.DisplayName} is not suited for your path.");
 
             return;
         }
@@ -48,7 +48,7 @@ public class EquipmentScript : ConfigurableItemScriptBase
         {
             source.Client.SendServerMessage(
                 ServerMessageType.OrangeBar1,
-                $"{Subject.DisplayName} does not seem to fit you, but you could grow into it");
+                $"{Subject.DisplayName} is too high of a level for you.");
 
             return;
         }
@@ -59,7 +59,7 @@ public class EquipmentScript : ConfigurableItemScriptBase
         {
             source.Client.SendServerMessage(
                 ServerMessageType.OrangeBar1,
-                $"{Subject.DisplayName} does not seem to fit you, but you could grow into it");
+                $"{Subject.DisplayName} has a stat requirement you have not achieved.");
 
             return;
         }
