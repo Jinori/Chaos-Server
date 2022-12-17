@@ -55,6 +55,7 @@ public enum Status : ulong
     ClawFist = 16,
     BeagSuain = 32,
     BattleCry = 64,
+    InnerFire = 128,
     //add more statuses here, double each time
 }
 

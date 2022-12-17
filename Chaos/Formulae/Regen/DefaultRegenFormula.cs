@@ -15,7 +15,12 @@ public sealed class DefaultRegenFormula : IRegenFormula
         if (!aisling.IsAlive)
             return;
 
-        aisling.StatSheet.AddHealthPct(10);
+        if (aisling.Status.HasFlag(Status.InnerFire))
+        {
+            aisling.StatSheet.AddHealthPct(18);
+        }
+        else
+            aisling.StatSheet.AddHealthPct(10);
         aisling.StatSheet.AddManaPct(5);
         aisling.Client.SendAttributes(StatUpdateType.Vitality);
     }
