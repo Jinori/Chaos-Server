@@ -16,6 +16,9 @@
         <ApplicationIcon>chaos.ico</ApplicationIcon>
     </PropertyGroup>
     <ItemGroup>
+      <Compile Remove="Scripts\MonsterScripts\RandomElementScript.cs" />
+    </ItemGroup>
+    <ItemGroup>
         <Content Include="chaos.ico" />
         <None Update="appsettings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
