@@ -33,6 +33,7 @@ namespace Chaos.Scripts.EffectScripts.Monk
         {
         }
 
+
         public override void OnApplied()
         {
             base.OnApplied();

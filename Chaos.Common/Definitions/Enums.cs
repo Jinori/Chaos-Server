@@ -56,6 +56,7 @@ public enum Status : ulong
     BeagSuain = 32,
     BattleCry = 64,
     InnerFire = 128,
+    Rumination = 256,
     //add more statuses here, double each time
 }
 

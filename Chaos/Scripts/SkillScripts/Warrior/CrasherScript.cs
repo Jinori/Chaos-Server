@@ -23,7 +23,12 @@ public class CrasherScript : BasicSkillScriptBase
         }
 
         int sac = Convert.ToInt32(.8 * context.Source.StatSheet.CurrentHp);
-        context.Source.StatSheet.SubtractHp(sac);
+        if (context.Source.StatSheet.CurrentHp <= sac)
+        {
+            context.Source.StatSheet.SetHp(1);
+        }
+        else
+            context.Source.StatSheet.SubtractHp(sac);
         context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
     }
 
