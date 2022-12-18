@@ -10,7 +10,7 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
 
-namespace Chaos.Scripts.DialogScripts.Generic;
+namespace Chaos.Scripts.DialogScripts;
 
 public class LearnSpellScript : ConfigurableDialogScriptBase
 {
@@ -120,7 +120,7 @@ public class LearnSpellScript : ConfigurableDialogScriptBase
                 var requiredClass = spell.Template.LearningRequirements?.RequiredClass;
 
                 //if this spell is not available to the player's class, skip it
-                if (requiredClass.HasValue && source.UserStatSheet.BaseClass != requiredClass.Value)
+                if (requiredClass.HasValue && !requiredClass.Value.ContainsClass(source.UserStatSheet.BaseClass))
                     continue;
 
                 //if the player already knows this spell, skip it
@@ -156,7 +156,7 @@ public class LearnSpellScript : ConfigurableDialogScriptBase
         if (requirements == null)
             return true;
 
-        if (requirements.RequiredLevel.HasValue && source.StatSheet.Level < requirements.RequiredLevel.Value)
+        if (requirements.RequiredLevel.HasValue && (source.StatSheet.Level < requirements.RequiredLevel.Value))
         {
             dialog.Reply(source, "Come back when you are more experienced.");
 
@@ -167,35 +167,35 @@ public class LearnSpellScript : ConfigurableDialogScriptBase
         {
             var requiredStats = requirements.RequiredStats;
 
-            if (requiredStats.Str > source.StatSheet.EffectiveStr)
+            if (requiredStats.Str < source.StatSheet.EffectiveStr)
             {
                 dialog.Reply(source, "Come back when you are stronger.");
 
                 return false;
             }
 
-            if (requiredStats.Int > source.StatSheet.EffectiveInt)
+            if (requiredStats.Int < source.StatSheet.EffectiveInt)
             {
                 dialog.Reply(source, "Come back when you are smarter.");
 
                 return false;
             }
 
-            if (requiredStats.Wis > source.StatSheet.EffectiveWis)
+            if (requiredStats.Wis < source.StatSheet.EffectiveWis)
             {
                 dialog.Reply(source, "Come back when you are wiser.");
 
                 return false;
             }
 
-            if (requiredStats.Con > source.StatSheet.EffectiveCon)
+            if (requiredStats.Con < source.StatSheet.EffectiveCon)
             {
                 dialog.Reply(source, "Come back when you are tougher.");
 
                 return false;
             }
 
-            if (requiredStats.Dex > source.StatSheet.EffectiveDex)
+            if (requiredStats.Dex < source.StatSheet.EffectiveDex)
             {
                 dialog.Reply(source, "Come back when you are more dexterous.");
 
@@ -239,7 +239,7 @@ public class LearnSpellScript : ConfigurableDialogScriptBase
             }
         }
 
-        if (requirements.RequiredGold.HasValue && source.Gold < requirements.RequiredGold.Value)
+        if (requirements.RequiredGold.HasValue && (source.Gold < requirements.RequiredGold.Value))
         {
             dialog.Reply(source, "Come back when you are more wealthy.");
 

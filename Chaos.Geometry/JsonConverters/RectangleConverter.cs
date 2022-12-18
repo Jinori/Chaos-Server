@@ -10,7 +10,7 @@ public sealed class RectangleConverter : JsonConverter<Rectangle>
         if (reader.TokenType != JsonTokenType.StartObject)
             throw new InvalidOperationException("Expected startObject");
 
-        //read startobj
+        //read startObj
         reader.Read();
 
         var top = 0;
@@ -21,9 +21,9 @@ public sealed class RectangleConverter : JsonConverter<Rectangle>
         while (reader.TokenType != JsonTokenType.EndObject)
         {
             var pName = reader.GetString()!.ToLower();
-            reader.Read(); //read separator
+            reader.Read(); //progress reader
             var value = reader.GetInt32();
-            reader.Read();
+            reader.Read(); //progress reader
 
             switch (pName)
             {
@@ -46,6 +46,7 @@ public sealed class RectangleConverter : JsonConverter<Rectangle>
             }
         }
 
+        //reader endObj
         reader.Read();
 
         return new Rectangle(
@@ -58,8 +59,6 @@ public sealed class RectangleConverter : JsonConverter<Rectangle>
     public override void Write(Utf8JsonWriter writer, Rectangle value, JsonSerializerOptions options)
     {
         writer.WriteStartObject();
-
-        writer.WritePropertyName("Top");
 
         writer.WriteNumber("Top", value.Top);
         writer.WriteNumber("Left", value.Left);

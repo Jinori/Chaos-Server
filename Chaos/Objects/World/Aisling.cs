@@ -57,6 +57,7 @@ public sealed class Aisling : Creature
     public IPanel<Skill> SkillBook { get; private set; }
     public SocialStatus SocialStatus { get; set; }
     public IPanel<Spell> SpellBook { get; private set; }
+    public TimedEventCollection TimedEvents { get; private set; }
     public TitleList Titles { get; init; }
     public UserState UserState { get; set; }
     public UserStatSheet UserStatSheet { get; init; }
@@ -159,6 +160,7 @@ public sealed class Aisling : Creature
         AssailIntervalMs = WorldOptions.Instance.AislingAssailIntervalMs;
         Flags = new FlagCollection();
         RegenTimer = new RegenTimer(this, RegenFormulae.Default);
+        TimedEvents = new TimedEventCollection();
 
         //this object is purely intended to be created and immediately serialized
         //these pieces should never come into play
@@ -334,13 +336,9 @@ public sealed class Aisling : Creature
         if (Equipment.TryEquip(type, item, out var returnedItem))
         {
             Inventory.Remove(slot);
-            item.Script.OnEquipped(this);
 
             if (returnedItem != null)
-            {
                 Inventory.TryAddToNextSlot(returnedItem);
-                returnedItem.Script.OnUnEquipped(this);
-            }
 
             LastEquipOrUnEquip = DateTime.UtcNow;
         }
@@ -355,7 +353,7 @@ public sealed class Aisling : Creature
         if (UserStatSheet.Level >= WorldOptions.Instance.MaxLevel)
             return;
 
-        Client.SendServerMessage(ServerMessageType.ActiveMessage, $"You have gained {amount} experience!");
+        SendActiveMessage($"You have gained {amount} experience!");
 
         while (amount > 0)
         {
@@ -383,7 +381,8 @@ public sealed class Aisling : Creature
         SkillBook skillBook,
         SpellBook spellBook,
         Containers.Legend legend,
-        EffectsBar effects
+        EffectsBar effects,
+        TimedEventCollection timedEvents
     )
     {
         Name = name;
@@ -394,6 +393,7 @@ public sealed class Aisling : Creature
         SpellBook = spellBook;
         Legend = legend;
         Effects = effects;
+        TimedEvents = timedEvents;
     }
 
     public void LevelUp()
@@ -490,6 +490,15 @@ public sealed class Aisling : Creature
             reactor.OnWalkedOn(this);
     }
 
+    public void SendActiveMessage(string message) => SendServerMessage(ServerMessageType.ActiveMessage, message);
+
+    public void SendOrangeBarMessage(string message) => SendServerMessage(ServerMessageType.OrangeBar1, message);
+
+    public void SendPersistentMessage(string message) => SendServerMessage(ServerMessageType.PersistentMessage, message);
+
+    public void SendServerMessage(ServerMessageType serverMessageType, string message) =>
+        Client.SendServerMessage(serverMessageType, message);
+
     public override void ShowTo(Aisling aisling) => aisling.Client.SendDisplayAisling(this);
 
     public bool TryGiveGold(int amount)
@@ -501,7 +510,7 @@ public sealed class Aisling : Creature
 
         if (@new > WorldOptions.Instance.MaxGoldHeld)
         {
-            Client.SendServerMessage(ServerMessageType.OrangeBar1, "You have too much gold.");
+            SendOrangeBarMessage("You have too much gold.");
 
             return false;
         }
@@ -517,7 +526,7 @@ public sealed class Aisling : Creature
     {
         if (!CanCarry(item))
         {
-            Client.SendServerMessage(ServerMessageType.OrangeBar1, "You can't carry that");
+            SendOrangeBarMessage("You can't carry that");
 
             return false;
         }
@@ -548,7 +557,7 @@ public sealed class Aisling : Creature
     {
         if (!CanCarry(items))
         {
-            Client.SendServerMessage(ServerMessageType.OrangeBar1, "You can't carry that");
+            SendOrangeBarMessage("You can't carry that");
 
             return false;
         }
@@ -565,8 +574,8 @@ public sealed class Aisling : Creature
 
         if (!ActiveObject.SetIfNull(exchange))
         {
-            source.Client.SendServerMessage(ServerMessageType.ActiveMessage, $"{Name} is busy right now");
-            Client.SendServerMessage(ServerMessageType.ActiveMessage, $"{source.Name} is trying to exchange with you");
+            source.SendActiveMessage($"{Name} is busy right now");
+            SendActiveMessage($"{source.Name} is trying to exchange with you");
 
             exchange = null;
 
@@ -576,7 +585,7 @@ public sealed class Aisling : Creature
         if (!source.ActiveObject.SetIfNull(exchange))
         {
             ActiveObject.TryRemove(exchange);
-            source.Client.SendServerMessage(ServerMessageType.ActiveMessage, "You're already busy");
+            source.SendActiveMessage("You're already busy");
 
             exchange = null;
 
@@ -601,7 +610,7 @@ public sealed class Aisling : Creature
 
         if (@new < 0)
         {
-            Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You do not have enough gold, you need a total of {amount}");
+            SendOrangeBarMessage($"You do not have enough gold, you need a total of {amount}");
 
             return false;
         }

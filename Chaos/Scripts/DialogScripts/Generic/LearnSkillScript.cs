@@ -10,7 +10,7 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
 
-namespace Chaos.Scripts.DialogScripts.Generic;
+namespace Chaos.Scripts.DialogScripts;
 
 public class LearnSkillScript : ConfigurableDialogScriptBase
 {
@@ -120,7 +120,7 @@ public class LearnSkillScript : ConfigurableDialogScriptBase
                 var requiredClass = skill.Template.LearningRequirements?.RequiredClass;
 
                 //if this skill is not available to the player's class, skip it
-                if (requiredClass.HasValue && source.UserStatSheet.BaseClass != requiredClass.Value)
+                if (requiredClass.HasValue && !requiredClass.Value.ContainsClass(source.UserStatSheet.BaseClass))
                     continue;
 
                 //if the player already knows this skill, skip it
@@ -156,7 +156,7 @@ public class LearnSkillScript : ConfigurableDialogScriptBase
         if (requirements == null)
             return true;
 
-        if (requirements.RequiredLevel.HasValue && source.StatSheet.Level < requirements.RequiredLevel.Value)
+        if (requirements.RequiredLevel.HasValue && (source.StatSheet.Level < requirements.RequiredLevel.Value))
         {
             dialog.Reply(source, "Come back when you are more experienced.");
 
@@ -239,7 +239,7 @@ public class LearnSkillScript : ConfigurableDialogScriptBase
             }
         }
 
-        if (requirements.RequiredGold.HasValue && source.Gold < requirements.RequiredGold.Value)
+        if (requirements.RequiredGold.HasValue && (source.Gold < requirements.RequiredGold.Value))
         {
             dialog.Reply(source, "Come back when you are more wealthy.");
 

@@ -238,7 +238,7 @@ public enum ServerMessageType : byte
     /// <summary>
     ///     Text appears white, and persists indefinitely until cleared in the top right corner
     /// </summary>
-    TopRight = 18
+    PersistentMessage = 18
 }
 
 /// <summary>
@@ -1031,5 +1031,13 @@ public enum MapFlags : ulong
     Darkness = Rain | Snow,
     NoTabMap = 64,
     SnowTileset = 128
+}
+
+public enum ShardingType : byte
+{
+    None,
+    AbsolutePlayerLimit,
+    PlayerLimit,
+    AbsoluteGroupLimit
 }
 #endregion
