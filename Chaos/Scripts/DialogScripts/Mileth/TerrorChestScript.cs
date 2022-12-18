@@ -94,6 +94,7 @@ namespace Chaos.Scripts.DialogScripts.Mileth
                 //Lets send them an orange bar message and give them a Legend Mark for completing the quest
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've received {item.DisplayName} and 50,000 coins!");
                 source.Legend.AddOrAccumulate(new LegendMark("Vanquished Terror of the Crypt", "cryptTerror", MarkIcon.Victory, MarkColor.White, 1, Time.GameTime.Now));
+                source.TimedEvents.AddEvent(Data.TimedEvent.TimedEventId.TerrorOfTheCrypt, TimeSpan.FromDays(1));
 
                 //Warp Player back to Tavern
                 MapInstance mapInstance;

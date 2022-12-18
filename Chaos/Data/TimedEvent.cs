@@ -6,7 +6,8 @@ public sealed class TimedEvent : IEquatable<TimedEvent>
 {
     public enum TimedEventId
     {
-        Fountain
+        Fountain,
+        TerrorOfTheCrypt = 1,
     }
 
     public bool Completed => DateTime.UtcNow - Start > Duration;
