@@ -261,6 +261,8 @@ public abstract class Creature : NamedEntity, IAffected
         Task.Run(
             async () =>
             {
+                await Task.Yield();
+
                 var currentMap = MapInstance;
 
                 var aisling = this as Aisling;
@@ -268,14 +270,15 @@ public abstract class Creature : NamedEntity, IAffected
                 if (aisling is not null)
                     await aisling.Client.ReceiveSync.WaitAsync();
 
-                await using var sync = await ComplexSynchronizationHelper.WaitAsync(
-                    TimeSpan.FromMilliseconds(500),
-                    TimeSpan.FromMilliseconds(3),
-                    currentMap.Sync,
-                    destinationMap.Sync);
 
                 try
                 {
+                    await using var sync = await ComplexSynchronizationHelper.WaitAsync(
+                        TimeSpan.FromMilliseconds(500),
+                        TimeSpan.FromMilliseconds(3),
+                        currentMap.Sync,
+                        destinationMap.Sync);
+
                     if (!fromWolrdMap && !currentMap.RemoveObject(this))
                         return;
 

@@ -58,7 +58,7 @@ namespace Chaos.Scripts.EffectScripts.Wizard
             }
 
             Subject.StatSheet.SubtractHealthPct(5);
-            Subject.StatSheet.AddManaPct(2);
+            Subject.StatSheet.AddManaPct(3);
 
             //Show Vitality
             AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);

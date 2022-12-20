@@ -15,6 +15,52 @@ public enum RandomizationType
 }
 
 [Flags]
+
+public enum ChiAnkletFlags : ulong
+{
+    Ac1 = 0,
+    Ac2 = 1 << 1,
+    Ac3 = 1 << 2,
+    Ac4 = 1 << 3,
+    Ac5 = 1 << 4,
+    Ac6 = 1 << 5,
+    Ac7 = 1 << 6,
+    Ac8 = 1 << 7,
+    Ac9 = 1 << 8,
+
+    BlockSkill1 = 1 << 9,
+    BlockSkill2 = 1 << 10,
+    BlockSkill3 = 1 << 11,
+    BlockSkill4 = 1 << 12,
+    BlockSkill5 = 1 << 13,
+
+    BlockSpell1 = 1 << 14,
+    BlockSpell2 = 1 << 15,
+    BlockSpell3 = 1 << 16,
+    BlockSpell4 = 1 << 17,
+    BlockSpell5 = 1 << 18,
+
+    DTKProc = 1 << 19,
+    DTKProc1 = 1 << 20,
+    DTKProc2 = 1 << 20,
+    DTKProc3 = 1 << 20,
+    DTKProc4 = 1 << 20,
+    DTKProc5 = 1 << 20,
+
+    IncreaseHPRegen1 = 1 << 21,
+    IncreaseHPRegen2 = 1 << 22,
+    IncreaseHPRegen3 = 1 << 23,
+    IncreaseHPRegen4 = 1 << 24,
+    IncreaseHPRegen5 = 1 << 25,
+
+    IncreaseMPRegen1 = 1 << 26,
+    IncreaseMPRegen2 = 1 << 27,
+    IncreaseMPRegen3 = 1 << 28,
+    IncreaseMPRegen4 = 1 << 29,
+    IncreaseMPRegen5 = 1 << 30,
+}
+
+[Flags]
 public enum QuestFlag1 : ulong
 {
     None = 0,
@@ -57,6 +103,7 @@ public enum Status : ulong
     BattleCry = 64,
     InnerFire = 128,
     Rumination = 256,
+    ChiBlocker = 512,
     //add more statuses here, double each time
 }
 

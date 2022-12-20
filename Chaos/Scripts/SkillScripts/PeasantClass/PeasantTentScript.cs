@@ -3,7 +3,7 @@ using Chaos.Objects.Panel;
 using Chaos.Scripts.SkillScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripts.SkillScripts.Rogue
+namespace Chaos.Scripts.SkillScripts.PeasantClass
 {
     public class PeasantTentScript : SkillScriptBase
     {

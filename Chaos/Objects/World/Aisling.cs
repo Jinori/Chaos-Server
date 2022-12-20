@@ -664,7 +664,6 @@ public sealed class Aisling : Creature
             return;
 
         Inventory.TryAddToNextSlot(item);
-        item.Script.OnUnEquipped(this);
         LastEquipOrUnEquip = DateTime.UtcNow;
     }
 
