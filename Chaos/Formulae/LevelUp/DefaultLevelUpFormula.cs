@@ -42,6 +42,13 @@ public class DefaultLevelUpFormula : ILevelUpFormula
         aisling.UserStatSheet.Add(levelUpAttribs);
         aisling.UserStatSheet.RecalculateMaxWeight();
 
+        var ani = new Animation
+        {
+            AnimationSpeed = 100,
+            TargetAnimation = 79
+        };
+
         aisling.Client.SendAttributes(StatUpdateType.Full);
+        aisling.Animate(ani.GetTargetedAnimation(aisling.Id));
     }
 }

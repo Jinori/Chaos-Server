@@ -42,10 +42,10 @@ public class DamageScript : BasicSkillScriptBase
             if (target is Aisling aisling && !aisling.Effects.Contains("chiBlocker") && aisling.Equipment[EquipmentSlot.Boots]!.Template.TemplateKey.EqualsI("chiAnklet"))
             {
                 var chiBlock = (ChiAnkletFlags)aisling.Flags.GetFlag<ChiAnkletFlags>();
-                chiBlock &= ChiAnkletFlags.BlockSkill1 | ChiAnkletFlags.BlockSkill2 | ChiAnkletFlags.BlockSkill3 | ChiAnkletFlags.BlockSkill4 | ChiAnkletFlags.BlockSkill5;
+                chiBlock &= ChiAnkletFlags.Block1 | ChiAnkletFlags.Block2 | ChiAnkletFlags.Block3 | ChiAnkletFlags.Block4 | ChiAnkletFlags.Block5;
                 switch (chiBlock)
                 {
-                    case ChiAnkletFlags.BlockSkill1:
+                    case ChiAnkletFlags.Block1:
                         if (Randomizer.RollChance(1))
                         {
                             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"Your Chi blocked {Subject.Template.Name}.");
@@ -60,7 +60,7 @@ public class DamageScript : BasicSkillScriptBase
                             return;
                         }
                         break;
-                    case ChiAnkletFlags.BlockSkill2:
+                    case ChiAnkletFlags.Block2:
                         if (Randomizer.RollChance(2))
                         {
                             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"Your Chi blocked {Subject.Template.Name}.");
@@ -75,7 +75,7 @@ public class DamageScript : BasicSkillScriptBase
                             return;
                         }
                         break;
-                    case ChiAnkletFlags.BlockSkill3:
+                    case ChiAnkletFlags.Block3:
                         if (Randomizer.RollChance(3))
                         {
                             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"Your Chi blocked {Subject.Template.Name}.");
@@ -90,7 +90,7 @@ public class DamageScript : BasicSkillScriptBase
                             return;
                         }
                         break;
-                    case ChiAnkletFlags.BlockSkill4:
+                    case ChiAnkletFlags.Block4:
                         if (Randomizer.RollChance(4))
                         {
                             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"Your Chi blocked {Subject.Template.Name}.");
@@ -105,7 +105,7 @@ public class DamageScript : BasicSkillScriptBase
                             return;
                         }
                         break;
-                    case ChiAnkletFlags.BlockSkill5:
+                    case ChiAnkletFlags.Block5:
                         if (Randomizer.RollChance(5))
                         {
                             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"Your Chi blocked {Subject.Template.Name}.");
