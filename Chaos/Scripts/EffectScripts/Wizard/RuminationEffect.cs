@@ -71,6 +71,7 @@ namespace Chaos.Scripts.EffectScripts.Wizard
                 return;
             }
 
+            //Remove and Add HP
             Subject.StatSheet.SubtractHealthPct(4);
             Subject.StatSheet.AddManaPct(3);
 

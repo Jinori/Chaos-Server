@@ -34,24 +34,17 @@ public enum ChiAnkletFlags : ulong
     Block4 = 1 << 12,
     Block5 = 1 << 13,
 
-    DTKProc = 1 << 14,
-    DTKProc1 = 1 << 15,
-    DTKProc2 = 1 << 16,
-    DTKProc3 = 1 << 17,
-    DTKProc4 = 1 << 18,
-    DTKProc5 = 1 << 19,
+    DTKProc1 = 1 << 14,
+    DTKProc2 = 1 << 15,
+    DTKProc3 = 1 << 16,
+    DTKProc4 = 1 << 17,
+    DTKProc5 = 1 << 18,
 
-    IncreaseHPRegen1 = 1 << 20,
-    IncreaseHPRegen2 = 1 << 21,
-    IncreaseHPRegen3 = 1 << 22,
-    IncreaseHPRegen4 = 1 << 23,
-    IncreaseHPRegen5 = 1 << 24,
-
-    IncreaseMPRegen1 = 1 << 25,
-    IncreaseMPRegen2 = 1 << 26,
-    IncreaseMPRegen3 = 1 << 27,
-    IncreaseMPRegen4 = 1 << 28,
-    IncreaseMPRegen5 = 1 << 29,
+    IncreaseRegen1 = 1 << 19,
+    IncreaseRegen2 = 1 << 20,
+    IncreaseRegen3 = 1 << 21,
+    IncreaseRegen4 = 1 << 22,
+    IncreaseRegen5 = 1 << 23
 }
 
 [Flags]
