@@ -8,6 +8,7 @@ using Chaos.Objects;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
+using Chaos.Scripts.RuntimeScripts;
 using Chaos.Scripts.SkillScripts.Abstractions;
 using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
@@ -183,6 +184,11 @@ public class DamageScript : BasicSkillScriptBase
             var damage = CalculateDamage(context, target);
             target.ApplyDamage(context.Source, damage);
         }
+            ApplyDamageScripts.Default.ApplyDamage(
+                context.Source,
+                target,
+                this,
+                CalculateDamage(context, target));
     }
 
 
