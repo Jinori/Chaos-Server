@@ -29,7 +29,7 @@ namespace Chaos.Scripts.DialogScripts.Mileth
                 Subject.Text = "Excellent! You'll make a fine spark. Now, go and find your way.";
                 source.Flags.RemoveFlag(QuestFlag1.GatheringSticks);
                 source.Flags.AddFlag(QuestFlag1.SpareAStickComplete);
-                source.GiveExp(3000);
+                source.GiveExp(2500);
                 if (Randomizer.RollChance(8))
                 {
                     source.Legend.AddOrAccumulate(new Objects.Legend.LegendMark("Loved by Mileth Mundanes", "milethLoved", MarkIcon.Heart, MarkColor.Blue, 1, Time.GameTime.Now));

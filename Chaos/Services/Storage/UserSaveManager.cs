@@ -34,7 +34,7 @@ public sealed class UserSaveManager : ISaveManager<Aisling>
             Directory.CreateDirectory(Options.Directory);
     }
 
-    private async ValueTask<T> DesierlizeAsync<T>(string directory, string fileName)
+    private async ValueTask<T> DeserializeAsync<T>(string directory, string fileName)
     {
         var path = Path.Combine(directory, fileName);
 
@@ -59,15 +59,15 @@ public sealed class UserSaveManager : ISaveManager<Aisling>
 
         var directory = Path.Combine(Options.Directory, name.ToLower());
 
-        var aislingSchema = await DesierlizeAsync<AislingSchema>(directory, "aisling.json");
-        var bankSchema = await DesierlizeAsync<BankSchema>(directory, "bank.json");
-        var effectsSchema = await DesierlizeAsync<EffectsBarSchema>(directory, "effects.json");
-        var equipmentSchema = await DesierlizeAsync<EquipmentSchema>(directory, "equipment.json");
-        var inventorySchema = await DesierlizeAsync<InventorySchema>(directory, "inventory.json");
-        var skillsSchemas = await DesierlizeAsync<SkillBookSchema>(directory, "skills.json");
-        var spellsSchemas = await DesierlizeAsync<SpellBookSchema>(directory, "spells.json");
-        var legendSchema = await DesierlizeAsync<LegendSchema>(directory, "legend.json");
-        var timedEventsSchema = await DesierlizeAsync<TimedEventCollectionSchema>(directory, "timedEvents.json");
+        var aislingSchema = await DeserializeAsync<AislingSchema>(directory, "aisling.json");
+        var bankSchema = await DeserializeAsync<BankSchema>(directory, "bank.json");
+        var effectsSchema = await DeserializeAsync<EffectsBarSchema>(directory, "effects.json");
+        var equipmentSchema = await DeserializeAsync<EquipmentSchema>(directory, "equipment.json");
+        var inventorySchema = await DeserializeAsync<InventorySchema>(directory, "inventory.json");
+        var skillsSchemas = await DeserializeAsync<SkillBookSchema>(directory, "skills.json");
+        var spellsSchemas = await DeserializeAsync<SpellBookSchema>(directory, "spells.json");
+        var legendSchema = await DeserializeAsync<LegendSchema>(directory, "legend.json");
+        var timedEventsSchema = await DeserializeAsync<TimedEventCollectionSchema>(directory, "timedEvents.json");
 
         var aisling = Mapper.Map<Aisling>(aislingSchema);
         var bank = Mapper.Map<Bank>(bankSchema);

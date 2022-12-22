@@ -23,7 +23,7 @@ namespace Chaos.Scripts.DialogScripts.Mileth
                 Subject.Text = "Riona sent you? I do have her dye, I'll let her know! Are you interested in a hair style?";
                 source.Flags.RemoveFlag(QuestFlag1.HeadedToBeautyShop);
                 source.Flags.AddFlag(QuestFlag1.TalkedToJosephine);
-                source.GiveExp(500);
+                source.GiveExp(1000);
                 source.TryGiveGold(1000);
             }
         }
