@@ -32,7 +32,6 @@ public static class ComplexSynchronizationHelper
                     else
                         disposable.Dispose();
                 }
-            }
             else
                 return new CompositePolyDisposable(disposables!);
         }
@@ -41,7 +40,8 @@ public static class ComplexSynchronizationHelper
         var signature = string.Join(", ", attemptSignature);
 
         throw new TimeoutException(
-            $"The timeout period elapsed. The helper was unable to acquire all semaphores in the alotted time. (Attempts: {attempts}, Signature: \"{signature}\")");
+            $"The timeout period elapsed. The helper was unable to acquire all semaphores in the alotted time. (Attempts: {attempts
+            }, Signature: \"{signature}\")");
     }
 
     private sealed class CompositePolyDisposable : IPolyDisposable

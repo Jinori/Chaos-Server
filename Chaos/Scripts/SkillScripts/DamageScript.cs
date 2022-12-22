@@ -8,6 +8,7 @@ using Chaos.Objects;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
+using Chaos.Scripts.RuntimeScripts;
 using Chaos.Scripts.SkillScripts.Abstractions;
 using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
@@ -20,10 +21,11 @@ public class DamageScript : BasicSkillScriptBase
     protected Stat? DamageStat { get; init; }
     protected decimal? DamageStatMultiplier { get; init; }
     private readonly IEffectFactory EffectFactory;
+    private readonly ISkillFactory SkillFactory;
 
     /// <inheritdoc />
-    public DamageScript(Skill subject, IEffectFactory effectFactory)
-        : base(subject) { EffectFactory = effectFactory; }
+    public DamageScript(Skill subject, IEffectFactory effectFactory, ISkillFactory skillFactory)
+        : base(subject) { EffectFactory = effectFactory; SkillFactory = skillFactory; }
 
     protected virtual void ApplyDamage(SkillContext context, IEnumerable<Creature> targetEntities)
     {
@@ -39,6 +41,7 @@ public class DamageScript : BasicSkillScriptBase
                     return;
                 }
             }
+            #region ChiReactions
             if (target is Aisling aisling && !aisling.Effects.Contains("chiBlocker") && aisling.Equipment[EquipmentSlot.Boots]!.Template.TemplateKey.EqualsI("chiAnklet"))
             {
                 var chiBlock = (ChiAnkletFlags)aisling.Flags.GetFlag<ChiAnkletFlags>();
@@ -56,7 +59,7 @@ public class DamageScript : BasicSkillScriptBase
                                 TargetAnimation = 339,
                                 AnimationSpeed = 100
                             };
-                            aisling.MapInstance.ShowAnimation(Animation.GetTargetedAnimation(aisling.Id));
+                            aisling.MapInstance.ShowAnimation(ani.GetTargetedAnimation(aisling.Id));
                             return;
                         }
                         break;
@@ -71,7 +74,7 @@ public class DamageScript : BasicSkillScriptBase
                                 TargetAnimation = 339,
                                 AnimationSpeed = 100
                             };
-                            aisling.MapInstance.ShowAnimation(Animation.GetTargetedAnimation(aisling.Id));
+                            aisling.MapInstance.ShowAnimation(ani.GetTargetedAnimation(aisling.Id));
                             return;
                         }
                         break;
@@ -86,7 +89,7 @@ public class DamageScript : BasicSkillScriptBase
                                 TargetAnimation = 339,
                                 AnimationSpeed = 100
                             };
-                            aisling.MapInstance.ShowAnimation(Animation.GetTargetedAnimation(aisling.Id));
+                            aisling.MapInstance.ShowAnimation(ani.GetTargetedAnimation(aisling.Id));
                             return;
                         }
                         break;
@@ -101,7 +104,7 @@ public class DamageScript : BasicSkillScriptBase
                                 TargetAnimation = 339,
                                 AnimationSpeed = 100
                             };
-                            aisling.MapInstance.ShowAnimation(Animation.GetTargetedAnimation(aisling.Id));
+                            aisling.MapInstance.ShowAnimation(ani.GetTargetedAnimation(aisling.Id));
                             return;
                         }
                         break;
@@ -116,15 +119,76 @@ public class DamageScript : BasicSkillScriptBase
                                 TargetAnimation = 339,
                                 AnimationSpeed = 100
                             };
-                            aisling.MapInstance.ShowAnimation(Animation.GetTargetedAnimation(aisling.Id));
+                            aisling.MapInstance.ShowAnimation(ani.GetTargetedAnimation(aisling.Id));
                             return;
                         }
                         break;
                 }
+                var chiDtk = (ChiAnkletFlags)aisling.Flags.GetFlag<ChiAnkletFlags>();
+                chiDtk &= ChiAnkletFlags.DTKProc1 | ChiAnkletFlags.DTKProc2 | ChiAnkletFlags.DTKProc3 | ChiAnkletFlags.DTKProc4 | ChiAnkletFlags.DTKProc5;
+                switch (chiDtk)
+                {
+                    case ChiAnkletFlags.DTKProc1:
+                        if (Randomizer.RollChance(1))
+                        {
+                            var effect = EffectFactory.Create("chiBlocker");
+                            aisling.Effects.Apply(aisling, effect);
+                            var skill = SkillFactory.Create("roundhousekick");
+                            aisling.TryUseSkill(skill);
+                            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"Your Chi reacted to {Subject.Template.Name} with a {skill.Template.Name}!");
+                        }
+                        break;
+                    case ChiAnkletFlags.DTKProc2:
+                        if (Randomizer.RollChance(2))
+                        {
+                            var effect = EffectFactory.Create("chiBlocker");
+                            aisling.Effects.Apply(aisling, effect);
+                            var skill = SkillFactory.Create("roundhousekick");
+                            aisling.TryUseSkill(skill);
+                            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"Your Chi reacted to {Subject.Template.Name} with a {skill.Template.Name}!");
+                        }
+                        break;
+                    case ChiAnkletFlags.DTKProc3:
+                        if (Randomizer.RollChance(3))
+                        {
+                            var effect = EffectFactory.Create("chiBlocker");
+                            aisling.Effects.Apply(aisling, effect);
+                            var skill = SkillFactory.Create("roundhousekick");
+                            aisling.TryUseSkill(skill);
+                            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"Your Chi reacted to {Subject.Template.Name} with a {skill.Template.Name}!");
+                        }
+                        break;
+                    case ChiAnkletFlags.DTKProc4:
+                        if (Randomizer.RollChance(4))
+                        {
+                            var effect = EffectFactory.Create("chiBlocker");
+                            aisling.Effects.Apply(aisling, effect);
+                            var skill = SkillFactory.Create("roundhousekick");
+                            aisling.TryUseSkill(skill);
+                            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"Your Chi reacted to {Subject.Template.Name} with a {skill.Template.Name}!");
+                        }
+                        break;
+                    case ChiAnkletFlags.DTKProc5:
+                        if (Randomizer.RollChance(5))
+                        {
+                            var effect = EffectFactory.Create("chiBlocker");
+                            aisling.Effects.Apply(aisling, effect);
+                            var skill = SkillFactory.Create("roundhousekick");
+                            aisling.TryUseSkill(skill);
+                            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"Your Chi reacted to {Subject.Template.Name} with a {skill.Template.Name}!");
+                        }
+                        break;
+                }
             }
+            #endregion ChiReactions
             var damage = CalculateDamage(context, target);
             target.ApplyDamage(context.Source, damage);
         }
+            ApplyDamageScripts.Default.ApplyDamage(
+                context.Source,
+                target,
+                this,
+                CalculateDamage(context, target));
     }
 
 

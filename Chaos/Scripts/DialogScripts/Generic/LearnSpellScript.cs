@@ -250,7 +250,7 @@ public class LearnSpellScript : ConfigurableDialogScriptBase
         {
             var requiredItem = ItemFactory.CreateFaux(itemRequirement.ItemTemplateKey);
 
-            source.Inventory.RemoveQuantity(requiredItem.DisplayName, itemRequirement.AmountRequired, out _);
+            source.Inventory.RemoveQuantity(requiredItem.DisplayName, itemRequirement.AmountRequired);
         }
 
         if (requirements.RequiredGold.HasValue)

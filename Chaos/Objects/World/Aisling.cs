@@ -8,8 +8,6 @@ using Chaos.Containers.Abstractions;
 using Chaos.Data;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
-using Chaos.Formulae;
-using Chaos.Formulae.LevelUp;
 using Chaos.Geometry.Abstractions;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Objects.Menu;
@@ -19,7 +17,6 @@ using Chaos.Observers;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Servers.Options;
 using Chaos.Time;
-using Chaos.Time.Abstractions;
 using Chaos.TypeMapper.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
@@ -67,6 +64,7 @@ public sealed class Aisling : Creature
     /// <inheritdoc />
     public override int AssailIntervalMs { get; }
     public ChantTimer ChantTimer { get; }
+    public override ILogger<Aisling> Logger { get; }
     public bool ShouldRefresh => DateTime.UtcNow.Subtract(LastRefresh).TotalMilliseconds > WorldOptions.Instance.RefreshIntervalMs;
 
     public bool ShouldWalk
@@ -93,8 +91,6 @@ public sealed class Aisling : Creature
     public override StatSheet StatSheet => UserStatSheet;
     public override CreatureType Type => CreatureType.Aisling;
     public ResettingCounter WalkCounter { get; }
-    protected override ILogger<Aisling> Logger { get; }
-    private IIntervalTimer RegenTimer { get; }
 
     public Aisling(
         string name,
@@ -159,7 +155,6 @@ public sealed class Aisling : Creature
         WalkCounter = new ResettingCounter(10, new IntervalTimer(TimeSpan.FromSeconds(3)));
         AssailIntervalMs = WorldOptions.Instance.AislingAssailIntervalMs;
         Flags = new FlagCollection();
-        RegenTimer = new RegenTimer(this, RegenFormulae.Default);
         TimedEvents = new TimedEventCollection();
 
         //this object is purely intended to be created and immediately serialized
@@ -190,6 +185,7 @@ public sealed class Aisling : Creature
         StatSheet.AddMp(amount);
         Client.SendAttributes(StatUpdateType.Vitality);
     }
+
 
     public void BeginObserving()
     {
@@ -288,46 +284,6 @@ public sealed class Aisling : Creature
 
     public bool CanUse(Item item) => item.CanUse() && item.Script.CanUse(this);
 
-    public void Drop(IPoint point, byte slot, int? amount = null)
-    {
-        if (MapInstance.IsWall(point))
-            return;
-
-        if (!this.WithinRange(point, WorldOptions.Instance.DropRange))
-            return;
-
-        var item = Inventory[slot];
-
-        if ((item == null) || item.Template.AccountBound)
-            return;
-
-        if (amount.HasValue)
-        {
-            if (!Inventory.HasCount(item.DisplayName, amount.Value))
-                return;
-
-            if (Inventory.RemoveQuantity(item.Slot, amount.Value, out var items))
-                Drop(point, items.FixStacks(ItemCloner));
-        } else
-        {
-            if (Inventory.TryGetRemove(slot, out var droppedItem))
-                Drop(point, droppedItem);
-        }
-    }
-
-    /// <inheritdoc />
-    public override void DropGold(IPoint point, int amount)
-    {
-        if (!TryTakeGold(amount))
-            return;
-
-        var money = new Money(amount, MapInstance, point);
-        MapInstance.AddObject(money, point);
-
-        foreach (var reactor in MapInstance.GetEntitiesAtPoint<ReactorTile>(money))
-            reactor.OnGoldDroppedOn(this, money);
-    }
-
     public void Equip(EquipmentType type, Item item)
     {
         var slot = item.Slot;
@@ -396,13 +352,6 @@ public sealed class Aisling : Creature
         TimedEvents = timedEvents;
     }
 
-    public void LevelUp()
-    {
-        //maybe use a diff formula for each class? idk
-        var levelUpFormula = new DefaultLevelUpFormula();
-        levelUpFormula.LevelUp(this);
-    }
-
     public override void OnClicked(Aisling source)
     {
         if (source.Equals(this))
@@ -432,24 +381,40 @@ public sealed class Aisling : Creature
 
     public void PickupItem(GroundItem groundItem, byte destinationSlot)
     {
+        if (!groundItem.CanPickUp(this))
+        {
+            SendActiveMessage("You can't pick that up right now");
+
+            return;
+        }
+
         var item = groundItem.Item;
 
         if (TryGiveItem(item, destinationSlot))
         {
-            Logger.LogDebug("{Player} picked up {Item}", this, item);
-
+            Logger.LogDebug("{Player} picked up {Item}", this, groundItem);
             MapInstance.RemoveObject(groundItem);
             item.Script.OnPickup(this);
+
+            foreach (var reactor in MapInstance.GetDistinctReactorsAtPoint(groundItem).ToList())
+                reactor.OnItemPickedUpFrom(this, groundItem);
         }
     }
 
     public void PickupMoney(Money money)
     {
+        if (!money.CanPickUp(this))
+        {
+            SendActiveMessage("You can't pick that up right now");
+
+            return;
+        }
+
         if (TryGiveGold(money.Amount))
         {
-            Logger.LogDebug("{Player} picked up {Amount} gold", this, money.Amount);
+            Logger.LogDebug("{Player} picked up {Gold}", this, money);
 
-            MapInstance.RemoveObject(money);
+            MapInstance.RemoveObject(this);
         }
     }
 
@@ -486,7 +451,7 @@ public sealed class Aisling : Creature
         Client.SendDisplayAisling(this);
         Client.SendRefreshResponse();
 
-        foreach (var reactor in MapInstance.GetEntitiesAtPoint<ReactorTile>(Point.From(this)))
+        foreach (var reactor in MapInstance.GetDistinctReactorsAtPoint(this).ToList())
             reactor.OnWalkedOn(this);
     }
 
@@ -500,6 +465,60 @@ public sealed class Aisling : Creature
         Client.SendServerMessage(serverMessageType, message);
 
     public override void ShowTo(Aisling aisling) => aisling.Client.SendDisplayAisling(this);
+
+    public bool TryDrop(
+        IPoint point,
+        byte slot,
+        [MaybeNullWhen(false)]
+        out GroundItem[] groundItems,
+        int? amount = null
+    )
+    {
+        groundItems = null;
+
+        if (MapInstance.IsWall(point))
+            return false;
+
+        if (!this.WithinRange(point, WorldOptions.Instance.DropRange))
+            return false;
+
+        var item = Inventory[slot];
+
+        if ((item == null) || item.Template.AccountBound)
+            return false;
+
+        if (amount.HasValue)
+        {
+            if (!Inventory.HasCount(item.DisplayName, amount.Value))
+                return false;
+
+            if (Inventory.RemoveQuantity(item.Slot, amount.Value, out var items))
+                return TryDrop(point, items.FixStacks(ItemCloner), out groundItems);
+        } else
+        {
+            if (Inventory.TryGetRemove(slot, out var droppedItem))
+                return TryDrop(point, out groundItems, droppedItem);
+        }
+
+        return false;
+    }
+
+    /// <inheritdoc />
+    public override bool TryDropGold(IPoint point, int amount, [MaybeNullWhen(false)] out Money money)
+    {
+        money = null;
+
+        if (!TryTakeGold(amount))
+            return false;
+
+        money = new Money(amount, MapInstance, point);
+        MapInstance.AddObject(money, point);
+
+        foreach (var reactor in MapInstance.GetDistinctReactorsAtPoint(money).ToList())
+            reactor.OnGoldDroppedOn(this, money);
+
+        return true;
+    }
 
     public bool TryGiveGold(int amount)
     {
@@ -677,6 +696,7 @@ public sealed class Aisling : Creature
         WalkCounter.Update(delta);
         ChantTimer.Update(delta);
         RegenTimer.Update(delta);
+        TimedEvents.Update(delta);
 
         base.Update(delta);
     }
@@ -768,7 +788,7 @@ public sealed class Aisling : Creature
 
         Client.SendConfirmClientWalk(startPoint, direction);
 
-        foreach (var reactor in MapInstance.GetEntitiesAtPoint<ReactorTile>(Point.From(this)))
+        foreach (var reactor in MapInstance.GetDistinctReactorsAtPoint(this).ToList())
             reactor.OnWalkedOn(this);
     }
 
