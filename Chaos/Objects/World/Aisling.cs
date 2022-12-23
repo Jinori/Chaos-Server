@@ -419,7 +419,7 @@ public sealed class Aisling : Creature
         {
             Logger.LogDebug("{Player} picked up {Gold}", this, money);
 
-            MapInstance.RemoveObject(this);
+            MapInstance.RemoveObject(money);
         }
     }
 
