@@ -12,15 +12,58 @@ public sealed class DefaultRegenFormula : IRegenFormula
     /// <inheritdoc />
     public int CalculateHealthRegen(Creature creature)
     {
-        var percentToRegenerate = creature switch
+        switch (creature)
         {
-            Aisling  => 10,
-            Monster  => 3,
-            Merchant => 100,
-            _        => throw new ArgumentOutOfRangeException(nameof(creature), creature, null)
-        };
+            case Aisling aisling:
+                {
+                    int percentToAdd = 10;
+                    if (aisling.Status.HasFlag(Status.InnerFire))
+                    {
+                        percentToAdd += 8;
+                    }
+                    if (aisling.Equipment[EquipmentSlot.Boots] is not null && aisling.Equipment[EquipmentSlot.Boots]!.Template!.TemplateKey.EqualsI("chiAnklet"))
+                    {
+                        var chiBlock = (ChiAnkletFlags)aisling.Flags.GetFlag<ChiAnkletFlags>();
+                        chiBlock &= ChiAnkletFlags.IncreaseRegen1 | ChiAnkletFlags.IncreaseRegen2 | ChiAnkletFlags.IncreaseRegen3 | ChiAnkletFlags.IncreaseRegen4 | ChiAnkletFlags.IncreaseRegen5;
+                        switch (chiBlock)
+                        {
+                            case ChiAnkletFlags.IncreaseRegen1:
+                                {
+                                    percentToAdd += 1;
+                                }
+                                break;
+                            case ChiAnkletFlags.IncreaseRegen2:
+                                {
+                                    percentToAdd += 2;
+                                }
+                                break;
+                            case ChiAnkletFlags.IncreaseRegen3:
+                                {
+                                    percentToAdd += 3;
+                                }
+                                break;
+                            case ChiAnkletFlags.IncreaseRegen4:
+                                {
+                                    percentToAdd += 4;
+                                }
+                                break;
+                            case ChiAnkletFlags.IncreaseRegen5:
+                                {
+                                    percentToAdd += 5;
+                                }
+                                break;
+                        }
+                    }
+                    return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumHp, percentToAdd);
+                }
+            case Monster:
+                return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumHp, 3);
+            case Merchant:
+                return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumHp, 100);
 
-        return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumHp, percentToRegenerate);
+            default:
+                throw new ArgumentOutOfRangeException(nameof(creature), creature, null);
+        }
     }
 
     /// <inheritdoc />
@@ -29,57 +72,53 @@ public sealed class DefaultRegenFormula : IRegenFormula
     /// <inheritdoc />
     public int CalculateManaRegen(Creature creature)
     {
-        var percentToRegenerate = creature switch
+        switch (creature)
         {
-            Aisling  => 5,
-            Monster  => 1.5m,
-            Merchant => 100,
-            _        => throw new ArgumentOutOfRangeException(nameof(creature), creature, null)
-        };
+            case Aisling aisling:
+                {
+                    int percentToAdd = 5;
+                    if (aisling.Equipment[EquipmentSlot.Boots] is not null && aisling.Equipment[EquipmentSlot.Boots]!.Template!.TemplateKey.EqualsI("chiAnklet"))
+                    {
+                        var chiBlock = (ChiAnkletFlags)aisling.Flags.GetFlag<ChiAnkletFlags>();
+                        chiBlock &= ChiAnkletFlags.IncreaseRegen1 | ChiAnkletFlags.IncreaseRegen2 | ChiAnkletFlags.IncreaseRegen3 | ChiAnkletFlags.IncreaseRegen4 | ChiAnkletFlags.IncreaseRegen5;
+                        switch (chiBlock)
+                        {
+                            case ChiAnkletFlags.IncreaseRegen1:
+                                {
+                                    percentToAdd += 1;
+                                }
+                                break;
+                            case ChiAnkletFlags.IncreaseRegen2:
+                                {
+                                    percentToAdd += 2;
+                                }
+                                break;
+                            case ChiAnkletFlags.IncreaseRegen3:
+                                {
+                                    percentToAdd += 3;
+                                }
+                                break;
+                            case ChiAnkletFlags.IncreaseRegen4:
+                                {
+                                    percentToAdd += 4;
+                                }
+                                break;
+                            case ChiAnkletFlags.IncreaseRegen5:
+                                {
+                                    percentToAdd += 5;
+                                }
+                                break;
+                        }
+                    }
+                    return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumMp, percentToAdd);
+                }
+            case Monster:
+                return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumMp, 3);
+            case Merchant:
+                return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumMp, 100);
 
-        return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumMp, percentToRegenerate);
+            default:
+                throw new ArgumentOutOfRangeException(nameof(creature), creature, null);
+        }
     }
 }
-
-/*  if (aisling.Status.HasFlag(Status.InnerFire))
-        {
-            aisling.StatSheet.AddHealthPct(8);
-        }
-        if (aisling.Equipment[EquipmentSlot.Boots] is not null && aisling.Equipment[EquipmentSlot.Boots]!.Template!.TemplateKey.EqualsI("chiAnklet"))
-        {
-            var chiBlock = (ChiAnkletFlags)aisling.Flags.GetFlag<ChiAnkletFlags>();
-            chiBlock &= ChiAnkletFlags.IncreaseRegen1 | ChiAnkletFlags.IncreaseRegen2 | ChiAnkletFlags.IncreaseRegen3 | ChiAnkletFlags.IncreaseRegen4 | ChiAnkletFlags.IncreaseRegen5;
-            switch (chiBlock)
-            {
-                case ChiAnkletFlags.IncreaseRegen1:
-                    {
-                        aisling.StatSheet.AddHealthPct(1);
-                        aisling.StatSheet.AddManaPct(1);
-                    }
-                    break;
-                case ChiAnkletFlags.IncreaseRegen2:
-                    {
-                        aisling.StatSheet.AddHealthPct(2);
-                        aisling.StatSheet.AddManaPct(2);
-                    }
-                    break;
-                case ChiAnkletFlags.IncreaseRegen3:
-                    {
-                        aisling.StatSheet.AddHealthPct(3);
-                        aisling.StatSheet.AddManaPct(3);
-                    }
-                    break;
-                case ChiAnkletFlags.IncreaseRegen4:
-                    {
-                        aisling.StatSheet.AddHealthPct(4);
-                        aisling.StatSheet.AddManaPct(4);
-                    }
-                    break;
-                case ChiAnkletFlags.IncreaseRegen5:
-                    {
-                        aisling.StatSheet.AddHealthPct(5);
-                        aisling.StatSheet.AddManaPct(5);
-                    }
-                    break;
-            }
-        }*/
