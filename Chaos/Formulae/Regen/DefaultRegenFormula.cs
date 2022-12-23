@@ -4,6 +4,7 @@ using Chaos.Common.Utilities;
 using Chaos.Formulae.Abstractions;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
+using NLog.Targets;
 
 namespace Chaos.Formulae.Regen;
 
@@ -21,7 +22,7 @@ public sealed class DefaultRegenFormula : IRegenFormula
                     {
                         percentToAdd += 8;
                     }
-                    if (aisling.Equipment[EquipmentSlot.Boots] is not null && aisling.Equipment[EquipmentSlot.Boots]!.Template!.TemplateKey.EqualsI("chiAnklet"))
+                    if (!aisling.Effects.Contains("chiBlocker") && aisling.Equipment.TryGetObject((byte)EquipmentSlot.Boots, out var boots) && boots.Template.TemplateKey.EqualsI("chiAnklet"))
                     {
                         var chiBlock = (ChiAnkletFlags)aisling.Flags.GetFlag<ChiAnkletFlags>();
                         chiBlock &= ChiAnkletFlags.IncreaseRegen1 | ChiAnkletFlags.IncreaseRegen2 | ChiAnkletFlags.IncreaseRegen3 | ChiAnkletFlags.IncreaseRegen4 | ChiAnkletFlags.IncreaseRegen5;

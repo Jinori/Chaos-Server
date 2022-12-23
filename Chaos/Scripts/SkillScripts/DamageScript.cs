@@ -45,7 +45,7 @@ public class DamageScript : BasicSkillScriptBase
             if (target is Aisling aisling 
                 && !aisling.Effects.Contains("chiBlocker") 
                 && aisling.Equipment.TryGetObject((byte)EquipmentSlot.Boots, out var boots) 
-                && boots.Template.TemplateKey.EqualsI("chiAnklet"))
+                && boots.Template.TemplateKey.EqualsI("chiAnklet") && !Subject.Template.IsAssail)
             {
                 var chiBlock = (ChiAnkletFlags)aisling.Flags.GetFlag<ChiAnkletFlags>();
                 chiBlock &= ChiAnkletFlags.Block1 | ChiAnkletFlags.Block2 | ChiAnkletFlags.Block3 | ChiAnkletFlags.Block4 | ChiAnkletFlags.Block5;
