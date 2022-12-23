@@ -1487,6 +1487,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
 
                 //remove aisling from map
                 mapInstance?.RemoveObject(client.Aisling);
+                aisling.Group?.Leave(aisling);
                 //save aisling
                 await SaveUserAsync(client.Aisling);
             }
