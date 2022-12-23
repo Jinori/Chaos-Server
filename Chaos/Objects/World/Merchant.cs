@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Common.Identity;
 using Chaos.Containers;
 using Chaos.Data;
 using Chaos.Extensions.Common;
@@ -25,6 +26,24 @@ public sealed class Merchant : Creature, IScripted<IMerchantScript>
     public MerchantTemplate Template { get; }
 
     public override CreatureType Type { get; }
+
+    /// <inheritdoc />
+    public override void ApplyDamage(Creature source, int amount, byte? hitSound = 1)
+    {
+        StatSheet.SubtractHp(amount);
+        ShowHealth(hitSound);
+    }
+
+    public override void ApplyHealing(Creature source, int amount)
+    {
+        StatSheet.AddHp(amount);
+        ShowHealth();
+    }
+
+    public override void ApplyMana(Creature source, int amount)
+    {
+        StatSheet.AddMp(amount);
+    }
 
     public Merchant(
         MerchantTemplate template,

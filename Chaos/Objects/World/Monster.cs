@@ -80,6 +80,24 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>
     }
 
     /// <inheritdoc />
+    public override void ApplyDamage(Creature source, int amount, byte? hitSound = 1)
+    {
+        StatSheet.SubtractHp(amount);
+        ShowHealth(hitSound);
+    }
+
+    public override void ApplyHealing(Creature source, int amount)
+    {
+        StatSheet.AddHp(amount);
+        ShowHealth();
+    }
+
+    public override void ApplyMana(Creature source, int amount)
+    {
+        StatSheet.AddMp(amount);
+    }
+
+    /// <inheritdoc />
     public override void OnApproached(Creature creature) => Script.OnApproached(creature);
 
     public override void OnClicked(Aisling source)

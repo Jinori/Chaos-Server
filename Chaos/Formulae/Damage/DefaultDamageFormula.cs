@@ -44,6 +44,16 @@ public class DefaultDamageFormula : IDamageFormula
         return damage;
     }
 
+    public int CalculateElemental(Creature attacker, Creature defender, int damage, Element offenseElement, Element defenseElement)
+    {
+        var defenderAc = GetDefenderAc(defender);
+
+        ApplyAcModifier(ref damage, defenderAc);
+        ApplyElementalModifier(ref damage, offenseElement, defenseElement);
+
+        return damage;
+    }
+
     protected virtual int GetDefenderAc(Creature defender) => defender switch
     {
         Aisling aisling => Math.Clamp(

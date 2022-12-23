@@ -1,4 +1,5 @@
-﻿using Chaos.Extensions.Common;
+﻿using Chaos.Common.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Geometry.Abstractions;
 using Chaos.Objects;
 using Chaos.Objects.Panel;
@@ -40,7 +41,7 @@ namespace Chaos.Scripts.SkillScripts.Warrior
 
             if (item?.Template.ScriptVars.Count > 0)
             {
-                var weapon = item?.Template!.ScriptVars["equipment"]!.Select(x => x.Key.EqualsI("equipmentType") && x.Value.Equals("weapon"));
+                var weapon = item?.Template!.ScriptVars["equipment"]!.Get<EquipmentType>("Weapon");
                 if (weapon is null)
                 {
                     context.SourceAisling?.Client.SendServerMessage(Common.Definitions.ServerMessageType.OrangeBar1, "Using this as a weapon would be nice..");

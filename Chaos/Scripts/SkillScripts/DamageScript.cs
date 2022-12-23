@@ -181,14 +181,14 @@ public class DamageScript : BasicSkillScriptBase
                 }
             }
             #endregion ChiReactions
-            var damage = CalculateDamage(context, target);
-            target.ApplyDamage(context.Source, damage);
-        }
+
             ApplyDamageScripts.Default.ApplyDamage(
                 context.Source,
                 target,
                 this,
                 CalculateDamage(context, target));
+        }
+
     }
 
 

@@ -32,6 +32,7 @@ public static class ComplexSynchronizationHelper
                     else
                         disposable.Dispose();
                 }
+            }
             else
                 return new CompositePolyDisposable(disposables!);
         }

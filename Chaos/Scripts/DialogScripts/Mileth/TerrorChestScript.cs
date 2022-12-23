@@ -51,7 +51,7 @@ namespace Chaos.Scripts.DialogScripts.Mileth
                     item.Color = DisplayColor.White;
 
                 //Give 20% of current TNL
-                int TNL = LevelUpFormulae.Default.GetNewTnl(source);
+                int TNL = LevelUpFormulae.Default.CalculateTnl(source);
                 int twentyPercent = Convert.ToInt32(0.20 * TNL);
 
                 source.GiveExp(twentyPercent);
@@ -82,7 +82,7 @@ namespace Chaos.Scripts.DialogScripts.Mileth
                 var item = ItemFactory.Create(templateKeyRewards[index]);
 
                 //Give 20% of current TNL
-                int TNL = LevelUpFormulae.Default.GetNewTnl(source);
+                int TNL = LevelUpFormulae.Default.CalculateTnl(source);
                 int twentyPercent = Convert.ToInt32(0.20 * TNL);
 
                 source.GiveExp(twentyPercent);

@@ -26,7 +26,22 @@ public sealed class DefaultRegenFormula : IRegenFormula
     /// <inheritdoc />
     public int CalculateIntervalSecs(Creature creature) => 6;
 
-        if (aisling.Status.HasFlag(Status.InnerFire))
+    /// <inheritdoc />
+    public int CalculateManaRegen(Creature creature)
+    {
+        var percentToRegenerate = creature switch
+        {
+            Aisling  => 5,
+            Monster  => 1.5m,
+            Merchant => 100,
+            _        => throw new ArgumentOutOfRangeException(nameof(creature), creature, null)
+        };
+
+        return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumMp, percentToRegenerate);
+    }
+}
+
+/*  if (aisling.Status.HasFlag(Status.InnerFire))
         {
             aisling.StatSheet.AddHealthPct(8);
         }
@@ -67,21 +82,4 @@ public sealed class DefaultRegenFormula : IRegenFormula
                     }
                     break;
             }
-        }
-        aisling.StatSheet.AddHealthPct(10);
-        aisling.StatSheet.AddManaPct(5);
-        aisling.Client.SendAttributes(StatUpdateType.Vitality);
-    /// <inheritdoc />
-    public int CalculateManaRegen(Creature creature)
-    {
-        var percentToRegenerate = creature switch
-        {
-            Aisling  => 5,
-            Monster  => 1.5m,
-            Merchant => 100,
-            _        => throw new ArgumentOutOfRangeException(nameof(creature), creature, null)
-        };
-
-        return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumMp, percentToRegenerate);
-    }
-}
+        }*/

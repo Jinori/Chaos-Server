@@ -20,7 +20,9 @@ using Chaos.Time;
 using Chaos.TypeMapper.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
+using Chaos.Scripts.RuntimeScripts;
 using PointExtensions = Chaos.Extensions.Geometry.PointExtensions;
+using Chaos.Scripts.RuntimeScripts.ExperienceDistribution;
 
 namespace Chaos.Objects.World;
 
@@ -323,7 +325,9 @@ public sealed class Aisling : Creature
             amount -= expToGive;
 
             if (UserStatSheet.ToNextLevel <= 0)
-                LevelUp();
+            {
+                LevelUpScripts.Default.LevelUp(this);
+            }
         }
 
         Client.SendAttributes(StatUpdateType.Full);

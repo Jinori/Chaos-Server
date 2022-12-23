@@ -23,7 +23,7 @@ namespace Chaos.Scripts.ItemScripts
         public override void OnUse(Aisling source)
         {
 
-            int TNL = LevelUpFormulae.Default.GetNewTnl(source);
+            int TNL = LevelUpFormulae.Default.CalculateTnl(source);
 
             switch (Subject.DisplayName)
             {
