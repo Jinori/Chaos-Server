@@ -3,11 +3,7 @@ using Chaos.Data;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Objects.World;
 using Chaos.Scripts.EffectScripts.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Chaos.Scripts.EffectScripts.Rogue
 {
@@ -15,56 +11,24 @@ namespace Chaos.Scripts.EffectScripts.Rogue
     {
         public override byte Icon => 109;
         public override string Name => "AssassinStrike";
-
         protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(12);
+        protected int ArmorClassSaved;
 
         public override void OnApplied()
         {
-
             base.OnApplied();
-
             //Reduce Armor of Subject by Equipment Slot Armor
-            if (AislingSubject?.Equipment[EquipmentSlot.Armor]?.Count > 0)
+            if (AislingSubject is not null && AislingSubject.Equipment.TryGetObject((byte)EquipmentSlot.Armor, out var obj))
             {
-                if (AislingSubject?.Equipment[EquipmentSlot.Armor]?.Template?.Modifiers?.Ac is not null)
+                if (obj.Template.Modifiers?.Ac != null)
                 {
-                    int s = (int)(AislingSubject?.Equipment[EquipmentSlot.Armor]?.Template!.Modifiers?.Ac);
+                    var armorClass = obj.Template.Modifiers.Ac;
+
                     var attributes = new Attributes
                     {
-                        Ac = -s,
+                        Ac = armorClass,
                     };
-
-                    AislingSubject?.StatSheet.SubtractBonus(attributes);
-                }
-            }
-            //If creature or no armor, lets pass a base value?
-            else
-            {
-                var attributes = new Attributes
-                {
-                    Ac = -80,
-                };
-                Subject.StatSheet.SubtractBonus(attributes);
-            }
-
-
-            AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Ack! Armor class has been lowered for a short period.");
-        }
-
-        public override void OnTerminated()
-        {
-            //Reduce Armor of Subject by Equipment Slot Armor
-            if (AislingSubject?.Equipment[EquipmentSlot.Armor]?.Count > 0)
-            {
-                if (AislingSubject?.Equipment[EquipmentSlot.Armor]?.Template?.Modifiers?.Ac is not null)
-                {
-                    int s = (int)(AislingSubject?.Equipment[EquipmentSlot.Armor]?.Template!.Modifiers?.Ac);
-                    var attributes = new Attributes
-                    {
-                        Ac = -s,
-                    };
-
+                    ArmorClassSaved = armorClass;
                     AislingSubject?.StatSheet.AddBonus(attributes);
                 }
             }
@@ -73,9 +37,33 @@ namespace Chaos.Scripts.EffectScripts.Rogue
             {
                 var attributes = new Attributes
                 {
-                    Ac = -80,
+                    Ac = 80,
                 };
                 Subject.StatSheet.AddBonus(attributes);
+                ArmorClassSaved = 80;
+            }
+            AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
+            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Ack! Armor class has been lowered for a short period.");
+        }
+
+        public override void OnTerminated()
+        {
+            if (AislingSubject is not null)
+            {
+                var attributes = new Attributes
+                {
+                    Ac = ArmorClassSaved,
+                };
+                AislingSubject?.StatSheet.SubtractBonus(attributes);
+            }
+            //If creature or no armor, lets pass a base value?
+            else
+            {
+                var attributes = new Attributes
+                {
+                    Ac = ArmorClassSaved
+                };
+                Subject.StatSheet.SubtractBonus(attributes);
             }
             AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
             AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor class has returned to normal.");
@@ -92,9 +80,6 @@ namespace Chaos.Scripts.EffectScripts.Rogue
                 return true;
         }
 
-        public override void OnDispelled()
-        {
-            OnTerminated();
-        }
+        public override void OnDispelled() => OnTerminated();
     }
 }

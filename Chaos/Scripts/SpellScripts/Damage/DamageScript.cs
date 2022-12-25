@@ -33,12 +33,7 @@ public class DamageScript : BasicSpellScriptBase
     /// <inheritdoc />
     public DamageScript(Spell subject, IEffectFactory effectFactory, ISkillFactory skillFactory)
         : base(subject) { EffectFactory = effectFactory; SkillFactory = skillFactory; }
-
-    protected DamageScript(Spell subject)
-        : base(subject)
-    {
-        
-    }
+    
 
     protected virtual void ApplyDamage(SpellContext context, IEnumerable<Creature> targetEntities)
     {

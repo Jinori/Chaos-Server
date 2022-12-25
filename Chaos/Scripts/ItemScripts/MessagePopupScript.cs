@@ -12,7 +12,7 @@ namespace Chaos.Scripts.ItemScripts
 {
     public class MessagePopupScript : ConfigurableItemScriptBase
     {
-        protected string message { get; init; }
+        protected string message { get; init; } = null!;
         protected bool showToNearby { get; init; }
 
         public MessagePopupScript(Item subject) : base(subject)

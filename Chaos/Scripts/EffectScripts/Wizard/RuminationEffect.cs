@@ -5,11 +5,6 @@ using Chaos.Objects.World;
 using Chaos.Scripts.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Chaos.Extensions.Common;
 
 namespace Chaos.Scripts.EffectScripts.Wizard
@@ -39,7 +34,7 @@ namespace Chaos.Scripts.EffectScripts.Wizard
         {
             //Check if a player is casting a new spell
 
-            if (AislingSubject?.LastSpellCastTemplateName.EqualsI("rumination") is false)
+            if (AislingSubject?.LastSpellCastTemplateName?.EqualsI("rumination") is false)
             {
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{MessageColor.Silver.ToPrefix()}You cannot gain mana while casting other spells.");
                 Subject.Effects.Terminate(Name);

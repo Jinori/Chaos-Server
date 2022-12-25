@@ -27,7 +27,7 @@ public abstract class Creature : NamedEntity, IAffected
     public virtual bool IsDead { get; set; }
     public DateTime LastAttack { get; set; }
     public DateTime LastSpellCast { get; set; }
-    public string LastSpellCastTemplateName { get; set; }
+    public string? LastSpellCastTemplateName { get; set; }
     public DateTime LastMove { get; set; }
     public Status Status { get; set; }
     protected ConcurrentDictionary<uint, DateTime> LastClicked { get; init; }

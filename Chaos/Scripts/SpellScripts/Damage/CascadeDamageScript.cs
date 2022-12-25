@@ -6,6 +6,7 @@ using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Objects;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripts.SpellScripts.Damage;
 
@@ -16,8 +17,8 @@ public class CascadeDamageScript : DamageScript
     protected bool StopAtWalls { get; init; }
 
     /// <inheritdoc />
-    public CascadeDamageScript(Spell subject)
-        : base(subject) { }
+    public CascadeDamageScript(Spell subject, IEffectFactory effectFactory, ISkillFactory skillFactory)
+        : base(subject, effectFactory, skillFactory) { }
 
     /// <inheritdoc />
     protected override IEnumerable<Point> GetAffectedPoints(SpellContext context)
