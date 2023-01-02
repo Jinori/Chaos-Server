@@ -30,7 +30,10 @@ public class DefaultApplyDamageScript : ScriptBase, IApplyDamageScript
                 aisling.ShowHealth();
 
                 if (!aisling.IsAlive)
-                    PlayerDeathScripts.Default.OnDeath(aisling);
+                {
+                    aisling.KilledBy = attacker;
+                    PlayerDeathScripts.Default.OnDeath(aisling);   
+                }
 
                 break;
             case Monster monster:

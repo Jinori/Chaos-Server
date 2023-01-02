@@ -1,3 +1,7 @@
+using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
+using Chaos.Extensions.Common;
+using Chaos.Formulae;
 using Chaos.Objects.World;
 using Chaos.Scripts.RuntimeScripts.Abstractions;
 
@@ -17,7 +21,25 @@ public class DefaultPlayerDeathScript : IPlayerDeathScript
         var effects = aisling.Effects.ToList();
         foreach (var effect in effects)
             aisling.Effects.Dispel(effect.Name);
-
-        aisling.Client.SendServerMessage(Common.Definitions.ServerMessageType.OrangeBar1, "You died! Wait for a resurrect or press (F1).");
+        
+        //Will worldshout soon
+        aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{aisling.Name} was killed at {aisling.MapInstance.Name} by {aisling.KilledBy.Name}.");
+        
+        //Let's break some items at 2% chance
+        var itemsToBreak = aisling.Equipment.Where((x => x.Template.AccountBound is false));
+        foreach (var item in itemsToBreak)
+        {
+            if (Randomizer.RollChance(2))
+            {
+                aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{item.DisplayName} has been consumed by the Death God.");
+                aisling.Equipment.TryGetRemove(item.Slot, out _);
+            }
+        }
+        
+        //Percent of Exp to take away (Sichi is implementing TakeExp)
+        var TNL = LevelUpFormulae.Default.CalculateTnl(aisling);
+        var tenPercent = Convert.ToInt32(0.1 * TNL);
+        //aisling.TakeExp(tenPercent);
+        aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You have lost {tenPercent} experience.");
     }
 }

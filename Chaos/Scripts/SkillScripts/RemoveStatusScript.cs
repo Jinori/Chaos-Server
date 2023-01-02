@@ -8,7 +8,7 @@ namespace Chaos.Scripts.SkillScripts
 {
     public class RemoveStatusScript : BasicSkillScriptBase
     {
-        protected string? StatusToRemove { get; init; }
+        private string? StatusToRemove { get; init; }
 
         public RemoveStatusScript(Skill subject) : base(subject)
         {

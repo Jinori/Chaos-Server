@@ -64,6 +64,8 @@ public sealed class Aisling : Creature
     public ResettingCounter ActionThrottle { get; }
     public IInterlockedObject<Dialog> ActiveDialog { get; }
     public IInterlockedObject<object> ActiveObject { get; }
+    public Creature? KilledBy { get; set; }
+    
     /// <inheritdoc />
     public override int AssailIntervalMs { get; }
     public ChantTimer ChantTimer { get; }
