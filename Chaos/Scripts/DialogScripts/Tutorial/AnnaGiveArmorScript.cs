@@ -25,7 +25,7 @@ namespace Chaos.Scripts.DialogScripts.Tutorial
             }
             else
             {
-                if (source.Inventory.Any(Item => Item.Template.TemplateKey.EqualsI("shirt1")))
+                if (source.Inventory.Any(Item => Item.Template.TemplateKey.EqualsI("shirt")))
                     return;
                 source.TryGiveItems(ItemFactory.Create("shirt1"));
             }

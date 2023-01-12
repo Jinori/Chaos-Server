@@ -78,6 +78,12 @@ public enum QuestFlag2 : ulong { }
 public enum QuestFlag3 : ulong { }
 
 [Flags]
+public enum TutorialFlag : ulong
+{
+    LeiaTutorialFlag1 = 0,
+    LeiaTutorialFlag2 = 1 << 1,
+}
+[Flags]
 public enum Status : ulong
 {
     None = 0,
