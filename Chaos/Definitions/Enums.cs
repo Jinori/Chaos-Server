@@ -16,3 +16,10 @@ public enum TargetFilter
     FriendlyOnly,
     HostileOnly
 }
+
+public enum TutorialQuestFlag
+{
+    None = 0,
+    GaveStickAndArmor = 1,
+    GaveAssail = 2,
+}

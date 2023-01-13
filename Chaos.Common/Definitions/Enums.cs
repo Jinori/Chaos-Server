@@ -80,8 +80,10 @@ public enum QuestFlag3 : ulong { }
 [Flags]
 public enum TutorialFlag : ulong
 {
-    LeiaTutorialFlag1 = 0,
+    LeiaTutorialFlag1 = 1,
     LeiaTutorialFlag2 = 1 << 1,
+    CainTutorialFlag1 = 1 << 2,
+    CainTutorialFlag2 = 1 << 3,
 }
 [Flags]
 public enum Status : ulong

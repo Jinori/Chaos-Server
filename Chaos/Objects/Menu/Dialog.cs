@@ -105,10 +105,13 @@ public sealed record Dialog : IScripted<IDialogScript>
     public string? GetOptionText(int optionIndex)
     {
         var option = Options.ElementAtOrDefault(optionIndex);
+        
 
         return option?.OptionText;
     }
+    public bool HasOption(DialogOption option) => GetOptionIndex(option.OptionText) != null;
 
+    
     public void Next(Aisling source, byte? optionIndex = null)
     {
         if (optionIndex is 0)
@@ -143,13 +146,31 @@ public sealed record Dialog : IScripted<IDialogScript>
         if (!optionIndex.HasValue)
         {
             if (!string.IsNullOrEmpty(NextDialogKey))
+            {
+                if (NextDialogKey.EqualsI("close"))
+                {
+                    Close(source);
+
+                    return;
+                }
+
                 nextDialog = DialogFactory.Create(NextDialogKey, SourceEntity);
+            }
         } else
         {
             var option = Options.ElementAtOrDefault(optionIndex.Value - 1);
 
             if (option != null)
+            {
+                if (option.DialogKey.EqualsI("close"))
+                {
+                    Close(source);
+
+                    return;
+                }
+
                 nextDialog = DialogFactory.Create(option.DialogKey, SourceEntity);
+            }
         }
 
         nextDialog?.Display(source);
