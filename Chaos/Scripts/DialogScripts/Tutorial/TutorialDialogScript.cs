@@ -1,3 +1,4 @@
+using System.Diagnostics.Eventing.Reader;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
@@ -15,7 +16,10 @@ public class TutorialDialogScript : DialogScriptBase
     private readonly ISpellFactory SpellFactory;
 
     /// <inheritdoc />
-    public TutorialDialogScript(Dialog subject, IItemFactory itemFactory, ISkillFactory skillFactory,
+    public TutorialDialogScript(
+        Dialog subject,
+        IItemFactory itemFactory,
+        ISkillFactory skillFactory,
         ISpellFactory spellFactory
     )
         : base(subject)
@@ -28,7 +32,7 @@ public class TutorialDialogScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        switch (Subject.Template.TemplateKey)
+        switch (Subject.Template.TemplateKey.ToLower())
         {
             case "leia_initial":
                 if (!source.Flags.HasFlag(TutorialQuestFlag.GaveStickAndArmor))
@@ -43,7 +47,8 @@ public class TutorialDialogScript : DialogScriptBase
                         Subject.Options.Insert(0, option);
                 }
 
-                if (source.Flags.HasFlag(TutorialQuestFlag.GaveStickAndArmor) && !source.Flags.HasFlag(TutorialQuestFlag.GaveAssail))
+                if (source.Flags.HasFlag(TutorialQuestFlag.GaveStickAndArmor)
+                    && !source.Flags.HasFlag(TutorialQuestFlag.GaveAssailAndSpell))
                 {
                     source.SendOrangeBarMessage("Equip your stick and armor, then say hello to get Leia's attention.");
 
@@ -64,7 +69,8 @@ public class TutorialDialogScript : DialogScriptBase
 
                 break;
             case "leia_2":
-                if (source.Flags.HasFlag(TutorialQuestFlag.GaveStickAndArmor) && !source.Flags.HasFlag(TutorialQuestFlag.GaveAssail))
+                if (source.Flags.HasFlag(TutorialQuestFlag.GaveStickAndArmor)
+                    && !source.Flags.HasFlag(TutorialQuestFlag.GaveAssailAndSpell))
                 {
                     var weapon = source.Equipment[EquipmentSlot.Weapon];
                     var armor = source.Equipment[EquipmentSlot.Armor];
@@ -74,21 +80,171 @@ public class TutorialDialogScript : DialogScriptBase
                         || !weapon.DisplayName.EqualsI("stick")
                         || (!armor.DisplayName.EqualsI("shirt") && !armor.DisplayName.EqualsI("blouse")))
                     {
+                        source.SendOrangeBarMessage("Equip armor and weapon then say Hello.");
                         Subject.Close(source);
-                        source.SendOrangeBarMessage("Equip your stick and armor, then say hello again to get Leia's attention.");
 
                         return;
                     }
-
-                    source.Flags.AddFlag(TutorialQuestFlag.GaveAssail);
                 }
 
                 var assail = SkillFactory.Create("assail");
                 var sradtut = SpellFactory.Create("sradtut");
                 source.SkillBook.TryAddToNextSlot(assail);
                 source.SpellBook.TryAddToNextSlot(sradtut);
-                source.Flags.AddFlag(TutorialQuestFlag.GaveAssail);
+                source.Flags.AddFlag(TutorialQuestFlag.GaveAssailAndSpell);
 
+                break;
+
+            case "cain_initial":
+                if (source.Flags.HasFlag(TutorialQuestFlag.GaveAssailAndSpell) && !source.Flags.HasFlag(TutorialQuestFlag.StartedFloppy))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cain_yes",
+                        OptionText = "I'm on it!",
+
+                    };
+
+                    var option1 = new DialogOption
+                    {
+                        DialogKey = "cain_no",
+                        OptionText = "Not right now.",
+
+                    };
+
+
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+
+                    if (!Subject.HasOption(option1))
+                        Subject.Options.Insert(0, option1);
+
+                    return;
+                }
+                if (source.Flags.HasFlag(TutorialQuestFlag.StartedFloppy) && (!source.Flags.HasFlag(TutorialQuestFlag.CompletedFloppy)))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cain_yes2",
+                        OptionText = "Here ya go",
+
+                    };
+
+                    var option1 = new DialogOption
+                    {
+                        DialogKey = "cain_no2",
+                        OptionText = "No, not yet, those floppies hurt..",
+
+                    };
+
+
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+
+                    if (!Subject.HasOption(option1))
+                        Subject.Options.Insert(0, option1);
+
+                    return;
+                }
+                
+                if (source.Flags.HasFlag(TutorialQuestFlag.CompletedFloppy) && (!source.Flags.HasFlag(TutorialQuestFlag.GotEquipment)))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "tutorialequipment",
+                        OptionText = "Buying Equipment",
+                    };
+
+
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+
+                    return;
+                }
+
+                if (source.Flags.HasFlag(TutorialQuestFlag.GotEquipment) && (!source.Flags.HasFlag(TutorialQuestFlag.GiantFloppy)))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "tutorialgiantfloppy",
+                        OptionText = "Giant Floppy",
+                    };
+                    
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+
+                    return;
+                }
+                
+                if (source.Flags.HasFlag(TutorialQuestFlag.GiantFloppy))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "tutorialgiantfloppy2",
+                        OptionText = "Giant Floppy",
+                    };
+                    
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+
+                    return;
+                }
+
+                break;
+
+            case "cain_yes":
+                if (source.Flags.HasFlag(TutorialQuestFlag.GaveAssailAndSpell) && !source.Flags.HasFlag(TutorialQuestFlag.StartedFloppy))
+                {
+                    source.Flags.AddFlag(TutorialQuestFlag.StartedFloppy);
+                }
+
+                break;
+            
+            
+            case "cain_yes2":
+                if (source.Flags.HasFlag(TutorialQuestFlag.StartedFloppy) && !source.Flags.HasFlag(TutorialQuestFlag.CompletedFloppy))
+                {
+
+                    if (!source.Inventory.HasCount("carrot", 3))
+                    {
+                        source.SendOrangeBarMessage("Farmer looks disappointed, you don't have enough carrots.");
+                        Subject.Close(source);
+
+                        return;
+                    }
+                    source.Inventory.RemoveQuantity("carrot", 3);
+                    source.GiveExp(1000);
+                    source.TryGiveGold(1000);
+                    source.Flags.AddFlag(TutorialQuestFlag.CompletedFloppy);
+
+                    return;
+                }
+                break;
+            
+            case "tutorialequipment":
+                if (source.Flags.HasFlag(TutorialQuestFlag.CompletedFloppy) && !source.Flags.HasFlag(TutorialQuestFlag.GotEquipment))
+                {
+                    var ring = source.Equipment[EquipmentSlot.RightRing];
+                    var ring2 = source.Equipment[EquipmentSlot.LeftRing];
+                    var boots = source.Equipment[EquipmentSlot.Boots];
+
+                    if ((ring == null)
+                        || (boots == null)
+                        || (ring2 == null))
+                    {
+                        source.SendOrangeBarMessage("Buy rings and boots from Abel then equip them.");
+
+                        return;
+                    }
+                    source.Flags.AddFlag(TutorialQuestFlag.GotEquipment);
+                }
+
+                break;
+            case "tutorialgiantfloppy":
+                if (source.Flags.HasFlag(TutorialQuestFlag.GotEquipment) && !source.Flags.HasFlag(TutorialQuestFlag.GiantFloppy))
+                {
+                    source.Flags.AddFlag(TutorialQuestFlag.GiantFloppy);
+                }
                 break;
         }
     }

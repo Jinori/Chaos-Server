@@ -7,12 +7,12 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripts.MerchantScripts;
 
-public class TutorialScript : MerchantScriptBase
+public class TutorialMerchantScript : MerchantScriptBase
 {
     private readonly IDialogFactory DialogFactory;
 
     /// <inheritdoc />
-    public TutorialScript(Merchant subject, IDialogFactory dialogFactory)
+    public TutorialMerchantScript(Merchant subject, IDialogFactory dialogFactory)
         : base(subject) =>
         DialogFactory = dialogFactory;
 
@@ -25,7 +25,7 @@ public class TutorialScript : MerchantScriptBase
         if (!aisling.Flags.HasFlag(TutorialQuestFlag.GaveStickAndArmor))
             return;
 
-        if (aisling.Flags.HasFlag(TutorialQuestFlag.GaveAssail))
+        if (aisling.Flags.HasFlag(TutorialQuestFlag.GaveAssailAndSpell))
             return;
 
         if (!message.EqualsI("hello"))
