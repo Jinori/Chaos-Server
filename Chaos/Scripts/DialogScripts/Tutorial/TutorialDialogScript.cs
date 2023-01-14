@@ -40,7 +40,7 @@ public class TutorialDialogScript : DialogScriptBase
                     var option = new DialogOption
                     {
                         DialogKey = "leia_1",
-                        OptionText = "I'll stay, what has changed? What happen?"
+                        OptionText = "I'll stay, what has changed? Where am I?"
                     };
 
                     if (!Subject.HasOption(option))
@@ -55,7 +55,21 @@ public class TutorialDialogScript : DialogScriptBase
                     return;
                 }
 
+                if (source.Flags.HasFlag(TutorialQuestFlag.GaveAssailAndSpell) && !source.Flags.HasFlag(TutorialQuestFlag.StartedFloppy))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "learnworld",
+                        OptionText = "What else have I missed?"
+                    };
+
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+
+                    return;
+                }
                 break;
+                
             case "leia_1":
                 if (!source.Flags.HasFlag(TutorialQuestFlag.GaveStickAndArmor))
                 {
@@ -94,9 +108,19 @@ public class TutorialDialogScript : DialogScriptBase
                 source.Flags.AddFlag(TutorialQuestFlag.GaveAssailAndSpell);
 
                 break;
-
-            case "cain_initial":
+            
+            case "leiaend":
                 if (source.Flags.HasFlag(TutorialQuestFlag.GaveAssailAndSpell) && !source.Flags.HasFlag(TutorialQuestFlag.StartedFloppy))
+                {
+                    source.GiveExp(250);
+                    source.Flags.AddFlag(TutorialQuestFlag.LearnedWorld);
+
+                    return;
+                }
+
+                break;
+            case "cain_initial":
+                if (source.Flags.HasFlag(TutorialQuestFlag.LearnedWorld) && !source.Flags.HasFlag(TutorialQuestFlag.StartedFloppy))
                 {
                     var option = new DialogOption
                     {
@@ -117,7 +141,7 @@ public class TutorialDialogScript : DialogScriptBase
                         Subject.Options.Insert(0, option);
 
                     if (!Subject.HasOption(option1))
-                        Subject.Options.Insert(0, option1);
+                        Subject.Options.Insert(1, option1);
 
                     return;
                 }
@@ -142,7 +166,7 @@ public class TutorialDialogScript : DialogScriptBase
                         Subject.Options.Insert(0, option);
 
                     if (!Subject.HasOption(option1))
-                        Subject.Options.Insert(0, option1);
+                        Subject.Options.Insert(1, option1);
 
                     return;
                 }
