@@ -1,6 +1,5 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Geometry.Abstractions;
-using Chaos.Objects;
+using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.SpellScripts.Abstractions;
@@ -10,16 +9,7 @@ namespace Chaos.Scripts.SpellScripts.Healing
 {
     public class VialSmashScript : BasicSpellScriptBase
     {
-        private readonly IEffectFactory EffectFactory;
-        //Healing
-        protected int? GiveHeal { get; init; }
-        protected Stat? HealStat { get; init; }
-        protected decimal? HealStatMultiplier { get; init; }
-        //Mana Regen
-        protected int? GiveMana { get; init; }
-        protected Stat? ManaStat { get; init; }
-        protected decimal? ManaStatMultiplier { get; init; }
-
+        protected readonly IEffectFactory EffectFactory;
 
         public VialSmashScript(Spell subject, IEffectFactory effectFactory) : base(subject)
         {
@@ -41,7 +31,7 @@ namespace Chaos.Scripts.SpellScripts.Healing
 
             if (HealStat.HasValue)
             {
-                if (context.Source == target)
+                if (context.Source.Equals(target))
                 {
                     var multiplier = HealStatMultiplier ?? 1;
 
@@ -75,7 +65,7 @@ namespace Chaos.Scripts.SpellScripts.Healing
 
             if (ManaStat.HasValue)
             {
-                if (context.Source == target)
+                if (context.Source.Equals(target))
                 {
                     var multiplier = ManaStatMultiplier ?? 1;
 
@@ -95,14 +85,6 @@ namespace Chaos.Scripts.SpellScripts.Healing
         }
 
         /// <inheritdoc />
-        protected override IEnumerable<T> GetAffectedEntities<T>(SpellContext context, IEnumerable<IPoint> affectedPoints)
-        {
-            var entities = base.GetAffectedEntities<T>(context, affectedPoints);
-
-            return entities;
-        }
-
-        /// <inheritdoc />
         public override void OnUse(SpellContext context)
         {
             if (context.SourceAisling?.Inventory.HasCount("Crafted Health Pot", 1) is false && GiveHeal.HasValue)
@@ -117,19 +99,12 @@ namespace Chaos.Scripts.SpellScripts.Healing
                 return;
             }
 
-            ShowBodyAnimation(context);
-
-
-            var affectedPoints = GetAffectedPoints(context).Cast<IPoint>().ToList();
-            var affectedEntities = GetAffectedEntities<Creature>(context, affectedPoints);
-
-            ShowAnimation(context, affectedPoints);
-            PlaySound(context, affectedPoints);
+            var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
 
             if (GiveHeal.HasValue)
             {
-                ApplyHealing(context, affectedEntities);
-                foreach (var entity in affectedEntities)
+                ApplyHealing(context, targets.TargetEntities);
+                foreach (var entity in targets.TargetEntities)
                 {
                     var effect = EffectFactory.Create("smashVialHeal");
                     entity.Effects.Apply(context.Source, effect);
@@ -140,8 +115,8 @@ namespace Chaos.Scripts.SpellScripts.Healing
 
             if (GiveMana.HasValue)
             {
-                ApplyMana(context, affectedEntities);
-                foreach (var entity in affectedEntities)
+                ApplyMana(context, targets.TargetEntities);
+                foreach (var entity in targets.TargetEntities)
                 {
                     var effect = EffectFactory.Create("smashVialMana");
                     entity.Effects.Apply(context.Source, effect);
@@ -150,6 +125,15 @@ namespace Chaos.Scripts.SpellScripts.Healing
                 context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You smash a Crafted Mana Pot on the ground.");
             }
         }
-
+        
+        #region ScriptVars
+        protected int? GiveHeal { get; init; }
+        protected Stat? HealStat { get; init; }
+        protected decimal? HealStatMultiplier { get; init; }
+        //Mana Regen
+        protected int? GiveMana { get; init; }
+        protected Stat? ManaStat { get; init; }
+        protected decimal? ManaStatMultiplier { get; init; }
+        #endregion
     }
 }

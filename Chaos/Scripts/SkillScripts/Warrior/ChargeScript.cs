@@ -1,80 +1,70 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Definitions;
-using Chaos.Extensions;
-using Chaos.Extensions.Geometry;
-using Chaos.Formulae;
-using Chaos.Geometry.Abstractions;
-using Chaos.Objects;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.SkillScripts.Abstractions;
-using NLog.Targets;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Chaos.Data;
+using Chaos.Definitions;
+using Chaos.Extensions;
+using Chaos.Scripts.Components;
+using Chaos.Scripts.FunctionalScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.ApplyDamage;
 
 namespace Chaos.Scripts.SkillScripts.Warrior
 {
     public class ChargeScript : BasicSkillScriptBase
     {
-        protected int? BaseDamage { get; init; }
-        protected Stat? DamageStat { get; init; }
-        protected decimal? DamageStatMultiplier { get; init; }
+        protected IApplyDamageScript ApplyDamageScript { get; }
+        protected DamageComponent DamageComponent { get; }
+        protected DamageComponent.DamageComponentOptions DamageComponentOptions { get; }
 
-
-        public ChargeScript(Skill subject) : base(subject)
+        /// <inheritdoc />
+        public ChargeScript(Skill subject)
+            : base(subject)
         {
+            ApplyDamageScript = DefaultApplyDamageScript.Create();
+            DamageComponent = new DamageComponent();
+
+            DamageComponentOptions = new DamageComponent.DamageComponentOptions
+            {
+                ApplyDamageScript = ApplyDamageScript,
+                SourceScript = this,
+                BaseDamage = BaseDamage,
+                DamageMultiplier = DamageMultiplier,
+                DamageStat = DamageStat
+            };
         }
 
-        public override void OnUse(SkillContext context)
+        /// <inheritdoc />
+        public override void OnUse(ActivationContext context)
         {
-            //get the 3 points in front of the source
+            //get the 5 points in front of the source
             var points = AoeShape.Front.ResolvePoints(
                 context.SourcePoint,
                 5,
                 context.Source.Direction,
                 context.Map.Template.Bounds);
 
-
-            var targetCreature = context.Map.GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
-                            .FirstOrDefault();
+           var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+           var targetCreature = targets.TargetEntities.FirstOrDefault();
 
             if (targetCreature is null)
             {
-                //get the point in that direction
-                var destinationPoint = context.SourcePoint.GetDirectPath(points.Last());
-
                 //if that point is not walkable, continue
                 if (!context.Map.IsWalkable(points.Last(), context.Source.Type))
                     return;
 
                 //if it is walkable, warp to that point
                 context.Source.WarpTo(points.Last());
+                DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
             }
 
             return;
         }
 
-        private void ApplyDamage(SkillContext context, Creature targetCreature)
-        {
-            var damage = CalculateDamage(context, targetCreature);
-            targetCreature.ApplyDamage(context.Source, damage);
-        }
-
-        protected virtual int CalculateDamage(SkillContext context, Creature targetCreature)
-        {
-            var damage = BaseDamage ?? 0;
-
-            if (DamageStat.HasValue)
-            {
-                var multiplier = DamageStatMultiplier ?? 1;
-
-                damage += Convert.ToInt32(context.Source.StatSheet.GetEffectiveStat(DamageStat.Value) * multiplier);
-            }
-
-            return DamageFormulae.Default.Calculate(context.Source, targetCreature, damage);
-        }
+        #region ScriptVars
+        protected int? BaseDamage { get; init; }
+        protected Stat? DamageStat { get; init; }
+        protected decimal? DamageMultiplier { get; init; }
+        #endregion
     }
 }

@@ -2,18 +2,17 @@
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Chaos.Scripts.FunctionalScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 
 namespace Chaos.Scripts.DialogScripts.Mileth
 {
     public class JosephineRewardScript : DialogScriptBase
     {
+        private IExperienceDistributionScript ExperienceDistributionScript{ get; set; }
         public JosephineRewardScript(Dialog subject) : base(subject)
         {
+            ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         }
 
         public override void OnDisplaying(Aisling source)
@@ -23,7 +22,7 @@ namespace Chaos.Scripts.DialogScripts.Mileth
                 Subject.Text = "Riona sent you? I do have her dye, I'll let her know! Are you interested in a hair style?";
                 source.Flags.RemoveFlag(QuestFlag1.HeadedToBeautyShop);
                 source.Flags.AddFlag(QuestFlag1.TalkedToJosephine);
-                source.GiveExp(1000);
+                ExperienceDistributionScript.GiveExp(source, 1000);
                 source.TryGiveGold(1000);
             }
         }

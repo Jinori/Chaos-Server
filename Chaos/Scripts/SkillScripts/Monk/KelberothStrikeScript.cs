@@ -1,56 +1,47 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Geometry.Abstractions;
-using Chaos.Objects;
+using Chaos.Common.Definitions;
+using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
+using Chaos.Scripts.Components;
+using Chaos.Scripts.FunctionalScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.ApplyDamage;
 using Chaos.Scripts.SkillScripts.Abstractions;
 
 namespace Chaos.Scripts.SkillScripts.Monk;
 
 public class KelberothStrikeScript : BasicSkillScriptBase
 {
+    protected IApplyDamageScript ApplyDamageScript { get; }
+    protected DamageComponent DamageComponent { get; }
+    protected DamageComponent.DamageComponentOptions DamageComponentOptions { get; }
 
     /// <inheritdoc />
     public KelberothStrikeScript(Skill subject)
-        : base(subject) { }
-
-    protected virtual void ApplyDamage(SkillContext context, IEnumerable<Creature> targetEntities)
+        : base(subject)
     {
-        foreach (var target in targetEntities)
+        ApplyDamageScript = KelberothApplyDamageScript.Create();
+        DamageComponent = new DamageComponent();
+
+        DamageComponentOptions = new DamageComponent.DamageComponentOptions
         {
-            var damage = CalculateDamage(context, target);
-            target.ApplyDamage(context.Source, damage);
-        }
-        int sac = Convert.ToInt32(.6 * context.Source.StatSheet.CurrentHp);
-        context.Source.StatSheet.SubtractHp(sac);
-        context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
-    }
-
-    protected virtual int CalculateDamage(SkillContext context, Creature target)
-    {
-        int damage = Convert.ToInt32(.3 * context.Source.StatSheet.CurrentHp);
-
-        return damage;
+            ApplyDamageScript = ApplyDamageScript,
+            SourceScript = this,
+            BaseDamage = BaseDamage,
+            DamageMultiplier = DamageMultiplier,
+            DamageStat = DamageStat
+        };
     }
 
     /// <inheritdoc />
-    protected override IEnumerable<T> GetAffectedEntities<T>(SkillContext context, IEnumerable<IPoint> affectedPoints)
+    public override void OnUse(ActivationContext context)
     {
-        var entities = base.GetAffectedEntities<T>(context, affectedPoints);
-
-        return entities;
+        var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+        DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
     }
 
-    /// <inheritdoc />
-    public override void OnUse(SkillContext context)
-    {
-        ShowBodyAnimation(context);
-
-        var affectedPoints = GetAffectedPoints(context).Cast<IPoint>().ToList();
-        var affectedEntities = GetAffectedEntities<Creature>(context, affectedPoints);
-
-        ShowAnimation(context, affectedPoints);
-        PlaySound(context, affectedPoints);
-        ApplyDamage(context, affectedEntities);
-    }
+    #region ScriptVars
+    protected int? BaseDamage { get; init; }
+    protected Stat? DamageStat { get; init; }
+    protected decimal? DamageMultiplier { get; init; }
+    #endregion
 }

@@ -21,9 +21,7 @@ using Chaos.Time;
 using Chaos.TypeMapper.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
-using Chaos.Scripts.RuntimeScripts;
 using PointExtensions = Chaos.Extensions.Geometry.PointExtensions;
-using Chaos.Scripts.RuntimeScripts.ExperienceDistribution;
 
 namespace Chaos.Objects.World;
 
@@ -65,8 +63,7 @@ public sealed class Aisling : Creature
     public ResettingCounter ActionThrottle { get; }
     public IInterlockedObject<Dialog> ActiveDialog { get; }
     public IInterlockedObject<object> ActiveObject { get; }
-    public Creature? KilledBy { get; set; }
-    
+
     /// <inheritdoc />
     public override int AssailIntervalMs { get; }
     public ChantTimer ChantTimer { get; }
@@ -312,37 +309,6 @@ public sealed class Aisling : Creature
 
             LastEquipOrUnEquip = DateTime.UtcNow;
         }
-    }
-
-    public void GiveExp(long amount)
-    {
-        if (amount + UserStatSheet.TotalExp > uint.MaxValue)
-            amount = uint.MaxValue - UserStatSheet.TotalExp;
-
-        //if you're at max level, you don't gain exp
-        if (UserStatSheet.Level >= WorldOptions.Instance.MaxLevel)
-            return;
-
-        SendActiveMessage($"You have gained {amount} experience!");
-
-        while (amount > 0)
-        {
-            if (UserStatSheet.Level >= WorldOptions.Instance.MaxLevel)
-                break;
-			
-            var expToGive = Math.Min(amount, UserStatSheet.ToNextLevel);
-            UserStatSheet.AddTotalExp(expToGive);
-            UserStatSheet.AddTNL(-expToGive);
-
-            amount -= expToGive;
-
-            if (UserStatSheet.ToNextLevel <= 0)
-            {
-                LevelUpScripts.Default.LevelUp(this);
-            }
-        }
-
-        Client.SendAttributes(StatUpdateType.Full);
     }
 
     public void Initialize(

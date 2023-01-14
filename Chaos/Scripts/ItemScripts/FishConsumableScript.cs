@@ -9,15 +9,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Chaos.Scripts.FunctionalScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 
 namespace Chaos.Scripts.ItemScripts
 {
     public class FishConsumableScript : ItemScriptBase
     {
         private protected int percent { get; set; }
+        private IExperienceDistributionScript ExperienceDistributionScript{ get; set; }
 
         public FishConsumableScript(Item subject) : base(subject)
         {
+            ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         }
 
         public override void OnUse(Aisling source)
@@ -50,7 +54,7 @@ namespace Chaos.Scripts.ItemScripts
                     break;
             }
 
-            source.GiveExp(percent);
+            ExperienceDistributionScript.GiveExp(source, percent);
             source.Inventory.RemoveQuantity(Subject.DisplayName, 1, out _);
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You ate {Subject.DisplayName} and it gave you {percent} exp.");
             source.Legend.AddOrAccumulate(new Objects.Legend.LegendMark("Caught a fish and ate it", "fish", MarkIcon.Yay, MarkColor.White, 1, Time.GameTime.Now));

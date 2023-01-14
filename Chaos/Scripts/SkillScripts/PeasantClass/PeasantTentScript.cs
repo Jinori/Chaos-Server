@@ -1,4 +1,4 @@
-﻿using Chaos.Objects;
+﻿using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Scripts.SkillScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -7,8 +7,8 @@ namespace Chaos.Scripts.SkillScripts.PeasantClass
 {
     public class PeasantTentScript : SkillScriptBase
     {
-        private readonly IDialogFactory DialogFactory;
-        private readonly IMerchantFactory MerchantFactory;
+        protected readonly IDialogFactory DialogFactory;
+        protected readonly IMerchantFactory MerchantFactory;
 
         public PeasantTentScript(Skill subject, IDialogFactory factory, IMerchantFactory merchant) : base(subject)
         {
@@ -16,7 +16,7 @@ namespace Chaos.Scripts.SkillScripts.PeasantClass
             MerchantFactory = merchant;
         }
 
-        public override void OnUse(SkillContext context)
+        public override void OnUse(ActivationContext context)
         {
             if (context.Source.IsAlive)
             {

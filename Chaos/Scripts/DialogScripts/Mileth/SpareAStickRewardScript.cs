@@ -10,16 +10,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Chaos.Scripts.FunctionalScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 
 namespace Chaos.Scripts.DialogScripts.Mileth
 {
     public class SpareAStickRewardScript : DialogScriptBase
     {
         private readonly IItemFactory ItemFactory;
-
+        private IExperienceDistributionScript ExperienceDistributionScript{ get; set; }
         public SpareAStickRewardScript(Dialog subject, IItemFactory itemFactory) : base(subject)
         {
             ItemFactory = itemFactory;
+            ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         }
 
         public override void OnDisplaying(Aisling source)
@@ -29,7 +32,7 @@ namespace Chaos.Scripts.DialogScripts.Mileth
                 Subject.Text = "Excellent! You'll make a fine spark. Now, go and find your way.";
                 source.Flags.RemoveFlag(QuestFlag1.GatheringSticks);
                 source.Flags.AddFlag(QuestFlag1.SpareAStickComplete);
-                source.GiveExp(2500);
+                ExperienceDistributionScript.GiveExp(source, 2500);
                 if (Randomizer.RollChance(8))
                 {
                     source.Legend.AddOrAccumulate(new Objects.Legend.LegendMark("Loved by Mileth Mundanes", "milethLoved", MarkIcon.Heart, MarkColor.Blue, 1, Time.GameTime.Now));

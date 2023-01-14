@@ -2,13 +2,18 @@
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 
 namespace Chaos.Scripts.DialogScripts.Mileth
 {
     public class ArmsLoreGiveExpScript : DialogScriptBase
     {
+        private IExperienceDistributionScript ExperienceDistributionScript{ get; set; }
+    
         public ArmsLoreGiveExpScript(Dialog subject) : base(subject)
         {
+            ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         }
 
         public override void OnDisplayed(Aisling source)
@@ -19,7 +24,7 @@ namespace Chaos.Scripts.DialogScripts.Mileth
             }
 
             source.Flags.AddFlag(QuestFlag1.Arms);
-            source.GiveExp(1500);
+            ExperienceDistributionScript.GiveExp(source, 1000);
         }
     }
 }

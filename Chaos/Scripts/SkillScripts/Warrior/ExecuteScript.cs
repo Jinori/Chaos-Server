@@ -1,63 +1,49 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Geometry.Abstractions;
-using Chaos.Objects;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.SkillScripts.Abstractions;
+using Chaos.Data;
+using Chaos.Scripts.Components;
+using Chaos.Scripts.FunctionalScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.ApplyDamage;
 
-namespace Chaos.Scripts.SkillScripts.Warrior;
-
-public class ExecuteScript : BasicSkillScriptBase
+namespace Chaos.Scripts.SkillScripts.Warrior
 {
-
-    /// <inheritdoc />
-    public ExecuteScript(Skill subject)
-        : base(subject) { }
-
-    protected virtual void ApplyDamage(SkillContext context, IEnumerable<Creature> targetEntities)
+    public class ExecuteScript : BasicSkillScriptBase
     {
-        foreach (var target in targetEntities)
+        protected IApplyDamageScript ApplyDamageScript { get; }
+        protected DamageComponent DamageComponent { get; }
+        protected DamageComponent.DamageComponentOptions DamageComponentOptions { get; }
+
+        /// <inheritdoc />
+        public ExecuteScript(Skill subject)
+            : base(subject)
         {
-            var damage = CalculateDamage(context, target);
-            target.ApplyDamage(target, damage);
+            ApplyDamageScript = ExecuteApplyDamageScript.Create();
+            DamageComponent = new DamageComponent();
 
-            int tenPercent = Convert.ToInt32(.1 * target.StatSheet.MaximumHp);
-            if (tenPercent >= target.StatSheet.CurrentHp)
+            DamageComponentOptions = new DamageComponent.DamageComponentOptions
             {
-                target.ApplyDamage(context.Source, target.StatSheet.CurrentHp);
-                int fivePercent = Convert.ToInt32(.05 * context.Source.StatSheet.EffectiveMaximumHp);
-                context.Source.ApplyHealing(context.Source, fivePercent);
-                context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
-                Subject.Cooldown = new TimeSpan(0, 0, 15);
-            }
+                ApplyDamageScript = ApplyDamageScript,
+                SourceScript = this,
+                BaseDamage = BaseDamage,
+                DamageMultiplier = DamageMultiplier,
+                DamageStat = DamageStat
+            };
         }
-    }
 
-    protected virtual int CalculateDamage(SkillContext context, Creature target)
-    {
-        int tenPercent = Convert.ToInt32(.1 * context.Source.StatSheet.EffectiveMaximumHp);
+        /// <inheritdoc />
+        public override void OnUse(ActivationContext context)
+        {
+            var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+            DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
+        }
 
-        return tenPercent;
-    }
-
-    /// <inheritdoc />
-    protected override IEnumerable<T> GetAffectedEntities<T>(SkillContext context, IEnumerable<IPoint> affectedPoints)
-    {
-        var entities = base.GetAffectedEntities<T>(context, affectedPoints);
-
-        return entities;
-    }
-
-    /// <inheritdoc />
-    public override void OnUse(SkillContext context)
-    {
-        ShowBodyAnimation(context);
-
-        var affectedPoints = GetAffectedPoints(context).Cast<IPoint>().ToList();
-        var affectedEntities = GetAffectedEntities<Creature>(context, affectedPoints);
-
-        ShowAnimation(context, affectedPoints);
-        PlaySound(context, affectedPoints);
-        ApplyDamage(context, affectedEntities);
+        #region ScriptVars
+        protected int? BaseDamage { get; init; }
+        protected Stat? DamageStat { get; init; }
+        protected decimal? DamageMultiplier { get; init; }
+        #endregion
     }
 }
+

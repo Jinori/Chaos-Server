@@ -1,27 +1,13 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Formulae;
-using Chaos.Geometry.Abstractions;
-using Chaos.Objects;
 using Chaos.Objects.Panel;
-using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.SpellScripts.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Chaos.Data;
 
 namespace Chaos.Scripts.SpellScripts.Healing
 {
     internal class BasicHealScript : BasicSpellScriptBase
     {
-        protected int? BaseHealing { get; init; }
-        protected Stat? HealStat { get; init; }
-        protected decimal? HealStatMultiplier { get; init; }
-        protected int? manaSpent { get; init; }
-
-
         public BasicHealScript(Spell subject) : base(subject)
         {
         }
@@ -50,37 +36,30 @@ namespace Chaos.Scripts.SpellScripts.Healing
         }
 
         /// <inheritdoc />
-        protected override IEnumerable<T> GetAffectedEntities<T>(SpellContext context, IEnumerable<IPoint> affectedPoints)
-        {
-            var entities = base.GetAffectedEntities<T>(context, affectedPoints);
-
-            return entities;
-        }
-
-        /// <inheritdoc />
         public override void OnUse(SpellContext context)
         {
-            if (manaSpent.HasValue)
+            if (ManaSpent.HasValue)
             {
                 //Require mana
-                if (context.Source.StatSheet.CurrentMp < manaSpent.Value)
+                if (context.Source.StatSheet.CurrentMp < ManaSpent.Value)
                 {
                     context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this cast.");
                     return;
                 }
                 //Subtract mana and update user
-                context.Source.StatSheet.SubtractMp(manaSpent.Value);
+                context.Source.StatSheet.SubtractMp(ManaSpent.Value);
                 context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
             }
 
-            ShowBodyAnimation(context);
-
-            var affectedPoints = GetAffectedPoints(context).Cast<IPoint>().ToList();
-            var affectedEntities = GetAffectedEntities<Creature>(context, affectedPoints);
-
-            ShowAnimation(context, affectedPoints);
-            PlaySound(context, affectedPoints);
-            ApplyHealing(context, affectedEntities);
+            var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+            ApplyHealing(context, targets.TargetEntities);
         }
+        
+        #region ScriptVars
+        protected int? BaseHealing { get; init; }
+        protected Stat? HealStat { get; init; }
+        protected decimal? HealStatMultiplier { get; init; }
+        protected int? ManaSpent { get; init; }
+        #endregion
     }
 }

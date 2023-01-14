@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using Chaos.Formulae;
 using Chaos.Storage.Abstractions;
 using Chaos.Containers;
+using Chaos.Scripts.FunctionalScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 
 namespace Chaos.Scripts.DialogScripts.Mileth
 {
@@ -22,10 +24,12 @@ namespace Chaos.Scripts.DialogScripts.Mileth
     {
         private readonly IItemFactory ItemFactory;
         private readonly ISimpleCache SimpleCache;
+        private IExperienceDistributionScript ExperienceDistributionScript{ get; set; }
         public TerrorChestScript(Dialog subject, IItemFactory itemFactory, ISimpleCache simpleCache) : base(subject)
         {
             ItemFactory = itemFactory;
             SimpleCache = simpleCache;
+            ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         }
 
         public override void OnDisplaying(Aisling source)
@@ -54,7 +58,7 @@ namespace Chaos.Scripts.DialogScripts.Mileth
                 int TNL = LevelUpFormulae.Default.CalculateTnl(source);
                 int twentyPercent = Convert.ToInt32(0.20 * TNL);
 
-                source.GiveExp(twentyPercent);
+                ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 //Give Gold
                 source.TryGiveGold(50000);
 
@@ -85,7 +89,7 @@ namespace Chaos.Scripts.DialogScripts.Mileth
                 int TNL = LevelUpFormulae.Default.CalculateTnl(source);
                 int twentyPercent = Convert.ToInt32(0.20 * TNL);
 
-                source.GiveExp(twentyPercent);
+                ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 //Give Gold
                 source.TryGiveGold(50000);
 

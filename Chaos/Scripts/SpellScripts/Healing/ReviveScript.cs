@@ -1,17 +1,8 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Data;
-using Chaos.Geometry.Abstractions;
-using Chaos.Networking.Entities.Server;
-using Chaos.Objects;
 using Chaos.Objects.Panel;
-using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.SpellScripts.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chaos.Scripts.SpellScripts.Healing
 {
@@ -20,6 +11,7 @@ namespace Chaos.Scripts.SpellScripts.Healing
         public SelfReviveScript(Spell subject) : base(subject)
         {
         }
+        
         public override bool CanUse(SpellContext context)
         {
             context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You can only cast this spell when you are dead.");
@@ -29,8 +21,6 @@ namespace Chaos.Scripts.SpellScripts.Healing
 
     public class ReviveScript : BasicSpellScriptBase
     {
-        protected int? manaSpent { get; init; }
-
         public override bool CanUse(SpellContext context)
         {
             context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You cannot use this spell while dead.");
@@ -42,42 +32,45 @@ namespace Chaos.Scripts.SpellScripts.Healing
         }
         public override void OnUse(SpellContext context)
         {
-            if (manaSpent.HasValue)
+            if (ManaSpent.HasValue)
             {
                 //Require mana
-                if (context.Source.StatSheet.CurrentMp < manaSpent.Value)
+                if (context.Source.StatSheet.CurrentMp < ManaSpent.Value)
                 {
                     context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this cast.");
                     return;
                 }
                 //Subtract mana and update user
-                context.Source.StatSheet.SubtractMp(manaSpent.Value);
+                context.Source.StatSheet.SubtractMp(ManaSpent.Value);
                 context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
             }
 
-            var affectedPoints = GetAffectedPoints(context).Cast<IPoint>().ToList();
-            var affectedEntities = GetAffectedEntities<Creature>(context, affectedPoints);
-            if (!context.Target.IsAlive)
+            var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+            foreach (var target in targets.TargetEntities)
             {
+                if (!target.IsAlive)
+                {
 
-                //Let's restore their hp/mp to %20
-                context.Target.StatSheet.AddHealthPct(20);
-                context.Target.StatSheet.AddManaPct(20);
+                    //Let's restore their hp/mp to %20
+                    target.StatSheet.AddHealthPct(20);
+                    target.StatSheet.AddManaPct(20);
 
-                //Refresh the users health bar
-                context.TargetAisling?.Client.SendAttributes(StatUpdateType.Vitality);
+                    //Refresh the users health bar
+                    context.TargetAisling?.Client.SendAttributes(StatUpdateType.Vitality);
 
-                //Let's tell the player they have been revived
-                context.TargetAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are revived.");
-                ShowAnimation(context, affectedPoints);
-                ShowBodyAnimation(context);
+                    //Let's tell the player they have been revived
+                    context.TargetAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are revived.");
+                }
+                else
+                {
+                    context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "This target isn't dead.");
+                    return;
+                }
             }
-            else
-            {
-                context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "This target isn't dead.");
-                return;
-            }
-
         }
+        
+        #region ScriptVars
+        protected int? ManaSpent { get; init; }
+        #endregion
     }
 }

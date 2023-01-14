@@ -5,6 +5,8 @@ using Chaos.Extensions.Common;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripts.DialogScripts;
@@ -14,7 +16,7 @@ public class TutorialDialogScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
     private readonly ISkillFactory SkillFactory;
     private readonly ISpellFactory SpellFactory;
-
+    private IExperienceDistributionScript ExperienceDistributionScript{ get; set; }
     /// <inheritdoc />
     public TutorialDialogScript(
         Dialog subject,
@@ -27,6 +29,7 @@ public class TutorialDialogScript : DialogScriptBase
         ItemFactory = itemFactory;
         SkillFactory = skillFactory;
         SpellFactory = spellFactory;
+        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
     /// <inheritdoc />
@@ -213,7 +216,7 @@ public class TutorialDialogScript : DialogScriptBase
                         return;
                     }
                     source.Inventory.RemoveQuantity("carrot", 3);
-                    source.GiveExp(1000);
+                    ExperienceDistributionScript.GiveExp(source, 1000);
                     source.TryGiveGold(1000);
                     source.Flags.AddFlag(TutorialQuestFlag.CompletedFloppy);
 

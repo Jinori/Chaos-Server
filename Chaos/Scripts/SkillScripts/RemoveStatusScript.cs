@@ -1,6 +1,6 @@
 ﻿using Chaos.Common.Definitions;
+using Chaos.Data;
 using Chaos.Extensions.Common;
-using Chaos.Objects;
 using Chaos.Objects.Panel;
 using Chaos.Scripts.SkillScripts.Abstractions;
 
@@ -14,13 +14,12 @@ namespace Chaos.Scripts.SkillScripts
         {
         }
 
-        public override void OnUse(SkillContext context)
+        public override void OnUse(ActivationContext context)
         {
             if (StatusToRemove is not null)
             {
                 if (StatusToRemove.EqualsI("Beag Suain"))
                 {
-                    ShowBodyAnimation(context);
                     if (context.Source.Status.HasFlag(Status.BeagSuain))
                         context.Source.Status &= ~Status.BeagSuain;
 

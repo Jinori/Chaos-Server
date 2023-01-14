@@ -2,14 +2,13 @@ using Chaos.Common.Definitions;
 using Chaos.Data;
 using Chaos.Definitions;
 using Chaos.Objects.Panel;
-using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.Components;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ApplyDamage;
 using Chaos.Scripts.SpellScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripts.SpellScripts.Damage;
+namespace Chaos.Scripts.SpellScripts;
 
 public class CascadeDamageScript : ConfigurableSpellScriptBase
 {
@@ -32,71 +31,6 @@ public class CascadeDamageScript : ConfigurableSpellScriptBase
         ApplyDamageScript = DefaultApplyDamageScript.Create();
         DamageComponent = new DamageComponent();
 
-        return affectedPoints;
-    }
-
-    /// <inheritdoc />
-    public override void OnUse(SpellContext context)
-    {
-        var direction = context.Source.Direction;
-
-        ShowBodyAnimation(context);
-
-        var allPossiblePoints = GetAffectedPoints(context)
-                                .Cast<IPoint>()
-                                .ToList();
-
-        var elapsedMs = MinSoundDelayMs;
-
-        _ = Task.Run(
-            async () =>
-            {
-                for (var i = 1; i <= Range; i++)
-                {
-                    //get points for this stage
-                    var pointsForStage = SelectPointsForStage(
-                            allPossiblePoints,
-                            context.SourcePoint,
-                            direction,
-                            i)
-                        .ToList();
-
-                    // ReSharper disable once RemoveRedundantBraces
-                    await using (_ = await context.Map.Sync.WaitAsync())
-                    {
-                        try
-                        {
-                            ShowAnimation(context, pointsForStage);
-
-                            var affectedEntitiesForStage = GetAffectedEntities<Creature>(context, pointsForStage);
-                            ApplyDamage(context, affectedEntitiesForStage);
-
-                            if (Sound.HasValue && elapsedMs >= MinSoundDelayMs)
-                            {
-                                PlaySound(context, pointsForStage);
-
-                                elapsedMs = 0;
-                            }
-                        }
-                        catch
-                        {
-                            //ignored
-                        }
-                    }
-
-                    await Task.Delay(PropagationDelayMs);
-                    elapsedMs += PropagationDelayMs;
-                }
-            });
-    }
-
-    private IEnumerable<IPoint> SelectPointsForStage(
-        IEnumerable<IPoint> allPossiblePoints,
-        Point sourcePoint,
-        Direction aoeDirection,
-        int range
-    )
-    {
         DamageComponentOptions = new DamageComponent.DamageComponentOptions
         {
             ApplyDamageScript = ApplyDamageScript,

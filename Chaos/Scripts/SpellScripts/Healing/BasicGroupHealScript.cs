@@ -1,31 +1,14 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Containers;
 using Chaos.Extensions;
-using Chaos.Extensions.Geometry;
-using Chaos.Formulae;
-using Chaos.Geometry.Abstractions;
-using Chaos.Objects;
 using Chaos.Objects.Panel;
-using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.SpellScripts.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using Chaos.Data;
 
-namespace Chaos.Scripts.SpellScripts.Priest
+namespace Chaos.Scripts.SpellScripts.Healing
 {
     internal class BasicGroupHealScript : BasicSpellScriptBase
     {
-        protected int? BaseHealing { get; init; }
-        protected Stat? HealStat { get; init; }
-        protected decimal? HealStatMultiplier { get; init; }
-        protected int? manaSpent { get; init; }
-
-
         public BasicGroupHealScript(Spell subject) : base(subject)
         {
         }
@@ -36,7 +19,7 @@ namespace Chaos.Scripts.SpellScripts.Priest
 
             if (HealStat.HasValue)
             {
-                if (context.Source == target)
+                if (context.Source.Equals(target))
                 {
                     var multiplier = HealStatMultiplier ?? 1;
 
@@ -59,36 +42,38 @@ namespace Chaos.Scripts.SpellScripts.Priest
         /// <inheritdoc />
         public override void OnUse(SpellContext context)
         {
-            if (manaSpent.HasValue)
+            if (ManaSpent.HasValue)
             {
                 //Require mana
-                if (context.Source.StatSheet.CurrentMp < manaSpent.Value)
+                if (context.Source.StatSheet.CurrentMp < ManaSpent.Value)
                 {
                     context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this cast.");
                     return;
                 }
                 //Subtract mana and update user
-                context.Source.StatSheet.SubtractMp(manaSpent.Value);
+                context.Source.StatSheet.SubtractMp(ManaSpent.Value);
                 context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
             }
-
+            
             var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint));
 
             if (group is null && BaseHealing.HasValue)
             {
                 context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are not in a group.");
                 context.SourceAisling?.ApplyHealing(context.Source, CalculateHealing(context, context.Source));
-                ShowBodyAnimation(context);
-                PlaySound(context, context.SourcePoint);
                 return;
             }
             if (group is not null && BaseHealing.HasValue)
             {
                 group.ToList().ForEach(n => n.ApplyHealing(n, CalculateHealing(context, n)));
-                PlaySound(context, context.TargetPoint);
-                ShowAnimation(context, group);
-                ShowBodyAnimation(context);
             }
         }
+        
+        #region ScriptVars
+        protected int? BaseHealing { get; init; }
+        protected Stat? HealStat { get; init; }
+        protected decimal? HealStatMultiplier { get; init; }
+        protected int? ManaSpent { get; init; }
+        #endregion
     }
 }

@@ -5,8 +5,7 @@ using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.Components;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ApplyDamage;
-using Chaos.Scripts.SpellScripts.Abstractions;
-using Chaos.Services.Factories;
+using Chaos.Scripts.SkillScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripts.SkillScripts.Monk;
@@ -16,11 +15,13 @@ public class PoisonPunchScript : BasicSkillScriptBase
     protected IApplyDamageScript ApplyDamageScript { get; }
     protected DamageComponent DamageComponent { get; }
     protected DamageComponent.DamageComponentOptions DamageComponentOptions { get; }
+    protected readonly IEffectFactory EffectFactory;
 
     /// <inheritdoc />
-    public DamageScript(Spell subject)
+    public PoisonPunchScript(Skill subject, IEffectFactory effectFactory)
         : base(subject)
     {
+        EffectFactory = effectFactory;
         ApplyDamageScript = DefaultApplyDamageScript.Create();
         DamageComponent = new DamageComponent();
 
@@ -35,11 +36,13 @@ public class PoisonPunchScript : BasicSkillScriptBase
     }
 
     /// <inheritdoc />
-    public override void OnUse(SkillContext context)
+    public override void OnUse(ActivationContext context)
     {
         var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
         DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
-        context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}");
+        var effect = EffectFactory.Create("Poison");
+        foreach (var target in targets.TargetEntities) 
+            target.Effects.Apply(context.Source, effect);
     }
 
     #region ScriptVars

@@ -1,16 +1,8 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Formulae;
-using Chaos.Geometry.Abstractions;
-using Chaos.Objects;
 using Chaos.Objects.Panel;
-using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.SpellScripts.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Chaos.Data;
 
 namespace Chaos.Scripts.SpellScripts.Healing
 {
@@ -33,17 +25,10 @@ namespace Chaos.Scripts.SpellScripts.Healing
         protected virtual int CalculateHealing(SpellContext context, Creature target)
         {
             var heals = (int)target.StatSheet.EffectiveMaximumHp;
-
             return heals;
         }
 
-        /// <inheritdoc />
-        protected override IEnumerable<T> GetAffectedEntities<T>(SpellContext context, IEnumerable<IPoint> affectedPoints)
-        {
-            var entities = base.GetAffectedEntities<T>(context, affectedPoints);
 
-            return entities;
-        }
 
         /// <inheritdoc />
         public override void OnUse(SpellContext context)
@@ -60,15 +45,9 @@ namespace Chaos.Scripts.SpellScripts.Healing
                 context.Source.StatSheet.SubtractMp(context.Source.StatSheet.MaximumMp);
                 context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
             }
-
-            ShowBodyAnimation(context);
-
-            var affectedPoints = GetAffectedPoints(context).Cast<IPoint>().ToList();
-            var affectedEntities = GetAffectedEntities<Creature>(context, affectedPoints);
-
-            ShowAnimation(context, affectedPoints);
-            PlaySound(context, affectedPoints);
-            ApplyHealing(context, affectedEntities);
+            
+            var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+            ApplyHealing(context, targets.TargetEntities);
         }
     }
 }

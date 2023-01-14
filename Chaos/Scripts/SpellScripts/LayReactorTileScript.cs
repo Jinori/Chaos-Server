@@ -39,7 +39,6 @@ public class LayReactorTileScript : BasicSpellScriptBase
             context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
         }
         
-        ShowBodyAnimation(context);
         var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
 
         foreach (var point in targets.TargetPoints)
