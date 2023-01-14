@@ -71,7 +71,7 @@ public class CompositeMerchantScript : CompositeScriptBase<IMerchantScript>, IMe
     public virtual void OnPublicMessage(Creature source, string message)
     {
         foreach (ref var component in CollectionsMarshal.AsSpan(Components))
-            component.OnPublicMessage(source, message); 
+            component.OnPublicMessage(source, message);
     }
 
     /// <summary>

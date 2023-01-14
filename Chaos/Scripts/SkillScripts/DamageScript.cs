@@ -5,10 +5,13 @@ using Chaos.Extensions.Common;
 using Chaos.Formulae;
 using Chaos.Geometry.Abstractions;
 using Chaos.Objects;
+using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
-using Chaos.Scripts.RuntimeScripts;
+using Chaos.Scripts.Components;
+using Chaos.Scripts.FunctionalScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.ApplyDamage;
 using Chaos.Scripts.SkillScripts.Abstractions;
 using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
@@ -212,18 +215,38 @@ public class DamageScript : BasicSkillScriptBase
         }
 
         return DamageFormulae.Default.Calculate(context.Source, target, damage);
+		
+    protected IApplyDamageScript ApplyDamageScript { get; }
+    protected DamageComponent DamageComponent { get; }
+    protected DamageComponent.DamageComponentOptions DamageComponentOptions { get; }
+
+    /// <inheritdoc />
+    public DamageScript(Skill subject)
+        : base(subject)
+    {
+        ApplyDamageScript = DefaultApplyDamageScript.Create();
+        DamageComponent = new DamageComponent();
+
+        DamageComponentOptions = new DamageComponent.DamageComponentOptions
+        {
+            ApplyDamageScript = ApplyDamageScript,
+            SourceScript = this,
+            BaseDamage = BaseDamage,
+            DamageMultiplier = DamageMultiplier,
+            DamageStat = DamageStat
+        };
     }
 
     /// <inheritdoc />
-    public override void OnUse(SkillContext context)
+    public override void OnUse(ActivationContext context)
     {
-        ShowBodyAnimation(context);
-
-        var affectedPoints = GetAffectedPoints(context).Cast<IPoint>().ToList();
-        var affectedEntities = GetAffectedEntities<Creature>(context, affectedPoints);
-
-        ShowAnimation(context, affectedPoints);
-        PlaySound(context, affectedPoints);
-        ApplyDamage(context, affectedEntities);
+        var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+        DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
     }
+
+    #region ScriptVars
+    protected int? BaseDamage { get; init; }
+    protected Stat? DamageStat { get; init; }
+    protected decimal? DamageMultiplier { get; init; }
+    #endregion
 }

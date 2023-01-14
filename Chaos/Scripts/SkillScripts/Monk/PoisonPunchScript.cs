@@ -1,10 +1,10 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Formulae;
-using Chaos.Geometry.Abstractions;
-using Chaos.Objects;
+using Chaos.Common.Definitions;
+using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
-using Chaos.Scripts.SkillScripts.Abstractions;
+using Chaos.Scripts.Components;
+using Chaos.Scripts.FunctionalScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.ApplyDamage;
 using Chaos.Scripts.SpellScripts.Abstractions;
 using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
@@ -13,58 +13,38 @@ namespace Chaos.Scripts.SkillScripts.Monk;
 
 public class PoisonPunchScript : BasicSkillScriptBase
 {
-    private readonly IEffectFactory EffectFactory;
-    protected int? BaseDamage { get; init; }
-    protected Stat? DamageStat { get; init; }
-    protected decimal? DamageStatMultiplier { get; init; }
+    protected IApplyDamageScript ApplyDamageScript { get; }
+    protected DamageComponent DamageComponent { get; }
+    protected DamageComponent.DamageComponentOptions DamageComponentOptions { get; }
 
     /// <inheritdoc />
-    public PoisonPunchScript(Skill subject, IEffectFactory effectFactory)
-        : base(subject) { EffectFactory = effectFactory; }
-
-    protected virtual void ApplyDamage(SkillContext context, IEnumerable<Creature> targetEntities)
+    public DamageScript(Spell subject)
+        : base(subject)
     {
-        foreach (var target in targetEntities)
+        ApplyDamageScript = DefaultApplyDamageScript.Create();
+        DamageComponent = new DamageComponent();
+
+        DamageComponentOptions = new DamageComponent.DamageComponentOptions
         {
-            var damage = CalculateDamage(context, target);
-            target.ApplyDamage(context.Source, damage);
-            var effect = EffectFactory.Create("Poison");
-            target.Effects.Apply(context.Source, effect);
-        }
-    }
-
-    protected virtual int CalculateDamage(SkillContext context, Creature target)
-    {
-        var damage = BaseDamage ?? 0;
-
-        if (DamageStat.HasValue)
-        {
-            var multiplier = DamageStatMultiplier ?? 1;
-
-            damage += Convert.ToInt32(context.Source.StatSheet.GetEffectiveStat(DamageStat.Value) * multiplier);
-        }
-
-        return DamageFormulae.Default.Calculate(context.Source, target, damage);
-    }
-
-    /// <inheritdoc />
-    protected override IEnumerable<T> GetAffectedEntities<T>(SkillContext context, IEnumerable<IPoint> affectedPoints)
-    {
-        var entities = base.GetAffectedEntities<T>(context, affectedPoints);
-
-        return entities;
+            ApplyDamageScript = ApplyDamageScript,
+            SourceScript = this,
+            BaseDamage = BaseDamage,
+            DamageMultiplier = DamageMultiplier,
+            DamageStat = DamageStat
+        };
     }
 
     /// <inheritdoc />
     public override void OnUse(SkillContext context)
     {
-        ShowBodyAnimation(context);
-
-        var affectedPoints = GetAffectedPoints(context).Cast<IPoint>().ToList();
-        var affectedEntities = GetAffectedEntities<Creature>(context, affectedPoints);
-
-        ShowAnimation(context, affectedPoints);
-        PlaySound(context, affectedPoints);
-        ApplyDamage(context, affectedEntities);
+        var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+        DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
+        context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}");
     }
+
+    #region ScriptVars
+    protected int? BaseDamage { get; init; }
+    protected Stat? DamageStat { get; init; }
+    protected decimal? DamageMultiplier { get; init; }
+    #endregion
 }
