@@ -115,7 +115,7 @@ public class TutorialDialogScript : DialogScriptBase
             case "leiaend":
                 if (source.Flags.HasFlag(TutorialQuestFlag.GaveAssailAndSpell) && !source.Flags.HasFlag(TutorialQuestFlag.StartedFloppy))
                 {
-                    source.GiveExp(250);
+                    ExperienceDistributionScript.GiveExp(source, 250);
                     source.Flags.AddFlag(TutorialQuestFlag.LearnedWorld);
 
                     return;

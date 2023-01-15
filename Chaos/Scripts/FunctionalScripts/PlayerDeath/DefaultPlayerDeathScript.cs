@@ -12,6 +12,10 @@ namespace Chaos.Scripts.FunctionalScripts.PlayerDeath;
 
 public class DefaultPlayerDeathScript : ScriptBase, IPlayerDeathScript
 {
+    public DefaultPlayerDeathScript(IClientRegistry<IWorldClient> clientRegistry)
+    {
+        ClientRegistry = clientRegistry;
+    }
 
     /// <inheritdoc />
     public static string Key { get; } = GetScriptKey(typeof(DefaultPlayerDeathScript));
@@ -37,8 +41,12 @@ public class DefaultPlayerDeathScript : ScriptBase, IPlayerDeathScript
             aisling.Effects.Dispel(effect.Name);
         
         //Will worldshout soon
-        aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{aisling.Name} was killed at {aisling.MapInstance.Name} by {killedBy.Name}.");
-        
+        foreach (var client in ClientRegistry)
+        {
+            client.SendServerMessage(ServerMessageType.OrangeBar1,
+                $"{aisling.Name} was killed at {aisling.MapInstance.Name} by {killedBy.Name}.");
+        }
+
         //Let's break some items at 2% chance
         var itemsToBreak = aisling.Equipment.Where((x => x.Template.AccountBound is false));
         foreach (var item in itemsToBreak)

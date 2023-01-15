@@ -1,8 +1,10 @@
 using System.Collections.Immutable;
 using Chaos.Common.Definitions;
 using Chaos.Formulae.Abstractions;
+using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
+using Chaos.Scripting.Abstractions;
 using Chaos.Services.Servers.Options;
 
 namespace Chaos.Formulae.Damage;
@@ -40,7 +42,7 @@ public class DefaultDamageFormula : IDamageFormula
 
         ApplyAcModifier(ref damage, defenderAc);
         ApplyElementalModifier(ref damage, attacker.StatSheet.OffenseElement, defender.StatSheet.DefenseElement);
-
+        //HandleClawFist(ref damage, source, attacker);
         return damage;
     }
 
@@ -62,4 +64,16 @@ public class DefaultDamageFormula : IDamageFormula
             WorldOptions.Instance.MaximumAislingAc),
         _ => Math.Clamp(defender.StatSheet.Ac, WorldOptions.Instance.MinimumMonsterAc, WorldOptions.Instance.MaximumMonsterAc)
     };
+    
+    protected virtual void HandleClawFist(ref int damage, IScript source, Creature attacker)
+    {
+        if (!attacker.Effects.Contains("claw fist"))
+            return;
+
+        if (source is not SubjectiveScriptBase<Skill> skillScript)
+            return;
+
+        if (skillScript.Subject.Template.IsAssail)
+            damage = Convert.ToInt32(damage * 0.3);
+    }
 }
