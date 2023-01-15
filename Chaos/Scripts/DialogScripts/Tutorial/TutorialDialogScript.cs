@@ -266,7 +266,7 @@ public class TutorialDialogScript : DialogScriptBase
                         return;
                     }
                     source.Inventory.RemoveQuantity("carrot", 3);
-                    ExperienceDistributionScript.GiveExp(source, 1000);
+                    ExperienceDistributionScript.GiveExp(source, 500);
                     source.TryGiveGold(1000);
                     source.Enums.Set(TutorialQuestStage.CompletedFloppy);
 
@@ -295,13 +295,11 @@ public class TutorialDialogScript : DialogScriptBase
                         DialogKey = "gotequipment",
                         OptionText = "I got rings and boots from Abel",
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-
-                    return;
                     source.Enums.Set(TutorialQuestStage.GotEquipment);
-                    
+                    return;
                 }
 
                 break;

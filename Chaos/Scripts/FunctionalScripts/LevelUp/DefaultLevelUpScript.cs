@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Data;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
 using Chaos.Objects.World;
@@ -23,6 +24,7 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
     /// <inheritdoc />
     public virtual void LevelUp(Aisling aisling)
     {
+        aisling.SendOrangeBarMessage("You level up!");
         aisling.UserStatSheet.IncrementLevel();
         aisling.UserStatSheet.GivePoints(2);
 
@@ -33,10 +35,14 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
         }
 
         var levelUpAttribs = LevelUpFormula.CalculateAttributesIncrease(aisling);
-
+        var ani = new Animation
+        {
+            AnimationSpeed = 100,
+            TargetAnimation = 79,
+        };
         aisling.UserStatSheet.Add(levelUpAttribs);
         aisling.UserStatSheet.SetMaxWeight(LevelUpFormula.CalculateMaxWeight(aisling));
-
+        aisling.Animate(ani);
         aisling.Client.SendAttributes(StatUpdateType.Full);
     }
 }
