@@ -13,24 +13,12 @@ namespace Chaos.Scripts.SkillScripts.Rogue;
 public class StudyCreatureScript : BasicSkillScriptBase
 {
     protected IApplyDamageScript ApplyDamageScript { get; }
-    protected DamageComponent DamageComponent { get; }
-    protected DamageComponent.DamageComponentOptions DamageComponentOptions { get; }
 
     /// <inheritdoc />
     public StudyCreatureScript(Skill subject)
         : base(subject)
     {
         ApplyDamageScript = DefaultApplyDamageScript.Create();
-        DamageComponent = new DamageComponent();
-
-        DamageComponentOptions = new DamageComponent.DamageComponentOptions
-        {
-            ApplyDamageScript = ApplyDamageScript,
-            SourceScript = this,
-            BaseDamage = BaseDamage,
-            DamageMultiplier = DamageMultiplier,
-            DamageStat = DamageStat
-        };
     }
 
     /// <inheritdoc />
@@ -56,10 +44,4 @@ public class StudyCreatureScript : BasicSkillScriptBase
         if (mob is null)
             context.SourceAisling?.Client.SendServerMessage(Common.Definitions.ServerMessageType.OrangeBar1, "Your attempt to examine failed.");
     }
-
-    #region ScriptVars
-    protected int? BaseDamage { get; init; }
-    protected Stat? DamageStat { get; init; }
-    protected decimal? DamageMultiplier { get; init; }
-    #endregion
 }

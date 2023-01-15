@@ -10,12 +10,10 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripts.SkillScripts.Rogue;
 
-public class AssassinStrikeScript : BasicSkillScriptBase
+public class AssassinStrikeScript : DamageScript
 {
-    protected IApplyDamageScript ApplyDamageScript { get; }
-    protected DamageComponent DamageComponent { get; }
-    protected DamageComponent.DamageComponentOptions DamageComponentOptions { get; }
-    
+    protected new IApplyDamageScript ApplyDamageScript { get; }
+
     protected readonly IEffectFactory EffectFactory;
 
     /// <inheritdoc />
@@ -24,16 +22,6 @@ public class AssassinStrikeScript : BasicSkillScriptBase
     {
         EffectFactory = effectFactory;
         ApplyDamageScript = DefaultApplyDamageScript.Create();
-        DamageComponent = new DamageComponent();
-
-        DamageComponentOptions = new DamageComponent.DamageComponentOptions
-        {
-            ApplyDamageScript = ApplyDamageScript,
-            SourceScript = this,
-            BaseDamage = BaseDamage,
-            DamageMultiplier = DamageMultiplier,
-            DamageStat = DamageStat
-        };
     }
 
     /// <inheritdoc />
@@ -45,10 +33,4 @@ public class AssassinStrikeScript : BasicSkillScriptBase
         foreach (var target in targets.TargetEntities) 
             target.Effects.Apply(context.Source, effect);
     }
-
-    #region ScriptVars
-    protected int? BaseDamage { get; init; }
-    protected Stat? DamageStat { get; init; }
-    protected decimal? DamageMultiplier { get; init; }
-    #endregion
 }

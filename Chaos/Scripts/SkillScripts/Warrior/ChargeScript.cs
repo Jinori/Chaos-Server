@@ -11,27 +11,15 @@ using Chaos.Scripts.FunctionalScripts.ApplyDamage;
 
 namespace Chaos.Scripts.SkillScripts.Warrior
 {
-    public class ChargeScript : BasicSkillScriptBase
+    public class ChargeScript : DamageScript
     {
         protected IApplyDamageScript ApplyDamageScript { get; }
-        protected DamageComponent DamageComponent { get; }
-        protected DamageComponent.DamageComponentOptions DamageComponentOptions { get; }
 
         /// <inheritdoc />
         public ChargeScript(Skill subject)
             : base(subject)
         {
             ApplyDamageScript = DefaultApplyDamageScript.Create();
-            DamageComponent = new DamageComponent();
-
-            DamageComponentOptions = new DamageComponent.DamageComponentOptions
-            {
-                ApplyDamageScript = ApplyDamageScript,
-                SourceScript = this,
-                BaseDamage = BaseDamage,
-                DamageMultiplier = DamageMultiplier,
-                DamageStat = DamageStat
-            };
         }
 
         /// <inheritdoc />
@@ -60,11 +48,5 @@ namespace Chaos.Scripts.SkillScripts.Warrior
 
             return;
         }
-
-        #region ScriptVars
-        protected int? BaseDamage { get; init; }
-        protected Stat? DamageStat { get; init; }
-        protected decimal? DamageMultiplier { get; init; }
-        #endregion
     }
 }

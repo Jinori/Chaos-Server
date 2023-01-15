@@ -11,11 +11,9 @@ using Chaos.Scripts.SkillScripts.Abstractions;
 
 namespace Chaos.Scripts.SkillScripts.PeasantClass;
 
-public class SapNeedleScript : BasicSkillScriptBase
+public class SapNeedleScript : DamageScript
 {
-    protected IApplyDamageScript ApplyDamageScript { get; }
-    protected DamageComponent DamageComponent { get; }
-    protected DamageComponent.DamageComponentOptions DamageComponentOptions { get; }
+    protected new IApplyDamageScript ApplyDamageScript { get; }
 
     protected readonly Animation SuccessfulSap = new Animation { AnimationSpeed = 100, TargetAnimation = 127 };
     
@@ -24,16 +22,6 @@ public class SapNeedleScript : BasicSkillScriptBase
         : base(subject)
     {
         ApplyDamageScript = DefaultApplyDamageScript.Create();
-        DamageComponent = new DamageComponent();
-
-        DamageComponentOptions = new DamageComponent.DamageComponentOptions
-        {
-            ApplyDamageScript = ApplyDamageScript,
-            SourceScript = this,
-            BaseDamage = BaseDamage,
-            DamageMultiplier = DamageMultiplier,
-            DamageStat = DamageStat
-        };
     }
 
     /// <inheritdoc />
@@ -65,10 +53,4 @@ public class SapNeedleScript : BasicSkillScriptBase
             context.Source.MapInstance.ShowAnimation(SuccessfulSap.GetTargetedAnimation(context.Source.Id));
         }
     }
-
-    #region ScriptVars
-    protected int? BaseDamage { get; init; }
-    protected Stat? DamageStat { get; init; }
-    protected decimal? DamageMultiplier { get; init; }
-    #endregion
 }

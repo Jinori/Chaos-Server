@@ -1,10 +1,8 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Containers;
 using Chaos.Data;
-using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
-using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.MapScripts.Abstractions;

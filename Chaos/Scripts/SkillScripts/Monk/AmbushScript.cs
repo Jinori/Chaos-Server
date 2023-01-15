@@ -41,7 +41,7 @@ public class AmbushScript : SkillScriptBase
                     //get the point in that direction
                     var destinationPoint = entity.DirectionalOffset(direction);
 
-                    //if that point is not talkable, continue
+                    //if that point is not walkable, continue
                     if (!context.Map.IsWalkable(destinationPoint, context.Source.Type))
                         continue;
 

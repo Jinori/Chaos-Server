@@ -1,8 +1,5 @@
 ﻿using Chaos.Data;
-using Chaos.Definitions;
-using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
-using Chaos.Geometry.Abstractions;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
 

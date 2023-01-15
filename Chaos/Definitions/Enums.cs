@@ -41,4 +41,5 @@ public enum TutorialQuestStage
     StartedFloppy = 5,
     CompletedFloppy = 6,
     GiantFloppy = 7,
+    CompletedTutorial = 8
 }

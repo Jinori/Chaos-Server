@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.Eventing.Reader;
 using Chaos.Common.Definitions;
+using Chaos.Containers;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Objects.Menu;
@@ -8,14 +9,17 @@ using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripts.DialogScripts;
 
 public class TerminusTutorialScript : DialogScriptBase
 {
-    public TerminusTutorialScript(Dialog subject)
-        : base(subject) { }
+    public TerminusTutorialScript(Dialog subject, ISimpleCache simpleCache)
+        : base(subject) => SimpleCache = simpleCache;
 
+    private readonly ISimpleCache SimpleCache;
+    
     public override void OnDisplaying(Aisling source)
     {
         var hasStage = source.Enums.TryGetValue(out TutorialQuestStage stage);
@@ -43,9 +47,13 @@ public class TerminusTutorialScript : DialogScriptBase
             case "terminusgotosgrios":
                 if (stage == TutorialQuestStage.GiantFloppy)
                 {
-                        
+                    source.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                    MapInstance mapInstance;
+                    Point point;
+                    point = new Point(13,10);
+                    mapInstance = SimpleCache.Get<MapInstance>("after_life");
+                    source.TraverseMap(mapInstance, point, true);
                 }
-
                 break;
         }
     }

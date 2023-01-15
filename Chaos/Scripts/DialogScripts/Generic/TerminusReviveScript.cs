@@ -1,44 +1,36 @@
-﻿using Chaos.Common.Definitions;
+﻿using System.Diagnostics.Eventing.Reader;
+using Chaos.Common.Definitions;
+using Chaos.Containers;
+using Chaos.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Chaos.Scripts.FunctionalScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripts.DialogScripts.Generic
+namespace Chaos.Scripts.DialogScripts;
+
+public class TerminusReviveScript : DialogScriptBase
 {
-    public class TerminusReviveScript : DialogScriptBase
+    public TerminusReviveScript(Dialog subject, ISimpleCache simpleCache)
+        : base(subject) => SimpleCache = simpleCache;
+
+    private readonly ISimpleCache SimpleCache;
+    
+    public override void OnDisplaying(Aisling source)
     {
-        public TerminusReviveScript(Dialog subject) : base(subject)
+        switch (Subject.Template.TemplateKey.ToLower())
         {
-        }
-
-        public override void OnDisplayed(Aisling source)
-        {
-            if (!source.IsAlive)
-            {
-                if (source.Gender is Gender.Male && source.BodySprite is not BodySprite.Male)
-                    source.BodySprite = BodySprite.Male;
-                if (source.Gender is Gender.Female && source.BodySprite is not BodySprite.Female)
-                    source.BodySprite = BodySprite.Female;
-
-                //They are no longer dead!
-                source.IsDead = false;
-
-                //Let's restore their hp/mp to %20
-                source?.StatSheet.AddHealthPct(20);
-                source?.StatSheet.AddManaPct(20);
-
-                //Refresh the users health bar
-                source?.Client.SendAttributes(StatUpdateType.Vitality);
-                source?.Refresh(true);
-
-                //Let's tell the player they have been revived
-                source?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are revived.");
-            }
+            case "terminus_existance":
+                MapInstance mapInstance;
+                Point point;
+                point = new Point(13, 10);
+                mapInstance = SimpleCache.Get<MapInstance>("after_life");
+                source.TraverseMap(mapInstance, point, true);
+                break;
         }
     }
 }
