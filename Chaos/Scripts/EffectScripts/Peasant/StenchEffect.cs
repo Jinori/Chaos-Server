@@ -8,11 +8,20 @@ using Chaos.Extensions;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Geometry.Abstractions;
 using Chaos.Objects.World;
+using Chaos.Scripts.FunctionalScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.ApplyDamage;
 
 namespace Chaos.Scripts.EffectScripts.Peasant
 {
     public class StenchEffect : AnimatingEffectBase
     {
+        protected IApplyDamageScript ApplyDamageScript { get; }
+        
+        public StenchEffect()
+        {
+            ApplyDamageScript = DefaultApplyDamageScript.Create();
+        }
+
         /// <inheritdoc />
         public override byte Icon { get; } = 176;
         /// <inheritdoc />
@@ -49,8 +58,7 @@ namespace Chaos.Scripts.EffectScripts.Peasant
             foreach (var target in targets)
             {
                 var TargetAisling = target as Aisling;
-                target.ApplyDamage(Subject, 1, null);
-                TargetAisling?.Client.SendAttributes(StatUpdateType.Vitality);
+                //ApplyDamageScript.ApplyDamage(Subject, target, this, Subject.StatSheet.Level);
                 target.ShowHealth();
             }
         }

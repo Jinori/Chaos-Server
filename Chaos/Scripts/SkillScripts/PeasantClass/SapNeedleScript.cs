@@ -1,5 +1,7 @@
 using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
 using Chaos.Data;
+using Chaos.Extensions;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.Components;
@@ -15,11 +17,13 @@ public class SapNeedleScript : BasicSkillScriptBase
     protected DamageComponent DamageComponent { get; }
     protected DamageComponent.DamageComponentOptions DamageComponentOptions { get; }
 
+    protected readonly Animation SuccessfulSap = new Animation { AnimationSpeed = 100, TargetAnimation = 127 };
+    
     /// <inheritdoc />
     public SapNeedleScript(Skill subject)
         : base(subject)
     {
-        ApplyDamageScript = SapNeedleApplyDamageScript.Create();
+        ApplyDamageScript = DefaultApplyDamageScript.Create();
         DamageComponent = new DamageComponent();
 
         DamageComponentOptions = new DamageComponent.DamageComponentOptions
@@ -36,9 +40,30 @@ public class SapNeedleScript : BasicSkillScriptBase
     public override void OnUse(ActivationContext context)
     {
         var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
-        DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
-        //most take away from creature is half of own mana (half of creatures mana?)
+        var manaToGive = 0;
+        foreach (var target in targets.TargetEntities)
+        {
+            DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
+            var halfOfAttackersMana = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumMp, 50);
+            var halfOfDefendersMana = MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumMp, 50);
+            manaToGive = Math.Min(halfOfDefendersMana, halfOfAttackersMana);
+            target.StatSheet.SubtractManaPct(50);
+        }
         
+        var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourceAisling)).ToList();
+        if (group != null)
+        {
+            foreach (var member in group)
+            {
+                member.ApplyMana(member, manaToGive / group.Count);
+                member.MapInstance.ShowAnimation(SuccessfulSap.GetTargetedAnimation(member.Id));
+            }
+        }
+        else
+        {
+            context.Source.ApplyMana(context.Source, manaToGive / 2);
+            context.Source.MapInstance.ShowAnimation(SuccessfulSap.GetTargetedAnimation(context.Source.Id));
+        }
     }
 
     #region ScriptVars
