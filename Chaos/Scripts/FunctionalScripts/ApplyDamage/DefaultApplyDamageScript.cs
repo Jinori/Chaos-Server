@@ -40,7 +40,6 @@ public class DefaultApplyDamageScript : ScriptBase, IApplyDamageScript
         switch (defender)
         {
             case Aisling aisling:
-                
                 aisling.StatSheet.SubtractHp(damage);
                 aisling.Client.SendAttributes(StatUpdateType.Vitality);
                 aisling.ShowHealth();

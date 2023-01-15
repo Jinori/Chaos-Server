@@ -14,5 +14,4 @@ public class PureDamageFormula : IDamageFormula
         IScript source,
         int damage
     ) => Convert.ToInt32(damage);
-    public int CalculateElemental(Creature attacker, Creature defenser, int damage, Element offensiveElement, Element defensiveElement) => Convert.ToInt32(damage);
 }
