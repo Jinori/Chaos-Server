@@ -28,7 +28,14 @@ public class DefaultApplyDamageScript : ScriptBase, IApplyDamageScript
         int damage
     )
     {
-        damage = DamageFormula.Calculate(attacker, defender, damage);
+        damage = DamageFormula.Calculate(
+            attacker,
+            defender,
+            source,
+            damage);
+
+        if (damage <= 0)
+            return;
 
         switch (defender)
         {
