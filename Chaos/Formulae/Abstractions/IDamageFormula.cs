@@ -12,5 +12,4 @@ public interface IDamageFormula
         IScript source,
         int damage
     );
-    int CalculateElemental(Creature attacker, Creature defenser, int damage, Element offensiveElement, Element defensiveElement);
 }

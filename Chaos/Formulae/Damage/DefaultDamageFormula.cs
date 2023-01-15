@@ -11,7 +11,8 @@ using Chaos.Services.Servers.Options;
 
 namespace Chaos.Formulae.Damage;
 
-public sealed class DefaultDamageFormula : IDamageFormula
+// ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
+public class DefaultDamageFormula : IDamageFormula
 {
     private ImmutableArray<ImmutableArray<decimal>> ElementalModifierLookup { get; } = new[]
     {
@@ -32,12 +33,12 @@ public sealed class DefaultDamageFormula : IDamageFormula
         // @formatter:on
     }.ToImmutableArray();
 
-    private void ApplyAcModifier(ref int damage, int defenderAc) => damage = Convert.ToInt32(damage * (1 + defenderAc / 100.0m));
+    protected virtual void ApplyAcModifier(ref int damage, int defenderAc) => damage = Convert.ToInt32(damage * (1 + defenderAc / 100.0m));
 
-    private void ApplyElementalModifier(ref int damage, Element attackElement, Element defenseElement) =>
+    protected virtual void ApplyElementalModifier(ref int damage, Element attackElement, Element defenseElement) =>
         damage = Convert.ToInt32(damage * ElementalModifierLookup[(int)attackElement][(int)defenseElement]);
 
-    private void ApplySkillSpellModifier(ref int damage, IScript source, Creature attacker)
+    protected virtual void ApplySkillSpellModifier(ref int damage, IScript source, Creature attacker)
     {
         switch (source)
         {
@@ -76,17 +77,7 @@ public sealed class DefaultDamageFormula : IDamageFormula
         return damage;
     }
 
-    public int CalculateElemental(Creature attacker, Creature defender, int damage, Element offenseElement, Element defenseElement)
-    {
-        var defenderAc = GetDefenderAc(defender);
-
-        ApplyAcModifier(ref damage, defenderAc);
-        ApplyElementalModifier(ref damage, offenseElement, defenseElement);
-
-        return damage;
-    }
-
-    private int GetDefenderAc(Creature defender) => defender switch
+    protected virtual int GetDefenderAc(Creature defender) => defender switch
     {
         Aisling aisling => Math.Clamp(
             aisling.UserStatSheet.Ac,
@@ -95,15 +86,15 @@ public sealed class DefaultDamageFormula : IDamageFormula
         _ => Math.Clamp(defender.StatSheet.Ac, WorldOptions.Instance.MinimumMonsterAc, WorldOptions.Instance.MaximumMonsterAc)
     };
 
-    private void HandleClawFist(ref int damage, IScript source, Creature attacker)
+    protected virtual void HandleClawFist(ref int damage, IScript source, Creature attacker)
     {
-        if (!attacker.Effects.Contains("claw fist"))
+        if (!attacker.Effects.Contains("clawfist"))
             return;
 
         if (source is not SubjectiveScriptBase<Skill> skillScript)
             return;
 
         if (skillScript.Subject.Template.IsAssail)
-            damage = Convert.ToInt32(damage * 0.3);
+            damage = Convert.ToInt32(damage * 1.3);
     }
 }
