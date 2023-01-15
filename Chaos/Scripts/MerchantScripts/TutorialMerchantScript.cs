@@ -22,12 +22,12 @@ public class TutorialMerchantScript : MerchantScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if (!aisling.Flags.HasFlag(TutorialQuestFlag.GaveStickAndArmor))
+        if (!aisling.Enums.TryGetValue<TutorialQuestStage>(out var stage))
             return;
-
-        if (aisling.Flags.HasFlag(TutorialQuestFlag.GaveAssailAndSpell))
+        
+        if (stage != TutorialQuestStage.GaveStickAndArmor)
             return;
-
+        
         if (!message.EqualsI("hello"))
             return;
 

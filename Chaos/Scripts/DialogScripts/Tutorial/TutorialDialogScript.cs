@@ -35,10 +35,13 @@ public class TutorialDialogScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
+        
+        var hasStage = source.Enums.TryGetValue(out TutorialQuestStage stage);
+        
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "leia_initial":
-                if (!source.Flags.HasFlag(TutorialQuestFlag.GaveStickAndArmor))
+                if (!hasStage)
                 {
                     var option = new DialogOption
                     {
@@ -50,15 +53,24 @@ public class TutorialDialogScript : DialogScriptBase
                         Subject.Options.Insert(0, option);
                 }
 
-                if (source.Flags.HasFlag(TutorialQuestFlag.GaveStickAndArmor)
-                    && !source.Flags.HasFlag(TutorialQuestFlag.GaveAssailAndSpell))
+                if (stage != TutorialQuestStage.None)
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "leia_repeat",
+                        OptionText ="Can you repeat that?"
+                    };
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+                }
+                if (stage == TutorialQuestStage.GaveStickAndArmor)
                 {
                     source.SendOrangeBarMessage("Equip your stick and armor, then say hello to get Leia's attention.");
 
                     return;
                 }
 
-                if (source.Flags.HasFlag(TutorialQuestFlag.GaveAssailAndSpell) && !source.Flags.HasFlag(TutorialQuestFlag.StartedFloppy))
+                if (stage == TutorialQuestStage.GaveAssailAndSpell)
                 {
                     var option = new DialogOption
                     {
@@ -71,12 +83,26 @@ public class TutorialDialogScript : DialogScriptBase
 
                     return;
                 }
+
+                if (stage == TutorialQuestStage.LearnedWorld)
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "talktocain",
+                        OptionText = "I'll go talk to Cain now."
+                    };
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+                    
+                    return;
+                }
+
                 break;
                 
             case "leia_1":
-                if (!source.Flags.HasFlag(TutorialQuestFlag.GaveStickAndArmor))
+                if (!hasStage)
                 {
-                    source.Flags.AddFlag(TutorialQuestFlag.GaveStickAndArmor);
+                    source.Enums.Set(TutorialQuestStage.GaveStickAndArmor);
 
                     var stick = ItemFactory.Create("stick");
                     var armor = source.Gender == Gender.Female ? ItemFactory.Create("blouse") : ItemFactory.Create("shirt");
@@ -86,8 +112,7 @@ public class TutorialDialogScript : DialogScriptBase
 
                 break;
             case "leia_2":
-                if (source.Flags.HasFlag(TutorialQuestFlag.GaveStickAndArmor)
-                    && !source.Flags.HasFlag(TutorialQuestFlag.GaveAssailAndSpell))
+                if (stage == TutorialQuestStage.GaveStickAndArmor)
                 {
                     var weapon = source.Equipment[EquipmentSlot.Weapon];
                     var armor = source.Equipment[EquipmentSlot.Armor];
@@ -108,22 +133,23 @@ public class TutorialDialogScript : DialogScriptBase
                 var sradtut = SpellFactory.Create("sradtut");
                 source.SkillBook.TryAddToNextSlot(assail);
                 source.SpellBook.TryAddToNextSlot(sradtut);
-                source.Flags.AddFlag(TutorialQuestFlag.GaveAssailAndSpell);
+                source.Enums.Set(TutorialQuestStage.GaveAssailAndSpell);
 
                 break;
             
             case "leiaend":
-                if (source.Flags.HasFlag(TutorialQuestFlag.GaveAssailAndSpell) && !source.Flags.HasFlag(TutorialQuestFlag.StartedFloppy))
+                if (stage == TutorialQuestStage.GaveAssailAndSpell)
                 {
-                    source.GiveExp(250);
-                    source.Flags.AddFlag(TutorialQuestFlag.LearnedWorld);
+                    ExperienceDistributionScript.GiveExp(source, 250);
+                    source.TryGiveGold(1000);
+                    source.Enums.Set(TutorialQuestStage.LearnedWorld);
 
                     return;
                 }
 
                 break;
             case "cain_initial":
-                if (source.Flags.HasFlag(TutorialQuestFlag.LearnedWorld) && !source.Flags.HasFlag(TutorialQuestFlag.StartedFloppy))
+                if (stage == TutorialQuestStage.GotEquipment)
                 {
                     var option = new DialogOption
                     {
@@ -148,7 +174,7 @@ public class TutorialDialogScript : DialogScriptBase
 
                     return;
                 }
-                if (source.Flags.HasFlag(TutorialQuestFlag.StartedFloppy) && (!source.Flags.HasFlag(TutorialQuestFlag.CompletedFloppy)))
+                if (stage == TutorialQuestStage.StartedFloppy)
                 {
                     var option = new DialogOption
                     {
@@ -174,7 +200,7 @@ public class TutorialDialogScript : DialogScriptBase
                     return;
                 }
                 
-                if (source.Flags.HasFlag(TutorialQuestFlag.CompletedFloppy) && (!source.Flags.HasFlag(TutorialQuestFlag.GotEquipment)))
+                if (stage == TutorialQuestStage.LearnedWorld)
                 {
                     var option = new DialogOption
                     {
@@ -189,7 +215,7 @@ public class TutorialDialogScript : DialogScriptBase
                     return;
                 }
 
-                if (source.Flags.HasFlag(TutorialQuestFlag.GotEquipment) && (!source.Flags.HasFlag(TutorialQuestFlag.GiantFloppy)))
+                if (stage == TutorialQuestStage.CompletedFloppy)
                 {
                     var option = new DialogOption
                     {
@@ -203,7 +229,7 @@ public class TutorialDialogScript : DialogScriptBase
                     return;
                 }
                 
-                if (source.Flags.HasFlag(TutorialQuestFlag.GiantFloppy))
+                if (stage == TutorialQuestStage.GiantFloppy)
                 {
                     var option = new DialogOption
                     {
@@ -220,16 +246,16 @@ public class TutorialDialogScript : DialogScriptBase
                 break;
 
             case "cain_yes":
-                if (source.Flags.HasFlag(TutorialQuestFlag.GaveAssailAndSpell) && !source.Flags.HasFlag(TutorialQuestFlag.StartedFloppy))
+                if (stage == TutorialQuestStage.GotEquipment)
                 {
-                    source.Flags.AddFlag(TutorialQuestFlag.StartedFloppy);
+                    source.Enums.Set(TutorialQuestStage.StartedFloppy);
                 }
 
                 break;
             
             
             case "cain_yes2":
-                if (source.Flags.HasFlag(TutorialQuestFlag.StartedFloppy) && !source.Flags.HasFlag(TutorialQuestFlag.CompletedFloppy))
+                if (stage == TutorialQuestStage.StartedFloppy)
                 {
 
                     if (!source.Inventory.HasCount("carrot", 3))
@@ -242,14 +268,14 @@ public class TutorialDialogScript : DialogScriptBase
                     source.Inventory.RemoveQuantity("carrot", 3);
                     ExperienceDistributionScript.GiveExp(source, 1000);
                     source.TryGiveGold(1000);
-                    source.Flags.AddFlag(TutorialQuestFlag.CompletedFloppy);
+                    source.Enums.Set(TutorialQuestStage.CompletedFloppy);
 
                     return;
                 }
                 break;
             
             case "tutorialequipment":
-                if (source.Flags.HasFlag(TutorialQuestFlag.CompletedFloppy) && !source.Flags.HasFlag(TutorialQuestFlag.GotEquipment))
+                if (stage == TutorialQuestStage.LearnedWorld)
                 {
                     var ring = source.Equipment[EquipmentSlot.RightRing];
                     var ring2 = source.Equipment[EquipmentSlot.LeftRing];
@@ -263,14 +289,26 @@ public class TutorialDialogScript : DialogScriptBase
 
                         return;
                     }
-                    source.Flags.AddFlag(TutorialQuestFlag.GotEquipment);
+                    
+                    var option = new DialogOption
+                    {
+                        DialogKey = "gotequipment",
+                        OptionText = "I got rings and boots from Abel",
+                    };
+                    
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+
+                    return;
+                    source.Enums.Set(TutorialQuestStage.GotEquipment);
+                    
                 }
 
                 break;
             case "tutorialgiantfloppy":
-                if (source.Flags.HasFlag(TutorialQuestFlag.GotEquipment) && !source.Flags.HasFlag(TutorialQuestFlag.GiantFloppy))
+                if (stage == TutorialQuestStage.CompletedFloppy)
                 {
-                    source.Flags.AddFlag(TutorialQuestFlag.GiantFloppy);
+                    source.Enums.Set(TutorialQuestStage.GiantFloppy);
                 }
                 break;
         }

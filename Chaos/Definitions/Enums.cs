@@ -30,3 +30,15 @@ public enum TutorialQuestFlag
     LearnedWorld = 1 << 6,
     GiantFloppy = 1 << 7,
 }
+
+public enum TutorialQuestStage
+{
+    None = 0,
+    GaveStickAndArmor = 1,
+    GaveAssailAndSpell = 2,
+    LearnedWorld = 3,
+    GotEquipment = 4,
+    StartedFloppy = 5,
+    CompletedFloppy = 6,
+    GiantFloppy = 7,
+}

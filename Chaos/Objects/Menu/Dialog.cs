@@ -109,7 +109,7 @@ public sealed record Dialog : IScripted<IDialogScript>
 
         return option?.OptionText;
     }
-    public bool HasOption(DialogOption option) => GetOptionIndex(option.OptionText) == null;
+    public bool HasOption(DialogOption option) => GetOptionIndex(option.OptionText) != null;
 
     public void Next(Aisling source, byte? optionIndex = null)
     {
