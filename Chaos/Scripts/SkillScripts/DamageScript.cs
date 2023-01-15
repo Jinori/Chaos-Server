@@ -16,17 +16,10 @@ namespace Chaos.Scripts.SkillScripts;
 
 public class DamageScript : BasicSkillScriptBase
 {
-    private readonly IEffectFactory EffectFactory;
-    private readonly ISkillFactory SkillFactory;
-
-    /// <inheritdoc />
-    public DamageScript(Skill subject, IEffectFactory effectFactory, ISkillFactory skillFactory)
-        : base(subject) { EffectFactory = effectFactory; SkillFactory = skillFactory; }
-    
     protected IApplyDamageScript ApplyDamageScript { get; }
     protected DamageComponent DamageComponent { get; }
     protected DamageComponent.DamageComponentOptions DamageComponentOptions { get; }
-
+    
     /// <inheritdoc />
     public DamageScript(Skill subject)
         : base(subject)

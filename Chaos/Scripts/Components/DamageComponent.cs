@@ -43,12 +43,6 @@ public class DamageComponent
         if (!damageStat.HasValue)
             return finalDamage;
         
-        //Needs to filter assails!
-        if (context.Source.Status.HasFlag(Status.ClawFist))
-        {
-            finalDamage += Convert.ToInt32(finalDamage * 0.3);
-        }
-        
         if (!damageStatMultiplier.HasValue)
         {
             finalDamage += context.Source.StatSheet.GetEffectiveStat(damageStat.Value);

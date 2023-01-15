@@ -37,6 +37,8 @@ public class SapNeedleScript : BasicSkillScriptBase
     {
         var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
         DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
+        //most take away from creature is half of own mana (half of creatures mana?)
+        
     }
 
     #region ScriptVars
