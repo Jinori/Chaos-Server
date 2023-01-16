@@ -17,9 +17,9 @@ namespace Chaos.Scripts.DialogScripts.Generic
         
         private readonly ISimpleCache SimpleCache;
         
-        public SgriosReviveScript(Dialog subject) : base(subject)
+        public SgriosReviveScript(Dialog subject, ISimpleCache simpleCache) : base(subject)
         {
-            
+            SimpleCache = simpleCache;
         }
 
         public override void OnDisplayed(Aisling source)
@@ -44,6 +44,7 @@ namespace Chaos.Scripts.DialogScripts.Generic
 
                 //Let's tell the player they have been revived
                 source?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are revived.");
+                Subject.Close(source);
                 
                 MapInstance mapInstance;
                 Point point;
