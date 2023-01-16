@@ -16,7 +16,8 @@ public class TutorialDialogScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
     private readonly ISkillFactory SkillFactory;
     private readonly ISpellFactory SpellFactory;
-    private IExperienceDistributionScript ExperienceDistributionScript{ get; set; }
+    private IExperienceDistributionScript ExperienceDistributionScript { get; set; }
+
     /// <inheritdoc />
     public TutorialDialogScript(
         Dialog subject,
@@ -35,9 +36,9 @@ public class TutorialDialogScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        
+
         var hasStage = source.Enums.TryGetValue(out TutorialQuestStage stage);
-        
+
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "leia_initial":
@@ -58,11 +59,13 @@ public class TutorialDialogScript : DialogScriptBase
                     var option = new DialogOption
                     {
                         DialogKey = "leia_repeat",
-                        OptionText ="Can you repeat that?"
+                        OptionText = "Can you repeat that?"
                     };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
                 }
+
                 if (stage == TutorialQuestStage.GaveStickAndArmor)
                 {
                     source.SendOrangeBarMessage("Equip your stick and armor, then say hello to get Leia's attention.");
@@ -91,14 +94,15 @@ public class TutorialDialogScript : DialogScriptBase
                         DialogKey = "talktocain",
                         OptionText = "I'll go talk to Cain now."
                     };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-                    
+
                     return;
                 }
 
                 break;
-                
+
             case "leia_1":
                 if (!hasStage)
                 {
@@ -136,7 +140,7 @@ public class TutorialDialogScript : DialogScriptBase
                 source.Enums.Set(TutorialQuestStage.GaveAssailAndSpell);
 
                 break;
-            
+
             case "leiaend":
                 if (stage == TutorialQuestStage.GaveAssailAndSpell)
                 {
@@ -174,6 +178,7 @@ public class TutorialDialogScript : DialogScriptBase
 
                     return;
                 }
+
                 if (stage == TutorialQuestStage.StartedFloppy)
                 {
                     var option = new DialogOption
@@ -199,7 +204,7 @@ public class TutorialDialogScript : DialogScriptBase
 
                     return;
                 }
-                
+
                 if (stage == TutorialQuestStage.LearnedWorld)
                 {
                     var option = new DialogOption
@@ -222,13 +227,13 @@ public class TutorialDialogScript : DialogScriptBase
                         DialogKey = "tutorialgiantfloppy",
                         OptionText = "Giant Floppy",
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
 
                     return;
                 }
-                
+
                 if (stage == TutorialQuestStage.GiantFloppy)
                 {
                     var option = new DialogOption
@@ -236,7 +241,7 @@ public class TutorialDialogScript : DialogScriptBase
                         DialogKey = "tutorialgiantfloppy2",
                         OptionText = "Giant Floppy",
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
 
@@ -248,12 +253,21 @@ public class TutorialDialogScript : DialogScriptBase
             case "cain_yes":
                 if (stage == TutorialQuestStage.GotEquipment)
                 {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cain_yes2",
+                        OptionText = "Here ya go.",
+                    };
+
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+
                     source.Enums.Set(TutorialQuestStage.StartedFloppy);
                 }
 
                 break;
-            
-            
+
+
             case "cain_yes2":
                 if (stage == TutorialQuestStage.StartedFloppy)
                 {
@@ -265,15 +279,25 @@ public class TutorialDialogScript : DialogScriptBase
 
                         return;
                     }
+
                     source.Inventory.RemoveQuantity("carrot", 3);
                     ExperienceDistributionScript.GiveExp(source, 500);
                     source.TryGiveGold(1000);
                     source.Enums.Set(TutorialQuestStage.CompletedFloppy);
+                    
+                    var option = new DialogOption
+                    {
+                        DialogKey = "tutorialgiantfloppy",
+                        OptionText = "Giant Floppy",
+                    };
 
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
                     return;
                 }
+
                 break;
-            
+
             case "tutorialequipment":
                 if (stage == TutorialQuestStage.LearnedWorld)
                 {
@@ -289,7 +313,7 @@ public class TutorialDialogScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     var option = new DialogOption
                     {
                         DialogKey = "gotequipment",
@@ -298,7 +322,9 @@ public class TutorialDialogScript : DialogScriptBase
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
+
                     source.Enums.Set(TutorialQuestStage.GotEquipment);
+
                     return;
                 }
 
@@ -306,8 +332,18 @@ public class TutorialDialogScript : DialogScriptBase
             case "tutorialgiantfloppy":
                 if (stage == TutorialQuestStage.CompletedFloppy)
                 {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "tutorialgiantfloppy",
+                        OptionText = "Giant Floppy",
+                    };
+
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+
                     source.Enums.Set(TutorialQuestStage.GiantFloppy);
                 }
+
                 break;
         }
     }

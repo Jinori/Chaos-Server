@@ -30,10 +30,34 @@ public class TerminusTutorialScript : DialogScriptBase
             case "terminus_initial":
                 if (stage == TutorialQuestStage.GiantFloppy)
                 {
+                    if (source.IsAlive)
+                    {
+                        return;
+                    }
+                    
                     var option = new DialogOption
                     {
                         DialogKey = "TerminusDeathExplanation",
                         OptionText = "I'm dead?"
+                    };
+
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+
+                    return;
+                }
+
+                if (stage == TutorialQuestStage.CompletedTutorial)
+                {
+                    if (source.IsAlive)
+                    {
+                        return;
+                    }
+
+                    var option = new DialogOption
+                    {
+                        DialogKey = "terminus_existance",
+                        OptionText = "Send me to the Afterlife"
                     };
 
                     if (!Subject.HasOption(option))
@@ -47,11 +71,15 @@ public class TerminusTutorialScript : DialogScriptBase
             case "terminusgotosgrios":
                 if (stage == TutorialQuestStage.GiantFloppy)
                 {
+                    if (source.IsAlive)
+                    {
+                        return;
+                    }
+
                     source.Enums.Set(TutorialQuestStage.CompletedTutorial);
-                    MapInstance mapInstance;
                     Point point;
                     point = new Point(13,10);
-                    mapInstance = SimpleCache.Get<MapInstance>("after_life");
+                    var mapInstance = SimpleCache.Get<MapInstance>("after_life");
                     source.TraverseMap(mapInstance, point, true);
                 }
                 break;
