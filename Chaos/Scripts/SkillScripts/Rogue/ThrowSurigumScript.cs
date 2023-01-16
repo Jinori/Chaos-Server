@@ -10,7 +10,7 @@ namespace Chaos.Scripts.SkillScripts.Rogue;
 
 public class ThrowSurigumScript : DamageScript
 {
-    protected IApplyDamageScript ApplyDamageScript { get; }
+    protected new IApplyDamageScript ApplyDamageScript { get; }
 
     /// <inheritdoc />
     public ThrowSurigumScript(Skill subject)

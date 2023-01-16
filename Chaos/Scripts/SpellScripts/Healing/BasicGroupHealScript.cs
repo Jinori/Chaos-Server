@@ -49,7 +49,7 @@ namespace Chaos.Scripts.SpellScripts.Healing
             }
 
             var targets = GroupComponent.Activate<Aisling>(context, GroupComponentOptions);
-            GroupComponent.ApplyHealing(context, targets.targetEntities, GroupComponentOptions);
+            GroupComponent.ApplyHealing(context, targets.targetEntities!, GroupComponentOptions);
         }
         
         #region ScriptVars

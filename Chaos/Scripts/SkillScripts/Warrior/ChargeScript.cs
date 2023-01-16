@@ -13,7 +13,7 @@ namespace Chaos.Scripts.SkillScripts.Warrior
 {
     public class ChargeScript : DamageScript
     {
-        protected IApplyDamageScript ApplyDamageScript { get; }
+        protected new IApplyDamageScript ApplyDamageScript { get; }
 
         /// <inheritdoc />
         public ChargeScript(Skill subject)

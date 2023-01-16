@@ -60,7 +60,7 @@ public class GroupComponent
 
         var targetEntities = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint)).ToList();
 
-        if (options.MustHaveTargets && !targetEntities.Any())
+        if (options.MustHaveTargets && !targetEntities!.Any())
             return (targetPoints, targetEntities);
 
         if (options.BodyAnimation.HasValue)
@@ -71,7 +71,7 @@ public class GroupComponent
                 foreach (var point in targetPoints)
                     context.Map.ShowAnimation(options.Animation.GetPointAnimation(point, context.Source.Id));
             else
-                foreach (var target in targetEntities)
+                foreach (var target in targetEntities!)
                     target.Animate(options.Animation, context.Source.Id);
 
         if (options.Sound.HasValue)
