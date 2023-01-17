@@ -1,13 +1,21 @@
 using System.Diagnostics.Eventing.Reader;
+using System.Runtime.CompilerServices;
+using Chaos.Commands;
 using Chaos.Common.Definitions;
+using Chaos.Containers;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
+using Chaos.Objects.Legend;
 using Chaos.Objects.Menu;
+using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Services.Storage;
+using Chaos.Storage.Abstractions;
+using Chaos.Time;
 
 namespace Chaos.Scripts.DialogScripts;
 
@@ -16,6 +24,7 @@ public class TutorialDialogScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
     private readonly ISkillFactory SkillFactory;
     private readonly ISpellFactory SpellFactory;
+    private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; set; }
 
     /// <inheritdoc />
@@ -23,13 +32,15 @@ public class TutorialDialogScript : DialogScriptBase
         Dialog subject,
         IItemFactory itemFactory,
         ISkillFactory skillFactory,
-        ISpellFactory spellFactory
+        ISpellFactory spellFactory,
+        ISimpleCache simpleCache
     )
         : base(subject)
     {
         ItemFactory = itemFactory;
         SkillFactory = skillFactory;
         SpellFactory = spellFactory;
+        SimpleCache = simpleCache;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
@@ -38,6 +49,8 @@ public class TutorialDialogScript : DialogScriptBase
     {
 
         var hasStage = source.Enums.TryGetValue(out TutorialQuestStage stage);
+
+        Skill? assail;
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -133,7 +146,7 @@ public class TutorialDialogScript : DialogScriptBase
                     }
                 }
 
-                var assail = SkillFactory.Create("assail");
+                assail = SkillFactory.Create("assail");
                 var sradtut = SpellFactory.Create("sradtut");
                 source.SkillBook.TryAddToNextSlot(assail);
                 source.SpellBook.TryAddToNextSlot(sradtut);
@@ -284,7 +297,7 @@ public class TutorialDialogScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, 500);
                     source.TryGiveGold(1000);
                     source.Enums.Set(TutorialQuestStage.CompletedFloppy);
-                    
+
                     var option = new DialogOption
                     {
                         DialogKey = "tutorialgiantfloppy",
@@ -293,6 +306,7 @@ public class TutorialDialogScript : DialogScriptBase
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
+
                     return;
                 }
 
@@ -345,6 +359,169 @@ public class TutorialDialogScript : DialogScriptBase
                 }
 
                 break;
+
+            case "leia_exit2":
+            {
+                SpellFactory.Create("sradtut");
+                var stick = ItemFactory.Create("stick");
+                var armor = source.Gender == Gender.Female ? ItemFactory.Create("blouse") : ItemFactory.Create("shirt");
+                var ring = ItemFactory.Create("smallrubyring");
+                var boots = ItemFactory.Create("boots");
+                assail = SkillFactory.Create("assail");
+                MapInstance? mapInstance;
+                Point point;
+
+                if (hasStage)
+                {
+                    if (stage == TutorialQuestStage.GaveStickAndArmor)
+                    {
+                        source.TryGiveGold(1300);
+                        source.TryGiveItems(ring, ring, boots);
+                        assail = SkillFactory.Create("assail");
+                        source.SkillBook.TryAddToNextSlot(assail);
+                        ExperienceDistributionScript.GiveExp(source, 1750);
+
+                        source.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Completed Tutorial",
+                                "base",
+                                MarkIcon.Heart,
+                                MarkColor.White,
+                                1,
+                                GameTime.Now));
+
+                        source.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                        point = new Point(5, 8);
+                        mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
+                        source.TraverseMap(mapInstance, point);
+
+                        return;
+                    }
+
+                    if (stage == TutorialQuestStage.GaveAssailAndSpell)
+                    {
+                        source.TryGiveGold(1300);
+                        source.TryGiveItems(ring, ring, boots);
+                        source.SkillBook.TryAddToNextSlot(assail);
+                        ExperienceDistributionScript.GiveExp(source, 1750);
+                        source.SpellBook.Remove("srad tut");
+
+                        source.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Completed Tutorial",
+                                "base",
+                                MarkIcon.Heart,
+                                MarkColor.White,
+                                1,
+                                GameTime.Now));
+
+                        source.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                        point = new Point(5, 8);
+                        mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
+                        source.TraverseMap(mapInstance, point);
+
+                        return;
+                    }
+                    
+                    if (stage == TutorialQuestStage.LearnedWorld)
+                    {
+                        source.TryGiveGold(1300);
+                        source.TryGiveItems(ring, ring, boots);
+                        ExperienceDistributionScript.GiveExp(source, 1500);
+                        source.SpellBook.Remove("srad tut");
+
+                        source.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Completed Tutorial",
+                                "base",
+                                MarkIcon.Heart,
+                                MarkColor.White,
+                                1,
+                                GameTime.Now));
+
+                        source.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                        point = new Point(5, 8);
+                        mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
+                        source.TraverseMap(mapInstance, point);
+
+                        return;
+                    }
+
+                    if (stage is TutorialQuestStage.GotEquipment or TutorialQuestStage.StartedFloppy)
+                    {
+                        source.TryGiveGold(1000);
+                        ExperienceDistributionScript.GiveExp(source, 1500);
+                        source.SpellBook.Remove("srad tut");
+
+                        source.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Completed Tutorial",
+                                "base",
+                                MarkIcon.Heart,
+                                MarkColor.White,
+                                1,
+                                GameTime.Now));
+
+                        source.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                        point = new Point(5, 8);
+                        mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
+                        source.TraverseMap(mapInstance, point);
+
+                        return;
+                    }
+                    
+
+                    if (stage is TutorialQuestStage.CompletedFloppy or TutorialQuestStage.GiantFloppy)
+
+                    {
+                        ExperienceDistributionScript.GiveExp(source, 1000);
+                        source.SpellBook.Remove("srad tut");
+
+                        source.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Completed Tutorial",
+                                "base",
+                                MarkIcon.Heart,
+                                MarkColor.White,
+                                1,
+                                GameTime.Now));
+
+                        source.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                        point = new Point(5, 8);
+                        mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
+                        source.TraverseMap(mapInstance, point);
+
+                        return;
+                    }
+                }
+
+                source.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        "Completed Tutorial",
+                        "base",
+                        MarkIcon.Heart,
+                        MarkColor.White,
+                        1,
+                        GameTime.Now));
+
+                source.TryGiveItems(
+                    stick,
+                    armor,
+                    ring,
+                    ring,
+                    boots);
+
+                assail = SkillFactory.Create("assail");
+                source.SkillBook.TryAddToNextSlot(assail);
+                ExperienceDistributionScript.GiveExp(source, 1750);
+                source.SpellBook.Remove("srad tut");
+                source.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                point = new Point(5, 8);
+                mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
+                source.TraverseMap(mapInstance, point);
+
+                break;
+            }
         }
     }
 }

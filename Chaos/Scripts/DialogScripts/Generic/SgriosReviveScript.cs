@@ -46,7 +46,7 @@ namespace Chaos.Scripts.DialogScripts.Generic
                 source?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are revived and sent home.");
                 Subject.Close(source);
             Point point;
-                point = new Point(5, 8);
+                point = new Point(9, 6);
                 var mapInstance = SimpleCache.Get<MapInstance>("mileth_Inn");
                 source.TraverseMap(mapInstance, point, true);
             }

@@ -3,6 +3,7 @@ using Chaos.Common.Definitions;
 using Chaos.Containers;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
+using Chaos.Objects.Legend;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
@@ -10,15 +11,33 @@ using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
+using Chaos.Time;
 
 namespace Chaos.Scripts.DialogScripts;
 
 public class TerminusTutorialScript : DialogScriptBase
 {
-    public TerminusTutorialScript(Dialog subject, ISimpleCache simpleCache)
-        : base(subject) => SimpleCache = simpleCache;
+    public TerminusTutorialScript(
+        Dialog subject,
+        IItemFactory itemFactory,
+        ISkillFactory skillFactory,
+        ISpellFactory spellFactory,
+        ISimpleCache simpleCache
+    )
+        : base(subject)
+    {
+        ItemFactory = itemFactory;
+        SkillFactory = skillFactory;
+        SpellFactory = spellFactory;
+        SimpleCache = simpleCache;
+        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    }
 
     private readonly ISimpleCache SimpleCache;
+    private readonly IItemFactory ItemFactory;
+    private readonly ISkillFactory SkillFactory;
+    private readonly ISpellFactory SpellFactory;
+    private IExperienceDistributionScript ExperienceDistributionScript { get; set; }
     
     public override void OnDisplaying(Aisling source)
     {
@@ -75,7 +94,9 @@ public class TerminusTutorialScript : DialogScriptBase
                     {
                         return;
                     }
-
+                    
+                    source.Legend.AddOrAccumulate(new LegendMark("Completed Tutorial", "base", MarkIcon.Heart, MarkColor.White, 1, GameTime.Now));
+                    source.SpellBook.Remove("sradtut");
                     source.Enums.Set(TutorialQuestStage.CompletedTutorial);
                     Point point;
                     point = new Point(13,10);
