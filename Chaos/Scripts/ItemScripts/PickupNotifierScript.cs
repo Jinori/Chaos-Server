@@ -33,7 +33,7 @@ namespace Chaos.Scripts.ItemScripts
             if (aisling.Group!.Count > 1)
             {
                 var point = new Point(aisling.X, aisling.Y);
-                var group = aisling.Group?.Where(x => x.WithinRange(point));
+                var group = aisling.Group?.Where(x => x.WithinRange(point) && x.MapInstance.Equals(aisling.MapInstance));
                 foreach (var member in group!)
                 {
                     member.SendOrangeBarMessage($"{aisling.Name} has picked up {Subject.DisplayName}.");

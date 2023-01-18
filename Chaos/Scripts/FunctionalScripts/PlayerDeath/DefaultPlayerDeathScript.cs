@@ -1,6 +1,7 @@
 using Chaos.Clients.Abstractions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Extensions.Common;
 using Chaos.Formulae;
 using Chaos.Networking.Abstractions;
 using Chaos.Objects.World;
@@ -27,6 +28,8 @@ public class DefaultPlayerDeathScript : ScriptBase, IPlayerDeathScript
         return FunctionalScriptRegistry.Instance.Get<IPlayerDeathScript>(Key);
     }
 
+    private List<string> mapsToNotPunishDeathOn = new List<string> { "tutorial_bossroom", "tutorial_farm" };
+    
     /// <inheritdoc />
     public virtual void OnDeath(Aisling aisling, Creature killedBy)
     {
@@ -39,8 +42,10 @@ public class DefaultPlayerDeathScript : ScriptBase, IPlayerDeathScript
         var effects = aisling.Effects.ToList();
         foreach (var effect in effects)
             aisling.Effects.Dispel(effect.Name);
-        
-        //Will worldshout soon
+
+        if (mapsToNotPunishDeathOn.Contains(aisling.MapInstance.InstanceId))
+            return;
+
         foreach (var client in ClientRegistry)
         {
             client.SendServerMessage(ServerMessageType.OrangeBar1,

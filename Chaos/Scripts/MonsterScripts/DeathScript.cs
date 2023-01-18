@@ -56,7 +56,7 @@ public class DeathScript : MonsterScriptBase
             if (droppedITems)
                 foreach (var groundItem in groundItems!)
                     groundItem.LockToCreatures(30, rewardTargets);
-
+            
             ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
         }
     }
