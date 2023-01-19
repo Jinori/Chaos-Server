@@ -36,8 +36,7 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
 
         foreach (var aisling in aislings)
         {
-            if (aisling.MapInstance.Equals(killedCreature.MapInstance))
-                   GiveExp(aisling, exp);
+            GiveExp(aisling, exp);
         }
     }
 
