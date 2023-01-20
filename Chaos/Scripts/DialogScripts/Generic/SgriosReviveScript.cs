@@ -2,11 +2,6 @@
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Chaos.Containers;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Storage.Abstractions;
@@ -25,26 +20,37 @@ namespace Chaos.Scripts.DialogScripts.Generic
             if (source.IsAlive) return;
 
             //Change their sprite back to normal
-            if (source.Gender is Gender.Male && source.BodySprite is not BodySprite.Male)
-                source.BodySprite = BodySprite.Male;
-            if (source.Gender is Gender.Female && source.BodySprite is not BodySprite.Female)
-                source.BodySprite = BodySprite.Female;
+            switch (source.Gender)
+            {
+                case Gender.Male:
+                {
+                    if (source.BodySprite is not BodySprite.Male)
+                        source.BodySprite = BodySprite.Male;
+                    break;
+                }
+                case Gender.Female:
+                {
+                    if (source.BodySprite is not BodySprite.Female)
+                        source.BodySprite = BodySprite.Male;
+                    break;
+                }
+            }
 
             //They are no longer dead!
             source.IsDead = false;
 
             //Let's restore their hp/mp to %20
-            source?.StatSheet.AddHealthPct(20);
-            source?.StatSheet.AddManaPct(20);
+            source.StatSheet.AddHealthPct(20);
+            source.StatSheet.AddManaPct(20);
 
             //Refresh the users health bar & turn direction
-            source?.Client.SendAttributes(StatUpdateType.Vitality);
+            source.Client.SendAttributes(StatUpdateType.Vitality);
             source.Turn(Direction.Down);
-            source?.Refresh(true);
+            source.Refresh(true);
 
             //Let's tell the player they have been revived
-            source?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Sgrios mumbles unintelligble gibberish");
-            source?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are revived and sent home.");
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Sgrios mumbles unintelligble gibberish");
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are revived and sent home.");
             Subject.Close(source);
             
             //Warp them to the Inn
