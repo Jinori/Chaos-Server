@@ -15,6 +15,9 @@ using Chaos.Objects.Menu;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Observers;
+using Chaos.Scripting.Abstractions;
+using Chaos.Scripts.AislingScripts;
+using Chaos.Scripts.AislingScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Servers.Options;
 using Chaos.Time;
@@ -25,7 +28,7 @@ using PointExtensions = Chaos.Extensions.Geometry.PointExtensions;
 
 namespace Chaos.Objects.World;
 
-public sealed class Aisling : Creature
+public sealed class Aisling : Creature, IScripted<IAislingScript>
 {
     private readonly IExchangeFactory ExchangeFactory;
     private readonly ICloningService<Item> ItemCloner;
@@ -70,6 +73,10 @@ public sealed class Aisling : Creature
     public override int AssailIntervalMs { get; }
     public ChantTimer ChantTimer { get; }
     public override ILogger<Aisling> Logger { get; }
+    /// <inheritdoc />
+    public override IAislingScript Script { get; }
+    /// <inheritdoc />
+    public override ISet<string> ScriptKeys { get; }
     public bool ShouldRefresh => DateTime.UtcNow.Subtract(LastRefresh).TotalMilliseconds > WorldOptions.Instance.RefreshIntervalMs;
 
     public bool ShouldWalk
@@ -105,6 +112,7 @@ public sealed class Aisling : Creature
         MapInstance mapInstance,
         IPoint point,
         IExchangeFactory exchangeFactory,
+        IScriptProvider scriptProvider,
         ILogger<Aisling> logger,
         ICloningService<Item> itemCloner
     )
@@ -113,6 +121,8 @@ public sealed class Aisling : Creature
         ExchangeFactory = exchangeFactory;
         Logger = logger;
         ItemCloner = itemCloner;
+        ScriptKeys = new HashSet<string> { ScriptBase.GetScriptKey(typeof(DefaultAislingScript)) };
+        Script = scriptProvider.CreateScript<IAislingScript, Aisling>(ScriptKeys, this);
     }
 
     //default user
@@ -168,6 +178,7 @@ public sealed class Aisling : Creature
         Flags = new FlagCollection();
         Enums = new EnumCollection();
         TimedEvents = new TimedEventCollection();
+        ScriptKeys = new HashSet<string>();
 
         //this object is purely intended to be created and immediately serialized
         //these pieces should never come into play
@@ -175,6 +186,7 @@ public sealed class Aisling : Creature
         Logger = null!;
         ExchangeFactory = null!;
         ItemCloner = null!;
+        Script = null!;
     }
 
     /// <inheritdoc />
@@ -288,6 +300,9 @@ public sealed class Aisling : Creature
     {
         skillContext = null;
 
+        if (!Script.CanUseSkill(skill))
+            return false;
+
         if (!skill.Template.IsAssail && (!ActionThrottle.CanIncrement || !SkillThrottle.CanIncrement))
             return false;
 
@@ -305,6 +320,9 @@ public sealed class Aisling : Creature
     {
         spellContext = null;
 
+        if (!Script.CanUseSpell(spell))
+            return false;
+
         if (!ActionThrottle.CanIncrement)
             return false;
 
@@ -318,7 +336,7 @@ public sealed class Aisling : Creature
             out spellContext!);
     }
 
-    public bool CanUse(Item item) => ActionThrottle.CanIncrement && item.CanUse() && item.Script.CanUse(this);
+    public bool CanUse(Item item) => Script.CanUseItem(item) && ActionThrottle.CanIncrement && item.CanUse() && item.Script.CanUse(this);
 
     public void Equip(EquipmentType type, Item item)
     {
@@ -763,9 +781,12 @@ public sealed class Aisling : Creature
 
     public override void Walk(Direction direction)
     {
-        //don't allow f5 walking
-        if (!ShouldWalk)
+        if (!Script.CanMove() || ((direction != Direction) && !Script.CanTurn()) || !ShouldWalk)
+        {
+            Refresh(true);
+
             return;
+        }
 
         Direction = direction;
         var startPoint = Point.From(this);

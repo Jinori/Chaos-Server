@@ -80,10 +80,10 @@ public class DefaultDamageFormula : IDamageFormula
     protected virtual int GetDefenderAc(Creature defender) => defender switch
     {
         Aisling aisling => Math.Clamp(
-            aisling.UserStatSheet.Ac,
+            aisling.UserStatSheet.EffectiveAc,
             WorldOptions.Instance.MinimumAislingAc,
             WorldOptions.Instance.MaximumAislingAc),
-        _ => Math.Clamp(defender.StatSheet.Ac, WorldOptions.Instance.MinimumMonsterAc, WorldOptions.Instance.MaximumMonsterAc)
+        _ => Math.Clamp(defender.StatSheet.EffectiveAc, WorldOptions.Instance.MinimumMonsterAc, WorldOptions.Instance.MaximumMonsterAc)
     };
 
     protected virtual void HandleClawFist(ref int damage, IScript source, Creature attacker)

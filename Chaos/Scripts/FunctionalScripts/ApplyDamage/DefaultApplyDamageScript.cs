@@ -5,21 +5,15 @@ using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
-using Chaos.Scripts.FunctionalScripts.PlayerDeath;
 
 namespace Chaos.Scripts.FunctionalScripts.ApplyDamage;
 
 public class DefaultApplyDamageScript : ScriptBase, IApplyDamageScript
 {
     public IDamageFormula DamageFormula { get; set; }
-    public IPlayerDeathScript PlayerDeathScript { get; set; }
     public static string Key { get; } = GetScriptKey(typeof(DefaultApplyDamageScript));
 
-    public DefaultApplyDamageScript()
-    {
-        DamageFormula = DamageFormulae.Default;
-        PlayerDeathScript = DefaultPlayerDeathScript.Create();
-    }
+    public DefaultApplyDamageScript() => DamageFormula = DamageFormulae.Default;
 
     public virtual void ApplyDamage(
         Creature attacker,
@@ -43,11 +37,12 @@ public class DefaultApplyDamageScript : ScriptBase, IApplyDamageScript
                 aisling.StatSheet.SubtractHp(damage);
                 aisling.Client.SendAttributes(StatUpdateType.Vitality);
                 aisling.ShowHealth();
-                
-                if (!aisling.IsAlive)
-                    PlayerDeathScript.OnDeath(aisling, attacker);
+                aisling.Script.OnAttacked(attacker, damage);
 
-                    break;
+                if (!aisling.IsAlive)
+                    aisling.Script.OnDeath(attacker);
+
+                break;
             case Monster monster:
                 monster.StatSheet.SubtractHp(damage);
                 monster.ShowHealth();

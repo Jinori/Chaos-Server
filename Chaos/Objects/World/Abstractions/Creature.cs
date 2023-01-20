@@ -10,6 +10,8 @@ using Chaos.Geometry.Abstractions;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Networking.Definitions;
 using Chaos.Objects.Panel;
+using Chaos.Scripting.Abstractions;
+using Chaos.Scripts.Abstractions;
 using Chaos.Scripts.EffectScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.NaturalRegeneration;
 using Chaos.Time;
@@ -19,7 +21,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Chaos.Objects.World.Abstractions;
 
-public abstract class Creature : NamedEntity, IAffected
+public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScript>
 {
     public Direction Direction { get; set; }
     public IEffectsBar Effects { get; set; }
@@ -37,6 +39,11 @@ public abstract class Creature : NamedEntity, IAffected
     public virtual bool IsAlive => StatSheet.CurrentHp > 0;
     public abstract ILogger Logger { get; }
     public IIntervalTimer RegenTimer { get; }
+    /// <inheritdoc />
+    public abstract ICreatureScript Script { get; }
+
+    /// <inheritdoc />
+    public abstract ISet<string> ScriptKeys { get; }
     public abstract StatSheet StatSheet { get; }
     public abstract CreatureType Type { get; }
 
@@ -97,6 +104,9 @@ public abstract class Creature : NamedEntity, IAffected
     {
         skillContext = null;
 
+        if (!Script.CanUseSkill(skill))
+            return false;
+
         if (!skill.CanUse())
             return false;
 
@@ -114,6 +124,9 @@ public abstract class Creature : NamedEntity, IAffected
     )
     {
         spellContext = null;
+
+        if (!Script.CanUseSpell(spell))
+            return false;
 
         if (!spell.CanUse())
             return false;
@@ -189,6 +202,9 @@ public abstract class Creature : NamedEntity, IAffected
 
     public void ShowPublicMessage(PublicMessageType publicMessageType, string message)
     {
+        if (!Script.CanTalk())
+            return;
+
         IEnumerable<Creature>? entitiesWithinRange;
         var sendMessage = message;
 
@@ -366,6 +382,9 @@ public abstract class Creature : NamedEntity, IAffected
 
     public virtual void Turn(Direction direction)
     {
+        if (!Script.CanTurn())
+            return;
+
         Direction = direction;
 
         foreach (var aisling in MapInstance.GetEntitiesWithinRange<Aisling>(this)
@@ -381,6 +400,9 @@ public abstract class Creature : NamedEntity, IAffected
 
     public virtual void Walk(Direction direction)
     {
+        if (!Script.CanMove())
+            return;
+
         Direction = direction;
         var startPoint = Point.From(this);
         var endPoint = ((IPoint)this).DirectionalOffset(direction);
