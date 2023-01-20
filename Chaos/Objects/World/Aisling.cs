@@ -63,6 +63,8 @@ public sealed class Aisling : Creature
     public ResettingCounter ActionThrottle { get; }
     public IInterlockedObject<Dialog> ActiveDialog { get; }
     public IInterlockedObject<object> ActiveObject { get; }
+    
+    public Dictionary<string, int> killedMonsters { get; init; }
 
     /// <inheritdoc />
     public override int AssailIntervalMs { get; }
@@ -142,6 +144,7 @@ public sealed class Aisling : Creature
     {
         //initialize all the things
         UserStatSheet = new UserStatSheet();
+        killedMonsters = new Dictionary<string, int>();
         Titles = new TitleList();
         Options = new UserOptions();
         IgnoreList = new IgnoreList();

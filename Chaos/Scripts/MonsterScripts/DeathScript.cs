@@ -1,3 +1,4 @@
+using Chaos.Common.Definitions;
 using Chaos.Extensions;
 using Chaos.Objects.World;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
@@ -61,6 +62,17 @@ public class DeathScript : MonsterScriptBase
                     groundItem.LockToCreatures(30, rewardTargets);
             
             ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
+            foreach (var aisling in rewardTargets)
+            {
+                if (aisling.killedMonsters.ContainsKey(Subject.Template.TemplateKey))
+                {
+                    aisling.killedMonsters[Subject.Template.TemplateKey] += 1;
+                }
+                else
+                {
+                    aisling.killedMonsters.Add(Subject.Template.TemplateKey, 1); ;
+                }
+            }
         }
     }
 }
