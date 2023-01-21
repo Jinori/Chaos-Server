@@ -59,5 +59,16 @@ public enum HolyResearchStage
     StartedRawHoney = 1,
     StartedRawWax = 2,
     StartedRoyalWax = 3
-    
+}
+
+public enum DarkThingsStage
+{
+    None = 0,
+    StartedSpidersEye = 1,
+    StartedCentipedesGland = 2,
+    StartedBatsWing = 3,
+    StartedSpidersSilk = 4,
+    StartedScorpionSting = 5,
+    StartedGreatBatsWing = 6,
+    StartedWhiteBatsWing = 7
 }
