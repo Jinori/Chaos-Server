@@ -11,6 +11,25 @@ public enum AoeShape
 }
 
 [Flags]
+public enum Status : ulong
+{
+    None = 0,
+    Dead = 1,
+    Suain = 1 << 2,
+    AsgallFaileas = 1 << 3,
+    PreventAffliction = 1 << 4,
+    ClawFist = 1 << 5,
+    BeagSuain = 1 << 6,
+    BattleCry = 1 << 7,
+    InnerFire = 1 << 8,
+    Rumination = 1 << 9,
+    ChiBlocker = 1 << 10,
+    Pramh = 1 << 11
+    //add more statuses here, double each time
+}
+
+
+[Flags]
 public enum TargetFilter
 {
     None,

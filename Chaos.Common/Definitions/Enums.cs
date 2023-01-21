@@ -77,22 +77,6 @@ public enum QuestFlag2 : ulong { }
 [Flags]
 public enum QuestFlag3 : ulong { }
 
-[Flags]
-public enum Status : ulong
-{
-    None = 0,
-    Dead = 1,
-    Suain = 2,
-    AsgallFaileas = 4,
-    PreventAffliction = 8,
-    ClawFist = 16,
-    BeagSuain = 32,
-    BattleCry = 64,
-    InnerFire = 128,
-    Rumination = 256,
-    ChiBlocker = 512,
-    //add more statuses here, double each time
-}
 
 [Flags]
 public enum UserState : ulong

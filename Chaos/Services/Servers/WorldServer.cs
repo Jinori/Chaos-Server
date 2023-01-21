@@ -11,6 +11,7 @@ using Chaos.Common.Synchronization;
 using Chaos.Containers;
 using Chaos.Cryptography;
 using Chaos.Data;
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae;

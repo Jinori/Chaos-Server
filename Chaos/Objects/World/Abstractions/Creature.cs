@@ -3,6 +3,7 @@ using Chaos.Common.Utilities;
 using Chaos.Containers;
 using Chaos.Containers.Abstractions;
 using Chaos.Data;
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;

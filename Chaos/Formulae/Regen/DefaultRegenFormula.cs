@@ -1,10 +1,10 @@
 using Chaos.Common.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Common.Utilities;
+using Chaos.Definitions;
 using Chaos.Formulae.Abstractions;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
-using NLog.Targets;
 
 namespace Chaos.Formulae.Regen;
 
