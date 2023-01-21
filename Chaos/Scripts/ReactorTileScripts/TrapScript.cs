@@ -26,6 +26,13 @@ public class TrapScript : ConfigurableReactorTileScriptBase
     protected AbilityComponent.AbilityComponentOptions AbilityComponentOptions { get; }
     protected DamageComponent DamageComponent { get; }
     protected DamageComponent.DamageComponentOptions DamageComponentOptions { get; }
+    
+    protected IIntervalTimer AnimationTimer { get; set; }
+    protected Animation DetectTrapAnimation { get; } = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 96
+    };
 
     /// <inheritdoc />
     public TrapScript(ReactorTile subject, IEffectFactory effectFactory)
@@ -43,6 +50,7 @@ If this reactor was created through a script, you must specify the owner in the 
         Owner = subject.Owner!;
         EffectFactory = effectFactory;
         TriggerCount = 0;
+        AnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
         Timer = new IntervalTimer(TimeSpan.FromSeconds(DurationSecs), false);
         ApplyDamageScript = DefaultApplyDamageScript.Create();
         ApplyDamageScript.DamageFormula = DamageFormulae.PureDamage;
@@ -109,6 +117,13 @@ If this reactor was created through a script, you must specify the owner in the 
         base.Update(delta);
 
         Timer.Update(delta);
+        
+        AnimationTimer.Update(delta);
+        
+        if (Subject.Owner is not null && Subject.Owner.Status.HasFlag(Status.DetectTraps) && AnimationTimer.IntervalElapsed)
+        {
+            Subject.Owner.MapInstance.ShowAnimation(DetectTrapAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y), Subject.Owner.Id));
+        }
 
         if (Timer.IntervalElapsed)
             Map.RemoveObject(Subject);

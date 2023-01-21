@@ -1,6 +1,4 @@
 using Chaos.Common.Definitions;
-using Chaos.Geometry.Abstractions;
-using Chaos.Objects;
 using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
@@ -16,8 +14,8 @@ public class LayReactorTileScript : BasicSpellScriptBase
     #region ScriptVars
     protected string ReactorTileTemplateKey { get; init; } = null!;
     protected int? ManaSpent { get; init; }
-
     #endregion
+
     /// <inheritdoc />
     public LayReactorTileScript(Spell subject, IReactorTileFactory reactorTileFactory)
         : base(subject) =>
@@ -48,8 +46,10 @@ public class LayReactorTileScript : BasicSpellScriptBase
                 context.Map,
                 point,
                 owner: context.Target);
-
+            
             context.Map.SimpleAdd(trap);
         }
+        
+        context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Subject.Template.Name}.");
     }
 }

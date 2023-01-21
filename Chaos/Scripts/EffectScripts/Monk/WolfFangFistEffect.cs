@@ -5,14 +5,14 @@ using Chaos.Scripts.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripts.EffectScripts.Priest;
+namespace Chaos.Scripts.EffectScripts.Monk;
 
-public sealed class SuainEffect : AnimatingEffectBase
+public sealed class WolfFangFistEffect : AnimatingEffectBase
 {
     /// <inheritdoc />
     public override byte Icon => 50;
     /// <inheritdoc />
-    public override string Name => "Suain";
+    public override string Name => "wolfFangFist";
 
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
@@ -23,13 +23,13 @@ public sealed class SuainEffect : AnimatingEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1));
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(15);
+    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(6);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
 
     public override void OnApplied()
     {
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel ice run through your veins.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A deadly strike puts you to sleep.");
         if (!Subject.Status.HasFlag(Status.Suain))
             Subject.Status = Status.Suain;
     }
