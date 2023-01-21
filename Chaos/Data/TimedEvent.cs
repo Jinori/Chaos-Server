@@ -8,6 +8,8 @@ public sealed class TimedEvent : IEquatable<TimedEvent>
     {
         Fountain,
         TerrorOfTheCrypt = 1,
+        HolyResearchCd = 2,
+        DarkThingsCd = 3
     }
 
     public bool AutoConsume { get; }
@@ -34,12 +36,13 @@ public sealed class TimedEvent : IEquatable<TimedEvent>
         AutoConsume = autoConsume;
     }
 
-    public TimedEvent(TimedEventId eventId, TimeSpan duration)
+    public TimedEvent(TimedEventId eventId, TimeSpan duration, bool autoConsume = false)
     {
         UniqueId = ServerId.NextId;
         EventId = eventId;
         Duration = duration;
         Start = DateTime.UtcNow;
+        AutoConsume = autoConsume;
     }
 
     /// <inheritdoc />

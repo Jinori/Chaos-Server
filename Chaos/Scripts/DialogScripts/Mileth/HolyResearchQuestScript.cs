@@ -1,48 +1,30 @@
 using Chaos.Common.Utilities;
+using Chaos.Data;
 using Chaos.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Objects.Menu;
-using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
-using Chaos.Services.Factories.Abstractions;
-using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripts.DialogScripts;
+namespace Chaos.Scripts.DialogScripts.Mileth;
 
 public class HolyResearchQuestScript : DialogScriptBase
 {
-    private readonly IItemFactory ItemFactory;
-    private readonly ISkillFactory SkillFactory;
-    private readonly ISpellFactory SpellFactory;
-    private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; set; }
 
     /// <inheritdoc />
     public HolyResearchQuestScript(
-        Dialog subject,
-        IItemFactory itemFactory,
-        ISkillFactory skillFactory,
-        ISpellFactory spellFactory,
-        ISimpleCache simpleCache
-    )
-        : base(subject)
-    {
-        ItemFactory = itemFactory;
-        SkillFactory = skillFactory;
-        SpellFactory = spellFactory;
-        SimpleCache = simpleCache;
+        Dialog subject)
+        : base(subject) =>
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
-    }
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
 
         var hasStage = source.Enums.TryGetValue(out HolyResearchStage stage);
-
-        Skill? assail;
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -56,7 +38,7 @@ public class HolyResearchQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-                }
+            }
                 
 
                 break;
@@ -64,10 +46,17 @@ public class HolyResearchQuestScript : DialogScriptBase
             case "holyresearch_initial":
                 if (!hasStage || (stage == HolyResearchStage.None))
                 {
+                    
+                    if (source.TimedEvents.TryGetNearestToCompletion(TimedEvent.TimedEventId.HolyResearchCd, out var timedEvent))
+                    {
+                        Subject.Text = $"I don't need any more right now, please come back later. (({timedEvent.Remaining.ToReadableString()}))";
+                        return;
+                    }
+                    
                     var option = new DialogOption
                     {
                         DialogKey = "HolyResearch_yes",
-                        OptionText = "Yes I will help you."
+                        OptionText = "Yes I will help you, what do you need?"
                     };
 
                     var option1 = new DialogOption
@@ -76,11 +65,27 @@ public class HolyResearchQuestScript : DialogScriptBase
                         OptionText = "I have better things to do."
                     };
 
+                    var option2 = new DialogOption
+                    {
+                        DialogKey = "HolyResearch_where",
+                        OptionText = "Where can I find that?"
+                    };
+
+                    var option3 = new DialogOption
+                    {
+                        DialogKey = "HolyResearch_use",
+                        OptionText = "What do you use these for?"
+                    };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
 
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
+                    if (!Subject.HasOption(option2))
+                        Subject.Options.Insert(2, option2);
+                    if (!Subject.HasOption(option3))
+                        Subject.Options.Insert(3, option3);
                 }
 
 
@@ -140,21 +145,21 @@ public class HolyResearchQuestScript : DialogScriptBase
                     {
                         case HolyResearchStage.StartedRawHoney:
                         {
-                            Subject.Text = $"Thank you so much Aisling, bring me Raw Honey to me.";
+                            Subject.Text = "Thank you so much Aisling, bring me one raw honey.";
                         }
 
                             break;
 
                         case HolyResearchStage.StartedRawWax:
                         {
-                            Subject.Text = $"Thank you so much Aisling, bring me Raw Wax to me.";
+                            Subject.Text = "Thank you so much Aisling, bring me one raw wax.";
                         }
 
                             break;
 
                         case HolyResearchStage.StartedRoyalWax:
                         {
-                            Subject.Text = $"Thank you so much Aisling, bring me Royal Wax to me.";
+                            Subject.Text = "Thank you so much Aisling, bring me one royal wax.";
                         }
 
                             break;
@@ -176,9 +181,11 @@ public class HolyResearchQuestScript : DialogScriptBase
                     }
 
                     source.Inventory.RemoveQuantity("raw honey", 1);
-                    ExperienceDistributionScript.GiveExp(source, 8000);
+                    ExperienceDistributionScript.GiveExp(source, 2000);
                     source.Enums.Set(HolyResearchStage.None);
                     Subject.Close(source);
+                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.HolyResearchCd, TimeSpan.FromHours(1), true);
+                    
                 }
 
                 break;
@@ -195,9 +202,10 @@ public class HolyResearchQuestScript : DialogScriptBase
                     }
 
                     source.Inventory.RemoveQuantity("raw wax", 1);
-                    ExperienceDistributionScript.GiveExp(source, 8000);
+                    ExperienceDistributionScript.GiveExp(source, 2000);
                     source.Enums.Set(HolyResearchStage.None);
                     Subject.Close(source);
+                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.HolyResearchCd, TimeSpan.FromHours(1), true);
                 }
 
                 break;
@@ -214,9 +222,10 @@ public class HolyResearchQuestScript : DialogScriptBase
                     }
 
                     source.Inventory.RemoveQuantity("royal wax", 1);
-                    ExperienceDistributionScript.GiveExp(source, 8000);
+                    ExperienceDistributionScript.GiveExp(source, 2000);
                     source.Enums.Set(HolyResearchStage.None);
                     Subject.Close(source);
+                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.HolyResearchCd, TimeSpan.FromHours(1), true);
                 }
 
                 break;

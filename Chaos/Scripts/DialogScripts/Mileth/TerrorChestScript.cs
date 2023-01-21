@@ -101,8 +101,7 @@ namespace Chaos.Scripts.DialogScripts.Mileth
                 source.TimedEvents.AddEvent(Data.TimedEvent.TimedEventId.TerrorOfTheCrypt, TimeSpan.FromDays(1));
 
                 //Warp Player back to Tavern
-                MapInstance mapInstance;
-                mapInstance = SimpleCache.Get<MapInstance>("mileth_tavern");
+                var mapInstance = SimpleCache.Get<MapInstance>("mileth_tavern");
                 source.TraverseMap(mapInstance, new Point(9, 10));
                 //Close Dialog
                 Subject.Close(source);
