@@ -51,3 +51,12 @@ public enum TutorialQuestStage
     GiantFloppy = 7,
     CompletedTutorial = 8
 }
+
+public enum HolyResearchStage
+{
+    None = 0,
+    StartedRawHoney = 1,
+    StartedRawWax = 2,
+    StartedRoyalWax = 3
+    
+}
