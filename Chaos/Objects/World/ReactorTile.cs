@@ -5,6 +5,7 @@ using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripts.ReactorTileScripts.Abstractions;
 using Chaos.Templates;
+using Chaos.Time.Abstractions;
 
 namespace Chaos.Objects.World;
 
