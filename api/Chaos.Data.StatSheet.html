@@ -1,0 +1,792 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+    
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class StatSheet
+     | Chaos Server Docs </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class StatSheet
+     | Chaos Server Docs ">
+      <meta name="generator" content="docfx 2.59.4.0">
+      
+      <link rel="shortcut icon" href="../images/chaos.ico">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/night-owl.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" integrity="sha384-EvBWSlnoFgZlXJvpzS+MAUEjvN7+gcCwH+qh7GRFOGgZO0PuwOFro7qPOJnLfe7l" crossorigin="anonymous">
+      <link rel="stylesheet" href="../styles/config.css">
+      <link rel="stylesheet" href="../styles/discord.css">
+      <link rel="stylesheet" href="../styles/singulink.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+      
+      <meta property="docfx:rel" content="../">
+      <meta property="docfx:newtab" content="true">
+    </head>
+    <body>
+        <div class="top-navbar">
+            <a class="burger-icon" onclick="toggleMenu()">
+                <svg name="Hamburger" style="vertical-align: middle;" width="34" height="34" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M20 6H4V9H20V6ZM4 10.999H20V13.999H4V10.999ZM4 15.999H20V18.999H4V15.999Z"></path></svg>
+            </a>
+
+            
+            <a class="brand" href="../index.html">
+              <img src="../images/chaosico.png" alt="Chaos Server Docs" class="logomark">
+              <span class="brand-title">Chaos Server Docs</span>
+            </a>        </div>
+
+        <div class="body-content">
+            <div id="blackout" class="blackout" onclick="toggleMenu()"></div>
+
+            <nav id="sidebar" role="navigation">
+                <div class="sidebar">
+                    
+                    <div>
+                      <div class="mobile-hide">
+                        
+                        <a class="brand" href="../index.html">
+                          <img src="../images/chaosico.png" alt="Chaos Server Docs" class="logomark">
+                          <span class="brand-title">Chaos Server Docs</span>
+                        </a>  </div>
+                    
+                      <div class="sidesearch">
+                        <form id="search" role="search" class="search">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" id="search-query" placeholder="Search" autocomplete="off">
+                        </form>
+                      </div>
+                    
+                      <div id="navbar">
+                      </div>
+                    </div>                    <div class="sidebar-item-separator"></div>
+                        
+                        <div id="sidetoggle">
+                          <div id="sidetoc"></div>
+                        </div>
+                </div>
+                <div class="footer">
+                  
+                  <strong><a href='https://dotnet.github.io/docfx/'>DocFX</a> + <a href='https://www.singulink.com'>Singulink</a> = ♥</strong>
+                </div>            </nav>
+
+            <main class="main-panel">
+                
+                <div id="search-results" style="display: none;">
+                  <h1 class="search-list">Search Results for <span></span></h1>
+                  <div class="sr-items">
+                    <p><i class="bi bi-hourglass-split index-loading"></i></p>
+                  </div>
+                  <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+                </div>
+                <div role="main" class="hide-when-search">
+                        
+                        <div class="subnav navbar navbar-default">
+                          <div class="container hide-when-search" id="breadcrumb">
+                            <ul class="breadcrumb">
+                              <li></li>
+                            </ul>
+                          </div>
+                        </div>
+
+                    <article class="content wrap" id="_content" data-uid="Chaos.Data.StatSheet">
+  
+  
+  <h1 id="Chaos_Data_StatSheet" data-uid="Chaos.Data.StatSheet" class="text-break">Class StatSheet
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Chaos.Data.Stats.html">Stats</a></div>
+    <div class="level2"><a class="xref" href="Chaos.Data.Attributes.html">Attributes</a></div>
+    <div class="level3"><span class="xref">StatSheet</span></div>
+      <div class="level4"><a class="xref" href="Chaos.Data.UserStatSheet.html">UserStatSheet</a></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Chaos.Data.Stats.html">Stats</a>&gt;</div>
+    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Chaos.Data.Attributes.html">Attributes</a>&gt;</div>
+    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Chaos.Data.StatSheet.html">StatSheet</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes._ac.html">Attributes._ac</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes._atkSpeedPct.html">Attributes._atkSpeedPct</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes._dmg.html">Attributes._dmg</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes._flatSkillDamage.html">Attributes._flatSkillDamage</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes._flatSpellDamage.html">Attributes._flatSpellDamage</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes._hit.html">Attributes._hit</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes._magicResistance.html">Attributes._magicResistance</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes._maximumHp.html">Attributes._maximumHp</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes._maximumMp.html">Attributes._maximumMp</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes._skillDamagePct.html">Attributes._skillDamagePct</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes._spellDamagePct.html">Attributes._spellDamagePct</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes.Ac.html#Chaos_Data_Attributes_Ac">Attributes.Ac</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes.AtkSpeedPct.html#Chaos_Data_Attributes_AtkSpeedPct">Attributes.AtkSpeedPct</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes.Dmg.html#Chaos_Data_Attributes_Dmg">Attributes.Dmg</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes.FlatSkillDamage.html#Chaos_Data_Attributes_FlatSkillDamage">Attributes.FlatSkillDamage</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes.FlatSpellDamage.html#Chaos_Data_Attributes_FlatSpellDamage">Attributes.FlatSpellDamage</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes.Hit.html#Chaos_Data_Attributes_Hit">Attributes.Hit</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes.MagicResistance.html#Chaos_Data_Attributes_MagicResistance">Attributes.MagicResistance</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes.MaximumHp.html#Chaos_Data_Attributes_MaximumHp">Attributes.MaximumHp</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes.MaximumMp.html#Chaos_Data_Attributes_MaximumMp">Attributes.MaximumMp</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes.SkillDamagePct.html#Chaos_Data_Attributes_SkillDamagePct">Attributes.SkillDamagePct</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes.SpellDamagePct.html#Chaos_Data_Attributes_SpellDamagePct">Attributes.SpellDamagePct</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes.Add.html#Chaos_Data_Attributes_Add_Chaos_Data_Attributes_">Attributes.Add(Attributes)</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Attributes.Subtract.html#Chaos_Data_Attributes_Subtract_Chaos_Data_Attributes_">Attributes.Subtract(Attributes)</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Stats._con.html">Stats._con</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Stats._dex.html">Stats._dex</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Stats._int.html">Stats._int</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Stats._str.html">Stats._str</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Stats._wis.html">Stats._wis</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Stats.Con.html#Chaos_Data_Stats_Con">Stats.Con</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Stats.Dex.html#Chaos_Data_Stats_Dex">Stats.Dex</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Stats.Int.html#Chaos_Data_Stats_Int">Stats.Int</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Stats.Str.html#Chaos_Data_Stats_Str">Stats.Str</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Data.Stats.Wis.html#Chaos_Data_Stats_Wis">Stats.Wis</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Chaos.Data.html">Chaos.Data</a></h6>
+  <h6><strong>Assembly</strong>: Chaos.dll</h6>
+  <h5 id="Chaos_Data_StatSheet_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class StatSheet : Attributes, IEquatable&lt;Stats&gt;, IEquatable&lt;Attributes&gt;, IEquatable&lt;StatSheet&gt;</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="Chaos_Data_StatSheet__ability" data-uid="Chaos.Data.StatSheet._ability">
+          <a class="xref" href="Chaos.Data.StatSheet._ability.html">_ability</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__acMod" data-uid="Chaos.Data.StatSheet._acMod">
+          <a class="xref" href="Chaos.Data.StatSheet._acMod.html">_acMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__atkSpeedPctMod" data-uid="Chaos.Data.StatSheet._atkSpeedPctMod">
+          <a class="xref" href="Chaos.Data.StatSheet._atkSpeedPctMod.html">_atkSpeedPctMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__conMod" data-uid="Chaos.Data.StatSheet._conMod">
+          <a class="xref" href="Chaos.Data.StatSheet._conMod.html">_conMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__currentHp" data-uid="Chaos.Data.StatSheet._currentHp">
+          <a class="xref" href="Chaos.Data.StatSheet._currentHp.html">_currentHp</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__currentMp" data-uid="Chaos.Data.StatSheet._currentMp">
+          <a class="xref" href="Chaos.Data.StatSheet._currentMp.html">_currentMp</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__defenseElement" data-uid="Chaos.Data.StatSheet._defenseElement">
+          <a class="xref" href="Chaos.Data.StatSheet._defenseElement.html">_defenseElement</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__dexMod" data-uid="Chaos.Data.StatSheet._dexMod">
+          <a class="xref" href="Chaos.Data.StatSheet._dexMod.html">_dexMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__dmgMod" data-uid="Chaos.Data.StatSheet._dmgMod">
+          <a class="xref" href="Chaos.Data.StatSheet._dmgMod.html">_dmgMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__flatSkillDamageMod" data-uid="Chaos.Data.StatSheet._flatSkillDamageMod">
+          <a class="xref" href="Chaos.Data.StatSheet._flatSkillDamageMod.html">_flatSkillDamageMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__flatSpellDamageMod" data-uid="Chaos.Data.StatSheet._flatSpellDamageMod">
+          <a class="xref" href="Chaos.Data.StatSheet._flatSpellDamageMod.html">_flatSpellDamageMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__hitMod" data-uid="Chaos.Data.StatSheet._hitMod">
+          <a class="xref" href="Chaos.Data.StatSheet._hitMod.html">_hitMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__intMod" data-uid="Chaos.Data.StatSheet._intMod">
+          <a class="xref" href="Chaos.Data.StatSheet._intMod.html">_intMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__level" data-uid="Chaos.Data.StatSheet._level">
+          <a class="xref" href="Chaos.Data.StatSheet._level.html">_level</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__magicResistanceMod" data-uid="Chaos.Data.StatSheet._magicResistanceMod">
+          <a class="xref" href="Chaos.Data.StatSheet._magicResistanceMod.html">_magicResistanceMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__maximumHpMod" data-uid="Chaos.Data.StatSheet._maximumHpMod">
+          <a class="xref" href="Chaos.Data.StatSheet._maximumHpMod.html">_maximumHpMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__maximumMpMod" data-uid="Chaos.Data.StatSheet._maximumMpMod">
+          <a class="xref" href="Chaos.Data.StatSheet._maximumMpMod.html">_maximumMpMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__offenseElement" data-uid="Chaos.Data.StatSheet._offenseElement">
+          <a class="xref" href="Chaos.Data.StatSheet._offenseElement.html">_offenseElement</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__skillDamagePctMod" data-uid="Chaos.Data.StatSheet._skillDamagePctMod">
+          <a class="xref" href="Chaos.Data.StatSheet._skillDamagePctMod.html">_skillDamagePctMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__spellDamagePctMod" data-uid="Chaos.Data.StatSheet._spellDamagePctMod">
+          <a class="xref" href="Chaos.Data.StatSheet._spellDamagePctMod.html">_spellDamagePctMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__strMod" data-uid="Chaos.Data.StatSheet._strMod">
+          <a class="xref" href="Chaos.Data.StatSheet._strMod.html">_strMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet__wisMod" data-uid="Chaos.Data.StatSheet._wisMod">
+          <a class="xref" href="Chaos.Data.StatSheet._wisMod.html">_wisMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="Chaos_Data_StatSheet_Ability" data-uid="Chaos.Data.StatSheet.Ability">
+          <a class="xref" href="Chaos.Data.StatSheet.Ability.html#Chaos_Data_StatSheet_Ability">Ability</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_AcMod" data-uid="Chaos.Data.StatSheet.AcMod">
+          <a class="xref" href="Chaos.Data.StatSheet.AcMod.html#Chaos_Data_StatSheet_AcMod">AcMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_AtkSpeedPctMod" data-uid="Chaos.Data.StatSheet.AtkSpeedPctMod">
+          <a class="xref" href="Chaos.Data.StatSheet.AtkSpeedPctMod.html#Chaos_Data_StatSheet_AtkSpeedPctMod">AtkSpeedPctMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_ConMod" data-uid="Chaos.Data.StatSheet.ConMod">
+          <a class="xref" href="Chaos.Data.StatSheet.ConMod.html#Chaos_Data_StatSheet_ConMod">ConMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_CurrentHp" data-uid="Chaos.Data.StatSheet.CurrentHp">
+          <a class="xref" href="Chaos.Data.StatSheet.CurrentHp.html#Chaos_Data_StatSheet_CurrentHp">CurrentHp</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_CurrentMp" data-uid="Chaos.Data.StatSheet.CurrentMp">
+          <a class="xref" href="Chaos.Data.StatSheet.CurrentMp.html#Chaos_Data_StatSheet_CurrentMp">CurrentMp</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_DefenseElement" data-uid="Chaos.Data.StatSheet.DefenseElement">
+          <a class="xref" href="Chaos.Data.StatSheet.DefenseElement.html#Chaos_Data_StatSheet_DefenseElement">DefenseElement</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_DexMod" data-uid="Chaos.Data.StatSheet.DexMod">
+          <a class="xref" href="Chaos.Data.StatSheet.DexMod.html#Chaos_Data_StatSheet_DexMod">DexMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_DmgMod" data-uid="Chaos.Data.StatSheet.DmgMod">
+          <a class="xref" href="Chaos.Data.StatSheet.DmgMod.html#Chaos_Data_StatSheet_DmgMod">DmgMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveAc" data-uid="Chaos.Data.StatSheet.EffectiveAc">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveAc.html#Chaos_Data_StatSheet_EffectiveAc">EffectiveAc</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveAttackSpeedPct" data-uid="Chaos.Data.StatSheet.EffectiveAttackSpeedPct">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveAttackSpeedPct.html#Chaos_Data_StatSheet_EffectiveAttackSpeedPct">EffectiveAttackSpeedPct</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveCon" data-uid="Chaos.Data.StatSheet.EffectiveCon">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveCon.html#Chaos_Data_StatSheet_EffectiveCon">EffectiveCon</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveDex" data-uid="Chaos.Data.StatSheet.EffectiveDex">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveDex.html#Chaos_Data_StatSheet_EffectiveDex">EffectiveDex</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveDmg" data-uid="Chaos.Data.StatSheet.EffectiveDmg">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveDmg.html#Chaos_Data_StatSheet_EffectiveDmg">EffectiveDmg</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveFlatSkillDamage" data-uid="Chaos.Data.StatSheet.EffectiveFlatSkillDamage">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveFlatSkillDamage.html#Chaos_Data_StatSheet_EffectiveFlatSkillDamage">EffectiveFlatSkillDamage</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveFlatSpellDamage" data-uid="Chaos.Data.StatSheet.EffectiveFlatSpellDamage">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveFlatSpellDamage.html#Chaos_Data_StatSheet_EffectiveFlatSpellDamage">EffectiveFlatSpellDamage</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveHit" data-uid="Chaos.Data.StatSheet.EffectiveHit">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveHit.html#Chaos_Data_StatSheet_EffectiveHit">EffectiveHit</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveInt" data-uid="Chaos.Data.StatSheet.EffectiveInt">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveInt.html#Chaos_Data_StatSheet_EffectiveInt">EffectiveInt</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveMagicResistance" data-uid="Chaos.Data.StatSheet.EffectiveMagicResistance">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveMagicResistance.html#Chaos_Data_StatSheet_EffectiveMagicResistance">EffectiveMagicResistance</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveMaximumHp" data-uid="Chaos.Data.StatSheet.EffectiveMaximumHp">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveMaximumHp.html#Chaos_Data_StatSheet_EffectiveMaximumHp">EffectiveMaximumHp</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveMaximumMp" data-uid="Chaos.Data.StatSheet.EffectiveMaximumMp">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveMaximumMp.html#Chaos_Data_StatSheet_EffectiveMaximumMp">EffectiveMaximumMp</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveSkillDamagePct" data-uid="Chaos.Data.StatSheet.EffectiveSkillDamagePct">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveSkillDamagePct.html#Chaos_Data_StatSheet_EffectiveSkillDamagePct">EffectiveSkillDamagePct</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveSpellDamagePct" data-uid="Chaos.Data.StatSheet.EffectiveSpellDamagePct">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveSpellDamagePct.html#Chaos_Data_StatSheet_EffectiveSpellDamagePct">EffectiveSpellDamagePct</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveStr" data-uid="Chaos.Data.StatSheet.EffectiveStr">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveStr.html#Chaos_Data_StatSheet_EffectiveStr">EffectiveStr</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_EffectiveWis" data-uid="Chaos.Data.StatSheet.EffectiveWis">
+          <a class="xref" href="Chaos.Data.StatSheet.EffectiveWis.html#Chaos_Data_StatSheet_EffectiveWis">EffectiveWis</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_FlatSkillDamageMod" data-uid="Chaos.Data.StatSheet.FlatSkillDamageMod">
+          <a class="xref" href="Chaos.Data.StatSheet.FlatSkillDamageMod.html#Chaos_Data_StatSheet_FlatSkillDamageMod">FlatSkillDamageMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_FlatSpellDamageMod" data-uid="Chaos.Data.StatSheet.FlatSpellDamageMod">
+          <a class="xref" href="Chaos.Data.StatSheet.FlatSpellDamageMod.html#Chaos_Data_StatSheet_FlatSpellDamageMod">FlatSpellDamageMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_HealthPercent" data-uid="Chaos.Data.StatSheet.HealthPercent">
+          <a class="xref" href="Chaos.Data.StatSheet.HealthPercent.html#Chaos_Data_StatSheet_HealthPercent">HealthPercent</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_HitMod" data-uid="Chaos.Data.StatSheet.HitMod">
+          <a class="xref" href="Chaos.Data.StatSheet.HitMod.html#Chaos_Data_StatSheet_HitMod">HitMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_IntMod" data-uid="Chaos.Data.StatSheet.IntMod">
+          <a class="xref" href="Chaos.Data.StatSheet.IntMod.html#Chaos_Data_StatSheet_IntMod">IntMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_Level" data-uid="Chaos.Data.StatSheet.Level">
+          <a class="xref" href="Chaos.Data.StatSheet.Level.html#Chaos_Data_StatSheet_Level">Level</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_MagicResistanceMod" data-uid="Chaos.Data.StatSheet.MagicResistanceMod">
+          <a class="xref" href="Chaos.Data.StatSheet.MagicResistanceMod.html#Chaos_Data_StatSheet_MagicResistanceMod">MagicResistanceMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_ManaPercent" data-uid="Chaos.Data.StatSheet.ManaPercent">
+          <a class="xref" href="Chaos.Data.StatSheet.ManaPercent.html#Chaos_Data_StatSheet_ManaPercent">ManaPercent</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_Maxed" data-uid="Chaos.Data.StatSheet.Maxed">
+          <a class="xref" href="Chaos.Data.StatSheet.Maxed.html#Chaos_Data_StatSheet_Maxed">Maxed</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_MaximumHpMod" data-uid="Chaos.Data.StatSheet.MaximumHpMod">
+          <a class="xref" href="Chaos.Data.StatSheet.MaximumHpMod.html#Chaos_Data_StatSheet_MaximumHpMod">MaximumHpMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_MaximumMpMod" data-uid="Chaos.Data.StatSheet.MaximumMpMod">
+          <a class="xref" href="Chaos.Data.StatSheet.MaximumMpMod.html#Chaos_Data_StatSheet_MaximumMpMod">MaximumMpMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_OffenseElement" data-uid="Chaos.Data.StatSheet.OffenseElement">
+          <a class="xref" href="Chaos.Data.StatSheet.OffenseElement.html#Chaos_Data_StatSheet_OffenseElement">OffenseElement</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_SkillDamagePctMod" data-uid="Chaos.Data.StatSheet.SkillDamagePctMod">
+          <a class="xref" href="Chaos.Data.StatSheet.SkillDamagePctMod.html#Chaos_Data_StatSheet_SkillDamagePctMod">SkillDamagePctMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_SpellDamagePctMod" data-uid="Chaos.Data.StatSheet.SpellDamagePctMod">
+          <a class="xref" href="Chaos.Data.StatSheet.SpellDamagePctMod.html#Chaos_Data_StatSheet_SpellDamagePctMod">SpellDamagePctMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_StrMod" data-uid="Chaos.Data.StatSheet.StrMod">
+          <a class="xref" href="Chaos.Data.StatSheet.StrMod.html#Chaos_Data_StatSheet_StrMod">StrMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_WisMod" data-uid="Chaos.Data.StatSheet.WisMod">
+          <a class="xref" href="Chaos.Data.StatSheet.WisMod.html#Chaos_Data_StatSheet_WisMod">WisMod</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="Chaos_Data_StatSheet_AddBonus_Chaos_Data_Attributes_" data-uid="Chaos.Data.StatSheet.AddBonus(Chaos.Data.Attributes)">
+          <a class="xref" href="Chaos.Data.StatSheet.AddBonus.html#Chaos_Data_StatSheet_AddBonus_Chaos_Data_Attributes_">AddBonus(Attributes)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_AddHealthPct_System_Int32_" data-uid="Chaos.Data.StatSheet.AddHealthPct(System.Int32)">
+          <a class="xref" href="Chaos.Data.StatSheet.AddHealthPct.html#Chaos_Data_StatSheet_AddHealthPct_System_Int32_">AddHealthPct(Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_AddHp_System_Int32_" data-uid="Chaos.Data.StatSheet.AddHp(System.Int32)">
+          <a class="xref" href="Chaos.Data.StatSheet.AddHp.html#Chaos_Data_StatSheet_AddHp_System_Int32_">AddHp(Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_AddManaPct_System_Int32_" data-uid="Chaos.Data.StatSheet.AddManaPct(System.Int32)">
+          <a class="xref" href="Chaos.Data.StatSheet.AddManaPct.html#Chaos_Data_StatSheet_AddManaPct_System_Int32_">AddManaPct(Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_AddMp_System_Int32_" data-uid="Chaos.Data.StatSheet.AddMp(System.Int32)">
+          <a class="xref" href="Chaos.Data.StatSheet.AddMp.html#Chaos_Data_StatSheet_AddMp_System_Int32_">AddMp(Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_CalculateEffectiveAssailInterval_System_Int32_" data-uid="Chaos.Data.StatSheet.CalculateEffectiveAssailInterval(System.Int32)">
+          <a class="xref" href="Chaos.Data.StatSheet.CalculateEffectiveAssailInterval.html#Chaos_Data_StatSheet_CalculateEffectiveAssailInterval_System_Int32_">CalculateEffectiveAssailInterval(Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_GetBaseStat_Stat_" data-uid="Chaos.Data.StatSheet.GetBaseStat(Stat)">
+          <a class="xref" href="Chaos.Data.StatSheet.GetBaseStat.html#Chaos_Data_StatSheet_GetBaseStat_Stat_">GetBaseStat(Stat)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_GetEffectiveStat_Stat_" data-uid="Chaos.Data.StatSheet.GetEffectiveStat(Stat)">
+          <a class="xref" href="Chaos.Data.StatSheet.GetEffectiveStat.html#Chaos_Data_StatSheet_GetEffectiveStat_Stat_">GetEffectiveStat(Stat)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_SetDefenseElement_Element_" data-uid="Chaos.Data.StatSheet.SetDefenseElement(Element)">
+          <a class="xref" href="Chaos.Data.StatSheet.SetDefenseElement.html#Chaos_Data_StatSheet_SetDefenseElement_Element_">SetDefenseElement(Element)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_SetHealthPct_System_Int32_" data-uid="Chaos.Data.StatSheet.SetHealthPct(System.Int32)">
+          <a class="xref" href="Chaos.Data.StatSheet.SetHealthPct.html#Chaos_Data_StatSheet_SetHealthPct_System_Int32_">SetHealthPct(Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_SetHp_System_Int32_" data-uid="Chaos.Data.StatSheet.SetHp(System.Int32)">
+          <a class="xref" href="Chaos.Data.StatSheet.SetHp.html#Chaos_Data_StatSheet_SetHp_System_Int32_">SetHp(Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_SetManaPct_System_Int32_" data-uid="Chaos.Data.StatSheet.SetManaPct(System.Int32)">
+          <a class="xref" href="Chaos.Data.StatSheet.SetManaPct.html#Chaos_Data_StatSheet_SetManaPct_System_Int32_">SetManaPct(Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_SetMp_System_Int32_" data-uid="Chaos.Data.StatSheet.SetMp(System.Int32)">
+          <a class="xref" href="Chaos.Data.StatSheet.SetMp.html#Chaos_Data_StatSheet_SetMp_System_Int32_">SetMp(Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_SetOffenseElement_Element_" data-uid="Chaos.Data.StatSheet.SetOffenseElement(Element)">
+          <a class="xref" href="Chaos.Data.StatSheet.SetOffenseElement.html#Chaos_Data_StatSheet_SetOffenseElement_Element_">SetOffenseElement(Element)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_SubtractBonus_Chaos_Data_Attributes_" data-uid="Chaos.Data.StatSheet.SubtractBonus(Chaos.Data.Attributes)">
+          <a class="xref" href="Chaos.Data.StatSheet.SubtractBonus.html#Chaos_Data_StatSheet_SubtractBonus_Chaos_Data_Attributes_">SubtractBonus(Attributes)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_SubtractHealthPct_System_Int32_" data-uid="Chaos.Data.StatSheet.SubtractHealthPct(System.Int32)">
+          <a class="xref" href="Chaos.Data.StatSheet.SubtractHealthPct.html#Chaos_Data_StatSheet_SubtractHealthPct_System_Int32_">SubtractHealthPct(Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_SubtractHp_System_Int32_" data-uid="Chaos.Data.StatSheet.SubtractHp(System.Int32)">
+          <a class="xref" href="Chaos.Data.StatSheet.SubtractHp.html#Chaos_Data_StatSheet_SubtractHp_System_Int32_">SubtractHp(Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_SubtractManaPct_System_Int32_" data-uid="Chaos.Data.StatSheet.SubtractManaPct(System.Int32)">
+          <a class="xref" href="Chaos.Data.StatSheet.SubtractManaPct.html#Chaos_Data_StatSheet_SubtractManaPct_System_Int32_">SubtractManaPct(Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Data_StatSheet_SubtractMp_System_Int32_" data-uid="Chaos.Data.StatSheet.SubtractMp(System.Int32)">
+          <a class="xref" href="Chaos.Data.StatSheet.SubtractMp.html#Chaos_Data_StatSheet_SubtractMp_System_Int32_">SubtractMp(Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+                </div>
+
+            </main>
+        </div>
+
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+        <script type="text/javascript" src="../styles/jquery.twbsPagination.js"></script>
+        <script type="text/javascript" src="../styles/url.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/anchor-js/anchor.min.js"></script>
+        <script type="text/javascript" src="../styles/docfx.js"></script>
+        <script type="text/javascript" src="../styles/singulink.js"></script>
+        <script type="text/javascript" src="../styles/main.js"></script>    </body>
+</html>

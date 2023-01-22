@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+    
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Lobby Options | Chaos Server Docs </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Lobby Options | Chaos Server Docs ">
+      <meta name="generator" content="docfx 2.59.4.0">
+      
+      <link rel="shortcut icon" href="../images/chaos.ico">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/night-owl.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" integrity="sha384-EvBWSlnoFgZlXJvpzS+MAUEjvN7+gcCwH+qh7GRFOGgZO0PuwOFro7qPOJnLfe7l" crossorigin="anonymous">
+      <link rel="stylesheet" href="../styles/config.css">
+      <link rel="stylesheet" href="../styles/discord.css">
+      <link rel="stylesheet" href="../styles/singulink.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+      
+      <meta property="docfx:rel" content="../">
+      <meta property="docfx:newtab" content="true">
+    </head>
+    <body>
+        <div class="top-navbar">
+            <a class="burger-icon" onclick="toggleMenu()">
+                <svg name="Hamburger" style="vertical-align: middle;" width="34" height="34" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M20 6H4V9H20V6ZM4 10.999H20V13.999H4V10.999ZM4 15.999H20V18.999H4V15.999Z"></path></svg>
+            </a>
+
+            
+            <a class="brand" href="../index.html">
+              <img src="../images/chaosico.png" alt="Chaos Server Docs" class="logomark">
+              <span class="brand-title">Chaos Server Docs</span>
+            </a>        </div>
+
+        <div class="body-content">
+            <div id="blackout" class="blackout" onclick="toggleMenu()"></div>
+
+            <nav id="sidebar" role="navigation">
+                <div class="sidebar">
+                    
+                    <div>
+                      <div class="mobile-hide">
+                        
+                        <a class="brand" href="../index.html">
+                          <img src="../images/chaosico.png" alt="Chaos Server Docs" class="logomark">
+                          <span class="brand-title">Chaos Server Docs</span>
+                        </a>  </div>
+                    
+                      <div class="sidesearch">
+                        <form id="search" role="search" class="search">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" id="search-query" placeholder="Search" autocomplete="off">
+                        </form>
+                      </div>
+                    
+                      <div id="navbar">
+                      </div>
+                    </div>                    <div class="sidebar-item-separator"></div>
+                        
+                        <div id="sidetoggle">
+                          <div id="sidetoc"></div>
+                        </div>
+                </div>
+                <div class="footer">
+                  
+                  <strong><a href='https://dotnet.github.io/docfx/'>DocFX</a> + <a href='https://www.singulink.com'>Singulink</a> = ♥</strong>
+                </div>            </nav>
+
+            <main class="main-panel">
+                
+                <div id="search-results" style="display: none;">
+                  <h1 class="search-list">Search Results for <span></span></h1>
+                  <div class="sr-items">
+                    <p><i class="bi bi-hourglass-split index-loading"></i></p>
+                  </div>
+                  <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+                </div>
+                <div role="main" class="hide-when-search">
+                        
+                        <div class="subnav navbar navbar-default">
+                          <div class="container hide-when-search" id="breadcrumb">
+                            <ul class="breadcrumb">
+                              <li></li>
+                            </ul>
+                          </div>
+                        </div>
+
+                    <article class="content wrap" id="_content" data-uid="">
+<h1 id="lobby-options">Lobby Options</h1>
+
+<p>Lobby options are changed in <code>appsettings.json</code> via section &quot;Options:LobbyOptions&quot;.<br>
+This section is serialized into <a class="xref" href="../api/Chaos.Services.Servers.Options.LobbyOptions.html">LobbyOptions</a></p>
+<h2 id="lobby-server-settings">Lobby-Server Settings</h2>
+<hr>
+<h3 id="port">Port</h3>
+<p>The port the server will listen on. Default is 4200, if this value is changed, the client will need to be edited to connect to a different
+port.</p>
+<h3 id="servers">Servers</h3>
+<p>When a client connects to a server, the first thing is displays to the player is a list of available login servers to connect to.<br>
+When the original game first launched, there were 3 servers, and you would select the server you wanted to connect to at the lobby. For each
+of these servers, the name and a short description would display, and each would connect you to a unique world with it's own login
+server.</p>
+<p>Each server is serialized into <a class="xref" href="../api/Chaos.Networking.Options.ServerInfo.html">ServerInfo</a></p>
+<h3 id="serverinfo">ServerInfo</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Type</th>
+<th style="text-align: center;">Name</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">int</td>
+<td style="text-align: center;">Id</td>
+<td style="text-align: left;">The id that will be used to redirect the client from the lobby server to the specified login server <br> If the selected login server is also being hosted through this process, the object that manages redirects will recognize the id as being from an internal redirect source. <br> If not, the redirect will be considered external, and will need this id placed in the <a href="xref:Chaos.Servers.Options.LoginOptions">LoginOptions</a> as a reserved redirect</td>
+</tr>
+<tr>
+<td style="text-align: center;">string</td>
+<td style="text-align: center;">Name</td>
+<td style="text-align: left;">The name of the server as it will be displayed to players.<br> Must be 9 or less characters long.</td>
+</tr>
+<tr>
+<td style="text-align: center;">string</td>
+<td style="text-align: center;">Hostname</td>
+<td style="text-align: left;">The dns entry to look up to find the ip address of the login server</td>
+</tr>
+<tr>
+<td style="text-align: center;">int</td>
+<td style="text-align: center;">Port</td>
+<td style="text-align: left;">The port the login server is hosted on</td>
+</tr>
+<tr>
+<td style="text-align: center;">string</td>
+<td style="text-align: center;">Description</td>
+<td style="text-align: left;">A short description of the login server.<br>Must be 18 or less characters long.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="examples">Examples</h3>
+<p>The recommended way to use this configuration would be to set the port in your &quot;appsettings.json&quot;, but leave the servers blank so they can
+be overridden depending on environment like so</p>
+<h4 id="appsettingsjson-lobby-options">appsettings.json lobby options</h4>
+<pre><code class="lang-json">&quot;LobbyOptions&quot;: {
+&quot;Port&quot;: 4200,
+&quot;Servers&quot;: []
+}
+</code></pre>
+<h4 id="appsettingslocaljson-lobby-options">appsettings.local.json lobby options</h4>
+<pre><code class="lang-json">&quot;LobbyOptions&quot;: {
+  &quot;Servers&quot;: [
+    {
+      &quot;Id&quot;: 0,
+      &quot;Name&quot;: &quot;LocalTest&quot;,
+      &quot;HostName&quot;: &quot;localhost&quot;,
+      &quot;Port&quot;: 4201,
+      &quot;Description&quot;: &quot;Test server&quot;
+    }
+  ]
+}
+</code></pre>
+<h4 id="appsettingsprodjson-lobby-options">appsettings.prod.json lobby options</h4>
+<pre><code class="lang-json">&quot;LobbyOptions&quot;: {
+  &quot;Servers&quot;: [
+    {
+      &quot;Id&quot;: 0,
+      &quot;Name&quot;: &quot;Chaos&quot;,
+      &quot;HostName&quot;: &quot;chaos-server.net&quot;,
+      &quot;Port&quot;: 4201,
+      &quot;Description&quot;: &quot;Private DA server&quot;
+    }
+  ]
+}
+</code></pre>
+</article>
+                </div>
+
+            </main>
+        </div>
+
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+        <script type="text/javascript" src="../styles/jquery.twbsPagination.js"></script>
+        <script type="text/javascript" src="../styles/url.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/anchor-js/anchor.min.js"></script>
+        <script type="text/javascript" src="../styles/docfx.js"></script>
+        <script type="text/javascript" src="../styles/singulink.js"></script>
+        <script type="text/javascript" src="../styles/main.js"></script>    </body>
+</html>

@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+    
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class ConfigurableMonsterScriptBase
+     | Chaos Server Docs </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class ConfigurableMonsterScriptBase
+     | Chaos Server Docs ">
+      <meta name="generator" content="docfx 2.59.4.0">
+      
+      <link rel="shortcut icon" href="../images/chaos.ico">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/night-owl.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" integrity="sha384-EvBWSlnoFgZlXJvpzS+MAUEjvN7+gcCwH+qh7GRFOGgZO0PuwOFro7qPOJnLfe7l" crossorigin="anonymous">
+      <link rel="stylesheet" href="../styles/config.css">
+      <link rel="stylesheet" href="../styles/discord.css">
+      <link rel="stylesheet" href="../styles/singulink.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+      
+      <meta property="docfx:rel" content="../">
+      <meta property="docfx:newtab" content="true">
+    </head>
+    <body>
+        <div class="top-navbar">
+            <a class="burger-icon" onclick="toggleMenu()">
+                <svg name="Hamburger" style="vertical-align: middle;" width="34" height="34" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M20 6H4V9H20V6ZM4 10.999H20V13.999H4V10.999ZM4 15.999H20V18.999H4V15.999Z"></path></svg>
+            </a>
+
+            
+            <a class="brand" href="../index.html">
+              <img src="../images/chaosico.png" alt="Chaos Server Docs" class="logomark">
+              <span class="brand-title">Chaos Server Docs</span>
+            </a>        </div>
+
+        <div class="body-content">
+            <div id="blackout" class="blackout" onclick="toggleMenu()"></div>
+
+            <nav id="sidebar" role="navigation">
+                <div class="sidebar">
+                    
+                    <div>
+                      <div class="mobile-hide">
+                        
+                        <a class="brand" href="../index.html">
+                          <img src="../images/chaosico.png" alt="Chaos Server Docs" class="logomark">
+                          <span class="brand-title">Chaos Server Docs</span>
+                        </a>  </div>
+                    
+                      <div class="sidesearch">
+                        <form id="search" role="search" class="search">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" id="search-query" placeholder="Search" autocomplete="off">
+                        </form>
+                      </div>
+                    
+                      <div id="navbar">
+                      </div>
+                    </div>                    <div class="sidebar-item-separator"></div>
+                        
+                        <div id="sidetoggle">
+                          <div id="sidetoc"></div>
+                        </div>
+                </div>
+                <div class="footer">
+                  
+                  <strong><a href='https://dotnet.github.io/docfx/'>DocFX</a> + <a href='https://www.singulink.com'>Singulink</a> = ♥</strong>
+                </div>            </nav>
+
+            <main class="main-panel">
+                
+                <div id="search-results" style="display: none;">
+                  <h1 class="search-list">Search Results for <span></span></h1>
+                  <div class="sr-items">
+                    <p><i class="bi bi-hourglass-split index-loading"></i></p>
+                  </div>
+                  <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+                </div>
+                <div role="main" class="hide-when-search">
+                        
+                        <div class="subnav navbar navbar-default">
+                          <div class="container hide-when-search" id="breadcrumb">
+                            <ul class="breadcrumb">
+                              <li></li>
+                            </ul>
+                          </div>
+                        </div>
+
+                    <article class="content wrap" id="_content" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase">
+  
+  
+  <h1 id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase" class="text-break">Class ConfigurableMonsterScriptBase
+  </h1>
+  <div class="markdown level0 summary"><p>This should likely only be used for quest scripts or things that are very unique. Most monster variables should be
+interactable through the monster's properties so that they can be manipulated by buffs, debuffs, etc</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">ConfigurableMonsterScriptBase</span></div>
+      <div class="level2"><a class="xref" href="Chaos.Scripts.MonsterScripts.RandomDefenseElementScript.html">RandomDefenseElementScript</a></div>
+      <div class="level2"><a class="xref" href="Chaos.Scripts.MonsterScripts.RandomOffenseElementScript.html">RandomOffenseElementScript</a></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.IMonsterScript.html">IMonsterScript</a></div>
+    <div><a class="xref" href="Chaos.Scripts.Abstractions.ICreatureScript.html">ICreatureScript</a></div>
+    <div><span class="xref">IScript</span></div>
+    <div><span class="xref">IDeltaUpdatable</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.html">Chaos.Scripts.MonsterScripts.Abstractions</a></h6>
+  <h6><strong>Assembly</strong>: Chaos.dll</h6>
+  <h5 id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class ConfigurableMonsterScriptBase : ConfigurableScriptBase&lt;Monster&gt;, IMonsterScript, ICreatureScript</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase__ctor_Chaos_Objects_World_Monster_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.#ctor(Chaos.Objects.World.Monster)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.-ctor.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase__ctor_Chaos_Objects_World_Monster_">ConfigurableMonsterScriptBase(Monster)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_CanMove" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.CanMove">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.CanMove.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_CanMove">CanMove()</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_CanTalk" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.CanTalk">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.CanTalk.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_CanTalk">CanTalk()</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_CanTurn" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.CanTurn">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.CanTurn.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_CanTurn">CanTurn()</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_CanUseSkill_Chaos_Objects_Panel_Skill_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.CanUseSkill(Chaos.Objects.Panel.Skill)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.CanUseSkill.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_CanUseSkill_Chaos_Objects_Panel_Skill_">CanUseSkill(Skill)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_CanUseSpell_Chaos_Objects_Panel_Spell_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.CanUseSpell(Chaos.Objects.Panel.Spell)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.CanUseSpell.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_CanUseSpell_Chaos_Objects_Panel_Spell_">CanUseSpell(Spell)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnApproached_Chaos_Objects_World_Abstractions_Creature_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnApproached(Chaos.Objects.World.Abstractions.Creature)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnApproached.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnApproached_Chaos_Objects_World_Abstractions_Creature_">OnApproached(Creature)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnAttacked_Chaos_Objects_World_Abstractions_Creature_System_Int32_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnAttacked(Chaos.Objects.World.Abstractions.Creature,System.Int32)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnAttacked.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnAttacked_Chaos_Objects_World_Abstractions_Creature_System_Int32_">OnAttacked(Creature, Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnAttacked_Chaos_Objects_World_Abstractions_Creature_System_Int32_System_Nullable_System_Int32__" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnAttacked(Chaos.Objects.World.Abstractions.Creature,System.Int32,System.Nullable{System.Int32})">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnAttacked.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnAttacked_Chaos_Objects_World_Abstractions_Creature_System_Int32_System_Nullable_System_Int32__">OnAttacked(Creature, Int32, Nullable&lt;Int32&gt;)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnClicked_Chaos_Objects_World_Aisling_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnClicked(Chaos.Objects.World.Aisling)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnClicked.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnClicked_Chaos_Objects_World_Aisling_">OnClicked(Aisling)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnDeath" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnDeath">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnDeath.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnDeath">OnDeath()</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnDeparture_Chaos_Objects_World_Abstractions_Creature_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnDeparture(Chaos.Objects.World.Abstractions.Creature)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnDeparture.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnDeparture_Chaos_Objects_World_Abstractions_Creature_">OnDeparture(Creature)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnGoldDroppedOn_Chaos_Objects_World_Aisling_System_Int32_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnGoldDroppedOn(Chaos.Objects.World.Aisling,System.Int32)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnGoldDroppedOn.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnGoldDroppedOn_Chaos_Objects_World_Aisling_System_Int32_">OnGoldDroppedOn(Aisling, Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnItemDroppedOn_Chaos_Objects_World_Aisling_Chaos_Objects_Panel_Item_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnItemDroppedOn(Chaos.Objects.World.Aisling,Chaos.Objects.Panel.Item)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnItemDroppedOn.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnItemDroppedOn_Chaos_Objects_World_Aisling_Chaos_Objects_Panel_Item_">OnItemDroppedOn(Aisling, Item)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnSpawn" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnSpawn">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.OnSpawn.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_OnSpawn">OnSpawn()</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_Update_TimeSpan_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.Update(TimeSpan)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.ConfigurableMonsterScriptBase.Update.html#Chaos_Scripts_MonsterScripts_Abstractions_ConfigurableMonsterScriptBase_Update_TimeSpan_">Update(TimeSpan)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+                </div>
+
+            </main>
+        </div>
+
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+        <script type="text/javascript" src="../styles/jquery.twbsPagination.js"></script>
+        <script type="text/javascript" src="../styles/url.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/anchor-js/anchor.min.js"></script>
+        <script type="text/javascript" src="../styles/docfx.js"></script>
+        <script type="text/javascript" src="../styles/singulink.js"></script>
+        <script type="text/javascript" src="../styles/main.js"></script>    </body>
+</html>

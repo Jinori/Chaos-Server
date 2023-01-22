@@ -1,0 +1,338 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+    
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class MonsterScriptBase
+     | Chaos Server Docs </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class MonsterScriptBase
+     | Chaos Server Docs ">
+      <meta name="generator" content="docfx 2.59.4.0">
+      
+      <link rel="shortcut icon" href="../images/chaos.ico">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/night-owl.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" integrity="sha384-EvBWSlnoFgZlXJvpzS+MAUEjvN7+gcCwH+qh7GRFOGgZO0PuwOFro7qPOJnLfe7l" crossorigin="anonymous">
+      <link rel="stylesheet" href="../styles/config.css">
+      <link rel="stylesheet" href="../styles/discord.css">
+      <link rel="stylesheet" href="../styles/singulink.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+      
+      <meta property="docfx:rel" content="../">
+      <meta property="docfx:newtab" content="true">
+    </head>
+    <body>
+        <div class="top-navbar">
+            <a class="burger-icon" onclick="toggleMenu()">
+                <svg name="Hamburger" style="vertical-align: middle;" width="34" height="34" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M20 6H4V9H20V6ZM4 10.999H20V13.999H4V10.999ZM4 15.999H20V18.999H4V15.999Z"></path></svg>
+            </a>
+
+            
+            <a class="brand" href="../index.html">
+              <img src="../images/chaosico.png" alt="Chaos Server Docs" class="logomark">
+              <span class="brand-title">Chaos Server Docs</span>
+            </a>        </div>
+
+        <div class="body-content">
+            <div id="blackout" class="blackout" onclick="toggleMenu()"></div>
+
+            <nav id="sidebar" role="navigation">
+                <div class="sidebar">
+                    
+                    <div>
+                      <div class="mobile-hide">
+                        
+                        <a class="brand" href="../index.html">
+                          <img src="../images/chaosico.png" alt="Chaos Server Docs" class="logomark">
+                          <span class="brand-title">Chaos Server Docs</span>
+                        </a>  </div>
+                    
+                      <div class="sidesearch">
+                        <form id="search" role="search" class="search">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" id="search-query" placeholder="Search" autocomplete="off">
+                        </form>
+                      </div>
+                    
+                      <div id="navbar">
+                      </div>
+                    </div>                    <div class="sidebar-item-separator"></div>
+                        
+                        <div id="sidetoggle">
+                          <div id="sidetoc"></div>
+                        </div>
+                </div>
+                <div class="footer">
+                  
+                  <strong><a href='https://dotnet.github.io/docfx/'>DocFX</a> + <a href='https://www.singulink.com'>Singulink</a> = ♥</strong>
+                </div>            </nav>
+
+            <main class="main-panel">
+                
+                <div id="search-results" style="display: none;">
+                  <h1 class="search-list">Search Results for <span></span></h1>
+                  <div class="sr-items">
+                    <p><i class="bi bi-hourglass-split index-loading"></i></p>
+                  </div>
+                  <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+                </div>
+                <div role="main" class="hide-when-search">
+                        
+                        <div class="subnav navbar navbar-default">
+                          <div class="container hide-when-search" id="breadcrumb">
+                            <ul class="breadcrumb">
+                              <li></li>
+                            </ul>
+                          </div>
+                        </div>
+
+                    <article class="content wrap" id="_content" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase">
+  
+  
+  <h1 id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase" class="text-break">Class MonsterScriptBase
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">MonsterScriptBase</span></div>
+      <div class="level2"><a class="xref" href="Chaos.Scripts.MonsterScripts.AggroTargetingScript.html">AggroTargetingScript</a></div>
+      <div class="level2"><a class="xref" href="Chaos.Scripts.MonsterScripts.AttackingScript.html">AttackingScript</a></div>
+      <div class="level2"><a class="xref" href="Chaos.Scripts.MonsterScripts.CastingScript.html">CastingScript</a></div>
+      <div class="level2"><a class="xref" href="Chaos.Scripts.MonsterScripts.Components.PF_MantisDeathScript.html">PF_MantisDeathScript</a></div>
+      <div class="level2"><a class="xref" href="Chaos.Scripts.MonsterScripts.ContributionScript.html">ContributionScript</a></div>
+      <div class="level2"><a class="xref" href="Chaos.Scripts.MonsterScripts.DeathScript.html">DeathScript</a></div>
+      <div class="level2"><a class="xref" href="Chaos.Scripts.MonsterScripts.MoveToTargetScript.html">MoveToTargetScript</a></div>
+      <div class="level2"><a class="xref" href="Chaos.Scripts.MonsterScripts.RestrictionScript.html">RestrictionScript</a></div>
+      <div class="level2"><a class="xref" href="Chaos.Scripts.MonsterScripts.TerrorOfTheCryptScript.html">TerrorOfTheCryptScript</a></div>
+      <div class="level2"><a class="xref" href="Chaos.Scripts.MonsterScripts.WanderingScript.html">WanderingScript</a></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.IMonsterScript.html">IMonsterScript</a></div>
+    <div><a class="xref" href="Chaos.Scripts.Abstractions.ICreatureScript.html">ICreatureScript</a></div>
+    <div><span class="xref">IScript</span></div>
+    <div><span class="xref">IDeltaUpdatable</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.html">Chaos.Scripts.MonsterScripts.Abstractions</a></h6>
+  <h6><strong>Assembly</strong>: Chaos.dll</h6>
+  <h5 id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class MonsterScriptBase : SubjectiveScriptBase&lt;Monster&gt;, IMonsterScript, ICreatureScript</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase__ctor_Chaos_Objects_World_Monster_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.#ctor(Chaos.Objects.World.Monster)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.-ctor.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase__ctor_Chaos_Objects_World_Monster_">MonsterScriptBase(Monster)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_AggroList" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.AggroList">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.AggroList.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_AggroList">AggroList</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_AggroRange" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.AggroRange">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.AggroRange.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_AggroRange">AggroRange</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_Map" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.Map">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.Map.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_Map">Map</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_ShouldMove" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.ShouldMove">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.ShouldMove.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_ShouldMove">ShouldMove</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_ShouldUseSkill" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.ShouldUseSkill">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.ShouldUseSkill.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_ShouldUseSkill">ShouldUseSkill</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_ShouldUseSpell" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.ShouldUseSpell">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.ShouldUseSpell.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_ShouldUseSpell">ShouldUseSpell</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_ShouldWander" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.ShouldWander">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.ShouldWander.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_ShouldWander">ShouldWander</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_Skills" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.Skills">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.Skills.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_Skills">Skills</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_Spells" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.Spells">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.Spells.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_Spells">Spells</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_Target" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.Target">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.Target.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_Target">Target</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_CanMove" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.CanMove">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.CanMove.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_CanMove">CanMove()</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_CanTalk" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.CanTalk">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.CanTalk.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_CanTalk">CanTalk()</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_CanTurn" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.CanTurn">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.CanTurn.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_CanTurn">CanTurn()</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_CanUseSkill_Chaos_Objects_Panel_Skill_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.CanUseSkill(Chaos.Objects.Panel.Skill)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.CanUseSkill.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_CanUseSkill_Chaos_Objects_Panel_Skill_">CanUseSkill(Skill)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_CanUseSpell_Chaos_Objects_Panel_Spell_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.CanUseSpell(Chaos.Objects.Panel.Spell)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.CanUseSpell.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_CanUseSpell_Chaos_Objects_Panel_Spell_">CanUseSpell(Spell)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnApproached_Chaos_Objects_World_Abstractions_Creature_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnApproached(Chaos.Objects.World.Abstractions.Creature)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnApproached.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnApproached_Chaos_Objects_World_Abstractions_Creature_">OnApproached(Creature)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnAttacked_Chaos_Objects_World_Abstractions_Creature_System_Int32_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnAttacked(Chaos.Objects.World.Abstractions.Creature,System.Int32)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnAttacked.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnAttacked_Chaos_Objects_World_Abstractions_Creature_System_Int32_">OnAttacked(Creature, Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnAttacked_Chaos_Objects_World_Abstractions_Creature_System_Int32_System_Nullable_System_Int32__" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnAttacked(Chaos.Objects.World.Abstractions.Creature,System.Int32,System.Nullable{System.Int32})">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnAttacked.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnAttacked_Chaos_Objects_World_Abstractions_Creature_System_Int32_System_Nullable_System_Int32__">OnAttacked(Creature, Int32, Nullable&lt;Int32&gt;)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnClicked_Chaos_Objects_World_Aisling_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnClicked(Chaos.Objects.World.Aisling)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnClicked.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnClicked_Chaos_Objects_World_Aisling_">OnClicked(Aisling)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnDeath" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnDeath">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnDeath.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnDeath">OnDeath()</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnDeparture_Chaos_Objects_World_Abstractions_Creature_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnDeparture(Chaos.Objects.World.Abstractions.Creature)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnDeparture.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnDeparture_Chaos_Objects_World_Abstractions_Creature_">OnDeparture(Creature)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnGoldDroppedOn_Chaos_Objects_World_Aisling_System_Int32_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnGoldDroppedOn(Chaos.Objects.World.Aisling,System.Int32)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnGoldDroppedOn.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnGoldDroppedOn_Chaos_Objects_World_Aisling_System_Int32_">OnGoldDroppedOn(Aisling, Int32)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnItemDroppedOn_Chaos_Objects_World_Aisling_Chaos_Objects_Panel_Item_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnItemDroppedOn(Chaos.Objects.World.Aisling,Chaos.Objects.Panel.Item)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnItemDroppedOn.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnItemDroppedOn_Chaos_Objects_World_Aisling_Chaos_Objects_Panel_Item_">OnItemDroppedOn(Aisling, Item)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnSpawn" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnSpawn">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.OnSpawn.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_OnSpawn">OnSpawn()</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_Update_TimeSpan_" data-uid="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.Update(TimeSpan)">
+          <a class="xref" href="Chaos.Scripts.MonsterScripts.Abstractions.MonsterScriptBase.Update.html#Chaos_Scripts_MonsterScripts_Abstractions_MonsterScriptBase_Update_TimeSpan_">Update(TimeSpan)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+                </div>
+
+            </main>
+        </div>
+
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+        <script type="text/javascript" src="../styles/jquery.twbsPagination.js"></script>
+        <script type="text/javascript" src="../styles/url.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/anchor-js/anchor.min.js"></script>
+        <script type="text/javascript" src="../styles/docfx.js"></script>
+        <script type="text/javascript" src="../styles/singulink.js"></script>
+        <script type="text/javascript" src="../styles/main.js"></script>    </body>
+</html>

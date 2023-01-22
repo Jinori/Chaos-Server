@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+    
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class ExpiringItemTemplateCache
+     | Chaos Server Docs </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class ExpiringItemTemplateCache
+     | Chaos Server Docs ">
+      <meta name="generator" content="docfx 2.59.4.0">
+      
+      <link rel="shortcut icon" href="../images/chaos.ico">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/night-owl.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" integrity="sha384-EvBWSlnoFgZlXJvpzS+MAUEjvN7+gcCwH+qh7GRFOGgZO0PuwOFro7qPOJnLfe7l" crossorigin="anonymous">
+      <link rel="stylesheet" href="../styles/config.css">
+      <link rel="stylesheet" href="../styles/discord.css">
+      <link rel="stylesheet" href="../styles/singulink.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+      
+      <meta property="docfx:rel" content="../">
+      <meta property="docfx:newtab" content="true">
+    </head>
+    <body>
+        <div class="top-navbar">
+            <a class="burger-icon" onclick="toggleMenu()">
+                <svg name="Hamburger" style="vertical-align: middle;" width="34" height="34" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M20 6H4V9H20V6ZM4 10.999H20V13.999H4V10.999ZM4 15.999H20V18.999H4V15.999Z"></path></svg>
+            </a>
+
+            
+            <a class="brand" href="../index.html">
+              <img src="../images/chaosico.png" alt="Chaos Server Docs" class="logomark">
+              <span class="brand-title">Chaos Server Docs</span>
+            </a>        </div>
+
+        <div class="body-content">
+            <div id="blackout" class="blackout" onclick="toggleMenu()"></div>
+
+            <nav id="sidebar" role="navigation">
+                <div class="sidebar">
+                    
+                    <div>
+                      <div class="mobile-hide">
+                        
+                        <a class="brand" href="../index.html">
+                          <img src="../images/chaosico.png" alt="Chaos Server Docs" class="logomark">
+                          <span class="brand-title">Chaos Server Docs</span>
+                        </a>  </div>
+                    
+                      <div class="sidesearch">
+                        <form id="search" role="search" class="search">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" id="search-query" placeholder="Search" autocomplete="off">
+                        </form>
+                      </div>
+                    
+                      <div id="navbar">
+                      </div>
+                    </div>                    <div class="sidebar-item-separator"></div>
+                        
+                        <div id="sidetoggle">
+                          <div id="sidetoc"></div>
+                        </div>
+                </div>
+                <div class="footer">
+                  
+                  <strong><a href='https://dotnet.github.io/docfx/'>DocFX</a> + <a href='https://www.singulink.com'>Singulink</a> = ♥</strong>
+                </div>            </nav>
+
+            <main class="main-panel">
+                
+                <div id="search-results" style="display: none;">
+                  <h1 class="search-list">Search Results for <span></span></h1>
+                  <div class="sr-items">
+                    <p><i class="bi bi-hourglass-split index-loading"></i></p>
+                  </div>
+                  <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+                </div>
+                <div role="main" class="hide-when-search">
+                        
+                        <div class="subnav navbar navbar-default">
+                          <div class="container hide-when-search" id="breadcrumb">
+                            <ul class="breadcrumb">
+                              <li></li>
+                            </ul>
+                          </div>
+                        </div>
+
+                    <article class="content wrap" id="_content" data-uid="Chaos.Services.Storage.ExpiringItemTemplateCache">
+  
+  
+  <h1 id="Chaos_Services_Storage_ExpiringItemTemplateCache" data-uid="Chaos.Services.Storage.ExpiringItemTemplateCache" class="text-break">Class ExpiringItemTemplateCache
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.html">ExpiringFileCacheBase</a>&lt;<a class="xref" href="Chaos.Templates.ItemTemplate.html">ItemTemplate</a>, <a class="xref" href="Chaos.Schemas.Templates.ItemTemplateSchema.html">ItemTemplateSchema</a>&gt;</div>
+    <div class="level2"><span class="xref">ExpiringItemTemplateCache</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Chaos.Storage.Abstractions.ISimpleCache-1.html">ISimpleCache</a>&lt;<a class="xref" href="Chaos.Templates.ItemTemplate.html">ItemTemplate</a>&gt;</div>
+    <div><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Chaos.Templates.ItemTemplate.html">ItemTemplate</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.Paths.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_Paths">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.Paths</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.Cache.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_Cache">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.Cache</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.JsonSerializerOptions.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_JsonSerializerOptions">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.JsonSerializerOptions</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.KeyPrefix.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_KeyPrefix">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.KeyPrefix</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.LocalLookup.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_LocalLookup">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.LocalLookup</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.Logger.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_Logger">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.Mapper.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_Mapper">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.Mapper</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.Options.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_Options">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.Options</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.ConstructKeyForType.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_ConstructKeyForType_System_String_">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.ConstructKeyForType(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.CreateFromEntry.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_CreateFromEntry_ICacheEntry_">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.CreateFromEntry(ICacheEntry)</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.DeconstructKeyForType.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_DeconstructKeyForType_System_String_">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.DeconstructKeyForType(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.Get.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_Get_System_String_">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.Get(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.GetEnumerator.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_GetEnumerator">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.GetEnumerator()</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.System-Collections-IEnumerable-GetEnumerator.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_System_Collections_IEnumerable_GetEnumerator">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.IEnumerable.GetEnumerator()</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.GetPathForKey.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_GetPathForKey_System_String_">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.GetPathForKey(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.LoadFromFile.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_LoadFromFile_System_String_">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.LoadFromFile(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.LoadPaths.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_LoadPaths">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.LoadPaths()</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.ReloadAsync.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_ReloadAsync">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.ReloadAsync()</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Storage.Abstractions.ExpiringFileCacheBase-2.RemoveValueCallback.html#Chaos_Storage_Abstractions_ExpiringFileCacheBase_2_RemoveValueCallback_System_Object_System_Object_EvictionReason_System_Object_">ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;.RemoveValueCallback(Object, Object, EvictionReason, Object)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Chaos.Services.Storage.html">Chaos.Services.Storage</a></h6>
+  <h6><strong>Assembly</strong>: Chaos.dll</h6>
+  <h5 id="Chaos_Services_Storage_ExpiringItemTemplateCache_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class ExpiringItemTemplateCache : ExpiringFileCacheBase&lt;ItemTemplate, ItemTemplateSchema&gt;, ISimpleCache&lt;ItemTemplate&gt;</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="Chaos_Services_Storage_ExpiringItemTemplateCache__ctor_IMemoryCache_ITypeMapper_IOptions_System_Text_Json_JsonSerializerOptions__IOptions_Chaos_Services_Storage_Options_ExpiringItemTemplateCacheOptions__ILogger_Chaos_Services_Storage_ExpiringItemTemplateCache__" data-uid="Chaos.Services.Storage.ExpiringItemTemplateCache.#ctor(IMemoryCache,ITypeMapper,IOptions{System.Text.Json.JsonSerializerOptions},IOptions{Chaos.Services.Storage.Options.ExpiringItemTemplateCacheOptions},ILogger{Chaos.Services.Storage.ExpiringItemTemplateCache})">
+          <a class="xref" href="Chaos.Services.Storage.ExpiringItemTemplateCache.-ctor.html#Chaos_Services_Storage_ExpiringItemTemplateCache__ctor_IMemoryCache_ITypeMapper_IOptions_System_Text_Json_JsonSerializerOptions__IOptions_Chaos_Services_Storage_Options_ExpiringItemTemplateCacheOptions__ILogger_Chaos_Services_Storage_ExpiringItemTemplateCache__">ExpiringItemTemplateCache(IMemoryCache, ITypeMapper, IOptions&lt;JsonSerializerOptions&gt;, IOptions&lt;ExpiringItemTemplateCacheOptions&gt;, ILogger&lt;ExpiringItemTemplateCache&gt;)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+                </div>
+
+            </main>
+        </div>
+
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+        <script type="text/javascript" src="../styles/jquery.twbsPagination.js"></script>
+        <script type="text/javascript" src="../styles/url.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/anchor-js/anchor.min.js"></script>
+        <script type="text/javascript" src="../styles/docfx.js"></script>
+        <script type="text/javascript" src="../styles/singulink.js"></script>
+        <script type="text/javascript" src="../styles/main.js"></script>    </body>
+</html>

@@ -1,0 +1,489 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+    
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class WorldServer
+     | Chaos Server Docs </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class WorldServer
+     | Chaos Server Docs ">
+      <meta name="generator" content="docfx 2.59.4.0">
+      
+      <link rel="shortcut icon" href="../images/chaos.ico">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/night-owl.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" integrity="sha384-EvBWSlnoFgZlXJvpzS+MAUEjvN7+gcCwH+qh7GRFOGgZO0PuwOFro7qPOJnLfe7l" crossorigin="anonymous">
+      <link rel="stylesheet" href="../styles/config.css">
+      <link rel="stylesheet" href="../styles/discord.css">
+      <link rel="stylesheet" href="../styles/singulink.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+      
+      <meta property="docfx:rel" content="../">
+      <meta property="docfx:newtab" content="true">
+    </head>
+    <body>
+        <div class="top-navbar">
+            <a class="burger-icon" onclick="toggleMenu()">
+                <svg name="Hamburger" style="vertical-align: middle;" width="34" height="34" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M20 6H4V9H20V6ZM4 10.999H20V13.999H4V10.999ZM4 15.999H20V18.999H4V15.999Z"></path></svg>
+            </a>
+
+            
+            <a class="brand" href="../index.html">
+              <img src="../images/chaosico.png" alt="Chaos Server Docs" class="logomark">
+              <span class="brand-title">Chaos Server Docs</span>
+            </a>        </div>
+
+        <div class="body-content">
+            <div id="blackout" class="blackout" onclick="toggleMenu()"></div>
+
+            <nav id="sidebar" role="navigation">
+                <div class="sidebar">
+                    
+                    <div>
+                      <div class="mobile-hide">
+                        
+                        <a class="brand" href="../index.html">
+                          <img src="../images/chaosico.png" alt="Chaos Server Docs" class="logomark">
+                          <span class="brand-title">Chaos Server Docs</span>
+                        </a>  </div>
+                    
+                      <div class="sidesearch">
+                        <form id="search" role="search" class="search">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" id="search-query" placeholder="Search" autocomplete="off">
+                        </form>
+                      </div>
+                    
+                      <div id="navbar">
+                      </div>
+                    </div>                    <div class="sidebar-item-separator"></div>
+                        
+                        <div id="sidetoggle">
+                          <div id="sidetoc"></div>
+                        </div>
+                </div>
+                <div class="footer">
+                  
+                  <strong><a href='https://dotnet.github.io/docfx/'>DocFX</a> + <a href='https://www.singulink.com'>Singulink</a> = ♥</strong>
+                </div>            </nav>
+
+            <main class="main-panel">
+                
+                <div id="search-results" style="display: none;">
+                  <h1 class="search-list">Search Results for <span></span></h1>
+                  <div class="sr-items">
+                    <p><i class="bi bi-hourglass-split index-loading"></i></p>
+                  </div>
+                  <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+                </div>
+                <div role="main" class="hide-when-search">
+                        
+                        <div class="subnav navbar navbar-default">
+                          <div class="container hide-when-search" id="breadcrumb">
+                            <ul class="breadcrumb">
+                              <li></li>
+                            </ul>
+                          </div>
+                        </div>
+
+                    <article class="content wrap" id="_content" data-uid="Chaos.Services.Servers.WorldServer">
+  
+  
+  <h1 id="Chaos_Services_Servers_WorldServer" data-uid="Chaos.Services.Servers.WorldServer" class="text-break">Class WorldServer
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Chaos.Networking.Abstractions.ServerBase-1.html">ServerBase</a>&lt;<a class="xref" href="Chaos.Clients.Abstractions.IWorldClient.html">IWorldClient</a>&gt;</div>
+    <div class="level2"><span class="xref">WorldServer</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Chaos.Networking.Abstractions.IServer-1.html">IServer</a>&lt;<a class="xref" href="Chaos.Clients.Abstractions.IWorldClient.html">IWorldClient</a>&gt;</div>
+    <div><span class="xref">IWorldServer</span>&lt;<a class="xref" href="Chaos.Clients.Abstractions.IWorldClient.html">IWorldClient</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Chaos.Networking.Abstractions.ServerBase-1.ClientHandlers.html#Chaos_Networking_Abstractions_ServerBase_1_ClientHandlers">ServerBase&lt;IWorldClient&gt;.ClientHandlers</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Networking.Abstractions.ServerBase-1.ClientRegistry.html#Chaos_Networking_Abstractions_ServerBase_1_ClientRegistry">ServerBase&lt;IWorldClient&gt;.ClientRegistry</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Networking.Abstractions.ServerBase-1.Logger.html#Chaos_Networking_Abstractions_ServerBase_1_Logger">ServerBase&lt;IWorldClient&gt;.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Networking.Abstractions.ServerBase-1.Options.html#Chaos_Networking_Abstractions_ServerBase_1_Options">ServerBase&lt;IWorldClient&gt;.Options</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Networking.Abstractions.ServerBase-1.PacketSerializer.html#Chaos_Networking_Abstractions_ServerBase_1_PacketSerializer">ServerBase&lt;IWorldClient&gt;.PacketSerializer</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Networking.Abstractions.ServerBase-1.RedirectManager.html#Chaos_Networking_Abstractions_ServerBase_1_RedirectManager">ServerBase&lt;IWorldClient&gt;.RedirectManager</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Networking.Abstractions.ServerBase-1.Socket.html#Chaos_Networking_Abstractions_ServerBase_1_Socket">ServerBase&lt;IWorldClient&gt;.Socket</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Networking.Abstractions.ServerBase-1.HandlePacketAsync.html#Chaos_Networking_Abstractions_ServerBase_1_HandlePacketAsync__0_Chaos_Packets_ClientPacket__">ServerBase&lt;IWorldClient&gt;.HandlePacketAsync(IWorldClient, ClientPacket)</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Networking.Abstractions.ServerBase-1.OnHeartBeatAsync.html#Chaos_Networking_Abstractions_ServerBase_1_OnHeartBeatAsync__0_Chaos_Packets_ClientPacket__">ServerBase&lt;IWorldClient&gt;.OnHeartBeatAsync(IWorldClient, ClientPacket)</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Networking.Abstractions.ServerBase-1.OnSequenceChangeAsync.html#Chaos_Networking_Abstractions_ServerBase_1_OnSequenceChangeAsync__0_Chaos_Packets_ClientPacket__">ServerBase&lt;IWorldClient&gt;.OnSequenceChangeAsync(IWorldClient, ClientPacket)</a>
+    </div>
+    <div>
+      <a class="xref" href="Chaos.Networking.Abstractions.ServerBase-1.OnSynchronizeTicksAsync.html#Chaos_Networking_Abstractions_ServerBase_1_OnSynchronizeTicksAsync__0_Chaos_Packets_ClientPacket__">ServerBase&lt;IWorldClient&gt;.OnSynchronizeTicksAsync(IWorldClient, ClientPacket)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Chaos.Services.Servers.html">Chaos.Services.Servers</a></h6>
+  <h6><strong>Assembly</strong>: Chaos.dll</h6>
+  <h5 id="Chaos_Services_Servers_WorldServer_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class WorldServer : ServerBase&lt;IWorldClient&gt;</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer__ctor_IClientRegistry_Chaos_Clients_Abstractions_IWorldClient__Chaos_Services_Factories_Abstractions_IClientFactory_Chaos_Clients_Abstractions_IWorldClient__Chaos_Storage_Abstractions_ISimpleCacheProvider_Chaos_Storage_Abstractions_ISaveManager_Chaos_Objects_World_Aisling__IRedirectManager_IPacketSerializer_Chaos_CommandInterceptor_Abstractions_ICommandInterceptor_Chaos_Objects_World_Aisling__Chaos_Services_Abstractions_IGroupService_Chaos_Services_Factories_Abstractions_IMerchantFactory_IOptions_Chaos_Services_Servers_Options_WorldOptions__ILogger_Chaos_Services_Servers_WorldServer__" data-uid="Chaos.Services.Servers.WorldServer.#ctor(IClientRegistry{Chaos.Clients.Abstractions.IWorldClient},Chaos.Services.Factories.Abstractions.IClientFactory{Chaos.Clients.Abstractions.IWorldClient},Chaos.Storage.Abstractions.ISimpleCacheProvider,Chaos.Storage.Abstractions.ISaveManager{Chaos.Objects.World.Aisling},IRedirectManager,IPacketSerializer,Chaos.CommandInterceptor.Abstractions.ICommandInterceptor{Chaos.Objects.World.Aisling},Chaos.Services.Abstractions.IGroupService,Chaos.Services.Factories.Abstractions.IMerchantFactory,IOptions{Chaos.Services.Servers.Options.WorldOptions},ILogger{Chaos.Services.Servers.WorldServer})">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.-ctor.html#Chaos_Services_Servers_WorldServer__ctor_IClientRegistry_Chaos_Clients_Abstractions_IWorldClient__Chaos_Services_Factories_Abstractions_IClientFactory_Chaos_Clients_Abstractions_IWorldClient__Chaos_Storage_Abstractions_ISimpleCacheProvider_Chaos_Storage_Abstractions_ISaveManager_Chaos_Objects_World_Aisling__IRedirectManager_IPacketSerializer_Chaos_CommandInterceptor_Abstractions_ICommandInterceptor_Chaos_Objects_World_Aisling__Chaos_Services_Abstractions_IGroupService_Chaos_Services_Factories_Abstractions_IMerchantFactory_IOptions_Chaos_Services_Servers_Options_WorldOptions__ILogger_Chaos_Services_Servers_WorldServer__">WorldServer(IClientRegistry&lt;IWorldClient&gt;, IClientFactory&lt;IWorldClient&gt;, ISimpleCacheProvider, ISaveManager&lt;Aisling&gt;, IRedirectManager, IPacketSerializer, ICommandInterceptor&lt;Aisling&gt;, IGroupService, IMerchantFactory, IOptions&lt;WorldOptions&gt;, ILogger&lt;WorldServer&gt;)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_Aislings" data-uid="Chaos.Services.Servers.WorldServer.Aislings">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.Aislings.html#Chaos_Services_Servers_WorldServer_Aislings">Aislings</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_ExecuteAsync_CancellationToken_" data-uid="Chaos.Services.Servers.WorldServer.ExecuteAsync(CancellationToken)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.ExecuteAsync.html#Chaos_Services_Servers_WorldServer_ExecuteAsync_CancellationToken_">ExecuteAsync(CancellationToken)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_ExecuteHandler_Chaos_Clients_Abstractions_IWorldClient_Func_Chaos_Clients_Abstractions_IWorldClient_ValueTask__" data-uid="Chaos.Services.Servers.WorldServer.ExecuteHandler(Chaos.Clients.Abstractions.IWorldClient,Func{Chaos.Clients.Abstractions.IWorldClient,ValueTask})">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.ExecuteHandler.html#Chaos_Services_Servers_WorldServer_ExecuteHandler_Chaos_Clients_Abstractions_IWorldClient_Func_Chaos_Clients_Abstractions_IWorldClient_ValueTask__">ExecuteHandler(IWorldClient, Func&lt;IWorldClient, ValueTask&gt;)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_ExecuteHandler__1_Chaos_Clients_Abstractions_IWorldClient___0_Func_Chaos_Clients_Abstractions_IWorldClient___0_ValueTask__" data-uid="Chaos.Services.Servers.WorldServer.ExecuteHandler``1(Chaos.Clients.Abstractions.IWorldClient,``0,Func{Chaos.Clients.Abstractions.IWorldClient,``0,ValueTask})">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.ExecuteHandler.html#Chaos_Services_Servers_WorldServer_ExecuteHandler__1_Chaos_Clients_Abstractions_IWorldClient___0_Func_Chaos_Clients_Abstractions_IWorldClient___0_ValueTask__">ExecuteHandler&lt;TArgs&gt;(IWorldClient, TArgs, Func&lt;IWorldClient, TArgs, ValueTask&gt;)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_HandlePacketAsync_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.HandlePacketAsync(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.HandlePacketAsync.html#Chaos_Services_Servers_WorldServer_HandlePacketAsync_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">HandlePacketAsync(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_IndexHandlers" data-uid="Chaos.Services.Servers.WorldServer.IndexHandlers">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.IndexHandlers.html#Chaos_Services_Servers_WorldServer_IndexHandlers">IndexHandlers()</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnBeginChant_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnBeginChant(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnBeginChant.html#Chaos_Services_Servers_WorldServer_OnBeginChant_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnBeginChant(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnBoardRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnBoardRequest(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnBoardRequest.html#Chaos_Services_Servers_WorldServer_OnBoardRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnBoardRequest(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnChant_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnChant(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnChant.html#Chaos_Services_Servers_WorldServer_OnChant_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnChant(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnClick_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnClick(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnClick.html#Chaos_Services_Servers_WorldServer_OnClick_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnClick(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnClientRedirected_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnClientRedirected(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnClientRedirected.html#Chaos_Services_Servers_WorldServer_OnClientRedirected_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnClientRedirected(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnClientRedirectedAsync_Chaos_Clients_Abstractions_IWorldClient_Chaos_Networking_Entities_Client_ClientRedirectedArgs_IRedirect_" data-uid="Chaos.Services.Servers.WorldServer.OnClientRedirectedAsync(Chaos.Clients.Abstractions.IWorldClient,Chaos.Networking.Entities.Client.ClientRedirectedArgs,IRedirect)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnClientRedirectedAsync.html#Chaos_Services_Servers_WorldServer_OnClientRedirectedAsync_Chaos_Clients_Abstractions_IWorldClient_Chaos_Networking_Entities_Client_ClientRedirectedArgs_IRedirect_">OnClientRedirectedAsync(IWorldClient, ClientRedirectedArgs, IRedirect)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnClientWalk_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnClientWalk(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnClientWalk.html#Chaos_Services_Servers_WorldServer_OnClientWalk_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnClientWalk(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnConnection_IAsyncResult_" data-uid="Chaos.Services.Servers.WorldServer.OnConnection(IAsyncResult)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnConnection.html#Chaos_Services_Servers_WorldServer_OnConnection_IAsyncResult_">OnConnection(IAsyncResult)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnDialogResponse_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnDialogResponse(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnDialogResponse.html#Chaos_Services_Servers_WorldServer_OnDialogResponse_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnDialogResponse(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnEmote_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnEmote(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnEmote.html#Chaos_Services_Servers_WorldServer_OnEmote_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnEmote(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnExchange_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnExchange(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnExchange.html#Chaos_Services_Servers_WorldServer_OnExchange_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnExchange(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnExitRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnExitRequest(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnExitRequest.html#Chaos_Services_Servers_WorldServer_OnExitRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnExitRequest(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnGoldDropped_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnGoldDropped(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnGoldDropped.html#Chaos_Services_Servers_WorldServer_OnGoldDropped_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnGoldDropped(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnGoldDroppedOnCreature_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnGoldDroppedOnCreature(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnGoldDroppedOnCreature.html#Chaos_Services_Servers_WorldServer_OnGoldDroppedOnCreature_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnGoldDroppedOnCreature(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnGroupRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnGroupRequest(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnGroupRequest.html#Chaos_Services_Servers_WorldServer_OnGroupRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnGroupRequest(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnIgnore_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnIgnore(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnIgnore.html#Chaos_Services_Servers_WorldServer_OnIgnore_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnIgnore(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnItemDropped_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnItemDropped(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnItemDropped.html#Chaos_Services_Servers_WorldServer_OnItemDropped_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnItemDropped(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnItemDroppedOnCreature_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnItemDroppedOnCreature(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnItemDroppedOnCreature.html#Chaos_Services_Servers_WorldServer_OnItemDroppedOnCreature_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnItemDroppedOnCreature(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnMapDataRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnMapDataRequest(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnMapDataRequest.html#Chaos_Services_Servers_WorldServer_OnMapDataRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnMapDataRequest(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnMetafileRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnMetafileRequest(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnMetafileRequest.html#Chaos_Services_Servers_WorldServer_OnMetafileRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnMetafileRequest(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnPickup_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnPickup(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnPickup.html#Chaos_Services_Servers_WorldServer_OnPickup_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnPickup(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnProfile_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnProfile(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnProfile.html#Chaos_Services_Servers_WorldServer_OnProfile_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnProfile(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnProfileRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnProfileRequest(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnProfileRequest.html#Chaos_Services_Servers_WorldServer_OnProfileRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnProfileRequest(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnPublicMessage_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnPublicMessage(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnPublicMessage.html#Chaos_Services_Servers_WorldServer_OnPublicMessage_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnPublicMessage(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnPursuitRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnPursuitRequest(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnPursuitRequest.html#Chaos_Services_Servers_WorldServer_OnPursuitRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnPursuitRequest(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnRaiseStat_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnRaiseStat(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnRaiseStat.html#Chaos_Services_Servers_WorldServer_OnRaiseStat_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnRaiseStat(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnRefreshRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnRefreshRequest(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnRefreshRequest.html#Chaos_Services_Servers_WorldServer_OnRefreshRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnRefreshRequest(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnSocialStatus_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnSocialStatus(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnSocialStatus.html#Chaos_Services_Servers_WorldServer_OnSocialStatus_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnSocialStatus(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnSpacebar_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnSpacebar(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnSpacebar.html#Chaos_Services_Servers_WorldServer_OnSpacebar_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnSpacebar(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnSwapSlot_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnSwapSlot(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnSwapSlot.html#Chaos_Services_Servers_WorldServer_OnSwapSlot_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnSwapSlot(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnToggleGroup_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnToggleGroup(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnToggleGroup.html#Chaos_Services_Servers_WorldServer_OnToggleGroup_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnToggleGroup(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnTurn_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnTurn(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnTurn.html#Chaos_Services_Servers_WorldServer_OnTurn_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnTurn(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnUnequip_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnUnequip(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnUnequip.html#Chaos_Services_Servers_WorldServer_OnUnequip_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnUnequip(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnUseItem_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnUseItem(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnUseItem.html#Chaos_Services_Servers_WorldServer_OnUseItem_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnUseItem(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnUserOptionToggle_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnUserOptionToggle(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnUserOptionToggle.html#Chaos_Services_Servers_WorldServer_OnUserOptionToggle_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnUserOptionToggle(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnUseSkill_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnUseSkill(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnUseSkill.html#Chaos_Services_Servers_WorldServer_OnUseSkill_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnUseSkill(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnUseSpell_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnUseSpell(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnUseSpell.html#Chaos_Services_Servers_WorldServer_OnUseSpell_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnUseSpell(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnWhisper_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnWhisper(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnWhisper.html#Chaos_Services_Servers_WorldServer_OnWhisper_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnWhisper(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnWorldListRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnWorldListRequest(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnWorldListRequest.html#Chaos_Services_Servers_WorldServer_OnWorldListRequest_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnWorldListRequest(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+      <tr>
+        <td id="Chaos_Services_Servers_WorldServer_OnWorldMapClick_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__" data-uid="Chaos.Services.Servers.WorldServer.OnWorldMapClick(Chaos.Clients.Abstractions.IWorldClient,ClientPacket@)">
+          <a class="xref" href="Chaos.Services.Servers.WorldServer.OnWorldMapClick.html#Chaos_Services_Servers_WorldServer_OnWorldMapClick_Chaos_Clients_Abstractions_IWorldClient_ClientPacket__">OnWorldMapClick(IWorldClient, in ClientPacket)</a>
+        </td>
+        <td class="markdown level1 summary"></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+                </div>
+
+            </main>
+        </div>
+
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+        <script type="text/javascript" src="../styles/jquery.twbsPagination.js"></script>
+        <script type="text/javascript" src="../styles/url.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/anchor-js/anchor.min.js"></script>
+        <script type="text/javascript" src="../styles/docfx.js"></script>
+        <script type="text/javascript" src="../styles/singulink.js"></script>
+        <script type="text/javascript" src="../styles/main.js"></script>    </body>
+</html>

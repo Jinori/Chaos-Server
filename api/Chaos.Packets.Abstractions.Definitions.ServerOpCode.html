@@ -1,0 +1,483 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+    
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Enum ServerOpCode
+     | Chaos Server Docs </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Enum ServerOpCode
+     | Chaos Server Docs ">
+      <meta name="generator" content="docfx 2.59.4.0">
+      
+      <link rel="shortcut icon" href="../images/chaos.ico">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/night-owl.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" integrity="sha384-EvBWSlnoFgZlXJvpzS+MAUEjvN7+gcCwH+qh7GRFOGgZO0PuwOFro7qPOJnLfe7l" crossorigin="anonymous">
+      <link rel="stylesheet" href="../styles/config.css">
+      <link rel="stylesheet" href="../styles/discord.css">
+      <link rel="stylesheet" href="../styles/singulink.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+      
+      <meta property="docfx:rel" content="../">
+      <meta property="docfx:newtab" content="true">
+    </head>
+    <body>
+        <div class="top-navbar">
+            <a class="burger-icon" onclick="toggleMenu()">
+                <svg name="Hamburger" style="vertical-align: middle;" width="34" height="34" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M20 6H4V9H20V6ZM4 10.999H20V13.999H4V10.999ZM4 15.999H20V18.999H4V15.999Z"></path></svg>
+            </a>
+
+            
+            <a class="brand" href="../index.html">
+              <img src="../images/chaosico.png" alt="Chaos Server Docs" class="logomark">
+              <span class="brand-title">Chaos Server Docs</span>
+            </a>        </div>
+
+        <div class="body-content">
+            <div id="blackout" class="blackout" onclick="toggleMenu()"></div>
+
+            <nav id="sidebar" role="navigation">
+                <div class="sidebar">
+                    
+                    <div>
+                      <div class="mobile-hide">
+                        
+                        <a class="brand" href="../index.html">
+                          <img src="../images/chaosico.png" alt="Chaos Server Docs" class="logomark">
+                          <span class="brand-title">Chaos Server Docs</span>
+                        </a>  </div>
+                    
+                      <div class="sidesearch">
+                        <form id="search" role="search" class="search">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" id="search-query" placeholder="Search" autocomplete="off">
+                        </form>
+                      </div>
+                    
+                      <div id="navbar">
+                      </div>
+                    </div>                    <div class="sidebar-item-separator"></div>
+                        
+                        <div id="sidetoggle">
+                          <div id="sidetoc"></div>
+                        </div>
+                </div>
+                <div class="footer">
+                  
+                  <strong><a href='https://dotnet.github.io/docfx/'>DocFX</a> + <a href='https://www.singulink.com'>Singulink</a> = ♥</strong>
+                </div>            </nav>
+
+            <main class="main-panel">
+                
+                <div id="search-results" style="display: none;">
+                  <h1 class="search-list">Search Results for <span></span></h1>
+                  <div class="sr-items">
+                    <p><i class="bi bi-hourglass-split index-loading"></i></p>
+                  </div>
+                  <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+                </div>
+                <div role="main" class="hide-when-search">
+                        
+                        <div class="subnav navbar navbar-default">
+                          <div class="container hide-when-search" id="breadcrumb">
+                            <ul class="breadcrumb">
+                              <li></li>
+                            </ul>
+                          </div>
+                        </div>
+
+                    <article class="content wrap" id="_content" data-uid="Chaos.Packets.Abstractions.Definitions.ServerOpCode">
+  
+  
+  <h1 id="Chaos_Packets_Abstractions_Definitions_ServerOpCode" data-uid="Chaos.Packets.Abstractions.Definitions.ServerOpCode" class="text-break">Enum ServerOpCode
+  </h1>
+  <div class="markdown level0 summary"><p>OpCodes used when sending packets to a client</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Chaos.Packets.Abstractions.Definitions.html">Chaos.Packets.Abstractions.Definitions</a></h6>
+  <h6><strong>Assembly</strong>: Chaos.Packets.Abstractions.dll</h6>
+  <h5 id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public enum ServerOpCode : byte</code></pre>
+  </div>
+  <h5 id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>In networking, an opcode is used to identify the type of packet that is being sent. The opcode is generally part of a header near the
+beginning of the data stream</p>
+</div>
+  <h3 id="fields">Fields
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    <thead>
+    <tbody>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_AcceptConnection">AcceptConnection</td>
+        <td><p>OpCode sent to a client to confirm their initial connection<br>
+Hex value: 0x7E</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_AddItemToPane">AddItemToPane</td>
+        <td><p>OpCode used to add an item to the client's inventory<br>
+Hex value: 0x0F</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_AddSkillToPane">AddSkillToPane</td>
+        <td><p>OpCode used to add a skill to a client's skillbook<br>
+Hex value: 0x2C</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_AddSpellToPane">AddSpellToPane</td>
+        <td><p>OpCode used to add a spell to the client's spellbook<br>
+Hex value: 0x17</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Animation">Animation</td>
+        <td><p>OpCode used to play an animation on a point or object<br>
+Hex value: 0x29</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Attributes">Attributes</td>
+        <td><p>OpCode used to send a client it's attributes<br>
+Hex value: 0x08</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_BodyAnimation">BodyAnimation</td>
+        <td><p>OpCode used to animate a creature's body<br>
+Hex value: 0x1A</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_BulletinBoard">BulletinBoard</td>
+        <td><p>OpCode used to display a board to a client<br>
+Hex value: 0x31</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_CancelCasting">CancelCasting</td>
+        <td><p>OpCode used to tell a client to cancel a spellcast<br>
+Hex value: 0x48</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_ConfirmClientWalk">ConfirmClientWalk</td>
+        <td><p>OpCode used to respond to a client's request to walk<br>
+Hex value: 0x0B</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_ConfirmExit">ConfirmExit</td>
+        <td><p>OpCode used to send a client confirmation of a request to exit to the login server<br>
+Hex value: 0x4C</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_ConnectionInfo">ConnectionInfo</td>
+        <td><p>OpCode used to send the encryption details and checksum of the details of available login servers<br>
+Hex value: 0x00</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Cooldown">Cooldown</td>
+        <td><p>OpCode used to send a skill or spell cooldown to a client<br>
+Hex value: 0x3F</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_CreatureTurn">CreatureTurn</td>
+        <td><p>OpCode used to send a client another creature's turn<br>
+Hex value: 0x11</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_CreatureWalk">CreatureWalk</td>
+        <td><p>OpCode used to send a client another creature's walk<br>
+Hex value: 0x0C</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Dialog">Dialog</td>
+        <td><p>OpCode used to display a dialog to a client<br>
+Hex value: 0x30</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_DisplayAisling">DisplayAisling</td>
+        <td><p>OpCode used to display an aisling to a client<br>
+Hex value: 0x33</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_DisplayVisibleObject">DisplayVisibleObject</td>
+        <td><p>OpCode used to send a client all non-aisling objects in it's viewport<br>
+Hex value: 0x07</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Door">Door</td>
+        <td><p>OpCode used to give details of nearby doors to a client<br>
+Hex value: 0x32</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Effect">Effect</td>
+        <td><p>OpCode used to display an effect on the bar on the right hand side of the viewport<br>
+Hex value: 0x3A</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Equipment">Equipment</td>
+        <td><p>OpCode used to send a client a change in an equipment slot<br>
+Hex value: 0x37</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Exchange">Exchange</td>
+        <td><p>OpCode used to send data displayed int an exchange window to a client<br>
+Hex value: 0x42</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_ForceClientPacket">ForceClientPacket</td>
+        <td><p>OpCode used to force a client to send back a specified packet<br>
+Hex value: 0x4B</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_GroupRequest">GroupRequest</td>
+        <td><p>OpCode used to send a client a group request<br>
+Hex value: 0x63</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_HealthBar">HealthBar</td>
+        <td><p>OpCode used to display a creature's health bar<br>
+Hex value: 0x13</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_HeartBeatResponse">HeartBeatResponse</td>
+        <td><p>OpCode used to respond to a client's heartbeat<br>
+Hex value: 0x3B</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_LightLevel">LightLevel</td>
+        <td><p>OpCode used to change the light level of the map<br>
+Hex value: 0x20</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Location">Location</td>
+        <td><p>OpCode used to send a client it's location<br>
+Hex value: 0x04</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_LoginControls">LoginControls</td>
+        <td><p>OpCode used to send a client data for the lobby<br>
+Hex value: 0x66</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_LoginMessage">LoginMessage</td>
+        <td><p>OpCode used to send a message to a client on the login server<br>
+Hex value: 0x02</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_LoginNotification">LoginNotification</td>
+        <td><p>OpCode used to send a client the EULA / login notice<br>
+Hex value: 0x60</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_MapChangeComplete">MapChangeComplete</td>
+        <td><p>OpCode used to signal to the client that a map change operation has completed<br>
+Hex value: 0x1F</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_MapChangePending">MapChangePending</td>
+        <td><p>OpCode used to signal a client that it is changing maps<br>
+Hex value: 0x67</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_MapData">MapData</td>
+        <td><p>OpCode used to send a client tile data for a map<br>
+Hex value: 0x3C</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_MapInfo">MapInfo</td>
+        <td><p>OpCode used to send map details to a client<br>
+Hex value: 0x15</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_MapLoadComplete">MapLoadComplete</td>
+        <td><p>OpCode used to signal a client that it has finished sending map data<br>
+Hex value: 0x58</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Menu">Menu</td>
+        <td><p>OpCode used to display a merchant menu to a client<br>
+Hex value: 0x2F</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Metafile">Metafile</td>
+        <td><p>OpCode used to send metafile data to a client<br>
+Hex value: 0x6F</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Notepad">Notepad</td>
+        <td><p>OpCode used to associate text with an object<br>
+Hex value: 0x1B</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Profile">Profile</td>
+        <td><p>OpCode used to display an aisling's profile to a client<br>
+Hex value: 0x34</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_ProfileRequest">ProfileRequest</td>
+        <td><p>OpCode used to request profile details from a client<br>
+Hex value: 0x49</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_PublicMessage">PublicMessage</td>
+        <td><p>OpCode used to send a client a public message<br>
+Hex value: 0x0D</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Redirect">Redirect</td>
+        <td><p>OpCode used to redirect a client to another server<br>
+Hex value: 0x03</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_RefreshResponse">RefreshResponse</td>
+        <td><p>OpCode used to respond to a client's request to refresh the viewport<br>
+Hex value: 0x22</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_RemoveItemFromPane">RemoveItemFromPane</td>
+        <td><p>OpCode used to remove an item from the client's inventory<br>
+Hex value: 0x10</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_RemoveObject">RemoveObject</td>
+        <td><p>OpCode used to remove an object from the client's viewport<br>
+Hex value: 0x0E</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_RemoveSkillFromPane">RemoveSkillFromPane</td>
+        <td><p>OpCode used to remove a skill from a client's skillbook<br>
+Hex value: 0x2D</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_RemoveSpellFromPane">RemoveSpellFromPane</td>
+        <td><p>OpCode used to remove a spell from the client's spellbook<br>
+Hex value: 0x18</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_SelfProfile">SelfProfile</td>
+        <td><p>OpCode used to send a client it's own profile<br>
+Hex value: 0x39</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_ServerMessage">ServerMessage</td>
+        <td><p>OpCode used to send a client a non-public message<br>
+Hex value: 0x0A</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_ServerTable">ServerTable</td>
+        <td><p>OpCode used to send a client a list of available servers<br>
+Hex value: 0x56</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Sound">Sound</td>
+        <td><p>OpCode used to tell the client to play a sound<br>
+Hex value: 0x19</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_SynchronizeTicks">SynchronizeTicks</td>
+        <td><p>OpCode used to synchronize the server's ticks with a client's<br>
+Hex value: 0x68</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_Unequip">Unequip</td>
+        <td><p>OpCode used to send a client a removal from an equipment slot<br>
+Hex value: 0x38</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_UserId">UserId</td>
+        <td><p>OpCode used to send a client it's id<br>
+Hex value: 0x05</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_WorldList">WorldList</td>
+        <td><p>OpCode used to display the world list to a client<br>
+Hex value: 0x36</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Chaos_Packets_Abstractions_Definitions_ServerOpCode_WorldMap">WorldMap</td>
+        <td><p>OpCode used to transition a client to the world map<br>
+Hex value: 0x2E</p>
+</td>
+      </tr>
+    </tbody>
+  </thead></thead></table>
+</article>
+                </div>
+
+            </main>
+        </div>
+
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+        <script type="text/javascript" src="../styles/jquery.twbsPagination.js"></script>
+        <script type="text/javascript" src="../styles/url.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/anchor-js/anchor.min.js"></script>
+        <script type="text/javascript" src="../styles/docfx.js"></script>
+        <script type="text/javascript" src="../styles/singulink.js"></script>
+        <script type="text/javascript" src="../styles/main.js"></script>    </body>
+</html>
