@@ -27,7 +27,7 @@ public sealed class TimedEventCollection : IEnumerable<TimedEvent>, IDeltaUpdata
         using var sync = Sync.Enter();
 
         var timedEvent = new TimedEvent(eventId, duration, autoConsume);
-        
+
         InnerAddEvent(timedEvent);
     }
 

@@ -10,17 +10,24 @@ public sealed class DeltaMonitor : IDeltaUpdatable
 {
     private readonly ILogger Logger;
     private readonly double MaxDelta;
+    private readonly string Name;
     private readonly IIntervalTimer Timer;
+    private bool BeginLogging;
     private List<TimeSpan> ExecutionDeltas;
-    private bool FirstPrint;
 
-    public DeltaMonitor(ILogger logger, TimeSpan logInterval, double maxDelta)
+    public DeltaMonitor(
+        string name,
+        ILogger logger,
+        TimeSpan logInterval,
+        double maxDelta
+    )
     {
+        Name = name;
         Logger = logger;
         MaxDelta = maxDelta;
         ExecutionDeltas = new List<TimeSpan>();
         Timer = new IntervalTimer(logInterval, false);
-        FirstPrint = true;
+        BeginLogging = false;
     }
 
     /// <summary>
@@ -29,25 +36,14 @@ public sealed class DeltaMonitor : IDeltaUpdatable
     /// <param name="executionDelta">The amount of time the loop took to execute</param>
     public void AddExecutionDelta(TimeSpan executionDelta) => ExecutionDeltas.Add(executionDelta);
 
-    private void PrintStatistics(List<TimeSpan> deltas) => _ = Task.Run(
-        () =>
+    private void CheckStatistics(List<TimeSpan> deltas) => _ = Task.Run(
+        async () =>
         {
-            //the first set of statistic will be inaccurate because of JIT compilation, world loading, and other things
-            if (FirstPrint)
-            {
-                FirstPrint = false;
+            await Task.Yield();
 
-                //so instead of printing the first set of statistic, print notes that give information about the monitor
-                Logger.LogInformation(
-                    """
-Delta Monitor Notes: 
-This message is shown in place of the first statistics message, because the first set of statistics are not accurate
-Server may run slow at first as the JIT recompiles things
-Max deltas can generally be ignored, if they go too high the message will show up as a WARN or ERROR
-If the log message is INFO, then it's fine
-If the log message is WARN, you may have something to worry about
-If the log message is ERROR, then you've done something seriously wrong
-""");
+            if (!BeginLogging)
+            {
+                BeginLogging = true;
 
                 return;
             }
@@ -74,12 +70,13 @@ If the log message is ERROR, then you've done something seriously wrong
 
             //log output format
             const string FORMAT =
-                "Delta Monitor - Average: {Average:N1}ms, Median: {Median:N1}ms, 95th%: {UpperPercentile:N1}, Max: {Max:N1}, Samples: {SampleCount}";
+                "Delta Monitor [{Name}] - Average: {Average:N1}ms, Median: {Median:N1}ms, 95th%: {UpperPercentile:N1}, Max: {Max:N1}, Samples: {SampleCount}";
 
             //depending on how the loop is performing, log the output at different levels
             if ((average > MaxDelta) || (max > 250))
                 Logger.LogError(
                     FORMAT,
+                    Name,
                     average,
                     median,
                     upperPct,
@@ -88,14 +85,16 @@ If the log message is ERROR, then you've done something seriously wrong
             else if ((upperPct > MaxDelta / 2) || (max > 100))
                 Logger.LogWarning(
                     FORMAT,
+                    Name,
                     average,
                     median,
                     upperPct,
                     max,
                     deltas.Count);
             else
-                Logger.LogInformation(
+                Logger.LogTrace(
                     FORMAT,
+                    Name,
                     average,
                     median,
                     upperPct,
@@ -110,7 +109,7 @@ If the log message is ERROR, then you've done something seriously wrong
 
         if (Timer.IntervalElapsed)
         {
-            PrintStatistics(ExecutionDeltas);
+            CheckStatistics(ExecutionDeltas);
             ExecutionDeltas = new List<TimeSpan>(ExecutionDeltas.Count);
         }
     }

@@ -1,5 +1,7 @@
 using System.Text;
 
+// ReSharper disable ConvertIfStatementToSwitchStatement
+
 namespace Chaos.Extensions.Common;
 
 public static class TimeSpanExtensions
