@@ -1,6 +1,3 @@
-using System.Diagnostics.Eventing.Reader;
-using System.Runtime.CompilerServices;
-using Chaos.Commands;
 using Chaos.Common.Definitions;
 using Chaos.Containers;
 using Chaos.Definitions;
@@ -13,11 +10,10 @@ using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
-using Chaos.Services.Storage;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 
-namespace Chaos.Scripts.DialogScripts;
+namespace Chaos.Scripts.DialogScripts.Tutorial;
 
 public class TutorialDialogScript : DialogScriptBase
 {

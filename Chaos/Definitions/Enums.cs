@@ -29,6 +29,14 @@ public enum Status : ulong
     //add more statuses here, double each time
 }
 
+public enum MonkElementForm
+{
+    Water,
+    Earth = 1,
+    Air = 2,
+    Fire = 3,
+}
+
 
 [Flags]
 public enum TargetFilter
