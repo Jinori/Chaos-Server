@@ -9,7 +9,7 @@ using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 
-namespace Chaos.Scripts.DialogScripts.Mileth;
+namespace Chaos.Scripts.DialogScripts.Quests;
 
 public class DarkThingsQuestScript : DialogScriptBase
 {

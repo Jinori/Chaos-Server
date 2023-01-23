@@ -23,7 +23,7 @@ namespace Chaos.Scripts.ItemScripts
         {
             if (!Admin)
             {
-                var killCounts = string.Join(Environment.NewLine, source.killedMonsters.Select(x => string.Join(" - ", x.Key, x.Value)));
+                var killCounts = string.Join(Environment.NewLine, source.KilledMonsters.Select(x => string.Join(" - ", x.Key, x.Value)));
                 if (killCounts.Length >= 1)
                     source.Client.SendServerMessage(ServerMessageType.WoodenBoard, killCounts);
                 else

@@ -9,7 +9,8 @@ public sealed class TimedEvent : IEquatable<TimedEvent>
         Fountain,
         TerrorOfTheCrypt = 1,
         HolyResearchCd = 2,
-        DarkThingsCd = 3
+        DarkThingsCd = 3,
+        ALittleBitofThatCd = 4
     }
 
     public bool AutoConsume { get; }

@@ -8,7 +8,7 @@ using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 
-namespace Chaos.Scripts.DialogScripts.Mileth;
+namespace Chaos.Scripts.DialogScripts.Quests;
 
 public class HolyResearchQuestScript : DialogScriptBase
 {
@@ -67,12 +67,6 @@ public class HolyResearchQuestScript : DialogScriptBase
 
                     var option2 = new DialogOption
                     {
-                        DialogKey = "HolyResearch_where",
-                        OptionText = "Where can I find that?"
-                    };
-
-                    var option3 = new DialogOption
-                    {
                         DialogKey = "HolyResearch_use",
                         OptionText = "What do you use these for?"
                     };
@@ -84,8 +78,6 @@ public class HolyResearchQuestScript : DialogScriptBase
                         Subject.Options.Insert(1, option1);
                     if (!Subject.HasOption(option2))
                         Subject.Options.Insert(2, option2);
-                    if (!Subject.HasOption(option3))
-                        Subject.Options.Insert(3, option3);
                 }
 
 
@@ -97,8 +89,17 @@ public class HolyResearchQuestScript : DialogScriptBase
                         OptionText = "I have your Raw Honey here."
                     };
 
+                    var option2 = new DialogOption
+                    {
+                        DialogKey = "HolyResearch_where",
+                        OptionText = "Where can I find that?"
+                    };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
+
+                    if (!Subject.HasOption(option2))
+                        Subject.Options.Insert(1, option2);
 
                     return;
                 }
@@ -110,9 +111,18 @@ public class HolyResearchQuestScript : DialogScriptBase
                         DialogKey = "HolyResearch_startedrawwax",
                         OptionText = "I have your Raw Wax here."
                     };
+                    
+                    var option2 = new DialogOption
+                    {
+                        DialogKey = "HolyResearch_where",
+                        OptionText = "Where can I find that?"
+                    };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
+
+                    if (!Subject.HasOption(option2))
+                        Subject.Options.Insert(1, option2);
 
                     return;
                 }
@@ -124,9 +134,18 @@ public class HolyResearchQuestScript : DialogScriptBase
                         DialogKey = "HolyResearch_startedroyalwax",
                         OptionText = "I have your Royal Wax here."
                     };
+                    var option2 = new DialogOption
+                    {
+                        DialogKey = "HolyResearch_where",
+                        OptionText = "Where can I find that?"
+                    };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
+
+                    if (!Subject.HasOption(option2))
+                        Subject.Options.Insert(1, option2);
+                    
                 }
 
                 break;

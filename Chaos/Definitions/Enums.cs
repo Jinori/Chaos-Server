@@ -80,3 +80,21 @@ public enum DarkThingsStage
     StartedGreatBatsWing = 6,
     StartedWhiteBatsWing = 7
 }
+
+public enum ALittleBitofThatStage
+{
+    None = 0,
+    StartedApple = 1,
+    StartedTomato = 2,
+    StartedCherry = 3,
+    StartedGrapes = 4,
+    StartedMold = 5,
+    StartedBaguette = 6,
+}
+
+public enum RionaRatQuestStage
+{
+    None = 0,
+    StartedRatQuest = 1, 
+    CompletedRatQuest = 2
+}
