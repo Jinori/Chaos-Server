@@ -55,7 +55,7 @@ namespace Chaos.Scripts.DialogScripts.Generic
             
             //Warp them to the Inn
             Point point;
-            point = new Point(9, 6);
+            point = new Point(5, 8);
             var mapInstance = SimpleCache.Get<MapInstance>("mileth_Inn");
             source.TraverseMap(mapInstance, point, true);
         }

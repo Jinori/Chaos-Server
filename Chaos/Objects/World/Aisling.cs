@@ -777,7 +777,6 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>
         SkillThrottle.Update(delta);
         WalkCounter.Update(delta);
         ChantTimer.Update(delta);
-        RegenTimer.Update(delta);
         TimedEvents.Update(delta);
         SaveTimer.Update(delta);
 

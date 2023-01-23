@@ -96,7 +96,7 @@ public class TerminusTutorialScript : DialogScriptBase
                     }
                     
                     source.Legend.AddOrAccumulate(new LegendMark("Completed Tutorial", "base", MarkIcon.Heart, MarkColor.White, 1, GameTime.Now));
-                    source.SpellBook.Remove("sradtut");
+                    source.SpellBook.Remove("srad tut");
                     source.Enums.Set(TutorialQuestStage.CompletedTutorial);
                     Point point;
                     point = new Point(13,10);

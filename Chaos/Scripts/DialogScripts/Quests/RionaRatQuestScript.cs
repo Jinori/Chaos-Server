@@ -113,9 +113,9 @@ public class RionaRatQuestScript : DialogScriptBase
                     {
                         if (count < 5)
                         {
-                            Subject.Text = "They're still everywhere! Please take care of them.";
-                                source.SendOrangeBarMessage("You watch a rat crawl across your foot");
-
+                            Subject.Text = "They're still everywhere! Please take care of them."; 
+                            source.SendOrangeBarMessage("You watch a rat crawl across your foot");
+                            
                             return;
                         }
 
