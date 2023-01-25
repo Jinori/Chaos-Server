@@ -98,3 +98,13 @@ public enum RionaRatQuestStage
     StartedRatQuest = 1, 
     CompletedRatQuest = 2
 }
+public enum PFQuestStage
+{
+    None = 0,
+    StartedPFQuest = 1,
+    TurnedInRoots = 2,
+    WolfManes = 3,
+    KilledGiantMantis = 4,
+    CompletedPFQuest = 5,
+    TurnedInTristar = 6,
+}
