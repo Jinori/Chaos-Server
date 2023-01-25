@@ -55,6 +55,7 @@ public class DamageScript : BasicSpellScriptBase
 
     #region ScriptVars
     protected int? BaseDamage { get; init; }
+    protected Stat? DamageStat { get; init; }
     protected int? ManaSpent { get; init; }
     protected decimal? DamageStatMultiplier { get; init; }
     #endregion
