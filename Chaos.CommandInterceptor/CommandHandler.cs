@@ -50,7 +50,7 @@ public sealed class CommandHandler<T> : ICommandInterceptor<T>
     }
 
     /// <inheritdoc />
-    public async ValueTask HandleCommandAsync(T source, string commandStr)
+    public ValueTask HandleCommandAsync(T source, string commandStr)
     {
         var command = commandStr[1..];
 
@@ -66,38 +66,29 @@ public sealed class CommandHandler<T> : ICommandInterceptor<T>
                                      .ToArray();
 
         if (commandParts.Length == 0)
-            return;
+            return default;
 
         var commandName = commandParts[0];
         var commandArgs = commandParts[1..];
 
         if (!Commands.TryGetValue(commandName, out var descriptor))
-            return;
+            return default;
 
-        if (descriptor.Details.RequiresAdmin && !Configuration.AdminPredicate(source))
+        if (descriptor.Details.RequiresAdmin)
         {
-            Logger.LogWarning("Non-Admin {Source} tried to execute admin command {CommandName}", source, commandName);
+            if (!Configuration.AdminPredicate(source))
+            {
+                Logger.LogWarning("Non-Admin {Source} tried to execute admin command {CommandName}", source, commandName);
 
-            return;
+                return default;
+            }
+
+            Logger.LogInformation("Admin {Source} executed command {CommandName}", source, commandName);
         }
 
-        try
-        {
-            var commandInstance = (ICommand<T>)ActivatorUtilities.CreateInstance(ServiceProvider, descriptor.Type);
+        var commandInstance = (ICommand<T>)ActivatorUtilities.CreateInstance(ServiceProvider, descriptor.Type);
 
-            Logger.LogTrace("Successfully created command {CommandName}", commandName);
-
-            await commandInstance.ExecuteAsync(source, new ArgumentCollection(commandArgs));
-
-            Logger.LogInformation("{Source} executed command {CommandName}", source, commandName);
-        } catch (Exception e)
-        {
-            Logger.LogError(
-                e,
-                "{Source} failed to execute command {CommandName}",
-                source,
-                commandName);
-        }
+        return commandInstance.ExecuteAsync(source, new ArgumentCollection(commandArgs));
     }
 
     /// <inheritdoc />

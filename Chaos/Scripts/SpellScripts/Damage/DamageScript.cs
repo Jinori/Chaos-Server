@@ -27,7 +27,7 @@ public class DamageScript : BasicSpellScriptBase
             ApplyDamageScript = ApplyDamageScript,
             SourceScript = this,
             BaseDamage = BaseDamage,
-            DamageStatMultiplier = DamageStatMultiplier,
+            DamageMultiplier = DamageMultiplier,
             DamageStat = DamageStat
         };
     }
@@ -55,7 +55,8 @@ public class DamageScript : BasicSpellScriptBase
 
     #region ScriptVars
     protected int? BaseDamage { get; init; }
+    protected Stat? DamageStat { get; init; }
+    protected decimal? DamageMultiplier { get; init; }
     protected int? ManaSpent { get; init; }
-    protected decimal? DamageStatMultiplier { get; init; }
     #endregion
 }

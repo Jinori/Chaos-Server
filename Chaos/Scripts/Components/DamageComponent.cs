@@ -18,7 +18,7 @@ public class DamageComponent
             context,
             options.BaseDamage,
             options.DamageStat,
-            options.DamageStatMultiplier);
+            options.DamageMultiplier);
 
         if (damage == 0)
             return;
@@ -60,8 +60,8 @@ public class DamageComponent
     {
         public required IApplyDamageScript ApplyDamageScript { get; init; }
         public int? BaseDamage { get; init; }
+        public decimal? DamageMultiplier { get; init; }
         public Stat? DamageStat { get; init; }
-        public decimal? DamageStatMultiplier { get; init; }
         public required IScript SourceScript { get; init; }
     }
 }
