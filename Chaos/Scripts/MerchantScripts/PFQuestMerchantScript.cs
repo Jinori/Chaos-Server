@@ -26,7 +26,7 @@ public class PFQuestMerchant : MerchantScriptBase
                 if (source is not Aisling aisling)
                     return;
 
-                if (aisling.UserStatSheet.Level >= 42)
+                if (aisling.UserStatSheet.Level is <= 10 or >= 42)
                     return;
 
                 if (!message.EqualsI("Porte Forest"))
@@ -63,7 +63,7 @@ public class PFQuestMerchant : MerchantScriptBase
                 if (source is not Aisling aisling)
                     return;
 
-                if (aisling.UserStatSheet.Level >= 42)
+                if (aisling.UserStatSheet.Level is <= 10 or >= 42)
                     return;
 
                 if (!message.EqualsI("Porte Forest"))

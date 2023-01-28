@@ -10,10 +10,7 @@ namespace Chaos.Scripts.DialogScripts.Tutorial
     {
         private readonly IItemFactory ItemFactory;
 
-        public AnnaGiveArmorScript(Dialog subject, IItemFactory itemFactory) : base(subject)
-        {
-            ItemFactory = itemFactory;
-        }
+        public AnnaGiveArmorScript(Dialog subject, IItemFactory itemFactory) : base(subject) => ItemFactory = itemFactory;
 
         public override void OnDisplayed(Aisling source)
         {

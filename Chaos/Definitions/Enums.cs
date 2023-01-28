@@ -104,7 +104,9 @@ public enum PFQuestStage
     StartedPFQuest = 1,
     TurnedInRoots = 2,
     WolfManes = 3,
-    KilledGiantMantis = 4,
-    CompletedPFQuest = 5,
-    TurnedInTristar = 6,
+    WolfManesTurnedIn = 4,
+    FoundPendant = 5,
+    KilledGiantMantis = 6,
+    CompletedPFQuest = 7,
+    TurnedInTristar = 8,
 }

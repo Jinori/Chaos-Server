@@ -98,6 +98,7 @@ public class TerminusTutorialScript : DialogScriptBase
                     source.Legend.AddOrAccumulate(new LegendMark("Completed Tutorial", "base", MarkIcon.Heart, MarkColor.White, 1, GameTime.Now));
                     source.SpellBook.Remove("srad tut");
                     source.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                    ExperienceDistributionScript.GiveExp(source, 1000);
                     Point point;
                     point = new Point(13,10);
                     var mapInstance = SimpleCache.Get<MapInstance>("after_life");
