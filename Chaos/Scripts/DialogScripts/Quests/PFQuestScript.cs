@@ -1,26 +1,28 @@
-using Chaos.Common.Utilities;
-using Chaos.Data;
+using Chaos.Containers;
 using Chaos.Definitions;
-using Chaos.Extensions.Common;
+using Chaos.Extensions.Geometry;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripts.DialogScripts.Quests;
 
 public class PFQuestScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
+    private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; set; }
 
     /// <inheritdoc />
-    public PFQuestScript(Dialog subject, IItemFactory itemFactory)
+    public PFQuestScript(Dialog subject, IItemFactory itemFactory, ISimpleCache simpleCache)
         : base(subject)
     {
         ItemFactory = itemFactory;
+        SimpleCache = simpleCache;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
@@ -224,7 +226,6 @@ public class PFQuestScript : DialogScriptBase
                 {
                     source.Enums.Set(PFQuestStage.WolfManes);
                     source.SendOrangeBarMessage("Return to Bertil with five Silver Wolf Mane Hairs.");
-                    return;
                 }
 
                 break;
@@ -404,6 +405,87 @@ public class PFQuestScript : DialogScriptBase
                 }
 
                 break;
+            
+            case "rennie_initial":
+                if (stage == PFQuestStage.KilledGiantMantis)
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "porteforest_rennie",
+                        OptionText = "Trevor? Who?"
+                    };
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Add(option);
+                }
+
+                break;
+
+            case "porteforest_rennie":
+            {
+                var option = new DialogOption
+                {
+                    DialogKey = "porteforest_rennie1",
+                    OptionText = "Oh... Trevor is dead..."
+                };
+                if (!Subject.HasOption(option))
+                    Subject.Options.Add(option);
+            }
+
+                break;
+            
+            case "porteforest_rennie1":
+            {
+                var option = new DialogOption
+                {
+                    DialogKey = "porteforest_rennie2",
+                    OptionText = "Sorry for your loss."
+                };
+                if (!Subject.HasOption(option))
+                    Subject.Options.Add(option);
+            }
+
+                break;
+            
+            case "porteforest_rennie2":
+            {
+                var option = new DialogOption
+                {
+                    DialogKey = "porteforest_rennie3",
+                    OptionText = "We should get you back to him"
+                };
+                if (!Subject.HasOption(option))
+                    Subject.Options.Add(option);
+            }
+
+                break;
+            
+            case "porteforest_rennie3":
+            {
+                Subject.Close(source);
+                var tristar = ItemFactory.Create("tristarring");
+                var rectangle = new Rectangle(
+                    11,
+                    7,
+                    3,
+                    4);
+
+                var mapInstance = SimpleCache.Get<MapInstance>("pf_shop");
+                
+                Point point;
+
+                do
+                    point = rectangle.RandomPoint();
+
+                while (!mapInstance.IsWalkable(point, source.Type));
+                
+                source.TraverseMap(mapInstance, point);
+                source.Enums.Set(PFQuestStage.CompletedPFQuest);
+                ExperienceDistributionScript.GiveExp(source, 500000);
+                source.TryGiveItem(tristar);
+
+            }
+                break;
+            
 
 
 
