@@ -46,10 +46,11 @@ public class DyeClassArmorsScript : DialogScriptBase
                         return false;
 
                     var newArmor = ItemFactory.Create("mileth" + Item.Template.TemplateKey);
-                    source.Inventory.Remove(Item.Template.TemplateKey);
-                    source.Inventory.Remove("Mileth Armor Dye");
+                    source.Inventory.Remove(Item.Template.Name);
+                    source.Inventory.RemoveQuantity("Mileth Armor Dye", 1);
                     source.Inventory.TryAddToNextSlot(newArmor);
                     source.SendOrangeBarMessage($"You've successfully dyed your {Item.Template.Name}!");
+                    dialog.Close(source);
                 }
 
                     return true;
@@ -60,10 +61,11 @@ public class DyeClassArmorsScript : DialogScriptBase
                         return false;
 
                     var newArmor = ItemFactory.Create("rucesion" + Item.Template.TemplateKey);
-                    source.Inventory.Remove(Item.Template.TemplateKey);
-                    source.Inventory.Remove("Rucesion Armor Dye");
+                    source.Inventory.Remove(Item.Template.Name);
+                    source.Inventory.RemoveQuantity("Rucesion Armor Dye", 1);
                     source.Inventory.TryAddToNextSlot(newArmor);
                     source.SendOrangeBarMessage($"You've successfully dyed your {Item.Template.Name}!");
+                    dialog.Close(source);
                 }
 
                     return true;
@@ -74,10 +76,11 @@ public class DyeClassArmorsScript : DialogScriptBase
                         return false;
 
                     var newArmor = ItemFactory.Create("suomi" + Item.Template.TemplateKey);
-                    source.Inventory.Remove(Item.Template.TemplateKey);
-                    source.Inventory.Remove("Suomi Armor Dye");
+                    source.Inventory.Remove(Item.Template.Name);
+                    source.Inventory.RemoveQuantity("Suomi Armor Dye", 1);
                     source.Inventory.TryAddToNextSlot(newArmor);
                     source.SendOrangeBarMessage($"You've successfully dyed your {Item.Template.Name}!");
+                    dialog.Close(source);
                 }
 
                     return true;
@@ -88,15 +91,17 @@ public class DyeClassArmorsScript : DialogScriptBase
                         return false;
 
                     var newArmor = ItemFactory.Create("loures" + Item.Template.TemplateKey);
-                    source.Inventory.Remove(Item.Template.TemplateKey);
-                    source.Inventory.Remove("Loures Armor Dye");
+                    source.Inventory.Remove(Item.Template.Name);
+                    source.Inventory.RemoveQuantity("Loures Armor Dye", 1);
                     source.Inventory.TryAddToNextSlot(newArmor);
                     source.SendOrangeBarMessage($"You've successfully dyed your {Item.Template.Name}!");
+                    dialog.Close(source);
                 }
 
                     return true;
             }
         
+        dialog.Close(source);
         source.SendOrangeBarMessage("You might be missing the armor dye required...");
         return false;
     }
