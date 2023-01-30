@@ -1,6 +1,8 @@
+using Chaos.Common.Definitions;
 using Chaos.Containers;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
+using Chaos.Objects.Legend;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
@@ -8,6 +10,7 @@ using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
+using Chaos.Time;
 
 namespace Chaos.Scripts.DialogScripts.Quests;
 
@@ -49,22 +52,46 @@ public class PFQuestScript : DialogScriptBase
                         Subject.Options.Insert(0, option);
                 }
 
+                if (stage == PFQuestStage.StartedPFQuest)
+                {
+                    Subject.Text = "Did ya get those roots for me?";
+                    
+                    var option = new DialogOption
+                    {
+                        DialogKey = "porteforest_rootturnin",
+                        OptionText = "I have the roots here."
+                    };
+                    
+                    var option1 = new DialogOption
+                    {
+                        DialogKey = "porteforest_no",
+                        OptionText = "I'm still working on it."
+                    };
+
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+                    if (!Subject.HasOption(option1))
+                        Subject.Options.Insert(1, option1);
+                }
+
                 if (stage == PFQuestStage.TurnedInRoots)
                 {
                     Subject.Text = "I already told you what I know.";
-                    
+
                     var option = new DialogOption
                     {
                         DialogKey = "porteforest_repeat",
                         OptionText = "What did you say again?"
                     };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
                 }
-                
-                if (stage == PFQuestStage.CompletedPFQuest)
+
+                if (stage is PFQuestStage.CompletedPFQuest or PFQuestStage.TurnedInTristar)
                 {
-                    Subject.Text = "Well done Aisling, I'm glad that beast won't bother us again. I can go farm my own trent roots again. Thank you.";
+                    Subject.Text =
+                        "Well done Aisling, I'm glad that beast won't bother us again. I can go farm my own trent roots again. Thank you.";
                 }
             }
 
@@ -77,6 +104,7 @@ public class PFQuestScript : DialogScriptBase
                     DialogKey = "porteforest_yes",
                     OptionText = "I can do that."
                 };
+
                 var option1 = new DialogOption
                 {
                     DialogKey = "porteforest_no",
@@ -85,6 +113,7 @@ public class PFQuestScript : DialogScriptBase
 
                 if (!Subject.HasOption(option))
                     Subject.Options.Insert(0, option);
+
                 if (!Subject.HasOption(option))
                     Subject.Options.Insert(1, option1);
             }
@@ -96,8 +125,9 @@ public class PFQuestScript : DialogScriptBase
                 {
                     source.Enums.Set(PFQuestStage.StartedPFQuest);
                 }
+
                 break;
-            
+
             case "porteforest_rootturnin":
                 if (stage == PFQuestStage.StartedPFQuest)
                 {
@@ -110,10 +140,10 @@ public class PFQuestScript : DialogScriptBase
                             DialogKey = "Close",
                             OptionText = "Be right back."
                         };
-                        
+
                         if (!Subject.HasOption(option))
                             Subject.Options.Insert(0, option);
-                        
+
                         source.SendOrangeBarMessage("Torbjorn isn't impressed. He wants four trent roots.");
 
                         return;
@@ -129,12 +159,14 @@ public class PFQuestScript : DialogScriptBase
                         DialogKey = "porteforest_rootturnin1",
                         OptionText = "Where did you last see the pendant?"
                     };
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Add(option1);
-                    
+
                 }
+
                 break;
-            
+
             case "porteforest_initial2":
                 if (stage == PFQuestStage.TurnedInRoots)
                 {
@@ -143,8 +175,9 @@ public class PFQuestScript : DialogScriptBase
                         DialogKey = "porteforest_quest3",
                         OptionText = "Torbjorn sent me."
                     };
-                        if (!Subject.HasOption(option))
-                            Subject.Options.Add(option);
+
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Add(option);
                 }
 
                 if (stage == PFQuestStage.WolfManes)
@@ -154,17 +187,19 @@ public class PFQuestScript : DialogScriptBase
                         DialogKey = "porteforest_wolfmanes",
                         OptionText = "I have the Silver Wolf Manes."
                     };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
                 }
-                
-                if (stage == PFQuestStage.CompletedPFQuest)
+
+                if (stage is PFQuestStage.CompletedPFQuest or PFQuestStage.TurnedInTristar)
                 {
-                    Subject.Text = "It is so great to hear about your battle with the Giant Mantis. I can't believe you took it down. Praise you Aisling.";
+                    Subject.Text =
+                        "It is so great to hear about your battle with the Giant Mantis. I can't believe you took it down. Praise you Aisling.";
                 }
 
                 break;
-            
+
             case "porteforest_quest3":
             {
                 var option = new DialogOption
@@ -178,7 +213,7 @@ public class PFQuestScript : DialogScriptBase
             }
 
                 break;
-            
+
             case "porteforest_quest4":
             {
                 var option = new DialogOption
@@ -192,7 +227,7 @@ public class PFQuestScript : DialogScriptBase
             }
 
                 break;
-            
+
             case "porteforest_quest5":
             {
                 var option = new DialogOption
@@ -200,11 +235,13 @@ public class PFQuestScript : DialogScriptBase
                     DialogKey = "porteforest_yes2",
                     OptionText = "I will go get them."
                 };
+
                 var option1 = new DialogOption
                 {
                     DialogKey = "porteforest_no2",
                     OptionText = "No way, I don't need it."
                 };
+
                 var option2 = new DialogOption
                 {
                     DialogKey = "porteforest_explain",
@@ -213,14 +250,16 @@ public class PFQuestScript : DialogScriptBase
 
                 if (!Subject.HasOption(option))
                     Subject.Options.Insert(0, option);
+
                 if (!Subject.HasOption(option1))
                     Subject.Options.Insert(1, option1);
+
                 if (!Subject.HasOption(option2))
                     Subject.Options.Insert(2, option2);
             }
 
                 break;
-            
+
             case "porteforest_yes2":
                 if (stage == PFQuestStage.TurnedInRoots)
                 {
@@ -229,18 +268,20 @@ public class PFQuestScript : DialogScriptBase
                 }
 
                 break;
-            
+
             case "porteforest_wolfmanes":
                 if (stage == PFQuestStage.WolfManes)
                 {
                     if (!source.Inventory.HasCount("Silver Wolf Mane Hair", 5))
                     {
-                        Subject.Text = "You don't have enough Aisling, I need atleast five Silver Wolf Mane Hair to make the Silver Wolf Leather.";
+                        Subject.Text =
+                            "You don't have enough Aisling, I need atleast five Silver Wolf Mane Hair to make the Silver Wolf Leather.";
 
                         return;
                     }
 
-                    Subject.Text = "Great work Aisling! Here is your Silver Wolf Leather, that should help you fight that beast off. Go talk to Isabelle again, she may know where to go with it.";
+                    Subject.Text =
+                        "Great work Aisling! Here is your Silver Wolf Leather, that should help you fight that beast off. Go talk to Isabelle again, she may know where to go with it.";
 
                     source.Inventory.RemoveQuantity("Silver Wolf Mane Hair", 5);
 
@@ -252,7 +293,7 @@ public class PFQuestScript : DialogScriptBase
                 }
 
                 break;
-            
+
             case "isabelle_initial":
                 if ((!hasStage) || (stage == PFQuestStage.None))
                 {
@@ -266,43 +307,48 @@ public class PFQuestScript : DialogScriptBase
                         DialogKey = "porteforest_initial3",
                         OptionText = "Porte Forest"
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
 
                 }
 
-                if (stage == PFQuestStage.TurnedInRoots)
+                switch (stage)
                 {
-                    var option = new DialogOption
+                    case PFQuestStage.TurnedInRoots or PFQuestStage.WolfManesTurnedIn:
                     {
-                        DialogKey = "porteforest_pendant",
-                        OptionText = "Turuc Pendant"
-                    };
-                    
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-                }
+                        var option = new DialogOption
+                        {
+                            DialogKey = "porteforest_pendant",
+                            OptionText = "Turuc Pendant"
+                        };
 
-                if (stage == PFQuestStage.FoundPendant)
-                {
-                    var option = new DialogOption
+                        if (!Subject.HasOption(option))
+                            Subject.Options.Insert(0, option);
+
+                        break;
+                    }
+                    case PFQuestStage.FoundPendant:
                     {
-                        DialogKey = "porteforest_pendant3",
-                        OptionText = "Turuc Pendant"
-                    };
-                    
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-                }
+                        var option = new DialogOption
+                        {
+                            DialogKey = "porteforest_pendant3",
+                            OptionText = "Turuc Pendant"
+                        };
 
-                if (stage == PFQuestStage.CompletedPFQuest)
-                {
-                    Subject.Text = "Thank you so much Aisling, I can enjoy the peak again! And all the flowers and bunnies!";
+                        if (!Subject.HasOption(option))
+                            Subject.Options.Add(option);
+
+                        break;
+                    }
+                    case PFQuestStage.CompletedPFQuest or PFQuestStage.TurnedInTristar:
+                        Subject.Text = "Thank you so much Aisling, I can enjoy the peak again! And all the flowers and bunnies!";
+
+                        break;
                 }
 
                 break;
-            
+
             case "porteforest_initial3":
                 if ((!hasStage) || (stage == PFQuestStage.None))
                 {
@@ -311,14 +357,14 @@ public class PFQuestScript : DialogScriptBase
                         DialogKey = "porteforest_quest6",
                         OptionText = "What did you see?"
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
 
                 }
 
                 break;
-            
+
             case "porteforest_quest6":
                 if ((!hasStage) || (stage == PFQuestStage.None))
                 {
@@ -327,14 +373,14 @@ public class PFQuestScript : DialogScriptBase
                         DialogKey = "porteforest_quest7",
                         OptionText = "Did they get away safely?"
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
 
                 }
 
                 break;
-            
+
             case "porteforest_pendant":
                 if (stage is PFQuestStage.TurnedInRoots or PFQuestStage.WolfManesTurnedIn)
                 {
@@ -343,13 +389,14 @@ public class PFQuestScript : DialogScriptBase
                         DialogKey = "porteforest_pendant2",
                         OptionText = "I'll go get it now."
                     };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
                 }
 
                 break;
 
-            
+
             case "porteforest_pendant3":
                 if (stage == PFQuestStage.FoundPendant)
                 {
@@ -358,12 +405,13 @@ public class PFQuestScript : DialogScriptBase
                         DialogKey = "porteforest_pendant4",
                         OptionText = "Yeah I found the pendant."
                     };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
                 }
 
                 break;
-            
+
             case "porteforest_pendant4":
                 if (stage == PFQuestStage.FoundPendant)
                 {
@@ -372,12 +420,13 @@ public class PFQuestScript : DialogScriptBase
                         DialogKey = "porteforest_pendant5",
                         OptionText = "Yes, a few of us will. Where do we go?."
                     };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
                 }
 
                 break;
-            
+
             case "porteforest_pendant5":
                 if (stage == PFQuestStage.FoundPendant)
                 {
@@ -386,12 +435,13 @@ public class PFQuestScript : DialogScriptBase
                         DialogKey = "porteforest_pendant6",
                         OptionText = "Is there anything else we should know?"
                     };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
                 }
 
                 break;
-            
+
             case "porteforest_pendant6":
                 if (stage == PFQuestStage.FoundPendant)
                 {
@@ -400,12 +450,13 @@ public class PFQuestScript : DialogScriptBase
                         DialogKey = "Close",
                         OptionText = "Thank you Isabelle."
                     };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
                 }
 
                 break;
-            
+
             case "rennie_initial":
                 if (stage == PFQuestStage.KilledGiantMantis)
                 {
@@ -414,6 +465,7 @@ public class PFQuestScript : DialogScriptBase
                         DialogKey = "porteforest_rennie",
                         OptionText = "Trevor? Who?"
                     };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
                 }
@@ -427,12 +479,13 @@ public class PFQuestScript : DialogScriptBase
                     DialogKey = "porteforest_rennie1",
                     OptionText = "Oh... Trevor is dead..."
                 };
+
                 if (!Subject.HasOption(option))
                     Subject.Options.Add(option);
             }
 
                 break;
-            
+
             case "porteforest_rennie1":
             {
                 var option = new DialogOption
@@ -440,29 +493,32 @@ public class PFQuestScript : DialogScriptBase
                     DialogKey = "porteforest_rennie2",
                     OptionText = "Sorry for your loss."
                 };
+
                 if (!Subject.HasOption(option))
                     Subject.Options.Add(option);
             }
 
                 break;
-            
-            case "porteforest_rennie2":
+
+            case "porteforest_rennie5":
             {
                 var option = new DialogOption
                 {
                     DialogKey = "porteforest_rennie3",
-                    OptionText = "We should get you back to him"
+                    OptionText = "I will return it to him."
                 };
+
                 if (!Subject.HasOption(option))
                     Subject.Options.Add(option);
             }
 
                 break;
-            
+
             case "porteforest_rennie3":
             {
                 Subject.Close(source);
                 var tristar = ItemFactory.Create("tristarring");
+
                 var rectangle = new Rectangle(
                     11,
                     7,
@@ -470,27 +526,97 @@ public class PFQuestScript : DialogScriptBase
                     4);
 
                 var mapInstance = SimpleCache.Get<MapInstance>("pf_shop");
-                
+
                 Point point;
 
                 do
                     point = rectangle.RandomPoint();
 
                 while (!mapInstance.IsWalkable(point, source.Type));
-                
+
                 source.TraverseMap(mapInstance, point);
                 source.Enums.Set(PFQuestStage.CompletedPFQuest);
                 ExperienceDistributionScript.GiveExp(source, 500000);
                 source.TryGiveItem(tristar);
 
+                source.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        "Saved the Daughter of Porte Forest",
+                        "PorteForest",
+                        MarkIcon.Heart,
+                        MarkColor.White,
+                        1,
+                        GameTime.Now));
+
             }
+
                 break;
-            
 
+            case "lureca_initial":
+            {
+                if (stage == PFQuestStage.CompletedPFQuest)
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "porteforest_lureca",
+                        OptionText = "Rennie"
+                    };
 
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+                }
+            }
 
+                break;
+
+            case "porteforest_lureca":
+            {
+                if (stage == PFQuestStage.CompletedPFQuest)
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "porteforest_lureca1",
+                        OptionText = "She gave me this ring to give to you."
+                    };
+                    var option1 = new DialogOption
+                    {
+                        DialogKey = "porteforest_keeptristar",
+                        OptionText = "Umm... You'll have to take my word for it. Good bye!"
+                    };
+
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+                    if (!Subject.HasOption(option1))
+                        Subject.Options.Insert(1, option1);
+                }
+            }
+
+                break;
+
+            case "porteforest_lureca1":
+            {
+                if (!source.Inventory.HasCount("tristar ring", 1))
+                {
+                    source.SendOrangeBarMessage("You don't have the Tristar Ring.");
+
+                    return;
+                }
+
+                source.Inventory.Remove("tristar ring");
+                ExperienceDistributionScript.GiveExp(source, 250000);
+                source.Enums.Set(PFQuestStage.TurnedInTristar);
+                source.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        "Eased the suffering of Porte Forest",
+                        "PorteForest1",
+                        MarkIcon.Heart,
+                        MarkColor.Blue,
+                        1,
+                        GameTime.Now));
+
+            }
+
+                break;
         }
-        
-        
     }
 }

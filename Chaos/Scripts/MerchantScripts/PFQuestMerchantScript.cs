@@ -44,7 +44,7 @@ public class PFQuestMerchant : MerchantScriptBase
 
                 if (stage == PFQuestStage.StartedPFQuest)
                 {
-                    var dialog = DialogFactory.Create("porteforest_rootturnin", Subject);
+                    var dialog = DialogFactory.Create("porteforest_initial", Subject);
                     dialog.Display(aisling);
                 }
 
