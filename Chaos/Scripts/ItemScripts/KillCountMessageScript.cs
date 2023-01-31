@@ -23,11 +23,17 @@ namespace Chaos.Scripts.ItemScripts
         {
             if (!Admin)
             {
-                var killCounts = string.Join(Environment.NewLine, source.KilledMonsters.Select(x => string.Join(" - ", x.Key, x.Value)));
-                if (killCounts.Length >= 1)
-                    source.Client.SendServerMessage(ServerMessageType.WoodenBoard, killCounts);
+                var killCounts = source.Counters.Select(x => string.Join(" - ", x.Key, x.Value));
+
+                if (killCounts.Any())
+                {
+                    foreach (var kill in killCounts)
+                    {
+                        source.Client.SendServerMessage(ServerMessageType.WoodenBoard, kill);
+                    }
+                }
                 else
-                    source.Client.SendServerMessage(ServerMessageType.WoodenBoard, "No currently recorded kills.");   
+                    source.Client.SendServerMessage(ServerMessageType.WoodenBoard, "No currently recorded kills.");
             }
         }
     }

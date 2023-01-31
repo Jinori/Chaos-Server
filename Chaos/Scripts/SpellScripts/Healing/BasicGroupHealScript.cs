@@ -35,6 +35,11 @@ namespace Chaos.Scripts.SpellScripts.Healing
         /// <inheritdoc />
         public override void OnUse(SpellContext context)
         {
+            if (context.SourceAisling?.Group is null)
+            {
+                context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are not in a group.");
+                return;
+            }
             if (ManaSpent.HasValue)
             {
                 //Require mana

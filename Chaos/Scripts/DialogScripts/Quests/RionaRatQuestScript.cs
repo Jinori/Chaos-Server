@@ -108,7 +108,7 @@ public class RionaRatQuestScript : DialogScriptBase
                 break;
             
                 case "ratquest_turnin":
-                    var killedRats = source.KilledMonsters.TryGetValue("tavern_rat", out var count);
+                    var killedRats = source.Counters.TryGetValue("tavern_rat", out var count);
                     if (stage == RionaRatQuestStage.StartedRatQuest)
                     {
                         if (count < 5)

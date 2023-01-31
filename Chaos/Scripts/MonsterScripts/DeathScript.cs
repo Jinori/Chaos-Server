@@ -64,13 +64,13 @@ public class DeathScript : MonsterScriptBase
             ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
             foreach (var aisling in rewardTargets)
             {
-                if (aisling.KilledMonsters.ContainsKey(Subject.Template.TemplateKey))
+                if (aisling.Counters.ContainsKey(Subject.Template.TemplateKey))
                 {
-                           aisling.KilledMonsters[Subject.Template.TemplateKey] += 1;
+                    aisling.Counters[Subject.Template.TemplateKey] += 1;
                 }
                 else
                 {
-                    aisling.KilledMonsters.Add(Subject.Template.TemplateKey, 1); ;
+                    aisling.Counters.TryAdd(Subject.Template.TemplateKey, 1);
                 }
             }
         }

@@ -8,6 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Chaos.Extensions.DependencyInjection;
+using Chaos.Extensions.Geometry;
+using Chaos.Pathfinding;
+using Chaos.Pathfinding.Abstractions;
 
 namespace Chaos.Scripts.ItemScripts
 {

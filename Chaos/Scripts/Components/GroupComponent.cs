@@ -14,6 +14,9 @@ public class GroupComponent
 {
     public virtual void ApplyHealing(ActivationContext context, IReadOnlyCollection<Aisling> targetEntities, GroupComponentOptions options)
     {
+        if (targetEntities is null)
+            return;
+        
         var healing = CalculateHealing(
             context,
             options.BaseHealing,
@@ -22,7 +25,7 @@ public class GroupComponent
 
         if (healing == 0)
             return;
-
+        
         foreach (var target in targetEntities)
         {
             target.ApplyHealing(context.Source, healing);
@@ -60,7 +63,7 @@ public class GroupComponent
 
         var targetEntities = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint)).ToList();
 
-        if (options.MustHaveTargets && !targetEntities!.Any())
+        if (targetEntities is null && options.MustHaveTargets)
             return (targetPoints, targetEntities);
 
         if (options.BodyAnimation.HasValue)
@@ -71,8 +74,14 @@ public class GroupComponent
                 foreach (var point in targetPoints)
                     context.Map.ShowAnimation(options.Animation.GetPointAnimation(point, context.Source.Id));
             else
-                foreach (var target in targetEntities!)
-                    target.Animate(options.Animation, context.Source.Id);
+            {
+                if (targetEntities != null)
+                {
+                    foreach (var target in targetEntities)
+                        target.Animate(options.Animation, context.Source.Id);      
+                }
+            }
+
 
         if (options.Sound.HasValue)
             context.Map.PlaySound(options.Sound.Value, targetPoints);
