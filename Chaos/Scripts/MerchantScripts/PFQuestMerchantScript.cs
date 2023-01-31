@@ -81,7 +81,7 @@ public class PFQuestMerchant : MerchantScriptBase
 
                 if (stage == PFQuestStage.WolfManes)
                 {
-                    var dialog = DialogFactory.Create("porteforest_wolfmanes", Subject);
+                    var dialog = DialogFactory.Create("porteforest_initial2", Subject);
                     dialog.Display(aisling);
                 }
 

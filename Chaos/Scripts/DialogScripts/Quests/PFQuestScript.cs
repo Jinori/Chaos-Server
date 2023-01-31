@@ -182,6 +182,8 @@ public class PFQuestScript : DialogScriptBase
 
                 if (stage == PFQuestStage.WolfManes)
                 {
+
+                    Subject.Text = "Glad to see you back so soon, were you able to gather the Silver Wolf Manes?";
                     var option = new DialogOption
                     {
                         DialogKey = "porteforest_wolfmanes",
