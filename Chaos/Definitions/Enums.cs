@@ -48,6 +48,45 @@ public enum TargetFilter
     DeadOnly = 1 << 3
 }
 
+public enum ProfessionCount
+{
+    None,
+    One = 1,
+    Two = 2
+}
+
+public enum Professions
+{
+    None,
+    Fishing = 1,
+    Tailoring = 1 << 1,
+}
+
+public enum Religion
+{
+    None = 0, 
+    Cail = 1,
+    Ceannlaidir = 2,
+    Deoch = 3,
+    Fiosachd = 4,
+    Glioca = 5,
+    Gramail = 6,
+    Luathas = 7,
+    Sgrios = 8
+}
+
+public enum ReligionRanks
+{
+    None = 0,
+    Probate = 1,
+    Worshipper = 2,
+    Acolyte = 3,
+    Priest = 4,
+    Cleric = 5,
+    Minister = 6,
+    HighPriest = 7
+}
+
 public enum TutorialQuestStage
 {
     None = 0,
