@@ -47,8 +47,8 @@ namespace Chaos.Scripts.EffectScripts.Priest
                 (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor has already been applied.");
                 return false;
             }
-            else
-                return true;
+
+            return true;
         }
 
         public override void OnDispelled() => OnTerminated();

@@ -19,7 +19,12 @@ public class ApplyEffectScript : BasicSkillScriptBase
 
     public override void OnUse(ActivationContext context)
     {
-        var effect = EffectFactory.Create(EffectKey);
-        context.Source.Effects.Apply(context.Source, effect);
+        var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+
+        foreach (var target in targets.TargetEntities)
+        {
+            var effect = EffectFactory.Create(EffectKey);
+            target.Effects.Apply(context.Source, effect);
+        }
     }
 }

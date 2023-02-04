@@ -18,6 +18,9 @@ public class RestrictionComponent
         if (creature.Status.HasFlag(Status.BeagSuain))
             return false;
         
+        if (creature.Status.HasFlag(Status.Blind))
+            return false;
+        
         return creature.IsAlive;
     }
 
@@ -29,6 +32,9 @@ public class RestrictionComponent
             return false;
 
         if (creature.Status.HasFlag(Status.Pramh))
+            return false;
+        
+        if (creature.Status.HasFlag(Status.BeagSuain))
             return false;
         
         return creature.IsAlive;
@@ -51,6 +57,9 @@ public class RestrictionComponent
             return false;
 
         if (creature.Status.HasFlag(Status.Pramh))
+            return false;
+        
+        if (creature.Status.HasFlag(Status.BeagSuain))
             return false;
         
         return creature.IsAlive;

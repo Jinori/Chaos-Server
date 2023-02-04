@@ -25,7 +25,8 @@ public enum Status : ulong
     Rumination = 1 << 9,
     ChiBlocker = 1 << 10,
     Pramh = 1 << 11,
-    DetectTraps = 1 << 12
+    DetectTraps = 1 << 12,
+    Blind = 1 << 13
     //add more statuses here, double each time
 }
 
