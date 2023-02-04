@@ -5,6 +5,7 @@ using Chaos.Extensions;
 using Chaos.Formulae;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
+using Chaos.Scripting.Abstractions;
 using Chaos.Scripts.Components;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ApplyDamage;
@@ -120,7 +121,7 @@ If this reactor was created through a script, you must specify the owner in the 
         
         AnimationTimer.Update(delta);
         
-        if (Subject.Owner is not null && Subject.Owner.Status.HasFlag(Status.DetectTraps) && AnimationTimer.IntervalElapsed)
+        if (Subject.Owner is not null && Subject.Owner.Status.HasFlag(Status.DetectTraps) && AnimationTimer.IntervalElapsed && Subject.MapInstance.Equals(Subject.Owner.MapInstance))
         {
             Subject.Owner.MapInstance.ShowAnimation(DetectTrapAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y), Subject.Owner.Id));
         }
