@@ -1,4 +1,6 @@
+using Chaos.Common.Collections;
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Objects.World;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
@@ -8,28 +10,17 @@ using Chaos.Scripts.MonsterScripts.Abstractions;
 namespace Chaos.Scripts.MonsterScripts;
 
 // ReSharper disable once ClassCanBeSealed.Global
-public class DeathScript : MonsterScriptBase
+public class KillCounterScript : MonsterScriptBase
 {
     protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
 
     /// <inheritdoc />
-    public DeathScript(Monster subject)
+    public KillCounterScript(Monster subject)
         : base(subject) => ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
 
     /// <inheritdoc />
     public override void OnDeath()
     {
-        if (!Map.RemoveObject(Subject))
-            return;
-
-        //this code will set the reward target to the person at the top of the aggro list
-        //var rewardTarget = Subject.AggroList
-        //                          .OrderByDescending(kvp => kvp.Value)
-        //                          .Select(kvp => Map.TryGetObject<Aisling>(kvp.Key, out var a) ? a : null)
-        //                          .FirstOrDefault(a => a is not null);
-
-        //get the highest contributor
-        //if there are no contributor, try getting the highest aggro
         var rewardTarget = Subject.Contribution
                                   .OrderByDescending(kvp => kvp.Value)
                                   .Select(kvp => Map.TryGetObject<Aisling>(kvp.Key, out var a) ? a : null)
@@ -46,22 +37,25 @@ public class DeathScript : MonsterScriptBase
                             .ThatAreWithinRange(rewardTarget)
                             .ToArray();
 
-        if (Subject.LootTable != null)
-            Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
-
-        var droppedGold = Subject.TryDropGold(Subject, Subject.Gold, out var money);
-        var droppedITems = Subject.TryDrop(Subject, Subject.Items, out var groundItems);
-
         if (rewardTargets is not null)
         {
-            if (droppedGold)
-                money!.LockToCreatures(30, rewardTargets);
+            foreach (var aisling in rewardTargets)
+            {
+                if (aisling.Counters.ContainsKey(Subject.Template.TemplateKey))
+                {
+                    aisling.Counters[Subject.Template.TemplateKey] += 1;
 
-            if (droppedITems)
-                foreach (var groundItem in groundItems!)
-                    groundItem.LockToCreatures(30, rewardTargets);
-            
-            ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
+                    var hasRatStage = aisling.Enums.TryGetValue(out RionaRatQuestStage stage);
+                    if (hasRatStage && (stage == RionaRatQuestStage.StartedRatQuest))
+                    {
+                        aisling.SendServerMessage(ServerMessageType.PersistentMessage, $"Killed " + aisling.Counters[Subject.Template.TemplateKey] + " " +Subject.Template.Name);
+                    }
+                }
+                else
+                {
+                    aisling.Counters.TryAdd(Subject.Template.TemplateKey, 1);
+                }
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Formulae;
 using Chaos.Objects.Menu;
@@ -122,7 +123,8 @@ public class RionaRatQuestScript : DialogScriptBase
                         Subject.Text = "Thank you so much for taking care of those rats!";
                         ExperienceDistributionScript.GiveExp(source, twentyPercent);
                         source.Enums.Set(RionaRatQuestStage.CompletedRatQuest);
-
+                        source.SendServerMessage(ServerMessageType.PersistentMessage, "");
+                        source.Counters.Remove("tavern_rat", out _);
                     }
 
                     break;

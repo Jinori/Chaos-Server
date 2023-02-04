@@ -26,31 +26,43 @@ namespace Chaos.Scripts.DialogScripts
                         {
                             var s = Subject.GetOptionIndex("Fish Market")!.Value;
                             Subject.Options.RemoveAt(s);
-                        }   
+                        }
                     }
                 }
 
                     break;
 
-                case "kamel_acceptProfession":
+                case "kamel_acceptprofession":
                 {
-                    if (profession.Equals(ProfessionCount.Two))
+                    switch (profession)
                     {
-                        Subject.Text = "Go, be on your way. The path to learning is endless. You cannot learn more.";
-                        Subject.Type = MenuOrDialogType.Normal;
-                        source.SendOrangeBarMessage("You already have two professions.");
-                    } else if (profession.Equals(ProfessionCount.One) && job is not Professions.Fishing)
-                    {
-                        source.Enums.Set(Professions.Fishing);
-                        source.Enums.Set((ProfessionCount.Two));
-                        source.Titles.Add("Fisherman");
-                        source.SendOrangeBarMessage("You've selected Fishing as your second profession!");
-                    } else if (profession.Equals(ProfessionCount.None))
-                    {
-                        source.Enums.Set(Professions.Fishing);
-                        source.Enums.Set(ProfessionCount.One);
-                        source.Titles.Add("Fisherman");
-                        source.SendOrangeBarMessage("You've selected Fishing as your first profession!");
+                        case ProfessionCount.Two:
+                            Subject.Text = "Go, be on your way. The path to learning is endless. You cannot learn more.";
+                            Subject.Type = MenuOrDialogType.Normal;
+                            source.SendOrangeBarMessage("You already have two professions.");
+
+                            break;
+                        case ProfessionCount.One when job is not Professions.Fishing:
+                            source.Enums.Set(Professions.Fishing);
+                            source.Enums.Set((ProfessionCount.Two));
+                            source.Titles.Add("Fisherman");
+                            source.SendOrangeBarMessage("You've selected Fishing as your second profession!");
+
+                            break;
+
+                        default:
+                        {
+                            if (profession is ProfessionCount.None || !hasFishing)
+                            {
+                                source.Enums.Set(Professions.Fishing);
+                                source.Enums.Set(ProfessionCount.One);
+                                source.Titles.Add("Fisherman");
+                                source.SendOrangeBarMessage("You've selected Fishing as your first profession!");
+                            }
+
+                            break;
+                        }
+
                     }
                 }
 
