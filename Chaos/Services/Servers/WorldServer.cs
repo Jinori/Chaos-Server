@@ -11,7 +11,6 @@ using Chaos.Common.Synchronization;
 using Chaos.Containers;
 using Chaos.Cryptography;
 using Chaos.Data;
-using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae;
@@ -26,6 +25,7 @@ using Chaos.Packets.Abstractions.Definitions;
 using Chaos.Services.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Servers.Options;
+using Chaos.Services.Storage.Abstractions;
 using Chaos.Storage.Abstractions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -35,11 +35,11 @@ namespace Chaos.Services.Servers;
 public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldClient>
 {
     private readonly ISaveManager<Aisling> AislingSaveManager;
-    private readonly ISimpleCacheProvider CacheProvider;
     private readonly IClientFactory<IWorldClient> ClientFactory;
     private readonly ICommandInterceptor<Aisling> CommandInterceptor;
     private readonly IGroupService GroupService;
     private readonly IMerchantFactory MerchantFactory;
+    private readonly IMetaDataCache MetaDataCache;
 
     public IEnumerable<Aisling> Aislings => ClientRegistry
                                             .Select(c => c.Aisling)
@@ -57,7 +57,8 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         IGroupService groupService,
         IMerchantFactory merchantFactory,
         IOptions<WorldOptions> options,
-        ILogger<WorldServer> logger
+        ILogger<WorldServer> logger,
+        IMetaDataCache metaDataCache
     )
         : base(
             redirectManager,
@@ -73,6 +74,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         CommandInterceptor = commandInterceptor;
         GroupService = groupService;
         MerchantFactory = merchantFactory;
+        MetaDataCache = metaDataCache;
 
         IndexHandlers();
     }
@@ -327,7 +329,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             client.SendAttributes(StatUpdateType.Full);
             client.SendLightLevel(LightLevel.Lightest);
             client.SendUserId();
-            aisling.MapInstance.AddObject(aisling, aisling);
+            aisling.MapInstance.AddAislingDirect(aisling, aisling);
             client.SendProfileRequest();
 
             foreach (var reactor in aisling.MapInstance.GetDistinctReactorsAtPoint(aisling).ToList())
@@ -559,7 +561,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
 
             if (target == null)
             {
-                localClient.SendServerMessage(ServerMessageType.ActiveMessage, $"{targetName} is nowhere to be found");
+                localClient.Aisling.SendActiveMessage($"{targetName} is nowhere to be found");
 
                 return default;
             }
@@ -704,16 +706,15 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         ValueTask InnerOnMetafileRequest(IWorldClient localClient, MetafileRequestArgs localArgs)
         {
             (var metafileRequestType, var name) = localArgs;
-            var metafileCache = CacheProvider.GetCache<Metafile>();
 
             switch (metafileRequestType)
             {
                 case MetafileRequestType.DataByName:
-                    localClient.SendMetafile(MetafileRequestType.DataByName, metafileCache, name);
+                    localClient.SendMetafile(MetafileRequestType.DataByName, MetaDataCache, name);
 
                     break;
                 case MetafileRequestType.AllCheckSums:
-                    localClient.SendMetafile(MetafileRequestType.AllCheckSums, metafileCache);
+                    localClient.SendMetafile(MetafileRequestType.AllCheckSums, MetaDataCache);
 
                     break;
                 default:
@@ -1128,78 +1129,49 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         ValueTask InnerOnWhisper(IWorldClient localClient, WhisperArgs localArgs)
         {
             (var targetName, var message) = localArgs;
+            var targetUser = Aislings.FirstOrDefault(user => user.Name.EqualsI(targetName));
 
-            if (targetName == "!")
+            if (message.Length > 100)
+                return default;
+
+            if (targetUser == null)
             {
-                if (message.Length > 100)
-                    return default;
+                localClient.Aisling.SendActiveMessage($"{targetName} is not online");
 
-                if (localClient.Aisling.GuildName is null)
-                {
-                    localClient.SendServerMessage(ServerMessageType.ActiveMessage, "You are not in a guild.");
-                    return default;
-                }
-
-                var getGuildmates = Aislings.Where(user => user.GuildName == localClient.Aisling.GuildName).ToList();
-
-                if (getGuildmates.Count < 2)
-                {
-                    localClient.SendServerMessage(ServerMessageType.ActiveMessage, $"No one else in {localClient.Aisling.GuildName} is online.");
-
-                    return default;
-                }
-                else
-                {
-                    foreach (var guildmate in getGuildmates)
-                        guildmate.Client.SendServerMessage(ServerMessageType.GuildChat, $"[{localClient.Aisling.Name}]! {message}");
-                }
+                return default;
             }
-            else
+
+            if (targetUser.Equals(localClient.Aisling))
             {
-                var targetUser = Aislings.FirstOrDefault(user => user.Name.EqualsI(targetName));
+                localClient.SendServerMessage(ServerMessageType.Whisper, "Talking to yourself?");
 
-                if (message.Length > 100)
-                    return default;
+                return default;
+            }
 
-                if (targetUser == null)
-                {
-                    localClient.SendServerMessage(ServerMessageType.ActiveMessage, $"{targetName} is not online");
+            if (targetUser.SocialStatus == SocialStatus.DoNotDisturb)
+            {
+                localClient.SendServerMessage(ServerMessageType.Whisper, $"{targetUser.Name} doesn't want to be bothered");
 
-                    return default;
-                }
+                return default;
+            }
 
-                if (targetUser.Equals(localClient.Aisling))
-                {
-                    localClient.SendServerMessage(ServerMessageType.Whisper, "Talking to yourself?");
-
-                    return default;
-                }
-
-                if (targetUser.SocialStatus == SocialStatus.DoNotDisturb)
-                {
-                    localClient.SendServerMessage(ServerMessageType.Whisper, $"{targetUser.Name} doesn't want to be bothered");
-
-                    return default;
-                }
-
-                //if someone is being ignored, they shouldnt know it
-                //let them waste their time typing for no reason
-                if (targetUser.IgnoreList.ContainsI(localClient.Aisling.Name))
-                {
-                    Logger.LogInformation(
-                        "Message sent by {FromName} was ignored by {TargetName} (Message: \"{Message}\")",
-                        localClient.Aisling.Name,
-                        targetUser.Name,
-                        message);
-
-                    localClient.SendServerMessage(ServerMessageType.Whisper, $"[{targetUser.Name}] > {message}");
-
-                    return default;
-                }
+            //if someone is being ignored, they shouldnt know it
+            //let them waste their time typing for no reason
+            if (targetUser.IgnoreList.ContainsI(localClient.Aisling.Name))
+            {
+                Logger.LogInformation(
+                    "Message sent by {From} was ignored by {Target} (Message: \"{Message}\")",
+                    localClient.Aisling,
+                    targetUser,
+                    message);
 
                 localClient.SendServerMessage(ServerMessageType.Whisper, $"[{targetUser.Name}] > {message}");
-                targetUser.Client.SendServerMessage(ServerMessageType.Whisper, $"[{localClient.Aisling.Name}] < {message}");
+
+                return default;
             }
+
+            localClient.SendServerMessage(ServerMessageType.Whisper, $"[{targetUser.Name}] > {message}");
+            targetUser.Client.SendServerMessage(ServerMessageType.Whisper, $"[{localClient.Aisling.Name}] < {message}");
 
             return default;
         }
