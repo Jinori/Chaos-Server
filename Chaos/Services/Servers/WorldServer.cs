@@ -11,6 +11,7 @@ using Chaos.Common.Synchronization;
 using Chaos.Containers;
 using Chaos.Cryptography;
 using Chaos.Data;
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae;
@@ -69,7 +70,6 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
     {
         Options = options.Value;
         ClientFactory = clientFactory;
-        CacheProvider = cacheProvider;
         AislingSaveManager = aislingSaveManager;
         CommandInterceptor = commandInterceptor;
         GroupService = groupService;

@@ -12,7 +12,7 @@ namespace Chaos.Scripts.ItemScripts;
 public class ChiAnkletScript : ConfigurableItemScriptBase
 {
     protected AdvClass AdvClass { get; init; } = AdvClass.None;
-    protected BaseClass BaseClass { get; init; } = BaseClass.Any;
+    protected BaseClass BaseClass { get; init; } = BaseClass.Monk;
     protected EquipmentType EquipmentType { get; init; }
     protected Gender Gender { get; init; } = Gender.Unisex;
     protected int? MinLevel { get; init; }
@@ -40,9 +40,7 @@ public class ChiAnkletScript : ConfigurableItemScriptBase
             return;
         }
 
-        if ((source.UserStatSheet.BaseClass != BaseClass.Diacht)
-            && (BaseClass != BaseClass.Any)
-            && (BaseClass != source.UserStatSheet.BaseClass))
+        if ((source.UserStatSheet.BaseClass != BaseClass.Diacht) && (BaseClass != source.UserStatSheet.BaseClass))
         {
             source.SendOrangeBarMessage($"{Subject.DisplayName} does not seem to fit you");
 
