@@ -9,7 +9,7 @@ namespace Chaos.Scripts.SkillScripts.Rogue;
 public class ThrowSmokeBombScript : BasicSkillScriptBase
 {
     private readonly IEffectFactory EffectFactory;
-    private string EffectKey { get; } = null!;
+    public string EffectKey { get; set; } = null!;
 
     protected new Animation Animation { get; } = new()
     {

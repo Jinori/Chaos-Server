@@ -19,7 +19,7 @@ public class ArmachdEffect : EffectBase
 
         var attributes = new Attributes
         {
-            Ac = 15
+            Ac = 10
         };
 
         AislingSubject?.StatSheet.SubtractMp(100);
@@ -34,7 +34,7 @@ public class ArmachdEffect : EffectBase
     {
         var attributes = new Attributes
         {
-            Ac = -15
+            Ac = -10
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
