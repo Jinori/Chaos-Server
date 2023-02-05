@@ -9,14 +9,14 @@ namespace Chaos.Scripts.SkillScripts.Rogue;
 public class ThrowSmokeBombScript : BasicSkillScriptBase
 {
     private readonly IEffectFactory EffectFactory;
-    private string EffectKey { get; init; } = null!;
+    private string EffectKey { get; } = null!;
 
     protected new Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 18
     };
-    
+
     /// <inheritdoc />
     public ThrowSmokeBombScript(Skill subject, IEffectFactory effectFactory)
         : base(subject) =>
@@ -32,19 +32,21 @@ public class ThrowSmokeBombScript : BasicSkillScriptBase
         if (!screen.Any())
         {
             context.SourceAisling?.SendOrangeBarMessage("There are no hostile mobs to blind.");
+
             return;
         }
 
         if (context.SourceAisling?.Inventory.CountOf("smokebomb") < 1)
         {
             context.SourceAisling?.SendOrangeBarMessage("You don't have any smokebombs to throw!");
+
             return;
         }
 
         context.Source.Animate(Animation, context.Source.Id);
         context.SourceAisling?.Inventory.RemoveQuantity("smokebomb", 1);
         context.SourceAisling?.SendOrangeBarMessage("You throw a smokebomb at your feet and it explodes!");
-        
+
         foreach (var monster in screen)
         {
             var effect = EffectFactory.Create(EffectKey);

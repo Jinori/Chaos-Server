@@ -15,8 +15,8 @@ namespace Chaos.Scripts.ItemScripts;
 [SuppressMessage("ReSharper", "UnusedVariable")]
 public class PFPendantScript : ItemScriptBase
 {
-    private readonly ISimpleCache SimpleCache;
     private readonly IMonsterFactory MonsterFactory;
+    private readonly ISimpleCache SimpleCache;
 
     public PFPendantScript(Item subject, ISimpleCache simpleCache, IMonsterFactory monsterFactory)
         : base(subject)
@@ -32,7 +32,7 @@ public class PFPendantScript : ItemScriptBase
 
         if (!source.IsAlive || (stage != PFQuestStage.FoundPendant) || !source.MapInstance.Name.EqualsI(mapInstance.Name))
             return;
-        
+
         var mantisisspawned = mapInstance.GetEntities<Monster>().Any(x => x.Template.TemplateKey.EqualsI("PF_giant_mantis"));
 
         if (mantisisspawned)
@@ -53,7 +53,7 @@ public class PFPendantScript : ItemScriptBase
             AnimationSpeed = 100,
             TargetAnimation = 97
         };
-        
+
         var monsterSpawn = new Rectangle(source, 10, 10);
         var outline = monsterSpawn.GetOutline().ToList();
         var mantis = MonsterFactory.Create("pf_giant_mantis", mapInstance, Point.From(source));

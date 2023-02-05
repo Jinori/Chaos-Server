@@ -9,9 +9,8 @@ namespace Chaos.Scripts.SkillScripts.Rogue;
 
 public class AssassinStrikeScript : DamageScript
 {
-    protected new IApplyDamageScript ApplyDamageScript { get; }
-
     protected readonly IEffectFactory EffectFactory;
+    protected new IApplyDamageScript ApplyDamageScript { get; }
 
     /// <inheritdoc />
     public AssassinStrikeScript(Skill subject, IEffectFactory effectFactory)
@@ -27,7 +26,8 @@ public class AssassinStrikeScript : DamageScript
         var targets = AbilityComponent.Activate<Creature>(context, this);
         DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
         var effect = EffectFactory.Create("AssassinStrike");
-        foreach (var target in targets.TargetEntities) 
+
+        foreach (var target in targets.TargetEntities)
             target.Effects.Apply(context.Source, effect);
     }
 }

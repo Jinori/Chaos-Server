@@ -13,18 +13,16 @@ namespace Chaos.Scripts.DialogScripts.Quests;
 
 public class DarkThingsQuestScript : DialogScriptBase
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; set; }
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
-    public DarkThingsQuestScript(
-        Dialog subject)
+    public DarkThingsQuestScript(Dialog subject)
         : base(subject) =>
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-
         var hasStage = source.Enums.TryGetValue(out DarkThingsStage stage);
 
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
@@ -48,13 +46,11 @@ public class DarkThingsQuestScript : DialogScriptBase
                     Subject.Options.Insert(0, option);
             }
 
-
                 break;
 
             case "darkthings_initial":
                 if (!hasStage || (stage == DarkThingsStage.None))
                 {
-
                     if (source.TimedEvents.TryGetNearestToCompletion(TimedEvent.TimedEventId.DarkThingsCd, out var timedEvent))
                     {
                         Subject.Text = $"I have enough for now. Return later. (({timedEvent.Remaining.ToReadableString()}))";
@@ -90,7 +86,6 @@ public class DarkThingsQuestScript : DialogScriptBase
                         Subject.Options.Insert(2, option2);
                 }
 
-
                 if (stage == DarkThingsStage.StartedSpidersEye)
                 {
                     var option = new DialogOption
@@ -107,7 +102,7 @@ public class DarkThingsQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-                    
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
 
@@ -130,7 +125,7 @@ public class DarkThingsQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-                    
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
 
@@ -150,10 +145,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                         DialogKey = "darkthings_where",
                         OptionText = "Where do I find it?"
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-                    
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
 
@@ -173,10 +168,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                         DialogKey = "darkthings_where",
                         OptionText = "Where do I find it?"
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-                    
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
 
@@ -196,10 +191,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                         DialogKey = "darkthings_where",
                         OptionText = "Where do I find it?"
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-                    
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
 
@@ -219,16 +214,16 @@ public class DarkThingsQuestScript : DialogScriptBase
                         DialogKey = "darkthings_where",
                         OptionText = "Where do I find it?"
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-                    
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
 
                     return;
                 }
-                
+
                 if (stage == DarkThingsStage.StartedScorpionSting)
                 {
                     var option = new DialogOption
@@ -242,7 +237,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                         DialogKey = "darkthings_where",
                         OptionText = "Where do I find it?"
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
 
@@ -346,7 +341,6 @@ public class DarkThingsQuestScript : DialogScriptBase
 
                             break;
                     }
-
                 }
 
                 break;
@@ -373,7 +367,6 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
-
                 }
 
                 break;
@@ -394,7 +387,6 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
-
                 }
 
                 break;
@@ -415,7 +407,6 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
-
                 }
 
                 break;
@@ -436,7 +427,6 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
-
                 }
 
                 break;
@@ -456,7 +446,6 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
-
                 }
 
                 break;
@@ -477,7 +466,6 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
-
                 }
 
                 break;
@@ -498,7 +486,6 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
-
                 }
 
                 break;

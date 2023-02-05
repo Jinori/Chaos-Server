@@ -1,10 +1,11 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Data;
 using Chaos.Scripts.EffectScripts.Abstractions;
-using Chaos.Time.Abstractions;
 using Chaos.Time;
+using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripts.EffectScripts;
+
 public class ManaBurnEffect : AnimatingEffectBase
 {
     /// <inheritdoc />

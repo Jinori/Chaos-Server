@@ -13,30 +13,27 @@ namespace Chaos.Scripts.DialogScripts.Quests;
 
 public class ALittleBitofThatScript : DialogScriptBase
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; set; }
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
-    public ALittleBitofThatScript(
-        Dialog subject)
+    public ALittleBitofThatScript(Dialog subject)
         : base(subject) =>
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-
         var hasStage = source.Enums.TryGetValue(out ALittleBitofThatStage stage);
 
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = Convert.ToInt32(.20 * tnl);
-        
+
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "egil_initial":
-                case "appie_initial":
-                    case "matei_initial":
+            case "appie_initial":
+            case "matei_initial":
             {
-
                 if (source.UserStatSheet.Level < 21)
                 {
                     var option = new DialogOption
@@ -55,7 +52,6 @@ public class ALittleBitofThatScript : DialogScriptBase
             case "alittlebitofthat_initial":
                 if (!hasStage || (stage == ALittleBitofThatStage.None))
                 {
-
                     if (source.TimedEvents.TryGetNearestToCompletion(TimedEvent.TimedEventId.ALittleBitofThatCd, out var timedEvent))
                     {
                         Subject.Text = $"I'm still working on this, come back later. (({timedEvent.Remaining.ToReadableString()}))";
@@ -74,7 +70,6 @@ public class ALittleBitofThatScript : DialogScriptBase
                         DialogKey = "alittlebitofthat_no",
                         OptionText = "Can't do. Good luck!"
                     };
-                    
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
@@ -83,10 +78,10 @@ public class ALittleBitofThatScript : DialogScriptBase
                         Subject.Options.Insert(1, option1);
                 }
 
-
                 if (stage == ALittleBitofThatStage.StartedApple)
                 {
                     Subject.Text = "Oh, back so soon? Did you get it?";
+
                     var option = new DialogOption
                     {
                         DialogKey = "alittlebitofthat_apple",
@@ -101,7 +96,7 @@ public class ALittleBitofThatScript : DialogScriptBase
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-                    
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
 
@@ -111,6 +106,7 @@ public class ALittleBitofThatScript : DialogScriptBase
                 if (stage == ALittleBitofThatStage.StartedBaguette)
                 {
                     Subject.Text = "Oh, back so soon? Did you get it?";
+
                     var option = new DialogOption
                     {
                         DialogKey = "alittlebitofthat_baguette",
@@ -125,7 +121,7 @@ public class ALittleBitofThatScript : DialogScriptBase
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-                    
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
 
@@ -135,6 +131,7 @@ public class ALittleBitofThatScript : DialogScriptBase
                 if (stage == ALittleBitofThatStage.StartedCherry)
                 {
                     Subject.Text = "Oh, back so soon? Did you get it?";
+
                     var option = new DialogOption
                     {
                         DialogKey = "alittlebitofthat_cherry",
@@ -146,10 +143,10 @@ public class ALittleBitofThatScript : DialogScriptBase
                         DialogKey = "alittlebitofthat_where",
                         OptionText = "Where do you expect me to look?"
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-                    
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
 
@@ -159,6 +156,7 @@ public class ALittleBitofThatScript : DialogScriptBase
                 if (stage == ALittleBitofThatStage.StartedGrapes)
                 {
                     Subject.Text = "Oh, back so soon? Did you get it?";
+
                     var option = new DialogOption
                     {
                         DialogKey = "alittlebitofthat_grapes",
@@ -170,10 +168,10 @@ public class ALittleBitofThatScript : DialogScriptBase
                         DialogKey = "alittlebitofthat_where",
                         OptionText = "Where do you expect me to look?"
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-                    
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
 
@@ -183,6 +181,7 @@ public class ALittleBitofThatScript : DialogScriptBase
                 if (stage == ALittleBitofThatStage.StartedMold)
                 {
                     Subject.Text = "Oh, back so soon? Did you get it?";
+
                     var option = new DialogOption
                     {
                         DialogKey = "alittlebitofthat_mold",
@@ -194,10 +193,10 @@ public class ALittleBitofThatScript : DialogScriptBase
                         DialogKey = "alittlebitofthat_where",
                         OptionText = "Where do you expect me to look?"
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-                    
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
 
@@ -207,6 +206,7 @@ public class ALittleBitofThatScript : DialogScriptBase
                 if (stage == ALittleBitofThatStage.StartedTomato)
                 {
                     Subject.Text = "Oh, back so soon? Did you get it?";
+
                     var option = new DialogOption
                     {
                         DialogKey = "alittlebitofthat_tomato",
@@ -218,10 +218,10 @@ public class ALittleBitofThatScript : DialogScriptBase
                         DialogKey = "alittlebitofthat_where",
                         OptionText = "Where do you expect me to look?"
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-                    
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
                 }
@@ -232,18 +232,16 @@ public class ALittleBitofThatScript : DialogScriptBase
                 if (!hasStage || (stage == ALittleBitofThatStage.None))
                 {
                     var randomALittleBitofThatStage = new[]
-                        {
-                            ALittleBitofThatStage.StartedApple, 
-                            ALittleBitofThatStage.StartedBaguette, 
-                            ALittleBitofThatStage.StartedCherry, 
-                            ALittleBitofThatStage.StartedGrapes, 
-                            ALittleBitofThatStage.StartedMold, 
-                            ALittleBitofThatStage.StartedTomato
-                            
-                        }.PickRandom();
-                
+                    {
+                        ALittleBitofThatStage.StartedApple,
+                        ALittleBitofThatStage.StartedBaguette,
+                        ALittleBitofThatStage.StartedCherry,
+                        ALittleBitofThatStage.StartedGrapes,
+                        ALittleBitofThatStage.StartedMold,
+                        ALittleBitofThatStage.StartedTomato
+                    }.PickRandom();
 
-                source.Enums.Set(randomALittleBitofThatStage);
+                    source.Enums.Set(randomALittleBitofThatStage);
 
                     switch (randomALittleBitofThatStage)
                     {
@@ -273,7 +271,7 @@ public class ALittleBitofThatScript : DialogScriptBase
                         }
 
                             break;
-                            
+
                         case ALittleBitofThatStage.StartedTomato:
                         {
                             Subject.Text = "I really appreciate your help Aisling, please bring me a Tomato.";
@@ -284,9 +282,9 @@ public class ALittleBitofThatScript : DialogScriptBase
                         {
                             Subject.Text = "I really appreciate your help Aisling, please bring me ten Grapes.";
                         }
+
                             break;
                     }
-
                 }
 
                 break;
@@ -308,7 +306,6 @@ public class ALittleBitofThatScript : DialogScriptBase
                     source.Enums.Set(ALittleBitofThatStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.ALittleBitofThatCd, TimeSpan.FromHours(2), true);
-
                 }
 
                 break;
@@ -329,7 +326,6 @@ public class ALittleBitofThatScript : DialogScriptBase
                     source.Enums.Set(ALittleBitofThatStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.ALittleBitofThatCd, TimeSpan.FromHours(2), true);
-
                 }
 
                 break;
@@ -350,11 +346,10 @@ public class ALittleBitofThatScript : DialogScriptBase
                     source.Enums.Set(ALittleBitofThatStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.ALittleBitofThatCd, TimeSpan.FromHours(2), true);
-
                 }
 
                 break;
-            
+
             case "alittlebitofthat_grape":
                 if (stage == ALittleBitofThatStage.StartedGrapes)
                 {
@@ -371,11 +366,10 @@ public class ALittleBitofThatScript : DialogScriptBase
                     source.Enums.Set(ALittleBitofThatStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.ALittleBitofThatCd, TimeSpan.FromHours(2), true);
-
                 }
 
                 break;
-            
+
             case "alittlebitofthat_mold":
                 if (stage == ALittleBitofThatStage.StartedMold)
                 {
@@ -392,11 +386,10 @@ public class ALittleBitofThatScript : DialogScriptBase
                     source.Enums.Set(ALittleBitofThatStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.ALittleBitofThatCd, TimeSpan.FromHours(2), true);
-
                 }
 
                 break;
-            
+
             case "alittlebitofthat_tomato":
                 if (stage == ALittleBitofThatStage.StartedTomato)
                 {
@@ -413,7 +406,6 @@ public class ALittleBitofThatScript : DialogScriptBase
                     source.Enums.Set(ALittleBitofThatStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.ALittleBitofThatCd, TimeSpan.FromHours(2), true);
-
                 }
 
                 break;

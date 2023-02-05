@@ -7,49 +7,66 @@ using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
+using Chaos.Time;
 
-namespace Chaos.Scripts.DialogScripts.Temple_of_Choosing
+namespace Chaos.Scripts.DialogScripts.Temple_of_Choosing;
+
+public class WizardDedicateScript : DialogScriptBase
 {
-    public class WizardDedicateScript : DialogScriptBase
+    private readonly IItemFactory ItemFactory;
+    private readonly ISimpleCache SimpleCache;
+    private readonly ISkillFactory SkillFactory;
+
+    public WizardDedicateScript(
+        Dialog subject,
+        IItemFactory itemFactory,
+        ISimpleCache simpleCache,
+        ISkillFactory skillFactory
+    )
+        : base(subject)
     {
-        private readonly IItemFactory ItemFactory;
-        private readonly ISimpleCache SimpleCache;
-        private readonly ISkillFactory SkillFactory;
+        ItemFactory = itemFactory;
+        SimpleCache = simpleCache;
+        SkillFactory = skillFactory;
+    }
 
-        public WizardDedicateScript(Dialog subject, IItemFactory itemFactory, ISimpleCache simpleCache, ISkillFactory skillFactory) : base(subject)
+    public override void OnDisplayed(Aisling source)
+    {
+        if (!source.Flags.HasFlag(QuestFlag1.ChosenClass))
         {
-            ItemFactory = itemFactory;
-            SimpleCache = simpleCache;
-            SkillFactory= skillFactory;
-        }
-
-        public override void OnDisplayed(Aisling source)
-        {
-            if (!source.Flags.HasFlag(QuestFlag1.ChosenClass))
+            var ani = new Animation
             {
-                var ani = new Animation
-                {
-                    AnimationSpeed = 100,
-                    TargetAnimation = 78,
-                };
+                AnimationSpeed = 100,
+                TargetAnimation = 78
+            };
 
-                source.UserStatSheet.SetBaseClass(BaseClass.Wizard);
-                if (source.Gender is Gender.Female)
-                    source.TryGiveItems(ItemFactory.Create("magiskirt"));
-                if (source.Gender is Gender.Male)
-                    source.TryGiveItems(ItemFactory.Create("gardcorp"));
-                source.Legend.AddOrAccumulate(new LegendMark("Wizard Class Devotion", "base", MarkIcon.Wizard, MarkColor.Blue, 1, Time.GameTime.Now));
-                source.Flags.AddFlag(QuestFlag1.ChosenClass);
-                var skill = SkillFactory.Create("assail");
-                if (!source.SkillBook.Contains(skill))
-                {
-                    source.SkillBook.TryAddToNextSlot(skill);
-                }
-                var mapInstance = SimpleCache.Get<MapInstance>("toc");
-                var point = new Point(8, 5);
-                source.TraverseMap(mapInstance, point);
-                source.Animate(ani, source.Id);
-            }
+            source.UserStatSheet.SetBaseClass(BaseClass.Wizard);
+
+            if (source.Gender is Gender.Female)
+                source.TryGiveItems(ItemFactory.Create("magiskirt"));
+
+            if (source.Gender is Gender.Male)
+                source.TryGiveItems(ItemFactory.Create("gardcorp"));
+
+            source.Legend.AddOrAccumulate(
+                new LegendMark(
+                    "Wizard Class Devotion",
+                    "base",
+                    MarkIcon.Wizard,
+                    MarkColor.Blue,
+                    1,
+                    GameTime.Now));
+
+            source.Flags.AddFlag(QuestFlag1.ChosenClass);
+            var skill = SkillFactory.Create("assail");
+
+            if (!source.SkillBook.Contains(skill))
+                source.SkillBook.TryAddToNextSlot(skill);
+
+            var mapInstance = SimpleCache.Get<MapInstance>("toc");
+            var point = new Point(8, 5);
+            source.TraverseMap(mapInstance, point);
+            source.Animate(ani, source.Id);
         }
     }
 }

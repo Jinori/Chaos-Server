@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Objects.World;
@@ -38,26 +37,21 @@ public class KillCounterScript : MonsterScriptBase
                             .ToArray();
 
         if (rewardTargets is not null)
-        {
             foreach (var aisling in rewardTargets)
-            {
                 switch (Subject.Template.TemplateKey)
                 {
                     case "tavern_rat":
                     {
                         var hasStage = aisling.Enums.TryGetValue(out RionaRatQuestStage stage);
-                        var counter = aisling.Counters.Where(x => x.Key.Equals(Subject.Template.TemplateKey));
-                        aisling.Counters.AddOrIncrement(Subject.Template.TemplateKey, 1);
-                        
-                        if (hasStage && (stage == RionaRatQuestStage.StartedRatQuest))
-                            aisling.SendServerMessage(
-                                ServerMessageType.PersistentMessage,
-                                $"Killed " + counter.FirstOrDefault().Value + " " + Subject.Template.Name);
 
+                        if (!hasStage || (stage != RionaRatQuestStage.StartedRatQuest))
+                            return;
+                        
+                        aisling.Counters.AddOrIncrement("StartedRatQuest", 1);
+                        aisling.Counters.TryGetValue("StartedRatQuest", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}");
                         break;
                     }
                 }
-            }
-        }
     }
 }

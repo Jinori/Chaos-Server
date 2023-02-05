@@ -4,23 +4,23 @@ using Chaos.Objects.World;
 using Chaos.Scripts.ItemScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripts.ItemScripts
+namespace Chaos.Scripts.ItemScripts;
+
+public class TownScrollScript : ConfigurableItemScriptBase
 {
-    public class TownScrollScript : ConfigurableItemScriptBase
+    private readonly ISimpleCache SimpleC;
+    protected Location Destination { get; init; }
+
+    public TownScrollScript(Item subject, ISimpleCache simpleCache)
+        : base(subject) => SimpleC = simpleCache;
+
+    public override void OnUse(Aisling source)
     {
-        protected Location Destination { get; init; }
-        private readonly ISimpleCache SimpleC;
-
-        public TownScrollScript(Item subject, ISimpleCache simpleCache) : base(subject) => SimpleC = simpleCache;
-
-        public override void OnUse(Aisling source)
+        if (source.IsAlive)
         {
-            if (source.IsAlive)
-            {
-                var instance = SimpleC.Get<MapInstance>(Destination.Map);
-                source.TraverseMap(instance, Destination);
-                source.Inventory.RemoveQuantity(Subject.DisplayName, 1, out _);
-            }
+            var instance = SimpleC.Get<MapInstance>(Destination.Map);
+            source.TraverseMap(instance, Destination);
+            source.Inventory.RemoveQuantity(Subject.DisplayName, 1, out _);
         }
     }
 }

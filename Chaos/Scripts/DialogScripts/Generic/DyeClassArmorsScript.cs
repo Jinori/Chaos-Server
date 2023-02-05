@@ -11,26 +11,23 @@ namespace Chaos.Scripts.DialogScripts.Generic;
 
 public class DyeClassArmorsScript : DialogScriptBase
 {
-    private Item? Item { get; set; }
-    public InputCollector InputCollector { get; }
-    private MapInstance? MapInstance { get; set; }
-
     private readonly IItemFactory ItemFactory;
-    
+    private Item? Item { get; set; }
+    private MapInstance? MapInstance { get; set; }
+    public InputCollector InputCollector { get; }
+
     public DyeClassArmorsScript(Dialog subject, IItemFactory itemFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;
 
-        var requestOptionText = DialogString.From(
-            () => $"I can dye your {Item?.DisplayName}. Would you like to continue?");
-        
+        var requestOptionText = DialogString.From(() => $"I can dye your {Item?.DisplayName}. Would you like to continue?");
+
         InputCollector = new InputCollectorBuilder()
                          .RequestOptionSelection(requestOptionText, DialogString.Yes, DialogString.No)
                          .HandleInput(HandleInputOption)
                          .Build();
     }
-
 
     private bool HandleInputOption(Aisling source, Dialog dialog, int? option)
     {
@@ -69,7 +66,7 @@ public class DyeClassArmorsScript : DialogScriptBase
                 }
 
                     return true;
-                
+
                 case "suomi_armor_shop":
                 {
                     if (!source.Inventory.HasCount("Suomi Armor Dye", 1))
@@ -84,7 +81,7 @@ public class DyeClassArmorsScript : DialogScriptBase
                 }
 
                     return true;
-                
+
                 case "piet_storage":
                 {
                     if (!source.Inventory.HasCount("Loures Armor Dye", 1))
@@ -100,9 +97,10 @@ public class DyeClassArmorsScript : DialogScriptBase
 
                     return true;
             }
-        
+
         dialog.Close(source);
         source.SendOrangeBarMessage("You might be missing the armor dye required...");
+
         return false;
     }
 
@@ -110,7 +108,7 @@ public class DyeClassArmorsScript : DialogScriptBase
     {
         MapInstance = source.MapInstance;
         var inventory = source.Inventory.Where(x => x.Template.IsDyeable).ToList();
-        
+
         if (Subject.Slots.IsNullOrEmpty())
             Subject.Slots = inventory.Select(x => x.Slot).ToList();
     }
@@ -122,6 +120,7 @@ public class DyeClassArmorsScript : DialogScriptBase
             if (!Subject.MenuArgs.TryGet<byte>(0, out var slot))
             {
                 Subject.Reply(source, DialogString.UnknownInput.Value);
+
                 return;
             }
 
@@ -130,12 +129,13 @@ public class DyeClassArmorsScript : DialogScriptBase
             if (item == null)
             {
                 Subject.Reply(source, DialogString.UnknownInput.Value);
+
                 return;
             }
 
             Item = item;
         }
-        
+
         InputCollector.Collect(source, Subject, optionIndex);
     }
 }

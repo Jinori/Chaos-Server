@@ -27,8 +27,7 @@ public class PFPendantScript : ReactorTileScriptBase
 
         var hasStage = aisling.Enums.TryGetValue(out PFQuestStage stage);
 
-
-        if ((hasStage) && stage is PFQuestStage.TurnedInRoots or PFQuestStage.WolfManes or PFQuestStage.WolfManesTurnedIn)
+        if (hasStage && stage is PFQuestStage.TurnedInRoots or PFQuestStage.WolfManes or PFQuestStage.WolfManesTurnedIn)
         {
             var pendant = ItemFactory.Create("turucpendant");
             var dialog = DialogFactory.Create("pf_foundpendant", pendant);

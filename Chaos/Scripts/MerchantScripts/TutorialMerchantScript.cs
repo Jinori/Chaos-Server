@@ -24,10 +24,10 @@ public class TutorialMerchantScript : MerchantScriptBase
 
         if (!aisling.Enums.TryGetValue<TutorialQuestStage>(out var stage))
             return;
-        
+
         if (stage != TutorialQuestStage.GaveStickAndArmor)
             return;
-        
+
         if (!message.EqualsI("hello"))
             return;
 

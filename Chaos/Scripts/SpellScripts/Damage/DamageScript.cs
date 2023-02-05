@@ -28,7 +28,9 @@ public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageCompone
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
     {
-        ManaCostComponent.ApplyManaCost(context, this);
+        if (!ManaCostComponent.TryApplyManaCost(context, this))
+            return;
+
         var targets = AbilityComponent.Activate<Creature>(context, this);
         DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
         context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}");

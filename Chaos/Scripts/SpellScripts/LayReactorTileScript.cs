@@ -11,7 +11,7 @@ public class LayReactorTileScript : BasicSpellScriptBase, ManaCostComponent.IMan
 {
     protected IReactorTileFactory ReactorTileFactory { get; set; }
     protected ManaCostComponent ManaCostComponent { get; }
-    
+
     /// <inheritdoc />
     public LayReactorTileScript(Spell subject, IReactorTileFactory reactorTileFactory)
         : base(subject)
@@ -23,7 +23,9 @@ public class LayReactorTileScript : BasicSpellScriptBase, ManaCostComponent.IMan
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
     {
-        ManaCostComponent.ApplyManaCost(context, this);
+        if (!ManaCostComponent.TryApplyManaCost(context, this))
+            return;
+
         var targets = AbilityComponent.Activate<Creature>(context, this);
 
         foreach (var point in targets.TargetPoints)
@@ -37,6 +39,7 @@ public class LayReactorTileScript : BasicSpellScriptBase, ManaCostComponent.IMan
             context.Map.SimpleAdd(trap);
         }
     }
+
     #region ScriptVars
     protected string ReactorTileTemplateKey { get; init; } = null!;
     public int? ManaCost { get; init; }

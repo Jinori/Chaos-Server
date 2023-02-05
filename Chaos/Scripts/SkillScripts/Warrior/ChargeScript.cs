@@ -1,52 +1,44 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World.Abstractions;
-using Chaos.Scripts.SkillScripts.Abstractions;
-using Chaos.Data;
+﻿using Chaos.Data;
 using Chaos.Definitions;
 using Chaos.Extensions;
-using Chaos.Scripts.Components;
+using Chaos.Objects.Panel;
+using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ApplyDamage;
 
-namespace Chaos.Scripts.SkillScripts.Warrior
+namespace Chaos.Scripts.SkillScripts.Warrior;
+
+public class ChargeScript : DamageScript
 {
-    public class ChargeScript : DamageScript
+    protected new IApplyDamageScript ApplyDamageScript { get; }
+
+    /// <inheritdoc />
+    public ChargeScript(Skill subject)
+        : base(subject) =>
+        ApplyDamageScript = DefaultApplyDamageScript.Create();
+
+    /// <inheritdoc />
+    public override void OnUse(ActivationContext context)
     {
-        protected new IApplyDamageScript ApplyDamageScript { get; }
+        //get the 5 points in front of the source
+        var points = AoeShape.Front.ResolvePoints(
+            context.SourcePoint,
+            5,
+            context.Source.Direction,
+            context.Map.Template.Bounds);
 
-        /// <inheritdoc />
-        public ChargeScript(Skill subject)
-            : base(subject)
+        var targets = AbilityComponent.Activate<Creature>(context, this);
+        var targetCreature = targets.TargetEntities.FirstOrDefault();
+
+        if (targetCreature is null)
         {
-            ApplyDamageScript = DefaultApplyDamageScript.Create();
-        }
+            //if that point is not walkable, continue
+            if (!context.Map.IsWalkable(points.Last(), context.Source.Type))
+                return;
 
-        /// <inheritdoc />
-        public override void OnUse(ActivationContext context)
-        {
-            //get the 5 points in front of the source
-            var points = AoeShape.Front.ResolvePoints(
-                context.SourcePoint,
-                5,
-                context.Source.Direction,
-                context.Map.Template.Bounds);
-
-           var targets = AbilityComponent.Activate<Creature>(context, this);
-           var targetCreature = targets.TargetEntities.FirstOrDefault();
-
-            if (targetCreature is null)
-            {
-                //if that point is not walkable, continue
-                if (!context.Map.IsWalkable(points.Last(), context.Source.Type))
-                    return;
-
-                //if it is walkable, warp to that point
-                context.Source.WarpTo(points.Last());
-                DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
-            }
-
-            return;
+            //if it is walkable, warp to that point
+            context.Source.WarpTo(points.Last());
+            DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
         }
     }
 }

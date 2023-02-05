@@ -12,9 +12,6 @@ public class SapphireStreamPassScript : ReactorTileScriptBase
 {
     private readonly ISimpleCache SimpleCache;
 
-    #region ScriptVars
-    #endregion
-
     /// <inheritdoc />
     public SapphireStreamPassScript(ReactorTile subject, ISimpleCache simpleCache)
         : base(subject) =>
@@ -37,4 +34,7 @@ public class SapphireStreamPassScript : ReactorTileScriptBase
 
         source.TraverseMap(targetMap, new Point(13, 11));
     }
+
+    #region ScriptVars
+    #endregion
 }

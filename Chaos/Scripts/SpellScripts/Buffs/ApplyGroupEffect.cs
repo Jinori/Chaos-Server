@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Data;
+﻿using Chaos.Data;
 using Chaos.Extensions;
 using Chaos.Objects.Panel;
 using Chaos.Scripts.Components;
@@ -26,17 +25,17 @@ public class ApplyGroupEffectScript : BasicSpellScriptBase, ManaCostComponent.IM
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
     {
-        ManaCostComponent.ApplyManaCost(context, this);
+        if (!ManaCostComponent.TryApplyManaCost(context, this))
+            return;
+
         var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint));
-        
+
         if (group != null)
-        {
             foreach (var member in group)
             {
                 var effect = EffectFactory.Create(EffectKey);
                 member.Effects.Apply(member, effect);
-            }   
-        }
+            }
         else
         {
             var effect = EffectFactory.Create(EffectKey);
@@ -45,7 +44,7 @@ public class ApplyGroupEffectScript : BasicSpellScriptBase, ManaCostComponent.IM
 
         context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}");
     }
-    
+
     #region ScriptVars
     public int? ManaCost { get; init; }
     public decimal PctManaCost { get; init; }

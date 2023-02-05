@@ -11,12 +11,10 @@ namespace Chaos.Scripts.DialogScripts.Quests;
 
 public class RionaRatQuestScript : DialogScriptBase
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; set; }
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
-    public RionaRatQuestScript(
-        Dialog subject 
-    )
+    public RionaRatQuestScript(Dialog subject)
         : base(subject) =>
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
 
@@ -43,7 +41,7 @@ public class RionaRatQuestScript : DialogScriptBase
                 }
 
                 break;
-            
+
             case "ratquest_initial":
                 if (!hasStage || (stage == RionaRatQuestStage.None))
                 {
@@ -64,11 +62,13 @@ public class RionaRatQuestScript : DialogScriptBase
                         DialogKey = "ratquest_where",
                         OptionText = "Where'd they come from?"
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
+
                     if (!Subject.HasOption(option2))
                         Subject.Options.Insert(2, option2);
                 }
@@ -76,6 +76,7 @@ public class RionaRatQuestScript : DialogScriptBase
                 if (stage == RionaRatQuestStage.StartedRatQuest)
                 {
                     Subject.Text = "Did you take care of those rats?";
+
                     {
                         var option = new DialogOption
                         {
@@ -88,16 +89,17 @@ public class RionaRatQuestScript : DialogScriptBase
                             DialogKey = "ratquest_refuse",
                             OptionText = "Rats are too fast"
                         };
-                        
+
                         if (!Subject.HasOption(option))
                             Subject.Options.Insert(0, option);
+
                         if (!Subject.HasOption(option1))
                             Subject.Options.Insert(1, option1);
-                        
                     }
                 }
+
                 break;
-            
+
             case "ratquest_yes":
                 if (!hasStage || (stage == RionaRatQuestStage.None))
                 {
@@ -107,28 +109,26 @@ public class RionaRatQuestScript : DialogScriptBase
                 }
 
                 break;
-            
-                case "ratquest_turnin":
-                    var counter = source.Counters.Where(x => x.Key.Equals("tavern_rat"));;
-                    if (stage == RionaRatQuestStage.StartedRatQuest)
-                    {
-                        if (counter.FirstOrDefault().Value < 5)
-                        {
-                            Subject.Text = "They're still everywhere! Please take care of them."; 
-                            source.SendOrangeBarMessage("You watch a rat crawl across your foot");
-                            
-                            return;
-                        }
 
-                        Subject.Text = "Thank you so much for taking care of those rats!";
-                        ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                        source.Enums.Set(RionaRatQuestStage.CompletedRatQuest);
-                        source.SendServerMessage(ServerMessageType.PersistentMessage, "");
-                        source.Counters.Remove("tavern_rat", out _);
+            case "ratquest_turnin":
+                if (stage == RionaRatQuestStage.StartedRatQuest)
+                {
+                    if (!source.Counters.TryGetValue("StartedRatQuest", out var value) || (value < 5))
+                    {
+                        Subject.Text = "They're still everywhere! Please take care of them.";
+                        source.SendOrangeBarMessage("You watch a rat crawl across your foot");
+
+                        return;
                     }
 
-                    break;
+                    Subject.Text = "Thank you so much for taking care of those rats!";
+                    ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    source.Enums.Set(RionaRatQuestStage.CompletedRatQuest);
+                    source.SendServerMessage(ServerMessageType.PersistentMessage, "");
+                    source.Counters.Remove("StartedRatQuest", out _);
+                }
 
+                break;
         }
     }
-    }
+}

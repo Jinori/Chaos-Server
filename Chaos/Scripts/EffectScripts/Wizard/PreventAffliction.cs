@@ -1,47 +1,49 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Objects.World.Abstractions;
-using Chaos.Objects.World;
-using Chaos.Scripts.EffectScripts.Abstractions;
 using Chaos.Definitions;
+using Chaos.Objects.World;
+using Chaos.Objects.World.Abstractions;
+using Chaos.Scripts.EffectScripts.Abstractions;
 
-namespace Chaos.Scripts.EffectScripts.Wizard
+namespace Chaos.Scripts.EffectScripts.Wizard;
+
+public class PreventAffliction : EffectBase
 {
-    public class PreventAffliction : EffectBase
+    public override byte Icon => 112;
+    public override string Name => "preventaffliction";
+
+    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(18);
+
+    public override void OnApplied()
     {
-        public override byte Icon => 112;
-        public override string Name => "preventaffliction";
+        base.OnApplied();
 
-        protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(18);
+        if (!Subject.Status.HasFlag(Status.PreventAffliction))
+            Subject.Status = Status.PreventAffliction;
 
-        public override void OnApplied()
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your magic has been simplified.");
+    }
+
+    public override void OnDispelled() => OnTerminated();
+
+    public override void OnTerminated()
+    {
+        if (Subject.Status.HasFlag(Status.PreventAffliction))
+            Subject.Status &= ~Status.PreventAffliction;
+
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your magic returns to normal.");
+    }
+
+    public override bool ShouldApply(Creature source, Creature target)
+    {
+        if (target.Effects.Contains("preventaffliction"))
         {
-            base.OnApplied();
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "This magic has already been simplified.");
 
-            if (!Subject.Status.HasFlag(Status.PreventAffliction))
-                Subject.Status = Status.PreventAffliction;
-            AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your magic has been simplified.");
+            return false;
         }
 
-        public override void OnTerminated()
-        {
-            if (Subject.Status.HasFlag(Status.PreventAffliction))
-                Subject.Status &= ~Status.PreventAffliction;
-            AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your magic returns to normal.");
-        }
-
-        public override bool ShouldApply(Creature source, Creature target)
-        {
-            if (target.Effects.Contains("preventaffliction"))
-            {
-                (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "This magic has already been simplified.");
-                return false;
-            }
-            else
-                return true;
-        }
-
-        public override void OnDispelled() => OnTerminated();
+        return true;
     }
 }

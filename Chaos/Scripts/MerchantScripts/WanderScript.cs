@@ -8,20 +8,19 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripts.MerchantScripts;
 
-
 public class WanderScript : ConfigurableMerchantScriptBase
 {
-    private MapInstance Map => Subject.MapInstance;
+    private readonly ICollection<IPoint>? PathingBoundsOutline;
 
     private readonly IIntervalTimer WanderTimer;
-    protected int WanderIntervalMs { get; init; }
     protected Rectangle? PathingBounds { get; init; }
-    private readonly ICollection<IPoint>? PathingBoundsOutline;
+    protected int WanderIntervalMs { get; init; }
+    private MapInstance Map => Subject.MapInstance;
     private bool ShouldWander => WanderTimer.IntervalElapsed;
 
     /// <inheritdoc />
     public WanderScript(Merchant subject)
-    : base(subject)
+        : base(subject)
     {
         WanderTimer = new IntervalTimer(TimeSpan.FromMilliseconds(WanderIntervalMs));
 

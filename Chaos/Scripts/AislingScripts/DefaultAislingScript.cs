@@ -1,31 +1,33 @@
 using Chaos.Clients.Abstractions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
-using Chaos.Formulae;
 using Chaos.Networking.Abstractions;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.AislingScripts.Abstractions;
 using Chaos.Scripts.Components;
+using Chaos.Scripts.FunctionalScripts.Abstractions;
+using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 
 namespace Chaos.Scripts.AislingScripts;
 
 public class DefaultAislingScript : AislingScriptBase
 {
-    protected virtual RestrictionComponent RestrictionComponent { get; }
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
-    private readonly List<string> MapsToNotPunishDeathOn = new List<string>
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
+    private readonly List<string> MapsToNotPunishDeathOn = new()
     {
         "tutorial_bossroom",
         "tutorial_farm"
     };
-
+    protected virtual RestrictionComponent RestrictionComponent { get; }
 
     /// <inheritdoc />
     public DefaultAislingScript(Aisling subject, IClientRegistry<IWorldClient> clientRegistry)
         : base(subject)
     {
+        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         RestrictionComponent = new RestrictionComponent();
         ClientRegistry = clientRegistry;
     }
@@ -58,6 +60,7 @@ public class DefaultAislingScript : AislingScriptBase
 
         //Remove all effects from the player
         var effects = Subject.Effects.ToList();
+
         foreach (var effect in effects)
             Subject.Effects.Dispel(effect.Name);
 
@@ -65,26 +68,24 @@ public class DefaultAislingScript : AislingScriptBase
             return;
 
         foreach (var client in ClientRegistry)
-        {
-            client.SendServerMessage(ServerMessageType.OrangeBar1,
+            client.SendServerMessage(
+                ServerMessageType.OrangeBar1,
                 $"{Subject.Name} was killed at {Subject.MapInstance.Name} by {source.Name}.");
-        }
 
         //Let's break some items at 2% chance
-        var itemsToBreak = Subject.Equipment.Where((x => x.Template.AccountBound is false));
+        var itemsToBreak = Subject.Equipment.Where(x => x.Template.AccountBound is false);
+
         foreach (var item in itemsToBreak)
-        {
             if (Randomizer.RollChance(2))
             {
                 Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{item.DisplayName} has been consumed by the Death God.");
                 Subject.Equipment.TryGetRemove(item.Slot, out _);
             }
-        }
         
-        //Percent of Exp to take away (Sichi is implementing TakeExp)
-        var tnl = LevelUpFormulae.Default.CalculateTnl(Subject);
-        var tenPercent = Convert.ToInt32(0.1 * tnl);
-        //aisling.TakeExp(tenPercent);
-        Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You have lost {tenPercent} experience.");
+        var tenPercent = MathEx.GetPercentOf<int>((int)Subject.UserStatSheet.TotalExp, 10);
+        if (ExperienceDistributionScript.TryTakeExp(Subject, tenPercent))
+        {
+            Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You have lost {tenPercent} experience.");   
+        }
     }
 }

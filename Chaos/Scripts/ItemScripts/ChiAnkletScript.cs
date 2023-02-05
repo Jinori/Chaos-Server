@@ -19,6 +19,85 @@ public class ChiAnkletScript : ConfigurableItemScriptBase
     public ChiAnkletScript(Item subject)
         : base(subject) { }
 
+    public override void OnEquipped(Aisling source)
+    {
+        var ac = 0;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac1))
+            ac = 1;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac2))
+            ac = 2;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac3))
+            ac = 3;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac4))
+            ac = 4;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac5))
+            ac = 5;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac6))
+            ac = 6;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac7))
+            ac = 7;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac8))
+            ac = 8;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac9))
+            ac = 9;
+
+        var attributes = new Attributes
+        {
+            Ac = ac
+        };
+
+        source.StatSheet.SubtractBonus(attributes);
+        source.Client.SendAttributes(StatUpdateType.Secondary);
+    }
+
+    public override void OnUnEquipped(Aisling source)
+    {
+        var ac = 0;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac1))
+            ac = 1;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac2))
+            ac = 2;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac3))
+            ac = 3;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac4))
+            ac = 4;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac5))
+            ac = 5;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac6))
+            ac = 6;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac7))
+            ac = 7;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac8))
+            ac = 8;
+
+        if (source.Flags.HasFlag(ChiAnkletFlags.Ac9))
+            ac = 9;
+
+        var attributes = new Attributes
+        {
+            Ac = ac
+        };
+
+        source.StatSheet.AddBonus(attributes);
+        source.Client.SendAttributes(StatUpdateType.Secondary);
+    }
 
     public override void OnUse(Aisling source)
     {
@@ -68,68 +147,5 @@ public class ChiAnkletScript : ConfigurableItemScriptBase
         }
 
         source.Equip(EquipmentType, Subject);
-    }
-
-    public override void OnEquipped(Aisling source)
-    {
-        var ac = 0;
-
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac1))
-            ac = 1;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac2))
-            ac = 2;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac3))
-            ac = 3;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac4))
-            ac = 4;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac5))
-            ac = 5;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac6))
-            ac = 6;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac7))
-            ac = 7;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac8))
-            ac = 8;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac9))
-            ac = 9;
-
-        var attributes = new Attributes
-        {
-            Ac = ac
-        };
-
-        source.StatSheet.SubtractBonus(attributes);
-        source.Client.SendAttributes(StatUpdateType.Secondary);
-    }
-
-    public override void OnUnEquipped(Aisling source)
-    {
-        var ac = 0;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac1))
-            ac = 1;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac2))
-            ac = 2;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac3))
-            ac = 3;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac4))
-            ac = 4;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac5))
-            ac = 5;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac6))
-            ac = 6;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac7))
-            ac = 7;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac8))
-            ac = 8;
-        if (source.Flags.HasFlag(ChiAnkletFlags.Ac9))
-            ac = 9;
-
-        var attributes = new Attributes
-        {
-            Ac = ac
-        };
-
-        source.StatSheet.AddBonus(attributes);
-        source.Client.SendAttributes(StatUpdateType.Secondary);
     }
 }

@@ -18,10 +18,10 @@ namespace Chaos.Scripts.DialogScripts.Tutorial;
 public class TutorialDialogScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
+    private readonly ISimpleCache SimpleCache;
     private readonly ISkillFactory SkillFactory;
     private readonly ISpellFactory SpellFactory;
-    private readonly ISimpleCache SimpleCache;
-    private IExperienceDistributionScript ExperienceDistributionScript { get; set; }
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
     public TutorialDialogScript(
@@ -43,7 +43,6 @@ public class TutorialDialogScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-
         var hasStage = source.Enums.TryGetValue(out TutorialQuestStage stage);
 
         Skill? assail;
@@ -106,8 +105,6 @@ public class TutorialDialogScript : DialogScriptBase
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-
-                    return;
                 }
 
                 break;
@@ -156,8 +153,6 @@ public class TutorialDialogScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, 250);
                     source.TryGiveGold(1000);
                     source.Enums.Set(TutorialQuestStage.LearnedWorld);
-
-                    return;
                 }
 
                 break;
@@ -167,17 +162,14 @@ public class TutorialDialogScript : DialogScriptBase
                     var option = new DialogOption
                     {
                         DialogKey = "cain_yes",
-                        OptionText = "I'm on it!",
-
+                        OptionText = "I'm on it!"
                     };
 
                     var option1 = new DialogOption
                     {
                         DialogKey = "cain_no",
-                        OptionText = "Not right now.",
-
+                        OptionText = "Not right now."
                     };
-
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
@@ -193,17 +185,14 @@ public class TutorialDialogScript : DialogScriptBase
                     var option = new DialogOption
                     {
                         DialogKey = "cain_yes2",
-                        OptionText = "Here ya go",
-
+                        OptionText = "Here ya go"
                     };
 
                     var option1 = new DialogOption
                     {
                         DialogKey = "cain_no2",
-                        OptionText = "No, not yet, those floppies hurt..",
-
+                        OptionText = "No, not yet, those floppies hurt.."
                     };
-
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
@@ -219,9 +208,8 @@ public class TutorialDialogScript : DialogScriptBase
                     var option = new DialogOption
                     {
                         DialogKey = "tutorialequipment",
-                        OptionText = "Buying Equipment",
+                        OptionText = "Buying Equipment"
                     };
-
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
@@ -234,7 +222,7 @@ public class TutorialDialogScript : DialogScriptBase
                     var option = new DialogOption
                     {
                         DialogKey = "tutorialgiantfloppy",
-                        OptionText = "Giant Floppy",
+                        OptionText = "Giant Floppy"
                     };
 
                     if (!Subject.HasOption(option))
@@ -248,13 +236,11 @@ public class TutorialDialogScript : DialogScriptBase
                     var option = new DialogOption
                     {
                         DialogKey = "tutorialgiantfloppy2",
-                        OptionText = "Giant Floppy",
+                        OptionText = "Giant Floppy"
                     };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-
-                    return;
                 }
 
                 break;
@@ -265,7 +251,7 @@ public class TutorialDialogScript : DialogScriptBase
                     var option = new DialogOption
                     {
                         DialogKey = "cain_yes2",
-                        OptionText = "Here ya go.",
+                        OptionText = "Here ya go."
                     };
 
                     if (!Subject.HasOption(option))
@@ -276,11 +262,9 @@ public class TutorialDialogScript : DialogScriptBase
 
                 break;
 
-
             case "cain_yes2":
                 if (stage == TutorialQuestStage.StartedFloppy)
                 {
-
                     if (!source.Inventory.HasCount("carrot", 3))
                     {
                         source.SendOrangeBarMessage("Farmer looks disappointed, you don't have enough carrots.");
@@ -297,13 +281,11 @@ public class TutorialDialogScript : DialogScriptBase
                     var option = new DialogOption
                     {
                         DialogKey = "tutorialgiantfloppy",
-                        OptionText = "Giant Floppy",
+                        OptionText = "Giant Floppy"
                     };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-
-                    return;
                 }
 
                 break;
@@ -327,15 +309,13 @@ public class TutorialDialogScript : DialogScriptBase
                     var option = new DialogOption
                     {
                         DialogKey = "gotequipment",
-                        OptionText = "I got rings and boots from Abel",
+                        OptionText = "I got rings and boots from Abel"
                     };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
 
                     source.Enums.Set(TutorialQuestStage.GotEquipment);
-
-                    return;
                 }
 
                 break;
@@ -345,7 +325,7 @@ public class TutorialDialogScript : DialogScriptBase
                     var option = new DialogOption
                     {
                         DialogKey = "tutorialgiantfloppy",
-                        OptionText = "Giant Floppy",
+                        OptionText = "Giant Floppy"
                     };
 
                     if (!Subject.HasOption(option))
@@ -418,7 +398,7 @@ public class TutorialDialogScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     if (stage == TutorialQuestStage.LearnedWorld)
                     {
                         source.TryGiveGold(1300);
@@ -465,7 +445,6 @@ public class TutorialDialogScript : DialogScriptBase
 
                         return;
                     }
-                    
 
                     if (stage is TutorialQuestStage.CompletedFloppy or TutorialQuestStage.GiantFloppy)
 

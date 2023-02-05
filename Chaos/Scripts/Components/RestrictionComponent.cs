@@ -11,16 +11,16 @@ public class RestrictionComponent
     {
         if (creature.Status.HasFlag(Status.Suain))
             return false;
-        
+
         if (creature.Status.HasFlag(Status.Pramh))
             return false;
 
         if (creature.Status.HasFlag(Status.BeagSuain))
             return false;
-        
+
         if (creature.Status.HasFlag(Status.Blind))
             return false;
-        
+
         return creature.IsAlive;
     }
 
@@ -33,21 +33,21 @@ public class RestrictionComponent
 
         if (creature.Status.HasFlag(Status.Pramh))
             return false;
-        
+
         if (creature.Status.HasFlag(Status.BeagSuain))
             return false;
-        
+
         return creature.IsAlive;
     }
 
     public virtual bool CanUseItem(Aisling aisling, Item item)
-    {       
+    {
         if (aisling.Status.HasFlag(Status.Suain))
             return false;
-        
+
         if (aisling.Status.HasFlag(Status.Pramh))
             return false;
-        
+
         return aisling.IsAlive;
     }
 
@@ -58,10 +58,10 @@ public class RestrictionComponent
 
         if (creature.Status.HasFlag(Status.Pramh))
             return false;
-        
+
         if (creature.Status.HasFlag(Status.BeagSuain))
             return false;
-        
+
         return creature.IsAlive;
     }
 
@@ -72,7 +72,7 @@ public class RestrictionComponent
 
         if (creature.Status.HasFlag(Status.Pramh))
             return false;
-        
+
         return creature.IsAlive;
     }
 }

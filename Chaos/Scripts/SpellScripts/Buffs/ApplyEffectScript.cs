@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
@@ -13,28 +12,28 @@ public class ApplyEffectScript : BasicSpellScriptBase, ManaCostComponent.IManaCo
 {
     protected IEffectFactory EffectFactory { get; }
     protected ManaCostComponent ManaCostComponent { get; }
-    
+
     /// <inheritdoc />
     public ApplyEffectScript(Spell subject, IEffectFactory effectFactory)
         : base(subject)
     {
         ManaCostComponent = new ManaCostComponent();
-        EffectFactory = effectFactory;   
+        EffectFactory = effectFactory;
     }
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
     {
-        if (EffectKey is "stench")
-        {
-            if (context.SourceAisling!.Effects.Contains("stench"))
+        if (EffectKey is "Wrath")
+            if (context.SourceAisling!.Effects.Contains("Wrath"))
             {
-                context.SourceAisling?.Effects.Terminate("stench");
+                context.SourceAisling?.Effects.Terminate("Wrath");
                 return;
             }
-        }
-        
-        ManaCostComponent.ApplyManaCost(context, this);
+
+        if (!ManaCostComponent.TryApplyManaCost(context, this))
+            return;
+
         var targets = AbilityComponent.Activate<Creature>(context, this);
 
         foreach (var target in targets.TargetEntities)
@@ -45,7 +44,7 @@ public class ApplyEffectScript : BasicSpellScriptBase, ManaCostComponent.IManaCo
 
         context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}");
     }
-    
+
     #region ScriptVars
     public int? ManaCost { get; init; }
     public decimal PctManaCost { get; init; }

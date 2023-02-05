@@ -50,7 +50,7 @@ public class DamageComponent
 
         if (!damageStat.HasValue)
             return finalDamage;
-        
+
         if (!damageStatMultiplier.HasValue)
         {
             finalDamage += context.Source.StatSheet.GetEffectiveStat(damageStat.Value);

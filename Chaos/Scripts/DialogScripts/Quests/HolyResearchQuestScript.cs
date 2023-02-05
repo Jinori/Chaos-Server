@@ -12,47 +12,45 @@ namespace Chaos.Scripts.DialogScripts.Quests;
 
 public class HolyResearchQuestScript : DialogScriptBase
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; set; }
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
-    public HolyResearchQuestScript(
-        Dialog subject)
+    public HolyResearchQuestScript(Dialog subject)
         : base(subject) =>
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-
         var hasStage = source.Enums.TryGetValue(out HolyResearchStage stage);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "berteli_initial":
             {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "HolyResearch_initial",
-                        OptionText = "Holy Research"
-                    };
+                var option = new DialogOption
+                {
+                    DialogKey = "HolyResearch_initial",
+                    OptionText = "Holy Research"
+                };
 
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
+                if (!Subject.HasOption(option))
+                    Subject.Options.Insert(0, option);
             }
-                
 
                 break;
 
             case "holyresearch_initial":
                 if (!hasStage || (stage == HolyResearchStage.None))
                 {
-                    
                     if (source.TimedEvents.TryGetNearestToCompletion(TimedEvent.TimedEventId.HolyResearchCd, out var timedEvent))
                     {
-                        Subject.Text = $"I don't need any more right now, please come back later. (({timedEvent.Remaining.ToReadableString()}))";
+                        Subject.Text = $"I don't need any more right now, please come back later. (({timedEvent.Remaining.ToReadableString()
+                        }))";
+
                         return;
                     }
-                    
+
                     var option = new DialogOption
                     {
                         DialogKey = "HolyResearch_yes",
@@ -76,10 +74,10 @@ public class HolyResearchQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
+
                     if (!Subject.HasOption(option2))
                         Subject.Options.Insert(2, option2);
                 }
-
 
                 if (stage == HolyResearchStage.StartedRawHoney)
                 {
@@ -111,7 +109,7 @@ public class HolyResearchQuestScript : DialogScriptBase
                         DialogKey = "HolyResearch_startedrawwax",
                         OptionText = "I have your Raw Wax here."
                     };
-                    
+
                     var option2 = new DialogOption
                     {
                         DialogKey = "HolyResearch_where",
@@ -134,6 +132,7 @@ public class HolyResearchQuestScript : DialogScriptBase
                         DialogKey = "HolyResearch_startedroyalwax",
                         OptionText = "I have your Royal Wax here."
                     };
+
                     var option2 = new DialogOption
                     {
                         DialogKey = "HolyResearch_where",
@@ -145,7 +144,6 @@ public class HolyResearchQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option2))
                         Subject.Options.Insert(1, option2);
-                    
                 }
 
                 break;
@@ -183,7 +181,6 @@ public class HolyResearchQuestScript : DialogScriptBase
 
                             break;
                     }
-
                 }
 
                 break;
@@ -204,7 +201,6 @@ public class HolyResearchQuestScript : DialogScriptBase
                     source.Enums.Set(HolyResearchStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.HolyResearchCd, TimeSpan.FromHours(1), true);
-                    
                 }
 
                 break;

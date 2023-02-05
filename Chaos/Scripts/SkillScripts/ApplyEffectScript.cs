@@ -1,5 +1,4 @@
 ﻿using Chaos.Data;
-using Chaos.Geometry.Abstractions;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.SkillScripts.Abstractions;
@@ -10,7 +9,7 @@ namespace Chaos.Scripts.SkillScripts;
 public class ApplyEffectScript : BasicSkillScriptBase
 {
     private readonly IEffectFactory EffectFactory;
-    private string EffectKey { get; init; } = null!;
+    private string EffectKey { get; } = null!;
 
     /// <inheritdoc />
     public ApplyEffectScript(Skill subject, IEffectFactory effectFactory)

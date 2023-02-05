@@ -2,10 +2,11 @@ using Chaos.Common.Definitions;
 using Chaos.Extensions;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
+using Chaos.Scripting.Abstractions;
 
 namespace Chaos.Scripts.EffectScripts.Abstractions;
 
-public abstract class EffectBase : IEffect
+public abstract class EffectBase : ScriptBase, IEffect
 {
     public EffectColor Color { get; set; }
 

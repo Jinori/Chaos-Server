@@ -4,26 +4,25 @@ using Chaos.Objects.World;
 using Chaos.Scripts.MonsterScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
+namespace Chaos.Scripts.MonsterScripts;
 
-namespace Chaos.Scripts.MonsterScripts
+public class TerrorOfTheCryptScript : MonsterScriptBase
 {
-    public class TerrorOfTheCryptScript : MonsterScriptBase
+    private readonly ISimpleCache SimpleCache;
+
+    public TerrorOfTheCryptScript(Monster subject, ISimpleCache simpleCache)
+        : base(subject) => SimpleCache = simpleCache;
+
+    public override void OnDeath()
     {
-        private readonly ISimpleCache SimpleCache;
+        var mapInstance = SimpleCache.Get<MapInstance>("cryptTerrorReward");
 
-
-        public TerrorOfTheCryptScript(Monster subject, ISimpleCache simpleCache) : base(subject) => SimpleCache= simpleCache;
-
-        public override void OnDeath()
+        foreach (var aisling in Subject.MapInstance.GetEntities<Aisling>())
         {
-            var mapInstance = SimpleCache.Get<MapInstance>("cryptTerrorReward");
-            foreach (var aisling in Subject.MapInstance.GetEntities<Aisling>())
-            {
-                aisling.TraverseMap(mapInstance, new Point(4, 5));
-                aisling.Flags.RemoveFlag(QuestFlag1.TerrorOfCryptHunt);
-                aisling.Flags.AddFlag(QuestFlag1.TerrorOfCryptComplete);
-                aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The terror will no longer make the Old Man suffer.");
-            }
+            aisling.TraverseMap(mapInstance, new Point(4, 5));
+            aisling.Flags.RemoveFlag(QuestFlag1.TerrorOfCryptHunt);
+            aisling.Flags.AddFlag(QuestFlag1.TerrorOfCryptComplete);
+            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The terror will no longer make the Old Man suffer.");
         }
     }
 }

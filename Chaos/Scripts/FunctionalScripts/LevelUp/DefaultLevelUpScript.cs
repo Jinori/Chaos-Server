@@ -35,11 +35,13 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
         }
 
         var levelUpAttribs = LevelUpFormula.CalculateAttributesIncrease(aisling);
+
         var ani = new Animation
         {
             AnimationSpeed = 100,
-            TargetAnimation = 79,
+            TargetAnimation = 79
         };
+
         aisling.UserStatSheet.Add(levelUpAttribs);
         aisling.UserStatSheet.SetMaxWeight(LevelUpFormula.CalculateMaxWeight(aisling));
         aisling.Animate(ani);

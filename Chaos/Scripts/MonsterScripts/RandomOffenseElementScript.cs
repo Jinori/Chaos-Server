@@ -3,19 +3,18 @@ using Chaos.Common.Utilities;
 using Chaos.Objects.World;
 using Chaos.Scripts.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripts.MonsterScripts
+namespace Chaos.Scripts.MonsterScripts;
+
+public class RandomOffenseElementScript : ConfigurableMonsterScriptBase
 {
-    public class RandomOffenseElementScript : ConfigurableMonsterScriptBase
+    protected Element[] Elements { get; init; } = Array.Empty<Element>();
+
+    /// <inheritdoc />
+    public RandomOffenseElementScript(Monster subject)
+        : base(subject)
     {
-        protected Element[] Elements { get; init; } = Array.Empty<Element>();
+        var element = Elements.PickRandom();
 
-        /// <inheritdoc />
-        public RandomOffenseElementScript(Monster subject)
-            : base(subject)
-        {
-            var element = Elements.PickRandom();
-
-            Subject.StatSheet.SetOffenseElement(element);
-        }
+        Subject.StatSheet.SetOffenseElement(element);
     }
 }

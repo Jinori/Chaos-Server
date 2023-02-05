@@ -18,7 +18,7 @@ public class PFQuestScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
     private readonly ISimpleCache SimpleCache;
-    private IExperienceDistributionScript ExperienceDistributionScript { get; set; }
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
     public PFQuestScript(Dialog subject, IItemFactory itemFactory, ISimpleCache simpleCache)
@@ -32,16 +32,14 @@ public class PFQuestScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-
         var hasStage = source.Enums.TryGetValue(out PFQuestStage stage);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "porteforest_initial":
             {
-                if ((!hasStage) || (stage == PFQuestStage.None))
+                if (!hasStage || (stage == PFQuestStage.None))
                 {
-
                     var option = new DialogOption
                     {
                         DialogKey = "porteforest_quest1",
@@ -55,13 +53,13 @@ public class PFQuestScript : DialogScriptBase
                 if (stage == PFQuestStage.StartedPFQuest)
                 {
                     Subject.Text = "Did ya get those roots for me?";
-                    
+
                     var option = new DialogOption
                     {
                         DialogKey = "porteforest_rootturnin",
                         OptionText = "I have the roots here."
                     };
-                    
+
                     var option1 = new DialogOption
                     {
                         DialogKey = "porteforest_no",
@@ -70,6 +68,7 @@ public class PFQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
                 }
@@ -89,10 +88,8 @@ public class PFQuestScript : DialogScriptBase
                 }
 
                 if (stage is PFQuestStage.CompletedPFQuest or PFQuestStage.TurnedInTristar)
-                {
                     Subject.Text =
                         "Well done Aisling, I'm glad that beast won't bother us again. I can go farm my own trent roots again. Thank you.";
-                }
             }
 
                 break;
@@ -122,9 +119,7 @@ public class PFQuestScript : DialogScriptBase
 
             case "porteforest_yes":
                 if (!hasStage || (stage == PFQuestStage.None))
-                {
                     source.Enums.Set(PFQuestStage.StartedPFQuest);
-                }
 
                 break;
 
@@ -162,7 +157,6 @@ public class PFQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option1))
                         Subject.Options.Add(option1);
-
                 }
 
                 break;
@@ -182,8 +176,8 @@ public class PFQuestScript : DialogScriptBase
 
                 if (stage == PFQuestStage.WolfManes)
                 {
-
                     Subject.Text = "Glad to see you back so soon, were you able to gather the Silver Wolf Manes?";
+
                     var option = new DialogOption
                     {
                         DialogKey = "porteforest_wolfmanes",
@@ -195,10 +189,8 @@ public class PFQuestScript : DialogScriptBase
                 }
 
                 if (stage is PFQuestStage.CompletedPFQuest or PFQuestStage.TurnedInTristar)
-                {
                     Subject.Text =
                         "It is so great to hear about your battle with the Giant Mantis. I can't believe you took it down. Praise you Aisling.";
-                }
 
                 break;
 
@@ -291,18 +283,15 @@ public class PFQuestScript : DialogScriptBase
                     source.Enums.Set(PFQuestStage.WolfManesTurnedIn);
                     ExperienceDistributionScript.GiveExp(source, 150000);
                     source.TryGiveItem(leather);
-
                 }
 
                 break;
 
             case "isabelle_initial":
-                if ((!hasStage) || (stage == PFQuestStage.None))
+                if (!hasStage || (stage == PFQuestStage.None))
                 {
                     if (source.UserStatSheet.Level is <= 10 or >= 42)
-                    {
                         return;
-                    }
 
                     var option = new DialogOption
                     {
@@ -312,7 +301,6 @@ public class PFQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-
                 }
 
                 switch (stage)
@@ -352,7 +340,7 @@ public class PFQuestScript : DialogScriptBase
                 break;
 
             case "porteforest_initial3":
-                if ((!hasStage) || (stage == PFQuestStage.None))
+                if (!hasStage || (stage == PFQuestStage.None))
                 {
                     var option = new DialogOption
                     {
@@ -362,13 +350,12 @@ public class PFQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-
                 }
 
                 break;
 
             case "porteforest_quest6":
-                if ((!hasStage) || (stage == PFQuestStage.None))
+                if (!hasStage || (stage == PFQuestStage.None))
                 {
                     var option = new DialogOption
                     {
@@ -378,7 +365,6 @@ public class PFQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-
                 }
 
                 break;
@@ -397,7 +383,6 @@ public class PFQuestScript : DialogScriptBase
                 }
 
                 break;
-
 
             case "porteforest_pendant3":
                 if (stage == PFQuestStage.FoundPendant)
@@ -549,7 +534,6 @@ public class PFQuestScript : DialogScriptBase
                         MarkColor.White,
                         1,
                         GameTime.Now));
-
             }
 
                 break;
@@ -580,6 +564,7 @@ public class PFQuestScript : DialogScriptBase
                         DialogKey = "porteforest_lureca1",
                         OptionText = "She gave me this ring to give to you."
                     };
+
                     var option1 = new DialogOption
                     {
                         DialogKey = "porteforest_keeptristar",
@@ -588,6 +573,7 @@ public class PFQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
+
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
                 }
@@ -607,6 +593,7 @@ public class PFQuestScript : DialogScriptBase
                 source.Inventory.Remove("tristar ring");
                 ExperienceDistributionScript.GiveExp(source, 250000);
                 source.Enums.Set(PFQuestStage.TurnedInTristar);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Eased the suffering of Porte Forest",
@@ -615,7 +602,6 @@ public class PFQuestScript : DialogScriptBase
                         MarkColor.Blue,
                         1,
                         GameTime.Now));
-
             }
 
                 break;

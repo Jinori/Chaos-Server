@@ -30,9 +30,13 @@ public sealed class BeagPramhEffect : AnimatingEffectBase
     public override void OnApplied()
     {
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your eyelids become heavy.");
+
         if (!Subject.Status.HasFlag(Status.Pramh))
             Subject.Status = Status.Pramh;
     }
+
+    /// <inheritdoc />
+    protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
 
     public override void OnTerminated()
     {
@@ -41,8 +45,4 @@ public sealed class BeagPramhEffect : AnimatingEffectBase
 
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You awake from your slumber.");
     }
-
-
-    /// <inheritdoc />
-    protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
 }

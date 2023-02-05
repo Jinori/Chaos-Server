@@ -1,6 +1,4 @@
 using Chaos.Common.Definitions;
-using Chaos.Extensions;
-using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
 using Chaos.Objects.World;
@@ -38,9 +36,7 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
         var exp = ExperienceFormula.Calculate(killedCreature, aislings);
 
         foreach (var aisling in aislings)
-        {
             GiveExp(aisling, exp);
-        }
     }
 
     public virtual void GiveExp(Aisling aisling, long amount)

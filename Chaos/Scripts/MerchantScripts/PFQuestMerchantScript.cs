@@ -7,7 +7,8 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripts.MerchantScripts;
 
-[SuppressMessage("ReSharper", "UnusedVariable"),SuppressMessage("ReSharper", "SwitchStatementMissingSomeEnumCasesNoDefault"),SuppressMessage("ReSharper", "ConvertIfStatementToSwitchStatement")]
+[SuppressMessage("ReSharper", "UnusedVariable"), SuppressMessage("ReSharper", "SwitchStatementMissingSomeEnumCasesNoDefault"),
+ SuppressMessage("ReSharper", "ConvertIfStatementToSwitchStatement")]
 public class PFQuestMerchant : MerchantScriptBase
 {
     private readonly IDialogFactory DialogFactory;

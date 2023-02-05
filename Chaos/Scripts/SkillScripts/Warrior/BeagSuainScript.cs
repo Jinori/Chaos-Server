@@ -9,8 +9,8 @@ namespace Chaos.Scripts.SkillScripts.Warrior;
 
 public class BeagSuainScript : DamageScript
 {
-    protected new IApplyDamageScript ApplyDamageScript { get; }
     protected readonly IEffectFactory EffectFactory;
+    protected new IApplyDamageScript ApplyDamageScript { get; }
 
     /// <inheritdoc />
     public BeagSuainScript(Skill subject, IEffectFactory effectFactory)
@@ -26,7 +26,8 @@ public class BeagSuainScript : DamageScript
         var targets = AbilityComponent.Activate<Creature>(context, this);
         DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
         var effect = EffectFactory.Create("beagSuain");
-        foreach (var target in targets.TargetEntities) 
+
+        foreach (var target in targets.TargetEntities)
             target.Effects.Apply(context.Source, effect);
     }
 }

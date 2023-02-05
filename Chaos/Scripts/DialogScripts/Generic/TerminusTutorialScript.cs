@@ -14,6 +14,9 @@ namespace Chaos.Scripts.DialogScripts.Generic;
 
 public class TerminusTutorialScript : DialogScriptBase
 {
+    private readonly ISimpleCache SimpleCache;
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
+
     public TerminusTutorialScript(
         Dialog subject,
         ISimpleCache simpleCache
@@ -24,24 +27,18 @@ public class TerminusTutorialScript : DialogScriptBase
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
-    private readonly ISimpleCache SimpleCache;
-    private IExperienceDistributionScript ExperienceDistributionScript { get; set; }
-    
     public override void OnDisplaying(Aisling source)
     {
         source.Enums.TryGetValue(out TutorialQuestStage stage);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
-
             case "terminus_initial":
                 if (stage == TutorialQuestStage.GiantFloppy)
                 {
                     if (source.IsAlive)
-                    {
                         return;
-                    }
-                    
+
                     var option = new DialogOption
                     {
                         DialogKey = "TerminusDeathExplanation",
@@ -57,9 +54,7 @@ public class TerminusTutorialScript : DialogScriptBase
                 if (stage == TutorialQuestStage.CompletedTutorial)
                 {
                     if (source.IsAlive)
-                    {
                         return;
-                    }
 
                     var option = new DialogOption
                     {
@@ -72,24 +67,31 @@ public class TerminusTutorialScript : DialogScriptBase
                 }
 
                 break;
-                
+
             case "terminusgotosgrios":
                 if (stage == TutorialQuestStage.GiantFloppy)
                 {
                     if (source.IsAlive)
-                    {
                         return;
-                    }
-                    
-                    source.Legend.AddOrAccumulate(new LegendMark("Completed Tutorial", "base", MarkIcon.Heart, MarkColor.White, 1, GameTime.Now));
+
+                    source.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Completed Tutorial",
+                            "base",
+                            MarkIcon.Heart,
+                            MarkColor.White,
+                            1,
+                            GameTime.Now));
+
                     source.SpellBook.Remove("srad tut");
                     source.Enums.Set(TutorialQuestStage.CompletedTutorial);
                     ExperienceDistributionScript.GiveExp(source, 1000);
                     Point point;
-                    point = new Point(13,10);
+                    point = new Point(13, 10);
                     var mapInstance = SimpleCache.Get<MapInstance>("after_life");
                     source.TraverseMap(mapInstance, point, true);
                 }
+
                 break;
         }
     }

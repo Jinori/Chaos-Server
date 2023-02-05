@@ -5,26 +5,21 @@ using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 
-namespace Chaos.Scripts.DialogScripts.Mileth
+namespace Chaos.Scripts.DialogScripts.Mileth;
+
+public class ArmsLoreGiveExpScript : DialogScriptBase
 {
-    public class ArmsLoreGiveExpScript : DialogScriptBase
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
+
+    public ArmsLoreGiveExpScript(Dialog subject)
+        : base(subject) => ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+
+    public override void OnDisplayed(Aisling source)
     {
-        private IExperienceDistributionScript ExperienceDistributionScript{ get; set; }
-    
-        public ArmsLoreGiveExpScript(Dialog subject) : base(subject)
-        {
-            ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
-        }
+        if (source.Flags.HasFlag(QuestFlag1.Arms))
+            return;
 
-        public override void OnDisplayed(Aisling source)
-        {
-            if (source.Flags.HasFlag(QuestFlag1.Arms))
-            {
-                return;
-            }
-
-            source.Flags.AddFlag(QuestFlag1.Arms);
-            ExperienceDistributionScript.GiveExp(source, 1000);
-        }
+        source.Flags.AddFlag(QuestFlag1.Arms);
+        ExperienceDistributionScript.GiveExp(source, 1000);
     }
 }

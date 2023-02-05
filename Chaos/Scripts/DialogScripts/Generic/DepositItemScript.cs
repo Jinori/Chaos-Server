@@ -108,8 +108,7 @@ public class DepositItemScript : DialogScriptBase
             var result = ComplexActionHelper.DepositItem(source, Item.Slot, 1);
             Amount = 1;
             HandleDepositItemResult(source, result);
-        }
-        else
+        } else
             InputCollector.Collect(source, Subject, optionIndex);
     }
 }

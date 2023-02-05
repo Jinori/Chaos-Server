@@ -5,30 +5,31 @@ using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripts.ReactorTileScripts.Mileth
+namespace Chaos.Scripts.ReactorTileScripts.Mileth;
+
+public class BranchScript : ReactorTileScriptBase
 {
-    public class BranchScript : ReactorTileScriptBase
+    private readonly IItemFactory ItemFactory;
+
+    public BranchScript(ReactorTile subject, IItemFactory itemFactory)
+        : base(subject) =>
+        ItemFactory = itemFactory;
+
+    public override void OnWalkedOn(Creature source)
     {
-        private readonly IItemFactory ItemFactory;
-        public BranchScript(ReactorTile subject, IItemFactory itemFactory)
-            : base(subject) =>
-            ItemFactory = itemFactory;
+        if (source is not Aisling aisling)
+            return;
 
-        public override void OnWalkedOn(Creature source)
-        {
-            if (source is not Aisling aisling)
-                return;
-
-            if (aisling.Flags.HasFlag(QuestFlag1.GatheringSticks))
+        if (aisling.Flags.HasFlag(QuestFlag1.GatheringSticks))
+            if (Randomizer.RollChance(18))
             {
-                if (Randomizer.RollChance(18))
-                {
-                    var branch = ItemFactory.Create("branch");
-                    aisling.TryGiveItem(branch);
-                    var branchcount = aisling.Inventory.CountOf("branch");
-                    aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"Oh, you've found a sturdy branch! That makes {branchcount} branches!");
-                }
+                var branch = ItemFactory.Create("branch");
+                aisling.TryGiveItem(branch);
+                var branchcount = aisling.Inventory.CountOf("branch");
+
+                aisling.Client.SendServerMessage(
+                    ServerMessageType.OrangeBar1,
+                    $"Oh, you've found a sturdy branch! That makes {branchcount} branches!");
             }
-        }
     }
 }

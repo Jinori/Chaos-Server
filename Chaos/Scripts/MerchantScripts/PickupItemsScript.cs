@@ -3,25 +3,29 @@ using Chaos.Extensions.Common;
 using Chaos.Objects.World;
 using Chaos.Scripts.MerchantScripts.Abstractions;
 
-namespace Chaos.Scripts.MerchantScripts
+namespace Chaos.Scripts.MerchantScripts;
+
+public class PickupItemsScript : MerchantScriptBase
 {
-    public class PickupItemsScript : MerchantScriptBase
+    private readonly List<string> Sayings = new()
     {
-        private readonly List<string> Sayings = new List<string>() { "Oh, I could use one of these!", "Yoink!", "You missed the altar..", "King Bruce gives a good payment for {Item}!", "Daddy needs a new pair of {Item}!", "Glioca blessed be!" };
-        
-        public PickupItemsScript(Merchant subject)
-            : base(subject) { }
-        
-        public override void Update(TimeSpan delta)
+        "Oh, I could use one of these!", "Yoink!", "You missed the altar..", "King Bruce gives a good payment for {Item}!",
+        "Daddy needs a new pair of {Item}!", "Glioca blessed be!"
+    };
+
+    public PickupItemsScript(Merchant subject)
+        : base(subject) { }
+
+    public override void Update(TimeSpan delta)
+    {
+        var now = DateTime.UtcNow;
+        var timeSpan = TimeSpan.FromSeconds(3);
+
+        foreach (var item in Subject.MapInstance.GetEntitiesWithinRange<GroundItem>(Subject).Where(x => now - x.Creation > timeSpan))
         {
-            var now = DateTime.UtcNow;
-            var timeSpan = TimeSpan.FromSeconds(3);
-            foreach (var item in Subject.MapInstance.GetEntitiesWithinRange<GroundItem>(Subject).Where(x => now - x.Creation > timeSpan))
-            {
-                Subject.MapInstance.RemoveObject(item);
-                var saying = Sayings.PickRandom().Inject(item.Name);
-                Subject.Say(saying);
-            }
+            Subject.MapInstance.RemoveObject(item);
+            var saying = Sayings.PickRandom().Inject(item.Name);
+            Subject.Say(saying);
         }
     }
 }

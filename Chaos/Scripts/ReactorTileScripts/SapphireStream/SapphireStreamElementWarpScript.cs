@@ -12,9 +12,6 @@ public class SapphireStreamElementWarpScript : ReactorTileScriptBase
 {
     private readonly ISimpleCache SimpleCache;
 
-    #region ScriptVars
-    #endregion
-
     /// <inheritdoc />
     public SapphireStreamElementWarpScript(ReactorTile subject, ISimpleCache simpleCache)
         : base(subject) =>
@@ -27,7 +24,7 @@ public class SapphireStreamElementWarpScript : ReactorTileScriptBase
         {
             var key = "";
             var hasForm = aisling.Enums.TryGetValue(out MonkElementForm form);
-            
+
             if (!hasForm)
             {
                 aisling.SendOrangeBarMessage("You must choose an elemental form to access this area.");
@@ -35,7 +32,7 @@ public class SapphireStreamElementWarpScript : ReactorTileScriptBase
                 var point = source.DirectionalOffset(source.Direction.Reverse());
                 source.WarpTo(point);
 
-                return;   
+                return;
             }
 
             key = form switch
@@ -46,8 +43,12 @@ public class SapphireStreamElementWarpScript : ReactorTileScriptBase
                 MonkElementForm.Fire  => "fire_elemental_master",
                 _                     => key
             };
+
             var targetMap = SimpleCache.Get<MapInstance>(key);
             source.TraverseMap(targetMap, new Point(13, 7));
         }
     }
+
+    #region ScriptVars
+    #endregion
 }

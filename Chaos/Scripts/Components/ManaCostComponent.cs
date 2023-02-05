@@ -12,7 +12,11 @@ public class ManaCostComponent
         cost += MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumMp, options.PctManaCost);
 
         if (!context.Source.StatSheet.TrySubtractMp(cost))
+        {
+            context.SourceAisling?.SendActiveMessage("You do not have enough mana.");
+
             return false;
+        }
 
         context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
 

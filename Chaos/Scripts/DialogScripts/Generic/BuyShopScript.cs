@@ -98,7 +98,7 @@ public class BuyShopScript : ConfigurableDialogScriptBase
 
     private bool HandleTextInput(Aisling aisling, Dialog dialog, int? optionIndex = null)
     {
-        if (!Subject.MenuArgs.TryGet<int>(1, out var amount) || amount <= 0)
+        if (!Subject.MenuArgs.TryGet<int>(1, out var amount) || (amount <= 0))
         {
             dialog.Reply(aisling, DialogString.UnknownInput.Value);
 

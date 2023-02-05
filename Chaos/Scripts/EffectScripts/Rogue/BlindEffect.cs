@@ -32,9 +32,13 @@ public sealed class BlindEffect : AnimatingEffectBase
     public override void OnApplied()
     {
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are unable to see.");
+
         if (!Subject.Status.HasFlag(Status.Blind))
             Subject.Status = Status.Blind;
     }
+
+    /// <inheritdoc />
+    protected override void OnIntervalElapsed() { }
 
     public override void OnTerminated()
     {
@@ -49,15 +53,10 @@ public sealed class BlindEffect : AnimatingEffectBase
         if (target.Effects.Contains("Blind"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Blind has already been applied.");
+
             return false;
         }
 
         return true;
-    }
-
-    /// <inheritdoc />
-    protected override void OnIntervalElapsed()
-    {
-        
     }
 }

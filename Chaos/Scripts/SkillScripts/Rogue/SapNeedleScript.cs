@@ -10,10 +10,10 @@ namespace Chaos.Scripts.SkillScripts.Rogue;
 
 public class SapNeedleScript : DamageScript
 {
+    protected readonly Animation SuccessfulSap = new()
+        { AnimationSpeed = 100, TargetAnimation = 127 };
     protected new IApplyDamageScript ApplyDamageScript { get; }
 
-    protected readonly Animation SuccessfulSap = new Animation { AnimationSpeed = 100, TargetAnimation = 127 };
-    
     /// <inheritdoc />
     public SapNeedleScript(Skill subject)
         : base(subject) =>
@@ -24,6 +24,7 @@ public class SapNeedleScript : DamageScript
     {
         var targets = AbilityComponent.Activate<Creature>(context, this);
         var manaToGive = 0;
+
         foreach (var target in targets.TargetEntities)
         {
             DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
@@ -32,16 +33,15 @@ public class SapNeedleScript : DamageScript
             manaToGive = Math.Min(halfOfDefendersMana, halfOfAttackersMana);
             target.StatSheet.SubtractManaPct(50);
         }
-        
+
         var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourceAisling)).ToList();
+
         if (group != null)
-        {
             foreach (var member in group)
             {
                 member.ApplyMana(member, manaToGive / group.Count);
                 member.MapInstance.ShowAnimation(SuccessfulSap.GetTargetedAnimation(member.Id));
             }
-        }
         else
         {
             context.Source.ApplyMana(context.Source, manaToGive / 2);

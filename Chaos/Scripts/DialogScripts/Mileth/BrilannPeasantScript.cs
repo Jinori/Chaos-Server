@@ -1,44 +1,37 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Extensions.Common;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
-using Chaos.Templates.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Chaos.Scripts.DialogScripts.Mileth
+namespace Chaos.Scripts.DialogScripts.Mileth;
+
+public class BrilannPeasantScript : DialogScriptBase
 {
-    public class BrilannPeasantScript : DialogScriptBase
-    {
-        public BrilannPeasantScript(Dialog subject) : base(subject)
-        {
-        }
+    public BrilannPeasantScript(Dialog subject)
+        : base(subject) { }
 
-        public override void OnDisplaying(Aisling source)
+    public override void OnDisplaying(Aisling source)
+    {
+        if (source.UserStatSheet.BaseClass.Equals(BaseClass.Peasant) && source.Flags.HasFlag(QuestFlag1.ChosenClass))
         {
-            if (source.UserStatSheet.BaseClass.Equals(BaseClass.Peasant) && source.Flags.HasFlag(QuestFlag1.ChosenClass))
+            Subject.Text = "Hello, young traveler. What do you need help with?";
+            Subject.Type = MenuOrDialogType.Menu;
+
+            var BrilannOptions = new List<DialogOption>
             {
-                Subject.Text = "Hello, young traveler. What do you need help with?";
-                Subject.Type = MenuOrDialogType.Menu;
-                var BrilannOptions = new List<DialogOption>
+                new()
                 {
-                    new()
-                    {
-                DialogKey = "brilann_learnSpells",
-                OptionText = "Learn Spells"
-                    },
-                    new()
-                    {
-                DialogKey = "brilann_learnSkills",
-                OptionText = "Learn Skills"
-                    }
-                };
-                Subject.Options.AddRange(BrilannOptions);
-            }
+                    DialogKey = "brilann_learnSpells",
+                    OptionText = "Learn Spells"
+                },
+                new()
+                {
+                    DialogKey = "brilann_learnSkills",
+                    OptionText = "Learn Skills"
+                }
+            };
+
+            Subject.Options.AddRange(BrilannOptions);
         }
     }
 }

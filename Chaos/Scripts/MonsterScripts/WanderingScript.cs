@@ -8,7 +8,7 @@ public class WanderingScript : MonsterScriptBase
 {
     /// <inheritdoc />
     public WanderingScript(Monster subject)
-    : base(subject) { }
+        : base(subject) { }
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)

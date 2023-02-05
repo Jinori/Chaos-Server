@@ -30,9 +30,13 @@ public sealed class WolfFangFistEffect : AnimatingEffectBase
     public override void OnApplied()
     {
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A deadly strike puts you to sleep.");
+
         if (!Subject.Status.HasFlag(Status.Suain))
             Subject.Status = Status.Suain;
     }
+
+    /// <inheritdoc />
+    protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
 
     public override void OnTerminated()
     {
@@ -41,8 +45,4 @@ public sealed class WolfFangFistEffect : AnimatingEffectBase
 
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.");
     }
-
-
-    /// <inheritdoc />
-    protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
 }

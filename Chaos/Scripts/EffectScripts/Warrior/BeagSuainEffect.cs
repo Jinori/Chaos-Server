@@ -29,10 +29,16 @@ public sealed class BeagSuainEffect : AnimatingEffectBase
 
     public override void OnApplied()
     {
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "After taking a strike, you feel as though you cannot move.");
+        AislingSubject?.Client.SendServerMessage(
+            ServerMessageType.OrangeBar1,
+            "After taking a strike, you feel as though you cannot move.");
+
         if (!Subject.Status.HasFlag(Status.BeagSuain))
             Subject.Status = Status.BeagSuain;
     }
+
+    /// <inheritdoc />
+    protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
 
     public override void OnTerminated()
     {
@@ -41,8 +47,4 @@ public sealed class BeagSuainEffect : AnimatingEffectBase
 
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.");
     }
-
-
-    /// <inheritdoc />
-    protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
 }

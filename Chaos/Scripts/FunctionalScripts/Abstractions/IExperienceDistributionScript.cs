@@ -13,4 +13,5 @@ public interface IExperienceDistributionScript : IFunctionalScript
     void DistributeExperience(Creature killedCreature, params Aisling[] aislings);
 
     void GiveExp(Aisling aisling, long amount);
+    bool TryTakeExp(Aisling aisling, long amount);
 }

@@ -21,20 +21,19 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
                           DamageComponent.IDamageComponentOptions,
                           ManaDrainComponent.IManaDrainComponentOptions
 {
+    protected IIntervalTimer AnimationTimer { get; set; }
     protected IEffectFactory EffectFactory { get; set; }
     protected Creature Owner { get; set; }
     protected IIntervalTimer Timer { get; set; }
     protected int TriggerCount { get; set; }
     protected AbilityComponent AbilityComponent { get; }
     protected DamageComponent DamageComponent { get; }
-    protected ManaDrainComponent ManaDrainComponent { get; }
-
-    protected IIntervalTimer AnimationTimer { get; set; }
     protected Animation DetectTrapAnimation { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 96
     };
+    protected ManaDrainComponent ManaDrainComponent { get; }
 
     /// <inheritdoc />
     public TrapScript(ReactorTile subject, IEffectFactory effectFactory)
@@ -99,13 +98,15 @@ If this reactor was created through a script, you must specify the owner in the 
         base.Update(delta);
 
         Timer.Update(delta);
-        
+
         AnimationTimer.Update(delta);
-        
-        if (Subject.Owner is not null && Subject.Owner.Status.HasFlag(Status.DetectTraps) && AnimationTimer.IntervalElapsed && Subject.MapInstance.Equals(Subject.Owner.MapInstance))
-        {
-            Subject.Owner.MapInstance.ShowAnimation(DetectTrapAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y), Subject.Owner.Id));
-        }
+
+        if (Subject.Owner is not null
+            && Subject.Owner.Status.HasFlag(Status.DetectTraps)
+            && AnimationTimer.IntervalElapsed
+            && Subject.MapInstance.Equals(Subject.Owner.MapInstance))
+            Subject.Owner.MapInstance.ShowAnimation(
+                DetectTrapAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y), Subject.Owner.Id));
 
         if (Timer.IntervalElapsed)
             Map.RemoveObject(Subject);

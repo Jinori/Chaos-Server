@@ -41,8 +41,7 @@ public class TeleportScript : DialogScriptBase
         try
         {
             mapInstance = SimpleCache.Get<MapInstance>(mapInstanceId);
-        }
-        catch
+        } catch
         {
             Subject.Reply(source, $"No map instance with the id of {mapInstanceId} was found");
 

@@ -9,9 +9,7 @@ public class ShadowFigureScript : DamageScript
 {
     /// <inheritdoc />
     public ShadowFigureScript(Skill subject)
-        : base(subject)
-    {
-    }
+        : base(subject) { }
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
@@ -22,12 +20,11 @@ public class ShadowFigureScript : DamageScript
         //if there is no creature, return
         if (targetCreature == null)
             return;
-        
+
         //if the target is standing on a wall, return
         if (context.Map.IsWall(targetCreature))
             return;
-        
-        
+
         //get the direction that vectors behind the target relative to the source
         var behindTargetDirection = targetCreature.DirectionalRelationTo(context.SourcePoint);
 
@@ -36,6 +33,7 @@ public class ShadowFigureScript : DamageScript
         {
             //get the point in that direction
             var destinationPoint = targetCreature.DirectionalOffset(direction);
+
             //if that point is not walkable, continue
             if (!context.Map.IsWalkable(destinationPoint, context.Source.Type))
                 continue;
@@ -44,8 +42,10 @@ public class ShadowFigureScript : DamageScript
             context.Source.WarpTo(destinationPoint);
             var newDirection = targetCreature.DirectionalRelationTo(context.Source);
             context.Source.Turn(newDirection);
+
             break;
         }
+
         DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
     }
 }
