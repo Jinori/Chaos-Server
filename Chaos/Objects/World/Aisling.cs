@@ -197,7 +197,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>
     {
         StatSheet.SubtractHp(amount);
         Client.SendAttributes(StatUpdateType.Vitality);
-		ShowHealth(hitSound);
+        ShowHealth(hitSound);
     }
 
     public override void ApplyHealing(Creature source, int amount)
@@ -548,6 +548,26 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>
         return true;
     }
 
+    public bool TryGiveGamePoints(int amount)
+    {
+        if (amount < 0)
+            throw new ArgumentOutOfRangeException(nameof(amount), "Cannot give negative game points.");
+
+        var @new = GamePoints + amount;
+
+        if (@new > 500)
+        {
+            SendOrangeBarMessage("You cannot have any more GamePoints. Please spend them.");
+
+            return false;
+        }
+
+        GamePoints = @new;
+        Client.SendAttributes(StatUpdateType.Full);
+
+        return true;
+    }
+    
     public bool TryGiveGold(int amount)
     {
         if (amount < 0)
@@ -644,6 +664,30 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>
         return true;
     }
 
+    public bool TryTakeGamePoints(int amount)
+    {
+        // ReSharper disable once ConvertIfStatementToSwitchStatement
+        if (amount < 0)
+            throw new ArgumentOutOfRangeException(nameof(amount), "Cannot take negative game points.");
+
+        if (amount == 0)
+            return true;
+
+        var @new = GamePoints - amount;
+
+        if (@new < 0)
+        {
+            SendOrangeBarMessage($"You do not have enough GamePoints, you need a total of {amount}.");
+
+            return false;
+        }
+
+        GamePoints = @new;
+        Client.SendAttributes(StatUpdateType.Full);
+
+        return true;
+    }
+    
     public bool TryTakeGold(int amount)
     {
         // ReSharper disable once ConvertIfStatementToSwitchStatement

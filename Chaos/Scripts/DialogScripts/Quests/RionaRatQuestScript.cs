@@ -121,8 +121,9 @@ public class RionaRatQuestScript : DialogScriptBase
                         return;
                     }
 
-                    Subject.Text = "Thank you so much for taking care of those rats!";
+                    source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    Subject.Text = "Thank you so much for taking care of those rats!";
                     source.Enums.Set(RionaRatQuestStage.CompletedRatQuest);
                     source.SendServerMessage(ServerMessageType.PersistentMessage, "");
                     source.Counters.Remove("StartedRatQuest", out _);

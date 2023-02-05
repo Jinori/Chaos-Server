@@ -22,6 +22,8 @@ public class IsabelleRewardScript : DialogScriptBase
             source.Flags.AddFlag(QuestFlag1.IsabelleComplete);
             ExperienceDistributionScript.GiveExp(source, 150000);
             source.TryGiveGold(25000);
+            source.TryGiveGamePoints(25);
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've received 25,000 coins and 25 game points!");
         } else
         {
             Subject.Text = "I can still see it from here! Please take care of it.";

@@ -1,3 +1,4 @@
+using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Data;
 using Chaos.Definitions;
@@ -364,6 +365,8 @@ public class DarkThingsQuestScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("Spider's Eye", 1);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    source.TryGiveGamePoints(5);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
                     source.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
@@ -384,6 +387,8 @@ public class DarkThingsQuestScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("Spider's Silk", 1);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    source.TryGiveGamePoints(5);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
                     source.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
@@ -405,6 +410,8 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.Inventory.RemoveQuantity("Centipede's Gland", 1);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.Enums.Set(DarkThingsStage.None);
+                    source.TryGiveGamePoints(5);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
                 }
@@ -424,6 +431,8 @@ public class DarkThingsQuestScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("Bat's Wing", 1);
                     ExperienceDistributionScript.GiveExp(source, thirtyPercent);
+                    source.TryGiveGamePoints(5);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {thirtyPercent} exp!");
                     source.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
@@ -443,6 +452,8 @@ public class DarkThingsQuestScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("Scorpion's Sting", 1);
                     ExperienceDistributionScript.GiveExp(source, thirtyPercent);
+                    source.TryGiveGamePoints(5);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {thirtyPercent} exp!");
                     source.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
@@ -463,6 +474,8 @@ public class DarkThingsQuestScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("Great Bat's Wing", 1);
                     ExperienceDistributionScript.GiveExp(source, thirtyPercent);
+                    source.TryGiveGamePoints(5);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {thirtyPercent} exp!");
                     source.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
@@ -484,6 +497,8 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.Inventory.RemoveQuantity("White Bat's Wing", 1);
                     ExperienceDistributionScript.GiveExp(source, fortyPercent);
                     source.Enums.Set(DarkThingsStage.None);
+                    source.TryGiveGamePoints(10);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive ten gamepoints and {fortyPercent} exp!");
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
                 }

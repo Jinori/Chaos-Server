@@ -23,6 +23,8 @@ public class JosephineRewardScript : DialogScriptBase
             source.Flags.AddFlag(QuestFlag1.TalkedToJosephine);
             ExperienceDistributionScript.GiveExp(source, 1000);
             source.TryGiveGold(1000);
+            source.TryGiveGamePoints(5);
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've received 1000g, 1000exp and 5 game points!");
         }
     }
 }

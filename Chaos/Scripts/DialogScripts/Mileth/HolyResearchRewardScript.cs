@@ -31,7 +31,8 @@ public class HolyResearchRewardScript : DialogScriptBase
             source.TryGiveGold(amountToReward);
             ExperienceDistributionScript.GiveExp(source, amountToReward);
             source.Inventory.RemoveQuantity("Raw Wax", source.Inventory.CountOf("Raw Wax"), out _);
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive {amountToReward} gold and exp!");
+            source.TryGiveGamePoints(1);
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive a gamepoint and {amountToReward} gold/exp!");
             Subject.Text = "Thank you for grabbing what I needed.";
         }
     }

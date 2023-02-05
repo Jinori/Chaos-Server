@@ -56,8 +56,8 @@ public class TerrorChestScript : DialogScriptBase
                 item.Color = DisplayColor.White;
 
             //Give 20% of current TNL
-            var TNL = LevelUpFormulae.Default.CalculateTnl(source);
-            var twentyPercent = Convert.ToInt32(0.20 * TNL);
+            var tnl = LevelUpFormulae.Default.CalculateTnl(source);
+            var twentyPercent = Convert.ToInt32(0.20 * tnl);
 
             ExperienceDistributionScript.GiveExp(source, twentyPercent);
             //Give Gold
@@ -65,8 +65,9 @@ public class TerrorChestScript : DialogScriptBase
 
             //Give item to inventory we built previously
             source.TryGiveItem(item);
+            source.TryGiveGamePoints(15);
             //Lets send them an orange bar message and give them a Legend Mark for completing the quest
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've received {item.DisplayName} and 50,000 coins!");
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've received {item.DisplayName}, 50,000 coins and 5 game points!");
 
             source.Legend.AddOrAccumulate(
                 new LegendMark(
@@ -78,8 +79,7 @@ public class TerrorChestScript : DialogScriptBase
                     GameTime.Now));
 
             //Warp Player back to Tavern
-            MapInstance mapInstance;
-            mapInstance = SimpleCache.Get<MapInstance>("mileth_tavern");
+            var mapInstance = SimpleCache.Get<MapInstance>("mileth_tavern");
             source.TraverseMap(mapInstance, new Point(9, 10));
             //Close Dialog
             Subject.Close(source);
@@ -95,8 +95,8 @@ public class TerrorChestScript : DialogScriptBase
             var item = ItemFactory.Create(templateKeyRewards[index]);
 
             //Give 20% of current TNL
-            var TNL = LevelUpFormulae.Default.CalculateTnl(source);
-            var twentyPercent = Convert.ToInt32(0.20 * TNL);
+            var tnl = LevelUpFormulae.Default.CalculateTnl(source);
+            var twentyPercent = Convert.ToInt32(0.20 * tnl);
 
             ExperienceDistributionScript.GiveExp(source, twentyPercent);
             //Give Gold
@@ -104,8 +104,9 @@ public class TerrorChestScript : DialogScriptBase
 
             //Give item to inventory we built previously
             source.TryGiveItem(item);
+            source.TryGiveGamePoints(15);
             //Lets send them an orange bar message and give them a Legend Mark for completing the quest
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've received {item.DisplayName} and 50,000 coins!");
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've received {item.DisplayName}, 50,000 coins and 5 game points!");
 
             source.Legend.AddOrAccumulate(
                 new LegendMark(

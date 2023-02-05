@@ -1,3 +1,4 @@
+using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Data;
 using Chaos.Definitions;
@@ -199,6 +200,8 @@ public class HolyResearchQuestScript : DialogScriptBase
                     source.Inventory.RemoveQuantity("raw honey", 1);
                     ExperienceDistributionScript.GiveExp(source, 2000);
                     source.Enums.Set(HolyResearchStage.None);
+                    source.TryGiveGamePoints(5);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and 2000 exp!");
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.HolyResearchCd, TimeSpan.FromHours(1), true);
                 }
@@ -219,6 +222,8 @@ public class HolyResearchQuestScript : DialogScriptBase
                     source.Inventory.RemoveQuantity("raw wax", 1);
                     ExperienceDistributionScript.GiveExp(source, 2000);
                     source.Enums.Set(HolyResearchStage.None);
+                    source.TryGiveGamePoints(5);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and 2000 exp!");
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.HolyResearchCd, TimeSpan.FromHours(1), true);
                 }
@@ -239,6 +244,8 @@ public class HolyResearchQuestScript : DialogScriptBase
                     source.Inventory.RemoveQuantity("royal wax", 1);
                     ExperienceDistributionScript.GiveExp(source, 2000);
                     source.Enums.Set(HolyResearchStage.None);
+                    source.TryGiveGamePoints(5);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and 2000 exp!");
                     Subject.Close(source);
                     source.TimedEvents.AddEvent(TimedEvent.TimedEventId.HolyResearchCd, TimeSpan.FromHours(1), true);
                 }

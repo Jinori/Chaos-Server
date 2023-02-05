@@ -31,7 +31,10 @@ public class SpareAStickRewardScript : DialogScriptBase
             source.Flags.RemoveFlag(QuestFlag1.GatheringSticks);
             source.Flags.AddFlag(QuestFlag1.SpareAStickComplete);
             ExperienceDistributionScript.GiveExp(source, 2500);
-
+            source.TryGiveGamePoints(5);
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and 2500 exp!");
+            
+            
             if (Randomizer.RollChance(8))
             {
                 source.Legend.AddOrAccumulate(
