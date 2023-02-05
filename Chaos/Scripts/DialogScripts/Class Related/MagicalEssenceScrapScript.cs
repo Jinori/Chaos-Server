@@ -4,18 +4,13 @@ using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Chaos.Scripts.DialogScripts
+namespace Chaos.Scripts.DialogScripts.Class_Related
 {
     public class MagicalEssenceScrapScript : DialogScriptBase
     {
 
-        public Item? ask { get; set; }
+        public Item? Ask { get; set; }
         public InputCollector InputCollector { get; }
         private readonly IItemFactory ItemFactory;
 
@@ -23,7 +18,7 @@ namespace Chaos.Scripts.DialogScripts
         public MagicalEssenceScrapScript(Dialog subject, IItemFactory itemFactory) : base(subject)
         {
             ItemFactory= itemFactory;
-            var requestInputText = DialogString.From(() => $"How many {ask!.DisplayName} would you like to turn into magical essence? You have {ask!.Count}.");
+            var requestInputText = DialogString.From(() => $"How many {Ask!.DisplayName} would you like to turn into magical essence? You have {Ask!.Count}.");
 
             InputCollector = new InputCollectorBuilder()
                              .RequestTextInput(requestInputText)
@@ -38,12 +33,12 @@ namespace Chaos.Scripts.DialogScripts
                 Subject.Reply(source, DialogString.UnknownInput.Value);
                 return false;
             }
-            if (!source.Inventory.HasCount(ask!.DisplayName, amount))
+            if (!source.Inventory.HasCount(Ask!.DisplayName, amount))
             {
-                Subject.Reply(source, $"You do not have that many {ask.DisplayName}.");
+                Subject.Reply(source, $"You do not have that many {Ask.DisplayName}.");
                 return false;
             }
-            source.Inventory.RemoveQuantity(ask.Slot, amount, out var Items);
+            source.Inventory.RemoveQuantity(Ask.Slot, amount, out var Items);
             foreach (var Item in Items!)
             {
                 var item = ItemFactory.Create("magicalessence");
@@ -63,7 +58,7 @@ namespace Chaos.Scripts.DialogScripts
 
         public override void OnNext(Aisling source, byte? optionIndex = null)
         {
-            if (ask == null)
+            if (Ask == null)
             {
                 if (!Subject.MenuArgs.TryGet<byte>(0, out var slot))
                 {
@@ -76,14 +71,14 @@ namespace Chaos.Scripts.DialogScripts
                     Subject.Reply(source, DialogString.UnknownInput.Value);
                     return;
                 }
-                ask = Item;
+                Ask = Item;
             }
-            if (source.Inventory.CountOf(ask.DisplayName) == 1)
+            if (source.Inventory.CountOf(Ask.DisplayName) == 1)
             {
-                source.Inventory.RemoveQuantity(ask.Slot, 1, out var Items);
+                source.Inventory.RemoveQuantity(Ask.Slot, 1, out var Items);
                 foreach (var Item in Items!)
                 {
-                    var item = ItemFactory.Create("magicalessence", null);
+                    var item = ItemFactory.Create("magicalessence");
                     item.Count = 1;
                     source.TryGiveItems(item);
                 }

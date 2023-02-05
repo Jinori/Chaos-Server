@@ -1,32 +1,24 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Extensions.Common;
+﻿using Chaos.Extensions.Common;
 using Chaos.Objects.Menu;
-using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chaos.Scripts.DialogScripts.Guild
 {
     public class GuildAddScript : DialogScriptBase
     {
-        private readonly InputCollector inputCollector;
-        private string? guildMemberSelected;
-        private Aisling? guildAdd { get; set; }
+        private readonly InputCollector InputCollector;
+        private string? GuildMemberSelected;
+        private Aisling? GuildAdd { get; set; }
         private IMerchantFactory MerchantFactory { get; init; }
         private IDialogFactory DialogFactory { get; init; }
 
 
         public GuildAddScript(Dialog subject, IDialogFactory dialogFactory, IMerchantFactory merchantFactory) : base(subject)
         {
-            inputCollector = new InputCollectorBuilder().RequestOptionSelection(DialogString.From(() => $"{guildMemberSelected} will be added. Is this correct?"), DialogString.Yes, DialogString.No)
+            InputCollector = new InputCollectorBuilder().RequestOptionSelection(DialogString.From(() => $"{GuildMemberSelected} will be added. Is this correct?"), DialogString.Yes, DialogString.No)
             .HandleInput(HandleConfirmation).Build();
             DialogFactory = dialogFactory;
             MerchantFactory = merchantFactory;
@@ -35,7 +27,7 @@ namespace Chaos.Scripts.DialogScripts.Guild
 
         public override void OnNext(Aisling source, byte? optionIndex = null)
         {
-            if (guildMemberSelected == null)
+            if (GuildMemberSelected == null)
             {
                 if (!Subject.MenuArgs.TryGet<string>(0, out var guildMember))
                 {
@@ -52,9 +44,9 @@ namespace Chaos.Scripts.DialogScripts.Guild
                     Subject.Reply(source, DialogString.UnknownInput.Value);
                     return;
                 }
-                guildMemberSelected = guildMember;
+                GuildMemberSelected = guildMember;
                 var point = new Point(source.X, source.Y);
-                var member = source.MapInstance.GetEntitiesWithinRange<Aisling>(point).FirstOrDefault(x => x.Name.EqualsI(guildMemberSelected));
+                var member = source.MapInstance.GetEntitiesWithinRange<Aisling>(point).FirstOrDefault(x => x.Name.EqualsI(GuildMemberSelected));
                 if (member is null)
                 {
                     Subject.Reply(source, "That aisling is not near.");
@@ -65,9 +57,9 @@ namespace Chaos.Scripts.DialogScripts.Guild
                     Subject.Reply(source, "That aisling already belongs to a guild.");
                     return;
                 }
-                guildAdd = member;
+                GuildAdd = member;
             }
-            inputCollector.Collect(source, Subject, optionIndex);
+            InputCollector.Collect(source, Subject, optionIndex);
         }
 
         public bool HandleConfirmation(Aisling aisling, Dialog dialog, int? option = null)
@@ -82,7 +74,7 @@ namespace Chaos.Scripts.DialogScripts.Guild
             var dialogNew = DialogFactory.Create("aricin_acceptGuild", merchant);
 
             dialogNew.Text = $"Do you accept your invitation to the {aisling.GuildName} guild?";
-            dialogNew.Display(guildAdd!);
+            dialogNew.Display(GuildAdd!);
 
             dialog.Close(aisling);
             return true;

@@ -2,7 +2,6 @@
 using Chaos.Data;
 using Chaos.Extensions.Common;
 using Chaos.Objects.Menu;
-using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -15,7 +14,7 @@ namespace Chaos.Scripts.DialogScripts.Generic
 
         public int Hairstyle;
         private readonly IItemFactory ItemFactory;
-        private static List<string> femaleHairstyles = new List<string> { "female_hairstyle_1", "female_hairstyle_2", "female_hairstyle_3", "female_hairstyle_4"
+        private static readonly List<string> FEMALE_HAIRSTYLES = new List<string> { "female_hairstyle_1", "female_hairstyle_2", "female_hairstyle_3", "female_hairstyle_4"
         , "female_hairstyle_5", "female_hairstyle_6", "female_hairstyle_7", "female_hairstyle_8", "female_hairstyle_9", "female_hairstyle_10", "female_hairstyle_11",
          "female_hairstyle_12", "female_hairstyle_13", "female_hairstyle_14", "female_hairstyle_15", "female_hairstyle_16", "female_hairstyle_17",
          "female_hairstyle_19", "female_hairstyle_20", "female_hairstyle_21", "female_hairstyle_22", "female_hairstyle_23", "female_hairstyle_24", "female_hairstyle_25",
@@ -25,7 +24,7 @@ namespace Chaos.Scripts.DialogScripts.Generic
          "female_hairstyle_47", "female_hairstyle_48", "female_hairstyle_49", "female_hairstyle_50", "female_hairstyle_51", "female_hairstyle_52", "female_hairstyle_53",
          "female_hairstyle_54", "female_hairstyle_55", "female_hairstyle_56", "female_hairstyle_57", "female_hairstyle_58", "female_hairstyle_59", "female_hairstyle_60"
         };
-        private static List<string> maleHairstyles = new List<string> { "male_hairstyle_1", "male_hairstyle_2", "male_hairstyle_3", "male_hairstyle_4"
+        private static readonly List<string> MALE_HAIRSTYLES = new List<string> { "male_hairstyle_1", "male_hairstyle_2", "male_hairstyle_3", "male_hairstyle_4"
         , "male_hairstyle_5", "male_hairstyle_6", "male_hairstyle_7", "male_hairstyle_8", "male_hairstyle_9", "male_hairstyle_10", "male_hairstyle_11",
          "male_hairstyle_12", "male_hairstyle_13", "male_hairstyle_14", "male_hairstyle_15", "male_hairstyle_16", "male_hairstyle_17",
          "male_hairstyle_19", "male_hairstyle_20", "male_hairstyle_21", "male_hairstyle_22", "male_hairstyle_23", "male_hairstyle_24", "male_hairstyle_25",
@@ -36,17 +35,14 @@ namespace Chaos.Scripts.DialogScripts.Generic
          "male_hairstyle_54", "male_hairstyle_55", "male_hairstyle_56", "male_hairstyle_57", "male_hairstyle_58", "male_hairstyle_59", "male_hairstyle_60"
         };
 
-        public HairstyleScript(Dialog subject, IItemFactory itemFactory) : base(subject)
-        {
-            ItemFactory = itemFactory;
-        }
+        public HairstyleScript(Dialog subject, IItemFactory itemFactory) : base(subject) => ItemFactory = itemFactory;
 
         public override void OnDisplaying(Aisling source)
         {
 
             if (source.Gender.Equals(Gender.Male))
             {
-                foreach (var s in maleHairstyles)
+                foreach (var s in MALE_HAIRSTYLES)
                 {
                     var item = ItemFactory.CreateFaux(s);
                     item.Color = source.HairColor;
@@ -55,7 +51,7 @@ namespace Chaos.Scripts.DialogScripts.Generic
             }
             if (source.Gender.Equals(Gender.Female))
             {
-                foreach (var s in femaleHairstyles)
+                foreach (var s in FEMALE_HAIRSTYLES)
                 {
                     var item = ItemFactory.CreateFaux(s);
                     item.Color = source.HairColor;
@@ -71,20 +67,20 @@ namespace Chaos.Scripts.DialogScripts.Generic
                 Subject.Reply(source, DialogString.UnknownInput.Value);
                 return;
             }
-            var ItemDetails = Subject.Items.FirstOrDefault(x => x.Item.DisplayName.EqualsI(hairStyleName));
-            var Item = ItemDetails?.Item;
-            if (Item == null)
+            var itemDetails = Subject.Items.FirstOrDefault(x => x.Item.DisplayName.EqualsI(hairStyleName));
+            var item = itemDetails?.Item;
+            if (item == null)
 
             {
                 Subject.Reply(source, DialogString.UnknownInput.Value);
                 return;
             }
-            if (!source.TryTakeGold(ItemDetails!.AmountOrPrice))
+            if (!source.TryTakeGold(itemDetails!.AmountOrPrice))
             {
                 Subject.Close(source);
                 return;
             }
-            source.HairStyle = Item.Template.ItemSprite.DisplaySprite;
+            source.HairStyle = item.Template.ItemSprite.DisplaySprite;
             source.Refresh(true);
         }
     }

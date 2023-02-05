@@ -4,7 +4,7 @@ using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripts.DialogScripts;
+namespace Chaos.Scripts.DialogScripts.Generic;
 
 public class TerminusReviveScript : DialogScriptBase
 {

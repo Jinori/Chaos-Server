@@ -11,18 +11,16 @@ namespace Chaos.Scripts.DialogScripts.Generic
 {
     public class DyeShopScript : DialogScriptBase
     {
-        private readonly InputCollector inputCollector;
-        private DisplayColor? displayColor;
-        private Item? item;
+        private readonly InputCollector InputCollector;
+        private DisplayColor? DisplayColor;
+        private Item? Item;
 
-        public DyeShopScript(Dialog subject) : base(subject)
-        {
-            inputCollector = new InputCollectorBuilder()
-                .RequestTextInput(DialogString.From(RequestColorInput))
-                .HandleInput(HandleColorInput)
-                .RequestOptionSelection(DialogString.From(() => $"{item!.DisplayName} will be dyed {displayColor}. Is this correct?"), DialogString.Yes, DialogString.No)
-                .HandleInput(HandleConfirmation).Build();
-        }
+        public DyeShopScript(Dialog subject) : base(subject) =>
+            InputCollector = new InputCollectorBuilder()
+                             .RequestTextInput(DialogString.From(RequestColorInput))
+                             .HandleInput(HandleColorInput)
+                             .RequestOptionSelection(DialogString.From(() => $"{Item!.DisplayName} will be dyed {DisplayColor}. Is this correct?"), DialogString.Yes, DialogString.No)
+                             .HandleInput(HandleConfirmation).Build();
 
         public string RequestColorInput()
         {
@@ -46,27 +44,27 @@ namespace Chaos.Scripts.DialogScripts.Generic
                 dialog.Reply(aisling, DialogString.UnknownInput.Value);
                 return false;
             }
-            displayColor = color;
+            DisplayColor = color;
             return true;
         }
 
         public override void OnNext(Aisling source, byte? optionIndex = null)
         {
-            if (item == null)
+            if (Item == null)
             {
                 if (!Subject.MenuArgs.TryGet<string>(0, out var itemname))
                 {
                     Subject.Reply(source, DialogString.UnknownInput.Value);
                     return;
                 }
-                item = source.Inventory.FirstOrDefault(i => i.DisplayName.EqualsI(itemname));
-                if (item == null)
+                Item = source.Inventory.FirstOrDefault(i => i.DisplayName.EqualsI(itemname));
+                if (Item == null)
                 {
                     Subject.Reply(source, DialogString.UnknownInput.Value);
                     return;
                 }
             }
-            inputCollector.Collect(source, Subject, optionIndex);
+            InputCollector.Collect(source, Subject, optionIndex);
         }
 
         public bool HandleConfirmation(Aisling aisling, Dialog dialog, int? option = null)
@@ -75,10 +73,10 @@ namespace Chaos.Scripts.DialogScripts.Generic
             {
                 return false;
             }
-            aisling.Inventory.Update(item!.Slot, i =>
+            aisling.Inventory.Update(Item!.Slot, i =>
             {
 
-                i.Color = displayColor!.Value;
+                i.Color = DisplayColor!.Value;
 
             });
             dialog.Close(aisling);

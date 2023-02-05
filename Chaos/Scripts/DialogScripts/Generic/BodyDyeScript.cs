@@ -3,7 +3,6 @@ using Chaos.Data;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Objects.Menu;
-using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -16,14 +15,11 @@ namespace Chaos.Scripts.DialogScripts.Generic
 
         private readonly IItemFactory ItemFactory;
 
-        public BodyDyeScript(Dialog subject, IItemFactory itemFactory) : base(subject)
-        {
-            ItemFactory = itemFactory;
-        }
+        public BodyDyeScript(Dialog subject, IItemFactory itemFactory) : base(subject) => ItemFactory = itemFactory;
 
         public override void OnDisplaying(Aisling source)
         {
-            foreach (BodyColor color in Enum.GetValues<BodyColor>())
+            foreach (var color in Enum.GetValues<BodyColor>())
             {
                 var item = ItemFactory.CreateFaux("hairDyeContainer");
                 item.DisplayName = $"{color} Body Dye";
@@ -39,20 +35,20 @@ namespace Chaos.Scripts.DialogScripts.Generic
                 Subject.Reply(source, DialogString.UnknownInput.Value);
                 return;
             }
-            var ItemDetails = Subject.Items.FirstOrDefault(x => x.Item.DisplayName.EqualsI(dye));
-            var Item = ItemDetails?.Item;
+            var itemDetails = Subject.Items.FirstOrDefault(x => x.Item.DisplayName.EqualsI(dye));
+            var item = itemDetails?.Item;
 
-            if (Item == null)
+            if (item == null)
             {
                 Subject.Reply(source, DialogString.UnknownInput.Value);
                 return;
             }
-            if (!source.TryTakeGold(ItemDetails!.AmountOrPrice))
+            if (!source.TryTakeGold(itemDetails!.AmountOrPrice))
             {
                 Subject.Close(source);
                 return;
             }
-            source.BodyColor = Item.Color.ConvertToBodyColor();
+            source.BodyColor = item.Color.ConvertToBodyColor();
             source.Refresh(true);
         }
     }
