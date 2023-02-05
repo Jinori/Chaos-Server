@@ -6,7 +6,7 @@ using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Time;
 
-namespace Chaos.Scripts.DialogScripts
+namespace Chaos.Scripts.DialogScripts.Class_Related
 {
     public class MonkFormDedicationScript : DialogScriptBase
     {

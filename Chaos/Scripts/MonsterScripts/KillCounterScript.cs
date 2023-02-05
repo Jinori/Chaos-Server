@@ -1,4 +1,3 @@
-using Chaos.Common.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -56,6 +55,7 @@ public class KillCounterScript : MonsterScriptBase
                 else
                 {
                     aisling.Counters.TryAdd(Subject.Template.TemplateKey, 1);
+                    aisling.SendServerMessage(ServerMessageType.PersistentMessage, $"Killed " + aisling.Counters[Subject.Template.TemplateKey] + " " +Subject.Template.Name);
                 }
             }
         }

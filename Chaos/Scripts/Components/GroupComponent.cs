@@ -12,7 +12,7 @@ namespace Chaos.Scripts.Components;
 
 public class GroupComponent
 {
-    public virtual void ApplyHealing(ActivationContext context, IReadOnlyCollection<Aisling> targetEntities, GroupComponentOptions options)
+    public virtual void ApplyHealing(ActivationContext context, IReadOnlyCollection<Aisling>? targetEntities, GroupComponentOptions options)
     {
         if (targetEntities is null)
             return;
@@ -34,17 +34,17 @@ public class GroupComponent
 
     protected virtual int CalculateHealing(
         ActivationContext context,
-        int? BaseHealing = null,
-        Stat? HealStat = null,
-        decimal? HealStatMultiplier = null
+        int? baseHealing = null,
+        Stat? healStat = null,
+        decimal? healStatMultiplier = null
     )
     {
-        var heals = BaseHealing ?? 0;
+        var heals = baseHealing ?? 0;
 
-        if (HealStat.HasValue)
+        if (healStat.HasValue)
         {
-            var multiplier = HealStatMultiplier ?? 1; 
-            heals += Convert.ToInt32(context.Source.StatSheet.GetEffectiveStat(HealStat.Value) * multiplier);
+            var multiplier = healStatMultiplier ?? 1; 
+            heals += Convert.ToInt32(context.Source.StatSheet.GetEffectiveStat(healStat.Value) * multiplier);
         }
 
         return heals;

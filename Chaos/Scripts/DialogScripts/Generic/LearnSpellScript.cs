@@ -10,7 +10,7 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
 
-namespace Chaos.Scripts.DialogScripts;
+namespace Chaos.Scripts.DialogScripts.Generic;
 
 public class LearnSpellScript : ConfigurableDialogScriptBase
 {

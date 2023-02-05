@@ -1,47 +1,35 @@
-﻿using System.Diagnostics.Eventing.Reader;
-using Chaos.Common.Definitions;
+﻿using Chaos.Common.Definitions;
 using Chaos.Containers;
 using Chaos.Definitions;
-using Chaos.Extensions.Common;
 using Chaos.Objects.Legend;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
-using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 
-namespace Chaos.Scripts.DialogScripts;
+namespace Chaos.Scripts.DialogScripts.Generic;
 
 public class TerminusTutorialScript : DialogScriptBase
 {
     public TerminusTutorialScript(
         Dialog subject,
-        IItemFactory itemFactory,
-        ISkillFactory skillFactory,
-        ISpellFactory spellFactory,
         ISimpleCache simpleCache
     )
         : base(subject)
     {
-        ItemFactory = itemFactory;
-        SkillFactory = skillFactory;
-        SpellFactory = spellFactory;
         SimpleCache = simpleCache;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
     private readonly ISimpleCache SimpleCache;
-    private readonly IItemFactory ItemFactory;
-    private readonly ISkillFactory SkillFactory;
-    private readonly ISpellFactory SpellFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; set; }
     
     public override void OnDisplaying(Aisling source)
     {
-        var hasStage = source.Enums.TryGetValue(out TutorialQuestStage stage);
+        source.Enums.TryGetValue(out TutorialQuestStage stage);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -81,8 +69,6 @@ public class TerminusTutorialScript : DialogScriptBase
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
-
-                    return;
                 }
 
                 break;

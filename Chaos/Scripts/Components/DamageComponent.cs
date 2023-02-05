@@ -3,7 +3,6 @@ using Chaos.Data;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
-using Microsoft.Extensions.Options;
 
 namespace Chaos.Scripts.Components;
 
