@@ -14,10 +14,8 @@ public class ThrowSurigumScript : DamageScript
 
     /// <inheritdoc />
     public ThrowSurigumScript(Skill subject)
-        : base(subject)
-    {
+        : base(subject) =>
         ApplyDamageScript = DefaultApplyDamageScript.Create();
-    }
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
@@ -31,7 +29,7 @@ public class ThrowSurigumScript : DamageScript
                 return;
             }
         }
-        var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
-        DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
+        var targets = AbilityComponent.Activate<Creature>(context, this);
+        DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
     }
 }

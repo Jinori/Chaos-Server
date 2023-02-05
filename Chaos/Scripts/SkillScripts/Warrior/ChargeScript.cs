@@ -32,7 +32,7 @@ namespace Chaos.Scripts.SkillScripts.Warrior
                 context.Source.Direction,
                 context.Map.Template.Bounds);
 
-           var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+           var targets = AbilityComponent.Activate<Creature>(context, this);
            var targetCreature = targets.TargetEntities.FirstOrDefault();
 
             if (targetCreature is null)
@@ -43,7 +43,7 @@ namespace Chaos.Scripts.SkillScripts.Warrior
 
                 //if it is walkable, warp to that point
                 context.Source.WarpTo(points.Last());
-                DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
+                DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
             }
 
             return;

@@ -2,32 +2,20 @@
 using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
+using Chaos.Scripts.Components;
 using Chaos.Scripts.SpellScripts.Abstractions;
 
 namespace Chaos.Scripts.SpellScripts.Healing
 {
-    public class AoPoisonScript : BasicSpellScriptBase
+    public class AoPoisonScript : BasicSpellScriptBase, ManaCostComponent.IManaCostComponentOptions
     {
-        public AoPoisonScript(Spell subject) : base(subject)
-        {
-        }
+        protected ManaCostComponent ManaCostComponent { get; }
+        public AoPoisonScript(Spell subject) : base(subject) => ManaCostComponent = new ManaCostComponent();
 
         public override void OnUse(SpellContext context)
         {
-            if (ManaSpent.HasValue)
-            {
-                //Require mana
-                if (context.Source.StatSheet.CurrentMp < ManaSpent.Value)
-                {
-                    context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this cast.");
-                    return;
-                }
-                //Subtract mana and update user
-                context.Source.StatSheet.SubtractMp(ManaSpent.Value);
-                context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
-            }
-            
-            var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+            ManaCostComponent.ApplyManaCost(context, this);
+            var targets = AbilityComponent.Activate<Creature>(context, this);
             foreach (var target in targets.TargetEntities)
             {
                 if (target.Effects.Contains("poison"))
@@ -45,8 +33,9 @@ namespace Chaos.Scripts.SpellScripts.Healing
         }
                 
         #region ScriptVars
-        protected int? ManaSpent { get; init; }
         protected string? CradhNameToRemove { get; init; }
+        public int? ManaCost { get; init; }
+        public decimal PctManaCost { get; init; }
         #endregion
     }
 }

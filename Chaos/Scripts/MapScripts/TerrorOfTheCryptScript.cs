@@ -25,13 +25,13 @@ namespace Chaos.Scripts.MapScripts
         private readonly IMonsterFactory MonsterFactory;
         private ScriptState State;
         private DateTime? StartTime;
-        private TimeSpan StartDelay;
-        private IIntervalTimer AnimationInterval;
-        private IRectangle AnimationShape;
-        private List<Point> ShapeOutline;
-        private List<Point> ReverseOutline;
+        private readonly TimeSpan StartDelay;
+        private readonly IIntervalTimer AnimationInterval;
+        private readonly IRectangle AnimationShape;
+        private readonly List<Point> ShapeOutline;
+        private readonly List<Point> ReverseOutline;
         private int AnimationIndex;
-        private Animation Animation;
+        private readonly Animation Animation;
 
     public TerrorOfTheCryptScript(MapInstance subject, IMonsterFactory monsterFactory) : base(subject)
         {
@@ -101,9 +101,9 @@ namespace Chaos.Scripts.MapScripts
                     break;
                 case ScriptState.Spawned:
 
-                    if(Subject.GetEntities<Aisling>().Count() == 0)
+                    if(!Subject.GetEntities<Aisling>().Any())
                     {
-                        var monsters = Subject.GetEntities<Monster>().ToList(); ;
+                        var monsters = Subject.GetEntities<Monster>().ToList();
 
                         //if we are transitioning to a dormant state, remove any lingering monsters
                         //this could potentially happen if both players logged out

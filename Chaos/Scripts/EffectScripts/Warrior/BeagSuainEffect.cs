@@ -1,8 +1,6 @@
 using Chaos.Common.Definitions;
 using Chaos.Data;
 using Chaos.Definitions;
-using Chaos.Objects.World.Abstractions;
-using Chaos.Objects.World;
 using Chaos.Scripts.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -46,8 +44,5 @@ public sealed class BeagSuainEffect : AnimatingEffectBase
 
 
     /// <inheritdoc />
-    protected override void OnIntervalElapsed()
-    {
-        AislingSubject?.Client.SendCancelCasting();
-    }
+    protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
 }

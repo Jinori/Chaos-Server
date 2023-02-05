@@ -8,11 +8,12 @@ using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ApplyDamage;
 using Chaos.Scripts.SpellScripts.Abstractions;
 
-namespace Chaos.Scripts.SpellScripts;
+namespace Chaos.Scripts.SpellScripts.Damage;
 
-public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageComponentOptions
+public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageComponentOptions, ManaCostComponent.IManaCostComponentOptions
 {
     protected DamageComponent DamageComponent { get; }
+    protected ManaCostComponent ManaCostComponent { get; }
 
     /// <inheritdoc />
     public DamageScript(Spell subject)
@@ -20,12 +21,14 @@ public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageCompone
     {
         ApplyDamageScript = DefaultApplyDamageScript.Create();
         DamageComponent = new DamageComponent();
+        ManaCostComponent = new ManaCostComponent();
         SourceScript = this;
     }
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
     {
+        ManaCostComponent.ApplyManaCost(context, this);
         var targets = AbilityComponent.Activate<Creature>(context, this);
         DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
         context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}");
@@ -38,5 +41,7 @@ public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageCompone
     public decimal? DamageStatMultiplier { get; init; }
     public decimal? PctHpDamage { get; init; }
     public IScript SourceScript { get; init; }
+    public int? ManaCost { get; init; }
+    public decimal PctManaCost { get; init; }
     #endregion
 }

@@ -9,6 +9,7 @@ using Chaos.Scripts.MonsterScripts.Abstractions;
 namespace Chaos.Scripts.MonsterScripts;
 
 // ReSharper disable once ClassCanBeSealed.Global
+[SuppressMessage("ReSharper", "SuspiciousTypeConversion.Global")]
 public class KillCounterScript : MonsterScriptBase
 {
     protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
@@ -40,22 +41,21 @@ public class KillCounterScript : MonsterScriptBase
         {
             foreach (var aisling in rewardTargets)
             {
-                if (aisling.Counters.ContainsKey(Subject.Template.TemplateKey))
+                switch (Subject.Template.TemplateKey)
                 {
-                    aisling.Counters[Subject.Template.TemplateKey] += 1;
-
-                    //Add Stage Checks Here
-                    
-                    var hasRatStage = aisling.Enums.TryGetValue(out RionaRatQuestStage stage);
-                    if (hasRatStage && (stage == RionaRatQuestStage.StartedRatQuest))
+                    case "tavern_rat":
                     {
-                        aisling.SendServerMessage(ServerMessageType.PersistentMessage, $"Killed " + aisling.Counters[Subject.Template.TemplateKey] + " " +Subject.Template.Name);
+                        var hasStage = aisling.Enums.TryGetValue(out RionaRatQuestStage stage);
+                        var counter = aisling.Counters.Where(x => x.Key.Equals(Subject.Template.TemplateKey));
+                        aisling.Counters.AddOrIncrement(Subject.Template.TemplateKey, 1);
+                        
+                        if (hasStage && (stage == RionaRatQuestStage.StartedRatQuest))
+                            aisling.SendServerMessage(
+                                ServerMessageType.PersistentMessage,
+                                $"Killed " + counter.FirstOrDefault().Value + " " + Subject.Template.Name);
+
+                        break;
                     }
-                }
-                else
-                {
-                    aisling.Counters.TryAdd(Subject.Template.TemplateKey, 1);
-                    aisling.SendServerMessage(ServerMessageType.PersistentMessage, $"Killed " + aisling.Counters[Subject.Template.TemplateKey] + " " +Subject.Template.Name);
                 }
             }
         }

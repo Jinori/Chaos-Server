@@ -30,7 +30,7 @@ public class HealthBasedAttackScript : BasicSkillScriptBase
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
     {
-        var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+        var targets = AbilityComponent.Activate<Creature>(context, this);
         var damageAmount = Convert.ToInt32(HealthMultiplier * context.Source.StatSheet.CurrentHp);
 
         foreach (var target in targets.TargetEntities)

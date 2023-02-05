@@ -1,11 +1,8 @@
 using Chaos.Common.Definitions;
-using Chaos.Containers;
 using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.ItemScripts.Abstractions;
-using NLog.Web.LayoutRenderers;
 
 namespace Chaos.Scripts.ItemScripts;
 
@@ -75,7 +72,7 @@ public class ChiAnkletScript : ConfigurableItemScriptBase
 
     public override void OnEquipped(Aisling source)
     {
-        int ac = 0;
+        var ac = 0;
 
         if (source.Flags.HasFlag(ChiAnkletFlags.Ac1))
             ac = 1;
@@ -107,7 +104,7 @@ public class ChiAnkletScript : ConfigurableItemScriptBase
 
     public override void OnUnEquipped(Aisling source)
     {
-        int ac = 0;
+        var ac = 0;
         if (source.Flags.HasFlag(ChiAnkletFlags.Ac1))
             ac = 1;
         if (source.Flags.HasFlag(ChiAnkletFlags.Ac2))

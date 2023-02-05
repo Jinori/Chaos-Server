@@ -3,13 +3,7 @@ using Chaos.Common.Utilities;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.ReactorTileScripts.Abstractions;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 
@@ -29,14 +23,14 @@ namespace Chaos.Scripts.ReactorTileScripts.Mileth
         {
             var aisling = (Aisling)source;
             aisling.MapInstance.RemoveObject(groundItem);
-            if (groundItem.Item.Template.BuyCost >= 1000 || groundItem.Item.Template.SellValue >= 1000)
+            if ((groundItem.Item.Template.BuyCost >= 1000) || (groundItem.Item.Template.SellValue >= 1000))
             {
                 ExperienceDistributionScript.GiveExp(aisling, 200);
                 if (Randomizer.RollChance(10))
                 {
-                    List<string> randomMessages = new List<string>() { "The gods are pleased with your sacrifice.", "The item glows before dissolving into the altar.", "Good fortune the gods will grant." };
+                    var randomMessages = new List<string>() { "The gods are pleased with your sacrifice.", "The item glows before dissolving into the altar.", "Good fortune the gods will grant." };
                     var random = new Random();
-                    int index = random.Next(randomMessages.Count);
+                    var index = random.Next(randomMessages.Count);
                     aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, randomMessages[index]);
                 }
                 if (Randomizer.RollChance(2))

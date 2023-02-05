@@ -24,7 +24,7 @@ public class ThrowSmokeBombScript : BasicSkillScriptBase
 
     public override void OnUse(ActivationContext context)
     {
-        var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+        var targets = AbilityComponent.Activate<Creature>(context, this);
 
         var screen = context.Source.MapInstance.GetEntitiesWithinRange<Creature>(context.SourcePoint)
                             .Where(x => x.IsHostileTo(context.Source));

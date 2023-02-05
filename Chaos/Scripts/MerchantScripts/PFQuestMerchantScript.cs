@@ -7,6 +7,7 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripts.MerchantScripts;
 
+[SuppressMessage("ReSharper", "UnusedVariable"),SuppressMessage("ReSharper", "SwitchStatementMissingSomeEnumCasesNoDefault"),SuppressMessage("ReSharper", "ConvertIfStatementToSwitchStatement")]
 public class PFQuestMerchant : MerchantScriptBase
 {
     private readonly IDialogFactory DialogFactory;
@@ -71,18 +72,22 @@ public class PFQuestMerchant : MerchantScriptBase
 
                 var hasStage = aisling.Enums.TryGetValue(out PFQuestStage stage);
 
-                if (stage == PFQuestStage.TurnedInRoots)
+                switch (stage)
                 {
-                    var dialog = DialogFactory.Create("porteforest_initial2", Subject);
-                    dialog.Display(aisling);
+                    case PFQuestStage.TurnedInRoots:
+                    {
+                        var dialog = DialogFactory.Create("porteforest_initial2", Subject);
+                        dialog.Display(aisling);
 
-                    return;
-                }
+                        return;
+                    }
+                    case PFQuestStage.WolfManes:
+                    {
+                        var dialog = DialogFactory.Create("porteforest_initial2", Subject);
+                        dialog.Display(aisling);
 
-                if (stage == PFQuestStage.WolfManes)
-                {
-                    var dialog = DialogFactory.Create("porteforest_initial2", Subject);
-                    dialog.Display(aisling);
+                        break;
+                    }
                 }
 
                 break;

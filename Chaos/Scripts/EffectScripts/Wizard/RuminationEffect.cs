@@ -22,7 +22,7 @@ namespace Chaos.Scripts.EffectScripts.Wizard
             TargetAnimation = 58
         };
 
-        protected Point point { get; set; }
+        protected Point Point { get; set; }
 
         /// <inheritdoc />
         protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1));
@@ -44,7 +44,7 @@ namespace Chaos.Scripts.EffectScripts.Wizard
 
             //Check if they have moved from the original location
             var currentPoint = new Point(Subject.X, Subject.Y);
-            if (!point.Equals(currentPoint))
+            if (!Point.Equals(currentPoint))
             {
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{MessageColor.Silver.ToPrefix()}You moved while trying to concentrate.");
                 Subject.Effects.Terminate(Name);
@@ -83,7 +83,7 @@ namespace Chaos.Scripts.EffectScripts.Wizard
                 Subject.Status = Status.Rumination;
             AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
             AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{MessageColor.Silver.ToPrefix()}You begin to sacrifice your health in return for mana gains..");
-            point = new Point(Subject.X, Subject.Y);
+            Point = new Point(Subject.X, Subject.Y);
         }
 
         public override void OnTerminated()
@@ -104,10 +104,6 @@ namespace Chaos.Scripts.EffectScripts.Wizard
                 return true;
         }
 
-        public override void OnDispelled()
-        {
-            OnTerminated();
-        }
-
+        public override void OnDispelled() => OnTerminated();
     }
 }

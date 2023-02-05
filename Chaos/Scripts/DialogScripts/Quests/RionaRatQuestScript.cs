@@ -109,10 +109,10 @@ public class RionaRatQuestScript : DialogScriptBase
                 break;
             
                 case "ratquest_turnin":
-                    var killedRats = source.Counters.TryGetValue("tavern_rat", out var count);
+                    var counter = source.Counters.Where(x => x.Key.Equals("tavern_rat"));;
                     if (stage == RionaRatQuestStage.StartedRatQuest)
                     {
-                        if (count < 5)
+                        if (counter.FirstOrDefault().Value < 5)
                         {
                             Subject.Text = "They're still everywhere! Please take care of them."; 
                             source.SendOrangeBarMessage("You watch a rat crawl across your foot");

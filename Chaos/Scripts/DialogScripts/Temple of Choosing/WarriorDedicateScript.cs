@@ -6,10 +6,9 @@ using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripts.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
-using Chaos.Storage;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripts.DialogScripts
+namespace Chaos.Scripts.DialogScripts.Temple_of_Choosing
 {
     public class WarriorDedicateScript : DialogScriptBase
     {

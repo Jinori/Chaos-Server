@@ -2,11 +2,6 @@
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Scripts.ItemScripts.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chaos.Scripts.ItemScripts
 {
@@ -25,13 +20,11 @@ namespace Chaos.Scripts.ItemScripts
             {
                 var killCounts = source.Counters.Select(x => string.Join(" - ", x.Key, x.Value));
 
-                if (killCounts.Any())
-                {
-                    foreach (var kill in killCounts)
-                    {
+                var enumerable = killCounts as string[] ?? killCounts.ToArray();
+
+                if (enumerable.Any())
+                    foreach (var kill in enumerable)
                         source.Client.SendServerMessage(ServerMessageType.WoodenBoard, kill);
-                    }
-                }
                 else
                     source.Client.SendServerMessage(ServerMessageType.WoodenBoard, "No currently recorded kills.");
             }

@@ -29,11 +29,7 @@ public class ALittleBitofThatScript : DialogScriptBase
 
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = Convert.ToInt32(.20 * tnl);
-
-        var thirtyPercent = Convert.ToInt32(0.30 * tnl);
-
-        var fortyPercent = Convert.ToInt32(0.40 * tnl);
-
+        
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "egil_initial":
@@ -228,8 +224,6 @@ public class ALittleBitofThatScript : DialogScriptBase
                     
                     if (!Subject.HasOption(option1))
                         Subject.Options.Insert(1, option1);
-
-                    return;
                 }
 
                 break;
@@ -237,11 +231,9 @@ public class ALittleBitofThatScript : DialogScriptBase
             case "alittlebitofthat_yes":
                 if (!hasStage || (stage == ALittleBitofThatStage.None))
                 {
-                    var randomALittleBitofThatStage = ALittleBitofThatStage.None;
-                    
-                        randomALittleBitofThatStage = new[]
+                    var randomALittleBitofThatStage = new[]
                         {
-                    ALittleBitofThatStage.StartedApple, 
+                            ALittleBitofThatStage.StartedApple, 
                             ALittleBitofThatStage.StartedBaguette, 
                             ALittleBitofThatStage.StartedCherry, 
                             ALittleBitofThatStage.StartedGrapes, 

@@ -2,38 +2,31 @@
 using Chaos.Data;
 using Chaos.Extensions;
 using Chaos.Objects.Panel;
+using Chaos.Scripts.Components;
 using Chaos.Scripts.SpellScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripts.SpellScripts.Buffs;
 
 [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
-public class ApplyGroupEffectScript : BasicSpellScriptBase
+public class ApplyGroupEffectScript : BasicSpellScriptBase, ManaCostComponent.IManaCostComponentOptions
 {
     protected readonly IEffectFactory EffectFactory;
     protected string EffectKey { get; init; } = null!;
+    protected ManaCostComponent ManaCostComponent { get; }
 
     /// <inheritdoc />
     public ApplyGroupEffectScript(Spell subject, IEffectFactory effectFactory)
-        : base(subject) =>
+        : base(subject)
+    {
         EffectFactory = effectFactory;
+        ManaCostComponent = new ManaCostComponent();
+    }
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
     {
-        if (ManaSpent.HasValue)
-        {
-            //Require mana
-            if (context.Source.StatSheet.CurrentMp < ManaSpent.Value)
-            {
-                context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this cast.");
-                return;
-            }
-            //Subtract mana and update user
-            context.Source.StatSheet.SubtractMp(ManaSpent.Value);
-            context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
-        }
-        
+        ManaCostComponent.ApplyManaCost(context, this);
         var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint));
         
         if (group != null)
@@ -54,6 +47,7 @@ public class ApplyGroupEffectScript : BasicSpellScriptBase
     }
     
     #region ScriptVars
-    protected int? ManaSpent { get; init; }
+    public int? ManaCost { get; init; }
+    public decimal PctManaCost { get; init; }
     #endregion
 }

@@ -19,7 +19,7 @@ public class ApplyEffectScript : BasicSkillScriptBase
 
     public override void OnUse(ActivationContext context)
     {
-        var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+        var targets = AbilityComponent.Activate<Creature>(context, this);
 
         foreach (var target in targets.TargetEntities)
         {

@@ -3,15 +3,14 @@ using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.SpellScripts.Abstractions;
 using Chaos.Data;
+using Chaos.Scripts.Components;
 
 namespace Chaos.Scripts.SpellScripts.Healing
 {
-    internal class SalvationScript : BasicSpellScriptBase
+    internal class SalvationScript : BasicSpellScriptBase, ManaCostComponent.IManaCostComponentOptions
     {
-
-        public SalvationScript(Spell subject) : base(subject)
-        {
-        }
+        protected ManaCostComponent ManaCostComponent { get; }
+        public SalvationScript(Spell subject) : base(subject) => ManaCostComponent = new ManaCostComponent();
 
         protected virtual void ApplyHealing(SpellContext context, IEnumerable<Creature> targetEntities)
         {
@@ -33,21 +32,12 @@ namespace Chaos.Scripts.SpellScripts.Healing
         /// <inheritdoc />
         public override void OnUse(SpellContext context)
         {
-            //Require mana
-            if (context.Source.StatSheet.CurrentMp < 1)
-            {
-                context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this cast.");
-                return;
-            }
-            if (context.SourceAisling?.StatSheet.CurrentMp >= 1)
-            {
-                //Subtract mana and update user
-                context.Source.StatSheet.SubtractMp(context.Source.StatSheet.MaximumMp);
-                context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
-            }
-            
-            var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+            ManaCostComponent.ApplyManaCost(context, this);
+            var targets = AbilityComponent.Activate<Creature>(context, this);
             ApplyHealing(context, targets.TargetEntities);
         }
+
+        public int? ManaCost { get; init; }
+        public decimal PctManaCost { get; init; }
     }
 }

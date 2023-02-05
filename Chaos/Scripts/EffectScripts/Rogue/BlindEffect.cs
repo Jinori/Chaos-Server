@@ -7,7 +7,7 @@ using Chaos.Scripts.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripts.EffectScripts.Priest;
+namespace Chaos.Scripts.EffectScripts.Rogue;
 
 public sealed class BlindEffect : AnimatingEffectBase
 {

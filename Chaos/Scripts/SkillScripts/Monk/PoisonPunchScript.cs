@@ -23,8 +23,8 @@ public class PoisonPunchScript : DamageScript
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
     {
-        var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
-        DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
+        var targets = AbilityComponent.Activate<Creature>(context, this);
+        DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
         var effect = EffectFactory.Create("Poison");
         foreach (var target in targets.TargetEntities) 
             target.Effects.Apply(context.Source, effect);

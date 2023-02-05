@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Containers;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;

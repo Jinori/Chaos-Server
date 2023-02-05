@@ -1,14 +1,8 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Containers;
 using Chaos.Objects.Legend;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Scripts.ItemScripts.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chaos.Scripts.ItemScripts
 {
@@ -29,7 +23,7 @@ namespace Chaos.Scripts.ItemScripts
                     //Give Gold Amount
                     source.TryGiveGold(GoldAmount.Value);
                     //Give Legend Mark
-                    source.Legend.AddOrAccumulate(new LegendMark("Opened a " + Subject.DisplayName + "!", "giftbox1", Common.Definitions.MarkIcon.Yay, Common.Definitions.MarkColor.White, 1, Time.GameTime.Now));
+                    source.Legend.AddOrAccumulate(new LegendMark("Opened a " + Subject.DisplayName + "!", "giftbox1", MarkIcon.Yay, MarkColor.White, 1, Time.GameTime.Now));
                     //Remove box from Inventory
                     source.Inventory.RemoveQuantity(Subject.DisplayName, 1, out _);
                     //Display confirmation to user

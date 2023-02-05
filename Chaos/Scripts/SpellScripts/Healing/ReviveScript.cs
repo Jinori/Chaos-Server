@@ -2,6 +2,7 @@
 using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
+using Chaos.Scripts.Components;
 using Chaos.Scripts.SpellScripts.Abstractions;
 
 namespace Chaos.Scripts.SpellScripts.Healing
@@ -19,7 +20,7 @@ namespace Chaos.Scripts.SpellScripts.Healing
         }
     }
 
-    public class ReviveScript : BasicSpellScriptBase
+    public class ReviveScript : BasicSpellScriptBase, ManaCostComponent.IManaCostComponentOptions
     {
         public override bool CanUse(SpellContext context)
         {
@@ -27,25 +28,15 @@ namespace Chaos.Scripts.SpellScripts.Healing
             return context.Source.IsAlive;
         }
 
-        public ReviveScript(Spell subject) : base(subject)
-        {
-        }
+        protected ManaCostComponent ManaCostComponent { get; }
+        
+        public ReviveScript(Spell subject) : base(subject) => ManaCostComponent = new ManaCostComponent();
+
         public override void OnUse(SpellContext context)
         {
-            if (ManaSpent.HasValue)
-            {
-                //Require mana
-                if (context.Source.StatSheet.CurrentMp < ManaSpent.Value)
-                {
-                    context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this cast.");
-                    return;
-                }
-                //Subtract mana and update user
-                context.Source.StatSheet.SubtractMp(ManaSpent.Value);
-                context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
-            }
+            ManaCostComponent.ApplyManaCost(context, this);
 
-            var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+            var targets = AbilityComponent.Activate<Creature>(context, this);
             foreach (var target in targets.TargetEntities)
             {
                 if (!target.IsAlive)
@@ -70,7 +61,8 @@ namespace Chaos.Scripts.SpellScripts.Healing
         }
         
         #region ScriptVars
-        protected int? ManaSpent { get; init; }
+        public int? ManaCost { get; init; }
+        public decimal PctManaCost { get; init; }
         #endregion
     }
 }

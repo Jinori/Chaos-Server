@@ -2,18 +2,13 @@
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Scripts.ItemScripts.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chaos.Scripts.ItemScripts
 {
     public class MessagePopupScript : ConfigurableItemScriptBase
     {
-        protected string message { get; init; } = null!;
-        protected bool showToNearby { get; init; }
+        protected string Message { get; init; } = null!;
+        protected bool ShowToNearby { get; init; }
 
         public MessagePopupScript(Item subject) : base(subject)
         {
@@ -21,11 +16,11 @@ namespace Chaos.Scripts.ItemScripts
 
         public override void OnUse(Aisling source)
         {
-            if (!showToNearby)
-                source.Client.SendServerMessage(ServerMessageType.WoodenBoard, message);
+            if (!ShowToNearby)
+                source.Client.SendServerMessage(ServerMessageType.WoodenBoard, Message);
             else
                 foreach (var aisling in source.MapInstance.GetEntitiesWithinRange<Aisling>(source))
-                    aisling.Client.SendServerMessage(ServerMessageType.WoodenBoard, message);
+                    aisling.Client.SendServerMessage(ServerMessageType.WoodenBoard, Message);
         }
     }
 }

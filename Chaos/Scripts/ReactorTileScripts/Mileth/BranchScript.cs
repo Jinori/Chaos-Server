@@ -16,10 +16,10 @@ namespace Chaos.Scripts.ReactorTileScripts.Mileth
 
         public override void OnWalkedOn(Creature source)
         {
-            if (source is not Aisling)
+            if (source is not Aisling aisling)
                 return;
-            var aisling = source as Aisling;
-            if (aisling!.Flags.HasFlag(QuestFlag1.GatheringSticks))
+
+            if (aisling.Flags.HasFlag(QuestFlag1.GatheringSticks))
             {
                 if (Randomizer.RollChance(18))
                 {

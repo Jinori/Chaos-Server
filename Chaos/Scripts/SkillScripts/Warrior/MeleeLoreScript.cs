@@ -11,33 +11,14 @@ namespace Chaos.Scripts.SkillScripts.Warrior
 {
     public class MeleeLoreScript : BasicSkillScriptBase
     {
-        protected IApplyDamageScript ApplyDamageScript { get; }
-        protected DamageComponent DamageComponent { get; }
-        protected DamageComponent.DamageComponentOptions DamageComponentOptions { get; }
-
         /// <inheritdoc />
         public MeleeLoreScript(Skill subject)
-            : base(subject)
-        {
-            ApplyDamageScript = DefaultApplyDamageScript.Create();
-            DamageComponent = new DamageComponent();
-
-            DamageComponentOptions = new DamageComponent.DamageComponentOptions
-            {
-                ApplyDamageScript = ApplyDamageScript,
-                SourceScript = this,
-                BaseDamage = BaseDamage,
-                DamageStatMultiplier = DamageStatMultiplier,
-                DamageStat = DamageStat
-            };
-        }
-
+            : base(subject) { }
         /// <inheritdoc />
         public override void OnUse(ActivationContext context)
         {
-            var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
-            DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
-            
+            var targets = AbilityComponent.Activate<Creature>(context, this);
+
             var item = context.SourceAisling?.Inventory.FirstOrDefault();
             if (item is null)
             {

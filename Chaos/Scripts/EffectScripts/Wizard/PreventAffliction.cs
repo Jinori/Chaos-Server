@@ -1,13 +1,7 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Data;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Objects.World;
 using Chaos.Scripts.EffectScripts.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Chaos.Definitions;
 
 namespace Chaos.Scripts.EffectScripts.Wizard
@@ -48,9 +42,6 @@ namespace Chaos.Scripts.EffectScripts.Wizard
                 return true;
         }
 
-        public override void OnDispelled()
-        {
-            OnTerminated();
-        }
+        public override void OnDispelled() => OnTerminated();
     }
 }

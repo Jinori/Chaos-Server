@@ -7,10 +7,11 @@ using Chaos.Scripts.Components;
 
 namespace Chaos.Scripts.SpellScripts.Healing
 {
-    internal class BasicGroupHealScript : BasicSpellScriptBase
+    internal class BasicGroupHealScript : BasicSpellScriptBase, ManaCostComponent.IManaCostComponentOptions
     {
         public BasicGroupHealScript(Spell subject) : base(subject)
         {
+            ManaCostComponent = new ManaCostComponent();
             GroupComponent = new GroupComponent();
             GroupComponentOptions = new GroupComponent.GroupComponentOptions
             {
@@ -28,7 +29,8 @@ namespace Chaos.Scripts.SpellScripts.Healing
                 IncludeSourcePoint = IncludeSourcePoint,
             };
         }
-
+        
+        protected ManaCostComponent ManaCostComponent { get; }
         protected GroupComponent GroupComponent{ get; }
         protected GroupComponent.GroupComponentOptions GroupComponentOptions { get; }
 
@@ -40,29 +42,17 @@ namespace Chaos.Scripts.SpellScripts.Healing
                 context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are not in a group.");
                 return;
             }
-            if (ManaSpent.HasValue)
-            {
-                //Require mana
-                if (context.Source.StatSheet.CurrentMp < ManaSpent.Value)
-                {
-                    context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this cast.");
-                    return;
-                }
-                //Subtract mana and update user
-                context.Source.StatSheet.SubtractMp(ManaSpent.Value);
-                context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
-            }
-
+            ManaCostComponent.ApplyManaCost(context, this);
             var targets = GroupComponent.Activate<Aisling>(context, GroupComponentOptions);
             GroupComponent.ApplyHealing(context, targets.targetEntities!, GroupComponentOptions);
         }
         
         #region ScriptVars
-        protected int? ManaSpent { get; init; }
         protected int? BaseHealing { get; init; }
         protected Stat? HealStat { get; init; }
         protected decimal? HealStatMultiplier { get; init; }
-        
+        public int? ManaCost { get; init; }
+        public decimal PctManaCost { get; init; }
         #endregion
     }
 }

@@ -12,7 +12,7 @@ public class ContributionScript : MonsterScriptBase
         : base(subject) { }
 
     /// <inheritdoc />
-    public override void OnAttacked(Creature source, int damage, int? aggroOverride = null)
+    public override void OnAttacked(Creature source, int damage, int? aggroOverride)
     {
         if (!Subject.Contribution.TryGetValue(source.Id, out var currentValue))
             currentValue = 0;

@@ -1,7 +1,5 @@
-using Chaos.Common.Definitions;
 using Chaos.Objects.World;
 using Chaos.Scripts.MonsterScripts.Abstractions;
-using Chaos.Templates.Abstractions;
 
 namespace Chaos.Scripts.MonsterScripts;
 

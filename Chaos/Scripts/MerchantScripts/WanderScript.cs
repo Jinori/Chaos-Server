@@ -1,18 +1,14 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Containers;
+﻿using Chaos.Containers;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Objects.World;
 using Chaos.Scripts.MerchantScripts.Abstractions;
-using Chaos.Services.Factories;
-using Chaos.Services.Factories.Abstractions;
-using Chaos.Templates.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripts.MerchantScripts.Components;
+namespace Chaos.Scripts.MerchantScripts;
 
-// ReSharper disable once ClassCanBeSealed.Global
+
 public class WanderScript : ConfigurableMerchantScriptBase
 {
     private MapInstance Map => Subject.MapInstance;

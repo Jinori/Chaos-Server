@@ -2,13 +2,7 @@
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.ReactorTileScripts.Abstractions;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chaos.Scripts.ReactorTileScripts.Jobs
 {
@@ -16,19 +10,16 @@ namespace Chaos.Scripts.ReactorTileScripts.Jobs
     {
         private readonly IEffectFactory EffectFactory;
 
-        public FishingSpotScript(ReactorTile subject, IEffectFactory effectFactory) : base(subject)
-        {
-            EffectFactory = effectFactory;
-        }
+        public FishingSpotScript(ReactorTile subject, IEffectFactory effectFactory) : base(subject) => EffectFactory = effectFactory;
 
         public override void OnWalkedOn(Creature source)
         {
-            if (source is not Aisling)
+            if (source is not Aisling aisling)
                 return;
-            var aisling = source as Aisling;
 
+            var templateTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
 
-            if (aisling?.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey.EndsWith("FishingPole") is true)
+            if (templateTemplateKey?.EndsWith("FishingPole", StringComparison.Ordinal) is true)
             {
                 var effect = EffectFactory.Create("Fishing");
                 aisling.Effects.Apply(aisling, effect);

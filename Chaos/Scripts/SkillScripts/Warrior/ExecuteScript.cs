@@ -22,7 +22,7 @@ namespace Chaos.Scripts.SkillScripts.Warrior
         /// <inheritdoc />
         public override void OnUse(ActivationContext context)
         {
-            var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+            var targets = AbilityComponent.Activate<Creature>(context, this);
             foreach (var target in targets.TargetEntities)
             {
                 if (target.StatSheet.HealthPercent <= KillAtHealthPct)

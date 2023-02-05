@@ -3,13 +3,6 @@ using Chaos.Data;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.EffectScripts.Abstractions;
-using Chaos.Time;
-using Chaos.Time.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chaos.Scripts.EffectScripts.Wizard
 {
@@ -31,7 +24,7 @@ namespace Chaos.Scripts.EffectScripts.Wizard
             };
 
             AislingSubject?.StatSheet.SubtractMp(500);
-            Subject?.StatSheet.SubtractBonus(attributes);
+            Subject.StatSheet.SubtractBonus(attributes);
             AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
             AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've been cursed by cradh! AC and MR lowered!");
         }
@@ -43,7 +36,7 @@ namespace Chaos.Scripts.EffectScripts.Wizard
                 Ac = -35,
                 MagicResistance = 10,
             };
-            Subject?.StatSheet.AddBonus(attributes);
+            Subject.StatSheet.AddBonus(attributes);
             AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
             AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Cradh curse has been lifted.");
         }
@@ -59,9 +52,6 @@ namespace Chaos.Scripts.EffectScripts.Wizard
                 return true;
         }
 
-        public override void OnDispelled()
-        {
-            OnTerminated();
-        }
+        public override void OnDispelled() => OnTerminated();
     }
 }

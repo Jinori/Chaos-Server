@@ -7,6 +7,7 @@ using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripts.MonsterScripts
 {
+    [SuppressMessage("ReSharper", "UnusedVariable")]
     public class PFMantisDeathScript :  MonsterScriptBase
     {
         private readonly ISimpleCache SimpleCache;
@@ -38,7 +39,7 @@ namespace Chaos.Scripts.MonsterScripts
                 Point point;
 
                 do
-                    point = rectangle!.RandomPoint();
+                    point = rectangle.RandomPoint();
                 while (!mapInstance.IsWalkable(point, member.Type));
                 
                 member.TraverseMap(mapInstance, point);

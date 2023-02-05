@@ -3,14 +3,15 @@ using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.SpellScripts.Abstractions;
 using Chaos.Data;
+using Chaos.Scripts.Components;
 
 namespace Chaos.Scripts.SpellScripts.Healing
 {
-    internal class BasicHealScript : BasicSpellScriptBase
+    internal class BasicHealScript : BasicSpellScriptBase, ManaCostComponent.IManaCostComponentOptions
     {
-        public BasicHealScript(Spell subject) : base(subject)
-        {
-        }
+        protected ManaCostComponent ManaCostComponent { get; }
+        
+        public BasicHealScript(Spell subject) : base(subject) => ManaCostComponent = new ManaCostComponent();
 
         protected virtual void ApplyHealing(SpellContext context, IEnumerable<Creature> targetEntities)
         {
@@ -38,20 +39,8 @@ namespace Chaos.Scripts.SpellScripts.Healing
         /// <inheritdoc />
         public override void OnUse(SpellContext context)
         {
-            if (ManaSpent.HasValue)
-            {
-                //Require mana
-                if (context.Source.StatSheet.CurrentMp < ManaSpent.Value)
-                {
-                    context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this cast.");
-                    return;
-                }
-                //Subtract mana and update user
-                context.Source.StatSheet.SubtractMp(ManaSpent.Value);
-                context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
-            }
-
-            var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+            ManaCostComponent.ApplyManaCost(context, this);
+            var targets = AbilityComponent.Activate<Creature>(context, this);
             ApplyHealing(context, targets.TargetEntities);
         }
         
@@ -59,7 +48,8 @@ namespace Chaos.Scripts.SpellScripts.Healing
         protected int? BaseHealing { get; init; }
         protected Stat? HealStat { get; init; }
         protected decimal? HealStatMultiplier { get; init; }
-        protected int? ManaSpent { get; init; }
+        public int? ManaCost { get; init; }
+        public decimal PctManaCost { get; init; }
         #endregion
     }
 }

@@ -7,7 +7,6 @@ using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Geometry.Abstractions;
-using Chaos.Objects.World;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ApplyDamage;
 
@@ -17,10 +16,7 @@ namespace Chaos.Scripts.EffectScripts.Peasant
     {
         protected IApplyDamageScript ApplyDamageScript { get; }
         
-        public StenchEffect()
-        {
-            ApplyDamageScript = DefaultApplyDamageScript.Create();
-        }
+        public StenchEffect() => ApplyDamageScript = DefaultApplyDamageScript.Create();
 
         /// <inheritdoc />
         public override byte Icon { get; } = 176;
@@ -57,15 +53,12 @@ namespace Chaos.Scripts.EffectScripts.Peasant
 
             foreach (var target in targets)
             {
-                var TargetAisling = target as Aisling;
+                //var targetAisling = target as Aisling;
                 //ApplyDamageScript.ApplyDamage(Subject, target, this, Subject.StatSheet.Level);
                 target.ShowHealth();
             }
         }
 
-        public override void OnTerminated()
-        {
-            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A foul stench begins to dissipate.");
-        }
+        public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A foul stench begins to dissipate.");
     }
 }

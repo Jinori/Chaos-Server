@@ -10,7 +10,7 @@ public class ManaCostComponent
     {
         var cost = options.ManaCost ?? 0;
         cost += MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumMp, options.PctManaCost);
-
+        
         context.Source.StatSheet.SubtractMp(cost);
         context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
     }

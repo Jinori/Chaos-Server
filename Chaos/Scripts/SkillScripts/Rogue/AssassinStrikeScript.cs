@@ -1,11 +1,8 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Data;
+﻿using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
-using Chaos.Scripts.Components;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ApplyDamage;
-using Chaos.Scripts.SkillScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripts.SkillScripts.Rogue;
@@ -27,8 +24,8 @@ public class AssassinStrikeScript : DamageScript
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
     {
-        var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
-        DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
+        var targets = AbilityComponent.Activate<Creature>(context, this);
+        DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
         var effect = EffectFactory.Create("AssassinStrike");
         foreach (var target in targets.TargetEntities) 
             target.Effects.Apply(context.Source, effect);

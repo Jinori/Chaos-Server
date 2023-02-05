@@ -99,7 +99,7 @@ namespace Chaos.Scripts.SpellScripts.Healing
                 return;
             }
 
-            var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+            var targets = AbilityComponent.Activate<Creature>(context, this);
 
             if (GiveHeal.HasValue)
             {

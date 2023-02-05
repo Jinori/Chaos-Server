@@ -3,13 +3,6 @@ using Chaos.Data;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.EffectScripts.Abstractions;
-using Chaos.Time;
-using Chaos.Time.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Chaos.Definitions;
 
 namespace Chaos.Scripts.EffectScripts.Warrior
@@ -66,9 +59,6 @@ namespace Chaos.Scripts.EffectScripts.Warrior
                 return true;
         }
 
-        public override void OnDispelled()
-        {
-            OnTerminated();
-        }
+        public override void OnDispelled() => OnTerminated();
     }
 }

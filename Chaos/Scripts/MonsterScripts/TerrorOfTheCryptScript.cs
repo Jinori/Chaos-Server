@@ -3,11 +3,7 @@ using Chaos.Containers;
 using Chaos.Objects.World;
 using Chaos.Scripts.MonsterScripts.Abstractions;
 using Chaos.Storage.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Chaos.Scripts.MonsterScripts
 {
@@ -16,10 +12,7 @@ namespace Chaos.Scripts.MonsterScripts
         private readonly ISimpleCache SimpleCache;
 
 
-        public TerrorOfTheCryptScript(Monster subject, ISimpleCache simpleCache) : base(subject)
-        {
-            SimpleCache= simpleCache;
-        }
+        public TerrorOfTheCryptScript(Monster subject, ISimpleCache simpleCache) : base(subject) => SimpleCache= simpleCache;
 
         public override void OnDeath()
         {

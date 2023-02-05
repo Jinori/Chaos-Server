@@ -1,15 +1,12 @@
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Data;
 using Chaos.Extensions;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
-using Chaos.Scripts.Components;
 using Chaos.Scripts.FunctionalScripts.Abstractions;
 using Chaos.Scripts.FunctionalScripts.ApplyDamage;
-using Chaos.Scripts.SkillScripts.Abstractions;
 
-namespace Chaos.Scripts.SkillScripts.PeasantClass;
+namespace Chaos.Scripts.SkillScripts.Rogue;
 
 public class SapNeedleScript : DamageScript
 {
@@ -19,19 +16,17 @@ public class SapNeedleScript : DamageScript
     
     /// <inheritdoc />
     public SapNeedleScript(Skill subject)
-        : base(subject)
-    {
+        : base(subject) =>
         ApplyDamageScript = DefaultApplyDamageScript.Create();
-    }
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
     {
-        var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+        var targets = AbilityComponent.Activate<Creature>(context, this);
         var manaToGive = 0;
         foreach (var target in targets.TargetEntities)
         {
-            DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
+            DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
             var halfOfAttackersMana = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumMp, 50);
             var halfOfDefendersMana = MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumMp, 50);
             manaToGive = Math.Min(halfOfDefendersMana, halfOfAttackersMana);

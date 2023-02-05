@@ -2,12 +2,6 @@
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Scripts.ItemScripts.Abstractions;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chaos.Scripts.ItemScripts
 {

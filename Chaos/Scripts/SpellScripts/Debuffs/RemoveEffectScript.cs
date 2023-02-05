@@ -1,38 +1,28 @@
-using Chaos.Common.Definitions;
 using Chaos.Data;
 using Chaos.Extensions.Common;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
+using Chaos.Scripts.Components;
 using Chaos.Scripts.SpellScripts.Abstractions;
 
 namespace Chaos.Scripts.SpellScripts.Debuffs;
 
 [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
-public class RemoveEffectScript : BasicSpellScriptBase
+public class RemoveEffectScript : BasicSpellScriptBase, ManaCostComponent.IManaCostComponentOptions
 {
-    /// <inheritdoc />
-    public RemoveEffectScript(Spell subject)
-        : base(subject)
-    {
-    }
+    protected ManaCostComponent ManaCostComponent { get; }
 
     /// <inheritdoc />
+    public RemoveEffectScript(Spell subject)
+        : base(subject) =>
+        ManaCostComponent = new ManaCostComponent();
+
+    /// <inheritdoc />
+
     public override void OnUse(SpellContext context)
     {
-        if (ManaSpent.HasValue)
-        {
-            //Require mana
-            if (context.Source.StatSheet.CurrentMp < ManaSpent.Value)
-            {
-                context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana for this cast.");
-                return;
-            }
-            //Subtract mana and update user
-            context.Source.StatSheet.SubtractMp(ManaSpent.Value);
-            context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
-        }
-        
-        var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+        ManaCostComponent.ApplyManaCost(context, this);
+        var targets = AbilityComponent.Activate<Creature>(context, this);
 
         foreach (var target in targets.TargetEntities)
         {
@@ -54,7 +44,8 @@ public class RemoveEffectScript : BasicSpellScriptBase
     }
     
     #region ScriptVars
-    protected int? ManaSpent { get; init; }
     protected string EffectKey { get; init; } = null!;
+    public int? ManaCost { get; init; }
+    public decimal PctManaCost { get; init; }
     #endregion
 }

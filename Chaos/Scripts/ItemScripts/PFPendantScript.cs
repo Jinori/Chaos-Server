@@ -7,12 +7,12 @@ using Chaos.Extensions.Geometry;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Scripts.ItemScripts.Abstractions;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripts.ItemScripts;
 
+[SuppressMessage("ReSharper", "UnusedVariable")]
 public class PFPendantScript : ItemScriptBase
 {
     private readonly ISimpleCache SimpleCache;

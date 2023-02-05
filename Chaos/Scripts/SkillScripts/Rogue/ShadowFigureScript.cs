@@ -16,7 +16,7 @@ public class ShadowFigureScript : DamageScript
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
     {
-        var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+        var targets = AbilityComponent.Activate<Creature>(context, this);
         var targetCreature = targets.TargetEntities.FirstOrDefault();
 
         //if there is no creature, return
@@ -46,6 +46,6 @@ public class ShadowFigureScript : DamageScript
             context.Source.Turn(newDirection);
             break;
         }
-        DamageComponent.ApplyDamage(context, targets.TargetEntities, DamageComponentOptions);
+        DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
     }
 }
