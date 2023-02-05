@@ -42,7 +42,7 @@ public class ApplyEffectScript : BasicSpellScriptBase
             context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
         }
         
-        var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+        var targets = AbilityComponent.Activate<Creature>(context, this);
 
         foreach (var target in targets.TargetEntities)
         {

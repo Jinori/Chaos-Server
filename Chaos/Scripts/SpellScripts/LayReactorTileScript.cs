@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
@@ -13,7 +12,6 @@ public class LayReactorTileScript : BasicSpellScriptBase
 
     #region ScriptVars
     protected string ReactorTileTemplateKey { get; init; } = null!;
-    protected int? ManaSpent { get; init; }
     #endregion
 
     /// <inheritdoc />
@@ -24,20 +22,7 @@ public class LayReactorTileScript : BasicSpellScriptBase
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
     {
-        if (ManaSpent.HasValue)
-        {
-            //Require mana
-            if (context.Source.StatSheet.CurrentMp < ManaSpent.Value)
-            {
-                context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana to set this trap.");
-                return;
-            }
-            //Subtract mana and update user
-            context.Source.StatSheet.SubtractMp(ManaSpent.Value);
-            context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
-        }
-        
-        var targets = AbilityComponent.Activate<Creature>(context, AbilityComponentOptions);
+        var targets = AbilityComponent.Activate<Creature>(context, this);
 
         foreach (var point in targets.TargetPoints)
         {
@@ -46,10 +31,8 @@ public class LayReactorTileScript : BasicSpellScriptBase
                 context.Map,
                 point,
                 owner: context.Target);
-            
+
             context.Map.SimpleAdd(trap);
         }
-        
-        context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Subject.Template.Name}.");
     }
 }
