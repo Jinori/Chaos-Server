@@ -20,7 +20,7 @@ namespace Chaos.Scripts.DialogScripts
             if (monkForm || source.UserStatSheet.BaseClass is not BaseClass.Monk)
             {
                 Subject.Options.Clear();
-                Subject.Text = "Go, be on your way. The path to learning is endless.";
+                Subject.Text = "You should head up to the door on the left to learn skills for element. May your spark be true.";
                 Subject.Type = MenuOrDialogType.Normal;
             }
             if (!monkForm)

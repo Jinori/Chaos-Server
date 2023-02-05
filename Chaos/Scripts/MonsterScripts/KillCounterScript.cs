@@ -45,6 +45,8 @@ public class KillCounterScript : MonsterScriptBase
                 {
                     aisling.Counters[Subject.Template.TemplateKey] += 1;
 
+                    //Add Stage Checks Here
+                    
                     var hasRatStage = aisling.Enums.TryGetValue(out RionaRatQuestStage stage);
                     if (hasRatStage && (stage == RionaRatQuestStage.StartedRatQuest))
                     {
