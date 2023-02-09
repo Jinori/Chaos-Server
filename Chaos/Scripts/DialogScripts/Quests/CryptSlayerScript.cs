@@ -37,9 +37,33 @@ public class CryptSlayerScript : DialogScriptBase
         {
             case "skarn_initial":
             {
+
                 if (source.UserStatSheet.Level > 71)
                 {
                     Subject.Text = "You're an experienced Aisling, I have nothing for you.";
+                    return;
+                }
+
+                if (stage == CryptSlayerStage.Completed)
+                {
+                    Subject.Text = "Thanks for all your hard work Aisling, we can keep these creatures where they belong.";
+
+                    return;
+                }
+
+                if (!source.Counters.TryGetValue("CryptSlayerLegend", out var value) || (value >= 10))
+                {
+                    source.Enums.Set(CryptSlayerStage.Completed);
+                    source.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Controlled the Mileth Crypt population with Skarn.",
+                            "CryptSlayerCompleted",
+                            MarkIcon.Victory,
+                            MarkColor.Blue,
+                            1,
+                            GameTime.Now));
+                    Subject.Text = "Thanks for all your hard work Aisling, we can keep these creatures where they belong.";
+
                     return;
                 }
                 
@@ -58,6 +82,20 @@ public class CryptSlayerScript : DialogScriptBase
             case "cryptslayer_initial":
                 if (!hasStage || (stage == CryptSlayerStage.None))
                 {
+                    if (source.TimedEvents.TryGetNearestToCompletion(TimedEvent.TimedEventId.CryptSlayerCd, out var timedEvent))
+                    {
+                        Subject.Text = $"You have killed enough for now, come back later. (({timedEvent.Remaining.ToReadableString()}))";
+
+                        return;
+                    }
+                    
+                    if (stage == CryptSlayerStage.Completed)
+                    {
+                        Subject.Text = "Thank you again Aisling, the crypt is a safer place now.";
+
+                        return;
+                    }
+                    
                     var option = new DialogOption
                     {
                         DialogKey = "cryptslayer_start",
@@ -86,28 +124,20 @@ public class CryptSlayerScript : DialogScriptBase
                         Subject.Options.Insert(2, option2);
                 }
 
-                if (hasStage)
+                if (stage is CryptSlayerStage.Bat or CryptSlayerStage.Centipede1 or CryptSlayerStage.Centipede2 or CryptSlayerStage.Kardi
+                             or CryptSlayerStage.Marauder or CryptSlayerStage.Mimic or CryptSlayerStage.Scorpion or CryptSlayerStage.Spider1
+                             or CryptSlayerStage.Spider2 or CryptSlayerStage.Succubus or CryptSlayerStage.GiantBat
+                             or CryptSlayerStage.WhiteBat or CryptSlayerStage.Rat)
                 {
-                    if (source.TimedEvents.TryGetNearestToCompletion(TimedEvent.TimedEventId.CryptSlayerCd, out var timedEvent))
-                    {
-                        Subject.Text = $"You have killed enough for now, come back later. (({timedEvent.Remaining.ToReadableString()}))";
 
-                        return;
-                    }
-                    
-                    if (stage == CryptSlayerStage.Completed)
-                    {
-                        Subject.Text = "Thank you again Aisling, the crypt is a safer place now.";
+                    Subject.Text = "Did you have any issues?";
 
-                        return;
-                    }
-                    
                     var option = new DialogOption
                     {
                         DialogKey = "cryptslayer_turnin",
                         OptionText = "I cleared them all."
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
                 }
@@ -172,82 +202,82 @@ public class CryptSlayerScript : DialogScriptBase
                     {
                         case CryptSlayerStage.Rat:
                         {
-                            Subject.Text = $"Go slay 10 Rats for me.";
+                            Subject.Text = "I need you to kill 10 Rats, this will keep the population down.";
                         }
 
                             break;
 
                         case CryptSlayerStage.Spider1:
                         {
-                            Subject.Text = $"Go slay 10 Spiders for me.";
+                            Subject.Text = "Please go kill 10 Spiders on the upper floors, they are reproducing quickly.";
                         }
 
                             break;
 
                         case CryptSlayerStage.Spider2:
                         {
-                            Subject.Text = $"Go slay 10 Spiders for me.";
+                            Subject.Text = "Please go kill 10 Spiders on the lower floors, they are reproducing quickly.";
                         }
 
                             break;
                         case CryptSlayerStage.Centipede1:
                         {
-                            Subject.Text = $"Go slay 10 Centipedes for me.";
+                            Subject.Text = "Handle 10 Centipedes for me, the ones found on the upper floors.";
                         }
 
                             break;
                         case CryptSlayerStage.Centipede2:
                         {
-                            Subject.Text = $"Go slay 10 Centipedes for me.";
+                            Subject.Text = "Handle 10 Centipedes for me, the ones found on the lower floors.";
                         }
 
                             break;
 
                         case CryptSlayerStage.Bat:
                         {
-                            Subject.Text = $"Go slay 10 Bats for me.";
+                            Subject.Text = "Seems to be Bat season, can you kill 10 Bats for me?";
                         }
 
                             break;
                         case CryptSlayerStage.GiantBat:
                         {
-                            Subject.Text = $"Go slay 10 Giant Bats for me.";
+                            Subject.Text = "The Giant bats are out of control, please clear 10 of them for me.";
                         }
 
                             break;
                         case CryptSlayerStage.Scorpion:
                         {
-                            Subject.Text = $"Go slay 10 Scorpions for me.";
+                            Subject.Text = "Scorpions are over populated, please go kill 10 Scorpions.";
                         }
 
                             break;
                         case CryptSlayerStage.WhiteBat:
                         {
-                            Subject.Text = $"Go slay 10 White Bats for me.";
+                            Subject.Text = "Please kill 10 White Bats, they're invasive.";
                         }
 
                             break;
                         case CryptSlayerStage.Kardi:
                         {
-                            Subject.Text = $"Go kill 10 Kardis for me.";
+                            Subject.Text = "Travel deep, kill 10 Kardis for me, annoying little things.";
                         }
 
                             break;
                         case CryptSlayerStage.Marauder:
                         {
-                            Subject.Text = $"Go kill 10 Murauders for me.";
+                            Subject.Text = "Marauders are really interesting but there's too many. Please kill 10 Marauders for me.";
                         }
 
                             break;
                         case CryptSlayerStage.Mimic:
                         {
-                            Subject.Text = $"Go kill 10 Mimics for me.";
+                            Subject.Text = "Tricky little beast, these mimics. Way too many of them, kill 10 Mimics.";
                         }
 
                             break;
                         case CryptSlayerStage.Succubus:
                         {
-                            Subject.Text = $"Go kill 10 Succubus for me.";
+                            Subject.Text = "Beautiful Succubus, but so deadly. They'll be roaming with us soon if we don't clear them. Please kill 10 Succubus.";
                         }
 
                             break;
@@ -258,10 +288,59 @@ public class CryptSlayerScript : DialogScriptBase
 
             case "cryptslayer_turnin":
             {
-                if (source.Counters.TryGetValue("CryptSlayer", out var value) || (value < 10))
+                if (!source.Counters.TryGetValue("CryptSlayer", out var value) || (value < 10))
                 {
-                    source.SendOrangeBarMessage($"Skarn laughs. You haven't killed 10. Go back down there and get to work.");
                     Subject.Close(source);
+                    
+                    switch (stage)
+                    {
+                        case CryptSlayerStage.Rat:
+                            source.SendOrangeBarMessage("You haven't killed 10 Rats. Get back to work.");
+
+                            break;
+                        case CryptSlayerStage.Bat:
+                            source.SendOrangeBarMessage("You haven't killed 10 Bats. Get back to work.");
+
+                            break;
+                        case CryptSlayerStage.Spider1:
+                        case CryptSlayerStage.Spider2:
+                            source.SendOrangeBarMessage("You haven't killed 10 Spiders. Get back to work.");
+
+                            break;
+                        case CryptSlayerStage.Centipede1:
+                        case CryptSlayerStage.Centipede2:
+                            source.SendOrangeBarMessage("You haven't killed 10 Centipedes. Get back to work.");
+
+                            break;
+                        case CryptSlayerStage.Scorpion:
+                            source.SendOrangeBarMessage("You haven't killed 10 Scorpions. Get back to work.");
+
+                            break;
+                        case CryptSlayerStage.GiantBat:
+                            source.SendOrangeBarMessage("You haven't killed 10 Giant Bats. Get back to work.");
+
+                            break;
+                        case CryptSlayerStage.WhiteBat:
+                            source.SendOrangeBarMessage("You haven't killed 10 White Bats. Get back to work.");
+
+                            break;
+                        case CryptSlayerStage.Mimic:
+                            source.SendOrangeBarMessage("You haven't killed 10 Mimics. Get back to work.");
+
+                            break;
+                        case CryptSlayerStage.Kardi:
+                            source.SendOrangeBarMessage("You haven't killed 10 Kardis. Get back to work.");
+
+                            break;
+                        case CryptSlayerStage.Succubus:
+                            source.SendOrangeBarMessage("You haven't killed 10 Succubus. Get back to work.");
+
+                            break;
+                        case CryptSlayerStage.Marauder:
+                            source.SendOrangeBarMessage("You haven't killed 10 Marauder. Get back to work.");
+
+                            break;
+                    }
 
                     return;
                 }
@@ -271,7 +350,8 @@ public class CryptSlayerScript : DialogScriptBase
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
                 source.Enums.Set(CryptSlayerStage.None);
                 Subject.Text = "Thank you so much for killing those. That's enough for today, come back soon.";
-
+                source.Counters.Set("CryptSlayer", 0);
+                source.Counters.AddOrIncrement("CryptSlayerLegend", 1);
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Helped Skarn clear the Mileth Crypt",
