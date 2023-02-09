@@ -30,10 +30,6 @@ public class CryptSlayerScript : DialogScriptBase
 
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = Convert.ToInt32(.20 * tnl);
-
-        var thirtyPercent = Convert.ToInt32(0.30 * tnl);
-
-        var fortyPercent = Convert.ToInt32(0.40 * tnl);
         var randomCryptSlayerStage = CryptSlayerStage.None;
 
 
@@ -131,12 +127,12 @@ public class CryptSlayerScript : DialogScriptBase
                     {
                         randomCryptSlayerStage = new[]
                         {
-                           CryptSlayerStage.WhiteBat, CryptSlayerStage.Mimic, CryptSlayerStage.GiantBat, CryptSlayerStage.Marauder
+                            CryptSlayerStage.WhiteBat, CryptSlayerStage.Mimic, CryptSlayerStage.GiantBat, CryptSlayerStage.Marauder
                         }.PickRandom();
 
                         source.Enums.Set(randomCryptSlayerStage);
                     }
-                    
+
                     if (source.UserStatSheet.Level is >= 50 and <= 71)
                     {
                         randomCryptSlayerStage = new[]
@@ -200,6 +196,7 @@ public class CryptSlayerScript : DialogScriptBase
                         {
                             Subject.Text = $"Go slay 10 Giant Bats for me.";
                         }
+
                             break;
                         case CryptSlayerStage.Scorpion:
                         {
@@ -217,21 +214,25 @@ public class CryptSlayerScript : DialogScriptBase
                         {
                             Subject.Text = $"Go kill 10 Kardis for me.";
                         }
+
                             break;
                         case CryptSlayerStage.Marauder:
                         {
                             Subject.Text = $"Go kill 10 Murauders for me.";
                         }
+
                             break;
                         case CryptSlayerStage.Mimic:
                         {
                             Subject.Text = $"Go kill 10 Mimics for me.";
                         }
+
                             break;
                         case CryptSlayerStage.Succubus:
                         {
                             Subject.Text = $"Go kill 10 Succubus for me.";
                         }
+
                             break;
                     }
                 }
@@ -247,9 +248,7 @@ public class CryptSlayerScript : DialogScriptBase
 
                     return;
                 }
-            }
-
-
+                
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.TryGiveGamePoints(5);
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
@@ -266,11 +265,9 @@ public class CryptSlayerScript : DialogScriptBase
                         GameTime.Now));
 
                 source.TimedEvents.AddEvent(TimedEvent.TimedEventId.CryptSlayerCd, TimeSpan.FromHours(4), true);
-            }
 
                 break;
-
-
+            }
         }
     }
 }

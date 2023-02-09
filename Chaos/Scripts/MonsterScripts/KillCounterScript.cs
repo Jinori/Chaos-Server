@@ -38,7 +38,7 @@ public class KillCounterScript : MonsterScriptBase
 
         if (rewardTargets is not null)
             foreach (var aisling in rewardTargets)
-                switch (Subject.Template.TemplateKey)
+                switch (Subject.Template.TemplateKey.ToLower())
                 {
                     case "tavern_rat":
                     {
@@ -46,10 +46,182 @@ public class KillCounterScript : MonsterScriptBase
 
                         if (!hasStage || (stage != RionaRatQuestStage.StartedRatQuest))
                             return;
-                        
+
                         aisling.Counters.AddOrIncrement("StartedRatQuest", 1);
                         aisling.Counters.TryGetValue("StartedRatQuest", out var value);
-                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}");
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+
+                    case "crypt_bat":
+                    {
+                        var hasStage = aisling.Enums.TryGetValue(out CryptSlayerStage stage);
+
+                        if (!hasStage || (stage != CryptSlayerStage.Bat))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("CryptSlayer", 1);
+                        aisling.Counters.TryGetValue("CryptSlayer", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+
+                    case "crypt_centipede":
+                    {
+                        var hasStage = aisling.Enums.TryGetValue(out CryptSlayerStage stage);
+
+                        if (!hasStage || (stage != CryptSlayerStage.Centipede1))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("CryptSlayer", 1);
+                        aisling.Counters.TryGetValue("CryptSlayer", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "crypt_centipede2":
+                    {
+                        var hasStage = aisling.Enums.TryGetValue(out CryptSlayerStage stage);
+
+                        if (!hasStage || (stage != CryptSlayerStage.Centipede2))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("CryptSlayer", 1);
+                        aisling.Counters.TryGetValue("CryptSlayer", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "crypt_giantbat":
+                    {
+                        var hasStage = aisling.Enums.TryGetValue(out CryptSlayerStage stage);
+
+                        if (!hasStage || (stage != CryptSlayerStage.GiantBat))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("CryptSlayer", 1);
+                        aisling.Counters.TryGetValue("CryptSlayer", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "crypt_kardi":
+                    {
+                        var hasStage = aisling.Enums.TryGetValue(out CryptSlayerStage stage);
+
+                        if (!hasStage || (stage != CryptSlayerStage.Kardi))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("CryptSlayer", 1);
+                        aisling.Counters.TryGetValue("CryptSlayer", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "crypt_marauder":
+                    {
+                        var hasStage = aisling.Enums.TryGetValue(out CryptSlayerStage stage);
+
+                        if (!hasStage || (stage != CryptSlayerStage.Marauder))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("CryptSlayer", 1);
+                        aisling.Counters.TryGetValue("CryptSlayer", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "crypt_mimic":
+                    {
+                        var hasStage = aisling.Enums.TryGetValue(out CryptSlayerStage stage);
+
+                        if (!hasStage || (stage != CryptSlayerStage.Mimic))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("CryptSlayer", 1);
+                        aisling.Counters.TryGetValue("CryptSlayer", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "crypt_rat":
+                    {
+                        var hasStage = aisling.Enums.TryGetValue(out CryptSlayerStage stage);
+
+                        if (!hasStage || (stage != CryptSlayerStage.Rat))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("CryptSlayer", 1);
+                        aisling.Counters.TryGetValue("CryptSlayer", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "crypt_scorpion":
+                    {
+                        var hasStage = aisling.Enums.TryGetValue(out CryptSlayerStage stage);
+
+                        if (!hasStage || (stage != CryptSlayerStage.Scorpion))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("CryptSlayer", 1);
+                        aisling.Counters.TryGetValue("CryptSlayer", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "crypt_spider":
+                    {
+                        var hasStage = aisling.Enums.TryGetValue(out CryptSlayerStage stage);
+
+                        if (!hasStage || (stage != CryptSlayerStage.Spider1))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("CryptSlayer", 1);
+                        aisling.Counters.TryGetValue("CryptSlayer", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "crypt_spider2":
+                    {
+                        var hasStage = aisling.Enums.TryGetValue(out CryptSlayerStage stage);
+
+                        if (!hasStage || (stage != CryptSlayerStage.Spider2))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("CryptSlayer", 1);
+                        aisling.Counters.TryGetValue("CryptSlayer", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "crypt_succubus":
+                    {
+                        var hasStage = aisling.Enums.TryGetValue(out CryptSlayerStage stage);
+
+                        if (!hasStage || (stage != CryptSlayerStage.Succubus))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("CryptSlayer", 1);
+                        aisling.Counters.TryGetValue("CryptSlayer", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "crypt_white_bat":
+                    {
+                        var hasStage = aisling.Enums.TryGetValue(out CryptSlayerStage stage);
+
+                        if (!hasStage || (stage != CryptSlayerStage.WhiteBat))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("CryptSlayer", 1);
+                        aisling.Counters.TryGetValue("CryptSlayer", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
                         break;
                     }
                 }

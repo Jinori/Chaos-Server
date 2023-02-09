@@ -67,7 +67,7 @@ public class TerrorChestScript : DialogScriptBase
             source.TryGiveItem(item);
             source.TryGiveGamePoints(15);
             //Lets send them an orange bar message and give them a Legend Mark for completing the quest
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've received {item.DisplayName}, 50,000 coins and 5 game points!");
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've received {item.DisplayName}, 50,000 coins and 15 game points!");
 
             source.Legend.AddOrAccumulate(
                 new LegendMark(
