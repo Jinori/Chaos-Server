@@ -37,6 +37,12 @@ public class CryptSlayerScript : DialogScriptBase
         {
             case "skarn_initial":
             {
+                if (source.UserStatSheet.Level > 71)
+                {
+                    Subject.Text = "You're an experienced Aisling, I have nothing for you.";
+                    return;
+                }
+                
                 var option = new DialogOption
                 {
                     DialogKey = "cryptslayer_initial",
@@ -52,13 +58,6 @@ public class CryptSlayerScript : DialogScriptBase
             case "cryptslayer_initial":
                 if (!hasStage || (stage == CryptSlayerStage.None))
                 {
-                    if (source.TimedEvents.TryGetNearestToCompletion(TimedEvent.TimedEventId.CryptSlayerCd, out var timedEvent))
-                    {
-                        Subject.Text = $"You have killed enough for now, come back later. (({timedEvent.Remaining.ToReadableString()}))";
-
-                        return;
-                    }
-
                     var option = new DialogOption
                     {
                         DialogKey = "cryptslayer_start",
@@ -85,6 +84,32 @@ public class CryptSlayerScript : DialogScriptBase
 
                     if (!Subject.HasOption(option2))
                         Subject.Options.Insert(2, option2);
+                }
+
+                if (hasStage)
+                {
+                    if (source.TimedEvents.TryGetNearestToCompletion(TimedEvent.TimedEventId.CryptSlayerCd, out var timedEvent))
+                    {
+                        Subject.Text = $"You have killed enough for now, come back later. (({timedEvent.Remaining.ToReadableString()}))";
+
+                        return;
+                    }
+                    
+                    if (stage == CryptSlayerStage.Completed)
+                    {
+                        Subject.Text = "Thank you again Aisling, the crypt is a safer place now.";
+
+                        return;
+                    }
+                    
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cryptslayer_turnin",
+                        OptionText = "I cleared them all."
+                    };
+                    
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Add(option);
                 }
 
                 break;
@@ -141,14 +166,6 @@ public class CryptSlayerScript : DialogScriptBase
                         }.PickRandom();
 
                         source.Enums.Set(randomCryptSlayerStage);
-                    }
-
-                    if (source.UserStatSheet.Level is >= 71)
-                    {
-                        Subject.Text = "Oh my you have grown. You cannot help me here anymore.";
-                        source.Enums.Set(CryptSlayerStage.TooHigh);
-
-                        return;
                     }
 
                     switch (randomCryptSlayerStage)
@@ -239,7 +256,7 @@ public class CryptSlayerScript : DialogScriptBase
 
                 break;
 
-            case "turnin":
+            case "cryptslayer_turnin":
             {
                 if (source.Counters.TryGetValue("CryptSlayer", out var value) || (value < 10))
                 {
@@ -248,12 +265,12 @@ public class CryptSlayerScript : DialogScriptBase
 
                     return;
                 }
-                
+
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.TryGiveGamePoints(5);
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
                 source.Enums.Set(CryptSlayerStage.None);
-                Subject.Text = $"Thank you so much for killing those. That's enough for today, come back soon.";
+                Subject.Text = "Thank you so much for killing those. That's enough for today, come back soon.";
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
@@ -270,4 +287,4 @@ public class CryptSlayerScript : DialogScriptBase
             }
         }
     }
-}
+    }

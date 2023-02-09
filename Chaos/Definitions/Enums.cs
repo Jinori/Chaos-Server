@@ -167,8 +167,7 @@ public enum CryptSlayerStage
     Spider2 = 11,
     Succubus = 12,
     WhiteBat = 13,
-    TooHigh = 14,
-    Completed = 15
+    Completed = 14
 }
 
 public enum CryptSlayerNumber
