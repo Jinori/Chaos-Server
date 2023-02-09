@@ -150,3 +150,32 @@ public enum PFQuestStage
     CompletedPFQuest = 7,
     TurnedInTristar = 8,
 }
+
+public enum CryptSlayerStage
+{
+    None = 0,
+    Bat = 1,
+    Centipede1 = 2,
+    Centipede2 = 3,
+    GiantBat = 4,
+    Kardi = 5,
+    Marauder = 6,
+    Mimic = 7,
+    Rat = 8,
+    Scorpion = 9,
+    Spider1 = 10,
+    Spider2 = 11,
+    Succubus = 12,
+    WhiteBat = 13,
+    TooHigh = 14,
+    Completed = 15
+}
+
+public enum CryptSlayerNumber
+{
+    None = 0,
+    Five = 1,
+    Ten = 2,
+    Fifteen = 3,
+    Twenty = 4
+}
