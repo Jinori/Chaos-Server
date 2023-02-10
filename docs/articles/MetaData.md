@@ -84,20 +84,39 @@ Event metadata appears in the character's profile under the `Events` tab. It is 
 about those events. These events can be in one of 3 states, unavailable, available, or completed. Here are the requirements for an event to
 be in each state:
 
-- Unavailable (gray with a crossed out circle)
-  - The criteria for available are not met
-- Available (blue with an exclamation mark)
-  - The character must be at a level within the designated Circle
-  - The character must be one of the classes the quest is available to
-  - If the character is a master, all events before circle 6 will be unvavailable
-  - If the character has an Advanced Class, all events before circle 7 will be unavailable
-- Completed (green check mark)
-  - The character must have a legend mark with a key equal to the id of the event
+### Unavailable (gray with a crossed out circle)
+
+* The criteria for available are not met
+* If the character is a master, all events before circle 6 will be unvavailable
+* If the character has an Advanced Class, all events before circle 7 will be unavailable
+
+### Available (blue with an exclamation mark)
+
+* The character must be at a level within the designated Circle
+* The character must be one of the classes the quest is available to
+
+### Completed (green check mark)
+
+* The character must have a legend mark with a key equal to the id of the event
 
 Since no objects directly correlate to events, the metadata must be specified directly
 through [EventMetaSchema](<xref:Chaos.Schemas.MetaData.EventMetaSchema>).
 
 This file is located at `StagingDir/MetaData/Events.json` by default
+
+### EventMetaSchema Properties
+
+| Type                                                                       | Name                | Description                                                                                                                                                                     |
+|----------------------------------------------------------------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| string                                                                     | Id                  | A unique id specific to this event. In order for the event to show up as completed, a legend mark with a key equal to this Id must be given                                     |
+| string                                                                     | Title               | The title of the event                                                                                                                                                          |
+| int?                                                                       | PageOverride        | Default null<br />If set, this is the page that the event will show up on(starting at index of 1). If null, the page will be determined by the event's lowest qualifying circle |
+| ICollection\<[LevelCircle](<xref:Chaos.Common.Definitions.LevelCircle>)\>? | QualifyingCircles   | Default null<br />if set, these are the circles this quest is available to. If null, the event will be available to all circles                                                 |
+| ICollection\<[Baseclass](<xref:Chaos.Common.Definitions.Baseclass>)\>?     | QualifyingClasses   | Default null<br />If set, these are the classes this event is available to.<br />If null, the event will be available to all classes                                            |
+| string?                                                                    | PrerequisiteEventId | The id of the event that must be completed before this event can be completed. This event will only show up blue(available) if the previous event was completed                 |
+| string                                                                     | Summary             | A brief summary of the event                                                                                                                                                    |
+| string?                                                                    | Rewards             | Default null.<br />The rewards given when the event is completed                                                                                                                |
+| string                                                                     | Result              | When the event is completed, the event will be marked green(completed) and show this text in place of it's summary                                                              |
 
 ### Example json
 

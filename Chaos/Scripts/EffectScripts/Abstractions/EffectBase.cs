@@ -1,5 +1,6 @@
 using Chaos.Common.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.Abstractions;
@@ -21,10 +22,14 @@ public abstract class EffectBase : ScriptBase, IEffect
     public abstract byte Icon { get; }
     public abstract string Name { get; }
 
+    /// <inheritdoc />
+    public string ScriptKey { get; }
     protected Aisling? AislingSubject => Subject as Aisling;
     protected abstract TimeSpan Duration { get; }
 
-    public static string GetEffectKey(Type type) => type.Name.Replace("effect", string.Empty, StringComparison.OrdinalIgnoreCase);
+    protected EffectBase() => ScriptKey = GetEffectKey(GetType());
+
+    public static string GetEffectKey(Type type) => type.Name.ReplaceI("effect", string.Empty);
 
     /// <inheritdoc />
     public virtual void OnApplied() { }
