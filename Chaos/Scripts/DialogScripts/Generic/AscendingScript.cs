@@ -44,7 +44,7 @@ public class AscendingScript : DialogScriptBase
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "generic_buyhealthforallexp":
+            case "aoife_buyhealthforallexp":
             {
                 var timesToAscend = CheckTimesToAscend(source, "HP");
                 var hp = new Attributes
@@ -70,14 +70,14 @@ public class AscendingScript : DialogScriptBase
                 }
                 
                 //Calculate old value to new health and show user
-                var newHealth = beforeBaseHealth + (timesToAscend * 50);
+                var newHealth = beforeBaseMana + (timesToAscend * 50);
                 source.Client.SendAttributes(StatUpdateType.Full);
-                source.SendOrangeBarMessage($"You've increased to {newHealth} base health from {beforeBaseHealth}.");
+                source.SendOrangeBarMessage($"You've increased to {newHealth} base health from {beforeBaseMana}.");
             }
 
                 break;
             
-            case "generic_buymanaforallexp":
+            case "aoife_buymanaforallexp":
             {
                 var timesToAscend = CheckTimesToAscend(source, "MP");
                 var mp = new Attributes
@@ -110,7 +110,7 @@ public class AscendingScript : DialogScriptBase
 
                 break;
             
-            case "generic_buyhealthonce":
+            case "aoife_buyhealthonce":
             {
                 if (ExperienceDistributionScript.TryTakeExp(source, source.StatSheet.MaximumHp * 500))
                 {
@@ -120,13 +120,15 @@ public class AscendingScript : DialogScriptBase
                     };
                     
                     source.StatSheet.Add(hp);
+                    var newHealth = beforeBaseHealth + (1 * 50);
                     source.Client.SendAttributes(StatUpdateType.Full);
+                    source.SendOrangeBarMessage($"Health increased to {newHealth} from {beforeBaseHealth}.");
                 }
             }
 
                 break;
 
-            case "generic_buymanaonce":
+            case "aoife_buymanaonce":
             {
                 if (ExperienceDistributionScript.TryTakeExp(source, source.StatSheet.MaximumMp * 500))
                 {
@@ -136,8 +138,9 @@ public class AscendingScript : DialogScriptBase
                     };
                     
                     source.StatSheet.Add(mp);
+                    var newMana = beforeBaseMana + (1 * 50);
                     source.Client.SendAttributes(StatUpdateType.Full);
-                    source.SendOrangeBarMessage("Mana raised by twenty five points!");
+                    source.SendOrangeBarMessage($"Health increased to {newMana} from {beforeBaseMana}.");
                 }
             }
 
