@@ -29,7 +29,7 @@ public class CryptSlayerScript : DialogScriptBase
         var hasStage = source.Enums.TryGetValue(out CryptSlayerStage stage);
 
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-        var twentyPercent = Convert.ToInt32(.20 * tnl);
+        var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var randomCryptSlayerStage = CryptSlayerStage.None;
 
 
@@ -51,9 +51,10 @@ public class CryptSlayerScript : DialogScriptBase
                     return;
                 }
 
-                if (!source.Counters.TryGetValue("CryptSlayerLegend", out var value) || (value >= 10))
+                if (source.Counters.TryGetValue("CryptSlayerLegend", out var value) && (value >= 10))
                 {
                     source.Enums.Set(CryptSlayerStage.Completed);
+                    source.Legend.Remove("CryptSlayer", out _);
                     source.Legend.AddOrAccumulate(
                         new LegendMark(
                             "Controlled the Mileth Crypt population with Skarn.",
@@ -62,6 +63,7 @@ public class CryptSlayerScript : DialogScriptBase
                             MarkColor.Blue,
                             1,
                             GameTime.Now));
+
                     Subject.Text = "Thanks for all your hard work Aisling, we can keep these creatures where they belong.";
 
                     return;
@@ -124,10 +126,7 @@ public class CryptSlayerScript : DialogScriptBase
                         Subject.Options.Insert(2, option2);
                 }
 
-                if (stage is CryptSlayerStage.Bat or CryptSlayerStage.Centipede1 or CryptSlayerStage.Centipede2 or CryptSlayerStage.Kardi
-                             or CryptSlayerStage.Marauder or CryptSlayerStage.Mimic or CryptSlayerStage.Scorpion or CryptSlayerStage.Spider1
-                             or CryptSlayerStage.Spider2 or CryptSlayerStage.Succubus or CryptSlayerStage.GiantBat
-                             or CryptSlayerStage.WhiteBat or CryptSlayerStage.Rat)
+                if (hasStage)
                 {
 
                     Subject.Text = "Did you have any issues?";
@@ -288,7 +287,7 @@ public class CryptSlayerScript : DialogScriptBase
 
             case "cryptslayer_turnin":
             {
-                if (!source.Counters.TryGetValue("CryptSlayer", out var value) || (value < 10))
+                if (!source.Counters.TryGetValue("CryptSlayer", out var value) || (value < 0))
                 {
                     Subject.Close(source);
                     
@@ -348,9 +347,9 @@ public class CryptSlayerScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.TryGiveGamePoints(5);
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
-                source.Enums.Set(CryptSlayerStage.None);
+                source.Enums.Remove(typeof(CryptSlayerStage));
                 Subject.Text = "Thank you so much for killing those. That's enough for today, come back soon.";
-                source.Counters.Set("CryptSlayer", 0);
+                source.Counters.Remove("CryptSlayer", out _);
                 source.Counters.AddOrIncrement("CryptSlayerLegend", 1);
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
@@ -361,7 +360,7 @@ public class CryptSlayerScript : DialogScriptBase
                         1,
                         GameTime.Now));
 
-                source.TimedEvents.AddEvent(TimedEvent.TimedEventId.CryptSlayerCd, TimeSpan.FromHours(4), true);
+                source.TimedEvents.AddEvent(TimedEvent.TimedEventId.CryptSlayerCd, TimeSpan.FromSeconds(5), true);
 
                 break;
             }
