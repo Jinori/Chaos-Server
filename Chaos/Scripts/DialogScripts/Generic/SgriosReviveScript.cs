@@ -10,10 +10,10 @@ namespace Chaos.Scripts.DialogScripts.Generic;
 
 public class SgriosReviveScript : DialogScriptBase
 {
-    private readonly ISimpleCache SimpleCache;
+    private readonly ISimpleCache _simpleCache;
 
     public SgriosReviveScript(Dialog subject, ISimpleCache simpleCache)
-        : base(subject) => SimpleCache = simpleCache;
+        : base(subject) => _simpleCache = simpleCache;
 
     public override void OnDisplayed(Aisling source)
     {
@@ -56,10 +56,81 @@ public class SgriosReviveScript : DialogScriptBase
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are revived and sent home.");
         Subject.Close(source);
 
-        //Warp them to the Inn
-        Point point;
-        point = new Point(5, 8);
-        var mapInstance = SimpleCache.Get<MapInstance>("mileth_Inn");
-        source.TraverseMap(mapInstance, point, true);
+        
+        switch (source.Nation)
+        {
+            case Nation.Rucesion:
+            {
+                Point point;
+                point = new Point(25, 36);
+                var mapInstance = _simpleCache.Get<MapInstance>("rucesion");
+                source.TraverseMap(mapInstance, point, true);
+                break;
+            }
+            case Nation.Mileth:
+            {
+                Point point;
+                point = new Point(23, 18);
+                var mapInstance = _simpleCache.Get<MapInstance>("mileth");
+                source.TraverseMap(mapInstance, point, true);
+                break;
+            }
+            case Nation.Exile:
+            {
+                Point point;
+                point = new Point(3, 13);
+                var mapInstance = _simpleCache.Get<MapInstance>("mileth_village_way");
+                source.TraverseMap(mapInstance, point, true);
+                break;
+            }
+            case Nation.Suomi:
+            {
+                Point point;
+                point = new Point(16, 8);
+                var mapInstance = _simpleCache.Get<MapInstance>("suomi_village_way");
+                source.TraverseMap(mapInstance, point, true);
+                break;
+            }
+            case Nation.Loures:
+            {
+                Point point;
+                point = new Point(10, 6);
+                var mapInstance = _simpleCache.Get<MapInstance>("mileth_village_way");
+                source.TraverseMap(mapInstance, point, true);
+                break;
+            }
+            case Nation.Tagor:
+            {
+                Point point;
+                point = new Point(22, 94);
+                var mapInstance = _simpleCache.Get<MapInstance>("tagor");
+                source.TraverseMap(mapInstance, point, true);
+                break;
+            }
+            case Nation.Piet:
+            {
+                Point point;
+                point = new Point(16, 8);
+                var mapInstance = _simpleCache.Get<MapInstance>("piet_village_way");
+                source.TraverseMap(mapInstance, point, true);
+                break;
+            }
+            case Nation.Abel:
+            {
+                Point point;
+                point = new Point(11, 13);
+                var mapInstance = _simpleCache.Get<MapInstance>("abel_port_way");
+                source.TraverseMap(mapInstance, point, true);
+                break;
+            }
+            case Nation.Undine:
+            {
+                Point point;
+                point = new Point(11, 12);
+                var mapInstance = _simpleCache.Get<MapInstance>("undine_village_way");
+                source.TraverseMap(mapInstance, point, true);
+                break;   
+            }
+        }
     }
 }
