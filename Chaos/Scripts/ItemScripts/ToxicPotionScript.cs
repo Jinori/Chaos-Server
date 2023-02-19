@@ -7,29 +7,28 @@ namespace Chaos.Scripts.ItemScripts;
 
 public class ToxicPotionScript : ConfigurableItemScriptBase
 {
-    protected int? DmgAmount { get; init; }
-    protected int? DmgPercent { get; init; }
+    private int? DmgAmount { get; init; }
+    private int? DmgPercent { get; init; }
 
     public ToxicPotionScript(Item subject)
-        : base(subject) { }
+        : base(subject)
+    {
+    }
 
     public override void OnUse(Aisling source)
     {
-        if (source.IsAlive)
-        {
-            var amount = DmgAmount ?? source.StatSheet.MaximumHp / 100 * DmgPercent;
+        if (!source.IsAlive) 
+            return;
+        
+        var amount = DmgAmount ?? source.StatSheet.MaximumHp / 100 * DmgPercent;
 
-            //Let's remove Hp
-            source.StatSheet.SubtractHp(amount!.Value);
+        //Let's remove Hp
+        source.StatSheet.SubtractHp(amount!.Value);
 
-            //Refresh the users health bar
-            source.Client.SendAttributes(StatUpdateType.Vitality);
+        //Refresh the users health bar
+        source.Client.SendAttributes(StatUpdateType.Vitality);
 
-            //Let's tell the player they have been healed
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A foul taste stings your tounge. Lose " + amount + " health.");
-
-            //Update inventory quantity
-            source.Inventory.RemoveQuantity(Subject.DisplayName, 1, out _);
-        }
+        //Update inventory quantity
+        source.Inventory.RemoveQuantity(Subject.DisplayName, 1, out _);
     }
 }

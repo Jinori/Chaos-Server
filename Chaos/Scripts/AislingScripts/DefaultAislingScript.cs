@@ -12,16 +12,17 @@ using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
 
 namespace Chaos.Scripts.AislingScripts;
 
-public class DefaultAislingScript : AislingScriptBase
+public sealed class DefaultAislingScript : AislingScriptBase
 {
-    private readonly IClientRegistry<IWorldClient> ClientRegistry;
+    private readonly IClientRegistry<IWorldClient> _clientRegistry;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
-    private readonly List<string> MapsToNotPunishDeathOn = new()
+    private readonly List<string> _mapsToNotPunishDeathOn = new()
     {
         "tutorial_bossroom",
         "tutorial_farm"
     };
-    protected virtual RestrictionComponent RestrictionComponent { get; }
+
+    private RestrictionComponent RestrictionComponent { get; }
 
     /// <inheritdoc />
     public DefaultAislingScript(Aisling subject, IClientRegistry<IWorldClient> clientRegistry)
@@ -29,7 +30,7 @@ public class DefaultAislingScript : AislingScriptBase
     {
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         RestrictionComponent = new RestrictionComponent();
-        ClientRegistry = clientRegistry;
+        _clientRegistry = clientRegistry;
     }
 
     /// <inheritdoc />
@@ -64,10 +65,10 @@ public class DefaultAislingScript : AislingScriptBase
         foreach (var effect in effects)
             Subject.Effects.Dispel(effect.Name);
 
-        if (MapsToNotPunishDeathOn.Contains(Subject.MapInstance.InstanceId))
+        if (_mapsToNotPunishDeathOn.Contains(Subject.MapInstance.InstanceId))
             return;
 
-        foreach (var client in ClientRegistry)
+        foreach (var client in _clientRegistry)
             client.SendServerMessage(
                 ServerMessageType.OrangeBar1,
                 $"{Subject.Name} was killed at {Subject.MapInstance.Name} by {source.Name}.");

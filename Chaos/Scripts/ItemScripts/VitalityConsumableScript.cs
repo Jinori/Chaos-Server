@@ -31,9 +31,11 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase
     }
 
     #region ScriptVars
-    protected int? HealthAmount { get; init; }
-    protected int? HealthPercent { get; init; }
-    protected int? ManaAmount { get; init; }
-    protected int? ManaPercent { get; init; }
+
+    private int? HealthAmount { get; init; }
+    private int? HealthPercent { get; init; }
+    private int? ManaAmount { get; init; }
+    private int? ManaPercent { get; init; }
+    
     #endregion
 }

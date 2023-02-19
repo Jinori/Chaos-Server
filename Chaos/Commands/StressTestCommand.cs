@@ -1,9 +1,11 @@
+using System.Diagnostics;
 using Chaos.CommandInterceptor;
 using Chaos.CommandInterceptor.Abstractions;
 using Chaos.Common.Collections;
 using Chaos.Extensions.Geometry;
 using Chaos.Objects.World;
 using Chaos.Services.Factories.Abstractions;
+using Microsoft.AspNetCore.Builder.Extensions;
 
 namespace Chaos.Commands;
 
@@ -11,8 +13,13 @@ namespace Chaos.Commands;
 public class StressTestCommand : ICommand<Aisling>
 {
     private readonly IItemFactory ItemFactory;
+    private readonly IMerchantFactory MerchantFactory;
 
-    public StressTestCommand(IItemFactory itemFactory) => ItemFactory = itemFactory;
+    public StressTestCommand(IItemFactory itemFactory, IMerchantFactory merchantFactory)
+    {
+        ItemFactory = itemFactory;
+        MerchantFactory = merchantFactory;
+    }
 
     /// <inheritdoc />
     public ValueTask ExecuteAsync(Aisling source, ArgumentCollection args)
@@ -26,6 +33,9 @@ public class StressTestCommand : ICommand<Aisling>
                 if (!args.TryGetNext<int>(out var amount))
                     return default;
 
+                var sw = new Stopwatch();
+                sw.Start();
+                
                 var items = new List<GroundItem>();
                 var map = source.MapInstance;
 
@@ -37,9 +47,30 @@ public class StressTestCommand : ICommand<Aisling>
                 }
 
                 map.AddObjects(items);
+                sw.Stop();
+                source.SendOrangeBarMessage($"{amount} stick(s) spawned on the ground in {sw.Elapsed.TotalSeconds}");
+                break;
+            
+            case "merchants":
+                if (!args.TryGetNext<int>(out var amount1))
+                    return default;
+                
+                var sw1 = new Stopwatch();
+                sw1.Start();
+                
+                var map1 = source.MapInstance;
+                var merch = new List<Merchant>();
 
-                source.SendOrangeBarMessage($"{amount} stick(s) spawned on the ground");
+                for (var i = 0; i < amount1; i++)
+                {                                  
+                    var point1 = map1.Template.Bounds.RandomPoint();
+                    var merchant = MerchantFactory.Create("aingeal", map1, point1);
+                    merch.Add(merchant);
+                }
 
+                map1.AddObjects(merch);
+                sw1.Stop();
+                source.SendOrangeBarMessage($"{amount1} merchants spawned on the ground in {sw1.Elapsed.TotalSeconds}");
                 break;
         }
 
