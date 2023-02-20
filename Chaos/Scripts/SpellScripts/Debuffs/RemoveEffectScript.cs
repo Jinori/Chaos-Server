@@ -1,4 +1,5 @@
 using Chaos.Data;
+using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
@@ -26,18 +27,29 @@ public class RemoveEffectScript : BasicSpellScriptBase, ManaCostComponent.IManaC
         var targets = AbilityComponent.Activate<Creature>(context, this);
 
         foreach (var target in targets.TargetEntities)
+        {
             if (EffectKey.EqualsI("dinarcoli"))
             {
                 if (target.Effects.Contains("pramh"))
+                {
                     target.Effects.Dispel("pramh");
+                    target.Status &= ~Status.Pramh;
+                }
 
                 if (target.Effects.Contains("beagpramh"))
+                {
                     target.Effects.Dispel("beagpramh");
-            } else
+                    target.Status &= ~Status.Pramh;
+                }
+            } 
+            else
             {
                 if (target.Effects.Contains(EffectKey))
-                    target.Effects.Dispel(EffectKey);
+                {
+                    target.Effects.Dispel(EffectKey);   
+                }
             }
+        }
 
         context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}.");
     }

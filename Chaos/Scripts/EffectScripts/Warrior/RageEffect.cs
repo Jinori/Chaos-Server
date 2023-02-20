@@ -17,9 +17,11 @@ public class RageEffect : EffectBase
     {
         base.OnApplied();
 
+        var damFormula = (Subject.StatSheet.EffectiveStr + Subject.StatSheet.EffectiveCon) / 5;
+        
         var attributes = new Attributes
         {
-            Dmg = 10
+            Dmg = 10 + damFormula
         };
 
         AislingSubject?.StatSheet.SubtractMp(50);

@@ -50,12 +50,6 @@ public class RestrictionComponent
             return false;
         }
 
-        if (creature.Status.HasFlag(Status.BeagSuain))
-        {
-            aisling?.SendOrangeBarMessage("You are stunned.");
-            return false;
-        }
-
         return true;
     }
 
@@ -98,12 +92,6 @@ public class RestrictionComponent
             return false;
         }
 
-        if (creature.Status.HasFlag(Status.BeagSuain))
-        {
-            aisling?.SendOrangeBarMessage("You are stunned.");
-            return false;
-        }
-
         return creature.IsAlive;
     }
 
@@ -117,15 +105,9 @@ public class RestrictionComponent
             return false;
         }
 
-        if (creature.Status.HasFlag(Status.Pramh))
+        if (creature.Status.HasFlag(Status.Pramh) && spell.Template.Name != "dinarcoli")
         {
             aisling?.SendOrangeBarMessage("You are asleep.");
-            return false;
-        }
-
-        if (creature.Status.HasFlag(Status.BeagSuain))
-        {
-            aisling?.SendOrangeBarMessage("You are stunned.");
             return false;
         }
 
