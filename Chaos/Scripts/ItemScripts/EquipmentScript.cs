@@ -15,13 +15,6 @@ public class EquipmentScript : ConfigurableItemScriptBase
     {
         var template = Subject.Template;
 
-        if (!source.IsAlive)
-        {
-            source.SendOrangeBarMessage("You can't do that");
-
-            return;
-        }
-
         if (template.EquipmentType == EquipmentType.NotEquipment)
         {
             source.SendOrangeBarMessage("You can't equip that");

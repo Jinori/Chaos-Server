@@ -24,7 +24,7 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
     protected IIntervalTimer AnimationTimer { get; set; }
     protected IEffectFactory EffectFactory { get; set; }
     protected Creature Owner { get; set; }
-    protected IIntervalTimer Timer { get; set; }
+    protected IIntervalTimer? Timer { get; set; }
     protected int TriggerCount { get; set; }
     protected AbilityComponent AbilityComponent { get; }
     protected DamageComponent DamageComponent { get; }
@@ -51,8 +51,11 @@ If this reactor was created through a script, you must specify the owner in the 
         Owner = subject.Owner!;
         EffectFactory = effectFactory;
         TriggerCount = 0;
+
+        if (DurationSecs.HasValue)
+            Timer = new IntervalTimer(TimeSpan.FromSeconds(DurationSecs.Value), false);
+        
         AnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
-        Timer = new IntervalTimer(TimeSpan.FromSeconds(DurationSecs), false);
         ApplyDamageScript = DefaultApplyDamageScript.Create();
         ApplyDamageScript.DamageFormula = DamageFormulae.PureDamage;
         SourceScript = this;
@@ -86,18 +89,19 @@ If this reactor was created through a script, you must specify the owner in the 
                 entity.Effects.Apply(context.Source, effect);
             }
 
-        TriggerCount++;
+        if (MaxTriggers.HasValue)
+        {
+            TriggerCount++;
 
-        if (TriggerCount >= MaxTriggers)
-            Map.RemoveObject(Subject);
+            if (TriggerCount >= MaxTriggers)
+                Map.RemoveObject(Subject);
+        }
     }
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         base.Update(delta);
-
-        Timer.Update(delta);
 
         AnimationTimer.Update(delta);
 
@@ -108,8 +112,12 @@ If this reactor was created through a script, you must specify the owner in the 
             Subject.Owner.MapInstance.ShowAnimation(
                 DetectTrapAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y), Subject.Owner.Id));
 
-        if (Timer.IntervalElapsed)
-            Map.RemoveObject(Subject);
+        if (Timer !=null)
+        {
+            Timer.Update(delta);
+            if (Timer.IntervalElapsed)
+                Map.RemoveObject(Subject);
+        }
     }
 
     #region ScriptVars
@@ -128,8 +136,8 @@ If this reactor was created through a script, you must specify the owner in the 
     public decimal? DamageStatMultiplier { get; init; }
     public decimal? PctHpDamage { get; init; }
     public IScript SourceScript { get; init; }
-    public int DurationSecs { get; init; }
-    public int MaxTriggers { get; init; }
+    public int? DurationSecs { get; init; }
+    public int? MaxTriggers { get; init; }
     public string? EffectKey { get; init; }
     public int? ManaDrain { get; init; }
     public decimal PctManaDrain { get; init; }

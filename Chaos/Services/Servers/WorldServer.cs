@@ -979,19 +979,17 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
 
         static ValueTask InnerOnUseItem(IWorldClient localClient, ItemUseArgs localArgs)
         {
-            if (localClient.Aisling.Inventory.TryGetObject(localArgs.SourceSlot, out var item))
+
+            var exchange = localClient.Aisling.ActiveObject.TryGet<Exchange>();
+
+            if (exchange != null)
             {
-                var exchange = localClient.Aisling.ActiveObject.TryGet<Exchange>();
+                exchange.AddItem(localClient.Aisling, localArgs.SourceSlot);
 
-                if (exchange != null)
-                {
-                    exchange.AddItem(localClient.Aisling, item.Slot);
-
-                    return default;
-                }
-
-                item.Script.OnUse(localClient.Aisling);
+                return default;
             }
+
+            localClient.Aisling.TryUseItem(localArgs.SourceSlot);
 
             return default;
         }
