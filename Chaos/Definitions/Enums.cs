@@ -11,6 +11,16 @@ public enum AoeShape
 }
 
 [Flags]
+public enum WizardElement : byte
+{
+    None = 0,
+    Fire = 1 << 1,
+    Earth = 1 << 2,
+    Wind = 1 << 3,
+    Water = 1 << 4,
+}
+
+[Flags]
 public enum Status : ulong
 {
     None = 0,
@@ -37,7 +47,6 @@ public enum MonkElementForm
     Air = 2,
     Fire = 3,
 }
-
 
 [Flags]
 public enum TargetFilter

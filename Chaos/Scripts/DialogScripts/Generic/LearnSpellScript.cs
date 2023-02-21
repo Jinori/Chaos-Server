@@ -1,6 +1,7 @@
 using System.Text;
 using Chaos.Common.Definitions;
 using Chaos.Data;
+using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Objects.Menu;
 using Chaos.Objects.Panel;
@@ -20,6 +21,8 @@ public class LearnSpellScript : ConfigurableDialogScriptBase
     private readonly ISkillFactory SkillFactory;
     private readonly ISpellFactory SpellFactory;
     private Spell? SpellToLearn;
+    
+    
     protected List<string> SpellTemplateKeys { get; init; } = null!;
 
     /// <inheritdoc />
@@ -119,6 +122,7 @@ public class LearnSpellScript : ConfigurableDialogScriptBase
                 var spell = SpellFactory.CreateFaux(spellTemplateKey);
                 var requiredBaseClass = spell.Template.Class;
                 var requiredAdvClass = spell.Template.AdvClass;
+                var wizardElement = spell.Template.WizardElement;
 
                 //if this skill is not available to the player's class, skip it
                 if (requiredBaseClass.HasValue && !requiredBaseClass.Value.ContainsClass(source.UserStatSheet.BaseClass))
@@ -131,6 +135,14 @@ public class LearnSpellScript : ConfigurableDialogScriptBase
                 //if the player already knows this spell, skip it
                 if (source.SpellBook.Contains(spell))
                     continue;
+                
+                
+                if (wizardElement is not null)
+                {
+                    var elementForm = source.Enums.TryGetValue(out WizardElement element); 
+                    if (wizardElement != element.ToString())
+                        continue;
+                }
 
                 Subject.Spells.Add(spell);
             }

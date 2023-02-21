@@ -95,7 +95,8 @@ public sealed class SpellMapperProfile : IMapperProfile<Spell, SpellSchema>,
         Level = obj.Level,
         Class = obj.Class,
         AdvClass = obj.AdvClass,
-        RequiresMaster = obj.RequiresMaster
+        RequiresMaster = obj.RequiresMaster,
+        WizardElement = obj.WizardElement
     };
 
     public SpellTemplateSchema Map(SpellTemplate obj) => throw new NotImplementedException();
