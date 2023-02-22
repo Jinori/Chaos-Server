@@ -31,8 +31,6 @@ public class ALittleBitofThatScript : DialogScriptBase
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "egil_initial":
-            case "appie_initial":
-            case "matei_initial":
             {
                 if (source.UserStatSheet.Level < 21)
                 {
