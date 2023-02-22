@@ -115,11 +115,14 @@ public class RestrictionComponent
             aisling?.SendOrangeBarMessage("You are asleep.");
             return false;
         }
-        
+
         if (creature.Status.HasFlag(Status.Blind) && creature is not Aisling)
         {
             return false;
         }
+        
+        if ((creature.IsDead) && (spell.Template.Name == "Self Revive"))
+            return true;
         
         return creature.IsAlive;
     }

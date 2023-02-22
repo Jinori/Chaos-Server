@@ -287,7 +287,7 @@ public class CryptSlayerScript : DialogScriptBase
 
             case "cryptslayer_turnin":
             {
-                if (!source.Counters.TryGetValue("CryptSlayer", out var value) || (value < 0))
+                if (!source.Counters.TryGetValue("CryptSlayer", out var value) || (value < 10))
                 {
                     Subject.Close(source);
                     
