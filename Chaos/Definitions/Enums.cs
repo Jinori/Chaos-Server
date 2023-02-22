@@ -38,7 +38,6 @@ public enum MonkElementForm
     Fire = 3,
 }
 
-
 [Flags]
 public enum TargetFilter
 {

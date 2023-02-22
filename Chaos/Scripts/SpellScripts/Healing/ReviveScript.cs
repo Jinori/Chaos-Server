@@ -27,13 +27,6 @@ public class ReviveScript : BasicSpellScriptBase, ManaCostComponent.IManaCostCom
     public ReviveScript(Spell subject)
         : base(subject) => ManaCostComponent = new ManaCostComponent();
 
-    public override bool CanUse(SpellContext context)
-    {
-        context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You cannot use this spell while dead.");
-
-        return context.Source.IsAlive;
-    }
-
     public override void OnUse(SpellContext context)
     {
         if (!ManaCostComponent.TryApplyManaCost(context, this))
@@ -44,9 +37,11 @@ public class ReviveScript : BasicSpellScriptBase, ManaCostComponent.IManaCostCom
         foreach (var target in targets.TargetEntities)
             if (!target.IsAlive)
             {
-                //Let's restore their hp/mp to %20
-                target.StatSheet.AddHealthPct(20);
-                target.StatSheet.AddManaPct(20);
+                target.IsDead = false;
+                target.StatSheet.SetHealthPct(50);
+                target.StatSheet.SetManaPct(50);
+                context.TargetAisling.Refresh();
+                
 
                 //Refresh the users health bar
                 context.TargetAisling?.Client.SendAttributes(StatUpdateType.Vitality);
