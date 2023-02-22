@@ -20,7 +20,7 @@ public class MonkFormDedicationScript : DialogScriptBase
         if (monkForm || source.UserStatSheet.BaseClass is not BaseClass.Monk)
         {
             Subject.Options.Clear();
-            Subject.Text = "You should head up to the door on the left to learn skills for element. May your spark be true.";
+            Subject.Text = "How did you get here?.";
             Subject.Type = MenuOrDialogType.Normal;
         }
 

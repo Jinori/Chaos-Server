@@ -11,7 +11,7 @@ namespace Chaos.Schemas.Templates;
 /// </summary>
 public sealed record SpellTemplateSchema : PanelObjectTemplateSchema
 {
-    public string? WizardElement { get; set; }
+    public WizardElement? WizardElement { get; set; }
     
     /// <summary>
     ///     The number of chant lines this spell requires by default

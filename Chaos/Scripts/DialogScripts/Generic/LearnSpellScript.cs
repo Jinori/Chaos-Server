@@ -1,7 +1,6 @@
 using System.Text;
 using Chaos.Common.Definitions;
 using Chaos.Data;
-using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Objects.Menu;
 using Chaos.Objects.Panel;
@@ -21,8 +20,7 @@ public class LearnSpellScript : ConfigurableDialogScriptBase
     private readonly ISkillFactory SkillFactory;
     private readonly ISpellFactory SpellFactory;
     private Spell? SpellToLearn;
-    
-    
+
     protected List<string> SpellTemplateKeys { get; init; } = null!;
 
     /// <inheritdoc />
@@ -137,12 +135,8 @@ public class LearnSpellScript : ConfigurableDialogScriptBase
                     continue;
                 
                 
-                if (wizardElement is not null)
-                {
-                    var elementForm = source.Enums.TryGetValue(out WizardElement element); 
-                    if (wizardElement != element.ToString())
-                        continue;
-                }
+                if (wizardElement.HasValue && !source.Flags.HasFlag(wizardElement.Value))
+                    continue;
 
                 Subject.Spells.Add(spell);
             }

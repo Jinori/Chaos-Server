@@ -7,7 +7,7 @@ namespace Chaos.Templates;
 
 public sealed record SpellTemplate : PanelObjectTemplateBase
 {
-    public required string? WizardElement { get; init; }
+    public required WizardElement? WizardElement { get; init; }
     public required byte CastLines { get; init; }
     public required LearningRequirements? LearningRequirements { get; init; }
     public required string? Prompt { get; set; }
