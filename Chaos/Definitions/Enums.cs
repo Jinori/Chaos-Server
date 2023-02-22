@@ -180,3 +180,13 @@ public enum CryptSlayerNumber
     Fifteen = 3,
     Twenty = 4
 }
+public enum SickChildStage
+{
+    None = 0,
+    WhiteRose = 1,
+    WhiteRose2 = 2,
+    BlackRose = 3,
+    GoldRose = 4,
+    SickChildComplete = 5,
+    SickChildKilled = 6
+}
