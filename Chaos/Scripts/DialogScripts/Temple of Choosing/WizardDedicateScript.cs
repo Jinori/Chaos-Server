@@ -51,7 +51,7 @@ public class WizardDedicateScript : DialogScriptBase
             source.Legend.AddOrAccumulate(
                 new LegendMark(
                     "Wizard Class Devotion",
-                    "base",
+                    "wizardClass",
                     MarkIcon.Wizard,
                     MarkColor.Blue,
                     1,

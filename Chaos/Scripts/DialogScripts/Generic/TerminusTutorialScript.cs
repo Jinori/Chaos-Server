@@ -77,7 +77,7 @@ public class TerminusTutorialScript : DialogScriptBase
                     source.Legend.AddOrAccumulate(
                         new LegendMark(
                             "Completed Tutorial",
-                            "base",
+                            "CompletedTutorial",
                             MarkIcon.Heart,
                             MarkColor.White,
                             1,

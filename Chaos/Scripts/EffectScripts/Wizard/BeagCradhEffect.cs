@@ -43,6 +43,7 @@ public class BeagCradhEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
+
         if (target.Effects.Contains("ard cradh")
             || target.Effects.Contains("mor cradh")
             || target.Effects.Contains("cradh")

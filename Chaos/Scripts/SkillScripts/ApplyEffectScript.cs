@@ -9,7 +9,7 @@ namespace Chaos.Scripts.SkillScripts;
 public class ApplyEffectScript : BasicSkillScriptBase
 {
     private readonly IEffectFactory EffectFactory;
-    private string EffectKey { get; } = null!;
+    protected string EffectKey { get; set; } = null!;
 
     /// <inheritdoc />
     public ApplyEffectScript(Skill subject, IEffectFactory effectFactory)

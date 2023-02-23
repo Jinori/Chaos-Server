@@ -51,14 +51,16 @@ public class MonkDedicateScript : DialogScriptBase
             source.Legend.AddOrAccumulate(
                 new LegendMark(
                     "Monk Class Devotion",
-                    "base",
+                    "monkClass",
                     MarkIcon.Monk,
                     MarkColor.Blue,
                     1,
                     GameTime.Now));
 
+            source.SkillBook.Remove("assail");
+
             source.Flags.AddFlag(QuestFlag1.ChosenClass);
-            var skill = SkillFactory.Create("assail");
+            var skill = SkillFactory.Create("punch");
 
             if (!source.SkillBook.Contains(skill))
                 source.SkillBook.TryAddToNextSlot(skill);

@@ -52,7 +52,7 @@ public class PriestDedicateScript : DialogScriptBase
             source.Legend.AddOrAccumulate(
                 new LegendMark(
                     "Priest Class Devotion",
-                    "base",
+                    "priestClass",
                     MarkIcon.Priest,
                     MarkColor.Blue,
                     1,

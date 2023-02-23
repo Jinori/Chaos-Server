@@ -1,11 +1,14 @@
 ﻿using Chaos.Common.Definitions;
+using Chaos.Containers;
 using Chaos.Data;
 using Chaos.Definitions;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripts.Components;
+using Chaos.Scripts.EffectScripts.Wizard;
 using Chaos.Scripts.SpellScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
+using NLog.Targets;
 
 namespace Chaos.Scripts.SpellScripts.Debuffs;
 
@@ -26,6 +29,10 @@ public class ApplyCradhScript : BasicSpellScriptBase, ManaCostComponent.IManaCos
     {
         if (!ManaCostComponent.TryApplyManaCost(context, this))
             return;
+
+        {
+            
+        }
 
         if (context.Target.Status.HasFlag(Status.PreventAffliction))
         {

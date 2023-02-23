@@ -42,7 +42,7 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
         if (Subject.Owner == null)
             throw new Exception(
                 $"""
-{nameof(TrapScript)} script initialized fo {Subject} that has no owner. 
+{nameof(TrapScript)} script initialized for {Subject} that has no owner. 
 If this reactor was created through json, you must specify the optional parameter "owningMonsterTemplateKey". 
 If this reactor was created through a script, you must specify the owner in the {nameof(IReactorTileFactory)}.{
     nameof(IReactorTileFactory.Create)}() call.

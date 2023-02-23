@@ -51,7 +51,7 @@ public class RogueDedicateScript : DialogScriptBase
             source.Legend.AddOrAccumulate(
                 new LegendMark(
                     "Rogue Class Devotion",
-                    "base",
+                    "rogueClass",
                     MarkIcon.Rogue,
                     MarkColor.Blue,
                     1,

@@ -51,7 +51,7 @@ public class WarriorDedicateScript : DialogScriptBase
             source.Legend.AddOrAccumulate(
                 new LegendMark(
                     "Warrior Class Devotion",
-                    "base",
+                    "warriorClass",
                     MarkIcon.Warrior,
                     MarkColor.Blue,
                     1,
