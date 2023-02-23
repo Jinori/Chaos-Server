@@ -360,7 +360,7 @@ public class CryptSlayerScript : DialogScriptBase
                         1,
                         GameTime.Now));
 
-                source.TimedEvents.AddEvent(TimedEvent.TimedEventId.CryptSlayerCd, TimeSpan.FromSeconds(5), true);
+                source.TimedEvents.AddEvent(TimedEvent.TimedEventId.CryptSlayerCd, TimeSpan.FromHours(4), true);
 
                 break;
             }
