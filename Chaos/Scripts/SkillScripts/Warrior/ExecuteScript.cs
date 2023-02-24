@@ -36,7 +36,8 @@ public class ExecuteScript : BasicSkillScriptBase
                 var healAmount = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, HealAmountPct);
                 context.Source.ApplyHealing(context.Source, healAmount);
                 Subject.Elapsed = Subject.Cooldown / 2;
-            } else
+            } 
+            else
             {
                 var tenPercent = MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, DmgHealthPct);
 

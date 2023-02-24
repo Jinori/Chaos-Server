@@ -1,3 +1,4 @@
+using Chaos.Common.Definitions;
 using Chaos.Formulae.Abstractions;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.Abstractions;

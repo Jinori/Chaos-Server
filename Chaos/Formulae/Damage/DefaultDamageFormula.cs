@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using Chaos.Common.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Formulae.Abstractions;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
@@ -38,6 +39,23 @@ public class DefaultDamageFormula : IDamageFormula
     protected virtual void ApplyElementalModifier(ref int damage, Element attackElement, Element defenseElement) =>
         damage = Convert.ToInt32(damage * ElementalModifierLookup[(int)attackElement][(int)defenseElement]);
 
+    protected virtual void HandleElementalModifier(ref int damage, IScript source, Creature attacker, Creature defender)
+    {
+        switch (source)
+        {
+            case ISkillScript:
+            {
+                ApplyElementalModifier(ref damage, attacker.StatSheet.OffenseElement, defender.StatSheet.DefenseElement);
+                break;
+            }
+            case ISpellScript:
+            {
+                ApplyElementalModifier(ref damage, attacker.StatSheet.OffensiveCastElement, defender.StatSheet.DefenseElement);
+                break;
+            }
+        }
+    }
+    
     protected virtual void ApplySkillSpellModifier(ref int damage, IScript source, Creature attacker)
     {
         switch (source)
@@ -72,9 +90,21 @@ public class DefaultDamageFormula : IDamageFormula
         var defenderAc = GetDefenderAc(defender);
 
         ApplyAcModifier(ref damage, defenderAc);
-        ApplyElementalModifier(ref damage, attacker.StatSheet.OffenseElement, defender.StatSheet.DefenseElement);
+        HandleElementalModifier(ref damage, source, attacker, defender);
         HandleClawFist(ref damage, source, attacker);
+        HandleZap(ref damage, source, attacker);
         return damage;
+    }
+
+    private void HandleZap(ref int damage, IScript source, Creature attacker)
+    {
+        if (source is not SubjectiveScriptBase<Spell> spellScript)
+            return;
+
+        if (spellScript.Subject.Template.Name.EqualsI("Zap"))
+        {
+            damage = Convert.ToInt32(damage + (attacker.StatSheet.EffectiveMaximumMp / 3));
+        }
     }
 
     protected virtual int GetDefenderAc(Creature defender) => defender switch

@@ -40,7 +40,7 @@ public class ReviveScript : BasicSpellScriptBase, ManaCostComponent.IManaCostCom
                 target.IsDead = false;
                 target.StatSheet.SetHealthPct(50);
                 target.StatSheet.SetManaPct(50);
-                context.TargetAisling.Refresh();
+                context.TargetAisling?.Refresh();
                 
 
                 //Refresh the users health bar

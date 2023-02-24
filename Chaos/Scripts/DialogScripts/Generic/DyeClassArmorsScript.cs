@@ -40,7 +40,11 @@ public class DyeClassArmorsScript : DialogScriptBase
                 case "mileth_tailor":
                 {
                     if (!source.Inventory.HasCount("Mileth Armor Dye", 1))
+                    {
+                        dialog.Close(source);
+                        source.SendOrangeBarMessage("You have no Mileth Armor Dye, come back with it.");
                         return false;
+                    }
 
                     var newArmor = ItemFactory.Create("mileth" + Item.Template.TemplateKey);
                     source.Inventory.Remove(Item.Template.Name);
@@ -55,7 +59,11 @@ public class DyeClassArmorsScript : DialogScriptBase
                 case "rucesion_tailor":
                 {
                     if (!source.Inventory.HasCount("Rucesion Armor Dye", 1))
+                    {
+                        dialog.Close(source);
+                        source.SendOrangeBarMessage("You have no Rucesion Armor Dye, come back with it.");
                         return false;
+                    }
 
                     var newArmor = ItemFactory.Create("rucesion" + Item.Template.TemplateKey);
                     source.Inventory.Remove(Item.Template.Name);
@@ -70,7 +78,11 @@ public class DyeClassArmorsScript : DialogScriptBase
                 case "suomi_armor_shop":
                 {
                     if (!source.Inventory.HasCount("Suomi Armor Dye", 1))
+                    {
+                        dialog.Close(source);
+                        source.SendOrangeBarMessage("You have no Suomi Armor Dye, come back with it.");
                         return false;
+                    }
 
                     var newArmor = ItemFactory.Create("suomi" + Item.Template.TemplateKey);
                     source.Inventory.Remove(Item.Template.Name);
@@ -85,7 +97,11 @@ public class DyeClassArmorsScript : DialogScriptBase
                 case "piet_storage":
                 {
                     if (!source.Inventory.HasCount("Loures Armor Dye", 1))
+                    {
+                        dialog.Close(source);
+                        source.SendOrangeBarMessage("You have no Loures Armor Dye, come back with it.");
                         return false;
+                    }
 
                     var newArmor = ItemFactory.Create("loures" + Item.Template.TemplateKey);
                     source.Inventory.Remove(Item.Template.Name);

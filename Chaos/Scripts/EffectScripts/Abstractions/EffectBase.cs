@@ -23,7 +23,9 @@ public abstract class EffectBase : ScriptBase, IEffect
     public abstract string Name { get; }
 
     /// <inheritdoc />
+#pragma warning disable CS0108, CS0114
     public string ScriptKey { get; }
+#pragma warning restore CS0108, CS0114
     protected Aisling? AislingSubject => Subject as Aisling;
     protected abstract TimeSpan Duration { get; }
 
