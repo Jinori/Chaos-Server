@@ -65,7 +65,7 @@ public sealed class DefaultAislingScript : AislingScriptBase
         foreach (var effect in effects)
             Subject.Effects.Dispel(effect.Name);
 
-        if (_mapsToNotPunishDeathOn.Contains(Subject.MapInstance.InstanceId))
+        if (_mapsToNotPunishDeathOn.Contains(Subject.MapInstance.Template.TemplateKey))
             return;
 
         foreach (var client in _clientRegistry)

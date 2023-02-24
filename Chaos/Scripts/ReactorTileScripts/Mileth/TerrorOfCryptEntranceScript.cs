@@ -40,8 +40,10 @@ public class TerrorOfCryptEntranceScript : ReactorTileScriptBase
         var groupCount = 0;
 
         foreach (var member in group)
-            if (member.WithinLevelRange(source))
+        {
+            if (member.WithinLevelRange(source) && member.Flags.HasFlag(QuestFlag1.TerrorOfCryptHunt))
                 ++groupCount;
+        }
 
         if (groupCount.Equals(group.Count))
         {
@@ -49,9 +51,10 @@ public class TerrorOfCryptEntranceScript : ReactorTileScriptBase
             var merchant = MerchantFactory.Create("teague", aisling.MapInstance, npcpoint);
             var dialog = DialogFactory.Create("teague_enterTerror", merchant);
             dialog.Display(aisling);
-        } else
+        } 
+        else
         {
-            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure your companions are within level range.");
+            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure everyone is within level range and has quest.");
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);
         }
