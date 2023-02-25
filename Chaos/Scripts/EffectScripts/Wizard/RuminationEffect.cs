@@ -99,11 +99,10 @@ public class RuminationEffect : AnimatingEffectBase
 
             return;
         }
-
-        var healthCost = Subject.StatSheet.EffectiveMaximumHp * .04;
+        
         //Remove and Add HP
-        Subject.StatSheet.SubtractHealthPct(4);
-        Subject.StatSheet.AddMp(healthCost * .66);
+        Subject.StatSheet.SubtractHealthPct(6);
+        Subject.StatSheet.AddManaPct(4);
 
         //Show Vitality
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
