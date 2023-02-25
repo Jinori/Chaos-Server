@@ -35,9 +35,6 @@ public sealed class Spell : PanelObjectBase, IScripted<ISpellScript>
     }
 
     /// <inheritdoc />
-    public override string ToString() => $"{{ UId: {UniqueId}, Name: \"{Template.Name}\" }}";
-
-    /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         base.Update(delta);

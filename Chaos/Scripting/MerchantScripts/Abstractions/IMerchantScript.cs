@@ -3,9 +3,11 @@ using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Time.Abstractions;
 
+// ReSharper disable UnusedParameter.Global
+
 namespace Chaos.Scripting.MerchantScripts.Abstractions;
 
-public interface IMerchantScript : ICreatureScript, IScript, IDeltaUpdatable
+public interface IMerchantScript : ICreatureScript, IDeltaUpdatable
 {
     void OnApproached(Creature source);
     void OnClicked(Aisling source);

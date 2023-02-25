@@ -42,7 +42,7 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
     public virtual void GiveExp(Aisling aisling, long amount)
     {
         if (amount < 0)
-            Logger.LogError("Tried to give negative amount ({Amount}) experience to {Aisling}", amount, aisling);
+            Logger.LogError("Tried to give negative amount ({Amount}) experience to {@Client}", amount, aisling.Client);
 
         if (amount + aisling.UserStatSheet.TotalExp > uint.MaxValue)
             amount = uint.MaxValue - aisling.UserStatSheet.TotalExp;
@@ -53,7 +53,7 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
             return;
 
         aisling.SendActiveMessage($"You have gained {amount} experience!");
-        Logger.LogTrace("{Aisling} has gained {Amount} experience", aisling, amount);
+        Logger.LogTrace("{@Player} has gained {ExpAmount} experience", aisling, amount);
 
         while (amount > 0)
         {
@@ -80,7 +80,7 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
     {
         if (amount < 0)
         {
-            Logger.LogError("Tried to take negative amount ({Amount}) experience from {Aisling}", amount, aisling);
+            Logger.LogError("Tried to take negative amount ({Amount}) experience from {@Client}", amount, aisling.Client);
 
             return false;
         }
@@ -91,7 +91,7 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
         if (!aisling.UserStatSheet.TrySubtractTotalExp(amount))
             return false;
 
-        Logger.LogTrace("{Aisling} has lost {Amount} experience", aisling, amount);
+        Logger.LogTrace("{@Player} has lost {ExpAmount} experience", aisling, amount);
 
         aisling.Client.SendAttributes(StatUpdateType.ExpGold);
 

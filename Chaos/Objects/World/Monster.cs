@@ -125,7 +125,7 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>
             Script.OnGoldDroppedOn(source, amount);
 
             Logger.LogDebug(
-                "{Player} dropped {Amount} gold on {Monster}",
+                "{@Player} dropped {Amount} gold on {@Monster}",
                 source,
                 amount,
                 this);
@@ -138,7 +138,7 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>
             foreach (var item in items)
             {
                 Logger.LogDebug(
-                    "{Player} dropped {Item} on monster {Monster}",
+                    "{@Player} dropped {@Item} on monster {@Monster}",
                     source,
                     item,
                     this);

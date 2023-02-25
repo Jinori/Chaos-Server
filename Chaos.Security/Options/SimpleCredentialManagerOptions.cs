@@ -4,9 +4,9 @@ using Chaos.Common.Abstractions;
 namespace Chaos.Security.Options;
 
 /// <summary>
-///     Configuration options for <see cref="Chaos.Security.ActiveDirectoryCredentialManager" />
+///     Configuration options for <see cref="SimpleCredentialManager" />
 /// </summary>
-public sealed record ActiveDirectoryCredentialManagerOptions : IDirectoryBound
+public sealed record SimpleCredentialManagerOptions : IDirectoryBound
 {
     /// <summary>
     ///     The relative directory where the credentials are stored

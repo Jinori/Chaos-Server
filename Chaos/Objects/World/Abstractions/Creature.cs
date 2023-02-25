@@ -288,7 +288,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
                 {
                     Logger.LogCritical(
                         e,
-                        "Exception thrown while {Creature} attempted to traverse from map {FromMap} to {ToMap}",
+                        "Exception thrown while {@Creature} attempted to traverse from {@FromMapInstance} to {@ToMapInstance}",
                         this,
                         currentMap,
                         destinationMap);
@@ -313,7 +313,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
 
         foreach (var groundItem in groundItems)
         {
-            Logger.LogDebug("{Creature} dropped {Item}", this, groundItem);
+            Logger.LogDebug("{@Creature} dropped {@Item}", this, groundItem);
             groundItem.Item.Script.OnDropped(this, MapInstance);
 
             foreach (var reactor in reactors)
@@ -338,6 +338,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
         money = new Money(amount, MapInstance, point);
 
         MapInstance.AddObject(money, point);
+        Logger.LogDebug("{@Creature} dropped {@Money}", this, money);
 
         foreach (var reactor in MapInstance.GetDistinctReactorsAtPoint(point).ToList())
             reactor.OnGoldDroppedOn(this, money);

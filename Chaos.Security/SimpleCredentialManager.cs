@@ -15,15 +15,15 @@ namespace Chaos.Security;
 /// <summary>
 ///     A <see cref="Chaos.Security.Abstractions.ICredentialManager" /> that uses a folder to represent a user
 /// </summary>
-public sealed class ActiveDirectoryCredentialManager : ICredentialManager
+public sealed class SimpleCredentialManager : ICredentialManager
 {
-    private readonly ILogger<ActiveDirectoryCredentialManager> Logger;
-    private readonly ActiveDirectoryCredentialManagerOptions Options;
+    private readonly ILogger<SimpleCredentialManager> Logger;
+    private readonly SimpleCredentialManagerOptions Options;
     private readonly AutoReleasingSemaphoreSlim Sync;
 
-    public ActiveDirectoryCredentialManager(
-        IOptions<ActiveDirectoryCredentialManagerOptions> options,
-        ILogger<ActiveDirectoryCredentialManager> logger
+    public SimpleCredentialManager(
+        IOptions<SimpleCredentialManagerOptions> options,
+        ILogger<SimpleCredentialManager> logger
     )
     {
         Options = options.Value;

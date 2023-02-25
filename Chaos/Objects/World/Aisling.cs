@@ -92,7 +92,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>
 
             if ((Sprite == 0) && WorldOptions.Instance.ProhibitSpeedWalk && !WalkCounter.TryIncrement())
             {
-                Logger.LogWarning("{Player} is probably speed walking", this);
+                Logger.LogWarning("{@Client} is probably speed walking", Client);
 
                 return false;
             }
@@ -420,7 +420,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>
 
         if (TryGiveItem(item, destinationSlot))
         {
-            Logger.LogDebug("{Player} picked up {Item}", this, groundItem);
+            Logger.LogDebug("{@Player} picked up {@Item}", this, groundItem);
             MapInstance.RemoveObject(groundItem);
             item.Script.OnPickup(this);
 
@@ -440,7 +440,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>
 
         if (TryGiveGold(money.Amount))
         {
-            Logger.LogDebug("{Player} picked up {Gold}", this, money);
+            Logger.LogDebug("{@Player} picked up {@Money}", this, money);
 
             MapInstance.RemoveObject(money);
         }
@@ -541,6 +541,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>
 
         money = new Money(amount, MapInstance, point);
         MapInstance.AddObject(money, point);
+        Logger.LogDebug("{@Player} dropped {@Money}", this, money);
 
         foreach (var reactor in MapInstance.GetDistinctReactorsAtPoint(money).ToList())
             reactor.OnGoldDroppedOn(this, money);

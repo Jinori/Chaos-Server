@@ -103,11 +103,6 @@ public sealed class Item : PanelObjectBase, IScripted<IItemScript>
     public string ToAmountString(int amount) => $@"{amount} {DisplayName}{(amount > 1 ? "s" : string.Empty)}";
 
     /// <inheritdoc />
-    public override string ToString() => $"{{ UId: {UniqueId}, Name: \"{DisplayName}\", Count: {Count} }}";
-
-    public string ToString(int amount) => $"{{ UId: {UniqueId}, Name: \"{DisplayName}\", Count: {amount} }}";
-
-    /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         base.Update(delta);
