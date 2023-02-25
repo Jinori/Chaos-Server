@@ -34,7 +34,8 @@ public sealed class PramhEffect : ContinuousAnimationEffectBase
         if (!Subject.Status.HasFlag(Status.Pramh))
             Subject.Status = Status.Pramh;
     }
-
+    
+    
     /// <inheritdoc />
     protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
 

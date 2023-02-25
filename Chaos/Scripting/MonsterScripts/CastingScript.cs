@@ -13,6 +13,7 @@ public class CastingScript : MonsterScriptBase
         : base(subject) { }
 
     /// <inheritdoc />
+    
     public override void Update(TimeSpan delta)
     {
         base.Update(delta);

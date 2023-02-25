@@ -52,6 +52,18 @@ public sealed class DefaultAislingScript : AislingScriptBase
     /// <inheritdoc />
     public override bool CanUseSpell(Spell spell) => RestrictionComponent.CanUseSpell(Subject, spell);
 
+    public override void OnAttacked(Creature source, int damage)
+    {
+        if (Subject.Status.HasFlag(Status.Pramh))
+        {
+            Subject.Status &= ~Status.Pramh;
+            Subject.Effects.Dispel("pramh");
+            Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You awake from your slumber.");
+        }
+
+        base.OnAttacked(source, damage);
+    }
+
     /// <inheritdoc />
     public override void OnDeath(Creature source)
     {
