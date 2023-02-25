@@ -224,6 +224,84 @@ public class KillCounterScript : MonsterScriptBase
 
                         break;
                     }
+                    case "horse1-1":
+                    {
+                        var hasBunny = aisling.Enums.TryGetValue(out MythicBunny bunny);
+
+                        if (!hasBunny || (bunny != MythicBunny.Lower))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("BunnyLower", 1);
+                        aisling.Counters.TryGetValue("BunnyLower", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "horse1-2":
+                    {
+                        var hasBunny = aisling.Enums.TryGetValue(out MythicBunny bunny);
+
+                        if (!hasBunny || (bunny != MythicBunny.Higher))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("BunnyHigher", 1);
+                        aisling.Counters.TryGetValue("BunnyHigher", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "horse1_boss":
+                    {
+                        var hasBunny = aisling.Enums.TryGetValue(out MythicBunny bunny);
+
+                        if (!hasBunny || (bunny != MythicBunny.BossStarted))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("AppleJack", 1);
+                        aisling.Counters.TryGetValue("AppleJack", out var value);
+                        aisling.SendOrangeBarMessage($"You defeated Apple Jack {value} times!");
+
+                        break;
+                    }
+                    case "bunny1-1":
+                    {
+                        var hasHorse = aisling.Enums.TryGetValue(out MythicHorse horse);
+
+                        if (!hasHorse || (horse != MythicHorse.Lower))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("HorseLower", 1);
+                        aisling.Counters.TryGetValue("HorseLower", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "bunny1-2":
+                    {
+                        var hasHorse = aisling.Enums.TryGetValue(out MythicHorse horse);
+
+                        if (!hasHorse || (horse != MythicHorse.Higher))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("HorseHigher", 1);
+                        aisling.Counters.TryGetValue("HorseHigher", out var value);
+                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "bunny1_boss":
+                    {
+                        var hasHorse = aisling.Enums.TryGetValue(out MythicHorse horse);
+
+                        if (!hasHorse || (horse != MythicHorse.BossStarted))
+                            return;
+
+                        aisling.Counters.AddOrIncrement("MrHopps", 1);
+                        aisling.Counters.TryGetValue("MrHopps", out var value);
+                        aisling.SendOrangeBarMessage($"You defeated Mr.Hopps ({value} times!");
+
+                        break;
+                    }
                 }
     }
 }

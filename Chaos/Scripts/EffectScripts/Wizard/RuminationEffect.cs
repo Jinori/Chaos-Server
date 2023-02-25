@@ -89,7 +89,7 @@ public class RuminationEffect : AnimatingEffectBase
         }
 
         //If they drop under 2% health. Stop the effect.
-        if (Subject.StatSheet.HealthPercent < 5)
+        if (Subject.StatSheet.HealthPercent < 10)
         {
             Subject.Effects.Terminate(Name);
 
@@ -100,9 +100,10 @@ public class RuminationEffect : AnimatingEffectBase
             return;
         }
 
+        var healthCost = Subject.StatSheet.EffectiveMaximumHp * .04;
         //Remove and Add HP
         Subject.StatSheet.SubtractHealthPct(4);
-        Subject.StatSheet.AddManaPct(3);
+        Subject.StatSheet.AddMp(healthCost * .66);
 
         //Show Vitality
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);

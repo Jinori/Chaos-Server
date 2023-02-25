@@ -170,3 +170,161 @@ public enum CryptSlayerStage
     WhiteBat = 13,
     Completed = 14
 }
+
+public enum MythicQuestMain
+{
+    None= 0,
+    MythicStarted = 1,
+    CompletedAll = 2,
+    CompletedMythic = 3
+}
+
+public enum MythicBunny
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicHorse
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicGargoyle
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicZombie
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicFrog
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicWolf
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicMantis
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicBee
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicKobold
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicGrimlock
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
