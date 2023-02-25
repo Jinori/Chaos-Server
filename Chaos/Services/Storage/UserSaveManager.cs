@@ -3,7 +3,7 @@ using System.Text.Json;
 using Chaos.Containers;
 using Chaos.Objects.World;
 using Chaos.Schemas.Aisling;
-using Chaos.Scripts.EffectScripts.Abstractions;
+using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Services.Storage.Options;
 using Chaos.Storage.Abstractions;
 using Chaos.TypeMapper.Abstractions;

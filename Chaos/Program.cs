@@ -1,7 +1,7 @@
 using Chaos;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
-using Chaos.Scripts.FunctionalScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Services;
 using Chaos.Services.Abstractions;
 using Chaos.Services.Servers.Options;

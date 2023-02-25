@@ -8,7 +8,7 @@ using Chaos.Geometry.Abstractions;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.Abstractions;
-using Chaos.Scripts.MonsterScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Templates;
 using Chaos.Time;
 using Chaos.Time.Abstractions;

@@ -10,7 +10,7 @@ using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Pathfinding.Abstractions;
 using Chaos.Scripting.Abstractions;
-using Chaos.Scripts.MapScripts.Abstractions;
+using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Services.Servers.Options;
 using Chaos.Services.Storage.Abstractions;
 using Chaos.Storage.Abstractions;
