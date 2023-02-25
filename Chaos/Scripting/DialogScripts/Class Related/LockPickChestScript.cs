@@ -1,7 +1,9 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Objects.Menu;
+using Chaos.Objects.Panel;
 using Chaos.Objects.World;
+using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Utilities;
 
@@ -51,7 +53,22 @@ public class LockPickChestScript : DialogScriptBase
             source.SendServerMessage(ServerMessageType.OrangeBar1, $"You've unlocked the chest and received {prizeGold} gold!");
             source.TryGiveGold(prizeGold);
             source.Inventory.RemoveQuantity("Lockpicks", 1);
-        } else
+
+            switch (Subject.SourceEntity)
+            {
+                case MapEntity mapEntity:
+                {
+                    mapEntity.MapInstance.RemoveObject(mapEntity);
+                    break;
+                }
+                case Item itemEntity:
+                {
+                    source.Inventory.RemoveQuantity(itemEntity.Slot, 1);
+                    break;
+                }
+            }
+        }
+        else
         {
             var breakPick = Randomizer.RollChance(50);
 

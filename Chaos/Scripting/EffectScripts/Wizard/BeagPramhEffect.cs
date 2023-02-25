@@ -7,7 +7,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Wizard;
 
-public sealed class BeagPramhEffect : AnimatingEffectBase
+public sealed class BeagPramhEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     public override byte Icon => 90;

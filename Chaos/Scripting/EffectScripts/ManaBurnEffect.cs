@@ -6,7 +6,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts;
 
-public class ManaBurnEffect : AnimatingEffectBase
+public class ManaBurnEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     public override byte Icon { get; } = 187;

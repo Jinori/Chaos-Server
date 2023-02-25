@@ -18,9 +18,7 @@ public class LockPickChestScript : MonsterScriptBase
 
     public override void OnClicked(Aisling source)
     {
-        var npcpoint = new Point(source.X, source.Y);
-        var merchant = MerchantFactory.Create("lockPickChest", source.MapInstance, npcpoint);
-        var dialogNew = DialogFactory.Create("generic_lockPickChest", merchant);
+        var dialogNew = DialogFactory.Create("generic_lockPickChest", Subject);
         dialogNew.Display(source);
     }
 }

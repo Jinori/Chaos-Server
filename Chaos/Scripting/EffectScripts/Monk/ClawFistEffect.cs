@@ -9,7 +9,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Monk;
 
-public class ClawFistEffect : AnimatingEffectBase
+public class ClawFistEffect : ContinuousAnimationEffectBase
 {
     public override byte Icon => 101;
     public override string Name => "clawfist";

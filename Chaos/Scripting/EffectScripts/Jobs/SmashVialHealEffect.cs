@@ -6,7 +6,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Jobs;
 
-public sealed class SmashVialHealEffect : AnimatingEffectBase
+public sealed class SmashVialHealEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     public override byte Icon => 145;

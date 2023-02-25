@@ -7,7 +7,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
-public sealed class SuainEffect : AnimatingEffectBase
+public sealed class SuainEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     public override byte Icon => 50;

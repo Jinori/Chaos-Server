@@ -14,7 +14,7 @@ public class RandomSpellScript : MonsterScriptBase
         : base(subject)
     {
         SpellFactory = spellFactory;
-        var spellsToRandomize = new List<string>() { "poison", "zap", "battleCry", "rage", "beagcradh", "cradh", "preventaffliction", "beagpramh" };
+        var spellsToRandomize = new List<string>() { "poison", "zap", "battleCry", "rage", "beagcradh", "cradh", "preventaffliction" };
 
         var spell = SpellFactory.CreateFaux(spellsToRandomize.PickRandom());
         Spells.Add(spell);

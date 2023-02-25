@@ -5,11 +5,10 @@ using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.SkillScripts.Abstractions;
 
-<<<<<<<< HEAD:Chaos/Scripting/SkillScripts/Monk/AmbushScript.cs
+
 namespace Chaos.Scripting.SkillScripts.Monk;
-========
-namespace Chaos.Scripting.SkillScripts;
->>>>>>>> upstream/master:Chaos/Scripting/SkillScripts/AmbushScript.cs
+
+
 
 public class AmbushScript : SkillScriptBase
 {

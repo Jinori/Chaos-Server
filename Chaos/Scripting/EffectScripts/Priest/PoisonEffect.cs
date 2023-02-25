@@ -4,13 +4,12 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-<<<<<<<< HEAD:Chaos/Scripting/EffectScripts/Priest/PoisonEffect.cs
-namespace Chaos.Scripting.EffectScripts.Priest;
-========
-namespace Chaos.Scripting.EffectScripts;
->>>>>>>> upstream/master:Chaos/Scripting/EffectScripts/PoisonIntervalEffect.cs
 
-public class PoisonIntervalEffect : ContinuousAnimationEffectBase
+namespace Chaos.Scripting.EffectScripts.Priest;
+
+
+
+public class PoisonEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     public override byte Icon => 35;

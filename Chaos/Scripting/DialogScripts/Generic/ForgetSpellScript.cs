@@ -5,11 +5,10 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
 
-<<<<<<<< HEAD:Chaos/Scripting/DialogScripts/Generic/ForgetSpellScript.cs
+
 namespace Chaos.Scripting.DialogScripts.Generic;
-========
-namespace Chaos.Scripting.DialogScripts;
->>>>>>>> upstream/master:Chaos/Scripting/DialogScripts/ForgetSpellScript.cs
+
+
 
 public class ForgetSpellScript : DialogScriptBase
 {

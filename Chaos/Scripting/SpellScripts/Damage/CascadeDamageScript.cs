@@ -9,11 +9,10 @@ using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.SpellScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-<<<<<<<< HEAD:Chaos/Scripting/SpellScripts/Damage/CascadeDamageScript.cs
+
 namespace Chaos.Scripting.SpellScripts.Damage;
-========
-namespace Chaos.Scripting.SpellScripts;
->>>>>>>> upstream/master:Chaos/Scripting/SpellScripts/CascadeDamageScript.cs
+
+
 
 public class CascadeDamageScript : ConfigurableSpellScriptBase, CascadeAbilityComponent.ICascadeAbilityComponentOptions
 {

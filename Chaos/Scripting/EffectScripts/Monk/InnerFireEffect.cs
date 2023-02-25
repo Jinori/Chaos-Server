@@ -9,7 +9,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Monk;
 
-public class InnerFireEffect : AnimatingEffectBase
+public class InnerFireEffect : ContinuousAnimationEffectBase
 {
     public override byte Icon => 126;
     public override string Name => "innerFire";

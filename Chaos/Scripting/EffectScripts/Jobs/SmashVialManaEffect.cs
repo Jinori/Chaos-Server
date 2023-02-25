@@ -6,7 +6,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Jobs;
 
-public sealed class SmashVialManaEffect : AnimatingEffectBase
+public sealed class SmashVialManaEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     public override byte Icon => 144;

@@ -1,18 +1,17 @@
 using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
-<<<<<<<< HEAD:Chaos/Scripting/SpellScripts/Buffs/ApplyEffectScript.cs
+
 using Chaos.Scripting.Components;
 using Chaos.Scripting.SpellScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.SpellScripts.Buffs;
-========
+
 using Chaos.Scripting.SpellScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.SpellScripts;
->>>>>>>> upstream/master:Chaos/Scripting/SpellScripts/ApplyEffectScript.cs
+
 
 [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
 public class ApplyEffectScript : BasicSpellScriptBase, ManaCostComponent.IManaCostComponentOptions

@@ -9,7 +9,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Rogue;
 
-public sealed class BlindEffect : AnimatingEffectBase
+public sealed class BlindEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     public override byte Icon => 3;

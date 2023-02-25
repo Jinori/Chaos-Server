@@ -7,7 +7,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Monk;
 
-public sealed class WolfFangFistEffect : AnimatingEffectBase
+public sealed class WolfFangFistEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     public override byte Icon => 50;

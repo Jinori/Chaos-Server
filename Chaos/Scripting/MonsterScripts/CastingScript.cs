@@ -29,7 +29,6 @@ public class CastingScript : MonsterScriptBase
                 Subject.WanderTimer.Reset();
                 Subject.MoveTimer.Reset();
                 Subject.SkillTimer.Reset();
-
                 break;
             }
         }

@@ -7,11 +7,10 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
 
-<<<<<<<< HEAD:Chaos/Scripting/DialogScripts/Generic/WithdrawItemScript.cs
+
 namespace Chaos.Scripting.DialogScripts.Generic;
-========
-namespace Chaos.Scripting.DialogScripts;
->>>>>>>> upstream/master:Chaos/Scripting/DialogScripts/WithdrawItemScript.cs
+
+
 
 public class WithdrawItemScript : DialogScriptBase
 {

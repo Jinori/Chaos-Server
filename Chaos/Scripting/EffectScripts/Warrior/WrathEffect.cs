@@ -12,7 +12,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Warrior;
 
-public class WrathEffect : AnimatingEffectBase
+public class WrathEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     public override byte Icon { get; } = 176;

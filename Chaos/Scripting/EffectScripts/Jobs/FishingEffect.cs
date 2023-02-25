@@ -9,7 +9,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Jobs;
 
-public class FishingEffect : AnimatingEffectBase
+public class FishingEffect : ContinuousAnimationEffectBase
 {
     private readonly IItemFactory ItemFactory;
     private readonly List<string> Sayings = new()

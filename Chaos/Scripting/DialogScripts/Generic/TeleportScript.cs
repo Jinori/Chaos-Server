@@ -6,11 +6,10 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Utilities;
 
-<<<<<<<< HEAD:Chaos/Scripting/DialogScripts/Generic/TeleportScript.cs
+
 namespace Chaos.Scripting.DialogScripts.Generic;
-========
-namespace Chaos.Scripting.DialogScripts;
->>>>>>>> upstream/master:Chaos/Scripting/DialogScripts/TeleportScript.cs
+
+
 
 public class TeleportScript : DialogScriptBase
 {

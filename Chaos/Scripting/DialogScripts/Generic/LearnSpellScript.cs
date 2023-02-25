@@ -10,11 +10,10 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
 
-<<<<<<<< HEAD:Chaos/Scripting/DialogScripts/Generic/LearnSpellScript.cs
+
 namespace Chaos.Scripting.DialogScripts.Generic;
-========
-namespace Chaos.Scripting.DialogScripts;
->>>>>>>> upstream/master:Chaos/Scripting/DialogScripts/LearnSpellScript.cs
+
+
 
 public class LearnSpellScript : ConfigurableDialogScriptBase
 {

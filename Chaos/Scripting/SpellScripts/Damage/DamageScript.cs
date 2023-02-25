@@ -8,11 +8,10 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.SpellScripts.Abstractions;
 
-<<<<<<<< HEAD:Chaos/Scripting/SpellScripts/Damage/DamageScript.cs
+
 namespace Chaos.Scripting.SpellScripts.Damage;
-========
-namespace Chaos.Scripting.SpellScripts;
->>>>>>>> upstream/master:Chaos/Scripting/SpellScripts/DamageScript.cs
+
+
 
 public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageComponentOptions, ManaCostComponent.IManaCostComponentOptions
 {

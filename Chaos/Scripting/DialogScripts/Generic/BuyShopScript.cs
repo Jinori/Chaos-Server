@@ -9,11 +9,8 @@ using Chaos.TypeMapper.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
 
-<<<<<<<< HEAD:Chaos/Scripting/DialogScripts/Generic/BuyShopScript.cs
+
 namespace Chaos.Scripting.DialogScripts.Generic;
-========
-namespace Chaos.Scripting.DialogScripts;
->>>>>>>> upstream/master:Chaos/Scripting/DialogScripts/BuyShopScript.cs
 
 public class BuyShopScript : ConfigurableDialogScriptBase
 {

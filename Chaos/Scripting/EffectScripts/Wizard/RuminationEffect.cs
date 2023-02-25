@@ -10,7 +10,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Wizard;
 
-public class RuminationEffect : AnimatingEffectBase
+public class RuminationEffect : ContinuousAnimationEffectBase
 {
     protected Point Point { get; set; }
     public override byte Icon => 91;

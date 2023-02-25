@@ -4,11 +4,10 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
 
-<<<<<<<< HEAD:Chaos/Scripting/DialogScripts/Generic/WithdrawGold.cs
+
 namespace Chaos.Scripting.DialogScripts.Generic;
-========
-namespace Chaos.Scripting.DialogScripts;
->>>>>>>> upstream/master:Chaos/Scripting/DialogScripts/WithdrawGold.cs
+
+
 
 public class WithdrawGold : DialogScriptBase
 {
