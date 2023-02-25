@@ -4,13 +4,13 @@ using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
-using Chaos.Scripts.EffectScripts.Abstractions;
+using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripts.EffectScripts.Wizard;
+namespace Chaos.Scripting.EffectScripts.Wizard;
 
-public class RuminationEffect : AnimatingEffectBase
+public class RuminationEffect : ContinuousAnimationEffectBase
 {
     protected Point Point { get; set; }
     public override byte Icon => 91;

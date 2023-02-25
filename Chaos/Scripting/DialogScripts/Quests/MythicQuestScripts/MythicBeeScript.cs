@@ -5,13 +5,13 @@ using Chaos.Definitions;
 using Chaos.Formulae;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
-using Chaos.Scripts.DialogScripts.Abstractions;
-using Chaos.Scripts.FunctionalScripts.Abstractions;
-using Chaos.Scripts.FunctionalScripts.ExperienceDistribution;
+using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripts.DialogScripts.Quests.MythicQuestScripts;
+namespace Chaos.Scripting.DialogScripts.Quests.MythicQuestScripts;
 
 public class MythicBeeScript : DialogScriptBase
 {
