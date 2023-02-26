@@ -6,7 +6,7 @@ using Chaos.Extensions.Common;
 using Chaos.Geometry.Abstractions;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.Abstractions;
-using Chaos.Scripts.MerchantScripts.Abstractions;
+using Chaos.Scripting.MerchantScripts.Abstractions;
 using Chaos.Templates;
 using Microsoft.Extensions.Logging;
 

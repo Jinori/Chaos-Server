@@ -1,11 +1,6 @@
 namespace Chaos.Common.Definitions;
 
 #region Custom Stuff
-public enum MoveType
-{
-    Walk,
-    Warp
-}
 
 [Flags]
 public enum WizardElement : byte
@@ -115,30 +110,6 @@ public enum MenuOrDialogType : byte
     CreatureMenu,
     Protected,
     CloseDialog
-}
-
-public enum ReactorActivationType
-{
-    Walk = 0,
-    DropMoney = 1,
-    DropItem = 2
-}
-
-public enum TargetsType : byte
-{
-    //skills(usually)
-    None = 0,
-    Self = 1,
-    Front = 2,
-    Surround = 3,
-    Cleave = 4,
-    StraightAhead = 5,
-
-    //spells(usually)
-    Cluster5 = 252,
-    Cluster13 = 253,
-    Cluster21 = 254,
-    Screen = 255
 }
 #endregion
 
@@ -585,7 +556,7 @@ public enum Element : byte
     Darkness = 6,
     Wood = 7,
     Metal = 8,
-    Nature = 9
+    Undead = 9
 }
 
 /// <summary>

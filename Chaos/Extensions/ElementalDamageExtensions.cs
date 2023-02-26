@@ -33,7 +33,7 @@ namespace Chaos.Extensions
                     return damage += Convert.ToInt32(damage * 0.83);
                 if (defense is Element.Metal)
                     return damage += Convert.ToInt32(damage * 0.83);
-                if (defense is Element.Nature)
+                if (defense is Element.Undead)
                     return damage += Convert.ToInt32(damage * 1.88);
             }
             if (offense is Element.Wind)
@@ -56,7 +56,7 @@ namespace Chaos.Extensions
                     return damage += Convert.ToInt32(damage * 0.83);
                 if (defense is Element.Metal)
                     return damage += Convert.ToInt32(damage * 0.50);
-                if (defense is Element.Nature)
+                if (defense is Element.Undead)
                     return damage += Convert.ToInt32(damage * 0.83);
             }
             if (offense is Element.Earth)
@@ -79,7 +79,7 @@ namespace Chaos.Extensions
                     return damage += Convert.ToInt32(damage * 0.83);
                 if (defense is Element.Metal)
                     return damage += Convert.ToInt32(damage * 0.83);
-                if (defense is Element.Nature)
+                if (defense is Element.Undead)
                     return damage += Convert.ToInt32(damage * 0.50);
             }
             if (offense is Element.Water)
@@ -102,7 +102,7 @@ namespace Chaos.Extensions
                     return damage += Convert.ToInt32(damage * 0.83);
                 if (defense is Element.Metal)
                     return damage += Convert.ToInt32(damage * 1.88);
-                if (defense is Element.Nature)
+                if (defense is Element.Undead)
                     return damage += Convert.ToInt32(damage * 0.83);
             }
             if (offense is Element.Holy)
@@ -125,7 +125,7 @@ namespace Chaos.Extensions
                     return damage += Convert.ToInt32(damage * 0.83);
                 if (defense is Element.Metal)
                     return damage += Convert.ToInt32(damage * 0.76);
-                if (defense is Element.Nature)
+                if (defense is Element.Undead)
                     return damage += Convert.ToInt32(damage * 0.76);
             }
             if (offense is Element.Darkness)
@@ -148,7 +148,7 @@ namespace Chaos.Extensions
                     return damage += Convert.ToInt32(damage * 0.83);
                 if (defense is Element.Metal)
                     return damage += Convert.ToInt32(damage * 1.25);
-                if (defense is Element.Nature)
+                if (defense is Element.Undead)
                     return damage += Convert.ToInt32(damage * 1.25);
             }
             if (offense is Element.Metal)
@@ -171,10 +171,10 @@ namespace Chaos.Extensions
                     return damage += Convert.ToInt32(damage * 0.83);
                 if (defense is Element.Metal)
                     return damage += Convert.ToInt32(damage * 0.58);
-                if (defense is Element.Nature)
+                if (defense is Element.Undead)
                     return damage += Convert.ToInt32(damage * 1.25);
             }
-            if (offense is Element.Nature)
+            if (offense is Element.Undead)
             {
                 if (defense is Element.None)
                     return damage += Convert.ToInt32(damage * 2.32);
@@ -194,7 +194,7 @@ namespace Chaos.Extensions
                     return damage += Convert.ToInt32(damage * 0.83);
                 if (defense is Element.Metal)
                     return damage += Convert.ToInt32(damage * 1.25);
-                if (defense is Element.Nature)
+                if (defense is Element.Undead)
                     return damage += Convert.ToInt32(damage * 0.58);
             }
             return damage;

@@ -114,6 +114,12 @@ public record StatSheet : Attributes
         get => _offenseElement;
         init => _offenseElement = value;
     }
+    
+    public Element OffensiveCastElement
+    {
+        get => _offenseCastElement;
+        init => _offenseCastElement = value;
+    }
 
     public int SkillDamagePctMod
     {
@@ -273,6 +279,8 @@ public record StatSheet : Attributes
     public void SetMp(int amount) => Interlocked.Exchange(ref _currentMp, amount);
 
     public void SetOffenseElement(Element element) => _offenseElement = element;
+    
+    public void SetOffensiveCastElement(Element element) => _offenseCastElement = element;
 
     public void SubtractBonus(Attributes other)
     {
@@ -379,6 +387,7 @@ public record StatSheet : Attributes
     protected int _level;
     protected Element _defenseElement;
     protected Element _offenseElement;
+    protected Element _offenseCastElement;
     #endregion
 
     #region Mods
