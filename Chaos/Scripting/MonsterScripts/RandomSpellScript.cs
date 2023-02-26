@@ -17,7 +17,7 @@ public class RandomSpellScript : MonsterScriptBase
     {
         "arcaneblast", "arcanebolt", "zap", "ardioc", "beagioc", "ioc", "morioc", "nuadhaich", "salvation",
         "ardcradh", "morcradh", "cradh", "beagcradh", "poison", "suain", "beagpramh", "pramh",
-        "armachd", "innerfire", "mist", "battlecry", "rage", "warcry"
+        "armachd", "innerfire", "mist", "battlecry", "rage", "warcry", "athar", "creag"
     };
     public RandomSpellScript(Monster subject, ISpellFactory spellFactory)
         : base(subject)

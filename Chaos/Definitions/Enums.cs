@@ -102,6 +102,15 @@ public enum TutorialQuestStage
     CompletedTutorial = 8
 }
 
+public enum ManorNecklaceStage
+{
+    None = 0,
+    AcceptedQuest = 1,
+    ObtainedNecklace = 2,
+    ReturnedNecklace = 3,
+    KeptNecklace = 4,
+}
+
 public enum HolyResearchStage
 {
     None = 0,
