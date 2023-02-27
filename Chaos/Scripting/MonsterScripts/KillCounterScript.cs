@@ -302,6 +302,58 @@ public class KillCounterScript : MonsterScriptBase
 
                         break;
                     }
+                    case "wolf1-1":
+                        {
+                            var hasFrog = aisling.Enums.TryGetValue(out MythicFrog frog);
+
+                            if (!hasFrog || (frog != MythicFrog.Lower))
+                                return;
+
+                            aisling.Counters.AddOrIncrement("MythicWolf", 1);
+                            aisling.Counters.TryGetValue("MythicWolf", out var value);
+                            aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                            break;
+                        }
+                    case "wolf1-2":
+                        {
+                            var hasFrog = aisling.Enums.TryGetValue(out MythicFrog frog);
+
+                            if (!hasFrog || (frog != MythicFrog.Higher))
+                                return;
+
+                            aisling.Counters.AddOrIncrement("WhiteWolf", 1);
+                            aisling.Counters.TryGetValue("WhiteWolf", out var value);
+                            aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                            break;
+                        }
+                    case "wolf1-3":
+                        {
+                            var hasFrog = aisling.Enums.TryGetValue(out MythicFrog frog);
+
+                            if (!hasFrog || (frog != MythicFrog.Higher))
+                                return;
+
+                            aisling.Counters.AddOrIncrement("BeardedWolf", 1);
+                            aisling.Counters.TryGetValue("BeardedWolf", out var value);
+                            aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                            break;
+                        }
+                    case "wolf1_boss":
+                        {
+                            var hasFrog = aisling.Enums.TryGetValue(out MythicFrog frog);
+
+                            if (!hasFrog || (frog != MythicFrog.BossStarted))
+                                return;
+
+                            aisling.Counters.AddOrIncrement("Nymeria", 1);
+                            aisling.Counters.TryGetValue("Nymeria", out var value);
+                            aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+
+                            break;
+                        }
                 }
     }
 }

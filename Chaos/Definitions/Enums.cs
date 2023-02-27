@@ -66,7 +66,7 @@ public enum Professions
 
 public enum Religion
 {
-    None = 0, 
+    None = 0,
     Cail = 1,
     Ceannlaidir = 2,
     Deoch = 3,
@@ -100,6 +100,15 @@ public enum TutorialQuestStage
     CompletedFloppy = 6,
     GiantFloppy = 7,
     CompletedTutorial = 8
+}
+
+public enum ManorNecklaceStage
+{
+    None = 0,
+    AcceptedQuest = 1,
+    ObtainedNecklace = 2,
+    ReturnedNecklace = 3,
+    KeptNecklace = 4,
 }
 
 public enum HolyResearchStage
@@ -136,7 +145,7 @@ public enum ALittleBitofThatStage
 public enum RionaRatQuestStage
 {
     None = 0,
-    StartedRatQuest = 1, 
+    StartedRatQuest = 1,
     CompletedRatQuest = 2
 }
 public enum PFQuestStage
@@ -171,21 +180,160 @@ public enum CryptSlayerStage
     Completed = 14
 }
 
-public enum CryptSlayerNumber
+public enum MythicQuestMain
 {
     None = 0,
-    Five = 1,
-    Ten = 2,
-    Fifteen = 3,
-    Twenty = 4
+    MythicStarted = 1,
+    CompletedAll = 2,
+    CompletedMythic = 3
 }
-public enum SickChildStage
+
+public enum MythicBunny
 {
     None = 0,
-    WhiteRose = 1,
-    WhiteRose2 = 2,
-    BlackRose = 3,
-    GoldRose = 4,
-    SickChildComplete = 5,
-    SickChildKilled = 6
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicHorse
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicGargoyle
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicZombie
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicFrog
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicWolf
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicMantis
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicBee
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicKobold
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
+}
+
+public enum MythicGrimlock
+{
+    None = 0,
+    Lower = 1,
+    LowerComplete = 2,
+    Higher = 3,
+    HigherComplete = 4,
+    Item = 5,
+    ItemComplete = 6,
+    Allied = 7,
+    EnemyAllied = 8,
+    BossStarted = 9,
+    BossDefeated = 10,
 }
