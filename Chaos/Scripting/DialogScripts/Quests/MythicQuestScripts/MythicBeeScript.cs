@@ -58,19 +58,19 @@ public class MythicBeeScript : DialogScriptBase
                 if (hasBee && (bee == MythicBee.EnemyAllied))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "You have allied yourself with our enemies and that fills me with rabbit-like fear. I cannot trust you to hop on our side again. Please leave our warren.";
+                    Subject.Text = "I cannot allow a member of the hive to be allied with our enemies. It puts our entire colony at risk, and I simply cannot tolerate it. So, I must ask you to leave our hive and never return.";
                     Subject.NextDialogKey = "Close";
                 }
                 
                 if ((main == MythicQuestMain.MythicStarted) && !hasBee)
 
                 {
-                    Subject.Text = "Ears to you, traveler. I am the leader of this warren of bunnies, and I carrot thank you enough for coming to our aid. The neigh-sayers may think we're just cute and fluffy, but we're tougher than we look.";
+                    Subject.Text = "Buzz buzz, welcome to my hive, little one. I am the Bee Queen, ruler of these lands. For centuries, my hive has been at war with the Mantis Colony, those vicious and ruthless hunters. They have no respect for the hard work and sacrifice of my bees. We've been stuck in this sticky situation for far too long. They constantly attack our hive and steal our precious honey, leaving us with little to sustain ourselves.";
                     
                     var option = new DialogOption
                     {
                         DialogKey = "bee_start1",
-                        OptionText = "What can I do to help?"
+                        OptionText = "Buzz me in Queen."
                     };
 
                     if (!Subject.HasOption(option))
@@ -81,50 +81,32 @@ public class MythicBeeScript : DialogScriptBase
 
                 if (bee == MythicBee.Lower)
                 {
-                    Subject.Text = "Well, well, well, look who's back! It's our favorite rabbit-loving adventurer! Have you come to tell us that you've completed the task we gave you?";
+                    Subject.Text = "Ah, welcome back, my industrious friend! I see that you have returned to our hive, buzzing with the excitement of your latest mission. Your efforts have certainly created quite a buzz around here! Did you get rid of those mantis?";
 
                     var option = new DialogOption
                     {
                         DialogKey = "bee_lower2",
-                        OptionText = "Yes Big Bee."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "bee_no1",
-                        OptionText = "I'm sorry, not yet."
+                        OptionText = "Yes Queen Bee."
                     };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
                 }
                 if (bee == MythicBee.LowerComplete)
                 {
-                    Subject.Text = "Warren Wanderer, we are in need of your assistance once again. It seems that another group of horses has invaded our territory and is causing chaos and destruction. We need your help to remove them from our fields, just as you did with the previous group.";
+                    Subject.Text = "Greetings, my dear buzz-worthy friend! We have identified a congregation of mantis that are a different species from before. They are blocking our access to some crucial flowers deeper in the forest. We simply cannot get to them without your help. ";
                 
                     var option = new DialogOption
                     {
                         DialogKey = "bee_start3",
-                        OptionText = "No problem Big Bee."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "bee_no",
-                        OptionText = "I'm done for now."
+                        OptionText = "What can I do?"
                     };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -132,25 +114,16 @@ public class MythicBeeScript : DialogScriptBase
 
                 if (bee == MythicBee.Higher)
                 {
-                    Subject.Text = "Hoppy Greetings, welcome back. Did you clear those hoofed oppressors?";
+                    Subject.Text = "Greetings, my busy bee friend! I'm abuzz with excitement to see you again. I hope your wings aren't too tired from all the flying. Is the area clear for my worker bees? Can we get that sweet nectar?";
 
                     var option = new DialogOption
                     {
                         DialogKey = "bee_higher2",
-                        OptionText = "Yeah, it is done."
+                        OptionText = "Yeah, it is clear."
                     };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "bee_no1",
-                        OptionText = "I'm working on it."
-                    };
-
+                    
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -158,30 +131,23 @@ public class MythicBeeScript : DialogScriptBase
 
                 if (bee == MythicBee.HigherComplete)
                 {
-                    Subject.Text = "Want to collect some horse hair for me?";
+                    Subject.Text = "I have a new task for you, and it's sure to be a real honey of a mission. We need you to buzz around and collect some dendron flowers for us. The Mantis Colony uses them to lure in my workers, you can probably take them from any of the mantis.";
                     
                     var option = new DialogOption
                     {
                         DialogKey = "bee_item",
-                        OptionText = "I can get that."
+                        OptionText = "I will get the flowers."
                     };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "bee_no",
-                        OptionText = "Not a chance, good luck."
-                    };
+                    
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
                 }
 
                 if (bee == MythicBee.Item)
                 {
-                    Subject.Text = "Hare-oic Aisling! Did you collect all the horse hair?";
+                    Subject.Text = "Bee-friend! You're back. Were you able to collect those dendron flowers?";
 
                     var option = new DialogOption
                     {
@@ -207,7 +173,7 @@ public class MythicBeeScript : DialogScriptBase
 
                 if (bee == MythicBee.ItemComplete)
                 {
-                    Subject.Text = "You have proven yourself to be a valuable ally to our warren, dear traveler. You have saved our crops, defended our burrows, and defeated many of our enemies. You have shown us that you share our values of kindness and bravery, and for that, we are very grateful. We would be honored if you would consider allying with us, and becoming a part of our family. \n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
+                    Subject.Text = "We bees are known for our loyalty and hard work. And we always stick together as a hive. So, the choice is yours: will you be a busy bee and join us in our fight, or will you be a drone and buzz off?\n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
 
                     var option = new DialogOption
                     {
@@ -234,24 +200,15 @@ public class MythicBeeScript : DialogScriptBase
                 if (bee == MythicBee.Allied)
                 {
                     Subject.Text =
-                        "Warren Wanderer, we have another urgent request for you. We have learned that the leader of the horse herd that has been causing us so much trouble is a powerful and dangerous horse named Apple Jack. We need you to go and defeat Apple Jack three times to ensure that our fields remain safe and secure.";
+                        "We have a crucial mission that only a bee like you can accomplish. The mantis colony is led by a fiery and cunning leader who has been causing all sorts of trouble for us and our hive.";
                     var option = new DialogOption
                     {
                         DialogKey = "bee_start5",
-                        OptionText = "Anything for you."
+                        OptionText = "Tell me more."
                     };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "bee_noboss",
-                        OptionText = "I won't do it."
-                    };
-
+                    
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
                 }
@@ -259,25 +216,16 @@ public class MythicBeeScript : DialogScriptBase
                 if (bee == MythicBee.BossStarted)
                 {
                     Subject.Text =
-                        "Did you find Apple Jack? Is it done?";
+                        "Bee-venturer! Are you okay? Did you find Fire Tree?";
 
                     var option = new DialogOption
                     {
                         DialogKey = "bee_boss2",
-                        OptionText = "I carried out what was asked of me."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "bee_noboss2",
-                        OptionText = "I can't do it."
+                        OptionText = "I found him, he's gone."
                     };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
                 }
@@ -293,8 +241,8 @@ public class MythicBeeScript : DialogScriptBase
 
             case "bee_lower":
             {
-                Subject.Text = "You have our paws-tounding gratitude. Don't let the horses get your goat, though - they're quick and nimble, and they can kick like mules. But we believe in you, and we know you'll do us proud. May the bee luck be with you!";
-                source.SendOrangeBarMessage("Kill 20 Purple Horses for Big Bee");
+                Subject.Text = "I wish you the best of luck on your mission. May your stinger be swift and true, and may you return to our hive victorious. Buzz on, my friend!";
+                source.SendOrangeBarMessage("Kill 15 Mythic Mantis for Queen Bee");
                 source.Enums.Set(MythicBee.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -304,9 +252,9 @@ public class MythicBeeScript : DialogScriptBase
             case "bee_lower2":
             {
 
-                if (!source.Counters.TryGetValue("BeeLower", out var beelower) || (beelower < 20))
+                if (!source.Counters.TryGetValue("MythicMantis", out var MythicMantis) || (MythicMantis < 15))
                 {
-                    Subject.Text = "You haven't killed enough lower horses.";
+                    Subject.Text = "You haven't killed enough Mythic Mantis.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -316,8 +264,8 @@ public class MythicBeeScript : DialogScriptBase
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("BeeLower", out _);
-                Subject.Text = "As you can imagine, horses stomping around all day can really cramp a bee's style. We've got carrots to grow and holes to dig, and we can't do any of that with a bunch of hooves stomping all over the place. Thank you.";
+                source.Counters.Remove("MythicMantis", out _);
+                Subject.Text = "Your bravery and dedication have not gone unnoticed. By eliminating some of the mythic mantis, we can now send our workers to gather pollen and nectar without fear of attack.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "bee_initial";
 
@@ -326,8 +274,8 @@ public class MythicBeeScript : DialogScriptBase
 
             case "bee_higher":
             {
-                Subject.Text = "Great, clear 20 horses in the further rooms and come back to me..";
-                source.SendOrangeBarMessage("Kill 20 Gray Horses for Big Bee");
+                Subject.Text = "Please eliminate 20 Brown Mantis. The nectar from the flowers that they are guarding is among the sweetest we have ever tasted.";
+                source.SendOrangeBarMessage("Kill 20 Brown Mantis for the Bee Queen.");
                 source.Enums.Set(MythicBee.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -337,48 +285,33 @@ public class MythicBeeScript : DialogScriptBase
             case "bee_higher2":
             {
 
-                if (!source.Counters.TryGetValue("BeeHigher", out var beehigher) || (beehigher < 20))
+                if (!source.Counters.TryGetValue("brownmantis", out var brownmantis) || (brownmantis < 20))
                 {
-                    Subject.Text = "You haven't killed enough higher horses.";
+                    Subject.Text = "You haven't killed enough Brown Mantis.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
                 }
 
-                Subject.Text = "You've really hopped to it and shown your bee-licious heroism once again. We're incredibly grateful for your help, and we can't thank you enough. Our warren's crops will be able to grow strong and healthy once again, thanks to you.";
+                Subject.Text =
+                    "Thank you from the bottom of my queenly heart. You truly are the pollen to our flower. Buzz on, my dear bee protector!";
+
                 Subject.NextDialogKey = "bee_initial";
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Enums.Set(MythicBee.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("BeeHigher", out _);
+                source.Counters.Remove("brownmantis", out _);
 
-                var option = new DialogOption
-                {
-                    DialogKey = "bee_item",
-                    OptionText = "I can get that."
-                };
-
-                var option1 = new DialogOption
-                {
-                    DialogKey = "bee_no",
-                    OptionText = "Not a chance, good luck."
-                };
-
-                if (!Subject.HasOption(option))
-                    Subject.Options.Add(option);
-
-                if (!Subject.HasOption(option1))
-                    Subject.Options.Add(option1);
+            }
 
                 break;
-            }
 
             case "bee_item":
             {
-                Subject.Text = "Don't let us down, Warren Wanderer. We're counting on you to hop to it and bring back the horse hair we need. And remember, the early bee gets the hair!";
-                source.SendOrangeBarMessage("Collect 25 horse hair for Big Bee");
+                Subject.Text = "Thank you mighty bee! Fight the mantis colony and collect 25 dendron flowers from them.";
+                source.SendOrangeBarMessage("Collect 25 Dendron Flower for the Queen Bee");
                 source.Enums.Set(MythicBee.Item);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -388,9 +321,9 @@ public class MythicBeeScript : DialogScriptBase
             case "bee_item2":
             {
 
-                if (!source.Inventory.RemoveQuantity("Horse Hair", 25))
+                if (!source.Inventory.RemoveQuantity("Dendron Flower", 25))
                 {
-                    Subject.Text = "Whatever it takes, we need you to gather more horse hair so that we can build warm and snug beds for all of us. We believe in you, Warren Wanderer. We know you can get the job done.";
+                    Subject.Text = "This isn't enough Dendron Flowers to feed the hive, we need more of its sweet nectar.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -399,7 +332,7 @@ public class MythicBeeScript : DialogScriptBase
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Enums.Set(MythicBee.ItemComplete);
-                Subject.Text = "You've really hopped to it and brought us enough horse hair to keep us warm and cozy through the long winter nights. This is bee-tastic news!";
+                Subject.Text = "With these flowers, we will be able to produce the most delicious and nutritious nectar that will keep our hive buzzing with joy and energy. You have truly outdone yourself this time, my dear ally.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "bee_initial";
 
@@ -412,7 +345,7 @@ public class MythicBeeScript : DialogScriptBase
                     && (hasMantis == mantis is MythicMantis.Allied or MythicMantis.BossStarted or MythicMantis.BossDefeated))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "Oh no! You already allied with the horses! Get away from us!";
+                    Subject.Text = "";
                     source.Enums.Set(MythicBee.EnemyAllied);
 
                     return;
@@ -420,8 +353,8 @@ public class MythicBeeScript : DialogScriptBase
 
                 source.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Enums.Set(MythicBee.Allied);
-                source.SendOrangeBarMessage("You are now allied with the bunnies!");
-                Subject.Text = $"Remember, {source.Name}, that no matter where your journeys take you, you will always have a home in our warren. The bee luck be with you always!";
+                source.SendOrangeBarMessage("You are now allied with the Bees!");
+                Subject.Text = $"So let me just say, we're pollen for you! It's bee-n a long time since we've had such a dedicated ally in our fight against the mantis colony. With you on our side, we can bee unstoppable!";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "bee_initial";
 
@@ -431,11 +364,11 @@ public class MythicBeeScript : DialogScriptBase
 
             case "bee_boss":
             {
-                Subject.Text = "Please be careful, Warren Wanderer. We rabbits are a fragile and gentle species, and we need your help to survive. We'll be eagerly waiting for your return, hoping to hear tales of your bee-licious bravery and triumph over Apple Jack. May the bee gods be with you!";
+                Subject.Text = "So fly out, my buzz-worthy ally, and bring us victory over Fire Tree!";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
                 source.Enums.Set(MythicBee.BossStarted);
-                source.SendOrangeBarMessage("Kill Apple Jack atleast three times.");
+                source.SendOrangeBarMessage("Kill Fire Tree three times.");
             }
 
                 break;
@@ -444,10 +377,10 @@ public class MythicBeeScript : DialogScriptBase
             {
                 if (!source.Counters.TryGetValue("AppleJack", out var beeboss1) || (beeboss1 < 3))
                 {
-                    Subject.Text = "Please rest and recover your strength, and then hop back into action. We'll be here waiting, hoping and praying for your success. The fate of our warren rests on your paws, Warren Wanderer. We're counting on you!";
+                    Subject.Text =  "Oh dear, it seems Fire Tree is still at large. This is troubling news for my hive and my workers. Please be careful, we cannot afford to let the mantis leader continue to harm us. I urge you to finish the task at hand and take down Fire Tree once and for all. The safety and well-being of my hive and all its inhabitants depend on it.";
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.NextDialogKey = "Close";
-                    source.SendOrangeBarMessage("You haven't killed Apple Jack enough.");
+                    source.SendOrangeBarMessage("You haven't killed Fire Tree enough.");
 
                     return;
                 }
@@ -458,7 +391,7 @@ public class MythicBeeScript : DialogScriptBase
                     TargetAnimation = 21
                 };
                 
-                Subject.Text = "Your bravery and skill in battle have truly hopped over our expectations. You've gone above and beyond to protect our warren and its inhabitants, and we will forever be grateful for your bee-tastic efforts.";
+                Subject.Text =  "Buzzing fantastic! You've done it! You've defeated Fire Tree, the notorious mantis leader. Thank you so much for your dedication and bravery in protecting my hive and my fellow bees. Your efforts will not go unnoticed. You truly are the bee's knees!";
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");

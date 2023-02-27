@@ -7,6 +7,7 @@ using Chaos.Objects.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 
@@ -15,15 +16,18 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 public class TerminusTutorialScript : DialogScriptBase
 {
     private readonly ISimpleCache SimpleCache;
+    private readonly IMerchantFactory MerchantFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     public TerminusTutorialScript(
         Dialog subject,
-        ISimpleCache simpleCache
+        ISimpleCache simpleCache,
+        IMerchantFactory merchantFactory
     )
         : base(subject)
     {
         SimpleCache = simpleCache;
+        MerchantFactory = merchantFactory;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
@@ -90,6 +94,7 @@ public class TerminusTutorialScript : DialogScriptBase
                     point = new Point(13, 10);
                     var mapInstance = SimpleCache.Get<MapInstance>("after_life");
                     source.TraverseMap(mapInstance, point, true);
+                    
                 }
 
                 break;

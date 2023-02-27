@@ -1,7 +1,9 @@
 using Chaos.Clients.Abstractions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Containers;
 using Chaos.Definitions;
+using Chaos.Extensions.Geometry;
 using Chaos.Networking.Abstractions;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
@@ -10,28 +12,32 @@ using Chaos.Scripting.AislingScripts.Abstractions;
 using Chaos.Scripting.Components;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories;
+using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.AislingScripts;
 
 public sealed class DefaultAislingScript : AislingScriptBase
 {
     private readonly IClientRegistry<IWorldClient> _clientRegistry;
+    private readonly IMerchantFactory MerchantFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
     private readonly List<string> _mapsToNotPunishDeathOn = new()
     {
-        "tutorial_bossroom",
-        "tutorial_farm"
+        "Mr. Hopps's Home",
+        "Cain's Farm"
     };
 
     private RestrictionComponent RestrictionComponent { get; }
 
     /// <inheritdoc />
-    public DefaultAislingScript(Aisling subject, IClientRegistry<IWorldClient> clientRegistry)
+    public DefaultAislingScript(Aisling subject, IClientRegistry<IWorldClient> clientRegistry, IMerchantFactory merchantFactory)
         : base(subject)
     {
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         RestrictionComponent = new RestrictionComponent();
         _clientRegistry = clientRegistry;
+        MerchantFactory = merchantFactory;
     }
 
     /// <inheritdoc />
@@ -67,6 +73,14 @@ public sealed class DefaultAislingScript : AislingScriptBase
     /// <inheritdoc />
     public override void OnDeath(Creature source)
     {
+        if (source.MapInstance.Name.Equals("Cain's Farm"))
+        {
+            Subject.StatSheet.AddHp(1);
+            Subject.Client.SendAttributes(StatUpdateType.Vitality);
+            Subject.SendOrangeBarMessage("You can't die here.");
+            return;
+        }
+        
         Subject.IsDead = true;
 
         //Refresh to show ghost
@@ -83,8 +97,23 @@ public sealed class DefaultAislingScript : AislingScriptBase
         foreach (var effect in effects)
             Subject.Effects.Dispel(effect.Name);
 
-        if (_mapsToNotPunishDeathOn.Contains(Subject.MapInstance.Template.TemplateKey))
+        if (source.MapInstance.Name.Equals("Mr. Hopps's Home"))
+        {
+            var terminusSpawn = new Rectangle(source, 8, 8);
+            var outline = terminusSpawn.GetOutline().ToList();
+            var terminus = MerchantFactory.Create("terminus", source.MapInstance, Point.From(source));
+            Point point;
+
+            do
+                point = outline.PickRandom();
+            while (!source.MapInstance.IsWalkable(point, terminus.Type));
+
+            source.MapInstance.AddObject(terminus, point);
+        }
+
+        if (_mapsToNotPunishDeathOn.Contains(Subject.MapInstance.Name))
             return;
+        
 
         foreach (var client in _clientRegistry)
             client.SendServerMessage(

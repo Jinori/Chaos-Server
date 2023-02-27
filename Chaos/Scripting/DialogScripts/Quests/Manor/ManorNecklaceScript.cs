@@ -90,7 +90,7 @@ public class ManorNecklaceScript : DialogScriptBase
             }
             case "zulera_acceptedquest":
             {
-                if (!hasStage || stage == ManorNecklaceStage.None)
+                if (!hasStage || (stage == ManorNecklaceStage.None))
                 {
                     source.Enums.Set(ManorNecklaceStage.AcceptedQuest);
                 }

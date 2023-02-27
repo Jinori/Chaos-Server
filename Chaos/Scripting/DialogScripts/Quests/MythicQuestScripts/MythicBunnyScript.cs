@@ -326,7 +326,7 @@ public class MythicBunnyScript : DialogScriptBase
 
             case "bunny_higher":
             {
-                Subject.Text = "Great, clear 20 horses in the further rooms and come back to me..";
+                Subject.Text = "I need you to travel deep into the fields and thin out the horse herd. Specifically, I need you to thin out 10 gray horses and 10 red horses.";
                 source.SendOrangeBarMessage("Kill 20 Gray Horses for Big Bunny");
                 source.Enums.Set(MythicBunny.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
@@ -337,9 +337,17 @@ public class MythicBunnyScript : DialogScriptBase
             case "bunny_higher2":
             {
 
-                if (!source.Counters.TryGetValue("BunnyHigher", out var bunnyhigher) || (bunnyhigher < 20))
+                if (!source.Counters.TryGetValue("grayhorse", out var grayhorse) || (grayhorse < 10))
                 {
-                    Subject.Text = "You haven't killed enough higher horses.";
+                    Subject.Text = "You haven't killed enough gray horses.";
+                    Subject.Type = MenuOrDialogType.Normal;
+
+                    return;
+                }
+                
+                if (!source.Counters.TryGetValue("GrayHorse", out var redhorse) || (redhorse < 10))
+                {
+                    Subject.Text = "You haven't killed enough red horses.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;

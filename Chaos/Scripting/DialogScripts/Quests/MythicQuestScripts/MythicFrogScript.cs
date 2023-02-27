@@ -66,7 +66,7 @@ public class MythicFrogScript : DialogScriptBase
 
                 {
                     Subject.Text = "Hello adventurer, I am the leader of the Frog Army. Croak! We are in a dire situation and we need your help.";
-                    
+
                     var option = new DialogOption
                     {
                         DialogKey = "frog_start1",
@@ -339,7 +339,7 @@ public class MythicFrogScript : DialogScriptBase
                     source.Counters.TryGetValue("WhiteWolf", out var whitewolf);
                     source.Counters.TryGetValue("BeardedWolf", out var beardedwolf);
 
-                    if (whitewolf < 10 && beardedwolf < 10)
+                    if ((whitewolf < 10) && (beardedwolf < 10))
                     {
                         Subject.Text = "You haven't killed enough White Wolves and Bearded Wolves.";
                         Subject.Type = MenuOrDialogType.Normal;
