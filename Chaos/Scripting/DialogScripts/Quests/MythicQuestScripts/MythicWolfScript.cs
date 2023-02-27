@@ -58,19 +58,19 @@ public class MythicWolfScript : DialogScriptBase
                 if (hasWolf && (wolf == MythicWolf.EnemyAllied))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "You have allied yourself with our enemies and that fills me with rabbit-like fear. I cannot trust you to hop on our side again. Please leave our warren.";
+                    Subject.Text = "You have allied yourself with the frogs. You can never be one with the pack...";
                     Subject.NextDialogKey = "Close";
                 }
                 
                 if ((main == MythicQuestMain.MythicStarted) && !hasWolf)
 
                 {
-                    Subject.Text = "Ears to you, traveler. I am the leader of this warren of bunnies, and I carrot thank you enough for coming to our aid. The neigh-sayers may think we're just cute and fluffy, but we're tougher than we look.";
+                    Subject.Text = "The wolf leader steps forward and greets you with a low growl, its piercing eyes fixed on you. Hello aisling, what do you want?";
                     
                     var option = new DialogOption
                     {
                         DialogKey = "wolf_start1",
-                        OptionText = "What can I do to help?"
+                        OptionText = "I came to see if you needed some help?"
                     };
 
                     if (!Subject.HasOption(option))
@@ -81,12 +81,12 @@ public class MythicWolfScript : DialogScriptBase
 
                 if (wolf == MythicWolf.Lower)
                 {
-                    Subject.Text = "Well, well, well, look who's back! It's our favorite rabbit-loving adventurer! Have you come to tell us that you've completed the task we gave you?";
+                    Subject.Text = "Well look who it is. Were you able to take out the Green Frogs?";
 
                     var option = new DialogOption
                     {
                         DialogKey = "wolf_lower2",
-                        OptionText = "Yes Big Bunny."
+                        OptionText = "Yeap. They dont seem to dangerous to me."
                     };
 
                     if (!Subject.HasOption(option))
@@ -97,12 +97,12 @@ public class MythicWolfScript : DialogScriptBase
                 }
                 if (wolf == MythicWolf.LowerComplete)
                 {
-                    Subject.Text = "Warren Wanderer, we are in need of your assistance once again. It seems that another group of horses has invaded our territory and is causing chaos and destruction. We need your help to remove them from our fields, just as you did with the previous group.";
+                    Subject.Text = "Good job taking out the green frogs, however that was just the beginning. Deeper in the swamp you can find red and blue frogs. They are even more poisonous then the green ones. Are you willing to help?";
                 
                     var option = new DialogOption
                     {
                         DialogKey = "wolf_start3",
-                        OptionText = "No problem Big Bunny."
+                        OptionText = "Sure, how can I help?"
                     };
 
                     if (!Subject.HasOption(option))
@@ -114,7 +114,7 @@ public class MythicWolfScript : DialogScriptBase
 
                 if (wolf == MythicWolf.Higher)
                 {
-                    Subject.Text = " ";
+                    Subject.Text = "Have you killed the red and blue frogs yet?";
 
                     var option = new DialogOption
                     {
@@ -131,12 +131,12 @@ public class MythicWolfScript : DialogScriptBase
 
                 if (wolf == MythicWolf.HigherComplete)
                 {
-                    Subject.Text = "Want to collect some horse hair for me?";
+                    Subject.Text = "You seem to be unaffected by the frogs poison. How could this be? Nevermind for now... We could use your help once again. Since you seem to be immune to the frogs, could you bring us back 25 frog meat? Our food supply has been running low.";
                     
                     var option = new DialogOption
                     {
                         DialogKey = "wolf_item",
-                        OptionText = "I can get that."
+                        OptionText = "Just 25? No problem."
                     };
 
                     if (!Subject.HasOption(option))
@@ -146,12 +146,12 @@ public class MythicWolfScript : DialogScriptBase
 
                 if (wolf == MythicWolf.Item)
                 {
-                    Subject.Text = " ";
+                    Subject.Text = "Do you have the frog meat?";
 
                     var option = new DialogOption
                     {
                         DialogKey = "wolf_item2",
-                        OptionText = "I have them here."
+                        OptionText = "Here you go."
                     };
 
                     if (!Subject.HasOption(option))
@@ -163,12 +163,12 @@ public class MythicWolfScript : DialogScriptBase
 
                 if (wolf == MythicWolf.ItemComplete)
                 {
-                    Subject.Text = "\n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
+                    Subject.Text = "You have earned our respect fearless one. Would you consider allying with us? You would fit in well with our wolf pack. *The Wolf Pack Leader lets of a fierce howl you can hear echo in the distance*\n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
 
                     var option = new DialogOption
                     {
                         DialogKey = "wolf_ally",
-                        OptionText = "Ally with Bunny"
+                        OptionText = "Ally with Wolves."
                     };
 
                     var option1 = new DialogOption
@@ -190,11 +190,11 @@ public class MythicWolfScript : DialogScriptBase
                 if (wolf == MythicWolf.Allied)
                 {
                     Subject.Text =
-                        " ";
+                        "Welcome back fearless one! Thank you again for bringing honor to our wolf pack!";
                     var option = new DialogOption
                     {
                         DialogKey = "wolf_start5",
-                        OptionText = "Anything for you."
+                        OptionText = "Anything for the pack."
                     };
 
                     if (!Subject.HasOption(option))
@@ -206,12 +206,12 @@ public class MythicWolfScript : DialogScriptBase
                 if (wolf == MythicWolf.BossStarted)
                 {
                     Subject.Text =
-                        " ";
+                        "Have you killed Frogger yet?";
 
                     var option = new DialogOption
                     {
                         DialogKey = "wolf_boss2",
-                        OptionText = "I carried out what was asked of me."
+                        OptionText = "Frogger hops no more."
                     };
 
                     if (!Subject.HasOption(option))
@@ -223,7 +223,7 @@ public class MythicWolfScript : DialogScriptBase
                 if (wolf == MythicWolf.BossDefeated)
                 {
 
-                    Subject.Text = "Thank you again Aisling for your help. We are winning our fight.";
+                    Subject.Text = "Hello fearless one! Thank you for all you have done. I have no other task for you.";
                 }
 
                 break;
@@ -231,8 +231,8 @@ public class MythicWolfScript : DialogScriptBase
 
             case "wolf_lower":
             {
-                Subject.Text = " ";
-                source.SendOrangeBarMessage("Kill 15 Mythic Frogs for the Wolf Pack Leader");
+                Subject.Text = "Stay safe, friend.";
+                source.SendOrangeBarMessage("Kill 15 Green Frogs for the Wolf Pack Leader");
                 source.Enums.Set(MythicWolf.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -244,7 +244,7 @@ public class MythicWolfScript : DialogScriptBase
 
                 if (!source.Counters.TryGetValue("mythicfrog", out var wolflower) || (wolflower < 15))
                 {
-                    Subject.Text = "You haven't killed enough Mythic Frogs";
+                    Subject.Text = "You haven't killed enough Green Frogs";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -255,7 +255,7 @@ public class MythicWolfScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
                 source.Counters.Remove("mythicfrog", out _);
-                Subject.Text = " ";
+                Subject.Text = "Ha! You seem brave. Please come back when you can, I have another task for you.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "wolf_initial";
 
@@ -264,7 +264,7 @@ public class MythicWolfScript : DialogScriptBase
 
             case "wolf_higher":
             {
-                Subject.Text = "Great, clear 10 Blue Frogs and 10 Red Frogs.";
+                Subject.Text = "You seem to have no fear. You are either very brave or just plain out stupid. Either way you have earned my respect. Please come back to me once the task is complete.";
                 source.SendOrangeBarMessage("Kill 10 Blue and 10 Red Frogs for Wolf Pack Leader.");
                 source.Enums.Set(MythicWolf.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
@@ -285,7 +285,7 @@ public class MythicWolfScript : DialogScriptBase
                     return;
                 }
 
-                Subject.Text = " ";
+                Subject.Text = "Thanks for the help once again. You have earned our respect. I have another task for you when you are ready.";
                 Subject.NextDialogKey = "wolf_initial";
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
@@ -309,7 +309,7 @@ public class MythicWolfScript : DialogScriptBase
 
             case "wolf_item":
             {
-                Subject.Text = " ";
+                Subject.Text = "Hurry back, the other wolves are starting to get very hangry.";
                 source.SendOrangeBarMessage("Collect 25 Frog Meat for Wolf Pack Leader");
                 source.Enums.Set(MythicWolf.Item);
                 Subject.Type = MenuOrDialogType.Normal;
@@ -322,7 +322,7 @@ public class MythicWolfScript : DialogScriptBase
 
                 if (!source.Inventory.RemoveQuantity("Frog Meat", 25))
                 {
-                    Subject.Text = " ";
+                    Subject.Text = "You do not have enough Frog Meat.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -331,7 +331,7 @@ public class MythicWolfScript : DialogScriptBase
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Enums.Set(MythicWolf.ItemComplete);
-                Subject.Text = " ";
+                Subject.Text = "Thank you. I was starting to get a headache from all the howling. This should be enough to feed us for awhile. Please come back to see me when you can. ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "wolf_initial";
 
@@ -344,7 +344,7 @@ public class MythicWolfScript : DialogScriptBase
                     && (hasFrog == frog is MythicFrog.Allied or MythicFrog.BossStarted or MythicFrog.BossDefeated))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = " ";
+                    Subject.Text = "You are already allied with the Frogs? *The wolf pack leader begins to growl* Begone!";
                     source.Enums.Set(MythicWolf.EnemyAllied);
 
                     return;
@@ -353,7 +353,7 @@ public class MythicWolfScript : DialogScriptBase
                 source.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Enums.Set(MythicWolf.Allied);
                 source.SendOrangeBarMessage("You are now allied with the Wolves!");
-                Subject.Text = $" ";
+                Subject.Text = $"Wise choice friend! Welcome to the wolf pack!";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "wolf_initial";
 
@@ -363,7 +363,7 @@ public class MythicWolfScript : DialogScriptBase
 
             case "wolf_boss":
             {
-                Subject.Text = " ";
+                Subject.Text = "That's the spirit! We will be here awaiting your return.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
                 source.Enums.Set(MythicWolf.BossStarted);
@@ -376,7 +376,7 @@ public class MythicWolfScript : DialogScriptBase
             {
                 if (!source.Counters.TryGetValue("Frogger", out var wolfboss1) || (wolfboss1 < 3))
                 {
-                    Subject.Text = " ";
+                    Subject.Text = "Frogger's army is still there!";
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.NextDialogKey = "Close";
                     source.SendOrangeBarMessage("You haven't completely defeated Frogger.");
@@ -390,7 +390,7 @@ public class MythicWolfScript : DialogScriptBase
                     TargetAnimation = 21
                 };
                 
-                Subject.Text = " ";
+                Subject.Text = "What a victory! Frogger and his army are no more. Thank you for all the help fearless one.";
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");

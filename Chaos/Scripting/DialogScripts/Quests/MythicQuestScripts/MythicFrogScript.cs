@@ -66,7 +66,7 @@ public class MythicFrogScript : DialogScriptBase
 
                 {
                     Subject.Text = "Hello adventurer, I am the leader of the Frog Army. Croak! We are in a dire situation and we need your help.";
-
+                    
                     var option = new DialogOption
                     {
                         DialogKey = "frog_start1",
@@ -88,10 +88,18 @@ public class MythicFrogScript : DialogScriptBase
                         DialogKey = "frog_lower2",
                         OptionText = "Yes, I have slain 15 Mythic Wolves."
                     };
-                    
+
+                    var option1 = new DialogOption
+                    {
+                        DialogKey = "frog_no1",
+                        OptionText = "I'm sorry, not yet."
+                    };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
+                    if (!Subject.HasOption(option1))
+                        Subject.Options.Add(option1);
 
                     return;
 
@@ -105,10 +113,18 @@ public class MythicFrogScript : DialogScriptBase
                         DialogKey = "frog_start3",
                         OptionText = "Sure, How can i help?"
                     };
-                    
+
+                    var option1 = new DialogOption
+                    {
+                        DialogKey = "frog_no",
+                        OptionText = "I'm done for now."
+                    };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
+                    if (!Subject.HasOption(option1))
+                        Subject.Options.Add(option1);
 
                     return;
 
@@ -124,9 +140,18 @@ public class MythicFrogScript : DialogScriptBase
                         OptionText = "Yeah, it is done."
                     };
 
+                    var option1 = new DialogOption
+                    {
+                        DialogKey = "frog_no1",
+                        OptionText = "I'm working on it."
+                    };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-                    
+
+                    if (!Subject.HasOption(option1))
+                        Subject.Options.Add(option1);
+
                     return;
 
                 }
@@ -141,9 +166,17 @@ public class MythicFrogScript : DialogScriptBase
                         OptionText = "I can get that."
                     };
 
+                    var option1 = new DialogOption
+                    {
+                        DialogKey = "frog_no",
+                        OptionText = "Not a chance, good luck."
+                    };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
+                    if (!Subject.HasOption(option1))
+                        Subject.Options.Add(option1);
                 }
 
                 if (frog == MythicFrog.Item)
@@ -155,11 +188,18 @@ public class MythicFrogScript : DialogScriptBase
                         DialogKey = "frog_item2",
                         OptionText = "I have them here."
                     };
-                    
+
+                    var option1 = new DialogOption
+                    {
+                        DialogKey = "frog_no1",
+                        OptionText = "Still working on it."
+                    };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
+                    if (!Subject.HasOption(option1))
+                        Subject.Options.Add(option1);
 
                     return;
 
@@ -200,10 +240,18 @@ public class MythicFrogScript : DialogScriptBase
                         DialogKey = "frog_start5",
                         OptionText = "I'll stop her at all cost."
                     };
-                    
+
+                    var option1 = new DialogOption
+                    {
+                        DialogKey = "frog_noboss",
+                        OptionText = "I won't do it."
+                    };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
+
+                    if (!Subject.HasOption(option1))
+                        Subject.Options.Add(option1);
 
                     return;
                 }
@@ -219,9 +267,17 @@ public class MythicFrogScript : DialogScriptBase
                         OptionText = "I've slain the beast."
                     };
 
+                    var option1 = new DialogOption
+                    {
+                        DialogKey = "frog_noboss2",
+                        OptionText = "I can't do it."
+                    };
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
+                    if (!Subject.HasOption(option1))
+                        Subject.Options.Add(option1);
 
                     return;
                 }
@@ -283,7 +339,7 @@ public class MythicFrogScript : DialogScriptBase
                     source.Counters.TryGetValue("WhiteWolf", out var whitewolf);
                     source.Counters.TryGetValue("BeardedWolf", out var beardedwolf);
 
-                    if ((whitewolf < 10) && (beardedwolf < 10))
+                    if (whitewolf < 10 && beardedwolf < 10)
                     {
                         Subject.Text = "You haven't killed enough White Wolves and Bearded Wolves.";
                         Subject.Type = MenuOrDialogType.Normal;
@@ -291,7 +347,7 @@ public class MythicFrogScript : DialogScriptBase
                         return;
                     }
 
-                Subject.Text = "Croak! You've really proven you could be a powerful ally.";
+                    Subject.Text = "Croak! You've really proven you could be a powerful ally.";
                 Subject.NextDialogKey = "frog_initial";
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
@@ -307,8 +363,17 @@ public class MythicFrogScript : DialogScriptBase
                     OptionText = "I can get that."
                 };
 
+                var option1 = new DialogOption
+                {
+                    DialogKey = "frog_no",
+                    OptionText = "Not a chance, good luck."
+                };
+
                 if (!Subject.HasOption(option))
                     Subject.Options.Add(option);
+
+                if (!Subject.HasOption(option1))
+                    Subject.Options.Add(option1);
 
                 break;
             }
@@ -380,12 +445,12 @@ public class MythicFrogScript : DialogScriptBase
 
             case "frog_boss2":
             {
-                if (!source.Counters.TryGetValue("Nymeria", out var nymeria) || (nymeria < 3))
+                if (!source.Counters.TryGetValue("Nymeria", out var frogboss1) || (frogboss1 < 3))
                 {
-                    Subject.Text = "Please rest and recover your strength, and then hop back into action. We'll be here waiting, hoping and praying for your success. The fate of our warren rests on your paws, Warren Wanderer. We're counting on you!";
+                    Subject.Text = "Please rest and recover your strength. We're all cheering for you!";
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.NextDialogKey = "Close";
-                    source.SendOrangeBarMessage("You haven't completely defeated Nymeria.");
+                    source.SendOrangeBarMessage("You haven't killed Nymeria enough times.");
 
                     return;
                 }
@@ -400,7 +465,7 @@ public class MythicFrogScript : DialogScriptBase
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                source.Counters.Remove("nymeria", out _);
+                source.Counters.Remove("FrogBoss", out _);
                 source.Enums.Set(MythicFrog.BossDefeated);
                 source.Counters.AddOrIncrement("MythicBoss", 1);
 
