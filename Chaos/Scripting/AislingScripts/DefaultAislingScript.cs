@@ -14,6 +14,7 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.AislingScripts;
 
@@ -21,6 +22,7 @@ public sealed class DefaultAislingScript : AislingScriptBase
 {
     private readonly IClientRegistry<IWorldClient> _clientRegistry;
     private readonly IMerchantFactory MerchantFactory;
+    private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
     private readonly List<string> _mapsToNotPunishDeathOn = new()
     {
@@ -31,13 +33,16 @@ public sealed class DefaultAislingScript : AislingScriptBase
     private RestrictionComponent RestrictionComponent { get; }
 
     /// <inheritdoc />
-    public DefaultAislingScript(Aisling subject, IClientRegistry<IWorldClient> clientRegistry, IMerchantFactory merchantFactory)
+    public DefaultAislingScript(Aisling subject, IClientRegistry<IWorldClient> clientRegistry, IMerchantFactory merchantFactory,
+        ISimpleCache simpleCache
+    )
         : base(subject)
     {
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         RestrictionComponent = new RestrictionComponent();
         _clientRegistry = clientRegistry;
         MerchantFactory = merchantFactory;
+        SimpleCache = simpleCache;
     }
 
     /// <inheritdoc />
@@ -75,9 +80,14 @@ public sealed class DefaultAislingScript : AislingScriptBase
     {
         if (source.MapInstance.Name.Equals("Cain's Farm"))
         {
+            var mapInstance = SimpleCache.Get<MapInstance>("tutorial_hut");
+            var pointS = new Point(2, 9);
+            
             Subject.StatSheet.AddHp(1);
             Subject.Client.SendAttributes(StatUpdateType.Vitality);
-            Subject.SendOrangeBarMessage("You can't die here.");
+            Subject.SendOrangeBarMessage("You are knocked out. Be more careful.");
+            Subject.TraverseMap(mapInstance, pointS);
+            
             return;
         }
         

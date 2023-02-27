@@ -42,8 +42,7 @@ public class TeleportToTerrorBossScript : DialogScriptBase
 
                 foreach (var member in group)
                 {
-                    MapInstance mapInstance;
-                    mapInstance = SimpleCache.Get<MapInstance>("cryptTerror");
+                    var mapInstance = SimpleCache.Get<MapInstance>("cryptTerror");
                     var pointS = new Point(13, 8);
                     member.TraverseMap(mapInstance, pointS);
                 }
