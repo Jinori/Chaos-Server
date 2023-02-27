@@ -89,17 +89,8 @@ public class MythicKoboldScript : DialogScriptBase
                         OptionText = "Yes Big Bunny."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "kobold_no1",
-                        OptionText = "I'm sorry, not yet."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -114,17 +105,8 @@ public class MythicKoboldScript : DialogScriptBase
                         OptionText = "No problem Big Bunny."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "kobold_no",
-                        OptionText = "I'm done for now."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -139,19 +121,11 @@ public class MythicKoboldScript : DialogScriptBase
                         DialogKey = "kobold_higher2",
                         OptionText = "Yeah, it is done."
                     };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "kobold_no1",
-                        OptionText = "I'm working on it."
-                    };
+                    
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
-
+                    
                     return;
 
                 }
@@ -166,17 +140,9 @@ public class MythicKoboldScript : DialogScriptBase
                         OptionText = "I can get that."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "kobold_no",
-                        OptionText = "Not a chance, good luck."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
                 }
 
                 if (kobold == MythicKobold.Item)
@@ -189,17 +155,8 @@ public class MythicKoboldScript : DialogScriptBase
                         OptionText = "I have them here."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "kobold_no1",
-                        OptionText = "Still working on it."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -241,17 +198,8 @@ public class MythicKoboldScript : DialogScriptBase
                         OptionText = "Anything for you."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "kobold_noboss",
-                        OptionText = "I won't do it."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
                 }
@@ -267,17 +215,8 @@ public class MythicKoboldScript : DialogScriptBase
                         OptionText = "I carried out what was asked of me."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "kobold_noboss2",
-                        OptionText = "I can't do it."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
                 }
@@ -304,9 +243,9 @@ public class MythicKoboldScript : DialogScriptBase
             case "kobold_lower2":
             {
 
-                if (!source.Counters.TryGetValue("BunnyLower", out var koboldlower) || (koboldlower < 20))
+                if (!source.Counters.TryGetValue("grimlockworker", out var grimlockworker) || (grimlockworker < 15))
                 {
-                    Subject.Text = "You haven't killed enough lower horses.";
+                    Subject.Text = "You haven't killed enough Grimlock Workers.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -316,8 +255,8 @@ public class MythicKoboldScript : DialogScriptBase
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("BunnyLower", out _);
-                Subject.Text = "As you can imagine, horses stomping around all day can really cramp a kobold's style. We've got carrots to grow and holes to dig, and we can't do any of that with a bunch of hooves stomping all over the place. Thank you.";
+                source.Counters.Remove("grimlockworker", out _);
+                Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "kobold_initial";
 
@@ -326,8 +265,8 @@ public class MythicKoboldScript : DialogScriptBase
 
             case "kobold_higher":
             {
-                Subject.Text = "Great, clear 20 horses in the further rooms and come back to me..";
-                source.SendOrangeBarMessage("Kill 20 Gray Horses for Big Bunny");
+                Subject.Text = "Great, clear 10 Grimlock Guards and Grimlock Rogues further rooms and come back to me..";
+                source.SendOrangeBarMessage("Kill 10 Grimlock Guards and 10 Grimlock Rogues");
                 source.Enums.Set(MythicKobold.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -337,9 +276,12 @@ public class MythicKoboldScript : DialogScriptBase
             case "kobold_higher2":
             {
 
-                if (!source.Counters.TryGetValue("BunnyHigher", out var koboldhigher) || (koboldhigher < 20))
+                source.Counters.TryGetValue("grimlockguard", out var grimlockguard);
+                source.Counters.TryGetValue("grimlockrogue", out var grimlockrogue);
+
+                if ((grimlockguard < 10) && (grimlockrogue < 10))
                 {
-                    Subject.Text = "You haven't killed enough higher horses.";
+                    Subject.Text = "You haven't killed enough Grimlock Guards and Grimlock Rogues.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -352,33 +294,25 @@ public class MythicKoboldScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Enums.Set(MythicKobold.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("BunnyHigher", out _);
+                source.Counters.Remove("grimlockguard", out _);
+                source.Counters.Remove("grimlockrogue", out _);
 
                 var option = new DialogOption
                 {
                     DialogKey = "kobold_item",
                     OptionText = "I can get that."
                 };
-
-                var option1 = new DialogOption
-                {
-                    DialogKey = "kobold_no",
-                    OptionText = "Not a chance, good luck."
-                };
-
+                
                 if (!Subject.HasOption(option))
                     Subject.Options.Add(option);
-
-                if (!Subject.HasOption(option1))
-                    Subject.Options.Add(option1);
 
                 break;
             }
 
             case "kobold_item":
             {
-                Subject.Text = "Don't let us down, Warren Wanderer. We're counting on you to hop to it and bring back the horse hair we need. And remember, the early kobold gets the hair!";
-                source.SendOrangeBarMessage("Collect 25 horse hair for Big Bunny");
+                Subject.Text = " ";
+                source.SendOrangeBarMessage("Collect 25 something");
                 source.Enums.Set(MythicKobold.Item);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -388,9 +322,9 @@ public class MythicKoboldScript : DialogScriptBase
             case "kobold_item2":
             {
 
-                if (!source.Inventory.RemoveQuantity("Horse Hair", 25))
+                if (!source.Inventory.RemoveQuantity("Strange Potion", 25))
                 {
-                    Subject.Text = "Whatever it takes, we need you to gather more horse hair so that we can build warm and snug beds for all of us. We believe in you, Warren Wanderer. We know you can get the job done.";
+                    Subject.Text = " ";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -399,7 +333,7 @@ public class MythicKoboldScript : DialogScriptBase
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Enums.Set(MythicKobold.ItemComplete);
-                Subject.Text = "You've really hopped to it and brought us enough horse hair to keep us warm and cozy through the long winter nights. This is kobold-tastic news!";
+                Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "kobold_initial";
 
@@ -420,8 +354,8 @@ public class MythicKoboldScript : DialogScriptBase
 
                 source.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Enums.Set(MythicKobold.Allied);
-                source.SendOrangeBarMessage("You are now allied with the bunnies!");
-                Subject.Text = $"Remember, {source.Name}, that no matter where your journeys take you, you will always have a home in our warren. The kobold luck be with you always!";
+                source.SendOrangeBarMessage("You are now allied with the Kobolds!");
+                Subject.Text = $" ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "kobold_initial";
 
@@ -431,23 +365,23 @@ public class MythicKoboldScript : DialogScriptBase
 
             case "kobold_boss":
             {
-                Subject.Text = "Please be careful, Warren Wanderer. We rabbits are a fragile and gentle species, and we need your help to survive. We'll be eagerly waiting for your return, hoping to hear tales of your kobold-licious bravery and triumph over Apple Jack. May the kobold gods be with you!";
+                Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
                 source.Enums.Set(MythicKobold.BossStarted);
-                source.SendOrangeBarMessage("Kill Apple Jack atleast three times.");
+                source.SendOrangeBarMessage("Kill Grimlock Princess three times.");
             }
 
                 break;
 
             case "kobold_boss2":
             {
-                if (!source.Counters.TryGetValue("AppleJack", out var koboldboss1) || (koboldboss1 < 3))
+                if (!source.Counters.TryGetValue("Grimlock Princess", out var koboldboss1) || (koboldboss1 < 3))
                 {
-                    Subject.Text = "Please rest and recover your strength, and then hop back into action. We'll be here waiting, hoping and praying for your success. The fate of our warren rests on your paws, Warren Wanderer. We're counting on you!";
+                    Subject.Text = " ";
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.NextDialogKey = "Close";
-                    source.SendOrangeBarMessage("You haven't killed Apple Jack enough.");
+                    source.SendOrangeBarMessage("You haven't completely defeated the Grimlock Princess");
 
                     return;
                 }
@@ -458,7 +392,7 @@ public class MythicKoboldScript : DialogScriptBase
                     TargetAnimation = 21
                 };
                 
-                Subject.Text = "Your bravery and skill in battle have truly hopped over our expectations. You've gone above and beyond to protect our warren and its inhabitants, and we will forever be grateful for your kobold-tastic efforts.";
+                Subject.Text = " ";
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");

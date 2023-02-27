@@ -88,18 +88,10 @@ public class MythicBunnyScript : DialogScriptBase
                         DialogKey = "bunny_lower2",
                         OptionText = "Yes Big Bunny."
                     };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "bunny_no1",
-                        OptionText = "I'm sorry, not yet."
-                    };
+                    
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -114,17 +106,8 @@ public class MythicBunnyScript : DialogScriptBase
                         OptionText = "No problem Big Bunny."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "bunny_no",
-                        OptionText = "I'm done for now."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -139,18 +122,10 @@ public class MythicBunnyScript : DialogScriptBase
                         DialogKey = "bunny_higher2",
                         OptionText = "Yeah, it is done."
                     };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "bunny_no1",
-                        OptionText = "I'm working on it."
-                    };
+                    
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -165,18 +140,10 @@ public class MythicBunnyScript : DialogScriptBase
                         DialogKey = "bunny_item",
                         OptionText = "I can get that."
                     };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "bunny_no",
-                        OptionText = "Not a chance, good luck."
-                    };
-
+                    
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
                 }
 
                 if (bunny == MythicBunny.Item)
@@ -189,17 +156,8 @@ public class MythicBunnyScript : DialogScriptBase
                         OptionText = "I have them here."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "bunny_no1",
-                        OptionText = "Still working on it."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -241,17 +199,8 @@ public class MythicBunnyScript : DialogScriptBase
                         OptionText = "Anything for you."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "bunny_noboss",
-                        OptionText = "I won't do it."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
                 }
@@ -267,17 +216,8 @@ public class MythicBunnyScript : DialogScriptBase
                         OptionText = "I carried out what was asked of me."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "bunny_noboss2",
-                        OptionText = "I can't do it."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
                 }
@@ -285,7 +225,7 @@ public class MythicBunnyScript : DialogScriptBase
                 if (bunny == MythicBunny.BossDefeated)
                 {
 
-                    Subject.Text = "Thank you again Aisling for your help. We are winning our fight.";
+                    Subject.Text = $"Every bunny knows your name {source.Name}! It's all around the warren, we really appreciate your hare-oic efforts.";
                 }
 
                 break;
@@ -304,9 +244,9 @@ public class MythicBunnyScript : DialogScriptBase
             case "bunny_lower2":
             {
 
-                if (!source.Counters.TryGetValue("BunnyLower", out var bunnylower) || (bunnylower < 20))
+                if (!source.Counters.TryGetValue("purplehorse", out var purplehorse) || (purplehorse < 20))
                 {
-                    Subject.Text = "You haven't killed enough lower horses.";
+                    Subject.Text = "You haven't killed enough Purple Horses.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -316,7 +256,7 @@ public class MythicBunnyScript : DialogScriptBase
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("BunnyLower", out _);
+                source.Counters.Remove("purplehorse", out _);
                 Subject.Text = "As you can imagine, horses stomping around all day can really cramp a bunny's style. We've got carrots to grow and holes to dig, and we can't do any of that with a bunch of hooves stomping all over the place. Thank you.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "bunny_initial";
@@ -326,8 +266,8 @@ public class MythicBunnyScript : DialogScriptBase
 
             case "bunny_higher":
             {
-                Subject.Text = "I need you to travel deep into the fields and thin out the horse herd. Specifically, I need you to thin out 10 gray horses and 10 red horses.";
-                source.SendOrangeBarMessage("Kill 20 Gray Horses for Big Bunny");
+                Subject.Text = "I need you to travel deep into the fields and thin out the horse herd. Specifically, I need you to thin out 10 Gray Horses and 10 Red Horses.";
+                source.SendOrangeBarMessage("Kill 10 Gray and 10 Red Horses for Big Bunny");
                 source.Enums.Set(MythicBunny.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -336,18 +276,12 @@ public class MythicBunnyScript : DialogScriptBase
 
             case "bunny_higher2":
             {
+                source.Counters.TryGetValue("grayhorse", out var grayhorse);
+                source.Counters.TryGetValue("redhorse", out var redhorse);
 
-                if (!source.Counters.TryGetValue("grayhorse", out var grayhorse) || (grayhorse < 10))
+                if ((grayhorse < 10) && (redhorse < 10))
                 {
-                    Subject.Text = "You haven't killed enough gray horses.";
-                    Subject.Type = MenuOrDialogType.Normal;
-
-                    return;
-                }
-                
-                if (!source.Counters.TryGetValue("GrayHorse", out var redhorse) || (redhorse < 10))
-                {
-                    Subject.Text = "You haven't killed enough red horses.";
+                    Subject.Text = "You haven't killed enough gray or red horses.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -360,25 +294,8 @@ public class MythicBunnyScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Enums.Set(MythicBunny.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("BunnyHigher", out _);
-
-                var option = new DialogOption
-                {
-                    DialogKey = "bunny_item",
-                    OptionText = "I can get that."
-                };
-
-                var option1 = new DialogOption
-                {
-                    DialogKey = "bunny_no",
-                    OptionText = "Not a chance, good luck."
-                };
-
-                if (!Subject.HasOption(option))
-                    Subject.Options.Add(option);
-
-                if (!Subject.HasOption(option1))
-                    Subject.Options.Add(option1);
+                source.Counters.Remove("grayhorse", out _);
+                source.Counters.Remove("redhorse", out _);
 
                 break;
             }
@@ -455,7 +372,7 @@ public class MythicBunnyScript : DialogScriptBase
                     Subject.Text = "Please rest and recover your strength, and then hop back into action. We'll be here waiting, hoping and praying for your success. The fate of our warren rests on your paws, Warren Wanderer. We're counting on you!";
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.NextDialogKey = "Close";
-                    source.SendOrangeBarMessage("You haven't killed Apple Jack enough.");
+                    source.SendOrangeBarMessage("You haven't completely defeated Apple Jack.");
 
                     return;
                 }
@@ -470,7 +387,7 @@ public class MythicBunnyScript : DialogScriptBase
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                source.Counters.Remove("BunnyBoss", out _);
+                source.Counters.Remove("AppleJack", out _);
                 source.Enums.Set(MythicBunny.BossDefeated);
                 source.Counters.AddOrIncrement("MythicBoss", 1);
 

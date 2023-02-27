@@ -233,7 +233,7 @@ public class MythicBeeScript : DialogScriptBase
                 if (bee == MythicBee.BossDefeated)
                 {
 
-                    Subject.Text = "Thank you again Aisling for your help. We are winning our fight.";
+                    Subject.Text = "The whole hive is buzzing about your efforts, you're an honorary bee around here. Thank you again!";
                 }
 
                 break;
@@ -345,7 +345,7 @@ public class MythicBeeScript : DialogScriptBase
                     && (hasMantis == mantis is MythicMantis.Allied or MythicMantis.BossStarted or MythicMantis.BossDefeated))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "";
+                    Subject.Text = "No way! You have been allied to the Mantis Colony this entire time traitor! Buzz off!";
                     source.Enums.Set(MythicBee.EnemyAllied);
 
                     return;
@@ -354,7 +354,7 @@ public class MythicBeeScript : DialogScriptBase
                 source.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Enums.Set(MythicBee.Allied);
                 source.SendOrangeBarMessage("You are now allied with the Bees!");
-                Subject.Text = $"So let me just say, we're pollen for you! It's bee-n a long time since we've had such a dedicated ally in our fight against the mantis colony. With you on our side, we can bee unstoppable!";
+                Subject.Text = $"So let me just say, we're pollen for you {source.Name}! It's bee-n a long time since we've had such a dedicated ally in our fight against the mantis colony. With you on our side, we can bee unstoppable!";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "bee_initial";
 
@@ -375,12 +375,12 @@ public class MythicBeeScript : DialogScriptBase
 
             case "bee_boss2":
             {
-                if (!source.Counters.TryGetValue("AppleJack", out var beeboss1) || (beeboss1 < 3))
+                if (!source.Counters.TryGetValue("FireTree", out var firetree) || (firetree < 3))
                 {
                     Subject.Text =  "Oh dear, it seems Fire Tree is still at large. This is troubling news for my hive and my workers. Please be careful, we cannot afford to let the mantis leader continue to harm us. I urge you to finish the task at hand and take down Fire Tree once and for all. The safety and well-being of my hive and all its inhabitants depend on it.";
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.NextDialogKey = "Close";
-                    source.SendOrangeBarMessage("You haven't killed Fire Tree enough.");
+                    source.SendOrangeBarMessage("You haven't completely defeated Fire Tree.");
 
                     return;
                 }
@@ -395,7 +395,7 @@ public class MythicBeeScript : DialogScriptBase
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                source.Counters.Remove("BeeBoss", out _);
+                source.Counters.Remove("FireTree", out _);
                 source.Enums.Set(MythicBee.BossDefeated);
                 source.Counters.AddOrIncrement("MythicBoss", 1);
 

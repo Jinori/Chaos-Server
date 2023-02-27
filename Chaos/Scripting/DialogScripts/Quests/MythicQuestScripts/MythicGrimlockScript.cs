@@ -89,17 +89,8 @@ public class MythicGrimlockScript : DialogScriptBase
                         OptionText = "Yes Big Grimlock."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "grimlock_no1",
-                        OptionText = "I'm sorry, not yet."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -114,17 +105,8 @@ public class MythicGrimlockScript : DialogScriptBase
                         OptionText = "No problem Big Grimlock."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "grimlock_no",
-                        OptionText = "I'm done for now."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -140,17 +122,9 @@ public class MythicGrimlockScript : DialogScriptBase
                         OptionText = "Yeah, it is done."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "grimlock_no1",
-                        OptionText = "I'm working on it."
-                    };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -166,17 +140,9 @@ public class MythicGrimlockScript : DialogScriptBase
                         OptionText = "I can get that."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "grimlock_no",
-                        OptionText = "Not a chance, good luck."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
                 }
 
                 if (grimlock == MythicGrimlock.Item)
@@ -189,17 +155,9 @@ public class MythicGrimlockScript : DialogScriptBase
                         OptionText = "I have them here."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "grimlock_no1",
-                        OptionText = "Still working on it."
-                    };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -241,17 +199,9 @@ public class MythicGrimlockScript : DialogScriptBase
                         OptionText = "Anything for you."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "grimlock_noboss",
-                        OptionText = "I won't do it."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
                 }
@@ -259,25 +209,16 @@ public class MythicGrimlockScript : DialogScriptBase
                 if (grimlock == MythicGrimlock.BossStarted)
                 {
                     Subject.Text =
-                        "Did you find Apple Jack? Is it done?";
+                        "Did you find Shank? Is it done?";
 
                     var option = new DialogOption
                     {
                         DialogKey = "grimlock_boss2",
-                        OptionText = "I carried out what was asked of me."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "grimlock_noboss2",
-                        OptionText = "I can't do it."
+                        OptionText = " "
                     };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
                 }
@@ -285,7 +226,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 if (grimlock == MythicGrimlock.BossDefeated)
                 {
 
-                    Subject.Text = "Thank you again Aisling for your help. We are winning our fight.";
+                    Subject.Text = " ";
                 }
 
                 break;
@@ -293,8 +234,8 @@ public class MythicGrimlockScript : DialogScriptBase
 
             case "grimlock_lower":
             {
-                Subject.Text = "You have our paws-tounding gratitude. Don't let the horses get your goat, though - they're quick and nimble, and they can kick like mules. But we believe in you, and we know you'll do us proud. May the grimlock luck be with you!";
-                source.SendOrangeBarMessage("Kill 20 Purple Horses for Big Grimlock");
+                Subject.Text = " ";
+                source.SendOrangeBarMessage("Kill 15 Kobold Workers.");
                 source.Enums.Set(MythicGrimlock.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -304,9 +245,9 @@ public class MythicGrimlockScript : DialogScriptBase
             case "grimlock_lower2":
             {
 
-                if (!source.Counters.TryGetValue("GrimlockLower", out var grimlocklower) || (grimlocklower < 20))
+                if (!source.Counters.TryGetValue("koboldworker", out var koboldworker) || (koboldworker < 15))
                 {
-                    Subject.Text = "You haven't killed enough lower horses.";
+                    Subject.Text = "You haven't killed enough Kobold Workers";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -316,8 +257,8 @@ public class MythicGrimlockScript : DialogScriptBase
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("GrimlockLower", out _);
-                Subject.Text = "As you can imagine, horses stomping around all day can really cramp a grimlock's style. We've got carrots to grow and holes to dig, and we can't do any of that with a bunch of hooves stomping all over the place. Thank you.";
+                source.Counters.Remove("koboldworker", out _);
+                Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "grimlock_initial";
 
@@ -326,8 +267,8 @@ public class MythicGrimlockScript : DialogScriptBase
 
             case "grimlock_higher":
             {
-                Subject.Text = "Great, clear 20 horses in the further rooms and come back to me..";
-                source.SendOrangeBarMessage("Kill 20 Gray Horses for Big Grimlock");
+                Subject.Text = "---Clear 10 Kobold Workers and 10 Kobold Soldiers---";
+                source.SendOrangeBarMessage("Kill 10 Kobold Workers and 10 Kobold Soldiers.");
                 source.Enums.Set(MythicGrimlock.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -337,22 +278,26 @@ public class MythicGrimlockScript : DialogScriptBase
             case "grimlock_higher2":
             {
 
-                if (!source.Counters.TryGetValue("GrimlockHigher", out var grimlockhigher) || (grimlockhigher < 20))
+                source.Counters.TryGetValue("koboldworker", out var koboldworker);
+                source.Counters.TryGetValue("koboldsoldier", out var koboldsoldier);
+
+                if ((koboldworker < 10) && (koboldsoldier < 10))
                 {
-                    Subject.Text = "You haven't killed enough higher horses.";
+                    Subject.Text = "You haven't killed enough Kobold Workers and Soldiers.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
                 }
 
-                Subject.Text = "You've really hopped to it and shown your grimlock-licious heroism once again. We're incredibly grateful for your help, and we can't thank you enough. Our warren's crops will be able to grow strong and healthy once again, thanks to you.";
+                Subject.Text = " ";
                 Subject.NextDialogKey = "grimlock_initial";
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Enums.Set(MythicGrimlock.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("GrimlockHigher", out _);
+                source.Counters.Remove("koboldworker", out _);
+                source.Counters.Remove("koboldsoldier", out _);
 
                 var option = new DialogOption
                 {
@@ -360,25 +305,16 @@ public class MythicGrimlockScript : DialogScriptBase
                     OptionText = "I can get that."
                 };
 
-                var option1 = new DialogOption
-                {
-                    DialogKey = "grimlock_no",
-                    OptionText = "Not a chance, good luck."
-                };
-
                 if (!Subject.HasOption(option))
                     Subject.Options.Add(option);
-
-                if (!Subject.HasOption(option1))
-                    Subject.Options.Add(option1);
-
+                
                 break;
             }
 
             case "grimlock_item":
             {
-                Subject.Text = "Don't let us down, Warren Wanderer. We're counting on you to hop to it and bring back the horse hair we need. And remember, the early grimlock gets the hair!";
-                source.SendOrangeBarMessage("Collect 25 horse hair for Big Grimlock");
+                Subject.Text = " ";
+                source.SendOrangeBarMessage("Collect 25 Kobold Tails for the Grimlock Queen");
                 source.Enums.Set(MythicGrimlock.Item);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -388,7 +324,7 @@ public class MythicGrimlockScript : DialogScriptBase
             case "grimlock_item2":
             {
 
-                if (!source.Inventory.RemoveQuantity("Horse Hair", 25))
+                if (!source.Inventory.RemoveQuantity("Kobold Tail", 25))
                 {
                     Subject.Text = "Whatever it takes, we need you to gather more horse hair so that we can build warm and snug beds for all of us. We believe in you, Warren Wanderer. We know you can get the job done.";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -399,7 +335,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Enums.Set(MythicGrimlock.ItemComplete);
-                Subject.Text = "You've really hopped to it and brought us enough horse hair to keep us warm and cozy through the long winter nights. This is grimlock-tastic news!";
+                Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "grimlock_initial";
 
@@ -412,7 +348,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     && (hasKobold == kobold is MythicKobold.Allied or MythicKobold.BossStarted or MythicKobold.BossDefeated))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "Oh no! You already allied with the horses! Get away from us!";
+                    Subject.Text = " ";
                     source.Enums.Set(MythicGrimlock.EnemyAllied);
 
                     return;
@@ -420,8 +356,8 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 source.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Enums.Set(MythicGrimlock.Allied);
-                source.SendOrangeBarMessage("You are now allied with the bunnies!");
-                Subject.Text = $"Remember, {source.Name}, that no matter where your journeys take you, you will always have a home in our warren. The grimlock luck be with you always!";
+                source.SendOrangeBarMessage("You are now allied with the Grimlocks!");
+                Subject.Text = $" ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "grimlock_initial";
 
@@ -431,23 +367,23 @@ public class MythicGrimlockScript : DialogScriptBase
 
             case "grimlock_boss":
             {
-                Subject.Text = "Please be careful, Warren Wanderer. We rabbits are a fragile and gentle species, and we need your help to survive. We'll be eagerly waiting for your return, hoping to hear tales of your grimlock-licious bravery and triumph over Apple Jack. May the grimlock gods be with you!";
+                Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
                 source.Enums.Set(MythicGrimlock.BossStarted);
-                source.SendOrangeBarMessage("Kill Apple Jack atleast three times.");
+                source.SendOrangeBarMessage("Kill Shank three times.");
             }
 
                 break;
 
             case "grimlock_boss2":
             {
-                if (!source.Counters.TryGetValue("AppleJack", out var grimlockboss1) || (grimlockboss1 < 3))
+                if (!source.Counters.TryGetValue("Shank", out var shank) || (shank < 3))
                 {
-                    Subject.Text = "Please rest and recover your strength, and then hop back into action. We'll be here waiting, hoping and praying for your success. The fate of our warren rests on your paws, Warren Wanderer. We're counting on you!";
+                    Subject.Text = " ";
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.NextDialogKey = "Close";
-                    source.SendOrangeBarMessage("You haven't killed Apple Jack enough.");
+                    source.SendOrangeBarMessage("You haven't completely defeated Shank.");
 
                     return;
                 }
@@ -458,11 +394,11 @@ public class MythicGrimlockScript : DialogScriptBase
                     TargetAnimation = 21
                 };
                 
-                Subject.Text = "Your bravery and skill in battle have truly hopped over our expectations. You've gone above and beyond to protect our warren and its inhabitants, and we will forever be grateful for your grimlock-tastic efforts.";
+                Subject.Text = " ";
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                source.Counters.Remove("GrimlockBoss", out _);
+                source.Counters.Remove("shank", out _);
                 source.Enums.Set(MythicGrimlock.BossDefeated);
                 source.Counters.AddOrIncrement("MythicBoss", 1);
 

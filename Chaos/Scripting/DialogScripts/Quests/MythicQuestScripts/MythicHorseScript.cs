@@ -82,17 +82,9 @@ public class MythicHorseScript : DialogScriptBase
                         OptionText = "Yeah, I cleared them."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "horse_no1",
-                        OptionText = "I'm sorry, not yet."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -108,17 +100,8 @@ public class MythicHorseScript : DialogScriptBase
                         OptionText = "What's the trouble now, your equine-ness?"
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "horse_no",
-                        OptionText = "I'm done for now."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -134,17 +117,9 @@ public class MythicHorseScript : DialogScriptBase
                         OptionText = "Yeah, it is done."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "horse_no1",
-                        OptionText = "I'm working on it."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -160,17 +135,9 @@ public class MythicHorseScript : DialogScriptBase
                         OptionText = "Sure thing, what do you need?"
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "horse_no",
-                        OptionText = "No, good luck."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
                 }
                 
                 if (horse == MythicHorse.Item)
@@ -183,17 +150,8 @@ public class MythicHorseScript : DialogScriptBase
                         OptionText = "I did! I scoured the fields."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "horse_no1",
-                        OptionText = "I am still searching."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -236,17 +194,8 @@ public class MythicHorseScript : DialogScriptBase
                         OptionText = "Consider it done.."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "horse_noboss",
-                        OptionText = "I won't do it."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
                 }
@@ -261,17 +210,9 @@ public class MythicHorseScript : DialogScriptBase
                         OptionText = "I carried out what was asked of me."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "horse_noboss2",
-                        OptionText = "I can't do it."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
                 }
@@ -287,7 +228,7 @@ public class MythicHorseScript : DialogScriptBase
             case "horse_lower":
             {
                 Subject.Text = "You have our paws-tounding gratitude. Don't let the horses get your goat, though - they're quick and nimble, and they can kick like mules. But we believe in you, and we know you'll do us proud. May the horse luck be with you!";
-                source.SendOrangeBarMessage("Kill 20 White Bunnies for the Horse Leader");
+                source.SendOrangeBarMessage("Kill 15 White Bunnies for the Horse Leader");
                 source.Enums.Set(MythicHorse.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -297,9 +238,9 @@ public class MythicHorseScript : DialogScriptBase
             case "horse_lower2":
             {
 
-                if (!source.Counters.TryGetValue("HorseLower", out var horselower) || (horselower < 20))
+                if (!source.Counters.TryGetValue("whitebunny", out var whitebunny) || (whitebunny < 15))
                 {
-                    Subject.Text = "You haven't killed enough lower horses.";
+                    Subject.Text = "You haven't killed enough White Bunnies.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -308,7 +249,7 @@ public class MythicHorseScript : DialogScriptBase
                 source.Enums.Set(MythicHorse.LowerComplete);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("HorseLower", out _);
+                source.Counters.Remove("whitebunny", out _);
                 Subject.Text = "Well done, adventurer! We saw you thundering through the fields with those bunnies in tow. You've lassoed 20 of them, by our count! That should teach them to stay away from our carrots.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "horse_initial";
@@ -319,7 +260,7 @@ public class MythicHorseScript : DialogScriptBase
             case "horse_higher":
             {
                 Subject.Text = "We knew we could count on you, partner. Good luck out there, and remember, don't let those brown bunnies get the best of you! (The horse leader lets out a hearty neigh as you walk away.)";
-                source.SendOrangeBarMessage("Kill 20 Brown Bunnies for the Horse Leader");
+                source.SendOrangeBarMessage("Kill 10 Brown and 10 Purple Bunnies for the Horse Leader");
                 source.Enums.Set(MythicHorse.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -328,8 +269,10 @@ public class MythicHorseScript : DialogScriptBase
 
             case "horse_higher2":
             {
+                source.Counters.TryGetValue("brownbunny", out var brownbunny);
+                source.Counters.TryGetValue("purplebunny", out var purplebunny);
 
-                if (!source.Counters.TryGetValue("HorseHigher", out var horsehigher) || (horsehigher < 20))
+                if ((brownbunny < 10) && (purplebunny < 10))
                 {
                     Subject.Text = "You haven't killed enough brown bunnies";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -343,7 +286,8 @@ public class MythicHorseScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Enums.Set(MythicHorse.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("HorseHigher", out _);
+                source.Counters.Remove("brownbunny", out _);
+                source.Counters.Remove("purplebunny", out _);
 
                 break;
             }
@@ -404,30 +348,31 @@ public class MythicHorseScript : DialogScriptBase
 
             case "horse_boss":
             {
-                Subject.Text = "That's what I like to hear, my little pony! You've proven yourself to be a dependable ally, and I know you have the chops to take down Mr. Hopps. Just watch your back, he's a slippery sucker, and he'll do anything to keep those carrots for himself.";
+                Subject.Text = "That's what I like to hear, my little pony! You've proven yourself to be a dependable ally, and I know you have the chops to take down Mr.Hopps. Just watch your back, he's a slippery sucker, and he'll do anything to keep those carrots for himself.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
                 source.Enums.Set(MythicHorse.BossStarted);
-                source.SendOrangeBarMessage("Kill the bunny boss three times.");
+                source.SendOrangeBarMessage("Kill Mr.Hopps three times.");
             }
 
                 break;
 
             case "horse_boss2":
             {
-                if (!source.Counters.TryGetValue("MrHopps", out var horseboss1) || (horseboss1 < 3))
+                if (!source.Counters.TryGetValue("MrHopps", out var mrhopps) || (mrhopps < 3))
                 {
-                    Subject.Text = "Please go kill the bunny boss atleast three times.";
+                    Subject.Text = "Please defeat Mr.Hopps three times.";
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.NextDialogKey = "Close";
+                    source.SendOrangeBarMessage("Kill Mr.Hopps three times.");
 
                     return;
                 }
 
-                Subject.Text = "Oh my hop! Thank you so much! This has really helped us bunnies get ahead. Those big, bad horses have been thumping on us for far too long, but now we can finally fight back!";
+                Subject.Text = " ";
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                source.Counters.Remove("HorseBoss", out _);
+                source.Counters.Remove("mrhopps", out _);
                 source.Enums.Set(MythicHorse.BossDefeated);
                 source.Counters.AddOrIncrement("MythicBoss", 1);
 

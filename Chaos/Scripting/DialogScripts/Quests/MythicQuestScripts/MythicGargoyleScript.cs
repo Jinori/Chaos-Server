@@ -58,14 +58,14 @@ public class MythicGargoyleScript : DialogScriptBase
                 if (hasGargoyle && (gargoyle == MythicGargoyle.EnemyAllied))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "You have allied yourself with our enemies and that fills me with rabbit-like fear. I cannot trust you to hop on our side again. Please leave our warren.";
+                    Subject.Text = " ";
                     Subject.NextDialogKey = "Close";
                 }
                 
                 if ((main == MythicQuestMain.MythicStarted) && !hasGargoyle)
 
                 {
-                    Subject.Text = "Ears to you, traveler. I am the leader of this warren of bunnies, and I carrot thank you enough for coming to our aid. The neigh-sayers may think we're just cute and fluffy, but we're tougher than we look.";
+                    Subject.Text = "";
                     
                     var option = new DialogOption
                     {
@@ -81,50 +81,34 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 if (gargoyle == MythicGargoyle.Lower)
                 {
-                    Subject.Text = "Well, well, well, look who's back! It's our favorite rabbit-loving adventurer! Have you come to tell us that you've completed the task we gave you?";
+                    Subject.Text = "";
 
                     var option = new DialogOption
                     {
                         DialogKey = "gargoyle_lower2",
                         OptionText = "Yes Big Bunny."
                     };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "gargoyle_no1",
-                        OptionText = "I'm sorry, not yet."
-                    };
+                    
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
                 }
                 if (gargoyle == MythicGargoyle.LowerComplete)
                 {
-                    Subject.Text = "Warren Wanderer, we are in need of your assistance once again. It seems that another group of horses has invaded our territory and is causing chaos and destruction. We need your help to remove them from our fields, just as you did with the previous group.";
+                    Subject.Text = " ";
                 
                     var option = new DialogOption
                     {
                         DialogKey = "gargoyle_start3",
-                        OptionText = "No problem Big Bunny."
+                        OptionText = " "
                     };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "gargoyle_no",
-                        OptionText = "I'm done for now."
-                    };
+                    
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -132,25 +116,16 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 if (gargoyle == MythicGargoyle.Higher)
                 {
-                    Subject.Text = "Hoppy Greetings, welcome back. Did you clear those hoofed oppressors?";
+                    Subject.Text = " ";
 
                     var option = new DialogOption
                     {
                         DialogKey = "gargoyle_higher2",
-                        OptionText = "Yeah, it is done."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "gargoyle_no1",
-                        OptionText = "I'm working on it."
+                        OptionText = " "
                     };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -165,23 +140,16 @@ public class MythicGargoyleScript : DialogScriptBase
                         DialogKey = "gargoyle_item",
                         OptionText = "I can get that."
                     };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "gargoyle_no",
-                        OptionText = "Not a chance, good luck."
-                    };
+                    
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
                 }
 
                 if (gargoyle == MythicGargoyle.Item)
                 {
-                    Subject.Text = "Hare-oic Aisling! Did you collect all the horse hair?";
+                    Subject.Text = " ";
 
                     var option = new DialogOption
                     {
@@ -189,17 +157,10 @@ public class MythicGargoyleScript : DialogScriptBase
                         OptionText = "I have them here."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "gargoyle_no1",
-                        OptionText = "Still working on it."
-                    };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
+                    
 
                     return;
 
@@ -241,17 +202,9 @@ public class MythicGargoyleScript : DialogScriptBase
                         OptionText = "Anything for you."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "gargoyle_noboss",
-                        OptionText = "I won't do it."
-                    };
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
                 }
@@ -267,17 +220,8 @@ public class MythicGargoyleScript : DialogScriptBase
                         OptionText = "I carried out what was asked of me."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "gargoyle_noboss2",
-                        OptionText = "I can't do it."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
                 }
@@ -293,8 +237,8 @@ public class MythicGargoyleScript : DialogScriptBase
 
             case "gargoyle_lower":
             {
-                Subject.Text = "You have our paws-tounding gratitude. Don't let the horses get your goat, though - they're quick and nimble, and they can kick like mules. But we believe in you, and we know you'll do us proud. May the gargoyle luck be with you!";
-                source.SendOrangeBarMessage("Kill 20 Purple Horses for Big Bunny");
+                Subject.Text = " ";
+                source.SendOrangeBarMessage("Kill 15 Zombie Grunts for Lord Gargoyle");
                 source.Enums.Set(MythicGargoyle.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -304,9 +248,9 @@ public class MythicGargoyleScript : DialogScriptBase
             case "gargoyle_lower2":
             {
 
-                if (!source.Counters.TryGetValue("BunnyLower", out var gargoylelower) || (gargoylelower < 20))
+                if (!source.Counters.TryGetValue("zombiegrunt", out var zombiegrunt) || (zombiegrunt < 15))
                 {
-                    Subject.Text = "You haven't killed enough lower horses.";
+                    Subject.Text = "You haven't killed enough Zombie Grunts.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -316,8 +260,8 @@ public class MythicGargoyleScript : DialogScriptBase
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("BunnyLower", out _);
-                Subject.Text = "As you can imagine, horses stomping around all day can really cramp a gargoyle's style. We've got carrots to grow and holes to dig, and we can't do any of that with a bunch of hooves stomping all over the place. Thank you.";
+                source.Counters.Remove("zombiegrunt", out _);
+                Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "gargoyle_initial";
 
@@ -326,8 +270,8 @@ public class MythicGargoyleScript : DialogScriptBase
 
             case "gargoyle_higher":
             {
-                Subject.Text = "Great, clear 20 horses in the further rooms and come back to me..";
-                source.SendOrangeBarMessage("Kill 20 Gray Horses for Big Bunny");
+                Subject.Text = "Great, clear 10 Zombie Soldiers and 10 Zombie Farmers--";
+                source.SendOrangeBarMessage("Kill 10 Zombie Soldiers and Farmers for Lord Gargoyle");
                 source.Enums.Set(MythicGargoyle.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -337,48 +281,46 @@ public class MythicGargoyleScript : DialogScriptBase
             case "gargoyle_higher2":
             {
 
-                if (!source.Counters.TryGetValue("BunnyHigher", out var gargoylehigher) || (gargoylehigher < 20))
+                source.Counters.TryGetValue("zombiesoldier", out var zombiesoldier);
+                source.Counters.TryGetValue("zombiefarmer", out var zombiefarmer);
+                
+
+                if ((zombiefarmer < 20) && (zombiesoldier < 20))
                 {
-                    Subject.Text = "You haven't killed enough higher horses.";
+                    Subject.Text = "You haven't killed enough Zombie Soldiers and Zombie Farmers.";
                     Subject.Type = MenuOrDialogType.Normal;
+                    source.SendOrangeBarMessage($"You have only killed {zombiesoldier} Soldiers and {zombiefarmer} Farmers.");
 
                     return;
                 }
 
-                Subject.Text = "You've really hopped to it and shown your gargoyle-licious heroism once again. We're incredibly grateful for your help, and we can't thank you enough. Our warren's crops will be able to grow strong and healthy once again, thanks to you.";
+                Subject.Text = " ";
                 Subject.NextDialogKey = "gargoyle_initial";
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Enums.Set(MythicGargoyle.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("BunnyHigher", out _);
+                source.Counters.Remove("zombiesoldier", out _);
+                source.Counters.Remove("zombiefarmer", out _);
 
                 var option = new DialogOption
                 {
                     DialogKey = "gargoyle_item",
                     OptionText = "I can get that."
                 };
-
-                var option1 = new DialogOption
-                {
-                    DialogKey = "gargoyle_no",
-                    OptionText = "Not a chance, good luck."
-                };
+                
 
                 if (!Subject.HasOption(option))
                     Subject.Options.Add(option);
-
-                if (!Subject.HasOption(option1))
-                    Subject.Options.Add(option1);
 
                 break;
             }
 
             case "gargoyle_item":
             {
-                Subject.Text = "Don't let us down, Warren Wanderer. We're counting on you to hop to it and bring back the horse hair we need. And remember, the early gargoyle gets the hair!";
-                source.SendOrangeBarMessage("Collect 25 horse hair for Big Bunny");
+                Subject.Text = " ";
+                source.SendOrangeBarMessage("Collect 25 Zombie Bones for Lord Gargoyle");
                 source.Enums.Set(MythicGargoyle.Item);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -388,9 +330,9 @@ public class MythicGargoyleScript : DialogScriptBase
             case "gargoyle_item2":
             {
 
-                if (!source.Inventory.RemoveQuantity("Horse Hair", 25))
+                if (!source.Inventory.RemoveQuantity("Zombie Bone", 25))
                 {
-                    Subject.Text = "Whatever it takes, we need you to gather more horse hair so that we can build warm and snug beds for all of us. We believe in you, Warren Wanderer. We know you can get the job done.";
+                    Subject.Text = " ";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -399,7 +341,7 @@ public class MythicGargoyleScript : DialogScriptBase
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Enums.Set(MythicGargoyle.ItemComplete);
-                Subject.Text = "You've really hopped to it and brought us enough horse hair to keep us warm and cozy through the long winter nights. This is gargoyle-tastic news!";
+                Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "gargoyle_initial";
 
@@ -412,7 +354,7 @@ public class MythicGargoyleScript : DialogScriptBase
                     && (hasZombie == zombie is MythicZombie.Allied or MythicZombie.BossStarted or MythicZombie.BossDefeated))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "Oh no! You already allied with the horses! Get away from us!";
+                    Subject.Text = " ";
                     source.Enums.Set(MythicGargoyle.EnemyAllied);
 
                     return;
@@ -420,8 +362,8 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 source.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Enums.Set(MythicGargoyle.Allied);
-                source.SendOrangeBarMessage("You are now allied with the bunnies!");
-                Subject.Text = $"Remember, {source.Name}, that no matter where your journeys take you, you will always have a home in our warren. The gargoyle luck be with you always!";
+                source.SendOrangeBarMessage("You are now allied with the Gargoyles!");
+                Subject.Text = $" ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "gargoyle_initial";
 
@@ -431,23 +373,23 @@ public class MythicGargoyleScript : DialogScriptBase
 
             case "gargoyle_boss":
             {
-                Subject.Text = "Please be careful, Warren Wanderer. We rabbits are a fragile and gentle species, and we need your help to survive. We'll be eagerly waiting for your return, hoping to hear tales of your gargoyle-licious bravery and triumph over Apple Jack. May the gargoyle gods be with you!";
+                Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
                 source.Enums.Set(MythicGargoyle.BossStarted);
-                source.SendOrangeBarMessage("Kill Apple Jack atleast three times.");
+                source.SendOrangeBarMessage("Kill Brains three times.");
             }
 
                 break;
 
             case "gargoyle_boss2":
             {
-                if (!source.Counters.TryGetValue("AppleJack", out var gargoyleboss1) || (gargoyleboss1 < 3))
+                if (!source.Counters.TryGetValue("Brains", out var brains) || (brains < 3))
                 {
-                    Subject.Text = "Please rest and recover your strength, and then hop back into action. We'll be here waiting, hoping and praying for your success. The fate of our warren rests on your paws, Warren Wanderer. We're counting on you!";
+                    Subject.Text = " ";
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.NextDialogKey = "Close";
-                    source.SendOrangeBarMessage("You haven't killed Apple Jack enough.");
+                    source.SendOrangeBarMessage("You haven't completely defeated Brains.");
 
                     return;
                 }
@@ -458,11 +400,11 @@ public class MythicGargoyleScript : DialogScriptBase
                     TargetAnimation = 21
                 };
                 
-                Subject.Text = "Your bravery and skill in battle have truly hopped over our expectations. You've gone above and beyond to protect our warren and its inhabitants, and we will forever be grateful for your gargoyle-tastic efforts.";
+                Subject.Text = " ";
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                source.Counters.Remove("BunnyBoss", out _);
+                source.Counters.Remove("Brains", out _);
                 source.Enums.Set(MythicGargoyle.BossDefeated);
                 source.Counters.AddOrIncrement("MythicBoss", 1);
 

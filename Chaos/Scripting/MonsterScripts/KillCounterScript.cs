@@ -48,7 +48,7 @@ public class KillCounterScript : MonsterScriptBase
                         if (!hasStage || (stage != RionaRatQuestStage.StartedRatQuest))
                             return;
 
-                        if (value > 5)
+                        if (value >= 5)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -69,7 +69,7 @@ public class KillCounterScript : MonsterScriptBase
                         if (!hasStage || (stage != CryptSlayerStage.Bat))
                             return;
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -91,7 +91,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("CryptSlayer", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -112,7 +112,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("CryptSlayer", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -133,7 +133,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("CryptSlayer", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -154,7 +154,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("CryptSlayer", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -175,7 +175,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("CryptSlayer", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -196,7 +196,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("CryptSlayer", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -217,7 +217,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("CryptSlayer", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -238,7 +238,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("CryptSlayer", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -259,7 +259,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("CryptSlayer", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -280,7 +280,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("CryptSlayer", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -301,7 +301,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("CryptSlayer", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -322,7 +322,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("CryptSlayer", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -343,7 +343,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("PurpleHorse", out var value);
 
-                        if (value > 15)
+                        if (value >= 15)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -364,7 +364,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("grayhorse", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -385,7 +385,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("redhorse", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -406,7 +406,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("AppleJack", out var value);
 
-                        if (value > 3)
+                        if (value >= 3)
                         {
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name} Return to Big Bunny.");
 
@@ -427,7 +427,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("whitebunny", out var value);
 
-                        if (value > 15)
+                        if (value >= 15)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -448,7 +448,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("brownbunny", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -469,7 +469,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("purplebunny", out var value);
 
-                        if (value > 10)
+                        if (value >= 10)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -490,7 +490,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("MrHopps", out var value);
 
-                        if (value > 3)
+                        if (value >= 3)
                         {
                             aisling.SendOrangeBarMessage($"You've already defeated {Subject.Template.Name}. Return to the Horse Leader.");
 
@@ -508,9 +508,17 @@ public class KillCounterScript : MonsterScriptBase
 
                         if (!hasFrog || (frog != MythicFrog.Lower))
                             return;
+                        
+                        aisling.Counters.TryGetValue("mythicwolf", out var value);
+
+                        if (value >= 10)
+                        {
+                            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+                            return;
+                        }
 
                         aisling.Counters.AddOrIncrement("MythicWolf", 1);
-                        aisling.Counters.TryGetValue("MythicWolf", out var value);
                         aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
 
                         break;
@@ -522,8 +530,16 @@ public class KillCounterScript : MonsterScriptBase
                         if (!hasFrog || (frog != MythicFrog.Higher))
                             return;
 
-                        aisling.Counters.AddOrIncrement("WhiteWolf", 1);
                         aisling.Counters.TryGetValue("WhiteWolf", out var value);
+
+                        if (value >= 10)
+                        {
+                            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+                            return;
+                        }
+                        
+                        aisling.Counters.AddOrIncrement("WhiteWolf", 1);
                         aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
 
                         break;
@@ -534,9 +550,16 @@ public class KillCounterScript : MonsterScriptBase
 
                         if (!hasFrog || (frog != MythicFrog.Higher))
                             return;
+                        aisling.Counters.TryGetValue("beardedwolf", out var value);
+
+                        if (value >= 10)
+                        {
+                            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+                            return;
+                        }
 
                         aisling.Counters.AddOrIncrement("BeardedWolf", 1);
-                        aisling.Counters.TryGetValue("BeardedWolf", out var value);
                         aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
 
                         break;
@@ -547,10 +570,18 @@ public class KillCounterScript : MonsterScriptBase
 
                         if (!hasFrog || (frog != MythicFrog.BossStarted))
                             return;
+                        
+                        aisling.Counters.TryGetValue("nymeria", out var value);
+
+                        if (value >= 3)
+                        {
+                            aisling.SendOrangeBarMessage($"You've already defeated {Subject.Template.Name}. Return to the King Frog.");
+
+                            return;
+                        }
 
                         aisling.Counters.AddOrIncrement("Nymeria", 1);
-                        aisling.Counters.TryGetValue("Nymeria", out var value);
-                        aisling.SendOrangeBarMessage($"Killed {value} {Subject.Template.Name}.");
+                        aisling.SendOrangeBarMessage($"You defeated Nymeria ({value} times!");
 
                         break;
                     }
@@ -563,7 +594,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("MythicMantis", out var value);
 
-                        if (value > 15)
+                        if (value >= 15)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -584,7 +615,7 @@ public class KillCounterScript : MonsterScriptBase
 
                         aisling.Counters.TryGetValue("BrownMantis", out var value);
 
-                        if (value > 20)
+                        if (value >= 20)
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -596,6 +627,175 @@ public class KillCounterScript : MonsterScriptBase
 
                         break;
                     }
+                    case "mantis1_boss":
+                    {
+                        var hasBee = aisling.Enums.TryGetValue(out MythicBee bee);
+
+                        if (!hasBee || (bee != MythicBee.BossStarted))
+                            return;
+                        
+                        aisling.Counters.TryGetValue("firetree", out var value);
+
+                        if (value >= 3)
+                        {
+                            aisling.SendOrangeBarMessage($"You've already defeated {Subject.Template.Name}. Return to the Queen Bee.");
+
+                            return;
+                        }
+
+                        aisling.Counters.AddOrIncrement("firetree", 1);
+                        aisling.SendOrangeBarMessage($"You defeated Fire Tree ({value} times!");
+
+                        break;
+                    }
+                    case "bee1-1":
+                    {
+                        var hasMantis = aisling.Enums.TryGetValue(out MythicMantis mantis);
+
+                        if (!hasMantis || (mantis != MythicMantis.Lower))
+                            return;
+
+                        aisling.Counters.TryGetValue("mythicbee", out var value);
+
+                        if (value >= 15)
+                        {
+                            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+                            return;
+                        }
+
+                        aisling.Counters.AddOrIncrement("mythicbee", 1);
+                        aisling.SendOrangeBarMessage($"You've killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "bee1-2":
+                    {
+                        var hasMantis = aisling.Enums.TryGetValue(out MythicMantis mantis);
+
+                        if (!hasMantis || (mantis != MythicMantis.Higher))
+                            return;
+
+                        aisling.Counters.TryGetValue("greenbee", out var value);
+
+                        if (value >= 20)
+                        {
+                            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+                            return;
+                        }
+
+                        aisling.Counters.AddOrIncrement("greenbee", 1);
+                        aisling.SendOrangeBarMessage($"You've killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "bee1_boss":
+                    {
+                        var hasMantis = aisling.Enums.TryGetValue(out MythicMantis mantis);
+
+                        if (!hasMantis || (mantis != MythicMantis.BossStarted))
+                            return;
+                        
+                        aisling.Counters.TryGetValue("Carolina", out var value);
+
+                        if (value >= 3)
+                        {
+                            aisling.SendOrangeBarMessage($"You've already defeated {Subject.Template.Name}. Return to the King Mantis.");
+
+                            return;
+                        }
+
+                        aisling.Counters.AddOrIncrement("carolina", 1);
+                        aisling.SendOrangeBarMessage($"You defeated Carolina ({value} times!");
+
+                        break;
+                    }
+                    case "frog1-1":
+                    {
+                        var hasWolf = aisling.Enums.TryGetValue(out MythicWolf wolf);
+
+                        if (!hasWolf || (wolf != MythicWolf.Lower))
+                            return;
+
+                        aisling.Counters.TryGetValue("mythicfrog", out var value);
+
+                        if (value >= 15)
+                        {
+                            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+                            return;
+                        }
+
+                        aisling.Counters.AddOrIncrement("mythicfrog", 1);
+                        aisling.SendOrangeBarMessage($"You've killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "frog1-2":
+                    {
+                        var hasWolf = aisling.Enums.TryGetValue(out MythicWolf wolf);
+
+                        if (!hasWolf || (wolf != MythicWolf.Higher))
+                            return;
+
+                        aisling.Counters.TryGetValue("bluefrog", out var value);
+
+                        if (value >= 10)
+                        {
+                            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+                            return;
+                        }
+
+                        aisling.Counters.AddOrIncrement("bluefrog", 1);
+                        aisling.SendOrangeBarMessage($"You've killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "frog1-3":
+                    {
+                        var hasWolf = aisling.Enums.TryGetValue(out MythicWolf wolf);
+
+                        if (!hasWolf || (wolf != MythicWolf.Higher))
+                            return;
+
+                        aisling.Counters.TryGetValue("redfrog", out var value);
+
+                        if (value >= 10)
+                        {
+                            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+                            return;
+                        }
+
+                        aisling.Counters.AddOrIncrement("redfrog", 1);
+                        aisling.SendOrangeBarMessage($"You've killed {value} {Subject.Template.Name}.");
+
+                        break;
+                    }
+                    case "frog1_boss":
+                    {
+                        var hasWolf = aisling.Enums.TryGetValue(out MythicWolf wolf);
+
+                        if (!hasWolf || (wolf != MythicWolf.BossStarted))
+                            return;
+                        
+                        aisling.Counters.TryGetValue("frogger", out var value);
+
+                        if (value >= 3)
+                        {
+                            aisling.SendOrangeBarMessage($"You've already defeated {Subject.Template.Name}. Return to the Wolf Pack Leader.");
+
+                            return;
+                        }
+
+                        aisling.Counters.AddOrIncrement("frogger", 1);
+                        aisling.SendOrangeBarMessage($"You defeated Frogger ({value} times!");
+
+                        break;
+                    }
+                    
                 }
     }
 }

@@ -58,14 +58,14 @@ public class MythicMantisScript : DialogScriptBase
                 if (hasMantis && (mantis == MythicMantis.EnemyAllied))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "You have allied yourself with our enemies and that fills me with rabbit-like fear. I cannot trust you to hop on our side again. Please leave our warren.";
+                    Subject.Text = " ";
                     Subject.NextDialogKey = "Close";
                 }
                 
                 if ((main == MythicQuestMain.MythicStarted) && !hasMantis)
 
                 {
-                    Subject.Text = "Ears to you, traveler. I am the leader of this warren of bunnies, and I carrot thank you enough for coming to our aid. The neigh-sayers may think we're just cute and fluffy, but we're tougher than we look.";
+                    Subject.Text = " ";
                     
                     var option = new DialogOption
                     {
@@ -89,17 +89,8 @@ public class MythicMantisScript : DialogScriptBase
                         OptionText = "Yes Big Bunny."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "mantis_no1",
-                        OptionText = "I'm sorry, not yet."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -113,18 +104,9 @@ public class MythicMantisScript : DialogScriptBase
                         DialogKey = "mantis_start3",
                         OptionText = "No problem Big Bunny."
                     };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "mantis_no",
-                        OptionText = "I'm done for now."
-                    };
-
+                    
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -140,17 +122,8 @@ public class MythicMantisScript : DialogScriptBase
                         OptionText = "Yeah, it is done."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "mantis_no1",
-                        OptionText = "I'm working on it."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -166,17 +139,9 @@ public class MythicMantisScript : DialogScriptBase
                         OptionText = "I can get that."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "mantis_no",
-                        OptionText = "Not a chance, good luck."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
                 }
 
                 if (mantis == MythicMantis.Item)
@@ -189,17 +154,8 @@ public class MythicMantisScript : DialogScriptBase
                         OptionText = "I have them here."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "mantis_no1",
-                        OptionText = "Still working on it."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 
@@ -241,17 +197,8 @@ public class MythicMantisScript : DialogScriptBase
                         OptionText = "Anything for you."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "mantis_noboss",
-                        OptionText = "I won't do it."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
                 }
@@ -267,17 +214,8 @@ public class MythicMantisScript : DialogScriptBase
                         OptionText = "I carried out what was asked of me."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "mantis_noboss2",
-                        OptionText = "I can't do it."
-                    };
-
                     if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
+                        Subject.Options.Add(option);    
 
                     return;
                 }
@@ -293,8 +231,8 @@ public class MythicMantisScript : DialogScriptBase
 
             case "mantis_lower":
             {
-                Subject.Text = "You have our paws-tounding gratitude. Don't let the horses get your goat, though - they're quick and nimble, and they can kick like mules. But we believe in you, and we know you'll do us proud. May the mantis luck be with you!";
-                source.SendOrangeBarMessage("Kill 20 Purple Horses for Big Bunny");
+                Subject.Text = " ";
+                source.SendOrangeBarMessage("Kill 15 Mythic Bees for King Mantis");
                 source.Enums.Set(MythicMantis.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -304,9 +242,9 @@ public class MythicMantisScript : DialogScriptBase
             case "mantis_lower2":
             {
 
-                if (!source.Counters.TryGetValue("BunnyLower", out var mantislower) || (mantislower < 20))
+                if (!source.Counters.TryGetValue("mythicbee", out var mantislower) || (mantislower < 15))
                 {
-                    Subject.Text = "You haven't killed enough lower horses.";
+                    Subject.Text = "You haven't killed enough Mythic Bees";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -316,8 +254,8 @@ public class MythicMantisScript : DialogScriptBase
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("BunnyLower", out _);
-                Subject.Text = "As you can imagine, horses stomping around all day can really cramp a mantis's style. We've got carrots to grow and holes to dig, and we can't do any of that with a bunch of hooves stomping all over the place. Thank you.";
+                source.Counters.Remove("mythicbee", out _);
+                Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "mantis_initial";
 
@@ -326,8 +264,8 @@ public class MythicMantisScript : DialogScriptBase
 
             case "mantis_higher":
             {
-                Subject.Text = "Great, clear 20 horses in the further rooms and come back to me..";
-                source.SendOrangeBarMessage("Kill 20 Gray Horses for Big Bunny");
+                Subject.Text = "Kill 20 Green Bees";
+                source.SendOrangeBarMessage("Kill 20 Green Bees for King Mantis");
                 source.Enums.Set(MythicMantis.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -337,22 +275,22 @@ public class MythicMantisScript : DialogScriptBase
             case "mantis_higher2":
             {
 
-                if (!source.Counters.TryGetValue("BunnyHigher", out var mantishigher) || (mantishigher < 20))
+                if (!source.Counters.TryGetValue("greenbee", out var mantishigher) || (mantishigher < 20))
                 {
-                    Subject.Text = "You haven't killed enough higher horses.";
+                    Subject.Text = "You haven't killed enough Green Bees";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
                 }
 
-                Subject.Text = "You've really hopped to it and shown your mantis-licious heroism once again. We're incredibly grateful for your help, and we can't thank you enough. Our warren's crops will be able to grow strong and healthy once again, thanks to you.";
+                Subject.Text = " ";
                 Subject.NextDialogKey = "mantis_initial";
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Enums.Set(MythicMantis.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("BunnyHigher", out _);
+                source.Counters.Remove("greenbee", out _);
 
                 var option = new DialogOption
                 {
@@ -360,25 +298,16 @@ public class MythicMantisScript : DialogScriptBase
                     OptionText = "I can get that."
                 };
 
-                var option1 = new DialogOption
-                {
-                    DialogKey = "mantis_no",
-                    OptionText = "Not a chance, good luck."
-                };
-
                 if (!Subject.HasOption(option))
                     Subject.Options.Add(option);
-
-                if (!Subject.HasOption(option1))
-                    Subject.Options.Add(option1);
 
                 break;
             }
 
             case "mantis_item":
             {
-                Subject.Text = "Don't let us down, Warren Wanderer. We're counting on you to hop to it and bring back the horse hair we need. And remember, the early mantis gets the hair!";
-                source.SendOrangeBarMessage("Collect 25 horse hair for Big Bunny");
+                Subject.Text = " ";
+                source.SendOrangeBarMessage("Collect 25 Mythic Honey for King Mantis");
                 source.Enums.Set(MythicMantis.Item);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -388,9 +317,9 @@ public class MythicMantisScript : DialogScriptBase
             case "mantis_item2":
             {
 
-                if (!source.Inventory.RemoveQuantity("Horse Hair", 25))
+                if (!source.Inventory.RemoveQuantity("Mythic Honey", 25))
                 {
-                    Subject.Text = "Whatever it takes, we need you to gather more horse hair so that we can build warm and snug beds for all of us. We believe in you, Warren Wanderer. We know you can get the job done.";
+                    Subject.Text = " ";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -399,7 +328,7 @@ public class MythicMantisScript : DialogScriptBase
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Enums.Set(MythicMantis.ItemComplete);
-                Subject.Text = "You've really hopped to it and brought us enough horse hair to keep us warm and cozy through the long winter nights. This is mantis-tastic news!";
+                Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "mantis_initial";
 
@@ -412,7 +341,7 @@ public class MythicMantisScript : DialogScriptBase
                     && (hasBee == bee is MythicBee.Allied or MythicBee.BossStarted or MythicBee.BossDefeated))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "Oh no! You already allied with the horses! Get away from us!";
+                    Subject.Text = " ";
                     source.Enums.Set(MythicMantis.EnemyAllied);
 
                     return;
@@ -420,8 +349,8 @@ public class MythicMantisScript : DialogScriptBase
 
                 source.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Enums.Set(MythicMantis.Allied);
-                source.SendOrangeBarMessage("You are now allied with the bunnies!");
-                Subject.Text = $"Remember, {source.Name}, that no matter where your journeys take you, you will always have a home in our warren. The mantis luck be with you always!";
+                source.SendOrangeBarMessage("You are now allied with the Mantises!");
+                Subject.Text = $" ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "mantis_initial";
 
@@ -431,23 +360,23 @@ public class MythicMantisScript : DialogScriptBase
 
             case "mantis_boss":
             {
-                Subject.Text = "Please be careful, Warren Wanderer. We rabbits are a fragile and gentle species, and we need your help to survive. We'll be eagerly waiting for your return, hoping to hear tales of your mantis-licious bravery and triumph over Apple Jack. May the mantis gods be with you!";
+                Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
                 source.Enums.Set(MythicMantis.BossStarted);
-                source.SendOrangeBarMessage("Kill Apple Jack atleast three times.");
+                source.SendOrangeBarMessage("Kill Carolina three times.");
             }
 
                 break;
 
             case "mantis_boss2":
             {
-                if (!source.Counters.TryGetValue("AppleJack", out var mantisboss1) || (mantisboss1 < 3))
+                if (!source.Counters.TryGetValue("Carolina", out var mantisboss1) || (mantisboss1 < 3))
                 {
-                    Subject.Text = "Please rest and recover your strength, and then hop back into action. We'll be here waiting, hoping and praying for your success. The fate of our warren rests on your paws, Warren Wanderer. We're counting on you!";
+                    Subject.Text = " ";
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.NextDialogKey = "Close";
-                    source.SendOrangeBarMessage("You haven't killed Apple Jack enough.");
+                    source.SendOrangeBarMessage("You haven't completely defeated Carolina.");
 
                     return;
                 }
@@ -458,11 +387,11 @@ public class MythicMantisScript : DialogScriptBase
                     TargetAnimation = 21
                 };
                 
-                Subject.Text = "Your bravery and skill in battle have truly hopped over our expectations. You've gone above and beyond to protect our warren and its inhabitants, and we will forever be grateful for your mantis-tastic efforts.";
+                Subject.Text = " ";
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                source.Counters.Remove("BunnyBoss", out _);
+                source.Counters.Remove("carolina", out _);
                 source.Enums.Set(MythicMantis.BossDefeated);
                 source.Counters.AddOrIncrement("MythicBoss", 1);
 
