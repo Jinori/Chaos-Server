@@ -13,6 +13,7 @@ namespace Chaos.Scripting.SkillScripts;
 public class DamageScript : BasicSkillScriptBase, DamageComponent.IDamageComponentOptions
 {
     protected DamageComponent DamageComponent { get; }
+    protected DurabilityComponent DurabilityComponent { get; }
 
     /// <inheritdoc />
     public DamageScript(Skill subject)
@@ -20,6 +21,7 @@ public class DamageScript : BasicSkillScriptBase, DamageComponent.IDamageCompone
     {
         ApplyDamageScript = DefaultApplyDamageScript.Create();
         DamageComponent = new DamageComponent();
+        DurabilityComponent = new DurabilityComponent();
         SourceScript = this;
     }
 
@@ -28,6 +30,7 @@ public class DamageScript : BasicSkillScriptBase, DamageComponent.IDamageCompone
     {
         var targets = AbilityComponent.Activate<Creature>(context, this);
         DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
+        DurabilityComponent.TryApplyDurability(context,targets.TargetEntities, this);
     }
 
     #region ScriptVars
