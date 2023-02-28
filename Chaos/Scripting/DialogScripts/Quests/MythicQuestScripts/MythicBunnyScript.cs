@@ -62,7 +62,7 @@ public class MythicBunnyScript : DialogScriptBase
                     Subject.NextDialogKey = "Close";
                 }
                 
-                if ((main == MythicQuestMain.MythicStarted) && !hasBunny)
+                if (hasMain && !hasBunny)
 
                 {
                     Subject.Text = "Ears to you, traveler. I am the leader of this warren of bunnies, and I carrot thank you enough for coming to our aid. The neigh-sayers may think we're just cute and fluffy, but we're tougher than we look.";
@@ -244,7 +244,7 @@ public class MythicBunnyScript : DialogScriptBase
             case "bunny_lower2":
             {
 
-                if (!source.Counters.TryGetValue("purplehorse", out var purplehorse) || (purplehorse < 20))
+                if (!source.Counters.TryGetValue("purplehorse", out var purplehorse) || (purplehorse < 15))
                 {
                     Subject.Text = "You haven't killed enough Purple Horses.";
                     Subject.Type = MenuOrDialogType.Normal;

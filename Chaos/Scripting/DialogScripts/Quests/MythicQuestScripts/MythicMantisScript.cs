@@ -62,7 +62,7 @@ public class MythicMantisScript : DialogScriptBase
                     Subject.NextDialogKey = "Close";
                 }
                 
-                if ((main == MythicQuestMain.MythicStarted) && !hasMantis)
+                if (hasMain && !hasMantis)
 
                 {
                     Subject.Text = " ";

@@ -62,7 +62,7 @@ public class MythicGargoyleScript : DialogScriptBase
                     Subject.NextDialogKey = "Close";
                 }
                 
-                if ((main == MythicQuestMain.MythicStarted) && !hasGargoyle)
+                if (hasMain && !hasGargoyle)
 
                 {
                     Subject.Text = "";
@@ -270,8 +270,8 @@ public class MythicGargoyleScript : DialogScriptBase
 
             case "gargoyle_higher":
             {
-                Subject.Text = "Great, clear 10 Zombie Soldiers and 10 Zombie Farmers--";
-                source.SendOrangeBarMessage("Kill 10 Zombie Soldiers and Farmers for Lord Gargoyle");
+                Subject.Text = "Great, clear 10 Zombie Soldiers and 10 Zombie Lumberjacks--";
+                source.SendOrangeBarMessage("Kill 10 Zombie Soldiers and Lumberjacks for Lord Gargoyle");
                 source.Enums.Set(MythicGargoyle.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -282,14 +282,14 @@ public class MythicGargoyleScript : DialogScriptBase
             {
 
                 source.Counters.TryGetValue("zombiesoldier", out var zombiesoldier);
-                source.Counters.TryGetValue("zombiefarmer", out var zombiefarmer);
+                source.Counters.TryGetValue("zombiefarmer", out var zombielumberjack);
                 
 
-                if ((zombiefarmer < 20) && (zombiesoldier < 20))
+                if ((zombielumberjack < 10) && (zombiesoldier < 10))
                 {
-                    Subject.Text = "You haven't killed enough Zombie Soldiers and Zombie Farmers.";
+                    Subject.Text = "You haven't killed enough Zombie Soldiers and Zombie Lumberjacks.";
                     Subject.Type = MenuOrDialogType.Normal;
-                    source.SendOrangeBarMessage($"You have only killed {zombiesoldier} Soldiers and {zombiefarmer} Farmers.");
+                    source.SendOrangeBarMessage($"You have only killed {zombiesoldier} Soldiers and {zombielumberjack} Farmers.");
 
                     return;
                 }
@@ -302,7 +302,7 @@ public class MythicGargoyleScript : DialogScriptBase
                 source.Enums.Set(MythicGargoyle.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
                 source.Counters.Remove("zombiesoldier", out _);
-                source.Counters.Remove("zombiefarmer", out _);
+                source.Counters.Remove("zombielumberjack", out _);
 
                 var option = new DialogOption
                 {

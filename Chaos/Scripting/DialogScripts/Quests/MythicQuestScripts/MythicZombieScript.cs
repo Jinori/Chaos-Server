@@ -53,7 +53,7 @@ public class MythicZombieScript : DialogScriptBase
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "wolf_initial":
+            case "zombie_initial":
             {
                 if (hasZombie && (zombie == MythicZombie.EnemyAllied))
                 {
@@ -62,7 +62,7 @@ public class MythicZombieScript : DialogScriptBase
                     Subject.NextDialogKey = "Close";
                 }
                 
-                if ((main == MythicQuestMain.MythicStarted) && !hasZombie)
+                if (hasMain && !hasZombie)
 
                 {
                     Subject.Text = "Ears to you, traveler. I am the leader of this warren of bunnies, and I carrot thank you enough for coming to our aid. The neigh-sayers may think we're just cute and fluffy, but we're tougher than we look.";

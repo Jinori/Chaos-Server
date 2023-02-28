@@ -62,7 +62,7 @@ public class MythicKoboldScript : DialogScriptBase
                     Subject.NextDialogKey = "Close";
                 }
                 
-                if ((main == MythicQuestMain.MythicStarted) && !hasKobold)
+                if (hasMain && !hasKobold)
 
                 {
                     Subject.Text = "Ears to you, traveler. I am the leader of this warren of bunnies, and I carrot thank you enough for coming to our aid. The neigh-sayers may think we're just cute and fluffy, but we're tougher than we look.";

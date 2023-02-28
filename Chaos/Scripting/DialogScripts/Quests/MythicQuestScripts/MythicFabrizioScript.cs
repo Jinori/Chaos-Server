@@ -55,6 +55,16 @@ public class MythicFabrizioScript : DialogScriptBase
                 {
                     Subject.Text = "Greetings Young Aisling, you are too weak to be here. Please get out of here.";
                     Subject.Type = MenuOrDialogType.Normal;
+
+                    return;
+                }
+                
+                if (main == MythicQuestMain.CompletedMythic)
+                {
+                    Subject.Text = "Thank you for all your hard work Aisling. These lands are forever in your debt.";
+                    Subject.Type = MenuOrDialogType.Normal;
+
+                    return;
                 }
 
                 if (!hasMain)
@@ -68,7 +78,7 @@ public class MythicFabrizioScript : DialogScriptBase
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
 
-                    break;
+                    return;
                 }
 
                 if (main != MythicQuestMain.CompletedAll)
@@ -85,10 +95,9 @@ public class MythicFabrizioScript : DialogScriptBase
                 if (source.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
                 {
                     Subject.Text =
-                        "You really did it! You've made alliances with some of the leaders. Here's something for my gratitude. They have been feuding forever!";
-
+                        "You really did it! You've made alliances with some of the leaders. Here's something for my gratitude. They have been feuding forever! Whichever alliances you made will be victorious. The others will perish and these lands shall be peaceful once again. Unfortunately, it was the only way.";
+                    Subject.Type = MenuOrDialogType.Normal;
                     source.Enums.Set(MythicQuestMain.CompletedMythic);
-
                     ExperienceDistributionScript.GiveExp(source, source.UserStatSheet.Level <= 98 ? tnl : 50000000);
 
                     source.Legend.AddOrAccumulate(

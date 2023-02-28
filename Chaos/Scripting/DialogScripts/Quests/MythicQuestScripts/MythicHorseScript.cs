@@ -56,7 +56,7 @@ public class MythicHorseScript : DialogScriptBase
                     Subject.NextDialogKey = "Close";
                 }
                 
-                if ((main == MythicQuestMain.MythicStarted) && !hasHorse)
+                if (hasMain && !hasHorse)
                 {
                     Subject.Text = "Well howdy there, traveler! You look like just the horse-whisperer we need. We've got a carrot conundrum on our hooves - those darn bunnies keep snatching our carrots from right under our noses. We need you to take care of the situation.";
                     

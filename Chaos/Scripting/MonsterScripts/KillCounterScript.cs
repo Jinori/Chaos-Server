@@ -373,9 +373,14 @@ public class KillCounterScript : MonsterScriptBase
                         if (!hasBunny || (bunny != MythicBunny.BossStarted))
                             return;
                         
-                        if (aisling.Counters.CounterGreaterThanOrEqualTo("AppleJack", 3))
+                        if (aisling.Counters.CounterGreaterThanOrEqualTo("AppleJack", 2))
                         {
-                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name} Return to Big Bunny.");
+                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Big Bunny.");
+
+                            if (!aisling.Counters.CounterGreaterThanOrEqualTo("AppleJack", 3))
+                            {
+                                aisling.Counters.AddOrIncrement("AppleJack");
+                            }
 
                             return;
                         }
@@ -448,10 +453,15 @@ public class KillCounterScript : MonsterScriptBase
 
                         if (!hasHorse || (horse != MythicHorse.BossStarted))
                             return;
-
-                        if (aisling.Counters.CounterGreaterThanOrEqualTo("MrHopps", 3))
+                        
+                        if (aisling.Counters.CounterGreaterThanOrEqualTo("MrHopps", 2))
                         {
-                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name} Return to Big Bunny.");
+                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Horse Leader.");
+
+                            if (!aisling.Counters.CounterGreaterThanOrEqualTo("MrHopps", 3))
+                            {
+                                aisling.Counters.AddOrIncrement("MrHopps");
+                            }
 
                             return;
                         }
@@ -468,7 +478,7 @@ public class KillCounterScript : MonsterScriptBase
                         if (!hasFrog || (frog != MythicFrog.Lower))
                             return;
                         
-                        if (aisling.Counters.CounterGreaterThanOrEqualTo("MythicWolf", 10))
+                        if (aisling.Counters.CounterGreaterThanOrEqualTo("MythicWolf", 15))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -525,9 +535,14 @@ public class KillCounterScript : MonsterScriptBase
                         if (!hasFrog || (frog != MythicFrog.BossStarted))
                             return;
                         
-                        if (aisling.Counters.CounterGreaterThanOrEqualTo("Nymeria", 3))
+                        if (aisling.Counters.CounterGreaterThanOrEqualTo("Nymeria", 2))
                         {
-                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name} Return to King Frog.");
+                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to King Frog.");
+
+                            if (!aisling.Counters.CounterGreaterThanOrEqualTo("Nymeria", 3))
+                            {
+                                aisling.Counters.AddOrIncrement("Nymeria");
+                            }
 
                             return;
                         }
@@ -563,7 +578,7 @@ public class KillCounterScript : MonsterScriptBase
                         if (!hasBee || (bee != MythicBee.Higher))
                             return;
 
-                        if (aisling.Counters.CounterGreaterThanOrEqualTo("BrownMantis", 10))
+                        if (aisling.Counters.CounterGreaterThanOrEqualTo("BrownMantis", 20))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
@@ -582,9 +597,14 @@ public class KillCounterScript : MonsterScriptBase
                         if (!hasBee || (bee != MythicBee.BossStarted))
                             return;
                         
-                        if (aisling.Counters.CounterGreaterThanOrEqualTo("FireTree", 3))
+                        if (aisling.Counters.CounterGreaterThanOrEqualTo("FireTree", 2))
                         {
-                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name} Return to Bee Queen.");
+                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Bee Queen.");
+
+                            if (!aisling.Counters.CounterGreaterThanOrEqualTo("FireTree", 3))
+                            {
+                                aisling.Counters.AddOrIncrement("FireTree");
+                            }
 
                             return;
                         }
@@ -639,9 +659,14 @@ public class KillCounterScript : MonsterScriptBase
                         if (!hasMantis || (mantis != MythicMantis.BossStarted))
                             return;
                         
-                        if (aisling.Counters.CounterGreaterThanOrEqualTo("Carolina", 3))
+                        if (aisling.Counters.CounterGreaterThanOrEqualTo("Carolina", 2))
                         {
-                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name} Return to King Mantis.");
+                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Mantis King.");
+
+                            if (!aisling.Counters.CounterGreaterThanOrEqualTo("Carolina", 3))
+                            {
+                                aisling.Counters.AddOrIncrement("Carolina");
+                            }
 
                             return;
                         }
@@ -715,9 +740,14 @@ public class KillCounterScript : MonsterScriptBase
                         if (!hasWolf || (wolf != MythicWolf.BossStarted))
                             return;
                         
-                        if (aisling.Counters.CounterGreaterThanOrEqualTo("Frogger", 3))
+                        if (aisling.Counters.CounterGreaterThanOrEqualTo("Frogger", 2))
                         {
-                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name} Return to Wolf Pack Leader.");
+                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Wolf Pack Leader.");
+
+                            if (!aisling.Counters.CounterGreaterThanOrEqualTo("Frogger", 3))
+                            {
+                                aisling.Counters.AddOrIncrement("Frogger");
+                            }
 
                             return;
                         }
@@ -791,9 +821,14 @@ public class KillCounterScript : MonsterScriptBase
                         if (!hasZombie || (zombie != MythicZombie.BossStarted))
                             return;
                         
-                        if (aisling.Counters.CounterGreaterThanOrEqualTo("GargoyleFiend", 3))
+                        if (aisling.Counters.CounterGreaterThanOrEqualTo("GargoyleFiend", 2))
                         {
-                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name} Return to Superior Zombie.");
+                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Superior Zombie");
+
+                            if (!aisling.Counters.CounterGreaterThanOrEqualTo("GargoyleFiend", 3))
+                            {
+                                aisling.Counters.AddOrIncrement("GargoyleFiend");
+                            }
 
                             return;
                         }
@@ -867,9 +902,14 @@ public class KillCounterScript : MonsterScriptBase
                         if (!hasGargoyle || (gargoyle != MythicGargoyle.BossStarted))
                             return;
                         
-                        if (aisling.Counters.CounterGreaterThanOrEqualTo("Brains", 3))
+                        if (aisling.Counters.CounterGreaterThanOrEqualTo("Brains", 2))
                         {
-                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name} Return to Lord Gargoyle.");
+                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Lord Gargoyle.");
+
+                            if (!aisling.Counters.CounterGreaterThanOrEqualTo("Brains", 3))
+                            {
+                                aisling.Counters.AddOrIncrement("Brains");
+                            }
 
                             return;
                         }
@@ -943,9 +983,14 @@ public class KillCounterScript : MonsterScriptBase
                         if (!hasKobold || (kobold != MythicKobold.BossStarted))
                             return;
                         
-                        if (aisling.Counters.CounterGreaterThanOrEqualTo("Grimlock Princess", 3))
+                        if (aisling.Counters.CounterGreaterThanOrEqualTo("GrimlockPrincess", 2))
                         {
-                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name} Return to Kobold Pack Leader.");
+                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Kobold Pack Leader.");
+
+                            if (!aisling.Counters.CounterGreaterThanOrEqualTo("GrimlockPrincess", 3))
+                            {
+                                aisling.Counters.AddOrIncrement("GrimlockPrincess");
+                            }
 
                             return;
                         }
@@ -1019,15 +1064,20 @@ public class KillCounterScript : MonsterScriptBase
                         if (!hasGrimlock || (grimlock != MythicGrimlock.BossStarted))
                             return;
                         
-                        if (aisling.Counters.CounterGreaterThanOrEqualTo("Shank", 3))
+                        if (aisling.Counters.CounterGreaterThanOrEqualTo("Shank", 2))
                         {
-                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name} Return to Grimlock Queen.");
+                            aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Grimlock Queen.");
+
+                            if (!aisling.Counters.CounterGreaterThanOrEqualTo("Shank", 3))
+                            {
+                                aisling.Counters.AddOrIncrement("Shank");
+                            }
 
                             return;
                         }
 
                         var value = aisling.Counters.AddOrIncrement("Shank");
-                        aisling.SendOrangeBarMessage($"You defeated Brains {value} times!");
+                        aisling.SendOrangeBarMessage($"You defeated Shank {value} times!");
                         
                         break;
                     }

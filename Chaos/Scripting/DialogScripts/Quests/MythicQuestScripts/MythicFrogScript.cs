@@ -62,7 +62,7 @@ public class MythicFrogScript : DialogScriptBase
                     Subject.NextDialogKey = "Close";
                 }
                 
-                if ((main == MythicQuestMain.MythicStarted) && !hasFrog)
+                if (hasMain && !hasFrog)
 
                 {
                     Subject.Text = "Hello adventurer, I am the leader of the Frog Army. Croak! We are in a dire situation and we need your help.";
@@ -339,7 +339,7 @@ public class MythicFrogScript : DialogScriptBase
                     source.Counters.TryGetValue("WhiteWolf", out var whitewolf);
                     source.Counters.TryGetValue("BeardedWolf", out var beardedwolf);
 
-                    if (whitewolf < 10 && beardedwolf < 10)
+                    if ((whitewolf < 10) && (beardedwolf < 10))
                     {
                         Subject.Text = "You haven't killed enough White Wolves and Bearded Wolves.";
                         Subject.Type = MenuOrDialogType.Normal;
@@ -411,8 +411,8 @@ public class MythicFrogScript : DialogScriptBase
 
             case "frog_ally":
             {
-                if (hasHorse
-                    && (hasHorse == horse is MythicHorse.Allied or MythicHorse.BossStarted or MythicHorse.BossDefeated))
+                if (hasWolf
+                    && (hasWolf == wolf is MythicWolf.Allied or MythicWolf.BossStarted or MythicWolf.BossDefeated))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.Text = "Ribbit! It seems you already allied with the Wolves! Go away!";

@@ -62,7 +62,7 @@ public class MythicBeeScript : DialogScriptBase
                     Subject.NextDialogKey = "Close";
                 }
                 
-                if ((main == MythicQuestMain.MythicStarted) && !hasBee)
+                if (hasMain && !hasBee)
 
                 {
                     Subject.Text = "Buzz buzz, welcome to my hive, little one. I am the Bee Queen, ruler of these lands. For centuries, my hive has been at war with the Mantis Colony, those vicious and ruthless hunters. They have no respect for the hard work and sacrifice of my bees. We've been stuck in this sticky situation for far too long. They constantly attack our hive and steal our precious honey, leaving us with little to sustain ourselves.";
@@ -155,17 +155,8 @@ public class MythicBeeScript : DialogScriptBase
                         OptionText = "I have them here."
                     };
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "bee_no1",
-                        OptionText = "Still working on it."
-                    };
-
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
 
                     return;
 

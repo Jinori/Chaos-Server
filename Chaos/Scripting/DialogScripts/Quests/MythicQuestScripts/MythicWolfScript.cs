@@ -62,7 +62,7 @@ public class MythicWolfScript : DialogScriptBase
                     Subject.NextDialogKey = "Close";
                 }
                 
-                if ((main == MythicQuestMain.MythicStarted) && !hasWolf)
+                if (hasMain && !hasWolf)
 
                 {
                     Subject.Text = "The wolf leader steps forward and greets you with a low growl, its piercing eyes fixed on you. Hello aisling, what do you want?";
