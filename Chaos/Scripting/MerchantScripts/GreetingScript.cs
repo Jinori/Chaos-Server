@@ -12,6 +12,38 @@ public class GreetingScript : MerchantScriptBase
 
     public override void OnApproached(Creature source)
     {
-        Subject.Say($"Hello {source.Name}!");
+        switch (Subject.Template.TemplateKey.ToLower())
+        {
+            case "leia":
+            {
+                Subject.Say($"Hello {source.Name}!");
+                return;
+            }
+            case "skarn":
+            {
+                Subject.Say($"{source.Name}, I have a job for you.");
+                return;
+            }
+            case "riona":
+            {
+                Subject.Chant("Welcome to my Inn!");
+                return;
+            }
+            case "cain":
+            {
+                Subject.Chant("My carrots! Help! Get out of my garden!");
+                return;
+            }
+            case "fabrizio":
+            {
+                Subject.Say("These leaders just won't listen to reason.");
+                return;
+            }
+            case "sgrios":
+            {
+                Subject.Say("Another disgusting view. What is it?");
+                return;
+            }
+        }
     }
 }
