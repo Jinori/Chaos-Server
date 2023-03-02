@@ -1,3 +1,4 @@
+using Chaos.Common.Utilities;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.MerchantScripts.Abstractions;
@@ -12,6 +13,9 @@ public class GreetingScript : MerchantScriptBase
 
     public override void OnApproached(Creature source)
     {
+        if (Randomizer.RollChance(60))
+            return;
+        
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "leia":
@@ -26,7 +30,7 @@ public class GreetingScript : MerchantScriptBase
             }
             case "riona":
             {
-                Subject.Chant("Welcome to my Inn!");
+                Subject.Say("Welcome to my Inn!");
                 return;
             }
             case "cain":

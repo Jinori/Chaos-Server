@@ -309,6 +309,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "horse1-1":
+                    case "horse2-1":
+                    case "horse3-1":
                     {
                         var hasBunny = aisling.Enums.TryGetValue(out MythicBunny bunny);
 
@@ -329,6 +331,8 @@ public class KillCounterScript : MonsterScriptBase
                         
                     }
                     case "horse1-2":
+                    case "horse2-2":
+                    case "horse3-2":
                     {
                         var hasBunny = aisling.Enums.TryGetValue(out MythicBunny bunny);
 
@@ -348,6 +352,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "horse1-3":
+                    case "horse2-3":
+                    case "horse3-3":
                     {
                         var hasBunny = aisling.Enums.TryGetValue(out MythicBunny bunny);
 
@@ -367,6 +373,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "horse1_boss":
+                    case "horse2_boss":
+                    case "horse3_boss":
                     {
                         var hasBunny = aisling.Enums.TryGetValue(out MythicBunny bunny);
 
@@ -391,6 +399,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "bunny1-1":
+                    case "bunny2-1":
+                    case "bunny3-1":
                     {
                         var hasHorse = aisling.Enums.TryGetValue(out MythicHorse horse);
 
@@ -410,6 +420,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "bunny1-2":
+                    case "bunny2-2":
+                    case "bunny3-2":
                     {
                         var hasHorse = aisling.Enums.TryGetValue(out MythicHorse horse);
 
@@ -429,6 +441,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "bunny1-3":
+                    case "bunny2-3":
+                    case "bunny3-3":
                     {
                         var hasHorse = aisling.Enums.TryGetValue(out MythicHorse horse);
 
@@ -448,6 +462,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "bunny1_boss":
+                    case "bunny2_boss":
+                    case "bunny3_boss":
                     {
                         var hasHorse = aisling.Enums.TryGetValue(out MythicHorse horse);
 
@@ -472,6 +488,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "wolf1-1":
+                    case "wolf2-1":
+                    case "wolf3-1":
                     {
                         var hasFrog = aisling.Enums.TryGetValue(out MythicFrog frog);
 
@@ -491,6 +509,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "wolf1-2":
+                    case "wolf2-2":
+                    case "wolf3-2":
                     {
                         var hasFrog = aisling.Enums.TryGetValue(out MythicFrog frog);
 
@@ -510,6 +530,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "wolf1-3":
+                    case "wolf2-3":
+                    case "wolf3-3":
                     {
                         var hasFrog = aisling.Enums.TryGetValue(out MythicFrog frog);
 
@@ -529,6 +551,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "wolf1_boss":
+                    case "wolf2_boss":
+                    case "wolf3_boss":
                     {
                         var hasFrog = aisling.Enums.TryGetValue(out MythicFrog frog);
 
@@ -553,6 +577,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "mantis1-1":
+                    case "mantis2-1":
+                    case "mantis3-1":
                     {
                         var hasBee = aisling.Enums.TryGetValue(out MythicBee bee);
 
@@ -572,6 +598,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "mantis1-2":
+                    case "mantis2-2":
+                    case "mantis3-2":
                     {
                         var hasBee = aisling.Enums.TryGetValue(out MythicBee bee);
 
@@ -591,6 +619,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "mantis1_boss":
+                    case "mantis2_boss":
+                    case "mantis3_boss":
                     {
                         var hasBee = aisling.Enums.TryGetValue(out MythicBee bee);
 
@@ -615,6 +645,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "bee1-1":
+                    case "bee2-1":
+                    case "bee3-1":
                     {
                         var hasMantis = aisling.Enums.TryGetValue(out MythicMantis mantis);
 
@@ -634,6 +666,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "bee1-2":
+                    case "bee2-2":
+                    case "bee3-2":
                     {
                         var hasMantis = aisling.Enums.TryGetValue(out MythicMantis mantis);
 
@@ -653,6 +687,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "bee1_boss":
+                    case "bee2_boss":
+                    case "bee3_boss":
                     {
                         var hasMantis = aisling.Enums.TryGetValue(out MythicMantis mantis);
 
@@ -677,6 +713,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "frog1-1":
+                    case "frog2-1":
+                    case "frog3-1":
                     {
                         var hasWolf = aisling.Enums.TryGetValue(out MythicWolf wolf);
 
@@ -696,6 +734,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "frog1-2":
+                    case "frog2-2":
+                    case "frog3-2":
                     {
                         var hasWolf = aisling.Enums.TryGetValue(out MythicWolf wolf);
 
@@ -715,6 +755,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "frog1-3":
+                    case "frog2-3":
+                    case "frog3-3":
                     {
                         var hasWolf = aisling.Enums.TryGetValue(out MythicWolf wolf);
 
@@ -734,6 +776,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "frog1_boss":
+                    case "frog2_boss":
+                    case "frog3_boss":
                     {
                         var hasWolf = aisling.Enums.TryGetValue(out MythicWolf wolf);
 
@@ -758,6 +802,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     } 
                     case "gargoyle1-1":
+                    case "gargoyle2-1":
+                    case "gargoyle3-1":
                     {
                         var hasZombie = aisling.Enums.TryGetValue(out MythicZombie zombie);
 
@@ -777,6 +823,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "gargoyle1-2":
+                    case "gargoyle2-2":
+                    case "gargoyle3-2":
                     {
                         var hasZombie = aisling.Enums.TryGetValue(out MythicZombie zombie);
 
@@ -796,6 +844,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "gargoyle1-3":
+                    case "gargoyle2-3":
+                    case "gargoyle3-3":
                     {
                         var hasZombie = aisling.Enums.TryGetValue(out MythicZombie zombie);
 
@@ -815,6 +865,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "gargoyle1_boss":
+                    case "gargoyle2_boss":
+                    case "gargoyle3_boss":
                     {
                         var hasZombie = aisling.Enums.TryGetValue(out MythicZombie zombie);
 
@@ -839,6 +891,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "zombie1-1":
+                    case "zombie2-1":
+                    case "zombie3-1":
                     {
                         var hasGargoyle = aisling.Enums.TryGetValue(out MythicGargoyle gargoyle);
 
@@ -858,6 +912,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "zombie1-2":
+                    case "zombie2-2":
+                    case "zombie3-2":
                     {
                         var hasGargoyle = aisling.Enums.TryGetValue(out MythicGargoyle gargoyle);
 
@@ -877,6 +933,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "zombie1-3":
+                    case "zombie2-3":
+                    case "zombie3-3":
                     {
                         var hasGargoyle = aisling.Enums.TryGetValue(out MythicGargoyle gargoyle);
 
@@ -896,6 +954,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "zombie1_boss":
+                    case "zombie2_boss":
+                    case "zombie3_boss":
                     {
                         var hasGargoyle = aisling.Enums.TryGetValue(out MythicGargoyle gargoyle);
 
@@ -920,6 +980,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "grimlock1-1":
+                    case "grimlock2-1":
+                    case "grimlock3-1":
                     {
                         var hasKobold = aisling.Enums.TryGetValue(out MythicKobold kobold);
 
@@ -939,6 +1001,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "grimlock1-2":
+                    case "grimlock2-2":
+                    case "grimlock3-2":
                     {
                         var hasKobold = aisling.Enums.TryGetValue(out MythicKobold kobold);
 
@@ -958,6 +1022,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "grimlock1-3":
+                    case "grimlock2-3":
+                    case "grimlock3-3":
                     {
                         var hasKobold = aisling.Enums.TryGetValue(out MythicKobold kobold);
 
@@ -977,6 +1043,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "grimlock1_boss":
+                    case "grimlock2_boss":
+                    case "grimlock3_boss":
                     {
                         var hasKobold = aisling.Enums.TryGetValue(out MythicKobold kobold);
 
@@ -1001,6 +1069,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "kobold1-1":
+                    case "kobold2-1":
+                    case "kobold3-1":
                     {
                         var hasGrimlock = aisling.Enums.TryGetValue(out MythicGrimlock grimlock);
 
@@ -1019,6 +1089,8 @@ public class KillCounterScript : MonsterScriptBase
 
                         break;
                     }
+                    case "kobold3-2":
+                    case "kobold2-2":
                     case "kobold1-2":
                     {
                         var hasGrimlock = aisling.Enums.TryGetValue(out MythicGrimlock grimlock);
@@ -1039,6 +1111,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "kobold1-3":
+                    case "kobold2-3":
+                    case "kobold3-3":
                     {
                         var hasGrimlock = aisling.Enums.TryGetValue(out MythicGrimlock grimlock);
 
@@ -1058,6 +1132,8 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     }
                     case "kobold1_boss":
+                    case "kobold2_boss":
+                    case "kobold3_boss":
                     {
                         var hasGrimlock = aisling.Enums.TryGetValue(out MythicGrimlock grimlock);
 

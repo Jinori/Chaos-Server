@@ -84,18 +84,17 @@ public class MythicFabrizioScript : DialogScriptBase
                 if (main != MythicQuestMain.CompletedAll)
                 {
                     Subject.Text =
-                        "Welcome back, adventurer. I sense that you haven't made enough alliances yet. Our situation is dire, and time is running out. We need to act quickly if we're to bring peace to our land.";
+                        "Welcome back, adventurer. I sense that you haven't made enough alliances yet.";
                     source.SendOrangeBarMessage("Assist five leaders to the fullest.");
-
                     Subject.Type = MenuOrDialogType.Normal;
-
+                    
                     return;
                 }
 
                 if (source.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
                 {
                     Subject.Text =
-                        "You really did it! You've made alliances with some of the leaders. Here's something for my gratitude. They have been feuding forever! Whichever alliances you made will be victorious. The others will perish and these lands shall be peaceful once again. Unfortunately, it was the only way.";
+                        "You really did it! You've made alliances with some of the leaders. They have been feuding forever! Whichever alliances you made will be victorious. The others will perish and these lands shall be peaceful once again. Unfortunately, it was the only way.";
                     Subject.Type = MenuOrDialogType.Normal;
                     source.Enums.Set(MythicQuestMain.CompletedMythic);
                     ExperienceDistributionScript.GiveExp(source, source.UserStatSheet.Level <= 98 ? tnl : 50000000);
@@ -120,7 +119,7 @@ public class MythicFabrizioScript : DialogScriptBase
                 source.Enums.Set(MythicQuestMain.MythicStarted);
 
                 Subject.Text =
-                    "Farewell for now, adventurer. Remember, our land's fate rests in your hands. Please return to me once you've made five alliances with the leaders. The more allies we have, the stronger our position will be. I trust in your abilities and look forward to hearing about your progress. Good luck.";
+                    "Farewell for now, adventurer. Remember, our land's fate rests in your hands. Please return to me once you've made alliances and finished helping the leaders.. The more allies we have, the stronger our position will be. I trust in your abilities and look forward to hearing about your progress. Good luck.";
 
                 Subject.Type = MenuOrDialogType.Normal;
                 source.SendOrangeBarMessage("Talk to any of the leaders.");

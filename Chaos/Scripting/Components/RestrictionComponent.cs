@@ -1,4 +1,5 @@
 using Chaos.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
@@ -34,6 +35,9 @@ public class RestrictionComponent
             return false;
         }
 
+        if (creature.MapInstance.Name.EqualsI("The Afterlife"))
+            return true;
+        
         return creature.IsAlive;
     }
 
