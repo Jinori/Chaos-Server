@@ -1,5 +1,6 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Extensions.Common;
 using Chaos.Objects.Menu;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
@@ -16,16 +17,20 @@ public class LockPickChestScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        if (!source.UserStatSheet.BaseClass.Equals(BaseClass.Rogue))
+        if (!source.UserStatSheet.BaseClass.IsClass(BaseClass.Rogue))
         {
             Subject.Type = MenuOrDialogType.Normal;
-            Subject.Text = "Perhaps you'd need some keys to attempt to open this chest.";
+            Subject.Text = "Only a Rogue may pick this lock.";
+
+            return;
         }
 
-        if (source.UserStatSheet.BaseClass.Equals(BaseClass.Rogue) && !source.Inventory.HasCount("Lockpicks", 1))
+        if (!source.Inventory.HasCount("Lockpicks", 1))
         {
             Subject.Type = MenuOrDialogType.Normal;
             Subject.Text = "Perhaps you'd need some keys to attempt to open this chest.";
+
+            return;
         }
     }
 

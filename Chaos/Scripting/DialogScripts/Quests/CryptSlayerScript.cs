@@ -352,34 +352,36 @@ public class CryptSlayerScript : DialogScriptBase
 
                 var wizardstaff = ItemFactory.Create("MagusZeus");
                 var prieststaff = ItemFactory.Create("HolyAres");
-                var monkweapon = ItemFactory.Create("WolfClaws");
+                var monkweapon = ItemFactory.Create("WolfClaw");
                 var rogueweapon = ItemFactory.Create("BlossomDagger");
                 var warriorshield = ItemFactory.Create("LeatherShield");
+                
+                source.Counters.AddOrIncrement("CryptSlayerLegend");
 
-                if (source.Counters.CounterLessThanOrEqualTo("CryptSlayerLegend", 0))
+                if (source.Counters.CounterLessThanOrEqualTo("CryptSlayerLegend", 1))
                 {
 
-                    if (source.UserStatSheet.BaseClass.Equals("Wizard"))
+                    if (source.UserStatSheet.BaseClass.IsClass(BaseClass.Wizard))
                     {
                         source.TryGiveItem(wizardstaff);
                     }
 
-                    if (source.UserStatSheet.BaseClass.Equals("Warrior"))
+                    if (source.UserStatSheet.BaseClass.IsClass(BaseClass.Warrior))
                     {
                         source.TryGiveItem(warriorshield);
                     }
 
-                    if (source.UserStatSheet.BaseClass.Equals("Priest"))
+                    if (source.UserStatSheet.BaseClass.IsClass(BaseClass.Priest))
                     {
                         source.TryGiveItem(prieststaff);
                     }
 
-                    if (source.UserStatSheet.BaseClass.Equals("Rogue"))
+                    if (source.UserStatSheet.BaseClass.IsClass(BaseClass.Rogue))
                     {
                         source.TryGiveItem(rogueweapon);
                     }
 
-                    if (source.UserStatSheet.BaseClass.Equals("monk"))
+                    if (source.UserStatSheet.BaseClass.IsClass(BaseClass.Monk))
                     {
                         source.TryGiveItem(monkweapon);
                     }
