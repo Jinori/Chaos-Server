@@ -10,6 +10,8 @@ using Chaos.Objects.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests;
@@ -17,11 +19,15 @@ namespace Chaos.Scripting.DialogScripts.Quests;
 public class CryptSlayerScript : DialogScriptBase
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
+    private readonly IItemFactory ItemFactory;
 
     /// <inheritdoc />
-    public CryptSlayerScript(Dialog subject)
-        : base(subject) =>
+    public CryptSlayerScript(Dialog subject, IItemFactory itemFactory)
+        : base(subject)
+    {
+        ItemFactory = itemFactory;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    }
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -342,6 +348,41 @@ public class CryptSlayerScript : DialogScriptBase
                     }
 
                     return;
+                }
+
+                var wizardstaff = ItemFactory.Create("MagusZeus");
+                var prieststaff = ItemFactory.Create("HolyAres");
+                var monkweapon = ItemFactory.Create("WolfClaws");
+                var rogueweapon = ItemFactory.Create("BlossomDagger");
+                var warriorshield = ItemFactory.Create("LeatherShield");
+
+                if (source.Counters.CounterLessThanOrEqualTo("CryptSlayerLegend", 0))
+                {
+
+                    if (source.UserStatSheet.BaseClass.Equals("Wizard"))
+                    {
+                        source.TryGiveItem(wizardstaff);
+                    }
+
+                    if (source.UserStatSheet.BaseClass.Equals("Warrior"))
+                    {
+                        source.TryGiveItem(warriorshield);
+                    }
+
+                    if (source.UserStatSheet.BaseClass.Equals("Priest"))
+                    {
+                        source.TryGiveItem(prieststaff);
+                    }
+
+                    if (source.UserStatSheet.BaseClass.Equals("Rogue"))
+                    {
+                        source.TryGiveItem(rogueweapon);
+                    }
+
+                    if (source.UserStatSheet.BaseClass.Equals("monk"))
+                    {
+                        source.TryGiveItem(monkweapon);
+                    }
                 }
 
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
