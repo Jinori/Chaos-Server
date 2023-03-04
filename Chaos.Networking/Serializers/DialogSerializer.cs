@@ -29,7 +29,7 @@ public sealed record DialogSerializer : ServerPacketSerializer<DialogArgs>
         writer.WriteUInt16(args.DialogId);
         writer.WriteBoolean(args.HasPreviousButton);
         writer.WriteBoolean(args.HasNextButton);
-        writer.WriteByte(5); //dunno
+        writer.WriteByte(0); //dunno
         writer.WriteString8(args.Name);
         writer.WriteString16(args.Text);
 

@@ -354,7 +354,7 @@ public class CryptSlayerScript : DialogScriptBase
                 var prieststaff = ItemFactory.Create("HolyAres");
                 var monkweapon = ItemFactory.Create("WolfClaw");
                 var rogueweapon = ItemFactory.Create("BlossomDagger");
-                var warriorshield = ItemFactory.Create("LeatherShield");
+                var warriorweapon = ItemFactory.Create("Claidheahmh");
                 
                 source.Counters.AddOrIncrement("CryptSlayerLegend");
 
@@ -368,7 +368,7 @@ public class CryptSlayerScript : DialogScriptBase
 
                     if (source.UserStatSheet.BaseClass.IsClass(BaseClass.Warrior))
                     {
-                        source.TryGiveItem(warriorshield);
+                        source.TryGiveItem(warriorweapon);
                     }
 
                     if (source.UserStatSheet.BaseClass.IsClass(BaseClass.Priest))

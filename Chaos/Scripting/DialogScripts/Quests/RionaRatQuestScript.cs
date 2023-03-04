@@ -40,6 +40,19 @@ public class RionaRatQuestScript : DialogScriptBase
                         Subject.Options.Insert(0, option);
                 }
 
+                if ((source.UserStatSheet.Level < 11) && (stage == RionaRatQuestStage.CompletedRatQuest))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "riona_beginnerquest",
+                        OptionText = "Got any other quest?"
+                    };
+                    
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Add(option);
+                }
+
+
                 break;
 
             case "ratquest_initial":
