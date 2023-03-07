@@ -39,6 +39,7 @@ public class GatherGrapeScript : ReactorTileScriptBase
             
             aisling.Animate(animation);
             aisling.SendOrangeBarMessage("You gathered some grapes!");
+            aisling.TimedEvents.AddEvent(TimedEvent.TimedEventId.SuomiGrapeCd, TimeSpan.FromHours(24), true);
         }
     }
 }

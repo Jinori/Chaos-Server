@@ -39,6 +39,7 @@ public class GatherCherryScript : ReactorTileScriptBase
             
             aisling.Animate(animation);
             aisling.SendOrangeBarMessage("You gathered some cherries!");
+            aisling.TimedEvents.AddEvent(TimedEvent.TimedEventId.SuomiCherryCd, TimeSpan.FromHours(24), true);
         }
     }
 }

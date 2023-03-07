@@ -11,7 +11,9 @@ public sealed class TimedEvent : IEquatable<TimedEvent>
         HolyResearchCd = 2,
         DarkThingsCd = 3,
         ALittleBitofThatCd = 4,
-        CryptSlayerCd = 5
+        CryptSlayerCd = 5,
+        SuomiGrapeCd = 6,
+        SuomiCherryCd = 7
     }
 
     public bool AutoConsume { get; }
