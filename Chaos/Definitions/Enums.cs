@@ -30,6 +30,12 @@ public enum Status : ulong
     //add more statuses here, double each time
 }
 
+public enum GainExp
+{
+    Yes,
+    No = 1
+}
+
 public enum MonkElementForm
 {
     Water,

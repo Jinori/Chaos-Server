@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
 using Chaos.Objects.World;
@@ -49,7 +50,8 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
 
         //if you're at max level, you don't gain exp
         //feel free to put a message here if you want
-        if ((amount <= 0) || (aisling.UserStatSheet.Level >= WorldOptions.Instance.MaxLevel))
+        var hasFlag = aisling.Enums.TryGetValue(out GainExp stage);
+        if ((amount <= 0) || (aisling.UserStatSheet.Level >= WorldOptions.Instance.MaxLevel) || stage == GainExp.No)
             return;
 
         aisling.SendActiveMessage($"You have gained {amount} experience!");
