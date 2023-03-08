@@ -8,22 +8,19 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
-using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Quests.MythicQuestScripts;
 
 public class MythicHorseScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
-    public MythicHorseScript(Dialog subject, IItemFactory itemFactory, ISimpleCache simpleCache)
+    public MythicHorseScript(Dialog subject, IItemFactory itemFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;
-        SimpleCache = simpleCache;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
@@ -33,14 +30,6 @@ public class MythicHorseScript : DialogScriptBase
         var hasMain = source.Enums.TryGetValue(out MythicQuestMain main);
         var hasBunny = source.Enums.TryGetValue(out MythicBunny bunny);
         var hasHorse = source.Enums.TryGetValue(out MythicHorse horse);
-        var hasGargoyle = source.Enums.TryGetValue(out MythicGargoyle gargoyle);
-        var hasZombie = source.Enums.TryGetValue(out MythicZombie zombie);
-        var hasFrog = source.Enums.TryGetValue(out MythicFrog frog);
-        var hasWolf = source.Enums.TryGetValue(out MythicWolf wolf);
-        var hasMantis = source.Enums.TryGetValue(out MythicMantis mantis);
-        var hasBee = source.Enums.TryGetValue(out MythicBee bee);
-        var hasKobold = source.Enums.TryGetValue(out MythicKobold kobold);
-        var hasGrimlock = source.Enums.TryGetValue(out MythicGrimlock grimlock);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
@@ -52,7 +41,7 @@ public class MythicHorseScript : DialogScriptBase
                 if (hasHorse && (horse == MythicHorse.EnemyAllied))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "I told you to go away! You are not welcome here anymore!";
+                    Subject.Text = "You're already allied with the bunnies! That's like a kick in the teeth! Giddy-up and leave my sight immediately.";
                     Subject.NextDialogKey = "Close";
                 }
                 
@@ -109,12 +98,12 @@ public class MythicHorseScript : DialogScriptBase
                 
                 if (horse == MythicHorse.Higher)
                 {
-                    Subject.Text = "Hoppy Greetings, welcome back. Did you clear those hoofed oppressors?";
+                    Subject.Text = "Did you manage to hoof it over to their warren and give them a good neighing? Or did they outsmart you and give you the slip? I hope you didn't let them burrow under your skin.";
 
                     var option = new DialogOption
                     {
                         DialogKey = "horse_higher2",
-                        OptionText = "Yeah, it is done."
+                        OptionText = "They were no match for me."
                     };
 
                     if (!Subject.HasOption(option))
@@ -127,12 +116,12 @@ public class MythicHorseScript : DialogScriptBase
                 
                 if (horse == MythicHorse.HigherComplete)
                 {
-                    Subject.Text = "We've got another job for you, if you're up for it.";
+                    Subject.Text = "It looks like you're itching for another adventure. I can see it in your eyes, you're ready to gallop off into the sunset.";
                     
                     var option = new DialogOption
                     {
                         DialogKey = "horse_start4",
-                        OptionText = "Sure thing, what do you need?"
+                        OptionText = "I sure am."
                     };
 
                     if (!Subject.HasOption(option))
@@ -159,7 +148,7 @@ public class MythicHorseScript : DialogScriptBase
                 
                 if (horse == MythicHorse.ItemComplete)
                 {
-                    Subject.Text = "You have proven yourself to be a valuable ally to our warren, dear traveler. You have saved our crops, defended our burrows, and defeated many of our enemies. You have shown us that you share our values of kindness and bravery, and for that, we are very grateful. We would be honored if you would consider allying with us, and becoming a part of our family. \n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
+                    Subject.Text = "The horse herd really appreciates your bravery and we need someone with a little more horsepower to join us. So here's what I propose: why don't we form an alliance? You help us drive those bunnies away, and we'll give you free rein to our carrot fields. What do you say, partner?\n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
 
                     var option = new DialogOption
                     {
@@ -186,12 +175,12 @@ public class MythicHorseScript : DialogScriptBase
                 if (horse == MythicHorse.Allied)
                 {
                     Subject.Text =
-                        "Listen up, neigh-sayer! I have a new mission for you, and it's a whinny-taker. You see, all these bunnies have been giving us the hoof, and they all answer to one bunny-boss: Mr. Hopps. He's the one who's been whipping them into a frenzy and leading them in their carrot heists";
+                        "New Ally! I have another mission for you, and it's a whinny-taker. You see, all these bunnies have been giving us the hoof, and they all answer to one bunny-boss: Mr. Hopps. He's the one who's been whipping them into a frenzy and leading them in their carrot heists.";
 
                     var option = new DialogOption
                     {
                         DialogKey = "horse_boss",
-                        OptionText = "Consider it done.."
+                        OptionText = "Consider it done."
                     };
 
                     if (!Subject.HasOption(option))
@@ -202,12 +191,12 @@ public class MythicHorseScript : DialogScriptBase
                 if (horse == MythicHorse.BossStarted)
                 {
                     Subject.Text =
-                        "Did you find the horse bosses? Is it done?";
+                        "(neighs excitedly) Hello, hello, my valiant friend! It's good to see you've made it back in one piece. So, did you manage to defeat that rascally rabbit, Mr. Hopps?";
 
                     var option = new DialogOption
                     {
                         DialogKey = "horse_boss2",
-                        OptionText = "I carried out what was asked of me."
+                        OptionText = "Mr.Hopps has been defeated."
                     };
 
                     if (!Subject.HasOption(option))
@@ -219,7 +208,7 @@ public class MythicHorseScript : DialogScriptBase
                 if (horse == MythicHorse.BossDefeated)
                 {
 
-                    Subject.Text = "Thank you again Aisling for your help. We are winning our fight.";
+                    Subject.Text = "Thank you again partner, you really have saved my herd and our carrot fields are thriving.";
                 }
 
                 break;
@@ -227,7 +216,7 @@ public class MythicHorseScript : DialogScriptBase
 
             case "horse_lower":
             {
-                Subject.Text = "You have our paws-tounding gratitude. Don't let the horses get your goat, though - they're quick and nimble, and they can kick like mules. But we believe in you, and we know you'll do us proud. May the horse luck be with you!";
+                Subject.Text = " ";
                 source.SendOrangeBarMessage("Kill 15 White Bunnies for the Horse Leader");
                 source.Enums.Set(MythicHorse.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
@@ -259,7 +248,7 @@ public class MythicHorseScript : DialogScriptBase
 
             case "horse_higher":
             {
-                Subject.Text = "We knew we could count on you, partner. Good luck out there, and remember, don't let those brown bunnies get the best of you! (The horse leader lets out a hearty neigh as you walk away.)";
+                Subject.Text = "We knew we could count on you, partner. Good luck out there, and remember, don't let those brown and purple bunnies get the best of you! (The horse leader lets out a hearty neigh)";
                 source.SendOrangeBarMessage("Kill 10 Brown and 10 Purple Bunnies for the Horse Leader");
                 source.Enums.Set(MythicHorse.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
@@ -274,13 +263,13 @@ public class MythicHorseScript : DialogScriptBase
 
                 if ((brownbunny < 10) && (purplebunny < 10))
                 {
-                    Subject.Text = "You haven't killed enough brown bunnies";
+                    Subject.Text = "You haven't killed enough brown and purple bunnies";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
                 }
 
-                Subject.Text = "Well done, partner! We saw you charging through the fields, and we knew you meant business. Those brown bunnies didn't stand a chance against you.";
+                Subject.Text = "Well done, partner! We saw you charging through the fields, and we knew you meant business. Those bunnies didn't stand a chance against you.";
                 Subject.NextDialogKey = "horse_initial";
                 Subject.Type = MenuOrDialogType.Normal;
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
@@ -338,7 +327,7 @@ public class MythicHorseScript : DialogScriptBase
                 source.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Enums.Set(MythicHorse.Allied);
                 source.SendOrangeBarMessage("You are now allied with the bunnies!");
-                Subject.Text = $"Remember, {source.Name}, that no matter where your journeys take you, you will always have a home in our warren. The horse luck be with you always!";
+                Subject.Text = $"(neighs gratefully) Thank you, thank you, {source.Name}. You've shown us that you're not just any old mare or stallion. You've proven yourself to be a true herd member, and for that, we are truly grateful.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "horse_initial";
 
@@ -361,7 +350,7 @@ public class MythicHorseScript : DialogScriptBase
             {
                 if (!source.Counters.TryGetValue("MrHopps", out var mrhopps) || (mrhopps < 3))
                 {
-                    Subject.Text = "Please defeat Mr.Hopps three times.";
+                    Subject.Text = "Don't feel down, partner. You gave it your all, and that's all any of us can do. Mr. Hopps may be a tough nut to crack, but we won't give up. We'll keep on fighting until we reach the finish line.";
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.NextDialogKey = "Close";
                     source.SendOrangeBarMessage("Kill Mr.Hopps three times.");
@@ -369,7 +358,7 @@ public class MythicHorseScript : DialogScriptBase
                     return;
                 }
 
-                Subject.Text = " ";
+                Subject.Text = "Oh, horseshoes and hay bales! You've done it, my trusty ally! We knew you had it in you all along. You've earned your oats today, and then some. I can't thank you enough for what you've done for our herd.";
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
                 source.Counters.Remove("mrhopps", out _);

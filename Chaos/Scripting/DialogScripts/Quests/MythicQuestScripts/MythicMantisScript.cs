@@ -9,22 +9,19 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
-using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Quests.MythicQuestScripts;
 
 public class MythicMantisScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
-    public MythicMantisScript(Dialog subject, IItemFactory itemFactory, ISimpleCache simpleCache)
+    public MythicMantisScript(Dialog subject, IItemFactory itemFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;
-        SimpleCache = simpleCache;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
@@ -32,16 +29,8 @@ public class MythicMantisScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         var hasMain = source.Enums.TryGetValue(out MythicQuestMain main);
-        var hasBunny = source.Enums.TryGetValue(out MythicBunny bunny);
-        var hasHorse = source.Enums.TryGetValue(out MythicHorse horse);
-        var hasGargoyle = source.Enums.TryGetValue(out MythicGargoyle gargoyle);
-        var hasZombie = source.Enums.TryGetValue(out MythicZombie zombie);
-        var hasFrog = source.Enums.TryGetValue(out MythicFrog frog);
-        var hasWolf = source.Enums.TryGetValue(out MythicWolf wolf);
         var hasMantis = source.Enums.TryGetValue(out MythicMantis mantis);
         var hasBee = source.Enums.TryGetValue(out MythicBee bee);
-        var hasKobold = source.Enums.TryGetValue(out MythicKobold kobold);
-        var hasGrimlock = source.Enums.TryGetValue(out MythicGrimlock grimlock);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
@@ -291,15 +280,6 @@ public class MythicMantisScript : DialogScriptBase
                 source.Enums.Set(MythicMantis.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
                 source.Counters.Remove("greenbee", out _);
-
-                var option = new DialogOption
-                {
-                    DialogKey = "mantis_item",
-                    OptionText = "I can get that."
-                };
-
-                if (!Subject.HasOption(option))
-                    Subject.Options.Add(option);
 
                 break;
             }

@@ -27,14 +27,19 @@ public class SuomiGatheringScript : MapScriptBase
             19);
         
         var cherrypoints = new HashSet<Point>();
-        var count = cherryrectangle.Area / 2;
+        var count = cherryrectangle.Area / 3;
+        var count2 = graperectangle.Area / 3;
         var grapepoints = new HashSet<Point>();
 
         for (var i = 0; i < count; i++)
         {
             var cherrypoint = cherryrectangle.RandomPoint();
-            var grapepoint = graperectangle.RandomPoint();
             cherrypoints.Add(cherrypoint);
+        }
+
+        for (var i = 0; i < count2; i++)
+        {
+            var grapepoint = graperectangle.RandomPoint();
             grapepoints.Add(grapepoint);
         }
 

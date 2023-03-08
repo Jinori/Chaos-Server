@@ -33,16 +33,6 @@ public class MythicFabrizioScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         var hasMain = source.Enums.TryGetValue(out MythicQuestMain main);
-        var hasBunny = source.Enums.TryGetValue(out MythicBunny bunny);
-        var hasHorse = source.Enums.TryGetValue(out MythicHorse horse);
-        var hasGargoyle = source.Enums.TryGetValue(out MythicGargoyle gargoyle);
-        var hasZombie = source.Enums.TryGetValue(out MythicZombie zombie);
-        var hasFrog = source.Enums.TryGetValue(out MythicFrog frog);
-        var hasWolf = source.Enums.TryGetValue(out MythicWolf wolf);
-        var hasMantis = source.Enums.TryGetValue(out MythicMantis mantis);
-        var hasBee = source.Enums.TryGetValue(out MythicBee bee);
-        var hasKobold = source.Enums.TryGetValue(out MythicKobold kobold);
-        var hasGrimlock = source.Enums.TryGetValue(out MythicGrimlock grimlock);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);

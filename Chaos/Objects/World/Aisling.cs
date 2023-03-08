@@ -702,7 +702,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>
 
         if (@new < 0)
         {
-            SendOrangeBarMessage($"You do not have enough gold, you need a total of {amount}");
+            SendOrangeBarMessage($"You do not have enough, you need a {amount} gold.");
 
             return false;
         }

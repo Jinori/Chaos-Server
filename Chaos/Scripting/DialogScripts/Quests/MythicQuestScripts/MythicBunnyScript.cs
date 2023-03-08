@@ -16,15 +16,13 @@ namespace Chaos.Scripting.DialogScripts.Quests.MythicQuestScripts;
 public class MythicBunnyScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
-    public MythicBunnyScript(Dialog subject, IItemFactory itemFactory, ISimpleCache simpleCache)
+    public MythicBunnyScript(Dialog subject, IItemFactory itemFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;
-        SimpleCache = simpleCache;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
@@ -34,14 +32,6 @@ public class MythicBunnyScript : DialogScriptBase
         var hasMain = source.Enums.TryGetValue(out MythicQuestMain main);
         var hasBunny = source.Enums.TryGetValue(out MythicBunny bunny);
         var hasHorse = source.Enums.TryGetValue(out MythicHorse horse);
-        var hasGargoyle = source.Enums.TryGetValue(out MythicGargoyle gargoyle);
-        var hasZombie = source.Enums.TryGetValue(out MythicZombie zombie);
-        var hasFrog = source.Enums.TryGetValue(out MythicFrog frog);
-        var hasWolf = source.Enums.TryGetValue(out MythicWolf wolf);
-        var hasMantis = source.Enums.TryGetValue(out MythicMantis mantis);
-        var hasBee = source.Enums.TryGetValue(out MythicBee bee);
-        var hasKobold = source.Enums.TryGetValue(out MythicKobold kobold);
-        var hasGrimlock = source.Enums.TryGetValue(out MythicGrimlock grimlock);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);

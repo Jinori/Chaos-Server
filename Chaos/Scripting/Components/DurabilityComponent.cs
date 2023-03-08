@@ -20,10 +20,10 @@ public class DurabilityComponent
         {
             //Aisling Attacker
             var hasWeapon = context.SourceAisling!.Equipment.TryGetObject(1, out var weapon);
-            if (hasWeapon && weapon?.CurrentDurability >= 1)
+            if (hasWeapon && (weapon?.CurrentDurability >= 1))
                 weapon.CurrentDurability--;
             var hasNecklace = context.SourceAisling!.Equipment.TryGetObject(6, out var necklace);
-            if (hasNecklace && necklace?.CurrentDurability >= 1)
+            if (hasNecklace && (necklace?.CurrentDurability >= 1))
                 necklace.CurrentDurability--;   
         }
 
