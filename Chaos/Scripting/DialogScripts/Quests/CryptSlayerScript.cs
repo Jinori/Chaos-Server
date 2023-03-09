@@ -1,6 +1,5 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
-using Chaos.Data;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae;
@@ -10,7 +9,6 @@ using Chaos.Objects.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
@@ -349,12 +347,7 @@ public class CryptSlayerScript : DialogScriptBase
 
                     return;
                 }
-
-                var wizardstaff = ItemFactory.Create("MagusZeus");
-                var prieststaff = ItemFactory.Create("HolyAres");
-                var monkweapon = ItemFactory.Create("WolfClaw");
-                var rogueweapon = ItemFactory.Create("BlossomDagger");
-                var warriorweapon = ItemFactory.Create("Claidheahmh");
+                
                 
                 source.Trackers.Counters.AddOrIncrement("CryptSlayerLegend");
 
@@ -363,26 +356,31 @@ public class CryptSlayerScript : DialogScriptBase
 
                     if (source.UserStatSheet.BaseClass.ContainsClass(BaseClass.Wizard))
                     {
+                        var wizardstaff = ItemFactory.Create("MagusZeus");
                         source.TryGiveItem(wizardstaff);
                     }
 
                     if (source.UserStatSheet.BaseClass.ContainsClass(BaseClass.Warrior))
                     {
+                        var warriorweapon = ItemFactory.Create("Claidheahmh");
                         source.TryGiveItem(warriorweapon);
                     }
 
                     if (source.UserStatSheet.BaseClass.ContainsClass(BaseClass.Priest))
                     {
+                        var prieststaff = ItemFactory.Create("HolyHermes");
                         source.TryGiveItem(prieststaff);
                     }
 
                     if (source.UserStatSheet.BaseClass.ContainsClass(BaseClass.Rogue))
                     {
+                        var rogueweapon = ItemFactory.Create("BlossomDagger");
                         source.TryGiveItem(rogueweapon);
                     }
 
                     if (source.UserStatSheet.BaseClass.ContainsClass(BaseClass.Monk))
                     {
+                        var monkweapon = ItemFactory.Create("WolfClaw");
                         source.TryGiveItem(monkweapon);
                     }
                 }

@@ -54,12 +54,12 @@ public class MythicGrimlockScript : DialogScriptBase
                 if (hasMain && !hasGrimlock)
 
                 {
-                    Subject.Text = "Ears to you, traveler. I am the leader of this warren of bunnies, and I carrot thank you enough for coming to our aid. The neigh-sayers may think we're just cute and fluffy, but we're tougher than we look.";
+                    Subject.Text = "Greetings, adventurer. I am Queen Grimlock, ruler of this land. Our people have been locked in a bitter feud with the vile kobolds for many years. We have lost too many of our own in this endless conflict, and it pains me greatly to see my people suffer.";
                     
                     var option = new DialogOption
                     {
                         DialogKey = "grimlock_start1",
-                        OptionText = "What can I do to help?"
+                        OptionText = "Anything I can do to help?"
                     };
 
                     if (!Subject.HasOption(option))
@@ -70,12 +70,12 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 if (grimlock == MythicGrimlock.Lower)
                 {
-                    Subject.Text = "Well, well, well, look who's back! It's our favorite rabbit-loving adventurer! Have you come to tell us that you've completed the task we gave you?";
+                    Subject.Text = "Have you managed to fight off the 15 Worker Kobolds and protect our lands from the devastation they were causing?";
 
                     var option = new DialogOption
                     {
                         DialogKey = "grimlock_lower2",
-                        OptionText = "Yes Big Grimlock."
+                        OptionText = "Yes Queen Grimlock."
                     };
 
                     if (!Subject.HasOption(option))
@@ -86,12 +86,12 @@ public class MythicGrimlockScript : DialogScriptBase
                 }
                 if (grimlock == MythicGrimlock.LowerComplete)
                 {
-                    Subject.Text = "Warren Wanderer, we are in need of your assistance once again. It seems that another group of horses has invaded our territory and is causing chaos and destruction. We need your help to remove them from our fields, just as you did with the previous group.";
+                    Subject.Text = "Adventurer, I must warn you that our conflict with the Kobolds has escalated since the disappearance of their Kobold Workers. Their forces have gathered, and they seem to be preparing for a large-scale war. We cannot let this happen.";
                 
                     var option = new DialogOption
                     {
                         DialogKey = "grimlock_start3",
-                        OptionText = "No problem Big Grimlock."
+                        OptionText = "What is your plan of action?"
                     };
 
                     if (!Subject.HasOption(option))
@@ -103,7 +103,7 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 if (grimlock == MythicGrimlock.Higher)
                 {
-                    Subject.Text = "Hoppy Greetings, welcome back. Did you clear those hoofed oppressors?";
+                    Subject.Text = "";
 
                     var option = new DialogOption
                     {
@@ -223,7 +223,7 @@ public class MythicGrimlockScript : DialogScriptBase
 
             case "grimlock_lower":
             {
-                Subject.Text = " ";
+                Subject.Text = "Please go kill 15 Kobold Workers, that'll stop them from damaging our land any further and supplying any more wars between us. Your willingness to fight on our behalf is appreciated.";
                 source.SendOrangeBarMessage("Kill 15 Kobold Workers.");
                 source.Trackers.Enums.Set(MythicGrimlock.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
@@ -247,7 +247,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
                 source.Trackers.Counters.Remove("koboldworker", out _);
-                Subject.Text = " ";
+                Subject.Text = "While the elimination of any living beings is never something to be taken lightly, the Kobold workers posed a genuine threat to our land. Your actions have helped ensure the safety and security of our lands, and for that, we are grateful.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "grimlock_initial";
 
@@ -266,13 +266,12 @@ public class MythicGrimlockScript : DialogScriptBase
 
             case "grimlock_higher2":
             {
+                source.Trackers.Counters.TryGetValue("koboldworker", out var koboldsoldier);
+                source.Trackers.Counters.TryGetValue("koboldsoldier", out var koboldwarrior);
 
-                source.Trackers.Counters.TryGetValue("koboldworker", out var koboldworker);
-                source.Trackers.Counters.TryGetValue("koboldsoldier", out var koboldsoldier);
-
-                if ((koboldworker < 10) && (koboldsoldier < 10))
+                if ((koboldsoldier < 10) && (koboldwarrior < 10))
                 {
-                    Subject.Text = "You haven't killed enough Kobold Workers and Soldiers.";
+                    Subject.Text = "You haven't killed enough Kobold Soldiers and Warriors.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
