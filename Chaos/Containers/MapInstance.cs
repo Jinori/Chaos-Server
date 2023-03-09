@@ -509,6 +509,7 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
             aisling.Client.SendSound(Music, true);
             aisling.Client.SendMapLoadComplete();
             aisling.Client.SendDisplayAisling(aisling);
+
             foreach (var otherCreature in otherVisibles.OfType<Creature>())
                 Helpers.HandleApproach(aisling, otherCreature);
         } else
@@ -528,10 +529,10 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
                 if (nearbyCreature.Equals(creature))
                     continue;
 
-                Helpers.HandleApproach(creature, nearbyCreature);
-
                 if (nearbyCreature is Aisling nearbyAisling && creature.IsVisibleTo(nearbyCreature))
                     nearbyAisling.Client.SendVisibleObjects(visibleEntity);
+
+                Helpers.HandleApproach(creature, nearbyCreature);
             }
         }
     }

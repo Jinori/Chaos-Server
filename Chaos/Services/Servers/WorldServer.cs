@@ -2,9 +2,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text.Json;
 using Chaos.Clients.Abstractions;
+using Chaos.Collections.Common;
 using Chaos.CommandInterceptor.Abstractions;
 using Chaos.Common.Abstractions;
-using Chaos.Common.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Common.Identity;
 using Chaos.Common.Synchronization;
@@ -36,7 +36,7 @@ namespace Chaos.Services.Servers;
 public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldClient>
 {
     private readonly ISaveManager<Aisling> AislingSaveManager;
-    private readonly IClientFactory<IWorldClient> ClientFactory;
+    private readonly IClientProvider ClientProvider;
     private readonly ICommandInterceptor<Aisling> CommandInterceptor;
     private readonly IGroupService GroupService;
     private readonly IMerchantFactory MerchantFactory;
@@ -49,8 +49,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
 
     public WorldServer(
         IClientRegistry<IWorldClient> clientRegistry,
-        IClientFactory<IWorldClient> clientFactory,
-        ISimpleCacheProvider cacheProvider,
+        IClientProvider clientProvider,
         ISaveManager<Aisling> aislingSaveManager,
         IRedirectManager redirectManager,
         IPacketSerializer packetSerializer,
@@ -69,7 +68,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             logger)
     {
         Options = options.Value;
-        ClientFactory = clientFactory;
+        ClientProvider = clientProvider;
         AislingSaveManager = aislingSaveManager;
         CommandInterceptor = commandInterceptor;
         GroupService = groupService;
@@ -307,7 +306,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
 
     public async ValueTask OnClientRedirectedAsync(IWorldClient client, ClientRedirectedArgs args, IRedirect redirect)
     {
-        client.CryptoClient = new CryptoClient(args.Seed, args.Key, args.Name);
+        client.Crypto = new Crypto(args.Seed, args.Key, args.Name);
         var aisling = await AislingSaveManager.LoadAsync(redirect.Name);
 
         client.Aisling = aisling;
@@ -477,8 +476,8 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
                     ClientId.NextId,
                     Options.LoginRedirect,
                     ServerType.Login,
-                    localClient.CryptoClient.Key,
-                    localClient.CryptoClient.Seed);
+                    localClient.Crypto.Key,
+                    localClient.Crypto.Seed);
 
                 RedirectManager.Add(redirect);
 
@@ -1151,7 +1150,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             if (targetUser.IgnoreList.ContainsI(localClient.Aisling.Name))
             {
                 Logger.LogInformation(
-                    "Message sent by {From} was ignored by {Target} (Message: \"{Message}\")",
+                    "Message sent by {@FromPlayer} was ignored by {@TargetPlayer} (Message: \"{Message}\")",
                     localClient.Aisling,
                     targetUser,
                     message);
@@ -1343,7 +1342,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         var ip = clientSocket.RemoteEndPoint as IPEndPoint;
         Logger.LogDebug("Incoming connection from {Ip}", ip);
 
-        var client = ClientFactory.CreateClient(clientSocket);
+        var client = ClientProvider.CreateClient<IWorldClient>(clientSocket);
         client.OnDisconnected += OnDisconnect;
 
         Logger.LogDebug("Connection established with {@Client}", client);

@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Chaos.CommandInterceptor.Definitions;
+namespace Chaos.Common.Definitions;
 
 internal static partial class RegexCache
 {
@@ -10,7 +10,7 @@ internal static partial class RegexCache
     internal static readonly Regex COMMAND_SPLIT_REGEX = GenerateCommandSplitRegex();
 
     [GeneratedRegex(
-        """ 
+        """
     "([^"]+)"|([^ ]+)
     """,
         RegexOptions.Compiled)]

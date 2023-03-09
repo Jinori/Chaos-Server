@@ -1,10 +1,17 @@
-namespace Chaos.Containers;
+using System.Collections;
+using System.Collections.Concurrent;
+using System.Text.Json.Serialization;
+using Chaos.Common.Converters;
 
-public sealed class CounterTracker : IEnumerable<KeyValuePair<string, int>>
+// ReSharper disable once CheckNamespace
+namespace Chaos.Collections.Common;
+
+[JsonConverter(typeof(CounterCollectionConverter))]
+public sealed class CounterCollection : IEnumerable<KeyValuePair<string, int>>
 {
     private readonly ConcurrentDictionary<string, int> Counters;
 
-    public CounterTracker(IEnumerable<KeyValuePair<string, int>>? enumerable = null) =>
+    public CounterCollection(IEnumerable<KeyValuePair<string, int>>? enumerable = null) =>
         Counters = new ConcurrentDictionary<string, int>(
             enumerable ?? Array.Empty<KeyValuePair<string, int>>(),
             StringComparer.OrdinalIgnoreCase);

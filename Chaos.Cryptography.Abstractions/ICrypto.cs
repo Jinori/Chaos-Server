@@ -5,7 +5,7 @@ namespace Chaos.Cryptography.Abstractions;
 /// <summary>
 ///     Defines a pattern for encryption and decryption on spans using opcodes
 /// </summary>
-public interface ICryptoClient
+public interface ICrypto
 {
     /// <summary>
     ///     Encryption key

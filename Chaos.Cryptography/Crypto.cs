@@ -5,17 +5,17 @@ using Chaos.Cryptography.Abstractions.Definitions;
 
 namespace Chaos.Cryptography;
 
-public sealed class CryptoClient : ICryptoClient
+public sealed class Crypto : ICrypto
 {
     private readonly IReadOnlyList<byte> KeySalts;
     public byte[] Key { get; }
     public byte Seed { get; }
     private IReadOnlyList<byte> Salts => Tables.SALT_TABLE[Seed];
 
-    public CryptoClient()
+    public Crypto()
         : this(0, "UrkcnItnI"u8.ToArray(), string.Empty) { }
 
-    public CryptoClient(byte seed, byte[] key, string keySaltSeed)
+    public Crypto(byte seed, byte[] key, string keySaltSeed)
     {
         Seed = seed;
         Key = key;
