@@ -20,8 +20,8 @@ public class TerrorOfTheCryptScript : MonsterScriptBase
         foreach (var aisling in Subject.MapInstance.GetEntities<Aisling>())
         {
             aisling.TraverseMap(mapInstance, new Point(4, 5));
-            aisling.Flags.RemoveFlag(QuestFlag1.TerrorOfCryptHunt);
-            aisling.Flags.AddFlag(QuestFlag1.TerrorOfCryptComplete);
+            aisling.Trackers.Flags.RemoveFlag(QuestFlag1.TerrorOfCryptHunt);
+            aisling.Trackers.Flags.AddFlag(QuestFlag1.TerrorOfCryptComplete);
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The terror will no longer make the Old Man suffer.");
         }
     }

@@ -138,7 +138,7 @@ public class LearnSpellScript : ConfigurableDialogScriptBase
                     continue;
                 
                 
-                if (wizardElement.HasValue && !source.Flags.HasFlag(wizardElement.Value))
+                if (wizardElement.HasValue && !source.Trackers.Flags.HasFlag(wizardElement.Value))
                     continue;
 
                 Subject.Spells.Add(spell);

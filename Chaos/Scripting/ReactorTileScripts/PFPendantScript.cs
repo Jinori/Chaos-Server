@@ -25,7 +25,7 @@ public class PFPendantScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        var hasStage = aisling.Enums.TryGetValue(out PFQuestStage stage);
+        var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
 
         if (hasStage && stage is PFQuestStage.TurnedInRoots or PFQuestStage.WolfManes or PFQuestStage.WolfManesTurnedIn)
         {
@@ -34,7 +34,7 @@ public class PFPendantScript : ReactorTileScriptBase
             dialog.Display(aisling);
             aisling.TryGiveItem(pendant);
             aisling.SendOrangeBarMessage("You found the Turuc Pendant, this is what Bertil dropped.");
-            aisling.Enums.Set(PFQuestStage.FoundPendant);
+            aisling.Trackers.Enums.Set(PFQuestStage.FoundPendant);
         }
     }
 }

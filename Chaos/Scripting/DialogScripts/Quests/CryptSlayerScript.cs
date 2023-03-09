@@ -32,7 +32,7 @@ public class CryptSlayerScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        var hasStage = source.Enums.TryGetValue(out CryptSlayerStage stage);
+        var hasStage = source.Trackers.Enums.TryGetValue(out CryptSlayerStage stage);
 
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
@@ -57,9 +57,9 @@ public class CryptSlayerScript : DialogScriptBase
                     return;
                 }
 
-                if (source.Counters.TryGetValue("CryptSlayerLegend", out var value) && (value >= 10))
+                if (source.Trackers.Counters.TryGetValue("CryptSlayerLegend", out var value) && (value >= 10))
                 {
-                    source.Enums.Set(CryptSlayerStage.Completed);
+                    source.Trackers.Enums.Set(CryptSlayerStage.Completed);
                     source.Legend.Remove("CryptSlayer", out _);
                     source.Legend.AddOrAccumulate(
                         new LegendMark(
@@ -90,7 +90,7 @@ public class CryptSlayerScript : DialogScriptBase
             case "cryptslayer_initial":
                 if (!hasStage || (stage == CryptSlayerStage.None))
                 {
-                    if (source.TimedEvents.TryGetNearestToCompletion(TimedEvent.TimedEventId.CryptSlayerCd, out var timedEvent))
+                    if (source.Trackers.TimedEvents.TryConsumeEvent("CryptSlayerCd", out var timedEvent))
                     {
                         Subject.Text = $"You have killed enough for now, come back later. (({timedEvent.Remaining.ToReadableString()}))";
 
@@ -160,7 +160,7 @@ public class CryptSlayerScript : DialogScriptBase
                             CryptSlayerStage.Rat, CryptSlayerStage.Centipede1, CryptSlayerStage.Spider1
                         }.PickRandom();
 
-                        source.Enums.Set(randomCryptSlayerStage);
+                        source.Trackers.Enums.Set(randomCryptSlayerStage);
                     }
 
                     if (source.UserStatSheet.Level is >= 11 and < 21)
@@ -170,7 +170,7 @@ public class CryptSlayerScript : DialogScriptBase
                             CryptSlayerStage.Centipede2, CryptSlayerStage.Bat, CryptSlayerStage.Scorpion, CryptSlayerStage.Spider2
                         }.PickRandom();
 
-                        source.Enums.Set(randomCryptSlayerStage);
+                        source.Trackers.Enums.Set(randomCryptSlayerStage);
                     }
 
                     if (source.UserStatSheet.Level is >= 21 and < 31)
@@ -180,7 +180,7 @@ public class CryptSlayerScript : DialogScriptBase
                             CryptSlayerStage.Scorpion, CryptSlayerStage.Bat, CryptSlayerStage.GiantBat, CryptSlayerStage.WhiteBat
                         }.PickRandom();
 
-                        source.Enums.Set(randomCryptSlayerStage);
+                        source.Trackers.Enums.Set(randomCryptSlayerStage);
                     }
 
                     if (source.UserStatSheet.Level is >= 31 and <= 50)
@@ -190,7 +190,7 @@ public class CryptSlayerScript : DialogScriptBase
                             CryptSlayerStage.WhiteBat, CryptSlayerStage.Mimic, CryptSlayerStage.GiantBat, CryptSlayerStage.Marauder
                         }.PickRandom();
 
-                        source.Enums.Set(randomCryptSlayerStage);
+                        source.Trackers.Enums.Set(randomCryptSlayerStage);
                     }
 
                     if (source.UserStatSheet.Level is >= 50 and <= 71)
@@ -200,7 +200,7 @@ public class CryptSlayerScript : DialogScriptBase
                             CryptSlayerStage.Succubus, CryptSlayerStage.Mimic, CryptSlayerStage.Marauder, CryptSlayerStage.Kardi
                         }.PickRandom();
 
-                        source.Enums.Set(randomCryptSlayerStage);
+                        source.Trackers.Enums.Set(randomCryptSlayerStage);
                     }
 
                     switch (randomCryptSlayerStage)
@@ -293,7 +293,7 @@ public class CryptSlayerScript : DialogScriptBase
 
             case "cryptslayer_turnin":
             {
-                if (!source.Counters.TryGetValue("CryptSlayer", out var value) || (value < 10))
+                if (!source.Trackers.Counters.TryGetValue("CryptSlayer", out var value) || (value < 10))
                 {
                     Subject.Close(source);
                     
@@ -356,32 +356,32 @@ public class CryptSlayerScript : DialogScriptBase
                 var rogueweapon = ItemFactory.Create("BlossomDagger");
                 var warriorweapon = ItemFactory.Create("Claidheahmh");
                 
-                source.Counters.AddOrIncrement("CryptSlayerLegend");
+                source.Trackers.Counters.AddOrIncrement("CryptSlayerLegend");
 
-                if (source.Counters.CounterLessThanOrEqualTo("CryptSlayerLegend", 1))
+                if (source.Trackers.Counters.CounterLessThanOrEqualTo("CryptSlayerLegend", 1))
                 {
 
-                    if (source.UserStatSheet.BaseClass.IsClass(BaseClass.Wizard))
+                    if (source.UserStatSheet.BaseClass.ContainsClass(BaseClass.Wizard))
                     {
                         source.TryGiveItem(wizardstaff);
                     }
 
-                    if (source.UserStatSheet.BaseClass.IsClass(BaseClass.Warrior))
+                    if (source.UserStatSheet.BaseClass.ContainsClass(BaseClass.Warrior))
                     {
                         source.TryGiveItem(warriorweapon);
                     }
 
-                    if (source.UserStatSheet.BaseClass.IsClass(BaseClass.Priest))
+                    if (source.UserStatSheet.BaseClass.ContainsClass(BaseClass.Priest))
                     {
                         source.TryGiveItem(prieststaff);
                     }
 
-                    if (source.UserStatSheet.BaseClass.IsClass(BaseClass.Rogue))
+                    if (source.UserStatSheet.BaseClass.ContainsClass(BaseClass.Rogue))
                     {
                         source.TryGiveItem(rogueweapon);
                     }
 
-                    if (source.UserStatSheet.BaseClass.IsClass(BaseClass.Monk))
+                    if (source.UserStatSheet.BaseClass.ContainsClass(BaseClass.Monk))
                     {
                         source.TryGiveItem(monkweapon);
                     }
@@ -390,10 +390,10 @@ public class CryptSlayerScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.TryGiveGamePoints(5);
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
-                source.Enums.Remove(typeof(CryptSlayerStage));
+                source.Trackers.Enums.Remove(typeof(CryptSlayerStage));
                 Subject.Text = "Thank you so much for killing those. That's enough for today, come back soon.";
-                source.Counters.Remove("CryptSlayer", out _);
-                source.Counters.AddOrIncrement("CryptSlayerLegend", 1);
+                source.Trackers.Counters.Remove("CryptSlayer", out _);
+                source.Trackers.Counters.AddOrIncrement("CryptSlayerLegend", 1);
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Helped Skarn clear the Mileth Crypt",
@@ -403,7 +403,7 @@ public class CryptSlayerScript : DialogScriptBase
                         1,
                         GameTime.Now));
 
-                source.TimedEvents.AddEvent(TimedEvent.TimedEventId.CryptSlayerCd, TimeSpan.FromHours(4), true);
+                source.Trackers.TimedEvents.AddEvent("CryptSlayerCd",TimeSpan.FromHours(4), true);
 
                 break;
             }

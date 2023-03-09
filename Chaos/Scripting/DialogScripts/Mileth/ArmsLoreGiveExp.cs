@@ -16,10 +16,10 @@ public class ArmsLoreGiveExpScript : DialogScriptBase
 
     public override void OnDisplayed(Aisling source)
     {
-        if (source.Flags.HasFlag(QuestFlag1.Arms))
+        if (source.Trackers.Flags.HasFlag(QuestFlag1.Arms))
             return;
 
-        source.Flags.AddFlag(QuestFlag1.Arms);
+        source.Trackers.Flags.AddFlag(QuestFlag1.Arms);
         ExperienceDistributionScript.GiveExp(source, 1000);
     }
 }

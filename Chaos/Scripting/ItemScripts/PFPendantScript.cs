@@ -28,7 +28,7 @@ public class PFPendantScript : ItemScriptBase
     public override void OnUse(Aisling source)
     {
         var mapInstance = SimpleCache.Get<MapInstance>("PF_peak");
-        var hasStage = source.Enums.TryGetValue(out PFQuestStage stage);
+        var hasStage = source.Trackers.Enums.TryGetValue(out PFQuestStage stage);
 
         if (!source.IsAlive || (stage != PFQuestStage.FoundPendant) || !source.MapInstance.Name.EqualsI(mapInstance.Name))
             return;

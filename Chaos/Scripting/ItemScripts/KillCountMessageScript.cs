@@ -16,7 +16,7 @@ public class KillCountMessageScript : ConfigurableItemScriptBase
     {
         if (!Admin)
         {
-            var killCounts = source.Counters.Select(x => string.Join(" - ", x.Key, x.Value));
+            var killCounts = source.Trackers.Counters.Select(x => string.Join(" - ", x.Key, x.Value));
 
             var enumerable = killCounts as string[] ?? killCounts.ToArray();
 

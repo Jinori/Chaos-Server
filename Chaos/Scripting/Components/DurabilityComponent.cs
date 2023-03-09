@@ -1,5 +1,4 @@
 using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
 using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
@@ -26,33 +25,32 @@ public class DurabilityComponent
                 weapon.CurrentDurability--;
             var hasNecklace = context.SourceAisling!.Equipment.TryGetObject(6, out var necklace);
             if (hasNecklace && (necklace?.CurrentDurability >= 1))
-                necklace.CurrentDurability--;   
+                necklace.CurrentDurability--;
         }
 
         //Works but lets clean this up?
         foreach (var creature in targetEntities)
         {
-            if (creature is not Aisling aisling) 
+            if (creature is not Aisling aisling)
                 continue;
-            
-            var equipment = aisling.Equipment.Where(x => x.CurrentDurability.HasValue ).ToList();
+
+            var equipment = aisling.Equipment.Where(x => x.CurrentDurability.HasValue).ToList();
             //Aisling Defender, Let's hurt everything but weapon, accessories, overcoats
-            foreach (var item in equipment!.Where(item => item.Slot is > 1 and < 14))
+            foreach (var item in equipment.Where(item => item.Slot is > 1 and < 14))
             {
                 item.CurrentDurability--;
             }
         }
-        
-        //Break items that are at zero durability
-        
-        var itemsToBreak = context.SourceAisling.Equipment.Where(x => x.Template.AccountBound is false);
 
-        foreach (var item in itemsToBreak)
-            if (Randomizer.RollChance(2))
+        //Break items that are at zero durability
+
+        var itemsToBreak = context.SourceAisling?.Equipment.Where(x => x.Template.AccountBound is false && x.CurrentDurability is <= 0);
+        if (itemsToBreak != null)
+            foreach (var item in itemsToBreak)
             {
-                Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{item.DisplayName} has been consumed by the Death God.");
-                Subject.Equipment.TryGetRemove(item.Slot, out _);
+                context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1,
+                    $"{item.DisplayName} has reached zero durability and has broke.");
+                context.SourceAisling?.Equipment.TryGetRemove(item.Slot, out _);
             }
-        
     }
 }

@@ -25,11 +25,11 @@ public class SpareAStickRewardScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        if (source.Flags.HasFlag(QuestFlag1.GatheringSticks) && (source.Inventory.CountOf("Branch") >= 6))
+        if (source.Trackers.Flags.HasFlag(QuestFlag1.GatheringSticks) && (source.Inventory.CountOf("Branch") >= 6))
         {
             Subject.Text = "Excellent! You'll make a fine spark. Now, go and find your way.";
-            source.Flags.RemoveFlag(QuestFlag1.GatheringSticks);
-            source.Flags.AddFlag(QuestFlag1.SpareAStickComplete);
+            source.Trackers.Flags.RemoveFlag(QuestFlag1.GatheringSticks);
+            source.Trackers.Flags.AddFlag(QuestFlag1.SpareAStickComplete);
             ExperienceDistributionScript.GiveExp(source, 2500);
             source.TryGiveGamePoints(5);
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and 2500 exp!");
@@ -54,7 +54,7 @@ public class SpareAStickRewardScript : DialogScriptBase
             source.TryGiveItem(stick);
         }
 
-        if (source.Flags.HasFlag(QuestFlag1.GatheringSticks) && (source.Inventory.CountOf("Branch") < 6))
+        if (source.Trackers.Flags.HasFlag(QuestFlag1.GatheringSticks) && (source.Inventory.CountOf("Branch") < 6))
         {
             if (source.Inventory.CountOf("Branch") == 0)
                 Subject.Text = "What? No branches?! You haven't even tried.";

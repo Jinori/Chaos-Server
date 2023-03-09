@@ -14,7 +14,7 @@ internal class HideTeagueOptionsScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        if (source.Flags.HasFlag(QuestFlag1.TerrorOfCryptHunt))
+        if (source.Trackers.Flags.HasFlag(QuestFlag1.TerrorOfCryptHunt))
         {
             Subject.Text = "Please end my terrors... good luck on your quest.";
             Subject.Type = MenuOrDialogType.Normal;
@@ -22,7 +22,7 @@ internal class HideTeagueOptionsScript : DialogScriptBase
             return;
         }
 
-        if (source.TimedEvents.TryGetNearestToCompletion(TimedEvent.TimedEventId.TerrorOfTheCrypt, out var timedEvent))
+        if (source.Trackers.TimedEvents.TryConsumeEvent("TerrorOfTheCrypt", out var timedEvent))
         {
 
             Subject.Text = $"Thank you for ending my terrors Aisling, I hope I sleep better tonight. Come see me later (({

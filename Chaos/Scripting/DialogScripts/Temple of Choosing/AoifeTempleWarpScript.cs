@@ -16,7 +16,7 @@ public class AoifeTempleWarpScript : DialogScriptBase
 
     public override void OnDisplayed(Aisling source)
     {
-        if (source.Flags.HasFlag(QuestFlag1.ChosenClass))
+        if (source.Trackers.Flags.HasFlag(QuestFlag1.ChosenClass))
         {
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You have already chosen a class. Luck be with you.");
 

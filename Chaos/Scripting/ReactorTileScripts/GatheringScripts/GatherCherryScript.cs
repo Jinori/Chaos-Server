@@ -30,14 +30,14 @@ public class GatherCherryScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if (aisling.Counters.CounterGreaterThanOrEqualTo("cherry", 23))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("cherry", 23))
         {
             var mapInstance = SimpleCache.Get<MapInstance>("suomi_cherry_farmer");
             var point = new Point(7, 5);
 
             aisling.SendOrangeBarMessage("The farmer waves, you head inside.");
             aisling.TraverseMap(mapInstance, point);
-            aisling.Counters.Remove("cherry", out _);
+            aisling.Trackers.Counters.Remove("cherry", out _);
         }
 
         var cherry = ItemFactory.Create("Cherry");
@@ -52,7 +52,7 @@ public class GatherCherryScript : ReactorTileScriptBase
 
             aisling.SendOrangeBarMessage("The farmer waves, you head inside.");
             aisling.TraverseMap(mapInstance, point);
-            aisling.Counters.Remove("cherry", out _);
+            aisling.Trackers.Counters.Remove("cherry", out _);
 
             return;
         }
@@ -65,7 +65,7 @@ public class GatherCherryScript : ReactorTileScriptBase
 
         aisling.Animate(animation);
         aisling.SendOrangeBarMessage("You gathered some cherries!");
-        aisling.Counters.AddOrIncrement("cherry");
+        aisling.Trackers.Counters.AddOrIncrement("cherry");
 
         return;
     }

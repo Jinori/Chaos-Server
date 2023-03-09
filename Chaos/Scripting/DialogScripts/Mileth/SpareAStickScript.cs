@@ -12,13 +12,13 @@ public class SpareAStickScript : DialogScriptBase
 
     public override void OnDisplayed(Aisling source)
     {
-        if (!source.Flags.HasFlag(QuestFlag1.GatheringSticks))
-            source.Flags.AddFlag(QuestFlag1.GatheringSticks);
+        if (!source.Trackers.Flags.HasFlag(QuestFlag1.GatheringSticks))
+            source.Trackers.Flags.AddFlag(QuestFlag1.GatheringSticks);
     }
 
     public override void OnDisplaying(Aisling source)
     {
-        if (source.Flags.HasFlag(QuestFlag1.GatheringSticks))
+        if (source.Trackers.Flags.HasFlag(QuestFlag1.GatheringSticks))
             Subject.Text = "Yeah yeah. I heard ya the first time. Go get the branches.";
     }
 }

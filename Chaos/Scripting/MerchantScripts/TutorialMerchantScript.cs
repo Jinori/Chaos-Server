@@ -22,7 +22,7 @@ public class TutorialMerchantScript : MerchantScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if (!aisling.Enums.TryGetValue<TutorialQuestStage>(out var stage))
+        if (!aisling.Trackers.Enums.TryGetValue<TutorialQuestStage>(out var stage))
             return;
 
         if (stage != TutorialQuestStage.GaveStickAndArmor)

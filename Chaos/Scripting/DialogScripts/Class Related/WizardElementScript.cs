@@ -16,7 +16,7 @@ public class WizardElementScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        var hasElement = source.Flags.TryGetFlag(out WizardElement stage);
+        var hasElement = source.Trackers.Flags.TryGetFlag(out WizardElement stage);
 
 
         if (!hasElement)
@@ -43,7 +43,7 @@ public class WizardElementScript : DialogScriptBase
 
                 case "dar_chosefire":
                 {
-                    source.Flags.AddFlag(WizardElement.Fire);
+                    source.Trackers.Flags.AddFlag(WizardElement.Fire);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "May the fire ignite your soul.");
 
                     source.Legend.AddOrAccumulate(
@@ -60,7 +60,7 @@ public class WizardElementScript : DialogScriptBase
 
                 case "dar_chosewater":
                 {
-                    source.Flags.AddFlag(WizardElement.Water);
+                    source.Trackers.Flags.AddFlag(WizardElement.Water);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Let the water flow within you.");
 
                     source.Legend.AddOrAccumulate(
@@ -77,7 +77,7 @@ public class WizardElementScript : DialogScriptBase
 
                 case "dar_choseearth":
                 {
-                    source.Flags.AddFlag(WizardElement.Earth);
+                    source.Trackers.Flags.AddFlag(WizardElement.Earth);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Sturdy like a rock, be strong.");
 
                     source.Legend.AddOrAccumulate(
@@ -94,7 +94,7 @@ public class WizardElementScript : DialogScriptBase
 
                 case "dar_chosewind":
                 {
-                    source.Flags.AddFlag(WizardElement.Wind);
+                    source.Trackers.Flags.AddFlag(WizardElement.Wind);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Understand restraint, be the leaf.");
 
                     source.Legend.AddOrAccumulate(

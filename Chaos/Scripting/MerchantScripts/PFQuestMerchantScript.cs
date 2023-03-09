@@ -34,7 +34,7 @@ public class PFQuestMerchant : MerchantScriptBase
                 if (!message.EqualsI("Porte Forest"))
                     return;
 
-                var hasStage = aisling.Enums.TryGetValue(out PFQuestStage stage);
+                var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
 
                 if (!hasStage || (stage == PFQuestStage.None))
                 {
@@ -71,7 +71,7 @@ public class PFQuestMerchant : MerchantScriptBase
                 if (!message.EqualsI("Porte Forest"))
                     return;
 
-                var hasStage = aisling.Enums.TryGetValue(out PFQuestStage stage);
+                var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
 
                 switch (stage)
                 {

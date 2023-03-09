@@ -48,7 +48,7 @@ public class TerrorOfTheCryptScript : MapScriptBase
         if (creature is not Aisling aisling)
             return;
 
-        if (aisling.Flags.HasFlag(QuestFlag1.TerrorOfCryptHunt) && (State == ScriptState.Dormant))
+        if (aisling.Trackers.Flags.HasFlag(QuestFlag1.TerrorOfCryptHunt) && (State == ScriptState.Dormant))
             State = ScriptState.DelayedStart;
     }
 

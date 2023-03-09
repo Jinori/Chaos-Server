@@ -32,7 +32,7 @@ public class MythicFabrizioScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        var hasMain = source.Enums.TryGetValue(out MythicQuestMain main);
+        var hasMain = source.Trackers.Enums.TryGetValue(out MythicQuestMain main);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
@@ -81,12 +81,12 @@ public class MythicFabrizioScript : DialogScriptBase
                     return;
                 }
 
-                if (source.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
                 {
                     Subject.Text =
                         "You really did it! You've made alliances with some of the leaders. They have been feuding forever! Whichever alliances you made will be victorious. The others will perish and these lands shall be peaceful once again. Unfortunately, it was the only way.";
                     Subject.Type = MenuOrDialogType.Normal;
-                    source.Enums.Set(MythicQuestMain.CompletedMythic);
+                    source.Trackers.Enums.Set(MythicQuestMain.CompletedMythic);
                     ExperienceDistributionScript.GiveExp(source, source.UserStatSheet.Level <= 98 ? tnl : 50000000);
 
                     source.Legend.AddOrAccumulate(
@@ -106,7 +106,7 @@ public class MythicFabrizioScript : DialogScriptBase
 
             case "mythicquest_initial":
             {
-                source.Enums.Set(MythicQuestMain.MythicStarted);
+                source.Trackers.Enums.Set(MythicQuestMain.MythicStarted);
 
                 Subject.Text =
                     "Farewell for now, adventurer. Remember, our land's fate rests in your hands. Please return to me once you've made alliances and finished helping the leaders.. The more allies we have, the stronger our position will be. I trust in your abilities and look forward to hearing about your progress. Good luck.";

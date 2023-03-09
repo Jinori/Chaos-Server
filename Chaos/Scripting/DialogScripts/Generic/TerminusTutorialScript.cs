@@ -33,7 +33,7 @@ public class TerminusTutorialScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        source.Enums.TryGetValue(out TutorialQuestStage stage);
+        source.Trackers.Enums.TryGetValue(out TutorialQuestStage stage);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -88,7 +88,7 @@ public class TerminusTutorialScript : DialogScriptBase
                             GameTime.Now));
 
                     source.SpellBook.Remove("srad tut");
-                    source.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                    source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
                     ExperienceDistributionScript.GiveExp(source, 1000);
                     Point point;
                     point = new Point(13, 10);

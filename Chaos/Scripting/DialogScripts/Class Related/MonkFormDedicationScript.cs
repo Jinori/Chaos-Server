@@ -15,7 +15,7 @@ public class MonkFormDedicationScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        var monkForm = source.Enums.TryGetValue(out MonkElementForm form);
+        var monkForm = source.Trackers.Enums.TryGetValue(out MonkElementForm form);
 
         if (monkForm || source.UserStatSheet.BaseClass is not BaseClass.Monk)
         {
@@ -29,7 +29,7 @@ public class MonkFormDedicationScript : DialogScriptBase
             {
                 case "fei_chosefire":
                 {
-                    source.Enums.Set(MonkElementForm.Fire);
+                    source.Trackers.Enums.Set(MonkElementForm.Fire);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Fire!");
 
                     source.Legend.AddOrAccumulate(
@@ -46,7 +46,7 @@ public class MonkFormDedicationScript : DialogScriptBase
 
                 case "fei_chosewater":
                 {
-                    source.Enums.Set(MonkElementForm.Water);
+                    source.Trackers.Enums.Set(MonkElementForm.Water);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Water!");
 
                     source.Legend.AddOrAccumulate(
@@ -63,7 +63,7 @@ public class MonkFormDedicationScript : DialogScriptBase
 
                 case "fei_choseearth":
                 {
-                    source.Enums.Set(MonkElementForm.Earth);
+                    source.Trackers.Enums.Set(MonkElementForm.Earth);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Earth!");
 
                     source.Legend.AddOrAccumulate(
@@ -80,7 +80,7 @@ public class MonkFormDedicationScript : DialogScriptBase
 
                 case "fei_choseair":
                 {
-                    source.Enums.Set(MonkElementForm.Air);
+                    source.Trackers.Enums.Set(MonkElementForm.Air);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Air!");
 
                     source.Legend.AddOrAccumulate(

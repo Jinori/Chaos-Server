@@ -43,7 +43,7 @@ public class TutorialDialogScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        var hasStage = source.Enums.TryGetValue(out TutorialQuestStage stage);
+        var hasStage = source.Trackers.Enums.TryGetValue(out TutorialQuestStage stage);
 
         Skill? assail;
 
@@ -112,7 +112,7 @@ public class TutorialDialogScript : DialogScriptBase
             case "leia_1":
                 if (!hasStage)
                 {
-                    source.Enums.Set(TutorialQuestStage.GaveStickAndArmor);
+                    source.Trackers.Enums.Set(TutorialQuestStage.GaveStickAndArmor);
 
                     var stick = ItemFactory.Create("stick");
                     var armor = source.Gender == Gender.Female ? ItemFactory.Create("blouse") : ItemFactory.Create("shirt");
@@ -143,7 +143,7 @@ public class TutorialDialogScript : DialogScriptBase
                 var sradtut = SpellFactory.Create("sradtut");
                 source.SkillBook.TryAddToNextSlot(assail);
                 source.SpellBook.TryAddToNextSlot(sradtut);
-                source.Enums.Set(TutorialQuestStage.GaveAssailAndSpell);
+                source.Trackers.Enums.Set(TutorialQuestStage.GaveAssailAndSpell);
 
                 break;
 
@@ -152,7 +152,7 @@ public class TutorialDialogScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, 250);
                     source.TryGiveGold(1000);
-                    source.Enums.Set(TutorialQuestStage.LearnedWorld);
+                    source.Trackers.Enums.Set(TutorialQuestStage.LearnedWorld);
                 }
 
                 break;
@@ -257,7 +257,7 @@ public class TutorialDialogScript : DialogScriptBase
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
 
-                    source.Enums.Set(TutorialQuestStage.StartedFloppy);
+                    source.Trackers.Enums.Set(TutorialQuestStage.StartedFloppy);
                 }
 
                 break;
@@ -276,7 +276,7 @@ public class TutorialDialogScript : DialogScriptBase
                     source.Inventory.RemoveQuantity("carrot", 3);
                     ExperienceDistributionScript.GiveExp(source, 500);
                     source.TryGiveGold(1000);
-                    source.Enums.Set(TutorialQuestStage.CompletedFloppy);
+                    source.Trackers.Enums.Set(TutorialQuestStage.CompletedFloppy);
 
                     var option = new DialogOption
                     {
@@ -315,7 +315,7 @@ public class TutorialDialogScript : DialogScriptBase
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
 
-                    source.Enums.Set(TutorialQuestStage.GotEquipment);
+                    source.Trackers.Enums.Set(TutorialQuestStage.GotEquipment);
                 }
 
                 break;
@@ -331,7 +331,7 @@ public class TutorialDialogScript : DialogScriptBase
                     if (!Subject.HasOption(option))
                         Subject.Options.Insert(0, option);
 
-                    source.Enums.Set(TutorialQuestStage.GiantFloppy);
+                    source.Trackers.Enums.Set(TutorialQuestStage.GiantFloppy);
                 }
 
                 break;
@@ -366,7 +366,7 @@ public class TutorialDialogScript : DialogScriptBase
                                 1,
                                 GameTime.Now));
 
-                        source.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                        source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
                         point = new Point(5, 8);
                         mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
                         source.TraverseMap(mapInstance, point);
@@ -391,7 +391,7 @@ public class TutorialDialogScript : DialogScriptBase
                                 1,
                                 GameTime.Now));
 
-                        source.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                        source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
                         point = new Point(5, 8);
                         mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
                         source.TraverseMap(mapInstance, point);
@@ -415,7 +415,7 @@ public class TutorialDialogScript : DialogScriptBase
                                 1,
                                 GameTime.Now));
 
-                        source.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                        source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
                         point = new Point(5, 8);
                         mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
                         source.TraverseMap(mapInstance, point);
@@ -438,7 +438,7 @@ public class TutorialDialogScript : DialogScriptBase
                                 1,
                                 GameTime.Now));
 
-                        source.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                        source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
                         point = new Point(5, 8);
                         mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
                         source.TraverseMap(mapInstance, point);
@@ -461,7 +461,7 @@ public class TutorialDialogScript : DialogScriptBase
                                 1,
                                 GameTime.Now));
 
-                        source.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                        source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
                         point = new Point(5, 8);
                         mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
                         source.TraverseMap(mapInstance, point);
@@ -490,7 +490,7 @@ public class TutorialDialogScript : DialogScriptBase
                 source.SkillBook.TryAddToNextSlot(assail);
                 ExperienceDistributionScript.GiveExp(source, 1750);
                 source.SpellBook.Remove("srad tut");
-                source.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
                 point = new Point(5, 8);
                 mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
                 source.TraverseMap(mapInstance, point);

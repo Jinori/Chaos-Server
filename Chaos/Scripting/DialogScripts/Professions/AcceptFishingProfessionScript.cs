@@ -13,8 +13,8 @@ public class AcceptFishingProfessionScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        var profCount = source.Enums.TryGetValue(out ProfessionCount profession);
-        var hasFishing = source.Enums.TryGetValue(out Definitions.Professions job);
+        var profCount = source.Trackers.Enums.TryGetValue(out ProfessionCount profession);
+        var hasFishing = source.Trackers.Enums.TryGetValue(out Definitions.Professions job);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -41,8 +41,8 @@ public class AcceptFishingProfessionScript : DialogScriptBase
 
                         break;
                     case ProfessionCount.One when job is not Definitions.Professions.Fishing:
-                        source.Enums.Set(Definitions.Professions.Fishing);
-                        source.Enums.Set(ProfessionCount.Two);
+                        source.Trackers.Enums.Set(Definitions.Professions.Fishing);
+                        source.Trackers.Enums.Set(ProfessionCount.Two);
                         source.Titles.Add("Fisherman");
                         source.SendOrangeBarMessage("You've selected Fishing as your second profession!");
 
@@ -52,8 +52,8 @@ public class AcceptFishingProfessionScript : DialogScriptBase
                     {
                         if (profession is ProfessionCount.None || !hasFishing)
                         {
-                            source.Enums.Set(Definitions.Professions.Fishing);
-                            source.Enums.Set(ProfessionCount.One);
+                            source.Trackers.Enums.Set(Definitions.Professions.Fishing);
+                            source.Trackers.Enums.Set(ProfessionCount.One);
                             source.Titles.Add("Fisherman");
                             source.SendOrangeBarMessage("You've selected Fishing as your first profession!");
                         }

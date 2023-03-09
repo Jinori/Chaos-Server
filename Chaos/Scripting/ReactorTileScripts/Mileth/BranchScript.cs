@@ -20,7 +20,7 @@ public class BranchScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if (aisling.Flags.HasFlag(QuestFlag1.GatheringSticks))
+        if (aisling.Trackers.Flags.HasFlag(QuestFlag1.GatheringSticks))
             if (Randomizer.RollChance(18))
             {
                 var branch = ItemFactory.Create("branch");

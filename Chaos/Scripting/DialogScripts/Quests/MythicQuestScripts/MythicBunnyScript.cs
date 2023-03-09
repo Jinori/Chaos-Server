@@ -29,9 +29,9 @@ public class MythicBunnyScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        var hasMain = source.Enums.TryGetValue(out MythicQuestMain main);
-        var hasBunny = source.Enums.TryGetValue(out MythicBunny bunny);
-        var hasHorse = source.Enums.TryGetValue(out MythicHorse horse);
+        var hasMain = source.Trackers.Enums.TryGetValue(out MythicQuestMain main);
+        var hasBunny = source.Trackers.Enums.TryGetValue(out MythicBunny bunny);
+        var hasHorse = source.Trackers.Enums.TryGetValue(out MythicHorse horse);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
@@ -225,7 +225,7 @@ public class MythicBunnyScript : DialogScriptBase
             {
                 Subject.Text = "You have our paws-tounding gratitude. Don't let the horses get your goat, though - they're quick and nimble, and they can kick like mules. But we believe in you, and we know you'll do us proud. May the bunny luck be with you!";
                 source.SendOrangeBarMessage("Kill 20 Purple Horses for Big Bunny");
-                source.Enums.Set(MythicBunny.Lower);
+                source.Trackers.Enums.Set(MythicBunny.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -234,7 +234,7 @@ public class MythicBunnyScript : DialogScriptBase
             case "bunny_lower2":
             {
 
-                if (!source.Counters.TryGetValue("purplehorse", out var purplehorse) || (purplehorse < 15))
+                if (!source.Trackers.Counters.TryGetValue("purplehorse", out var purplehorse) || (purplehorse < 15))
                 {
                     Subject.Text = "You haven't killed enough Purple Horses.";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -242,11 +242,11 @@ public class MythicBunnyScript : DialogScriptBase
                     return;
                 }
 
-                source.Enums.Set(MythicBunny.LowerComplete);
+                source.Trackers.Enums.Set(MythicBunny.LowerComplete);
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("purplehorse", out _);
+                source.Trackers.Counters.Remove("purplehorse", out _);
                 Subject.Text = "As you can imagine, horses stomping around all day can really cramp a bunny's style. We've got carrots to grow and holes to dig, and we can't do any of that with a bunch of hooves stomping all over the place. Thank you.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "bunny_initial";
@@ -258,7 +258,7 @@ public class MythicBunnyScript : DialogScriptBase
             {
                 Subject.Text = "I need you to travel deep into the fields and thin out the horse herd. Specifically, I need you to thin out 10 Gray Horses and 10 Red Horses.";
                 source.SendOrangeBarMessage("Kill 10 Gray and 10 Red Horses for Big Bunny");
-                source.Enums.Set(MythicBunny.Higher);
+                source.Trackers.Enums.Set(MythicBunny.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -266,8 +266,8 @@ public class MythicBunnyScript : DialogScriptBase
 
             case "bunny_higher2":
             {
-                source.Counters.TryGetValue("grayhorse", out var grayhorse);
-                source.Counters.TryGetValue("redhorse", out var redhorse);
+                source.Trackers.Counters.TryGetValue("grayhorse", out var grayhorse);
+                source.Trackers.Counters.TryGetValue("redhorse", out var redhorse);
 
                 if ((grayhorse < 10) && (redhorse < 10))
                 {
@@ -282,10 +282,10 @@ public class MythicBunnyScript : DialogScriptBase
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.Enums.Set(MythicBunny.HigherComplete);
+                source.Trackers.Enums.Set(MythicBunny.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("grayhorse", out _);
-                source.Counters.Remove("redhorse", out _);
+                source.Trackers.Counters.Remove("grayhorse", out _);
+                source.Trackers.Counters.Remove("redhorse", out _);
 
                 break;
             }
@@ -294,7 +294,7 @@ public class MythicBunnyScript : DialogScriptBase
             {
                 Subject.Text = "Don't let us down, Warren Wanderer. We're counting on you to hop to it and bring back the horse hair we need. And remember, the early bunny gets the hair!";
                 source.SendOrangeBarMessage("Collect 25 horse hair for Big Bunny");
-                source.Enums.Set(MythicBunny.Item);
+                source.Trackers.Enums.Set(MythicBunny.Item);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -313,7 +313,7 @@ public class MythicBunnyScript : DialogScriptBase
                 
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.Enums.Set(MythicBunny.ItemComplete);
+                source.Trackers.Enums.Set(MythicBunny.ItemComplete);
                 Subject.Text = "You've really hopped to it and brought us enough horse hair to keep us warm and cozy through the long winter nights. This is bunny-tastic news!";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "bunny_initial";
@@ -328,13 +328,13 @@ public class MythicBunnyScript : DialogScriptBase
                 {
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.Text = "Oh no! You already allied with the horses! Get away from us!";
-                    source.Enums.Set(MythicBunny.EnemyAllied);
+                    source.Trackers.Enums.Set(MythicBunny.EnemyAllied);
 
                     return;
                 }
 
-                source.Counters.AddOrIncrement("MythicAllies", 1);
-                source.Enums.Set(MythicBunny.Allied);
+                source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
+                source.Trackers.Enums.Set(MythicBunny.Allied);
                 source.SendOrangeBarMessage("You are now allied with the bunnies!");
                 Subject.Text = $"Remember, {source.Name}, that no matter where your journeys take you, you will always have a home in our warren. The bunny luck be with you always!";
                 Subject.Type = MenuOrDialogType.Normal;
@@ -349,7 +349,7 @@ public class MythicBunnyScript : DialogScriptBase
                 Subject.Text = "Please be careful, Warren Wanderer. We rabbits are a fragile and gentle species, and we need your help to survive. We'll be eagerly waiting for your return, hoping to hear tales of your bunny-licious bravery and triumph over Apple Jack. May the bunny gods be with you!";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
-                source.Enums.Set(MythicBunny.BossStarted);
+                source.Trackers.Enums.Set(MythicBunny.BossStarted);
                 source.SendOrangeBarMessage("Kill Apple Jack atleast three times.");
             }
 
@@ -357,7 +357,7 @@ public class MythicBunnyScript : DialogScriptBase
 
             case "bunny_boss2":
             {
-                if (!source.Counters.TryGetValue("AppleJack", out var bunnyboss1) || (bunnyboss1 < 3))
+                if (!source.Trackers.Counters.TryGetValue("AppleJack", out var bunnyboss1) || (bunnyboss1 < 3))
                 {
                     Subject.Text = "Please rest and recover your strength, and then hop back into action. We'll be here waiting, hoping and praying for your success. The fate of our warren rests on your paws, Warren Wanderer. We're counting on you!";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -377,13 +377,13 @@ public class MythicBunnyScript : DialogScriptBase
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                source.Counters.Remove("AppleJack", out _);
-                source.Enums.Set(MythicBunny.BossDefeated);
-                source.Counters.AddOrIncrement("MythicBoss", 1);
+                source.Trackers.Counters.Remove("AppleJack", out _);
+                source.Trackers.Enums.Set(MythicBunny.BossDefeated);
+                source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
                 {
-                    source.Enums.Set(MythicQuestMain.CompletedAll);
+                    source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
                 }
             }
 

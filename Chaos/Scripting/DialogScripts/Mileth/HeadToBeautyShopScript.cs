@@ -12,9 +12,9 @@ public class HeadToBeautyShopScript : DialogScriptBase
 
     public override void OnDisplayed(Aisling source)
     {
-        if (!source.Flags.HasFlag(QuestFlag1.HeadedToBeautyShop))
+        if (!source.Trackers.Flags.HasFlag(QuestFlag1.HeadedToBeautyShop))
         {
-            source.Flags.AddFlag(QuestFlag1.HeadedToBeautyShop);
+            source.Trackers.Flags.AddFlag(QuestFlag1.HeadedToBeautyShop);
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Josephine's shop is located in the southern part of town.");
         }
     }

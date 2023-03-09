@@ -24,7 +24,7 @@ public class DarkThingsQuestScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        var hasStage = source.Enums.TryGetValue(out DarkThingsStage stage);
+        var hasStage = source.Trackers.Enums.TryGetValue(out DarkThingsStage stage);
 
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = Convert.ToInt32(.20 * tnl);
@@ -52,7 +52,7 @@ public class DarkThingsQuestScript : DialogScriptBase
             case "darkthings_initial":
                 if (!hasStage || (stage == DarkThingsStage.None))
                 {
-                    if (source.TimedEvents.TryGetNearestToCompletion(TimedEvent.TimedEventId.DarkThingsCd, out var timedEvent))
+                    if (source.Trackers.TimedEvents.TryConsumeEvent("DarkThingsCd", out var timedEvent))
                     {
                         Subject.Text = $"I have enough for now. Return later. (({timedEvent.Remaining.ToReadableString()}))";
 
@@ -260,7 +260,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                             DarkThingsStage.StartedSpidersEye, DarkThingsStage.StartedCentipedesGland, DarkThingsStage.StartedSpidersSilk
                         }.PickRandom();
 
-                        source.Enums.Set(randomDarkThingsStage);
+                        source.Trackers.Enums.Set(randomDarkThingsStage);
                     }
 
                     if (source.UserStatSheet.Level is >= 11 and < 21)
@@ -271,7 +271,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                             DarkThingsStage.StartedBatsWing
                         }.PickRandom();
 
-                        source.Enums.Set(randomDarkThingsStage);
+                        source.Trackers.Enums.Set(randomDarkThingsStage);
                     }
 
                     if (source.UserStatSheet.Level is >= 21 and < 31)
@@ -281,7 +281,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                             DarkThingsStage.StartedBatsWing, DarkThingsStage.StartedCentipedesGland, DarkThingsStage.StartedScorpionSting
                         }.PickRandom();
 
-                        source.Enums.Set(randomDarkThingsStage);
+                        source.Trackers.Enums.Set(randomDarkThingsStage);
                     }
 
                     if (source.UserStatSheet.Level is >= 31 and <= 50)
@@ -291,7 +291,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                             DarkThingsStage.StartedGreatBatsWing, DarkThingsStage.StartedScorpionSting, DarkThingsStage.StartedWhiteBatsWing
                         }.PickRandom();
 
-                        source.Enums.Set(randomDarkThingsStage);
+                        source.Trackers.Enums.Set(randomDarkThingsStage);
                     }
 
                     switch (randomDarkThingsStage)
@@ -347,7 +347,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                 break;
 
             case "darkthings_use":
-                source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(1), true);
+                source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(1), true);
 
                 break;
 
@@ -367,9 +367,9 @@ public class DarkThingsQuestScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.TryGiveGamePoints(5);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
-                    source.Enums.Set(DarkThingsStage.None);
+                    source.Trackers.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(8), true);
                 }
 
                 break;
@@ -389,9 +389,9 @@ public class DarkThingsQuestScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.TryGiveGamePoints(5);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
-                    source.Enums.Set(DarkThingsStage.None);
+                    source.Trackers.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(8), true);
                 }
 
                 break;
@@ -409,11 +409,11 @@ public class DarkThingsQuestScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("Centipede's Gland", 1);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                    source.Enums.Set(DarkThingsStage.None);
+                    source.Trackers.Enums.Set(DarkThingsStage.None);
                     source.TryGiveGamePoints(5);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(8), true);
                 }
 
                 break;
@@ -433,9 +433,9 @@ public class DarkThingsQuestScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, thirtyPercent);
                     source.TryGiveGamePoints(5);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {thirtyPercent} exp!");
-                    source.Enums.Set(DarkThingsStage.None);
+                    source.Trackers.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(8), true);
                 }
 
                 break;
@@ -454,9 +454,9 @@ public class DarkThingsQuestScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, thirtyPercent);
                     source.TryGiveGamePoints(5);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {thirtyPercent} exp!");
-                    source.Enums.Set(DarkThingsStage.None);
+                    source.Trackers.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(8), true);
                 }
 
                 break;
@@ -476,9 +476,9 @@ public class DarkThingsQuestScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, thirtyPercent);
                     source.TryGiveGamePoints(5);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {thirtyPercent} exp!");
-                    source.Enums.Set(DarkThingsStage.None);
+                    source.Trackers.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(8), true);
                 }
 
                 break;
@@ -496,11 +496,11 @@ public class DarkThingsQuestScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("White Bat's Wing", 1);
                     ExperienceDistributionScript.GiveExp(source, fortyPercent);
-                    source.Enums.Set(DarkThingsStage.None);
+                    source.Trackers.Enums.Set(DarkThingsStage.None);
                     source.TryGiveGamePoints(10);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive ten gamepoints and {fortyPercent} exp!");
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.DarkThingsCd, TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(8), true);
                 }
 
                 break;

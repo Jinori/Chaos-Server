@@ -31,17 +31,17 @@ public class MythicZombieScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        var hasMain = source.Enums.TryGetValue(out MythicQuestMain main);
-        var hasBunny = source.Enums.TryGetValue(out MythicBunny bunny);
-        var hasHorse = source.Enums.TryGetValue(out MythicHorse horse);
-        var hasGargoyle = source.Enums.TryGetValue(out MythicGargoyle gargoyle);
-        var hasZombie = source.Enums.TryGetValue(out MythicZombie zombie);
-        var hasFrog = source.Enums.TryGetValue(out MythicFrog frog);
-        var hasWolf = source.Enums.TryGetValue(out MythicWolf wolf);
-        var hasMantis = source.Enums.TryGetValue(out MythicMantis mantis);
-        var hasBee = source.Enums.TryGetValue(out MythicBee bee);
-        var hasKobold = source.Enums.TryGetValue(out MythicKobold kobold);
-        var hasGrimlock = source.Enums.TryGetValue(out MythicGrimlock grimlock);
+        var hasMain = source.Trackers.Enums.TryGetValue(out MythicQuestMain main);
+        var hasBunny = source.Trackers.Enums.TryGetValue(out MythicBunny bunny);
+        var hasHorse = source.Trackers.Enums.TryGetValue(out MythicHorse horse);
+        var hasGargoyle = source.Trackers.Enums.TryGetValue(out MythicGargoyle gargoyle);
+        var hasZombie = source.Trackers.Enums.TryGetValue(out MythicZombie zombie);
+        var hasFrog = source.Trackers.Enums.TryGetValue(out MythicFrog frog);
+        var hasWolf = source.Trackers.Enums.TryGetValue(out MythicWolf wolf);
+        var hasMantis = source.Trackers.Enums.TryGetValue(out MythicMantis mantis);
+        var hasBee = source.Trackers.Enums.TryGetValue(out MythicBee bee);
+        var hasKobold = source.Trackers.Enums.TryGetValue(out MythicKobold kobold);
+        var hasGrimlock = source.Trackers.Enums.TryGetValue(out MythicGrimlock grimlock);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
@@ -233,7 +233,7 @@ public class MythicZombieScript : DialogScriptBase
             {
                 Subject.Text = " ";
                 source.SendOrangeBarMessage("Kill 15 Mythic Dunans for the Superior Zombie");
-                source.Enums.Set(MythicZombie.Lower);
+                source.Trackers.Enums.Set(MythicZombie.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -242,7 +242,7 @@ public class MythicZombieScript : DialogScriptBase
             case "zombie_lower2":
             {
 
-                if (!source.Counters.TryGetValue("mythicdunan", out var zombielower) || (zombielower < 15))
+                if (!source.Trackers.Counters.TryGetValue("mythicdunan", out var zombielower) || (zombielower < 15))
                 {
                     Subject.Text = "You haven't killed enough Mythic Dunans";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -250,11 +250,11 @@ public class MythicZombieScript : DialogScriptBase
                     return;
                 }
 
-                source.Enums.Set(MythicZombie.LowerComplete);
+                source.Trackers.Enums.Set(MythicZombie.LowerComplete);
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("mythicdunan", out _);
+                source.Trackers.Counters.Remove("mythicdunan", out _);
                 Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "zombie_initial";
@@ -266,7 +266,7 @@ public class MythicZombieScript : DialogScriptBase
             {
                 Subject.Text = "Great, clear 10 Gargoyle Servants and 10 Guards";
                 source.SendOrangeBarMessage("Kill 10 Gargoyle Servants and 10 Guards");
-                source.Enums.Set(MythicZombie.Higher);
+                source.Trackers.Enums.Set(MythicZombie.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -274,8 +274,8 @@ public class MythicZombieScript : DialogScriptBase
 
             case "zombie_higher2":
             {
-                source.Counters.TryGetValue("gargoyleservant", out var gargoyleservant);
-                source.Counters.TryGetValue("gargoyleguard", out var gargoyleguard);
+                source.Trackers.Counters.TryGetValue("gargoyleservant", out var gargoyleservant);
+                source.Trackers.Counters.TryGetValue("gargoyleguard", out var gargoyleguard);
 
                 if ((gargoyleservant < 10) && (gargoyleguard < 10))
                 {
@@ -290,10 +290,10 @@ public class MythicZombieScript : DialogScriptBase
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.Enums.Set(MythicZombie.HigherComplete);
+                source.Trackers.Enums.Set(MythicZombie.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("gargoyleservant", out _);
-                source.Counters.Remove("gargoyleguard", out _);
+                source.Trackers.Counters.Remove("gargoyleservant", out _);
+                source.Trackers.Counters.Remove("gargoyleguard", out _);
 
                 var option = new DialogOption
                 {
@@ -311,7 +311,7 @@ public class MythicZombieScript : DialogScriptBase
             {
                 Subject.Text = " ";
                 source.SendOrangeBarMessage("Collect 25 Dark Flames for Superior Zombie");
-                source.Enums.Set(MythicZombie.Item);
+                source.Trackers.Enums.Set(MythicZombie.Item);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -330,7 +330,7 @@ public class MythicZombieScript : DialogScriptBase
                 
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.Enums.Set(MythicZombie.ItemComplete);
+                source.Trackers.Enums.Set(MythicZombie.ItemComplete);
                 Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "zombie_initial";
@@ -345,13 +345,13 @@ public class MythicZombieScript : DialogScriptBase
                 {
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.Text = " ";
-                    source.Enums.Set(MythicZombie.EnemyAllied);
+                    source.Trackers.Enums.Set(MythicZombie.EnemyAllied);
 
                     return;
                 }
 
-                source.Counters.AddOrIncrement("MythicAllies", 1);
-                source.Enums.Set(MythicZombie.Allied);
+                source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
+                source.Trackers.Enums.Set(MythicZombie.Allied);
                 source.SendOrangeBarMessage("You are now allied with the Zombies!");
                 Subject.Text = $" ";
                 Subject.Type = MenuOrDialogType.Normal;
@@ -366,7 +366,7 @@ public class MythicZombieScript : DialogScriptBase
                 Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
-                source.Enums.Set(MythicZombie.BossStarted);
+                source.Trackers.Enums.Set(MythicZombie.BossStarted);
                 source.SendOrangeBarMessage("Kill Gargoyle Fiend three times.");
             }
 
@@ -374,7 +374,7 @@ public class MythicZombieScript : DialogScriptBase
 
             case "zombie_boss2":
             {
-                if (!source.Counters.TryGetValue("gargoylefiend", out var zombieboss1) || (zombieboss1 < 3))
+                if (!source.Trackers.Counters.TryGetValue("gargoylefiend", out var zombieboss1) || (zombieboss1 < 3))
                 {
                     Subject.Text = " ";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -394,13 +394,13 @@ public class MythicZombieScript : DialogScriptBase
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                source.Counters.Remove("gargoylefiend", out _);
-                source.Enums.Set(MythicZombie.BossDefeated);
-                source.Counters.AddOrIncrement("MythicBoss", 1);
+                source.Trackers.Counters.Remove("gargoylefiend", out _);
+                source.Trackers.Enums.Set(MythicZombie.BossDefeated);
+                source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
                 {
-                    source.Enums.Set(MythicQuestMain.CompletedAll);
+                    source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
                 }
             }
 

@@ -32,7 +32,7 @@ public class MonkDedicateScript : DialogScriptBase
 
     public override void OnDisplayed(Aisling source)
     {
-        if (!source.Flags.HasFlag(QuestFlag1.ChosenClass))
+        if (!source.Trackers.Flags.HasFlag(QuestFlag1.ChosenClass))
         {
             var ani = new Animation
             {
@@ -59,7 +59,7 @@ public class MonkDedicateScript : DialogScriptBase
 
             source.SkillBook.Remove("assail");
 
-            source.Flags.AddFlag(QuestFlag1.ChosenClass);
+            source.Trackers.Flags.AddFlag(QuestFlag1.ChosenClass);
             var skill = SkillFactory.Create("punch");
 
             if (!source.SkillBook.Contains(skill))

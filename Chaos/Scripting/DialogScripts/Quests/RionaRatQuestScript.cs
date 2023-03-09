@@ -20,7 +20,7 @@ public class RionaRatQuestScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        var hasStage = source.Enums.TryGetValue(out RionaRatQuestStage stage);
+        var hasStage = source.Trackers.Enums.TryGetValue(out RionaRatQuestStage stage);
 
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = Convert.ToInt32(.20 * tnl);
@@ -116,7 +116,7 @@ public class RionaRatQuestScript : DialogScriptBase
             case "ratquest_yes":
                 if (!hasStage || (stage == RionaRatQuestStage.None))
                 {
-                    source.Enums.Set(RionaRatQuestStage.StartedRatQuest);
+                    source.Trackers.Enums.Set(RionaRatQuestStage.StartedRatQuest);
                     Subject.Text = "Please kill five of these little rodents, I can't stand to look at them.";
                     source.SendOrangeBarMessage("Kill 5 tavern rats.");
                 }
@@ -126,7 +126,7 @@ public class RionaRatQuestScript : DialogScriptBase
             case "ratquest_turnin":
                 if (stage == RionaRatQuestStage.StartedRatQuest)
                 {
-                    if (!source.Counters.TryGetValue("StartedRatQuest", out var value) || (value < 5))
+                    if (!source.Trackers.Counters.TryGetValue("StartedRatQuest", out var value) || (value < 5))
                     {
                         Subject.Text = "They're still everywhere! Please take care of them.";
                         source.SendOrangeBarMessage("You watch a rat crawl across your foot");
@@ -137,9 +137,9 @@ public class RionaRatQuestScript : DialogScriptBase
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     Subject.Text = "Thank you so much for taking care of those rats!";
-                    source.Enums.Set(RionaRatQuestStage.CompletedRatQuest);
+                    source.Trackers.Enums.Set(RionaRatQuestStage.CompletedRatQuest);
                     source.SendServerMessage(ServerMessageType.PersistentMessage, "");
-                    source.Counters.Remove("StartedRatQuest", out _);
+                    source.Trackers.Counters.Remove("StartedRatQuest", out _);
                 }
 
                 break;

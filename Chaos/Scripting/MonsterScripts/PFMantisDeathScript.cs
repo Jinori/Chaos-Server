@@ -27,7 +27,7 @@ public class PFMantisDeathScript : MonsterScriptBase
 
         foreach (var member in Subject.MapInstance.GetEntities<Aisling>().ToList())
         {
-            var hasStage = member.Enums.TryGetValue(out PFQuestStage stage);
+            var hasStage = member.Trackers.Enums.TryGetValue(out PFQuestStage stage);
 
             if (stage != PFQuestStage.FoundPendant)
                 return;
@@ -40,7 +40,7 @@ public class PFMantisDeathScript : MonsterScriptBase
             while (!mapInstance.IsWalkable(point, member.Type));
 
             member.TraverseMap(mapInstance, point);
-            member.Enums.Set(PFQuestStage.KilledGiantMantis);
+            member.Trackers.Enums.Set(PFQuestStage.KilledGiantMantis);
             member.SendOrangeBarMessage("The ground underneath you caves...");
             member.Inventory.Remove("Turuc Pendant");
             member.Inventory.Remove("silver wolf leather");

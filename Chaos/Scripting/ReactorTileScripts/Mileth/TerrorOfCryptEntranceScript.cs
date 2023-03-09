@@ -41,7 +41,7 @@ public class TerrorOfCryptEntranceScript : ReactorTileScriptBase
 
         foreach (var member in group)
         {
-            if (member.WithinLevelRange(source) && member.Flags.HasFlag(QuestFlag1.TerrorOfCryptHunt))
+            if (member.WithinLevelRange(source) && member.Trackers.Flags.HasFlag(QuestFlag1.TerrorOfCryptHunt))
                 ++groupCount;
         }
 

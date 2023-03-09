@@ -21,14 +21,14 @@ public class ManorNecklaceScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        var hasStage = source.Enums.TryGetValue(out ManorNecklaceStage stage);
+        var hasStage = source.Trackers.Enums.TryGetValue(out ManorNecklaceStage stage);
         
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "zulera_keephernecklace":
             {
                 if (stage == ManorNecklaceStage.ObtainedNecklace)
-                    source.Enums.Set(ManorNecklaceStage.ReturnedNecklace);
+                    source.Trackers.Enums.Set(ManorNecklaceStage.ReturnedNecklace);
                 source.Legend.AddUnique(new LegendMark("Returned Zulera's Heirloom", "manorNecklace", MarkIcon.Victory, MarkColor.LightPurple, 1, GameTime.Now));
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive a legend mark. The young one looks terribly sad.");
                 break;
@@ -44,7 +44,7 @@ public class ManorNecklaceScript : DialogScriptBase
 
                 source.Inventory.RemoveQuantity("Zulera's Heirloom", 1);
                 if (stage == ManorNecklaceStage.ObtainedNecklace)
-                    source.Enums.Set(ManorNecklaceStage.ReturnedNecklace);
+                    source.Trackers.Enums.Set(ManorNecklaceStage.ReturnedNecklace);
                 ExperienceDistributionScript.GiveExp(source, 150000);
                 source.TryGiveGamePoints(20);
                 source.Legend.AddUnique(new LegendMark("Returned Zulera's Heirloom", "manorNecklace", MarkIcon.Heart, MarkColor.Blue, 1, GameTime.Now));
@@ -92,7 +92,7 @@ public class ManorNecklaceScript : DialogScriptBase
             {
                 if (!hasStage || (stage == ManorNecklaceStage.None))
                 {
-                    source.Enums.Set(ManorNecklaceStage.AcceptedQuest);
+                    source.Trackers.Enums.Set(ManorNecklaceStage.AcceptedQuest);
                 }
                 source.SendOrangeBarMessage("Go find the girl's lost necklace inside the manor!");
                 break;

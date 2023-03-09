@@ -13,7 +13,7 @@ public class TerminusExpToggleScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        var hasFlag = source.Enums.TryGetValue(out GainExp stage);
+        var hasFlag = source.Trackers.Enums.TryGetValue(out GainExp stage);
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "terminus_expgainyes":
@@ -21,7 +21,7 @@ public class TerminusExpToggleScript : DialogScriptBase
                 switch (stage)
                 {
                     case GainExp.No:
-                        source.Enums.Set(GainExp.Yes);
+                        source.Trackers.Enums.Set(GainExp.Yes);
                         source.SendOrangeBarMessage("You will now gain experience.");
                         break;
                     case GainExp.Yes:
@@ -36,7 +36,7 @@ public class TerminusExpToggleScript : DialogScriptBase
                 switch (stage)
                 {
                     case GainExp.Yes:
-                        source.Enums.Set(GainExp.No);
+                        source.Trackers.Enums.Set(GainExp.No);
                         source.SendOrangeBarMessage("You will no longer gain experience.");
                         break;
                     case GainExp.No:

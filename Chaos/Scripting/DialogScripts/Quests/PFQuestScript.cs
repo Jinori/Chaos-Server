@@ -32,7 +32,7 @@ public class PFQuestScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        var hasStage = source.Enums.TryGetValue(out PFQuestStage stage);
+        var hasStage = source.Trackers.Enums.TryGetValue(out PFQuestStage stage);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -119,7 +119,7 @@ public class PFQuestScript : DialogScriptBase
 
             case "porteforest_yes":
                 if (!hasStage || (stage == PFQuestStage.None))
-                    source.Enums.Set(PFQuestStage.StartedPFQuest);
+                    source.Trackers.Enums.Set(PFQuestStage.StartedPFQuest);
 
                 break;
 
@@ -145,7 +145,7 @@ public class PFQuestScript : DialogScriptBase
                     }
 
                     source.Inventory.RemoveQuantity("trent root", 4);
-                    source.Enums.Set(PFQuestStage.TurnedInRoots);
+                    source.Trackers.Enums.Set(PFQuestStage.TurnedInRoots);
                     ExperienceDistributionScript.GiveExp(source, 100000);
                     Subject.Text = "Thank you Aisling! Now I can make some more weapons.";
 
@@ -257,7 +257,7 @@ public class PFQuestScript : DialogScriptBase
             case "porteforest_yes2":
                 if (stage == PFQuestStage.TurnedInRoots)
                 {
-                    source.Enums.Set(PFQuestStage.WolfManes);
+                    source.Trackers.Enums.Set(PFQuestStage.WolfManes);
                     source.SendOrangeBarMessage("Return to Bertil with five Silver Wolf Mane Hairs.");
                 }
 
@@ -280,7 +280,7 @@ public class PFQuestScript : DialogScriptBase
                     source.Inventory.RemoveQuantity("Silver Wolf Mane Hair", 5);
 
                     var leather = ItemFactory.Create("silverwolfleather");
-                    source.Enums.Set(PFQuestStage.WolfManesTurnedIn);
+                    source.Trackers.Enums.Set(PFQuestStage.WolfManesTurnedIn);
                     ExperienceDistributionScript.GiveExp(source, 150000);
                     source.TryGiveItem(leather);
                 }
@@ -522,7 +522,7 @@ public class PFQuestScript : DialogScriptBase
                 while (!mapInstance.IsWalkable(point, source.Type));
 
                 source.TraverseMap(mapInstance, point);
-                source.Enums.Set(PFQuestStage.CompletedPFQuest);
+                source.Trackers.Enums.Set(PFQuestStage.CompletedPFQuest);
                 ExperienceDistributionScript.GiveExp(source, 500000);
                 source.TryGiveItem(tristar);
 
@@ -592,7 +592,7 @@ public class PFQuestScript : DialogScriptBase
 
                 source.Inventory.Remove("tristar ring");
                 ExperienceDistributionScript.GiveExp(source, 250000);
-                source.Enums.Set(PFQuestStage.TurnedInTristar);
+                source.Trackers.Enums.Set(PFQuestStage.TurnedInTristar);
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(

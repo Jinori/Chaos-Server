@@ -28,9 +28,9 @@ public class MythicGrimlockScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        var hasMain = source.Enums.TryGetValue(out MythicQuestMain main);
-        var hasKobold = source.Enums.TryGetValue(out MythicKobold kobold);
-        var hasGrimlock = source.Enums.TryGetValue(out MythicGrimlock grimlock);
+        var hasMain = source.Trackers.Enums.TryGetValue(out MythicQuestMain main);
+        var hasKobold = source.Trackers.Enums.TryGetValue(out MythicKobold kobold);
+        var hasGrimlock = source.Trackers.Enums.TryGetValue(out MythicGrimlock grimlock);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
@@ -225,7 +225,7 @@ public class MythicGrimlockScript : DialogScriptBase
             {
                 Subject.Text = " ";
                 source.SendOrangeBarMessage("Kill 15 Kobold Workers.");
-                source.Enums.Set(MythicGrimlock.Lower);
+                source.Trackers.Enums.Set(MythicGrimlock.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -234,7 +234,7 @@ public class MythicGrimlockScript : DialogScriptBase
             case "grimlock_lower2":
             {
 
-                if (!source.Counters.TryGetValue("koboldworker", out var koboldworker) || (koboldworker < 15))
+                if (!source.Trackers.Counters.TryGetValue("koboldworker", out var koboldworker) || (koboldworker < 15))
                 {
                     Subject.Text = "You haven't killed enough Kobold Workers";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -242,11 +242,11 @@ public class MythicGrimlockScript : DialogScriptBase
                     return;
                 }
 
-                source.Enums.Set(MythicGrimlock.LowerComplete);
+                source.Trackers.Enums.Set(MythicGrimlock.LowerComplete);
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("koboldworker", out _);
+                source.Trackers.Counters.Remove("koboldworker", out _);
                 Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "grimlock_initial";
@@ -258,7 +258,7 @@ public class MythicGrimlockScript : DialogScriptBase
             {
                 Subject.Text = "---Clear 10 Kobold Workers and 10 Kobold Soldiers---";
                 source.SendOrangeBarMessage("Kill 10 Kobold Workers and 10 Kobold Soldiers.");
-                source.Enums.Set(MythicGrimlock.Higher);
+                source.Trackers.Enums.Set(MythicGrimlock.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -267,8 +267,8 @@ public class MythicGrimlockScript : DialogScriptBase
             case "grimlock_higher2":
             {
 
-                source.Counters.TryGetValue("koboldworker", out var koboldworker);
-                source.Counters.TryGetValue("koboldsoldier", out var koboldsoldier);
+                source.Trackers.Counters.TryGetValue("koboldworker", out var koboldworker);
+                source.Trackers.Counters.TryGetValue("koboldsoldier", out var koboldsoldier);
 
                 if ((koboldworker < 10) && (koboldsoldier < 10))
                 {
@@ -283,10 +283,10 @@ public class MythicGrimlockScript : DialogScriptBase
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.Enums.Set(MythicGrimlock.HigherComplete);
+                source.Trackers.Enums.Set(MythicGrimlock.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("koboldworker", out _);
-                source.Counters.Remove("koboldsoldier", out _);
+                source.Trackers.Counters.Remove("koboldworker", out _);
+                source.Trackers.Counters.Remove("koboldsoldier", out _);
 
                 break;
             }
@@ -295,7 +295,7 @@ public class MythicGrimlockScript : DialogScriptBase
             {
                 Subject.Text = " ";
                 source.SendOrangeBarMessage("Collect 25 Kobold Tails for the Grimlock Queen");
-                source.Enums.Set(MythicGrimlock.Item);
+                source.Trackers.Enums.Set(MythicGrimlock.Item);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -314,7 +314,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.Enums.Set(MythicGrimlock.ItemComplete);
+                source.Trackers.Enums.Set(MythicGrimlock.ItemComplete);
                 Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "grimlock_initial";
@@ -329,13 +329,13 @@ public class MythicGrimlockScript : DialogScriptBase
                 {
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.Text = " ";
-                    source.Enums.Set(MythicGrimlock.EnemyAllied);
+                    source.Trackers.Enums.Set(MythicGrimlock.EnemyAllied);
 
                     return;
                 }
 
-                source.Counters.AddOrIncrement("MythicAllies", 1);
-                source.Enums.Set(MythicGrimlock.Allied);
+                source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
+                source.Trackers.Enums.Set(MythicGrimlock.Allied);
                 source.SendOrangeBarMessage("You are now allied with the Grimlocks!");
                 Subject.Text = $" ";
                 Subject.Type = MenuOrDialogType.Normal;
@@ -350,7 +350,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
-                source.Enums.Set(MythicGrimlock.BossStarted);
+                source.Trackers.Enums.Set(MythicGrimlock.BossStarted);
                 source.SendOrangeBarMessage("Kill Shank three times.");
             }
 
@@ -358,7 +358,7 @@ public class MythicGrimlockScript : DialogScriptBase
 
             case "grimlock_boss2":
             {
-                if (!source.Counters.TryGetValue("Shank", out var shank) || (shank < 3))
+                if (!source.Trackers.Counters.TryGetValue("Shank", out var shank) || (shank < 3))
                 {
                     Subject.Text = " ";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -378,13 +378,13 @@ public class MythicGrimlockScript : DialogScriptBase
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                source.Counters.Remove("shank", out _);
-                source.Enums.Set(MythicGrimlock.BossDefeated);
-                source.Counters.AddOrIncrement("MythicBoss", 1);
+                source.Trackers.Counters.Remove("shank", out _);
+                source.Trackers.Enums.Set(MythicGrimlock.BossDefeated);
+                source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
                 {
-                    source.Enums.Set(MythicQuestMain.CompletedAll);
+                    source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
                 }
             }
 

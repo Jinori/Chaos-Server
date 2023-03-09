@@ -23,7 +23,7 @@ public class HolyResearchQuestScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        var hasStage = source.Enums.TryGetValue(out HolyResearchStage stage);
+        var hasStage = source.Trackers.Enums.TryGetValue(out HolyResearchStage stage);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -44,7 +44,7 @@ public class HolyResearchQuestScript : DialogScriptBase
             case "holyresearch_initial":
                 if (!hasStage || (stage == HolyResearchStage.None))
                 {
-                    if (source.TimedEvents.TryGetNearestToCompletion(TimedEvent.TimedEventId.HolyResearchCd, out var timedEvent))
+                    if (source.Trackers.TimedEvents.TryConsumeEvent("HolyResearchCd", out var timedEvent))
                     {
                         Subject.Text = $"I don't need any more right now, please come back later. (({timedEvent.Remaining.ToReadableString()
                         }))";
@@ -157,7 +157,7 @@ public class HolyResearchQuestScript : DialogScriptBase
                         HolyResearchStage.StartedRawHoney, HolyResearchStage.StartedRawWax, HolyResearchStage.StartedRoyalWax
                     }.PickRandom();
 
-                    source.Enums.Set(randomHolyResearchStage);
+                    source.Trackers.Enums.Set(randomHolyResearchStage);
 
                     switch (randomHolyResearchStage)
                     {
@@ -199,11 +199,11 @@ public class HolyResearchQuestScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("raw honey", 1);
                     ExperienceDistributionScript.GiveExp(source, 2000);
-                    source.Enums.Set(HolyResearchStage.None);
+                    source.Trackers.Enums.Set(HolyResearchStage.None);
                     source.TryGiveGamePoints(5);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and 2000 exp!");
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.HolyResearchCd, TimeSpan.FromHours(1), true);
+                    source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(1), true);
                 }
 
                 break;
@@ -221,11 +221,11 @@ public class HolyResearchQuestScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("raw wax", 1);
                     ExperienceDistributionScript.GiveExp(source, 2000);
-                    source.Enums.Set(HolyResearchStage.None);
+                    source.Trackers.Enums.Set(HolyResearchStage.None);
                     source.TryGiveGamePoints(5);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and 2000 exp!");
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.HolyResearchCd, TimeSpan.FromHours(1), true);
+                    source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(1), true);
                 }
 
                 break;
@@ -243,11 +243,11 @@ public class HolyResearchQuestScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("royal wax", 1);
                     ExperienceDistributionScript.GiveExp(source, 2000);
-                    source.Enums.Set(HolyResearchStage.None);
+                    source.Trackers.Enums.Set(HolyResearchStage.None);
                     source.TryGiveGamePoints(5);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and 2000 exp!");
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.HolyResearchCd, TimeSpan.FromHours(1), true);
+                    source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(1), true);
                 }
 
                 break;

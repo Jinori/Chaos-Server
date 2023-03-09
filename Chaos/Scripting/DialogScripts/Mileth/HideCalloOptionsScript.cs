@@ -12,7 +12,7 @@ public class HideCalloOptionsScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        if (source.Flags.HasFlag(QuestFlag1.SpareAStickComplete))
+        if (source.Trackers.Flags.HasFlag(QuestFlag1.SpareAStickComplete))
             if (Subject.GetOptionIndex("Spare A Stick").HasValue)
             {
                 var s = Subject.GetOptionIndex("Spare A Stick")!.Value;

@@ -57,7 +57,7 @@ public class TeagueSendOnQuestScript : DialogScriptBase
                         ServerMessageType.OrangeBar1,
                         "Head to the crypts to end the horrific nightmares of the Old Man");
 
-                    member.Flags.AddFlag(QuestFlag1.TerrorOfCryptHunt);
+                    member.Trackers.Flags.AddFlag(QuestFlag1.TerrorOfCryptHunt);
                     member.Animate(ani);
                 }
             else

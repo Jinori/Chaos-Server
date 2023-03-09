@@ -17,7 +17,7 @@ public class LockPickChestScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        if (!source.UserStatSheet.BaseClass.IsClass(BaseClass.Rogue))
+        if (!source.UserStatSheet.BaseClass.ContainsClass(BaseClass.Rogue))
         {
             Subject.Type = MenuOrDialogType.Normal;
             Subject.Text = "Only a Rogue may pick this lock.";

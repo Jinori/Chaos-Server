@@ -28,9 +28,9 @@ public class MythicMantisScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        var hasMain = source.Enums.TryGetValue(out MythicQuestMain main);
-        var hasMantis = source.Enums.TryGetValue(out MythicMantis mantis);
-        var hasBee = source.Enums.TryGetValue(out MythicBee bee);
+        var hasMain = source.Trackers.Enums.TryGetValue(out MythicQuestMain main);
+        var hasMantis = source.Trackers.Enums.TryGetValue(out MythicMantis mantis);
+        var hasBee = source.Trackers.Enums.TryGetValue(out MythicBee bee);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
@@ -222,7 +222,7 @@ public class MythicMantisScript : DialogScriptBase
             {
                 Subject.Text = " ";
                 source.SendOrangeBarMessage("Kill 15 Mythic Bees for King Mantis");
-                source.Enums.Set(MythicMantis.Lower);
+                source.Trackers.Enums.Set(MythicMantis.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -231,7 +231,7 @@ public class MythicMantisScript : DialogScriptBase
             case "mantis_lower2":
             {
 
-                if (!source.Counters.TryGetValue("mythicbee", out var mantislower) || (mantislower < 15))
+                if (!source.Trackers.Counters.TryGetValue("mythicbee", out var mantislower) || (mantislower < 15))
                 {
                     Subject.Text = "You haven't killed enough Mythic Bees";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -239,11 +239,11 @@ public class MythicMantisScript : DialogScriptBase
                     return;
                 }
 
-                source.Enums.Set(MythicMantis.LowerComplete);
+                source.Trackers.Enums.Set(MythicMantis.LowerComplete);
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("mythicbee", out _);
+                source.Trackers.Counters.Remove("mythicbee", out _);
                 Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "mantis_initial";
@@ -255,7 +255,7 @@ public class MythicMantisScript : DialogScriptBase
             {
                 Subject.Text = "Kill 20 Green Bees";
                 source.SendOrangeBarMessage("Kill 20 Green Bees for King Mantis");
-                source.Enums.Set(MythicMantis.Higher);
+                source.Trackers.Enums.Set(MythicMantis.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -264,7 +264,7 @@ public class MythicMantisScript : DialogScriptBase
             case "mantis_higher2":
             {
 
-                if (!source.Counters.TryGetValue("greenbee", out var mantishigher) || (mantishigher < 20))
+                if (!source.Trackers.Counters.TryGetValue("greenbee", out var mantishigher) || (mantishigher < 20))
                 {
                     Subject.Text = "You haven't killed enough Green Bees";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -277,9 +277,9 @@ public class MythicMantisScript : DialogScriptBase
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.Enums.Set(MythicMantis.HigherComplete);
+                source.Trackers.Enums.Set(MythicMantis.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("greenbee", out _);
+                source.Trackers.Counters.Remove("greenbee", out _);
 
                 break;
             }
@@ -288,7 +288,7 @@ public class MythicMantisScript : DialogScriptBase
             {
                 Subject.Text = " ";
                 source.SendOrangeBarMessage("Collect 25 Mythic Honey for King Mantis");
-                source.Enums.Set(MythicMantis.Item);
+                source.Trackers.Enums.Set(MythicMantis.Item);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -307,7 +307,7 @@ public class MythicMantisScript : DialogScriptBase
                 
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.Enums.Set(MythicMantis.ItemComplete);
+                source.Trackers.Enums.Set(MythicMantis.ItemComplete);
                 Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "mantis_initial";
@@ -322,13 +322,13 @@ public class MythicMantisScript : DialogScriptBase
                 {
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.Text = " ";
-                    source.Enums.Set(MythicMantis.EnemyAllied);
+                    source.Trackers.Enums.Set(MythicMantis.EnemyAllied);
 
                     return;
                 }
 
-                source.Counters.AddOrIncrement("MythicAllies", 1);
-                source.Enums.Set(MythicMantis.Allied);
+                source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
+                source.Trackers.Enums.Set(MythicMantis.Allied);
                 source.SendOrangeBarMessage("You are now allied with the Mantises!");
                 Subject.Text = $" ";
                 Subject.Type = MenuOrDialogType.Normal;
@@ -343,7 +343,7 @@ public class MythicMantisScript : DialogScriptBase
                 Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
-                source.Enums.Set(MythicMantis.BossStarted);
+                source.Trackers.Enums.Set(MythicMantis.BossStarted);
                 source.SendOrangeBarMessage("Kill Carolina three times.");
             }
 
@@ -351,7 +351,7 @@ public class MythicMantisScript : DialogScriptBase
 
             case "mantis_boss2":
             {
-                if (!source.Counters.TryGetValue("Carolina", out var mantisboss1) || (mantisboss1 < 3))
+                if (!source.Trackers.Counters.TryGetValue("Carolina", out var mantisboss1) || (mantisboss1 < 3))
                 {
                     Subject.Text = " ";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -371,13 +371,13 @@ public class MythicMantisScript : DialogScriptBase
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                source.Counters.Remove("carolina", out _);
-                source.Enums.Set(MythicMantis.BossDefeated);
-                source.Counters.AddOrIncrement("MythicBoss", 1);
+                source.Trackers.Counters.Remove("carolina", out _);
+                source.Trackers.Enums.Set(MythicMantis.BossDefeated);
+                source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
                 {
-                    source.Enums.Set(MythicQuestMain.CompletedAll);
+                    source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
                 }
             }
 

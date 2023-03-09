@@ -48,7 +48,7 @@ public class TutorialBossCheckScript : ConfigurableReactorTileScriptBase
         }
 
         if (aisling is not null
-            && aisling.Enums.TryGetValue<TutorialQuestStage>(out var stage)
+            && aisling.Trackers.Enums.TryGetValue<TutorialQuestStage>(out var stage)
             && (stage == TutorialQuestStage.GiantFloppy))
             source.TraverseMap(targetMap, Destination);
         else

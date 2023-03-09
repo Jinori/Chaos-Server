@@ -25,7 +25,7 @@ public class ClueScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        var hasStage = aisling.Enums.TryGetValue(out ManorNecklaceStage stage);
+        var hasStage = aisling.Trackers.Enums.TryGetValue(out ManorNecklaceStage stage);
 
         switch (Subject.MapInstance.Name)
         {
@@ -111,7 +111,7 @@ public class ClueScript : ReactorTileScriptBase
                         foreach (var member in group)
                         {
                             member.TryGiveItem(necklace);
-                            member.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
+                            member.Trackers.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
                             member.Client.SendServerMessage(
                                 ServerMessageType.OrangeBar1,
                                 $"You've found Zulera's necklace but have disturbed some ghosts.");
@@ -120,7 +120,7 @@ public class ClueScript : ReactorTileScriptBase
                     else
                     {
                         aisling.TryGiveItem(necklace);
-                        aisling.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
+                        aisling.Trackers.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
                         aisling.Client.SendServerMessage(
                             ServerMessageType.OrangeBar1,
                             $"You've found Zulera's necklace but have disturbed some ghosts.");

@@ -23,7 +23,7 @@ public class ALittleBitofThatScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        var hasStage = source.Enums.TryGetValue(out ALittleBitofThatStage stage);
+        var hasStage = source.Trackers.Enums.TryGetValue(out ALittleBitofThatStage stage);
 
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = Convert.ToInt32(.20 * tnl);
@@ -50,7 +50,7 @@ public class ALittleBitofThatScript : DialogScriptBase
             case "alittlebitofthat_initial":
                 if (!hasStage || (stage == ALittleBitofThatStage.None))
                 {
-                    if (source.TimedEvents.TryGetNearestToCompletion(TimedEvent.TimedEventId.ALittleBitofThatCd, out var timedEvent))
+                    if (source.Trackers.TimedEvents.TryConsumeEvent("ALittleBitofThatCd", out var timedEvent))
                     {
                         Subject.Text = $"I'm still working on this, come back later. (({timedEvent.Remaining.ToReadableString()}))";
 
@@ -239,7 +239,7 @@ public class ALittleBitofThatScript : DialogScriptBase
                         ALittleBitofThatStage.StartedTomato
                     }.PickRandom();
 
-                    source.Enums.Set(randomALittleBitofThatStage);
+                    source.Trackers.Enums.Set(randomALittleBitofThatStage);
 
                     switch (randomALittleBitofThatStage)
                     {
@@ -301,9 +301,9 @@ public class ALittleBitofThatScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("Apple", 5);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                    source.Enums.Set(ALittleBitofThatStage.None);
+                    source.Trackers.Enums.Set(ALittleBitofThatStage.None);
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.ALittleBitofThatCd, TimeSpan.FromHours(2), true);
+                    source.Trackers.TimedEvents.AddEvent("ALittleBitofThatCd", TimeSpan.FromHours(2), true);
                 }
 
                 break;
@@ -321,9 +321,9 @@ public class ALittleBitofThatScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("baguette", 3);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                    source.Enums.Set(ALittleBitofThatStage.None);
+                    source.Trackers.Enums.Set(ALittleBitofThatStage.None);
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.ALittleBitofThatCd, TimeSpan.FromHours(2), true);
+                    source.Trackers.TimedEvents.AddEvent("ALittleBitofThatCd", TimeSpan.FromHours(2), true);
                 }
 
                 break;
@@ -341,9 +341,9 @@ public class ALittleBitofThatScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("Cherry", 10);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                    source.Enums.Set(ALittleBitofThatStage.None);
+                    source.Trackers.Enums.Set(ALittleBitofThatStage.None);
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.ALittleBitofThatCd, TimeSpan.FromHours(2), true);
+                    source.Trackers.TimedEvents.AddEvent("ALittleBitofThatCd", TimeSpan.FromHours(2), true);
                 }
 
                 break;
@@ -361,9 +361,9 @@ public class ALittleBitofThatScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("Grape", 10);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                    source.Enums.Set(ALittleBitofThatStage.None);
+                    source.Trackers.Enums.Set(ALittleBitofThatStage.None);
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.ALittleBitofThatCd, TimeSpan.FromHours(2), true);
+                    source.Trackers.TimedEvents.AddEvent("ALittleBitofThatCd", TimeSpan.FromHours(2), true);
                 }
 
                 break;
@@ -381,9 +381,9 @@ public class ALittleBitofThatScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("Mold", 3);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                    source.Enums.Set(ALittleBitofThatStage.None);
+                    source.Trackers.Enums.Set(ALittleBitofThatStage.None);
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.ALittleBitofThatCd, TimeSpan.FromHours(2), true);
+                    source.Trackers.TimedEvents.AddEvent("ALittleBitofThatCd", TimeSpan.FromHours(2), true);
                 }
 
                 break;
@@ -401,9 +401,9 @@ public class ALittleBitofThatScript : DialogScriptBase
 
                     source.Inventory.RemoveQuantity("Tomato", 1);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                    source.Enums.Set(ALittleBitofThatStage.None);
+                    source.Trackers.Enums.Set(ALittleBitofThatStage.None);
                     Subject.Close(source);
-                    source.TimedEvents.AddEvent(TimedEvent.TimedEventId.ALittleBitofThatCd, TimeSpan.FromHours(2), true);
+                    source.Trackers.TimedEvents.AddEvent("ALittleBitofThatCd", TimeSpan.FromHours(2), true);
                 }
 
                 break;

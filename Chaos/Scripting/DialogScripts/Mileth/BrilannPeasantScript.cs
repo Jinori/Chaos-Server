@@ -12,7 +12,7 @@ public class BrilannPeasantScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        if (source.UserStatSheet.BaseClass.Equals(BaseClass.Peasant) && source.Flags.HasFlag(QuestFlag1.ChosenClass))
+        if (source.UserStatSheet.BaseClass.Equals(BaseClass.Peasant) && source.Trackers.Flags.HasFlag(QuestFlag1.ChosenClass))
         {
             Subject.Text = "Hello, young traveler. What do you need help with?";
             Subject.Type = MenuOrDialogType.Menu;

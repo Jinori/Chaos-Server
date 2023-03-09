@@ -28,9 +28,9 @@ public class MythicFrogScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        var hasMain = source.Enums.TryGetValue(out MythicQuestMain main);
-        var hasFrog = source.Enums.TryGetValue(out MythicFrog frog);
-        var hasWolf = source.Enums.TryGetValue(out MythicWolf wolf);
+        var hasMain = source.Trackers.Enums.TryGetValue(out MythicQuestMain main);
+        var hasFrog = source.Trackers.Enums.TryGetValue(out MythicFrog frog);
+        var hasWolf = source.Trackers.Enums.TryGetValue(out MythicWolf wolf);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
@@ -284,7 +284,7 @@ public class MythicFrogScript : DialogScriptBase
             {
                 Subject.Text = "Thank you, adventurer. We appreciate your assistance. Good luck on your quest.";
                 source.SendOrangeBarMessage("Kill 15 Mythic Wolves for the Frog King.");
-                source.Enums.Set(MythicFrog.Lower);
+                source.Trackers.Enums.Set(MythicFrog.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -293,7 +293,7 @@ public class MythicFrogScript : DialogScriptBase
             case "frog_lower2":
             {
 
-                if (!source.Counters.TryGetValue("Mythicwolf", out var mythicwolf) || (mythicwolf < 15))
+                if (!source.Trackers.Counters.TryGetValue("Mythicwolf", out var mythicwolf) || (mythicwolf < 15))
                 {
                     Subject.Text = "You haven't killed enough Mythic Wolves.";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -301,11 +301,11 @@ public class MythicFrogScript : DialogScriptBase
                     return;
                 }
 
-                source.Enums.Set(MythicFrog.LowerComplete);
+                source.Trackers.Enums.Set(MythicFrog.LowerComplete);
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("MythicWolf", out _);
+                source.Trackers.Counters.Remove("MythicWolf", out _);
                 Subject.Text = "Excellent work, adventurer! You have proven yourself to our army. Now, it is time to deal with the stronger wolves that have been causing us even more trouble.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "frog_initial";
@@ -317,7 +317,7 @@ public class MythicFrogScript : DialogScriptBase
             {
                 Subject.Text = "Remember to slay 10 of each of the stronger wolves, the White Wolf and the Bearded Wolf. They are more powerful and cunning than the ones you faced before, so be careful.";
                 source.SendOrangeBarMessage("Kill 10 White Wolves and 10 Bearded Wolves.");
-                source.Enums.Set(MythicFrog.Higher);
+                source.Trackers.Enums.Set(MythicFrog.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -325,8 +325,8 @@ public class MythicFrogScript : DialogScriptBase
 
             case "frog_higher2":
             {
-                    source.Counters.TryGetValue("WhiteWolf", out var whitewolf);
-                    source.Counters.TryGetValue("BeardedWolf", out var beardedwolf);
+                    source.Trackers.Counters.TryGetValue("WhiteWolf", out var whitewolf);
+                    source.Trackers.Counters.TryGetValue("BeardedWolf", out var beardedwolf);
 
                     if ((whitewolf < 10) && (beardedwolf < 10))
                     {
@@ -341,10 +341,10 @@ public class MythicFrogScript : DialogScriptBase
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.Enums.Set(MythicFrog.HigherComplete);
+                source.Trackers.Enums.Set(MythicFrog.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("WhiteWolf", out _);
-                source.Counters.Remove("BeardedWolf", out _);
+                source.Trackers.Counters.Remove("WhiteWolf", out _);
+                source.Trackers.Counters.Remove("BeardedWolf", out _);
 
                     var option = new DialogOption
                 {
@@ -371,7 +371,7 @@ public class MythicFrogScript : DialogScriptBase
             {
                 Subject.Text = "Please be careful, we don't want you to ribbit the wrong way into danger. They may be more aggressive now that their pack has been weakened. Return to us once you have collected the wolf skins.";
                 source.SendOrangeBarMessage("Collect 25 Wolf Skin for the Frog King");
-                source.Enums.Set(MythicFrog.Item);
+                source.Trackers.Enums.Set(MythicFrog.Item);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -390,7 +390,7 @@ public class MythicFrogScript : DialogScriptBase
                 
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.Enums.Set(MythicFrog.ItemComplete);
+                source.Trackers.Enums.Set(MythicFrog.ItemComplete);
                 Subject.Text = "Excellent work, adventurer. You continue to prove yourself as a valuable friend to our army. These skins will be very useful for our army's survival.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "frog_initial";
@@ -405,13 +405,13 @@ public class MythicFrogScript : DialogScriptBase
                 {
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.Text = "Ribbit! It seems you already allied with the Wolves! Go away!";
-                    source.Enums.Set(MythicFrog.EnemyAllied);
+                    source.Trackers.Enums.Set(MythicFrog.EnemyAllied);
 
                     return;
                 }
 
-                source.Counters.AddOrIncrement("MythicAllies", 1);
-                source.Enums.Set(MythicFrog.Allied);
+                source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
+                source.Trackers.Enums.Set(MythicFrog.Allied);
                 source.SendOrangeBarMessage("You are now allied with the Frogs!");
                 Subject.Text = $"Remember, {source.Name}, no matter where your journeys take you, you will always have a home within our army!";
                 Subject.Type = MenuOrDialogType.Normal;
@@ -426,7 +426,7 @@ public class MythicFrogScript : DialogScriptBase
                 Subject.Text = "Please be careful, Nymeria is a fierce beast and is not to be taken lightly. We need your help to finally be rid of these beast . We'll be waiting for your return, may the frog be with you!";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
-                source.Enums.Set(MythicFrog.BossStarted);
+                source.Trackers.Enums.Set(MythicFrog.BossStarted);
                 source.SendOrangeBarMessage("Kill Nymeria atleast three times.");
             }
 
@@ -434,7 +434,7 @@ public class MythicFrogScript : DialogScriptBase
 
             case "frog_boss2":
             {
-                if (!source.Counters.TryGetValue("Nymeria", out var frogboss1) || (frogboss1 < 3))
+                if (!source.Trackers.Counters.TryGetValue("Nymeria", out var frogboss1) || (frogboss1 < 3))
                 {
                     Subject.Text = "Please rest and recover your strength. We're all cheering for you!";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -454,13 +454,13 @@ public class MythicFrogScript : DialogScriptBase
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                source.Counters.Remove("FrogBoss", out _);
-                source.Enums.Set(MythicFrog.BossDefeated);
-                source.Counters.AddOrIncrement("MythicBoss", 1);
+                source.Trackers.Counters.Remove("FrogBoss", out _);
+                source.Trackers.Enums.Set(MythicFrog.BossDefeated);
+                source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
                 {
-                    source.Enums.Set(MythicQuestMain.CompletedAll);
+                    source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
                 }
             }
 

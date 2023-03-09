@@ -23,7 +23,7 @@ public class SapphireStreamElementWarpScript : ReactorTileScriptBase
         if (source is Aisling aisling)
         {
             var key = "";
-            var hasForm = aisling.Enums.TryGetValue(out MonkElementForm form);
+            var hasForm = aisling.Trackers.Enums.TryGetValue(out MonkElementForm form);
 
             if (!hasForm)
             {

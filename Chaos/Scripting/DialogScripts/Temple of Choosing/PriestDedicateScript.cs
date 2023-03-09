@@ -33,7 +33,7 @@ public class PriestDedicateScript : DialogScriptBase
 
     public override void OnDisplayed(Aisling source)
     {
-        if (!source.Flags.HasFlag(QuestFlag1.ChosenClass))
+        if (!source.Trackers.Flags.HasFlag(QuestFlag1.ChosenClass))
         {
             var ani = new Animation
             {
@@ -58,7 +58,7 @@ public class PriestDedicateScript : DialogScriptBase
                     1,
                     GameTime.Now));
 
-            source.Flags.AddFlag(QuestFlag1.ChosenClass);
+            source.Trackers.Flags.AddFlag(QuestFlag1.ChosenClass);
             var skill = SkillFactory.Create("assail");
 
             if (!source.SkillBook.Contains(skill))

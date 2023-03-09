@@ -36,7 +36,7 @@ public class suomiFarmerScript : DialogScriptBase
                     return;
                 }
                 
-                if (source.TimedEvents.TryGetNearestToCompletion(TimedEvent.TimedEventId.SuomiGrapeCd,
+                if (source.Trackers.TimedEvents.TryConsumeEvent("SuomiGrapeCd",
                         out var timedEvent))
                 {
                     Subject.Text =
@@ -65,7 +65,7 @@ public class suomiFarmerScript : DialogScriptBase
                 var mapInstance = SimpleCache.Get<MapInstance>("suomi");
                 var point = new Point(78, 40);
                 source.TraverseMap(mapInstance, point);
-                source.TimedEvents.AddEvent(TimedEvent.TimedEventId.SuomiGrapeCd, TimeSpan.FromHours(24), true);
+                source.Trackers.TimedEvents.AddEvent("SuomiGrapeCd", TimeSpan.FromHours(24), true);
             }
                 break;
 
@@ -77,7 +77,7 @@ public class suomiFarmerScript : DialogScriptBase
                     return;
                 }
                 
-                if (source.TimedEvents.TryGetNearestToCompletion(TimedEvent.TimedEventId.SuomiCherryCd,
+                if (source.Trackers.TimedEvents.TryConsumeEvent("SuomiCherryCd",
                         out var timedEvent))
                 {
                     Subject.Text =
@@ -99,7 +99,7 @@ public class suomiFarmerScript : DialogScriptBase
                 var mapInstance = SimpleCache.Get<MapInstance>("suomi");
                 var point = new Point(29, 71);
                 source.TraverseMap(mapInstance, point);
-                source.TimedEvents.AddEvent(TimedEvent.TimedEventId.SuomiCherryCd, TimeSpan.FromHours(24), true);
+                source.Trackers.TimedEvents.AddEvent("SuomiCherryCd", TimeSpan.FromHours(24), true);
                 
             }
                 break;

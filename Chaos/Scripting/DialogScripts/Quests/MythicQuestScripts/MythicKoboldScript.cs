@@ -28,9 +28,9 @@ public class MythicKoboldScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        var hasMain = source.Enums.TryGetValue(out MythicQuestMain main);
-        var hasKobold = source.Enums.TryGetValue(out MythicKobold kobold);
-        var hasGrimlock = source.Enums.TryGetValue(out MythicGrimlock grimlock);
+        var hasMain = source.Trackers.Enums.TryGetValue(out MythicQuestMain main);
+        var hasKobold = source.Trackers.Enums.TryGetValue(out MythicKobold kobold);
+        var hasGrimlock = source.Trackers.Enums.TryGetValue(out MythicGrimlock grimlock);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
@@ -223,7 +223,7 @@ public class MythicKoboldScript : DialogScriptBase
             {
                 Subject.Text = "You have our paws-tounding gratitude. Don't let the horses get your goat, though - they're quick and nimble, and they can kick like mules. But we believe in you, and we know you'll do us proud. May the kobold luck be with you!";
                 source.SendOrangeBarMessage("Kill 20 Purple Horses for Big Bunny");
-                source.Enums.Set(MythicKobold.Lower);
+                source.Trackers.Enums.Set(MythicKobold.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -232,7 +232,7 @@ public class MythicKoboldScript : DialogScriptBase
             case "kobold_lower2":
             {
 
-                if (!source.Counters.TryGetValue("grimlockworker", out var grimlockworker) || (grimlockworker < 15))
+                if (!source.Trackers.Counters.TryGetValue("grimlockworker", out var grimlockworker) || (grimlockworker < 15))
                 {
                     Subject.Text = "You haven't killed enough Grimlock Workers.";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -240,11 +240,11 @@ public class MythicKoboldScript : DialogScriptBase
                     return;
                 }
 
-                source.Enums.Set(MythicKobold.LowerComplete);
+                source.Trackers.Enums.Set(MythicKobold.LowerComplete);
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("grimlockworker", out _);
+                source.Trackers.Counters.Remove("grimlockworker", out _);
                 Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "kobold_initial";
@@ -256,7 +256,7 @@ public class MythicKoboldScript : DialogScriptBase
             {
                 Subject.Text = "Great, clear 10 Grimlock Guards and Grimlock Rogues further rooms and come back to me..";
                 source.SendOrangeBarMessage("Kill 10 Grimlock Guards and 10 Grimlock Rogues");
-                source.Enums.Set(MythicKobold.Higher);
+                source.Trackers.Enums.Set(MythicKobold.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -265,8 +265,8 @@ public class MythicKoboldScript : DialogScriptBase
             case "kobold_higher2":
             {
 
-                source.Counters.TryGetValue("grimlockguard", out var grimlockguard);
-                source.Counters.TryGetValue("grimlockrogue", out var grimlockrogue);
+                source.Trackers.Counters.TryGetValue("grimlockguard", out var grimlockguard);
+                source.Trackers.Counters.TryGetValue("grimlockrogue", out var grimlockrogue);
 
                 if ((grimlockguard < 10) && (grimlockrogue < 10))
                 {
@@ -281,10 +281,10 @@ public class MythicKoboldScript : DialogScriptBase
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.Enums.Set(MythicKobold.HigherComplete);
+                source.Trackers.Enums.Set(MythicKobold.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("grimlockguard", out _);
-                source.Counters.Remove("grimlockrogue", out _);
+                source.Trackers.Counters.Remove("grimlockguard", out _);
+                source.Trackers.Counters.Remove("grimlockrogue", out _);
 
                 break;
             }
@@ -293,7 +293,7 @@ public class MythicKoboldScript : DialogScriptBase
             {
                 Subject.Text = " ";
                 source.SendOrangeBarMessage("Collect 25 something");
-                source.Enums.Set(MythicKobold.Item);
+                source.Trackers.Enums.Set(MythicKobold.Item);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -312,7 +312,7 @@ public class MythicKoboldScript : DialogScriptBase
                 
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.Enums.Set(MythicKobold.ItemComplete);
+                source.Trackers.Enums.Set(MythicKobold.ItemComplete);
                 Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "kobold_initial";
@@ -327,13 +327,13 @@ public class MythicKoboldScript : DialogScriptBase
                 {
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.Text = "Oh no! You already allied with the horses! Get away from us!";
-                    source.Enums.Set(MythicKobold.EnemyAllied);
+                    source.Trackers.Enums.Set(MythicKobold.EnemyAllied);
 
                     return;
                 }
 
-                source.Counters.AddOrIncrement("MythicAllies", 1);
-                source.Enums.Set(MythicKobold.Allied);
+                source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
+                source.Trackers.Enums.Set(MythicKobold.Allied);
                 source.SendOrangeBarMessage("You are now allied with the Kobolds!");
                 Subject.Text = $" ";
                 Subject.Type = MenuOrDialogType.Normal;
@@ -348,7 +348,7 @@ public class MythicKoboldScript : DialogScriptBase
                 Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
-                source.Enums.Set(MythicKobold.BossStarted);
+                source.Trackers.Enums.Set(MythicKobold.BossStarted);
                 source.SendOrangeBarMessage("Kill Grimlock Princess three times.");
             }
 
@@ -356,7 +356,7 @@ public class MythicKoboldScript : DialogScriptBase
 
             case "kobold_boss2":
             {
-                if (!source.Counters.TryGetValue("Grimlock Princess", out var koboldboss1) || (koboldboss1 < 3))
+                if (!source.Trackers.Counters.TryGetValue("Grimlock Princess", out var koboldboss1) || (koboldboss1 < 3))
                 {
                     Subject.Text = " ";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -376,13 +376,13 @@ public class MythicKoboldScript : DialogScriptBase
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                source.Counters.Remove("BunnyBoss", out _);
-                source.Enums.Set(MythicKobold.BossDefeated);
-                source.Counters.AddOrIncrement("MythicBoss", 1);
+                source.Trackers.Counters.Remove("BunnyBoss", out _);
+                source.Trackers.Enums.Set(MythicKobold.BossDefeated);
+                source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
                 {
-                    source.Enums.Set(MythicQuestMain.CompletedAll);
+                    source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
                 }
             }
 

@@ -12,7 +12,7 @@ public class HideRionaOptionsScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        if (source.Flags.HasFlag(QuestFlag1.HeadedToBeautyShop) || source.Flags.HasFlag(QuestFlag1.TalkedToJosephine))
+        if (source.Trackers.Flags.HasFlag(QuestFlag1.HeadedToBeautyShop) || source.Trackers.Flags.HasFlag(QuestFlag1.TalkedToJosephine))
             if (Subject.GetOptionIndex("Beauty Shop").HasValue)
             {
                 var s = Subject.GetOptionIndex("Beauty Shop")!.Value;

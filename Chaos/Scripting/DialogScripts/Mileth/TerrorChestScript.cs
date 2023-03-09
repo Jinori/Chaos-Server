@@ -78,7 +78,7 @@ public class TerrorChestScript : DialogScriptBase
                     1,
                     GameTime.Now));
             
-            source.TimedEvents.AddEvent(TimedEvent.TimedEventId.TerrorOfTheCrypt, TimeSpan.FromDays(1));
+            source.Trackers.TimedEvents.AddEvent("TerrorOfTheCrypt", TimeSpan.FromDays(1));
 
             //Warp Player back to Tavern
             var mapInstance = SimpleCache.Get<MapInstance>("mileth_tavern");
@@ -119,7 +119,7 @@ public class TerrorChestScript : DialogScriptBase
                     1,
                     GameTime.Now));
 
-            source.TimedEvents.AddEvent(TimedEvent.TimedEventId.TerrorOfTheCrypt, TimeSpan.FromDays(1));
+            source.Trackers.TimedEvents.AddEvent("TerrorOfTheCrypt", TimeSpan.FromDays(1));
 
             //Warp Player back to Tavern
             var mapInstance = SimpleCache.Get<MapInstance>("mileth_tavern");

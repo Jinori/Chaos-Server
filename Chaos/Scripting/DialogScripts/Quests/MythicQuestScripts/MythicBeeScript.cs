@@ -28,9 +28,9 @@ public class MythicBeeScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        var hasMain = source.Enums.TryGetValue(out MythicQuestMain main);
-        var hasMantis = source.Enums.TryGetValue(out MythicMantis mantis);
-        var hasBee = source.Enums.TryGetValue(out MythicBee bee);
+        var hasMain = source.Trackers.Enums.TryGetValue(out MythicQuestMain main);
+        var hasMantis = source.Trackers.Enums.TryGetValue(out MythicMantis mantis);
+        var hasBee = source.Trackers.Enums.TryGetValue(out MythicBee bee);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
@@ -223,7 +223,7 @@ public class MythicBeeScript : DialogScriptBase
             {
                 Subject.Text = "I wish you the best of luck on your mission. May your stinger be swift and true, and may you return to our hive victorious. Buzz on, my friend!";
                 source.SendOrangeBarMessage("Kill 15 Mythic Mantis for Queen Bee");
-                source.Enums.Set(MythicBee.Lower);
+                source.Trackers.Enums.Set(MythicBee.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -232,7 +232,7 @@ public class MythicBeeScript : DialogScriptBase
             case "bee_lower2":
             {
 
-                if (!source.Counters.TryGetValue("MythicMantis", out var MythicMantis) || (MythicMantis < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicMantis", out var MythicMantis) || (MythicMantis < 15))
                 {
                     Subject.Text = "You haven't killed enough Mythic Mantis.";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -240,11 +240,11 @@ public class MythicBeeScript : DialogScriptBase
                     return;
                 }
 
-                source.Enums.Set(MythicBee.LowerComplete);
+                source.Trackers.Enums.Set(MythicBee.LowerComplete);
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("MythicMantis", out _);
+                source.Trackers.Counters.Remove("MythicMantis", out _);
                 Subject.Text = "Your bravery and dedication have not gone unnoticed. By eliminating some of the mythic mantis, we can now send our workers to gather pollen and nectar without fear of attack.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "bee_initial";
@@ -256,7 +256,7 @@ public class MythicBeeScript : DialogScriptBase
             {
                 Subject.Text = "Please eliminate 20 Brown Mantis. The nectar from the flowers that they are guarding is among the sweetest we have ever tasted.";
                 source.SendOrangeBarMessage("Kill 20 Brown Mantis for the Bee Queen.");
-                source.Enums.Set(MythicBee.Higher);
+                source.Trackers.Enums.Set(MythicBee.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -265,7 +265,7 @@ public class MythicBeeScript : DialogScriptBase
             case "bee_higher2":
             {
 
-                if (!source.Counters.TryGetValue("brownmantis", out var brownmantis) || (brownmantis < 20))
+                if (!source.Trackers.Counters.TryGetValue("brownmantis", out var brownmantis) || (brownmantis < 20))
                 {
                     Subject.Text = "You haven't killed enough Brown Mantis.";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -280,9 +280,9 @@ public class MythicBeeScript : DialogScriptBase
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.Enums.Set(MythicBee.HigherComplete);
+                source.Trackers.Enums.Set(MythicBee.HigherComplete);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
-                source.Counters.Remove("brownmantis", out _);
+                source.Trackers.Counters.Remove("brownmantis", out _);
 
             }
 
@@ -292,7 +292,7 @@ public class MythicBeeScript : DialogScriptBase
             {
                 Subject.Text = "Thank you mighty bee! Fight the mantis colony and collect 25 dendron flowers from them.";
                 source.SendOrangeBarMessage("Collect 25 Dendron Flower for the Queen Bee");
-                source.Enums.Set(MythicBee.Item);
+                source.Trackers.Enums.Set(MythicBee.Item);
                 Subject.Type = MenuOrDialogType.Normal;
 
                 return;
@@ -311,7 +311,7 @@ public class MythicBeeScript : DialogScriptBase
                 
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.Enums.Set(MythicBee.ItemComplete);
+                source.Trackers.Enums.Set(MythicBee.ItemComplete);
                 Subject.Text = "With these flowers, we will be able to produce the most delicious and nutritious nectar that will keep our hive buzzing with joy and energy. You have truly outdone yourself this time, my dear ally.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "bee_initial";
@@ -326,13 +326,13 @@ public class MythicBeeScript : DialogScriptBase
                 {
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.Text = "No way! You have been allied to the Mantis Colony this entire time traitor! Buzz off!";
-                    source.Enums.Set(MythicBee.EnemyAllied);
+                    source.Trackers.Enums.Set(MythicBee.EnemyAllied);
 
                     return;
                 }
 
-                source.Counters.AddOrIncrement("MythicAllies", 1);
-                source.Enums.Set(MythicBee.Allied);
+                source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
+                source.Trackers.Enums.Set(MythicBee.Allied);
                 source.SendOrangeBarMessage("You are now allied with the Bees!");
                 Subject.Text = $"So let me just say, we're pollen for you {source.Name}! It's bee-n a long time since we've had such a dedicated ally in our fight against the mantis colony. With you on our side, we can bee unstoppable!";
                 Subject.Type = MenuOrDialogType.Normal;
@@ -347,7 +347,7 @@ public class MythicBeeScript : DialogScriptBase
                 Subject.Text = "So fly out, my buzz-worthy ally, and bring us victory over Fire Tree!";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
-                source.Enums.Set(MythicBee.BossStarted);
+                source.Trackers.Enums.Set(MythicBee.BossStarted);
                 source.SendOrangeBarMessage("Kill Fire Tree three times.");
             }
 
@@ -355,7 +355,7 @@ public class MythicBeeScript : DialogScriptBase
 
             case "bee_boss2":
             {
-                if (!source.Counters.TryGetValue("FireTree", out var firetree) || (firetree < 3))
+                if (!source.Trackers.Counters.TryGetValue("FireTree", out var firetree) || (firetree < 3))
                 {
                     Subject.Text =  "Oh dear, it seems Fire Tree is still at large. This is troubling news for my hive and my workers. Please be careful, we cannot afford to let the mantis leader continue to harm us. I urge you to finish the task at hand and take down Fire Tree once and for all. The safety and well-being of my hive and all its inhabitants depend on it.";
                     Subject.Type = MenuOrDialogType.Normal;
@@ -375,13 +375,13 @@ public class MythicBeeScript : DialogScriptBase
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                source.Counters.Remove("FireTree", out _);
-                source.Enums.Set(MythicBee.BossDefeated);
-                source.Counters.AddOrIncrement("MythicBoss", 1);
+                source.Trackers.Counters.Remove("FireTree", out _);
+                source.Trackers.Enums.Set(MythicBee.BossDefeated);
+                source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
                 {
-                    source.Enums.Set(MythicQuestMain.CompletedAll);
+                    source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
                 }
             }
 
