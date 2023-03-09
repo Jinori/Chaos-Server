@@ -33,9 +33,7 @@ public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageCompone
     {
         if (!ManaCostComponent.TryApplyManaCost(context, this))
             return;
-
-        context.Source.StatSheet.SetOffensiveCastElement(OffensiveElement ?? Element.None);
-
+        
         var targets = AbilityComponent.Activate<Creature>(context, this);
         DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
         context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}");
@@ -45,11 +43,10 @@ public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageCompone
     public IApplyDamageScript ApplyDamageScript { get; init; }
     public int? BaseDamage { get; init; }
     public Stat? DamageStat { get; init; }
-    
-    public Element? OffensiveElement { get; init; }
     public decimal? DamageStatMultiplier { get; init; }
     public decimal? PctHpDamage { get; init; }
     public IScript SourceScript { get; init; }
+    public Element? Element { get; init; }
     public int? ManaCost { get; init; }
     public decimal PctManaCost { get; init; }
     

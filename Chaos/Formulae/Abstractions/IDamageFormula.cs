@@ -10,6 +10,7 @@ public interface IDamageFormula
         Creature attacker,
         Creature defender,
         IScript source,
-        int damage
+        int damage,
+        Element? elementOverride = null
     );
 }

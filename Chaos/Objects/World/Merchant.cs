@@ -4,6 +4,7 @@ using Chaos.Containers;
 using Chaos.Data;
 using Chaos.Extensions.Common;
 using Chaos.Geometry.Abstractions;
+using Chaos.Objects.Abstractions;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MerchantScripts.Abstractions;
@@ -12,7 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Chaos.Objects.World;
 
-public sealed class Merchant : Creature, IScripted<IMerchantScript>
+public sealed class Merchant : Creature, IScripted<IMerchantScript>, IDialogSourceEntity
 {
     /// <inheritdoc />
     public override int AssailIntervalMs => 500;
@@ -26,6 +27,12 @@ public sealed class Merchant : Creature, IScripted<IMerchantScript>
     public MerchantTemplate Template { get; }
 
     public override CreatureType Type { get; }
+
+    /// <inheritdoc />
+    DisplayColor IDialogSourceEntity.Color => DisplayColor.Default;
+
+    /// <inheritdoc />
+    EntityType IDialogSourceEntity.EntityType => EntityType.Creature;
 
     /// <inheritdoc />
     public override void ApplyDamage(Creature source, int amount, byte? hitSound = 1)

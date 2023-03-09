@@ -8,10 +8,11 @@ namespace Chaos.Formulae.Damage;
 public class PureDamageFormula : IDamageFormula
 {
     /// <inheritdoc />
-    public int Calculate(
+    public virtual int Calculate(
         Creature? attacker,
         Creature defender,
         IScript source,
-        int damage
+        int damage,
+        Element? elementOverride = null
     ) => Convert.ToInt32(damage);
 }

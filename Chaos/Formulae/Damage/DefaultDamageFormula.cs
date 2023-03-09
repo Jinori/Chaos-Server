@@ -12,7 +12,6 @@ using Chaos.Services.Servers.Options;
 
 namespace Chaos.Formulae.Damage;
 
-// ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
 public class DefaultDamageFormula : IDamageFormula
 {
     private ImmutableArray<ImmutableArray<decimal>> ElementalModifierLookup { get; } = new[]
@@ -39,23 +38,6 @@ public class DefaultDamageFormula : IDamageFormula
     protected virtual void ApplyElementalModifier(ref int damage, Element attackElement, Element defenseElement) =>
         damage = Convert.ToInt32(damage * ElementalModifierLookup[(int)attackElement][(int)defenseElement]);
 
-    protected virtual void HandleElementalModifier(ref int damage, IScript source, Creature attacker, Creature defender)
-    {
-        switch (source)
-        {
-            case ISkillScript:
-            {
-                ApplyElementalModifier(ref damage, attacker.StatSheet.OffenseElement, defender.StatSheet.DefenseElement);
-                break;
-            }
-            case ISpellScript:
-            {
-                ApplyElementalModifier(ref damage, attacker.StatSheet.OffensiveCastElement, defender.StatSheet.DefenseElement);
-                break;
-            }
-        }
-    }
-    
     protected virtual void ApplySkillSpellModifier(ref int damage, IScript source, Creature attacker)
     {
         switch (source)
@@ -82,7 +64,8 @@ public class DefaultDamageFormula : IDamageFormula
         Creature attacker,
         Creature defender,
         IScript source,
-        int damage
+        int damage,
+        Element? elementOverride = null
     )
     {
         ApplySkillSpellModifier(ref damage, source, attacker);
@@ -90,7 +73,8 @@ public class DefaultDamageFormula : IDamageFormula
         var defenderAc = GetDefenderAc(defender);
 
         ApplyAcModifier(ref damage, defenderAc);
-        HandleElementalModifier(ref damage, source, attacker, defender);
+        ApplyElementalModifier(ref damage, elementOverride ?? attacker.StatSheet.OffenseElement, defender.StatSheet.DefenseElement);
+        
         HandleClawFist(ref damage, source, attacker);
         HandleZap(ref damage, source, attacker);
         return damage;
