@@ -14,7 +14,7 @@ public class RepairSingleItemScript : DialogScriptBase
 {
     public RepairSingleItemScript(Dialog subject,  IItemFactory itemFactory) : base(subject)
     {
-        ItemFactory = itemFactory;
+        _itemFactory = itemFactory;
         
         var requestInputText = DialogString.From(() => $"Would you like to repair {Item!.DisplayName} for {RepairCost} gold?");
 
@@ -35,8 +35,8 @@ public class RepairSingleItemScript : DialogScriptBase
             source.SendOrangeBarMessage($"You do not have enough. You need {RepairCost} gold.");
              return false;
         }
-        
-        Item.CurrentDurability = Item.Template.MaxDurability;
+
+        if (Item != null) Item.CurrentDurability = Item.Template.MaxDurability;
         source.SendOrangeBarMessage($"Your item has been repaired.");
         return true;
     }
@@ -45,7 +45,7 @@ public class RepairSingleItemScript : DialogScriptBase
     private int RepairCost { get; set; }
     public InputCollector InputCollector { get; }
     
-    private readonly IItemFactory ItemFactory;
+    private readonly IItemFactory _itemFactory;
     public override void OnDisplaying(Aisling source)
     {
         var inventory = source.Inventory.Where(x => x.Template.MaxDurability != null && x.CurrentDurability != null && x.CurrentDurability.Value != x.Template.MaxDurability.Value).ToList();

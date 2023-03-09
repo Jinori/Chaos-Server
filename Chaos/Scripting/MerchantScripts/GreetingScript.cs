@@ -18,6 +18,16 @@ public class GreetingScript : MerchantScriptBase
         
         switch (Subject.Template.TemplateKey.ToLower())
         {
+            case "thibault":
+            {
+                if (source is Aisling aisling)
+                {
+                    Subject.Say($"{source.Name} enters the throne room!");
+                    return;   
+                }
+
+                return;
+            }
             case "leia":
             {
                 Subject.Say($"Hello {source.Name}!");
