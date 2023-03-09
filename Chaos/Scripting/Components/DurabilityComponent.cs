@@ -1,3 +1,5 @@
+using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
 using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
@@ -40,5 +42,17 @@ public class DurabilityComponent
                 item.CurrentDurability--;
             }
         }
+        
+        //Break items that are at zero durability
+        
+        var itemsToBreak = context.SourceAisling.Equipment.Where(x => x.Template.AccountBound is false);
+
+        foreach (var item in itemsToBreak)
+            if (Randomizer.RollChance(2))
+            {
+                Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{item.DisplayName} has been consumed by the Death God.");
+                Subject.Equipment.TryGetRemove(item.Slot, out _);
+            }
+        
     }
 }
