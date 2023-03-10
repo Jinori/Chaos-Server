@@ -3,10 +3,12 @@ using Chaos.Containers;
 using Chaos.Data;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
+using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Templates;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -89,6 +91,21 @@ public class TerrorOfTheCryptScript : MapScriptBase
                 if (AnimationIndex >= ShapeOutline.Count)
                 {
                     var monster = MonsterFactory.Create("terrorLowInsight", Subject, new Point(8, 8));
+                    var groupLevel = Subject.GetEntities<Aisling>().Select(aisling => aisling.StatSheet.Level).ToList();
+                    var attrib =  new Attributes()
+                    {
+                        Con = (int)groupLevel.Average(),
+                        Dex = (int)groupLevel.Average(),
+                        Int = (int)groupLevel.Average(),
+                        Str = (int)groupLevel.Average(),
+                        Wis = (int)groupLevel.Average(),
+                        AtkSpeedPct = groupLevel.Count * 3,
+                        MaximumHp = (groupLevel.Count * 3) * 1000,
+                        MaximumMp = (groupLevel.Count * 3) * 500,
+                        SkillDamagePct = groupLevel.Count * 2,
+                        SpellDamagePct = groupLevel.Count * 2
+                    };
+                    monster.StatSheet.AddBonus(attrib);
                     Subject.AddObject(monster, monster);
                     State = ScriptState.Spawned;
                     AnimationIndex = 0;

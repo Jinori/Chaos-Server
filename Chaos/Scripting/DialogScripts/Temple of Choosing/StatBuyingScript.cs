@@ -17,6 +17,13 @@ public class StatBuyingScript : DialogScriptBase
         if (optionIndex is null)
             return;
 
+        if (source.UserStatSheet.Level < 99)
+        {
+            source.SendOrangeBarMessage("You cannot buy stats until you are of the 99th level.");
+            Subject.Close(source);
+            return;
+        }
+        
         switch (source.UserStatSheet.BaseClass)
         {
             case BaseClass.Warrior:

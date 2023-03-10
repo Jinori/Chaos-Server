@@ -54,6 +54,7 @@
         <ProjectReference Include="..\Chaos.TypeMapper\Chaos.TypeMapper.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="Discord.Net" />
         <PackageReference Include="NLog.Targets.Seq" />
         <PackageReference Include="NLog.Web.AspNetCore" />
         <PackageReference Include="System.Linq.Async" />
