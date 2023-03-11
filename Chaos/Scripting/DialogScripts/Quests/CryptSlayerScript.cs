@@ -61,7 +61,7 @@ public class CryptSlayerScript : DialogScriptBase
                     source.Legend.Remove("CryptSlayer", out _);
                     source.Legend.AddOrAccumulate(
                         new LegendMark(
-                            "Controlled the Mileth Crypt population with Skarn.",
+                            "Controlled the Mileth Crypt population.",
                             "CryptSlayerCompleted",
                             MarkIcon.Victory,
                             MarkColor.Blue,
@@ -362,7 +362,7 @@ public class CryptSlayerScript : DialogScriptBase
 
                     if (source.HasClass(BaseClass.Warrior))
                     {
-                        var warriorweapon = ItemFactory.Create("Claidheahmh");
+                        var warriorweapon = ItemFactory.Create("Claidheamh");
                         source.TryGiveItem(warriorweapon);
                     }
 

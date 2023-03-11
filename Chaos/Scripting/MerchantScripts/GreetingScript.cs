@@ -45,7 +45,7 @@ public class GreetingScript : MerchantScriptBase
             }
             case "cain":
             {
-                Subject.Chant("My carrots! Help! Get out of my garden!");
+                Subject.Say("My carrots! Help! Get out of my garden!");
                 return;
             }
             case "fabrizio":

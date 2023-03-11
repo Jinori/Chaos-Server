@@ -45,13 +45,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasStage = aisling.Trackers.Enums.TryGetValue(out RionaRatQuestStage stage);
 
                         if (!hasStage || (stage != RionaRatQuestStage.StartedRatQuest))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("StartedRatQuest", 5))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("StartedRatQuest");
@@ -65,13 +65,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasStage = aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage stage);
 
                         if (!hasStage || (stage != CryptSlayerStage.Bat))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("CryptSlayer");
@@ -85,13 +85,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasStage = aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage stage);
 
                         if (!hasStage || (stage != CryptSlayerStage.Centipede1))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("CryptSlayer");
@@ -104,13 +104,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasStage = aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage stage);
 
                         if (!hasStage || (stage != CryptSlayerStage.Centipede2))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("CryptSlayer");
@@ -123,13 +123,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasStage = aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage stage);
 
                         if (!hasStage || (stage != CryptSlayerStage.GiantBat))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("CryptSlayer");
@@ -142,13 +142,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasStage = aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage stage);
 
                         if (!hasStage || (stage != CryptSlayerStage.Kardi))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("CryptSlayer");
@@ -161,13 +161,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasStage = aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage stage);
 
                         if (!hasStage || (stage != CryptSlayerStage.Marauder))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("CryptSlayer");
@@ -180,13 +180,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasStage = aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage stage);
 
                         if (!hasStage || (stage != CryptSlayerStage.Mimic))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("CryptSlayer");
@@ -199,13 +199,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasStage = aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage stage);
 
                         if (!hasStage || (stage != CryptSlayerStage.Rat))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("CryptSlayer");
@@ -218,13 +218,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasStage = aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage stage);
 
                         if (!hasStage || (stage != CryptSlayerStage.Scorpion))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("CryptSlayer");
@@ -237,13 +237,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasStage = aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage stage);
 
                         if (!hasStage || (stage != CryptSlayerStage.Spider1))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("CryptSlayer");
@@ -256,13 +256,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasStage = aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage stage);
 
                         if (!hasStage || (stage != CryptSlayerStage.Spider2))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("CryptSlayer");
@@ -275,13 +275,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasStage = aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage stage);
 
                         if (!hasStage || (stage != CryptSlayerStage.Succubus))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("CryptSlayer");
@@ -294,13 +294,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasStage = aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage stage);
 
                         if (!hasStage || (stage != CryptSlayerStage.WhiteBat))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("CryptSlayer");
@@ -315,20 +315,20 @@ public class KillCounterScript : MonsterScriptBase
                         var hasBunny = aisling.Trackers.Enums.TryGetValue(out MythicBunny bunny);
 
                         if (!hasBunny || (bunny != MythicBunny.Lower))
-                            return;
-                        
+                            continue;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("PurpleHorse", 15))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("PurpleHorse");
                         aisling.SendOrangeBarMessage($"You've killed {value} {Subject.Template.Name}.");
 
                         break;
-                        
+
                     }
                     case "horse1-2":
                     case "horse2-2":
@@ -337,13 +337,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasBunny = aisling.Trackers.Enums.TryGetValue(out MythicBunny bunny);
 
                         if (!hasBunny || (bunny != MythicBunny.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("GrayHorse", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("GrayHorse");
@@ -358,13 +358,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasBunny = aisling.Trackers.Enums.TryGetValue(out MythicBunny bunny);
 
                         if (!hasBunny || (bunny != MythicBunny.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("RedHorse", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("RedHorse");
@@ -379,8 +379,8 @@ public class KillCounterScript : MonsterScriptBase
                         var hasBunny = aisling.Trackers.Enums.TryGetValue(out MythicBunny bunny);
 
                         if (!hasBunny || (bunny != MythicBunny.BossStarted))
-                            return;
-                        
+                            continue;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("AppleJack", 2))
                         {
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Big Bunny.");
@@ -390,7 +390,7 @@ public class KillCounterScript : MonsterScriptBase
                                 aisling.Trackers.Counters.AddOrIncrement("AppleJack");
                             }
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("AppleJack");
@@ -405,13 +405,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasHorse = aisling.Trackers.Enums.TryGetValue(out MythicHorse horse);
 
                         if (!hasHorse || (horse != MythicHorse.Lower))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("WhiteBunny", 15))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("WhiteBunny");
@@ -426,13 +426,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasHorse = aisling.Trackers.Enums.TryGetValue(out MythicHorse horse);
 
                         if (!hasHorse || (horse != MythicHorse.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("BrownBunny", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("BrownBunny");
@@ -447,13 +447,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasHorse = aisling.Trackers.Enums.TryGetValue(out MythicHorse horse);
 
                         if (!hasHorse || (horse != MythicHorse.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("PurpleBunny", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("PurpleBunny");
@@ -468,8 +468,8 @@ public class KillCounterScript : MonsterScriptBase
                         var hasHorse = aisling.Trackers.Enums.TryGetValue(out MythicHorse horse);
 
                         if (!hasHorse || (horse != MythicHorse.BossStarted))
-                            return;
-                        
+                            continue;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("MrHopps", 2))
                         {
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Horse Leader.");
@@ -479,12 +479,12 @@ public class KillCounterScript : MonsterScriptBase
                                 aisling.Trackers.Counters.AddOrIncrement("MrHopps");
                             }
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("MrHopps");
                         aisling.SendOrangeBarMessage($"You defeated Mr.Hopps {value} times!");
-                        
+
                         break;
                     }
                     case "wolf1-1":
@@ -494,13 +494,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasFrog = aisling.Trackers.Enums.TryGetValue(out MythicFrog frog);
 
                         if (!hasFrog || (frog != MythicFrog.Lower))
-                            return;
-                        
+                            continue;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("MythicWolf", 15))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("MythicWolf");
@@ -515,13 +515,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasFrog = aisling.Trackers.Enums.TryGetValue(out MythicFrog frog);
 
                         if (!hasFrog || (frog != MythicFrog.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("WhiteWolf", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("WhiteWolf");
@@ -536,13 +536,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasFrog = aisling.Trackers.Enums.TryGetValue(out MythicFrog frog);
 
                         if (!hasFrog || (frog != MythicFrog.Higher))
-                            return;
-                        
+                            continue;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("BeardedWolf", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("BeardedWolf");
@@ -557,8 +557,8 @@ public class KillCounterScript : MonsterScriptBase
                         var hasFrog = aisling.Trackers.Enums.TryGetValue(out MythicFrog frog);
 
                         if (!hasFrog || (frog != MythicFrog.BossStarted))
-                            return;
-                        
+                            continue;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Nymeria", 2))
                         {
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to King Frog.");
@@ -568,12 +568,12 @@ public class KillCounterScript : MonsterScriptBase
                                 aisling.Trackers.Counters.AddOrIncrement("Nymeria");
                             }
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("Nymeria");
                         aisling.SendOrangeBarMessage($"You defeated Nymeria {value} times!");
-                        
+
                         break;
                     }
                     case "mantis1-1":
@@ -583,13 +583,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasBee = aisling.Trackers.Enums.TryGetValue(out MythicBee bee);
 
                         if (!hasBee || (bee != MythicBee.Lower))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("MythicMantis", 15))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("MythicMantis");
@@ -604,13 +604,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasBee = aisling.Trackers.Enums.TryGetValue(out MythicBee bee);
 
                         if (!hasBee || (bee != MythicBee.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("BrownMantis", 20))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("BrownMantis");
@@ -625,8 +625,8 @@ public class KillCounterScript : MonsterScriptBase
                         var hasBee = aisling.Trackers.Enums.TryGetValue(out MythicBee bee);
 
                         if (!hasBee || (bee != MythicBee.BossStarted))
-                            return;
-                        
+                            continue;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("FireTree", 2))
                         {
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Bee Queen.");
@@ -636,12 +636,12 @@ public class KillCounterScript : MonsterScriptBase
                                 aisling.Trackers.Counters.AddOrIncrement("FireTree");
                             }
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("FireTree");
                         aisling.SendOrangeBarMessage($"You defeated Fire Tree {value} times!");
-                        
+
                         break;
                     }
                     case "bee1-1":
@@ -651,13 +651,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasMantis = aisling.Trackers.Enums.TryGetValue(out MythicMantis mantis);
 
                         if (!hasMantis || (mantis != MythicMantis.Lower))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("MythicBee", 15))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("MythicBee");
@@ -672,13 +672,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasMantis = aisling.Trackers.Enums.TryGetValue(out MythicMantis mantis);
 
                         if (!hasMantis || (mantis != MythicMantis.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("GreenBee", 20))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("GreenBee");
@@ -693,8 +693,8 @@ public class KillCounterScript : MonsterScriptBase
                         var hasMantis = aisling.Trackers.Enums.TryGetValue(out MythicMantis mantis);
 
                         if (!hasMantis || (mantis != MythicMantis.BossStarted))
-                            return;
-                        
+                            continue;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Carolina", 2))
                         {
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Mantis King.");
@@ -704,12 +704,12 @@ public class KillCounterScript : MonsterScriptBase
                                 aisling.Trackers.Counters.AddOrIncrement("Carolina");
                             }
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("Carolina");
                         aisling.SendOrangeBarMessage($"You defeated Carolina {value} times!");
-                        
+
                         break;
                     }
                     case "frog1-1":
@@ -719,13 +719,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasWolf = aisling.Trackers.Enums.TryGetValue(out MythicWolf wolf);
 
                         if (!hasWolf || (wolf != MythicWolf.Lower))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("MythicFrog", 15))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("MythicFrog");
@@ -740,13 +740,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasWolf = aisling.Trackers.Enums.TryGetValue(out MythicWolf wolf);
 
                         if (!hasWolf || (wolf != MythicWolf.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("BlueFrog", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("BlueFrog");
@@ -761,13 +761,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasWolf = aisling.Trackers.Enums.TryGetValue(out MythicWolf wolf);
 
                         if (!hasWolf || (wolf != MythicWolf.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("RedFrog", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("RedFrog");
@@ -782,8 +782,8 @@ public class KillCounterScript : MonsterScriptBase
                         var hasWolf = aisling.Trackers.Enums.TryGetValue(out MythicWolf wolf);
 
                         if (!hasWolf || (wolf != MythicWolf.BossStarted))
-                            return;
-                        
+                            continue;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Frogger", 2))
                         {
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Wolf Pack Leader.");
@@ -793,14 +793,14 @@ public class KillCounterScript : MonsterScriptBase
                                 aisling.Trackers.Counters.AddOrIncrement("Frogger");
                             }
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("Frogger");
                         aisling.SendOrangeBarMessage($"You defeated Frogger {value} times!");
-                        
+
                         break;
-                    } 
+                    }
                     case "gargoyle1-1":
                     case "gargoyle2-1":
                     case "gargoyle3-1":
@@ -808,13 +808,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasZombie = aisling.Trackers.Enums.TryGetValue(out MythicZombie zombie);
 
                         if (!hasZombie || (zombie != MythicZombie.Lower))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("MythicDunan", 15))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("MythicDunan");
@@ -829,13 +829,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasZombie = aisling.Trackers.Enums.TryGetValue(out MythicZombie zombie);
 
                         if (!hasZombie || (zombie != MythicZombie.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("GargoyleServant", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("GargoyleServant");
@@ -850,13 +850,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasZombie = aisling.Trackers.Enums.TryGetValue(out MythicZombie zombie);
 
                         if (!hasZombie || (zombie != MythicZombie.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("GargoyleGuard", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("GargoyleGuard");
@@ -871,8 +871,8 @@ public class KillCounterScript : MonsterScriptBase
                         var hasZombie = aisling.Trackers.Enums.TryGetValue(out MythicZombie zombie);
 
                         if (!hasZombie || (zombie != MythicZombie.BossStarted))
-                            return;
-                        
+                            continue;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("GargoyleFiend", 2))
                         {
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Superior Zombie");
@@ -882,12 +882,12 @@ public class KillCounterScript : MonsterScriptBase
                                 aisling.Trackers.Counters.AddOrIncrement("GargoyleFiend");
                             }
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("GargoyleFiend");
                         aisling.SendOrangeBarMessage($"You defeated Gargoyle Fiend {value} times!");
-                        
+
                         break;
                     }
                     case "zombie1-1":
@@ -897,13 +897,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasGargoyle = aisling.Trackers.Enums.TryGetValue(out MythicGargoyle gargoyle);
 
                         if (!hasGargoyle || (gargoyle != MythicGargoyle.Lower))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("ZombieGrunt", 15))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("ZombieGrunt");
@@ -918,13 +918,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasGargoyle = aisling.Trackers.Enums.TryGetValue(out MythicGargoyle gargoyle);
 
                         if (!hasGargoyle || (gargoyle != MythicGargoyle.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("ZombieSoldier", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("ZombieSoldier");
@@ -939,13 +939,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasGargoyle = aisling.Trackers.Enums.TryGetValue(out MythicGargoyle gargoyle);
 
                         if (!hasGargoyle || (gargoyle != MythicGargoyle.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("ZombieLumberjack", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("ZombieLumberjack");
@@ -960,8 +960,8 @@ public class KillCounterScript : MonsterScriptBase
                         var hasGargoyle = aisling.Trackers.Enums.TryGetValue(out MythicGargoyle gargoyle);
 
                         if (!hasGargoyle || (gargoyle != MythicGargoyle.BossStarted))
-                            return;
-                        
+                            continue;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Brains", 2))
                         {
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Lord Gargoyle.");
@@ -971,12 +971,12 @@ public class KillCounterScript : MonsterScriptBase
                                 aisling.Trackers.Counters.AddOrIncrement("Brains");
                             }
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("Brains");
                         aisling.SendOrangeBarMessage($"You defeated Brains {value} times!");
-                        
+
                         break;
                     }
                     case "grimlock1-1":
@@ -986,13 +986,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasKobold = aisling.Trackers.Enums.TryGetValue(out MythicKobold kobold);
 
                         if (!hasKobold || (kobold != MythicKobold.Lower))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("GrimlockWorker", 15))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("GrimlockWorker");
@@ -1007,13 +1007,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasKobold = aisling.Trackers.Enums.TryGetValue(out MythicKobold kobold);
 
                         if (!hasKobold || (kobold != MythicKobold.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("GrimlockRogue", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("GrimlockRogue");
@@ -1028,13 +1028,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasKobold = aisling.Trackers.Enums.TryGetValue(out MythicKobold kobold);
 
                         if (!hasKobold || (kobold != MythicKobold.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("GrimlockGuard", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("GrimlockGuard");
@@ -1049,8 +1049,8 @@ public class KillCounterScript : MonsterScriptBase
                         var hasKobold = aisling.Trackers.Enums.TryGetValue(out MythicKobold kobold);
 
                         if (!hasKobold || (kobold != MythicKobold.BossStarted))
-                            return;
-                        
+                            continue;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("GrimlockPrincess", 2))
                         {
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Kobold Pack Leader.");
@@ -1060,12 +1060,12 @@ public class KillCounterScript : MonsterScriptBase
                                 aisling.Trackers.Counters.AddOrIncrement("GrimlockPrincess");
                             }
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("GrimlockPrincess");
                         aisling.SendOrangeBarMessage($"You defeated Grimlock Princess {value} times!");
-                        
+
                         break;
                     }
                     case "kobold1-1":
@@ -1075,13 +1075,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasGrimlock = aisling.Trackers.Enums.TryGetValue(out MythicGrimlock grimlock);
 
                         if (!hasGrimlock || (grimlock != MythicGrimlock.Lower))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("KoboldWorker", 15))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("KoboldWorker");
@@ -1096,13 +1096,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasGrimlock = aisling.Trackers.Enums.TryGetValue(out MythicGrimlock grimlock);
 
                         if (!hasGrimlock || (grimlock != MythicGrimlock.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("KoboldSoldier", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("KoboldSoldier");
@@ -1117,13 +1117,13 @@ public class KillCounterScript : MonsterScriptBase
                         var hasGrimlock = aisling.Trackers.Enums.TryGetValue(out MythicGrimlock grimlock);
 
                         if (!hasGrimlock || (grimlock != MythicGrimlock.Higher))
-                            return;
+                            continue;
 
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("KoboldWarrior", 10))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("KoboldWarrior");
@@ -1138,8 +1138,8 @@ public class KillCounterScript : MonsterScriptBase
                         var hasGrimlock = aisling.Trackers.Enums.TryGetValue(out MythicGrimlock grimlock);
 
                         if (!hasGrimlock || (grimlock != MythicGrimlock.BossStarted))
-                            return;
-                        
+                            continue;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Shank", 2))
                         {
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Grimlock Queen.");
@@ -1149,15 +1149,15 @@ public class KillCounterScript : MonsterScriptBase
                                 aisling.Trackers.Counters.AddOrIncrement("Shank");
                             }
 
-                            return;
+                            continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("Shank");
                         aisling.SendOrangeBarMessage($"You defeated Shank {value} times!");
-                        
+
                         break;
                     }
-                    
+
                 }
     }
 }

@@ -31,8 +31,9 @@ public class SpareAStickRewardScript : DialogScriptBase
             source.Trackers.Flags.RemoveFlag(QuestFlag1.GatheringSticks);
             source.Trackers.Flags.AddFlag(QuestFlag1.SpareAStickComplete);
             ExperienceDistributionScript.GiveExp(source, 2500);
+            source.TryGiveGold(1000);
             source.TryGiveGamePoints(5);
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and 2500 exp!");
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"5 Gamepoints, 1000 gold, and 2500 Exp Rewarded!");
             
             
             if (Randomizer.RollChance(8))
@@ -51,7 +52,8 @@ public class SpareAStickRewardScript : DialogScriptBase
 
             source.Inventory.RemoveQuantity("branch", 6, out _);
             var stick = ItemFactory.Create("Stick");
-            source.TryGiveItem(stick);
+            var shield = ItemFactory.Create("woodenshield");
+            source.TryGiveItems(stick, shield);
         }
 
         if (source.Trackers.Flags.HasFlag(QuestFlag1.GatheringSticks) && (source.Inventory.CountOf("Branch") < 6))

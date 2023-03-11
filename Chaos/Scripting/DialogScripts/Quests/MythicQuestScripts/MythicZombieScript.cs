@@ -32,16 +32,8 @@ public class MythicZombieScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         var hasMain = source.Trackers.Enums.TryGetValue(out MythicQuestMain main);
-        var hasBunny = source.Trackers.Enums.TryGetValue(out MythicBunny bunny);
-        var hasHorse = source.Trackers.Enums.TryGetValue(out MythicHorse horse);
-        var hasGargoyle = source.Trackers.Enums.TryGetValue(out MythicGargoyle gargoyle);
         var hasZombie = source.Trackers.Enums.TryGetValue(out MythicZombie zombie);
         var hasFrog = source.Trackers.Enums.TryGetValue(out MythicFrog frog);
-        var hasWolf = source.Trackers.Enums.TryGetValue(out MythicWolf wolf);
-        var hasMantis = source.Trackers.Enums.TryGetValue(out MythicMantis mantis);
-        var hasBee = source.Trackers.Enums.TryGetValue(out MythicBee bee);
-        var hasKobold = source.Trackers.Enums.TryGetValue(out MythicKobold kobold);
-        var hasGrimlock = source.Trackers.Enums.TryGetValue(out MythicGrimlock grimlock);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);

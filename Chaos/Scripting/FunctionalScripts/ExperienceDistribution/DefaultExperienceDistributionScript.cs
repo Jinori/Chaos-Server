@@ -35,6 +35,9 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
     public virtual void DistributeExperience(Creature killedCreature, params Aisling[] aislings)
     {
         var exp = ExperienceFormula.Calculate(killedCreature, aislings);
+        
+        foreach (var aisling in aislings)
+            GiveExp(aisling, exp);
 
         foreach (var aisling in aislings)
             GiveExp(aisling, exp);

@@ -16,6 +16,8 @@ public class TeagueCoinsScript : DialogScriptBase
         {
             source.TryTakeGold(1000);
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The old man's eyes light up with glee..");
+
+            return;
         }
 
         if (source.Gold < 1000)
@@ -23,6 +25,8 @@ public class TeagueCoinsScript : DialogScriptBase
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You reach into your coin purse but it's not that full..");
             Subject.Text = "You almost had me excited there.. don't promise what you can't make true.";
             Subject.Type = MenuOrDialogType.Normal;
+
+            return;
         }
     }
 }

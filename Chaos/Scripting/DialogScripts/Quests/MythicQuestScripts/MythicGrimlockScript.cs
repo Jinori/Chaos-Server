@@ -103,12 +103,12 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 if (grimlock == MythicGrimlock.Higher)
                 {
-                    Subject.Text = "";
+                    Subject.Text = "Greetings, adventurer. I trust that your mission to defeat the 10 Kobold Soldiers and 10 Kobold Warriors was successful. Your efforts in this battle were crucial to our cause, and we are grateful for your bravery and skill.";
 
                     var option = new DialogOption
                     {
                         DialogKey = "grimlock_higher2",
-                        OptionText = "Yeah, it is done."
+                        OptionText = "Yes, it was."
                     };
 
 
@@ -121,12 +121,12 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 if (grimlock == MythicGrimlock.HigherComplete)
                 {
-                    Subject.Text = "Want to collect some horse hair for me?";
+                    Subject.Text = "I have a new task that I would ask of you. It is said that the Kobolds possess a strange potion with unique properties... We aren't too sure what it is used for, but we must have enough to experiment with. They will not share willingly, it must be taken by force. Could you collect 25 of them for me?";
                     
                     var option = new DialogOption
                     {
                         DialogKey = "grimlock_item",
-                        OptionText = "I can get that."
+                        OptionText = "I will for you."
                     };
 
                     if (!Subject.HasOption(option))
@@ -277,7 +277,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     return;
                 }
 
-                Subject.Text = " ";
+                Subject.Text = "With the loss of these fighters, the Kobolds will surely be weakened, and their chances of winning this conflict have been significantly reduced. The Grimlocks are a proud people, and we do not forget those who fight alongside us. You have earned our respect and gratitude, and we will remember your deeds for generations to come.";
                 Subject.NextDialogKey = "grimlock_initial";
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
