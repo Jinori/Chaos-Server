@@ -50,7 +50,7 @@ public class ALittleBitofThatScript : DialogScriptBase
             case "alittlebitofthat_initial":
                 if (!hasStage || (stage == ALittleBitofThatStage.None))
                 {
-                    if (source.Trackers.TimedEvents.TryConsumeEvent("ALittleBitofThatCd", out var timedEvent))
+                    if (source.Trackers.TimedEvents.HasActiveEvent("ALittleBitofThatCd", out var timedEvent))
                     {
                         Subject.Text = $"I'm still working on this, come back later. (({timedEvent.Remaining.ToReadableString()}))";
 

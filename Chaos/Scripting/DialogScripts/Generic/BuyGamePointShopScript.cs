@@ -72,7 +72,7 @@ public class BuyGamePointShopScript : ConfigurableDialogScriptBase
         {
             case ComplexActionHelper.BuyGamePointItemResult.Success:
                 Logger.LogDebug(
-                    "{Player} bought {Item} from {Merchant} for {Amount} GamePoints",
+                    "{@Player} bought {@Item} from {@Merchant} for {Amount} GamePoints",
                     aisling,
                     FauxItem!.ToAmountString(Amount!.Value),
                     Subject.SourceEntity,

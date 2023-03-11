@@ -121,7 +121,7 @@ public class FishingEffect : ContinuousAnimationEffectBase
             //3%
             case >= 4850 and < 4875:
             {
-                var item = ItemFactory.Create("Bass");
+                var item = ItemFactory.Create("Trout");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Trout");
 

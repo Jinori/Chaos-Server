@@ -8,47 +8,46 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.SpellScripts.Abstractions;
 
-
 namespace Chaos.Scripting.SpellScripts.Damage;
 
-
-
-public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageComponentOptions, ManaCostComponent.IManaCostComponentOptions
+public class ManaBasedDamageScript : BasicSpellScriptBase, ManaBasedDamageComponent.IManaBasedDamageComponentOptions, ManaCostComponent.IManaCostComponentOptions
 {
-    protected DamageComponent DamageComponent { get; }
+    protected ManaBasedDamageComponent ManaBasedDamageComponent { get; }
     protected ManaCostComponent ManaCostComponent { get; }
 
-    /// <inheritdoc />
-    public DamageScript(Spell subject)
+    public ManaBasedDamageScript(Spell subject)
         : base(subject)
     {
         ApplyDamageScript = DefaultApplyDamageScript.Create();
-        DamageComponent = new DamageComponent();
+        ManaBasedDamageComponent = new ManaBasedDamageComponent();
         ManaCostComponent = new ManaCostComponent();
         SourceScript = this;
     }
 
-    /// <inheritdoc />
     public override void OnUse(SpellContext context)
     {
+       
         if (!ManaCostComponent.TryApplyManaCost(context, this))
             return;
         
         var targets = AbilityComponent.Activate<Creature>(context, this);
         context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}");
-        DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
+        ManaBasedDamageComponent.ApplyDamage(context, targets.TargetEntities, this);
     }
 
+    public IScript SourceScript { get; }
+    public IApplyDamageScript ApplyDamageScript { get; }
+
     #region ScriptVars
-    public IApplyDamageScript ApplyDamageScript { get; init; }
-    public int? BaseDamage { get; init; }
-    public Stat? DamageStat { get; init; }
-    public decimal? DamageStatMultiplier { get; init; }
-    public decimal? PctHpDamage { get; init; }
-    public IScript SourceScript { get; init; }
-    public Element? Element { get; init; }
+    public int? BaseDamage { get; }
+    public decimal? BaseDamageMultiplier { get; }
+    public decimal? PctOfMana { get; }
+    public decimal? PctOfManaMultiplier { get; }
+    public decimal? FinalMultiplier { get; }
+    public Element? Element { get; }
     public int? ManaCost { get; init; }
     public decimal PctManaCost { get; init; }
     
     #endregion
+    
 }

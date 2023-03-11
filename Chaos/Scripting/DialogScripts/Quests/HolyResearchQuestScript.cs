@@ -44,7 +44,7 @@ public class HolyResearchQuestScript : DialogScriptBase
             case "holyresearch_initial":
                 if (!hasStage || (stage == HolyResearchStage.None))
                 {
-                    if (source.Trackers.TimedEvents.TryConsumeEvent("HolyResearchCd", out var timedEvent))
+                    if (source.Trackers.TimedEvents.HasActiveEvent("HolyResearchCd", out var timedEvent))
                     {
                         Subject.Text = $"I don't need any more right now, please come back later. (({timedEvent.Remaining.ToReadableString()
                         }))";

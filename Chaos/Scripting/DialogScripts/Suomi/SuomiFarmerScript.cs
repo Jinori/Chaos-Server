@@ -36,7 +36,7 @@ public class suomiFarmerScript : DialogScriptBase
                     return;
                 }
                 
-                if (source.Trackers.TimedEvents.TryConsumeEvent("SuomiGrapeCd",
+                if (source.Trackers.TimedEvents.HasActiveEvent("SuomiGrapeCd",
                         out var timedEvent))
                 {
                     Subject.Text =
@@ -77,7 +77,7 @@ public class suomiFarmerScript : DialogScriptBase
                     return;
                 }
                 
-                if (source.Trackers.TimedEvents.TryConsumeEvent("SuomiCherryCd",
+                if (source.Trackers.TimedEvents.HasActiveEvent("SuomiCherryCd",
                         out var timedEvent))
                 {
                     Subject.Text =

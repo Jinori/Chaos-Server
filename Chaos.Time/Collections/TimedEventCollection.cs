@@ -89,6 +89,16 @@ public sealed class TimedEventCollection : IEnumerable<KeyValuePair<string, Time
 
         return false;
     }
+    
+    public bool HasActiveEvent(string eventID, [MaybeNullWhen(false)] out Event @event)
+    {
+        using var sync = Sync.Enter();
+
+        if (!Events.TryGetValue(eventID, out @event))
+            return false;
+
+        return !@event.Completed;
+    }
 
     /// <inheritdoc />
     public void Update(TimeSpan delta)
@@ -118,6 +128,7 @@ public sealed class TimedEventCollection : IEnumerable<KeyValuePair<string, Time
         /// <summary>
         ///     Whether or not the event should be automatically removed from the collection when it has expired
         /// </summary>
+        [JsonInclude]
         public bool AutoConsume { get; }
 
         /// <summary>
@@ -128,11 +139,13 @@ public sealed class TimedEventCollection : IEnumerable<KeyValuePair<string, Time
         /// <summary>
         ///     The duration of the event
         /// </summary>
+        [JsonInclude]
         public TimeSpan Duration { get; }
 
         /// <summary>
         ///     The ID of the event
         /// </summary>
+        [JsonInclude]
         public string EventId { get; }
 
         /// <summary>
@@ -143,8 +156,10 @@ public sealed class TimedEventCollection : IEnumerable<KeyValuePair<string, Time
         /// <summary>
         ///     The start time of the event
         /// </summary>
+        [JsonInclude]
         public DateTime Start { get; }
 
+        [JsonConstructor]
         public Event(
             string eventId,
             TimeSpan duration,

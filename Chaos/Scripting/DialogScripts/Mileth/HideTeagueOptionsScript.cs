@@ -22,7 +22,7 @@ internal class HideTeagueOptionsScript : DialogScriptBase
             return;
         }
 
-        if (source.Trackers.TimedEvents.TryConsumeEvent("TerrorOfTheCrypt", out var timedEvent))
+        if (source.Trackers.TimedEvents.HasActiveEvent("TerrorOfTheCrypt", out var timedEvent))
         {
 
             Subject.Text = $"Thank you for ending my terrors Aisling, I hope I sleep better tonight. Come see me later (({

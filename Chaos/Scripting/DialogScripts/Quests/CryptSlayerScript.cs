@@ -88,7 +88,7 @@ public class CryptSlayerScript : DialogScriptBase
             case "cryptslayer_initial":
                 if (!hasStage || (stage == CryptSlayerStage.None))
                 {
-                    if (source.Trackers.TimedEvents.TryConsumeEvent("CryptSlayerCd", out var timedEvent))
+                    if (source.Trackers.TimedEvents.HasActiveEvent("CryptSlayerCd", out var timedEvent))
                     {
                         Subject.Text = $"You have killed enough for now, come back later. (({timedEvent.Remaining.ToReadableString()}))";
 

@@ -52,7 +52,7 @@ public class DarkThingsQuestScript : DialogScriptBase
             case "darkthings_initial":
                 if (!hasStage || (stage == DarkThingsStage.None))
                 {
-                    if (source.Trackers.TimedEvents.TryConsumeEvent("DarkThingsCd", out var timedEvent))
+                    if (source.Trackers.TimedEvents.HasActiveEvent("DarkThingsCd", out var timedEvent))
                     {
                         Subject.Text = $"I have enough for now. Return later. (({timedEvent.Remaining.ToReadableString()}))";
 
