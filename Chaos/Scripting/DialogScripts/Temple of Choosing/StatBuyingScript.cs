@@ -12,10 +12,13 @@ public class StatBuyingScript : DialogScriptBase
     public StatBuyingScript(Dialog subject)
         : base(subject) { }
 
+    
+    
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
         if (optionIndex is null)
             return;
+        
 
         if (source.UserStatSheet.Level < 99)
         {

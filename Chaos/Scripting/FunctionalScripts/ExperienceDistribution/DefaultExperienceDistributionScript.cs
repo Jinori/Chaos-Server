@@ -38,9 +38,6 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
         
         foreach (var aisling in aislings)
             GiveExp(aisling, exp);
-
-        foreach (var aisling in aislings)
-            GiveExp(aisling, exp);
     }
 
     public virtual void GiveExp(Aisling aisling, long amount)

@@ -10,7 +10,9 @@ using Chaos.Scripting.SpellScripts.Abstractions;
 
 namespace Chaos.Scripting.SpellScripts.Damage;
 
-public class ManaBasedDamageScript : BasicSpellScriptBase, ManaBasedDamageComponent.IManaBasedDamageComponentOptions, ManaCostComponent.IManaCostComponentOptions
+public class ManaBasedDamageScript : BasicSpellScriptBase,
+                                     ManaBasedDamageComponent.IManaBasedDamageComponentOptions,
+                                     ManaCostComponent.IManaCostComponentOptions
 {
     protected ManaBasedDamageComponent ManaBasedDamageComponent { get; }
     protected ManaCostComponent ManaCostComponent { get; }
@@ -26,10 +28,10 @@ public class ManaBasedDamageScript : BasicSpellScriptBase, ManaBasedDamageCompon
 
     public override void OnUse(SpellContext context)
     {
-       
+
         if (!ManaCostComponent.TryApplyManaCost(context, this))
             return;
-        
+
         var targets = AbilityComponent.Activate<Creature>(context, this);
         context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}");
         ManaBasedDamageComponent.ApplyDamage(context, targets.TargetEntities, this);
@@ -39,15 +41,15 @@ public class ManaBasedDamageScript : BasicSpellScriptBase, ManaBasedDamageCompon
     public IApplyDamageScript ApplyDamageScript { get; }
 
     #region ScriptVars
-    public int? BaseDamage { get; }
-    public decimal? BaseDamageMultiplier { get; }
-    public decimal? PctOfMana { get; }
-    public decimal? PctOfManaMultiplier { get; }
-    public decimal? FinalMultiplier { get; }
-    public Element? Element { get; }
+    public int? BaseDamage { get; set; }
+    public decimal? BaseDamageMultiplier { get; set; }
+    public decimal? PctOfMana { get; set; }
+    public decimal? PctOfManaMultiplier { get; set; }
+    public decimal? FinalMultiplier { get; set; }
+    public Element? Element { get; set; }
     public int? ManaCost { get; init; }
     public decimal PctManaCost { get; init; }
-    
+
     #endregion
-    
+
 }

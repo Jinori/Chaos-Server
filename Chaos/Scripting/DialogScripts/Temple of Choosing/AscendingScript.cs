@@ -10,6 +10,7 @@ namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 
 public class AscendingScript : DialogScriptBase
 {
+
     private readonly IExperienceDistributionScript ExperienceDistributionScript;
 
     public AscendingScript(Dialog subject)
@@ -31,6 +32,15 @@ public class AscendingScript : DialogScriptBase
     
     public override void OnDisplaying(Aisling source)
     {
+        if (source.UserStatSheet.Level <= 98)
+        {
+            Subject.Text = "You must be level 99 to buy health and mana.";
+            Subject.Options.Clear();
+            source.SendOrangeBarMessage("You may not ascend until level 99.");
+
+            return;
+        }
+
         var beforeBaseHealth = source.StatSheet.MaximumHp;
         var beforeBaseMana = source.StatSheet.MaximumMp;
 

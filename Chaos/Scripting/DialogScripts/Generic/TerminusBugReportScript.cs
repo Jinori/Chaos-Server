@@ -24,7 +24,7 @@ public class TerminusBugReportScript : DialogScriptBase
     private string? BugDescription { get; set; }
     private string? OptionSelected { get; set; }
     
-    const string BotToken = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.GEZ5TV.AZLKCub9vnDn5Nsz30EjO9W3ZZhCFYRaN7U8E4";
+    const string BotToken = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.GGjwC-.rO8c7FxOWQE8wW8PhzjKPmP2XUDcJCzLvcAjSU";
     readonly ulong _channelId = 1083522838817939566;
     
     public override void OnNext(Aisling source, byte? optionIndex = null)
