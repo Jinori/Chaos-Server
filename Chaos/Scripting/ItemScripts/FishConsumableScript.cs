@@ -26,31 +26,24 @@ public class FishConsumableScript : ItemScriptBase
         {
             case "Trout":
                 Percent = Convert.ToInt32(0.006 * tnl);
-
                 break;
             case "Bass":
                 Percent = Convert.ToInt32(0.007 * tnl);
-
                 break;
             case "Perch":
                 Percent = Convert.ToInt32(0.008 * tnl);
-
                 break;
             case "Pike":
                 Percent = Convert.ToInt32(0.009 * tnl);
-
                 break;
             case "Rock Fish":
                 Percent = Convert.ToInt32(0.01 * tnl);
-
                 break;
             case "Lion Fish":
                 Percent = Convert.ToInt32(0.02 * tnl);
-
                 break;
             case "Purple Whopper":
                 Percent = Convert.ToInt32(0.03 * tnl);
-
                 break;
         }
 

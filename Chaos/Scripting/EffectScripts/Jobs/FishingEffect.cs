@@ -38,105 +38,35 @@ public class FishingEffect : ContinuousAnimationEffectBase
 
     public FishingEffect(IItemFactory itemFactory) => _itemFactory = itemFactory;
 
+    private static readonly List<string> FishList = new List<string> { "uselessboot", "trout", "bass", "perch", "pike", "rockfish", "lionfish", "purplewhopper"};
+    private static readonly List<decimal> FishWeight = new List<decimal> { 20, 30, 25, 20, 15, 10, 8, 5 };
+    
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
+        var aisling = AislingSubject!;
+        
         var fishingSpots = Subject.MapInstance.GetEntities<ReactorTile>()
                                   .Where(x => x.ScriptKeys.Contains("FishingSpot") && x.X.Equals(Subject.X) && x.Y.Equals(Subject.Y));
 
-        if (!fishingSpots.Any())
+        if (!fishingSpots.Any() || !aisling.Inventory.HasCount("Fishing Bait", 1))
         {
             Subject.Effects.Terminate("Fishing");
             return;
         }
-
-        var chance = Randomizer.RollRange(5000, 99, RandomizationType.Negative);
-
-        switch (chance)
+        
+        if (!Randomizer.RollChance(2))
         {
-            //0.3%
-            case >= 4985:
-            {
-                var item = _itemFactory.Create("giftbox");
-                AislingSubject?.TryGiveItem(item);
-                AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a giftbox!");
-                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
-                break;
-            }
-            //0.5%
-            case >= 4975 and < 4985:
-            {
-                var item = _itemFactory.Create("purplewhopper");
-                AislingSubject?.TryGiveItem(item);
-                AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Purple Whopper");
-                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
-                break;
-            }
-            //.8%
-            case >= 4960 and < 4975:
-            {
-                var item = _itemFactory.Create("lionfish");
-                AislingSubject?.TryGiveItem(item);
-                AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Lion Fish");
-                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
-                break;
-            }
-            //1%
-            case >= 4950 and < 4960:
-            {
-                var item = _itemFactory.Create("rockfish");
-                AislingSubject?.TryGiveItem(item);
-                AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Rock Fish");
-                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
-                break;
-            }
-            //1.5%
-            case >= 4925 and < 4950:
-            {
-                var item = _itemFactory.Create("pike");
-                AislingSubject?.TryGiveItem(item);
-                AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Pike");
-                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
-                break;
-            }
-            //2%
-            case >= 4900 and < 4925:
-            {
-                var item = _itemFactory.Create("Perch");
-                AislingSubject?.TryGiveItem(item);
-                AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Perch");
-                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
-                return;
-            }
-            //2.5%
-            case >= 4875 and < 4900:
-            {
-                var item = _itemFactory.Create("Bass");
-                AislingSubject?.TryGiveItem(item);
-                AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Bass");
-                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
-                break;
-            }
-            //3%
-            case >= 4850 and < 4875:
-            {
-                var item = _itemFactory.Create("Trout");
-                AislingSubject?.TryGiveItem(item);
-                AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Trout");
-                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
-                break;
-            }
-            case <= 200:
-                AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You recast your fishing rod in frustration.");
-                AislingSubject?.AnimateBody(BodyAnimation.Assail);
-                break;
-            default:
-            {
-                var saying = _sayings.PickRandom();
-                AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, saying);
-                break;
-            }
+            return;
         }
+
+        var templateKey = FishList.PickRandom(FishWeight);
+        var fish = _itemFactory.Create(templateKey);
+        if (!aisling.TryGiveItem(fish))
+            return;
+        
+        aisling.SendOrangeBarMessage($"You caught a {fish.DisplayName}!");
+        aisling.Inventory.RemoveQuantity("Fishing Bait", 1);
     }
 
     public override void OnTerminated()

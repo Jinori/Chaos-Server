@@ -8,22 +8,27 @@ namespace Chaos.Scripting.ReactorTileScripts.Jobs;
 
 public class FishingSpotScript : ReactorTileScriptBase
 {
-    private readonly IEffectFactory EffectFactory;
+    private readonly IEffectFactory _effectFactory;
 
     public FishingSpotScript(ReactorTile subject, IEffectFactory effectFactory)
-        : base(subject) => EffectFactory = effectFactory;
+        : base(subject) => _effectFactory = effectFactory;
 
     public override void OnWalkedOn(Creature source)
     {
         if (source is not Aisling aisling)
             return;
 
+        if (!aisling.Inventory.HasCount("Fishing Bait", 1))
+            return;
+        
         var templateTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
-
-        if (templateTemplateKey?.EndsWith("FishingPole", StringComparison.Ordinal) is true)
-        {
-            var effect = EffectFactory.Create("Fishing");
-            aisling.Effects.Apply(aisling, effect);
-        }
+        if (templateTemplateKey?.EndsWith("FishingPole", StringComparison.Ordinal) is not true) 
+            return;
+        
+        if (source.Effects.Contains("Fishing"))
+            return;
+        
+        var effect = _effectFactory.Create("Fishing");
+        aisling.Effects.Apply(aisling, effect);
     }
 }

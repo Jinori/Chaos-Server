@@ -36,8 +36,5 @@ public class TrapRoomScript : MapScriptBase
 
             Subject.SimpleAdd(trap);
         }
-
     }
-    
-    
 }
