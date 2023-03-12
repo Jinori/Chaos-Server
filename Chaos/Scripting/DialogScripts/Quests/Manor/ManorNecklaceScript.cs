@@ -28,8 +28,8 @@ public class ManorNecklaceScript : DialogScriptBase
             case "zulera_keephernecklace":
             {
                 if (stage == ManorNecklaceStage.ObtainedNecklace)
-                    source.Trackers.Enums.Set(ManorNecklaceStage.ReturnedNecklace);
-                source.Legend.AddUnique(new LegendMark("Returned Zulera's Heirloom", "manorNecklace", MarkIcon.Victory, MarkColor.LightPurple, 1, GameTime.Now));
+                    source.Trackers.Enums.Set(ManorNecklaceStage.KeptNecklace);
+                source.Legend.AddUnique(new LegendMark("Stolen Zulera's Heirloom", "manorNecklace", MarkIcon.Rogue, MarkColor.Orange, 1, GameTime.Now));
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive a legend mark. The young one looks terribly sad.");
                 break;
             }
