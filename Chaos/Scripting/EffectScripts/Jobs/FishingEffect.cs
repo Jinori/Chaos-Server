@@ -11,8 +11,8 @@ namespace Chaos.Scripting.EffectScripts.Jobs;
 
 public class FishingEffect : ContinuousAnimationEffectBase
 {
-    private readonly IItemFactory ItemFactory;
-    private readonly List<string> Sayings = new()
+    private readonly IItemFactory _itemFactory;
+    private readonly List<string> _sayings = new()
     {
         "Your bobber slightly dips but nothing happens.", "You feel a bite at the line.", "*yawn* The water is calm and serene.",
         "Cursing at the sky, you say you'll never give up!", "A small patch of water ripples."
@@ -36,7 +36,7 @@ public class FishingEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(5));
 
-    public FishingEffect(IItemFactory itemFactory) => ItemFactory = itemFactory;
+    public FishingEffect(IItemFactory itemFactory) => _itemFactory = itemFactory;
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
@@ -47,7 +47,6 @@ public class FishingEffect : ContinuousAnimationEffectBase
         if (!fishingSpots.Any())
         {
             Subject.Effects.Terminate("Fishing");
-
             return;
         }
 
@@ -58,85 +57,83 @@ public class FishingEffect : ContinuousAnimationEffectBase
             //0.3%
             case >= 4985:
             {
-                var item = ItemFactory.Create("giftbox");
+                var item = _itemFactory.Create("giftbox");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a giftbox!");
-
+                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
                 break;
             }
             //0.5%
             case >= 4975 and < 4985:
             {
-                var item = ItemFactory.Create("purplewhopper");
+                var item = _itemFactory.Create("purplewhopper");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Purple Whopper");
-
+                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
                 break;
             }
             //.8%
             case >= 4960 and < 4975:
             {
-                var item = ItemFactory.Create("lionfish");
+                var item = _itemFactory.Create("lionfish");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Lion Fish");
-
+                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
                 break;
             }
             //1%
             case >= 4950 and < 4960:
             {
-                var item = ItemFactory.Create("rockfish");
+                var item = _itemFactory.Create("rockfish");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Rock Fish");
-
+                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
                 break;
             }
             //1.5%
             case >= 4925 and < 4950:
             {
-                var item = ItemFactory.Create("pike");
+                var item = _itemFactory.Create("pike");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Pike");
-
+                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
                 break;
             }
             //2%
             case >= 4900 and < 4925:
             {
-                var item = ItemFactory.Create("Perch");
+                var item = _itemFactory.Create("Perch");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Perch");
-
+                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
                 return;
             }
             //2.5%
             case >= 4875 and < 4900:
             {
-                var item = ItemFactory.Create("Bass");
+                var item = _itemFactory.Create("Bass");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Bass");
-
+                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
                 break;
             }
             //3%
             case >= 4850 and < 4875:
             {
-                var item = ItemFactory.Create("Trout");
+                var item = _itemFactory.Create("Trout");
                 AislingSubject?.TryGiveItem(item);
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got a Trout");
-
+                AislingSubject?.Inventory.RemoveQuantity("Fishing Bait", 1);
                 break;
             }
             case <= 200:
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You recast your fishing rod in frustration.");
                 AislingSubject?.AnimateBody(BodyAnimation.Assail);
-
                 break;
             default:
             {
-                var saying = Sayings.PickRandom();
+                var saying = _sayings.PickRandom();
                 AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, saying);
-
                 break;
             }
         }

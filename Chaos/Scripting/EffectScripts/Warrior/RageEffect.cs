@@ -9,6 +9,7 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 public class RageEffect : EffectBase
 {
     public override byte Icon => 135;
+    private int _damageSaved;
     public override string Name => "rage";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(25);
@@ -24,6 +25,8 @@ public class RageEffect : EffectBase
             Dmg = 10 + damFormula
         };
 
+        _damageSaved = 10 + damFormula;
+        
         AislingSubject?.StatSheet.SubtractMp(50);
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
@@ -36,7 +39,7 @@ public class RageEffect : EffectBase
     {
         var attributes = new Attributes
         {
-            Dmg = 10
+            Dmg = _damageSaved
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
