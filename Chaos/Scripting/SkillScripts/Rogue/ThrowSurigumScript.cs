@@ -22,6 +22,7 @@ public class ThrowSurigumScript : DamageScript
     {
         //Must be wearing a soori or dagger
         if (context.SourceAisling?.Equipment[EquipmentSlot.Weapon]?.Slot is not null)
+        {
             if (context.SourceAisling?.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey.ContainsI("dagger") is false)
             {
                 context.SourceAisling?.Client.SendServerMessage(
@@ -30,8 +31,8 @@ public class ThrowSurigumScript : DamageScript
 
                 return;
             }
-
-        var targets = AbilityComponent.Activate<Creature>(context, this);
-        DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
+            var targets = AbilityComponent.Activate<Creature>(context, this);
+            DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
+        }
     }
 }
