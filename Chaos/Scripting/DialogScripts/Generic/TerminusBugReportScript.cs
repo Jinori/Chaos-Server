@@ -24,7 +24,7 @@ public class TerminusBugReportScript : DialogScriptBase
     private string? BugDescription { get; set; }
     private string? OptionSelected { get; set; }
     
-    const string BotToken = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.GGjwC-.rO8c7FxOWQE8wW8PhzjKPmP2XUDcJCzLvcAjSU";
+    const string BotToken = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.GUhESy.QbvKjNnh8wI_C_eagfjG550HjEFNSWZR2conHM";
     readonly ulong _channelId = 1083522838817939566;
     
     public override void OnNext(Aisling source, byte? optionIndex = null)
@@ -39,6 +39,7 @@ public class TerminusBugReportScript : DialogScriptBase
                     2 => "Item",
                     3 => "Map or Warp",
                     4 => "Mundane",
+                    5 => "Other",
                     _ => OptionSelected
                 };
             }
