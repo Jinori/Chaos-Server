@@ -31,21 +31,21 @@ public class EquipmentScript : ConfigurableItemScriptBase
 
         if (template.Class.HasValue && !source.HasClass(template.Class.Value))
         {
-            source.SendOrangeBarMessage($"{Subject.DisplayName} does not seem to fit you");
+            source.SendOrangeBarMessage($"{Subject.DisplayName} is not for {source.UserStatSheet.BaseClass}.");
 
             return;
         }
 
         if (template.AdvClass.HasValue && (template.AdvClass.Value != source.UserStatSheet.AdvClass))
         {
-            source.SendOrangeBarMessage($"{Subject.DisplayName} does not seem to fit you");
+            source.SendOrangeBarMessage($"{Subject.DisplayName} is not for {source.UserStatSheet.AdvClass}.");
 
             return;
         }
 
         if (template.Level > source.UserStatSheet.Level)
         {
-            source.SendOrangeBarMessage($"{Subject.DisplayName} does not seem to fit you, but you could grow into it");
+            source.SendOrangeBarMessage($"You are too inexperienced to equip {Subject.Template.Name}.");
 
             return;
         }
@@ -54,7 +54,7 @@ public class EquipmentScript : ConfigurableItemScriptBase
             && StatAmountRequired.HasValue
             && (source.StatSheet.GetBaseStat(StatRequired.Value) < StatAmountRequired.Value))
         {
-            source.SendOrangeBarMessage($"{Subject.DisplayName} does not seem to fit you, but you could grow into it");
+            source.SendOrangeBarMessage($"{Subject.DisplayName} requires {StatAmountRequired.Value} {StatRequired} to equip.");
 
             return;
         }

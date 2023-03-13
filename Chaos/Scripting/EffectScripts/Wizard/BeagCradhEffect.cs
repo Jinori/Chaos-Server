@@ -11,7 +11,7 @@ public class BeagCradhEffect : EffectBase
     public override byte Icon => 5;
     public override string Name => "beag cradh";
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
+    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(2);
 
     public override void OnApplied()
     {
