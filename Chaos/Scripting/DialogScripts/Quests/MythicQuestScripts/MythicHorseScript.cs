@@ -216,7 +216,7 @@ public class MythicHorseScript : DialogScriptBase
 
             case "horse_lower":
             {
-                Subject.Text = " ";
+                Subject.Text = "I knew i could count on you, I'll see you soon traveler.";
                 source.SendOrangeBarMessage("Kill 15 White Bunnies for the Horse Leader");
                 source.Trackers.Enums.Set(MythicHorse.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
