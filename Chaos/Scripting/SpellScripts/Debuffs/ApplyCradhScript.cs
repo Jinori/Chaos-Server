@@ -27,10 +27,6 @@ public class ApplyCradhScript : BasicSpellScriptBase, ManaCostComponent.IManaCos
         if (!ManaCostComponent.TryApplyManaCost(context, this))
             return;
 
-        {
-            
-        }
-
         if (context.Target.Status.HasFlag(Status.PreventAffliction))
         {
             context.SourceAisling?.Client.SendServerMessage(

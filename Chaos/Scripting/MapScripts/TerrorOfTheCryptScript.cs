@@ -108,6 +108,9 @@ public class TerrorOfTheCryptScript : MapScriptBase
                         SpellDamagePct = groupLevel.Count * 2
                     };
 
+                    monster.StatSheet.AddHp((int)groupLevel.Average() * groupLevel.Count * 500);
+                    monster.StatSheet.AddMp((int)groupLevel.Average() * groupLevel.Count * 500);
+                    
                     if (groupLevel.Average() > 10)
                     {
                         var spell = SpellFactory.Create("beagsradlamh");
