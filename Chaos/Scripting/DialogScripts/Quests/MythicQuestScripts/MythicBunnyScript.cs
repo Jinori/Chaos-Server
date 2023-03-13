@@ -269,7 +269,7 @@ public class MythicBunnyScript : DialogScriptBase
                 source.Trackers.Counters.TryGetValue("grayhorse", out var grayhorse);
                 source.Trackers.Counters.TryGetValue("redhorse", out var redhorse);
 
-                if ((grayhorse < 10) && (redhorse < 10))
+                if ((grayhorse < 10) || (redhorse < 10))
                 {
                     Subject.Text = "You haven't killed enough gray or red horses.";
                     Subject.Type = MenuOrDialogType.Normal;

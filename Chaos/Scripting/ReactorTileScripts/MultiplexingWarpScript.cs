@@ -33,7 +33,6 @@ public class MultiplexingWarpScript : ConfigurableReactorTileScriptBase
                 
                 if (w.MinLevel.HasValue && (w.MinLevel.Value > source.StatSheet.Level))
                 {
-                    aisling.SendOrangeBarMessage($"You must be level {w.MinLevel.Value} to enter.");
                     return false;
                 }
 

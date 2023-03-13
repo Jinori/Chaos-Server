@@ -269,7 +269,7 @@ public class MythicZombieScript : DialogScriptBase
                 source.Trackers.Counters.TryGetValue("gargoyleservant", out var gargoyleservant);
                 source.Trackers.Counters.TryGetValue("gargoyleguard", out var gargoyleguard);
 
-                if ((gargoyleservant < 10) && (gargoyleguard < 10))
+                if ((gargoyleservant < 10) || (gargoyleguard < 10))
                 {
                     Subject.Text = "You haven't killed enough Gargoyle Servants and Guards.";
                     Subject.Type = MenuOrDialogType.Normal;

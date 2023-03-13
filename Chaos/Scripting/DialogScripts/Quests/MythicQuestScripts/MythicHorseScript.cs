@@ -239,7 +239,7 @@ public class MythicHorseScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
                 source.Trackers.Counters.Remove("whitebunny", out _);
-                Subject.Text = "Well done, adventurer! We saw you thundering through the fields with those bunnies in tow. You've lassoed 20 of them, by our count! That should teach them to stay away from our carrots.";
+                Subject.Text = "Well done, adventurer! We saw you thundering through the fields with those bunnies in tow. You've lassoed 15 of them, by our count! That should teach them to stay away from our carrots.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "horse_initial";
 
@@ -261,7 +261,7 @@ public class MythicHorseScript : DialogScriptBase
                 source.Trackers.Counters.TryGetValue("brownbunny", out var brownbunny);
                 source.Trackers.Counters.TryGetValue("purplebunny", out var purplebunny);
 
-                if ((brownbunny < 10) && (purplebunny < 10))
+                if ((brownbunny < 10) || (purplebunny < 10))
                 {
                     Subject.Text = "You haven't killed enough brown and purple bunnies";
                     Subject.Type = MenuOrDialogType.Normal;

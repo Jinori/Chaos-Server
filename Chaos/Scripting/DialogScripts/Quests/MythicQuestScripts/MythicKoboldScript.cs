@@ -268,7 +268,7 @@ public class MythicKoboldScript : DialogScriptBase
                 source.Trackers.Counters.TryGetValue("grimlockguard", out var grimlockguard);
                 source.Trackers.Counters.TryGetValue("grimlockrogue", out var grimlockrogue);
 
-                if ((grimlockguard < 10) && (grimlockrogue < 10))
+                if ((grimlockguard < 10) || (grimlockrogue < 10))
                 {
                     Subject.Text = "You haven't killed enough Grimlock Guards and Grimlock Rogues.";
                     Subject.Type = MenuOrDialogType.Normal;

@@ -266,7 +266,7 @@ public class MythicWolfScript : DialogScriptBase
                 source.Trackers.Counters.TryGetValue("bluefrog", out var bluefrog);
                 source.Trackers.Counters.TryGetValue("redfrog", out var redfrog);
 
-                if ((bluefrog < 10) && (redfrog < 10))
+                if ((bluefrog < 10) || (redfrog < 10))
                 {
                     Subject.Text = "You haven't killed enough Blue and Red Frogs.";
                     Subject.Type = MenuOrDialogType.Normal;
