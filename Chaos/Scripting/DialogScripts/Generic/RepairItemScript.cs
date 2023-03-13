@@ -2,7 +2,6 @@
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Generic;
 
@@ -37,7 +36,7 @@ public class RepairItemScript : DialogScriptBase
         }
         
         if (_repairCost != 0) 
-            Subject.Text = $"I can repair all of your items for {_repairCost}. Would you like to continue?";
+            Subject.Text = $"I can repair all of your items for {(int)_repairCost}. Would you like to continue?";
         else
         {
             Subject.Text = "I cannot repair your items any further.";
@@ -50,7 +49,7 @@ public class RepairItemScript : DialogScriptBase
         if (!source.TryTakeGold((int)_repairCost))
         {
             Subject.Close(source);
-            source.SendOrangeBarMessage($"You do not have enough. You need {_repairCost} gold.");
+            source.SendOrangeBarMessage($"You do not have enough. You need {(int)_repairCost} gold.");
             return;
         }
         
@@ -61,6 +60,7 @@ public class RepairItemScript : DialogScriptBase
                 repair.CurrentDurability = repair.Template.MaxDurability;
             }
         }
+        
         foreach (var repair in source.Inventory)
         {
             if (repair.CurrentDurability != repair.Template.MaxDurability)

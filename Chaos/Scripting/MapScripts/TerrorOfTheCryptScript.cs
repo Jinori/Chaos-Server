@@ -21,6 +21,7 @@ public class TerrorOfTheCryptScript : MapScriptBase
     private readonly IRectangle AnimationShape;
 
     private readonly IMonsterFactory MonsterFactory;
+    private readonly ISpellFactory SpellFactory;
     private readonly List<Point> ReverseOutline;
     private readonly List<Point> ShapeOutline;
     private readonly TimeSpan StartDelay;
@@ -28,10 +29,11 @@ public class TerrorOfTheCryptScript : MapScriptBase
     private DateTime? StartTime;
     private ScriptState State;
 
-    public TerrorOfTheCryptScript(MapInstance subject, IMonsterFactory monsterFactory)
+    public TerrorOfTheCryptScript(MapInstance subject, IMonsterFactory monsterFactory, ISpellFactory spellFactory)
         : base(subject)
     {
         MonsterFactory = monsterFactory;
+        SpellFactory = spellFactory;
         StartDelay = TimeSpan.FromSeconds(5);
         AnimationInterval = new IntervalTimer(TimeSpan.FromMilliseconds(200));
         AnimationShape = new Rectangle(new Point(8, 8), 5, 5);
@@ -100,11 +102,34 @@ public class TerrorOfTheCryptScript : MapScriptBase
                         Str = (int)groupLevel.Average(),
                         Wis = (int)groupLevel.Average(),
                         AtkSpeedPct = groupLevel.Count * 3,
-                        MaximumHp = (groupLevel.Count * 3) * 1000,
-                        MaximumMp = (groupLevel.Count * 3) * 500,
+                        MaximumHp = (int)groupLevel.Average() * groupLevel.Count * 500,
+                        MaximumMp = (int)groupLevel.Average() * groupLevel.Count * 500,
                         SkillDamagePct = groupLevel.Count * 2,
                         SpellDamagePct = groupLevel.Count * 2
                     };
+
+                    if (groupLevel.Average() > 10)
+                    {
+                        var spell = SpellFactory.Create("beagsradlamh");
+                        var cradh = SpellFactory.Create("beagcradh");
+                        monster.Spells.Add(spell);   
+                        monster.Spells.Add(cradh); 
+                    }
+                    if (groupLevel.Average() > 10 && groupLevel.Average() < 24)
+                    {
+                        var spell = SpellFactory.Create("beagsrad");
+                        var cradh = SpellFactory.Create("beagcradh");
+                        monster.Spells.Add(spell);   
+                        monster.Spells.Add(cradh); 
+                    }
+                    if (groupLevel.Average() > 25)
+                    {
+                        var spell = SpellFactory.Create("srad");
+                        var cradh = SpellFactory.Create("beagcradh");
+                        monster.Spells.Add(spell);
+                        monster.Spells.Add(cradh); 
+                    }
+                    
                     monster.StatSheet.AddBonus(attrib);
                     Subject.AddObject(monster, monster);
                     State = ScriptState.Spawned;
