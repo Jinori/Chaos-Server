@@ -28,8 +28,14 @@ public class MultiplexingWarpScript : ConfigurableReactorTileScriptBase
         var warp = Warps.SingleOrDefault(
             w =>
             {
-                if (w.MinLevel.HasValue && (w.MinLevel.Value > source.StatSheet.Level))
+                if (source is not Aisling aisling)
                     return false;
+                
+                if (w.MinLevel.HasValue && (w.MinLevel.Value > source.StatSheet.Level))
+                {
+                    aisling.SendOrangeBarMessage($"You must be level {w.MinLevel.Value} to enter.");
+                    return false;
+                }
 
                 if (w.MaxLevel.HasValue && (w.MaxLevel.Value < source.StatSheet.Level))
                     return false;

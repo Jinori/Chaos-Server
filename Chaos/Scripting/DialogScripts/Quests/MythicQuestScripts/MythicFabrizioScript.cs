@@ -74,10 +74,19 @@ public class MythicFabrizioScript : DialogScriptBase
                 if (main != MythicQuestMain.CompletedAll)
                 {
                     Subject.Text =
-                        "Welcome back, adventurer. I sense that you haven't made enough alliances yet.";
-                    source.SendOrangeBarMessage("Assist five leaders to the fullest.");
-                    Subject.Type = MenuOrDialogType.Normal;
+                        "Have you made enough alliances yet? These leaders may have more for you to do. Make sure you complete all the quest they have to offer then come back and see me.";
                     
+                    var option = new DialogOption
+                    {
+                        DialogKey = "fabrizio_repeat1",
+                        OptionText = "Wait, what did you say earlier?"
+                    };
+
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+
+                    source.SendOrangeBarMessage("Assist five leaders to the fullest.");
+
                     return;
                 }
 

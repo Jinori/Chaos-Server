@@ -47,7 +47,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 if (hasGrimlock && (grimlock == MythicGrimlock.EnemyAllied))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "You have allied yourself with our enemies and that fills me with rabbit-like fear. I cannot trust you to hop on our side again. Please leave our warren.";
+                    Subject.Text = "Your actions have brought shame upon yourself, and you will be remembered as a traitor to my people. May the spirits have mercy on your soul, for we will not. Now go, and do not let us catch you lurking in our tunnels again.";
                     Subject.NextDialogKey = "Close";
                 }
                 
@@ -103,7 +103,7 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 if (grimlock == MythicGrimlock.Higher)
                 {
-                    Subject.Text = "Greetings, adventurer. I trust that your mission to defeat the 10 Kobold Soldiers and 10 Kobold Warriors was successful. Your efforts in this battle were crucial to our cause, and we are grateful for your bravery and skill.";
+                    Subject.Text = "Welcome back. I trust that your mission to defeat the 10 Kobold Soldiers and 10 Kobold Warriors was successful. Your efforts in this battle were crucial to our cause, and we are grateful for your bravery and skill.";
 
                     var option = new DialogOption
                     {
@@ -121,12 +121,12 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 if (grimlock == MythicGrimlock.HigherComplete)
                 {
-                    Subject.Text = "I have a new task that I would ask of you. It is said that the Kobolds possess a strange potion with unique properties... We aren't too sure what it is used for, but we must have enough to experiment with. They will not share willingly, it must be taken by force. Could you collect 25 of them for me?";
+                    Subject.Text = "There is another task I have for you Aisling. This is a bit gruesome however it must be done. We didn't start the war over this however in the midst of the war, we discovered something very special about the Kobolds.";
                     
                     var option = new DialogOption
                     {
-                        DialogKey = "grimlock_item",
-                        OptionText = "I will for you."
+                        DialogKey = "grimlock_itemdescription1",
+                        OptionText = "What about them?"
                     };
 
                     if (!Subject.HasOption(option))
@@ -136,12 +136,12 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 if (grimlock == MythicGrimlock.Item)
                 {
-                    Subject.Text = "Hare-oic Aisling! Did you collect all the horse hair?";
+                    Subject.Text = "Aisling, did you get those Kobold Tails? We are so excited for the contribution to my people.";
 
                     var option = new DialogOption
                     {
                         DialogKey = "grimlock_item2",
-                        OptionText = "I have them here."
+                        OptionText = "Take them quickly."
                     };
 
 
@@ -154,7 +154,7 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 if (grimlock == MythicGrimlock.ItemComplete)
                 {
-                    Subject.Text = "You have proven yourself to be a valuable ally to our warren, dear traveler. You have saved our crops, defended our burrows, and defeated many of our enemies. You have shown us that you share our values of kindness and bravery, and for that, we are very grateful. We would be honored if you would consider allying with us, and becoming a part of our family. \n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
+                    Subject.Text = "I must ask you, adventurer: Would you consider allying with us in our fight against the Kobolds? We are always in need of strong and skilled warriors like yourself to aid us in our struggles.\n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
 
                     var option = new DialogOption
                     {
@@ -181,11 +181,11 @@ public class MythicGrimlockScript : DialogScriptBase
                 if (grimlock == MythicGrimlock.Allied)
                 {
                     Subject.Text =
-                        "Warren Wanderer, we have another urgent request for you. We have learned that the leader of the horse herd that has been causing us so much trouble is a powerful and dangerous horse named Apple Jack. We need you to go and defeat Apple Jack three times to ensure that our fields remain safe and secure.";
+                        "Now that we are allied, I can tell you this. Our scouts have reported that a particularly vicious Kobold leader by the name of Shank has been causing us no end of trouble. He has been raiding our supply caches and attacking our patrols, and we believe that he is the key to the Kobolds' recent resurgence.";
                     var option = new DialogOption
                     {
                         DialogKey = "grimlock_start5",
-                        OptionText = "Anything for you."
+                        OptionText = "That monster."
                     };
 
                     if (!Subject.HasOption(option))
@@ -203,7 +203,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     var option = new DialogOption
                     {
                         DialogKey = "grimlock_boss2",
-                        OptionText = " "
+                        OptionText = "Yes, Shank is gone."
                     };
 
                     if (!Subject.HasOption(option))
@@ -215,7 +215,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 if (grimlock == MythicGrimlock.BossDefeated)
                 {
 
-                    Subject.Text = " ";
+                    Subject.Text = "My people will never forget your heroic deeds, I must not ask you another favor for now. You have done more than enough for my people, thank you again.";
                 }
 
                 break;
@@ -256,8 +256,8 @@ public class MythicGrimlockScript : DialogScriptBase
 
             case "grimlock_higher":
             {
-                Subject.Text = "---Clear 10 Kobold Workers and 10 Kobold Soldiers---";
-                source.SendOrangeBarMessage("Kill 10 Kobold Workers and 10 Kobold Soldiers.");
+                Subject.Text = "Thank you Aisling, I take it I will hear from you soon.";
+                source.SendOrangeBarMessage("Kill 10 Kobold Soldiers and 10 Kobold Warriors.");
                 source.Trackers.Enums.Set(MythicGrimlock.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
 
@@ -292,7 +292,7 @@ public class MythicGrimlockScript : DialogScriptBase
 
             case "grimlock_item":
             {
-                Subject.Text = " ";
+                Subject.Text = "I am counting on you to bring back those Kobold tails. Your success will send a strong message to our enemies that we will not tolerate their attacks on our land. We also really need those tails.";
                 source.SendOrangeBarMessage("Collect 25 Kobold Tails for the Grimlock Queen");
                 source.Trackers.Enums.Set(MythicGrimlock.Item);
                 Subject.Type = MenuOrDialogType.Normal;
@@ -305,7 +305,7 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 if (!source.Inventory.RemoveQuantity("Kobold Tail", 25))
                 {
-                    Subject.Text = "Whatever it takes, we need you to gather more horse hair so that we can build warm and snug beds for all of us. We believe in you, Warren Wanderer. We know you can get the job done.";
+                    Subject.Text = "This is not enough! My people will blow through that many very quickly, please try harder. We are counting on you.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -314,7 +314,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Trackers.Enums.Set(MythicGrimlock.ItemComplete);
-                Subject.Text = " ";
+                Subject.Text = "This is so much! We will be satisfied for weeks! Thank you so much. We use the tails to heal our wounds and they really calm my people down.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "grimlock_initial";
 
@@ -327,7 +327,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     && (hasKobold == kobold is MythicKobold.Allied or MythicKobold.BossStarted or MythicKobold.BossDefeated))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = " ";
+                    Subject.Text = "I am outraged to discover that you have allied yourself with our sworn enemies, the Kobolds! How dare you betray us in such a manner! I trusted you to be an honorable and loyal ally, but you have proven yourself to be nothing more than a treacherous liar. I have no choice but to order you to leave our territory at once. You are no longer welcome among our people, and we will not hesitate to defend ourselves against you should you attempt to harm us in any way.";
                     source.Trackers.Enums.Set(MythicGrimlock.EnemyAllied);
 
                     return;
@@ -336,7 +336,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Trackers.Enums.Set(MythicGrimlock.Allied);
                 source.SendOrangeBarMessage("You are now allied with the Grimlocks!");
-                Subject.Text = $" ";
+                Subject.Text = $"I must say that I am impressed with your commitment to our cause. Your dedication to our alliance fills me with pride, and I have no doubt that you will be a valuable addition to our underground family.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "grimlock_initial";
 
@@ -346,7 +346,7 @@ public class MythicGrimlockScript : DialogScriptBase
 
             case "grimlock_boss":
             {
-                Subject.Text = " ";
+                Subject.Text = "Oh, Aisling. Remember you must defeat him 3 times! Thank you again for handling this, I don't know what we would do without you.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
                 source.Trackers.Enums.Set(MythicGrimlock.BossStarted);
@@ -359,7 +359,7 @@ public class MythicGrimlockScript : DialogScriptBase
             {
                 if (!source.Trackers.Counters.TryGetValue("Shank", out var shank) || (shank < 3))
                 {
-                    Subject.Text = " ";
+                    Subject.Text = "Shank is still out there? This is not good. Please take care of him as soon as possible, every second he is on the move, my people are in danger.";
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.NextDialogKey = "Close";
                     source.SendOrangeBarMessage("You haven't completely defeated Shank.");
@@ -373,7 +373,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     TargetAnimation = 21
                 };
                 
-                Subject.Text = " ";
+                Subject.Text = "Shank's Defeated!? That's such great news. I will pass along the word to my scouts, they will rest easy. This should really help us in our conflict, without Shank, the kobold's will fall. Thank you Adventurer, the Grimlock people are in your debt. Come back anytime.";
                 source.Animate(ani2, source.Id);
                 ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");

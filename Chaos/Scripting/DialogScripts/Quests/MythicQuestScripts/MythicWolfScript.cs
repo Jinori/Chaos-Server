@@ -47,7 +47,7 @@ public class MythicWolfScript : DialogScriptBase
                 if (hasWolf && (wolf == MythicWolf.EnemyAllied))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "You have allied yourself with the frogs. You can never be one with the pack...";
+                    Subject.Text = "You have allied yourself with the frogs. You can never be one with the pack. Get lost.";
                     Subject.NextDialogKey = "Close";
                 }
                 
