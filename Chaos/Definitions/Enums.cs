@@ -343,3 +343,14 @@ public enum MythicGrimlock
     BossStarted = 9,
     BossDefeated = 10,
 }
+
+public enum SickChildStage
+{
+    None = 0,
+    WhiteRose = 1,
+    WhiteRose2 = 2,
+    GoldRose = 3,
+    BlackRose = 4,
+    SickChildComplete = 5,
+    SickChildKilled = 6,
+}
