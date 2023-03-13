@@ -85,8 +85,6 @@ public class ClueScript : ReactorTileScriptBase
             {
                 if (stage == ManorNecklaceStage.AcceptedQuest)
                 {
-                    var necklace = _itemFactory.Create("zulerasnecklace");
-
                     var monster = _monsterFactory.Create("phasedGhost", aisling.MapInstance, new Point(3, 6));
                     monster.AggroRange = 10;
                     monster.Experience = 2000;
@@ -110,15 +108,21 @@ public class ClueScript : ReactorTileScriptBase
                     {
                         foreach (var member in group)
                         {
-                            member.TryGiveItem(necklace);
-                            member.Trackers.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
-                            member.Client.SendServerMessage(
-                                ServerMessageType.OrangeBar1,
-                                $"You've found Zulera's necklace but have disturbed some ghosts.");
+                            var hasNeck = member.Trackers.Enums.TryGetValue(out ManorNecklaceStage neckStage);
+                            if (neckStage == ManorNecklaceStage.AcceptedQuest)
+                            {
+                                var necklace = _itemFactory.Create("zulerasnecklace");
+                                member.TryGiveItem(necklace);
+                                member.Trackers.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
+                                member.Client.SendServerMessage(
+                                    ServerMessageType.OrangeBar1,
+                                    $"You've found Zulera's necklace but have disturbed some ghosts.");   
+                            }
                         }
                     }
                     else
                     {
+                        var necklace = _itemFactory.Create("zulerasnecklace");
                         aisling.TryGiveItem(necklace);
                         aisling.Trackers.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
                         aisling.Client.SendServerMessage(
