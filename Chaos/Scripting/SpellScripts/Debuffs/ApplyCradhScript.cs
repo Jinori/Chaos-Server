@@ -43,8 +43,6 @@ public class ApplyCradhScript : BasicSpellScriptBase, ManaCostComponent.IManaCos
             var effect = EffectFactory.Create(EffectKey);
             target.Effects.Apply(context.Source, effect);
         }
-
-        context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}");
     }
 
     #region ScriptVars

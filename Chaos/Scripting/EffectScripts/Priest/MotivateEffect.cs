@@ -21,8 +21,7 @@ public class MotivateEffect : EffectBase
         {
             AtkSpeedPct = 40
         };
-
-        AislingSubject?.StatSheet.SubtractMp(750);
+        
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed increased.");
@@ -46,7 +45,7 @@ public class MotivateEffect : EffectBase
     {
         if (target.Effects.Contains("motivate"))
         {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage has already been applied.");
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your target is already motivated.");
 
             return false;
         }

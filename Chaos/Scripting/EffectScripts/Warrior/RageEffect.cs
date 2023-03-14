@@ -27,7 +27,6 @@ public class RageEffect : EffectBase
 
         _damageSaved = 10 + damFormula;
         
-        AislingSubject?.StatSheet.SubtractMp(50);
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bA violent rage builds up inside you.");

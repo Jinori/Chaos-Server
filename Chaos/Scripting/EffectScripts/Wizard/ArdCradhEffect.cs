@@ -1,18 +1,35 @@
-﻿using Chaos.Common.Definitions;
+using Chaos.Common.Definitions;
 using Chaos.Data;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Wizard;
 
-public class ArdCradhEffect : EffectBase
+public class ArdCradhEffect : NonOverwritableEffectBase
 {
+    /// <inheritdoc />
     public override byte Icon => 84;
+    /// <inheritdoc />
     public override string Name => "ard cradh";
-
+    /// <inheritdoc />
+    protected override Animation? Animation { get; } = new()
+    {
+        TargetAnimation = 43,
+        AnimationSpeed = 100
+    };
+    /// <inheritdoc />
+    protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
+    {
+        "ard cradh",
+        "mor cradh",
+        "cradh",
+        "beag cradh"
+    };
+    /// <inheritdoc />
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(3);
-
+    /// <inheritdoc />
+    protected override byte? Sound => 27;
+    public override void OnDispelled() => OnTerminated();
+    
     public override void OnApplied()
     {
         base.OnApplied();
@@ -27,9 +44,6 @@ public class ArdCradhEffect : EffectBase
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've been cursed by cradh! AC and MR lowered!");
     }
-
-    public override void OnDispelled() => OnTerminated();
-
     public override void OnTerminated()
     {
         var attributes = new Attributes
@@ -41,20 +55,5 @@ public class ArdCradhEffect : EffectBase
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Ard Cradh curse has been lifted.");
-    }
-
-    public override bool ShouldApply(Creature source, Creature target)
-    {
-        if (target.Effects.Contains("ard cradh")
-            || target.Effects.Contains("mor cradh")
-            || target.Effects.Contains("cradh")
-            || target.Effects.Contains("beag cradh"))
-        {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Another curse has already been applied.");
-
-            return false;
-        }
-
-        return true;
     }
 }

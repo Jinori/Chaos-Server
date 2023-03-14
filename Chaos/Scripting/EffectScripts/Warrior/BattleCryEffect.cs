@@ -21,8 +21,6 @@ public class BattleCryEffect : EffectBase
         if (!Subject.Status.HasFlag(Status.BattleCry))
             Subject.Status = Status.BattleCry;
 
-        AislingSubject?.StatSheet.SubtractMp(100);
-
         var attributes = new Attributes
         {
             AtkSpeedPct = 5

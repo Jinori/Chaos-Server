@@ -21,8 +21,7 @@ public class BeannaichEffect : EffectBase
         {
             Dmg = 5
         };
-
-        AislingSubject?.StatSheet.SubtractMp(120);
+        
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage increased.");

@@ -26,8 +26,7 @@ public class MistEffect : EffectBase
         {
             MagicResistance = 20
         };
-
-        Subject?.StatSheet.SubtractMp(100);
+        
         Subject?.StatSheet.SubtractBonus(attributesToSubtract);
         Subject?.StatSheet.AddBonus(attributesToAdd);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);

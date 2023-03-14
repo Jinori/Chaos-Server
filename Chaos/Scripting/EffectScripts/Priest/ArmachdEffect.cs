@@ -21,8 +21,7 @@ public class ArmachdEffect : EffectBase
         {
             Ac = 10
         };
-
-        AislingSubject?.StatSheet.SubtractMp(100);
+        
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor increased.");

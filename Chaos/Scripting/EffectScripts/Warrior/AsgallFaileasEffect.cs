@@ -19,8 +19,7 @@ public class AsgallFaileasEffect : EffectBase
 
         if (!Subject.Status.HasFlag(Status.AsgallFaileas))
             Subject.Status = Status.AsgallFaileas;
-
-        AislingSubject?.StatSheet.SubtractMp(310);
+        
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your stance is more defensive.");
     }
