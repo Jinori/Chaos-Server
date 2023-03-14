@@ -113,14 +113,14 @@ public class TerrorOfTheCryptScript : MapScriptBase
                     
                     if (groupLevel.Average() > 10)
                     {
-                        var spell = SpellFactory.Create("beagsradlamh");
+                        var spell = SpellFactory.Create("beagsrad");
                         var cradh = SpellFactory.Create("beagcradh");
                         monster.Spells.Add(spell);   
                         monster.Spells.Add(cradh); 
                     }
                     if (groupLevel.Average() > 10 && groupLevel.Average() < 24)
                     {
-                        var spell = SpellFactory.Create("beagsrad");
+                        var spell = SpellFactory.Create("beagsradlamh");
                         var cradh = SpellFactory.Create("beagcradh");
                         monster.Spells.Add(spell);   
                         monster.Spells.Add(cradh); 

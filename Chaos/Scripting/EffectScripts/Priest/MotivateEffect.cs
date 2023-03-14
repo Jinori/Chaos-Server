@@ -1,17 +1,26 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Data;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
-public class MotivateEffect : EffectBase
+public class MotivateEffect : NonOverwritableEffectBase
 {
     public override byte Icon => 13;
     public override string Name => "Motivate";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(2);
+
+    protected override Animation? Animation { get; } = new()
+    {
+        TargetAnimation = 127,
+        AnimationSpeed = 100
+    };
+    protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
+    {
+        "Motivate",
+    };
+    protected override byte? Sound => 115;
 
     public override void OnApplied()
     {
@@ -39,17 +48,5 @@ public class MotivateEffect : EffectBase
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed has returned to normal.");
-    }
-
-    public override bool ShouldApply(Creature source, Creature target)
-    {
-        if (target.Effects.Contains("motivate"))
-        {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your target is already motivated.");
-
-            return false;
-        }
-
-        return true;
     }
 }

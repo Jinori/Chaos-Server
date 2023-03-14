@@ -6,12 +6,24 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
-public class BeannaichEffect : EffectBase
+public class BeannaichEffect : NonOverwritableEffectBase
 {
     public override byte Icon => 16;
     public override string Name => "beannaich";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
+
+    protected override Animation? Animation { get; } = new()
+    {
+        TargetAnimation = 125,
+        AnimationSpeed = 100
+    };
+    protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
+    {
+        "beannaich",
+        "mor beannaich"
+    };
+    protected override byte? Sound => 140;
 
     public override void OnApplied()
     {
@@ -39,17 +51,5 @@ public class BeannaichEffect : EffectBase
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage has returned to normal.");
-    }
-
-    public override bool ShouldApply(Creature source, Creature target)
-    {
-        if (target.Effects.Contains("beannaich"))
-        {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage has already been applied.");
-
-            return false;
-        }
-
-        return true;
     }
 }
