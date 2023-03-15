@@ -34,6 +34,7 @@ public class MythicWolfScript : DialogScriptBase
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
+
         var ani = new Animation
         {
             AnimationSpeed = 100,
@@ -50,12 +51,13 @@ public class MythicWolfScript : DialogScriptBase
                     Subject.Text = "You have allied yourself with the frogs. You can never be one with the pack. Get lost.";
                     Subject.NextDialogKey = "Close";
                 }
-                
+
                 if (hasMain && !hasWolf)
 
                 {
-                    Subject.Text = "The wolf leader steps forward and greets you with a low growl, its piercing eyes fixed on you. Hello aisling, what do you want?";
-                    
+                    Subject.Text =
+                        "The wolf leader steps forward and greets you with a low growl, its piercing eyes fixed on you. Hello aisling, what do you want?";
+
                     var option = new DialogOption
                     {
                         DialogKey = "wolf_start1",
@@ -84,10 +86,12 @@ public class MythicWolfScript : DialogScriptBase
                     return;
 
                 }
+
                 if (wolf == MythicWolf.LowerComplete)
                 {
-                    Subject.Text = "Good job taking out the green frogs, however that was just the beginning. Deeper in the swamp you can find red and blue frogs. They are even more poisonous then the green ones. Are you willing to help?";
-                
+                    Subject.Text =
+                        "Good job taking out the green frogs, however that was just the beginning. Deeper in the swamp you can find red and blue frogs. They are even more poisonous then the green ones. Are you willing to help?";
+
                     var option = new DialogOption
                     {
                         DialogKey = "wolf_start3",
@@ -120,8 +124,9 @@ public class MythicWolfScript : DialogScriptBase
 
                 if (wolf == MythicWolf.HigherComplete)
                 {
-                    Subject.Text = "You seem to be unaffected by the frogs poison. How could this be? Nevermind for now... We could use your help once again. Since you seem to be immune to the frogs, could you bring us back 25 frog meat? Our food supply has been running low.";
-                    
+                    Subject.Text =
+                        "You seem to be unaffected by the frogs poison. How could this be? Nevermind for now... We could use your help once again. Since you seem to be immune to the frogs, could you bring us back 25 frog meat? Our food supply has been running low.";
+
                     var option = new DialogOption
                     {
                         DialogKey = "wolf_item",
@@ -152,7 +157,8 @@ public class MythicWolfScript : DialogScriptBase
 
                 if (wolf == MythicWolf.ItemComplete)
                 {
-                    Subject.Text = "You have earned our respect fearless one. Would you consider allying with us? You would fit in well with our wolf pack. *The Wolf Pack Leader lets of a fierce howl you can hear echo in the distance*\n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
+                    Subject.Text =
+                        "You have earned our respect fearless one. Would you consider allying with us? You would fit in well with our wolf pack. *The Wolf Pack Leader lets of a fierce howl you can hear echo in the distance*\n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
 
                     var option = new DialogOption
                     {
@@ -180,6 +186,7 @@ public class MythicWolfScript : DialogScriptBase
                 {
                     Subject.Text =
                         "Welcome back fearless one! Thank you again for bringing honor to our wolf pack!";
+
                     var option = new DialogOption
                     {
                         DialogKey = "wolf_start5",
@@ -241,8 +248,15 @@ public class MythicWolfScript : DialogScriptBase
 
                 source.Trackers.Enums.Set(MythicWolf.LowerComplete);
                 source.Animate(ani, source.Id);
-                ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 10000000);
+                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                }
                 source.Trackers.Counters.Remove("mythicfrog", out _);
                 Subject.Text = "Ha! You seem brave. Please come back when you can, I have another task for you.";
                 Subject.Type = MenuOrDialogType.Normal;
@@ -253,7 +267,9 @@ public class MythicWolfScript : DialogScriptBase
 
             case "wolf_higher":
             {
-                Subject.Text = "You seem to have no fear. You are either very brave or just plain out stupid. Either way you have earned my respect. Please come back to me once the task is complete.";
+                Subject.Text =
+                    "You seem to have no fear. You are either very brave or just plain out stupid. Either way you have earned my respect. Please come back to me once the task is complete.";
+
                 source.SendOrangeBarMessage("Kill 10 Blue and 10 Red Frogs for Wolf Pack Leader.");
                 source.Trackers.Enums.Set(MythicWolf.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
@@ -274,13 +290,22 @@ public class MythicWolfScript : DialogScriptBase
                     return;
                 }
 
-                Subject.Text = "Thanks for the help once again. You have earned our respect. I have another task for you when you are ready.";
+                Subject.Text =
+                    "Thanks for the help once again. You have earned our respect. I have another task for you when you are ready.";
+
                 Subject.NextDialogKey = "wolf_initial";
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
-                ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 10000000);
+                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                }
                 source.Trackers.Enums.Set(MythicWolf.HigherComplete);
-                source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
                 source.Trackers.Counters.Remove("redfrog", out _);
                 source.Trackers.Counters.Remove("bluefrog", out _);
 
@@ -316,11 +341,22 @@ public class MythicWolfScript : DialogScriptBase
 
                     return;
                 }
-                
+
                 source.Animate(ani, source.Id);
-                ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 10000000);
+                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                }
                 source.Trackers.Enums.Set(MythicWolf.ItemComplete);
-                Subject.Text = "Thank you. I was starting to get a headache from all the howling. This should be enough to feed us for awhile. Please come back to see me when you can. ";
+
+                Subject.Text =
+                    "Thank you. I was starting to get a headache from all the howling. This should be enough to feed us for awhile. Please come back to see me when you can. ";
+
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "wolf_initial";
 
@@ -378,11 +414,20 @@ public class MythicWolfScript : DialogScriptBase
                     AnimationSpeed = 100,
                     TargetAnimation = 21
                 };
-                
+
                 Subject.Text = "What a victory! Frogger and his army are no more. Thank you for all the help fearless one.";
                 source.Animate(ani2, source.Id);
-                ExperienceDistributionScript.GiveExp(source, fiftyPercent);
-                source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
+
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, fiftyPercent);
+                    source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 25000000);
+                    source.SendOrangeBarMessage($"You received 25000000 experience!");
+                }
+
                 source.Trackers.Counters.Remove("frogger", out _);
                 source.Trackers.Enums.Set(MythicWolf.BossDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);

@@ -34,6 +34,7 @@ public class MythicMantisScript : DialogScriptBase
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
+
         var ani = new Animation
         {
             AnimationSpeed = 100,
@@ -50,12 +51,12 @@ public class MythicMantisScript : DialogScriptBase
                     Subject.Text = " ";
                     Subject.NextDialogKey = "Close";
                 }
-                
+
                 if (hasMain && !hasMantis)
 
                 {
                     Subject.Text = " ";
-                    
+
                     var option = new DialogOption
                     {
                         DialogKey = "mantis_start1",
@@ -70,7 +71,8 @@ public class MythicMantisScript : DialogScriptBase
 
                 if (mantis == MythicMantis.Lower)
                 {
-                    Subject.Text = "Well, well, well, look who's back! It's our favorite rabbit-loving adventurer! Have you come to tell us that you've completed the task we gave you?";
+                    Subject.Text =
+                        "Well, well, well, look who's back! It's our favorite rabbit-loving adventurer! Have you come to tell us that you've completed the task we gave you?";
 
                     var option = new DialogOption
                     {
@@ -84,16 +86,18 @@ public class MythicMantisScript : DialogScriptBase
                     return;
 
                 }
+
                 if (mantis == MythicMantis.LowerComplete)
                 {
-                    Subject.Text = "Warren Wanderer, we are in need of your assistance once again. It seems that another group of horses has invaded our territory and is causing chaos and destruction. We need your help to remove them from our fields, just as you did with the previous group.";
-                
+                    Subject.Text =
+                        "Warren Wanderer, we are in need of your assistance once again. It seems that another group of horses has invaded our territory and is causing chaos and destruction. We need your help to remove them from our fields, just as you did with the previous group.";
+
                     var option = new DialogOption
                     {
                         DialogKey = "mantis_start3",
                         OptionText = "No problem Big Bunny."
                     };
-                    
+
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
 
@@ -121,7 +125,7 @@ public class MythicMantisScript : DialogScriptBase
                 if (mantis == MythicMantis.HigherComplete)
                 {
                     Subject.Text = "Want to collect some horse hair for me?";
-                    
+
                     var option = new DialogOption
                     {
                         DialogKey = "mantis_item",
@@ -152,7 +156,8 @@ public class MythicMantisScript : DialogScriptBase
 
                 if (mantis == MythicMantis.ItemComplete)
                 {
-                    Subject.Text = "You have proven yourself to be a valuable ally to our warren, dear traveler. You have saved our crops, defended our burrows, and defeated many of our enemies. You have shown us that you share our values of kindness and bravery, and for that, we are very grateful. We would be honored if you would consider allying with us, and becoming a part of our family. \n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
+                    Subject.Text =
+                        "You have proven yourself to be a valuable ally to our warren, dear traveler. You have saved our crops, defended our burrows, and defeated many of our enemies. You have shown us that you share our values of kindness and bravery, and for that, we are very grateful. We would be honored if you would consider allying with us, and becoming a part of our family. \n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
 
                     var option = new DialogOption
                     {
@@ -180,6 +185,7 @@ public class MythicMantisScript : DialogScriptBase
                 {
                     Subject.Text =
                         "Warren Wanderer, we have another urgent request for you. We have learned that the leader of the horse herd that has been causing us so much trouble is a powerful and dangerous horse named Apple Jack. We need you to go and defeat Apple Jack three times to ensure that our fields remain safe and secure.";
+
                     var option = new DialogOption
                     {
                         DialogKey = "mantis_start5",
@@ -204,7 +210,7 @@ public class MythicMantisScript : DialogScriptBase
                     };
 
                     if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);    
+                        Subject.Options.Add(option);
 
                     return;
                 }
@@ -241,8 +247,17 @@ public class MythicMantisScript : DialogScriptBase
 
                 source.Trackers.Enums.Set(MythicMantis.LowerComplete);
                 source.Animate(ani, source.Id);
-                ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
+
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 10000000);
+                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                }
+
                 source.Trackers.Counters.Remove("mythicbee", out _);
                 Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
@@ -276,9 +291,18 @@ public class MythicMantisScript : DialogScriptBase
                 Subject.NextDialogKey = "mantis_initial";
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
-                ExperienceDistributionScript.GiveExp(source, twentyPercent);
+
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 10000000);
+                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                }
+
                 source.Trackers.Enums.Set(MythicMantis.HigherComplete);
-                source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
                 source.Trackers.Counters.Remove("greenbee", out _);
 
                 break;
@@ -304,9 +328,19 @@ public class MythicMantisScript : DialogScriptBase
 
                     return;
                 }
-                
+
                 source.Animate(ani, source.Id);
-                ExperienceDistributionScript.GiveExp(source, twentyPercent);
+
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 10000000);
+                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                }
+
                 source.Trackers.Enums.Set(MythicMantis.ItemComplete);
                 Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
@@ -366,10 +400,20 @@ public class MythicMantisScript : DialogScriptBase
                     AnimationSpeed = 100,
                     TargetAnimation = 21
                 };
-                
+
                 Subject.Text = " ";
                 source.Animate(ani2, source.Id);
-                ExperienceDistributionScript.GiveExp(source, fiftyPercent);
+
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, fiftyPercent);
+                    source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 25000000);
+                    source.SendOrangeBarMessage($"You received 25000000 experience!");
+                }
+
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
                 source.Trackers.Counters.Remove("carolina", out _);
                 source.Trackers.Enums.Set(MythicMantis.BossDefeated);
