@@ -19,7 +19,6 @@ public class StatBuyingScript : DialogScriptBase
         if (optionIndex is null)
             return;
         
-
         if (source.UserStatSheet.Level < 99)
         {
             source.SendOrangeBarMessage("You cannot buy stats until you are of the 99th level.");
@@ -146,7 +145,14 @@ public class StatBuyingScript : DialogScriptBase
             case BaseClass.Warrior:
             {
                var formula = (source.StatSheet.MaximumHp - 4000) / 150;
-                Subject.Text = $"Looks like you can get {formula} stats. Which one did you want?";
+               if (formula > 0)
+                   Subject.Text = $"Looks like you can get {formula} stats. Which one did you want?";
+               else
+               {
+                   Subject.Text = "You cannot buy any stats at this time, with your current vitality.";
+                   Subject.Type = MenuOrDialogType.Normal;
+                   Subject.Options.Clear();
+               }
             }
 
                 break;
@@ -154,7 +160,14 @@ public class StatBuyingScript : DialogScriptBase
             case BaseClass.Wizard:
             {
                 var formula = (source.StatSheet.MaximumHp - 3750) / 150;
-                Subject.Text = $"Looks like you can get {formula} stats. Which one did you want?";
+                if (formula > 0)
+                    Subject.Text = $"Looks like you can get {formula} stats. Which one did you want?";
+                else
+                {
+                    Subject.Text = "You cannot buy any stats at this time, with your current vitality.";
+                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Options.Clear();
+                }
             }
 
                 break;
@@ -162,7 +175,14 @@ public class StatBuyingScript : DialogScriptBase
             case BaseClass.Priest:
             {
                 var formula = (source.StatSheet.MaximumHp - 3500) / 150;
-                Subject.Text = $"Looks like you can get {formula} stats. Which one did you want?";
+                if (formula > 0)
+                    Subject.Text = $"Looks like you can get {formula} stats. Which one did you want?";
+                else
+                {
+                    Subject.Text = "You cannot buy any stats at this time, with your current vitality.";
+                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Options.Clear();
+                }
             }
 
                 break;
@@ -170,7 +190,14 @@ public class StatBuyingScript : DialogScriptBase
             case BaseClass.Monk:
             {
                 var formula = (source.StatSheet.MaximumHp - 6000) / 150;
-                Subject.Text = $"Looks like you can get {formula} stats. Which one did you want?";
+                if (formula > 0)
+                    Subject.Text = $"Looks like you can get {formula} stats. Which one did you want?";
+                else
+                {
+                    Subject.Text = "You cannot buy any stats at this time, with your current vitality.";
+                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Options.Clear();
+                }
             }
 
                 break;
@@ -178,7 +205,14 @@ public class StatBuyingScript : DialogScriptBase
             case BaseClass.Rogue:
             {
                 var formula = (source.StatSheet.MaximumHp - 4250) / 150;
-                Subject.Text = $"Looks like you can get {formula} stats. Which one did you want?";
+                if (formula > 0)
+                    Subject.Text = $"Looks like you can get {formula} stats. Which one did you want?";
+                else
+                {
+                    Subject.Text = "You cannot buy any stats at this time, with your current vitality.";
+                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Options.Clear();
+                }
             }
 
                 break;

@@ -16,6 +16,7 @@ public class ManaBasedDamageScript : BasicSpellScriptBase,
 {
     protected ManaBasedDamageComponent ManaBasedDamageComponent { get; }
     protected ManaCostComponent ManaCostComponent { get; }
+    protected MagicResistanceComponent MagicResistComponent { get; }
 
     public ManaBasedDamageScript(Spell subject)
         : base(subject)
@@ -23,6 +24,7 @@ public class ManaBasedDamageScript : BasicSpellScriptBase,
         ApplyDamageScript = DefaultApplyDamageScript.Create();
         ManaBasedDamageComponent = new ManaBasedDamageComponent();
         ManaCostComponent = new ManaCostComponent();
+        MagicResistComponent = new MagicResistanceComponent();
         SourceScript = this;
     }
 
@@ -32,6 +34,9 @@ public class ManaBasedDamageScript : BasicSpellScriptBase,
         if (!ManaCostComponent.TryApplyManaCost(context, this))
             return;
 
+        if (!MagicResistComponent.TryCastSpell(context, SourceScript))
+            return;
+        
         var targets = AbilityComponent.Activate<Creature>(context, this);
         context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}");
         ManaBasedDamageComponent.ApplyDamage(context, targets.TargetEntities, this);

@@ -100,6 +100,7 @@ namespace Chaos.Serialization;
 [JsonSerializable(typeof(Dictionary<string, TimedEventCollection.Event>))]
 [JsonSerializable(typeof(HashSet<string>))]
 //enums
+[JsonSerializable(typeof(Element))]
 [JsonSerializable(typeof(Stat))]
 [JsonSerializable(typeof(BodyAnimation))]
 [JsonSerializable(typeof(AoeShape))]

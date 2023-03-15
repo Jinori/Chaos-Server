@@ -17,6 +17,7 @@ public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageCompone
 {
     protected DamageComponent DamageComponent { get; }
     protected ManaCostComponent ManaCostComponent { get; }
+    protected MagicResistanceComponent MagicResistComponent { get; }
 
     /// <inheritdoc />
     public DamageScript(Spell subject)
@@ -25,6 +26,7 @@ public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageCompone
         ApplyDamageScript = DefaultApplyDamageScript.Create();
         DamageComponent = new DamageComponent();
         ManaCostComponent = new ManaCostComponent();
+        MagicResistComponent = new MagicResistanceComponent();
         SourceScript = this;
     }
 
@@ -32,6 +34,9 @@ public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageCompone
     public override void OnUse(SpellContext context)
     {
         if (!ManaCostComponent.TryApplyManaCost(context, this))
+            return;
+        
+        if (!MagicResistComponent.TryCastSpell(context, SourceScript))
             return;
         
         var targets = AbilityComponent.Activate<Creature>(context, this);
