@@ -37,6 +37,7 @@ public class MythicZombieScript : DialogScriptBase
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
+
         var ani = new Animation
         {
             AnimationSpeed = 100,
@@ -50,15 +51,19 @@ public class MythicZombieScript : DialogScriptBase
                 if (hasZombie && (zombie == MythicZombie.EnemyAllied))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "You have allied yourself with our enemies and that fills me with rabbit-like fear. I cannot trust you to hop on our side again. Please leave our warren.";
+
+                    Subject.Text =
+                        "You have allied yourself with our enemies and that fills me with rabbit-like fear. I cannot trust you to hop on our side again. Please leave our warren.";
+
                     Subject.NextDialogKey = "Close";
                 }
-                
+
                 if (hasMain && !hasZombie)
 
                 {
-                    Subject.Text = "Ears to you, traveler. I am the leader of this warren of bunnies, and I carrot thank you enough for coming to our aid. The neigh-sayers may think we're just cute and fluffy, but we're tougher than we look.";
-                    
+                    Subject.Text =
+                        "Ears to you, traveler. I am the leader of this warren of bunnies, and I carrot thank you enough for coming to our aid. The neigh-sayers may think we're just cute and fluffy, but we're tougher than we look.";
+
                     var option = new DialogOption
                     {
                         DialogKey = "zombie_start1",
@@ -73,7 +78,8 @@ public class MythicZombieScript : DialogScriptBase
 
                 if (zombie == MythicZombie.Lower)
                 {
-                    Subject.Text = "Well, well, well, look who's back! It's our favorite rabbit-loving adventurer! Have you come to tell us that you've completed the task we gave you?";
+                    Subject.Text =
+                        "Well, well, well, look who's back! It's our favorite rabbit-loving adventurer! Have you come to tell us that you've completed the task we gave you?";
 
                     var option = new DialogOption
                     {
@@ -87,10 +93,12 @@ public class MythicZombieScript : DialogScriptBase
                     return;
 
                 }
+
                 if (zombie == MythicZombie.LowerComplete)
                 {
-                    Subject.Text = "Warren Wanderer, we are in need of your assistance once again. It seems that another group of horses has invaded our territory and is causing chaos and destruction. We need your help to remove them from our fields, just as you did with the previous group.";
-                
+                    Subject.Text =
+                        "Warren Wanderer, we are in need of your assistance once again. It seems that another group of horses has invaded our territory and is causing chaos and destruction. We need your help to remove them from our fields, just as you did with the previous group.";
+
                     var option = new DialogOption
                     {
                         DialogKey = "zombie_start3",
@@ -124,7 +132,7 @@ public class MythicZombieScript : DialogScriptBase
                 if (zombie == MythicZombie.HigherComplete)
                 {
                     Subject.Text = "Want to collect some horse hair for me?";
-                    
+
                     var option = new DialogOption
                     {
                         DialogKey = "zombie_item",
@@ -183,6 +191,7 @@ public class MythicZombieScript : DialogScriptBase
                 {
                     Subject.Text =
                         " ";
+
                     var option = new DialogOption
                     {
                         DialogKey = "zombie_start5",
@@ -244,8 +253,17 @@ public class MythicZombieScript : DialogScriptBase
 
                 source.Trackers.Enums.Set(MythicZombie.LowerComplete);
                 source.Animate(ani, source.Id);
-                ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
+
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 10000000);
+                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                }
+
                 source.Trackers.Counters.Remove("mythicdunan", out _);
                 Subject.Text = " ";
                 Subject.Type = MenuOrDialogType.Normal;
@@ -281,9 +299,18 @@ public class MythicZombieScript : DialogScriptBase
                 Subject.NextDialogKey = "zombie_initial";
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
-                ExperienceDistributionScript.GiveExp(source, twentyPercent);
+
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 10000000);
+                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                }
+
                 source.Trackers.Enums.Set(MythicZombie.HigherComplete);
-                source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
                 source.Trackers.Counters.Remove("gargoyleservant", out _);
                 source.Trackers.Counters.Remove("gargoyleguard", out _);
 
@@ -319,7 +346,7 @@ public class MythicZombieScript : DialogScriptBase
 
                     return;
                 }
-                
+
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Trackers.Enums.Set(MythicZombie.ItemComplete);
@@ -381,11 +408,20 @@ public class MythicZombieScript : DialogScriptBase
                     AnimationSpeed = 100,
                     TargetAnimation = 21
                 };
-                
+
                 Subject.Text = " ";
                 source.Animate(ani2, source.Id);
-                ExperienceDistributionScript.GiveExp(source, fiftyPercent);
-                source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
+
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, fiftyPercent);
+                    source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 25000000);
+                    source.SendOrangeBarMessage($"You received 25000000 experience!");
+                }
+
                 source.Trackers.Counters.Remove("gargoylefiend", out _);
                 source.Trackers.Enums.Set(MythicZombie.BossDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);

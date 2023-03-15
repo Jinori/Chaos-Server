@@ -34,6 +34,7 @@ public class MythicGargoyleScript : DialogScriptBase
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
+
         var ani = new Animation
         {
             AnimationSpeed = 100,
@@ -50,12 +51,13 @@ public class MythicGargoyleScript : DialogScriptBase
                     Subject.Text = " ";
                     Subject.NextDialogKey = "Close";
                 }
-                
+
                 if (hasMain && !hasGargoyle)
 
                 {
-                    Subject.Text = "Greetings, puny Aisling. I, Lord Gargoyle, leader of my kind, welcome you. It appears that you have stumbled upon a situation that requires our attention. As you may have noticed, the zombies have been a real pain in our wings for quite some time. They follow us around, and their mindless ways have become a source of irritation to our kind.";
-                    
+                    Subject.Text =
+                        "Greetings, puny Aisling. I, Lord Gargoyle, leader of my kind, welcome you. It appears that you have stumbled upon a situation that requires our attention. As you may have noticed, the zombies have been a real pain in our wings for quite some time. They follow us around, and their mindless ways have become a source of irritation to our kind.";
+
                     var option = new DialogOption
                     {
                         DialogKey = "gargoyle_start1",
@@ -70,14 +72,15 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 if (gargoyle == MythicGargoyle.Lower)
                 {
-                    Subject.Text = "Ah, welcome back, player! Have you returned victorious in our battle against the zombie menace? I trust that your skills were more than adequate for the task at hand. Tell me, did you enjoy ridding the world of those brainless, shambling creatures?";
+                    Subject.Text =
+                        "Ah, welcome back, player! Have you returned victorious in our battle against the zombie menace? I trust that your skills were more than adequate for the task at hand. Tell me, did you enjoy ridding the world of those brainless, shambling creatures?";
 
                     var option = new DialogOption
                     {
                         DialogKey = "gargoyle_lower2",
                         OptionText = "I did."
                     };
-                    
+
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
@@ -85,16 +88,18 @@ public class MythicGargoyleScript : DialogScriptBase
                     return;
 
                 }
+
                 if (gargoyle == MythicGargoyle.LowerComplete)
                 {
-                    Subject.Text = "Ready to take on another mission in service of the Gargoyle clan? Our feud with the zombies continues, and we cannot allow them to encroach upon our territory any further.";
-                
+                    Subject.Text =
+                        "Ready to take on another mission in service of the Gargoyle clan? Our feud with the zombies continues, and we cannot allow them to encroach upon our territory any further.";
+
                     var option = new DialogOption
                     {
                         DialogKey = "gargoyle_start3",
                         OptionText = "What now?"
                     };
-                    
+
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
@@ -105,7 +110,8 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 if (gargoyle == MythicGargoyle.Higher)
                 {
-                    Subject.Text = "Welcome back, Aisling. I trust that your mission was successful? Did you vanquish the Zombie Soldiers and Lumberjacks that were threatening our lands? I hope that their presence will no longer be a problem for us.";
+                    Subject.Text =
+                        "Welcome back, Aisling. I trust that your mission was successful? Did you vanquish the Zombie Soldiers and Lumberjacks that were threatening our lands? I hope that their presence will no longer be a problem for us.";
 
                     var option = new DialogOption
                     {
@@ -122,14 +128,15 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 if (gargoyle == MythicGargoyle.HigherComplete)
                 {
-                    Subject.Text = "I have yet another task for you to aid us in our ongoing feud with the zombies. We require your assistance in collecting 25 zombie bones. These bones are important for our clan's rituals and ceremonies.";
-                    
+                    Subject.Text =
+                        "I have yet another task for you to aid us in our ongoing feud with the zombies. We require your assistance in collecting 25 zombie bones. These bones are important for our clan's rituals and ceremonies.";
+
                     var option = new DialogOption
                     {
                         DialogKey = "gargoyle_item",
                         OptionText = "I will collect them."
                     };
-                    
+
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
@@ -149,7 +156,7 @@ public class MythicGargoyleScript : DialogScriptBase
 
                     if (!Subject.HasOption(option))
                         Subject.Options.Add(option);
-                    
+
 
                     return;
 
@@ -157,7 +164,8 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 if (gargoyle == MythicGargoyle.ItemComplete)
                 {
-                    Subject.Text = "Ah, my trusty companion, you have proven yourself time and time again to be a true champion of the Gargoyle clan. Your valor and prowess in battle are truly unmatched, and I believe that you would make an excellent ally to our cause. So I ask you, my winged friend, will you stand with us? Will you pledge your loyalty to the Gargoyle clan and fight alongside us in our battles against the zombies?\n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
+                    Subject.Text =
+                        "Ah, my trusty companion, you have proven yourself time and time again to be a true champion of the Gargoyle clan. Your valor and prowess in battle are truly unmatched, and I believe that you would make an excellent ally to our cause. So I ask you, my winged friend, will you stand with us? Will you pledge your loyalty to the Gargoyle clan and fight alongside us in our battles against the zombies?\n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
 
                     var option = new DialogOption
                     {
@@ -185,6 +193,7 @@ public class MythicGargoyleScript : DialogScriptBase
                 {
                     Subject.Text =
                         "There is still much work to be done, and our next task is a formidable one. There is a zombie by the name of Brains who has been causing us no small amount of trouble. He is a cunning foe, and his intelligence makes him all the more dangerous.";
+
                     var option = new DialogOption
                     {
                         DialogKey = "gargoyle_start5",
@@ -218,7 +227,8 @@ public class MythicGargoyleScript : DialogScriptBase
                 if (gargoyle == MythicGargoyle.BossDefeated)
                 {
 
-                    Subject.Text = "Your unwavering support and dedication have brought us to new heights of success in our fight against the undead. ";
+                    Subject.Text =
+                        "Your unwavering support and dedication have brought us to new heights of success in our fight against the undead. ";
                 }
 
                 break;
@@ -247,10 +257,22 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 source.Trackers.Enums.Set(MythicGargoyle.LowerComplete);
                 source.Animate(ani, source.Id);
-                ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
+
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 10000000);
+                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                }
+
                 source.Trackers.Counters.Remove("zombiegrunt", out _);
-                Subject.Text = "Your bravery and loyalty to the Gargoyle clan are commendable. It is through the efforts of individuals like you that our clan can continue to thrive.";
+
+                Subject.Text =
+                    "Your bravery and loyalty to the Gargoyle clan are commendable. It is through the efforts of individuals like you that our clan can continue to thrive.";
+
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "gargoyle_initial";
 
@@ -259,7 +281,9 @@ public class MythicGargoyleScript : DialogScriptBase
 
             case "gargoyle_higher":
             {
-                Subject.Text = "Thank you very much, Aisling. Your loyalty to our clan rocks! I know you have the stones to take down those 10 zombie soldiers and 10 zombie lumberjacks.";
+                Subject.Text =
+                    "Thank you very much, Aisling. Your loyalty to our clan rocks! I know you have the stones to take down those 10 zombie soldiers and 10 zombie lumberjacks.";
+
                 source.SendOrangeBarMessage("Kill 10 Zombie Soldiers and Lumberjacks for Lord Gargoyle");
                 source.Trackers.Enums.Set(MythicGargoyle.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
@@ -272,7 +296,7 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 source.Trackers.Counters.TryGetValue("zombiesoldier", out var zombiesoldier);
                 source.Trackers.Counters.TryGetValue("zombiefarmer", out var zombielumberjack);
-                
+
 
                 if ((zombielumberjack < 10) || (zombiesoldier < 10))
                 {
@@ -283,13 +307,24 @@ public class MythicGargoyleScript : DialogScriptBase
                     return;
                 }
 
-                Subject.Text = "As we continue to battle against the zombie menace, let us remember the lessons of our past triumphs. Let us spread our wings wide and take to the skies, striking fear into the hearts of our foes and bringing hope to our allies.";
+                Subject.Text =
+                    "As we continue to battle against the zombie menace, let us remember the lessons of our past triumphs. Let us spread our wings wide and take to the skies, striking fear into the hearts of our foes and bringing hope to our allies.";
+
                 Subject.NextDialogKey = "gargoyle_initial";
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
-                ExperienceDistributionScript.GiveExp(source, twentyPercent);
+
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 10000000);
+                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                }
+
                 source.Trackers.Enums.Set(MythicGargoyle.HigherComplete);
-                source.SendOrangeBarMessage($"You've gained {twentyPercent} experience!");
                 source.Trackers.Counters.Remove("zombiesoldier", out _);
                 source.Trackers.Counters.Remove("zombielumberjack", out _);
 
@@ -311,16 +346,31 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 if (!source.Inventory.RemoveQuantity("Zombie Bone", 25))
                 {
-                    Subject.Text = "I implore you to hurry back with those zombie bones. We have an important ritual tonight that requires the bones, and time is of the essence.";
+                    Subject.Text =
+                        "I implore you to hurry back with those zombie bones. We have an important ritual tonight that requires the bones, and time is of the essence.";
+
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
                 }
-                
+
                 source.Animate(ani, source.Id);
-                ExperienceDistributionScript.GiveExp(source, twentyPercent);
+
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 10000000);
+                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                }
+
                 source.Trackers.Enums.Set(MythicGargoyle.ItemComplete);
-                Subject.Text = "With those bones in our possession, our clan will be able to perform our rituals and ceremonies with renewed vigor and power. You have truly done us a great service, and for that, we are eternally grateful.";
+
+                Subject.Text =
+                    "With those bones in our possession, our clan will be able to perform our rituals and ceremonies with renewed vigor and power. You have truly done us a great service, and for that, we are eternally grateful.";
+
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "gargoyle_initial";
 
@@ -333,7 +383,10 @@ public class MythicGargoyleScript : DialogScriptBase
                     && (hasZombie == zombie is MythicZombie.Allied or MythicZombie.BossStarted or MythicZombie.BossDefeated))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "As the Lord Gargoyle, I am deeply disappointed and saddened to hear that you have allied yourself with our undead enemies, the zombies. How could you betray your own kin and stand alongside those who seek to destroy us?";
+
+                    Subject.Text =
+                        "As the Lord Gargoyle, I am deeply disappointed and saddened to hear that you have allied yourself with our undead enemies, the zombies. How could you betray your own kin and stand alongside those who seek to destroy us?";
+
                     source.Trackers.Enums.Set(MythicGargoyle.EnemyAllied);
 
                     return;
@@ -342,7 +395,10 @@ public class MythicGargoyleScript : DialogScriptBase
                 source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Trackers.Enums.Set(MythicGargoyle.Allied);
                 source.SendOrangeBarMessage("You are now allied with the Gargoyles!");
-                Subject.Text = $"{source.Name} your decision to stand with the Gargoyle clan fills me with pride and joy. Together, we shall soar to new heights and vanquish our undead foes once and for all.";
+
+                Subject.Text = $"{source.Name
+                } your decision to stand with the Gargoyle clan fills me with pride and joy. Together, we shall soar to new heights and vanquish our undead foes once and for all.";
+
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "gargoyle_initial";
 
@@ -365,7 +421,9 @@ public class MythicGargoyleScript : DialogScriptBase
             {
                 if (!source.Trackers.Counters.TryGetValue("Brains", out var brains) || (brains < 3))
                 {
-                    Subject.Text = "Ah, I see. It seems that Brains proved to be a tougher adversary than we anticipated. But do not be disheartened, my friend. Even the greatest warriors can be bested in battle from time to time.";
+                    Subject.Text =
+                        "Ah, I see. It seems that Brains proved to be a tougher adversary than we anticipated. But do not be disheartened, my friend. Even the greatest warriors can be bested in battle from time to time.";
+
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.NextDialogKey = "Close";
                     source.SendOrangeBarMessage("You haven't completely defeated Brains.");
@@ -378,11 +436,22 @@ public class MythicGargoyleScript : DialogScriptBase
                     AnimationSpeed = 100,
                     TargetAnimation = 21
                 };
-                
-                Subject.Text = "Your victory over Brains fills me with pride and joy. It is not often that we are able to triumph over such a formidable foe, but you have proven once again that you are a true champion of the Gargoyle clan.";
+
+                Subject.Text =
+                    "Your victory over Brains fills me with pride and joy. It is not often that we are able to triumph over such a formidable foe, but you have proven once again that you are a true champion of the Gargoyle clan.";
+
                 source.Animate(ani2, source.Id);
-                ExperienceDistributionScript.GiveExp(source, fiftyPercent);
-                source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
+
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, fiftyPercent);
+                    source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 25000000);
+                    source.SendOrangeBarMessage($"You received 25000000 experience!");
+                }
+
                 source.Trackers.Counters.Remove("Brains", out _);
                 source.Trackers.Enums.Set(MythicGargoyle.BossDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
