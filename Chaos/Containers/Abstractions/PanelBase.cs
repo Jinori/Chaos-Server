@@ -279,10 +279,9 @@ public abstract class PanelBase<T> : IPanel<T> where T: PanelObjectBase
 
         if (obj1 != null)
             BroadcastOnAdded(obj1);
-        
+
         if (obj2 != null)
             BroadcastOnAdded(obj2);
-
 
         return true;
     }

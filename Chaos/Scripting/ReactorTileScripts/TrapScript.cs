@@ -56,7 +56,7 @@ If this reactor was created through a script, you must specify the owner in the 
             Timer = new IntervalTimer(TimeSpan.FromSeconds(DurationSecs.Value), false);
         
         AnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
-        ApplyDamageScript = DefaultApplyDamageScript.Create();
+        ApplyDamageScript = ApplyAttackDamageScript.Create();
         ApplyDamageScript.DamageFormula = DamageFormulae.PureDamage;
         SourceScript = this;
 

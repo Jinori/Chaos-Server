@@ -41,11 +41,9 @@ var configuration = builder.Build();
 // @formatter:on
 
 var startup = new Startup(configuration);
-var serverCtx = new CancellationTokenSource();
-
-services.AddSingleton(serverCtx);
 
 startup.ConfigureServices(services);
+var serverCtx = startup.ServerCtx;
 
 services.AddSingleton<IGroupService, GroupService>();
 services.AddLobbyServer();

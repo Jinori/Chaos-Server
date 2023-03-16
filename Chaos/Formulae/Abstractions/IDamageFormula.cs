@@ -7,9 +7,9 @@ namespace Chaos.Formulae.Abstractions;
 public interface IDamageFormula
 {
     int Calculate(
-        Creature attacker,
-        Creature defender,
-        IScript source,
+        Creature source,
+        Creature target,
+        IScript script,
         int damage,
         Element? elementOverride = null
     );

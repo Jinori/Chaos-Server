@@ -9,6 +9,25 @@ namespace Chaos.Scripting.Components;
 
 public class ManaBasedDamageComponent
 {
+    public virtual void ApplyDamage(
+        ActivationContext context,
+        IReadOnlyCollection<Creature> targetEntities,
+        IManaBasedDamageComponentOptions options
+    )
+    {
+        var damage = CalculateDamage(context, options);
+
+        if (damage <= 0)
+            return;
+
+        foreach (var target in targetEntities)
+            options.ApplyDamageScript.ApplyDamage(
+                context.Source,
+                target,
+                options.SourceScript,
+                damage,
+                options.Element);
+    }
 
     protected virtual int CalculateDamage(
         ActivationContext context,
@@ -35,38 +54,15 @@ public class ManaBasedDamageComponent
         return finalDamage;
     }
 
-    public virtual void ApplyDamage(
-        ActivationContext context,
-        IReadOnlyCollection<Creature> targetEntities,
-        IManaBasedDamageComponentOptions options
-    )
-    {
-        var damage = CalculateDamage(context, options);
-
-        if (damage <= 0)
-            return;
-
-        foreach (var target in targetEntities)
-            options.ApplyDamageScript.ApplyDamage(
-                context.Source,
-                target,
-                options.SourceScript,
-                damage,
-                options.Element);
-    }
-
     public interface IManaBasedDamageComponentOptions
     {
-        
-        IScript SourceScript { get; }
         IApplyDamageScript ApplyDamageScript { get; }
         int? BaseDamage { get; }
         decimal? BaseDamageMultiplier { get; }
+        Element? Element { get; }
+        decimal? FinalMultiplier { get; }
         decimal? PctOfMana { get; }
         decimal? PctOfManaMultiplier { get; }
-        decimal? FinalMultiplier { get; }
-        
-        Element? Element { get; }
-        
+        IScript SourceScript { get; }
     }
 }

@@ -15,6 +15,8 @@ namespace Chaos.Scripting.SpellScripts.Damage;
 
 public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageComponentOptions, ManaCostComponent.IManaCostComponentOptions
 {
+    public IApplyDamageScript ApplyDamageScript { get; init; }
+    public IScript SourceScript { get; init; }
     protected DamageComponent DamageComponent { get; }
     protected ManaCostComponent ManaCostComponent { get; }
     protected MagicResistanceComponent MagicResistComponent { get; }
@@ -23,7 +25,7 @@ public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageCompone
     public DamageScript(Spell subject)
         : base(subject)
     {
-        ApplyDamageScript = DefaultApplyDamageScript.Create();
+        ApplyDamageScript = ApplyAttackDamageScript.Create();
         DamageComponent = new DamageComponent();
         ManaCostComponent = new ManaCostComponent();
         MagicResistComponent = new MagicResistanceComponent();
@@ -45,12 +47,10 @@ public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageCompone
     }
 
     #region ScriptVars
-    public IApplyDamageScript ApplyDamageScript { get; init; }
     public int? BaseDamage { get; init; }
     public Stat? DamageStat { get; init; }
     public decimal? DamageStatMultiplier { get; init; }
     public decimal? PctHpDamage { get; init; }
-    public IScript SourceScript { get; init; }
     public Element? Element { get; init; }
     public int? ManaCost { get; init; }
     public decimal PctManaCost { get; init; }
