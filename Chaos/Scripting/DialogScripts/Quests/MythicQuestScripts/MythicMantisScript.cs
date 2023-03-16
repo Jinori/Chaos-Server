@@ -48,19 +48,19 @@ public class MythicMantisScript : DialogScriptBase
                 if (hasMantis && (mantis == MythicMantis.EnemyAllied))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = " ";
+                    Subject.Text = "Oh lucky us. You're allied with the bees. We'll devour you like the rest of them.";
                     Subject.NextDialogKey = "Close";
                 }
 
                 if (hasMain && !hasMantis)
 
                 {
-                    Subject.Text = " ";
+                    Subject.Text = "Welcome to our colony, stranger. I am the Mantis King. What brings you here?";
 
                     var option = new DialogOption
                     {
                         DialogKey = "mantis_start1",
-                        OptionText = "What can I do to help?"
+                        OptionText = "I have come seeking adventure."
                     };
 
                     if (!Subject.HasOption(option))
@@ -72,12 +72,12 @@ public class MythicMantisScript : DialogScriptBase
                 if (mantis == MythicMantis.Lower)
                 {
                     Subject.Text =
-                        "Well, well, well, look who's back! It's our favorite rabbit-loving adventurer! Have you come to tell us that you've completed the task we gave you?";
+                        "Tell me, have you killed 15 Mythic bees? You know my colony will tell me if you haven't.";
 
                     var option = new DialogOption
                     {
                         DialogKey = "mantis_lower2",
-                        OptionText = "Yes Big Bunny."
+                        OptionText = "They are dead King Mantis."
                     };
 
                     if (!Subject.HasOption(option))
@@ -90,12 +90,12 @@ public class MythicMantisScript : DialogScriptBase
                 if (mantis == MythicMantis.LowerComplete)
                 {
                     Subject.Text =
-                        "Warren Wanderer, we are in need of your assistance once again. It seems that another group of horses has invaded our territory and is causing chaos and destruction. We need your help to remove them from our fields, just as you did with the previous group.";
+                        "Can I interest you in another adventure Aisling? This time a little more difficult.";
 
                     var option = new DialogOption
                     {
                         DialogKey = "mantis_start3",
-                        OptionText = "No problem Big Bunny."
+                        OptionText = "I'm always up for adventure."
                     };
 
                     if (!Subject.HasOption(option))
@@ -107,12 +107,12 @@ public class MythicMantisScript : DialogScriptBase
 
                 if (mantis == MythicMantis.Higher)
                 {
-                    Subject.Text = "Hoppy Greetings, welcome back. Did you clear those hoofed oppressors?";
+                    Subject.Text = "Was that as fun as it usually is for me? I always enjoy a good massacre. Did you get all 20?";
 
                     var option = new DialogOption
                     {
                         DialogKey = "mantis_higher2",
-                        OptionText = "Yeah, it is done."
+                        OptionText = "Yes it was fun!"
                     };
 
                     if (!Subject.HasOption(option))
@@ -124,12 +124,12 @@ public class MythicMantisScript : DialogScriptBase
 
                 if (mantis == MythicMantis.HigherComplete)
                 {
-                    Subject.Text = "Want to collect some horse hair for me?";
+                    Subject.Text = "You are one quick Aisling, I like that. Oh, Hey. Now that those bees are dead, would you mind gathering 25 Mythic Honey for my colony? It's really just a good substance to have. Sometimes we use it to keep our nymphs in place. They like to scatter once they're born, but with a little mythic honey, they'll be there till we get back.";
 
                     var option = new DialogOption
                     {
                         DialogKey = "mantis_item",
-                        OptionText = "I can get that."
+                        OptionText = "That's kinda funny. Will do."
                     };
 
                     if (!Subject.HasOption(option))
@@ -139,12 +139,12 @@ public class MythicMantisScript : DialogScriptBase
 
                 if (mantis == MythicMantis.Item)
                 {
-                    Subject.Text = "Hare-oic Aisling! Did you collect all the horse hair?";
+                    Subject.Text = "Heh, you're back fast. Did you get all the Mythic Honey? My colony is thrilled we're getting another shipment of this stuff. Where is it?";
 
                     var option = new DialogOption
                     {
                         DialogKey = "mantis_item2",
-                        OptionText = "I have them here."
+                        OptionText = "Here they are."
                     };
 
                     if (!Subject.HasOption(option))
@@ -157,18 +157,18 @@ public class MythicMantisScript : DialogScriptBase
                 if (mantis == MythicMantis.ItemComplete)
                 {
                     Subject.Text =
-                        "You have proven yourself to be a valuable ally to our warren, dear traveler. You have saved our crops, defended our burrows, and defeated many of our enemies. You have shown us that you share our values of kindness and bravery, and for that, we are very grateful. We would be honored if you would consider allying with us, and becoming a part of our family. \n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
+                        $"Speaking of being part of the colony, that's an excellent idea. You've already done what most of us do in a day, how about it? Would you like to become one of our allies {source.Name}? \n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
 
                     var option = new DialogOption
                     {
                         DialogKey = "mantis_ally",
-                        OptionText = "Ally with Bunny"
+                        OptionText = "Ally with Mantis"
                     };
 
                     var option1 = new DialogOption
                     {
                         DialogKey = "mantis_no",
-                        OptionText = "No thank you."
+                        OptionText = "Not my style."
                     };
 
                     if (!Subject.HasOption(option))
@@ -184,12 +184,12 @@ public class MythicMantisScript : DialogScriptBase
                 if (mantis == MythicMantis.Allied)
                 {
                     Subject.Text =
-                        "Warren Wanderer, we have another urgent request for you. We have learned that the leader of the horse herd that has been causing us so much trouble is a powerful and dangerous horse named Apple Jack. We need you to go and defeat Apple Jack three times to ensure that our fields remain safe and secure.";
+                        "That's good we're allies now. I must tell you of the ultimate challenge. I haven't seen this one yet, some say she looks like a wasp but not many lived to report back. Are you interested in another adventure? I don't know if you'll make it back from this one.";
 
                     var option = new DialogOption
                     {
                         DialogKey = "mantis_start5",
-                        OptionText = "Anything for you."
+                        OptionText = "She can't be that bad."
                     };
 
                     if (!Subject.HasOption(option))
@@ -226,7 +226,7 @@ public class MythicMantisScript : DialogScriptBase
 
             case "mantis_lower":
             {
-                Subject.Text = " ";
+                Subject.Text = "Good, good. I will see you when you return. Remember, go kill 15 Mythic Bees. Don't leave any alive.";
                 source.SendOrangeBarMessage("Kill 15 Mythic Bees for King Mantis");
                 source.Trackers.Enums.Set(MythicMantis.Lower);
                 Subject.Type = MenuOrDialogType.Normal;
@@ -239,7 +239,7 @@ public class MythicMantisScript : DialogScriptBase
 
                 if (!source.Trackers.Counters.TryGetValue("mythicbee", out var mantislower) || (mantislower < 15))
                 {
-                    Subject.Text = "You haven't killed enough Mythic Bees";
+                    Subject.Text = "Disappointing, loyalty is everything and if you aren't willing, don't come back.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -259,7 +259,7 @@ public class MythicMantisScript : DialogScriptBase
                 }
 
                 source.Trackers.Counters.Remove("mythicbee", out _);
-                Subject.Text = " ";
+                Subject.Text = "Impressive. 15 Mythic bees without blinking an eye. I admire your loyalty.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "mantis_initial";
 
@@ -268,7 +268,7 @@ public class MythicMantisScript : DialogScriptBase
 
             case "mantis_higher":
             {
-                Subject.Text = "Kill 20 Green Bees";
+                Subject.Text = "Show me how you do it. Good luck Aisling, they can be awefully tricky to kill. Make sure you slay 20 of the Green Bees.";
                 source.SendOrangeBarMessage("Kill 20 Green Bees for King Mantis");
                 source.Trackers.Enums.Set(MythicMantis.Higher);
                 Subject.Type = MenuOrDialogType.Normal;
@@ -281,13 +281,13 @@ public class MythicMantisScript : DialogScriptBase
 
                 if (!source.Trackers.Counters.TryGetValue("greenbee", out var mantishigher) || (mantishigher < 20))
                 {
-                    Subject.Text = "You haven't killed enough Green Bees";
+                    Subject.Text = "Didn't quite finish them all did you? Go back and make sure they're dead.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
                 }
 
-                Subject.Text = " ";
+                Subject.Text = "It's quite exciting to come out on top. They're also very delicious if you're a mantis. Good work.";
                 Subject.NextDialogKey = "mantis_initial";
                 Subject.Type = MenuOrDialogType.Normal;
                 source.Animate(ani, source.Id);
@@ -310,7 +310,7 @@ public class MythicMantisScript : DialogScriptBase
 
             case "mantis_item":
             {
-                Subject.Text = " ";
+                Subject.Text = "Does that make us bad parents? Ah, who cares. Grab us 25 Mythic Honey.";
                 source.SendOrangeBarMessage("Collect 25 Mythic Honey for King Mantis");
                 source.Trackers.Enums.Set(MythicMantis.Item);
                 Subject.Type = MenuOrDialogType.Normal;
@@ -323,7 +323,7 @@ public class MythicMantisScript : DialogScriptBase
 
                 if (!source.Inventory.RemoveQuantity("Mythic Honey", 25))
                 {
-                    Subject.Text = " ";
+                    Subject.Text = "Nah, this won't be enough. Go get us some more, there's plenty in there.";
                     Subject.Type = MenuOrDialogType.Normal;
 
                     return;
@@ -342,7 +342,7 @@ public class MythicMantisScript : DialogScriptBase
                 }
 
                 source.Trackers.Enums.Set(MythicMantis.ItemComplete);
-                Subject.Text = " ";
+                Subject.Text = "Ah, just enough. We could always use more but this will keep us satisfied for some time. Thank you Aisling, you really are becoming part of the colony.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "mantis_initial";
 
@@ -363,7 +363,7 @@ public class MythicMantisScript : DialogScriptBase
 
                 source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Trackers.Enums.Set(MythicMantis.Allied);
-                source.SendOrangeBarMessage("You are now allied with the Mantises!");
+                source.SendOrangeBarMessage("You are now allied with the Mantis!");
                 Subject.Text = $" ";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "mantis_initial";
@@ -374,7 +374,7 @@ public class MythicMantisScript : DialogScriptBase
 
             case "mantis_boss":
             {
-                Subject.Text = " ";
+                Subject.Text = "That would be fantastic. Good luck Adventurer, and if I don't see you again, the colony appreciates your loyalty.";
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
                 source.Trackers.Enums.Set(MythicMantis.BossStarted);
@@ -387,7 +387,7 @@ public class MythicMantisScript : DialogScriptBase
             {
                 if (!source.Trackers.Counters.TryGetValue("Carolina", out var mantisboss1) || (mantisboss1 < 3))
                 {
-                    Subject.Text = " ";
+                    Subject.Text = "Carolina is still out there, please find her and defeat her three times.";
                     Subject.Type = MenuOrDialogType.Normal;
                     Subject.NextDialogKey = "Close";
                     source.SendOrangeBarMessage("You haven't completely defeated Carolina.");
@@ -401,7 +401,7 @@ public class MythicMantisScript : DialogScriptBase
                     TargetAnimation = 21
                 };
 
-                Subject.Text = " ";
+                Subject.Text = $"I can't believe you did it. That was a miracle! The whole Mantis Colony is talking about your adventures and bravery. You took her down, no problem. We are relieved in the revenge you applied today, thank you {source.Name}!";
                 source.Animate(ani2, source.Id);
 
                 if (source.UserStatSheet.Level <= 98)
@@ -413,8 +413,6 @@ public class MythicMantisScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, 25000000);
                     source.SendOrangeBarMessage($"You received 25000000 experience!");
                 }
-
-                source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
                 source.Trackers.Counters.Remove("carolina", out _);
                 source.Trackers.Enums.Set(MythicMantis.BossDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);

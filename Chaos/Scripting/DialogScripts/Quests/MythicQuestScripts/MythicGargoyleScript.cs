@@ -48,7 +48,7 @@ public class MythicGargoyleScript : DialogScriptBase
                 if (hasGargoyle && (gargoyle == MythicGargoyle.EnemyAllied))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = " ";
+                    Subject.Text = "You would be allied to the zombies, just as braindead as they are.";
                     Subject.NextDialogKey = "Close";
                 }
 
