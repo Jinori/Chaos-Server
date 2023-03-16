@@ -107,16 +107,6 @@ public sealed class TimedEventCollection : IEnumerable<KeyValuePair<string, Time
         return false;
     }
     
-    public bool HasActiveEvent(string eventID, [MaybeNullWhen(false)] out Event @event)
-    {
-        using var sync = Sync.Enter();
-
-        if (!Events.TryGetValue(eventID, out @event))
-            return false;
-
-        return !@event.Completed;
-    }
-
     /// <inheritdoc />
     public void Update(TimeSpan delta)
     {

@@ -17,7 +17,7 @@ public class PoisonPunchScript : DamageScript
         : base(subject)
     {
         EffectFactory = effectFactory;
-        ApplyDamageScript = DefaultApplyDamageScript.Create();
+        ApplyDamageScript = ApplyAttackDamageScript.Create();
     }
 
     /// <inheritdoc />

@@ -16,7 +16,7 @@ public class StudyCreatureScript : BasicSkillScriptBase
     /// <inheritdoc />
     public StudyCreatureScript(Skill subject)
         : base(subject) =>
-        ApplyDamageScript = DefaultApplyDamageScript.Create();
+        ApplyDamageScript = ApplyAttackDamageScript.Create();
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)

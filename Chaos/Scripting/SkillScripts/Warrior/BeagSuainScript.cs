@@ -17,7 +17,7 @@ public class BeagSuainScript : DamageScript
         : base(subject)
     {
         EffectFactory = effectFactory;
-        ApplyDamageScript = DefaultApplyDamageScript.Create();
+        ApplyDamageScript = ApplyAttackDamageScript.Create();
     }
 
     /// <inheritdoc />

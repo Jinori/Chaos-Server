@@ -33,7 +33,7 @@ public class WrathEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(400));
 
-    public WrathEffect() => ApplyDamageScript = DefaultApplyDamageScript.Create();
+    public WrathEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()

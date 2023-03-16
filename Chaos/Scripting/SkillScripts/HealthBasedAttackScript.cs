@@ -17,7 +17,7 @@ public class HealthBasedAttackScript : BasicSkillScriptBase
     public HealthBasedAttackScript(Skill subject)
         : base(subject)
     {
-        ApplyDamageScript = DefaultApplyDamageScript.Create();
+        ApplyDamageScript = ApplyAttackDamageScript.Create();
 
         if (TrueDamage is true)
             ApplyDamageScript.DamageFormula = DamageFormulae.PureDamage;

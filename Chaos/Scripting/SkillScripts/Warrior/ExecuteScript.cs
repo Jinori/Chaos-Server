@@ -15,7 +15,7 @@ public class ExecuteScript : BasicSkillScriptBase
     /// <inheritdoc />
     public ExecuteScript(Skill subject)
         : base(subject) =>
-        ApplyDamageScript = DefaultApplyDamageScript.Create();
+        ApplyDamageScript = ApplyAttackDamageScript.Create();
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)

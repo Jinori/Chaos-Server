@@ -21,7 +21,7 @@ public class ManaBasedDamageScript : BasicSpellScriptBase,
     public ManaBasedDamageScript(Spell subject)
         : base(subject)
     {
-        ApplyDamageScript = DefaultApplyDamageScript.Create();
+        ApplyDamageScript = ApplyAttackDamageScript.Create();
         ManaBasedDamageComponent = new ManaBasedDamageComponent();
         ManaCostComponent = new ManaCostComponent();
         MagicResistComponent = new MagicResistanceComponent();

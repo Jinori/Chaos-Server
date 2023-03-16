@@ -15,7 +15,7 @@ public class ChargeScript : DamageScript
     /// <inheritdoc />
     public ChargeScript(Skill subject)
         : base(subject) =>
-        ApplyDamageScript = DefaultApplyDamageScript.Create();
+        ApplyDamageScript = ApplyAttackDamageScript.Create();
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)

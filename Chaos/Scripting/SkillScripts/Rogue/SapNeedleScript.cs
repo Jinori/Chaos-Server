@@ -17,7 +17,7 @@ public class SapNeedleScript : DamageScript
     /// <inheritdoc />
     public SapNeedleScript(Skill subject)
         : base(subject) =>
-        ApplyDamageScript = DefaultApplyDamageScript.Create();
+        ApplyDamageScript = ApplyAttackDamageScript.Create();
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
