@@ -217,7 +217,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
                 break;
             case PublicMessageType.Shout:
                 entitiesWithinRange = MapInstance.GetEntities<Creature>();
-                sendMessage = $"{Name}!: {message}";
+                sendMessage = $"{Name}! {message}";
 
                 break;
             case PublicMessageType.Chant:
@@ -227,6 +227,9 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
             default:
                 throw new ArgumentOutOfRangeException(nameof(publicMessageType), publicMessageType, null);
         }
+
+        if (sendMessage.Length > CONSTANTS.MAX_PUBLIC_MESSAGE_LENGTH)
+            sendMessage = sendMessage[..CONSTANTS.MAX_PUBLIC_MESSAGE_LENGTH];
 
         foreach (var creature in entitiesWithinRange)
             switch (creature)

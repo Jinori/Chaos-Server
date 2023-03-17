@@ -3,7 +3,6 @@ using System.Net.Sockets;
 using System.Text.Json;
 using Chaos.Clients.Abstractions;
 using Chaos.Collections.Common;
-using Chaos.CommandInterceptor.Abstractions;
 using Chaos.Common.Abstractions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Identity;
@@ -15,6 +14,7 @@ using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae;
+using Chaos.Messaging.Abstractions;
 using Chaos.Networking.Abstractions;
 using Chaos.Networking.Entities.Client;
 using Chaos.Networking.Options;
@@ -36,6 +36,7 @@ namespace Chaos.Services.Servers;
 public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldClient>
 {
     private readonly ISaveManager<Aisling> AislingSaveManager;
+    private readonly IChannelService ChannelService;
     private readonly IClientProvider ClientProvider;
     private readonly ICommandInterceptor<Aisling> CommandInterceptor;
     private readonly IGroupService GroupService;
@@ -58,7 +59,8 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         IMerchantFactory merchantFactory,
         IOptions<WorldOptions> options,
         ILogger<WorldServer> logger,
-        IMetaDataCache metaDataCache
+        IMetaDataCache metaDataCache,
+        IChannelService channelService
     )
         : base(
             redirectManager,
@@ -74,6 +76,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         GroupService = groupService;
         MerchantFactory = merchantFactory;
         MetaDataCache = metaDataCache;
+        ChannelService = channelService;
 
         IndexHandlers();
     }
@@ -322,6 +325,14 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             client.SendUserId();
             aisling.MapInstance.AddAislingDirect(aisling, aisling);
             client.SendProfileRequest();
+
+            foreach (var channel in aisling.ChannelSettings)
+            {
+                ChannelService.JoinChannel(aisling, channel.ChannelName);
+
+                if (channel.MessageColor.HasValue)
+                    ChannelService.SetChannelColor(aisling, channel.ChannelName, channel.MessageColor.Value);
+            }
 
             Logger.LogDebug("World redirect finalized for {@Client}", client);
 
@@ -731,32 +742,29 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             if (!localClient.Aisling.WithinRange(sourcePoint, Options.PickupRange))
                 return default;
 
-            var obj = map.GetEntitiesAtPoint<GroundEntity>(sourcePoint)
-                         .TopOrDefault();
+            var possibleObjs = map.GetEntitiesAtPoint<GroundEntity>(sourcePoint)
+                                  .OrderByDescending(obj => obj.Creation)
+                                  .ToList();
 
-            var reactors = map.GetDistinctReactorsAtPoint(sourcePoint)
-                              .ToList();
-
-            if (obj == null)
+            if (!possibleObjs.Any())
                 return default;
 
-            switch (obj)
-            {
-                case GroundItem groundItem:
-                    localClient.Aisling.PickupItem(groundItem, destinationSlot);
+            //loop through the items on the ground, try to pick each one up
+            //if we pick one up, return (only pick up 1 obj at a time)
+            foreach (var obj in possibleObjs)
+                switch (obj)
+                {
+                    case GroundItem groundItem:
+                        if (localClient.Aisling.TryPickupItem(groundItem, destinationSlot))
+                            return default;
 
-                    foreach (var reactor in reactors)
-                        reactor.OnItemPickedUpFrom(localClient.Aisling, groundItem);
+                        break;
+                    case Money money:
+                        if (localClient.Aisling.TryPickupMoney(money))
+                            return default;
 
-                    break;
-                case Money money:
-                    localClient.Aisling.PickupMoney(money);
-
-                    foreach (var reactor in reactors)
-                        reactor.OnGoldPickedUpFrom(localClient.Aisling, money);
-
-                    break;
-            }
+                        break;
+                }
 
             return default;
         }
@@ -1118,9 +1126,28 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         ValueTask InnerOnWhisper(IWorldClient localClient, WhisperArgs localArgs)
         {
             (var targetName, var message) = localArgs;
+            var aisling = localClient.Aisling;
 
             if (message.Length > 100)
                 return default;
+
+            if (ChannelService.IsChannel(targetName))
+            {
+                if (targetName.EqualsI(WorldOptions.Instance.GroupChatName) || targetName.EqualsI("!group"))
+                {
+                    if (aisling.Group == null)
+                    {
+                        aisling.SendOrangeBarMessage("You are not in a group");
+
+                        return default;
+                    }
+
+                    ChannelService.SendMessage(aisling, aisling.Group.ChannelName, message);
+                } else if (ChannelService.ContainsChannel(targetName))
+                    ChannelService.SendMessage(aisling, targetName, message);
+
+                return default;
+            }
 
             var targetUser = Aislings.FirstOrDefault(player => player.Name.EqualsI(targetName));
 
@@ -1145,23 +1172,33 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
                 return default;
             }
 
+            var maxLength = CONSTANTS.MAX_SERVER_MESSAGE_LENGTH - targetUser.Name.Length - 4;
+
+            if (message.Length > maxLength)
+                message = message[..maxLength];
+
+            localClient.SendServerMessage(ServerMessageType.Whisper, $"[{targetUser.Name}]> {message}");
+
+            Logger.LogTrace(
+                "{@FromPlayer} sent whisper {@Message} to {@TargetPlayer}",
+                localClient.Aisling,
+                targetUser,
+                message);
+
             //if someone is being ignored, they shouldnt know it
             //let them waste their time typing for no reason
             if (targetUser.IgnoreList.ContainsI(localClient.Aisling.Name))
             {
                 Logger.LogInformation(
-                    "Message sent by {@FromPlayer} was ignored by {@TargetPlayer} (Message: \"{Message}\")",
+                    "Message sent by {@FromPlayer} was ignored by {@TargetPlayer} (Message: {@Message})",
                     localClient.Aisling,
                     targetUser,
                     message);
 
-                localClient.SendServerMessage(ServerMessageType.Whisper, $"[{targetUser.Name}] > {message}");
-
                 return default;
             }
 
-            localClient.SendServerMessage(ServerMessageType.Whisper, $"[{targetUser.Name}] > {message}");
-            targetUser.Client.SendServerMessage(ServerMessageType.Whisper, $"[{localClient.Aisling.Name}] < {message}");
+            targetUser.Client.SendServerMessage(ServerMessageType.Whisper, $"[{localClient.Aisling.Name}]: {message}");
 
             return default;
         }
@@ -1384,6 +1421,11 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
                 //remove aisling from map
                 mapInstance?.RemoveObject(client.Aisling);
                 aisling.Group?.Leave(aisling);
+
+                //leave chat channels
+                foreach (var channel in aisling.ChannelSettings)
+                    ChannelService.LeaveChannel(aisling, channel.ChannelName);
+
                 //save aisling
                 await SaveUserAsync(client.Aisling);
             }
