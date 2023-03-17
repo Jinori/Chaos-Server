@@ -1,14 +1,13 @@
 using Chaos.Collections.Common;
-using Chaos.CommandInterceptor;
-using Chaos.CommandInterceptor.Abstractions;
 using Chaos.Common.Definitions;
-using Chaos.Extensions.Common;
+using Chaos.Messaging;
+using Chaos.Messaging.Abstractions;
 using Chaos.Objects.World;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Commands;
+namespace Chaos.Commands.Admin;
 
-[Command("learnall")]
+[Command("learnall", true)]
 public class LearnAllCommand : ICommand<Aisling>
 {
     private readonly ISkillFactory _skillFactory;

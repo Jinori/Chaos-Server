@@ -79,9 +79,9 @@ public class Startup
                         {
                             IsInitialized = true;
                             var defaultResolver = new WarningJsonTypeInfoResolver(logger);
-                            var combinedResoler = JsonTypeInfoResolver.Combine(JsonContext, defaultResolver);
+                            var combinedResolver = JsonTypeInfoResolver.Combine(JsonContext, defaultResolver);
 
-                            JsonSerializerOptions.SetTypeResolver(combinedResoler);
+                            JsonSerializerOptions.SetTypeResolver(combinedResolver);
                         }
 
                         ShallowCopy<JsonSerializerOptions>.Merge(JsonSerializerOptions, options);

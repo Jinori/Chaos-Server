@@ -1,12 +1,11 @@
 using Chaos.Collections.Common;
-using Chaos.CommandInterceptor;
-using Chaos.CommandInterceptor.Abstractions;
-using Chaos.Common.Collections;
+using Chaos.Messaging;
+using Chaos.Messaging.Abstractions;
 using Chaos.Objects.World;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Commands;
-[Command("giveEffect")]
+namespace Chaos.Commands.Admin;
+[Command("giveeffect", true)]
 
 public class GiveEffectCommand : ICommand<Aisling>
 {
