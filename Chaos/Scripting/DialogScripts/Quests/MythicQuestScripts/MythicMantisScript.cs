@@ -201,12 +201,12 @@ public class MythicMantisScript : DialogScriptBase
                 if (mantis == MythicMantis.BossStarted)
                 {
                     Subject.Text =
-                        "Did you find Apple Jack? Is it done?";
+                        "Did you find that red wasp, Carolina? Is she dead?";
 
                     var option = new DialogOption
                     {
                         DialogKey = "mantis_boss2",
-                        OptionText = "I carried out what was asked of me."
+                        OptionText = "She is."
                     };
 
                     if (!Subject.HasOption(option))
@@ -218,7 +218,7 @@ public class MythicMantisScript : DialogScriptBase
                 if (mantis == MythicMantis.BossDefeated)
                 {
 
-                    Subject.Text = "Thank you again Aisling for your help. We are winning our fight.";
+                    Subject.Text = "My Colony is eating well, nothing to worry about. Thank you again Aisling for taking care of that wasp. We have no troubles these days.";
                 }
 
                 break;
@@ -355,7 +355,7 @@ public class MythicMantisScript : DialogScriptBase
                     && (hasBee == bee is MythicBee.Allied or MythicBee.BossStarted or MythicBee.BossDefeated))
                 {
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = " ";
+                    Subject.Text = $"Welcome to the Colony {source.Name}. I always knew you were strong enough to be one of us, you will fit in well.";
                     source.Trackers.Enums.Set(MythicMantis.EnemyAllied);
 
                     return;

@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
@@ -13,6 +14,26 @@ public class EquipmentScript : ConfigurableItemScriptBase
     public override void OnUse(Aisling source)
     {
         var template = Subject.Template;
+
+        if (template.TemplateKey.ContainsI("magus"))
+        {
+            if (source.SkillBook["wieldmagusstaff"] != null)
+            {
+                source.Equip(template.EquipmentType, Subject);
+
+                return;
+            }
+        }
+        
+        if (template.TemplateKey.ContainsI("holy"))
+        {
+            if (source.SkillBook["wieldholystaff"] != null)
+            {
+                source.Equip(template.EquipmentType, Subject);
+
+                return;
+            }
+        }
 
         if (template.EquipmentType == EquipmentType.NotEquipment)
         {

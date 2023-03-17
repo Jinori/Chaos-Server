@@ -3,10 +3,12 @@ using Chaos.Collections.Common;
 using Chaos.CommandInterceptor;
 using Chaos.CommandInterceptor.Abstractions;
 using Chaos.Extensions.Common;
+using Chaos.Formulae;
 using Chaos.Networking.Abstractions;
 using Chaos.Objects.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Discord;
 
 namespace Chaos.Commands;
 
@@ -25,10 +27,17 @@ public class GiveExpCommand : ICommand<Aisling>
     /// <inheritdoc />
     public ValueTask ExecuteAsync(Aisling source, ArgumentCollection args)
     {
+        var tnl = source.UserStatSheet.ToNextLevel;
+        
+        
         if (args.TryGetNext<int>(out var amount))
         {
             source.SendOrangeBarMessage($"You gave yourself {amount} exp");
             ExperienceDistributionScript.GiveExp(source, amount);
+            
+        } else
+        {
+            ExperienceDistributionScript.GiveExp(source, tnl);
 
             return default;
         }
