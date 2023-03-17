@@ -26,7 +26,8 @@ public enum Status : ulong
     ChiBlocker = 1 << 10,
     Pramh = 1 << 11,
     DetectTraps = 1 << 12,
-    Blind = 1 << 13
+    Blind = 1 << 13,
+    EarthenStance = 1 << 14
     //add more statuses here, double each time
 }
 

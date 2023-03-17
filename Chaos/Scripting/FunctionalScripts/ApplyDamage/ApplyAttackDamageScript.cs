@@ -1,4 +1,6 @@
 using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
+using Chaos.Definitions;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
 using Chaos.Objects.World;
@@ -36,6 +38,33 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
         switch (target)
         {
             case Aisling aisling:
+                if (aisling.Status.HasFlag(Status.AsgallFaileas) && Randomizer.RollChance(70) || aisling.Status.HasFlag(Status.EarthenStance) && Randomizer.RollChance(20))
+                {
+                    switch (source)
+                    {
+                        case Aisling sourceAisling:
+                        {
+                            sourceAisling.StatSheet.SubtractHp(damage);
+                            sourceAisling.Client.SendAttributes(StatUpdateType.Vitality);   
+                            sourceAisling.ShowHealth();
+                            sourceAisling.Script.OnAttacked(target, damage);
+                            if (!sourceAisling.IsAlive)
+                                sourceAisling.Script.OnDeath(target);
+                            break;
+                        }
+                        case Monster monster:
+                        {
+                            monster.StatSheet.SubtractHp(damage);
+                            monster.ShowHealth();
+                            monster.Script.OnAttacked(target, damage);
+                            if (!monster.IsAlive)
+                                monster.Script.OnDeath();
+                            break;
+                        }
+                    }
+
+                    return;
+                }
                 aisling.StatSheet.SubtractHp(damage);
                 aisling.Client.SendAttributes(StatUpdateType.Vitality);
                 aisling.ShowHealth();
@@ -46,6 +75,33 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
 
                 break;
             case Monster monster:
+                if (monster.Status.HasFlag(Status.AsgallFaileas) && Randomizer.RollChance(70) || monster.Status.HasFlag(Status.EarthenStance) && Randomizer.RollChance(20))
+                {
+                    switch (source)
+                    {
+                        case Aisling sourceAisling:
+                        {
+                            sourceAisling.StatSheet.SubtractHp(damage);
+                            sourceAisling.Client.SendAttributes(StatUpdateType.Vitality);   
+                            sourceAisling.ShowHealth();
+                            sourceAisling.Script.OnAttacked(target, damage);
+                            if (!sourceAisling.IsAlive)
+                                sourceAisling.Script.OnDeath(target);
+                            break;
+                        }
+                        case Monster mob:
+                        {
+                            mob.StatSheet.SubtractHp(damage);
+                            mob.ShowHealth();
+                            mob.Script.OnAttacked(target, damage);
+                            if (!mob.IsAlive)
+                                mob.Script.OnDeath();
+                            break;
+                        }
+                    }
+
+                    return;
+                }
                 monster.StatSheet.SubtractHp(damage);
                 monster.ShowHealth();
                 monster.Script.OnAttacked(source, damage);

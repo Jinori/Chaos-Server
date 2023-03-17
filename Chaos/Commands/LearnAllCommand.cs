@@ -11,13 +11,13 @@ namespace Chaos.Commands;
 [Command("learnall")]
 public class LearnAllCommand : ICommand<Aisling>
 {
-    private readonly ISkillFactory SkillFactory;
-    private readonly ISpellFactory SpellFactory;
+    private readonly ISkillFactory _skillFactory;
+    private readonly ISpellFactory _spellFactory;
 
     public LearnAllCommand(ISpellFactory spellFactory, ISkillFactory skillFactory)
     {
-        SpellFactory = spellFactory;
-        SkillFactory = skillFactory;
+        _spellFactory = spellFactory;
+        _skillFactory = skillFactory;
     }
     
     #region SkillSpellList
@@ -81,60 +81,60 @@ public class LearnAllCommand : ICommand<Aisling>
             case BaseClass.Warrior:
                 foreach (var Skill in _warriorSkills)
                 {
-                    var temp = SkillFactory.Create(Skill);
+                    var temp = _skillFactory.Create(Skill);
                     source.SkillBook.TryAddToNextSlot(temp);
                 }
                 foreach (var Spell in _warriorSpells)
                 {
-                    var temp = SpellFactory.Create(Spell);
+                    var temp = _spellFactory.Create(Spell);
                     source.SpellBook.TryAddToNextSlot(temp);
                 }
                 break;
             case BaseClass.Rogue:
                 foreach (var rogueSkill in _rogueSkills)
                 {
-                    var temp = SkillFactory.Create(rogueSkill);
+                    var temp = _skillFactory.Create(rogueSkill);
                     source.SkillBook.TryAddToNextSlot(temp);
                 }
                 foreach (var rogueSpell in _rogueSpells)
                 {
-                    var temp = SpellFactory.Create(rogueSpell);
+                    var temp = _spellFactory.Create(rogueSpell);
                     source.SpellBook.TryAddToNextSlot(temp);
                 }
                 break;
             case BaseClass.Wizard:
                 foreach (var Skill in _wizardSkills)
                 {
-                    var temp = SkillFactory.Create(Skill);
+                    var temp = _skillFactory.Create(Skill);
                     source.SkillBook.TryAddToNextSlot(temp);
                 }
                 foreach (var Spell in _wizardSpells)
                 {
-                    var temp = SpellFactory.Create(Spell);
+                    var temp = _spellFactory.Create(Spell);
                     source.SpellBook.TryAddToNextSlot(temp);
                 }
                 break;
             case BaseClass.Priest:
                 foreach (var Skill in _priestSkills)
                 {
-                    var temp = SkillFactory.Create(Skill);
+                    var temp = _skillFactory.Create(Skill);
                     source.SkillBook.TryAddToNextSlot(temp);
                 }
                 foreach (var Spell in _priestSpells)
                 {
-                    var temp = SpellFactory.Create(Spell);
+                    var temp = _spellFactory.Create(Spell);
                     source.SpellBook.TryAddToNextSlot(temp);
                 }
                 break;
             case BaseClass.Monk:
                 foreach (var Skill in _monkSkills)
                 {
-                    var temp = SkillFactory.Create(Skill);
+                    var temp = _skillFactory.Create(Skill);
                     source.SkillBook.TryAddToNextSlot(temp);
                 }
                 foreach (var Spell in _monkSpells)
                 {
-                    var temp = SpellFactory.Create(Spell);
+                    var temp = _spellFactory.Create(Spell);
                     source.SpellBook.TryAddToNextSlot(temp);
                 }
                 break;
