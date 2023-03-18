@@ -27,7 +27,8 @@ public enum Status : ulong
     Pramh = 1 << 11,
     DetectTraps = 1 << 12,
     Blind = 1 << 13,
-    EarthenStance = 1 << 14
+    EarthenStance = 1 << 14,
+    MistStance = 1 << 15
     //add more statuses here, double each time
 }
 

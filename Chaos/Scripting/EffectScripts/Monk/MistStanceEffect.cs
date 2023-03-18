@@ -6,10 +6,10 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Monk;
 
-public class EarthenStanceEffect : EffectBase
+public class MistStanceEffect : EffectBase
 {
     public override byte Icon => 54;
-    public override string Name => "earthenstance";
+    public override string Name => "miststance";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(15);
 
@@ -17,22 +17,22 @@ public class EarthenStanceEffect : EffectBase
     {
         base.OnApplied();
 
-        if (!Subject.Status.HasFlag(Status.EarthenStance))
-            Subject.Status = Status.EarthenStance;
+        if (!Subject.Status.HasFlag(Status.MistStance))
+            Subject.Status = Status.MistStance;
         
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Gaea protects your body, surrounding you in stone.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A heavy, soothing mist envelops your body.");
     }
 
     public override void OnDispelled() => OnTerminated();
 
     public override void OnTerminated()
     {
-        if (Subject.Status.HasFlag(Status.EarthenStance))
-            Subject.Status &= ~Status.EarthenStance;
+        if (Subject.Status.HasFlag(Status.MistStance))
+            Subject.Status &= ~Status.MistStance;
 
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The pebbles and rock flow from your body.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The mist rolls off your body.");
     }
 
     public override bool ShouldApply(Creature source, Creature target)
@@ -44,7 +44,7 @@ public class EarthenStanceEffect : EffectBase
             return false;
         }
 
-        if (target.Effects.Contains("earthenstance"))
+        if (target.Effects.Contains("miststance"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");
 
