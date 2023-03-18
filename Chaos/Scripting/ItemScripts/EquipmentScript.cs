@@ -15,23 +15,29 @@ public class EquipmentScript : ConfigurableItemScriptBase
     {
         var template = Subject.Template;
 
-        if (template.TemplateKey.ContainsI("magus"))
+        if (template.Category.Contains("Staff"))
         {
-            if (source.SkillBook["wieldmagusstaff"] != null)
+            if (template.TemplateKey.ContainsI("magus"))
             {
-                source.Equip(template.EquipmentType, Subject);
+                if (source.SkillBook.Contains("wieldmagusstaff"))
+                {
+                    source.Equip(template.EquipmentType, Subject);
 
-                return;
-            }
+                    return;
+                }
+            } 
         }
-        
-        if (template.TemplateKey.ContainsI("holy"))
-        {
-            if (source.SkillBook["wieldholystaff"] != null)
-            {
-                source.Equip(template.EquipmentType, Subject);
 
-                return;
+        if (template.Category.Contains("Staff"))
+        {
+            if (template.TemplateKey.ContainsI("holy"))
+            {
+                if (source.SkillBook.Contains("wieldholystaff"))
+                {
+                    source.Equip(template.EquipmentType, Subject);
+
+                    return;
+                }
             }
         }
 
