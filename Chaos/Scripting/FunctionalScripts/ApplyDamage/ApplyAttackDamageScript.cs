@@ -1,11 +1,13 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Data;
 using Chaos.Definitions;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.Abstractions;
+using Chaos.Scripting.Components;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 
 namespace Chaos.Scripting.FunctionalScripts.ApplyDamage;
@@ -15,7 +17,17 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
     public IDamageFormula DamageFormula { get; set; }
     public static string Key { get; } = GetScriptKey(typeof(ApplyAttackDamageScript));
 
-    public ApplyAttackDamageScript() => DamageFormula = DamageFormulae.Default;
+    private Animation MistHeal { get; } = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 9
+    };
+    
+
+    public ApplyAttackDamageScript()
+    {
+        DamageFormula = DamageFormulae.Default;
+    }
 
     public virtual void ApplyDamage(
         Creature source,
@@ -70,6 +82,23 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
                 aisling.ShowHealth();
                 aisling.Script.OnAttacked(source, damage);
 
+                if (aisling.Status.HasFlag(Status.MistStance))
+                {
+                    var result = damage * .15m;
+                    if (aisling.Group is not null)
+                    {
+                        foreach (var person in aisling.Group)
+                        {
+                            person.Animate(MistHeal, person.Id);
+                            person.ApplyHealing(aisling, (int)result);
+                        }
+                    }
+                    else
+                    {
+                        aisling.Animate(MistHeal, aisling.Id);
+                        aisling.ApplyHealing(aisling, (int)result);
+                    }
+                }
                 if (!aisling.IsAlive)
                     aisling.Script.OnDeath(source);
 
@@ -106,6 +135,12 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
                 monster.ShowHealth();
                 monster.Script.OnAttacked(source, damage);
 
+                if (monster.Status.HasFlag(Status.MistStance))
+                {
+                    var result = damage * .15m;
+                    monster.Animate(MistHeal, monster.Id);
+                    monster.ApplyHealing(monster, (int)result);
+                }
                 if (!monster.IsAlive)
                     monster.Script.OnDeath();
 
