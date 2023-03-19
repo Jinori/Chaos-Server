@@ -1,0 +1,44 @@
+using Chaos.Definitions;
+using Chaos.Extensions.Common;
+using Chaos.Objects.World;
+using Chaos.Objects.World.Abstractions;
+using Chaos.Scripting.ReactorTileScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
+
+namespace Chaos.Scripting.ReactorTileScripts.GatheringScripts.Wilderness.Roses;
+
+
+public class GatherWhiteRose3Script : ReactorTileScriptBase
+{
+    private readonly IDialogFactory DialogFactory;
+    private readonly IItemFactory ItemFactory;
+
+    /// <inheritdoc />
+    public GatherWhiteRose3Script(ReactorTile subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
+        : base(subject)
+    {
+        ItemFactory = itemFactory;
+        DialogFactory = dialogFactory;
+    }
+    /// <inheritdoc />
+    public override void OnWalkedOn(Creature source)
+    {
+        if (source is not Aisling aisling)
+            return;
+
+        if (aisling.Trackers.TimedEvents.HasActiveEvent("whiterose3cd", out var timedEvent))
+        {
+            aisling.SendOrangeBarMessage($"You can pick another White Rose in {timedEvent.Remaining.ToReadableString()}");
+
+            return;
+        }
+
+        var whiterose = ItemFactory.Create("whiterose");
+        var dialog = DialogFactory.Create("wildernesswhiterose", whiterose);
+        dialog.Display(aisling);
+        aisling.TryGiveItem(whiterose);
+        aisling.SendOrangeBarMessage("You found a White Rose.");
+        aisling.Trackers.TimedEvents.AddEvent("whiterose3cd", TimeSpan.FromHours(24), true);
+
+    }
+}
