@@ -9,6 +9,7 @@ using Chaos.Objects.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
@@ -18,12 +19,14 @@ public class SickChildScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; set; }
+    private readonly IMerchantFactory MerchantFactory;
 
     /// <inheritdoc />
-    public SickChildScript(Dialog subject, IItemFactory itemFactory)
+    public SickChildScript(Dialog subject, IItemFactory itemFactory, IMerchantFactory merchantFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;
+        MerchantFactory = merchantFactory;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
@@ -407,7 +410,7 @@ public class SickChildScript : DialogScriptBase
                               "Cured the Sick Child of Loures.",
                               "SickChild",
                               MarkIcon.Heart,
-                              MarkColor.White,
+                              MarkColor.Blue,
                               1,
                               GameTime.Now));
                     Subject.Text = "Thank you! With this we will be able to create the cure to save the princess! Please accept this reward in the name of the King.";
@@ -423,7 +426,7 @@ public class SickChildScript : DialogScriptBase
                     var option = new DialogOption
                     {
                         DialogKey = "blackrose2",
-                        OptionText = "Lets give it a shot."
+                        OptionText = "Let's give it a shot."
                     };
 
                     if (!Subject.HasOption(option))
@@ -461,7 +464,7 @@ public class SickChildScript : DialogScriptBase
                         return;
                     }
                     
-                        Subject.Text = "This was a mistake. Oh god what have we done!";
+                    Subject.Text = "This was a mistake. Oh god what have we done!";
                     source.Trackers.Enums.Set(SickChildStage.BlackRoseTurn);
 
                     var option2 = new DialogOption
@@ -483,6 +486,7 @@ public class SickChildScript : DialogScriptBase
                     source.Trackers.Enums.Set(SickChildStage.SickChildKilled);
                     ExperienceDistributionScript.GiveExp(source, 200000);
                     source.TryGiveGamePoints(5);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"5 Gamepoints and 200000 Exp Rewarded!");
                     source.SendOrangeBarMessage("The princess is dead...");
                     source.Legend.AddOrAccumulate(
                            new LegendMark(
@@ -493,6 +497,46 @@ public class SickChildScript : DialogScriptBase
                                1,
                                GameTime.Now));
                 }
+                break;
+
+            case "whiterosewait1":
+            {
+                var blank = MerchantFactory.Create("blank_merchant", source.MapInstance, new Point(2, 2));
+
+                Subject.SourceEntity = blank;
+
+            }
+
+                break;
+            
+            case "whiterosewait5":
+            {
+                var paulin = MerchantFactory.Create("paulin", source.MapInstance, new Point(2, 2));
+
+                Subject.SourceEntity = paulin;
+
+            }
+
+                break;
+            
+            case "whiterose2wait1":
+            {
+                var blank = MerchantFactory.Create("blank_merchant", source.MapInstance, new Point(2, 2));
+
+                Subject.SourceEntity = blank;
+
+            }
+
+                break;
+            
+            case "whiterose2wait3":
+            {
+                var paulin = MerchantFactory.Create("paulin", source.MapInstance, new Point(2, 2));
+
+                Subject.SourceEntity = paulin;
+
+            }
+
                 break;
         }
     }
