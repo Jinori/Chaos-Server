@@ -72,6 +72,12 @@ public class PFQuestMerchant : MerchantScriptBase
                     return;
 
                 var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
+                
+                if (!hasStage || (stage == PFQuestStage.None))
+                {
+                    var dialog = DialogFactory.Create("bertil_pf", Subject);
+                    dialog.Display(aisling);
+                }
 
                 switch (stage)
                 {
@@ -89,6 +95,197 @@ public class PFQuestMerchant : MerchantScriptBase
 
                         break;
                     }
+                }
+
+                break;
+            }
+
+            case "alvar":
+            {
+                if (source is not Aisling aisling)
+                    return;
+
+                if (aisling.UserStatSheet.Level is <= 10 or >= 42)
+                    return;
+
+                if (!message.EqualsI("Porte Forest"))
+                    return;
+
+                var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
+
+                if (!hasStage || (stage == PFQuestStage.None))
+                {
+                    var dialog = DialogFactory.Create("alvar_pf", Subject);
+                    dialog.Display(aisling);
+                }
+            }
+
+                break;
+
+            case "berg":
+            {
+                if (source is not Aisling aisling)
+                    return;
+
+                if (aisling.UserStatSheet.Level is <= 10 or >= 42)
+                    return;
+
+                if (!message.EqualsI("Porte Forest"))
+                    return;
+
+                var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
+
+                if (!hasStage || (stage == PFQuestStage.None))
+                {
+                    var dialog = DialogFactory.Create("berg_pf", Subject);
+                    dialog.Display(aisling);
+                }
+
+                break;
+            }
+            case "eeva":
+            {
+                if (source is not Aisling aisling)
+                    return;
+
+                if (aisling.UserStatSheet.Level is <= 10 or >= 42)
+                    return;
+
+                if (!message.EqualsI("Porte Forest"))
+                    return;
+
+                var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
+
+                if (!hasStage || (stage == PFQuestStage.None))
+                {
+                    var dialog = DialogFactory.Create("eeva_pf", Subject);
+                    dialog.Display(aisling);
+                }
+
+                break;
+            }
+            case "fisk":
+            {
+                if (source is not Aisling aisling)
+                    return;
+
+                if (aisling.UserStatSheet.Level is <= 10 or >= 42)
+                    return;
+
+                if (!message.EqualsI("Porte Forest"))
+                    return;
+
+                var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
+
+                if (!hasStage || (stage == PFQuestStage.None))
+                {
+                    var dialog = DialogFactory.Create("fisk_pf", Subject);
+                    dialog.Display(aisling);
+                }
+
+                break;
+            }
+            case "goran":
+            {
+                if (source is not Aisling aisling)
+                    return;
+
+                if (aisling.UserStatSheet.Level is <= 10 or >= 42)
+                    return;
+
+                if (!message.EqualsI("Porte Forest"))
+                    return;
+
+                var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
+
+                if (!hasStage || (stage == PFQuestStage.None))
+                {
+                    var dialog = DialogFactory.Create("goran_pf", Subject);
+                    dialog.Display(aisling);
+                }
+
+                break;
+            }
+            case "gudny":
+            {
+                if (source is not Aisling aisling)
+                    return;
+
+                if (aisling.UserStatSheet.Level is <= 10 or >= 42)
+                    return;
+
+                if (!message.EqualsI("Porte Forest"))
+                    return;
+
+                var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
+
+                if (!hasStage || (stage == PFQuestStage.None))
+                {
+                    var dialog = DialogFactory.Create("gudny_pf", Subject);
+                    dialog.Display(aisling);
+                }
+
+                break;
+            }
+            case "hadrian":
+            {
+                if (source is not Aisling aisling)
+                    return;
+
+                if (aisling.UserStatSheet.Level is <= 10 or >= 42)
+                    return;
+
+                if (!message.EqualsI("Porte Forest"))
+                    return;
+
+                var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
+
+                if (!hasStage || (stage == PFQuestStage.None))
+                {
+                    var dialog = DialogFactory.Create("hadrian_pf", Subject);
+                    dialog.Display(aisling);
+                }
+
+                break;
+            }
+            case "valdemar":
+            {
+                if (source is not Aisling aisling)
+                    return;
+
+                if (aisling.UserStatSheet.Level is <= 10 or >= 42)
+                    return;
+
+                if (!message.EqualsI("Porte Forest"))
+                    return;
+
+                var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
+
+                if (!hasStage || (stage == PFQuestStage.None))
+                {
+                    var dialog = DialogFactory.Create("valdemar_pf", Subject);
+                    dialog.Display(aisling);
+                }
+
+                break;
+            }
+            case "viveka":
+            {
+                if (source is not Aisling aisling)
+                    return;
+
+                if (aisling.UserStatSheet.Level is <= 10 or >= 42)
+                    return;
+
+                if (!message.EqualsI("Porte Forest"))
+                    return;
+
+                var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
+
+                if (!hasStage || (stage == PFQuestStage.None))
+                {
+                    var dialog = DialogFactory.Create("viveka_pf", Subject);
+                    dialog.Display(aisling);
                 }
 
                 break;
