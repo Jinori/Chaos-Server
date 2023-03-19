@@ -7,14 +7,15 @@ using Chaos.Formulae.Abstractions;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.Abstractions;
-using Chaos.Scripting.Components;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.FunctionalScripts.ApplyDamage;
 
 public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
 {
     public IDamageFormula DamageFormula { get; set; }
+    protected readonly IEffectFactory EffectFactory;
     public static string Key { get; } = GetScriptKey(typeof(ApplyAttackDamageScript));
 
     private Animation MistHeal { get; } = new()
@@ -24,9 +25,10 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
     };
     
 
-    public ApplyAttackDamageScript()
+    public ApplyAttackDamageScript(IEffectFactory effectFactory)
     {
         DamageFormula = DamageFormulae.Default;
+        EffectFactory = effectFactory;
     }
 
     public virtual void ApplyDamage(
@@ -82,6 +84,21 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
                 aisling.ShowHealth();
                 aisling.Script.OnAttacked(source, damage);
 
+                if (aisling.Status.HasFlag(Status.ThunderStance))
+                {
+                    var result = damage * 3;
+                    switch (source)
+                    {
+                        case Monster monster:
+                            if (Randomizer.RollChance(2))
+                            {
+                                var effect = EffectFactory.Create("Suain");
+                                monster.Effects.Apply(target, effect);
+                            }
+                            monster.AggroList.AddOrUpdate(target.Id, _ => result, (_, currentAggro) => currentAggro + result);
+                            break;
+                    }
+                }
                 if (aisling.Status.HasFlag(Status.MistStance))
                 {
                     var result = damage * .15m;
