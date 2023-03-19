@@ -11,15 +11,24 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class DyeClassArmorsScript : DialogScriptBase
 {
-    private readonly IItemFactory ItemFactory;
+    private readonly IItemFactory _itemFactory;
     private Item? Item { get; set; }
     private MapInstance? MapInstance { get; set; }
-    public InputCollector InputCollector { get; }
+    private InputCollector InputCollector { get; }
 
+    private readonly List<string> _dyeAbleClassArmors = new List<string>()
+    {
+        "earthbodice", "lotusbodice", "moonbodice", "lightninggarb", "seagarb", "dobok", "culotte", "earthgarb", "windgarb", "mountaingarb",
+        "gorgetgown", "mysticgown", "elle", "dolman", "bansagart", "cowl", "galuchatcoat", "mantle", "hierophant", "dalmatica",
+        "cotte", "brigandine", "corsette", "pebblerose", "kagum", "scoutleather", "dwarvishleather", "paluten", "keaton", "bardocle",
+        "leatherbliaut", "cuirass", "cotehardie", "kasmaniumhauberk", "labyrinthmail", "leathertunic", "jupe", "lorica", "chainmail", "platemail",
+        "magiskirt", "benusta", "stoller", "clymouth", "clamyth", "gardcorp", "journeyman", "lorum", "mane", "duinuasal"
+    };
+    
     public DyeClassArmorsScript(Dialog subject, IItemFactory itemFactory)
         : base(subject)
     {
-        ItemFactory = itemFactory;
+        _itemFactory = itemFactory;
 
         var requestOptionText = DialogString.From(() => $"I can dye your {Item?.DisplayName}. Would you like to continue?");
 
@@ -46,7 +55,7 @@ public class DyeClassArmorsScript : DialogScriptBase
                         return false;
                     }
 
-                    var newArmor = ItemFactory.Create("mileth" + Item.Template.TemplateKey);
+                    var newArmor = _itemFactory.Create("mileth" + Item.Template.TemplateKey);
                     source.Inventory.Remove(Item.Template.Name);
                     source.Inventory.RemoveQuantity("Mileth Armor Dye", 1);
                     source.Inventory.TryAddToNextSlot(newArmor);
@@ -65,7 +74,7 @@ public class DyeClassArmorsScript : DialogScriptBase
                         return false;
                     }
 
-                    var newArmor = ItemFactory.Create("rucesion" + Item.Template.TemplateKey);
+                    var newArmor = _itemFactory.Create("rucesion" + Item.Template.TemplateKey);
                     source.Inventory.Remove(Item.Template.Name);
                     source.Inventory.RemoveQuantity("Rucesion Armor Dye", 1);
                     source.Inventory.TryAddToNextSlot(newArmor);
@@ -84,7 +93,7 @@ public class DyeClassArmorsScript : DialogScriptBase
                         return false;
                     }
 
-                    var newArmor = ItemFactory.Create("suomi" + Item.Template.TemplateKey);
+                    var newArmor = _itemFactory.Create("suomi" + Item.Template.TemplateKey);
                     source.Inventory.Remove(Item.Template.Name);
                     source.Inventory.RemoveQuantity("Suomi Armor Dye", 1);
                     source.Inventory.TryAddToNextSlot(newArmor);
@@ -103,7 +112,7 @@ public class DyeClassArmorsScript : DialogScriptBase
                         return false;
                     }
 
-                    var newArmor = ItemFactory.Create("loures" + Item.Template.TemplateKey);
+                    var newArmor = _itemFactory.Create("loures" + Item.Template.TemplateKey);
                     source.Inventory.Remove(Item.Template.Name);
                     source.Inventory.RemoveQuantity("Loures Armor Dye", 1);
                     source.Inventory.TryAddToNextSlot(newArmor);
@@ -123,7 +132,7 @@ public class DyeClassArmorsScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         MapInstance = source.MapInstance;
-        var inventory = source.Inventory.Where(x => x.Template.IsDyeable).ToList();
+        var inventory = source.Inventory.Where(x => _dyeAbleClassArmors.Contains(x.Template.TemplateKey)).ToList();
 
         if (Subject.Slots.IsNullOrEmpty())
             Subject.Slots = inventory.Select(x => x.Slot).ToList();
