@@ -350,9 +350,13 @@ public enum SickChildStage
 {
     None = 0,
     WhiteRose = 1,
-    WhiteRose2 = 2,
-    GoldRose = 3,
-    BlackRose = 4,
-    SickChildComplete = 5,
-    SickChildKilled = 6,
+    WhiteRose1Turn = 2,
+    WhiteRose2 = 3,
+    WhiteRose2Turn = 4,
+    GoldRose = 5,
+    GoldRoseTurn = 6,
+    BlackRose = 7,
+    BlackRoseTurn = 8,
+    SickChildComplete = 9,
+    SickChildKilled = 10,
 }

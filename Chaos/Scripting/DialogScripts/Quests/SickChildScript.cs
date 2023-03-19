@@ -40,14 +40,13 @@ public class SickChildScript : DialogScriptBase
                     if ((!hasStage) || (stage == SickChildStage.None))
                     {
                         if (source.UserStatSheet.Level is <= 10 or >= 52)
-                        {
                             return;
-                        }
+                        Subject.Text = "Excuse me, aisling! I require your assistance. The princess is gravely ill, and we need to find a cure quickly. I've been informed that a white rose is said to have magical healing properties that could help her. Unfortunately, I am unable to leave my post. Will you aid us in finding this flower?";
 
                         var option = new DialogOption
                         {
-                            DialogKey = "paulin_quest1",
-                            OptionText = "What can I do?"
+                            DialogKey = "Whiterose1-1",
+                            OptionText = "Where can I find this flower?"
                         };
 
                         if (!Subject.HasOption(option))
@@ -63,7 +62,7 @@ public class SickChildScript : DialogScriptBase
 
                         var option = new DialogOption
                         {
-                            DialogKey = "whiterose1-1",
+                            DialogKey = "whiterose1-3",
                             OptionText = "Yes. Here you go."
                         };
                         if (!Subject.HasOption(option))
@@ -81,13 +80,36 @@ public class SickChildScript : DialogScriptBase
                         }
                         var option2 = new DialogOption
                         {
-                            DialogKey = "whiterose1_no",
+                            DialogKey = "close",
                             OptionText = "No, Not yet."
                         };
 
                         if (!Subject.HasOption(option2))
                             Subject.Options.Add(option2);
 
+                    }
+
+                    if (stage == SickChildStage.WhiteRose1Turn)
+                    {
+                        Subject.Text = "Paulin hasn't returned yet.";
+
+                        var option1 = new DialogOption
+                        {
+                            DialogKey = "whiterosewait1",
+                            OptionText = "Wait for Paulin to return."
+                        };
+
+                        if (!Subject.HasOption(option1))
+                            Subject.Options.Add(option1);
+
+                        var option2 = new DialogOption
+                        {
+                            DialogKey = "close",
+                            OptionText = "Leave."
+                        };
+
+                        if (!Subject.HasOption(option2))
+                            Subject.Options.Add(option2);
                     }
 
 
@@ -97,7 +119,7 @@ public class SickChildScript : DialogScriptBase
 
                         var option = new DialogOption
                         {
-                            DialogKey = "whiterose2-1",
+                            DialogKey = "whiterose2-3",
                             OptionText = "Yes. Here you go."
                         };
                         if (!Subject.HasOption(option))
@@ -115,23 +137,69 @@ public class SickChildScript : DialogScriptBase
                         }
                         var option2 = new DialogOption
                         {
-                            DialogKey = "whiterose1_no",
+                            DialogKey = "close",
                             OptionText = "No, Not yet."
                         };
 
                         if (!Subject.HasOption(option2))
                             Subject.Options.Add(option2);
 
+                    }
+
+                    if (stage == SickChildStage.WhiteRose2Turn)
+                    {
+                        Subject.Text = "Paulin hasn't returned yet.";
+
+                        var option1 = new DialogOption
+                        {
+                            DialogKey = "whiterose2wait1",
+                            OptionText = "Wait for Paulin to return."
+                        };
+
+                        if (!Subject.HasOption(option1))
+                            Subject.Options.Add(option1);
+
+                        var option2 = new DialogOption
+                        {
+                            DialogKey = "close",
+                            OptionText = "Leave."
+                        };
+
+                        if (!Subject.HasOption(option2))
+                            Subject.Options.Add(option2);
+                    }
+
+                    if (stage == SickChildStage.BlackRoseTurn)
+                    {
+                        Subject.Text = "What have we done...";
+
+                        var option1 = new DialogOption
+                        {
+                            DialogKey = "blackrose2-1",
+                            OptionText = "What happened?"
+                        };
+
+                        if (!Subject.HasOption(option1))
+                            Subject.Options.Add(option1);
+
+                        var option2 = new DialogOption
+                        {
+                            DialogKey = "close",
+                            OptionText = "Leave."
+                        };
+
+                        if (!Subject.HasOption(option2))
+                            Subject.Options.Add(option2);
                     }
 
                     if (stage == SickChildStage.GoldRose)
                     {
-                        Subject.Text = "Do you have the Gold Rose?";
+                        Subject.Text = "Were you able to find a Gold Rose?";
 
                         var option = new DialogOption
                         {
-                            DialogKey = "goldrose1",
-                            OptionText = "Yes. Here you go."
+                            DialogKey = "goldrose1-3",
+                            OptionText = "Yes. Here it is."
                         };
 
                         if (!Subject.HasOption(option))
@@ -149,7 +217,7 @@ public class SickChildScript : DialogScriptBase
                         }
                         var option2 = new DialogOption
                         {
-                            DialogKey = "whiterose1_no",
+                            DialogKey = "close",
                             OptionText = "No, Not yet."
                         };
 
@@ -158,16 +226,16 @@ public class SickChildScript : DialogScriptBase
 
                     }
 
-                    if ((!hasStage) || (stage == SickChildStage.SickChildComplete))
+                    if (stage == SickChildStage.SickChildComplete)
                     {
 
-                        Subject.Text = "Thank you again for helping cure the princess";
+                        Subject.Text = "Thank you again for helping cure the princess.";
 
                         return;
 
                     }
 
-                    if ((!hasStage) || (stage == SickChildStage.SickChildKilled))
+                    if (stage == SickChildStage.SickChildKilled)
                     {
 
                         Subject.Text = "Long live the princess...";
@@ -178,142 +246,243 @@ public class SickChildScript : DialogScriptBase
                 }
                 break;
 
-            case "paulin_quest2":
-                if (!hasStage || (stage == SickChildStage.None))
+            case "whiterose1-1":
                 {
-                    source.Trackers.Enums.Set(SickChildStage.WhiteRose);
+                    Subject.Text = "According to legend, the white rose only blooms in a gardens deep within the Wilderness. Are you still willing to help?";
+
+                    var option = new DialogOption
+                    {
+                        DialogKey = "whiterose1-2",
+                        OptionText = "Yes, I'll help."
+                    };
+
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Add(option);
+
                 }
                 break;
 
-            case "whiterose1-1":
+            case "whiterose1-2":
                 {
-                    if (stage == SickChildStage.WhiteRose)
-                    {
-
-                        if (!source.Inventory.HasCount("white rose", 1))
-                        {
-                            Subject.Text = "Where is it?";
-
-                            var option = new DialogOption
-                            {
-                                DialogKey = "Close",
-                                OptionText = "Be right back."
-                            };
-
-                            if (!Subject.HasOption(option))
-                                Subject.Options.Insert(0, option);
-
-                            source.SendOrangeBarMessage("You do not have a rose.");
-
-                            return;
-                        }
-                        source.Inventory.RemoveQuantity("white rose", 1);
-                        ExperienceDistributionScript.GiveExp(source, 50000);
-                        source.Trackers.Enums.Set(SickChildStage.WhiteRose2);
-                    }
+                    Subject.Text = "Thank you! Please be careful on your journey. You can get to the Wilderness through Mileth, Abel, or Rucesion.";
+                    Subject.Type = MenuOrDialogType.Normal;
+                    source.Trackers.Enums.Set(SickChildStage.WhiteRose);
+                    source.SendOrangeBarMessage("Go find a White Rose in the Wilderness.");
                 }
+                break;
+
+            case "whiterose1-3":
+                {
+
+                    if (!source.Inventory.Remove("white rose"))
+                    {
+                        Subject.Text = "Where is it?";
+
+                        var option = new DialogOption
+                        {
+                            DialogKey = "Close",
+                            OptionText = "Be right back."
+                        };
+
+                        if (!Subject.HasOption(option))
+                            Subject.Options.Insert(0, option);
+
+                        source.SendOrangeBarMessage("You do not have a rose.");
+
+                        return;
+                    }
+                    ExperienceDistributionScript.GiveExp(source, 50000);
+                    source.Trackers.Enums.Set(SickChildStage.WhiteRose1Turn);
+                    Subject.Text = "Thank you! I need to get this to the healers right away. Please excuse me.";
+                    Subject.NextDialogKey = "whiterosewait1";
+                }
+
                 break;
 
             case "whiterose2-1":
                 {
-                    if (stage == SickChildStage.WhiteRose2)
+
+                    Subject.Text = "It seems to have helped a little but I'm afraid it's not enough. Would you be willing to find another rose?";
+
+                    var option = new DialogOption
                     {
+                        DialogKey = "whiterose2-2",
+                        OptionText = "Of course. Anything for the princess."
+                    };
 
-                        if (!source.Inventory.HasCount("white rose", 1))
-                        {
-                            Subject.Text = "Where is it?";
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Add(option);
+                }
 
-                            var option = new DialogOption
-                            {
-                                DialogKey = "Close",
-                                OptionText = "Be right back."
-                            };
+                break;
 
-                            if (!Subject.HasOption(option))
-                                Subject.Options.Insert(0, option);
+            case "whiterose2-2":
+                {
+                    Subject.Text = "Thank you again. Please return as soon as you can.";
+                    Subject.Type = MenuOrDialogType.Normal;
+                    source.Trackers.Enums.Set(SickChildStage.WhiteRose2);
+                    source.SendOrangeBarMessage("Go find another White Rose in the Wilderness.");
+                }
 
-                            source.SendOrangeBarMessage("You do not have a rose.");
+                break;
 
-                            return;
-                        }
-                        source.Inventory.RemoveQuantity("white rose", 1);
-                        ExperienceDistributionScript.GiveExp(source, 50000);
-                        source.Trackers.Enums.Set(SickChildStage.GoldRose);
-                    }
+            case "whiterose2-3":
+
+                if (!source.Inventory.Remove("white rose"))
+                {
+                    Subject.Text = "Where is it?";
+
+                    var option = new DialogOption
+                    {
+                        DialogKey = "Close",
+                        OptionText = "Be right back."
+                    };
+
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+
+                    source.SendOrangeBarMessage("You do not have a rose.");
+
+                    return;
+                }
+                ExperienceDistributionScript.GiveExp(source, 75000);
+                source.Trackers.Enums.Set(SickChildStage.WhiteRose2Turn);
+                Subject.Text = "Thank you again! Please excuse me while I get this to the healers.";
+                Subject.NextDialogKey = "whiterose2wait1";
+
+                break;
+
+            case "goldrose1-1":
+                {
+
+                    Subject.Text = "To finish the cure we need a Gold Rose. Gold roses are more rare then the white roses are but they can be found around the same area. Please search all the gardens in the Wilderness and find us a gold rose.";
+
+                    var option = new DialogOption
+                    {
+                        DialogKey = "goldrose1-2",
+                        OptionText = "Got it. Be right back."
+                    };
+
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Add(option);
+                }
+
+                break;
+
+            case "goldrose1-2":
+                {
+                    Subject.Text = "Thank you again. Please return as soon as you can.";
+                    Subject.Type = MenuOrDialogType.Normal;
+                    source.Trackers.Enums.Set(SickChildStage.GoldRose);
+                    source.SendOrangeBarMessage("Go find a Gold Rose in the Wilderness.");
                 }
                 break;
 
-            case "goldrose1":
+            case "goldrose1-3":
                 {
-                    if (stage == SickChildStage.GoldRose)
+                    if (!source.Inventory.Remove("gold rose"))
                     {
+                        Subject.Text = "Where is it?";
 
-                        if (!source.Inventory.HasCount("gold rose", 1))
+                        var option = new DialogOption
                         {
-                            Subject.Text = "Where is it?";
+                            DialogKey = "Close",
+                            OptionText = "Be right back."
+                        };
 
-                            var option = new DialogOption
-                            {
-                                DialogKey = "Close",
-                                OptionText = "Be right back."
-                            };
+                        if (!Subject.HasOption(option))
+                            Subject.Options.Insert(0, option);
 
-                            if (!Subject.HasOption(option))
-                                Subject.Options.Insert(0, option);
+                        source.SendOrangeBarMessage("You do not have a Gold Rose.");
 
-                            source.SendOrangeBarMessage("You do not have a rose.");
-
-                            return;
-                        }
-                        source.Inventory.RemoveQuantity("gold rose", 1);
+                        return;
                     }
-                }
-                break;
-
-            case "goldrose2":
-
-                if (!hasStage || (stage == SickChildStage.GoldRose))
-                {
+                    ExperienceDistributionScript.GiveExp(source, 150000);
+                    source.TryGiveGold(20000);
+                    source.TryGiveGamePoints(5);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"5 Gamepoints, 20000 gold, and 150000 Exp Rewarded!");
                     source.Trackers.Enums.Set(SickChildStage.SickChildComplete);
-                    ExperienceDistributionScript.GiveExp(source, 100000);
-                    source.TryGiveGold(25000);
+                    source.Legend.AddOrAccumulate(
+                          new LegendMark(
+                              "Cured the Sick Child of Loures.",
+                              "SickChild",
+                              MarkIcon.Heart,
+                              MarkColor.White,
+                              1,
+                              GameTime.Now));
+                    Subject.Text = "Thank you! With this we will be able to create the cure to save the princess! Please accept this reward in the name of the King.";
+                    Subject.NextDialogKey = "close";
+
+                    break;
+                }
+
+            case "blackrose1":
+                {
+                    Subject.Text = "Hmm this looks like the rose needed but tainted. I'm not sure if this would help or not but at this point we dont have a choice. The princess cannot wait any longer.";
+
+                    var option = new DialogOption
+                    {
+                        DialogKey = "blackrose2",
+                        OptionText = "Lets give it a shot."
+                    };
+
+                    if (!Subject.HasOption(option))
+                        Subject.Options.Insert(0, option);
+
+                    var option2 = new DialogOption
+                    {
+                        DialogKey = "close",
+                        OptionText = "Nevermind."
+                    };
+
+                    if (!Subject.HasOption(option2))
+                        Subject.Options.Add(option2);
                 }
                 break;
 
             case "blackrose2":
+
                 {
-                    if (stage == SickChildStage.WhiteRose || stage == SickChildStage.WhiteRose2 || stage == SickChildStage.GoldRose)
+                    if (!source.Inventory.Remove("black rose"))
                     {
-                        source.Trackers.Enums.Set(SickChildStage.BlackRose);
+                        Subject.Text = "Where is it?";
+
+                        var option = new DialogOption
+                        {
+                            DialogKey = "Close",
+                            OptionText = "Be right back."
+                        };
+
+                        if (!Subject.HasOption(option))
+                            Subject.Options.Insert(0, option);
+
+                        source.SendOrangeBarMessage("You do not have a black rose.");
+
+                        return;
                     }
                     
-                        if (!source.Inventory.HasCount("black rose", 1))
-                        {
-                            Subject.Text = "Where is it?";
+                        Subject.Text = "This was a mistake. Oh god what have we done!";
+                    source.Trackers.Enums.Set(SickChildStage.BlackRoseTurn);
 
-                            var option = new DialogOption
-                            {
-                                DialogKey = "Close",
-                                OptionText = "Be right back."
-                            };
+                    var option2 = new DialogOption
+                    {
+                        DialogKey = "blackrose2-1",
+                        OptionText = "What happened?"
+                    };
 
-                            if (!Subject.HasOption(option))
-                                Subject.Options.Insert(0, option);
-
-                            source.SendOrangeBarMessage("You do not have a rose.");
-
-                            return;
-                        }
-                    
-                    break;
-
+                    if (!Subject.HasOption(option2))
+                        Subject.Options.Add(option2);
                 }
-            case "blackrose6":
+                
 
-                if (!hasStage || (stage == SickChildStage.BlackRose))
+                break;
+
+            case "blackrose3":
                 {
+                    Subject.Text = "Please leave.";
                     source.Trackers.Enums.Set(SickChildStage.SickChildKilled);
-                    ExperienceDistributionScript.GiveExp(source, 250000);
+                    ExperienceDistributionScript.GiveExp(source, 200000);
+                    source.TryGiveGamePoints(5);
                     source.SendOrangeBarMessage("The princess is dead...");
                     source.Legend.AddOrAccumulate(
                            new LegendMark(
