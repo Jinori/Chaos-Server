@@ -1,6 +1,5 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Data;
-using Chaos.Extensions.Common;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -20,14 +19,13 @@ public class ThrowSurigumScript : DamageScript
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
     {
-        //Must be wearing a soori or dagger
-        if (context.SourceAisling?.Equipment[EquipmentSlot.Weapon]?.Slot is not null)
-        {
-            if (context.SourceAisling?.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey.ContainsI("dagger") is false)
-                return;
+        if (context.SourceAisling?.Equipment[EquipmentSlot.Weapon]?.Slot == null) 
+            return;
 
-            var targets = AbilityComponent.Activate<Creature>(context, this);
-            DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
-        }
+        if (context.SourceAisling?.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey.Contains("dagger") != true) 
+            return;
+        
+        var targets = AbilityComponent.Activate<Creature>(context, this);
+        DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
     }
 }

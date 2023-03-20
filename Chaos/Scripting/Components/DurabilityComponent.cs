@@ -9,48 +9,35 @@ namespace Chaos.Scripting.Components;
 
 public class DurabilityComponent
 {
-    public void TryApplyDurability(ActivationContext context, IReadOnlyCollection<Creature> targetEntities, IScript source)
+    public virtual void TryApplyDurability(ActivationContext context, IReadOnlyCollection<Creature> targetEntities, IScript source)
     {
-        if (source is not SubjectiveScriptBase<Skill> skillScript)
-            return;
-
-        if (!skillScript.Subject.Template.IsAssail)
+        if (source is not SubjectiveScriptBase<Skill> skillScript || !skillScript.Subject.Template.IsAssail)
             return;
 
         if (context.Source is Aisling)
         {
-            //Aisling Attacker
             var hasWeapon = context.SourceAisling!.Equipment.TryGetObject(1, out var weapon);
-            if (hasWeapon && (weapon?.CurrentDurability >= 1))
+            if (hasWeapon && weapon?.CurrentDurability >= 1)
                 weapon.CurrentDurability--;
             var hasNecklace = context.SourceAisling!.Equipment.TryGetObject(6, out var necklace);
-            if (hasNecklace && (necklace?.CurrentDurability >= 1))
+            if (hasNecklace && necklace?.CurrentDurability >= 1)
                 necklace.CurrentDurability--;
         }
 
-        //Works but lets clean this up?
-        foreach (var creature in targetEntities)
+        foreach (var aislingTarget in targetEntities)
         {
-            if (creature is not Aisling aisling)
+            if (aislingTarget is not Aisling aisling)
                 continue;
-
             var equipment = aisling.Equipment.Where(x => x.CurrentDurability.HasValue).ToList();
-            //Aisling Defender, Let's hurt everything but weapon, accessories, overcoats
-            foreach (var item in equipment.Where(item => item.Slot is > 1 and < 14))
-            {
-                item.CurrentDurability--;
-            }
-        }
+            foreach (var item in equipment.Where(item => item.Slot is > 1 and < 14)) item.CurrentDurability--;
 
-        //Break items that are at zero durability
-
-        var itemsToBreak = context.SourceAisling?.Equipment.Where(x => x.Template.AccountBound is false && x.CurrentDurability is <= 0);
-        if (itemsToBreak != null)
+            var itemsToBreak = aisling.Equipment.Where(x => !x.Template.AccountBound && x.CurrentDurability <= 0);
             foreach (var item in itemsToBreak)
             {
-                context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1,
+                aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1,
                     $"{item.DisplayName} has reached zero durability and has broke.");
-                context.SourceAisling?.Equipment.TryGetRemove(item.Slot, out _);
+                aisling.Equipment.TryGetRemove(item.Slot, out _);
             }
+        }
     }
 }

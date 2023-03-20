@@ -28,7 +28,7 @@ public class ChargeScript : DamageScript
             context.Map.Template.Bounds);
 
         var targets = AbilityComponent.Activate<Creature>(context, this);
-        var targetCreature = targets.TargetEntities.FirstOrDefault();
+        var targetCreature = targets.TargetEntities.First();
 
         if (targetCreature is null)
         {

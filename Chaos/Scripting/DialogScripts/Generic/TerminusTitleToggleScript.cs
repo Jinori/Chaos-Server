@@ -1,4 +1,3 @@
-using Chaos.Extensions.Common;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
@@ -14,12 +13,12 @@ public class TerminusTitleToggleScript : DialogScriptBase
     
     public override void OnDisplaying(Aisling source)
     {
-        if (source.Titles.Count >= 2)
-        {
-            var first = source.Titles.First();
-            source.Titles.Remove(first);
-            source.Titles.Add(first);
-            source.Client.SendSelfProfile();
-        }
+        if (source.Titles.Count < 2) 
+            return;
+        
+        var first = source.Titles.First();
+        source.Titles.Remove(first);
+        source.Titles.Add(first);
+        source.Client.SendSelfProfile();
     }
 }

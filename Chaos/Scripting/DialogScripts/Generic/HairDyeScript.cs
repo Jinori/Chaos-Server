@@ -18,7 +18,8 @@ public class HairDyeScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        foreach (var color in Enum.GetValues<DisplayColor>())
+        var colors = Enum.GetValues<DisplayColor>();
+        foreach (var color in colors)
         {
             var item = ItemFactory.CreateFaux("hairDyeContainer");
             item.DisplayName = $"{color} Hair Dye";

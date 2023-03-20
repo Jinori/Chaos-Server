@@ -15,34 +15,43 @@ public class RepairItemScript : DialogScriptBase
         
     }
 
-    public override void OnDisplaying(Aisling source)
+public override void OnDisplaying(Aisling source)
+{
+    // Calculate repair cost for equipment
+    foreach (var item in source.Equipment)
     {
-        foreach (var item in source.Equipment)
-        {
-            if (item.Template.MaxDurability == null || item.CurrentDurability == null || item.CurrentDurability.Value == item.Template.MaxDurability.Value) 
-                continue;
-            var damage = ((float)item.CurrentDurability.Value / item.Template.MaxDurability.Value);
-            var formula = item.Template.SellValue / 2.0 * (.8 * damage);
-            _repairCost += formula;
-        }
-
-        foreach (var item2 in source.Inventory)
-        {
-            if (item2.Template.MaxDurability == null || item2.CurrentDurability == null || item2.CurrentDurability.Value == item2.Template.MaxDurability.Value) 
-                continue;
-            var damage = ((float)item2.CurrentDurability.Value / item2.Template.MaxDurability.Value);
-            var formula = item2.Template.SellValue / 2.0 * (.8 * damage);
-            _repairCost += formula;
-        }
-        
-        if (_repairCost != 0) 
-            Subject.Text = $"I can repair all of your items for {(int)_repairCost}. Would you like to continue?";
-        else
-        {
-            Subject.Text = "I cannot repair your items any further.";
-            Subject.Type = MenuOrDialogType.Normal;
-        }
+        // Skip if item is not damaged
+        if (item.Template.MaxDurability == null || item.CurrentDurability == null || item.CurrentDurability.Value == item.Template.MaxDurability.Value)
+            continue;
+         // Calculate damage percentage
+        var damage = ((float)item.CurrentDurability.Value / item.Template.MaxDurability.Value);
+         // Calculate formula
+        var formula = item.Template.SellValue / 2.0 * (.8 * damage);
+         // Add to total repair cost
+        _repairCost += formula;
     }
+     // Calculate repair cost for inventory
+    foreach (var item2 in source.Inventory)
+    {
+        // Skip if item is not damaged
+        if (item2.Template.MaxDurability == null || item2.CurrentDurability == null || item2.CurrentDurability.Value == item2.Template.MaxDurability.Value)
+            continue;
+         // Calculate damage percentage
+        var damage = ((float)item2.CurrentDurability.Value / item2.Template.MaxDurability.Value);
+         // Calculate formula
+        var formula = item2.Template.SellValue / 2.0 * (.8 * damage);
+         // Add to total repair cost
+        _repairCost += formula;
+    }
+     // Set subject text based on total repair cost
+    if (_repairCost != 0)
+        Subject.Text = $"I can repair all of your items for {(int)_repairCost}. Would you like to continue?";
+    else
+    {
+        Subject.Text = "I cannot repair your items any further.";
+        Subject.Type = MenuOrDialogType.Normal;
+    }
+}
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
@@ -52,22 +61,23 @@ public class RepairItemScript : DialogScriptBase
             source.SendOrangeBarMessage($"You do not have enough. You need {(int)_repairCost} gold.");
             return;
         }
-        
+
         foreach (var repair in source.Equipment)
         {
-            if (repair.CurrentDurability != repair.Template.MaxDurability)
+            if (repair.Template.MaxDurability > 0 && repair.CurrentDurability != repair.Template.MaxDurability)
             {
                 repair.CurrentDurability = repair.Template.MaxDurability;
             }
         }
-        
+
         foreach (var repair in source.Inventory)
         {
-            if (repair.CurrentDurability != repair.Template.MaxDurability)
+            if (repair.Template.MaxDurability > 0 && repair.CurrentDurability != repair.Template.MaxDurability)
             {
                 repair.CurrentDurability = repair.Template.MaxDurability;
             }
         }
+
         source.SendOrangeBarMessage($"Your items have been repaired.");
     }
 }

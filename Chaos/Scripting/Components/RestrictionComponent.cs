@@ -11,123 +11,64 @@ public class RestrictionComponent
     public virtual bool CanMove(Creature creature)
     {
         var aisling = creature as Aisling;
-        
-        if (creature.Status.HasFlag(Status.Suain))
+        if (creature.Status.HasFlag(Status.Suain) || creature.Status.HasFlag(Status.Pramh) ||
+            (creature.Status.HasFlag(Status.Blind) && creature is not Aisling))
         {
-            aisling?.SendOrangeBarMessage("You are frozen.");
+            aisling?.SendOrangeBarMessage("You cannot move.");
             return false;
         }
 
-        if (creature.Status.HasFlag(Status.Pramh))
-        {
-            aisling?.SendOrangeBarMessage("You are asleep.");
-            return false;
-        }
-
-        if (creature.Status.HasFlag(Status.Blind) && creature is not Aisling)
-        {
-            return false;
-        }
-        
-        if (creature.Status.HasFlag(Status.BeagSuain))
-        {
-            aisling?.SendOrangeBarMessage("You are stunned.");
-            return false;
-        }
-
-        if (creature.MapInstance.Name.EqualsI("The Afterlife"))
-            return true;
-        
-        return creature.IsAlive;
+        return creature.MapInstance.Name.EqualsI("The Afterlife") || creature.IsAlive;
     }
 
-    public virtual bool CanTalk(Creature creature) => true;
+    public virtual bool CanTalk(Creature creature)
+    {
+        return true;
+    }
 
     public virtual bool CanTurn(Creature creature)
     {
         var aisling = creature as Aisling;
-        
-        if (creature.Status.HasFlag(Status.Suain))
+        if (creature.Status.HasFlag(Status.Suain) || creature.Status.HasFlag(Status.Pramh))
         {
-            aisling?.SendOrangeBarMessage("You are frozen.");
+            aisling?.SendOrangeBarMessage("You cannot turn.");
             return false;
         }
-
-        if (creature.Status.HasFlag(Status.Pramh))
-        {
-            aisling?.SendOrangeBarMessage("You are asleep.");
-            return false;
-        }
-
         return true;
     }
 
     public virtual bool CanUseItem(Aisling aisling, Item item)
     {
-        if (!aisling.IsAlive)
-        {
-            aisling.SendOrangeBarMessage("You can't do that");
-            return false;
-        }
-
-        if (aisling.Status.HasFlag(Status.Suain))
-        {
-            aisling.SendOrangeBarMessage("You are frozen.");
-            return false;
-        }
-
-        if (aisling.Status.HasFlag(Status.Pramh))
-        {
-            aisling.SendOrangeBarMessage("You are asleep.");
-            return false;
-        }
-
-        return aisling.IsAlive;
+        if (aisling.IsAlive && !aisling.Status.HasFlag(Status.Suain) && !aisling.Status.HasFlag(Status.Pramh)) 
+            return aisling.IsAlive;
+        
+        aisling.SendOrangeBarMessage("You can't do that");
+        return false;
     }
 
     public virtual bool CanUseSkill(Creature creature, Skill skill)
     {
         var aisling = creature as Aisling;
-        
-        if (creature.Status.HasFlag(Status.Suain))
+        if (creature.Status.HasFlag(Status.Suain) || creature.Status.HasFlag(Status.Pramh))
         {
-            aisling?.SendOrangeBarMessage("You are frozen.");
+            aisling?.SendOrangeBarMessage("You cannot use skills.");
             return false;
         }
-
-        if (creature.Status.HasFlag(Status.Pramh))
-        {
-            aisling?.SendOrangeBarMessage("You are asleep.");
-            return false;
-        }
-
         return creature.IsAlive;
     }
 
     public virtual bool CanUseSpell(Creature creature, Spell spell)
     {
         var aisling = creature as Aisling;
-        
-        if (creature.Status.HasFlag(Status.Suain))
+        if (creature.Status.HasFlag(Status.Suain) || creature.Status.HasFlag(Status.Pramh) ||
+            (creature.Status.HasFlag(Status.Blind) && creature is not Aisling))
         {
-            aisling?.SendOrangeBarMessage("You are frozen.");
+            aisling?.SendOrangeBarMessage("You cannot use spells.");
             return false;
         }
 
-        if (creature.Status.HasFlag(Status.Pramh) && spell.Template.Name != "dinarcoli")
-        {
-            aisling?.SendOrangeBarMessage("You are asleep.");
-            return false;
-        }
-
-        if (creature.Status.HasFlag(Status.Blind) && creature is not Aisling)
-        {
-            return false;
-        }
-        
-        if ((creature.IsDead) && (spell.Template.Name == "Self Revive"))
+        if (creature.IsDead && spell.Template.Name == "Self Revive")
             return true;
-        
         return creature.IsAlive;
     }
 }

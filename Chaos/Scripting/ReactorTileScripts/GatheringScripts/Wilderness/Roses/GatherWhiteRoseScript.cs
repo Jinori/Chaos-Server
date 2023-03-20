@@ -1,4 +1,3 @@
-using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
@@ -10,15 +9,15 @@ namespace Chaos.Scripting.ReactorTileScripts.GatheringScripts.Wilderness.Roses;
 
 public class GatherWhiteRoseScript : ReactorTileScriptBase
 {
-    private readonly IDialogFactory DialogFactory;
-    private readonly IItemFactory ItemFactory;
+    private readonly IDialogFactory _dialogFactory;
+    private readonly IItemFactory _itemFactory;
 
     /// <inheritdoc />
     public GatherWhiteRoseScript(ReactorTile subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
         : base(subject)
     {
-        ItemFactory = itemFactory;
-        DialogFactory = dialogFactory;
+        _itemFactory = itemFactory;
+        _dialogFactory = dialogFactory;
     }
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
@@ -29,16 +28,14 @@ public class GatherWhiteRoseScript : ReactorTileScriptBase
         if (aisling.Trackers.TimedEvents.HasActiveEvent("whiterose1cd", out var timedEvent))
         {
             aisling.SendOrangeBarMessage($"You can pick another White Rose in {timedEvent.Remaining.ToReadableString()}");
-
             return;
         }
 
-        var whiterose = ItemFactory.Create("whiterose");
-        var dialog = DialogFactory.Create("wildernesswhiterose", whiterose);
+        var whiterose = _itemFactory.Create("whiterose");
+        var dialog = _dialogFactory.Create("wildernesswhiterose", whiterose);
         dialog.Display(aisling);
         aisling.TryGiveItem(whiterose);
         aisling.SendOrangeBarMessage("You found a White Rose.");
         aisling.Trackers.TimedEvents.AddEvent("whiterose1cd", TimeSpan.FromHours(24), true);
-
     }
 }
