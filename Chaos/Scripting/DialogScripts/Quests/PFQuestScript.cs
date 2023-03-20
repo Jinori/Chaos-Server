@@ -269,7 +269,7 @@ public class PFQuestScript : DialogScriptBase
                     if (!source.Inventory.HasCount("Silver Wolf Mane Hair", 5))
                     {
                         Subject.Text =
-                            "You don't have enough Aisling, I need atleast five Silver Wolf Mane Hair to make the Silver Wolf Leather.";
+                            "You don't have enough Aisling, I need at least five Silver Wolf Mane Hair to make the Silver Wolf Leather.";
 
                         return;
                     }
