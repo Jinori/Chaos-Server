@@ -11,59 +11,50 @@ public class AcceptFishingProfessionScript : DialogScriptBase
     public AcceptFishingProfessionScript(Dialog subject)
         : base(subject) { }
 
-    public override void OnDisplaying(Aisling source)
+ public override void OnDisplaying(Aisling source)
+{
+    var profCount = source.Trackers.Enums.TryGetValue(out ProfessionCount profession);
+    var hasFishing = source.Trackers.Enums.TryGetValue(out Definitions.Professions job);
+    switch (Subject.Template.TemplateKey.ToLower())
     {
-        var profCount = source.Trackers.Enums.TryGetValue(out ProfessionCount profession);
-        var hasFishing = source.Trackers.Enums.TryGetValue(out Definitions.Professions job);
-
-        switch (Subject.Template.TemplateKey.ToLower())
+        case "kamel_initial":
         {
-            case "kamel_initial":
+            if (hasFishing)
             {
-                if (hasFishing)
-                    if (Subject.GetOptionIndex("Fish Market").HasValue)
-                    {
-                        var s = Subject.GetOptionIndex("Fish Market")!.Value;
-                        Subject.Options.RemoveAt(s);
-                    }
+                var s = Subject.GetOptionIndex("Fish Market")!.Value;
+                Subject.Options.RemoveAt(s);
             }
-
-                break;
-
-            case "kamel_acceptprofession":
+        }
+        break;
+        case "kamel_acceptprofession":
+        {
+            switch (profession)
             {
-                switch (profession)
+                case ProfessionCount.Two:
+                    Subject.Text = "Go, be on your way. The path to learning is endless. You cannot learn more.";
+                    Subject.Type = MenuOrDialogType.Normal;
+                    source.SendOrangeBarMessage("You already have two professions.");
+                    break;
+                case ProfessionCount.One when job is not Definitions.Professions.Fishing:
+                    source.Trackers.Enums.Set(Definitions.Professions.Fishing);
+                    source.Trackers.Enums.Set(ProfessionCount.Two);
+                    source.Titles.Add("Fisherman");
+                    source.SendOrangeBarMessage("You've selected Fishing as your second profession!");
+                    break;
+                default:
                 {
-                    case ProfessionCount.Two:
-                        Subject.Text = "Go, be on your way. The path to learning is endless. You cannot learn more.";
-                        Subject.Type = MenuOrDialogType.Normal;
-                        source.SendOrangeBarMessage("You already have two professions.");
-
-                        break;
-                    case ProfessionCount.One when job is not Definitions.Professions.Fishing:
-                        source.Trackers.Enums.Set(Definitions.Professions.Fishing);
-                        source.Trackers.Enums.Set(ProfessionCount.Two);
-                        source.Titles.Add("Fisherman");
-                        source.SendOrangeBarMessage("You've selected Fishing as your second profession!");
-
-                        break;
-
-                    default:
+                    if (profession is ProfessionCount.None || !hasFishing)
                     {
-                        if (profession is ProfessionCount.None || !hasFishing)
-                        {
-                            source.Trackers.Enums.Set(Definitions.Professions.Fishing);
-                            source.Trackers.Enums.Set(ProfessionCount.One);
-                            source.Titles.Add("Fisherman");
-                            source.SendOrangeBarMessage("You've selected Fishing as your first profession!");
-                        }
-
-                        break;
+                        source.Trackers.Enums.Set(Definitions.Professions.Fishing);
+                        source.Trackers.Enums.Set(ProfessionCount.One);
+                        source.Titles.Add("Fisherman");
+                        source.SendOrangeBarMessage("You've selected Fishing as your first profession!");
                     }
+                    break;
                 }
             }
-
-                break;
         }
+        break;
     }
+}
 }

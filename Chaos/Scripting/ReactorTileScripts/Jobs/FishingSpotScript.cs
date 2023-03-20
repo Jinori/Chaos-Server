@@ -8,6 +8,10 @@ namespace Chaos.Scripting.ReactorTileScripts.Jobs;
 
 public class FishingSpotScript : ReactorTileScriptBase
 {
+    /// This class is responsible for handling the player's actions when they walk on a Fishing Spot tile.
+    /// It checks if the player has the correct equipment, such as fishing bait and a fishing pole, and then applies the Fishing effect
+    /// to the player if they meet the requirements.
+    
     private readonly IEffectFactory _effectFactory;
 
     public FishingSpotScript(ReactorTile subject, IEffectFactory effectFactory)

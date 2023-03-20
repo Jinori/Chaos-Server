@@ -11,8 +11,7 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class HairstyleScript : DialogScriptBase
 {
-    private static readonly List<string> FEMALE_HAIRSTYLES = new()
-    {
+    private static readonly string[] FemaleHairstyles = {
         "female_hairstyle_1", "female_hairstyle_2", "female_hairstyle_3", "female_hairstyle_4", "female_hairstyle_5", "female_hairstyle_6",
         "female_hairstyle_7", "female_hairstyle_8", "female_hairstyle_9", "female_hairstyle_10", "female_hairstyle_11",
         "female_hairstyle_12", "female_hairstyle_13", "female_hairstyle_14", "female_hairstyle_15", "female_hairstyle_16",
@@ -30,8 +29,7 @@ public class HairstyleScript : DialogScriptBase
         "female_hairstyle_54", "female_hairstyle_55", "female_hairstyle_56", "female_hairstyle_57", "female_hairstyle_58",
         "female_hairstyle_59", "female_hairstyle_60"
     };
-    private static readonly List<string> MALE_HAIRSTYLES = new()
-    {
+    private static readonly string[] MaleHairstyles = {
         "male_hairstyle_1", "male_hairstyle_2", "male_hairstyle_3", "male_hairstyle_4", "male_hairstyle_5", "male_hairstyle_6",
         "male_hairstyle_7", "male_hairstyle_8", "male_hairstyle_9", "male_hairstyle_10", "male_hairstyle_11",
         "male_hairstyle_12", "male_hairstyle_13", "male_hairstyle_14", "male_hairstyle_15", "male_hairstyle_16", "male_hairstyle_17",
@@ -48,30 +46,39 @@ public class HairstyleScript : DialogScriptBase
         "male_hairstyle_54", "male_hairstyle_55", "male_hairstyle_56", "male_hairstyle_57", "male_hairstyle_58", "male_hairstyle_59",
         "male_hairstyle_60"
     };
-    private readonly IItemFactory ItemFactory;
-
-    public int Hairstyle;
+    
+    private readonly IItemFactory _itemFactory;
 
     public HairstyleScript(Dialog subject, IItemFactory itemFactory)
-        : base(subject) => ItemFactory = itemFactory;
+        : base(subject) => _itemFactory = itemFactory;
 
     public override void OnDisplaying(Aisling source)
     {
-        if (source.Gender.Equals(Gender.Male))
-            foreach (var s in MALE_HAIRSTYLES)
+        switch (source.Gender)
+        {
+            case Gender.Male:
             {
-                var item = ItemFactory.CreateFaux(s);
-                item.Color = source.HairColor;
-                Subject.Items.Add(ItemDetails.Default(item));
-            }
+                foreach (var s in MaleHairstyles)
+                {
+                    var item = _itemFactory.CreateFaux(s);
+                    item.Color = source.HairColor;
+                    Subject.Items.Add(ItemDetails.Default(item));
+                }
 
-        if (source.Gender.Equals(Gender.Female))
-            foreach (var s in FEMALE_HAIRSTYLES)
-            {
-                var item = ItemFactory.CreateFaux(s);
-                item.Color = source.HairColor;
-                Subject.Items.Add(ItemDetails.Default(item));
+                break;
             }
+            case Gender.Female:
+            {
+                foreach (var s in FemaleHairstyles)
+                {
+                    var item = _itemFactory.CreateFaux(s);
+                    item.Color = source.HairColor;
+                    Subject.Items.Add(ItemDetails.Default(item));
+                }
+
+                break;
+            }
+        }
     }
 
     public override void OnNext(Aisling source, byte? optionIndex = null)

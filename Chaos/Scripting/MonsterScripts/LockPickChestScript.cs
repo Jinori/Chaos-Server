@@ -7,7 +7,7 @@ namespace Chaos.Scripting.MonsterScripts;
 public class LockPickChestScript : MonsterScriptBase
 {
     private IDialogFactory DialogFactory { get; }
-    private IMerchantFactory MerchantFactory { get; }
+    private IMerchantFactory MerchantFactory { get; set; }
 
     public LockPickChestScript(Monster subject, IDialogFactory dialogFactory, IMerchantFactory merchantFactory)
         : base(subject)

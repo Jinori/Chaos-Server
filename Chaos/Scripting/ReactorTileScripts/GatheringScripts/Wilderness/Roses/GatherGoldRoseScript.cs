@@ -1,4 +1,3 @@
-using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
@@ -10,15 +9,15 @@ namespace Chaos.Scripting.ReactorTileScripts.GatheringScripts.Wilderness.Roses;
 
 public class GatherGoldRoseScript : ReactorTileScriptBase
 {
-    private readonly IDialogFactory DialogFactory;
-    private readonly IItemFactory ItemFactory;
+    private readonly IDialogFactory _dialogFactory;
+    private readonly IItemFactory _itemFactory;
 
     /// <inheritdoc />
     public GatherGoldRoseScript(ReactorTile subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
         : base(subject)
     {
-        ItemFactory = itemFactory;
-        DialogFactory = dialogFactory;
+        _itemFactory = itemFactory;
+        _dialogFactory = dialogFactory;
     }
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
@@ -29,12 +28,11 @@ public class GatherGoldRoseScript : ReactorTileScriptBase
         if (aisling.Trackers.TimedEvents.HasActiveEvent("goldrose1cd", out var timedEvent))
         {
             aisling.SendOrangeBarMessage($"You can pick another Gold Rose in {timedEvent.Remaining.ToReadableString()}");
-
             return;
         }
 
-        var goldrose = ItemFactory.Create("goldrose");
-        var dialog = DialogFactory.Create("wildernessgoldrose", goldrose);
+        var goldrose = _itemFactory.Create("goldrose");
+        var dialog = _dialogFactory.Create("wildernessgoldrose", goldrose);
         dialog.Display(aisling);
         aisling.TryGiveItem(goldrose);
         aisling.SendOrangeBarMessage("You found a Gold Rose.");
