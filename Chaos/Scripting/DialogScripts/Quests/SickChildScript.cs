@@ -294,8 +294,9 @@ public class SickChildScript : DialogScriptBase
 
                         return;
                     }
-                    ExperienceDistributionScript.GiveExp(source, 50000);
+                    ExperienceDistributionScript.GiveExp(source, 25000);
                     source.Trackers.Enums.Set(SickChildStage.WhiteRose1Turn);
+                    source.SendOrangeBarMessage("25000 Exp Rewarded!");
                     Subject.Text = "Thank you! I need to get this to the healers right away. Please excuse me.";
                     Subject.NextDialogKey = "whiterosewait1";
                 }
@@ -348,8 +349,9 @@ public class SickChildScript : DialogScriptBase
 
                     return;
                 }
-                ExperienceDistributionScript.GiveExp(source, 75000);
+                ExperienceDistributionScript.GiveExp(source, 50000);
                 source.Trackers.Enums.Set(SickChildStage.WhiteRose2Turn);
+                source.SendOrangeBarMessage("50000 Exp Rewarded!");
                 Subject.Text = "Thank you again! Please excuse me while I get this to the healers.";
                 Subject.NextDialogKey = "whiterose2wait1";
 
@@ -400,10 +402,10 @@ public class SickChildScript : DialogScriptBase
 
                         return;
                     }
-                    ExperienceDistributionScript.GiveExp(source, 150000);
+                    ExperienceDistributionScript.GiveExp(source, 100000);
                     source.TryGiveGold(20000);
                     source.TryGiveGamePoints(5);
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"5 Gamepoints, 20000 gold, and 150000 Exp Rewarded!");
+                    source.SendOrangeBarMessage("5 Gamepoints, 20000 gold, and 100000 Exp Rewarded!");
                     source.Trackers.Enums.Set(SickChildStage.SickChildComplete);
                     source.Legend.AddOrAccumulate(
                           new LegendMark(
@@ -421,7 +423,7 @@ public class SickChildScript : DialogScriptBase
 
             case "blackrose1":
                 {
-                    Subject.Text = "Hmm this looks like the rose needed but tainted. I'm not sure if this would help or not but at this point we dont have a choice. The princess cannot wait any longer.";
+                    Subject.Text = "Hmm this looks like the rose needed but tainted. I'm not sure if this would help or not, but at this point we don't have a choice. The princess cannot wait any longer.";
 
                     var option = new DialogOption
                     {
@@ -484,9 +486,9 @@ public class SickChildScript : DialogScriptBase
                 {
                     Subject.Text = "Please leave.";
                     source.Trackers.Enums.Set(SickChildStage.SickChildKilled);
-                    ExperienceDistributionScript.GiveExp(source, 200000);
+                    ExperienceDistributionScript.GiveExp(source, 125000);
                     source.TryGiveGamePoints(5);
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"5 Gamepoints and 200000 Exp Rewarded!");
+                    source.SendOrangeBarMessage("5 Gamepoints and 125000 Exp Rewarded!");
                     source.SendOrangeBarMessage("The princess is dead...");
                     source.Legend.AddOrAccumulate(
                            new LegendMark(

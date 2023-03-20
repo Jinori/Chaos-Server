@@ -347,6 +347,13 @@ public enum MythicGrimlock
     BossDefeated = 10,
 }
 
+public enum WolfProblemStage
+{
+    None = 0,
+    Start = 1,
+    Complete = 2,
+}
+
 public enum SickChildStage
 {
     None = 0,
@@ -361,3 +368,4 @@ public enum SickChildStage
     SickChildComplete = 9,
     SickChildKilled = 10,
 }
+

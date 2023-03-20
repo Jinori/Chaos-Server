@@ -1156,7 +1156,19 @@ public class KillCounterScript : MonsterScriptBase
                         aisling.SendOrangeBarMessage($"You defeated Shank {value} times!");
 
                         break;
-                    }
+                        }  
+                        case "wilderness_questwolf":
+                        {
+                            var hasWolf = aisling.Trackers.Enums.TryGetValue(out WolfProblemStage Wolf);
+
+                            if (!hasWolf || (Wolf != WolfProblemStage.Start))
+                                return;
+
+                            var value = aisling.Trackers.Counters.AddOrIncrement("Wolf");
+                            aisling.SendOrangeBarMessage($"You defeated the Wolf.");
+
+                            break;
+                        }
 
                 }
     }
