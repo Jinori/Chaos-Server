@@ -37,7 +37,7 @@ public class MarriageScript : DialogScriptBase
                 {
                     if (!source.HasClass(BaseClass.Priest))
                     {
-                        Subject.Reply(source, "You are not a priest.");
+                        Subject.Reply(source, "You must be a priest to perform a marriage ceremony.");
                         return;
                     }
                     //if (source.Legend.ContainsKey("marriage"))
@@ -52,7 +52,7 @@ public class MarriageScript : DialogScriptBase
                 {
                     if (!source.Legend.ContainsKey("marriage"))
                     {
-                        Subject.Reply(source, "You are not married.");
+                        Subject.Reply(source, "You are not married, I cannot assist you with a divorce.");
                         return;
                     }
                     break;
@@ -81,19 +81,19 @@ public class MarriageScript : DialogScriptBase
                     var partner = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(name));
                     if (partner == null || !partner.Aisling.OnSameMapAs(source))
                     {
-                        Subject.Reply(source, "It does not look like they are here.");
+                        Subject.Reply(source, "It does not look like they are here, I cannot proceed without your partner being here with you.");
                         return;
                     }
 
                     if (partner.Aisling.Equals(source))
                     {
-                        Subject.Reply(source, "You cannot marry yourself.");
+                        Subject.Reply(source, "Unfortunately you are not able to marry yourself.");
                         return;
                     }
 
                     if (partner.Aisling.Legend.ContainsKey("marriage"))
                     {
-                        Subject.Reply(source, "They are already married.");
+                        Subject.Reply(source, "That Aisling is already married.");
                         return;
                     }
 
@@ -117,13 +117,13 @@ public class MarriageScript : DialogScriptBase
                     var partnerTwo = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(nameTwo));
                     if (partnerTwo == null || !partnerTwo.Aisling.OnSameMapAs(source))
                     {
-                        Subject.Reply(source, "It does not look like they are here.");
+                        Subject.Reply(source, "It does not look like they are here, I cannot proceed without your partner being here with you.");
                         return;
                     }
 
                     if (partnerTwo.Aisling.Name.Equals(source.Name))
                     {
-                        Subject.Reply(source, "You cannot marry yourself.");
+                        Subject.Reply(source, "Unfortunately you are not able to marry yourself.");
                         return;
                     }
 
@@ -174,14 +174,14 @@ public class MarriageScript : DialogScriptBase
 
                     if (optionIndex is 2)
                     {
-                        partnerOne.Aisling.SendOrangeBarMessage("They said no..");
+                        partnerOne.Aisling.SendOrangeBarMessage("It looks like they have rejected your proposal.");
                         partnerTwo.Aisling.SendOrangeBarMessage($"You have denied {partnerOne.Aisling.Name}s proposal.");
                     }
 
                     if (optionIndex is 1)
                     {
-                        partnerOne.Aisling.SendOrangeBarMessage($"Congratulations! You are now married to {partnerTwo.Aisling.Name}");
-                        partnerTwo.Aisling.SendOrangeBarMessage($"Congratulations! You are now married to {partnerOne.Aisling.Name}");
+                        partnerOne.Aisling.SendOrangeBarMessage($"Congratulations! You are now married to {partnerTwo.Aisling.Name}!");
+                        partnerTwo.Aisling.SendOrangeBarMessage($"Congratulations! You are now married to {partnerOne.Aisling.Name}!");
                         var markOne = new LegendMark($"Married {partnerTwo.Aisling.Name}", "marriage", MarkIcon.Heart, MarkColor.Pink, 1, GameTime.Now);
                         var markTwo = new LegendMark($"Married {partnerOne.Aisling.Name}", "marriage", MarkIcon.Heart, MarkColor.Pink, 1, GameTime.Now);
 
@@ -212,27 +212,27 @@ public class MarriageScript : DialogScriptBase
                     var markSplit = marriageMark.Text.Split();
 
                     //Find partner to remove from legend
-                    var partner = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(markSplit[1]));
-                    if (partner == null)
-                    {
-                        Subject.Reply(source, "It does not look like they currently in Unora.");
-                        return;
-                    }
+                    //var partner = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(markSplit[1]));
+                    //if (partner == null)
+                    //{
+                    //    Subject.Reply(source, "It does not look like they currently in Unora.");
+                    //    return;
+                    //}
 
 
                     if (optionIndex is 1)
                     {
                         source.Legend.Remove("marriage", out var marriageMarkOne);
-                        partner.Aisling.Legend.Remove("marriage", out var marriageMarkTwo);
+                        //partner.Aisling.Legend.Remove("marriage", out var marriageMarkTwo);
 
-                        source.SendOrangeBarMessage($"You have divorced {partner.Aisling.Name}.");
-                        partner.Aisling.SendOrangeBarMessage($"{source.Name} has divorced you.");
+                        source.SendOrangeBarMessage($"You have divorced {markSplit[1]}.");
+                        //partner.Aisling.SendOrangeBarMessage($"{source.Name} has divorced you.");
 
-                        var markOne = new LegendMark($"Divorced {partner.Aisling.Name}", "divorce", MarkIcon.Yay, MarkColor.Brown, 1, GameTime.Now);
-                        var markTwo = new LegendMark($"Divorced {source.Name}", "divorce", MarkIcon.Yay, MarkColor.Brown, 1, GameTime.Now);
+                        var markOne = new LegendMark($"Divorced {markSplit[1]}", "divorce", MarkIcon.Yay, MarkColor.Brown, 1, GameTime.Now);
+                        //var markTwo = new LegendMark($"Divorced {source.Name}", "divorce", MarkIcon.Yay, MarkColor.Brown, 1, GameTime.Now);
 
                         source.Legend.AddOrAccumulate(markOne);
-                        partner.Aisling.Legend.AddOrAccumulate(markTwo);
+                        //partner.Aisling.Legend.AddOrAccumulate(markTwo);
                     }
 
                     Subject.Close(source);

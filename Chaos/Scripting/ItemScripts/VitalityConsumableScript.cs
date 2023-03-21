@@ -35,12 +35,14 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase
 
         switch (hpAmt)
         {
+            
             case < 0:
                 ApplyDamageScript.ApplyDamage(
                     source,
                     source,
                     this,
                     hpAmt);
+                
 
                 break;
             case > 0:
@@ -52,6 +54,12 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase
 
                 break;
         }
+
+        if (HealthAmount.HasValue && (source.StatSheet.CurrentHp + HealthAmount.Value) > 0)
+            source.UserStatSheet.AddHp(HealthAmount.Value);
+
+        if (HealthPercent.HasValue)
+            source.UserStatSheet.AddHealthPct(HealthPercent.Value);
 
         if (ManaAmount.HasValue)
             source.UserStatSheet.AddMp(ManaAmount.Value);
