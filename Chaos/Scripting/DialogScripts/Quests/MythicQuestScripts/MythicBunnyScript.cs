@@ -410,7 +410,7 @@ public class MythicBunnyScript : DialogScriptBase
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
                 source.Trackers.Enums.Set(MythicBunny.BossStarted);
-                source.SendOrangeBarMessage("Kill Apple Jack atleast three times.");
+                source.SendOrangeBarMessage("Kill Apple Jack at least three times.");
             }
 
                 break;

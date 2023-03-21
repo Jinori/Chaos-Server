@@ -1159,14 +1159,13 @@ public class KillCounterScript : MonsterScriptBase
                         }  
                         case "wilderness_questwolf":
                         {
-                            var hasWolf = aisling.Trackers.Enums.TryGetValue(out WolfProblemStage Wolf);
+                            var hasWolf = aisling.Trackers.Enums.TryGetValue(out WolfProblemStage wolf);
 
-                            if (!hasWolf || (Wolf != WolfProblemStage.Start))
+                            if (!hasWolf || (wolf != WolfProblemStage.Start))
                                 return;
 
                             var value = aisling.Trackers.Counters.AddOrIncrement("Wolf");
                             aisling.SendOrangeBarMessage($"You defeated the Wolf.");
-
                             break;
                         }
 

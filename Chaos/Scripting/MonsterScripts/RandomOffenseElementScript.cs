@@ -7,14 +7,13 @@ namespace Chaos.Scripting.MonsterScripts;
 
 public class RandomOffenseElementScript : ConfigurableMonsterScriptBase
 {
-    protected Element[] Elements { get; init; } = Array.Empty<Element>();
+    private Element[] Elements { get; init; } = Array.Empty<Element>();
 
     /// <inheritdoc />
     public RandomOffenseElementScript(Monster subject)
         : base(subject)
     {
         var element = Elements.PickRandom();
-
         Subject.StatSheet.SetOffenseElement(element);
     }
 }

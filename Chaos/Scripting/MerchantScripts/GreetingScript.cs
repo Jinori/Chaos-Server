@@ -13,6 +13,9 @@ public class GreetingScript : MerchantScriptBase
 
     public override void OnApproached(Creature source)
     {
+        if (source is not Aisling)
+            return;
+        
         if (Randomizer.RollChance(60))
             return;
         
@@ -20,12 +23,7 @@ public class GreetingScript : MerchantScriptBase
         {
             case "thibault":
             {
-                if (source is Aisling aisling)
-                {
-                    Subject.Say($"{source.Name} enters the throne room!");
-                    return;   
-                }
-
+                Subject.Say($"{source.Name} enters the throne room!");
                 return;
             }
             case "leia":

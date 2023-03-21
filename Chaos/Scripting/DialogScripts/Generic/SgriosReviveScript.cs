@@ -17,46 +17,31 @@ public class SgriosReviveScript : DialogScriptBase
 
     public override void OnDisplayed(Aisling source)
     {
-        if (source.IsAlive)
-            return;
-
-        //Change their sprite back to normal
         switch (source.Gender)
         {
             case Gender.Male:
             {
                 if (source.BodySprite is not BodySprite.Male)
                     source.BodySprite = BodySprite.Male;
-
                 break;
             }
             case Gender.Female:
             {
                 if (source.BodySprite is not BodySprite.Female)
-                    source.BodySprite = BodySprite.Male;
-
+                    source.BodySprite = BodySprite.Female;
                 break;
             }
         }
 
-        //They are no longer dead!
         source.IsDead = false;
-
-        //Let's restore their hp/mp to %20
         source.StatSheet.AddHealthPct(20);
         source.StatSheet.AddManaPct(20);
-
-        //Refresh the users health bar & turn direction
         source.Client.SendAttributes(StatUpdateType.Vitality);
         source.Turn(Direction.Down);
         source.Refresh(true);
-
-        //Let's tell the player they have been revived
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Sgrios mumbles unintelligble gibberish");
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are revived and sent home.");
         Subject.Close(source);
-
-        
         switch (source.Nation)
         {
             case Nation.Rucesion:
@@ -129,7 +114,7 @@ public class SgriosReviveScript : DialogScriptBase
                 point = new Point(11, 12);
                 var mapInstance = _simpleCache.Get<MapInstance>("undine_village_way");
                 source.TraverseMap(mapInstance, point, true);
-                break;   
+                break;
             }
         }
     }

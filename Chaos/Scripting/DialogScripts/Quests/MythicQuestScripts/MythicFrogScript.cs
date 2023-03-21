@@ -481,7 +481,7 @@ public class MythicFrogScript : DialogScriptBase
                 Subject.Type = MenuOrDialogType.Normal;
                 Subject.NextDialogKey = "Close";
                 source.Trackers.Enums.Set(MythicFrog.BossStarted);
-                source.SendOrangeBarMessage("Kill Nymeria atleast three times.");
+                source.SendOrangeBarMessage("Kill Nymeria at least three times.");
             }
 
                 break;
