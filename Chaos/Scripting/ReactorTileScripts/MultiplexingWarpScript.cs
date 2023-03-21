@@ -31,6 +31,11 @@ public class MultiplexingWarpScript : ConfigurableReactorTileScriptBase
                 if (source is not Aisling aisling)
                     return false;
                 
+                if (w.MinLevelNotify.HasValue && (w.MinLevelNotify.Value > source.StatSheet.Level))
+                {
+                    aisling.SendOrangeBarMessage($"You must be level {w.MinLevelNotify} to enter");
+                }
+                
                 if (w.MinLevel.HasValue && (w.MinLevel.Value > source.StatSheet.Level))
                 {
                     return false;
@@ -63,6 +68,8 @@ public class MultiplexingWarpScript : ConfigurableReactorTileScriptBase
     public class WarpDetails
     {
         public int? MinLevel { get; set; }
+        
+        public int? MinLevelNotify { get; set; }
         public int? MaxLevel { get; set; }
         public int? MinVitality { get; set; }
         public int? MaxVitality { get; set; }
