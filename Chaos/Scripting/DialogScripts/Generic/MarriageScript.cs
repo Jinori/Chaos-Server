@@ -9,6 +9,8 @@ using Chaos.Objects.Legend;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Scripting.EffectScripts.Priest;
+using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Utilities;
@@ -22,11 +24,13 @@ public class MarriageScript : DialogScriptBase
 {
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
     private readonly IDialogFactory DialogFactory;
+    private readonly IEffectFactory _effectFactory;
 
-    public MarriageScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IDialogFactory dialogFactory)
+    public MarriageScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IDialogFactory dialogFactory, IEffectFactory effectFactory)
         : base(subject) {
         ClientRegistry = clientRegistry;
         DialogFactory = dialogFactory;
+        _effectFactory = effectFactory;
     }
 
     public override void OnDisplaying(Aisling source)
@@ -40,11 +44,6 @@ public class MarriageScript : DialogScriptBase
                         Subject.Reply(source, "You must be a priest to perform a marriage ceremony.");
                         return;
                     }
-                    //if (source.Legend.ContainsKey("marriage"))
-                    //{
-                    //    Subject.Reply(source, "You are already married.");
-                    //    return;
-                    //}
                     break;
                 }
 
@@ -77,7 +76,7 @@ public class MarriageScript : DialogScriptBase
                         return;
                     }
 
-                    //Priest entered first partner
+                    //Priest entered first partners name
                     var partner = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(name));
                     if (partner == null || !partner.Aisling.OnSameMapAs(source))
                     {
@@ -113,7 +112,7 @@ public class MarriageScript : DialogScriptBase
                         return;
                     }
 
-                    //First partner entered second partner
+                    //First partner entered second partners name
                     var partnerTwo = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(nameTwo));
                     if (partnerTwo == null || !partnerTwo.Aisling.OnSameMapAs(source))
                     {
@@ -140,7 +139,6 @@ public class MarriageScript : DialogScriptBase
                 {
                     if (!Subject.MenuArgs.TryGet<string>(0, out var nameOne))
                     {
-                        //Subject.Reply(source, DialogString.UnknownInput.Value);
                         source.SendOrangeBarMessage(DialogString.UnknownInput.Value);
                         Subject.Close(source);
                         return;
@@ -149,7 +147,6 @@ public class MarriageScript : DialogScriptBase
                     var partnerOne = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(nameOne));
                     if (partnerOne == null || !partnerOne.Aisling.OnSameMapAs(source))
                     {
-                        //Subject.Reply(source, "It does not look like they are here.");
                         source.SendOrangeBarMessage("It does not look like they are here.");
                         Subject.Close(source);
                         return;
@@ -157,7 +154,6 @@ public class MarriageScript : DialogScriptBase
 
                     if (!Subject.MenuArgs.TryGet<string>(1, out var nameTwo))
                     {
-                        //Subject.Reply(source, DialogString.UnknownInput.Value);
                         source.SendOrangeBarMessage(DialogString.UnknownInput.Value);
                         Subject.Close(source);
                         return;
@@ -166,7 +162,6 @@ public class MarriageScript : DialogScriptBase
                     var partnerTwo = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(nameTwo));
                     if (partnerTwo == null || !partnerTwo.Aisling.OnSameMapAs(source))
                     {
-                        //Subject.Reply(source, "It does not look like they are here.");
                         source.SendOrangeBarMessage("It does not look like they are here.");
                         Subject.Close(source);
                         return;
@@ -185,20 +180,24 @@ public class MarriageScript : DialogScriptBase
                         var markOne = new LegendMark($"Married {partnerTwo.Aisling.Name}", "marriage", MarkIcon.Heart, MarkColor.Pink, 1, GameTime.Now);
                         var markTwo = new LegendMark($"Married {partnerOne.Aisling.Name}", "marriage", MarkIcon.Heart, MarkColor.Pink, 1, GameTime.Now);
 
+                        partnerOne.Aisling.Legend.AddOrAccumulate(markOne);
+                        partnerTwo.Aisling.Legend.AddOrAccumulate(markTwo);
+
                         var ani = new Animation
                         {
                             AnimationSpeed = 150,
-                            TargetAnimation = 98
+                            TargetAnimation = 36
+                        };
+                        var ani2 = new Animation
+                        {
+                            AnimationSpeed = 150,
+                            TargetAnimation = 36
                         };
 
-                        partnerOne.Aisling.Animate(ani);
-                        partnerTwo.Aisling.Animate(ani);
-
-                        partnerOne.Aisling.MapInstance.PlaySound(50, partnerOne.Aisling);
-                        
-
-                        partnerOne.Aisling.Legend.AddOrAccumulate(markOne);
-                        partnerTwo.Aisling.Legend.AddOrAccumulate(markTwo);
+                        var effect = _effectFactory.Create("marriage");
+                        var effect2 = _effectFactory.Create("marriage");
+                        partnerOne.Aisling.Effects.Apply(partnerOne.Aisling, effect);
+                        partnerTwo.Aisling.Effects.Apply(partnerTwo.Aisling, effect2);
                     }
 
                     Subject.Close(source);
@@ -209,30 +208,22 @@ public class MarriageScript : DialogScriptBase
             case "generic_divorceinitial":
                 {
                     source.Legend.TryGetValue("marriage", out var marriageMark);
+
+                    if (marriageMark is null)
+                    {
+                        break;
+                    }
+
                     var markSplit = marriageMark.Text.Split();
-
-                    //Find partner to remove from legend
-                    //var partner = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(markSplit[1]));
-                    //if (partner == null)
-                    //{
-                    //    Subject.Reply(source, "It does not look like they currently in Unora.");
-                    //    return;
-                    //}
-
 
                     if (optionIndex is 1)
                     {
                         source.Legend.Remove("marriage", out var marriageMarkOne);
-                        //partner.Aisling.Legend.Remove("marriage", out var marriageMarkTwo);
-
                         source.SendOrangeBarMessage($"You have divorced {markSplit[1]}.");
-                        //partner.Aisling.SendOrangeBarMessage($"{source.Name} has divorced you.");
 
                         var markOne = new LegendMark($"Divorced {markSplit[1]}", "divorce", MarkIcon.Yay, MarkColor.Brown, 1, GameTime.Now);
-                        //var markTwo = new LegendMark($"Divorced {source.Name}", "divorce", MarkIcon.Yay, MarkColor.Brown, 1, GameTime.Now);
 
                         source.Legend.AddOrAccumulate(markOne);
-                        //partner.Aisling.Legend.AddOrAccumulate(markTwo);
                     }
 
                     Subject.Close(source);
