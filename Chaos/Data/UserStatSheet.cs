@@ -201,22 +201,27 @@ public sealed record UserStatSheet : StatSheet
         {
             case Stat.STR:
                 Interlocked.Increment(ref _str);
+                Interlocked.Add(ref _maximumHp, 25);
 
                 break;
             case Stat.INT:
                 Interlocked.Increment(ref _int);
+                Interlocked.Add(ref _maximumMp, 20);
 
                 break;
             case Stat.WIS:
                 Interlocked.Increment(ref _wis);
-
+                Interlocked.Add(ref _maximumMp, 40);
+                
                 break;
             case Stat.CON:
                 Interlocked.Increment(ref _con);
+                Interlocked.Add(ref _maximumHp, 50);
 
                 break;
             case Stat.DEX:
                 Interlocked.Increment(ref _dex);
+                Interlocked.Add(ref _atkSpeedPct, 1);
 
                 break;
             default:
