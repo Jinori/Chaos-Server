@@ -70,7 +70,11 @@ public enum Professions
 {
     None,
     Fishing = 1,
-    Tailoring = 1 << 1,
+    Tailoring = 2,
+    Cooking = 3,
+    Enchanting = 4,
+    Alchemy = 5,
+    Blacksmithing = 6
 }
 
 public enum Religion
