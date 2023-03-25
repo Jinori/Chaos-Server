@@ -26,7 +26,7 @@ public class StudyCreatureScript : BasicSkillScriptBase
         if (mob != null)
         {
             context.SourceAisling?.Client.SendServerMessage(ServerMessageType.ScrollWindow,
-                $"Name: {mob.Name}\nLevel: {mob.StatSheet.Level}\nCurrent Health: {mob.StatSheet.CurrentHp}\nCurrent Mana: {mob.StatSheet.CurrentMp}\nOffensive Element: {mob.StatSheet.OffenseElement}\nDefensive Element: {mob.StatSheet.DefenseElement}"
+                $"Name: {mob.Name}\nLevel: {mob.StatSheet.Level}\nCurrent Health: {mob.StatSheet.CurrentHp}\nArmor Class: {mob.StatSheet.EffectiveAc}\nCurrent Mana: {mob.StatSheet.CurrentMp}\nOffensive Element: {mob.StatSheet.OffenseElement}\nDefensive Element: {mob.StatSheet.DefenseElement}"
             );
             var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint));
             if (group != null)

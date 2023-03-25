@@ -1,24 +1,28 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Data;
+using Chaos.Definitions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
-public class ArmachdEffect : NonOverwritableEffectBase
+public class AiteEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 94;
-    public override string Name => "armachd";
+    public override byte Icon => 11;
+    public override string Name => "aite";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
 
     protected override Animation? Animation { get; } = new()
     {
-        TargetAnimation = 20,
+        TargetAnimation = 125,
         AnimationSpeed = 100
     };
     protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
     {
-        "Armachd",
+        "beag naomh aite",
+        "naomh aite",
+        "mor naomh aite",
+        "ard naomh aite"
     };
     
     protected override byte? Sound => 140;
@@ -27,27 +31,21 @@ public class ArmachdEffect : NonOverwritableEffectBase
     {
         base.OnApplied();
 
-        var attributes = new Attributes
-        {
-            Ac = 10
-        };
-        
-        Subject.StatSheet.SubtractBonus(attributes);
+        if (!Subject.Status.HasFlag(Status.Aite))
+            Subject.Status = Status.Aite;
+
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor increased.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Glioca has blessed your defenses.");
     }
 
     public override void OnDispelled() => OnTerminated();
 
     public override void OnTerminated()
     {
-        var attributes = new Attributes
-        {
-            Ac = -10
-        };
+        if (Subject.Status.HasFlag(Status.Aite))
+            Subject.Status &= ~Status.Aite;
 
-        Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor has returned to normal.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your defenses have returned to normal.");
     }
 }

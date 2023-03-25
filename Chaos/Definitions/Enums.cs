@@ -29,7 +29,11 @@ public enum Status : ulong
     Blind = 1 << 13,
     EarthenStance = 1 << 14,
     MistStance = 1 << 15,
-    ThunderStance = 1 << 16
+    ThunderStance = 1 << 16,
+    BeagAite = 1 << 17,
+    Aite = 1 << 18,
+    MorAite = 1 << 19,
+    ArdAite = 1 << 20,
     //add more statuses here, double each time
 }
 

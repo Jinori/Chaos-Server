@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae.Abstractions;
 using Chaos.Objects.Panel;
@@ -76,19 +77,34 @@ public class DefaultDamageFormula : IDamageFormula
         ApplyElementalModifier(ref damage, elementOverride ?? source.StatSheet.OffenseElement, target.StatSheet.DefenseElement);
         
         HandleClawFist(ref damage, script, source);
-        HandleZap(ref damage, script, source);
+        HandleAite(ref damage, source);
 
         return damage;
     }
 
-    private void HandleZap(ref int damage, IScript source, Creature attacker)
+    protected virtual void HandleAite(ref int damage, Creature defender)
     {
-        if (source is not SubjectiveScriptBase<Spell> spellScript)
+        if (!defender.Effects.Contains("aite"))
             return;
 
-        if (spellScript.Subject.Template.Name.EqualsI("Zap"))
+        if (defender.Status.HasFlag(Status.BeagAite))
         {
-            damage = Convert.ToInt32(damage + (attacker.StatSheet.EffectiveMaximumMp / 3));
+            damage *= Convert.ToInt32(0.95);
+        }
+
+        if (defender.Status.HasFlag(Status.Aite))
+        {
+            damage *= Convert.ToInt32(0.92);
+        }
+
+        if (defender.Status.HasFlag(Status.MorAite))
+        {
+            damage *= Convert.ToInt32(0.89);
+        }
+
+        if (defender.Status.HasFlag(Status.ArdAite))
+        {
+            damage *= Convert.ToInt32(0.85);
         }
     }
 

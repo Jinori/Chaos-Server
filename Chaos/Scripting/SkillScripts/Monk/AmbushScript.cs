@@ -52,7 +52,6 @@ public class AmbushScript : SkillScriptBase
                     context.Source.WarpTo(destinationPoint);
                     var newDirection = entity.DirectionalRelationTo(context.Source);
                     context.Source.Turn(newDirection);
-
                     return;
                 }
             }

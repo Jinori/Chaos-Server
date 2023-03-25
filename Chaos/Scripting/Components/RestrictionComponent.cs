@@ -10,14 +10,19 @@ public class RestrictionComponent
 {
     public virtual bool CanMove(Creature creature)
     {
-        var aisling = creature as Aisling;
-        if (creature.Status.HasFlag(Status.Suain) || creature.Status.HasFlag(Status.Pramh) ||
-            (creature.Status.HasFlag(Status.Blind) && creature is not Aisling))
+        switch (creature)
         {
-            aisling?.SendOrangeBarMessage("You cannot move.");
-            return false;
+            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh):
+            {
+                aisling.SendOrangeBarMessage("You cannot move.");
+                return false;   
+            }
+            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Blind) || monster.Status.HasFlag(Status.Pramh):
+            {
+                return false;
+            }
         }
-
+        
         return creature.MapInstance.Name.EqualsI("The Afterlife") || creature.IsAlive;
     }
 
@@ -28,47 +33,67 @@ public class RestrictionComponent
 
     public virtual bool CanTurn(Creature creature)
     {
-        var aisling = creature as Aisling;
-        if (creature.Status.HasFlag(Status.Suain) || creature.Status.HasFlag(Status.Pramh))
+        switch (creature)
         {
-            aisling?.SendOrangeBarMessage("You cannot turn.");
-            return false;
+            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh):
+            {
+                aisling.SendOrangeBarMessage("You cannot turn.");
+                return false;   
+            }
+            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Pramh):
+            {
+                return false;
+            }
         }
         return true;
     }
 
     public virtual bool CanUseItem(Aisling aisling, Item item)
     {
-        if (aisling.IsAlive && !aisling.Status.HasFlag(Status.Suain) && !aisling.Status.HasFlag(Status.Pramh)) 
-            return aisling.IsAlive;
-        
+        if (aisling.IsAlive)
+        {
+            if (!aisling.Status.HasFlag(Status.Suain) || !aisling.Status.HasFlag(Status.Pramh) || !aisling.Trackers.TimedEvents.HasActiveEvent("Jailed", out var timedEvent))
+                return aisling.IsAlive;
+        }
         aisling.SendOrangeBarMessage("You can't do that");
         return false;
     }
 
     public virtual bool CanUseSkill(Creature creature, Skill skill)
     {
-        var aisling = creature as Aisling;
-        if (creature.Status.HasFlag(Status.Suain) || creature.Status.HasFlag(Status.Pramh))
+        switch (creature)
         {
-            aisling?.SendOrangeBarMessage("You cannot use skills.");
-            return false;
+            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh) || aisling.Trackers.TimedEvents.HasActiveEvent("Jailed", out var timedEvent):
+            {
+                aisling.SendOrangeBarMessage("You cannot use skills.");
+                return false;
+            }
+            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Pramh):
+            {
+                return false;
+            }
         }
         return creature.IsAlive;
     }
 
     public virtual bool CanUseSpell(Creature creature, Spell spell)
     {
-        var aisling = creature as Aisling;
-        if (creature.Status.HasFlag(Status.Suain) || creature.Status.HasFlag(Status.Pramh) ||
-            (creature.Status.HasFlag(Status.Blind) && creature is not Aisling))
+        switch (creature)
         {
-            aisling?.SendOrangeBarMessage("You cannot use spells.");
-            return false;
+            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh) || aisling.Trackers.TimedEvents.HasActiveEvent("Jailed", out var timedEvent):
+            {
+                aisling.SendOrangeBarMessage("You cannot use spells.");
+                return false;
+            }
+            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Pramh):
+            {
+                return false;
+            }
         }
-
+        
         if (creature.IsDead && spell.Template.Name == "Self Revive")
             return true;
+        
         return creature.IsAlive;
     }
 }
