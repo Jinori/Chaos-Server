@@ -52,9 +52,15 @@ public class RestrictionComponent
     {
         if (aisling.IsAlive)
         {
-            if (!aisling.Status.HasFlag(Status.Suain) || !aisling.Status.HasFlag(Status.Pramh) || !aisling.Trackers.TimedEvents.HasActiveEvent("Jailed", out var timedEvent))
+            if (aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out var timedEvent))
+            {
+                aisling.SendOrangeBarMessage("You can't do that");
+                return false;
+            }
+            if (!aisling.Status.HasFlag(Status.Suain) || !aisling.Status.HasFlag(Status.Pramh))
                 return aisling.IsAlive;
         }
+        
         aisling.SendOrangeBarMessage("You can't do that");
         return false;
     }
@@ -63,7 +69,7 @@ public class RestrictionComponent
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh) || aisling.Trackers.TimedEvents.HasActiveEvent("Jailed", out var timedEvent):
+            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh) || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out var timedEvent):
             {
                 aisling.SendOrangeBarMessage("You cannot use skills.");
                 return false;
@@ -80,7 +86,7 @@ public class RestrictionComponent
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh) || aisling.Trackers.TimedEvents.HasActiveEvent("Jailed", out var timedEvent):
+            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh) || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out var timedEvent):
             {
                 aisling.SendOrangeBarMessage("You cannot use spells.");
                 return false;
