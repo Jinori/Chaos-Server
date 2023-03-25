@@ -538,6 +538,11 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
         }
     }
 
+    public bool IsBlockingReactor(IPoint point) => Objects.AtPoint<ReactorTile>(point).Any(reactor => reactor.ShouldBlockPathfinding);
+    
+    public bool IsReactor(IPoint point) =>
+        Objects.AtPoint<ReactorTile>(point).Any();
+    
     public bool IsWalkable(IPoint point, CreatureType creatureType)
     {
         var creatures = Objects.AtPoint<Creature>(point)

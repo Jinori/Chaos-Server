@@ -1,6 +1,7 @@
 ﻿using Chaos.Data;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -10,7 +11,7 @@ namespace Chaos.Scripting.SkillScripts.Warrior;
 
 public class ChargeScript : DamageScript
 {
-    protected new IApplyDamageScript ApplyDamageScript { get; }
+    private new IApplyDamageScript ApplyDamageScript { get; }
 
     /// <inheritdoc />
     public ChargeScript(Skill subject)
@@ -20,25 +21,42 @@ public class ChargeScript : DamageScript
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
     {
-        //get the 5 points in front of the source
-        var points = AoeShape.Front.ResolvePoints(
-            context.SourcePoint,
-            5,
-            context.Source.Direction,
-            context.Map.Template.Bounds);
-
-        var targets = AbilityComponent.Activate<Creature>(context, this);
-        var targetCreature = targets.TargetEntities.First();
-
-        if (targetCreature is null)
+        // Get the endpoint 4 tiles away from the source in the same direction
+        var endPoint = context.Source.DirectionalOffset(context.Source.Direction, 4);
+        // Get all points between the source and the endpoint, skipping the first one
+        var points = context.Source.GetDirectPath(endPoint).Skip(1);
+        // Iterate through each point
+        foreach (var point in points)
         {
-            //if that point is not walkable, continue
-            if (!context.Map.IsWalkable(points.Last(), context.Source.Type))
+            // If there is a wall at this point, return
+            if (context.Map.IsWall(point) || context.Map.IsBlockingReactor(point))
+            {
+                var distance = point.DistanceFrom(context.Source);
+                if (distance == 1)
+                    return;
+                var newPoint = point.OffsetTowards(context.Source);
+                context.Source.WarpTo(newPoint);
                 return;
-
-            //if it is walkable, warp to that point
-            context.Source.WarpTo(points.Last());
-            DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
+            }
+            // Get the closest creature to the source at this point
+            var entity = context.Map.GetEntitiesAtPoint<Creature>(point).OrderBy(creature => creature.DistanceFrom(context.Source))
+                .FirstOrDefault(creature => context.Source.WillCollideWith(creature));
+            // If there is a creature at this point
+            if (entity != null)
+            {
+                // Get the point towards the source from the creature
+                var newPoint = entity.OffsetTowards(context.Source);
+                // Warp the source to the new point
+                context.Source.WarpTo(newPoint);
+                // Activate the ability on the creature
+                var targets = AbilityComponent.Activate<Creature>(context, this);
+                // Apply damage to the target entities
+                DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
+                return;
+            }
         }
+
+        // If no creature was found, warp the source to the endpoint
+        context.Source.WarpTo(endPoint);
     }
 }

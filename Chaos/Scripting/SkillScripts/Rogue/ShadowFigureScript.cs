@@ -16,7 +16,7 @@ public class ShadowFigureScript : DamageScript
     {
         var targets = AbilityComponent.Activate<Creature>(context, this);
         var targetCreature = targets.TargetEntities.FirstOrDefault();
-        if (targetCreature == null || context.Map.IsWall(targetCreature))
+        if (targetCreature == null || context.Map.IsWall(targetCreature) || context.Map.IsBlockingReactor(targetCreature))
             return;
         // Get the direction behind the target creature
         var behindTargetDirection = targetCreature.DirectionalRelationTo(context.SourcePoint);
