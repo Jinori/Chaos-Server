@@ -1,4 +1,5 @@
-﻿using Chaos.Data;
+﻿using Chaos.Common.Definitions;
+using Chaos.Data;
 using Chaos.Extensions.Common;
 using Chaos.Objects.Menu;
 using Chaos.Objects.Panel;
@@ -60,6 +61,7 @@ public class WithdrawItemScript : DialogScriptBase
                     Amount!.Value,
                     Item,
                     Subject.SourceEntity);
+                
 
                 Subject.NextDialogKey = Subject.Template.TemplateKey;
 

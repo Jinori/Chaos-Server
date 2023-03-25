@@ -42,7 +42,7 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase
                     source,
                     this,
                     hpAmt);
-                
+                source.SendOrangeBarMessage($"You eat the {Subject.DisplayName}. Didn't taste so good.");
 
                 break;
             case > 0:
@@ -51,6 +51,7 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase
                     source,
                     this,
                     hpAmt);
+                source.SendOrangeBarMessage($"You eat the {Subject.DisplayName}. Yummy!");
 
                 break;
         }
