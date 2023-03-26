@@ -1,7 +1,9 @@
+using System.Diagnostics.Tracing;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Data;
 using Chaos.Definitions;
+using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
 using Chaos.Objects.World;
@@ -89,6 +91,13 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
 
                     return;
                 }
+                
+                var relation = source.DirectionalRelationTo(target);
+                if (relation == target.Direction.Reverse())
+                    damage = (int)(damage * 1.5);
+                else if (relation != target.Direction)
+                    damage = (int)(damage * 1.25);
+                
                 aisling.StatSheet.SubtractHp(damage);
                 aisling.Client.SendAttributes(StatUpdateType.Vitality);
                 aisling.ShowHealth();
@@ -158,6 +167,12 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
 
                     return;
                 }
+                var relationMonster = source.DirectionalRelationTo(target);
+                if (relationMonster == target.Direction.Reverse())
+                    damage = (int)(damage * 1.5);
+                else if (relationMonster != target.Direction)
+                    damage = (int)(damage * 1.25);
+                
                 monster.StatSheet.SubtractHp(damage);
                 monster.ShowHealth();
                 monster.Script.OnAttacked(source, damage);

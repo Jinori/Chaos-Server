@@ -75,10 +75,8 @@ public class DefaultDamageFormula : IDamageFormula
 
         ApplyAcModifier(ref damage, defenderAc);
         ApplyElementalModifier(ref damage, elementOverride ?? source.StatSheet.OffenseElement, target.StatSheet.DefenseElement);
-        
         HandleClawFist(ref damage, script, source);
         HandleAite(ref damage, source);
-
         return damage;
     }
 
