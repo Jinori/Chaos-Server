@@ -46,12 +46,7 @@ public class AbilityComponent
 
         return (targetPoints, targetEntities);
     }
-
-    private Animation ani = new Animation
-    {
-        AnimationSpeed = 100,
-        TargetAnimation = 78
-    };
+    
     
     // ReSharper disable once ClassCanBeSealed.Global
     public interface IAbilityComponentOptions

@@ -20,37 +20,43 @@ public class TerrorOfCryptEntranceScript : ReactorTileScriptBase
         _dialogFactory = dialogFactory;
     }
 
-    public override void OnWalkedOn(Creature source)
+public override void OnWalkedOn(Creature source)
+{
+    // Check if the source is an Aisling
+    if (source is  not Aisling aisling)
+        return;
+     // Get the current point of the Aisling
+    var currentPoint = new Point(aisling.X, aisling.Y);
+     // Get the group of Aislings near the current point
+    var group = aisling.Group?.Where(x => x.WithinRange(currentPoint)).ToList();
+     // Check if the group is null or has only one member
+    if (group is null || (group.Count <= 1))
     {
-        if (source is not Aisling aisling)
-            return;
-        
-        var currentPoint = new Point(aisling.X, aisling.Y);
-        var group = aisling.Group?.Where(x => x.WithinRange(currentPoint)).ToList();
-        if (group is null || (group.Count <= 1))
-        {
-            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure you are grouped or your group is near you.");
-            var point = source.DirectionalOffset(source.Direction.Reverse());
-            source.WarpTo(point);
-            return;
-        }
-
-        // Check if all members of the group have the quest flag and are within level range
-        var allMembersHaveQuestFlag = group.All(member => member.Trackers.Flags.HasFlag(QuestFlag1.TerrorOfCryptHunt) && member.WithinLevelRange(source));
-        
-        // Check if all conditions are met
-        if (allMembersHaveQuestFlag)
-        {
-            var npcpoint = new Point(aisling.X, aisling.Y);
-            var merchant = _merchantFactory.Create("teague", aisling.MapInstance, npcpoint);
-            var dialog = _dialogFactory.Create("teague_enterTerror", merchant);
-            dialog.Display(aisling);
-        }
-        else
-        {
-            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure everyone is within level range and has quest.");
-            var point = source.DirectionalOffset(source.Direction.Reverse());
-            source.WarpTo(point);
-        }
+        // Send a message to the Aisling
+        aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure you are grouped or your group is near you.");
+         // Warp the source back
+        var point = source.DirectionalOffset(source.Direction.Reverse());
+        source.WarpTo(point);
+        return;
     }
+     // Check if all members of the group have the quest flag and are within level range
+    var allMembersHaveQuestFlag = group.All(member => member.Trackers.Flags.HasFlag(QuestFlag1.TerrorOfCryptHunt) && member.WithinLevelRange(source));
+     if (allMembersHaveQuestFlag)
+    {
+        // Create a merchant at the Aisling's current point
+        var npcpoint = new Point(aisling.X, aisling.Y);
+        var merchant = _merchantFactory.Create("teague", aisling.MapInstance, npcpoint);
+         // Create a dialog for the merchant
+        var dialog = _dialogFactory.Create("teague_enterTerror", merchant);
+        dialog.Display(aisling);
+    }
+    else
+    {
+        // Send a message to the Aisling
+        aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure everyone is within level range and has quest.");
+         // Warp the source back
+        var point = source.DirectionalOffset(source.Direction.Reverse());
+        source.WarpTo(point);
+    }
+}
 }
