@@ -52,6 +52,16 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
         switch (target)
         {
             case Aisling aisling:
+                if (aisling.Status.HasFlag(Status.SmokeStance) && Randomizer.RollChance(15))
+                {
+                    switch (source)
+                    {
+                        case Monster monster:
+                            var effect = EffectFactory.Create("Blind");
+                            monster.Effects.Apply(target, effect);
+                            break;
+                    }
+                }
                 if (aisling.Status.HasFlag(Status.AsgallFaileas) && Randomizer.RollChance(70) || aisling.Status.HasFlag(Status.EarthenStance) && Randomizer.RollChance(20))
                 {
                     switch (source)

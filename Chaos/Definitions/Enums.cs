@@ -30,10 +30,11 @@ public enum Status : ulong
     EarthenStance = 1 << 14,
     MistStance = 1 << 15,
     ThunderStance = 1 << 16,
-    BeagAite = 1 << 17,
-    Aite = 1 << 18,
-    MorAite = 1 << 19,
-    ArdAite = 1 << 20,
+    SmokeStance = 1 << 17,
+    BeagAite = 1 << 18,
+    Aite = 1 << 19,
+    MorAite = 1 << 20,
+    ArdAite = 1 << 21,
     //add more statuses here, double each time
 }
 

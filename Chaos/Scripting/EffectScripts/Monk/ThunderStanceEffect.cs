@@ -37,13 +37,6 @@ public class ThunderStanceEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (source.StatSheet.CurrentMp < 200)
-        {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana.");
-
-            return false;
-        }
-
         if (target.Effects.Contains("thunderstance"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");
