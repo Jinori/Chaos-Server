@@ -27,19 +27,21 @@ public class GiveExpCommand : ICommand<Aisling>
     public ValueTask ExecuteAsync(Aisling source, ArgumentCollection args)
     {
         var tnl = source.UserStatSheet.ToNextLevel;
-        
-        
-        if (args.TryGetNext<int>(out var amount))
-        {
-            source.SendOrangeBarMessage($"You gave yourself {amount} exp");
-            ExperienceDistributionScript.GiveExp(source, amount);
-            
-        } else
+
+        if (!args.Any())
         {
             ExperienceDistributionScript.GiveExp(source, tnl);
 
             return default;
         }
+
+        if (args.TryGetNext<int>(out var amount))
+        {
+            source.SendOrangeBarMessage($"You gave yourself {amount} exp");
+            ExperienceDistributionScript.GiveExp(source, amount);
+        }
+
+
 
         if (args.TryGetNext<string>(out var targetName) && args.TryGetNext(out amount))
         {

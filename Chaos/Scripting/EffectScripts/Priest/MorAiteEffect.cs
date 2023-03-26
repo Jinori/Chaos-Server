@@ -8,7 +8,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 public class MorAiteEffect : NonOverwritableEffectBase
 {
     public override byte Icon => 11;
-    public override string Name => "moraite";
+    public override string Name => "mor naomh aite";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(8);
 

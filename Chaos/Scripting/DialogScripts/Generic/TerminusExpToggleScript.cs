@@ -1,3 +1,4 @@
+using System.Net;
 using Chaos.Definitions;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
@@ -13,9 +14,30 @@ public class TerminusExpToggleScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
+        source.Trackers.Enums.TryGetValue(out TutorialQuestStage tutorial);
+
+        if (tutorial != TutorialQuestStage.CompletedTutorial)
+            return;
+        
         var hasFlag = source.Trackers.Enums.TryGetValue(out GainExp stage);
         switch (Subject.Template.TemplateKey.ToLower())
         {
+
+            case "terminus_initial":
+            {
+
+                var option = new DialogOption
+                {
+                    DialogKey = "terminus_expGain",
+                    OptionText = "Toggle Experience Gain"
+                };
+
+                if (!Subject.HasOption(option))
+                    Subject.Options.Insert(0, option);
+
+                break;
+            }
+
             case "terminus_expgainyes":
             {
                 switch (stage)

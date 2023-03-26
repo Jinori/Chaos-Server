@@ -150,8 +150,9 @@ public class TutorialDialogScript : DialogScriptBase
             case "leiaend":
                 if (stage == TutorialQuestStage.GaveAssailAndSpell)
                 {
-                    ExperienceDistributionScript.GiveExp(source, 250);
+                    ExperienceDistributionScript.GiveExp(source, 400);
                     source.TryGiveGold(1000);
+                    source.SendOrangeBarMessage("You gained 1000 Gold and 400 exp!");
                     source.Trackers.Enums.Set(TutorialQuestStage.LearnedWorld);
                 }
 
@@ -274,7 +275,7 @@ public class TutorialDialogScript : DialogScriptBase
                     }
 
                     source.Inventory.RemoveQuantity("carrot", 3);
-                    ExperienceDistributionScript.GiveExp(source, 500);
+                    ExperienceDistributionScript.GiveExp(source, 1000);
                     source.TryGiveGold(1000);
                     source.Trackers.Enums.Set(TutorialQuestStage.CompletedFloppy);
 
@@ -351,11 +352,11 @@ public class TutorialDialogScript : DialogScriptBase
                 {
                     if (stage == TutorialQuestStage.GaveStickAndArmor)
                     {
-                        source.TryGiveGold(1300);
                         source.TryGiveItems(ring, ring, boots);
                         assail = SkillFactory.Create("assail");
                         source.SkillBook.TryAddToNextSlot(assail);
-                        ExperienceDistributionScript.GiveExp(source, 1750);
+                        source.TryGiveGold(2000);
+                        ExperienceDistributionScript.GiveExp(source, 6400);
 
                         source.Legend.AddOrAccumulate(
                             new LegendMark(
@@ -376,10 +377,10 @@ public class TutorialDialogScript : DialogScriptBase
 
                     if (stage == TutorialQuestStage.GaveAssailAndSpell)
                     {
-                        source.TryGiveGold(1300);
                         source.TryGiveItems(ring, ring, boots);
                         source.SkillBook.TryAddToNextSlot(assail);
-                        ExperienceDistributionScript.GiveExp(source, 1750);
+                        source.TryGiveGold(2000);
+                        ExperienceDistributionScript.GiveExp(source, 6400);
                         source.SpellBook.Remove("srad tut");
 
                         source.Legend.AddOrAccumulate(
@@ -401,9 +402,9 @@ public class TutorialDialogScript : DialogScriptBase
 
                     if (stage == TutorialQuestStage.LearnedWorld)
                     {
-                        source.TryGiveGold(1300);
                         source.TryGiveItems(ring, ring, boots);
-                        ExperienceDistributionScript.GiveExp(source, 1500);
+                        source.TryGiveGold(1000);
+                        ExperienceDistributionScript.GiveExp(source, 6000);
                         source.SpellBook.Remove("srad tut");
 
                         source.Legend.AddOrAccumulate(
@@ -426,7 +427,7 @@ public class TutorialDialogScript : DialogScriptBase
                     if (stage is TutorialQuestStage.GotEquipment or TutorialQuestStage.StartedFloppy)
                     {
                         source.TryGiveGold(1000);
-                        ExperienceDistributionScript.GiveExp(source, 1500);
+                        ExperienceDistributionScript.GiveExp(source, 6000);
                         source.SpellBook.Remove("srad tut");
 
                         source.Legend.AddOrAccumulate(
@@ -449,7 +450,7 @@ public class TutorialDialogScript : DialogScriptBase
                     if (stage is TutorialQuestStage.CompletedFloppy or TutorialQuestStage.GiantFloppy)
 
                     {
-                        ExperienceDistributionScript.GiveExp(source, 1000);
+                        ExperienceDistributionScript.GiveExp(source, 5000);
                         source.SpellBook.Remove("srad tut");
 
                         source.Legend.AddOrAccumulate(
@@ -488,7 +489,8 @@ public class TutorialDialogScript : DialogScriptBase
 
                 assail = SkillFactory.Create("assail");
                 source.SkillBook.TryAddToNextSlot(assail);
-                ExperienceDistributionScript.GiveExp(source, 1750);
+                source.TryGiveGold(2000);
+                ExperienceDistributionScript.GiveExp(source, 6400);
                 source.SpellBook.Remove("srad tut");
                 source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
                 point = new Point(5, 8);

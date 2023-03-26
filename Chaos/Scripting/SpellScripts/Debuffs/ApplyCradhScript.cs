@@ -42,6 +42,8 @@ public class ApplyCradhScript : BasicSpellScriptBase, ManaCostComponent.IManaCos
         }
 
         var targets = AbilityComponent.Activate<Creature>(context, this);
+        
+        context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}");
 
         foreach (var target in targets.TargetEntities)
         {

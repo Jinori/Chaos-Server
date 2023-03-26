@@ -89,7 +89,7 @@ public class TerminusTutorialScript : DialogScriptBase
 
                     source.SpellBook.Remove("srad tut");
                     source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
-                    ExperienceDistributionScript.GiveExp(source, 1000);
+                    ExperienceDistributionScript.GiveExp(source, 5000);
                     Point point;
                     point = new Point(13, 10);
                     var mapInstance = SimpleCache.Get<MapInstance>("after_life");

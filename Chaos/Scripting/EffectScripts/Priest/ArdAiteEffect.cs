@@ -8,7 +8,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 public class ArdAiteEffect : NonOverwritableEffectBase
 {
     public override byte Icon => 11;
-    public override string Name => "ardaite";
+    public override string Name => "ard naomh aite";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(12);
 

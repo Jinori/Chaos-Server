@@ -1,3 +1,4 @@
+using Chaos.Definitions;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
@@ -6,19 +7,41 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class TerminusTitleToggleScript : DialogScriptBase
 {
-    public TerminusTitleToggleScript(Dialog subject) : base(subject)
-    {
-    }
-    
-    
+    public TerminusTitleToggleScript(Dialog subject)
+        : base(subject) { }
+
+
     public override void OnDisplaying(Aisling source)
     {
-        if (source.Titles.Count < 2) 
+        source.Trackers.Enums.TryGetValue(out TutorialQuestStage stage);
+
+        if (stage != TutorialQuestStage.CompletedTutorial)
             return;
-        
-        var first = source.Titles.First();
-        source.Titles.Remove(first);
-        source.Titles.Add(first);
-        source.Client.SendSelfProfile();
+
+        if (source.Titles.Count < 2)
+            return;
+
+        switch (Subject.Template.TemplateKey.ToLower())
+        {
+            case "terminus_initial":
+            {
+
+                var option = new DialogOption
+                {
+                    DialogKey = "terminus_titleChange",
+                    OptionText = "Title Change"
+                };
+
+                if (!Subject.HasOption(option))
+                    Subject.Options.Insert(0, option);
+            }
+
+                var first = source.Titles.First();
+                source.Titles.Remove(first);
+                source.Titles.Add(first);
+                source.Client.SendSelfProfile();
+
+                break;
+        }
     }
 }

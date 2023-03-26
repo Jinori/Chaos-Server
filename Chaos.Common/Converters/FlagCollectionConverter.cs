@@ -19,7 +19,16 @@ public sealed class FlagCollectionConverter : JsonConverter<FlagCollection>
         var possibleTypes = AppDomain.CurrentDomain
                                      .GetAssemblies()
                                      .Where(a => !a.IsDynamic)
-                                     .SelectMany(a => a.GetTypes())
+                                     .SelectMany(a =>
+                                     {
+                                         try
+                                         {
+                                             return a.GetTypes();
+                                         } catch
+                                         {
+                                             return Enumerable.Empty<Type>();
+                                         }
+                                     })
                                      .Where(asmType => asmType.IsEnum && asmType is { IsInterface: false, IsAbstract: false })
                                      .ToList();
 

@@ -278,7 +278,7 @@ public class StartCookingScript : ConfigurableDialogScriptBase
                 {
                     source.Bank.Deposit(salad);
                     Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "You couldn't hold the basket's weight, we sent it to the bank";
+                    Subject.Text = "You couldn't hold the salads, we sent it to the bank";
                     Subject.NextDialogKey = "cooking_initial";
 
                     return;
@@ -327,7 +327,8 @@ public class StartCookingScript : ConfigurableDialogScriptBase
                 if (!source.TryGiveItem(salad))
                 {
                     source.Bank.Deposit(salad);
-                    Subject.Text = "You couldn't hold the salad's weight, we sent it to the bank";
+                    Subject.Text = "You couldn't hold the salads, we sent it to the bank";
+                    Subject.NextDialogKey = "cooking_initial";
 
                     return;
                 }

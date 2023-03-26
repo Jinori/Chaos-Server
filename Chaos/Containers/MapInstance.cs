@@ -54,6 +54,7 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
     /// <inheritdoc />
     public ISet<string> ScriptKeys { get; }
     public FifoAutoReleasingSemaphoreSlim Sync { get; }
+    public string LoadedFromInstanceId => BaseInstanceId ?? InstanceId;
 
     public MapInstance(
         MapTemplate template,

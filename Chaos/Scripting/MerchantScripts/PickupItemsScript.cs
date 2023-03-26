@@ -1,4 +1,5 @@
 ﻿using Chaos.Common.Utilities;
+using Chaos.Extensions.Common;
 using Chaos.Objects.World;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 
@@ -22,7 +23,7 @@ public class PickupItemsScript : MerchantScriptBase
         foreach (var item in Subject.MapInstance.GetEntitiesWithinRange<GroundItem>(Subject).Where(x => now - x.Creation > TimeSpan.FromSeconds(timeSpanSeconds)))
         {
             Subject.MapInstance.RemoveObject(item);
-            var saying = string.Format(_sayings.PickRandom(), item.Name);
+            var saying = _sayings.PickRandom().Inject(item.Name);
             Subject.Say(saying);
         }
     }
