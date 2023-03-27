@@ -78,6 +78,13 @@ public class ClassDedicationScript : DialogScriptBase
                     Subject.NextDialogKey = null;
                     return;
                 }
+                if (source.UserStatSheet.Master)
+                {
+                    Subject.Text = "You are already a Master of your class and cannot rededicate yourself.";
+                    Subject.PrevDialogKey = null;
+                    Subject.NextDialogKey = null;
+                    return;
+                }
                 var requiredHealth = 0;
                 var requiredMana = 0;
 
@@ -104,7 +111,6 @@ public class ClassDedicationScript : DialogScriptBase
                         requiredMana = 7250;
                         break;
                 }
-
                 if (source.UserStatSheet.MaximumHp >= requiredHealth && source.UserStatSheet.MaximumMp >= requiredMana)
                 {
                     Subject.Text = "You have enough vitality to continue.";
@@ -116,7 +122,6 @@ public class ClassDedicationScript : DialogScriptBase
                     Subject.NextDialogKey = null;
                     return;
                 }
-
                 if (source.Inventory.CountOf("ard ioc deum") >= 10)
                 {
                     Subject.Text += " Looks like you've also brought enough ard ioc deum";
@@ -128,7 +133,6 @@ public class ClassDedicationScript : DialogScriptBase
                     Subject.NextDialogKey = null;
                     return;
                 }
-
                 if (source.UserStatSheet.TotalExp >= 60000000)
                 {
                     Subject.Text += " and you've hunted enough experience! Let's continue.";

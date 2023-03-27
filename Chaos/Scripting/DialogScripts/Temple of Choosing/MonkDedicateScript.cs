@@ -56,9 +56,7 @@ public class MonkDedicateScript : DialogScriptBase
                     MarkColor.Blue,
                     1,
                     GameTime.Now));
-
-            source.SkillBook.Remove("assail");
-
+            
             source.Trackers.Flags.AddFlag(QuestFlag1.ChosenClass);
             var skill = SkillFactory.Create("punch");
 

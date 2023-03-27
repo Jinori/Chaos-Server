@@ -76,33 +76,33 @@ public class DefaultDamageFormula : IDamageFormula
         ApplyAcModifier(ref damage, defenderAc);
         ApplyElementalModifier(ref damage, elementOverride ?? source.StatSheet.OffenseElement, target.StatSheet.DefenseElement);
         HandleClawFist(ref damage, script, source);
-        HandleAite(ref damage, source);
+        HandleAite(ref damage, target);
         return damage;
     }
 
     protected virtual void HandleAite(ref int damage, Creature defender)
     {
-        if (!defender.Effects.Contains("aite"))
+        if (!defender.Effects.Any(x => x.Name.EndsWithI("aite")))
             return;
 
         if (defender.Status.HasFlag(Status.BeagAite))
         {
-            damage *= Convert.ToInt32(0.95);
+            damage = (int)(damage * .95);
         }
 
         if (defender.Status.HasFlag(Status.Aite))
         {
-            damage *= Convert.ToInt32(0.92);
+            damage = (int)(damage * .92);
         }
 
         if (defender.Status.HasFlag(Status.MorAite))
         {
-            damage *= Convert.ToInt32(0.89);
+            damage = (int)(damage * .89);
         }
 
         if (defender.Status.HasFlag(Status.ArdAite))
         {
-            damage *= Convert.ToInt32(0.85);
+            damage = (int)(damage * .85);
         }
     }
 

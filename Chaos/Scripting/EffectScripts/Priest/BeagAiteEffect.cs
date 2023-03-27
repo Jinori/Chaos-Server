@@ -8,7 +8,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 public class BeagAiteEffect : NonOverwritableEffectBase
 {
     public override byte Icon => 11;
-    public override string Name => "beag naohm aite";
+    public override string Name => "beag naomh aite";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(3);
 
