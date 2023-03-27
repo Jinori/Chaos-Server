@@ -12,12 +12,12 @@ public class RestrictionComponent
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh):
+            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh) || aisling.Status.HasFlag(Status.BeagSuain):
             {
                 aisling.SendOrangeBarMessage("You cannot move.");
                 return false;   
             }
-            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Blind) || monster.Status.HasFlag(Status.Pramh):
+            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Blind) || monster.Status.HasFlag(Status.Pramh) || monster.Status.HasFlag(Status.Pramh):
             {
                 return false;
             }
