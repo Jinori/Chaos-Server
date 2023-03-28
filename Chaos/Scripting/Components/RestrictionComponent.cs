@@ -40,7 +40,7 @@ public class RestrictionComponent
                 aisling.SendOrangeBarMessage("You cannot turn.");
                 return false;   
             }
-            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Pramh) || monster.Status.HasFlag(Status.BeagSuain):
+            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Pramh)|| monster.Status.HasFlag(Status.BeagSuain):
             {
                 return false;
             }
@@ -74,7 +74,7 @@ public class RestrictionComponent
                 aisling.SendOrangeBarMessage("You cannot use skills.");
                 return false;
             }
-            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Pramh):
+            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Pramh) || monster.Status.HasFlag(Status.BeagSuain):
             {
                 return false;
             }
@@ -91,7 +91,7 @@ public class RestrictionComponent
                 aisling.SendOrangeBarMessage("You cannot use spells.");
                 return false;
             }
-            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Pramh):
+            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Pramh) || monster.Status.HasFlag(Status.BeagSuain):
             {
                 return false;
             }
