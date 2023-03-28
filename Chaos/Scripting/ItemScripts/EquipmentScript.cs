@@ -86,6 +86,12 @@ public class EquipmentScript : ConfigurableItemScriptBase
             return;
         }
 
+        if (template.RequiresMaster && !source.UserStatSheet.Master)
+        {
+            source.SendOrangeBarMessage($"{Subject.DisplayName} requires Master to be able to be equipped.");
+            return;
+        }
+        
         source.Equip(template.EquipmentType, Subject);
     }
 

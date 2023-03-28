@@ -18,24 +18,31 @@ public class RemoveStatusScript : BasicSkillScriptBase
     public override void OnUse(ActivationContext context)
     {
         var targets = AbilityComponent.Activate<Creature>(context, this);
-        
-        if (StatusToRemove is null) 
+        if (StatusToRemove is null)
             return;
 
-        if (StatusToRemove.EqualsI("BeagSuain"))
+        //Only targets beag suain currently
+        if (!StatusToRemove.EqualsI("BeagSuain"))
+            return;
+        
+        var ani = new Animation
         {
-            var ani = new Animation
-            {
-                AnimationSpeed = 100,
-                TargetAnimation = 3
-            };
-            context.Source.Animate(ani, context.Source.Id);
-            if (!context.Source.Status.HasFlag(Status.BeagSuain)) 
-                return;
-            context.Source.Effects.Dispel("BeagSuain");
-            context.Source.Status &= ~Status.BeagSuain;
-            context.SourceAisling?.Client.SendAttributes(StatUpdateType.Full);
-            context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You can walk again.");
-        }
+            AnimationSpeed = 100,
+            TargetAnimation = 3
+        };
+        
+        context.Source.Animate(ani, context.Source.Id);
+            
+        if (!context.Source.Status.HasFlag(Status.BeagSuain)) 
+            return;
+            
+        context.Source.Effects.Dispel("BeagSuain");
+        context.Source.Status &= ~Status.BeagSuain;
+            
+        if (context.SourceAisling == null) 
+            return;
+            
+        context.SourceAisling.Client.SendAttributes(StatUpdateType.Full);
+        context.SourceAisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You can walk again.");
     }
 }

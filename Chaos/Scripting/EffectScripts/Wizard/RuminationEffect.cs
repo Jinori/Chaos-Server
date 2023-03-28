@@ -18,8 +18,8 @@ public class RuminationEffect : ContinuousAnimationEffectBase
 
     protected override Animation Animation { get; } = new()
     {
-        AnimationSpeed = 300,
-        TargetAnimation = 58
+        AnimationSpeed = 20,
+        TargetAnimation = 316
     };
 
     /// <inheritdoc />
@@ -41,7 +41,7 @@ public class RuminationEffect : ContinuousAnimationEffectBase
         AislingSubject?.Client.SendServerMessage(
             ServerMessageType.OrangeBar1,
             $"{MessageColor.Silver.ToPrefix()}You begin to sacrifice your health in return for mana gains..");
-
+        
         Point = new Point(Subject.X, Subject.Y);
     }
 

@@ -28,6 +28,7 @@ public class DurabilityComponent
         {
             if (aislingTarget is not Aisling aisling)
                 continue;
+            
             var equipment = aisling.Equipment.Where(x => x.CurrentDurability.HasValue).ToList();
             foreach (var item in equipment.Where(item => item.Slot is > 1 and < 14)) item.CurrentDurability--;
 
@@ -37,6 +38,16 @@ public class DurabilityComponent
                 aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1,
                     $"{item.DisplayName} has reached zero durability and has broke.");
                 aisling.Equipment.TryGetRemove(item.Slot, out _);
+            }
+
+            var itemsToBank = aisling.Equipment.Where(x => x.Template.AccountBound && x.CurrentDurability <= 0);
+            foreach (var item in itemsToBank)
+            {
+                aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1,
+                    $"{item.DisplayName} has reached zero durability and has been sent to your bank.");
+                aisling.Equipment.TryGetRemove(item.Slot, out var items);
+                if (items != null)
+                    aisling.Bank.Deposit(items);
             }
         }
     }
