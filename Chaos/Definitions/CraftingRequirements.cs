@@ -32,5 +32,48 @@ public static class CraftingRequirements
                 ("vegetable", 5),
                 ("rambutan", 3)
             }},
+            {"dinnerplate", new List<(string TemplateKey, int Amount)>()
+            {
+                ("beef", 5),
+                ("vegetable", 10),
+                ("salt", 1),
+                ("apple", 5)
+            }},
+            {"lobsterdinner", new List<(string TemplateKey, int Amount)>()
+            {
+                ("carrot", 10),
+                ("vegetable", 5),
+                ("rambutan", 3)
+            }},
+            {"steakmeal", new List<(string TemplateKey, int Amount)>()
+            {
+                ("carrot", 10),
+                ("vegetable", 5),
+                ("rambutan", 3)
+            }},
+            {"sweetbuns", new List<(string TemplateKey, int Amount)>()
+            {
+                ("carrot", 10),
+                ("vegetable", 5),
+                ("rambutan", 3)
+            }},
+            {"sandwich", new List<(string TemplateKey, int Amount)>()
+            {
+                ("carrot", 10),
+                ("vegetable", 5),
+                ("rambutan", 3)
+            }},
+            {"soup", new List<(string TemplateKey, int Amount)>()
+            {
+                ("carrot", 10),
+                ("vegetable", 5),
+                ("rambutan", 3)
+            }}, 
+            {"meats", new List<(string TemplateKey, int Amount)>()
+                {
+                    ("beef", 1),
+                    ("chicken", 1),
+                    ("beefslices", 1)
+                }}
         };
 }

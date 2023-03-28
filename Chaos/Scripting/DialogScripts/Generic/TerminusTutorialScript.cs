@@ -88,7 +88,6 @@ public class TerminusTutorialScript : DialogScriptBase
                             GameTime.Now));
 
                     source.SpellBook.Remove("srad tut");
-                    source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
                     ExperienceDistributionScript.GiveExp(source, 5000);
                     Point point;
                     point = new Point(13, 10);

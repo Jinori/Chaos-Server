@@ -43,7 +43,7 @@ public class LearnAllCommand : ICommand<Aisling>
 
     private string[] _rogueSpells =
     {
-        "needle_Trap", "stiletto_Trap", "bolt_Trap", "coiledBolt_Trap", "spring_Trap", "maiden_Trap", "detectTraps"
+        "needleTrap", "stilettoTrap", "boltTrap", "coiledBoltTrap", "springTrap", "maidenTrap", "detectTraps"
     };
 
     private string[] _rogueSkills =

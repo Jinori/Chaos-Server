@@ -87,22 +87,22 @@ public class DefaultDamageFormula : IDamageFormula
 
         if (defender.Status.HasFlag(Status.BeagAite))
         {
-            damage = (int)(damage * .95);
+            damage *= Convert.ToInt32(0.92);
         }
 
         if (defender.Status.HasFlag(Status.Aite))
         {
-            damage = (int)(damage * .92);
+            damage *= Convert.ToInt32(0.85);
         }
 
         if (defender.Status.HasFlag(Status.MorAite))
         {
-            damage = (int)(damage * .89);
+            damage *= Convert.ToInt32(0.78);
         }
 
         if (defender.Status.HasFlag(Status.ArdAite))
         {
-            damage = (int)(damage * .85);
+            damage *= Convert.ToInt32(0.70);
         }
     }
 
