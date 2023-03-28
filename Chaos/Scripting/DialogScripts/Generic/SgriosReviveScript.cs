@@ -1,5 +1,6 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Containers;
+using Chaos.Definitions;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
@@ -41,6 +42,18 @@ public class SgriosReviveScript : DialogScriptBase
         source.Refresh(true);
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Sgrios mumbles unintelligble gibberish");
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are revived and sent home.");
+        source.Trackers.Enums.TryGetValue(out TutorialQuestStage tutorial);
+
+        if (tutorial != TutorialQuestStage.CompletedTutorial)
+        {
+            Point point2;
+            point2 = new Point(23, 18);
+            var mapInstance2 = _simpleCache.Get<MapInstance>("mileth");
+            source.TraverseMap(mapInstance2, point2, true);
+            source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
+
+            return;
+        }
         Subject.Close(source);
         switch (source.Nation)
         {

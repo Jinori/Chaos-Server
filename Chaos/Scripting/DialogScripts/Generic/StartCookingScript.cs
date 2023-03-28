@@ -339,6 +339,124 @@ public class StartCookingScript : ConfigurableDialogScriptBase
                 
                 break;
             }
+            case "dinnerplate_requirements":
+            {
+                if (!CraftingRequirements.FoodRequirements.TryGetValue("meats", out var requirements))
+                {
+                    Subject.Text = DialogString.UnknownInput.Value;
+
+                    return;
+                }
+                if (!CraftingRequirements.FoodRequirements.TryGetValue("fruits", out var requirements2))
+                {
+                    Subject.Text = DialogString.UnknownInput.Value;
+
+                    return;
+                }
+                if (!CraftingRequirements.FoodRequirements.TryGetValue("extraingredients", out var requirements3))
+                {
+                    Subject.Text = DialogString.UnknownInput.Value;
+
+                    return;
+                }
+                if (!CraftingRequirements.FoodRequirements.TryGetValue("vegetables", out var requirements4))
+                {
+                    Subject.Text = DialogString.UnknownInput.Value;
+
+                    return;
+                }
+
+                var requirementParams = requirements
+                                        .Select(
+                                            requirement =>
+                                            {
+                                                var fauxItem = ItemFactory.CreateFaux(requirement.TemplateKey);
+
+                                                return new object[] { requirement.Amount, fauxItem.DisplayName };
+                                            })
+                                        .ToArray();
+                var requirementParams2 = requirements2
+                                        .Select(
+                                            requirement2 =>
+                                            {
+                                                var fauxItem = ItemFactory.CreateFaux(requirement2.TemplateKey);
+
+                                                return new object[] { requirement2.Amount, fauxItem.DisplayName };
+                                            })
+                                        .ToArray();
+                var requirementParam3 = requirements3
+                                        .Select(
+                                            requirement3 =>
+                                            {
+                                                var fauxItem = ItemFactory.CreateFaux(requirement3.TemplateKey);
+
+                                                return new object[] { requirement3.Amount, fauxItem.DisplayName };
+                                            })
+                                        .ToArray();
+                var requirementParam4 = requirements4
+                                        .Select(
+                                            requirement4 =>
+                                            {
+                                                var fauxItem = ItemFactory.CreateFaux(requirement4.TemplateKey);
+
+                                                return new object[] { requirement4.Amount, fauxItem.DisplayName };
+                                            })
+                                        .ToArray();
+
+                Subject.Text = "5 meats, 10 vegetables, 1 extra ingredient, 5 fruits";
+
+                break;
+            }
+            case "dinnerplate_attempt":
+            {
+                if (!CraftingRequirements.FoodRequirements.TryGetValue("fruit", out var requirements))
+                {
+                    Subject.Text = DialogString.UnknownInput.Value;
+                    return;
+                }
+
+                foreach (var requirement in requirements)
+                    if (!source.Inventory.HasCount(requirement.TemplateKey, requirement.Amount))
+                    {
+                        Subject.Type = MenuOrDialogType.Normal;
+                        Subject.Text = "Looks like you don't have enough vegetables.";
+                        Subject.NextDialogKey = "cooking_initial";
+
+                        return;
+                    }
+
+                foreach (var requirement in requirements)
+                    source.Inventory.RemoveQuantity(requirement.TemplateKey, requirement.Amount);
+
+                if (!Randomizer.RollChance(75))
+                {
+                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Text = "Looks as if these vegetables are rotten";
+                    Subject.NextDialogKey = "salad_requirements";
+
+                    return;
+                }
+
+                var salad = ItemFactory.Create("salad");
+                salad.Count = 3;
+                source.SendOrangeBarMessage("You put together 3 Salads!");
+
+                if (!source.TryGiveItem(salad))
+                {
+                    source.Bank.Deposit(salad);
+                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Text = "You couldn't hold the salads, we sent it to the bank";
+                    Subject.NextDialogKey = "cooking_initial";
+
+                    return;
+                }
+
+                Subject.Type = MenuOrDialogType.Normal;
+                Subject.Text = "You finished the Salads.";
+                Subject.NextDialogKey = "salad_requirements";
+                
+                break;
+            }
         }
     }
 
@@ -379,6 +497,36 @@ public class StartCookingScript : ConfigurableDialogScriptBase
                     case "salad":
                     {
                         Subject.NextDialogKey = "salad_choose";
+                        return;
+                    }
+                    case "dinnerplate":
+                    {
+                        Subject.NextDialogKey = "dinnerplate_choose";
+                        return;
+                    }
+                    case "lobsterdinner":
+                    {
+                        Subject.NextDialogKey = "lobsterdinner_choose";
+                        return;
+                    }
+                    case "steakmeal":
+                    {
+                        Subject.NextDialogKey = "steakmeal_choose";
+                        return;
+                    }
+                    case "sweetbuns":
+                    {
+                        Subject.NextDialogKey = "sweetbuns_choose";
+                        return;
+                    }
+                    case "sandwich":
+                    {
+                        Subject.NextDialogKey = "sandwich_choose";
+                        return;
+                    }
+                    case "soup":
+                    {
+                        Subject.NextDialogKey = "soup_choose";
                         return;
                     }
                 }

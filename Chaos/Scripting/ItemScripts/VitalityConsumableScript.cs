@@ -64,9 +64,11 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase
 
         if (ManaAmount.HasValue)
             source.UserStatSheet.AddMp(ManaAmount.Value);
+        source.SendOrangeBarMessage($"You eat the {Subject.DisplayName}. Yummy!");
 
         if (ManaPercent.HasValue)
             source.UserStatSheet.AddManaPct(ManaPercent.Value);
+        source.SendOrangeBarMessage($"You eat the {Subject.DisplayName}. Yummy!");
 
         source.Client.SendAttributes(StatUpdateType.Vitality);
         source.Inventory.RemoveQuantity(Subject.Slot, 1);
