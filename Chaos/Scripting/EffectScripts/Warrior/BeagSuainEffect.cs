@@ -18,7 +18,7 @@ public sealed class BeagSuainEffect : ContinuousAnimationEffectBase
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
-        TargetAnimation = 41
+        TargetAnimation = 364
     };
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1));

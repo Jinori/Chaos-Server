@@ -17,7 +17,7 @@ public class RestrictionComponent
                 aisling.SendOrangeBarMessage("You cannot move.");
                 return false;   
             }
-            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Blind) || monster.Status.HasFlag(Status.Pramh) || monster.Status.HasFlag(Status.Pramh):
+            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Blind) || monster.Status.HasFlag(Status.Pramh) || monster.Status.HasFlag(Status.BeagSuain):
             {
                 return false;
             }
@@ -40,7 +40,7 @@ public class RestrictionComponent
                 aisling.SendOrangeBarMessage("You cannot turn.");
                 return false;   
             }
-            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Pramh):
+            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Pramh) || monster.Status.HasFlag(Status.BeagSuain):
             {
                 return false;
             }

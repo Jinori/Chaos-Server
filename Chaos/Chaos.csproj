@@ -62,4 +62,7 @@
     <ItemGroup>
         <EmbeddedResource Include="Resources\sotp.dat" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Scripting\ReactorTileScripts\CthonicRemains\" />
+    </ItemGroup>
 </Project>
