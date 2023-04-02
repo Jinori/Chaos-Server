@@ -74,6 +74,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     /// <inheritdoc />
     public override int AssailIntervalMs { get; }
     public ChantTimer ChantTimer { get; }
+    public Stack<Dialog> DialogHistory { get; }
     public override ILogger<Aisling> Logger { get; }
     public IIntervalTimer SaveTimer { get; }
     /// <inheritdoc />
@@ -192,6 +193,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         WalkCounter = new ResettingCounter(3, 5);
         AssailIntervalMs = WorldOptions.Instance.AislingAssailIntervalMs;
         ChannelSettings = new SynchronizedHashSet<ChannelSettings>();
+        DialogHistory = new Stack<Dialog>();
 
         Trackers = new Trackers
         {
@@ -234,6 +236,9 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         Client.SendAttributes(StatUpdateType.Vitality);
     }
 
+
+    /// <inheritdoc />
+    void IDialogSourceEntity.Activate(Aisling source) => Script.OnClicked(source);
 
     public void BeginObserving()
     {
@@ -493,6 +498,21 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
     public void SendServerMessage(ServerMessageType serverMessageType, string message) =>
         Client.SendServerMessage(serverMessageType, message);
+
+    /// <inheritdoc />
+    public override void ShowPublicMessage(PublicMessageType publicMessageType, string message)
+    {
+        if (!Script.CanTalk())
+            return;
+
+        Logger.LogTrace(
+            "{@Client} sent {@Type} message {@Message}",
+            this,
+            publicMessageType,
+            message);
+
+        base.ShowPublicMessage(publicMessageType, message);
+    }
 
     public override void ShowTo(Aisling aisling) => aisling.Client.SendDisplayAisling(this);
 

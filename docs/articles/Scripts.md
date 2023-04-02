@@ -26,7 +26,7 @@ automatically if it can find that variable within the source json the entity was
 the `scriptVars` property from whatever entity is the subject of that script.
 
 For example, here is a script that is used for consumable items that give back health or mana.  
-[!code-csharp[](../../Chaos/Scripts/ItemScripts/VitalityConsumableScript.cs)]  
+[!code-csharp[](../../Chaos/Scripting/ItemScripts/VitalityConsumableScript.cs)]  
 Note the `scriptVars` region. These properties don't appear to be set anywhere, but they are automatically populated by the script's base
 implementation from the item's json.
 

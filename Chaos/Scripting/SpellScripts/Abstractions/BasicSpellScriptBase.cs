@@ -1,7 +1,6 @@
 using Chaos.Common.Definitions;
 using Chaos.Data;
 using Chaos.Definitions;
-using Chaos.Extensions;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.Components;

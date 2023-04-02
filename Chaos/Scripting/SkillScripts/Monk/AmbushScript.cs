@@ -44,7 +44,7 @@ public class AmbushScript : SkillScriptBase
                     //get the point in that direction
                     var destinationPoint = entity.DirectionalOffset(direction);
 
-                    //if that point is not walkable, continue
+                    //if that point is not walkable or is a reactor, continue
                     if (!context.Map.IsWalkable(destinationPoint, context.Source.Type) || context.Map.IsBlockingReactor(destinationPoint))
                         continue;
 

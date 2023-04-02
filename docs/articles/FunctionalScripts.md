@@ -6,10 +6,10 @@ kinds of interactions, and are not tied to any single entity. These scripts can 
 These scripts often use [Formulae](<Formulae.md>) for calculations as part of their actions. Any functional scripts that utilize formulae
 should be implemented in a way that the formula used is swappable for other implementations of that formula.
 
-Let's use the [DefaultApplyDamageScript](<xref:Chaos.Scripting.FunctionalScripts.ApplyDamage.DefaultApplyDamageScript>) functional script as
+Let's use the [DefaultApplyDamageScript](<xref:Chaos.Scripting.FunctionalScripts.ApplyDamage.ApplyAttackDamageScript>) functional script as
 an example.
 
-[!code-csharp[](../../Chaos/Scripts/FunctionalScripts/ApplyDamage/DefaultApplyDamageScript.cs)]
+[!code-csharp[](../../Chaos/Scripting/FunctionalScripts/ApplyDamage/ApplyAttackDamageScript.cs)]
 
 In this class, you can see that this script is used to apply damage to a target, and uses
 the [DefaultDamageFormula](<xref:Chaos.Formulae.Damage.DefaultDamageFormula>) to calculate the damage before it applies it. The formula is

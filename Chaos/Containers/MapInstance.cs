@@ -47,6 +47,7 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
     public ConcurrentDictionary<string, MapInstance> Shards { get; set; }
     public MapTemplate Template { get; set; }
     public bool IsShard => !string.IsNullOrEmpty(BaseInstanceId);
+    public string LoadedFromInstanceId => BaseInstanceId ?? InstanceId;
     public CancellationTokenSource MapInstanceCtx { get; }
     public List<MonsterSpawn> MonsterSpawns { get; }
     /// <inheritdoc />
@@ -54,7 +55,6 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
     /// <inheritdoc />
     public ISet<string> ScriptKeys { get; }
     public FifoAutoReleasingSemaphoreSlim Sync { get; }
-    public string LoadedFromInstanceId => BaseInstanceId ?? InstanceId;
 
     public MapInstance(
         MapTemplate template,
@@ -540,10 +540,11 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
     }
 
     public bool IsBlockingReactor(IPoint point) => Objects.AtPoint<ReactorTile>(point).Any(reactor => reactor.ShouldBlockPathfinding);
-    
+
     public bool IsReactor(IPoint point) =>
-        Objects.AtPoint<ReactorTile>(point).Any();
-    
+        Objects.AtPoint<ReactorTile>(point)
+               .Any();
+
     public bool IsWalkable(IPoint point, CreatureType creatureType)
     {
         var creatures = Objects.AtPoint<Creature>(point)

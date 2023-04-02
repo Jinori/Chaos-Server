@@ -92,7 +92,7 @@ public enum UserState : ulong
     //add more user states here, double each time
 }
 
-public enum MenuOrDialogType : byte
+public enum ChaosDialogType : byte
 {
     Menu,
     MenuWithArgs,

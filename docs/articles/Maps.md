@@ -1,9 +1,7 @@
 # Maps
 
-One of the first things you're going to want to do is add maps to your server. There are a few things you should know about maps first
-though. Chaos implement a map instance system. What map an object is on is determined by that maps MapInstanceId. This allow multiple maps
-with the same exact map id / tile data, or even the same names to coexist at the same time. Chaos also has an automatic map sharding system
-that will be explained later.
+Chaos uses a map instancing system. What map an object is on is determined by that map's MapInstanceId. This allow multiple maps
+with the same MapId/Name to coexist at the same time. Chaos also has an automatic map sharding system that will be explained later.
 
 ## Map Templates
 
@@ -174,7 +172,7 @@ type.
 | bool                                                                              | ShouldBlockPathfinding  | Whether or not this reactor should block monster pathfinding. If this is set to false, monsters and merchants will be able to step on this reactor                                            |
 | string?                                                                           | OwnerMonsterTemplateKey | If this reactor does damage, it is required to have an owner, otherwise this property can be ignored. The owning monster can be a basic monster with no stats or scripts                      |
 | ICollection\<string\>                                                             | ScriptKeys              | A collection of names of scripts to attach to this object by default                                                                                                                          |
-| IDictionary\<string, [DynamicVars](<xref:Chaos.Common.Collections.DynamicVars>)\> | ScriptVars              | A collection of key-value pairs of key-value pairs<br />Each script that has variables needs a scriptName-Value pair, and the value of that entry is a dictionary of propertyName-Value pairs |
+| IDictionary\<string, [DynamicVars](<xref:Chaos.Collections.Common.DynamicVars>)\> | ScriptVars              | A collection of key-value pairs of key-value pairs<br />Each script that has variables needs a scriptName-Value pair, and the value of that entry is a dictionary of propertyName-Value pairs |
 
 ### Example reactors.json
 
