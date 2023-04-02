@@ -49,7 +49,7 @@ public abstract class ItemSpawnerScript : MapScriptBase
         Point point;
 
         do
-            point = Subject.Template.Bounds.RandomPoint();
+            point = Subject.Template.Bounds.GetRandomPoint();
         while (Subject.IsWall(point) || Subject.IsBlockingReactor(point));
 
         return point;

@@ -33,13 +33,13 @@ public class SuomiGatheringScript : MapScriptBase
 
         for (var i = 0; i < count; i++)
         {
-            var cherrypoint = cherryrectangle.RandomPoint();
+            var cherrypoint = cherryrectangle.GetRandomPoint();
             cherrypoints.Add(cherrypoint);
         }
 
         for (var i = 0; i < count2; i++)
         {
-            var grapepoint = graperectangle.RandomPoint();
+            var grapepoint = graperectangle.GetRandomPoint();
             grapepoints.Add(grapepoint);
         }
 

@@ -36,7 +36,7 @@ public class PFMantisDeathScript : MonsterScriptBase
             Point point;
 
             do
-                point = rectangle.RandomPoint();
+                point = rectangle.GetRandomPoint();
             while (!mapInstance.IsWalkable(point, member.Type));
 
             member.TraverseMap(mapInstance, point);

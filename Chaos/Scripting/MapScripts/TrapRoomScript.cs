@@ -22,7 +22,7 @@ public class TrapRoomScript : MapScriptBase
 
         for (var i = 0; i < count; i++)
         {
-            var point = subject.Template.Bounds.RandomPoint();
+            var point = subject.Template.Bounds.GetRandomPoint();
             points.Add(point);
         }
 
