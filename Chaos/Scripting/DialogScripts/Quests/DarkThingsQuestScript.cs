@@ -54,196 +54,58 @@ public class DarkThingsQuestScript : DialogScriptBase
                 {
                     if (source.Trackers.TimedEvents.HasActiveEvent("DarkThingsCd", out var timedEvent))
                     {
-                        Subject.Text = $"I have enough for now. Return later. (({timedEvent.Remaining.ToReadableString()}))";
+                        Subject.Reply(source, $"I have enough for now. Return later. (({timedEvent.Remaining.ToReadableString()}))");
 
                         return;
                     }
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "darkthings_yes",
-                        OptionText = "Yes I can, what do you need?"
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "darkthings_no",
-                        OptionText = "Not right now."
-                    };
-
-                    var option2 = new DialogOption
-                    {
-                        DialogKey = "darkthings_use",
-                        OptionText = "What do you do with these?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Insert(1, option1);
-
-                    if (!Subject.HasOption(option2))
-                        Subject.Options.Insert(2, option2);
                 }
 
                 if (stage == DarkThingsStage.StartedSpidersEye)
                 {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "DarkThings_StartedSpidersEye",
-                        OptionText = "I have your Spider's Eye here."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "darkthings_where",
-                        OptionText = "Where do I find it?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Insert(1, option1);
-
+                    Subject.Reply(source,"skip", "darkthings_startse");
                     return;
                 }
 
                 if (stage == DarkThingsStage.StartedCentipedesGland)
                 {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "DarkThings_StartedCentipedesGland",
-                        OptionText = "I have your Centipede's Gland here."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "darkthings_where",
-                        OptionText = "Where do I find it?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Insert(1, option1);
+                    Subject.Reply(source,"skip", "darkthings_startcg");
 
                     return;
                 }
 
                 if (stage == DarkThingsStage.StartedSpidersSilk)
                 {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "DarkThings_StartedSpidersSilk",
-                        OptionText = "I have your Spider Silk here."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "darkthings_where",
-                        OptionText = "Where do I find it?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Insert(1, option1);
+                    Subject.Reply(source,"skip", "darkthings_startss");
 
                     return;
                 }
 
                 if (stage == DarkThingsStage.StartedBatsWing)
                 {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "DarkThings_StartedBatsWing",
-                        OptionText = "I have your Bat's Wing here."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "darkthings_where",
-                        OptionText = "Where do I find it?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Insert(1, option1);
+                    Subject.Reply(source,"skip", "darkthings_startbw");
 
                     return;
                 }
 
                 if (stage == DarkThingsStage.StartedGreatBatsWing)
                 {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "DarkThings_StartedGreatBatsWing",
-                        OptionText = "I have your Great Bat's Wing here."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "darkthings_where",
-                        OptionText = "Where do I find it?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Insert(1, option1);
+                    Subject.Reply(source,"skip", "darkthings_startgbw");
 
                     return;
                 }
 
                 if (stage == DarkThingsStage.StartedWhiteBatsWing)
                 {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "DarkThings_StartedWhiteBatsWing",
-                        OptionText = "I have your White Bat's Wing here."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "darkthings_where",
-                        OptionText = "Where do I find it?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Insert(1, option1);
+                    Subject.Reply(source,"skip", "darkthings_startwbw");
 
                     return;
                 }
 
                 if (stage == DarkThingsStage.StartedScorpionSting)
                 {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "DarkThings_StartedScorpionSting",
-                        OptionText = "I have your Scorpion Sting here."
-                    };
+                    Subject.Reply(source,"skip", "darkthings_startscs");
 
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "darkthings_where",
-                        OptionText = "Where do I find it?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Insert(1, option1);
+                    return;
                 }
 
                 break;
@@ -298,46 +160,46 @@ public class DarkThingsQuestScript : DialogScriptBase
                     {
                         case DarkThingsStage.StartedSpidersEye:
                         {
-                            Subject.Text = "You will? Okay, bring me one Spider's Eye.";
+                            Subject.Reply(source, "You will? Okay, bring me one Spider's Eye.");
                         }
 
                             break;
 
                         case DarkThingsStage.StartedSpidersSilk:
                         {
-                            Subject.Text = "You will? Okay, bring me one Spider's Silk.";
+                            Subject.Reply(source, "You will? Okay, bring me one Spider's Silk.");
                         }
 
                             break;
 
                         case DarkThingsStage.StartedCentipedesGland:
                         {
-                            Subject.Text = "You will? Okay, bring me one Centipede's Gland.";
+                            Subject.Reply(source, "You will? Okay, bring me one Centipede's Gland.");
                         }
 
                             break;
                         case DarkThingsStage.StartedBatsWing:
                         {
-                            Subject.Text = "You will? Okay, bring me one Bat's Wing.";
+                            Subject.Reply(source, "You will? Okay, bring me one Bat's Wing.");
                         }
 
                             break;
                         case DarkThingsStage.StartedScorpionSting:
                         {
-                            Subject.Text = "You will? Okay, bring me one Scorpion's Sting.";
+                            Subject.Reply(source, "You will? Okay, bring me one Scorpion's Sting.");
                         }
 
                             break;
 
                         case DarkThingsStage.StartedGreatBatsWing:
                         {
-                            Subject.Text = "You will? Okay, bring me one Great Bat's Wing.";
+                            Subject.Reply(source, "You will? Okay, bring me one Great Bat's Wing.");
                         }
 
                             break;
                         case DarkThingsStage.StartedWhiteBatsWing:
                         {
-                            Subject.Text = "You will? Okay, bring me one White Bat's Wing";
+                            Subject.Reply(source, "You will? Okay, bring me one White Bat's Wing");
                         }
 
                             break;

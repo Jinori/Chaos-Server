@@ -18,16 +18,14 @@ public class LockPickChestScript : DialogScriptBase
     {
         if (source.UserStatSheet.BaseClass != BaseClass.Rogue)
         {
-            Subject.Type = MenuOrDialogType.Normal;
-            Subject.Text = "Only a Rogue may pick this lock.";
+            Subject.Reply(source, "Only a Rogue may pick this lock.");
             return;
         }
 
         if (source.Inventory.HasCount("Lockpicks", 1)) 
             return;
-        
-        Subject.Type = MenuOrDialogType.Normal;
-        Subject.Text = "Perhaps you'd need some keys to attempt to open this chest.";
+       
+        Subject.Reply(source, "Perhaps you'd need some keys to attempt to open this chest.");
     }
 
     public override void OnNext(Aisling source, byte? optionIndex = null)

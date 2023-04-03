@@ -19,9 +19,9 @@ public class MonkFormDedicationScript : DialogScriptBase
 
         if (monkForm || source.UserStatSheet.BaseClass is not BaseClass.Monk)
         {
-            Subject.Options.Clear();
-            Subject.Text = "How did you get here?.";
-            Subject.Type = MenuOrDialogType.Normal;
+            Subject.Reply(source, "How did you get here?.");
+
+            return;
         }
 
         if (!monkForm)

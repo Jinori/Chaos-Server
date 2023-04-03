@@ -30,7 +30,8 @@ public static class ComplexActionHelper
         Success,
         CantCarry,
         NotEnoughGamePoints,
-        BadInput
+        BadInput,
+        NotEnoughStock
     }
 
     public enum DepositGoldResult
@@ -143,6 +144,7 @@ public static class ComplexActionHelper
     
     public static BuyGamePointItemResult BuyGamePointItem(
         Aisling source,
+        IBuyShopSource? shop,
         Item fauxItem,
         IItemFactory itemFactory,
         ICloningService<Item> itemCloner,
@@ -161,13 +163,23 @@ public static class ComplexActionHelper
         if (costPerItem < 0)
             return BuyGamePointItemResult.BadInput;
 
+        //fail fast
+        if ((shop != null) && (shop.GetStock(fauxItem.Template.TemplateKey) < amount))
+            return BuyGamePointItemResult.NotEnoughStock;
+
         if (!source.CanCarry((fauxItem, amount)))
             return BuyGamePointItemResult.CantCarry;
 
         var totalCost = costPerItem * amount;
 
+        if ((shop != null) && !shop.TryDecrementStock(fauxItem.Template.TemplateKey, amount))
+            return BuyGamePointItemResult.NotEnoughStock;
+
         if (!source.TryTakeGamePoints(totalCost))
+        {
+            shop?.TryDecrementStock(fauxItem.Template.TemplateKey, -amount);
             return BuyGamePointItemResult.NotEnoughGamePoints;
+        }
 
         var stackedItem = itemFactory.Create(fauxItem.Template.TemplateKey, fauxItem.ScriptKeys);
         stackedItem.Count = amount;

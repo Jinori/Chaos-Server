@@ -43,48 +43,26 @@ public class MythicFabrizioScript : DialogScriptBase
             {
                 if (source.UserStatSheet.Level < 9)
                 {
-                    Subject.Text = "Greetings Young Aisling, you are too weak to be here. Please get out of here.";
-                    Subject.Type = MenuOrDialogType.Normal;
-
+                    Subject.Reply(source,  "Greetings Young Aisling, you are too weak to be here. Please get out of here.");
                     return;
                 }
                 
                 if (main == MythicQuestMain.CompletedMythic)
                 {
-                    Subject.Text = "Thank you for all your hard work Aisling. These lands are forever in your debt.";
-                    Subject.Type = MenuOrDialogType.Normal;
-
+                    Subject.Reply(source, "Thank you for all your hard work Aisling. These lands are forever in your debt.");
                     return;
                 }
 
                 if (!hasMain)
                 {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "fabrizio_start1",
-                        OptionText = "What have you tried so far?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
+                    Subject.Reply(source, "Skip", "fabrizio_start1start");
 
                     return;
                 }
 
                 if (main != MythicQuestMain.CompletedAll)
                 {
-                    Subject.Text =
-                        "Have you made enough alliances yet? These leaders may have more for you to do. Make sure you complete all the quest they have to offer then come back and see me.";
-                    
-                    var option = new DialogOption
-                    {
-                        DialogKey = "fabrizio_repeat1",
-                        OptionText = "Wait, what did you say earlier?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
+                    Subject.Reply(source, "skip", "fabrizio_repeat1start");
                     source.SendOrangeBarMessage("Assist five leaders to the fullest.");
 
                     return;
@@ -92,9 +70,9 @@ public class MythicFabrizioScript : DialogScriptBase
 
                 if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
                 {
-                    Subject.Text =
-                        "You really did it! You've made alliances with some of the leaders. They have been feuding forever! Whichever alliances you made will be victorious. The others will perish and these lands shall be peaceful once again. Unfortunately, it was the only way.";
-                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Reply(source, 
+                        "You really did it! You've made alliances with some of the leaders. They have been feuding forever! Whichever alliances you made will be victorious. The others will perish and these lands shall be peaceful once again. Unfortunately, it was the only way.");
+                   
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedMythic);
                     ExperienceDistributionScript.GiveExp(source, source.UserStatSheet.Level <= 98 ? tnl : 50000000);
 
@@ -106,8 +84,6 @@ public class MythicFabrizioScript : DialogScriptBase
                             MarkColor.Yellow,
                             1,
                             GameTime.Now));
-
-                    return;
                 }
 
                 break;
@@ -117,10 +93,9 @@ public class MythicFabrizioScript : DialogScriptBase
             {
                 source.Trackers.Enums.Set(MythicQuestMain.MythicStarted);
 
-                Subject.Text =
-                    "Farewell for now, adventurer. Remember, our land's fate rests in your hands. Please return to me once you've made alliances and finished helping the leaders.. The more allies we have, the stronger our position will be. I trust in your abilities and look forward to hearing about your progress. Good luck.";
-
-                Subject.Type = MenuOrDialogType.Normal;
+                Subject.Reply(source, 
+                    "Farewell for now, adventurer. Remember, our land's fate rests in your hands. Please return to me once you've made alliances and finished helping the leaders.. The more allies we have, the stronger our position will be. I trust in your abilities and look forward to hearing about your progress. Good luck.");
+                
                 source.SendOrangeBarMessage("Talk to any of the leaders.");
 
                 break;

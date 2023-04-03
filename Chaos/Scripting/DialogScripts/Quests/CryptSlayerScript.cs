@@ -44,13 +44,13 @@ public class CryptSlayerScript : DialogScriptBase
 
                 if (source.UserStatSheet.Level > 71)
                 {
-                    Subject.Text = "You're an experienced Aisling, I have nothing for you.";
+                    Subject.Reply(source, "You're an experienced Aisling, I have nothing for you.");
                     return;
                 }
 
                 if (stage == CryptSlayerStage.Completed)
                 {
-                    Subject.Text = "Thanks for all your hard work Aisling, we can keep these creatures where they belong.";
+                    Subject.Reply(source, "Thanks for all your hard work Aisling, we can keep these creatures where they belong.");
 
                     return;
                 }
@@ -68,7 +68,7 @@ public class CryptSlayerScript : DialogScriptBase
                             1,
                             GameTime.Now));
 
-                    Subject.Text = "Thanks for all your hard work Aisling, we can keep these creatures where they belong.";
+                    Subject.Reply(source, "Thanks for all your hard work Aisling, we can keep these creatures where they belong.");
 
                     return;
                 }
@@ -90,14 +90,14 @@ public class CryptSlayerScript : DialogScriptBase
                 {
                     if (source.Trackers.TimedEvents.HasActiveEvent("CryptSlayerCd", out var timedEvent))
                     {
-                        Subject.Text = $"You have killed enough for now, come back later. (({timedEvent.Remaining.ToReadableString()}))";
+                        Subject.Reply(source, $"You have killed enough for now, come back later. (({timedEvent.Remaining.ToReadableString()}))");
 
                         return;
                     }
                     
                     if (stage == CryptSlayerStage.Completed)
                     {
-                        Subject.Text = "Thank you again Aisling, the crypt is a safer place now.";
+                        Subject.Reply(source, "Thank you again Aisling, the crypt is a safer place now.");
 
                         return;
                     }
@@ -132,17 +132,9 @@ public class CryptSlayerScript : DialogScriptBase
 
                 if (hasStage)
                 {
+                    Subject.Reply(source, "Skip", "cryptslayer_turninstart");
 
-                    Subject.Text = "Did you have any issues?";
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cryptslayer_turnin",
-                        OptionText = "I cleared them all."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    return;
                 }
 
                 break;
@@ -205,82 +197,82 @@ public class CryptSlayerScript : DialogScriptBase
                     {
                         case CryptSlayerStage.Rat:
                         {
-                            Subject.Text = "I need you to kill 10 Rats, this will keep the population down.";
+                            Subject.Reply(source, "I need you to kill 10 Rats, this will keep the population down.");
                         }
 
                             break;
 
                         case CryptSlayerStage.Spider1:
                         {
-                            Subject.Text = "Please go kill 10 Spiders on the upper floors, they are reproducing quickly.";
+                            Subject.Reply(source, "Please go kill 10 Spiders on the upper floors, they are reproducing quickly.");
                         }
 
                             break;
 
                         case CryptSlayerStage.Spider2:
                         {
-                            Subject.Text = "Please go kill 10 Spiders on the lower floors, they are reproducing quickly.";
+                            Subject.Reply(source, "Please go kill 10 Spiders on the lower floors, they are reproducing quickly.");
                         }
 
                             break;
                         case CryptSlayerStage.Centipede1:
                         {
-                            Subject.Text = "Handle 10 Centipedes for me, the ones found on the upper floors.";
+                            Subject.Reply(source, "Handle 10 Centipedes for me, the ones found on the upper floors.");
                         }
 
                             break;
                         case CryptSlayerStage.Centipede2:
                         {
-                            Subject.Text = "Handle 10 Centipedes for me, the ones found on the lower floors.";
+                            Subject.Reply(source, "Handle 10 Centipedes for me, the ones found on the lower floors.");
                         }
 
                             break;
 
                         case CryptSlayerStage.Bat:
                         {
-                            Subject.Text = "Seems to be Bat season, can you kill 10 Bats for me?";
+                            Subject.Reply(source, "Seems to be Bat season, can you kill 10 Bats for me?");
                         }
 
                             break;
                         case CryptSlayerStage.GiantBat:
                         {
-                            Subject.Text = "The Giant bats are out of control, please clear 10 of them for me.";
+                            Subject.Reply(source, "The Giant bats are out of control, please clear 10 of them for me.");
                         }
 
                             break;
                         case CryptSlayerStage.Scorpion:
                         {
-                            Subject.Text = "Scorpions are over populated, please go kill 10 Scorpions.";
+                            Subject.Reply(source, "Scorpions are over populated, please go kill 10 Scorpions.");
                         }
 
                             break;
                         case CryptSlayerStage.WhiteBat:
                         {
-                            Subject.Text = "Please kill 10 White Bats, they're invasive.";
+                            Subject.Reply(source, "Please kill 10 White Bats, they're invasive.");
                         }
 
                             break;
                         case CryptSlayerStage.Kardi:
                         {
-                            Subject.Text = "Travel deep, kill 10 Kardis for me, annoying little things.";
+                            Subject.Reply(source, "Travel deep, kill 10 Kardis for me, annoying little things.");
                         }
 
                             break;
                         case CryptSlayerStage.Marauder:
                         {
-                            Subject.Text = "Marauders are really interesting but there's too many. Please kill 10 Marauders for me.";
+                            Subject.Reply(source, "Marauders are really interesting but there's too many. Please kill 10 Marauders for me.");
                         }
 
                             break;
                         case CryptSlayerStage.Mimic:
                         {
-                            Subject.Text = "Tricky little beast, these mimics. Way too many of them, kill 10 Mimics.";
+                            Subject.Reply(source, "Tricky little beast, these mimics. Way too many of them, kill 10 Mimics.");
                         }
 
                             break;
                         case CryptSlayerStage.Succubus:
                         {
-                            Subject.Text = "Beautiful Succubus, but so deadly. They'll be roaming with us soon if we don't clear them. Please kill 10 Succubus.";
+                            Subject.Reply(source, "Beautiful Succubus, but so deadly. They'll be roaming with us soon if we don't clear them. Please kill 10 Succubus.");
                         }
 
                             break;
@@ -394,7 +386,7 @@ public class CryptSlayerScript : DialogScriptBase
                 source.TryGiveGamePoints(5);
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
                 source.Trackers.Enums.Remove(typeof(CryptSlayerStage));
-                Subject.Text = "Thank you so much for killing those. That's enough for today, come back soon.";
+                Subject.Reply(source, "Thank you so much for killing those. That's enough for today, come back soon.");
                 source.Trackers.Counters.Remove("CryptSlayer", out _);
                 source.Trackers.Counters.AddOrIncrement("CryptSlayerLegend", 1);
                 source.Legend.AddOrAccumulate(

@@ -24,7 +24,7 @@ public class BodyDyeScript : DialogScriptBase
             var item = ItemFactory.CreateFaux("hairDyeContainer");
             item.DisplayName = $"{color} Body Dye";
             item.Color = color.ConvertToDisplayColor();
-            Subject.Items.Add(ItemDetails.Default(item));
+            Subject.Items.Add(ItemDetails.BuyWithGold(item));
         }
     }
 
@@ -47,7 +47,7 @@ public class BodyDyeScript : DialogScriptBase
             return;
         }
 
-        if (!source.TryTakeGold(itemDetails!.AmountOrPrice))
+        if (!source.TryTakeGold(itemDetails!.Price))
         {
             Subject.Close(source);
 

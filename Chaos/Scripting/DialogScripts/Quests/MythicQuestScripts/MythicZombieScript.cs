@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Data;
 using Chaos.Definitions;
@@ -9,22 +8,19 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
-using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Quests.MythicQuestScripts;
 
 public class MythicZombieScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
-    public MythicZombieScript(Dialog subject, IItemFactory itemFactory, ISimpleCache simpleCache)
+    public MythicZombieScript(Dialog subject, IItemFactory itemFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;
-        SimpleCache = simpleCache;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
@@ -50,19 +46,19 @@ public class MythicZombieScript : DialogScriptBase
             {
                 if (hasZombie && (zombie == MythicZombie.EnemyAllied))
                 {
-                    Subject.Type = MenuOrDialogType.Normal;
+                    
 
-                    Subject.Text =
-                        "You have allied yourself with our enemies and that fills me with rabbit-like fear. I cannot trust you to hop on our side again. Please leave our warren.";
+                    Subject.Reply(source,
+                        "You have allied yourself with our enemies and that fills me with rabbit-like fear. I cannot trust you to hop on our side again. Please leave our warren.");
 
-                    Subject.NextDialogKey = "Close";
+                   
                 }
 
                 if (hasMain && !hasZombie)
 
                 {
-                    Subject.Text =
-                        "Grrrrreetings, aisling. We have a task that needs your attention. Those Gargoyles have been mocking us for tooooo loooong. They think we're just braaaaaaaainless corpses who wander around aimlessly. We need to show them that we're mmmoooooore than that. Uuuurgh!";
+                    Subject.Reply(source,
+                        "Grrrrreetings, aisling. We have a task that needs your attention. Those Gargoyles have been mocking us for tooooo loooong. They think we're just braaaaaaaainless corpses who wander around aimlessly. We need to show them that we're mmmoooooore than that. Uuuurgh!");
 
                     var option = new DialogOption
                     {
@@ -78,8 +74,8 @@ public class MythicZombieScript : DialogScriptBase
 
                 if (zombie == MythicZombie.Lower)
                 {
-                    Subject.Text =
-                        "welcome baaaaacck aisling. Have you taken care of those Dunans yet? Uuuuuurgh! They need to be punished for looking downnnnnn on us.";
+                    Subject.Reply(source,
+                        "welcome baaaaacck aisling. Have you taken care of those Dunans yet? Uuuuuurgh! They need to be punished for looking downnnnnn on us.");
 
                     var option = new DialogOption
                     {
@@ -96,8 +92,8 @@ public class MythicZombieScript : DialogScriptBase
 
                 if (zombie == MythicZombie.LowerComplete)
                 {
-                    Subject.Text =
-                        "Uuuurgh! You have done well. We are immmmmpressed with your skills. However, those Gargoyles still won't leeeeave us alone. They keep yapping about how we're nothing but braaaaaaainless zombies. It's time we put an end to their mooooockery. Uuuurgh! We need you to slay 10 of their servants and 10 of their guards. Uuuurgh!";
+                    Subject.Reply(source,
+                        "Uuuurgh! You have done well. We are immmmmpressed with your skills. However, those Gargoyles still won't leeeeave us alone. They keep yapping about how we're nothing but braaaaaaainless zombies. It's time we put an end to their mooooockery. Uuuurgh! We need you to slay 10 of their servants and 10 of their guards. Uuuurgh!");
 
                     var option = new DialogOption
                     {
@@ -114,7 +110,7 @@ public class MythicZombieScript : DialogScriptBase
 
                 if (zombie == MythicZombie.Higher)
                 {
-                    Subject.Text = "Have you taken care of the seeerrrrvants and guards yet?";
+                    Subject.Reply(source, "Have you taken care of the seeerrrrvants and guards yet?");
 
                     var option = new DialogOption
                     {
@@ -131,7 +127,7 @@ public class MythicZombieScript : DialogScriptBase
 
                 if (zombie == MythicZombie.HigherComplete)
                 {
-                    Subject.Text = "Uuuurgh. The Gargoyles like to carry around Dark Flames with themmmmm, We need you to collect sommme for us. Maybe if we have these flammmmmes, they will think we are one of themmmmmm and leave us alone.";
+                    Subject.Reply(source, "Uuuurgh. The Gargoyles like to carry around Dark Flames with themmmmm, We need you to collect sommme for us. Maybe if we have these flammmmmes, they will think we are one of themmmmmm and leave us alone.");
 
                     var option = new DialogOption
                     {
@@ -146,7 +142,7 @@ public class MythicZombieScript : DialogScriptBase
 
                 if (zombie == MythicZombie.Item)
                 {
-                    Subject.Text = "Weeeeerrrrre you able to colleeect the Dark Flames? Uuuurgh!";
+                    Subject.Reply(source, "Weeeeerrrrre you able to colleeect the Dark Flames? Uuuurgh!");
 
                     var option = new DialogOption
                     {
@@ -163,7 +159,7 @@ public class MythicZombieScript : DialogScriptBase
 
                 if (zombie == MythicZombie.ItemComplete)
                 {
-                    Subject.Text = "Thank you for all you have done. We could use you braaaaaaain to keep them from mocking us. Would you like to foorrrrrm an alliance to end their mockery? \n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))";
+                    Subject.Reply(source, "Thank you for all you have done. We could use you braaaaaaain to keep them from mocking us. Would you like to foorrrrrm an alliance to end their mockery? \n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))");
 
                     var option = new DialogOption
                     {
@@ -189,8 +185,8 @@ public class MythicZombieScript : DialogScriptBase
 
                 if (zombie == MythicZombie.Allied)
                 {
-                    Subject.Text =
-                        " ";
+                    Subject.Reply(source,
+                        " ");
 
                     var option = new DialogOption
                     {
@@ -206,8 +202,8 @@ public class MythicZombieScript : DialogScriptBase
 
                 if (zombie == MythicZombie.BossStarted)
                 {
-                    Subject.Text =
-                        " ";
+                    Subject.Reply(source,
+                        " ");
 
                     var option = new DialogOption
                     {
@@ -224,7 +220,7 @@ public class MythicZombieScript : DialogScriptBase
                 if (zombie == MythicZombie.BossDefeated)
                 {
 
-                    Subject.Text = "Thank you again Aisling for your help. We are winning our fight.";
+                    Subject.Reply(source, "Thank you again Aisling for your help. We are winning our fight.");
                 }
 
                 break;
@@ -232,10 +228,10 @@ public class MythicZombieScript : DialogScriptBase
 
             case "zombie_lower":
             {
-                Subject.Text = "Get moooooving. Now where are my braaaaaaainss at... Uuuuurgh.";
+                Subject.Reply(source, "Get moooooving. Now where are my braaaaaaainss at... Uuuuurgh.");
                 source.SendOrangeBarMessage("Kill 15 Mythic Dunans for the Superior Zombie");
                 source.Trackers.Enums.Set(MythicZombie.Lower);
-                Subject.Type = MenuOrDialogType.Normal;
+                
 
                 return;
             }
@@ -245,8 +241,8 @@ public class MythicZombieScript : DialogScriptBase
 
                 if (!source.Trackers.Counters.TryGetValue("mythicdunan", out var zombielower) || (zombielower < 15))
                 {
-                    Subject.Text = "Uuuurgh! I can still hear them mmooooocking us!";
-                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Reply(source, "Uuuurgh! I can still hear them mmooooocking us!");
+                    
 
                     return;
                 }
@@ -265,19 +261,19 @@ public class MythicZombieScript : DialogScriptBase
                 }
 
                 source.Trackers.Counters.Remove("mythicdunan", out _);
-                Subject.Text = " ";
-                Subject.Type = MenuOrDialogType.Normal;
-                Subject.NextDialogKey = "zombie_initial";
+                Subject.Reply(source, " ");
+                
+                
 
                 break;
             }
 
             case "zombie_higher":
             {
-                Subject.Text = "Great, clear 10 Gargoyle Servants and 10 Guards";
+                Subject.Reply(source, "Great, clear 10 Gargoyle Servants and 10 Guards");
                 source.SendOrangeBarMessage("Kill 10 Gargoyle Servants and 10 Guards");
                 source.Trackers.Enums.Set(MythicZombie.Higher);
-                Subject.Type = MenuOrDialogType.Normal;
+                
 
                 return;
             }
@@ -289,15 +285,15 @@ public class MythicZombieScript : DialogScriptBase
 
                 if ((gargoyleservant < 10) || (gargoyleguard < 10))
                 {
-                    Subject.Text = "I can still hear themmmmmm.";
-                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Reply(source, "I can still hear themmmmmm.");
+                    
 
                     return;
                 }
 
-                Subject.Text = "Gooooood job. Soon we will be able to roooooooammm in peace. Uuuurgh!";
-                Subject.NextDialogKey = "zombie_initial";
-                Subject.Type = MenuOrDialogType.Normal;
+                Subject.Reply(source, "Gooooood job. Soon we will be able to roooooooammm in peace. Uuuurgh!");
+                
+                
                 source.Animate(ani, source.Id);
 
                 if (source.UserStatSheet.Level <= 98)
@@ -328,10 +324,10 @@ public class MythicZombieScript : DialogScriptBase
 
             case "zombie_item":
             {
-                Subject.Text = " ";
+                Subject.Reply(source, " ");
                 source.SendOrangeBarMessage("Collect 25 Dark Flames for Superior Zombie");
                 source.Trackers.Enums.Set(MythicZombie.Item);
-                Subject.Type = MenuOrDialogType.Normal;
+                
 
                 return;
             }
@@ -341,8 +337,8 @@ public class MythicZombieScript : DialogScriptBase
 
                 if (!source.Inventory.RemoveQuantity("Dark Flame", 25))
                 {
-                    Subject.Text = " ";
-                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Reply(source, " ");
+                    
 
                     return;
                 }
@@ -350,9 +346,9 @@ public class MythicZombieScript : DialogScriptBase
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Trackers.Enums.Set(MythicZombie.ItemComplete);
-                Subject.Text = " ";
-                Subject.Type = MenuOrDialogType.Normal;
-                Subject.NextDialogKey = "zombie_initial";
+                Subject.Reply(source, " ");
+                
+                
 
                 break;
             }
@@ -362,8 +358,8 @@ public class MythicZombieScript : DialogScriptBase
                 if (hasFrog
                     && (hasFrog == frog is MythicFrog.Allied or MythicFrog.BossStarted or MythicFrog.BossDefeated))
                 {
-                    Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = " ";
+                    
+                    Subject.Reply(source, " ");
                     source.Trackers.Enums.Set(MythicZombie.EnemyAllied);
 
                     return;
@@ -372,9 +368,9 @@ public class MythicZombieScript : DialogScriptBase
                 source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Trackers.Enums.Set(MythicZombie.Allied);
                 source.SendOrangeBarMessage("You are now allied with the Zombies!");
-                Subject.Text = $" ";
-                Subject.Type = MenuOrDialogType.Normal;
-                Subject.NextDialogKey = "zombie_initial";
+                Subject.Reply(source, $" ");
+                
+                
 
                 break;
 
@@ -382,9 +378,9 @@ public class MythicZombieScript : DialogScriptBase
 
             case "zombie_boss":
             {
-                Subject.Text = " ";
-                Subject.Type = MenuOrDialogType.Normal;
-                Subject.NextDialogKey = "Close";
+                Subject.Reply(source, " ");
+                
+               
                 source.Trackers.Enums.Set(MythicZombie.BossStarted);
                 source.SendOrangeBarMessage("Kill Gargoyle Fiend three times.");
             }
@@ -395,9 +391,9 @@ public class MythicZombieScript : DialogScriptBase
             {
                 if (!source.Trackers.Counters.TryGetValue("gargoylefiend", out var zombieboss1) || (zombieboss1 < 3))
                 {
-                    Subject.Text = " ";
-                    Subject.Type = MenuOrDialogType.Normal;
-                    Subject.NextDialogKey = "Close";
+                    Subject.Reply(source, " ");
+                    
+                   
                     source.SendOrangeBarMessage("You haven't completely defeated Gargoyle Fiend.");
 
                     return;
@@ -409,7 +405,7 @@ public class MythicZombieScript : DialogScriptBase
                     TargetAnimation = 21
                 };
 
-                Subject.Text = " ";
+                Subject.Reply(source, " ");
                 source.Animate(ani2, source.Id);
 
                 if (source.UserStatSheet.Level <= 98)

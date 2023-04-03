@@ -31,8 +31,7 @@ public class AcceptFishingProfessionScript : DialogScriptBase
             switch (profession)
             {
                 case ProfessionCount.Two:
-                    Subject.Text = "Go, be on your way. The path to learning is endless. You cannot learn more.";
-                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Reply(source, "Go, be on your way. The path to learning is endless. You cannot learn more.");
                     source.SendOrangeBarMessage("You already have two professions.");
                     break;
                 case ProfessionCount.One when job is not Definitions.Professions.Fishing:
