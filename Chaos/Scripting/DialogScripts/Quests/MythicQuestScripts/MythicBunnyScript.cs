@@ -47,31 +47,11 @@ public class MythicBunnyScript : DialogScriptBase
             case "bunny_initial":
             {
                 if (hasBunny && (bunny == MythicBunny.EnemyAllied))
-                {
-                    Subject.Type = MenuOrDialogType.Normal;
-
-                    Subject.Text =
-                        "You have allied yourself with our enemies and that fills me with rabbit-like fear. I cannot trust you to hop on our side again. Please leave our warren.";
-
-                    Subject.NextDialogKey = "Close";
-                }
+                    Subject.Reply(source, "You have allied yourself with our enemies and that fills me with rabbit-like fear. I cannot trust you to hop on our side again. Please leave our warren.");
 
                 if (hasMain && !hasBunny)
-
                 {
-                    Subject.Text =
-                        "Ears to you, traveler. I am the leader of this warren of bunnies, and I carrot thank you enough for coming to our aid. The neigh-sayers may think we're just cute and fluffy, but we're tougher than we look.";
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "bunny_start1",
-                        OptionText = "What can I do to help?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
-                    return;
+                    Subject.Reply(source, "Skip", "bunny_start1start");
                 }
 
                 if (bunny == MythicBunny.Lower)
