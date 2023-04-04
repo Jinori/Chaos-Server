@@ -28,7 +28,7 @@ public class WolfProblemScript : DialogScriptBase
             case "francis_initial":
                 if ((!hasStage) || (stage == WolfProblemStage.None))
                 {
-                    Subject.Text = "Hey you! Are you busy?";
+                    Subject.Reply(source, "Hey you! Are you busy?");
 
                     var option = new DialogOption
                     {
@@ -42,7 +42,7 @@ public class WolfProblemScript : DialogScriptBase
 
                 if (stage == WolfProblemStage.Start)
                 {
-                    Subject.Text = "Did you get rid of the wolf?";
+                    Subject.Reply(source, "Did you get rid of the wolf?");
 
                     var option = new DialogOption
                     {
@@ -65,7 +65,7 @@ public class WolfProblemScript : DialogScriptBase
 
                  if (stage == WolfProblemStage.Complete)
                 {
-                    Subject.Text = "Thank you again for getting rid of that wolf.";
+                    Subject.Reply(source, "Thank you again for getting rid of that wolf.");
                 }
 
 
@@ -81,7 +81,7 @@ public class WolfProblemScript : DialogScriptBase
                 {
                     if (!source.Trackers.Counters.TryGetValue("wolf", out var value) || (value < 1))
                     {
-                        Subject.Text = "I can still hear the wolf! Please get rid of it.";
+                        Subject.Reply(source, "I can still hear the wolf! Please get rid of it.");
                         source.SendOrangeBarMessage("You hear the wolf howl in the distance.");
 
                         return;

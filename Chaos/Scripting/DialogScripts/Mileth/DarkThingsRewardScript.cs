@@ -23,7 +23,7 @@ public class DarkThingsRewardScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         if (source.Inventory.CountOf("Spider's Eye") == 0)
-            Subject.Text = "You have no Spider's Eye, which is what I need now.";
+            Subject.Reply(source, "You have no Spider's Eye, which is what I need now.");
 
         if (source.Inventory.CountOf("Spider's Eye") >= 1)
         {
@@ -33,7 +33,7 @@ public class DarkThingsRewardScript : DialogScriptBase
             source.Inventory.RemoveQuantity("Spider's Eye", source.Inventory.CountOf("Spider's Eye"), out _);
             source.TryGiveGamePoints(1);
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive a gamepoint and {amountToReward} gold/exp!");
-            Subject.Text = "Thank you for grabbing what I needed.";
+            Subject.Reply(source, "Thank you for grabbing what I needed.");
         }
     }
 }

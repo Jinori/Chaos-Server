@@ -23,7 +23,7 @@ public class HolyResearchRewardScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         if (source.Inventory.CountOf("Raw Wax") == 0)
-            Subject.Text = "You have no Raw Wax, which is what I need now.";
+            Subject.Reply(source, "You have no Raw Wax, which is what I need now.");
 
         if (source.Inventory.CountOf("Raw Wax") >= 1)
         {
@@ -33,7 +33,7 @@ public class HolyResearchRewardScript : DialogScriptBase
             source.Inventory.RemoveQuantity("Raw Wax", source.Inventory.CountOf("Raw Wax"), out _);
             source.TryGiveGamePoints(1);
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive a gamepoint and {amountToReward} gold/exp!");
-            Subject.Text = "Thank you for grabbing what I needed.";
+            Subject.Reply(source, "Thank you for grabbing what I needed.");
         }
     }
 }

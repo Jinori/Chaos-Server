@@ -19,6 +19,6 @@ public class SpareAStickScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         if (source.Trackers.Flags.HasFlag(QuestFlag1.GatheringSticks))
-            Subject.Text = "Yeah yeah. I heard ya the first time. Go get the branches.";
+            Subject.Reply(source, "Yeah yeah. I heard ya the first time. Go get the branches.");
     }
 }

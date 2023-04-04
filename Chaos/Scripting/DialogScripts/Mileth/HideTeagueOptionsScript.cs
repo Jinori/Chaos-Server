@@ -16,8 +16,7 @@ internal class HideTeagueOptionsScript : DialogScriptBase
     {
         if (source.Trackers.Flags.HasFlag(QuestFlag1.TerrorOfCryptHunt))
         {
-            Subject.Text = "Please end my terrors... good luck on your quest.";
-            Subject.Type = MenuOrDialogType.Normal;
+            Subject.Reply(source, "Please end my terrors... good luck on your quest.");
 
             return;
         }
@@ -25,9 +24,10 @@ internal class HideTeagueOptionsScript : DialogScriptBase
         if (source.Trackers.TimedEvents.HasActiveEvent("TerrorOfTheCrypt", out var timedEvent))
         {
 
-            Subject.Text = $"Thank you for ending my terrors Aisling, I hope I sleep better tonight. Come see me later (({
-                timedEvent.Remaining.ToReadableString()}))";
-            Subject.Type = MenuOrDialogType.Normal;
+            Subject.Reply(
+                source,
+                $"Thank you for ending my terrors Aisling, I hope I sleep better tonight. Come see me later (({
+                    timedEvent.Remaining.ToReadableString()}))");
         }
     }
 }

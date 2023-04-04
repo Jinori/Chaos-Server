@@ -14,8 +14,8 @@ public class BrilannPeasantScript : DialogScriptBase
     {
         if (source.UserStatSheet.BaseClass.Equals(BaseClass.Peasant) && source.Trackers.Flags.HasFlag(QuestFlag1.ChosenClass))
         {
-            Subject.Text = "Hello, young traveler. What do you need help with?";
-            Subject.Type = MenuOrDialogType.Menu;
+            Subject.Reply(source, "Hello, young traveler. What do you need help with?");
+            Subject.Type = ChaosDialogType.Menu;
 
             var BrilannOptions = new List<DialogOption>
             {

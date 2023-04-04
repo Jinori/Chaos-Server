@@ -34,7 +34,7 @@ public class AscendingScript : DialogScriptBase
     {
         if (source.UserStatSheet.Level <= 98)
         {
-            Subject.Text = "You must be level 99 to buy health and mana.";
+            Subject.Reply(source, "You must be level 99 to buy health and mana.");
             Subject.Options.Clear();
             source.SendOrangeBarMessage("You may not ascend until level 99.");
 
@@ -46,8 +46,7 @@ public class AscendingScript : DialogScriptBase
 
         if (!ExperienceDistributionScript.TryTakeExp(source, source.StatSheet.MaximumHp * 500))
         {
-            Subject.Type = MenuOrDialogType.Normal;
-            Subject.Text = "You do not have enough experience to buy vitality. Go increase your knowledge.";
+            Subject.Reply(source, "You do not have enough experience to buy vitality. Go increase your knowledge.");
             return;
         }
         
@@ -64,8 +63,8 @@ public class AscendingScript : DialogScriptBase
 
                 if (timesToAscend < 1)
                 {
-                    Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "You do not have enough experience to buy vitality. Go increase your knowledge.";
+                   
+                    Subject.Reply(source, "You do not have enough experience to buy vitality. Go increase your knowledge.");
                     return;
                 }
 
@@ -97,8 +96,8 @@ public class AscendingScript : DialogScriptBase
                 
                 if (timesToAscend < 1)
                 {
-                    Subject.Type = MenuOrDialogType.Normal;
-                    Subject.Text = "You do not have enough experience to buy vitality. Go increase your knowledge.";
+                   
+                    Subject.Reply(source, "You do not have enough experience to buy vitality. Go increase your knowledge.");
                     return;
                 }
 

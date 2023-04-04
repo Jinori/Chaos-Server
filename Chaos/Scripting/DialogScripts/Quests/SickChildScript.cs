@@ -1,19 +1,15 @@
 using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
 using Chaos.Definitions;
-using Chaos.Extensions.Common;
-using Chaos.Formulae;
 using Chaos.Objects.Legend;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
-namespace Chaos.Scripts.DialogScripts.Quests;
+namespace Chaos.Scripting.DialogScripts.Quests;
 
 public class SickChildScript : DialogScriptBase
 {
@@ -44,7 +40,8 @@ public class SickChildScript : DialogScriptBase
                     {
                         if (source.UserStatSheet.Level is <= 10 or >= 52)
                             return;
-                        Subject.Text = "Excuse me, aisling! I require your assistance. The princess is gravely ill, and we need to find a cure quickly. I've been informed that a white rose is said to have magical healing properties that could help her. Unfortunately, I am unable to leave my post. Will you aid us in finding this flower?";
+                        
+                        Subject.Reply(source, "Excuse me, aisling! I require your assistance. The princess is gravely ill, and we need to find a cure quickly. I've been informed that a white rose is said to have magical healing properties that could help her. Unfortunately, I am unable to leave my post. Will you aid us in finding this flower?");
 
                         var option = new DialogOption
                         {
@@ -61,7 +58,7 @@ public class SickChildScript : DialogScriptBase
 
                     if (stage == SickChildStage.WhiteRose)
                     {
-                        Subject.Text = "Did you find a white rose?";
+                        Subject.Reply(source, "Did you find a white rose?");
 
                         var option = new DialogOption
                         {
@@ -94,7 +91,7 @@ public class SickChildScript : DialogScriptBase
 
                     if (stage == SickChildStage.WhiteRose1Turn)
                     {
-                        Subject.Text = "Paulin hasn't returned yet.";
+                        Subject.Reply(source, "Paulin hasn't returned yet.");
 
                         var option1 = new DialogOption
                         {
@@ -118,7 +115,7 @@ public class SickChildScript : DialogScriptBase
 
                     if (stage == SickChildStage.WhiteRose2)
                     {
-                        Subject.Text = "Did you find another white rose?";
+                        Subject.Reply(source, "Did you find another white rose?");
 
                         var option = new DialogOption
                         {
@@ -151,7 +148,7 @@ public class SickChildScript : DialogScriptBase
 
                     if (stage == SickChildStage.WhiteRose2Turn)
                     {
-                        Subject.Text = "Paulin hasn't returned yet.";
+                        Subject.Reply(source, "Paulin hasn't returned yet.");
 
                         var option1 = new DialogOption
                         {
@@ -174,7 +171,7 @@ public class SickChildScript : DialogScriptBase
 
                     if (stage == SickChildStage.BlackRoseTurn)
                     {
-                        Subject.Text = "What have we done...";
+                        Subject.Reply(source, "What have we done...");
 
                         var option1 = new DialogOption
                         {
@@ -197,7 +194,7 @@ public class SickChildScript : DialogScriptBase
 
                     if (stage == SickChildStage.GoldRose)
                     {
-                        Subject.Text = "Were you able to find a Gold Rose?";
+                        Subject.Reply(source, "Were you able to find a Gold Rose?");
 
                         var option = new DialogOption
                         {
@@ -232,7 +229,7 @@ public class SickChildScript : DialogScriptBase
                     if (stage == SickChildStage.SickChildComplete)
                     {
 
-                        Subject.Text = "Thank you again for helping cure the princess.";
+                        Subject.Reply(source, "Thank you again for helping cure the princess.");
 
                         return;
 
@@ -241,7 +238,7 @@ public class SickChildScript : DialogScriptBase
                     if (stage == SickChildStage.SickChildKilled)
                     {
 
-                        Subject.Text = "Long live the princess...";
+                        Subject.Reply(source, "Long live the princess...");
 
                         return;
 
@@ -251,7 +248,7 @@ public class SickChildScript : DialogScriptBase
 
             case "whiterose1-1":
                 {
-                    Subject.Text = "According to legend, the white rose only blooms in a gardens deep within the Wilderness. Are you still willing to help?";
+                    Subject.Reply(source, "According to legend, the white rose only blooms in a gardens deep within the Wilderness. Are you still willing to help?");
 
                     var option = new DialogOption
                     {
@@ -267,8 +264,7 @@ public class SickChildScript : DialogScriptBase
 
             case "whiterose1-2":
                 {
-                    Subject.Text = "Thank you! Please be careful on your journey. You can get to the Wilderness through Mileth, Abel, or Rucesion.";
-                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Reply(source, "Thank you! Please be careful on your journey. You can get to the Wilderness through Mileth, Abel, or Rucesion.");
                     source.Trackers.Enums.Set(SickChildStage.WhiteRose);
                     source.SendOrangeBarMessage("Go find a White Rose in the Wilderness.");
                 }
@@ -279,7 +275,7 @@ public class SickChildScript : DialogScriptBase
 
                     if (!source.Inventory.Remove("white rose"))
                     {
-                        Subject.Text = "Where is it?";
+                        Subject.Reply(source, "Where is it?");
 
                         var option = new DialogOption
                         {
@@ -297,7 +293,7 @@ public class SickChildScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, 25000);
                     source.Trackers.Enums.Set(SickChildStage.WhiteRose1Turn);
                     source.SendOrangeBarMessage("25000 Exp Rewarded!");
-                    Subject.Text = "Thank you! I need to get this to the healers right away. Please excuse me.";
+                    Subject.Reply(source, "Thank you! I need to get this to the healers right away. Please excuse me.");
                     Subject.NextDialogKey = "whiterosewait1";
                 }
 
@@ -306,7 +302,7 @@ public class SickChildScript : DialogScriptBase
             case "whiterose2-1":
                 {
 
-                    Subject.Text = "It seems to have helped a little but I'm afraid it's not enough. Would you be willing to find another rose?";
+                    Subject.Reply(source, "It seems to have helped a little but I'm afraid it's not enough. Would you be willing to find another rose?");
 
                     var option = new DialogOption
                     {
@@ -322,8 +318,7 @@ public class SickChildScript : DialogScriptBase
 
             case "whiterose2-2":
                 {
-                    Subject.Text = "Thank you again. Please return as soon as you can.";
-                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Reply(source, "Thank you again. Please return as soon as you can.");
                     source.Trackers.Enums.Set(SickChildStage.WhiteRose2);
                     source.SendOrangeBarMessage("Go find another White Rose in the Wilderness.");
                 }
@@ -334,7 +329,7 @@ public class SickChildScript : DialogScriptBase
 
                 if (!source.Inventory.Remove("white rose"))
                 {
-                    Subject.Text = "Where is it?";
+                    Subject.Reply(source, "Where is it?");
 
                     var option = new DialogOption
                     {
@@ -352,7 +347,7 @@ public class SickChildScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, 50000);
                 source.Trackers.Enums.Set(SickChildStage.WhiteRose2Turn);
                 source.SendOrangeBarMessage("50000 Exp Rewarded!");
-                Subject.Text = "Thank you again! Please excuse me while I get this to the healers.";
+                Subject.Reply(source, "Thank you again! Please excuse me while I get this to the healers.");
                 Subject.NextDialogKey = "whiterose2wait1";
 
                 break;
@@ -360,7 +355,7 @@ public class SickChildScript : DialogScriptBase
             case "goldrose1-1":
                 {
 
-                    Subject.Text = "To finish the cure we need a Gold Rose. Gold roses are more rare then the white roses are but they can be found around the same area. Please search all the gardens in the Wilderness and find us a gold rose.";
+                    Subject.Reply(source, "To finish the cure we need a Gold Rose. Gold roses are more rare then the white roses are but they can be found around the same area. Please search all the gardens in the Wilderness and find us a gold rose.");
 
                     var option = new DialogOption
                     {
@@ -376,8 +371,7 @@ public class SickChildScript : DialogScriptBase
 
             case "goldrose1-2":
                 {
-                    Subject.Text = "Thank you again. Please return as soon as you can.";
-                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Reply(source, "Thank you again. Please return as soon as you can.");
                     source.Trackers.Enums.Set(SickChildStage.GoldRose);
                     source.SendOrangeBarMessage("Go find a Gold Rose in the Wilderness.");
                 }
@@ -387,7 +381,7 @@ public class SickChildScript : DialogScriptBase
                 {
                     if (!source.Inventory.Remove("gold rose"))
                     {
-                        Subject.Text = "Where is it?";
+                        Subject.Reply(source, "Where is it?");
 
                         var option = new DialogOption
                         {
@@ -415,7 +409,7 @@ public class SickChildScript : DialogScriptBase
                               MarkColor.Blue,
                               1,
                               GameTime.Now));
-                    Subject.Text = "Thank you! With this we will be able to create the cure to save the princess! Please accept this reward in the name of the King.";
+                    Subject.Reply(source, "Thank you! With this we will be able to create the cure to save the princess! Please accept this reward in the name of the King.");
                     Subject.NextDialogKey = "close";
 
                     break;
@@ -423,7 +417,7 @@ public class SickChildScript : DialogScriptBase
 
             case "blackrose1":
                 {
-                    Subject.Text = "Hmm this looks like the rose needed but tainted. I'm not sure if this would help or not, but at this point we don't have a choice. The princess cannot wait any longer.";
+                    Subject.Reply(source, "Hmm this looks like the rose needed but tainted. I'm not sure if this would help or not, but at this point we don't have a choice. The princess cannot wait any longer.");
 
                     var option = new DialogOption
                     {
@@ -450,7 +444,7 @@ public class SickChildScript : DialogScriptBase
                 {
                     if (!source.Inventory.Remove("black rose"))
                     {
-                        Subject.Text = "Where is it?";
+                        Subject.Reply(source, "Where is it?");
 
                         var option = new DialogOption
                         {
@@ -466,7 +460,7 @@ public class SickChildScript : DialogScriptBase
                         return;
                     }
                     
-                    Subject.Text = "This was a mistake. Oh god what have we done!";
+                    Subject.Reply(source, "This was a mistake. Oh god what have we done!");
                     source.Trackers.Enums.Set(SickChildStage.BlackRoseTurn);
 
                     var option2 = new DialogOption
@@ -484,7 +478,7 @@ public class SickChildScript : DialogScriptBase
 
             case "blackrose3":
                 {
-                    Subject.Text = "Please leave.";
+                    Subject.Reply(source, "Please leave.");
                     source.Trackers.Enums.Set(SickChildStage.SickChildKilled);
                     ExperienceDistributionScript.GiveExp(source, 125000);
                     source.TryGiveGamePoints(5);

@@ -52,7 +52,7 @@ public class PFQuestScript : DialogScriptBase
 
                 if (stage == PFQuestStage.StartedPFQuest)
                 {
-                    Subject.Text = "Did ya get those roots for me?";
+                    Subject.Reply(source, "Did ya get those roots for me?");
 
                     var option = new DialogOption
                     {
@@ -75,7 +75,7 @@ public class PFQuestScript : DialogScriptBase
 
                 if (stage == PFQuestStage.TurnedInRoots)
                 {
-                    Subject.Text = "I already told you what I know.";
+                    Subject.Reply(source, "I already told you what I know.");
 
                     var option = new DialogOption
                     {
@@ -88,8 +88,8 @@ public class PFQuestScript : DialogScriptBase
                 }
 
                 if (stage is PFQuestStage.CompletedPFQuest or PFQuestStage.TurnedInTristar)
-                    Subject.Text =
-                        "Well done Aisling, I'm glad that beast won't bother us again. I can go farm my own trent roots again. Thank you.";
+                    Subject.Reply(source,
+                        "Well done Aisling, I'm glad that beast won't bother us again. I can go farm my own trent roots again. Thank you.");
             }
 
                 break;
@@ -128,7 +128,7 @@ public class PFQuestScript : DialogScriptBase
                 {
                     if (!source.Inventory.HasCount("trent root", 4))
                     {
-                        Subject.Text = "Can you bring some more?";
+                        Subject.Reply(source, "Can you bring some more?");
 
                         var option = new DialogOption
                         {
@@ -147,7 +147,7 @@ public class PFQuestScript : DialogScriptBase
                     source.Inventory.RemoveQuantity("trent root", 4);
                     source.Trackers.Enums.Set(PFQuestStage.TurnedInRoots);
                     ExperienceDistributionScript.GiveExp(source, 100000);
-                    Subject.Text = "Thank you Aisling! Now I can make some more weapons.";
+                    Subject.Reply(source, "Thank you Aisling! Now I can make some more weapons.");
 
                     var option1 = new DialogOption
                     {
@@ -176,7 +176,7 @@ public class PFQuestScript : DialogScriptBase
 
                 if (stage == PFQuestStage.WolfManes)
                 {
-                    Subject.Text = "Glad to see you back so soon, were you able to gather the Silver Wolf Manes?";
+                    Subject.Reply(source, "Glad to see you back so soon, were you able to gather the Silver Wolf Manes?");
 
                     var option = new DialogOption
                     {
@@ -189,8 +189,8 @@ public class PFQuestScript : DialogScriptBase
                 }
 
                 if (stage is PFQuestStage.CompletedPFQuest or PFQuestStage.TurnedInTristar)
-                    Subject.Text =
-                        "It is so great to hear about your battle with the Giant Mantis. I can't believe you took it down. Praise you Aisling.";
+                    Subject.Reply(source,
+                        "It is so great to hear about your battle with the Giant Mantis. I can't believe you took it down. Praise you Aisling.");
 
                 break;
 
@@ -268,14 +268,14 @@ public class PFQuestScript : DialogScriptBase
                 {
                     if (!source.Inventory.HasCount("Silver Wolf Mane Hair", 5))
                     {
-                        Subject.Text =
-                            "You don't have enough Aisling, I need at least five Silver Wolf Mane Hair to make the Silver Wolf Leather.";
+                        Subject.Reply(source,
+                            "You don't have enough Aisling, I need at least five Silver Wolf Mane Hair to make the Silver Wolf Leather.");
 
                         return;
                     }
 
-                    Subject.Text =
-                        "Great work Aisling! Here is your Silver Wolf Leather, that should help you fight that beast off. Go talk to Isabelle again, she may know where to go with it.";
+                    Subject.Reply(source,
+                        "Great work Aisling! Here is your Silver Wolf Leather, that should help you fight that beast off. Go talk to Isabelle again, she may know where to go with it.");
 
                     source.Inventory.RemoveQuantity("Silver Wolf Mane Hair", 5);
 
@@ -332,7 +332,7 @@ public class PFQuestScript : DialogScriptBase
                         break;
                     }
                     case PFQuestStage.CompletedPFQuest or PFQuestStage.TurnedInTristar:
-                        Subject.Text = "Thank you so much Aisling, I can enjoy the peak again! And all the flowers and bunnies!";
+                        Subject.Reply(source, "Thank you so much Aisling, I can enjoy the peak again! And all the flowers and bunnies!");
 
                         break;
                 }
@@ -517,7 +517,7 @@ public class PFQuestScript : DialogScriptBase
                 Point point;
 
                 do
-                    point = rectangle.RandomPoint();
+                    point = rectangle.GetRandomPoint();
 
                 while (!mapInstance.IsWalkable(point, source.Type));
 

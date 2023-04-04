@@ -61,13 +61,14 @@ public class ManorNecklaceScript : DialogScriptBase
                 }
                 if (stage == ManorNecklaceStage.KeptNecklace)
                 {
-                    Subject.Text = "I don't really want to talk to you anymore. You're mean!";
-                    Subject.NextDialogKey?.Remove(0);
+                    Subject.Reply(source, "I don't really want to talk to you anymore. You're mean!");
+
+                    return;
                 }
                 if (stage == ManorNecklaceStage.ObtainedNecklace)
                 {
-                    Subject.Text = "You found it! Would you please hand over my precious necklace?";
-                    Subject.Type = MenuOrDialogType.Menu;
+                    Subject.Reply(source, "You found it! Would you please hand over my precious necklace?");
+                    Subject.Type = ChaosDialogType.Menu;
                     Subject.NextDialogKey?.Remove(0);
                     
                     var option = new DialogOption

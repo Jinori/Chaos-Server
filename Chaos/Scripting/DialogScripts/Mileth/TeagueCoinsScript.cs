@@ -23,8 +23,7 @@ public class TeagueCoinsScript : DialogScriptBase
         if (source.Gold < 1000)
         {
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You reach into your coin purse but it's not that full..");
-            Subject.Text = "You almost had me excited there.. don't promise what you can't make true.";
-            Subject.Type = MenuOrDialogType.Normal;
+            Subject.Reply(source, "You almost had me excited there.. don't promise what you can't make true.");
 
             return;
         }

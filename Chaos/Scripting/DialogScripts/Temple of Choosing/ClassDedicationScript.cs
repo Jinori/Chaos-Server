@@ -66,21 +66,21 @@ public class ClassDedicationScript : DialogScriptBase
             {
                 if (source.Legend.ContainsKey("dedicated"))
                 {
-                    Subject.Text = "You have already dedicated yourself to a new path.";
+                    Subject.Reply(source, "You have already dedicated yourself to a new path.");
                     Subject.PrevDialogKey = null;
                     Subject.NextDialogKey = null;
                     return;
                 }
                 if (source.UserStatSheet.Level != 99)
                 {
-                    Subject.Text = "You are not Level 99 and cannot dedicate your class.";
+                    Subject.Reply(source, "You are not Level 99 and cannot dedicate your class.");
                     Subject.PrevDialogKey = null;
                     Subject.NextDialogKey = null;
                     return;
                 }
                 if (source.UserStatSheet.Master)
                 {
-                    Subject.Text = "You are already a Master of your class and cannot rededicate yourself.";
+                    Subject.Reply(source, "You are already a Master of your class and cannot rededicate yourself.");
                     Subject.PrevDialogKey = null;
                     Subject.NextDialogKey = null;
                     return;
@@ -113,11 +113,11 @@ public class ClassDedicationScript : DialogScriptBase
                 }
                 if (source.UserStatSheet.MaximumHp >= requiredHealth && source.UserStatSheet.MaximumMp >= requiredMana)
                 {
-                    Subject.Text = "You have enough vitality to continue.";
+                    Subject.Reply(source, "You have enough vitality to continue.");
                 }
                 else
                 {
-                    Subject.Text = $"You do not have the required {requiredHealth} health and {requiredMana} mana to continue.";
+                    Subject.Reply(source, $"You do not have the required {requiredHealth} health and {requiredMana} mana to continue.");
                     Subject.PrevDialogKey = null;
                     Subject.NextDialogKey = null;
                     return;
@@ -128,19 +128,19 @@ public class ClassDedicationScript : DialogScriptBase
                 }
                 else
                 {
-                    Subject.Text += " but you do not have the required ard ioc deum. Come back with what you need.";
+                    Subject.Text += " but you do not have the required ard ioc deum. Come back with what you need.");
                     Subject.PrevDialogKey = null;
                     Subject.NextDialogKey = null;
                     return;
                 }
                 if (source.UserStatSheet.TotalExp >= 60000000)
                 {
-                    Subject.Text += " and you've hunted enough experience! Let's continue.";
+                    Subject.Text += " and you've hunted enough experience! Let's continue.");
                     Subject.NextDialogKey = "aoife_chooseNewClass";
                 }
                 else
                 {
-                    Subject.Text += " but you do not have the required experience of 60 million.";
+                    Subject.Text += " but you do not have the required experience of 60 million.");
                     Subject.PrevDialogKey = null;
                     Subject.NextDialogKey = null;
                 }

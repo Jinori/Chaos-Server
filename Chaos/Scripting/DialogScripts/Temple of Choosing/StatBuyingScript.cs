@@ -146,11 +146,11 @@ public class StatBuyingScript : DialogScriptBase
             {
                var formula = (source.StatSheet.MaximumHp - 4000) / 150;
                if (formula > 0)
-                   Subject.Text = $"Looks like you can get {formula} stats. Which one did you want?";
+                   Subject.Reply(source, $"Looks like you can get {formula} stats. Which one did you want?");
                else
                {
-                   Subject.Text = "You cannot buy any stats at this time, with your current vitality.";
-                   Subject.Type = MenuOrDialogType.Normal;
+                   Subject.Reply(source, "You cannot buy any stats at this time, with your current vitality.");
+                 
                    Subject.Options.Clear();
                }
             }
@@ -161,11 +161,11 @@ public class StatBuyingScript : DialogScriptBase
             {
                 var formula = (source.StatSheet.MaximumHp - 3750) / 150;
                 if (formula > 0)
-                    Subject.Text = $"Looks like you can get {formula} stats. Which one did you want?";
+                    Subject.Reply(source, $"Looks like you can get {formula} stats. Which one did you want?");
                 else
                 {
-                    Subject.Text = "You cannot buy any stats at this time, with your current vitality.";
-                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Reply(source, "You cannot buy any stats at this time, with your current vitality.");
+                  
                     Subject.Options.Clear();
                 }
             }
@@ -176,11 +176,11 @@ public class StatBuyingScript : DialogScriptBase
             {
                 var formula = (source.StatSheet.MaximumHp - 3500) / 150;
                 if (formula > 0)
-                    Subject.Text = $"Looks like you can get {formula} stats. Which one did you want?";
+                    Subject.Reply(source, $"Looks like you can get {formula} stats. Which one did you want?");
                 else
                 {
-                    Subject.Text = "You cannot buy any stats at this time, with your current vitality.";
-                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Reply(source, "You cannot buy any stats at this time, with your current vitality.");
+                  
                     Subject.Options.Clear();
                 }
             }
@@ -191,11 +191,11 @@ public class StatBuyingScript : DialogScriptBase
             {
                 var formula = (source.StatSheet.MaximumHp - 6000) / 150;
                 if (formula > 0)
-                    Subject.Text = $"Looks like you can get {formula} stats. Which one did you want?";
+                    Subject.Reply(source, $"Looks like you can get {formula} stats. Which one did you want?");
                 else
                 {
-                    Subject.Text = "You cannot buy any stats at this time, with your current vitality.";
-                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Reply(source, "You cannot buy any stats at this time, with your current vitality.");
+                  
                     Subject.Options.Clear();
                 }
             }
@@ -206,11 +206,11 @@ public class StatBuyingScript : DialogScriptBase
             {
                 var formula = (source.StatSheet.MaximumHp - 4250) / 150;
                 if (formula > 0)
-                    Subject.Text = $"Looks like you can get {formula} stats. Which one did you want?";
+                    Subject.Reply(source, $"Looks like you can get {formula} stats. Which one did you want?");
                 else
                 {
-                    Subject.Text = "You cannot buy any stats at this time, with your current vitality.";
-                    Subject.Type = MenuOrDialogType.Normal;
+                    Subject.Reply(source, "You cannot buy any stats at this time, with your current vitality.");
+                  
                     Subject.Options.Clear();
                 }
             }

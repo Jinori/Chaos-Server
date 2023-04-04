@@ -18,7 +18,7 @@ public class JosephineRewardScript : DialogScriptBase
     {
         if (source.Trackers.Flags.HasFlag(QuestFlag1.HeadedToBeautyShop))
         {
-            Subject.Text = "Riona sent you? I do have her dye, I'll let her know! Are you interested in a hair style?";
+            Subject.Reply(source, "Riona sent you? I do have her dye, I'll let her know! Are you interested in a hair style?");
             source.Trackers.Flags.RemoveFlag(QuestFlag1.HeadedToBeautyShop);
             source.Trackers.Flags.AddFlag(QuestFlag1.TalkedToJosephine);
             ExperienceDistributionScript.GiveExp(source, 1000);

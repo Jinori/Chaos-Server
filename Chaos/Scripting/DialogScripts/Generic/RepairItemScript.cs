@@ -45,11 +45,11 @@ public override void OnDisplaying(Aisling source)
     }
      // Set subject text based on total repair cost
     if (_repairCost != 0)
-        Subject.Text = $"I can repair all of your items for {(int)_repairCost}. Would you like to continue?";
+        Subject.Reply(source, $"I can repair all of your items for {(int)_repairCost}. Would you like to continue?");
     else
     {
-        Subject.Text = "I cannot repair your items any further.";
-        Subject.Type = MenuOrDialogType.Normal;
+        Subject.Reply(source, "I cannot repair your items any further.");
+        Subject.Type = ;
     }
 }
 

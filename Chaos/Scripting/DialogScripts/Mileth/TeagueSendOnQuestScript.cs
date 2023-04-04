@@ -34,7 +34,7 @@ public class TeagueSendOnQuestScript : DialogScriptBase
         if (group is null)
         {
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure you group your companions for this quest!");
-            Subject.Text = "What? You don't have any friends with you.. who are you talking to?";
+            Subject.Reply(source, "What? You don't have any friends with you.. who are you talking to?");
         }
 
         if (group is not null)
@@ -63,7 +63,7 @@ public class TeagueSendOnQuestScript : DialogScriptBase
             else
             {
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure your companions are within level range.");
-                Subject.Text = "Some of your companions are not within your level range.";
+                Subject.Reply(source, "Some of your companions are not within your level range.");
             }
         }
     }

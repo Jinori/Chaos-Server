@@ -88,7 +88,7 @@ public class RionaRatQuestScript : DialogScriptBase
 
                 if (stage == RionaRatQuestStage.StartedRatQuest)
                 {
-                    Subject.Text = "Did you take care of those rats?";
+                    Subject.Reply(source, "Did you take care of those rats?");
 
                     {
                         var option = new DialogOption
@@ -117,7 +117,7 @@ public class RionaRatQuestScript : DialogScriptBase
                 if (!hasStage || (stage == RionaRatQuestStage.None))
                 {
                     source.Trackers.Enums.Set(RionaRatQuestStage.StartedRatQuest);
-                    Subject.Text = "Please kill five of these little rodents, I can't stand to look at them.";
+                    Subject.Reply(source, "Please kill five of these little rodents, I can't stand to look at them.");
                     source.SendOrangeBarMessage("Kill 5 tavern rats.");
                 }
 
@@ -128,7 +128,7 @@ public class RionaRatQuestScript : DialogScriptBase
                 {
                     if (!source.Trackers.Counters.TryGetValue("StartedRatQuest", out var value) || (value < 5))
                     {
-                        Subject.Text = "They're still everywhere! Please take care of them.";
+                        Subject.Reply(source, "They're still everywhere! Please take care of them.");
                         source.SendOrangeBarMessage("You watch a rat crawl across your foot");
 
                         return;
@@ -136,7 +136,7 @@ public class RionaRatQuestScript : DialogScriptBase
 
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
-                    Subject.Text = "Thank you so much for taking care of those rats!";
+                    Subject.Reply(source, "Thank you so much for taking care of those rats!");
                     source.Trackers.Enums.Set(RionaRatQuestStage.CompletedRatQuest);
                     source.SendServerMessage(ServerMessageType.PersistentMessage, "");
                     source.Trackers.Counters.Remove("StartedRatQuest", out _);

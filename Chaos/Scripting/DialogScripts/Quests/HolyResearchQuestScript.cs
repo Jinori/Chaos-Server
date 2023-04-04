@@ -46,8 +46,8 @@ public class HolyResearchQuestScript : DialogScriptBase
                 {
                     if (source.Trackers.TimedEvents.HasActiveEvent("HolyResearchCd", out var timedEvent))
                     {
-                        Subject.Text = $"I don't need any more right now, please come back later. (({timedEvent.Remaining.ToReadableString()
-                        }))";
+                        Subject.Reply(source, $"I don't need any more right now, please come back later. (({timedEvent.Remaining.ToReadableString()
+                        }))");
 
                         return;
                     }
@@ -163,21 +163,21 @@ public class HolyResearchQuestScript : DialogScriptBase
                     {
                         case HolyResearchStage.StartedRawHoney:
                         {
-                            Subject.Text = "Thank you so much Aisling, bring me one raw honey.";
+                            Subject.Reply(source, "Thank you so much Aisling, bring me one raw honey.");
                         }
 
                             break;
 
                         case HolyResearchStage.StartedRawWax:
                         {
-                            Subject.Text = "Thank you so much Aisling, bring me one raw wax.";
+                            Subject.Reply(source, "Thank you so much Aisling, bring me one raw wax.");
                         }
 
                             break;
 
                         case HolyResearchStage.StartedRoyalWax:
                         {
-                            Subject.Text = "Thank you so much Aisling, bring me one royal wax.";
+                            Subject.Reply(source, "Thank you so much Aisling, bring me one royal wax.");
                         }
 
                             break;

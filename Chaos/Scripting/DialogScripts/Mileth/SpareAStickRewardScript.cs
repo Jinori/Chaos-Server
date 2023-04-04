@@ -27,7 +27,7 @@ public class SpareAStickRewardScript : DialogScriptBase
     {
         if (source.Trackers.Flags.HasFlag(QuestFlag1.GatheringSticks) && (source.Inventory.CountOf("Branch") >= 6))
         {
-            Subject.Text = "Excellent! You'll make a fine spark. Now, go and find your way.";
+            Subject.Reply(source, "Excellent! You'll make a fine spark. Now, go and find your way.");
             source.Trackers.Flags.RemoveFlag(QuestFlag1.GatheringSticks);
             source.Trackers.Flags.AddFlag(QuestFlag1.SpareAStickComplete);
             ExperienceDistributionScript.GiveExp(source, 2500);
@@ -59,11 +59,11 @@ public class SpareAStickRewardScript : DialogScriptBase
         if (source.Trackers.Flags.HasFlag(QuestFlag1.GatheringSticks) && (source.Inventory.CountOf("Branch") < 6))
         {
             if (source.Inventory.CountOf("Branch") == 0)
-                Subject.Text = "What? No branches?! You haven't even tried.";
+                Subject.Reply(source, "What? No branches?! You haven't even tried.");
             else
             {
                 var count = source.Inventory.CountOf("branch");
-                Subject.Text = $"Only {count} branches.. you need six! Go get the rest.";
+                Subject.Reply(source, $"Only {count} branches.. you need six! Go get the rest.");
             }
         }
     }
