@@ -11,21 +11,13 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class DyeShopScript : DialogScriptBase
 {
-    private readonly InputCollector InputCollector;
     private DisplayColor? DisplayColor;
     private Item? Item;
 
     public DyeShopScript(Dialog subject)
-        : base(subject) =>
-        InputCollector = new InputCollectorBuilder()
-                         .RequestTextInput(DialogString.From(RequestColorInput))
-                         .HandleInput(HandleColorInput)
-                         .RequestOptionSelection(
-                             DialogString.From(() => $"{Item!.DisplayName} will be dyed {DisplayColor}. Is this correct?"),
-                             DialogString.Yes,
-                             DialogString.No)
-                         .HandleInput(HandleConfirmation)
-                         .Build();
+        : base(subject)
+    {
+    }
 
     public bool HandleColorInput(Aisling aisling, Dialog dialog, int? option = null)
     {
@@ -79,7 +71,7 @@ public class DyeShopScript : DialogScriptBase
             }
         }
 
-        InputCollector.Collect(source, Subject, optionIndex);
+        Subject.Reply(source, $"{Item!.DisplayName} will be dyed {DisplayColor}. Is this correct?");
     }
 
     public string RequestColorInput()

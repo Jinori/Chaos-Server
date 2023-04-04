@@ -24,7 +24,7 @@ public class HairDyeScript : DialogScriptBase
             var item = ItemFactory.CreateFaux("hairDyeContainer");
             item.DisplayName = $"{color} Hair Dye";
             item.Color = color;
-            Subject.Items.Add(ItemDetails.Default(item));
+            Subject.Items.Add(ItemDetails.BuyWithGold(item));
         }
     }
 
@@ -33,7 +33,6 @@ public class HairDyeScript : DialogScriptBase
         if (!Subject.MenuArgs.TryGet<string>(0, out var dye))
         {
             Subject.Reply(source, DialogString.UnknownInput.Value);
-
             return;
         }
 
@@ -43,14 +42,12 @@ public class HairDyeScript : DialogScriptBase
         if (item == null)
         {
             Subject.Reply(source, DialogString.UnknownInput.Value);
-
             return;
         }
 
-        if (!source.TryTakeGold(itemDetails!.AmountOrPrice))
+        if (!source.TryTakeGold(itemDetails!.Price))
         {
             Subject.Close(source);
-
             return;
         }
 

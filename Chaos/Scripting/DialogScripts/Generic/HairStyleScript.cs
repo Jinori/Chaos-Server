@@ -62,7 +62,7 @@ public class HairstyleScript : DialogScriptBase
                 {
                     var item = _itemFactory.CreateFaux(s);
                     item.Color = source.HairColor;
-                    Subject.Items.Add(ItemDetails.Default(item));
+                    Subject.Items.Add(ItemDetails.BuyWithGold(item));
                 }
 
                 break;
@@ -73,9 +73,8 @@ public class HairstyleScript : DialogScriptBase
                 {
                     var item = _itemFactory.CreateFaux(s);
                     item.Color = source.HairColor;
-                    Subject.Items.Add(ItemDetails.Default(item));
+                    Subject.Items.Add(ItemDetails.BuyWithGold(item));
                 }
-
                 break;
             }
         }
@@ -86,7 +85,6 @@ public class HairstyleScript : DialogScriptBase
         if (!Subject.MenuArgs.TryGet<string>(0, out var hairStyleName))
         {
             Subject.Reply(source, DialogString.UnknownInput.Value);
-
             return;
         }
 
@@ -97,14 +95,12 @@ public class HairstyleScript : DialogScriptBase
 
         {
             Subject.Reply(source, DialogString.UnknownInput.Value);
-
             return;
         }
 
-        if (!source.TryTakeGold(itemDetails!.AmountOrPrice))
+        if (!source.TryTakeGold(itemDetails!.Price))
         {
             Subject.Close(source);
-
             return;
         }
 

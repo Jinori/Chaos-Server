@@ -49,7 +49,6 @@ public override void OnDisplaying(Aisling source)
     else
     {
         Subject.Reply(source, "I cannot repair your items any further.");
-        Subject.Type = ;
     }
 }
 

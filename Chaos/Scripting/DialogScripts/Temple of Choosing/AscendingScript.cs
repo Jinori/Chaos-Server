@@ -35,9 +35,7 @@ public class AscendingScript : DialogScriptBase
         if (source.UserStatSheet.Level <= 98)
         {
             Subject.Reply(source, "You must be level 99 to buy health and mana.");
-            Subject.Options.Clear();
             source.SendOrangeBarMessage("You may not ascend until level 99.");
-
             return;
         }
 

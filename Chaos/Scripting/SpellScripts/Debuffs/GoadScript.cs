@@ -25,7 +25,7 @@ public class GoadScript : BasicSpellScriptBase, ManaCostComponent.IManaCostCompo
         foreach (var target in targets.TargetEntities)
         {
             var monster = target as Monster;
-            monster?.AggroList.AddOrUpdate(context.Source.Id, _ => 1000, (_, currentAggro) => currentAggro + 1000);
+            monster?.AggroList.AddOrUpdate(context.Source.Id, _ => (1000 * context.Source.StatSheet.Str), (_, currentAggro) => currentAggro + (1000 * context.Source.StatSheet.Str));
         }
 
         context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}");

@@ -51,6 +51,9 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
         if (damage <= 0)
             return;
 
+        if (!source.OnSameMapAs(target))
+            return;
+        
         switch (target)
         {
             case Aisling aisling:

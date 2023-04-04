@@ -19,6 +19,7 @@ public class ClassDedicationScript : DialogScriptBase
         ClientRegistry = clientRegistry;
     }
 
+    private string builtReply;
 
     private void SetUserToLevel1Stats(Aisling source, BaseClass baseClass)
     {
@@ -113,36 +114,32 @@ public class ClassDedicationScript : DialogScriptBase
                 }
                 if (source.UserStatSheet.MaximumHp >= requiredHealth && source.UserStatSheet.MaximumMp >= requiredMana)
                 {
-                    Subject.Reply(source, "You have enough vitality to continue.");
+                    builtReply = "You have enough vitality to continue.";
                 }
                 else
                 {
                     Subject.Reply(source, $"You do not have the required {requiredHealth} health and {requiredMana} mana to continue.");
-                    Subject.PrevDialogKey = null;
-                    Subject.NextDialogKey = null;
                     return;
                 }
                 if (source.Inventory.CountOf("ard ioc deum") >= 10)
                 {
-                    Subject.Text += " Looks like you've also brought enough ard ioc deum";
+                    builtReply += " Looks like you've also brought enough ard ioc deum";
                 }
                 else
                 {
-                    Subject.Text += " but you do not have the required ard ioc deum. Come back with what you need.");
-                    Subject.PrevDialogKey = null;
-                    Subject.NextDialogKey = null;
+                    builtReply += " but you do not have the required ard ioc deum. Come back with what you need.";
+                    Subject.Reply(source, builtReply);
                     return;
                 }
                 if (source.UserStatSheet.TotalExp >= 60000000)
                 {
-                    Subject.Text += " and you've hunted enough experience! Let's continue.");
-                    Subject.NextDialogKey = "aoife_chooseNewClass";
+                    builtReply += " and you've hunted enough experience! Let's continue.";
+                    Subject.Reply(source, builtReply, "aoife_chooseNewClass");
                 }
                 else
                 {
-                    Subject.Text += " but you do not have the required experience of 60 million.");
-                    Subject.PrevDialogKey = null;
-                    Subject.NextDialogKey = null;
+                    builtReply += " but you do not have the required experience of 60 million.";
+                    Subject.Reply(source, builtReply);
                 }
                 break;
             }
