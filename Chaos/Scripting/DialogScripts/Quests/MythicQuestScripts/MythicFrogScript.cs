@@ -46,53 +46,23 @@ public class MythicFrogScript : DialogScriptBase
             {
                 if (hasFrog && (frog == MythicFrog.EnemyAllied))
                 {
-                  
-
                     Subject.Reply(source,
                         "You have allied yourself with our enemies. You have no honor and have betrayed our trust. Please leave our army at once.");
 
-                    Subject.NextDialogKey = "Close";
+                    return;
                 }
 
                 if (hasMain && !hasFrog)
-
                 {
                     Subject.Reply(source,
-                        "Hello adventurer, I am the leader of the Frog Army. Croak! We are in a dire situation and we need your help.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "frog_start1",
-                        OptionText = "What seems to be the problem?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                        "Skip", "frog_start1start");
 
                     return;
                 }
 
                 if (frog == MythicFrog.Lower)
                 {
-                    Subject.Reply(source, "Ribbit. Have you come to tell me that you've completed the task I gave you?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "frog_lower2",
-                        OptionText = "Yes, I have slain 15 Mythic Wolves."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "frog_no1",
-                        OptionText = "I'm sorry, not yet."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
+                    Subject.Reply(source, "Skip", "frog_lower2start");
 
                     return;
 
@@ -100,101 +70,29 @@ public class MythicFrogScript : DialogScriptBase
 
                 if (frog == MythicFrog.LowerComplete)
                 {
-                    Subject.Reply(source, "We have another task that we hope you can help us with.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "frog_start3",
-                        OptionText = "Sure, How can i help?"
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "frog_no",
-                        OptionText = "I'm done for now."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
+                    Subject.Reply(source, "Skip", "frog_start3start");
 
                     return;
-
                 }
 
                 if (frog == MythicFrog.Higher)
                 {
-                    Subject.Reply(source, "Croak! Welcome back, Did you clear the wolves yet?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "frog_higher2",
-                        OptionText = "Yeah, it is done."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "frog_no1",
-                        OptionText = "I'm working on it."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
-
+                    Subject.Reply(source, "Skip", "frog_higher2start");
+                    
                     return;
-
                 }
 
                 if (frog == MythicFrog.HigherComplete)
                 {
                     Subject.Reply(source,
-                        "Ribbit aisling! Are you willing to collect some wolf skin for us? Croak! It would come in handy for armors and other stuff for our army.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "frog_item",
-                        OptionText = "I can get that."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "frog_no",
-                        OptionText = "Not a chance, good luck."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
+                        "Skip", "frog_itemstart");
+                    
+                    return;
                 }
 
                 if (frog == MythicFrog.Item)
                 {
-                    Subject.Reply(source, "Ribbit! Did you collect the wolf skin we asked for?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "frog_item2",
-                        OptionText = "I have them here."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "frog_no1",
-                        OptionText = "Still working on it."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
+                    Subject.Reply(source, "Skip", "frog_item2start");
 
                     return;
 
@@ -202,26 +100,7 @@ public class MythicFrogScript : DialogScriptBase
 
                 if (frog == MythicFrog.ItemComplete)
                 {
-                    Subject.Reply(source,
-                        "You have proven yourself a mighty warrior. Thanks to you we can finally hop in peace, grow our army, and defend ourselves from our enemies. We would be honored if you would consider allying with us, and becoming a powerful part of our army. \n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "frog_ally",
-                        OptionText = "Ally with the Frogs"
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "frog_no",
-                        OptionText = "No thank you."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
+                    Subject.Reply(source,"Skip", "Frog_allystart");
 
                     return;
 
@@ -229,52 +108,16 @@ public class MythicFrogScript : DialogScriptBase
 
                 if (frog == MythicFrog.Allied)
                 {
-                    Subject.Reply(source,
-                        "We have another urgent request for you. Deep in the cave you can find the leader of the wolves, Nymeria. She is the one who is giving the orders to chase us. She finds it very amusing to watch us run in fear. She must be very lonely in that cave to find such joy in others pain. Please stop her at all cost. Defeat Nymeria three times to ensure that she will never mess with us again.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "frog_start5",
-                        OptionText = "I'll stop her at all cost."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "frog_noboss",
-                        OptionText = "I won't do it."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
+                    Subject.Reply(
+                        source, "Skip", "frog_start5start");
 
                     return;
                 }
 
                 if (frog == MythicFrog.BossStarted)
                 {
-                    Subject.Reply(source,
-                        "Did you slay Nymeria?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "frog_boss2",
-                        OptionText = "I've slain the beast."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "frog_noboss2",
-                        OptionText = "I can't do it."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
+                    Subject.Reply(
+                        source, "Skip", "frog_boss2start");
 
                     return;
                 }
@@ -283,6 +126,8 @@ public class MythicFrogScript : DialogScriptBase
                 {
 
                     Subject.Reply(source, "Thank you again Aisling for your help. You will always be part of our army.");
+
+                    return;
                 }
 
                 break;
@@ -304,7 +149,6 @@ public class MythicFrogScript : DialogScriptBase
                 if (!source.Trackers.Counters.TryGetValue("Mythicwolf", out var mythicwolf) || (mythicwolf < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough Mythic Wolves.");
-                  
 
                     return;
                 }
@@ -325,11 +169,8 @@ public class MythicFrogScript : DialogScriptBase
                 source.Trackers.Counters.Remove("MythicWolf", out _);
 
                 Subject.Reply(source,
-                    "Excellent work, adventurer! You have proven yourself to our army. Now, it is time to deal with the stronger wolves that have been causing us even more trouble.");
-
-              
+                    "Excellent work, adventurer! You have proven yourself to our army. Now, it is time to deal with the stronger wolves that have been causing us even more trouble.", "frog_initial");
                 
-
                 break;
             }
 
@@ -358,7 +199,7 @@ public class MythicFrogScript : DialogScriptBase
                     return;
                 }
 
-                Subject.Reply(source, "Croak! You've really proven you could be a powerful ally.");
+                Subject.Reply(source, "Croak! You've really proven you could be a powerful ally.", "frog_initial");
                 
               
                 source.Animate(ani, source.Id);
@@ -438,7 +279,7 @@ public class MythicFrogScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicFrog.ItemComplete);
 
                 Subject.Reply(source,
-                    "Excellent work, adventurer. You continue to prove yourself as a valuable friend to our army. These skins will be very useful for our army's survival.");
+                    "Excellent work, adventurer. You continue to prove yourself as a valuable friend to our army. These skins will be very useful for our army's survival.", "frog_initial");
 
               
                 
@@ -462,8 +303,7 @@ public class MythicFrogScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicFrog.Allied);
                 source.SendOrangeBarMessage("You are now allied with the Frogs!");
 
-                Subject.Reply(source, $"Remember, {source.Name
-                }, no matter where your journeys take you, you will always have a home within our army!");
+                Subject.Reply(source, $"Remember, {source.Name}, no matter where your journeys take you, you will always have a home within our army!", "frog_initial");
 
               
                 
@@ -504,7 +344,7 @@ public class MythicFrogScript : DialogScriptBase
                 };
 
                 Subject.Reply(source,
-                    "Your skill in battle have truly croaked over our expectations. You have proven yourself to our army, and we will forever be grateful for you. Croak!");
+                    "Your skill in battle have truly croaked over our expectations. You have proven yourself to our army, and we will forever be grateful for you. Croak!", "frog_initial");
 
                 source.Animate(ani2, source.Id);
 

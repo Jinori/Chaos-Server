@@ -57,34 +57,20 @@ public class MythicGrimlockScript : DialogScriptBase
                 if (hasMain && !hasGrimlock)
 
                 {
-                    Subject.Reply(source,
-                        "Greetings, adventurer. I am Queen Grimlock, ruler of this land. Our people have been locked in a bitter feud with the vile kobolds for many years. We have lost too many of our own in this endless conflict, and it pains me greatly to see my people suffer.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "grimlock_start1",
-                        OptionText = "Anything I can do to help?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    Subject.Reply(
+                        source,
+                        "Skip",
+                        "grimlock_start1start");
 
                     return;
                 }
 
                 if (grimlock == MythicGrimlock.Lower)
                 {
-                    Subject.Reply(source,
-                        "Have you managed to fight off the 15 Worker Kobolds and protect our lands from the devastation they were causing?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "grimlock_lower2",
-                        OptionText = "Yes Queen Grimlock."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    Subject.Reply(
+                        source,
+                        "Skip",
+                        "grimlock_lower2start");
 
                     return;
 
@@ -92,17 +78,10 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 if (grimlock == MythicGrimlock.LowerComplete)
                 {
-                    Subject.Reply(source,
-                        "Adventurer, I must warn you that our conflict with the Kobolds has escalated since the disappearance of their Kobold Workers. Their forces have gathered, and they seem to be preparing for a large-scale war. We cannot let this happen.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "grimlock_start3",
-                        OptionText = "What is your plan of action?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    Subject.Reply(
+                        source,
+                        "Skip",
+                        "grimlock_start3start");
 
                     return;
 
@@ -110,18 +89,10 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 if (grimlock == MythicGrimlock.Higher)
                 {
-                    Subject.Reply(source,
-                        "Welcome back. I trust that your mission to defeat the 10 Kobold Soldiers and 10 Kobold Warriors was successful. Your efforts in this battle were crucial to our cause, and we are grateful for your bravery and skill.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "grimlock_higher2",
-                        OptionText = "Yes, it was."
-                    };
-
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    Subject.Reply(
+                        source,
+                        "Skip",
+                        "grimlock_higher2start");
 
                     return;
 
@@ -129,60 +100,27 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 if (grimlock == MythicGrimlock.HigherComplete)
                 {
-                    Subject.Reply(source,
-                        "There is another task I have for you Aisling. This is a bit gruesome however it must be done. We didn't start the war over this however in the midst of the war, we discovered something very special about the Kobolds.");
+                    Subject.Reply(
+                        source,
+                        "Skip",
+                        "grimlock_itemstart");
 
-                    var option = new DialogOption
-                    {
-                        DialogKey = "grimlock_itemdescription1",
-                        OptionText = "What about them?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    return;
                 }
 
                 if (grimlock == MythicGrimlock.Item)
                 {
-                    Subject.Reply(source, "Aisling, did you get those Kobold Tails? We are so excited for the contribution to my people.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "grimlock_item2",
-                        OptionText = "Take them quickly."
-                    };
-
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    Subject.Reply(source, "Skip", "grimlock_item2start");
 
                     return;
-
                 }
 
                 if (grimlock == MythicGrimlock.ItemComplete)
                 {
-                    Subject.Reply(source,
-                        "I must ask you, adventurer: Would you consider allying with us in our fight against the Kobolds? We are always in need of strong and skilled warriors like yourself to aid us in our struggles.\n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "grimlock_ally",
-                        OptionText = "Ally with Grimlock"
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "grimlock_no",
-                        OptionText = "No thank you."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
+                    Subject.Reply(
+                        source,
+                        "Skip",
+                        "grimlock_allystart");
 
                     return;
 
@@ -190,17 +128,10 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 if (grimlock == MythicGrimlock.Allied)
                 {
-                    Subject.Reply(source,
-                        "Now that we are allied, I can tell you this. Our scouts have reported that a particularly vicious Kobold leader by the name of Shank has been causing us no end of trouble. He has been raiding our supply caches and attacking our patrols, and we believe that he is the key to the Kobolds' recent resurgence.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "grimlock_start5",
-                        OptionText = "That monster."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    Subject.Reply(
+                        source,
+                        "Skip",
+                        "grimlock_start5start");
 
 
                     return;
@@ -208,17 +139,10 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 if (grimlock == MythicGrimlock.BossStarted)
                 {
-                    Subject.Reply(source,
-                        "Did you find Shank? Is it done?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "grimlock_boss2",
-                        OptionText = "Yes, Shank is gone."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    Subject.Reply(
+                        source,
+                        "Skip",
+                        "grimlock_boss2start");
 
                     return;
                 }
@@ -271,7 +195,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 source.Trackers.Counters.Remove("koboldworker", out _);
 
                 Subject.Reply(source,
-                    "While the elimination of any living beings is never something to be taken lightly, the Kobold workers posed a genuine threat to our land. Your actions have helped ensure the safety and security of our lands, and for that, we are grateful.");
+                    "While the elimination of any living beings is never something to be taken lightly, the Kobold workers posed a genuine threat to our land. Your actions have helped ensure the safety and security of our lands, and for that, we are grateful.","grimlock_initial");
                 
 
                 break;
@@ -301,7 +225,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 }
 
                 Subject.Reply(source,
-                    "With the loss of these fighters, the Kobolds will surely be weakened, and their chances of winning this conflict have been significantly reduced. The Grimlocks are a proud people, and we do not forget those who fight alongside us. You have earned our respect and gratitude, and we will remember your deeds for generations to come.");
+                    "With the loss of these fighters, the Kobolds will surely be weakened, and their chances of winning this conflict have been significantly reduced. The Grimlocks are a proud people, and we do not forget those who fight alongside us. You have earned our respect and gratitude, and we will remember your deeds for generations to come.","grimlock_initial");
 
                 source.Animate(ani, source.Id);
 
@@ -362,7 +286,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicGrimlock.ItemComplete);
 
                 Subject.Reply(source,
-                    "This is so much! We will be satisfied for weeks! Thank you so much. We use the tails to heal our wounds and they really calm my people down.");
+                    "This is so much! We will be satisfied for weeks! Thank you so much. We use the tails to heal our wounds and they really calm my people down.","grimlock_initial");
 
                 break;
             }
@@ -387,7 +311,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 source.SendOrangeBarMessage("You are now allied with the Grimlocks!");
 
                 Subject.Reply(source,
-                    $"I must say that I am impressed with your commitment to our cause. Your dedication to our alliance fills me with pride, and I have no doubt that you will be a valuable addition to our underground family.");
+                    $"I must say that I am impressed with your commitment to our cause. Your dedication to our alliance fills me with pride, and I have no doubt that you will be a valuable addition to our underground family.","grimlock_initial");
 
                 break;
 

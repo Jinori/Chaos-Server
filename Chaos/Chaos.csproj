@@ -33,6 +33,7 @@
         <None Update="appsettings.seq.prod.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Remove="Scripting\DialogScripts\Guild\**" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Chaos.Messaging.Abstractions\Chaos.Messaging.Abstractions.csproj" />
@@ -64,5 +65,18 @@
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="Resources\sotp.dat" />
+        <EmbeddedResource Remove="Scripting\DialogScripts\Guild\**" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="Scripting\DialogScripts\Guild\**" />
+      <Compile Remove="Scripting\DialogScripts\Generic\DyeClassArmorsScript.cs" />
+      <Compile Remove="Scripting\DialogScripts\Generic\DyeShopScript.cs" />
+      <Compile Remove="Scripting\DialogScripts\Generic\HairDyeScript.cs" />
+      <Compile Remove="Scripting\DialogScripts\Generic\HairStyleScript.cs" />
+      <Compile Remove="Scripting\DialogScripts\Generic\MarriageScript.cs" />
+      <Compile Remove="Scripting\DialogScripts\Generic\RepairItemScript.cs" />
+      <Compile Remove="Scripting\DialogScripts\Generic\RepairSingleItemScript.cs" />
+      <Compile Remove="Scripting\DialogScripts\Generic\TerminusBugReportScript.cs" />
+      <Compile Remove="Scripting\DialogScripts\Temple of Choosing\ClassDedicationScript.cs" />
     </ItemGroup>
 </Project>

@@ -46,43 +46,27 @@ public class MythicGargoyleScript : DialogScriptBase
             {
                 if (hasGargoyle && (gargoyle == MythicGargoyle.EnemyAllied))
                 {
-                    
                     Subject.Reply(source, "You would be allied to the zombies, just as braindead as they are.");
-                    
+
+                    return;
+
                 }
 
                 if (hasMain && !hasGargoyle)
-
                 {
                     Subject.Reply(source,
-                        "Greetings, puny Aisling. I, Lord Gargoyle, leader of my kind, welcome you. It appears that you have stumbled upon a situation that requires our attention. As you may have noticed, the zombies have been a real pain in our wings for quite some time. They follow us around, and their mindless ways have become a source of irritation to our kind.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "gargoyle_start1",
-                        OptionText = "What can I do about it?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                        "Skip", "gargoyle_start1start");
 
                     return;
+
                 }
 
                 if (gargoyle == MythicGargoyle.Lower)
                 {
-                    Subject.Reply(source,
-                        "Ah, welcome back, player! Have you returned victorious in our battle against the zombie menace? I trust that your skills were more than adequate for the task at hand. Tell me, did you enjoy ridding the world of those brainless, shambling creatures?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "gargoyle_lower2",
-                        OptionText = "I did."
-                    };
-
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    Subject.Reply(
+                        source,
+                        "Skip",
+                        "gargoyle_lower2start");
 
                     return;
 
@@ -90,18 +74,10 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 if (gargoyle == MythicGargoyle.LowerComplete)
                 {
-                    Subject.Reply(source,
-                        "Ready to take on another mission in service of the Gargoyle clan? Our feud with the zombies continues, and we cannot allow them to encroach upon our territory any further.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "gargoyle_start3",
-                        OptionText = "What now?"
-                    };
-
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    Subject.Reply(
+                        source,
+                        "Skip",
+                        "gargoyle_start3start");
 
                     return;
 
@@ -109,17 +85,10 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 if (gargoyle == MythicGargoyle.Higher)
                 {
-                    Subject.Reply(source,
-                        "Welcome back, Aisling. I trust that your mission was successful? Did you vanquish the Zombie Soldiers and Lumberjacks that were threatening our lands? I hope that their presence will no longer be a problem for us.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "gargoyle_higher2",
-                        OptionText = "They are gone."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    Subject.Reply(
+                        source,
+                        "Skip",
+                        "gargoyle_higher2start");
 
                     return;
 
@@ -127,34 +96,18 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 if (gargoyle == MythicGargoyle.HigherComplete)
                 {
-                    Subject.Reply(source,
-                        "I have yet another task for you to aid us in our ongoing feud with the zombies. We require your assistance in collecting 25 zombie bones. These bones are important for our clan's rituals and ceremonies.");
+                    Subject.Reply(
+                        source,
+                        "Skip",
+                        "gargoyle_itemstart");
 
-                    var option = new DialogOption
-                    {
-                        DialogKey = "gargoyle_item",
-                        OptionText = "I will collect them."
-                    };
-
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    return;
 
                 }
 
                 if (gargoyle == MythicGargoyle.Item)
                 {
-                    Subject.Reply(source, "Have you managed to collect the 25 zombie bones we requested?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "gargoyle_item2",
-                        OptionText = "I have them here."
-                    };
-
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    Subject.Reply(source, "Skip", "gargoyle_item2start");
 
 
                     return;
@@ -163,26 +116,10 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 if (gargoyle == MythicGargoyle.ItemComplete)
                 {
-                    Subject.Reply(source,
-                        "Ah, my trusty companion, you have proven yourself time and time again to be a true champion of the Gargoyle clan. Your valor and prowess in battle are truly unmatched, and I believe that you would make an excellent ally to our cause. So I ask you, my winged friend, will you stand with us? Will you pledge your loyalty to the Gargoyle clan and fight alongside us in our battles against the zombies?\n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "gargoyle_ally",
-                        OptionText = "Ally with Gargoyle"
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "gargoyle_no",
-                        OptionText = "No thank you."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
+                    Subject.Reply(
+                        source,
+                        "Skip",
+                        "gargoyle_allystart");
 
                     return;
 
@@ -190,35 +127,20 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 if (gargoyle == MythicGargoyle.Allied)
                 {
-                    Subject.Reply(source,
-                        "There is still much work to be done, and our next task is a formidable one. There is a zombie by the name of Brains who has been causing us no small amount of trouble. He is a cunning foe, and his intelligence makes him all the more dangerous.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "gargoyle_start5",
-                        OptionText = "Anything for you."
-                    };
-
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    Subject.Reply(
+                        source,
+                        "Skip",
+                        "gargoyle_start5start");
 
                     return;
                 }
 
                 if (gargoyle == MythicGargoyle.BossStarted)
                 {
-                    Subject.Reply(source,
-                        "Ah, my winged ally, you have returned! I trust that your battle with Brains, the cunning zombie, was a success?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "gargoyle_boss2",
-                        OptionText = "Victory indeed."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    Subject.Reply(
+                        source,
+                        "Skip",
+                        "gargoyle_boss2start");
 
                     return;
                 }
@@ -227,7 +149,7 @@ public class MythicGargoyleScript : DialogScriptBase
                 {
 
                     Subject.Reply(source,
-                        "Your unwavering support and dedication have brought us to new heights of success in our fight against the undead. ");
+                        "Your unwavering support and dedication have brought us to new heights of success in our fight against the undead.");
                 }
 
                 break;
@@ -270,7 +192,7 @@ public class MythicGargoyleScript : DialogScriptBase
                 source.Trackers.Counters.Remove("zombiegrunt", out _);
 
                 Subject.Reply(source,
-                    "Your bravery and loyalty to the Gargoyle clan are commendable. It is through the efforts of individuals like you that our clan can continue to thrive.");
+                    "Your bravery and loyalty to the Gargoyle clan are commendable. It is through the efforts of individuals like you that our clan can continue to thrive.", "gargoyle_initial");
 
                 
                
@@ -307,7 +229,7 @@ public class MythicGargoyleScript : DialogScriptBase
                 }
 
                 Subject.Reply(source,
-                    "As we continue to battle against the zombie menace, let us remember the lessons of our past triumphs. Let us spread our wings wide and take to the skies, striking fear into the hearts of our foes and bringing hope to our allies.");
+                    "As we continue to battle against the zombie menace, let us remember the lessons of our past triumphs. Let us spread our wings wide and take to the skies, striking fear into the hearts of our foes and bringing hope to our allies.", "gargoyle_initial");
 
                
                 
@@ -368,7 +290,7 @@ public class MythicGargoyleScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicGargoyle.ItemComplete);
 
                 Subject.Reply(source,
-                    "With those bones in our possession, our clan will be able to perform our rituals and ceremonies with renewed vigor and power. You have truly done us a great service, and for that, we are eternally grateful.");
+                    "With those bones in our possession, our clan will be able to perform our rituals and ceremonies with renewed vigor and power. You have truly done us a great service, and for that, we are eternally grateful.", "gargoyle_initial");
 
                 
                
@@ -395,8 +317,7 @@ public class MythicGargoyleScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicGargoyle.Allied);
                 source.SendOrangeBarMessage("You are now allied with the Gargoyles!");
 
-                Subject.Reply(source, $"{source.Name
-                } your decision to stand with the Gargoyle clan fills me with pride and joy. Together, we shall soar to new heights and vanquish our undead foes once and for all.");
+                Subject.Reply(source, $"{source.Name} your decision to stand with the Gargoyle clan fills me with pride and joy. Together, we shall soar to new heights and vanquish our undead foes once and for all.", "gargoyle_initial");
 
                 
                

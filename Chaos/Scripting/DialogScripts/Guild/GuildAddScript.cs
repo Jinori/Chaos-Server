@@ -38,7 +38,7 @@ public class GuildAddScript : DialogScriptBase
         var merchant = MerchantFactory.Create("aricin", aisling.MapInstance, npcpoint);
         var dialogNew = DialogFactory.Create("aricin_acceptGuild", merchant);
 
-        dialogNew.Text = $"Do you accept your invitation to the {aisling.GuildName} guild?";
+        dialogNew.Text = $"Do you accept your invitation to the {aisling.GuildName} guild?");
         dialogNew.Display(GuildAdd!);
 
         dialog.Close(aisling);
