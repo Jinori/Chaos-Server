@@ -41,24 +41,17 @@ public class SickChildScript : DialogScriptBase
                         if (source.UserStatSheet.Level is <= 10 or >= 52)
                             return;
                         
-                        Subject.Reply(source, "Excuse me, aisling! I require your assistance. The princess is gravely ill, and we need to find a cure quickly. I've been informed that a white rose is said to have magical healing properties that could help her. Unfortunately, I am unable to leave my post. Will you aid us in finding this flower?");
-
-                        var option = new DialogOption
-                        {
-                            DialogKey = "Whiterose1-1",
-                            OptionText = "Where can I find this flower?"
-                        };
-
-                        if (!Subject.HasOption(option))
-                            Subject.Options.Insert(0, option);
-
+                        Subject.Reply(source, "skip", "whiterose1-1start");
                         return;
 
                     }
 
                     if (stage == SickChildStage.WhiteRose)
                     {
-                        Subject.Reply(source, "Did you find a white rose?");
+                        if (source.Inventory.HasCount("black rose", 1))
+                        {
+                            Subject.Reply(source, "skip", "whiterose1-3black");
+                        }
 
                         var option = new DialogOption
                         {
@@ -245,23 +238,7 @@ public class SickChildScript : DialogScriptBase
                     }
                 }
                 break;
-
-            case "whiterose1-1":
-                {
-                    Subject.Reply(source, "According to legend, the white rose only blooms in a gardens deep within the Wilderness. Are you still willing to help?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "whiterose1-2",
-                        OptionText = "Yes, I'll help."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
-                }
-                break;
-
+            
             case "whiterose1-2":
                 {
                     Subject.Reply(source, "Thank you! Please be careful on your journey. You can get to the Wilderness through Mileth, Abel, or Rucesion.");
@@ -276,16 +253,6 @@ public class SickChildScript : DialogScriptBase
                     if (!source.Inventory.Remove("white rose"))
                     {
                         Subject.Reply(source, "Where is it?");
-
-                        var option = new DialogOption
-                        {
-                            DialogKey = "Close",
-                            OptionText = "Be right back."
-                        };
-
-                        if (!Subject.HasOption(option))
-                            Subject.Options.Insert(0, option);
-
                         source.SendOrangeBarMessage("You do not have a rose.");
 
                         return;
@@ -293,8 +260,7 @@ public class SickChildScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, 25000);
                     source.Trackers.Enums.Set(SickChildStage.WhiteRose1Turn);
                     source.SendOrangeBarMessage("25000 Exp Rewarded!");
-                    Subject.Reply(source, "Thank you! I need to get this to the healers right away. Please excuse me.");
-                    Subject.NextDialogKey = "whiterosewait1";
+                    Subject.Reply(source, "Thank you! I need to get this to the healers right away. Please excuse me.","whiterosewait1");
                 }
 
                 break;

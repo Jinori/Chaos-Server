@@ -54,169 +54,62 @@ public class MythicMantisScript : DialogScriptBase
                 if (hasMain && !hasMantis)
 
                 {
-                    Subject.Reply(source, "Welcome to our colony, stranger. I am the Mantis King. What brings you here?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "mantis_start1",
-                        OptionText = "I have come seeking adventure."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    Subject.Reply(source, "skip", "mantis_start1start");
                     return;
                 }
 
                 if (mantis == MythicMantis.Lower)
                 {
-                    Subject.Reply(source,
-                        "Tell me, have you killed 15 Mythic bees? You know my colony will tell me if you haven't.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "mantis_lower2",
-                        OptionText = "They are dead King Mantis."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    Subject.Reply(source, "skip", "mantis_lower2start");
                     return;
-
                 }
 
                 if (mantis == MythicMantis.LowerComplete)
                 {
-                    Subject.Reply(source,
-                        "Can I interest you in another adventure Aisling? This time a little more difficult.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "mantis_start3",
-                        OptionText = "I'm always up for adventure."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    Subject.Reply(source, "skip", "mantis_start3start");
                     return;
-
                 }
 
                 if (mantis == MythicMantis.Higher)
                 {
-                    Subject.Reply(source, "Was that as fun as it usually is for me? I always enjoy a good massacre. Did you get all 20?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "mantis_higher2",
-                        OptionText = "Yes it was fun!"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    Subject.Reply(source, "skip", "mantis_higher2start");
                     return;
 
                 }
 
                 if (mantis == MythicMantis.HigherComplete)
                 {
-                    Subject.Reply(source, "You are one quick Aisling, I like that. Oh, Hey. Now that those bees are dead, would you mind gathering 25 Mythic Honey for my colony? It's really just a good substance to have. Sometimes we use it to keep our nymphs in place. They like to scatter once they're born, but with a little mythic honey, they'll be there till we get back.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "mantis_item",
-                        OptionText = "That's kinda funny. Will do."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    Subject.Reply(source, "skip", "mantis_itemstart");
+                    return;
                 }
 
                 if (mantis == MythicMantis.Item)
                 {
-                    Subject.Reply(source, "Heh, you're back fast. Did you get all the Mythic Honey? My colony is thrilled we're getting another shipment of this stuff. Where is it?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "mantis_item2",
-                        OptionText = "Here they are."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    Subject.Reply(source, "skip", "mantis_item2start");
                     return;
-
                 }
 
                 if (mantis == MythicMantis.ItemComplete)
                 {
-                    Subject.Reply(source,
-                        $"Speaking of being part of the colony, that's an excellent idea. You've already done what most of us do in a day, how about it? Would you like to become one of our allies {source.Name}? \n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "mantis_ally",
-                        OptionText = "Ally with Mantis"
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "mantis_no",
-                        OptionText = "Not my style."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
-
+                    Subject.Reply(source, "skip", "mantis_allystart");
                     return;
-
                 }
 
                 if (mantis == MythicMantis.Allied)
                 {
                     Subject.Reply(source,
-                        "That's good we're allies now. I must tell you of the ultimate challenge. I haven't seen this one yet, some say she looks like a wasp but not many lived to report back. Are you interested in another adventure? I don't know if you'll make it back from this one.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "mantis_start5",
-                        OptionText = "She can't be that bad."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                        "skip", "mantis_start5start");
                     return;
                 }
 
                 if (mantis == MythicMantis.BossStarted)
                 {
-                    Subject.Reply(source,
-                        "Did you find that red wasp, Carolina? Is she dead?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "mantis_boss2",
-                        OptionText = "She is."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    Subject.Reply(source, "skip", "mantis_boss2start");
                     return;
                 }
 
                 if (mantis == MythicMantis.BossDefeated)
                 {
-
                     Subject.Reply(source, "My Colony is eating well, nothing to worry about. Thank you again Aisling for taking care of that wasp. We have no troubles these days.");
                 }
 
@@ -228,8 +121,6 @@ public class MythicMantisScript : DialogScriptBase
                 Subject.Reply(source, "Good, good. I will see you when you return. Remember, go kill 15 Mythic Bees. Don't leave any alive.");
                 source.SendOrangeBarMessage("Kill 15 Mythic Bees for King Mantis");
                 source.Trackers.Enums.Set(MythicMantis.Lower);
-                
-
                 return;
             }
 
@@ -239,8 +130,6 @@ public class MythicMantisScript : DialogScriptBase
                 if (!source.Trackers.Counters.TryGetValue("mythicbee", out var mantislower) || (mantislower < 15))
                 {
                     Subject.Reply(source, "Disappointing, loyalty is everything and if you aren't willing, don't come back.");
-                    
-
                     return;
                 }
 
@@ -258,10 +147,8 @@ public class MythicMantisScript : DialogScriptBase
                 }
 
                 source.Trackers.Counters.Remove("mythicbee", out _);
-                Subject.Reply(source, "Impressive. 15 Mythic bees without blinking an eye. I admire your loyalty.");
+                Subject.Reply(source, "Impressive. 15 Mythic bees without blinking an eye. I admire your loyalty.", "mantis_initial");
                 
-                
-
                 break;
             }
 
@@ -270,8 +157,6 @@ public class MythicMantisScript : DialogScriptBase
                 Subject.Reply(source, "Show me how you do it. Good luck Aisling, they can be awefully tricky to kill. Make sure you slay 20 of the Green Bees.");
                 source.SendOrangeBarMessage("Kill 20 Green Bees for King Mantis");
                 source.Trackers.Enums.Set(MythicMantis.Higher);
-                
-
                 return;
             }
 
@@ -282,11 +167,10 @@ public class MythicMantisScript : DialogScriptBase
                 {
                     Subject.Reply(source, "Didn't quite finish them all did you? Go back and make sure they're dead.");
                     
-
                     return;
                 }
 
-                Subject.Reply(source, "It's quite exciting to come out on top. They're also very delicious if you're a mantis. Good work.");
+                Subject.Reply(source, "It's quite exciting to come out on top. They're also very delicious if you're a mantis. Good work.", "mantis_initial");
                 
                 source.Animate(ani, source.Id);
 
@@ -311,8 +195,6 @@ public class MythicMantisScript : DialogScriptBase
                 Subject.Reply(source, "Does that make us bad parents? Ah, who cares. Grab us 25 Mythic Honey.");
                 source.SendOrangeBarMessage("Collect 25 Mythic Honey for King Mantis");
                 source.Trackers.Enums.Set(MythicMantis.Item);
-                
-
                 return;
             }
 
@@ -322,8 +204,6 @@ public class MythicMantisScript : DialogScriptBase
                 if (!source.Inventory.RemoveQuantity("Mythic Honey", 25))
                 {
                     Subject.Reply(source, "Nah, this won't be enough. Go get us some more, there's plenty in there.");
-                    
-
                     return;
                 }
 
@@ -340,9 +220,8 @@ public class MythicMantisScript : DialogScriptBase
                 }
 
                 source.Trackers.Enums.Set(MythicMantis.ItemComplete);
-                Subject.Reply(source, "Ah, just enough. We could always use more but this will keep us satisfied for some time. Thank you Aisling, you really are becoming part of the colony.");
-                
-             
+                Subject.Reply(source, "Ah, just enough. We could always use more but this will keep us satisfied for some time. Thank you Aisling, you really are becoming part of the colony.", "mantis_initial");
+
                 break;
             }
 

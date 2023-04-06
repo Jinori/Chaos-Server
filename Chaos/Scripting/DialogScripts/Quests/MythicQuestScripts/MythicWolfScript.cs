@@ -46,178 +46,69 @@ public class MythicWolfScript : DialogScriptBase
             {
                 if (hasWolf && (wolf == MythicWolf.EnemyAllied))
                 {
-                    
                     Subject.Reply(source, "You have allied yourself with the frogs. You can never be one with the pack. Get lost.");
-               
+                    return;
                 }
 
                 if (hasMain && !hasWolf)
-
                 {
-                    Subject.Reply(source,
-                        "The wolf leader steps forward and greets you with a low growl, its piercing eyes fixed on you. Hello aisling, what do you want?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "wolf_start1",
-                        OptionText = "I came to see if you needed some help?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    Subject.Reply(source, "skip", "wolf_start1start");
                     return;
                 }
 
                 if (wolf == MythicWolf.Lower)
                 {
-                    Subject.Reply(source, "Well look who it is. Were you able to take out the Green Frogs?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "wolf_lower2",
-                        OptionText = "Yeap. They don't seem too dangerous to me."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    Subject.Reply(source, "skip", "wolf_lower2start");
                     return;
 
                 }
 
                 if (wolf == MythicWolf.LowerComplete)
                 {
-                    Subject.Reply(source,
-                        "Good job taking out the green frogs, however that was just the beginning. Deeper in the swamp you can find red and blue frogs. They are even more poisonous then the green ones. Are you willing to help?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "wolf_start3",
-                        OptionText = "Sure, how can I help?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    Subject.Reply(source, "skip", "wolf_start3start");
                     return;
 
                 }
 
                 if (wolf == MythicWolf.Higher)
                 {
-                    Subject.Reply(source, "Have you killed the red and blue frogs yet?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "wolf_higher2",
-                        OptionText = "Yeah, it is done."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    Subject.Reply(source, "skip", "wolf_higher2start");
                     return;
 
                 }
 
                 if (wolf == MythicWolf.HigherComplete)
                 {
-                    Subject.Reply(source,
-                        "You seem to be unaffected by the frogs poison. How could this be? Nevermind for now... We could use your help once again. Since you seem to be immune to the frogs, could you bring us back 25 frog meat? Our food supply has been running low.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "wolf_item",
-                        OptionText = "Just 25? No problem."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    Subject.Reply(source, "skip", "wolf_itemstart");
+                    return;
                 }
 
                 if (wolf == MythicWolf.Item)
                 {
-                    Subject.Reply(source, "Do you have the frog meat?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "wolf_item2",
-                        OptionText = "Here you go."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    Subject.Reply(source, "skip", "wolf_item2start");
                     return;
-
                 }
 
                 if (wolf == MythicWolf.ItemComplete)
                 {
-                    Subject.Reply(source,
-                        "You have earned our respect fearless one. Would you consider allying with us? You would fit in well with our wolf pack. *The Wolf Pack Leader lets of a fierce howl you can hear echo in the distance*\n((Remember, you may only have up to 5 Alliances and you cannot remove alliances.))");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "wolf_ally",
-                        OptionText = "Ally with Wolves."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "wolf_no",
-                        OptionText = "No thank you."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
-
+                    Subject.Reply(source, "skip", "wolf_allystart");
                     return;
-
                 }
 
                 if (wolf == MythicWolf.Allied)
                 {
-                    Subject.Reply(source,
-                        "Welcome back fearless one! Thank you again for bringing honor to our wolf pack!");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "wolf_start5",
-                        OptionText = "Anything for the pack."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    Subject.Reply(source, "skip", "wolf_start5start");
                     return;
                 }
 
                 if (wolf == MythicWolf.BossStarted)
                 {
-                    Subject.Reply(source,
-                        "Have you killed Frogger yet?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "wolf_boss2",
-                        OptionText = "Frogger hops no more."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-
+                    Subject.Reply(source, "skip", "wolf_boss2start");
                     return;
                 }
 
                 if (wolf == MythicWolf.BossDefeated)
                 {
-
                     Subject.Reply(source, "Hello fearless one! Thank you for all you have done. I have no other task for you.");
                 }
 
@@ -229,8 +120,6 @@ public class MythicWolfScript : DialogScriptBase
                 Subject.Reply(source, "Stay safe, friend.");
                 source.SendOrangeBarMessage("Kill 15 Green Frogs for the Wolf Pack Leader");
                 source.Trackers.Enums.Set(MythicWolf.Lower);
-                
-
                 return;
             }
 
@@ -240,8 +129,6 @@ public class MythicWolfScript : DialogScriptBase
                 if (!source.Trackers.Counters.TryGetValue("mythicfrog", out var wolflower) || (wolflower < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough Green Frogs");
-                    
-
                     return;
                 }
 
@@ -258,8 +145,6 @@ public class MythicWolfScript : DialogScriptBase
                 }
                 source.Trackers.Counters.Remove("mythicfrog", out _);
                 Subject.Reply(source, "Ha! You seem brave. Please come back when you can, I have another task for you.");
-                
-               
 
                 break;
             }
@@ -272,7 +157,6 @@ public class MythicWolfScript : DialogScriptBase
                 source.SendOrangeBarMessage("Kill 10 Blue and 10 Red Frogs for Wolf Pack Leader.");
                 source.Trackers.Enums.Set(MythicWolf.Higher);
                 
-
                 return;
             }
 
@@ -284,15 +168,10 @@ public class MythicWolfScript : DialogScriptBase
                 if ((bluefrog < 10) || (redfrog < 10))
                 {
                     Subject.Reply(source, "You haven't killed enough Blue and Red Frogs.");
-                    
-
                     return;
                 }
 
-                Subject.Reply(source,
-                    "Thanks for the help once again. You have earned our respect. I have another task for you when you are ready.");
-
-               
+                Subject.Reply(source, "Thanks for the help once again. You have earned our respect. I have another task for you when you are ready.");
                 
                 source.Animate(ani, source.Id);
                 if (source.UserStatSheet.Level <= 98)
@@ -308,15 +187,6 @@ public class MythicWolfScript : DialogScriptBase
                 source.Trackers.Counters.Remove("redfrog", out _);
                 source.Trackers.Counters.Remove("bluefrog", out _);
 
-                var option = new DialogOption
-                {
-                    DialogKey = "wolf_item",
-                    OptionText = "I can get that."
-                };
-
-                if (!Subject.HasOption(option))
-                    Subject.Options.Add(option);
-
                 break;
             }
 
@@ -325,8 +195,6 @@ public class MythicWolfScript : DialogScriptBase
                 Subject.Reply(source, "Hurry back, the other wolves are starting to get very hangry.");
                 source.SendOrangeBarMessage("Collect 25 Frog Meat for Wolf Pack Leader");
                 source.Trackers.Enums.Set(MythicWolf.Item);
-                
-
                 return;
             }
 
@@ -337,7 +205,6 @@ public class MythicWolfScript : DialogScriptBase
                 {
                     Subject.Reply(source, "You do not have enough Frog Meat.");
                     
-
                     return;
                 }
 
@@ -353,12 +220,8 @@ public class MythicWolfScript : DialogScriptBase
                 }
                 source.Trackers.Enums.Set(MythicWolf.ItemComplete);
 
-                Subject.Reply(source,
-                    "Thank you. I was starting to get a headache from all the howling. This should be enough to feed us for awhile. Please come back to see me when you can. ");
-
+                Subject.Reply(source, "Thank you. I was starting to get a headache from all the howling. This should be enough to feed us for awhile. Please come back to see me when you can. ");
                 
-               
-
                 break;
             }
 
@@ -379,8 +242,6 @@ public class MythicWolfScript : DialogScriptBase
                 source.SendOrangeBarMessage("You are now allied with the Wolves!");
                 Subject.Reply(source, $"Wise choice friend! Welcome to the wolf pack!");
                 
-               
-
                 break;
 
             }
@@ -388,12 +249,9 @@ public class MythicWolfScript : DialogScriptBase
             case "wolf_boss":
             {
                 Subject.Reply(source, "That's the spirit! We will be here awaiting your return.");
-                
-           
                 source.Trackers.Enums.Set(MythicWolf.BossStarted);
                 source.SendOrangeBarMessage("Kill Frogger three times.");
             }
-
                 break;
 
             case "wolf_boss2":
@@ -401,8 +259,6 @@ public class MythicWolfScript : DialogScriptBase
                 if (!source.Trackers.Counters.TryGetValue("Frogger", out var wolfboss1) || (wolfboss1 < 3))
                 {
                     Subject.Reply(source, "Frogger's army is still there!");
-                    
-               
                     source.SendOrangeBarMessage("You haven't completely defeated Frogger.");
 
                     return;
