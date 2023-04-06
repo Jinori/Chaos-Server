@@ -28,7 +28,9 @@ public class HolyResearchQuestScript : DialogScriptBase
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "berteli_initial":
-            {
+                if (source.UserStatSheet.Level > 50)
+                    return;
+
                 var option = new DialogOption
                 {
                     DialogKey = "HolyResearch_initial",
@@ -37,10 +39,9 @@ public class HolyResearchQuestScript : DialogScriptBase
 
                 if (!Subject.HasOption(option))
                     Subject.Options.Insert(0, option);
-            }
 
                 break;
-
+            
             case "holyresearch_initial":
                 if (!hasStage || (stage == HolyResearchStage.None))
                 {
@@ -52,99 +53,28 @@ public class HolyResearchQuestScript : DialogScriptBase
                         return;
                     }
 
-                    var option = new DialogOption
-                    {
-                        DialogKey = "HolyResearch_yes",
-                        OptionText = "Yes I will help you, what do you need?"
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "HolyResearch_no",
-                        OptionText = "I have better things to do."
-                    };
-
-                    var option2 = new DialogOption
-                    {
-                        DialogKey = "HolyResearch_use",
-                        OptionText = "What do you use these for?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Insert(1, option1);
-
-                    if (!Subject.HasOption(option2))
-                        Subject.Options.Insert(2, option2);
+                    return;
                 }
 
                 if (stage == HolyResearchStage.StartedRawHoney)
                 {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "HolyResearch_startedrawhoney",
-                        OptionText = "I have your Raw Honey here."
-                    };
-
-                    var option2 = new DialogOption
-                    {
-                        DialogKey = "HolyResearch_where",
-                        OptionText = "Where can I find that?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    if (!Subject.HasOption(option2))
-                        Subject.Options.Insert(1, option2);
+                    
+                    Subject.Reply(source, "skip", "holyresearch_rh");
 
                     return;
                 }
 
                 if (stage == HolyResearchStage.StartedRawWax)
                 {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "HolyResearch_startedrawwax",
-                        OptionText = "I have your Raw Wax here."
-                    };
-
-                    var option2 = new DialogOption
-                    {
-                        DialogKey = "HolyResearch_where",
-                        OptionText = "Where can I find that?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    if (!Subject.HasOption(option2))
-                        Subject.Options.Insert(1, option2);
-
+                    Subject.Reply(source, "skip", "holyresearch_rw");
                     return;
                 }
 
                 if (stage == HolyResearchStage.StartedRoyalWax)
                 {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "HolyResearch_startedroyalwax",
-                        OptionText = "I have your Royal Wax here."
-                    };
+                    Subject.Reply(source, "skip", "holyresearch_royw");
 
-                    var option2 = new DialogOption
-                    {
-                        DialogKey = "HolyResearch_where",
-                        OptionText = "Where can I find that?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    if (!Subject.HasOption(option2))
-                        Subject.Options.Insert(1, option2);
+                    return;
                 }
 
                 break;

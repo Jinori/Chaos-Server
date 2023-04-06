@@ -37,6 +37,9 @@ public class DarkThingsQuestScript : DialogScriptBase
         {
             case "dar_initial":
             {
+                if (source.UserStatSheet.Level > 50)
+                    return;
+
                 var option = new DialogOption
                 {
                     DialogKey = "DarkThings_initial",
@@ -87,7 +90,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                     return;
                 }
 
-                if (stage == DarkThingsStage.StartedGreatBatsWing)
+                if (stage == DarkThingsStage.StartedGiantBatsWing)
                 {
                     Subject.Reply(source,"skip", "darkthings_startgbw");
 
@@ -150,7 +153,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                     {
                         randomDarkThingsStage = new[]
                         {
-                            DarkThingsStage.StartedGreatBatsWing, DarkThingsStage.StartedScorpionSting, DarkThingsStage.StartedWhiteBatsWing
+                            DarkThingsStage.StartedGiantBatsWing, DarkThingsStage.StartedScorpionSting, DarkThingsStage.StartedWhiteBatsWing
                         }.PickRandom();
 
                         source.Trackers.Enums.Set(randomDarkThingsStage);
@@ -191,9 +194,9 @@ public class DarkThingsQuestScript : DialogScriptBase
 
                             break;
 
-                        case DarkThingsStage.StartedGreatBatsWing:
+                        case DarkThingsStage.StartedGiantBatsWing:
                         {
-                            Subject.Reply(source, "You will? Okay, bring me one Great Bat's Wing.");
+                            Subject.Reply(source, "You will? Okay, bring me one Giant Bat's Wing.");
                         }
 
                             break;
@@ -323,10 +326,10 @@ public class DarkThingsQuestScript : DialogScriptBase
 
                 break;
 
-            case "darkthings_startedgreatbatswing":
-                if (stage == DarkThingsStage.StartedGreatBatsWing)
+            case "darkthings_startedgiantbatswing":
+                if (stage == DarkThingsStage.StartedGiantBatsWing)
                 {
-                    if (!source.Inventory.HasCount("Great Bat's Wing", 1))
+                    if (!source.Inventory.HasCount("Giant Bat's Wing", 1))
                     {
                         source.SendOrangeBarMessage("Dar realizes you have nothing in your hands and scoffs.");
                         Subject.Close(source);
@@ -334,7 +337,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                         return;
                     }
 
-                    source.Inventory.RemoveQuantity("Great Bat's Wing", 1);
+                    source.Inventory.RemoveQuantity("Giant Bat's Wing", 1);
                     ExperienceDistributionScript.GiveExp(source, thirtyPercent);
                     source.TryGiveGamePoints(5);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {thirtyPercent} exp!");
