@@ -41,6 +41,12 @@ public class CryptSlayerScript : DialogScriptBase
         {
             case "skarn_initial":
             {
+                if (source.UserStatSheet.BaseClass is not BaseClass.Monk or BaseClass.Priest or BaseClass.Warrior or BaseClass.Rogue
+                                                      or BaseClass.Wizard)
+                {
+                    Subject.Reply(source, "You cannot help me until you've dedicated yourself to a class.");
+                    return;
+                }
 
                 if (source.UserStatSheet.Level > 71)
                 {
@@ -72,15 +78,6 @@ public class CryptSlayerScript : DialogScriptBase
 
                     return;
                 }
-                
-                var option = new DialogOption
-                {
-                    DialogKey = "cryptslayer_initial",
-                    OptionText = "Slayer of the Crypt"
-                };
-
-                if (!Subject.HasOption(option))
-                    Subject.Options.Insert(0, option);
             }
 
                 break;
@@ -88,6 +85,12 @@ public class CryptSlayerScript : DialogScriptBase
             case "cryptslayer_initial":
                 if (!hasStage || (stage == CryptSlayerStage.None))
                 {
+                    if (source.UserStatSheet.Level > 71)
+                    {
+                        Subject.Reply(source,"I have no quest for an experienced player like yourself.");
+                        return;
+                    }
+
                     if (source.Trackers.TimedEvents.HasActiveEvent("CryptSlayerCd", out var timedEvent))
                     {
                         Subject.Reply(source, $"You have killed enough for now, come back later. (({timedEvent.Remaining.ToReadableString()}))");
@@ -101,33 +104,6 @@ public class CryptSlayerScript : DialogScriptBase
 
                         return;
                     }
-                    
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cryptslayer_start",
-                        OptionText = "Yes"
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "cryptslayer_deny",
-                        OptionText = "No thanks"
-                    };
-
-                    var option2 = new DialogOption
-                    {
-                        DialogKey = "cryptslayer_who",
-                        OptionText = "Who are you?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Insert(1, option1);
-
-                    if (!Subject.HasOption(option2))
-                        Subject.Options.Insert(2, option2);
                 }
 
                 if (hasStage)
@@ -345,42 +321,38 @@ public class CryptSlayerScript : DialogScriptBase
 
                 if (source.Trackers.Counters.CounterLessThanOrEqualTo("CryptSlayerLegend", 1))
                 {
-
                     if (source.HasClass(BaseClass.Wizard))
                     {
                         var wizardstaff = ItemFactory.Create("MagusAres");
                         source.TryGiveItem(wizardstaff);
-                        source.SendOrangeBarMessage("Skarn hands you a weapon.");
                     }
 
                     if (source.HasClass(BaseClass.Warrior))
                     {
                         var warriorweapon = ItemFactory.Create("Claidheamh");
                         source.TryGiveItem(warriorweapon);
-                        source.SendOrangeBarMessage("Skarn hands you a weapon.");
                     }
 
                     if (source.HasClass(BaseClass.Priest))
                     {
                         var prieststaff = ItemFactory.Create("HolyHermes");
                         source.TryGiveItem(prieststaff);
-                        source.SendOrangeBarMessage("Skarn hands you a weapon.");
                     }
 
                     if (source.HasClass(BaseClass.Rogue))
                     {
                         var rogueweapon = ItemFactory.Create("BlossomDagger");
                         source.TryGiveItem(rogueweapon);
-                        source.SendOrangeBarMessage("Skarn hands you a weapon.");
                     }
 
                     if (source.HasClass(BaseClass.Monk))
                     {
                         var monkweapon = ItemFactory.Create("WolfClaw");
                         source.TryGiveItem(monkweapon);
-                        source.SendOrangeBarMessage("Skarn hands you a weapon.");
                     }
                 }
+                
+                source.SendOrangeBarMessage("Skarn hands you a weapon.");
 
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.TryGiveGamePoints(5);

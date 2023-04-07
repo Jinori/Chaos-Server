@@ -57,58 +57,13 @@ public class RionaRatQuestScript : DialogScriptBase
 
             case "ratquest_initial":
                 if (!hasStage || (stage == RionaRatQuestStage.None))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "ratquest_yes",
-                        OptionText = "I can help you with that."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "ratquest_no",
-                        OptionText = "Mice are friends, no thanks."
-                    };
-
-                    var option2 = new DialogOption
-                    {
-                        DialogKey = "ratquest_where",
-                        OptionText = "Where'd they come from?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Insert(1, option1);
-
-                    if (!Subject.HasOption(option2))
-                        Subject.Options.Insert(2, option2);
-                }
+                    return;
 
                 if (stage == RionaRatQuestStage.StartedRatQuest)
                 {
-                    Subject.Reply(source, "Did you take care of those rats?");
+                    Subject.Reply(source, "Skip", "ratquest_turninstart");
 
-                    {
-                        var option = new DialogOption
-                        {
-                            DialogKey = "ratquest_turnin",
-                            OptionText = "Yeah, they're gone."
-                        };
-
-                        var option1 = new DialogOption
-                        {
-                            DialogKey = "ratquest_refuse",
-                            OptionText = "Rats are too fast"
-                        };
-
-                        if (!Subject.HasOption(option))
-                            Subject.Options.Insert(0, option);
-
-                        if (!Subject.HasOption(option1))
-                            Subject.Options.Insert(1, option1);
-                    }
+                    return;
                 }
 
                 break;

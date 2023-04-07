@@ -52,39 +52,16 @@ public class PFQuestScript : DialogScriptBase
 
                 if (stage == PFQuestStage.StartedPFQuest)
                 {
-                    Subject.Reply(source, "Did ya get those roots for me?");
+                    Subject.Reply(source, "Skip", "porteforest_rootturninstart");
 
-                    var option = new DialogOption
-                    {
-                        DialogKey = "porteforest_rootturnin",
-                        OptionText = "I have the roots here."
-                    };
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "porteforest_no",
-                        OptionText = "I'm still working on it."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Insert(1, option1);
+                    return;
                 }
 
                 if (stage == PFQuestStage.TurnedInRoots)
                 {
-                    Subject.Reply(source, "I already told you what I know.");
+                    Subject.Reply(source, "Skip", "porteforest_repeatstart");
 
-                    var option = new DialogOption
-                    {
-                        DialogKey = "porteforest_repeat",
-                        OptionText = "What did you say again?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
+                    return;
                 }
 
                 if (stage is PFQuestStage.CompletedPFQuest or PFQuestStage.TurnedInTristar)
@@ -128,17 +105,7 @@ public class PFQuestScript : DialogScriptBase
                 {
                     if (!source.Inventory.HasCount("trent root", 4))
                     {
-                        Subject.Reply(source, "Can you bring some more?");
-
-                        var option = new DialogOption
-                        {
-                            DialogKey = "Close",
-                            OptionText = "Be right back."
-                        };
-
-                        if (!Subject.HasOption(option))
-                            Subject.Options.Insert(0, option);
-
+                        Subject.Reply(source, "Can you bring some more, this isn't enough.");
                         source.SendOrangeBarMessage("Torbjorn isn't impressed. He wants four trent roots.");
 
                         return;
@@ -147,16 +114,6 @@ public class PFQuestScript : DialogScriptBase
                     source.Inventory.RemoveQuantity("trent root", 4);
                     source.Trackers.Enums.Set(PFQuestStage.TurnedInRoots);
                     ExperienceDistributionScript.GiveExp(source, 100000);
-                    Subject.Reply(source, "Thank you Aisling! Now I can make some more weapons.");
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "porteforest_rootturnin1",
-                        OptionText = "Where did you last see the pendant?"
-                    };
-
-                    if (!Subject.HasOption(option1))
-                        Subject.Options.Add(option1);
                 }
 
                 break;
@@ -176,16 +133,9 @@ public class PFQuestScript : DialogScriptBase
 
                 if (stage == PFQuestStage.WolfManes)
                 {
-                    Subject.Reply(source, "Glad to see you back so soon, were you able to gather the Silver Wolf Manes?");
+                    Subject.Reply(source, "Skip", "porteforest_wolfmanesstart");
 
-                    var option = new DialogOption
-                    {
-                        DialogKey = "porteforest_wolfmanes",
-                        OptionText = "I have the Silver Wolf Manes."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
+                    return;
                 }
 
                 if (stage is PFQuestStage.CompletedPFQuest or PFQuestStage.TurnedInTristar)
@@ -405,7 +355,7 @@ public class PFQuestScript : DialogScriptBase
                     var option = new DialogOption
                     {
                         DialogKey = "porteforest_pendant5",
-                        OptionText = "Yes, a few of us will. Where do we go?."
+                        OptionText = "Yes, a few of us will. Where do we go?"
                     };
 
                     if (!Subject.HasOption(option))
