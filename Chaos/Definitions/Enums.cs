@@ -145,7 +145,7 @@ public enum DarkThingsStage
     StartedBatsWing = 3,
     StartedSpidersSilk = 4,
     StartedScorpionSting = 5,
-    StartedGreatBatsWing = 6,
+    StartedGiantBatsWing = 6,
     StartedWhiteBatsWing = 7
 }
 

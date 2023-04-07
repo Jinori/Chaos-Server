@@ -85,8 +85,7 @@ public class MythicBunnyScript : DialogScriptBase
 
                 if (bunny == MythicBunny.HigherComplete)
                 {
-                    Subject.Reply(source, "Want to collect some horse hair for me?");
-
+                    Subject.Reply(source, "skip", "bunny_itemstart");
                     return;
                 }
 
