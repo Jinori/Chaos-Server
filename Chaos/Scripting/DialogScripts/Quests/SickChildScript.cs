@@ -51,171 +51,51 @@ public class SickChildScript : DialogScriptBase
                         if (source.Inventory.HasCount("black rose", 1))
                         {
                             Subject.Reply(source, "skip", "whiterose1-3black");
+                            return;
                         }
-
-                        var option = new DialogOption
-                        {
-                            DialogKey = "whiterose1-3",
-                            OptionText = "Yes. Here you go."
-                        };
-                        if (!Subject.HasOption(option))
-                            Subject.Options.Insert(0, option);
-
-                        if (source.Inventory.HasCount("black rose", 1))
-                        {
-                            var option1 = new DialogOption
-                            {
-                                DialogKey = "blackrose1",
-                                OptionText = "I found a black rose. Will this work?"
-                            };
-                            if (!Subject.HasOption(option1))
-                                Subject.Options.Insert(1, option1);
-                        }
-                        var option2 = new DialogOption
-                        {
-                            DialogKey = "close",
-                            OptionText = "No, Not yet."
-                        };
-
-                        if (!Subject.HasOption(option2))
-                            Subject.Options.Add(option2);
-
+                        Subject.Reply(source, "skip", "whiterose1-3white");
+                        return;
                     }
 
                     if (stage == SickChildStage.WhiteRose1Turn)
                     {
-                        Subject.Reply(source, "Paulin hasn't returned yet.");
-
-                        var option1 = new DialogOption
-                        {
-                            DialogKey = "whiterosewait1",
-                            OptionText = "Wait for Paulin to return."
-                        };
-
-                        if (!Subject.HasOption(option1))
-                            Subject.Options.Add(option1);
-
-                        var option2 = new DialogOption
-                        {
-                            DialogKey = "close",
-                            OptionText = "Leave."
-                        };
-
-                        if (!Subject.HasOption(option2))
-                            Subject.Options.Add(option2);
+                        Subject.Reply(source, "skip", "whiterosewaitstart");
+                        return;
                     }
 
 
                     if (stage == SickChildStage.WhiteRose2)
                     {
-                        Subject.Reply(source, "Did you find another white rose?");
-
-                        var option = new DialogOption
-                        {
-                            DialogKey = "whiterose2-3",
-                            OptionText = "Yes. Here you go."
-                        };
-                        if (!Subject.HasOption(option))
-                            Subject.Options.Insert(0, option);
-
                         if (source.Inventory.HasCount("black rose", 1))
                         {
-                            var option1 = new DialogOption
-                            {
-                                DialogKey = "blackrose1",
-                                OptionText = "I found a black rose. Will this work?"
-                            };
-                            if (!Subject.HasOption(option1))
-                                Subject.Options.Insert(1, option1);
+                            Subject.Reply(source, "skip", "whiterose2-3black");
+                            return;
                         }
-                        var option2 = new DialogOption
-                        {
-                            DialogKey = "close",
-                            OptionText = "No, Not yet."
-                        };
-
-                        if (!Subject.HasOption(option2))
-                            Subject.Options.Add(option2);
-
+                        Subject.Reply(source, "skip", "whiterose2-3white");
+                        return;
                     }
 
                     if (stage == SickChildStage.WhiteRose2Turn)
                     {
-                        Subject.Reply(source, "Paulin hasn't returned yet.");
-
-                        var option1 = new DialogOption
-                        {
-                            DialogKey = "whiterose2wait1",
-                            OptionText = "Wait for Paulin to return."
-                        };
-
-                        if (!Subject.HasOption(option1))
-                            Subject.Options.Add(option1);
-
-                        var option2 = new DialogOption
-                        {
-                            DialogKey = "close",
-                            OptionText = "Leave."
-                        };
-
-                        if (!Subject.HasOption(option2))
-                            Subject.Options.Add(option2);
+                        Subject.Reply(source, "skip", "whiterose2waitstart");
+                        return;
                     }
 
                     if (stage == SickChildStage.BlackRoseTurn)
                     {
-                        Subject.Reply(source, "What have we done...");
-
-                        var option1 = new DialogOption
-                        {
-                            DialogKey = "blackrose2-1",
-                            OptionText = "What happened?"
-                        };
-
-                        if (!Subject.HasOption(option1))
-                            Subject.Options.Add(option1);
-
-                        var option2 = new DialogOption
-                        {
-                            DialogKey = "close",
-                            OptionText = "Leave."
-                        };
-
-                        if (!Subject.HasOption(option2))
-                            Subject.Options.Add(option2);
+                        Subject.Reply(source, "skip", "blackrose2-1start");
+                        return;
                     }
 
                     if (stage == SickChildStage.GoldRose)
                     {
-                        Subject.Reply(source, "Were you able to find a Gold Rose?");
-
-                        var option = new DialogOption
-                        {
-                            DialogKey = "goldrose1-3",
-                            OptionText = "Yes. Here it is."
-                        };
-
-                        if (!Subject.HasOption(option))
-                            Subject.Options.Insert(0, option);
-
                         if (source.Inventory.HasCount("black rose", 1))
                         {
-                            var option1 = new DialogOption
-                            {
-                                DialogKey = "blackrose1",
-                                OptionText = "I found a black rose. Will this work?"
-                            };
-                            if (!Subject.HasOption(option1))
-                                Subject.Options.Insert(1, option1);
+                            Subject.Reply(source, "skip", "goldrose1-3black");
+                            return;
                         }
-                        var option2 = new DialogOption
-                        {
-                            DialogKey = "close",
-                            OptionText = "No, Not yet."
-                        };
-
-                        if (!Subject.HasOption(option2))
-                            Subject.Options.Add(option2);
+                        Subject.Reply(source, "skip", "goldrose1-3gold");
+                        return;
 
                     }
 
@@ -265,23 +145,6 @@ public class SickChildScript : DialogScriptBase
 
                 break;
 
-            case "whiterose2-1":
-                {
-
-                    Subject.Reply(source, "It seems to have helped a little but I'm afraid it's not enough. Would you be willing to find another rose?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "whiterose2-2",
-                        OptionText = "Of course. Anything for the princess."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-                }
-
-                break;
-
             case "whiterose2-2":
                 {
                     Subject.Reply(source, "Thank you again. Please return as soon as you can.");
@@ -313,25 +176,7 @@ public class SickChildScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, 50000);
                 source.Trackers.Enums.Set(SickChildStage.WhiteRose2Turn);
                 source.SendOrangeBarMessage("50000 Exp Rewarded!");
-                Subject.Reply(source, "Thank you again! Please excuse me while I get this to the healers.");
-                Subject.NextDialogKey = "whiterose2wait1";
-
-                break;
-
-            case "goldrose1-1":
-                {
-
-                    Subject.Reply(source, "To finish the cure we need a Gold Rose. Gold roses are more rare then the white roses are but they can be found around the same area. Please search all the gardens in the Wilderness and find us a gold rose.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "goldrose1-2",
-                        OptionText = "Got it. Be right back."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Add(option);
-                }
+                Subject.Reply(source, "Thank you again! Please excuse me while I get this to the healers.", "whiterose2wait1");
 
                 break;
 
@@ -376,67 +221,24 @@ public class SickChildScript : DialogScriptBase
                               1,
                               GameTime.Now));
                     Subject.Reply(source, "Thank you! With this we will be able to create the cure to save the princess! Please accept this reward in the name of the King.");
-                    Subject.NextDialogKey = "close";
 
                     break;
                 }
-
-            case "blackrose1":
-                {
-                    Subject.Reply(source, "Hmm this looks like the rose needed but tainted. I'm not sure if this would help or not, but at this point we don't have a choice. The princess cannot wait any longer.");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "blackrose2",
-                        OptionText = "Let's give it a shot."
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    var option2 = new DialogOption
-                    {
-                        DialogKey = "close",
-                        OptionText = "Nevermind."
-                    };
-
-                    if (!Subject.HasOption(option2))
-                        Subject.Options.Add(option2);
-                }
-                break;
-
+            
             case "blackrose2":
 
                 {
                     if (!source.Inventory.Remove("black rose"))
                     {
                         Subject.Reply(source, "Where is it?");
-
-                        var option = new DialogOption
-                        {
-                            DialogKey = "Close",
-                            OptionText = "Be right back."
-                        };
-
-                        if (!Subject.HasOption(option))
-                            Subject.Options.Insert(0, option);
-
                         source.SendOrangeBarMessage("You do not have a black rose.");
 
                         return;
                     }
                     
-                    Subject.Reply(source, "This was a mistake. Oh god what have we done!");
+                    Subject.Reply(source, "skip", "blackrose2-1start");
                     source.Trackers.Enums.Set(SickChildStage.BlackRoseTurn);
-
-                    var option2 = new DialogOption
-                    {
-                        DialogKey = "blackrose2-1",
-                        OptionText = "What happened?"
-                    };
-
-                    if (!Subject.HasOption(option2))
-                        Subject.Options.Add(option2);
+                    return;
                 }
                 
 

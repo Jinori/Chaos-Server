@@ -6,9 +6,10 @@ using Chaos.Objects.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Time;
+using Chaos.Objects.Legend;
 
 namespace Chaos.Scripting.DialogScripts.Quests;
-
 public class WolfProblemScript : DialogScriptBase
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
@@ -28,39 +29,17 @@ public class WolfProblemScript : DialogScriptBase
             case "francis_initial":
                 if ((!hasStage) || (stage == WolfProblemStage.None))
                 {
-                    Subject.Reply(source, "Hey you! Are you busy?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "wolfproblem_initial",
-                        OptionText = "No, what's up?"
-                    };
-
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
+                    if (source.UserStatSheet.Level is <= 1 or >= 16)
+                        return;
+                    
+                    Subject.Reply(source, "skip", "wolfproblem_start");
+                    return;
                 }
 
                 if (stage == WolfProblemStage.Start)
                 {
-                    Subject.Reply(source, "Did you get rid of the wolf?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "wolfproblem_turnin",
-                        OptionText = "Yes."
-                    };
-                    if (!Subject.HasOption(option))
-                        Subject.Options.Insert(0, option);
-
-                    var option2 = new DialogOption
-                    {
-                        DialogKey = "close",
-                        OptionText = "No, Not yet."
-                    };
-
-                    if (!Subject.HasOption(option2))
-                        Subject.Options.Add(option2);
-
+                    Subject.Reply(source, "skip", "wolfproblem_turninstart");
+                    return;
                 }
 
                  if (stage == WolfProblemStage.Complete)
@@ -88,11 +67,19 @@ public class WolfProblemScript : DialogScriptBase
                     }
 
                     source.TryGiveGamePoints(5);
-                    ExperienceDistributionScript.GiveExp(source, 4000);
-                    source.TryGiveGold(1500);
+                    ExperienceDistributionScript.GiveExp(source, 5000);
+                    source.TryGiveGold(2500);
                     source.SendOrangeBarMessage("4000 Exp and 1500 Gold Rewarded!");
                     source.Trackers.Enums.Set(WolfProblemStage.Complete);
                     source.Trackers.Counters.Remove("wolf", out _);
+                    source.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Saved a cow from the big bad wolf.",
+                            "wolfproblem",
+                            MarkIcon.Heart,
+                            MarkColor.White,
+                            1,
+                            GameTime.Now));
                 }
 
                 break;

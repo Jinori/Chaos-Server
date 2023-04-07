@@ -1156,8 +1156,8 @@ public class KillCounterScript : MonsterScriptBase
                         aisling.SendOrangeBarMessage($"You defeated Shank {value} times!");
 
                         break;
-                        }  
-                        case "wilderness_questwolf":
+                    }  
+                    case "wilderness_questwolf":
                         {
                             var hasWolf = aisling.Trackers.Enums.TryGetValue(out WolfProblemStage wolf);
 
@@ -1168,6 +1168,17 @@ public class KillCounterScript : MonsterScriptBase
                             aisling.SendOrangeBarMessage($"You defeated the Wolf.");
                             break;
                         }
+                    case "undead_king":
+                    {
+                        var hasUndeadking = aisling.Trackers.Enums.TryGetValue(out CrHorror Undeadking);
+
+                        if (!hasUndeadking || (Undeadking != CrHorror.Start))
+                            return;
+
+                        var value = aisling.Trackers.Counters.AddOrIncrement("Undead_king");
+                        aisling.SendOrangeBarMessage($"You defeated the Undead King!");
+                        break;
+                    }
 
                 }
     }
