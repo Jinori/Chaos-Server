@@ -26,25 +26,21 @@ public class GenericDyeScript : DialogScriptBase
             case "generic_dyeiteminitial":
             {
                 OnDisplayingInitial(source);
-
                 break;
             }
             case "generic_dyeitemcolorselection":
             {
                 OnDisplayingColorSelect(source);
-
                 break;
             }
             case "generic_dyeitemconfirmation":
             {
                 OnDisplayingConfirmation(source);
-
                 break;
             }
             case "generic_dyeitemfinish":
             {
                 OnDisplayingAccepted(source);
-
                 break;
             }   
         }
@@ -92,7 +88,6 @@ public class GenericDyeScript : DialogScriptBase
             Subject.ReplyToUnknownInput(source);
             return;
         }
-        
         Subject.InjectTextParameters(item.DisplayName, colorName, DyeCost);
     }
 
@@ -103,7 +98,6 @@ public class GenericDyeScript : DialogScriptBase
             Subject.ReplyToUnknownInput(source);
             return;
         }
-        
         var colors = Enum.GetValues<DisplayColor>();
         foreach (var color in colors)
         {
@@ -116,7 +110,6 @@ public class GenericDyeScript : DialogScriptBase
                 Price = DyeCost
             });
         }
-        
         Subject.InjectTextParameters(item.DisplayName);
     }
     
