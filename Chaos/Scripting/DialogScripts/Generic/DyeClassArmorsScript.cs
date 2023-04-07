@@ -1,22 +1,17 @@
 ﻿using Chaos.Containers;
-using Chaos.Extensions.Common;
 using Chaos.Objects.Menu;
-using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
-using Chaos.Utilities;
 
 namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class DyeClassArmorsScript : DialogScriptBase
 {
-    private readonly IItemFactory _itemFactory;
-    private Item? Item { get; set; }
-    private MapInstance? MapInstance { get; set; }
-    private InputCollector InputCollector { get; }
+    private string Location;
+    private readonly IItemFactory ItemFactory;
 
-    private readonly List<string> _dyeAbleClassArmors = new List<string>()
+    private readonly List<string> DyeAbleClassArmors = new List<string>()
     {
         "earthbodice", "lotusbodice", "moonbodice", "lightninggarb", "seagarb", "dobok", "culotte", "earthgarb", "windgarb", "mountaingarb",
         "gorgetgown", "mysticgown", "elle", "dolman", "bansagart", "cowl", "galuchatcoat", "mantle", "hierophant", "dalmatica",
@@ -28,139 +23,144 @@ public class DyeClassArmorsScript : DialogScriptBase
     public DyeClassArmorsScript(Dialog subject, IItemFactory itemFactory)
         : base(subject)
     {
-        _itemFactory = itemFactory;
-
-        var requestOptionText = DialogString.From(() => $"I can dye your {Item?.DisplayName}. Would you like to continue?");
-
-        InputCollector = new InputCollectorBuilder()
-                         .RequestOptionSelection(requestOptionText, DialogString.Yes, DialogString.No)
-                         .HandleInput(HandleInputOption)
-                         .Build();
+        ItemFactory = itemFactory;
     }
-
-    private bool HandleInputOption(Aisling source, Dialog dialog, int? option)
-    {
-        if (option is not 1)
-            return false;
-
-        if (Item is not null)
-            switch (MapInstance?.InstanceId)
-            {
-                case "mileth_tailor":
-                {
-                    if (!source.Inventory.HasCount("Mileth Armor Dye", 1))
-                    {
-                        dialog.Close(source);
-                        source.SendOrangeBarMessage("You have no Mileth Armor Dye, come back with it.");
-                        return false;
-                    }
-
-                    var newArmor = _itemFactory.Create("mileth" + Item.Template.TemplateKey);
-                    source.Inventory.Remove(Item.Template.Name);
-                    source.Inventory.RemoveQuantity("Mileth Armor Dye", 1);
-                    source.Inventory.TryAddToNextSlot(newArmor);
-                    source.SendOrangeBarMessage($"You've successfully dyed your {Item.Template.Name}!");
-                    dialog.Close(source);
-                }
-
-                    return true;
-
-                case "rucesion_tailor":
-                {
-                    if (!source.Inventory.HasCount("Rucesion Armor Dye", 1))
-                    {
-                        dialog.Close(source);
-                        source.SendOrangeBarMessage("You have no Rucesion Armor Dye, come back with it.");
-                        return false;
-                    }
-
-                    var newArmor = _itemFactory.Create("rucesion" + Item.Template.TemplateKey);
-                    source.Inventory.Remove(Item.Template.Name);
-                    source.Inventory.RemoveQuantity("Rucesion Armor Dye", 1);
-                    source.Inventory.TryAddToNextSlot(newArmor);
-                    source.SendOrangeBarMessage($"You've successfully dyed your {Item.Template.Name}!");
-                    dialog.Close(source);
-                }
-
-                    return true;
-
-                case "suomi_armor_shop":
-                {
-                    if (!source.Inventory.HasCount("Suomi Armor Dye", 1))
-                    {
-                        dialog.Close(source);
-                        source.SendOrangeBarMessage("You have no Suomi Armor Dye, come back with it.");
-                        return false;
-                    }
-
-                    var newArmor = _itemFactory.Create("suomi" + Item.Template.TemplateKey);
-                    source.Inventory.Remove(Item.Template.Name);
-                    source.Inventory.RemoveQuantity("Suomi Armor Dye", 1);
-                    source.Inventory.TryAddToNextSlot(newArmor);
-                    source.SendOrangeBarMessage($"You've successfully dyed your {Item.Template.Name}!");
-                    dialog.Close(source);
-                }
-
-                    return true;
-
-                case "piet_storage":
-                {
-                    if (!source.Inventory.HasCount("Loures Armor Dye", 1))
-                    {
-                        dialog.Close(source);
-                        source.SendOrangeBarMessage("You have no Loures Armor Dye, come back with it.");
-                        return false;
-                    }
-
-                    var newArmor = _itemFactory.Create("loures" + Item.Template.TemplateKey);
-                    source.Inventory.Remove(Item.Template.Name);
-                    source.Inventory.RemoveQuantity("Loures Armor Dye", 1);
-                    source.Inventory.TryAddToNextSlot(newArmor);
-                    source.SendOrangeBarMessage($"You've successfully dyed your {Item.Template.Name}!");
-                    dialog.Close(source);
-                }
-
-                    return true;
-            }
-
-        dialog.Close(source);
-        source.SendOrangeBarMessage("You might be missing the armor dye required...");
-
-        return false;
-    }
-
+    
     public override void OnDisplaying(Aisling source)
     {
-        MapInstance = source.MapInstance;
-        var inventory = source.Inventory.Where(x => _dyeAbleClassArmors.Contains(x.Template.TemplateKey)).ToList();
+        switch (Subject.Template.TemplateKey.ToLower())
+        {
+            case "generic_dyeclassarmorinitial":
+            {
+                OnDisplayingInitial(source);
+                break;
+            }
+            case "generic_dyeclassarmorconfirmation":
+            {
+                OnDisplayingConfirmation(source);
 
-        if (Subject.Slots.IsNullOrEmpty())
-            Subject.Slots = inventory.Select(x => x.Slot).ToList();
+                break;
+            }
+            case "generic_dyeclassarmorfinish":
+            {
+                OnDisplayingAccepted(source);
+
+                break;
+            }   
+        }
     }
 
-    public override void OnNext(Aisling source, byte? optionIndex = null)
+    private void OnDisplayingAccepted(Aisling source)
     {
-        if (Item == null)
+        if (!TryFetchArgs<byte>(out var slot) || !source.Inventory.TryGetObject(slot, out var item))
         {
-            if (!Subject.MenuArgs.TryGet<byte>(0, out var slot))
-            {
-                Subject.Reply(source, DialogString.UnknownInput.Value);
-
-                return;
-            }
-
-            var item = source.Inventory[slot];
-
-            if (item == null)
-            {
-                Subject.Reply(source, DialogString.UnknownInput.Value);
-
-                return;
-            }
-
-            Item = item;
+            Subject.ReplyToUnknownInput(source);
+            return;
         }
 
-        InputCollector.Collect(source, Subject, optionIndex);
+        Location = source.MapInstance.InstanceId switch
+        {
+            "mileth_tailor" => "Mileth",
+            "rucesion_tailor" => "Rucesion",
+            "suomi_armor_shop" => "Suomi",
+            "piet_storage" => "Loures",
+            _ => Location
+        };
+        
+        switch (Location)
+        {
+            case "Mileth":
+            {
+                if (!source.Inventory.HasCount("Mileth Armor Dye", 1))
+                {
+                    Subject.Close(source);
+                    source.SendOrangeBarMessage("You have no Mileth Armor Dye, come back with it.");
+                    return;
+                }
+
+                var newArmor = ItemFactory.Create("mileth" + item.Template.TemplateKey);
+                source.Inventory.Remove(item.Template.Name);
+                source.Inventory.RemoveQuantity("Mileth Armor Dye", 1);
+                source.Inventory.TryAddToNextSlot(newArmor);
+                source.SendOrangeBarMessage($"You've successfully dyed your {item.Template.Name}!");
+                break;
+            }
+            case "Rucesion":
+            {
+                if (!source.Inventory.HasCount("Rucesion Armor Dye", 1))
+                {
+                    Subject.Close(source);
+                    source.SendOrangeBarMessage("You have no Rucesion Armor Dye, come back with it.");
+                    return;
+                }
+
+                var newArmor = ItemFactory.Create("rucesion" + item.Template.TemplateKey);
+                source.Inventory.Remove(item.Template.Name);
+                source.Inventory.RemoveQuantity("Rucesion Armor Dye", 1);
+                source.Inventory.TryAddToNextSlot(newArmor);
+                source.SendOrangeBarMessage($"You've successfully dyed your {item.Template.Name}!");
+                Subject.Close(source);
+                break;
+            }
+            case "Suomi":
+            {
+                if (!source.Inventory.HasCount("Suomi Armor Dye", 1))
+                {
+                    Subject.Close(source);
+                    source.SendOrangeBarMessage("You have no Suomi Armor Dye, come back with it.");
+                    return;
+                }
+
+                var newArmor = ItemFactory.Create("suomi" + item.Template.TemplateKey);
+                source.Inventory.Remove(item.Template.Name);
+                source.Inventory.RemoveQuantity("Suomi Armor Dye", 1);
+                source.Inventory.TryAddToNextSlot(newArmor);
+                source.SendOrangeBarMessage($"You've successfully dyed your {item.Template.Name}!");
+                Subject.Close(source);
+                break;
+            }
+            case "Loures":
+            {
+                if (!source.Inventory.HasCount("Loures Armor Dye", 1))
+                {
+                    Subject.Close(source);
+                    source.SendOrangeBarMessage("You have no Loures Armor Dye, come back with it.");
+                    return;
+                }
+
+                var newArmor = ItemFactory.Create("loures" + item.Template.TemplateKey);
+                source.Inventory.Remove(item.Template.Name);
+                source.Inventory.RemoveQuantity("Loures Armor Dye", 1);
+                source.Inventory.TryAddToNextSlot(newArmor);
+                source.SendOrangeBarMessage($"You've successfully dyed your {item.Template.Name}!");
+                Subject.Close(source);
+                break;
+            }
+        }
+    }
+
+    private void OnDisplayingConfirmation(Aisling source)
+    {
+        if (!TryFetchArgs<byte>(out var slot) || !source.Inventory.TryGetObject(slot, out var item))
+        {
+            Subject.ReplyToUnknownInput(source);
+            return;
+        }
+
+        Location = source.MapInstance.InstanceId switch
+        {
+            "mileth_tailor" => "Mileth",
+            "rucesion_tailor" => "Rucesion",
+            "suomi_armor_shop" => "Suomi",
+            "piet_storage" => "Loures",
+            _ => Location
+        };
+
+        Subject.InjectTextParameters(item.DisplayName, Location);
+    }
+
+    private void OnDisplayingInitial(Aisling source)
+    {
+        Subject.Slots = source.Inventory.Where(x => DyeAbleClassArmors.Contains(x.Template.TemplateKey)).Select(x => x.Slot).ToList();
     }
 }
