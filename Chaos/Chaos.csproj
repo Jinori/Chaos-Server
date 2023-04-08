@@ -67,4 +67,8 @@
         <EmbeddedResource Include="Resources\sotp.dat" />
         <EmbeddedResource Remove="Scripting\DialogScripts\Guild\**" />
     </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="Scripting\DialogScripts\Generic\MarriageScript.cs" />
+      <Compile Remove="Scripting\DialogScripts\Generic\TerminusBugReportScript.cs" />
+    </ItemGroup>
 </Project>
