@@ -536,6 +536,7 @@ public class PFQuestScript : DialogScriptBase
                 if (!source.Inventory.HasCount("tristar ring", 1))
                 {
                     source.SendOrangeBarMessage("You don't have the Tristar Ring.");
+                    Subject.Reply(source, "What ring? Are you trying to fool me?");
 
                     return;
                 }

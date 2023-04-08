@@ -71,4 +71,7 @@
       <Compile Remove="Scripting\DialogScripts\Generic\MarriageScript.cs" />
       <Compile Remove="Scripting\DialogScripts\Generic\TerminusBugReportScript.cs" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Scripting\MonsterScripts\PorteForest" />
+    </ItemGroup>
 </Project>

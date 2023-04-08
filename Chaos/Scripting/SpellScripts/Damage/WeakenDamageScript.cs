@@ -11,19 +11,16 @@ namespace Chaos.Scripting.SpellScripts.Damage;
 
 
 
-public class CreantDamageScript : BasicSpellScriptBase
+public class WeakenDamageScript : BasicSpellScriptBase
 {
     public IApplyDamageScript ApplyDamageScript { get; init; }
     public IScript SourceScript { get; init; }
 
     /// <inheritdoc />
-    public CreantDamageScript(Spell subject)
-        : base(subject)
-    {
+    public WeakenDamageScript(Spell subject)
+        : base(subject) =>
         SourceScript = this;
-    }
 
-    
     private readonly Animation _animation = new()
     {
         TargetAnimation = 7,
@@ -40,7 +37,7 @@ public class CreantDamageScript : BasicSpellScriptBase
             
             aisling.StatSheet.SetHp(1);
             aisling.Client.SendAttributes(StatUpdateType.Vitality);
-            aisling.SendOrangeBarMessage("Creant's Grasp has infected your body! Health depleted.");
+            aisling.SendOrangeBarMessage("Mantis weakens your body.");
             aisling.Animate(_animation, aisling.Id);
         }
     }

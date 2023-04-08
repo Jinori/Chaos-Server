@@ -86,6 +86,7 @@ public sealed class DefaultAislingScript : AislingScriptBase
     /// <inheritdoc />
     public override void OnDeath(Creature source)
     {
+
         if (source.MapInstance.Name.Equals("Cain's Farm"))
         {
             var mapInstance = SimpleCache.Get<MapInstance>("tutorial_hut");
