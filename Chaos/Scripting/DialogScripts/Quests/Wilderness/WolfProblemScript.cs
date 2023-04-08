@@ -69,12 +69,12 @@ public class WolfProblemScript : DialogScriptBase
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, 5000);
                     source.TryGiveGold(2500);
-                    source.SendOrangeBarMessage("4000 Exp and 1500 Gold Rewarded!");
+                    source.SendOrangeBarMessage("5000 Exp and 2500 Gold Rewarded!");
                     source.Trackers.Enums.Set(WolfProblemStage.Complete);
                     source.Trackers.Counters.Remove("wolf", out _);
                     source.Legend.AddOrAccumulate(
                         new LegendMark(
-                            "Saved a cow from the big bad wolf.",
+                            "Saved a cow from the Big Bad Wolf",
                             "wolfproblem",
                             MarkIcon.Heart,
                             MarkColor.White,

@@ -73,16 +73,16 @@ public class CrHorrorQuestScript : DialogScriptBase
 
                     return;
                 }
-
+                Subject.Reply(source, "I'm impressed.");
                 source.TryGiveGamePoints(5);
-                ExperienceDistributionScript.GiveExp(source, 5000);
-                source.TryGiveGold(2500);
+                ExperienceDistributionScript.GiveExp(source, 10000000);
+                source.TryGiveGold(150000);
                 source.SendOrangeBarMessage("10000000 Exp and 150000 Gold Rewarded!");
                 source.Trackers.Enums.Set(CrHorror.Complete);
                 source.Trackers.Counters.Remove("undead_king", out _);
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
-                        "Defeated the Undead King.",
+                        "Defeated the Undead King",
                         "Undead_king",
                         MarkIcon.Warrior,
                         MarkColor.White,

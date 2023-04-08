@@ -386,4 +386,12 @@ public enum CrHorror
     Complete = 3
 }
 
+public enum QueenOctopusQuest
+{
+    None = 0,
+    Liver = 1,
+    Pendant = 2,
+    Queen = 3
+}
+
 
