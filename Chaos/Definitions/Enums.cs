@@ -378,3 +378,12 @@ public enum SickChildStage
     SickChildKilled = 10,
 }
 
+public enum CrHorror
+{
+    None = 0,
+    Start = 1,
+    Kill = 2,
+    Complete = 3
+}
+
+

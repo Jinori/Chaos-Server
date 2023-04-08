@@ -65,9 +65,7 @@ public enum QuestFlag1 : ulong
     TalkedToJosephine = 1 << 6,
     TerrorOfCryptHunt = 1 << 7,
     TerrorOfCryptComplete = 1 << 8,
-    IsabelleQuest = 1 << 9,
-    IsabelleMantisDead = 1 << 10,
-    IsabelleComplete = 1 << 11,
+    CrHorror = 1 << 9
     //add more quest flags here, double each time
 }
 
