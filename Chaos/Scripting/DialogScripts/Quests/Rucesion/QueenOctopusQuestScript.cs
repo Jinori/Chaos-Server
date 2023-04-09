@@ -50,11 +50,39 @@ public class QueenOctopusQuestScript: DialogScriptBase
                 if (stage == QueenOctopusQuest.Pendant)
                 {
                     Subject.Reply(source, "skip", "queenoctopus_liver2");
+                    return;
+                }
+                
+                if (stage == QueenOctopusQuest.Pendant3)
+                {
+                    Subject.Reply(source, "skip", "queenoctopus_Queen");
+                }
+                
+                if (stage == QueenOctopusQuest.Queen)
+                {
+                    Subject.Reply(source, "Welcome Back. Please make yourself comfortable.");
+                }
+                if (stage == QueenOctopusQuest.Complete)
+                {
+                    Subject.Reply(source, "Welcome Back. Please make yourself comfortable.");
                 }
             }
-
                 break;
-
+            
+            case "bret_initial":
+            {
+                if (stage == QueenOctopusQuest.Pendant )
+                {
+                    Subject.Reply(source, "skip", "queenoctopus_pendant1");
+                    return;
+                }
+                if (stage == QueenOctopusQuest.Pendant2)
+                {
+                    Subject.Reply(source, "Be safe.", "close");
+                }
+            }
+                break;
+            
             case "queenoctopus_start2":
             {
                 source.Trackers.Enums.Set(QueenOctopusQuest.Liver);
@@ -81,6 +109,17 @@ public class QueenOctopusQuestScript: DialogScriptBase
                     "QueenOctopus_liver2");
             }
 
+                break;
+            
+            case "queenoctopus_pendant6":
+            {
+                source.Trackers.Enums.Set(QueenOctopusQuest.Pendant2);
+            }
+                break;
+            case "queenoctopus_queen2":
+            {
+                source.Trackers.Enums.Set(QueenOctopusQuest.Queen);
+            }
                 break;
         }
     }
