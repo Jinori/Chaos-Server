@@ -32,7 +32,6 @@ public class SapphireStreamPassScript : ReactorTileScriptBase
 
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);
-
             return;
         }
 

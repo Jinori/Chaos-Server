@@ -38,13 +38,11 @@ public class DyeClassArmorsScript : DialogScriptBase
             case "generic_dyeclassarmorconfirmation":
             {
                 OnDisplayingConfirmation(source);
-
                 break;
             }
             case "generic_dyeclassarmorfinish":
             {
                 OnDisplayingAccepted(source);
-
                 break;
             }   
         }
