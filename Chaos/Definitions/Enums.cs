@@ -391,7 +391,10 @@ public enum QueenOctopusQuest
     None = 0,
     Liver = 1,
     Pendant = 2,
-    Queen = 3
+    Pendant2 = 3,
+    Pendant3 = 4,
+    Queen = 5,
+    Complete = 6
 }
 
 
