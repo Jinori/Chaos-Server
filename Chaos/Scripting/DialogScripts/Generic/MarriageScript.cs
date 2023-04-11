@@ -78,7 +78,7 @@ public class MarriageScript : DialogScriptBase
 
                     //Priest entered first partners name
                     var partner = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(name));
-                    if (partner == null || !partner.Aisling.OnSameMapAs(source))
+                    if ((partner == null) || !partner.Aisling.OnSameMapAs(source))
                     {
                         Subject.Reply(source, "It does not look like they are here, I cannot proceed without your partner being here with you.");
                         return;
@@ -98,7 +98,6 @@ public class MarriageScript : DialogScriptBase
 
                     var dialog = DialogFactory.Create("generic_marriagesecondary", Subject.SourceEntity);
                     dialog.MenuArgs = Subject.MenuArgs;
-                    dialog.Text = dialog.Text.Inject(source.Name);
                     dialog.Display(partner.Aisling);
                     Subject.Close(source);
                     break;
@@ -114,7 +113,7 @@ public class MarriageScript : DialogScriptBase
 
                     //First partner entered second partners name
                     var partnerTwo = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(nameTwo));
-                    if (partnerTwo == null || !partnerTwo.Aisling.OnSameMapAs(source))
+                    if ((partnerTwo == null) || !partnerTwo.Aisling.OnSameMapAs(source))
                     {
                         Subject.Reply(source, "It does not look like they are here, I cannot proceed without your partner being here with you.");
                         return;
@@ -128,7 +127,6 @@ public class MarriageScript : DialogScriptBase
 
                     var dialog = DialogFactory.Create("generic_marriagefinal", Subject.SourceEntity);
                     dialog.MenuArgs = Subject.MenuArgs;
-                    dialog.Text = dialog.Text.Inject(source.Name);
                     dialog.Display(partnerTwo.Aisling);
                     Subject.Close(source);
 
@@ -145,7 +143,7 @@ public class MarriageScript : DialogScriptBase
                     }
 
                     var partnerOne = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(nameOne));
-                    if (partnerOne == null || !partnerOne.Aisling.OnSameMapAs(source))
+                    if ((partnerOne == null) || !partnerOne.Aisling.OnSameMapAs(source))
                     {
                         source.SendOrangeBarMessage("It does not look like they are here.");
                         Subject.Close(source);
@@ -160,7 +158,7 @@ public class MarriageScript : DialogScriptBase
                     }
 
                     var partnerTwo = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(nameTwo));
-                    if (partnerTwo == null || !partnerTwo.Aisling.OnSameMapAs(source))
+                    if ((partnerTwo == null) || !partnerTwo.Aisling.OnSameMapAs(source))
                     {
                         source.SendOrangeBarMessage("It does not look like they are here.");
                         Subject.Close(source);
@@ -170,7 +168,7 @@ public class MarriageScript : DialogScriptBase
                     if (optionIndex is 2)
                     {
                         partnerOne.Aisling.SendOrangeBarMessage("It looks like they have rejected your proposal.");
-                        partnerTwo.Aisling.SendOrangeBarMessage($"You have denied {partnerOne.Aisling.Name}s proposal.");
+                        partnerTwo.Aisling.SendOrangeBarMessage($"You have denied {partnerOne.Aisling.Name}'s proposal.");
                     }
 
                     if (optionIndex is 1)
