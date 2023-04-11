@@ -47,10 +47,10 @@ public class RepairSingleItemScript : DialogScriptBase
         var formula = item.Template.SellValue / 2.0 * (.8 * damage);
         RepairCost = (int)(RepairCost + formula);
         
-        if (!source.TryTakeGold(RepairCost))
+        if (!source.TryTakeGold((int)RepairCost))
         {
             Subject.Close(source);
-            source.SendOrangeBarMessage($"You do not have enough. You need {RepairCost} gold.");
+            source.SendOrangeBarMessage($"You do not have enough. You need {(int)RepairCost} gold.");
             return;
         }
         

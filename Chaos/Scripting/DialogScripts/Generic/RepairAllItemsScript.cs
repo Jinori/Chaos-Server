@@ -37,7 +37,7 @@ public class RepairAllItemsScript : DialogScriptBase
         if (!source.TryTakeGold((int)RepairCost))
         {
             Subject.Close(source);
-            source.SendOrangeBarMessage($"You do not have enough. You need {RepairCost} gold.");
+            source.SendOrangeBarMessage($"You do not have enough. You need {(int)RepairCost} gold.");
             return;
         }
 
