@@ -98,6 +98,7 @@ public class MarriageScript : DialogScriptBase
 
                     var dialog = DialogFactory.Create("generic_marriagesecondary", Subject.SourceEntity);
                     dialog.MenuArgs = Subject.MenuArgs;
+                    dialog.InjectTextParameters(source.Name);
                     dialog.Display(partner.Aisling);
                     Subject.Close(source);
                     break;
@@ -127,6 +128,7 @@ public class MarriageScript : DialogScriptBase
 
                     var dialog = DialogFactory.Create("generic_marriagefinal", Subject.SourceEntity);
                     dialog.MenuArgs = Subject.MenuArgs;
+                    dialog.InjectTextParameters(source.Name);
                     dialog.Display(partnerTwo.Aisling);
                     Subject.Close(source);
 
