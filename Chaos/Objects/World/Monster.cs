@@ -161,8 +161,6 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>, IDialogSource
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
-        base.Update(delta);
-
         foreach (ref var skill in CollectionsMarshal.AsSpan(Skills))
             skill.Update(delta);
 
@@ -173,6 +171,7 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>, IDialogSource
         MoveTimer.Update(delta);
         SkillTimer.Update(delta);
         SpellTimer.Update(delta);
-        Script.Update(delta);
+
+        base.Update(delta);
     }
 }

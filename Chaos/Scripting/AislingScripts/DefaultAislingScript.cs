@@ -10,6 +10,8 @@ using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.AislingScripts.Abstractions;
 using Chaos.Scripting.Components;
+using Chaos.Time;
+using Chaos.Time.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories;
@@ -20,6 +22,8 @@ namespace Chaos.Scripting.AislingScripts;
 
 public sealed class DefaultAislingScript : AislingScriptBase
 {
+    private readonly IIntervalTimer SleepAnimationTimer;
+    protected virtual RestrictionComponent RestrictionComponent { get; }
     private readonly IClientRegistry<IWorldClient> _clientRegistry;
     private readonly IMerchantFactory MerchantFactory;
     private readonly ISimpleCache SimpleCache;
@@ -33,6 +37,9 @@ public sealed class DefaultAislingScript : AislingScriptBase
     private RestrictionComponent RestrictionComponent { get; }
 
     /// <inheritdoc />
+    public DefaultAislingScript(Aisling subject)
+        : base(subject)
+    {
     public DefaultAislingScript(Aisling subject, IClientRegistry<IWorldClient> clientRegistry, IMerchantFactory merchantFactory,
         ISimpleCache simpleCache
     )
@@ -40,6 +47,8 @@ public sealed class DefaultAislingScript : AislingScriptBase
     {
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         RestrictionComponent = new RestrictionComponent();
+        SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5));
+    }
         _clientRegistry = clientRegistry;
         MerchantFactory = merchantFactory;
         SimpleCache = simpleCache;
@@ -153,6 +162,20 @@ public sealed class DefaultAislingScript : AislingScriptBase
         if (ExperienceDistributionScript.TryTakeExp(Subject, tenPercent))
         {
             Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You have lost {tenPercent} experience.");   
+        }
+    }
+
+    /// <inheritdoc />
+    public override void Update(TimeSpan delta)
+    {
+        SleepAnimationTimer.Update(delta);
+
+        if (SleepAnimationTimer.IntervalElapsed)
+        {
+            var lastManualAction = Subject.Trackers.LastManualAction;
+
+            if (!lastManualAction.HasValue || (DateTime.UtcNow.Subtract(lastManualAction.Value).TotalMinutes > 5))
+                Subject.AnimateBody(BodyAnimation.Snore);
         }
     }
 }

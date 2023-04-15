@@ -354,6 +354,8 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             if (localClient.Aisling.ActiveObject.TryGet<WorldMap>() != null)
                 return default;
 
+            //TODO: should i refresh the client if the points don't match up? seems like it might get obnoxious
+
             localClient.Aisling.Walk(localArgs.Direction);
 
             return default;
@@ -1322,6 +1324,12 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
     {
         var handler = ClientHandlers[(byte)packet.OpCode];
 
+        // ReSharper disable once ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
+        var trackers = client.Aisling?.Trackers;
+
+        if ((trackers != null) && IsManualAction(packet.OpCode))
+            trackers.LastManualAction = DateTime.UtcNow;
+
         return handler?.Invoke(client, in packet) ?? default;
     }
 
@@ -1442,5 +1450,47 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             Logger.LogError(ex, "Exception thrown while {@Client} was trying to disconnect", client);
         }
     }
+
+    private bool IsManualAction(ClientOpCode opCode) => opCode switch
+    {
+        ClientOpCode.ClientWalk            => true,
+        ClientOpCode.Pickup                => true,
+        ClientOpCode.ItemDrop              => true,
+        ClientOpCode.ExitRequest           => true,
+        ClientOpCode.Ignore                => true,
+        ClientOpCode.PublicMessage         => true,
+        ClientOpCode.UseSpell              => true,
+        ClientOpCode.ClientRedirected      => true,
+        ClientOpCode.Turn                  => true,
+        ClientOpCode.SpaceBar              => true,
+        ClientOpCode.WorldListRequest      => true,
+        ClientOpCode.Whisper               => true,
+        ClientOpCode.UserOptionToggle      => true,
+        ClientOpCode.UseItem               => true,
+        ClientOpCode.Emote                 => true,
+        ClientOpCode.SetNotepad            => true,
+        ClientOpCode.GoldDrop              => true,
+        ClientOpCode.ItemDroppedOnCreature => true,
+        ClientOpCode.GoldDroppedOnCreature => true,
+        ClientOpCode.RequestProfile        => true,
+        ClientOpCode.GroupRequest          => true,
+        ClientOpCode.ToggleGroup           => true,
+        ClientOpCode.SwapSlot              => true,
+        ClientOpCode.RequestRefresh        => true,
+        ClientOpCode.PursuitRequest        => true,
+        ClientOpCode.DialogResponse        => true,
+        ClientOpCode.BoardRequest          => true,
+        ClientOpCode.UseSkill              => true,
+        ClientOpCode.WorldMapClick         => true,
+        ClientOpCode.Click                 => true,
+        ClientOpCode.Unequip               => true,
+        ClientOpCode.RaiseStat             => true,
+        ClientOpCode.Exchange              => true,
+        ClientOpCode.BeginChant            => true,
+        ClientOpCode.Chant                 => true,
+        ClientOpCode.Profile               => true,
+        ClientOpCode.SocialStatus          => true,
+        _                                  => false
+    };
     #endregion
 }

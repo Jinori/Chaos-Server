@@ -53,8 +53,6 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public IgnoreList IgnoreList { get; init; }
     public IInventory Inventory { get; private set; }
     public bool IsAdmin { get; set; }
-    public DateTime LastEquipOrUnEquip { get; set; }
-    public DateTime LastRefresh { get; set; }
     public Containers.Legend Legend { get; private set; }
     public Nation Nation { get; set; }
     public UserOptions Options { get; init; }
@@ -81,16 +79,24 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public override IAislingScript Script { get; }
     /// <inheritdoc />
     public override ISet<string> ScriptKeys { get; }
-    public bool ShouldRefresh => DateTime.UtcNow.Subtract(LastRefresh).TotalMilliseconds > WorldOptions.Instance.RefreshIntervalMs;
+    public bool ShouldRefresh => !Trackers.LastRefresh.HasValue
+                                 || (DateTime.UtcNow.Subtract(Trackers.LastRefresh.Value).TotalMilliseconds
+                                     > WorldOptions.Instance.RefreshIntervalMs);
 
     public bool ShouldWalk
     {
         get
         {
-            if (WorldOptions.Instance.ProhibitF5Walk && (DateTime.UtcNow.Subtract(LastRefresh).TotalMilliseconds < 150))
+            if (Trackers.LastRefresh.HasValue
+                && WorldOptions.Instance.ProhibitF5Walk
+                && (DateTime.UtcNow.Subtract(Trackers.LastRefresh.Value).TotalMilliseconds < 150))
                 return false;
 
-            if (WorldOptions.Instance.ProhibitItemSwitchWalk && (DateTime.UtcNow.Subtract(LastEquipOrUnEquip).TotalMilliseconds < 150))
+            var lastEquipOrUnEquip = Trackers.LastEquipOrUnequip;
+
+            if (lastEquipOrUnEquip.HasValue
+                && WorldOptions.Instance.ProhibitItemSwitchWalk
+                && (DateTime.UtcNow.Subtract(lastEquipOrUnEquip.Value).TotalMilliseconds < 150))
                 return false;
 
             if ((Sprite == 0) && WorldOptions.Instance.ProhibitSpeedWalk && !WalkCounter.TryIncrement())
@@ -333,9 +339,6 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     {
         skillContext = null;
 
-        if (!Script.CanUseSkill(skill))
-            return false;
-
         if (!skill.Template.IsAssail && (!ActionThrottle.CanIncrement || !SkillThrottle.CanIncrement))
             return false;
 
@@ -352,9 +355,6 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     )
     {
         spellContext = null;
-
-        if (!Script.CanUseSpell(spell))
-            return false;
 
         if (!ActionThrottle.CanIncrement)
             return false;
@@ -381,9 +381,12 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
             Inventory.Remove(slot);
 
             if (returnedItem != null)
+            {
+                Trackers.LastUnequip = DateTime.UtcNow;
                 Inventory.TryAddToNextSlot(returnedItem);
+            }
 
-            LastEquipOrUnEquip = DateTime.UtcNow;
+            Trackers.LastEquip = DateTime.UtcNow;
         }
     }
 
@@ -463,7 +466,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         (var aislings, var doors, var otherVisibles) = MapInstance.GetEntitiesWithinRange<VisibleEntity>(this)
                                                                   .PartitionBySendType();
 
-        LastRefresh = now;
+        Trackers.LastRefresh = now;
         Client.SendMapInfo();
         Client.SendLocation();
         Client.SendAttributes(StatUpdateType.Full);
@@ -520,6 +523,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         IPoint point,
         byte slot,
         [MaybeNullWhen(false)]
+        // ReSharper disable once OutParameterValueIsAlwaysDiscarded.Global
         out GroundItem[] groundItems,
         int? amount = null
     )
@@ -874,7 +878,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
             return;
 
         Inventory.TryAddToNextSlot(item);
-        LastEquipOrUnEquip = DateTime.UtcNow;
+        Trackers.LastUnequip = DateTime.UtcNow;
     }
 
     public override void Update(TimeSpan delta)

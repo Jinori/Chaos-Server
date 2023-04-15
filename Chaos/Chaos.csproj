@@ -17,7 +17,7 @@
         <ApplicationIcon>chaos.ico</ApplicationIcon>
     </PropertyGroup>
     <ItemGroup>
-        <Content Include="chaos.ico" />
+        <Content Include="chaos.ico"/>
         <None Update="appsettings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
@@ -33,41 +33,34 @@
         <None Update="appsettings.seq.prod.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Remove="Scripting\DialogScripts\Guild\**" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Chaos.Messaging.Abstractions\Chaos.Messaging.Abstractions.csproj" />
-        <ProjectReference Include="..\Chaos.Messaging\Chaos.Messaging.csproj" />
-        <ProjectReference Include="..\Chaos.Extensions.Scripting\Chaos.Extensions.Scripting.csproj" />
-        <ProjectReference Include="..\Chaos.MetaData\Chaos.MetaData.csproj" />
-        <ProjectReference Include="..\Chaos.Schemas\Chaos.Schemas.csproj" />
-        <ProjectReference Include="..\Chaos.Extensions.Cryptography\Chaos.Extensions.Cryptography.csproj" />
-        <ProjectReference Include="..\Chaos.Extensions.Packets\Chaos.Extensions.Packets.csproj" />
-        <ProjectReference Include="..\Chaos.Extensions.Pathfinding\Chaos.Extensions.Pathfinding.csproj" />
-        <ProjectReference Include="..\Chaos.Extensions.Security\Chaos.Extensions.Security.csproj" />
-        <ProjectReference Include="..\Chaos.Extensions.TypeMapper\Chaos.Extensions.TypeMapper.csproj" />
-        <ProjectReference Include="..\Chaos.Networking\Chaos.Networking.csproj" />
-        <ProjectReference Include="..\Chaos.Pathfinding\Chaos.Pathfinding.csproj" />
-        <ProjectReference Include="..\Chaos.Scripting\Chaos.Scripting.csproj" />
-        <ProjectReference Include="..\Chaos.Security\Chaos.Security.csproj" />
-        <ProjectReference Include="..\Chaos.Storage.Abstractions\Chaos.Storage.Abstractions.csproj" />
-        <ProjectReference Include="..\Chaos.Storage\Chaos.Storage.csproj" />
-        <ProjectReference Include="..\Chaos.Time\Chaos.Time.csproj" />
-        <ProjectReference Include="..\Chaos.TypeMapper\Chaos.TypeMapper.csproj" />
+        <ProjectReference Include="..\Chaos.Messaging.Abstractions\Chaos.Messaging.Abstractions.csproj"/>
+        <ProjectReference Include="..\Chaos.Messaging\Chaos.Messaging.csproj"/>
+        <ProjectReference Include="..\Chaos.Extensions.Scripting\Chaos.Extensions.Scripting.csproj"/>
+        <ProjectReference Include="..\Chaos.MetaData\Chaos.MetaData.csproj"/>
+        <ProjectReference Include="..\Chaos.Schemas\Chaos.Schemas.csproj"/>
+        <ProjectReference Include="..\Chaos.Extensions.Cryptography\Chaos.Extensions.Cryptography.csproj"/>
+        <ProjectReference Include="..\Chaos.Extensions.Packets\Chaos.Extensions.Packets.csproj"/>
+        <ProjectReference Include="..\Chaos.Extensions.Pathfinding\Chaos.Extensions.Pathfinding.csproj"/>
+        <ProjectReference Include="..\Chaos.Extensions.Security\Chaos.Extensions.Security.csproj"/>
+        <ProjectReference Include="..\Chaos.Extensions.TypeMapper\Chaos.Extensions.TypeMapper.csproj"/>
+        <ProjectReference Include="..\Chaos.Networking\Chaos.Networking.csproj"/>
+        <ProjectReference Include="..\Chaos.Pathfinding\Chaos.Pathfinding.csproj"/>
+        <ProjectReference Include="..\Chaos.Scripting\Chaos.Scripting.csproj"/>
+        <ProjectReference Include="..\Chaos.Security\Chaos.Security.csproj"/>
+        <ProjectReference Include="..\Chaos.Storage.Abstractions\Chaos.Storage.Abstractions.csproj"/>
+        <ProjectReference Include="..\Chaos.Storage\Chaos.Storage.csproj"/>
+        <ProjectReference Include="..\Chaos.Time\Chaos.Time.csproj"/>
+        <ProjectReference Include="..\Chaos.TypeMapper\Chaos.TypeMapper.csproj"/>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Discord.Net.Core" />
-        <PackageReference Include="Discord.Net.Webhook" />
-        <PackageReference Include="Discord.Net.WebSocket" />
-        <PackageReference Include="NLog.Targets.Seq" />
-        <PackageReference Include="NLog.Web.AspNetCore" />
-        <PackageReference Include="System.Linq.Async" />
+        <PackageReference Include="NLog.Targets.Seq"/>
+        <PackageReference Include="NLog.Web.AspNetCore"/>
+        <PackageReference Include="System.Configuration.ConfigurationManager"/>
+        <PackageReference Include="System.Linq.Async"/>
     </ItemGroup>
     <ItemGroup>
-        <EmbeddedResource Include="Resources\sotp.dat" />
-        <EmbeddedResource Remove="Scripting\DialogScripts\Guild\**" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Scripting\MonsterScripts\PorteForest" />
+        <EmbeddedResource Include="Resources\sotp.dat"/>
     </ItemGroup>
 </Project>

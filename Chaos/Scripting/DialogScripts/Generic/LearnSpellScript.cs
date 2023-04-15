@@ -65,7 +65,7 @@ public class LearnSpellScript : DialogScriptBase
     {
         if (!TryFetchArgs<string>(out var spellName)
             || !SpellTeacherSource.TryGetSpell(spellName, out var spell)
-            || source.SkillBook.Contains(spellName))
+            || source.SpellBook.Contains(spellName))
         {
             Subject.ReplyToUnknownInput(source);
 
@@ -75,13 +75,13 @@ public class LearnSpellScript : DialogScriptBase
         if (!ValidateAndTakeRequirements(source, Subject, spell))
             return;
 
-        var spellToLearn = SkillFactory.Create(spell.Template.TemplateKey);
+        var spellToLearn = SpellFactory.Create(spell.Template.TemplateKey);
 
-        var learnSkillResult = ComplexActionHelper.LearnSkill(source, spellToLearn);
+        var learnSpellResult = ComplexActionHelper.LearnSpell(source, spellToLearn);
 
-        switch (learnSkillResult)
+        switch (learnSpellResult)
         {
-            case ComplexActionHelper.LearnSkillResult.Success:
+            case ComplexActionHelper.LearnSpellResult.Success:
                 Logger.LogDebug("{@Player} learned {@Spell}", source, spell);
 
                 var animation = new Animation
@@ -94,7 +94,7 @@ public class LearnSpellScript : DialogScriptBase
                 source.MapInstance.ShowAnimation(animation);
 
                 break;
-            case ComplexActionHelper.LearnSkillResult.NoRoom:
+            case ComplexActionHelper.LearnSpellResult.NoRoom:
                 Subject.Reply(
                     source,
                     "Like the spilled contents of an unbalanced cup, some knowledge is best forgotten...",
