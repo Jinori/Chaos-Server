@@ -73,6 +73,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public override int AssailIntervalMs { get; }
     public ChantTimer ChantTimer { get; }
     public Stack<Dialog> DialogHistory { get; }
+    public ResettingCounter ItemThrottle { get; }
     public override ILogger<Aisling> Logger { get; }
     public IIntervalTimer SaveTimer { get; }
     /// <inheritdoc />
@@ -196,6 +197,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         ActionThrottle = new ResettingCounter(WorldOptions.Instance.MaxActionsPerSecond);
         SpellThrottle = new ResettingCounter(WorldOptions.Instance.MaxSpellsPerSecond);
         SkillThrottle = new ResettingCounter(WorldOptions.Instance.MaxSkillsPerSecond);
+        ItemThrottle = new ResettingCounter(WorldOptions.Instance.MaxItemsPerSecond);
         WalkCounter = new ResettingCounter(3, 5);
         AssailIntervalMs = WorldOptions.Instance.AislingAssailIntervalMs;
         ChannelSettings = new SynchronizedHashSet<ChannelSettings>();
@@ -369,7 +371,11 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
             out spellContext!);
     }
 
-    public bool CanUse(Item item) => Script.CanUseItem(item) && ActionThrottle.CanIncrement && item.CanUse() && item.Script.CanUse(this);
+    public bool CanUse(Item item) => Script.CanUseItem(item)
+                                     && ActionThrottle.CanIncrement
+                                     && ItemThrottle.CanIncrement
+                                     && item.CanUse()
+                                     && item.Script.CanUse(this);
 
     public void Equip(EquipmentType type, Item item)
     {
@@ -797,6 +803,12 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         if (!CanUse(item))
             return false;
 
+        if (!ActionThrottle.TryIncrement())
+            return false;
+
+        if (!ItemThrottle.TryIncrement())
+            return false;
+
         item.Use(this);
 
         return true;
@@ -890,6 +902,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         ActionThrottle.Update(delta);
         SpellThrottle.Update(delta);
         SkillThrottle.Update(delta);
+        ItemThrottle.Update(delta);
         WalkCounter.Update(delta);
         ChantTimer.Update(delta);
         Trackers.Update(delta);
