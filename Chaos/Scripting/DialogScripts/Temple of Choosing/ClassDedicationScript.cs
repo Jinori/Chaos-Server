@@ -24,14 +24,15 @@ public class ClassDedicationScript : DialogScriptBase
     private void SetUserToLevel1Stats(Aisling source, BaseClass baseClass)
     {
         source.Inventory.RemoveQuantity("ard ioc deum", 10);
-        source.UserStatSheet.Assert(
+        /*
+        source.UserStatSheet.Assert
             statref =>
             {
                 statref.Level = 1;
                 statref.TotalExp = 0;
                 statref.UnspentPoints = 0;
                 statref.ToNextLevel = 599;
-            });
+            });*/
                 
         source.UserStatSheet.Str = 1;
         source.UserStatSheet.Int = 1;

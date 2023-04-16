@@ -23,7 +23,6 @@ namespace Chaos.Scripting.AislingScripts;
 public sealed class DefaultAislingScript : AislingScriptBase
 {
     private readonly IIntervalTimer SleepAnimationTimer;
-    protected virtual RestrictionComponent RestrictionComponent { get; }
     private readonly IClientRegistry<IWorldClient> _clientRegistry;
     private readonly IMerchantFactory MerchantFactory;
     private readonly ISimpleCache SimpleCache;
@@ -37,9 +36,6 @@ public sealed class DefaultAislingScript : AislingScriptBase
     private RestrictionComponent RestrictionComponent { get; }
 
     /// <inheritdoc />
-    public DefaultAislingScript(Aisling subject)
-        : base(subject)
-    {
     public DefaultAislingScript(Aisling subject, IClientRegistry<IWorldClient> clientRegistry, IMerchantFactory merchantFactory,
         ISimpleCache simpleCache
     )
@@ -48,11 +44,11 @@ public sealed class DefaultAislingScript : AislingScriptBase
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         RestrictionComponent = new RestrictionComponent();
         SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5));
-    }
         _clientRegistry = clientRegistry;
         MerchantFactory = merchantFactory;
         SimpleCache = simpleCache;
     }
+
 
     /// <inheritdoc />
     public override bool CanMove() => RestrictionComponent.CanMove(Subject);
