@@ -21,7 +21,7 @@ public class EquipmentScript : ConfigurableItemScriptBase
             {
                 if (source.SkillBook.Contains("wieldmagusstaff"))
                 {
-                    source.Equip(template.EquipmentType, Subject);
+                    source.Equip(template.EquipmentType.Value, Subject);
 
                     return;
                 }
@@ -34,7 +34,7 @@ public class EquipmentScript : ConfigurableItemScriptBase
             {
                 if (source.SkillBook.Contains("wieldholystaff"))
                 {
-                    source.Equip(template.EquipmentType, Subject);
+                    source.Equip(template.EquipmentType.Value, Subject);
 
                     return;
                 }
