@@ -51,7 +51,7 @@ public class WrathEffect : ContinuousAnimationEffectBase
         var points = AoeShape.AllAround.ResolvePoints(Subject);
 
         var targets =
-            Subject.MapInstance.GetEntitiesAtPoints<Creature>(points.Cast<IPoint>()).WithFilter(Subject, TargetFilter.HostileOnly);
+            Subject.MapInstance.GetEntitiesAtPoints<Creature>(points.Cast<IPoint>()).WithFilter(Subject, TargetFilter.HostileOnly).ToList();
 
         foreach (var target in targets)
         {

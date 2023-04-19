@@ -120,10 +120,7 @@ public class TerrorOfTheCryptScript : MapScriptBase
                     SkillDamagePct = groupLevel.Count * 2,
                     SpellDamagePct = groupLevel.Count * 2
                 };
-                 // Add HP and MP to the monster
-                monster.StatSheet.AddHp((int)groupLevel.Average() * groupLevel.Count * 500);
-                monster.StatSheet.AddMp((int)groupLevel.Average() * groupLevel.Count * 500);
-                 // Check the group level and add spells accordingly
+                // Check the group level and add spells accordingly
                 if (groupLevel.Average() > 10)
                 {
                     var spell = SpellFactory.Create("beagsrad");
@@ -147,6 +144,9 @@ public class TerrorOfTheCryptScript : MapScriptBase
                 }
                  // Add the attributes to the monster
                 monster.StatSheet.AddBonus(attrib);
+                // Add HP and MP to the monster
+                monster.StatSheet.SetHealthPct(100);
+                monster.StatSheet.SetManaPct(100);
                  // Add the monster to the subject
                 Subject.AddObject(monster, monster);
                  // Set the state to spawned
