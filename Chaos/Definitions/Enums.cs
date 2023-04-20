@@ -35,6 +35,8 @@ public enum Status : ulong
     Aite = 1 << 19,
     MorAite = 1 << 20,
     ArdAite = 1 << 21,
+    Hide = 1 << 22,
+    LastStand = 1 << 23
     //add more statuses here, double each time
 }
 

@@ -1,4 +1,5 @@
 using Chaos.Containers;
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Geometry.Abstractions;
 
@@ -38,6 +39,11 @@ public abstract class VisibleEntity : MapEntity
             return true;
 
         //TODO: invisibility and other shit
+        if (!creature.Equals(this) && creature.Status.HasFlag(Status.Hide))
+        {
+            return false;
+        }
+        
         return true;
     }
 

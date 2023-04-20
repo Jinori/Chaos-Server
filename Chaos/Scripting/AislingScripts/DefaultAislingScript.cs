@@ -85,6 +85,17 @@ public sealed class DefaultAislingScript : AislingScriptBase
             Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You awake from your slumber.");
         }
 
+        if (Subject.Status.HasFlag(Status.LastStand))
+        {
+            if (damage >= Subject.StatSheet.CurrentHp)
+            {
+                Subject.StatSheet.SetHp(1);
+                var aisling = Subject as Aisling;
+                aisling.Client.SendAttributes(StatUpdateType.Vitality);
+                return;
+            }
+        }
+        
         base.OnAttacked(source, damage);
     }
 
