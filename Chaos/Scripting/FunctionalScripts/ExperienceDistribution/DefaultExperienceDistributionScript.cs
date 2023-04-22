@@ -1,4 +1,6 @@
 using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
+using Chaos.Data;
 using Chaos.Definitions;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
@@ -45,6 +47,18 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
         if (amount < 0)
             Logger.LogError("Tried to give negative amount ({Amount}) experience to {@Client}", amount, aisling.Client);
 
+        if (Randomizer.RollChance(1))
+        {
+            amount = amount * 2;
+            aisling.SendActiveMessage($"Experience critical! Amount was doubled.");
+            var ani = new Animation
+            {
+                AnimationSpeed = 100,
+                TargetAnimation = 341
+            };
+            aisling.Animate(ani, aisling.Id);
+        }
+        
         if (amount + aisling.UserStatSheet.TotalExp > uint.MaxValue)
             amount = uint.MaxValue - aisling.UserStatSheet.TotalExp;
 
@@ -53,7 +67,7 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
         var hasFlag = aisling.Trackers.Enums.TryGetValue(out GainExp stage);
         if ((amount <= 0 || stage == GainExp.No))
             return;
-
+        
         aisling.SendActiveMessage($"You have gained {amount} experience!");
         Logger.LogTrace("{@Player} has gained {ExpAmount} experience", aisling, amount);
 
@@ -62,7 +76,8 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
             {
                 aisling.UserStatSheet.AddTotalExp(amount);
                 amount = 0;
-            } else
+            } 
+            else
             {
                 var expToGive = Math.Min(amount, aisling.UserStatSheet.ToNextLevel);
                 aisling.UserStatSheet.AddTotalExp(expToGive);
@@ -80,6 +95,8 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
             aisling.SendActiveMessage("You cannot gain any more experience");
     }
 
+    
+    
     public virtual bool TryTakeExp(Aisling aisling, long amount)
     {
         if (amount < 0)
