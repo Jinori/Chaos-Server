@@ -399,4 +399,10 @@ public enum QueenOctopusQuest
     Complete = 6
 }
 
+public enum BeggarFoodQuestStage
+{
+    None = 0,
+    Started = 1,
+    Completed = 2
+}
 

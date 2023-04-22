@@ -16,18 +16,21 @@ public class WarriorDedicateScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
     private readonly ISimpleCache SimpleCache;
     private readonly ISkillFactory SkillFactory;
+    private readonly ISpellFactory SpellFactory;
 
     public WarriorDedicateScript(
         Dialog subject,
         IItemFactory itemFactory,
         ISimpleCache simpleCache,
-        ISkillFactory skillFactory
+        ISkillFactory skillFactory,
+        ISpellFactory spellFactory
     )
         : base(subject)
     {
         ItemFactory = itemFactory;
         SimpleCache = simpleCache;
         SkillFactory = skillFactory;
+        SpellFactory = spellFactory;
     }
 
     public override void OnDisplayed(Aisling source)
@@ -59,6 +62,14 @@ public class WarriorDedicateScript : DialogScriptBase
 
             source.Trackers.Flags.AddFlag(QuestFlag1.ChosenClass);
             var skill = SkillFactory.Create("assail");
+            var skill2 = SkillFactory.Create("slash");
+            var spell = SpellFactory.Create("rage");
+            
+            if (!source.SpellBook.Contains(spell))
+                source.SpellBook.TryAddToNextSlot(spell);
+
+            if (!source.SkillBook.Contains(skill2))
+                source.SkillBook.TryAddToNextSlot(skill2);
 
             if (!source.SkillBook.Contains(skill))
                 source.SkillBook.TryAddToNextSlot(skill);

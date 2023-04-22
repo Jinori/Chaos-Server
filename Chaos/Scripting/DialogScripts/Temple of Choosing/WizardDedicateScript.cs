@@ -16,18 +16,21 @@ public class WizardDedicateScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
     private readonly ISimpleCache SimpleCache;
     private readonly ISkillFactory SkillFactory;
+    private readonly ISpellFactory SpellFactory;
 
     public WizardDedicateScript(
         Dialog subject,
         IItemFactory itemFactory,
         ISimpleCache simpleCache,
-        ISkillFactory skillFactory
+        ISkillFactory skillFactory,
+        ISpellFactory spellFactory
     )
         : base(subject)
     {
         ItemFactory = itemFactory;
         SimpleCache = simpleCache;
         SkillFactory = skillFactory;
+        SpellFactory = spellFactory;
     }
 
     public override void OnDisplayed(Aisling source)
@@ -59,6 +62,10 @@ public class WizardDedicateScript : DialogScriptBase
 
             source.Trackers.Flags.AddFlag(QuestFlag1.ChosenClass);
             var skill = SkillFactory.Create("assail");
+            var spell = SpellFactory.Create("arcanebolt");
+            
+            if (!source.SpellBook.Contains(spell))
+                source.SpellBook.TryAddToNextSlot(spell);
 
             if (!source.SkillBook.Contains(skill))
                 source.SkillBook.TryAddToNextSlot(skill);

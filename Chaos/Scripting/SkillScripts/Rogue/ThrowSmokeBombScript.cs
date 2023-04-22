@@ -13,7 +13,7 @@ public class ThrowSmokeBombScript : BasicSkillScriptBase
     protected new Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
-        TargetAnimation = 18
+        TargetAnimation = 276
     };
 
     /// <inheritdoc />
@@ -29,7 +29,7 @@ public class ThrowSmokeBombScript : BasicSkillScriptBase
 
         if (!screen.Any())
         {
-            context.SourceAisling?.SendOrangeBarMessage("There are no hostile mobs to blind near you.");
+            context.SourceAisling?.SendOrangeBarMessage("There is nothing to blind near you.");
 
             return;
         }

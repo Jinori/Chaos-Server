@@ -3,6 +3,7 @@ using Chaos.Containers;
 using Chaos.Data;
 using Chaos.Objects.Legend;
 using Chaos.Objects.Menu;
+using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -16,18 +17,21 @@ public class PriestDedicateScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
     private readonly ISimpleCache SimpleCache;
     private readonly ISkillFactory SkillFactory;
+    private readonly ISpellFactory SpellFactory;    
 
     public PriestDedicateScript(
         Dialog subject,
         IItemFactory itemFactory,
         ISimpleCache simpleCache,
-        ISkillFactory skillFactory
+        ISkillFactory skillFactory,
+        ISpellFactory spellFactory
     )
         : base(subject)
     {
         ItemFactory = itemFactory;
         SimpleCache = simpleCache;
         SkillFactory = skillFactory;
+        SpellFactory = spellFactory;
         SkillFactory = skillFactory;
     }
 
@@ -60,6 +64,14 @@ public class PriestDedicateScript : DialogScriptBase
 
             source.Trackers.Flags.AddFlag(QuestFlag1.ChosenClass);
             var skill = SkillFactory.Create("assail");
+            var spell = SpellFactory.Create("beagioc");
+            var spell2 = SpellFactory.Create("beothaich");
+            
+            if (!source.SpellBook.Contains(spell))
+                source.SpellBook.TryAddToNextSlot(spell);
+
+            if (!source.SpellBook.Contains(spell2))
+                source.SpellBook.TryAddToNextSlot(spell2);
 
             if (!source.SkillBook.Contains(skill))
                 source.SkillBook.TryAddToNextSlot(skill);

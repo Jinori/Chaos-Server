@@ -3,8 +3,10 @@ using Chaos.Containers;
 using Chaos.Data;
 using Chaos.Objects.Legend;
 using Chaos.Objects.Menu;
+using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -16,18 +18,21 @@ public class MonkDedicateScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
     private readonly ISimpleCache SimpleCache;
     private readonly ISkillFactory SkillFactory;
+    private readonly ISpellFactory SpellFactory;
 
     public MonkDedicateScript(
         Dialog subject,
         IItemFactory itemFactory,
         ISimpleCache simpleCache,
-        ISkillFactory skillFactory
+        ISkillFactory skillFactory,
+        ISpellFactory spellFactory
     )
         : base(subject)
     {
         ItemFactory = itemFactory;
         SimpleCache = simpleCache;
         SkillFactory = skillFactory;
+        SpellFactory = spellFactory;
     }
 
     public override void OnDisplayed(Aisling source)
@@ -59,6 +64,14 @@ public class MonkDedicateScript : DialogScriptBase
             
             source.Trackers.Flags.AddFlag(QuestFlag1.ChosenClass);
             var skill = SkillFactory.Create("punch");
+            var skill2 = SkillFactory.Create("kick");
+            var spell = SpellFactory.Create("taunt");
+            
+            if (!source.SpellBook.Contains(spell))
+                source.SpellBook.TryAddToNextSlot(spell);
+
+            if (!source.SkillBook.Contains(skill2))
+                source.SkillBook.TryAddToNextSlot(skill2);
 
             if (!source.SkillBook.Contains(skill))
                 source.SkillBook.TryAddToNextSlot(skill);

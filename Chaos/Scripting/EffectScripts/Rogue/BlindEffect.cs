@@ -52,7 +52,7 @@ public sealed class BlindEffect : ContinuousAnimationEffectBase
     {
         if (target.Effects.Contains("Blind"))
         {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Blind has already been applied.");
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "That target is already blinded.");
 
             return false;
         }

@@ -370,7 +370,7 @@ public class CryptSlayerScript : DialogScriptBase
                         1,
                         GameTime.Now));
 
-                source.Trackers.TimedEvents.AddEvent("CryptSlayerCd",TimeSpan.FromSeconds(4), true);
+                source.Trackers.TimedEvents.AddEvent("CryptSlayerCd",TimeSpan.FromHours(8), true);
 
                 break;
             }

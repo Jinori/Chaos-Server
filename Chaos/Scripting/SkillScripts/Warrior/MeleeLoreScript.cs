@@ -52,6 +52,10 @@ public class MeleeLoreScript : BasicSkillScriptBase
                 + item?.DisplayName
                 + "\nWeight: "
                 + item?.Template.Weight
+                +"\nSkill Damage: "
+                +item?.Modifiers?.FlatSkillDamage
+                +"\nSpell Damage: "
+                +item?.Modifiers?.FlatSpellDamage
                 + "\nHealth: "
                 + item?.Template.Modifiers?.MaximumHp
                 + "\nMana: "
