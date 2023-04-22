@@ -77,6 +77,7 @@ public class DefaultDamageFormula : IDamageFormula
         ApplyElementalModifier(ref damage, elementOverride ?? source.StatSheet.OffenseElement, target.StatSheet.DefenseElement);
         HandleClawFist(ref damage, script, source);
         HandleAite(ref damage, target);
+        HandleWeaponDamage(ref damage, source);
         return damage;
     }
 
@@ -106,6 +107,15 @@ public class DefaultDamageFormula : IDamageFormula
         }
     }
 
+    protected virtual void HandleWeaponDamage(ref int damage, Creature attacker)
+    {
+        if (attacker is not Aisling aisling || !aisling.Equipment.TryGetObject((byte)EquipmentSlot.Weapon, out var obj)) 
+            return;
+        
+        if (obj.Modifiers != null) 
+            damage += obj.Modifiers.Dmg;
+    }
+    
     protected virtual int GetDefenderAc(Creature defender) => defender switch
     {
         Aisling aisling => Math.Clamp(
