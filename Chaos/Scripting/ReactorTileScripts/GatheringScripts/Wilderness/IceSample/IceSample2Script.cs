@@ -1,0 +1,45 @@
+using Chaos.Common.Definitions;
+using Chaos.Definitions;
+using Chaos.Objects.World;
+using Chaos.Objects.World.Abstractions;
+using Chaos.Scripting.ReactorTileScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
+
+namespace Chaos.Scripting.ReactorTileScripts.IceSample1;
+
+public class IceSample2Script : ReactorTileScriptBase
+{
+    private readonly IItemFactory _itemFactory;
+    
+    public IceSample2Script(ReactorTile subject, IItemFactory itemFactory)
+        : base(subject)
+    {
+        _itemFactory = itemFactory;
+    }
+
+    public override void OnWalkedOn(Creature source)
+    {
+        if (source is not Aisling aisling)
+            return;
+
+        var hasStage = aisling.Trackers.Enums.TryGetValue(out IceWallQuest stage);
+
+        switch (Subject.MapInstance.Name)
+        {
+            case "Wilderness":
+            {
+                if (stage == IceWallQuest.Start && !aisling.Inventory.HasCount("Ice Sample 2", 1))
+                {
+                    var sample = _itemFactory.Create("icesample2");
+                    aisling.TryGiveItem(sample);
+
+                    aisling.Client.SendServerMessage(
+                        ServerMessageType.OrangeBar1,
+                        $"You've collected an ice sample!");
+                }
+
+                break;
+            }
+        }
+    }
+}

@@ -406,3 +406,22 @@ public enum BeggarFoodQuestStage
     Completed = 2
 }
 
+public enum BeeProblem
+{
+    None = 0,
+    Started = 1,
+    Completed = 2
+}
+
+public enum IceWallQuest
+{
+    None = 0,
+    Start = 1,
+    SampleComplete = 2,
+    KillWolves = 3,
+    WolfComplete = 4,
+    Charm = 5,
+    KillBoss = 6,
+    Complete = 7
+}
+

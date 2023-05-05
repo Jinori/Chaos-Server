@@ -1179,6 +1179,55 @@ public class KillCounterScript : MonsterScriptBase
                         aisling.SendOrangeBarMessage($"You defeated the Undead King!");
                         break;
                     }
+                    case "wilderness_bee":
+                    {
+                        var hasBee = aisling.Trackers.Enums.TryGetValue(out BeeProblem Bee );
+                        if (!hasBee || (Bee != BeeProblem.Started))
+                            return;
+                        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Bee", 5))
+                        {
+                            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+                            continue;
+                        }
+
+                        var value = aisling.Trackers.Counters.AddOrIncrement("wilderness_bee");
+                        aisling.SendOrangeBarMessage($"You've killed {value} {Subject.Template.Name}.");
+                        break;
+                    }
+                    case "wilderness_snowwolf1":
+                    case "wilderness_snowwolf2":
+                    {
+                        var haswolf = aisling.Trackers.Enums.TryGetValue(out IceWallQuest wolf );
+                        if (!haswolf || (wolf != IceWallQuest.KillWolves))
+                            return;
+                        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("wolf", 10))
+                        {
+                            aisling.SendOrangeBarMessage($"You've killed enough Snow Wolfs.");
+
+                            continue;
+                        }
+
+                        var value = aisling.Trackers.Counters.AddOrIncrement("wolf");
+                        aisling.SendOrangeBarMessage($"You've killed {value} Snow wolfs.");
+                        break;
+                    }
+                    case "wilderness_abomination":
+                    {
+                        var hasabomination = aisling.Trackers.Enums.TryGetValue(out IceWallQuest abomination );
+                        if (!hasabomination || (abomination != IceWallQuest.KillBoss))
+                            return;
+                        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("abomination", 1))
+                        {
+                            aisling.SendOrangeBarMessage($"You didn't defeat the Abomination yet.");
+
+                            continue;
+                        }
+
+                        var value = aisling.Trackers.Counters.AddOrIncrement("abomination");
+                        aisling.SendOrangeBarMessage($"You've Slain the Abomination!");
+                        break;
+                    }
 
                 }
     }
