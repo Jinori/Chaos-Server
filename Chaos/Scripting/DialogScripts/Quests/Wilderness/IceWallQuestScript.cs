@@ -31,13 +31,10 @@ public class IceWallQuestScript : DialogScriptBase
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "lilia_initial1":
-                if ((!hasStage) || (stage == IceWallQuest.None))
+
+                if (source.UserStatSheet.Level < 30)
                 {
-                    if (source.UserStatSheet.Level is < 24 )
-                        Subject.Reply(source, "skip", "Lilia_initial");
-                        else;
-                    
-                    Subject.Reply(source, "skip", "Lilia_initial1");
+                    Subject.Reply(source, "skip", "lilia_initial");
                     return;
                 }
 
@@ -56,11 +53,13 @@ public class IceWallQuestScript : DialogScriptBase
                 if (stage == IceWallQuest.KillWolves)
                 {
                     Subject.Reply(source, "skip", "lilia_initial4");
+                    return;
                 }
                 
                 if (stage == IceWallQuest.WolfComplete)
                 {
                     Subject.Reply(source, "skip", "lilia_initial5");
+                    return;
                 }
 
                 if (stage == IceWallQuest.Charm)
@@ -78,6 +77,7 @@ public class IceWallQuestScript : DialogScriptBase
                 if (stage == IceWallQuest.Complete)
                 {
                     Subject.Reply(source, "skip", "lilia_initial8");
+                    
                 }
 
                 break;

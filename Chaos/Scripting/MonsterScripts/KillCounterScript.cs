@@ -1203,13 +1203,13 @@ public class KillCounterScript : MonsterScriptBase
                             return;
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("wolf", 10))
                         {
-                            aisling.SendOrangeBarMessage($"You've killed enough Snow Wolfs.");
+                            aisling.SendOrangeBarMessage($"You've killed enough Snow Wolves.");
 
                             continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("wolf");
-                        aisling.SendOrangeBarMessage($"You've killed {value} Snow wolfs.");
+                        aisling.SendOrangeBarMessage($"You've killed {value} Snow wolves.");
                         break;
                     }
                     case "wilderness_abomination":
