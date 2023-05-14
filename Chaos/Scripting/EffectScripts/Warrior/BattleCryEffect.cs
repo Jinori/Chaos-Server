@@ -50,20 +50,12 @@ public class BattleCryEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (source.StatSheet.CurrentMp < 100)
-        {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana.");
-
-            return false;
-        }
-
         if (target.Effects.Contains("battlecry"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your muscles are at their maximum speed.");
 
             return false;
         }
-
         return true;
     }
 }
