@@ -27,17 +27,16 @@ public class LearnAllCommand : ICommand<Aisling>
         "beothaich", "revive", "selfrevive"
     };
 
-    private string[] _priestSkills = { "wieldholystuff" };
+    private string[] _priestSkills = { "wieldholystaff" };
 
     private string[] _monkSpells =
     {
-        "gentletouch", "goad", "howl", "innerfire", "mist"
+        "gentletouch", "goad", "howl", "innerfire", "laststand", "dodge", "thunderstance", "smokestance", "earthenstance", "miststance"
     };
 
     private string[] _monkSkills =
     {
-        "airpunch", "firepunch", "rockpunch", "waterpunch", "ambush", "clawfist", "doublepunch", "dracotailkick", "eaglestrike", "highkick",
-        "kelberothstrike", "kick", "mantiskick",
+        "airpunch", "firepunch", "rockpunch", "waterpunch", "ambush", "clawfist", "doublepunch", "dracotailkick", "eaglestrike", "highkick", "kick", "mantiskick",
         "poisonpunch", "punch", "roundhousekick", "triplekick", "wolffangfist"
     };
 
@@ -49,7 +48,7 @@ public class LearnAllCommand : ICommand<Aisling>
     private string[] _rogueSkills =
     {
         "assassinStrike", "pierce", "sapNeedle", "shadowFigure", "smokescreen", "stab", "stabAndTwist", "stabTwice",
-        "studyCreature", "throwsmokebomb", "throwsurigum"
+        "studyCreature", "throwsmokebomb"
     };
 
     private string[] _warriorSpells =

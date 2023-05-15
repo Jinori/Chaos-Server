@@ -1,17 +1,11 @@
 using Chaos.Data;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World.Abstractions;
-
 using Chaos.Scripting.Components;
 using Chaos.Scripting.SpellScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.SpellScripts.Buffs;
-
-using Chaos.Scripting.SpellScripts.Abstractions;
-using Chaos.Services.Factories.Abstractions;
-
-
+namespace Chaos.Scripting.SpellScripts.Debuffs;
 
 [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
 public class ApplyHostileEffectScript : BasicSpellScriptBase, ManaCostComponent.IManaCostComponentOptions
@@ -21,12 +15,12 @@ public class ApplyHostileEffectScript : BasicSpellScriptBase, ManaCostComponent.
     protected MagicResistanceComponent MagicResistComponent { get; }
 
     /// <inheritdoc />
-    public ApplyHostileEffectScript(Spell subject, IEffectFactory effectFactory, MagicResistanceComponent magicResistComponent)
+    public ApplyHostileEffectScript(Spell subject, IEffectFactory effectFactory)
         : base(subject)
     {
         ManaCostComponent = new ManaCostComponent();
         EffectFactory = effectFactory;
-        MagicResistComponent = magicResistComponent;
+        MagicResistComponent = new MagicResistanceComponent();
     }
 
     /// <inheritdoc />

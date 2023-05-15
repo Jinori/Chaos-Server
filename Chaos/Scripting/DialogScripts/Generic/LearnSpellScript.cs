@@ -1,4 +1,6 @@
+using Chaos.Common.Definitions;
 using Chaos.Data;
+using Chaos.Definitions;
 using Chaos.Objects.Abstractions;
 using Chaos.Objects.Menu;
 using Chaos.Objects.Panel;
@@ -35,6 +37,7 @@ public class LearnSpellScript : DialogScriptBase
         SpellTeacherSource = (ISpellTeacherSource)Subject.SourceEntity;
     }
 
+    
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
@@ -126,6 +129,17 @@ public class LearnSpellScript : DialogScriptBase
             //if the player already knows this spell, skip it
             if (source.SpellBook.Contains(spell))
                 continue;
+
+            // Check if the source has the Wizard class and the spell also has a Wizard element, then check if the source has a matching
+            // Wizard Element flag. If not, skip the spell.
+            if (source.HasClass(BaseClass.Wizard) && spell.Template.WizardElement != null)
+            {
+                if (source.Trackers.Flags.TryGetFlag(out WizardElement ele))
+                {
+                    if (spell.Template.WizardElement != ele)
+                        continue;
+                }
+            }
 
             Subject.Spells.Add(spell);
         }

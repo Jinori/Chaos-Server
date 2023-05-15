@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Objects.Legend;
 using Chaos.Objects.Menu;
 using Chaos.Objects.World;

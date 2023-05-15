@@ -25,7 +25,6 @@ public sealed class DialogFactory : IDialogFactory
     public Dialog Create(string templateKey, IDialogSourceEntity source, ICollection<string>? extraScriptKeys = null)
     {
         var template = SimpleCache.Get<DialogTemplate>(templateKey);
-
         var dialog = new Dialog(
             template,
             source,
@@ -33,7 +32,8 @@ public sealed class DialogFactory : IDialogFactory
             this,
             extraScriptKeys);
 
-        Logger.LogDebug("Created {@Dialog} for {@Entity}", dialog, source);
+        
+Logger.LogDebug("Created {@Dialog} for {@Entity}", dialog, source);
 
         return dialog;
     }

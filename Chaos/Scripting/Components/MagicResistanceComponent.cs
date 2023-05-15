@@ -19,7 +19,7 @@ public class MagicResistanceComponent
         if (Randomizer.RollChance(100 - context.Target.StatSheet.EffectiveMagicResistance))
             return true;
         // Check if the source is a SubjectiveScriptBase<Spell>
-        if (!(source is SubjectiveScriptBase<Spell> spellScript))
+        if (source is not SubjectiveScriptBase<Spell> spellScript)
             return false;
         // Notify the source Aisling if it exists
         context.SourceAisling?.SendActiveMessage($"{spellScript.Subject.Template.Name} has missed.");
