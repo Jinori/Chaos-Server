@@ -290,6 +290,50 @@ public class PFQuestMerchant : MerchantScriptBase
 
                 break;
             }
+            
+            case "thulin":
+            {
+                if (source is not Aisling aisling)
+                    return;
+
+                if (aisling.UserStatSheet.Level is <= 10 or >= 42)
+                    return;
+
+                if (!message.EqualsI("Porte Forest"))
+                    return;
+
+                var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
+
+                if (!hasStage || (stage == PFQuestStage.None))
+                {
+                    var dialog = DialogFactory.Create("thulin_pf", Subject);
+                    dialog.Display(aisling);
+                }
+
+                break;
+            }
+            
+            case "vivianne":
+            {
+                if (source is not Aisling aisling)
+                    return;
+
+                if (aisling.UserStatSheet.Level is <= 10 or >= 42)
+                    return;
+
+                if (!message.EqualsI("Porte Forest"))
+                    return;
+
+                var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
+
+                if (!hasStage || (stage == PFQuestStage.None))
+                {
+                    var dialog = DialogFactory.Create("vivianne_pf", Subject);
+                    dialog.Display(aisling);
+                }
+
+                break;
+            }
         }
     }
 }
