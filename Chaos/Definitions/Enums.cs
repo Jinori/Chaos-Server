@@ -379,7 +379,6 @@ public enum SickChildStage
     SickChildComplete = 9,
     SickChildKilled = 10,
 }
-
 public enum CrHorror
 {
     None = 0,
@@ -423,5 +422,157 @@ public enum IceWallQuest
     Charm = 5,
     KillBoss = 6,
     Complete = 7
+}
+
+public enum CookFoodStage
+{
+    None = 0,
+    dinnerplate = 1,
+    fruitbasket = 2,
+    lobsterdinner = 3,
+    pie = 4,
+    salad = 5,
+    sandwich = 6,
+    soup = 7,
+    steakmeal = 8,
+    sweetbuns = 9
+}
+
+public enum MeatsStage
+{
+    None = 0,
+    beefslices = 1,
+    beef = 2,
+    chicken = 3,
+    clam = 4,
+    trout = 5,
+    bass = 6,
+    egg = 7,
+    liver = 8,
+    lobstertail = 9,
+    rawmeat = 10
+}
+
+public enum FruitsStage
+{
+    none = 0,
+    acorn = 1,
+    apple = 2,
+    cherry = 3,
+    grape = 4,
+    greengrapes = 5,
+    strawberry = 6,
+    tangerines = 7
+}
+public enum FruitsStage2
+{
+    none = 0,
+    acorn = 1,
+    apple = 2,
+    cherry = 3,
+    grape = 4,
+    greengrapes = 5,
+    strawberry = 6,
+    tangerines = 7
+}
+public enum FruitsStage3
+{
+    None = 0,
+    acorn = 1,
+    apple = 2,
+    cherry = 3,
+    grape = 4,
+    greenGrapes = 5,
+    strawberry = 6,
+    tangerines = 7
+}
+
+public enum VegetableStage
+{
+    none = 0,
+    carrot = 1,
+    rambutan = 2,
+    tomato = 3,
+    vegetable = 4
+}
+public enum VegetableStage2
+{
+    none = 0,
+    carrot = 1,
+    rambutan = 2,
+    tomato = 3,
+    vegetable = 4
+}
+public enum VegetableStage3
+{
+    none = 0,
+    carrot = 1,
+    rambutan = 2,
+    tomato = 3,
+    vegetable = 4
+}
+
+public enum ExtraIngredientsStage
+{
+    none = 0,
+    bread = 1,
+    cheese = 2,
+    flour = 3,
+    marinade = 4,
+    salt = 5
+}
+public enum ExtraIngredientsStage2
+{
+    none = 0,
+    bread = 1,
+    cheese = 2,
+    flour = 3,
+    marinade = 4,
+    salt = 5
+}
+public enum ExtraIngredientsStage3
+{
+    none = 0,
+    bread = 1,
+    cheese = 2,
+    flour = 3,
+    marinade = 4,
+    salt = 5
+}
+
+public enum FiskSecretStage
+{
+    None = 0,
+    Started = 1,
+    StartedWaterLilies = 2,
+    CollectedWaterLilies = 3,
+    Started2 = 4,
+    StartedPetunias = 5,
+    CollectedPetunias = 6,
+    Started3 = 7,
+    StartedPinkRose = 8,
+    CollectedPinkRose = 9,
+    StartedBouquet = 10,
+    CollectedBouquet = 11,
+    DeliveredBouquet = 12,
+    CompletedFiskSecret = 13,
+    AngeredThulin = 14,
+    AngeredThulinReturn = 15,
+    ExposedFisk = 16,
+    WontTell = 17,
+    WontTell2 = 18,
+    MushroomStart = 19,
+    Started4 = 20,
+    Started5 = 21,
+    DeliverBouquet = 22,
+    Started6 = 23,
+    BrandyTurnin = 24
+}
+
+public enum FiskRemakeBouquet
+{
+    None = 0,
+    BouquetWait = 1,
+    RemadeBouquet = 2
 }
 

@@ -34,6 +34,7 @@ public class FiskSecretScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out FiskSecretStage stage);
+        var hasStage2 = source.Trackers.Enums.TryGetValue(out FiskRemakeBouquet stage2);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
@@ -50,7 +51,10 @@ public class FiskSecretScript : DialogScriptBase
             
             case "fisk_initial":
             {
-                var option = new DialogOption
+                
+                if (source.UserStatSheet.Level >= 11)
+                {
+                    var option = new DialogOption
                     {
                         DialogKey = "FiskSecret_initial",
                         OptionText = "Fisk's Secret"
@@ -60,6 +64,8 @@ public class FiskSecretScript : DialogScriptBase
                         Subject.Options.Insert(0, option);
 
                     return;
+                }
+                return;
             }
             
             case "fisksecret_initial":
@@ -203,7 +209,7 @@ public class FiskSecretScript : DialogScriptBase
                     return;
                 }
 
-                source.Trackers.Enums.Set(FiskSecretStage.CollectedWaterLilies);
+                source.Trackers.Enums.Set(FiskSecretStage.CollectedPetunias);
 
                 var petunia = ItemFactory.Create("petunia");
                 petunia.Count = 5;
@@ -260,7 +266,7 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "fisksecret_collectedbouquet":
             {
-                if (!source.Inventory.HasCount("bouquet", 1))
+                if (!source.Inventory.HasCount("specialbouquet", 1) && !source.Equipment.Contains("specialBouquet"))
                 {
                     Subject.Reply(source, "Where's the bouquet? I was so excited!");
                     source.SendOrangeBarMessage("You don't have the Bouquet.");
@@ -317,9 +323,9 @@ public class FiskSecretScript : DialogScriptBase
                 break;
 
             }
-            case "giveBertil_start":
+            case "givebertil_start":
             {
-                if (!source.Inventory.HasCount("bouquet", 1))
+                if (!source.Inventory.HasCount("specialbouquet", 1) && (!source.Equipment.Contains("specialbouquet")))
                 {
                     Subject.Reply(source, "Where'd you put the Bouquet?");
                     source.SendOrangeBarMessage("You don't have the Bouquet.");
@@ -451,7 +457,7 @@ public class FiskSecretScript : DialogScriptBase
             #region EevaPetunia
             case "eeva_initial":
             {
-                if (hasStage && (stage == FiskSecretStage.Started2))
+                if (hasStage && (stage == FiskSecretStage.Started2) || (stage == FiskSecretStage.CollectedPetunias) || (stage == FiskSecretStage.StartedPetunias))
                 {
                     var option = new DialogOption
                     {
@@ -492,12 +498,21 @@ public class FiskSecretScript : DialogScriptBase
 
                 break;
             }
+
+            case "petunia_start8":
+            {
+                source.Trackers.Enums.Set(FiskSecretStage.StartedPetunias);
+                source.SendOrangeBarMessage("Bring Eeva 20 Grapes.");
+
+                return;
+            }
+            
             #endregion
 
             #region ViviannePinkRose
             case "vivianne_initial":
             {
-                if (hasStage && (stage == FiskSecretStage.Started3))
+                if (hasStage && (stage == FiskSecretStage.Started3) || (stage == FiskSecretStage.CollectedPinkRose) || (stage == FiskSecretStage.MushroomStart) || (stage == FiskSecretStage.StartedPinkRose) || (stage == FiskSecretStage.WontTell) || (stage == FiskSecretStage.WontTell2))
                 {
                     var option = new DialogOption
                     {
@@ -560,7 +575,7 @@ public class FiskSecretScript : DialogScriptBase
             case "pinkrose_end":
             {
                 source.Trackers.Enums.Set(FiskSecretStage.WontTell);
-                Subject.Reply(source, "Close");
+                Subject.Reply(source, "Skip", "Close");
 
                 break;
             }
@@ -637,6 +652,7 @@ public class FiskSecretScript : DialogScriptBase
             {
                 if (!source.Inventory.RemoveQuantity("mushroom", 10))
                 {
+                    Subject.Reply(source, "Where are my mushrooms?");
                     source.SendOrangeBarMessage("You do not have enough mushrooms.");
 
                     return;
@@ -659,7 +675,8 @@ public class FiskSecretScript : DialogScriptBase
 
             case "viveka_initial":
             {
-                if (hasStage && (stage == FiskSecretStage.Started4))
+
+                if (hasStage)
                 {
                     var option = new DialogOption
                     {
@@ -672,26 +689,31 @@ public class FiskSecretScript : DialogScriptBase
 
                     return;
                 }
-
                 break;
             }
             case "bouquet_initial":
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("craftbouquet", out var timedEvent))
                 {
-                    Subject.Reply(source, $"I am not quite done yet. I am working on it. Come back in {timedEvent.Remaining.ToReadableString()}");
+                    Subject.Reply(source, $"I am not quite done yet. It can wait till later. Come back in {timedEvent.Remaining.ToReadableString()}");
 
                     return;
                 }
                 if (source.Trackers.TimedEvents.HasActiveEvent("craftbouquet2", out var timedEvent1))
                 {
-                    Subject.Reply(source, $"I am not quite done yet. I am working on it. Come back in {timedEvent1.Remaining.ToReadableString()}");
+                    Subject.Reply(source, $"I am not quite done yet. I will work on it soon. Come back in {timedEvent1.Remaining.ToReadableString()}");
 
                     return;
                 }
                 if (source.Trackers.TimedEvents.HasActiveEvent("craftbouquet3", out var timedEvent2))
                 {
-                    Subject.Reply(source, $"I am not quite done yet. I am working on it. Come back in {timedEvent2.Remaining.ToReadableString()}");
+                    Subject.Reply(source, $"I am not quite done yet. I am working on it right now. Come back in {timedEvent2.Remaining.ToReadableString()}");
+
+                    return;
+                }
+                if (source.Trackers.TimedEvents.HasActiveEvent("craftbouquet4", out var timedEvent3))
+                {
+                    Subject.Reply(source, $"I am not quite done yet. I am a bit busy now. Come back in {timedEvent3.Remaining.ToReadableString()}");
 
                     return;
                 }
@@ -708,12 +730,20 @@ public class FiskSecretScript : DialogScriptBase
 
                     return;
                 }
-
-                if (hasStage && (stage == FiskSecretStage.CollectedBouquet))
+                if (hasStage2 && (stage2 == FiskRemakeBouquet.BouquetWait))
                 {
-                    Subject.Reply(source, "Skip", "bouquet_thanks");
+                    Subject.Reply(source, "Skip", "bouquet_remake");
 
                     return;
+                }
+                {
+                    if (source.Inventory.HasCount("specialbouquet", 1) || (source.Equipment.Contains("specialBouquet")))
+                    {
+                        Subject.Reply(source, "I already made you a bouquet.");
+
+                        return;
+                    }
+                    Subject.Reply(source, "Skip", "RemakeBouquet");
                 }
 
                 break;
@@ -793,11 +823,46 @@ public class FiskSecretScript : DialogScriptBase
 
                 return;
             }
+            case "remakebouquet3":
+            {
+                if (!source.Inventory.HasCount("petunia", 5)
+                    && (!source.Inventory.HasCount("pinkrose", 1) && (!source.Inventory.HasCount("waterlily", 5))))
+                {
+                    Subject.Reply(source, "I think you're missing some flowers. I need the five water lilies, five petunias, and one pink rose.");
+                    source.SendOrangeBarMessage("Looks like you're missing some flowers.");
+                    return;
+                }
+                if (!source.TryTakeGold(50000))
+                {
+                    Subject.Reply(source, "You can't afford my services. Come back when you have enough gold.");
+                    source.SendOrangeBarMessage("You don't have enough gold to pay Viveka.");
+
+                    return;
+                }
+
+                source.Inventory.RemoveQuantity("petunia", 5);
+                source.Inventory.RemoveQuantity("waterlily", 5);
+                source.Inventory.RemoveQuantity("pinkrose", 1);
+                source.Trackers.Enums.Set(FiskRemakeBouquet.BouquetWait);
+                source.Trackers.TimedEvents.AddEvent("craftbouquet4", TimeSpan.FromHours(1), true);
+
+                return;
+            }
             case "bouquet_return2":
             {
                 source.Trackers.Enums.Set(FiskSecretStage.CollectedBouquet);
 
-                var bouquet = ItemFactory.Create("bouquet");
+                var bouquet = ItemFactory.Create("specialbouquet");
+                bouquet.Count = 1;
+                source.TryGiveItems(bouquet);
+
+                return;
+            }
+            case "bouquet_remake2":
+            {
+                source.Trackers.Enums.Remove<FiskRemakeBouquet>();
+
+                var bouquet = ItemFactory.Create("specialbouquet");
                 bouquet.Count = 1;
                 source.TryGiveItems(bouquet);
 
@@ -923,7 +988,7 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "deliverbouquet2":
             {
-                if (!source.Inventory.HasCount("bouquet", 1))
+                if (!source.Inventory.HasCount("specialbouquet", 1) && (!source.Equipment.Contains("specialBouquet")))
                 {
                     Subject.Reply(source, "What bouquet? You don't have one.");
                     source.SendOrangeBarMessage("You don't have the Bouquet.");
@@ -931,7 +996,8 @@ public class FiskSecretScript : DialogScriptBase
                     return;
                 }
 
-                source.Inventory.RemoveQuantity("bouquet", 1);
+                source.Inventory.TryGetRemove("specialbouquet", out _);
+                source.Equipment.Remove("specialbouquet");
                 source.Trackers.Enums.Set(FiskSecretStage.DeliveredBouquet);
                 break;
 
