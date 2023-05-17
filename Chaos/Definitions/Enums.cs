@@ -576,3 +576,9 @@ public enum FiskRemakeBouquet
     RemadeBouquet = 2
 }
 
+[Flags]
+public enum AvailableMounts
+{
+    None,
+    WhiteHorse = 1,
+}

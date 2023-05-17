@@ -289,18 +289,6 @@ public class FiskSecretScript : DialogScriptBase
                 }
                 source.Trackers.Enums.Set(FiskSecretStage.BrandyTurnin);
                 source.Trackers.TimedEvents.AddEvent("fiskbrandy", TimeSpan.FromHours(1), true);
-                
-                source.TryGiveGold(125000);
-                source.TryGiveGamePoints(10);
-                ExperienceDistributionScript.GiveExp(source, 300000);
-                source.Legend.AddOrAccumulate(
-                    new LegendMark(
-                        "Inspired Fisk to reach for the stars.",
-                        "FiskSecret",
-                        MarkIcon.Heart,
-                        MarkColor.Blue,
-                        1,
-                        GameTime.Now));
 
                 break;
 
