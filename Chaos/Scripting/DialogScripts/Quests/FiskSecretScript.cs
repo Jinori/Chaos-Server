@@ -280,27 +280,15 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "fisksecret_collectedbrandy":
             {
-                if (!source.Inventory.RemoveQuantity("brandy", 10))
+                if (!source.Inventory.RemoveQuantity("rum", 10))
                 {
-                    Subject.Reply(source, "Where's the brandy?");
-                    source.SendOrangeBarMessage("You don't have enough Brandy.");
+                    Subject.Reply(source, "Where's the Rum?");
+                    source.SendOrangeBarMessage("You don't have enough Rum.");
 
                     return;
                 }
                 source.Trackers.Enums.Set(FiskSecretStage.BrandyTurnin);
                 source.Trackers.TimedEvents.AddEvent("fiskbrandy", TimeSpan.FromHours(1), true);
-                
-                source.TryGiveGold(125000);
-                source.TryGiveGamePoints(10);
-                ExperienceDistributionScript.GiveExp(source, 300000);
-                source.Legend.AddOrAccumulate(
-                    new LegendMark(
-                        "Inspired Fisk to reach for the stars.",
-                        "FiskSecret",
-                        MarkIcon.Heart,
-                        MarkColor.Blue,
-                        1,
-                        GameTime.Now));
 
                 break;
 

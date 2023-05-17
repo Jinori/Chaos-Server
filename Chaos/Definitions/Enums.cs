@@ -576,3 +576,11 @@ public enum FiskRemakeBouquet
     RemadeBouquet = 2
 }
 
+public enum SwampMazeQuest
+{
+    None = 0,
+    Start = 1,
+    Complete = 2
+
+}
+
