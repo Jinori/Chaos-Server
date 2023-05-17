@@ -584,3 +584,9 @@ public enum SwampMazeQuest
 
 }
 
+[Flags]
+public enum AvailableMounts
+{
+    None,
+    WhiteHorse = 1,
+}
