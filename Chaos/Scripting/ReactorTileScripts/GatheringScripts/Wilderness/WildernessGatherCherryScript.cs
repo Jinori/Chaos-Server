@@ -1,23 +1,23 @@
 using Chaos.Extensions.Common;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.ReactorTileScripts.GatheringScripts.Wilderness.Roses;
+namespace Chaos.Scripting.ReactorTileScripts.GatheringScripts.Wilderness;
 
 
 public class WildernessGatherCherryScript : ReactorTileScriptBase
 {
-    private readonly IDialogFactory _dialogFactory;
-    private readonly IItemFactory _itemFactory;
+    private readonly IDialogFactory DialogFactory;
+    private readonly IItemFactory ItemFactory;
 
     /// <inheritdoc />
     public WildernessGatherCherryScript(ReactorTile subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
         : base(subject)
     {
-        _itemFactory = itemFactory;
-        _dialogFactory = dialogFactory;
+        ItemFactory = itemFactory;
+        DialogFactory = dialogFactory;
     }
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
@@ -35,12 +35,12 @@ public class WildernessGatherCherryScript : ReactorTileScriptBase
         {
             if (aisling.Trackers.Counters.TryGetValue("cherrypicked", out var wildernesscherry) && (wildernesscherry >= 5))
             {
-                aisling.SendOrangeBarMessage($"You can pick another cherry in {timedEvent.Remaining.ToReadableString()}");
+                aisling.SendOrangeBarMessage($"You can pick another cherry in {timedEvent?.Remaining.ToReadableString()}");
                 return;
             }
         }
 
-        var cherryitem = _itemFactory.Create("cherry");
+        var cherryitem = ItemFactory.Create("cherry");
         aisling.TryGiveItem(cherryitem);
         aisling.SendOrangeBarMessage("You've gathered some cherries.");
         aisling.Trackers.Counters.AddOrIncrement("cherrypicked");
@@ -49,7 +49,5 @@ public class WildernessGatherCherryScript : ReactorTileScriptBase
         {
             aisling.Trackers.TimedEvents.AddEvent("cherrycd", TimeSpan.FromHours(3), true);
         }
-
-        return;
     }
 }

@@ -1,14 +1,12 @@
-using Chaos.Common.Definitions;
 using Chaos.Definitions;
-using Chaos.Formulae;
-using Chaos.Objects.Menu;
-using Chaos.Objects.World;
+using Chaos.Models.Menu;
+using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Quests;
+namespace Chaos.Scripting.DialogScripts.Quests.Wilderness;
 
 public class SwampMazeQuestScript : DialogScriptBase
 {
