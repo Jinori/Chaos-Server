@@ -1,7 +1,7 @@
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -11,27 +11,14 @@ namespace Chaos.Scripting.MonsterScripts;
 // ReSharper disable once ClassCanBeSealed.Global
 public class AggroTargetingScript : MonsterScriptBase
 {
-    private readonly Dictionary<uint, DateTime> ApproachTime;
     private readonly IIntervalTimer TargetUpdateTimer;
     private int InitialAggro = 10;
 
     /// <inheritdoc />
     public AggroTargetingScript(Monster subject)
-        : base(subject)
-    {
+        : base(subject) =>
         TargetUpdateTimer =
             new IntervalTimer(TimeSpan.FromMilliseconds(Math.Min(250, Subject.Template.SkillIntervalMs)));
-
-        ApproachTime = new Dictionary<uint, DateTime>();
-    }
-
-    /// <inheritdoc />
-    public override void OnApproached(Creature source)
-    {
-        base.OnApproached(source);
-
-        ApproachTime.TryAdd(source.Id, DateTime.UtcNow);
-    }
 
     /// <inheritdoc />
     public override void OnAttacked(Creature source, int damage, int? aggroOverride)
@@ -45,14 +32,6 @@ public class AggroTargetingScript : MonsterScriptBase
             return;
 
         AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro);
-    }
-
-    /// <inheritdoc />
-    public override void OnDeparture(Creature source)
-    {
-        base.OnDeparture(source);
-
-        ApproachTime.Remove(source.Id);
     }
 
     /// <inheritdoc />
@@ -73,7 +52,7 @@ public class AggroTargetingScript : MonsterScriptBase
 
         Target = null;
 
-        if (!Map.GetEntitiesWithinRange<Aisling>(Subject).Any())
+        if (!Map.GetEntities<Aisling>().Any())
             return;
 
         //first try to get target via aggro list
@@ -83,7 +62,7 @@ public class AggroTargetingScript : MonsterScriptBase
             if (!Map.TryGetObject<Creature>(kvp.Key, out var possibleTarget))
                 continue;
 
-            if (!possibleTarget.IsAlive || !possibleTarget.IsVisibleTo(Subject) || !possibleTarget.WithinRange(Subject))
+            if (!possibleTarget.IsAlive || !Subject.CanObserve(possibleTarget) || !possibleTarget.WithinRange(Subject))
                 continue;
 
             Target = possibleTarget;
@@ -96,11 +75,11 @@ public class AggroTargetingScript : MonsterScriptBase
 
         //if we failed to get a target via aggroList, grab the closest aisling within aggro range
         Target ??= Map.GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
-                      .ThatAreVisibleTo(Subject)
+                      .ThatAreObservedBy(Subject)
                       .Where(
                           obj => !obj.Equals(Subject)
                                  && obj.IsAlive
-                                 && ApproachTime.TryGetValue(obj.Id, out var time)
+                                 && Subject.ApproachTime.TryGetValue(obj.Id, out var time)
                                  && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
                       .ClosestOrDefault(Subject);
 

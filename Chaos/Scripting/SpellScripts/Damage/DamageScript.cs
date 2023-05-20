@@ -1,59 +1,75 @@
 using Chaos.Common.Definitions;
-using Chaos.Data;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Definitions;
+using Chaos.Models.Data;
+using Chaos.Models.Panel;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components;
+using Chaos.Scripting.Components.Utilities;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.SpellScripts.Abstractions;
 
+namespace Chaos.Scripting.SpellScripts;
 
-namespace Chaos.Scripting.SpellScripts.Damage;
-
-
-
-public class DamageScript : BasicSpellScriptBase, DamageComponent.IDamageComponentOptions, ManaCostComponent.IManaCostComponentOptions
+public class DamageScript : ConfigurableSpellScriptBase,
+                            AbilityComponent<Creature>.IAbilityComponentOptions,
+                            DamageComponent.IDamageComponentOptions
 {
-    public IApplyDamageScript ApplyDamageScript { get; init; }
-    public IScript SourceScript { get; init; }
-    protected DamageComponent DamageComponent { get; }
-    protected ManaCostComponent ManaCostComponent { get; }
-    protected MagicResistanceComponent MagicResistComponent { get; }
-
     /// <inheritdoc />
     public DamageScript(Spell subject)
         : base(subject)
     {
         ApplyDamageScript = ApplyAttackDamageScript.Create();
-        DamageComponent = new DamageComponent();
-        ManaCostComponent = new ManaCostComponent();
-        MagicResistComponent = new MagicResistanceComponent();
         SourceScript = this;
     }
 
     /// <inheritdoc />
-    public override void OnUse(SpellContext context)
-    {
-        if (!ManaCostComponent.TryApplyManaCost(context, this))
-            return;
-        
-        if (!MagicResistComponent.TryCastSpell(context, SourceScript))
-            return;
-        
-        var targets = AbilityComponent.Activate<Creature>(context, this);
-        context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}");
-        DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
-    }
+    public override void OnUse(SpellContext context) =>
+        new ComponentExecutor(context)
+            .WithOptions(this)
+            .ExecuteAndCheck<AbilityComponent<Creature>>()
+            ?
+            .Execute<DamageComponent>();
 
     #region ScriptVars
+    /// <inheritdoc />
+    public bool ShouldNotBreakHide { get; init; }
+    /// <inheritdoc />
+    public AoeShape Shape { get; init; }
+    /// <inheritdoc />
+    public TargetFilter Filter { get; init; }
+    /// <inheritdoc />
+    public int Range { get; init; }
+    /// <inheritdoc />
+    public bool ExcludeSourcePoint { get; init; }
+    /// <inheritdoc />
+    public bool MustHaveTargets { get; init; }
+    /// <inheritdoc />
+    public byte? Sound { get; init; }
+    /// <inheritdoc />
+    public BodyAnimation BodyAnimation { get; init; }
+    /// <inheritdoc />
+    public Animation? Animation { get; init; }
+    /// <inheritdoc />
+    public bool AnimatePoints { get; init; }
+    /// <inheritdoc />
+    public IApplyDamageScript ApplyDamageScript { get; init; }
+    /// <inheritdoc />
     public int? BaseDamage { get; init; }
+    /// <inheritdoc />
     public Stat? DamageStat { get; init; }
+    /// <inheritdoc />
     public decimal? DamageStatMultiplier { get; init; }
-    public decimal? PctHpDamage { get; init; }
+    /// <inheritdoc />
     public Element? Element { get; init; }
+    /// <inheritdoc />
+    public decimal? PctHpDamage { get; init; }
+    /// <inheritdoc />
+    public IScript SourceScript { get; init; }
+    /// <inheritdoc />
     public int? ManaCost { get; init; }
+    /// <inheritdoc />
     public decimal PctManaCost { get; init; }
-    
     #endregion
 }

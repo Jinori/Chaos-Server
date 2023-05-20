@@ -1,6 +1,6 @@
-using Chaos.Data;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World;
+using Chaos.Models.Data;
+using Chaos.Models.Panel;
+using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 
 namespace Chaos.Scripting.SpellScripts.Abstractions;
@@ -12,7 +12,7 @@ public abstract class ConfigurableSpellScriptBase : ConfigurableScriptBase<Spell
         : base(subject, scriptKey => subject.Template.ScriptVars[scriptKey]) { }
 
     /// <inheritdoc />
-    public virtual bool CanUse(SpellContext context) => context.Target.IsAlive;
+    public virtual bool CanUse(SpellContext context) => context.Source.IsAlive && (context.TargetCreature?.IsAlive ?? true);
 
     /// <inheritdoc />
     public virtual void OnForgotten(Aisling aisling) { }

@@ -3,8 +3,8 @@ using Chaos.Extensions.Common;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Formulae.Abstractions;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 
 namespace Chaos.Formulae.Regen;
 

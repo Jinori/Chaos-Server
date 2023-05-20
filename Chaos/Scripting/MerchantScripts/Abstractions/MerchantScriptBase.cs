@@ -1,7 +1,7 @@
-using Chaos.Containers;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Collections;
+using Chaos.Models.Panel;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 
 namespace Chaos.Scripting.MerchantScripts.Abstractions;
@@ -17,6 +17,9 @@ public abstract class MerchantScriptBase : SubjectiveScriptBase<Merchant>, IMerc
 
     /// <inheritdoc />
     public virtual bool CanMove() => true;
+
+    /// <inheritdoc />
+    public virtual bool CanSee(VisibleEntity entity) => true;
 
     /// <inheritdoc />
     public virtual bool CanTalk() => true;

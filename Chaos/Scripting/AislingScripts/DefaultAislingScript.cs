@@ -1,5 +1,8 @@
 using Chaos.Clients.Abstractions;
 using Chaos.Common.Definitions;
+using Chaos.Models.Panel;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Common.Utilities;
 using Chaos.Containers;
 using Chaos.Definitions;
@@ -9,7 +12,7 @@ using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
 using Chaos.Scripting.AislingScripts.Abstractions;
-using Chaos.Scripting.Components;
+using Chaos.Scripting.Behaviors;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -20,9 +23,11 @@ using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.AislingScripts;
 
-public sealed class DefaultAislingScript : AislingScriptBase
+public class DefaultAislingScript : AislingScriptBase
 {
     private readonly IIntervalTimer SleepAnimationTimer;
+    protected virtual RestrictionBehavior RestrictionBehavior { get; }
+    protected virtual VisibilityBehavior VisibilityBehavior { get; }
     private readonly IClientRegistry<IWorldClient> _clientRegistry;
     private readonly IMerchantFactory MerchantFactory;
     private readonly ISimpleCache SimpleCache;
@@ -33,7 +38,7 @@ public sealed class DefaultAislingScript : AislingScriptBase
         "Cain's Farm"
     };
 
-    private RestrictionComponent RestrictionComponent { get; }
+   
 
     /// <inheritdoc />
     public DefaultAislingScript(Aisling subject, IClientRegistry<IWorldClient> clientRegistry, IMerchantFactory merchantFactory,
@@ -41,8 +46,9 @@ public sealed class DefaultAislingScript : AislingScriptBase
     )
         : base(subject)
     {
+        RestrictionBehavior = new RestrictionBehavior();
+        VisibilityBehavior = new VisibilityBehavior();
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
-        RestrictionComponent = new RestrictionComponent();
         SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5));
         _clientRegistry = clientRegistry;
         MerchantFactory = merchantFactory;
@@ -51,22 +57,25 @@ public sealed class DefaultAislingScript : AislingScriptBase
 
 
     /// <inheritdoc />
-    public override bool CanMove() => RestrictionComponent.CanMove(Subject);
+    public override bool CanMove() => RestrictionBehavior.CanMove(Subject);
 
     /// <inheritdoc />
-    public override bool CanTalk() => RestrictionComponent.CanTalk(Subject);
+    public override bool CanSee(VisibleEntity entity) => VisibilityBehavior.CanSee(Subject, entity);
 
     /// <inheritdoc />
-    public override bool CanTurn() => RestrictionComponent.CanTurn(Subject);
+    public override bool CanTalk() => RestrictionBehavior.CanTalk(Subject);
 
     /// <inheritdoc />
-    public override bool CanUseItem(Item item) => RestrictionComponent.CanUseItem(Subject, item);
+    public override bool CanTurn() => RestrictionBehavior.CanTurn(Subject);
 
     /// <inheritdoc />
-    public override bool CanUseSkill(Skill skill) => RestrictionComponent.CanUseSkill(Subject, skill);
+    public override bool CanUseItem(Item item) => RestrictionBehavior.CanUseItem(Subject, item);
 
     /// <inheritdoc />
-    public override bool CanUseSpell(Spell spell) => RestrictionComponent.CanUseSpell(Subject, spell);
+    public override bool CanUseSkill(Skill skill) => RestrictionBehavior.CanUseSkill(Subject, skill);
+
+    /// <inheritdoc />
+    public override bool CanUseSpell(Spell spell) => RestrictionBehavior.CanUseSpell(Subject, spell);
 
     public override void OnAttacked(Creature source, int damage)
     {

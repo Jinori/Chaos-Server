@@ -3,6 +3,8 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae.Abstractions;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Objects.Panel;
 using Chaos.Objects.World;
 using Chaos.Objects.World.Abstractions;
@@ -15,7 +17,7 @@ namespace Chaos.Formulae.Damage;
 
 public class DefaultDamageFormula : IDamageFormula
 {
-    private ImmutableArray<ImmutableArray<decimal>> ElementalModifierLookup { get; } = new[]
+    protected virtual ImmutableArray<ImmutableArray<decimal>> ElementalModifierLookup { get; } = new[]
     {
         // @formatter:off
         //mostly lifted from http://da-wizard.com/elements.html

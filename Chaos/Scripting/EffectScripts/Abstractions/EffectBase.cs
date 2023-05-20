@@ -1,13 +1,12 @@
 using Chaos.Common.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
-using Chaos.Scripting.Abstractions;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Abstractions;
 
-public abstract class EffectBase : ScriptBase, IEffect
+public abstract class EffectBase : IEffect
 {
     public EffectColor Color { get; set; }
 
@@ -23,9 +22,7 @@ public abstract class EffectBase : ScriptBase, IEffect
     public abstract string Name { get; }
 
     /// <inheritdoc />
-#pragma warning disable CS0108, CS0114
     public string ScriptKey { get; }
-#pragma warning restore CS0108, CS0114
     protected Aisling? AislingSubject => Subject as Aisling;
     protected abstract TimeSpan Duration { get; }
 
@@ -36,7 +33,7 @@ public abstract class EffectBase : ScriptBase, IEffect
     /// <inheritdoc />
     public virtual void OnApplied() { }
 
-    public virtual void OnDispelled() { }
+    public virtual void OnDispelled() => OnTerminated();
 
     /// <inheritdoc />
     public virtual void OnReApplied() => OnApplied();
@@ -44,7 +41,17 @@ public abstract class EffectBase : ScriptBase, IEffect
     public virtual void OnTerminated() { }
 
     /// <inheritdoc />
-    public virtual bool ShouldApply(Creature source, Creature target) => !target.Effects.Contains(Name);
+    public virtual bool ShouldApply(Creature source, Creature target)
+    {
+        if (target.Effects.Contains(Name) || target.Effects.Any(effect => effect.Icon == Icon))
+        {
+            AislingSubject?.SendOrangeBarMessage($"You are already affected by {Name}.");
+
+            return false;
+        }
+
+        return true;
+    }
 
     public virtual void Update(TimeSpan delta)
     {

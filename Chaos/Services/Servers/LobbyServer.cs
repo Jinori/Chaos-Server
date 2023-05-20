@@ -1,12 +1,10 @@
 using System.Net;
 using System.Net.Sockets;
-using Chaos.Clients.Abstractions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Identity;
 using Chaos.Networking.Abstractions;
 using Chaos.Networking.Entities;
 using Chaos.Networking.Entities.Client;
-using Chaos.Networking.Options;
 using Chaos.Packets;
 using Chaos.Packets.Abstractions;
 using Chaos.Packets.Abstractions.Definitions;
@@ -63,7 +61,7 @@ public sealed class LobbyServer : ServerBase<ILobbyClient>, ILobbyServer<ILobbyC
                 if (ServerTable.Servers.TryGetValue(serverId!.Value, out var serverInfo))
                 {
                     var redirect = new Redirect(
-                        ClientId.NextId,
+                        EphemeralRandomIdGenerator<uint>.Shared.NextId,
                         serverInfo,
                         ServerType.Login,
                         client.Crypto.Key,

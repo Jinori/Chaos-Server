@@ -1,12 +1,12 @@
 using Chaos.Common.Abstractions;
-using Chaos.Data;
+using Chaos.Models.Data;
+using Chaos.Models.Panel;
+using Chaos.Models.Templates;
 using Chaos.Networking.Entities.Server;
-using Chaos.Objects.Panel;
 using Chaos.Schemas.Aisling;
 using Chaos.Schemas.Templates;
 using Chaos.Scripting.Abstractions;
 using Chaos.Storage.Abstractions;
-using Chaos.Templates;
 using Chaos.TypeMapper.Abstractions;
 
 namespace Chaos.Services.MapperProfiles;
@@ -52,6 +52,7 @@ public sealed class SkillMapperProfile : IMapperProfile<Skill, SkillSchema>,
     SkillInfo IMapperProfile<Skill, SkillInfo>.Map(Skill obj) => new()
     {
         Name = obj.Template.Name,
+        PanelName = obj.PanelDisplayName,
         Slot = obj.Slot,
         Sprite = obj.Template.PanelSprite
     };

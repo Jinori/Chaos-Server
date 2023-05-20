@@ -1,12 +1,13 @@
 using Chaos.Common.Definitions;
-using Chaos.Data;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Formulae;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Models.Data;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components;
+using Chaos.Scripting.Components.Utilities;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
@@ -17,9 +18,12 @@ using Chaos.Time.Abstractions;
 namespace Chaos.Scripting.ReactorTileScripts;
 
 public class TrapScript : ConfigurableReactorTileScriptBase,
-                          AbilityComponent.IAbilityComponentOptions,
+                          GetTargetsComponent<Creature>.IGetTargetsComponentOptions,
+                          SoundComponent.ISoundComponentOptions,
+                          AnimationComponent.IAnimationComponentOptions,
                           DamageComponent.IDamageComponentOptions,
-                          ManaDrainComponent.IManaDrainComponentOptions
+                          ManaDrainComponent.IManaDrainComponentOptions,
+                          ApplyEffectComponent.IApplyEffectComponentOptions
 {
     protected IIntervalTimer AnimationTimer { get; set; }
     protected IEffectFactory EffectFactory { get; set; }
@@ -59,37 +63,27 @@ If this reactor was created through a script, you must specify the owner in the 
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         ApplyDamageScript.DamageFormula = DamageFormulae.PureDamage;
         SourceScript = this;
-
-        AbilityComponent = new AbilityComponent();
-        DamageComponent = new DamageComponent();
-        ManaDrainComponent = new ManaDrainComponent();
     }
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
     {
         //if the person who stepped on it isnt a valid target, do nothing
-        if (Filter.HasValue && !Filter.Value.IsValidTarget(Owner, source))
+        if (!Filter.IsValidTarget(Owner, source))
             return;
 
-        var context = new ActivationContext(Owner, source);
+        var executed = new ComponentExecutor(Owner, source)
+                       .WithOptions(this)
+                       .ExecuteAndCheck<GetTargetsComponent<Creature>>()
+                       ?
+                       .Execute<SoundComponent>()
+                       .Execute<AnimationComponent>()
+                       .Execute<DamageComponent>()
+                       .Execute<ManaDrainComponent>()
+                       .Execute<ApplyEffectComponent>()
+                       != null;
 
-        var targets = AbilityComponent.Activate<Creature>(context, this);
-
-        if (MustHaveTargets && !targets.TargetEntities.Any())
-            return;
-
-        DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
-        ManaDrainComponent.ApplyManaDrain(targets.TargetEntities, this);
-
-        if (!string.IsNullOrEmpty(EffectKey))
-            foreach (var entity in targets.TargetEntities)
-            {
-                var effect = EffectFactory.Create(EffectKey);
-                entity.Effects.Apply(context.Source, effect);
-            }
-
-        if (MaxTriggers.HasValue)
+        if (executed && MaxTriggers.HasValue)
         {
             TriggerCount++;
 
@@ -121,22 +115,22 @@ If this reactor was created through a script, you must specify the owner in the 
     }
 
     #region ScriptVars
+    public IEffectFactory EffectFactory { get; init; }
     public IApplyDamageScript ApplyDamageScript { get; init; }
     public AoeShape Shape { get; init; }
-    public BodyAnimation? BodyAnimation { get; init; }
+    public BodyAnimation BodyAnimation { get; init; }
     public int Range { get; init; }
-    public TargetFilter? Filter { get; init; }
+    public TargetFilter Filter { get; init; }
     public Animation? Animation { get; init; }
     public byte? Sound { get; init; }
     public bool AnimatePoints { get; init; }
     public bool MustHaveTargets { get; init; } = true;
-    public bool IncludeSourcePoint { get; init; } = true;
+    public bool ExcludeSourcePoint { get; init; } = true;
     public int? BaseDamage { get; init; }
     public Stat? DamageStat { get; init; }
     public decimal? DamageStatMultiplier { get; init; }
     public decimal? PctHpDamage { get; init; }
     public IScript SourceScript { get; init; }
-    /// <inheritdoc />
     public Element? Element { get; init; }
     public int? DurationSecs { get; init; }
     public int? MaxTriggers { get; init; }

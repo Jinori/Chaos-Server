@@ -1,12 +1,12 @@
 using System.Diagnostics;
 using System.IO.Compression;
 using System.Text.Json;
+using Chaos.Collections;
 using Chaos.Common.Collections.Synchronized;
 using Chaos.Common.Utilities;
-using Chaos.Containers;
-using Chaos.Objects.Legend;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World;
+using Chaos.Models.Legend;
+using Chaos.Models.Panel;
+using Chaos.Models.World;
 using Chaos.Schemas.Aisling;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Services.Storage.Options;
@@ -242,6 +242,9 @@ public sealed class UserSaveManager : BackgroundService, ISaveManager<Aisling>
         try
         {
             await action();
+        } catch (Exception e)
+        {
+            Logger.LogError(e, "Failed to execute directory action for \"{Directory}\"", directory);
         } finally
         {
             LockedFiles.Remove(directory);

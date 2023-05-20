@@ -1,8 +1,8 @@
-using Chaos.Data;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Models.Data;
+using Chaos.Models.Panel;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.SkillScripts.Abstractions;
 
 
@@ -27,10 +27,10 @@ public class AmbushScript : SkillScriptBase
 
         foreach (var point in points)
         {
-            if (context.Map.IsWall(point) || context.Map.IsBlockingReactor(point))
+            if (context.TargetMap.IsWall(point) || context.TargetMap.IsBlockingReactor(point))
                 return;
 
-            var entity = context.Map.GetEntitiesAtPoint<Creature>(point)
+            var entity = context.TargetMap.GetEntitiesAtPoint<Creature>(point)
                                 .TopOrDefault();
 
             if (entity != null)
@@ -45,7 +45,8 @@ public class AmbushScript : SkillScriptBase
                     var destinationPoint = entity.DirectionalOffset(direction);
 
                     //if that point is not walkable or is a reactor, continue
-                    if (!context.Map.IsWalkable(destinationPoint, context.Source.Type) || context.Map.IsBlockingReactor(destinationPoint))
+                    if (!context.TargetMap.IsWalkable(destinationPoint, context.Source.Type)
+                        || context.TargetMap.IsBlockingReactor(destinationPoint))
                         continue;
 
                     //if it is walkable, warp to that point and turn to face the target

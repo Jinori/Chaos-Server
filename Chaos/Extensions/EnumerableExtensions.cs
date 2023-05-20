@@ -2,9 +2,9 @@ using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Geometry.EqualityComparers;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Models.Panel;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.TypeMapper.Abstractions;
 
 namespace Chaos.Extensions;
@@ -47,11 +47,11 @@ public static class EnumerableExtensions
         return (aislings, doors, others);
     }
 
+    public static IEnumerable<T> ThatAreObservedBy<T>(this IEnumerable<T> objs, VisibleEntity visibleEntity) where T: VisibleEntity =>
+        objs.Where(visibleEntity.CanObserve);
+
     public static IEnumerable<T> ThatAreOnPoint<T>(this IEnumerable<T> objs, IPoint point) where T: MapEntity
         => objs.Where(o => PointEqualityComparer.Instance.Equals(o, point));
-
-    public static IEnumerable<T> ThatAreVisibleTo<T>(this IEnumerable<T> objs, Creature creature) where T: VisibleEntity =>
-        objs.Where(obj => obj.IsVisibleTo(creature));
 
     public static IEnumerable<T> ThatAreWithinRange<T>(this IEnumerable<T> objs, ILocation point, int range = 12) where T: MapEntity
         => objs.Where(o => o.WithinRange(point, range));
@@ -59,10 +59,13 @@ public static class EnumerableExtensions
     public static IEnumerable<T> ThatAreWithinRange<T>(this IEnumerable<T> objs, IPoint point, int range = 12) where T: MapEntity
         => objs.Where(o => o.WithinRange(point, range));
 
-    public static IEnumerable<T> ThatCanSee<T>(this IEnumerable<T> objs, VisibleEntity visibleEntity) where T: Creature =>
-        objs.Where(visibleEntity.IsVisibleTo);
+    public static IEnumerable<T> ThatCanObserve<T>(this IEnumerable<T> objs, VisibleEntity visibleEntity) where T: Creature =>
+        objs.Where(obj => obj.CanObserve(visibleEntity));
 
     public static IEnumerable<T> ThatCollideWith<T>(this IEnumerable<T> objs, Creature creature) where T: Creature =>
+        objs.Where(c => !c.Equals(creature) && c.WillCollideWith(creature));
+
+    public static IEnumerable<T> ThatThisCollidesWith<T>(this IEnumerable<T> objs, Creature creature) where T: Creature =>
         objs.Where(c => !c.Equals(creature) && creature.WillCollideWith(c));
 
     public static T? TopOrDefault<T>(this IEnumerable<T> objs) where T: WorldEntity => objs.MaxBy(o => o.Creation);

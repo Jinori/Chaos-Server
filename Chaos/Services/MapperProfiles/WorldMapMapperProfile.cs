@@ -1,6 +1,6 @@
+using Chaos.Collections;
 using Chaos.Common.Identity;
-using Chaos.Containers;
-using Chaos.Data;
+using Chaos.Models.WorldMap;
 using Chaos.Schemas.Content;
 using Chaos.Storage.Abstractions;
 using Chaos.TypeMapper.Abstractions;
@@ -10,7 +10,7 @@ namespace Chaos.Services.MapperProfiles;
 public class WorldMapMapperProfile : IMapperProfile<WorldMap, WorldMapSchema>,
                                      IMapperProfile<WorldMapNode, WorldMapNodeSchema>
 {
-    private static readonly IdGenerator<ushort> IdGenerator = new();
+    private static readonly SequentialIdGenerator<ushort> IdGenerator = new();
     private readonly ISimpleCache SimpleCache;
 
     public WorldMapMapperProfile(ISimpleCache simpleCache) => SimpleCache = simpleCache;

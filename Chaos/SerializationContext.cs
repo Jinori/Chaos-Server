@@ -3,8 +3,8 @@ using System.Text.Json.Serialization;
 using Chaos.Collections.Common;
 using Chaos.Collections.Time;
 using Chaos.Common.Definitions;
-using Chaos.Data;
 using Chaos.Definitions;
+using Chaos.Models.Data;
 using Chaos.Schemas.Aisling;
 using Chaos.Schemas.Content;
 using Chaos.Schemas.Data;
@@ -109,13 +109,15 @@ namespace Chaos;
 [JsonSerializable(typeof(AoeShape))]
 [JsonSerializable(typeof(TargetFilter))]
 [JsonSerializable(typeof(EquipmentType))]
+[JsonSerializable(typeof(LevelCircle))]
+[JsonSerializable(typeof(Element))]
 [JsonSerializable(typeof(Stat?))]
 [JsonSerializable(typeof(BodyAnimation?))]
 [JsonSerializable(typeof(AoeShape?))]
 [JsonSerializable(typeof(TargetFilter?))]
 [JsonSerializable(typeof(EquipmentType?))]
-[JsonSerializable(typeof(LevelCircle))]
-[JsonSerializable(typeof(Element))]
+[JsonSerializable(typeof(LevelCircle?))]
+[JsonSerializable(typeof(Element?))]
 //numerics
 [JsonSerializable(typeof(byte))]
 [JsonSerializable(typeof(sbyte))]
@@ -142,4 +144,7 @@ namespace Chaos;
 //other primitives
 [JsonSerializable(typeof(DateTime))]
 [JsonSerializable(typeof(TimeSpan))]
+//obj
+[JsonSerializable(typeof(object))]
+// ReSharper disable once ClassCanBeSealed.Global No it can not
 public partial class SerializationContext : JsonSerializerContext { }

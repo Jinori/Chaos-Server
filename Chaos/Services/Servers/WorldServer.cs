@@ -1,13 +1,13 @@
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text.Json;
-using Chaos.Clients.Abstractions;
+using Chaos.Collections;
 using Chaos.Collections.Common;
 using Chaos.Common.Abstractions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Identity;
 using Chaos.Common.Synchronization;
-using Chaos.Containers;
 using Chaos.Cryptography;
 using Chaos.Data;
 using Chaos.Definitions;
@@ -15,11 +15,11 @@ using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae;
 using Chaos.Messaging.Abstractions;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Networking.Abstractions;
+using Chaos.Networking.Entities;
 using Chaos.Networking.Entities.Client;
-using Chaos.Networking.Options;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
 using Chaos.Packets;
 using Chaos.Packets.Abstractions;
 using Chaos.Packets.Abstractions.Definitions;
@@ -301,13 +301,13 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
                 return default;
             }
 
-            return OnClientRedirectedAsync(localClient, localArgs, redirect);
+            return OnClientRedirectedAsync(localClient, redirect);
         }
 
         return ExecuteHandler(client, args, InnerOnClientRedirected);
     }
 
-    public async ValueTask OnClientRedirectedAsync(IWorldClient client, ClientRedirectedArgs args, IRedirect redirect)
+    public async ValueTask OnClientRedirectedAsync(IWorldClient client, IRedirect redirect)
     {
         client.Crypto = new Crypto(redirect.Seed, redirect.Key, redirect.Name);
         var aisling = await AislingSaveManager.LoadAsync(redirect.Name);
@@ -488,7 +488,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             else
             {
                 var redirect = new Redirect(
-                    ClientId.NextId,
+                    EphemeralRandomIdGenerator<uint>.Shared.NextId,
                     Options.LoginRedirect,
                     ServerType.Login,
                     localClient.Crypto.Key,
@@ -999,6 +999,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
 
         static ValueTask InnerOnUseItem(IWorldClient localClient, ItemUseArgs localArgs)
         {
+            var sw = Stopwatch.StartNew();
             var exchange = localClient.Aisling.ActiveObject.TryGet<Exchange>();
 
             if (exchange != null)
@@ -1009,6 +1010,9 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             }
 
             localClient.Aisling.TryUseItem(localArgs.SourceSlot);
+            var e = sw.Elapsed;
+
+            Console.WriteLine(e);
 
             return default;
         }

@@ -3,24 +3,24 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
-using Chaos.Clients.Abstractions;
-using Chaos.Commands.Options;
+using Chaos.Collections;
 using Chaos.Common.Abstractions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
-using Chaos.Containers;
 using Chaos.Extensions;
 using Chaos.Extensions.DependencyInjection;
 using Chaos.Geometry.Abstractions;
 using Chaos.Geometry.JsonConverters;
 using Chaos.Messaging;
+using Chaos.Messaging.Options;
+using Chaos.Models.Menu;
+using Chaos.Models.Panel;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Networking.Abstractions;
-using Chaos.Networking.Options;
-using Chaos.Objects.Menu;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Networking.Entities;
 using Chaos.Scripting.EffectScripts.Abstractions;
+using Chaos.Services.Configuration;
 using Chaos.Services.Other;
 using Chaos.Services.Other.Abstractions;
 using Chaos.Services.Servers.Options;
@@ -38,7 +38,7 @@ using NLog.Extensions.Logging;
 
 namespace Chaos;
 
-public class Startup
+public sealed class Startup
 {
     private static readonly SerializationContext JsonContext;
     private static readonly JsonSerializerOptions JsonSerializerOptions;
@@ -75,6 +75,7 @@ public class Startup
         ServerCtx = new CancellationTokenSource();
     }
 
+    // ReSharper disable once MemberCanBeMadeStatic.Global
     public void AddJsonSerializerOptions(IServiceCollection services) =>
         services.AddOptions<JsonSerializerOptions>()
                 .Configure<ILogger<WarningJsonTypeInfoResolver>>(
@@ -100,9 +101,10 @@ public class Startup
 
         services.AddSingleton(Configuration);
         services.AddOptions();
+        services.ConfigureOptions<OptionsConfigurer>();
+        services.ConfigureOptions<OptionsValidator>();
 
-        services.AddOptionsFromConfig<ChaosOptions>(ConfigKeys.Options.Key)
-                .Validate(o => !string.IsNullOrEmpty(o.StagingDirectory), "StagingDirectory is required");
+        services.AddOptionsFromConfig<ChaosOptions>(ConfigKeys.Options.Key);
 
         services.AddSingleton<IStagingDirectory, ChaosOptions>(p => p.GetRequiredService<IOptionsSnapshot<ChaosOptions>>().Value);
 
@@ -152,6 +154,7 @@ public class Startup
             p => (ExpiringMapInstanceCache)p.GetRequiredService<ISimpleCache<MapInstance>>());
     }
 
+    // ReSharper disable once MemberCanBeMadeStatic.Global
     public void RegisterStructuredLoggingTransformations() =>
         LogManager.Setup()
                   .SetupSerialization(
@@ -170,10 +173,9 @@ public class Startup
                                   Aisling = client.Aisling != null!
                                       ? new
                                       {
-                                          Type = nameof(Aisling),
                                           Id = client.Aisling.Id,
-                                          Location = ILocation.ToString(client.Aisling),
-                                          Name = client.Aisling.Name
+                                          Name = client.Aisling.Name,
+                                          Location = ILocation.ToString(client.Aisling)
                                       }
                                       : null
                               });
@@ -231,10 +233,9 @@ public class Startup
                                   IpAddress = obj.Client?.RemoteIp,
                                   Aisling = new
                                   {
-                                      Type = nameof(Aisling),
                                       Id = obj.Id,
-                                      Location = ILocation.ToString(obj),
-                                      Name = obj.Name
+                                      Name = obj.Name,
+                                      Location = ILocation.ToString(obj)
                                   }
                               });
 
@@ -243,9 +244,9 @@ public class Startup
                               {
                                   Type = nameof(Monster),
                                   Id = obj.Id,
-                                  Location = ILocation.ToString(obj),
                                   Name = obj.Name,
-                                  TemplateKey = obj.Template.TemplateKey
+                                  TemplateKey = obj.Template.TemplateKey,
+                                  Location = ILocation.ToString(obj)
                               });
 
                           builder.RegisterObjectTransformation<Merchant>(
@@ -253,9 +254,9 @@ public class Startup
                               {
                                   Type = nameof(Merchant),
                                   Id = obj.Id,
-                                  Location = ILocation.ToString(obj),
                                   Name = obj.Name,
-                                  TemplateKey = obj.Template.TemplateKey
+                                  TemplateKey = obj.Template.TemplateKey,
+                                  Location = ILocation.ToString(obj)
                               });
 
                           builder.RegisterObjectTransformation<GroundItem>(
@@ -263,9 +264,9 @@ public class Startup
                               {
                                   Type = nameof(GroundItem),
                                   Id = obj.Id,
+                                  Item = obj.Item,
                                   Creation = obj.Creation,
-                                  Location = ILocation.ToString(obj),
-                                  Item = obj.Item
+                                  Location = ILocation.ToString(obj)
                               });
 
                           builder.RegisterObjectTransformation<Money>(
@@ -273,9 +274,9 @@ public class Startup
                               {
                                   Type = nameof(Money),
                                   Id = obj.Id,
+                                  Amount = obj.Amount,
                                   Creation = obj.Creation,
-                                  Location = ILocation.ToString(obj),
-                                  Amount = obj.Amount
+                                  Location = ILocation.ToString(obj)
                               });
 
                           builder.RegisterObjectTransformation<Item>(
@@ -315,6 +316,7 @@ public class Startup
                               map => new
                               {
                                   InstanceId = map.InstanceId,
+                                  BaseInstanceId = map.BaseInstanceId,
                                   TemplateKey = map.Template.TemplateKey,
                                   Name = map.Name
                               });
@@ -322,9 +324,9 @@ public class Startup
                           builder.RegisterObjectTransformation<CommandDescriptor>(
                               obj => new
                               {
-                                  ExecutedByType = obj.Type.FullName,
+                                  CommandName = obj.Details.CommandName,
                                   RequiresAdmin = obj.Details.RequiresAdmin,
-                                  CommandName = obj.Details.CommandName
+                                  ExecutedByType = obj.Type.FullName
                               });
 
                           builder.RegisterObjectTransformation<Dialog>(

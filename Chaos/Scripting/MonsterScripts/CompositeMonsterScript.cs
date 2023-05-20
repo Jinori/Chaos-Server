@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Models.Panel;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
@@ -16,6 +16,11 @@ public class CompositeMonsterScript : CompositeScriptBase<IMonsterScript>, IMons
     ///     DO NOT EDIT THIS SCRIPT
     /// </summary>
     public virtual bool CanMove() => Components.All(component => component.CanMove());
+
+    /// <summary>
+    ///     DO NOT EDIT THIS SCRIPT
+    /// </summary>
+    public virtual bool CanSee(VisibleEntity entity) => Components.All(component => component.CanSee(entity));
 
     /// <summary>
     ///     DO NOT EDIT THIS SCRIPT

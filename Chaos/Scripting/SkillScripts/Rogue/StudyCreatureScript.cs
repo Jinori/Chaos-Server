@@ -1,33 +1,30 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Data;
+using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Extensions;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World.Abstractions;
-using Chaos.Scripting.FunctionalScripts.Abstractions;
-using Chaos.Scripting.FunctionalScripts.ApplyDamage;
+using Chaos.Models.Data;
+using Chaos.Models.Panel;
+using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Components;
 using Chaos.Scripting.SkillScripts.Abstractions;
 
 namespace Chaos.Scripting.SkillScripts.Rogue;
 
-public class StudyCreatureScript : BasicSkillScriptBase
+public class StudyObjectScript : ConfigurableSkillScriptBase, AbilityComponent<Creature>.IAbilityComponentOptions
 {
-    protected IApplyDamageScript ApplyDamageScript { get; }
-
     /// <inheritdoc />
-    public StudyCreatureScript(Skill subject)
-        : base(subject) =>
-        ApplyDamageScript = ApplyAttackDamageScript.Create();
+    public StudyObjectScript(Skill subject)
+        : base(subject) { }
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
     {
-        var targets = AbilityComponent.Activate<Creature>(context, this);
-        var mob = targets.TargetEntities.FirstOrDefault();
-        if (mob != null)
+        var mob = context.TargetCreature;
+        if (mob is not null)
         {
             context.SourceAisling?.Client.SendServerMessage(ServerMessageType.ScrollWindow,
                 $"Name: {mob.Name}\nLevel: {mob.StatSheet.Level}\nCurrent Health: {mob.StatSheet.CurrentHp}\nArmor Class: {mob.StatSheet.EffectiveAc}\nCurrent Mana: {mob.StatSheet.CurrentMp}\nOffensive Element: {mob.StatSheet.OffenseElement}\nDefensive Element: {mob.StatSheet.DefenseElement}"
             );
+            
             var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint));
             if (group != null)
             {
@@ -41,4 +38,29 @@ public class StudyCreatureScript : BasicSkillScriptBase
         if (mob == null)
             context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your attempt to examine failed.");
     }
+
+    /// <inheritdoc />
+    public bool ExcludeSourcePoint { get; init; }
+    /// <inheritdoc />
+    public TargetFilter Filter { get; init; }
+    /// <inheritdoc />
+    public bool MustHaveTargets { get; init; }
+    /// <inheritdoc />
+    public int Range { get; init; }
+    /// <inheritdoc />
+    public AoeShape Shape { get; init; }
+    /// <inheritdoc />
+    public byte? Sound { get; init; }
+    /// <inheritdoc />
+    public BodyAnimation BodyAnimation { get; init; }
+    /// <inheritdoc />
+    public bool AnimatePoints { get; init; }
+    /// <inheritdoc />
+    public Animation? Animation { get; init; }
+    /// <inheritdoc />
+    public int? ManaCost { get; init; }
+    /// <inheritdoc />
+    public decimal PctManaCost { get; init; }
+    /// <inheritdoc />
+    public bool ShouldNotBreakHide { get; init; }
 }

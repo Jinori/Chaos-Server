@@ -1,8 +1,8 @@
-using Chaos.Containers;
-using Chaos.Containers.Abstractions;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Collections;
+using Chaos.Collections.Abstractions;
+using Chaos.Models.Panel;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 
 namespace Chaos.Scripting.AislingScripts.Abstractions;
@@ -20,6 +20,10 @@ public abstract class AislingScriptBase : SubjectiveScriptBase<Aisling>, IAislin
 
     /// <inheritdoc />
     public virtual bool CanMove() => true;
+
+    /// <param name="entity"></param>
+    /// <inheritdoc />
+    public virtual bool CanSee(VisibleEntity entity) => true;
 
     /// <inheritdoc />
     public virtual bool CanTalk() => true;

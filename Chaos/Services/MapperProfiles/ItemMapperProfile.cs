@@ -1,13 +1,13 @@
 using Chaos.Common.Abstractions;
-using Chaos.Data;
+using Chaos.Models.Data;
+using Chaos.Models.Panel;
+using Chaos.Models.Templates;
 using Chaos.Networking.Entities.Server;
-using Chaos.Objects.Panel;
 using Chaos.Schemas.Aisling;
 using Chaos.Schemas.Data;
 using Chaos.Schemas.Templates;
 using Chaos.Scripting.Abstractions;
 using Chaos.Storage.Abstractions;
-using Chaos.Templates;
 using Chaos.TypeMapper.Abstractions;
 
 namespace Chaos.Services.MapperProfiles;
@@ -83,7 +83,7 @@ public sealed class ItemMapperProfile : IMapperProfile<Item, ItemSchema>,
             MaxDurability = item.Template.MaxDurability ?? 0,
             Name = item.DisplayName,
             Slot = item.Slot,
-            Sprite = item.ItemSprite.OffsetPanelSprite,
+            Sprite = item.ItemSprite.PanelSprite,
             Stackable = item.Template.Stackable
         };
     }
@@ -99,7 +99,7 @@ public sealed class ItemMapperProfile : IMapperProfile<Item, ItemSchema>,
         MaxDurability = obj.Template.MaxDurability ?? 0,
         Name = obj.DisplayName,
         Slot = obj.Slot,
-        Sprite = obj.ItemSprite.OffsetPanelSprite,
+        Sprite = obj.ItemSprite.PanelSprite,
         Stackable = obj.Template.Stackable
     };
 

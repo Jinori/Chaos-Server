@@ -1,12 +1,21 @@
+<<<<<<<< HEAD:Chaos/Scripting/EffectScripts/Jobs/SmashVialHealEffect.cs
 ﻿using Chaos.Common.Definitions;
 using Chaos.Data;
+========
+using Chaos.Common.Definitions;
+using Chaos.Models.Data;
+>>>>>>>> upstream/master:Chaos/Scripting/EffectScripts/RegenerationEffect.cs
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Jobs;
 
+<<<<<<<< HEAD:Chaos/Scripting/EffectScripts/Jobs/SmashVialHealEffect.cs
 public sealed class SmashVialHealEffect : ContinuousAnimationEffectBase
+========
+public sealed class RegenerationEffect : ContinuousAnimationEffectBase
+>>>>>>>> upstream/master:Chaos/Scripting/EffectScripts/RegenerationEffect.cs
 {
     /// <inheritdoc />
     public override byte Icon => 145;

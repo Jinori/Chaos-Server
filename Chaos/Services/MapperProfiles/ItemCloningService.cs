@@ -1,5 +1,5 @@
 using Chaos.Common.Identity;
-using Chaos.Objects.Panel;
+using Chaos.Models.Panel;
 using Chaos.Schemas.Aisling;
 using Chaos.TypeMapper.Abstractions;
 using Microsoft.Extensions.Logging;
@@ -20,7 +20,7 @@ public sealed class ItemCloningService : ICloningService<Item>
     public Item Clone(Item obj)
     {
         var schema = Mapper.Map<ItemSchema>(obj);
-        schema.UniqueId = ServerId.NextId;
+        schema.UniqueId = PersistentIdGenerator<ulong>.Shared.NextId;
         var cloned = Mapper.Map<Item>(schema);
 
         Logger.LogDebug("Cloned {@OriginItem} into {@ClonedItem}", obj, cloned);
