@@ -8,11 +8,11 @@ using Chaos.Scripting.Components.Utilities;
 using Chaos.Scripting.SpellScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.SpellScripts;
+namespace Chaos.Scripting.SpellScripts.Buffs;
 
-[SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
+
 public class ApplyEffectScript : ConfigurableSpellScriptBase,
-                                 AbilityComponent<Creature>.IAbilityComponentOptions,
+                                 SpellComponent<Creature>.ISpellComponentOptions,
                                  ApplyEffectComponent.IApplyEffectComponentOptions
 {
     /// <inheritdoc />
@@ -24,7 +24,7 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
     public override void OnUse(SpellContext context) =>
         new ComponentExecutor(context)
             .WithOptions(this)
-            .ExecuteAndCheck<AbilityComponent<Creature>>()
+            .ExecuteAndCheck<SpellComponent<Creature>>()
             ?
             .Execute<ApplyEffectComponent>();
 
@@ -57,5 +57,7 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
     public int? ManaCost { get; init; }
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
+    /// <inheritdoc />
+    public bool IgnoreMagicResistance { get; init; }
     #endregion
 }

@@ -11,7 +11,7 @@ using Chaos.Services.Factories.Abstractions;
 namespace Chaos.Scripting.SpellScripts;
 
 public class LayReactorTileScript : ConfigurableSpellScriptBase,
-                                    AbilityComponent<MapEntity>.IAbilityComponentOptions,
+                                    SpellComponent<MapEntity>.ISpellComponentOptions,
                                     LayReactorComponent.ILayReactorComponentOptions
 {
     public LayReactorTileScript(Spell subject, IReactorTileFactory reactorTileFactory)
@@ -22,7 +22,7 @@ public class LayReactorTileScript : ConfigurableSpellScriptBase,
     public override void OnUse(SpellContext context) =>
         new ComponentExecutor(context)
             .WithOptions(this)
-            .ExecuteAndCheck<AbilityComponent<MapEntity>>()
+            .ExecuteAndCheck<SpellComponent<MapEntity>>()
             ?
             .Execute<LayReactorComponent>();
 
@@ -55,5 +55,7 @@ public class LayReactorTileScript : ConfigurableSpellScriptBase,
     public int? ManaCost { get; init; }
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
+    /// <inheritdoc />
+    public bool IgnoreMagicResistance { get; init; }
     #endregion
 }

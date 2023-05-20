@@ -47,10 +47,7 @@ public sealed class Spell : PanelEntityBase, IScripted<ISpellScript>
     {
         if (!Script.CanUse(context))
             return;
-
-        context.Source.LastSpellCast = DateTime.UtcNow;
-        context.Source.LastSpellCastTemplateName = this.Template.TemplateKey;
-
+        
         Script.OnUse(context);
         BeginCooldown(context.Source);
     }

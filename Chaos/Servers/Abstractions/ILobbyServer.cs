@@ -1,4 +1,3 @@
-using Chaos.Clients.Abstractions;
 using Chaos.Networking.Abstractions;
 using Chaos.Packets;
 

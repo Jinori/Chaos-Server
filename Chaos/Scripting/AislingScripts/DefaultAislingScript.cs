@@ -1,21 +1,22 @@
-using Chaos.Clients.Abstractions;
+using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Common.Utilities;
-using Chaos.Containers;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
+using Chaos.Formulae;
+using Chaos.Models.Data;
 using Chaos.Networking.Abstractions;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.AislingScripts.Abstractions;
 using Chaos.Scripting.Behaviors;
+using Chaos.Scripting.Components;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.ApplyHealing;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
@@ -23,26 +24,32 @@ using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.AislingScripts;
 
-public class DefaultAislingScript : AislingScriptBase
+public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealComponentOptions
 {
     private readonly IIntervalTimer SleepAnimationTimer;
     protected virtual RestrictionBehavior RestrictionBehavior { get; }
     protected virtual VisibilityBehavior VisibilityBehavior { get; }
-    private readonly IClientRegistry<IWorldClient> _clientRegistry;
+    private readonly IClientRegistry<IWorldClient> ClientRegistry;
     private readonly IMerchantFactory MerchantFactory;
     private readonly ISimpleCache SimpleCache;
+    private readonly IEffectFactory EffectFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
-    private readonly List<string> _mapsToNotPunishDeathOn = new()
+    private readonly List<string> MapsToNotPunishDeathOn = new()
     {
         "Mr. Hopps's Home",
         "Cain's Farm"
     };
 
+    private Animation MistHeal { get; } = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 9
+    };
+    
    
 
     /// <inheritdoc />
-    public DefaultAislingScript(Aisling subject, IClientRegistry<IWorldClient> clientRegistry, IMerchantFactory merchantFactory,
-        ISimpleCache simpleCache
+    public DefaultAislingScript(Aisling subject, IClientRegistry<IWorldClient> clientRegistry, IMerchantFactory merchantFactory, ISimpleCache simpleCache, IEffectFactory effectFactory
     )
         : base(subject)
     {
@@ -50,9 +57,13 @@ public class DefaultAislingScript : AislingScriptBase
         VisibilityBehavior = new VisibilityBehavior();
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5));
-        _clientRegistry = clientRegistry;
+        ClientRegistry = clientRegistry;
+        EffectFactory = effectFactory;
         MerchantFactory = merchantFactory;
         SimpleCache = simpleCache;
+        SourceScript = this;
+        ApplyHealScript = ApplyNonAlertingHealScript.Create();
+        ApplyHealScript.HealFormula = HealFormulae.Default;
     }
 
 
@@ -93,7 +104,34 @@ public class DefaultAislingScript : AislingScriptBase
             Subject.Effects.Dispel("pramh");
             Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You awake from your slumber.");
         }
-
+        if (Subject.Status.HasFlag(Status.ThunderStance))
+        {
+            var result = damage * 3;
+            if (Randomizer.RollChance(2))
+            {
+                var effect = EffectFactory.Create("Suain");
+                source.Effects.Apply(Subject, effect);
+            }
+            if (source is Monster monster) 
+                monster.AggroList.AddOrUpdate(Subject.Id, _ => result, (_, currentAggro) => currentAggro + result);
+        }
+        if (Subject.Status.HasFlag(Status.MistStance))
+        {
+            var result = damage * .15m;
+            if (Subject.Group is not null)
+            {
+                foreach (var person in Subject.Group)
+                {
+                    person.Animate(MistHeal, person.Id);
+                    ApplyHealScript.ApplyHeal(source, Subject, this, (int)result);
+                }
+            }
+            else
+            {
+                Subject.Animate(MistHeal, Subject.Id);
+                ApplyHealScript.ApplyHeal(source, Subject, this, (int)result);
+            }
+        }
         if (Subject.Status.HasFlag(Status.LastStand))
         {
             if (damage >= Subject.StatSheet.CurrentHp)
@@ -155,11 +193,11 @@ public class DefaultAislingScript : AislingScriptBase
             source.MapInstance.AddObject(terminus, point);
         }
 
-        if (_mapsToNotPunishDeathOn.Contains(Subject.MapInstance.Name))
+        if (MapsToNotPunishDeathOn.Contains(Subject.MapInstance.Name))
             return;
         
 
-        foreach (var client in _clientRegistry)
+        foreach (var client in ClientRegistry)
             client.SendServerMessage(
                 ServerMessageType.OrangeBar1,
                 $"{Subject.Name} was killed at {Subject.MapInstance.Name} by {source.Name}.");
@@ -194,4 +232,17 @@ public class DefaultAislingScript : AislingScriptBase
                 Subject.AnimateBody(BodyAnimation.Snore);
         }
     }
+
+    /// <inheritdoc />
+    public IApplyHealScript ApplyHealScript { get; init; }
+    /// <inheritdoc />
+    public int? BaseHeal { get; init; }
+    /// <inheritdoc />
+    public Stat? HealStat { get; init; }
+    /// <inheritdoc />
+    public decimal? HealStatMultiplier { get; init; }
+    /// <inheritdoc />
+    public decimal? PctHpHeal { get; init; }
+    /// <inheritdoc />
+    public IScript SourceScript { get; init; }
 }

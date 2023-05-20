@@ -9,10 +9,10 @@ using Chaos.Scripting.Components.Utilities;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.SpellScripts.Abstractions;
 
-namespace Chaos.Scripting.SpellScripts;
+namespace Chaos.Scripting.SpellScripts.Healing;
 
 public class HealScript : ConfigurableSpellScriptBase,
-                          AbilityComponent<Creature>.IAbilityComponentOptions,
+                          SpellComponent<Creature>.ISpellComponentOptions,
                           HealComponent.IHealComponentOptions
 {
     /// <inheritdoc />
@@ -27,7 +27,7 @@ public class HealScript : ConfigurableSpellScriptBase,
     public override void OnUse(SpellContext context) =>
         new ComponentExecutor(context)
             .WithOptions(this)
-            .ExecuteAndCheck<AbilityComponent<Creature>>()
+            .ExecuteAndCheck<SpellComponent<Creature>>()
             ?
             .Execute<HealComponent>();
 
@@ -68,5 +68,8 @@ public class HealScript : ConfigurableSpellScriptBase,
     public int? ManaCost { get; init; }
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
+
+    /// <inheritdoc />
+    public bool IgnoreMagicResistance { get; init; }
     #endregion
 }

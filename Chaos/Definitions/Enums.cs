@@ -36,7 +36,8 @@ public enum Status : ulong
     MorAite = 1 << 20,
     ArdAite = 1 << 21,
     Hide = 1 << 22,
-    LastStand = 1 << 23
+    LastStand = 1 << 23,
+    Amensia = 1 << 24,
     //add more statuses here, double each time
 }
 
@@ -64,7 +65,8 @@ public enum TargetFilter
     DeadOnly = 1 << 3,
     AislingsOnly = 1 << 4,
     MonstersOnly = 1 << 5,
-    SelfOnly = 1 << 6
+    SelfOnly = 1 << 6,
+    GroupOnly = 1 << 7
 }
 
 public enum VisibilityType

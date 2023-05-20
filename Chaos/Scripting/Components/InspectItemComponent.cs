@@ -5,12 +5,13 @@ using Chaos.Scripting.Components.Utilities;
 
 namespace Chaos.Scripting.Components;
 
-public class IdentifyItemComponent : IComponent
+public class InspectItemComponent : IComponent
 {
     /// <inheritdoc />
     public void Execute(ActivationContext context, ComponentVars vars)
     {
         var item = context.SourceAisling?.Inventory.FirstOrDefault();
+        var options = vars.GetOptions<IInspectItemComponentOptions>();
 
         if (item is null)
         {
@@ -18,37 +19,44 @@ public class IdentifyItemComponent : IComponent
             return;
         }
         
-        context.SourceAisling?.SendServerMessage(
-            ServerMessageType.ScrollWindow,
-            "Name: "
-            + item?.DisplayName
-            + "\nWeight: "
-            + item?.Template.Weight
-            +"\nSkill Damage: "
-            +item?.Modifiers?.FlatSkillDamage
-            +"\nSpell Damage: "
-            +item?.Modifiers?.FlatSpellDamage
-            + "\nHealth: "
-            + item?.Template.Modifiers?.MaximumHp
-            + "\nMana: "
-            + item?.Template.Modifiers?.MaximumMp
-            + "\nAttack Speed %: "
-            + item?.Template.Modifiers?.AtkSpeedPct
-            + "\nMagic Resistance: "
-            + item?.Template.Modifiers?.MagicResistance
-            + "\nStrength: "
-            + item?.Template.Modifiers?.Str
-            + "\nIntelligence: "
-            + item?.Template.Modifiers?.Int
-            + "\nWisdom: "
-            + item?.Template.Modifiers?.Wis
-            + "\nConstitution: "
-            + item?.Template.Modifiers?.Con
-            + "\nDexterity: "
-            + item?.Template.Modifiers?.Dex
-            + "\nDMG: "
-            + item?.Template.Modifiers?.Dmg
-            + "\nHIT: "
-            + item?.Template.Modifiers?.Hit);
+        if (options.OutputType != null)
+            context.SourceAisling?.SendServerMessage(
+                options.OutputType.Value,
+                "Name: "
+                + item?.DisplayName
+                + "\nWeight: "
+                + item?.Template.Weight
+                + "\nSkill Damage: "
+                + item?.Modifiers?.FlatSkillDamage
+                + "\nSpell Damage: "
+                + item?.Modifiers?.FlatSpellDamage
+                + "\nHealth: "
+                + item?.Template.Modifiers?.MaximumHp
+                + "\nMana: "
+                + item?.Template.Modifiers?.MaximumMp
+                + "\nAttack Speed %: "
+                + item?.Template.Modifiers?.AtkSpeedPct
+                + "\nMagic Resistance: "
+                + item?.Template.Modifiers?.MagicResistance
+                + "\nStrength: "
+                + item?.Template.Modifiers?.Str
+                + "\nIntelligence: "
+                + item?.Template.Modifiers?.Int
+                + "\nWisdom: "
+                + item?.Template.Modifiers?.Wis
+                + "\nConstitution: "
+                + item?.Template.Modifiers?.Con
+                + "\nDexterity: "
+                + item?.Template.Modifiers?.Dex
+                + "\nDMG: "
+                + item?.Template.Modifiers?.Dmg
+                + "\nHIT: "
+                + item?.Template.Modifiers?.Hit);
     }
+    
+    public interface IInspectItemComponentOptions
+    {
+        ServerMessageType? OutputType { get; init; }
+    }
+    
 }

@@ -1,6 +1,6 @@
 using Chaos.Definitions;
 using Chaos.Extensions;
-using Chaos.Objects.World;
+using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MonsterScripts.Abstractions;

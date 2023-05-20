@@ -6,11 +6,11 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Rogue;
 
-public class AssassinStrikeEffect : EffectBase
+public class BirthdaySuitEffect : EffectBase
 {
     protected int ArmorClassSaved;
     public override byte Icon => 109;
-    public override string Name => "AssassinStrike";
+    public override string Name => "BirthdaySuit";
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(12);
 
     public override void OnApplied()
@@ -79,7 +79,7 @@ public class AssassinStrikeEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("AssassinStrike"))
+        if (target.Effects.Contains("BirthdaySuit"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Their armor class has already been lowered.");
 

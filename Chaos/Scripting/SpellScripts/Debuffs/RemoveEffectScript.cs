@@ -1,62 +1,58 @@
-using Chaos.Data;
+using Chaos.Common.Definitions;
 using Chaos.Definitions;
-using Chaos.Extensions.Common;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Models.Data;
+using Chaos.Models.Panel;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components;
+using Chaos.Scripting.Components.Utilities;
 using Chaos.Scripting.SpellScripts.Abstractions;
 
 namespace Chaos.Scripting.SpellScripts.Debuffs;
 
-[SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
-public class RemoveEffectScript : BasicSpellScriptBase, ManaCostComponent.IManaCostComponentOptions
+public class RemoveEffectScript : ConfigurableSpellScriptBase, SpellComponent<Creature>.ISpellComponentOptions, RemoveEffectComponent.IRemoveEffectComponentOptions
 {
-    protected ManaCostComponent ManaCostComponent { get; }
+    /// <inheritdoc />
+
+
+    /// <inheritdoc />
+    public override void OnUse(SpellContext context) =>
+        new ComponentExecutor(context).WithOptions(this)
+                                      .ExecuteAndCheck<SpellComponent<Creature>>()
+                                      ?
+                                      .Execute<RemoveEffectComponent>();
+
+    /// <inheritdoc />
+    public bool ExcludeSourcePoint { get; init; }
+    /// <inheritdoc />
+    public TargetFilter Filter { get; init; }
+    /// <inheritdoc />
+    public bool MustHaveTargets { get; init; }
+    /// <inheritdoc />
+    public int Range { get; init; }
+    /// <inheritdoc />
+    public AoeShape Shape { get; init; }
+    /// <inheritdoc />
+    public bool IgnoreMagicResistance { get; init; }
+    /// <inheritdoc />
+    public byte? Sound { get; init; }
+    /// <inheritdoc />
+    public BodyAnimation BodyAnimation { get; init; }
+    /// <inheritdoc />
+    public bool AnimatePoints { get; init; }
+    /// <inheritdoc />
+    public Animation? Animation { get; init; }
+    /// <inheritdoc />
+    public int? ManaCost { get; init; }
+    /// <inheritdoc />
+    public decimal PctManaCost { get; init; }
+    /// <inheritdoc />
+    public bool ShouldNotBreakHide { get; init; }
+    /// <inheritdoc />
+    public string? EffectKey { get; init; }
+    /// <inheritdoc />
+    public bool? RemoveAllEffects { get; init; }
 
     /// <inheritdoc />
     public RemoveEffectScript(Spell subject)
-        : base(subject) =>
-        ManaCostComponent = new ManaCostComponent();
-
-    /// <inheritdoc />
-    public override void OnUse(SpellContext context)
-    {
-        if (!ManaCostComponent.TryApplyManaCost(context, this))
-            return;
-
-        var targets = AbilityComponent.Activate<Creature>(context, this);
-
-        foreach (var target in targets.TargetEntities)
-        {
-            if (EffectKey.EqualsI("dinarcoli"))
-            {
-                if (target.Effects.Contains("pramh"))
-                {
-                    target.Effects.Dispel("pramh");
-                    target.Status &= ~Status.Pramh;
-                }
-
-                if (target.Effects.Contains("beagpramh"))
-                {
-                    target.Effects.Dispel("beagpramh");
-                    target.Status &= ~Status.Pramh;
-                }
-            } 
-            else
-            {
-                if (target.Effects.Contains(EffectKey))
-                {
-                    target.Effects.Dispel(EffectKey);   
-                }
-            }
-        }
-
-        context.SourceAisling?.SendActiveMessage($"You cast {Subject.Template.Name}.");
-    }
-
-    #region ScriptVars
-    protected string EffectKey { get; init; } = null!;
-    public int? ManaCost { get; init; }
-    public decimal PctManaCost { get; init; }
-    #endregion
+        : base(subject) { }
 }

@@ -1,11 +1,10 @@
-using System.Diagnostics.Tracing;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
-using Chaos.Data;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
+using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
@@ -19,14 +18,7 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
     public IDamageFormula DamageFormula { get; set; }
     protected readonly IEffectFactory EffectFactory;
     public static string Key { get; } = GetScriptKey(typeof(ApplyAttackDamageScript));
-
-    private Animation MistHeal { get; } = new()
-    {
-        AnimationSpeed = 100,
-        TargetAnimation = 9
-    };
     
-
     public ApplyAttackDamageScript(IEffectFactory effectFactory)
     {
         DamageFormula = DamageFormulae.Default;
@@ -105,39 +97,7 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
                 aisling.Client.SendAttributes(StatUpdateType.Vitality);
                 aisling.ShowHealth();
                 aisling.Script.OnAttacked(source, damage);
-
-                if (aisling.Status.HasFlag(Status.ThunderStance))
-                {
-                    var result = damage * 3;
-                    switch (source)
-                    {
-                        case Monster monster:
-                            if (Randomizer.RollChance(2))
-                            {
-                                var effect = EffectFactory.Create("Suain");
-                                monster.Effects.Apply(target, effect);
-                            }
-                            monster.AggroList.AddOrUpdate(target.Id, _ => result, (_, currentAggro) => currentAggro + result);
-                            break;
-                    }
-                }
-                if (aisling.Status.HasFlag(Status.MistStance))
-                {
-                    var result = damage * .15m;
-                    if (aisling.Group is not null)
-                    {
-                        foreach (var person in aisling.Group)
-                        {
-                            person.Animate(MistHeal, person.Id);
-                            person.ApplyHealing(aisling, (int)result);
-                        }
-                    }
-                    else
-                    {
-                        aisling.Animate(MistHeal, aisling.Id);
-                        aisling.ApplyHealing(aisling, (int)result);
-                    }
-                }
+                
                 if (!aisling.IsAlive)
                     aisling.Script.OnDeath(source);
 
@@ -179,13 +139,7 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
                 monster.StatSheet.SubtractHp(damage);
                 monster.ShowHealth();
                 monster.Script.OnAttacked(source, damage);
-
-                if (monster.Status.HasFlag(Status.MistStance))
-                {
-                    var result = damage * .15m;
-                    monster.Animate(MistHeal, monster.Id);
-                    monster.ApplyHealing(monster, (int)result);
-                }
+                
                 if (!monster.IsAlive)
                     monster.Script.OnDeath();
 

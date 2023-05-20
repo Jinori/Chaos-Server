@@ -10,12 +10,15 @@ public static class TargetFilterExtensions
     {
         if (filter == TargetFilter.None)
             return true;
-
+        
         if (source != null)
         {
             if (filter.HasFlag(TargetFilter.SelfOnly) && !source.Equals(target))
                 return false;
 
+            if (filter.HasFlag(TargetFilter.GroupOnly) && (source is not Aisling aisling || (aisling.Group?.Contains(target, WorldEntity.IdComparer) ?? false)))
+                return false;
+            
             if (filter.HasFlag(TargetFilter.FriendlyOnly) && !target.IsFriendlyTo(source))
                 return false;
 

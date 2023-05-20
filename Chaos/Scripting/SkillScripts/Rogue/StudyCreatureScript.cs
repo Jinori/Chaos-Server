@@ -1,6 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Geometry.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
@@ -9,16 +10,23 @@ using Chaos.Scripting.SkillScripts.Abstractions;
 
 namespace Chaos.Scripting.SkillScripts.Rogue;
 
-public class StudyObjectScript : ConfigurableSkillScriptBase, AbilityComponent<Creature>.IAbilityComponentOptions
+public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent<Creature>.IAbilityComponentOptions
 {
     /// <inheritdoc />
-    public StudyObjectScript(Skill subject)
+    public StudyCreatureScript(Skill subject)
         : base(subject) { }
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
     {
-        var mob = context.TargetCreature;
+        var points = AoeShape.Front.ResolvePoints(
+            context.Source,
+            3,
+            context.Direction,
+            excludeSource: true);
+
+        var mob = context.SourceMap.GetEntitiesAtPoints<Creature>(points.OfType<IPoint>()).FirstOrDefault();
+        
         if (mob is not null)
         {
             context.SourceAisling?.Client.SendServerMessage(ServerMessageType.ScrollWindow,

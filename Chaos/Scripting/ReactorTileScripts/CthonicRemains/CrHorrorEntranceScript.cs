@@ -1,10 +1,8 @@
 using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
-using Chaos.Scripting.DialogScripts.Quests.CthonicRemains;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 

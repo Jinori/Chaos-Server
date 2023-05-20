@@ -1,9 +1,9 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
-using Chaos.Objects.Menu;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Models.Menu;
+using Chaos.Models.Panel;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Utilities;
 

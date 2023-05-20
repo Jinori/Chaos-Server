@@ -1,6 +1,5 @@
-using System.Diagnostics;
 using Chaos.Common.Definitions;
-using Chaos.Data;
+using Chaos.Models.Data;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Wizard;

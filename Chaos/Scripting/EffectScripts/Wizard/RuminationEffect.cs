@@ -1,9 +1,9 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Data;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Models.Data;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -49,19 +49,6 @@ public class RuminationEffect : ContinuousAnimationEffectBase
 
     protected override void OnIntervalElapsed()
     {
-        //Check if a player is casting a new spell
-
-        if (AislingSubject?.LastSpellCastTemplateName?.EqualsI("rumination") is false)
-        {
-            AislingSubject?.Client.SendServerMessage(
-                ServerMessageType.OrangeBar1,
-                $"{MessageColor.Silver.ToPrefix()}You cannot gain mana while casting other spells.");
-
-            Subject.Effects.Terminate(Name);
-
-            return;
-        }
-
         //Check if they have moved from the original location
         var currentPoint = new Point(Subject.X, Subject.Y);
 

@@ -17,7 +17,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.ReactorTileScripts;
 
-public class TrapScript : ConfigurableReactorTileScriptBase,
+public class PorteTrapScript : ConfigurableReactorTileScriptBase,
                           GetTargetsComponent<Creature>.IGetTargetsComponentOptions,
                           SoundComponent.ISoundComponentOptions,
                           AnimationComponent.IAnimationComponentOptions,
@@ -34,10 +34,9 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
         AnimationSpeed = 100,
         TargetAnimation = 96
     };
-    protected ManaDrainComponent ManaDrainComponent { get; }
 
     /// <inheritdoc />
-    public TrapScript(ReactorTile subject, IEffectFactory effectFactory)
+    public PorteTrapScript(ReactorTile subject, IEffectFactory effectFactory)
         : base(subject)
     {
         if (Subject.Owner == null)
@@ -69,6 +68,23 @@ If this reactor was created through a script, you must specify the owner in the 
         if (!Filter.IsValidTarget(Owner, source))
             return;
 
+        var aisling = source as Aisling;
+
+        if ((aisling?.MapInstance.InstanceId == "pf_path") && aisling.Inventory.HasCount("Giant Ant Wing", 1))
+        {
+            aisling.Inventory.RemoveQuantity("Giant Ant Wing", 1);
+            aisling.SendOrangeBarMessage($"You lay down a Giant Ant Wing to avoid the trap, {aisling.Inventory.CountOf("Giant Ant Wing")} left.");
+
+            return;
+        }
+        if ((aisling?.MapInstance.InstanceId == "karlopostrap") && aisling.Inventory.HasCount("Giant Ant Wing", 1))
+        {
+            aisling.Inventory.RemoveQuantity("Giant Ant Wing", 1);
+            aisling.SendOrangeBarMessage($"You lay down a Giant Ant Wing to avoid the trap, {aisling.Inventory.CountOf("Giant Ant Wing")} left.");
+
+            return;
+        }
+        
         var executed = new ComponentExecutor(Owner, source)
                        .WithOptions(this)
                        .ExecuteAndCheck<GetTargetsComponent<Creature>>()
@@ -122,7 +138,7 @@ If this reactor was created through a script, you must specify the owner in the 
     public byte? Sound { get; init; }
     public bool AnimatePoints { get; init; }
     public bool MustHaveTargets { get; init; } = true;
-    public bool ExcludeSourcePoint { get; init; } = true;
+    public bool ExcludeSourcePoint { get; init; }
     public int? BaseDamage { get; init; }
     public Stat? DamageStat { get; init; }
     public decimal? DamageStatMultiplier { get; init; }

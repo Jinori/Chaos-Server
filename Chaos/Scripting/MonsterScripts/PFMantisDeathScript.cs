@@ -1,7 +1,7 @@
-﻿using Chaos.Containers;
+﻿using Chaos.Collections;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
-using Chaos.Objects.World;
+using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 

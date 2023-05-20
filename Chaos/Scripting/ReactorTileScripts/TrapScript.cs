@@ -26,12 +26,9 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
                           ApplyEffectComponent.IApplyEffectComponentOptions
 {
     protected IIntervalTimer AnimationTimer { get; set; }
-    protected IEffectFactory EffectFactory { get; set; }
     protected Creature Owner { get; set; }
     protected IIntervalTimer? Timer { get; set; }
     protected int TriggerCount { get; set; }
-    protected AbilityComponent AbilityComponent { get; }
-    protected DamageComponent DamageComponent { get; }
     protected Animation DetectTrapAnimation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -125,7 +122,7 @@ If this reactor was created through a script, you must specify the owner in the 
     public byte? Sound { get; init; }
     public bool AnimatePoints { get; init; }
     public bool MustHaveTargets { get; init; } = true;
-    public bool ExcludeSourcePoint { get; init; } = true;
+    public bool ExcludeSourcePoint { get; init; }
     public int? BaseDamage { get; init; }
     public Stat? DamageStat { get; init; }
     public decimal? DamageStatMultiplier { get; init; }

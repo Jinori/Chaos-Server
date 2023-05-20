@@ -1,30 +1,40 @@
 using Chaos.Common.Utilities;
-using Chaos.Data;
-using Chaos.Objects.Panel;
-using Chaos.Scripting.Abstractions;
+using Chaos.Models.Data;
+using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Components.Abstractions;
+using Chaos.Scripting.Components.Utilities;
 
 namespace Chaos.Scripting.Components;
 
-public class MagicResistanceComponent
+public class MagicResistanceComponent : IConditionalComponent
 {
-    private readonly Animation _animation = new()
+    public bool Execute(ActivationContext context, ComponentVars vars)
+    {
+        var targets = vars.GetTargets<Creature>();
+        var options = vars.GetOptions<IMagicResistanceComponentOptions>();
+
+        //Immediately cast spell
+        if (options.IgnoreMagicResistance)
+            return true;
+
+        foreach (var target in targets)
+        {
+            if (Randomizer.RollChance(100 - target.StatSheet.EffectiveMagicResistance))
+                return true;
+            
+            target.Animate(MissAnimation);
+        }
+        return false;
+    }
+
+    public interface IMagicResistanceComponentOptions
+    {
+        bool IgnoreMagicResistance { get; init; }
+    }
+    
+    private static readonly Animation MissAnimation = new()
     {
         TargetAnimation = 33,
         AnimationSpeed = 100
     };
-
-    public bool TryCastSpell(ActivationContext context, IScript source)
-    {
-        // Roll a chance based on the target's effective magic resistance
-        if (Randomizer.RollChance(100 - context.Target.StatSheet.EffectiveMagicResistance))
-            return true;
-        // Check if the source is a SubjectiveScriptBase<Spell>
-        if (source is not SubjectiveScriptBase<Spell> spellScript)
-            return false;
-        // Notify the source Aisling if it exists
-        context.SourceAisling?.SendActiveMessage($"{spellScript.Subject.Template.Name} has missed.");
-        // Animate the target
-        context.Target.Animate(_animation, context.Target.Id);
-        return false;
-    }
 }

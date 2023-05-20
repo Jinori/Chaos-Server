@@ -1,7 +1,7 @@
-using Chaos.Containers;
+using Chaos.Collections;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
-using Chaos.Objects.World;
+using Chaos.Models.World;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;

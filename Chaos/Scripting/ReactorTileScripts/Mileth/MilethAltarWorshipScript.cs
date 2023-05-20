@@ -1,8 +1,8 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
-using Chaos.Objects.Legend;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Models.Legend;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;

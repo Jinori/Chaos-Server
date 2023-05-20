@@ -1,7 +1,6 @@
-using System.Net;
 using Chaos.Definitions;
-using Chaos.Objects.Menu;
-using Chaos.Objects.World;
+using Chaos.Models.Menu;
+using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Generic;

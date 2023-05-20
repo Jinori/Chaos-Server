@@ -1,7 +1,9 @@
+using Chaos.Common.Utilities;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
+using Chaos.Scripting.Components;
 
 namespace Chaos.Scripting.SpellScripts.Abstractions;
 
@@ -12,7 +14,21 @@ public abstract class ConfigurableSpellScriptBase : ConfigurableScriptBase<Spell
         : base(subject, scriptKey => subject.Template.ScriptVars[scriptKey]) { }
 
     /// <inheritdoc />
-    public virtual bool CanUse(SpellContext context) => context.Source.IsAlive && (context.TargetCreature?.IsAlive ?? true);
+    public virtual bool CanUse(SpellContext context)
+    {
+        if (this is ManaCostComponent.IManaCostComponentOptions options)
+        {
+            var cost = options.ManaCost ?? 0;
+            cost += MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumMp, options.PctManaCost);
+
+            if (context.Source.StatSheet.CurrentMp < cost)
+            {
+                context.SourceAisling?.SendActiveMessage("You don't have enough mana.");
+                return false;   
+            }
+        }
+        return true;
+    }
 
     /// <inheritdoc />
     public virtual void OnForgotten(Aisling aisling) { }

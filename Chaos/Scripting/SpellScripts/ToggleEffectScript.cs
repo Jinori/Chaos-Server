@@ -12,7 +12,7 @@ namespace Chaos.Scripting.SpellScripts;
 
 [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
 public class ToggleEffectScript : ConfigurableSpellScriptBase,
-                                  AbilityComponent<Creature>.IAbilityComponentOptions,
+                                  SpellComponent<Creature>.ISpellComponentOptions,
                                   ToggleEffectComponent.IToggleEffectComponentOptions
 {
     /// <inheritdoc />
@@ -24,7 +24,7 @@ public class ToggleEffectScript : ConfigurableSpellScriptBase,
     public override void OnUse(SpellContext context) =>
         new ComponentExecutor(context)
             .WithOptions(this)
-            .ExecuteAndCheck<AbilityComponent<Creature>>()
+            .ExecuteAndCheck<SpellComponent<Creature>>()
             ?
             .Execute<ToggleEffectComponent>();
 
@@ -57,5 +57,7 @@ public class ToggleEffectScript : ConfigurableSpellScriptBase,
     public int? ManaCost { get; init; }
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
+    /// <inheritdoc />
+    public bool IgnoreMagicResistance { get; init; }
     #endregion
 }

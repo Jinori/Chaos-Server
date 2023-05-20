@@ -1,5 +1,5 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Data;
+using Chaos.Models.Data;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;

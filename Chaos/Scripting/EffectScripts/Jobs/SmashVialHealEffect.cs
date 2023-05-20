@@ -1,21 +1,12 @@
-<<<<<<<< HEAD:Chaos/Scripting/EffectScripts/Jobs/SmashVialHealEffect.cs
-﻿using Chaos.Common.Definitions;
-using Chaos.Data;
-========
 using Chaos.Common.Definitions;
 using Chaos.Models.Data;
->>>>>>>> upstream/master:Chaos/Scripting/EffectScripts/RegenerationEffect.cs
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Jobs;
 
-<<<<<<<< HEAD:Chaos/Scripting/EffectScripts/Jobs/SmashVialHealEffect.cs
 public sealed class SmashVialHealEffect : ContinuousAnimationEffectBase
-========
-public sealed class RegenerationEffect : ContinuousAnimationEffectBase
->>>>>>>> upstream/master:Chaos/Scripting/EffectScripts/RegenerationEffect.cs
 {
     /// <inheritdoc />
     public override byte Icon => 145;
@@ -39,8 +30,8 @@ public sealed class RegenerationEffect : ContinuousAnimationEffectBase
     protected override void OnIntervalElapsed()
     {
         //the interval is 100ms, so this will be applied 10 times a second
-        const int HEAL_PER_TICK = 5;
-        Subject.StatSheet.AddHp(HEAL_PER_TICK);
+        const int healPerTick = 5;
+        Subject.StatSheet.AddHp(healPerTick);
         //if the subject was a player, update their vit
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
     }

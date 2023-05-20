@@ -222,29 +222,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         Script = null!;
         SaveTimer = null!;
     }
-
-    /// <inheritdoc />
-    public override void ApplyDamage(Creature source, int amount, byte? hitSound = 1)
-    {
-        StatSheet.SubtractHp(amount);
-        Client.SendAttributes(StatUpdateType.Vitality);
-        ShowHealth(hitSound);
-    }
-
-    public override void ApplyHealing(Creature source, int amount)
-    {
-        StatSheet.AddHp(amount);
-        Client.SendAttributes(StatUpdateType.Vitality);
-        ShowHealth();
-    }
-
-    public override void ApplyMana(Creature source, int amount)
-    {
-        StatSheet.AddMp(amount);
-        Client.SendAttributes(StatUpdateType.Vitality);
-    }
-
-
+    
     /// <inheritdoc />
     void IDialogSourceEntity.Activate(Aisling source) => Script.OnClicked(source);
 

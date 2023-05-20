@@ -1,10 +1,9 @@
-using Chaos.Clients.Abstractions;
 using Chaos.Common.Definitions;
-using Chaos.Data;
+using Chaos.Models.Data;
+using Chaos.Models.Legend;
+using Chaos.Models.Menu;
+using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
-using Chaos.Objects.Legend;
-using Chaos.Objects.Menu;
-using Chaos.Objects.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Time;
 

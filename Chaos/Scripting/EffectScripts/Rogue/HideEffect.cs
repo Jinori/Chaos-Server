@@ -1,7 +1,7 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Definitions;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Rogue;

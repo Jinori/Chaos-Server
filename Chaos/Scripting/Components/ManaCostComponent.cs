@@ -19,7 +19,6 @@ public class ManaCostComponent : IConditionalComponent
         if (!context.Source.StatSheet.TrySubtractMp(cost))
         {
             context.SourceAisling?.SendActiveMessage("You do not have enough mana.");
-
             return false;
         }
 

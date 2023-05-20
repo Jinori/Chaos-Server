@@ -1,9 +1,8 @@
-﻿using Chaos.Data;
-using Chaos.Definitions;
-using Chaos.Extensions;
-using Chaos.Extensions.Geometry;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World.Abstractions;
+﻿using Chaos.Extensions.Geometry;
+using Chaos.Models.Data;
+using Chaos.Models.Panel;
+using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Components;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 
@@ -29,7 +28,7 @@ public class ChargeScript : DamageScript
         foreach (var point in points)
         {
             // If there is a wall at this point, return
-            if (context.Map.IsWall(point) || context.Map.IsBlockingReactor(point))
+            if (context.SourceMap.IsWall(point) || context.SourceMap.IsBlockingReactor(point))
             {
                 var distance = point.DistanceFrom(context.Source);
                 if (distance == 1)
@@ -39,7 +38,7 @@ public class ChargeScript : DamageScript
                 return;
             }
             // Get the closest creature to the source at this point
-            var entity = context.Map.GetEntitiesAtPoint<Creature>(point).OrderBy(creature => creature.DistanceFrom(context.Source))
+            var entity = context.SourceMap.GetEntitiesAtPoint<Creature>(point).OrderBy(creature => creature.DistanceFrom(context.Source))
                 .FirstOrDefault(creature => context.Source.WillCollideWith(creature));
             // If there is a creature at this point
             if (entity != null)
@@ -48,10 +47,8 @@ public class ChargeScript : DamageScript
                 var newPoint = entity.OffsetTowards(context.Source);
                 // Warp the source to the new point
                 context.Source.WarpTo(newPoint);
-                // Activate the ability on the creature
-                var targets = AbilityComponent.Activate<Creature>(context, this);
-                // Apply damage to the target entities
-                DamageComponent.ApplyDamage(context, targets.TargetEntities, this);
+                
+                // Needs Damage & Ability Component or a new Movement Component
                 return;
             }
         }

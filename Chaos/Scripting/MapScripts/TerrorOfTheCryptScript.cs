@@ -1,14 +1,12 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Containers;
-using Chaos.Data;
+﻿using Chaos.Collections;
+using Chaos.Common.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
-using Chaos.Geometry.Abstractions.Definitions;
-using Chaos.Objects.World;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Models.Data;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
-using Chaos.Templates;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 

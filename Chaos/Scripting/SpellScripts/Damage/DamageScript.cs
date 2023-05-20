@@ -10,10 +10,10 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.SpellScripts.Abstractions;
 
-namespace Chaos.Scripting.SpellScripts;
+namespace Chaos.Scripting.SpellScripts.Damage;
 
 public class DamageScript : ConfigurableSpellScriptBase,
-                            AbilityComponent<Creature>.IAbilityComponentOptions,
+                            SpellComponent<Creature>.ISpellComponentOptions,
                             DamageComponent.IDamageComponentOptions
 {
     /// <inheritdoc />
@@ -28,7 +28,7 @@ public class DamageScript : ConfigurableSpellScriptBase,
     public override void OnUse(SpellContext context) =>
         new ComponentExecutor(context)
             .WithOptions(this)
-            .ExecuteAndCheck<AbilityComponent<Creature>>()
+            .ExecuteAndCheck<SpellComponent<Creature>>()
             ?
             .Execute<DamageComponent>();
 
@@ -71,5 +71,7 @@ public class DamageScript : ConfigurableSpellScriptBase,
     public int? ManaCost { get; init; }
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
+    /// <inheritdoc />
+    public bool IgnoreMagicResistance { get; init; }
     #endregion
 }

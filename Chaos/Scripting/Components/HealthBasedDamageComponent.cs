@@ -1,5 +1,5 @@
 using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
+using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
@@ -9,55 +9,37 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 
 namespace Chaos.Scripting.Components;
 
-public class DamageComponent : IComponent
+public class HealthBasedDamageComponent : IComponent
 {
     protected virtual int CalculateDamage(
         Creature source,
-        Creature target,
-        int? baseDamage = null,
-        decimal? pctHpDamage = null,
-        Stat? damageStat = null,
-        decimal? damageStatMultiplier = null
+        decimal? healthMultiplier
     )
     {
-        var finalDamage = baseDamage ?? 0;
-
-        finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0);
-
-        if (!damageStat.HasValue)
-            return finalDamage;
-
-        if (!damageStatMultiplier.HasValue)
-        {
-            finalDamage += source.StatSheet.GetEffectiveStat(damageStat.Value);
-
-            return finalDamage;
-        }
-
-        finalDamage += Convert.ToInt32(source.StatSheet.GetEffectiveStat(damageStat.Value) * damageStatMultiplier.Value);
-
+        var multiplier = healthMultiplier ?? 1;
+        var finalDamage = Convert.ToInt32(multiplier * source.StatSheet.CurrentHp);
         return finalDamage;
     }
 
     /// <inheritdoc />
     public virtual void Execute(ActivationContext context, ComponentVars vars)
     {
-        var options = vars.GetOptions<IDamageComponentOptions>();
+        var options = vars.GetOptions<IHealthBasedDamageComponentOptions>();
         var targets = vars.GetTargets<Creature>();
+        var healthCostP = options.HealthCostPct ?? 1;
 
         foreach (var target in targets)
         {
             var damage = CalculateDamage(
                 context.Source,
-                target,
-                options.BaseDamage,
-                options.PctHpDamage,
-                options.DamageStat,
-                options.DamageStatMultiplier);
+                options.HealthMultiplier);
 
             if (damage <= 0)
                 continue;
 
+            if (options.TrueDamage) 
+                options.ApplyDamageScript.DamageFormula = DamageFormulae.PureDamage;
+            
             options.ApplyDamageScript.ApplyDamage(
                 context.Source,
                 target,
@@ -65,16 +47,22 @@ public class DamageComponent : IComponent
                 damage,
                 options.Element);
         }
+        
+        if (context.Source.StatSheet.HealthPercent <= options.HealthCostPct)
+            context.Source.StatSheet.SetHp(1);
+        else
+            context.Source.StatSheet.SubtractHealthPct(healthCostP);
+
+        context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
     }
 
-    public interface IDamageComponentOptions
+    public interface IHealthBasedDamageComponentOptions
     {
         IApplyDamageScript ApplyDamageScript { get; init; }
-        int? BaseDamage { get; init; }
-        Stat? DamageStat { get; init; }
-        decimal? DamageStatMultiplier { get; init; }
         Element? Element { get; init; }
-        decimal? PctHpDamage { get; init; }
+        decimal? HealthMultiplier { get; init; }
+        int? HealthCostPct { get; init; }
+        bool TrueDamage { get; init; }
         IScript SourceScript { get; init; }
     }
 }

@@ -1,6 +1,6 @@
-﻿using Chaos.Containers;
-using Chaos.Data;
-using Chaos.Objects.Panel;
+﻿using Chaos.Collections;
+using Chaos.Models.Data;
+using Chaos.Models.Panel;
 using Chaos.Scripting.SpellScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 

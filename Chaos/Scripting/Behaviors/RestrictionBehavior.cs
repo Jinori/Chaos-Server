@@ -1,3 +1,5 @@
+using Chaos.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -95,7 +97,7 @@ public class RestrictionBehavior
             }
         }
         
-        if (creature.IsDead && spell.Template.Name == "Self Revive")
+        if (creature.IsDead && (spell.Template.Name == "Self Revive"))
             return true;
         
         return creature.IsAlive;

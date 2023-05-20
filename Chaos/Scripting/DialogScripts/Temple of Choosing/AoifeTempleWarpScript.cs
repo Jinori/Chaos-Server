@@ -1,7 +1,7 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Containers;
-using Chaos.Objects.Menu;
-using Chaos.Objects.World;
+﻿using Chaos.Collections;
+using Chaos.Common.Definitions;
+using Chaos.Models.Menu;
+using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 

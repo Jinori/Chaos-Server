@@ -5,13 +5,9 @@ using Chaos.Time;
 using Chaos.Time.Abstractions;
 
 
-<<<<<<<< HEAD:Chaos/Scripting/EffectScripts/Priest/PoisonEffect.cs
+
 namespace Chaos.Scripting.EffectScripts.Priest;
 
-
-
-========
->>>>>>>> upstream/master:Chaos/Scripting/EffectScripts/PoisonEffect.cs
 public class PoisonEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />

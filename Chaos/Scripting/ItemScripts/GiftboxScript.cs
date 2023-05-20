@@ -1,7 +1,7 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Objects.Legend;
-using Chaos.Objects.Panel;
-using Chaos.Objects.World;
+using Chaos.Models.Legend;
+using Chaos.Models.Panel;
+using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Time;
 

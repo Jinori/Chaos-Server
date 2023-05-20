@@ -1,9 +1,9 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Data;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Geometry.Abstractions;
-using Chaos.Objects.World.Abstractions;
+using Chaos.Models.Data;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
@@ -36,12 +36,22 @@ public class WrathEffect : ContinuousAnimationEffectBase
     public WrathEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
     /// <inheritdoc />
+    public override bool ShouldApply(Creature source, Creature target)
+    {
+        if (target.StatSheet.ManaPercent <= 5) 
+            return false;
+        else
+        {
+            return true;
+        }
+    }
+
+    /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
         if (Subject.StatSheet.ManaPercent < 1)
         {
             Subject.Effects.Terminate(Name);
-
             return;
         }
 

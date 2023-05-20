@@ -16,7 +16,7 @@ using Chaos.Services.Factories.Abstractions;
 namespace Chaos.Scripting.SpellScripts;
 
 public class CascadingDamageScript : ConfigurableSpellScriptBase,
-                                     AbilityComponent<Creature>.IAbilityComponentOptions,
+                                     SpellComponent<Creature>.ISpellComponentOptions,
                                      DamageComponent.IDamageComponentOptions,
                                      CascadingComponent<CascadingDamageTileScript>.ICascadingComponentOptions
 {
@@ -34,7 +34,7 @@ public class CascadingDamageScript : ConfigurableSpellScriptBase,
     public override void OnUse(SpellContext context) =>
         new ComponentExecutor(context)
             .WithOptions(this)
-            .ExecuteAndCheck<AbilityComponent<Creature>>()
+            .ExecuteAndCheck<SpellComponent<Creature>>()
             ?
             .Execute<DamageComponent>()
             .Execute<CascadingComponent<CascadingDamageTileScript>>();
@@ -84,5 +84,7 @@ public class CascadingDamageScript : ConfigurableSpellScriptBase,
     public decimal PctManaCost { get; init; }
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
+    /// <inheritdoc />
+    public bool IgnoreMagicResistance { get; init; }
     #endregion
 }

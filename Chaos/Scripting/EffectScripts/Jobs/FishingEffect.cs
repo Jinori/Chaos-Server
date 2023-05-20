@@ -1,7 +1,6 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
-using Chaos.Data;
-using Chaos.Objects.World;
+﻿using Chaos.Common.Utilities;
+using Chaos.Models.Data;
+using Chaos.Models.World;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;

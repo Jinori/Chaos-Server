@@ -1,6 +1,6 @@
 ﻿using Chaos.Common.Utilities;
 using Chaos.Extensions.Common;
-using Chaos.Objects.World;
+using Chaos.Models.World;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 
 namespace Chaos.Scripting.MerchantScripts;
