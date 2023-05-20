@@ -232,17 +232,13 @@ public class SickChildScript : DialogScriptBase
                     {
                         Subject.Reply(source, "Where is it?");
                         source.SendOrangeBarMessage("You do not have a black rose.");
-
                         return;
                     }
                     
                     Subject.Reply(source, "skip", "blackrose2-1start");
                     source.Trackers.Enums.Set(SickChildStage.BlackRoseTurn);
-                    return;
+                    break;
                 }
-                
-
-                break;
 
             case "blackrose3":
                 {

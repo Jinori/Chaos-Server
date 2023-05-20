@@ -6,7 +6,7 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripting.ReactorTileScripts;
+namespace Chaos.Scripting.ReactorTileScripts.KarloposIsland;
 
 public class KarloposIslandSecretEntranceScript : ConfigurableReactorTileScriptBase
 {
@@ -47,14 +47,14 @@ public class KarloposIslandSecretEntranceScript : ConfigurableReactorTileScriptB
             return;
         }
 
-        if (!aisling.Inventory.HasCount("red pearl", 1))
+        if ((aisling != null) && !aisling.Inventory.HasCount("red pearl", 1))
         {
-            aisling?.SendOrangeBarMessage("You are missing the Red Pearl.");
+            aisling.SendOrangeBarMessage("You are missing the Red Pearl.");
             return;
         }
 
-        if (aisling is not null
-            && aisling.Trackers.Enums.TryGetValue<QueenOctopusQuest>(out var stage)
+        if ((aisling != null)
+            && aisling.Trackers.Enums.TryGetValue<QueenOctopusQuest>(out var stage) 
             && (stage == QueenOctopusQuest.Pendant))
             
             source.TraverseMap(targetMap, Destination);

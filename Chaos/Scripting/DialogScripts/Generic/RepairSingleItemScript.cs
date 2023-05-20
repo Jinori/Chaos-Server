@@ -43,24 +43,27 @@ public class RepairSingleItemScript : DialogScriptBase
             return;
         }
 
-        var damage = ((float)item.CurrentDurability.Value / item.Template.MaxDurability.Value);
-        var formula = item.Template.SellValue / 2.0 * (.8 * damage);
-        RepairCost = (int)(RepairCost + formula);
-        
-        if (!source.TryTakeGold((int)RepairCost))
+        if (item.CurrentDurability is not null && item.Template.MaxDurability is not null)
         {
-            Subject.Close(source);
-            source.SendOrangeBarMessage($"You do not have enough. You need {(int)RepairCost} gold.");
-            return;
+            var damage = ((float)item.CurrentDurability.Value / item.Template.MaxDurability.Value);
+            var formula = item.Template.SellValue / 2.0 * (.8 * damage);
+            RepairCost = (int)(RepairCost + formula);
+        
+            if (!source.TryTakeGold(RepairCost))
+            {
+                Subject.Close(source);
+                source.SendOrangeBarMessage($"You do not have enough. You need {RepairCost} gold.");
+                return;
+            }
+        
+            source.Inventory.Update(slot, item1 =>
+            {
+                item1.CurrentDurability = item1.Template.MaxDurability;
+            });
+        
+            source.SendOrangeBarMessage($"Your {item.DisplayName} has been repaired.");
+            Subject.InjectTextParameters(item.DisplayName, RepairCost);   
         }
-        
-        source.Inventory.Update(slot, item1 =>
-        {
-            item.CurrentDurability = item.Template.MaxDurability;
-        });
-        
-        source.SendOrangeBarMessage($"Your {item.DisplayName} has been repaired.");
-        Subject.InjectTextParameters(item.DisplayName, RepairCost);
     }
 
     private void OnDisplayingConfirmation(Aisling source)
@@ -70,18 +73,19 @@ public class RepairSingleItemScript : DialogScriptBase
             Subject.ReplyToUnknownInput(source);
             return;
         }
+
+        if (item.CurrentDurability is not null && item.Template.MaxDurability is not null)
+        {
+            var damage = ((float)item.CurrentDurability.Value / item.Template.MaxDurability.Value);
+            var formula = item.Template.SellValue / 2.0 * (.8 * damage);
+            RepairCost = (((int)(RepairCost + formula)));
         
-        var damage = ((float)item.CurrentDurability.Value / item.Template.MaxDurability.Value);
-        var formula = item.Template.SellValue / 2.0 * (.8 * damage);
-        RepairCost = (((int)(RepairCost + formula)));
-        
-        Subject.InjectTextParameters(item.DisplayName, RepairCost);
+            Subject.InjectTextParameters(item.DisplayName, RepairCost);   
+        }
     }
 
-    private void OnDisplayingInitial(Aisling source)
-    {
+    private void OnDisplayingInitial(Aisling source) =>
         Subject.Slots = source.Inventory.Where(x =>
             x.Template.MaxDurability != null && x.CurrentDurability != null &&
             x.CurrentDurability.Value != x.Template.MaxDurability.Value).Select(x => x.Slot).ToList();
-    }
 }

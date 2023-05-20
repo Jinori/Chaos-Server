@@ -7,7 +7,6 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class DyeClassArmorsScript : DialogScriptBase
 {
-    private string Location;
     private readonly IItemFactory ItemFactory;
 
     private readonly List<string> DyeAbleClassArmors = new List<string>()
@@ -20,11 +19,9 @@ public class DyeClassArmorsScript : DialogScriptBase
     };
     
     public DyeClassArmorsScript(Dialog subject, IItemFactory itemFactory)
-        : base(subject)
-    {
+        : base(subject) =>
         ItemFactory = itemFactory;
-    }
-    
+
     public override void OnDisplaying(Aisling source)
     {
         switch (Subject.Template.TemplateKey.ToLower())
@@ -55,16 +52,18 @@ public class DyeClassArmorsScript : DialogScriptBase
             return;
         }
 
-        Location = source.MapInstance.InstanceId switch
+        var location = "";
+        
+        location = source.MapInstance.InstanceId switch
         {
             "mileth_tailor" => "Mileth",
             "rucesion_tailor" => "Rucesion",
             "suomi_armor_shop" => "Suomi",
             "piet_storage" => "Loures",
-            _ => Location
+            _ => location
         };
         
-        switch (Location)
+        switch (location)
         {
             case "Mileth":
             {
@@ -144,20 +143,18 @@ public class DyeClassArmorsScript : DialogScriptBase
             return;
         }
 
-        Location = source.MapInstance.InstanceId switch
+        var location = "";
+        location = source.MapInstance.InstanceId switch
         {
             "mileth_tailor" => "Mileth",
             "rucesion_tailor" => "Rucesion",
             "suomi_armor_shop" => "Suomi",
             "piet_storage" => "Loures",
-            _ => Location
+            _ => location
         };
 
-        Subject.InjectTextParameters(item.DisplayName, Location);
+        Subject.InjectTextParameters(item.DisplayName, location);
     }
 
-    private void OnDisplayingInitial(Aisling source)
-    {
-        Subject.Slots = source.Inventory.Where(x => DyeAbleClassArmors.Contains(x.Template.TemplateKey)).Select(x => x.Slot).ToList();
-    }
+    private void OnDisplayingInitial(Aisling source) => Subject.Slots = source.Inventory.Where(x => DyeAbleClassArmors.Contains(x.Template.TemplateKey)).Select(x => x.Slot).ToList();
 }

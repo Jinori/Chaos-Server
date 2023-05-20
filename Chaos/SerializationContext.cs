@@ -103,6 +103,7 @@ namespace Chaos;
 [JsonSerializable(typeof(Dictionary<string, TimedEventCollection.Event>))]
 [JsonSerializable(typeof(HashSet<string>))]
 //enums
+[JsonSerializable(typeof(ServerMessageType))]
 [JsonSerializable(typeof(Element))]
 [JsonSerializable(typeof(Stat))]
 [JsonSerializable(typeof(BodyAnimation))]
@@ -110,14 +111,14 @@ namespace Chaos;
 [JsonSerializable(typeof(TargetFilter))]
 [JsonSerializable(typeof(EquipmentType))]
 [JsonSerializable(typeof(LevelCircle))]
-[JsonSerializable(typeof(Element))]
+[JsonSerializable(typeof(ServerMessageType?))]
+[JsonSerializable(typeof(Element?))]
 [JsonSerializable(typeof(Stat?))]
 [JsonSerializable(typeof(BodyAnimation?))]
 [JsonSerializable(typeof(AoeShape?))]
 [JsonSerializable(typeof(TargetFilter?))]
 [JsonSerializable(typeof(EquipmentType?))]
 [JsonSerializable(typeof(LevelCircle?))]
-[JsonSerializable(typeof(Element?))]
 //numerics
 [JsonSerializable(typeof(byte))]
 [JsonSerializable(typeof(sbyte))]
@@ -142,6 +143,8 @@ namespace Chaos;
 [JsonSerializable(typeof(float?))]
 [JsonSerializable(typeof(double?))]
 //other primitives
+[JsonSerializable(typeof(bool))]
+[JsonSerializable(typeof(bool?))]
 [JsonSerializable(typeof(DateTime))]
 [JsonSerializable(typeof(TimeSpan))]
 //obj
