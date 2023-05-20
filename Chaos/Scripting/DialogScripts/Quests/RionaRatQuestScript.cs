@@ -6,17 +6,23 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories;
+using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Quests;
 
 public class RionaRatQuestScript : DialogScriptBase
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
+    private readonly IItemFactory ItemFactory;
 
     /// <inheritdoc />
-    public RionaRatQuestScript(Dialog subject)
-        : base(subject) =>
+    public RionaRatQuestScript(Dialog subject, IItemFactory itemFactory)
+        : base(subject)
+    {
+        ItemFactory = itemFactory;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -88,13 +94,16 @@ public class RionaRatQuestScript : DialogScriptBase
 
                         return;
                     }
-
+                    
+                    var mount = ItemFactory.Create("Mount");
+                    source.TryGiveItem(mount);
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     Subject.Reply(source, "Thank you so much for taking care of those rats!");
                     source.Trackers.Enums.Set(RionaRatQuestStage.CompletedRatQuest);
                     source.SendServerMessage(ServerMessageType.PersistentMessage, "");
                     source.Trackers.Counters.Remove("StartedRatQuest", out _);
+                    source.Trackers.Flags.AddFlag(AvailableMounts.WhiteHorse);
                 }
 
                 break;
