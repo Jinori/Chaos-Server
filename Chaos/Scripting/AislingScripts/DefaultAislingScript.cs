@@ -141,6 +141,13 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
                 return;
             }
         }
+
+        if (Subject.Effects.Contains("mount"))
+        {
+            Subject.Effects.Terminate("mount");
+
+            return;
+        }
         
         base.OnAttacked(source, damage);
     }

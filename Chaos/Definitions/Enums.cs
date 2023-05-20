@@ -601,3 +601,18 @@ public enum AvailableMounts
     None,
     WhiteHorse = 1,
 }
+
+[Flags]
+public enum CookingRecipes
+{
+    None,
+    dinnerplate = 1,
+    fruitbasket = 1 << 1,
+    lobsterdinner = 1 << 2,
+    pie = 1 << 3,
+    salad = 1 << 4,
+    sandwich = 1 << 5,
+    soup = 1 << 6,
+    steakmeal = 1 << 7,
+    sweetbuns = 1 << 8
+}

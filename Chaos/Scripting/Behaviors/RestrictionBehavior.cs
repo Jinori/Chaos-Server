@@ -67,6 +67,7 @@ public class RestrictionBehavior
 
     public virtual bool CanUseSkill(Creature creature, Skill skill)
     {
+        
         switch (creature)
         {
             case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh) || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out var timedEvent):
@@ -78,7 +79,14 @@ public class RestrictionBehavior
             {
                 return false;
             }
+            case Aisling aisling when aisling.Effects.Contains("mount"):
+            {
+                aisling.Effects.Dispel("mount");
+
+                return true;
+            }
         }
+
         return creature.IsAlive;
     }
 
@@ -94,6 +102,12 @@ public class RestrictionBehavior
             case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Pramh) || monster.Status.HasFlag(Status.BeagSuain):
             {
                 return false;
+            }
+            case Aisling aisling when aisling.Effects.Contains("mount"):
+            {
+                aisling.Effects.Dispel("mount");
+
+                return true;
             }
         }
         
