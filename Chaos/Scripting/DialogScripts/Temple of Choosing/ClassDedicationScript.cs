@@ -13,12 +13,7 @@ public class ClassDedicationScript : DialogScriptBase
 {
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
     
-    public ClassDedicationScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry) : base(subject)
-    {
-        ClientRegistry = clientRegistry;
-    }
-
-    private string builtReply;
+    public ClassDedicationScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry) : base(subject) => ClientRegistry = clientRegistry;
 
     private void SetUserToLevel1Stats(Aisling source, BaseClass baseClass)
     {
@@ -43,11 +38,10 @@ public class ClassDedicationScript : DialogScriptBase
         source.UserStatSheet.Subtract(statBuyCost);
         source.Client.SendAttributes(StatUpdateType.Full);
         source.Refresh(true);
-        
+
         var player = ClientRegistry
-            .Select(c => c.Aisling)
-            .Where(a => true);
-        
+            .Select(c => c.Aisling);
+
         foreach (var aisling in player)
         {
             aisling.SendOrangeBarMessage($"{source.Name} has dedicated to the path of {baseClass.ToString()}.");
@@ -60,6 +54,7 @@ public class ClassDedicationScript : DialogScriptBase
         {
             case "aoife_confirmrequirements":
             {
+                string builtReply;
                 if (source.Legend.ContainsKey("dedicated"))
                 {
                     Subject.Reply(source, "You have already dedicated yourself to a new path.");

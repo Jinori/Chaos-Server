@@ -34,7 +34,6 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
         AnimationSpeed = 100,
         TargetAnimation = 96
     };
-    protected ManaDrainComponent ManaDrainComponent { get; }
 
     /// <inheritdoc />
     public TrapScript(ReactorTile subject, IEffectFactory effectFactory)
