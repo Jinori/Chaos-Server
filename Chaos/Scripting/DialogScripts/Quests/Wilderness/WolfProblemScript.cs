@@ -41,7 +41,7 @@ public class WolfProblemScript : DialogScriptBase
                     return;
                 }
 
-                 if (stage == WolfProblemStage.Complete)
+                if (stage == WolfProblemStage.Complete)
                 {
                     Subject.Reply(source, "Thank you again for getting rid of that wolf.");
                 }

@@ -41,8 +41,7 @@ public class CryptSlayerScript : DialogScriptBase
         {
             case "skarn_initial":
             {
-                if (source.UserStatSheet.BaseClass is not BaseClass.Monk or BaseClass.Priest or BaseClass.Warrior or BaseClass.Rogue
-                                                      or BaseClass.Wizard)
+                if (source.UserStatSheet.BaseClass is BaseClass.Peasant)
                 {
                     Subject.Reply(source, "You cannot help me until you've dedicated yourself to a class.");
                     return;

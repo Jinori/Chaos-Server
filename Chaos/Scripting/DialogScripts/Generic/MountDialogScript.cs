@@ -94,7 +94,6 @@ public class MountDialogScript : DialogScriptBase
                 source.Refresh(true);
                 source.SendOrangeBarMessage("You jump on your mount.");
                 source.Effects.Apply(source, effect);
-                source.Trackers.Flags.AddFlag(CookingRecipes.dinnerplate);
                 Subject.Reply(source, "Skip", "Close");
             }
 

@@ -37,6 +37,8 @@ public class FiskSecretScript : DialogScriptBase
             
             case "fisk_initial":
             {
+                if (hasStage && (stage == FiskSecretStage.CompletedFiskSecret))
+                    return;
                 
                 if (source.UserStatSheet.Level >= 11)
                 {
@@ -249,10 +251,10 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "fisksecret_collectedbrandy":
             {
-                if (!source.Inventory.RemoveQuantity("rum", 10))
+                if (!source.Inventory.RemoveQuantity("brandy", 10))
                 {
-                    Subject.Reply(source, "Where's the Rum?");
-                    source.SendOrangeBarMessage("You don't have enough Rum.");
+                    Subject.Reply(source, "Where's the Brandy?");
+                    source.SendOrangeBarMessage("You don't have enough Brandy.");
                     return;
                 }
                 source.Trackers.Enums.Set(FiskSecretStage.BrandyTurnin);
@@ -260,7 +262,7 @@ public class FiskSecretScript : DialogScriptBase
                 break;
 
             }
-            case "fisksecret_fiskcheckin3":
+            case "fisksecret_fiskcheckin2":
             {
                 source.Trackers.Enums.Set(FiskSecretStage.CompletedFiskSecret);
                 source.TryGiveGold(125000);

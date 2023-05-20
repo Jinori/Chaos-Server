@@ -13,7 +13,7 @@ public class GreetingScript : MerchantScriptBase
 
     public override void OnApproached(Creature source)
     {
-        if (source is not Aisling)
+        if (source is not Aisling aisling)
             return;
         
         if (Randomizer.RollChance(60))
@@ -33,6 +33,9 @@ public class GreetingScript : MerchantScriptBase
             }
             case "skarn":
             {
+                if (aisling.Trackers.TimedEvents.HasActiveEvent("CryptSlayerCd", out var timedEvent))
+                    return;
+
                 Subject.Say($"{source.Name}, I have a job for you.");
                 return;
             }

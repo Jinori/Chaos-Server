@@ -1,6 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Data;
-using Chaos.Objects.World;
+﻿using Chaos.Models.Data;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts;
@@ -26,14 +24,13 @@ public class MountEffect : NonOverwritableEffectBase
 
     public override void OnDispelled()
     {
-        AislingSubject.Sprite = 0;
-        AislingSubject.Refresh(true);
+        if (AislingSubject != null)
+        {
+            AislingSubject.Sprite = 0;
+            AislingSubject.Refresh(true);
+            AislingSubject?.Trackers.TimedEvents.AddEvent("mount", TimeSpan.FromSeconds(5), true);
+        }
     }
 
-    public override void OnTerminated()
-    {
-        AislingSubject?.Trackers.TimedEvents.AddEvent("mount", TimeSpan.FromSeconds(5), true);
-
-        return;
-    }
+    public override void OnTerminated() => AislingSubject?.Trackers.TimedEvents.AddEvent("mount", TimeSpan.FromSeconds(5), true);
 }
