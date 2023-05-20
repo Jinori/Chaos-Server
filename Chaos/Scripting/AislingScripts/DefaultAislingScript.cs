@@ -55,7 +55,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         RestrictionBehavior = new RestrictionBehavior();
         VisibilityBehavior = new VisibilityBehavior();
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
-        SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5));
+        SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         ClientRegistry = clientRegistry;
         EffectFactory = effectFactory;
         MerchantFactory = merchantFactory;
