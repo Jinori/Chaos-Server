@@ -103,6 +103,8 @@ public class RionaRatQuestScript : DialogScriptBase
                     source.SendServerMessage(ServerMessageType.PersistentMessage, "");
                     source.Trackers.Counters.Remove("StartedRatQuest", out _);
                     source.Trackers.Flags.AddFlag(AvailableMounts.WhiteHorse);
+                    source.Trackers.Enums.Set(CurrentMount.WhiteHorse);
+                    source.SendOrangeBarMessage("Congratulations on your first mount! Hit F1 to see your Mounts.");
                 }
 
                 break;

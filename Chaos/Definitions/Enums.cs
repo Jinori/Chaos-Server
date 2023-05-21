@@ -602,6 +602,12 @@ public enum AvailableMounts
     WhiteHorse = 1,
 }
 
+public enum CurrentMount
+{
+    None,
+    WhiteHorse = 1,
+}
+
 [Flags]
 public enum CookingRecipes
 {

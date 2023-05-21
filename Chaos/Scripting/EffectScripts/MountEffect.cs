@@ -20,9 +20,8 @@ public class MountEffect : NonOverwritableEffectBase
         "MountEffect",
     };
     protected override byte? Sound => 115;
-
-
-    public override void OnDispelled()
+    
+    public override void OnTerminated()
     {
         if (AislingSubject != null)
         {
@@ -31,6 +30,4 @@ public class MountEffect : NonOverwritableEffectBase
             AislingSubject?.Trackers.TimedEvents.AddEvent("mount", TimeSpan.FromSeconds(5), true);
         }
     }
-
-    public override void OnTerminated() => AislingSubject?.Trackers.TimedEvents.AddEvent("mount", TimeSpan.FromSeconds(5), true);
 }

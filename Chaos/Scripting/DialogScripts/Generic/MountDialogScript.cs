@@ -11,16 +11,12 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class MountDialogScript : DialogScriptBase
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
     private readonly IEffectFactory _effectFactory;
 
     /// <inheritdoc />
     public MountDialogScript(Dialog subject, IEffectFactory effectFactory)
-        : base(subject)
-    {
+        : base(subject) =>
         _effectFactory = effectFactory;
-        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
-    }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -71,30 +67,9 @@ public class MountDialogScript : DialogScriptBase
 
             case "mount_whitehorse":
             {
-                if (source.Trackers.TimedEvents.HasActiveEvent("mount", out var timedEvent))
-                {
-                    Subject.Reply(source, "Skip", "Close");
-                    source.SendOrangeBarMessage($"You can mount again in {timedEvent.Remaining.ToReadableString()}");
-                    return;
-                }
-
-                {
-                    
-                }
-                if (source.Sprite != 0)
-                {
-                    source.SendOrangeBarMessage("You jump off your mount.");
-                    source.Effects.Dispel("mount");
-                    Subject.Reply(source, "Skip", "Close");
-
-                    return;
-                }
-
-                source.Sprite = 1;
-                source.Refresh(true);
-                source.SendOrangeBarMessage("You jump on your mount.");
-                source.Effects.Apply(source, effect);
+                source.Trackers.Enums.Set(CurrentMount.WhiteHorse);
                 Subject.Reply(source, "Skip", "Close");
+                source.SendOrangeBarMessage("You've equipped your White Horse.");
             }
 
                 break;
