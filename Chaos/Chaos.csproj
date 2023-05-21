@@ -65,7 +65,4 @@
     <ItemGroup>
         <EmbeddedResource Include="Resources\sotp.dat" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Scripting\DialogScripts\Crafting\" />
-    </ItemGroup>
 </Project>
