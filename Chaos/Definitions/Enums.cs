@@ -10,10 +10,12 @@ public enum AoeShape
     Cleave
 }
 
+[Flags]
 public enum AlchemyRecipes
 {
     None = 0,
     Hemloch = 1,
+    BetonyDeum = 1 << 2,
 }
 
 [Flags]

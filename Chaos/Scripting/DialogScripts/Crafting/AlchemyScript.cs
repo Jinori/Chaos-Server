@@ -25,19 +25,16 @@ public class AlchemyScript : DialogScriptBase
             case "alf_craftalchemyinitial":
             {
                 OnDisplayingInitial(source);
-
                 break;
             }
             case "alf_craftalchemyconfirmation":
             {
                 OnDisplayingConfirmation(source);
-
                 break;
             }
             case "alf_craftalchemyaccepted":
             {
                 OnDisplayingAccepted(source);
-
                 break;
             }
         }
@@ -45,21 +42,22 @@ public class AlchemyScript : DialogScriptBase
 
     private void OnDisplayingInitial(Aisling source)
     {
-        foreach (var recipe in CraftingRequirements.AlchemyRequirements)
+        if (source.Trackers.Flags.TryGetFlag(out AlchemyRecipes recipes))
         {
-            var hasRecipe = source.Trackers.Enums.TryGetValue(out AlchemyRecipes userRecipe);
-
-            if (userRecipe == recipe.Key)
+            foreach (var recipe in CraftingRequirements.AlchemyRequirements)
             {
-                var item = ItemFactory.CreateFaux(recipe.Key.ToString());
-                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                if ((recipes & recipe.Key) == recipe.Key)
+                {
+                    var item = ItemFactory.CreateFaux(recipe.Key.ToString());
+                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                }
             }
         }
     }
 
     private void OnDisplayingConfirmation(Aisling source)
     {
-        if (!Subject.MenuArgs.TryGet<string>(0, out var itemName))
+        if (!Subject.MenuArgs.TryGet<string>(0, out var itemName) || string.IsNullOrWhiteSpace(itemName))
         {
             Subject.Reply(source, DialogString.UnknownInput.Value);
 
@@ -68,7 +66,8 @@ public class AlchemyScript : DialogScriptBase
 
         foreach (var recipe in CraftingRequirements.AlchemyRequirements)
         {
-            if (itemName == recipe.Key.ToString())
+            var itemNameFix = itemName.Replace(" ", "");
+            if (itemNameFix == recipe.Key.ToString())
             {
                 if (CraftingRequirements.AlchemyRequirements.TryGetValue(recipe.Key, out var requirement))
                 {
@@ -80,7 +79,7 @@ public class AlchemyScript : DialogScriptBase
                     }
 
                     var ingredients = string.Join(" and ", ingredientList);
-                    Subject.InjectTextParameters(recipe.Key.ToString(), ingredients);
+                    Subject.InjectTextParameters(itemName, ingredients);
                 }
             }
         }
@@ -88,22 +87,22 @@ public class AlchemyScript : DialogScriptBase
 
     private void OnDisplayingAccepted(Aisling source)
     {
-        if (!Subject.MenuArgs.TryGet<string>(0, out var itemName))
+        if (!Subject.MenuArgs.TryGet<string>(0, out var itemName) || string.IsNullOrWhiteSpace(itemName))
         {
             Subject.Reply(source, DialogString.UnknownInput.Value);
-
             return;
         }
 
         foreach (var recipe in CraftingRequirements.AlchemyRequirements)
         {
-            if (itemName == recipe.Key.ToString())
+            var itemNameFix = itemName.Replace(" ", "");
+            if (itemNameFix == recipe.Key.ToString())
             {
                 if (CraftingRequirements.AlchemyRequirements.TryGetValue(recipe.Key, out var requirement))
                 {
                     foreach (var reagant in requirement)
                     {
-                        if ((reagant.DisplayName != null) && !source.Inventory.RemoveQuantity(reagant.DisplayName, reagant.Amount))
+                        if ((reagant.DisplayName != null) && !source.Inventory.HasCount(reagant.DisplayName, reagant.Amount))
                         {
                             Subject.Close(source);
                             source.SendOrangeBarMessage($"You do not have the required amount of ({reagant.Amount}) of {reagant.DisplayName}.");
