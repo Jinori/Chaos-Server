@@ -2,7 +2,28 @@ namespace Chaos.Definitions;
 
 public static class CraftingRequirements
 {
-    public static List<string> Meats { get; } = new()
+    public sealed class Ingredient
+    {
+        public string? TemplateKey { get; set; }
+        public string? DisplayName { get; set; }
+        public int Amount { get; set; }
+    }
+    
+    public static Dictionary<AlchemyRecipes, List<Ingredient>> AlchemyRequirements { get; } =
+        new()
+        {
+            {
+                AlchemyRecipes.Hemloch, new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient {  TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
+                }
+            },
+            // More recipes...
+        };
+
+    
+        public static List<string> Meats { get; } = new()
     {
         "lobstertail",
         "beef",
@@ -14,19 +35,7 @@ public static class CraftingRequirements
         "rawmeat"
         // Add more meat types as needed...
     };
-
-    public static Dictionary<string, List<(string DisplayName, int Amount)>> AlchemyRequirements { get; } =
-        new(StringComparer.OrdinalIgnoreCase)
-        {
-            {
-                "hemloch", new List<(string DisplayName, int Amount)>()
-                {
-                    ("Mold", 1),
-                    ("Empty Bottle", 1),
-                }
-            },
-        };
-
+    
 
     public static Dictionary<string, List<(string TemplateKey, int Amount)>> FoodRequirements { get; } =
         new(StringComparer.OrdinalIgnoreCase)

@@ -10,6 +10,12 @@ public enum AoeShape
     Cleave
 }
 
+public enum AlchemyRecipes
+{
+    None = 0,
+    Hemloch = 1,
+}
+
 [Flags]
 public enum Status : ulong
 {

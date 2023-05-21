@@ -1,5 +1,4 @@
 using Chaos.Definitions;
-using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -12,7 +11,7 @@ namespace Chaos.Scripting.DialogScripts.Crafting;
 public class AlchemyScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    
+
     /// <inheritdoc />
     public AlchemyScript(Dialog subject, IItemFactory itemFactory)
         : base(subject) =>
@@ -23,54 +22,104 @@ public class AlchemyScript : DialogScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "alf_showrecipes":
+            case "alf_craftalchemyinitial":
             {
-                foreach (var recipes in CraftingRequirements.AlchemyRequirements)
-                {
-                    var item = ItemFactory.CreateFaux(recipes.Key);
-                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                }
+                OnDisplayingInitial(source);
+
+                break;
+            }
+            case "alf_craftalchemyconfirmation":
+            {
+                OnDisplayingConfirmation(source);
+
+                break;
+            }
+            case "alf_craftalchemyaccepted":
+            {
+                OnDisplayingAccepted(source);
+
                 break;
             }
         }
     }
 
-    /// <inheritdoc />
-    public override void OnNext(Aisling source, byte? optionIndex = null)
+    private void OnDisplayingInitial(Aisling source)
     {
-        if (!Subject.MenuArgs.TryGet<string>(0, out var craftable))
+        foreach (var recipe in CraftingRequirements.AlchemyRequirements)
         {
-            Subject.Reply(source, DialogString.UnknownInput.Value);
-            return;
-        }
-        
-        var itemDetails = Subject.Items.FirstOrDefault(x => x.Item.Template.TemplateKey.EqualsI(craftable));
-        var item = itemDetails?.Item;
+            var hasRecipe = source.Trackers.Enums.TryGetValue(out AlchemyRecipes userRecipe);
 
-        if (item == null)
-        {
-            Subject.Reply(source, DialogString.UnknownInput.Value);
-            return;
-        }
-
-        if (CraftingRequirements.AlchemyRequirements.TryGetValue(craftable, out var requirement))
-        {
-            var requiredItems = requirement.Count;
-            foreach (var regeant in requirement)
+            if (userRecipe == recipe.Key)
             {
-                if (!source.Inventory.HasCount(regeant.DisplayName, regeant.Amount))
-                {
-                    Subject.Reply(source, $"You need ({regeant.Amount}) {regeant.DisplayName} to craft this item. Please have the requirements before trying to craft. I don't want you blowing up my shop if things go bad..");
-                    break;
-                }
-
-                if (source.Inventory.HasCount(regeant.DisplayName, regeant.Amount))
-                    requiredItems++;
+                var item = ItemFactory.CreateFaux(recipe.Key.ToString());
+                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
             }
+        }
+    }
 
-            if (requiredItems == requirement.Count)
+    private void OnDisplayingConfirmation(Aisling source)
+    {
+        if (!Subject.MenuArgs.TryGet<string>(0, out var itemName))
+        {
+            Subject.Reply(source, DialogString.UnknownInput.Value);
+
+            return;
+        }
+
+        foreach (var recipe in CraftingRequirements.AlchemyRequirements)
+        {
+            if (itemName == recipe.Key.ToString())
             {
-                
+                if (CraftingRequirements.AlchemyRequirements.TryGetValue(recipe.Key, out var requirement))
+                {
+                    var ingredientList = new List<string>();
+
+                    foreach (var regeant in requirement)
+                    {
+                        ingredientList.Add($"({regeant.Amount}) {regeant.DisplayName}");
+                    }
+
+                    var ingredients = string.Join(" and ", ingredientList);
+                    Subject.InjectTextParameters(recipe.Key.ToString(), ingredients);
+                }
+            }
+        }
+    }
+
+    private void OnDisplayingAccepted(Aisling source)
+    {
+        if (!Subject.MenuArgs.TryGet<string>(0, out var itemName))
+        {
+            Subject.Reply(source, DialogString.UnknownInput.Value);
+
+            return;
+        }
+
+        foreach (var recipe in CraftingRequirements.AlchemyRequirements)
+        {
+            if (itemName == recipe.Key.ToString())
+            {
+                if (CraftingRequirements.AlchemyRequirements.TryGetValue(recipe.Key, out var requirement))
+                {
+                    foreach (var reagant in requirement)
+                    {
+                        if ((reagant.DisplayName != null) && !source.Inventory.RemoveQuantity(reagant.DisplayName, reagant.Amount))
+                        {
+                            Subject.Close(source);
+                            source.SendOrangeBarMessage($"You do not have the required amount of ({reagant.Amount}) of {reagant.DisplayName}.");
+                            return;
+                        }
+                    }
+                    
+                    var newCraft = ItemFactory.Create(recipe.Key.ToString());
+                    foreach (var removeRegant in requirement)
+                    {
+                        if (removeRegant.DisplayName != null)
+                            source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
+                    }
+                    source.Inventory.TryAddToNextSlot(newCraft);
+                    Subject.InjectTextParameters(recipe.Key.ToString());   
+                }
             }
         }
     }

@@ -17,10 +17,15 @@ public class MonkFormDedicationScript : DialogScriptBase
     {
         var monkForm = source.Trackers.Enums.TryGetValue(out MonkElementForm form);
 
-        if (monkForm || source.UserStatSheet.BaseClass is not BaseClass.Monk)
+        if (source.UserStatSheet.BaseClass is not BaseClass.Monk)
         {
             Subject.Reply(source, "How did you get here?.");
+            return;
+        }
 
+        if (monkForm)
+        {
+            Subject.Reply(source, "You have already dedicated yourself to a elemental path, Aisling.");
             return;
         }
 
