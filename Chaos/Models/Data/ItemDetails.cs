@@ -12,6 +12,12 @@ public sealed class ItemDetails
         Item = item,
         Price = item.Template.BuyCost
     };
+
+    public static ItemDetails DisplayRecipe(Item item) => new()
+    {
+        Item = item,
+        Price = 0
+    };
     
     public static ItemDetails BuyWithGp(Item item) => new()
     {

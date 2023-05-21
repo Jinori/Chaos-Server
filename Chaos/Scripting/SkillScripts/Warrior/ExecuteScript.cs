@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components;
@@ -20,6 +21,7 @@ public class ExecuteScript : ConfigurableSkillScriptBase, AbilityComponent<Creat
     public ExecuteScript(Skill subject)
         : base(subject)
     {
+        PanelEntityBase = subject;
         ApplyHealScript = ApplyNonAlertingHealScript.Create();
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
@@ -58,6 +60,8 @@ public class ExecuteScript : ConfigurableSkillScriptBase, AbilityComponent<Creat
     public decimal PctManaCost { get; init; }
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
+    /// <inheritdoc />
+    public PanelEntityBase PanelEntityBase { get; init; }
     /// <inheritdoc />
     public IApplyHealScript ApplyHealScript { get; init; }
     /// <inheritdoc />

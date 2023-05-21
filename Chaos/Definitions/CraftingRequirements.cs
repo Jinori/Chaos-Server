@@ -2,6 +2,32 @@ namespace Chaos.Definitions;
 
 public static class CraftingRequirements
 {
+    public static List<string> Meats { get; } = new()
+    {
+        "lobstertail",
+        "beef",
+        "chicken",
+        "beefslices",
+        "clam",
+        "egg",
+        "liver",
+        "rawmeat"
+        // Add more meat types as needed...
+    };
+
+    public static Dictionary<string, List<(string DisplayName, int Amount)>> AlchemyRequirements { get; } =
+        new(StringComparer.OrdinalIgnoreCase)
+        {
+            {
+                "hemloch", new List<(string DisplayName, int Amount)>()
+                {
+                    ("Mold", 1),
+                    ("Empty Bottle", 1),
+                }
+            },
+        };
+
+
     public static Dictionary<string, List<(string TemplateKey, int Amount)>> FoodRequirements { get; } =
         new(StringComparer.OrdinalIgnoreCase)
         {
@@ -34,7 +60,7 @@ public static class CraftingRequirements
             }},
             {"dinnerplate", new List<(string TemplateKey, int Amount)>()
             {
-                ("beef", 5),
+                ("any_meat", 1),
                 ("vegetable", 10),
                 ("salt", 1),
                 ("apple", 5)
@@ -47,6 +73,7 @@ public static class CraftingRequirements
             }},
             {"steakmeal", new List<(string TemplateKey, int Amount)>()
             {
+                ("any_meat", 1),
                 ("carrot", 10),
                 ("vegetable", 5),
                 ("rambutan", 3)
@@ -59,6 +86,7 @@ public static class CraftingRequirements
             }},
             {"sandwich", new List<(string TemplateKey, int Amount)>()
             {
+                ("any_meat", 1),
                 ("carrot", 10),
                 ("vegetable", 5),
                 ("rambutan", 3)
@@ -68,12 +96,6 @@ public static class CraftingRequirements
                 ("carrot", 10),
                 ("vegetable", 5),
                 ("rambutan", 3)
-            }}, 
-            {"meats", new List<(string TemplateKey, int Amount)>()
-                {
-                    ("beef", 1),
-                    ("chicken", 1),
-                    ("beefslices", 1)
-                }}
+            }}
         };
 }

@@ -17,7 +17,6 @@ public class CookingScript : ConfigurableDialogScriptBase
 {
     private readonly ICloningService<Item> ItemCloner;
     private readonly IItemFactory ItemFactory;
-    private readonly ILogger<BuyShopScript> Logger;
     private ItemDetails? ItemDetails;
     protected HashSet<string>? ItemTemplateKeys { get; init; }
     private Item? FauxItem => ItemDetails?.Item;
@@ -25,14 +24,12 @@ public class CookingScript : ConfigurableDialogScriptBase
     public CookingScript(
         Dialog subject,
         ICloningService<Item> itemCloner,
-        IItemFactory itemFactory,
-        ILogger<BuyShopScript> logger
+        IItemFactory itemFactory
     )
         : base(subject)
     {
         ItemCloner = itemCloner;
         ItemFactory = itemFactory;
-        Logger = logger;
     }
 
     public override void OnDisplaying(Aisling source)
@@ -72,7 +69,6 @@ public class CookingScript : ConfigurableDialogScriptBase
                                             requirement =>
                                             {
                                                 var fauxItem = ItemFactory.CreateFaux(requirement.TemplateKey);
-
                                                 return new object[] { requirement.Amount, fauxItem.DisplayName };
                                             })
                                         .ToArray();
@@ -92,6 +88,7 @@ public class CookingScript : ConfigurableDialogScriptBase
             }
 
                 break;
+            
             case "fruit_initial":
             {
                 if (source.Inventory.HasCount("cherry", 1))
