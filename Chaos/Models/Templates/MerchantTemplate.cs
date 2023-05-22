@@ -12,7 +12,7 @@ public sealed record MerchantTemplate : ITemplate, IScripted
     public required CounterCollection ItemsForSale { get; init; }
 
     public required ICollection<string> ItemsToBuy { get; init; }
-    public required string Name { get; init; }
+    public required string Name { get; set; }
 
     public required int RestockIntervalHours { get; init; }
 
