@@ -457,7 +457,45 @@ public enum CookFoodStage
     sweetbuns = 9
 }
 
+[Flags]
+public enum CookFoodProgression
+{
+    None = 0,
+    NotenoughIngredients = 1,
+    
+}
+
 public enum MeatsStage
+{
+    None = 0,
+    beefslices = 1,
+    beef = 2,
+    chicken = 3,
+    clam = 4,
+    trout = 5,
+    bass = 6,
+    egg = 7,
+    liver = 8,
+    lobstertail = 9,
+    rawmeat = 10
+}
+
+public enum MeatsStage2
+{
+    None = 0,
+    beefslices = 1,
+    beef = 2,
+    chicken = 3,
+    clam = 4,
+    trout = 5,
+    bass = 6,
+    egg = 7,
+    liver = 8,
+    lobstertail = 9,
+    rawmeat = 10
+}
+
+public enum MeatsStage3
 {
     None = 0,
     beefslices = 1,
@@ -501,9 +539,9 @@ public enum FruitsStage3
     apple = 2,
     cherry = 3,
     grape = 4,
-    greenGrapes = 5,
+    greengrapes = 5,
     strawberry = 6,
-    tangerines = 7
+    tangerines = 7,
 }
 
 public enum VegetableStage
