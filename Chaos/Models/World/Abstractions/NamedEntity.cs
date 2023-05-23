@@ -6,7 +6,7 @@ namespace Chaos.Models.World.Abstractions;
 
 public abstract class NamedEntity : VisibleEntity, IDeltaUpdatable
 {
-    public string Name { get; protected set; }
+    public string Name { get; set; }
 
     protected NamedEntity(
         string name,
