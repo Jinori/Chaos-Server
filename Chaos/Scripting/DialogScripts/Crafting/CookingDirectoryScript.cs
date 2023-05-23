@@ -81,6 +81,29 @@ public class CookingDirectoryScript : DialogScriptBase
 
                     return;
                 }
+
+                if (foodSelected && (foodStage == CookFoodStage.fruitbasket))
+                {
+                    switch (foodSelected)
+                    {
+                        case true when !fruitsStage:
+                            Subject.Reply(source, "Skip", "fruit_initial");
+
+                            return;
+                        case true when fruitsStage && !fruitsStage2:
+                            Subject.Reply(source, "Skip", "fruit_initial");
+
+                            return;
+                        case true when fruitsStage && fruitsStage2 && !fruitsStage3:
+                            Subject.Reply(source, "Skip", "fruit_initial");
+
+                            return;
+                        case true when fruitsStage && fruitsStage2 && fruitsStage3:
+                            Subject.Reply(source, "Skip", "cook_item");
+
+                            return;
+                    }
+                }
                 break;
         }
     }
