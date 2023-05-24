@@ -84,7 +84,6 @@ public static class CraftingRequirements
             {
                 "dinnerplate", new List<(string TemplateKey, int Amount)>()
                 {
-                    ("any_meat", 1),
                     ("vegetable", 10),
                     ("salt", 1),
                     ("apple", 5)
