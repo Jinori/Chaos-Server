@@ -23,11 +23,13 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>, IDialogSource
     public int Experience { get; set; }
     public LootTable? LootTable { get; set; }
     public Creature? Target { get; set; }
+    public Aisling? PetOwner { get; set; }
     public ConcurrentDictionary<uint, int> AggroList { get; }
     /// <inheritdoc />
     public override int AssailIntervalMs => Template.AssailIntervalMs;
     public ConcurrentDictionary<uint, int> Contribution { get; }
     public List<Item> Items { get; }
+    public int Gold { get; set; }
     public override ILogger<Monster> Logger { get; }
     public IIntervalTimer MoveTimer { get; }
 
@@ -56,7 +58,8 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>, IDialogSource
         IPoint point,
         ILogger<Monster> logger,
         IScriptProvider scriptProvider,
-        ICollection<string>? extraScriptKeys = null
+        ICollection<string>? extraScriptKeys = null,
+        Aisling? owner = null
     )
         : base(
             template.Name,
@@ -73,6 +76,8 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>, IDialogSource
         Logger = logger;
         StatSheet = ShallowCopy<StatSheet>.Create(template.StatSheet);
         Items = new List<Item>();
+        Gold = new int();
+        PetOwner = owner;
         Type = template.Type;
         Direction = template.Direction;
         AggroList = new ConcurrentDictionary<uint, int>();
