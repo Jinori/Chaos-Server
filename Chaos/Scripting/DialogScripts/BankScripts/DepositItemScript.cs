@@ -5,13 +5,8 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
 
-<<<<<<<< HEAD:Chaos/Scripting/DialogScripts/Generic/DepositItemScript.cs
-
-namespace Chaos.Scripting.DialogScripts.Generic;
-
-========
 namespace Chaos.Scripting.DialogScripts.BankScripts;
->>>>>>>> upstream/master:Chaos/Scripting/DialogScripts/BankScripts/DepositItemScript.cs
+
 
 public class DepositItemScript : DialogScriptBase
 {

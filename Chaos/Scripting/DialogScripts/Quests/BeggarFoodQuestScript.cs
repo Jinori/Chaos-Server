@@ -36,7 +36,7 @@ public class BeggarFoodQuestScript : DialogScriptBase
                         OptionText = "Are you hungry?"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 

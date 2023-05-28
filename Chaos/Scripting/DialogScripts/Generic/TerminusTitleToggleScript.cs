@@ -32,7 +32,7 @@ public class TerminusTitleToggleScript : DialogScriptBase
                     OptionText = "Title Change"
                 };
 
-                if (!Subject.HasOption(option))
+                if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Insert(0, option);
             }
 

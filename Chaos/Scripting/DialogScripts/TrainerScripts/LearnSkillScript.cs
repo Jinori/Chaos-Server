@@ -9,14 +9,7 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
 
-<<<<<<<< HEAD:Chaos/Scripting/DialogScripts/Generic/LearnSkillScript.cs
-
-namespace Chaos.Scripting.DialogScripts.Generic;
-
-
-========
 namespace Chaos.Scripting.DialogScripts.TrainerScripts;
->>>>>>>> upstream/master:Chaos/Scripting/DialogScripts/TrainerScripts/LearnSkillScript.cs
 
 public class LearnSkillScript : DialogScriptBase
 {

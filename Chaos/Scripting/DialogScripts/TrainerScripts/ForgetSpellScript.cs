@@ -4,14 +4,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Microsoft.Extensions.Logging;
 
-<<<<<<<< HEAD:Chaos/Scripting/DialogScripts/Generic/ForgetSpellScript.cs
-
-namespace Chaos.Scripting.DialogScripts.Generic;
-
-
-========
 namespace Chaos.Scripting.DialogScripts.TrainerScripts;
->>>>>>>> upstream/master:Chaos/Scripting/DialogScripts/TrainerScripts/ForgetSpellScript.cs
 
 public class ForgetSpellScript : DialogScriptBase
 {

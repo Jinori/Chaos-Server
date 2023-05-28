@@ -34,7 +34,7 @@ public class WizardElementScript : DialogScriptBase
                             OptionText = "Wizard Element"
                         };
                         
-                        if (!Subject.HasOption(option))
+                        if (!Subject.HasOption(option.OptionText))
                             Subject.Options.Insert(0, option);
                     }
                 }

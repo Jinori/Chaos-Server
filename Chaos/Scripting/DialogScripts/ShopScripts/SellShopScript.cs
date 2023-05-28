@@ -6,14 +6,7 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
 
-<<<<<<<< HEAD:Chaos/Scripting/DialogScripts/Generic/SellShopScript.cs
-
-namespace Chaos.Scripting.DialogScripts.Generic;
-
-
-========
 namespace Chaos.Scripting.DialogScripts.ShopScripts;
->>>>>>>> upstream/master:Chaos/Scripting/DialogScripts/ShopScripts/SellShopScript.cs
 
 public class SellShopScript : DialogScriptBase
 {

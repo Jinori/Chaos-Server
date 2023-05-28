@@ -41,7 +41,7 @@ public class RionaRatQuestScript : DialogScriptBase
                         OptionText = "Rat problem?"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 
@@ -53,7 +53,7 @@ public class RionaRatQuestScript : DialogScriptBase
                         OptionText = "Got any other quest?"
                     };
                     
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
 

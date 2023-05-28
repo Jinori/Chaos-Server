@@ -82,9 +82,9 @@ public class ManorNecklaceScript : DialogScriptBase
                         OptionText = "It's nice. I'm keeping it!"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
-                    if (!Subject.HasOption(optionTwo))
+                    if (!Subject.HasOption(optionTwo.OptionText))
                         Subject.Options.Add(optionTwo);
                 }
                 break;

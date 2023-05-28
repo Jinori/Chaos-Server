@@ -49,7 +49,7 @@ public class TerminusTutorialScript : DialogScriptBase
                         OptionText = "I'm dead?"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
 
                     return;
@@ -66,7 +66,7 @@ public class TerminusTutorialScript : DialogScriptBase
                         OptionText = "Send me to the Afterlife"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 

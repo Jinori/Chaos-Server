@@ -46,7 +46,7 @@ public class PFQuestScript : DialogScriptBase
                         OptionText = "What do you know?"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 
@@ -85,10 +85,10 @@ public class PFQuestScript : DialogScriptBase
                     OptionText = "Not gonna happen, see ya."
                 };
 
-                if (!Subject.HasOption(option))
+                if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Insert(0, option);
 
-                if (!Subject.HasOption(option))
+                if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Insert(1, option1);
             }
 
@@ -127,7 +127,7 @@ public class PFQuestScript : DialogScriptBase
                         OptionText = "Torbjorn sent me."
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
 
@@ -152,7 +152,7 @@ public class PFQuestScript : DialogScriptBase
                     OptionText = "You dropped the pendant and you may have more information."
                 };
 
-                if (!Subject.HasOption(option))
+                if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Insert(0, option);
             }
 
@@ -166,7 +166,7 @@ public class PFQuestScript : DialogScriptBase
                     OptionText = "Yes, please tell me."
                 };
 
-                if (!Subject.HasOption(option))
+                if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Insert(0, option);
             }
 
@@ -192,13 +192,13 @@ public class PFQuestScript : DialogScriptBase
                     OptionText = "What if I don't?"
                 };
 
-                if (!Subject.HasOption(option))
+                if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Insert(0, option);
 
-                if (!Subject.HasOption(option1))
+                if (!Subject.HasOption(option1.OptionText))
                     Subject.Options.Insert(1, option1);
 
-                if (!Subject.HasOption(option2))
+                if (!Subject.HasOption(option2.OptionText))
                     Subject.Options.Insert(2, option2);
             }
 
@@ -249,7 +249,7 @@ public class PFQuestScript : DialogScriptBase
                         OptionText = "Porte Forest"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 
@@ -263,7 +263,7 @@ public class PFQuestScript : DialogScriptBase
                             OptionText = "Turuc Pendant"
                         };
 
-                        if (!Subject.HasOption(option))
+                        if (!Subject.HasOption(option.OptionText))
                             Subject.Options.Insert(0, option);
 
                         break;
@@ -276,7 +276,7 @@ public class PFQuestScript : DialogScriptBase
                             OptionText = "Turuc Pendant"
                         };
 
-                        if (!Subject.HasOption(option))
+                        if (!Subject.HasOption(option.OptionText))
                             Subject.Options.Add(option);
 
                         break;
@@ -298,7 +298,7 @@ public class PFQuestScript : DialogScriptBase
                         OptionText = "What did you see?"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 
@@ -313,7 +313,7 @@ public class PFQuestScript : DialogScriptBase
                         OptionText = "Did they get away safely?"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 
@@ -328,7 +328,7 @@ public class PFQuestScript : DialogScriptBase
                         OptionText = "I'll go get it now."
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
 
@@ -343,7 +343,7 @@ public class PFQuestScript : DialogScriptBase
                         OptionText = "Yeah I found the pendant."
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
 
@@ -358,7 +358,7 @@ public class PFQuestScript : DialogScriptBase
                         OptionText = "Yes, a few of us will. Where do we go?"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
 
@@ -373,7 +373,7 @@ public class PFQuestScript : DialogScriptBase
                         OptionText = "Is there anything else we should know?"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
 
@@ -388,7 +388,7 @@ public class PFQuestScript : DialogScriptBase
                         OptionText = "Thank you Isabelle."
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
 
@@ -403,7 +403,7 @@ public class PFQuestScript : DialogScriptBase
                         OptionText = "Trevor? Who?"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
 
@@ -417,7 +417,7 @@ public class PFQuestScript : DialogScriptBase
                     OptionText = "Oh... Trevor is dead..."
                 };
 
-                if (!Subject.HasOption(option))
+                if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Add(option);
             }
 
@@ -431,7 +431,7 @@ public class PFQuestScript : DialogScriptBase
                     OptionText = "Sorry for your loss."
                 };
 
-                if (!Subject.HasOption(option))
+                if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Add(option);
             }
 
@@ -445,7 +445,7 @@ public class PFQuestScript : DialogScriptBase
                     OptionText = "I will return it to him."
                 };
 
-                if (!Subject.HasOption(option))
+                if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Add(option);
             }
 
@@ -498,7 +498,7 @@ public class PFQuestScript : DialogScriptBase
                         OptionText = "Rennie"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
             }
@@ -521,10 +521,10 @@ public class PFQuestScript : DialogScriptBase
                         OptionText = "Umm... You'll have to take my word for it. Good bye!"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
 
-                    if (!Subject.HasOption(option1))
+                    if (!Subject.HasOption(option1.OptionText))
                         Subject.Options.Insert(1, option1);
                 }
             }

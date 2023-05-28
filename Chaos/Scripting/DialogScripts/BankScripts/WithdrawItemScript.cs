@@ -1,7 +1,4 @@
-<<<<<<<< HEAD:Chaos/Scripting/DialogScripts/Generic/WithdrawItemScript.cs
-========
-﻿using Chaos.Extensions.Common;
->>>>>>>> upstream/master:Chaos/Scripting/DialogScripts/BankScripts/WithdrawItemScript.cs
+using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.Panel;
@@ -10,14 +7,7 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
 
-<<<<<<<< HEAD:Chaos/Scripting/DialogScripts/Generic/WithdrawItemScript.cs
-
-namespace Chaos.Scripting.DialogScripts.Generic;
-
-
-========
 namespace Chaos.Scripting.DialogScripts.BankScripts;
->>>>>>>> upstream/master:Chaos/Scripting/DialogScripts/BankScripts/WithdrawItemScript.cs
 
 public class WithdrawItemScript : DialogScriptBase
 {
@@ -92,23 +82,12 @@ public class WithdrawItemScript : DialogScriptBase
         switch (withdrawResult)
         {
             case ComplexActionHelper.WithdrawItemResult.Success:
-<<<<<<<< HEAD:Chaos/Scripting/DialogScripts/Generic/WithdrawItemScript.cs
-                Logger.LogDebug(
-                    "{@Player} withdrew {ItemCount} {@Item} from the bank using entity {@Entity}",
-                    source,
-                    amount,
-                    item,
-                    Subject.SourceEntity);
-                
-========
                 Logger.WithProperties(source, item, Subject.DialogSource)
                       .LogDebug(
                           "Aisling {@AislingName} withdrew {Amount} {@ItemName} from the bank",
                           source.Name,
                           amount,
                           item.DisplayName);
->>>>>>>> upstream/master:Chaos/Scripting/DialogScripts/BankScripts/WithdrawItemScript.cs
-
                 return;
             case ComplexActionHelper.WithdrawItemResult.CantCarry:
                 Subject.Reply(source, "You can't carry that");

@@ -58,7 +58,7 @@ public class TutorialDialogScript : DialogScriptBase
                         OptionText = "I'll stay, what has changed? Where am I?"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 
@@ -70,7 +70,7 @@ public class TutorialDialogScript : DialogScriptBase
                         OptionText = "Can you repeat that?"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 
@@ -89,7 +89,7 @@ public class TutorialDialogScript : DialogScriptBase
                         OptionText = "What else have I missed?"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
 
                     return;
@@ -103,7 +103,7 @@ public class TutorialDialogScript : DialogScriptBase
                         OptionText = "I'll go talk to Cain now."
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 
@@ -172,10 +172,10 @@ public class TutorialDialogScript : DialogScriptBase
                         OptionText = "Not right now."
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
 
-                    if (!Subject.HasOption(option1))
+                    if (!Subject.HasOption(option1.OptionText))
                         Subject.Options.Insert(1, option1);
 
                     return;
@@ -195,10 +195,10 @@ public class TutorialDialogScript : DialogScriptBase
                         OptionText = "No, not yet, those floppies hurt.."
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
 
-                    if (!Subject.HasOption(option1))
+                    if (!Subject.HasOption(option1.OptionText))
                         Subject.Options.Insert(1, option1);
 
                     return;
@@ -212,7 +212,7 @@ public class TutorialDialogScript : DialogScriptBase
                         OptionText = "Buying Equipment"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
 
                     return;
@@ -226,7 +226,7 @@ public class TutorialDialogScript : DialogScriptBase
                         OptionText = "Giant Floppy"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
 
                     return;
@@ -240,7 +240,7 @@ public class TutorialDialogScript : DialogScriptBase
                         OptionText = "Giant Floppy"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 
@@ -255,7 +255,7 @@ public class TutorialDialogScript : DialogScriptBase
                         OptionText = "Here ya go."
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
 
                     source.Trackers.Enums.Set(TutorialQuestStage.StartedFloppy);
@@ -285,7 +285,7 @@ public class TutorialDialogScript : DialogScriptBase
                         OptionText = "Giant Floppy"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 
@@ -313,7 +313,7 @@ public class TutorialDialogScript : DialogScriptBase
                         OptionText = "I got rings and boots from Abel"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
 
                     source.Trackers.Enums.Set(TutorialQuestStage.GotEquipment);
@@ -329,7 +329,7 @@ public class TutorialDialogScript : DialogScriptBase
                         OptionText = "Giant Floppy"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
 
                     source.Trackers.Enums.Set(TutorialQuestStage.GiantFloppy);

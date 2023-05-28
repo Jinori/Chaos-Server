@@ -31,7 +31,7 @@ public class BuyGamePointShopScript : DialogScriptBase
         ItemFactory = itemFactory;
         ItemCloner = itemCloner;
         Logger = logger;
-        BuyShopSource = (IBuyShopSource)subject.SourceEntity;
+        BuyShopSource = (IBuyShopSource)Subject.DialogSource;
     }
 
     /// <inheritdoc />
@@ -96,7 +96,7 @@ public class BuyGamePointShopScript : DialogScriptBase
                     source,
                     amount,
                     item,
-                    Subject.SourceEntity,
+                    Subject.DialogSource,
                     totalCost);
 
                 break;

@@ -230,10 +230,10 @@ public class MythicFrogScript : DialogScriptBase
                     OptionText = "Not a chance, good luck."
                 };
 
-                if (!Subject.HasOption(option))
+                if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Add(option);
 
-                if (!Subject.HasOption(option1))
+                if (!Subject.HasOption(option1.OptionText))
                     Subject.Options.Add(option1);
 
                 break;

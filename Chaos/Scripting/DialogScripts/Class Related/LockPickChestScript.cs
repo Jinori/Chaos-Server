@@ -53,7 +53,7 @@ public class LockPickChestScript : DialogScriptBase
             source.TryGiveGold(prizeGold);
             source.Inventory.RemoveQuantity("Lockpicks", 1);
 
-            switch (Subject.SourceEntity)
+            switch (Subject.DialogSource)
             {
                 case MapEntity mapEntity:
                 {

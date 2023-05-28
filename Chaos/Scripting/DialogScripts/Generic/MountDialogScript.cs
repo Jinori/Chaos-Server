@@ -33,7 +33,7 @@ public class MountDialogScript : DialogScriptBase
                         OptionText = "Mounts"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
             }
@@ -52,7 +52,7 @@ public class MountDialogScript : DialogScriptBase
                             OptionText = "White Horse"
                         };
 
-                        if (!Subject.HasOption(option))
+                        if (!Subject.HasOption(option.OptionText))
                             Subject.Options.Insert(0, option);
                     }
                     if (source.Trackers.Flags.HasFlag(AvailableMounts.WhiteWolf))
@@ -63,7 +63,7 @@ public class MountDialogScript : DialogScriptBase
                             OptionText = "White Wolf"
                         };
 
-                        if (!Subject.HasOption(option))
+                        if (!Subject.HasOption(option.OptionText))
                             Subject.Options.Insert(0, option);
 
                     }

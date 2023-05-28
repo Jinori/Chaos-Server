@@ -39,7 +39,7 @@ public class ALittleBitofThatScript : DialogScriptBase
                         OptionText = "A Little Bit of That"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
             }

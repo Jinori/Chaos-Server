@@ -166,7 +166,7 @@ public class SickChildScript : DialogScriptBase
                         OptionText = "Be right back."
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
 
                     source.SendOrangeBarMessage("You do not have a rose.");
@@ -200,7 +200,7 @@ public class SickChildScript : DialogScriptBase
                             OptionText = "Be right back."
                         };
 
-                        if (!Subject.HasOption(option))
+                        if (!Subject.HasOption(option.OptionText))
                             Subject.Options.Insert(0, option);
 
                         source.SendOrangeBarMessage("You do not have a Gold Rose.");
@@ -263,7 +263,7 @@ public class SickChildScript : DialogScriptBase
             {
                 var blank = MerchantFactory.Create("blank_merchant", source.MapInstance, new Point(2, 2));
 
-                Subject.SourceEntity = blank;
+                Subject.DialogSource = blank;
 
             }
 
@@ -273,7 +273,7 @@ public class SickChildScript : DialogScriptBase
             {
                 var paulin = MerchantFactory.Create("paulin", source.MapInstance, new Point(2, 2));
 
-                Subject.SourceEntity = paulin;
+                Subject.DialogSource = paulin;
 
             }
 
@@ -283,7 +283,7 @@ public class SickChildScript : DialogScriptBase
             {
                 var blank = MerchantFactory.Create("blank_merchant", source.MapInstance, new Point(2, 2));
 
-                Subject.SourceEntity = blank;
+                Subject.DialogSource = blank;
 
             }
 
@@ -293,7 +293,7 @@ public class SickChildScript : DialogScriptBase
             {
                 var paulin = MerchantFactory.Create("paulin", source.MapInstance, new Point(2, 2));
 
-                Subject.SourceEntity = paulin;
+                Subject.DialogSource = paulin;
 
             }
 

@@ -48,7 +48,7 @@ public class FiskSecretScript : DialogScriptBase
                         OptionText = "Fisk's Secret"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
 
                     return;
@@ -338,7 +338,7 @@ public class FiskSecretScript : DialogScriptBase
                         OptionText = "Water Lilies"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 
@@ -417,7 +417,7 @@ public class FiskSecretScript : DialogScriptBase
                         OptionText = "Petunias"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 
@@ -468,7 +468,7 @@ public class FiskSecretScript : DialogScriptBase
                         OptionText = "Pink Rose"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 
@@ -630,7 +630,7 @@ public class FiskSecretScript : DialogScriptBase
                         OptionText = "Bouquet"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
                 break;
@@ -904,7 +904,7 @@ public class FiskSecretScript : DialogScriptBase
                         OptionText = "Special Delivery"
                     };
 
-                    if (!Subject.HasOption(option))
+                    if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 
