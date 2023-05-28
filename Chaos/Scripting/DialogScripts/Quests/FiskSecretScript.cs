@@ -270,7 +270,7 @@ public class FiskSecretScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, 300000);
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
-                        "Inspired Fisk to reach for the stars.",
+                        "Inspired Fisk to Reach for the Stars",
                         "FiskSecret",
                         MarkIcon.Heart,
                         MarkColor.Blue,

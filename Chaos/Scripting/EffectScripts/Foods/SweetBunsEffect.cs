@@ -7,7 +7,7 @@ namespace Chaos.Scripting.EffectScripts.Foods;
 public class SweetBunsEffect : NonOverwritableEffectBase
 {
     public override byte Icon => 13;
-    public override string Name => "SweetBuns";
+    public override string Name => "Sweet Buns";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(2);
 
@@ -18,7 +18,7 @@ public class SweetBunsEffect : NonOverwritableEffectBase
     };
     protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
     {
-        "SweetBuns",
+        "Sweet Buns",
     };
     protected override byte? Sound => 115;
 

@@ -54,47 +54,47 @@ public class CookingScript : ConfigurableDialogScriptBase
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.dinnerplate))
                 {
                     var item = ItemFactory.CreateFaux("dinnerplate");
-                    Subject.Items.Add(ItemDetails.BuyWithGold(item));
-                }
-                if (source.Trackers.Flags.HasFlag(CookingRecipes.sweetbuns))
-                {
-                    var item = ItemFactory.CreateFaux("sweetbuns");
-                    Subject.Items.Add(ItemDetails.BuyWithGold(item));
+                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.fruitbasket))
                 {
                     var item = ItemFactory.CreateFaux("fruitbasket");
-                    Subject.Items.Add(ItemDetails.BuyWithGold(item));
+                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.lobsterdinner))
                 {
                     var item = ItemFactory.CreateFaux("lobsterdinner");
-                    Subject.Items.Add(ItemDetails.BuyWithGold(item));
-                }
-                if (source.Trackers.Flags.HasFlag(CookingRecipes.sandwich))
-                {
-                    var item = ItemFactory.CreateFaux("sandwich");
-                    Subject.Items.Add(ItemDetails.BuyWithGold(item));
-                }
-                if (source.Trackers.Flags.HasFlag(CookingRecipes.soup))
-                {
-                    var item = ItemFactory.CreateFaux("soup");
-                    Subject.Items.Add(ItemDetails.BuyWithGold(item));
+                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.pie))
                 {
                     var item = ItemFactory.CreateFaux("pie");
-                    Subject.Items.Add(ItemDetails.BuyWithGold(item));
+                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.salad))
                 {
                     var item = ItemFactory.CreateFaux("salad");
-                    Subject.Items.Add(ItemDetails.BuyWithGold(item));
+                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                }
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.sandwich))
+                {
+                    var item = ItemFactory.CreateFaux("sandwich");
+                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                }
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.soup))
+                {
+                    var item = ItemFactory.CreateFaux("soup");
+                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.steakmeal))
                 {
                     var item = ItemFactory.CreateFaux("steakmeal");
-                    Subject.Items.Add(ItemDetails.BuyWithGold(item));
+                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                }
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.sweetbuns))
+                {
+                    var item = ItemFactory.CreateFaux("sweetbuns");
+                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
                 #endregion
 
@@ -255,20 +255,6 @@ public class CookingScript : ConfigurableDialogScriptBase
 
                 switch (FauxItem?.Template.TemplateKey.ToLower())
                 {
-                    case "beef":
-                    {
-                        source.Trackers.Enums.Set(MeatsStage.beef);
-                        Subject.Reply(source, "Skip", "cooking_directory");
-
-                        return;
-                    }
-                    case "chicken":
-                    {
-                        source.Trackers.Enums.Set(MeatsStage.chicken);
-                        Subject.Reply(source, "Skip", "cooking_directory");
-
-                        return;
-                    }
                     case "beefslices":
                     {
                         source.Trackers.Enums.Set(MeatsStage.beefslices);
@@ -308,8 +294,6 @@ public class CookingScript : ConfigurableDialogScriptBase
                     {
                         source.Trackers.Enums.Set(MeatsStage.rawmeat);
                         Subject.Reply(source, "Skip", "cooking_directory");
-
-                        return;
                     }
 
                         break;
@@ -362,7 +346,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             Subject.Reply(source, "Skip", "cooking_directory");
                             return;
                         }
-                        Subject.Reply(source, "This fruit is already being used for this recipe.", "fruit_initial");
+                        Subject.Reply(source, "This fruit is already being used for this recipe.", "cooking_directory");
 
                         return;
                     }
@@ -386,7 +370,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             Subject.Reply(source, "Skip", "cooking_directory");
                             return;
                         }
-                        Subject.Reply(source, "This fruit is already being used for this recipe.", "fruit_initial");
+                        Subject.Reply(source, "This fruit is already being used for this recipe.", "cooking_directory");
 
                         return;
                     }
@@ -410,7 +394,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             Subject.Reply(source, "Skip", "cooking_directory");
                             return;
                         }
-                        Subject.Reply(source, "This fruit is already being used for this recipe.", "fruit_initial");
+                        Subject.Reply(source, "This fruit is already being used for this recipe.", "cooking_directory");
 
                         return;
                     }
@@ -434,7 +418,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             Subject.Reply(source, "Skip", "cooking_directory");
                             return;
                         }
-                        Subject.Reply(source, "This fruit is already being used for this recipe.", "fruit_initial");
+                        Subject.Reply(source, "This fruit is already being used for this recipe.", "cooking_directory");
 
                         return;
                     }
@@ -458,7 +442,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             Subject.Reply(source, "Skip", "cooking_directory");
                             return;
                         }
-                        Subject.Reply(source, "This fruit is already being used for this recipe.", "fruit_initial");
+                        Subject.Reply(source, "This fruit is already being used for this recipe.", "cooking_directory");
 
                         return;
                     }
@@ -482,7 +466,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             Subject.Reply(source, "Skip", "cooking_directory");
                             return;
                         }
-                        Subject.Reply(source, "This fruit is already being used for this recipe.", "fruit_initial");
+                        Subject.Reply(source, "This fruit is already being used for this recipe.", "cooking_directory");
 
                         return;
                     }
@@ -506,7 +490,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             Subject.Reply(source, "Skip", "cooking_directory");
                             return;
                         }
-                        Subject.Reply(source, "This fruit is already being used for this recipe.", "fruit_initial");
+                        Subject.Reply(source, "This fruit is already being used for this recipe.", "cooking_directory");
 
                         return;
                     }
@@ -559,7 +543,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             Subject.Reply(source, "Skip", "cooking_directory");
                             return;
                         }
-                        Subject.Reply(source, "This vegetable is already being used for this recipe.", "fruit_initial");
+                        Subject.Reply(source, "This vegetable is already being used for this recipe.", "cooking_directory");
 
                         return;
                     }
@@ -583,7 +567,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             Subject.Reply(source, "Skip", "cooking_directory");
                             return;
                         }
-                        Subject.Reply(source, "This vegetable is already being used for this recipe.", "fruit_initial");
+                        Subject.Reply(source, "This vegetable is already being used for this recipe.", "cooking_directory");
 
                         return;
                     }
@@ -607,7 +591,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             Subject.Reply(source, "Skip", "cooking_directory");
                             return;
                         }
-                        Subject.Reply(source, "This vegetable is already being used for this recipe.", "fruit_initial");
+                        Subject.Reply(source, "This vegetable is already being used for this recipe.", "cooking_directory");
 
                         return;
                     }
@@ -631,7 +615,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             Subject.Reply(source, "Skip", "cooking_directory");
                             return;
                         }
-                        Subject.Reply(source, "This vegetable is already being used for this recipe.", "fruit_initial");
+                        Subject.Reply(source, "This vegetable is already being used for this recipe.", "cooking_directory");
 
                         return;
                     }
@@ -640,7 +624,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                 break;
             }
             #endregion
-            #region vegetableselection
+            #region extraingredientsselection
             case "extraingredients_initial":
             {
                 if (ItemDetails == null)
@@ -685,7 +669,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             return;
                         }
                         
-                        Subject.Reply(source, "This ingredient is already being used in this recipe.", "extraIngredients_initial");
+                        Subject.Reply(source, "This ingredient is already being used in this recipe.", "cooking_directory");
                         return;
                     }
                     case "cheese":
@@ -709,7 +693,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             return;
                         }
                         
-                        Subject.Reply(source, "This ingredient is already being used in this recipe.", "extraIngredients_initial");
+                        Subject.Reply(source, "This ingredient is already being used in this recipe.", "cooking_directory");
                         return;
                     }
                     case "flour":
@@ -733,7 +717,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             return;
                         }
                         
-                        Subject.Reply(source, "This ingredient is already being used in this recipe.", "extraIngredients_initial");
+                        Subject.Reply(source, "This ingredient is already being used in this recipe.", "cooking_directory");
                         return;
                     }
                     case "marinade":
@@ -757,7 +741,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             return;
                         }
                         
-                        Subject.Reply(source, "This ingredient is already being used in this recipe.", "extraIngredients_initial");
+                        Subject.Reply(source, "This ingredient is already being used in this recipe.", "cooking_directory");
                         return;
                     }
                     case "salt":
@@ -781,7 +765,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                             return;
                         }
                         
-                        Subject.Reply(source, "This ingredient is already being used in this recipe.", "extraIngredients_initial");
+                        Subject.Reply(source, "This ingredient is already being used in this recipe.", "cooking_directory");
                         return;
                     }
                 }

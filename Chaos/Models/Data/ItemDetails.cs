@@ -30,4 +30,10 @@ public sealed class ItemDetails
         Item = item,
         Price = item.Count
     };
+
+    public static ItemDetails RecipeCount(Item item) => new()
+    {
+        Item = item,
+        Price = item.Count
+    };
 }

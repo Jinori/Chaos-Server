@@ -26,6 +26,8 @@ public class InspectItemComponent : IComponent
                 + item?.DisplayName
                 + "\nWeight: "
                 + item?.Template.Weight
+                + "\nMax Stack:"
+                + item?.Template.MaxStacks
                 + "\nSkill Damage: "
                 + item?.Modifiers?.FlatSkillDamage
                 + "\nSpell Damage: "

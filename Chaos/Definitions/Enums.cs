@@ -469,45 +469,39 @@ public enum MeatsStage
 {
     None = 0,
     beefslices = 1,
-    beef = 2,
-    chicken = 3,
-    clam = 4,
-    trout = 5,
-    bass = 6,
-    egg = 7,
-    liver = 8,
-    lobstertail = 9,
-    rawmeat = 10
+    clam = 2,
+    trout = 3,
+    bass = 4,
+    egg = 5,
+    liver = 6,
+    lobstertail = 7,
+    rawmeat = 8
 }
 
 public enum MeatsStage2
 {
     None = 0,
     beefslices = 1,
-    beef = 2,
-    chicken = 3,
-    clam = 4,
-    trout = 5,
-    bass = 6,
-    egg = 7,
-    liver = 8,
-    lobstertail = 9,
-    rawmeat = 10
+    clam = 2,
+    trout = 3,
+    bass = 4,
+    egg = 5,
+    liver = 6,
+    lobstertail = 7,
+    rawmeat = 8
 }
 
 public enum MeatsStage3
 {
     None = 0,
     beefslices = 1,
-    beef = 2,
-    chicken = 3,
-    clam = 4,
-    trout = 5,
-    bass = 6,
-    egg = 7,
-    liver = 8,
-    lobstertail = 9,
-    rawmeat = 10
+    clam = 2,
+    trout = 3,
+    bass = 4,
+    egg = 5,
+    liver = 6,
+    lobstertail = 7,
+    rawmeat = 8
 }
 
 public enum FruitsStage
@@ -646,12 +640,14 @@ public enum AvailableMounts
 {
     None,
     WhiteHorse = 1,
+    WhiteWolf = 2
 }
 
 public enum CurrentMount
 {
     None,
     WhiteHorse = 1,
+    WhiteWolf = 2,
 }
 
 [Flags]

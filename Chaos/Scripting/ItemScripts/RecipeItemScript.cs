@@ -69,6 +69,96 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
+            case "recipe_salad":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.salad))
+                {
+                    source.Animate(ani);
+                    source.Trackers.Flags.AddFlag(CookingRecipes.salad);
+                    source.SendOrangeBarMessage($"You've learned {Subject.Template.Name}.");
+                    source.Inventory.RemoveQuantity($"{Subject.Template.TemplateKey}", 1);
+
+                    return;
+                }
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_lobsterdinner":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.lobsterdinner))
+                {
+                    source.Animate(ani);
+                    source.Trackers.Flags.AddFlag(CookingRecipes.lobsterdinner);
+                    source.SendOrangeBarMessage($"You've learned {Subject.Template.Name}.");
+                    source.Inventory.RemoveQuantity($"{Subject.Template.TemplateKey}", 1);
+
+                    return;
+                }
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_pie":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.pie))
+                {
+                    source.Animate(ani);
+                    source.Trackers.Flags.AddFlag(CookingRecipes.pie);
+                    source.SendOrangeBarMessage($"You've learned {Subject.Template.Name}.");
+                    source.Inventory.RemoveQuantity($"{Subject.Template.TemplateKey}", 1);
+
+                    return;
+                }
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_sandwich":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.sandwich))
+                {
+                    source.Animate(ani);
+                    source.Trackers.Flags.AddFlag(CookingRecipes.sandwich);
+                    source.SendOrangeBarMessage($"You've learned {Subject.Template.Name}.");
+                    source.Inventory.RemoveQuantity($"{Subject.Template.TemplateKey}", 1);
+
+                    return;
+                }
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_soup":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.soup))
+                {
+                    source.Animate(ani);
+                    source.Trackers.Flags.AddFlag(CookingRecipes.soup);
+                    source.SendOrangeBarMessage($"You've learned {Subject.Template.Name}.");
+                    source.Inventory.RemoveQuantity($"{Subject.Template.TemplateKey}", 1);
+
+                    return;
+                }
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_steakmeal":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.steakmeal))
+                {
+                    source.Animate(ani);
+                    source.Trackers.Flags.AddFlag(CookingRecipes.steakmeal);
+                    source.SendOrangeBarMessage($"You've learned {Subject.Template.Name}.");
+                    source.Inventory.RemoveQuantity($"{Subject.Template.TemplateKey}", 1);
+
+                    return;
+                }
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
         }
     }
 }

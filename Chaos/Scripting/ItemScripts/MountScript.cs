@@ -39,7 +39,14 @@ public class MountScript : ItemScriptBase
 
             if (mount == CurrentMount.WhiteHorse)
             {
-                source.Sprite = 1;
+                source.Sprite = 1296;
+                source.Refresh(true);
+                source.SendOrangeBarMessage("You jump on your mount.");
+                source.Effects.Apply(source, effect);
+            }
+            if (mount == CurrentMount.WhiteWolf)
+            {
+                source.Sprite = 1297;
                 source.Refresh(true);
                 source.SendOrangeBarMessage("You jump on your mount.");
                 source.Effects.Apply(source, effect);
