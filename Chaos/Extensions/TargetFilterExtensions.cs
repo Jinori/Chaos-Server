@@ -30,7 +30,7 @@ public static class TargetFilterExtensions
                         return false;
                 }
             }
-            
+
             if (filter.HasFlag(TargetFilter.FriendlyOnly) && !target.IsFriendlyTo(source))
                 return false;
 

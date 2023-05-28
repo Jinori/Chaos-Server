@@ -46,8 +46,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public int FaceSprite { get; set; }
     public Gender Gender { get; set; }
     public Group? Group { get; set; }
-    public string? GuildName { get; set; }
-    public string? GuildTitle { get; set; }
+    public Guild? Guild { get; set; }
+    public string? GuildRank { get; set; }
     public DisplayColor HairColor { get; set; }
     public int HairStyle { get; set; }
     public IgnoreList IgnoreList { get; init; }
@@ -102,7 +102,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
             if ((Sprite == 0) && WorldOptions.Instance.ProhibitSpeedWalk && !WalkCounter.TryIncrement())
             {
-                Logger.LogWarning("{@Client} is probably speed walking", Client);
+                Logger.WithProperty(this)
+                      .LogWarning("Aisling {@AislingName} is probably speed walking", Name);
 
                 return false;
             }
@@ -492,11 +493,12 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         if (!Script.CanTalk())
             return;
 
-        Logger.LogTrace(
-            "{@Client} sent {@Type} message {@Message}",
-            this,
-            publicMessageType,
-            message);
+        Logger.WithProperty(this)
+              .LogTrace(
+                  "Aisling {@AislingName} sent {@Type} message {@Message}",
+                  Name,
+                  publicMessageType,
+                  message);
 
         base.ShowPublicMessage(publicMessageType, message);
     }
@@ -551,7 +553,13 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         money = new Money(amount, MapInstance, point);
         MapInstance.AddObject(money, point);
-        Logger.LogDebug("{@Player} dropped {@Money}", this, money);
+
+        Logger.WithProperties(this, money)
+              .LogDebug(
+                  "Aisling {@AislingName} dropped {Amount} gold at {@Location}",
+                  Name,
+                  money.Amount,
+                  ILocation.ToString(money));
 
         foreach (var reactor in MapInstance.GetDistinctReactorsAtPoint(money).ToList())
             reactor.OnGoldDroppedOn(this, money);
@@ -609,22 +617,6 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
             return false;
         }
 
-        //cancarry will allow adding stackable items even if we are at max weight, if the inventory contains enough incomplete stacks to store them
-        //if we're at max weight, the item is stackable, has weight, and the object is being added to a specific slot, and that slot is empty
-        //this will overweight the character...
-        /*
-        bool WillOverweight(Item localItem, byte localSlot)
-        {
-            var slotItem = Inventory[localSlot];
-
-            if (slotItem != null)
-                return false;
-
-            return localItem.Template.Stackable
-                   && (localItem.Template.Weight > 0)
-                   && (UserStatSheet.CurrentWeight >= UserStatSheet.MaxWeight);
-        }*/
-
         if (slot.HasValue)
             return Inventory.TryAdd(slot.Value, item);
 
@@ -659,7 +651,13 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         if (TryGiveItem(item, destinationSlot))
         {
-            Logger.LogDebug("{@Player} picked up {@Item}", this, groundItem);
+            Logger.WithProperties(this, groundItem)
+                  .LogDebug(
+                      "Aisling {@AislingName} picked up item {@ItemName} from {@Location}",
+                      Name,
+                      groundItem.Name,
+                      ILocation.ToString(groundItem));
+
             MapInstance.RemoveObject(groundItem);
             item.Script.OnPickup(this);
 
@@ -683,7 +681,13 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         if (TryGiveGold(money.Amount))
         {
-            Logger.LogDebug("{@Player} picked up {@Money}", this, money);
+            Logger.WithProperties(this, money)
+                  .LogDebug(
+                      "Aisling {@AislingName} picked up {Amount} gold from {@Location}",
+                      Name,
+                      money.Amount,
+                      ILocation.ToString(money));
+
             MapInstance.RemoveObject(money);
 
             foreach (var reactor in MapInstance.GetDistinctReactorsAtPoint(money).ToList())
@@ -695,7 +699,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
     private bool TryStartExchange(Aisling source, [MaybeNullWhen(false)] out Exchange exchange)
     {
-        exchange = ExchangeFactory.CreateExchange(source, this);
+        exchange = ExchangeFactory.Create(source, this);
 
         if (!source.Options.Exchange)
         {

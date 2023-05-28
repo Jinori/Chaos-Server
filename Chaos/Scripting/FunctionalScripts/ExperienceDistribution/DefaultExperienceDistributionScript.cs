@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using Chaos.Common.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Formulae;
@@ -45,7 +47,14 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
     public virtual void GiveExp(Aisling aisling, long amount)
     {
         if (amount < 0)
-            Logger.LogError("Tried to give negative amount ({Amount}) experience to {@Client}", amount, aisling.Client);
+        {
+            var stackTrace = new StackTrace(true).ToString();
+
+            Logger.WithProperties(aisling, stackTrace)
+                  .LogError("Tried to give {Amount:N0} experience to {@AislingName}", amount, aisling.Name);
+
+            return;
+        }
 
         if (Randomizer.RollChance(1))
         {
@@ -67,6 +76,11 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
         var hasFlag = aisling.Trackers.Enums.TryGetValue(out GainExp stage);
         if ((amount <= 0 || stage == GainExp.No))
             return;
+
+        aisling.SendActiveMessage($"You have gained {amount:N0} experience!");
+
+        Logger.WithProperty(aisling)
+              .LogTrace("Aisling {@AislingName} has gained {Amount:N0} experience", aisling, amount);
         
         aisling.SendActiveMessage($"You have gained {amount} experience!");
         Logger.LogTrace("{@Player} has gained {ExpAmount} experience", aisling, amount);
@@ -95,13 +109,14 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
             aisling.SendActiveMessage("You cannot gain any more experience");
     }
 
-    
-    
     public virtual bool TryTakeExp(Aisling aisling, long amount)
     {
         if (amount < 0)
         {
-            Logger.LogError("Tried to take negative amount ({Amount}) experience from {@Client}", amount, aisling.Client);
+            var stackTrace = new StackTrace(true).ToString();
+
+            Logger.WithProperties(aisling, stackTrace)
+                  .LogError("Tried to take {Amount:N0} experience from {@AislingName}", amount, aisling.Name);
 
             return false;
         }
@@ -112,7 +127,8 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
         if (!aisling.UserStatSheet.TrySubtractTotalExp(amount))
             return false;
 
-        Logger.LogTrace("{@Player} has lost {ExpAmount} experience", aisling, amount);
+        Logger.WithProperty(aisling)
+              .LogTrace("Aisling {@AislingName} has lost {Amount:N0} experience", aisling, amount);
 
         aisling.Client.SendAttributes(StatUpdateType.ExpGold);
 
