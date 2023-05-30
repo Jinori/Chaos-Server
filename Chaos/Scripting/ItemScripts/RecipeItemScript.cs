@@ -11,8 +11,8 @@ public class RecipeItemScript : ItemScriptBase
 {
 
     public RecipeItemScript(Item subject)
-        : base(subject) {}
-    
+        : base(subject) { }
+
 
     public override void OnUse(Aisling source)
     {
@@ -24,17 +24,21 @@ public class RecipeItemScript : ItemScriptBase
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
+            #region Cooking Recipes
             case "recipe_dinnerplate":
             {
                 if (!source.Trackers.Flags.HasFlag(CookingRecipes.dinnerplate))
                 {
-                    source.Animate(ani);
-                    source.Trackers.Flags.AddFlag(CookingRecipes.dinnerplate);
-                    source.SendOrangeBarMessage($"You've learned {Subject.Template.Name}.");
-                    source.Inventory.RemoveQuantity($"{Subject.Template.TemplateKey}", 1);
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.dinnerplate,
+                        "Dinner Plate",
+                        $"{Subject.Template.TemplateKey}");
 
                     return;
                 }
+
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
@@ -43,13 +47,16 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(CookingRecipes.sweetbuns))
                 {
-                    source.Animate(ani);
-                    source.Trackers.Flags.AddFlag(CookingRecipes.sweetbuns);
-                    source.SendOrangeBarMessage($"You've learned {Subject.Template.Name}.");
-                    source.Inventory.RemoveQuantity($"{Subject.Template.TemplateKey}", 1);
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.sweetbuns,
+                        "Sweet Buns",
+                        $"{Subject.Template.TemplateKey}");
 
                     return;
                 }
+
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
@@ -58,13 +65,16 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(CookingRecipes.fruitbasket))
                 {
-                    source.Animate(ani);
-                    source.Trackers.Flags.AddFlag(CookingRecipes.fruitbasket);
-                    source.SendOrangeBarMessage($"You've learned {Subject.Template.Name}.");
-                    source.Inventory.RemoveQuantity($"{Subject.Template.TemplateKey}", 1);
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.fruitbasket,
+                        "Fruit Basket",
+                        $"{Subject.Template.TemplateKey}");
 
                     return;
                 }
+
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
@@ -73,13 +83,16 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(CookingRecipes.salad))
                 {
-                    source.Animate(ani);
-                    source.Trackers.Flags.AddFlag(CookingRecipes.salad);
-                    source.SendOrangeBarMessage($"You've learned {Subject.Template.Name}.");
-                    source.Inventory.RemoveQuantity($"{Subject.Template.TemplateKey}", 1);
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.salad,
+                        "Salad",
+                        $"{Subject.Template.TemplateKey}");
 
                     return;
                 }
+
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
@@ -88,13 +101,16 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(CookingRecipes.lobsterdinner))
                 {
-                    source.Animate(ani);
-                    source.Trackers.Flags.AddFlag(CookingRecipes.lobsterdinner);
-                    source.SendOrangeBarMessage($"You've learned {Subject.Template.Name}.");
-                    source.Inventory.RemoveQuantity($"{Subject.Template.TemplateKey}", 1);
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.lobsterdinner,
+                        "Lobster Dinner",
+                        $"{Subject.Template.TemplateKey}");
 
                     return;
                 }
+
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
@@ -103,13 +119,16 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(CookingRecipes.pie))
                 {
-                    source.Animate(ani);
-                    source.Trackers.Flags.AddFlag(CookingRecipes.pie);
-                    source.SendOrangeBarMessage($"You've learned {Subject.Template.Name}.");
-                    source.Inventory.RemoveQuantity($"{Subject.Template.TemplateKey}", 1);
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.pie,
+                        "Pie",
+                        $"{Subject.Template.TemplateKey}");
 
                     return;
                 }
+
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
@@ -118,13 +137,16 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(CookingRecipes.sandwich))
                 {
-                    source.Animate(ani);
-                    source.Trackers.Flags.AddFlag(CookingRecipes.sandwich);
-                    source.SendOrangeBarMessage($"You've learned {Subject.Template.Name}.");
-                    source.Inventory.RemoveQuantity($"{Subject.Template.TemplateKey}", 1);
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.sandwich,
+                        "Sandwich",
+                        $"{Subject.Template.TemplateKey}");
 
                     return;
                 }
+
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
@@ -133,13 +155,16 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(CookingRecipes.soup))
                 {
-                    source.Animate(ani);
-                    source.Trackers.Flags.AddFlag(CookingRecipes.soup);
-                    source.SendOrangeBarMessage($"You've learned {Subject.Template.Name}.");
-                    source.Inventory.RemoveQuantity($"{Subject.Template.TemplateKey}", 1);
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.soup,
+                        "Soup",
+                        $"{Subject.Template.TemplateKey}");
 
                     return;
                 }
+
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
@@ -148,17 +173,269 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(CookingRecipes.steakmeal))
                 {
-                    source.Animate(ani);
-                    source.Trackers.Flags.AddFlag(CookingRecipes.steakmeal);
-                    source.SendOrangeBarMessage($"You've learned {Subject.Template.Name}.");
-                    source.Inventory.RemoveQuantity($"{Subject.Template.TemplateKey}", 1);
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.steakmeal,
+                        "Steak Meal",
+                        $"{Subject.Template.TemplateKey}");
 
                     return;
                 }
+
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
             }
+            #endregion
+
+            #region Armor Smithing Recipes
+            case "recipe_basicarmors":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.basicarmors))
+                {
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithRecipes.basicarmors,
+                        "Basic Armors",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_apprenticearmors":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.apprenticearmors))
+                {
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithRecipes.apprenticearmors,
+                        "Apprentice Armors",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_journeymanarmors":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.journeymanarmors))
+                {
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithRecipes.journeymanarmors,
+                        "Journeyman Armors",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_adeptarmors":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.adeptarmors))
+                {
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithRecipes.adeptarmors,
+                        "Adept Armors",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_advancedarmors":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.advancedarmors))
+                {
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithRecipes.advancedarmors,
+                        "Advanced Armors",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_basicgauntlets":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.basicgauntlets))
+                {
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithRecipes.basicgauntlets,
+                        "Basic Gauntlets",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_apprenticegauntlets":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.apprenticegauntlets))
+                {
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithRecipes.apprenticegauntlets,
+                        "Apprentice Gauntlets",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_journeymangauntlets":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.journeymangauntlets))
+                {
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithRecipes.journeymangauntlets,
+                        "Journeyman Gauntlets",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_adeptgauntlets":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.adeptgauntlets))
+                {
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithRecipes.adeptgauntlets,
+                        "Adept Gauntlets",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_basicbelts":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.basicbelts))
+                {
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithRecipes.basicbelts,
+                        "Basic Belts",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_apprenticebelts":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.apprenticebelts))
+                {
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithRecipes.apprenticebelts,
+                        "Apprentice Belts",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_journeymanbelts":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.journeymanbelts))
+                {
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithRecipes.journeymanbelts,
+                        "Journeyman Belts",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            #endregion
         }
+    }
+
+    public static void CookingRecipeLearn(
+        Aisling source,
+        Animation ani,
+        CookingRecipes recipe,
+        string serverMessage,
+        string templatekey
+    )
+    {
+        source.Animate(ani);
+        source.Trackers.Flags.AddFlag(recipe);
+        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
+        source.Inventory.RemoveQuantity(templatekey, 1);
+    }
+    
+    public static void ArmorSmithRecipeLearn(
+        Aisling source,
+        Animation ani,
+        ArmorSmithRecipes recipe,
+        string serverMessage,
+        string templatekey
+    )
+    {
+        source.Animate(ani);
+        source.Trackers.Flags.AddFlag(recipe);
+        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
+        source.Inventory.RemoveQuantity(templatekey, 1);
     }
 }

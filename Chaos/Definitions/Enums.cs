@@ -664,3 +664,21 @@ public enum CookingRecipes
     steakmeal = 1 << 7,
     sweetbuns = 1 << 8
 }
+
+[Flags]
+public enum ArmorSmithRecipes
+{
+    None = 0,
+    basicgauntlets = 1,
+    apprenticegauntlets = 1 << 2,
+    journeymangauntlets = 1 << 3,
+    adeptgauntlets = 1 << 4,
+    basicbelts = 1 << 5,
+    apprenticebelts = 1 << 6,
+    journeymanbelts = 1 << 7,
+    basicarmors = 1 << 8,
+    apprenticearmors = 1 << 9,
+    journeymanarmors = 1 << 10,
+    adeptarmors = 1 << 11,
+    advancedarmors = 1 << 12,
+}

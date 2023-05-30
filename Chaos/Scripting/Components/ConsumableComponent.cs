@@ -12,6 +12,7 @@ public class ConsumableComponent : IComponent
         var options = vars.GetOptions<IConsumableComponentOptions>();
 
         context.SourceAisling?.Inventory.RemoveQuantity(options.ItemName, 1);
+        context.SourceAisling?.SendOrangeBarMessage("You consumed a " + options.ItemName + ".");
     }
 
     public interface IConsumableComponentOptions
