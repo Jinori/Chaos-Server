@@ -6,199 +6,152 @@ using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Upside_Down;
-
-// ReSharper disable once ClassCanBeSealed.Global
-public class UpsideDownCastingScript : MonsterScriptBase
+namespace Chaos.Scripting.MonsterScripts.Upside_Down
 {
-    /// <inheritdoc />
-    public UpsideDownCastingScript(Monster subject)
-        : base(subject) { }
-
-    /// <inheritdoc />
-
-    private string[] Heals = { "ardioc", "beagioc", "ioc", "morioc", "nuadhaich", "salvation" };
-
-    private string[] Cradhs = { "ardcradh", "morcradh", "cradh", "beagcradh" };
-
-    private string[] Debuffs = { "poison", "suain", "beagpramh", "pramh" };
-
-    private string[] Buffs = { "armachd", "innerfire", "mist", "battlecry", "rage", "warcry" };
-
-    private string[] Attacks =
+    // ReSharper disable once ClassCanBeSealed.Global
+    public class UpsideDownCastingScript : MonsterScriptBase
     {
-        "ardathar", "athar", "atharlamh", "atharmeall", "morathar", "beagathar", "beagatharlamh", 
-        "ardcreag", "creag", "creaglamh", "creagmeall", "morcreag", "beagcreag", "beagcreaglamh",
-        "ardsal", "beagsal", "beagsallamh", "morsal", "sal", "sallamh", "salmeall",
-        "ardsrad", "beagsrad", "beagsradlamh", "morsrad", "srad", "sradlamh", "sradmeall",
-        "arcaneblast", "arcanebolt", "zap"
-    };
+        private const int HEALTH_THRESHOLD = 30;
+        private const int MANA_THRESHOLD = 35;
+
+        private static readonly string[] HealingSpells =
+        {
+            "ardioc", "beagioc", "ioc", "morioc", "nuadhaich", "salvation"
+        };
+
+        private static readonly string[] DebuffSpells =
+        {
+            "poison", "suain", "beagpramh", "pramh"
+        };
+
+        private static readonly string[] BuffSpells =
+        {
+            "armachd", "innerfire", "mist", "battlecry", "rage", "warcry"
+        };
+
+        private static readonly string[] AttackSpells =
+        {
+            "ardathar", "athar", "atharlamh", "atharmeall", "morathar", "beagathar", "beagatharlamh",
+            "ardcreag", "creag", "creaglamh", "creagmeall", "morcreag", "beagcreag", "beagcreaglamh",
+            "ardsal", "beagsal", "beagsallamh", "morsal", "sal", "sallamh", "salmeall",
+            "ardsrad", "beagsrad", "beagsradlamh", "morsrad", "srad", "sradlamh", "sradmeall",
+            "arcaneblast", "arcanebolt", "zap"
+        };
+
+        /// <inheritdoc />
+        public UpsideDownCastingScript(Monster subject) : base(subject) { }
 
         public override void Update(TimeSpan delta)
-    {
-        base.Update(delta);
-
-        if (Target is not { IsAlive: true } || !ShouldUseSpell || !Target.WithinRange(Subject))
-            return;
-        
-        var hostileAislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject).Where(x => x.WithinRange(Subject, 6)).ToList();
-        var friendlyCreatures = Subject.MapInstance.GetEntitiesWithinRange<Creature>(Subject)
-            .Where(x => x.WithinRange(Subject, 6) && x is not Aisling).ToList();
-        
-        if (!Subject.SpellTimer.IntervalElapsed)
-            return;
-        
-        foreach (var spell in Spells)
         {
-            //Monsters will heal when under 30% Health
-            if (Heals.ContainsI(spell.Template.TemplateKey))
+            base.Update(delta);
+
+            if (Target is not { IsAlive: true } || !ShouldUseSpell || !Target.WithinRange(Subject))
+                return;
+
+            var hostileAislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 6).ToList();
+            var friendlyCreatures = Subject.MapInstance.GetEntitiesWithinRange<Creature>(Subject, 6).Where(x => x is not Aisling).ToList();
+
+            if (!Subject.SpellTimer.IntervalElapsed)
+                return;
+
+            foreach (var spell in Spells)
             {
-                if (Subject.StatSheet.HealthPercent <= 30)
+                // Healing Spells
+                if (HealingSpells.ContainsI(spell.Template.TemplateKey))
                 {
-                    Subject.TryUseSpell(spell, Subject.Id);
-                    break;
+                    if (ShouldHeal(Subject.StatSheet.HealthPercent))
+                    {
+                        Subject.TryUseSpell(spell, Subject.Id);
+                        break;
+                    }
+
+                    var creatureToHeal = friendlyCreatures.FirstOrDefault(creature =>
+                        ShouldHeal(creature.StatSheet.HealthPercent));
+
+                    if (creatureToHeal != null)
+                    {
+                        Subject.TryUseSpell(spell, creatureToHeal.Id);
+                        break;
+                    }
                 }
 
-                foreach (var creature in friendlyCreatures.Where(creature => creature.StatSheet.HealthPercent <= 30))
+                // Buff Spells
+                if (BuffSpells.ContainsI(spell.Template.TemplateKey))
                 {
-                    Subject.TryUseSpell(spell, creature.Id);
-                    break;
+                    if (ShouldApplyBuff(spell.Template.TemplateKey, Subject))
+                    {
+                        Subject.TryUseSpell(spell, Subject.Id);
+                    }
+
+                    var creatureToBuff = friendlyCreatures.FirstOrDefault(creature =>
+                        ShouldApplyBuff(spell.Template.TemplateKey, creature));
+
+                    if (creatureToBuff != null)
+                    {
+                        Subject.TryUseSpell(spell, creatureToBuff.Id);
+                        break;
+                    }
                 }
 
-                break;
+                // Debuff Spells
+                if (DebuffSpells.ContainsI(spell.Template.TemplateKey))
+                {
+                    var aislingToDebuff = hostileAislings.FirstOrDefault(aisling =>
+                        ShouldApplyDebuff(spell.Template.TemplateKey, aisling));
+
+                    if (aislingToDebuff != null)
+                    {
+                        Subject.TryUseSpell(spell, aislingToDebuff.Id);
+                        break;
+                    }
+                }
+
+                // Attack Spells
+                if (AttackSpells.ContainsI(spell.Template.TemplateKey))
+                {
+                    if (Subject.StatSheet.ManaPercent >= MANA_THRESHOLD)
+                    {
+                        Subject.TryUseSpell(spell, Target.Id);
+                        Subject.WanderTimer.Reset();
+                        Subject.MoveTimer.Reset();
+                        Subject.SkillTimer.Reset();
+                        break;
+                    }
+                }
             }
 
-            //Buffs
-            if (Buffs.ContainsI(spell.Template.TemplateKey))
+            if (Subject.SpellTimer.IntervalElapsed)
             {
-                switch (spell.Template.TemplateKey)
-                {
-                    case "armachd":
-                    {
-                        if (!Subject.Effects.Contains("armachd"))
-                        {
-                            Subject.TryUseSpell(spell, Subject.Id);
-                            break;
-                        }
-
-                        foreach (var creature in friendlyCreatures.Where(creature => !creature.Effects.Contains("armachd")))
-                        {
-                            Subject.TryUseSpell(spell, creature.Id);
-                            break;
-                        }
-                        break;
-                    }
-                    case "innerfire":
-                    {
-                        if (!Subject.Effects.Contains("innerFire"))
-                        {
-                            Subject.TryUseSpell(spell, Subject.Id);
-                        }
-
-                        break;
-                    }
-                    case "mist":
-                    {
-                        if (!Subject.Effects.Contains("mist"))
-                        {
-                            Subject.TryUseSpell(spell, Subject.Id);
-                        }
-                        break;
-                    }
-                    case "battlecry":
-                    {
-                        if (!Subject.Effects.Contains("battlecry"))
-                            Subject.TryUseSpell(spell, Subject.Id);
-                        
-                        foreach (var creature in friendlyCreatures.Where(creature => !creature.Effects.Contains("battlecry")))
-                        {
-                            Subject.TryUseSpell(spell, creature.Id);
-                            break;
-                        }
-                        break;
-                    }
-                    case "warcry":
-                    {
-                        if (!Subject.Effects.Contains("warcry"))
-                            Subject.TryUseSpell(spell, Subject.Id);
-                        
-                        foreach (var creature in friendlyCreatures.Where(creature => !creature.Effects.Contains("warcry")))
-                        {
-                            Subject.TryUseSpell(spell, creature.Id);
-                            break;
-                        }
-                        break;
-                    }
-                    case "rage":
-                    {
-                        if (!Subject.Effects.Contains("rage"))
-                            Subject.TryUseSpell(spell, Subject.Id);
-                        
-                        foreach (var creature in friendlyCreatures.Where(creature => !creature.Effects.Contains("rage")))
-                        {
-                            Subject.TryUseSpell(spell, creature.Id);
-                            break;
-                        }
-                        break;
-                    }
-                }
-
-                break;
-            }
-            
-            
-            //Monster will apply any debuffs before using damage spells
-            if (Cradhs.ContainsI(spell.Template.TemplateKey) && Subject.Effects.Contains("ard cradh") || Subject.Effects.Contains("mor cradh") || Subject.Effects.Contains("cradh") || Subject.Effects.Contains("beag cradh"))
-            {
-                foreach (var aisling in hostileAislings)
-                {
-                    Subject.TryUseSpell(spell, aisling.Id);
-                }
-
-                break;
-            }
-
-            if (Debuffs.ContainsI(spell.Template.TemplateKey))
-            {
-                foreach (var aisling in hostileAislings)
-                {
-                    if (!aisling.Status.HasFlag(Status.Pramh) && spell.Template.TemplateKey.EqualsI("pramh") ||
-                        spell.Template.TemplateKey.EqualsI("beagpramh"))
-                    {
-                        Subject.TryUseSpell(spell, aisling.Id);
-                        break;
-                    }
-
-                    if (aisling.Status.HasFlag(Status.Suain) && spell.Template.TemplateKey.EqualsI("pramh"))
-                    {
-                        Subject.TryUseSpell(spell, aisling.Id);
-                        break;
-                    }
-
-                    if (aisling.UserStatSheet.BaseClass == BaseClass.Wizard && spell.Template.TemplateKey.EqualsI("preventaffliction"))
-                    {
-                        Subject.TryUseSpell(spell, aisling.Id);
-                        break;
-                    }
-                }
-
-                break;
-            }
-            
-            //Lets only do major attacks if mana is more than 50%
-            if (Subject.StatSheet.ManaPercent >= 35 && Attacks.ContainsI(spell.Template.TemplateKey))
-            {
-                Subject.TryUseSpell(spell, Target.Id);
-                Subject.WanderTimer.Reset();
-                Subject.MoveTimer.Reset();
-                Subject.SkillTimer.Reset();
-                break;
+                Subject.SpellTimer.Reset();
             }
         }
 
-        if (Subject.SpellTimer.IntervalElapsed)
+        private bool ShouldHeal(int healthPercent) => healthPercent <= HEALTH_THRESHOLD;
+
+        private bool ShouldApplyBuff(string buffSpell, Creature creature) => !creature.Effects.Contains(buffSpell);
+
+        private bool ShouldApplyDebuff(string debuffSpell, Aisling aisling)
         {
-            Subject.SpellTimer.Reset();
+            if (debuffSpell.EqualsI("pramh") || debuffSpell.EqualsI("beagpramh"))
+            {
+                if (!aisling.Status.HasFlag(Status.Pramh))
+                {
+                    return true;
+                }
+
+                if (aisling.Status.HasFlag(Status.Suain) && debuffSpell.EqualsI("pramh"))
+                {
+                    return true;
+                }
+
+                if (aisling.UserStatSheet.BaseClass == BaseClass.Wizard &&
+                    debuffSpell.EqualsI("preventaffliction"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
