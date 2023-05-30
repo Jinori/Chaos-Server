@@ -81,9 +81,6 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
 
         Logger.WithProperty(aisling)
               .LogTrace("Aisling {@AislingName} has gained {Amount:N0} experience", aisling, amount);
-        
-        aisling.SendActiveMessage($"You have gained {amount} experience!");
-        Logger.LogTrace("{@Player} has gained {ExpAmount} experience", aisling, amount);
 
         while (amount > 0)
             if (aisling.UserStatSheet.Level >= WorldOptions.Instance.MaxLevel)
