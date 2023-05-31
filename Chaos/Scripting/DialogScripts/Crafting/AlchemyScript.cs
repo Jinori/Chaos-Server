@@ -17,6 +17,19 @@ public class AlchemyScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
     private readonly IDialogFactory DialogFactory;
+    private const string ITEM_COUNTER_PREFIX = "[Alchemy]";
+    private const int BASE_SUCCESS_RATE = 20;
+    private const double SUCCESS_RATE_MULTIPLIER = 0.04;
+    private Animation FailAnimation { get; } = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 59
+    };
+    private Animation SuccessAnimation { get; } = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 127
+    };
 
     /// <inheritdoc />
     public AlchemyScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
@@ -25,9 +38,6 @@ public class AlchemyScript : DialogScriptBase
         ItemFactory = itemFactory;
         DialogFactory = dialogFactory;
     }
-
-    private const int BASE_SUCCESS_RATE = 20;
-    private const double SUCCESS_RATE_MULTIPLIER = 0.01;
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -116,18 +126,16 @@ public class AlchemyScript : DialogScriptBase
                     if ((reagant.DisplayName != null) && !source.Inventory.HasCount(reagant.DisplayName, reagant.Amount))
                     {
                         Subject.Close(source);
-        
                         source.SendOrangeBarMessage(
-                            $"You do not have the required amount of ({reagant.Amount}) of {reagant.DisplayName}.");
-                        
-                        source.Say($"I'll need {reagant.DisplayName} to craft a {itemName}.");
+                            
+                            $"You do not have the required amount ({reagant.Amount}) of {reagant.DisplayName}.");
                         return;
                     }
                 }
                 
                 var legendMark = source.Legend.GetCount("alch");
                 var timesCraftedSuccessfully =
-                    source.Trackers.Counters.TryGetValue(itemName, out var value) ? value : 0;
+                    source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + itemName, out var value) ? value : 0;
                 var successRate = Math.Min(
                     BASE_SUCCESS_RATE + (legendMark * (timesCraftedSuccessfully * SUCCESS_RATE_MULTIPLIER)),
                     100);
@@ -148,11 +156,12 @@ public class AlchemyScript : DialogScriptBase
                     dialog.MenuArgs = Subject.MenuArgs;
                     dialog.InjectTextParameters(itemName);
                     dialog.Display(source);
+                    source.Animate(FailAnimation);
                     return;
                 }
         
                 source.Inventory.TryAddToNextSlot(newCraft);
-                source.Trackers.Counters.AddOrIncrement(itemName);
+                source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + itemName);
         
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
@@ -164,6 +173,7 @@ public class AlchemyScript : DialogScriptBase
                         GameTime.Now));
         
                 Subject.InjectTextParameters(newCraft.DisplayName);
+                source.Animate(SuccessAnimation);
             } 
             else
             {
