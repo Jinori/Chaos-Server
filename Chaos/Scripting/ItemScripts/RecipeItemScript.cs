@@ -208,7 +208,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_apprenticearmors":
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.apprenticearmors))
@@ -408,6 +408,425 @@ public class RecipeItemScript : ItemScriptBase
                 return;
             }
             #endregion
+
+            #region Weapon Smithing Recipes
+            case "recipe_basicswords":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.basicswords))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.basicswords,
+                        "Basic Swords",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_apprenticeswords":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.apprenticeswords))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.apprenticeswords,
+                        "Apprentice Swords",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_journeymanswords":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.journeymanswords))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.journeymanswords,
+                        "Journeyman Swords",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_adeptswords":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.adeptswords))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.adeptswords,
+                        "Adept Swords",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_basicweapons":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.basicweapons))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.basicweapons,
+                        "Basic Weapons",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_apprenticeweapons":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.apprenticeweapons))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.apprenticeweapons,
+                        "Apprentice Weapons",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_journeymanweapons":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.journeymanweapons))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.journeymanweapons,
+                        "Journeyman Weapons",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_adeptweapons":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.adeptweapons))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.adeptweapons,
+                        "Adept Weapons",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_basicstaves":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.basicstaves))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.basicstaves,
+                        "Basic Staves",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_apprenticestaves":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.apprenticestaves))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.apprenticestaves,
+                        "Apprentice Staves",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_journeymanstaves":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.journeymanstaves))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.journeymanstaves,
+                        "Journeyman Staves",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_adeptstaves":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.adeptstaves))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.adeptstaves,
+                        "Adept Staves",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "basicdaggers":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.basicdaggers))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.basicdaggers,
+                        "Basic Daggers",
+                        $"{Subject.Template.TemplateKey}");
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "apprenticedaggers":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.apprenticedaggers))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.apprenticedaggers,
+                        "Apprentice Daggers",
+                        $"{Subject.Template.TemplateKey}");
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "journeymandaggers":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.journeymandaggers))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.journeymandaggers,
+                        "Journeyman Daggers",
+                        $"{Subject.Template.TemplateKey}");
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "adeptdaggers":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.adeptdaggers))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.adeptdaggers,
+                        "Adept Daggers",
+                        $"{Subject.Template.TemplateKey}");
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "basicclaws":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.basicclaws))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.basicclaws,
+                        "Basic Claws",
+                        $"{Subject.Template.TemplateKey}");
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "apprenticeclaws":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.apprenticeclaws))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.apprenticeclaws,
+                        "Apprentice Claws",
+                        $"{Subject.Template.TemplateKey}");
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "journeymanclaws":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.journeymanclaws))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.journeymanclaws,
+                        "Journeyman Claws",
+                        $"{Subject.Template.TemplateKey}");
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "basicshields":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.basicshields))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.basicshields,
+                        "Basic Shields",
+                        $"{Subject.Template.TemplateKey}");
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "apprenticeshields":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.apprenticeshields))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.apprenticeshields,
+                        "Apprentice Shields",
+                        $"{Subject.Template.TemplateKey}");
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "journeymanshields":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.journeymanshields))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithRecipes.journeymanshields,
+                        "Journeyman Shields",
+                        $"{Subject.Template.TemplateKey}");
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            #endregion
+            
+            #region Alchemy Recipes
+            
+            case "recipe_hemloch":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.Hemloch))
+                {
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.Hemloch,
+                        "Hemloch",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_betonydeum":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.BetonyDeum))
+                {
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.BetonyDeum,
+                        "Betony Deum",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            #endregion
         }
     }
 
@@ -429,6 +848,58 @@ public class RecipeItemScript : ItemScriptBase
         Aisling source,
         Animation ani,
         ArmorSmithRecipes recipe,
+        string serverMessage,
+        string templatekey
+    )
+    {
+        source.Animate(ani);
+        source.Trackers.Flags.AddFlag(recipe);
+        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
+        source.Inventory.RemoveQuantity(templatekey, 1);
+    }
+    public static void WeaponSmithRecipeLearn(
+        Aisling source,
+        Animation ani,
+        WeaponSmithRecipes recipe,
+        string serverMessage,
+        string templatekey
+    )
+    {
+        source.Animate(ani);
+        source.Trackers.Flags.AddFlag(recipe);
+        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
+        source.Inventory.RemoveQuantity(templatekey, 1);
+    }
+    public static void AlchemyRecipeLearn(
+        Aisling source,
+        Animation ani,
+        AlchemyRecipes recipe,
+        string serverMessage,
+        string templatekey
+    )
+    {
+        source.Animate(ani);
+        source.Trackers.Flags.AddFlag(recipe);
+        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
+        source.Inventory.RemoveQuantity(templatekey, 1);
+    }
+    public static void EnchantingRecipeLearn(
+        Aisling source,
+        Animation ani,
+        EnchantingRecipes recipe,
+        string serverMessage,
+        string templatekey
+    )
+    {
+        source.Animate(ani);
+        source.Trackers.Flags.AddFlag(recipe);
+        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
+        source.Inventory.RemoveQuantity(templatekey, 1);
+    }
+    public static void JewelcraftingRecipeLearn(
+        Aisling source,
+        Animation ani,
+        JewelcraftingRecipes recipe,
         string serverMessage,
         string templatekey
     )
