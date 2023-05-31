@@ -97,26 +97,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
                 #endregion
-
-                if (!CraftingRequirements.FoodRequirements.TryGetValue("dinnerplate", out var requirements))
-                {
-                    Subject.Reply(source, $"{DialogString.UnknownInput.Value}");
-
-                    return;
-                }
-
-                var requirementParams = requirements
-                                        .SelectMany(
-                                            requirement =>
-                                            {
-                                                var fauxItem = ItemFactory.CreateFaux(requirement.TemplateKey);
-                                                return new object[] { requirement.Amount, fauxItem.DisplayName };
-                                            })
-                                        .ToArray();
-
-                Subject.Text.Inject(requirementParams);
             }
-
                 break;
         }
 
