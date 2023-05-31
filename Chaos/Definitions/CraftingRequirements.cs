@@ -22,7 +22,7 @@ public static class CraftingRequirements
         {
             AlchemyRecipes.BetonyDeum, new List<Ingredient>()
             {
-                new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 5 },
+                new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
                 new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
             }
         }

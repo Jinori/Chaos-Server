@@ -18,8 +18,7 @@ public class AlchemyScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
     private readonly IDialogFactory DialogFactory;
     private const string ITEM_COUNTER_PREFIX = "[Alchemy]";
-    private const int BASE_SUCCESS_RATE = 20;
-    private const double SUCCESS_RATE_MULTIPLIER = 0.04;
+    private readonly double BaseSuccessRate = 30;
     private Animation FailAnimation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -31,6 +30,93 @@ public class AlchemyScript : DialogScriptBase
         TargetAnimation = 127
     };
 
+    private double GetMultiplier(int totalTimesCrafted)
+    {
+        switch (totalTimesCrafted)
+        {
+            case <= 100:
+                return 1.0; // Novice
+            case <= 500:
+                return 1.05; // Apprentice
+            case <= 1000:
+                return 1.1; // Journeyman
+            case <= 1500:
+                return 1.15; // Craftsman
+            case <= 2200:
+                return 1.2; // Artisan
+            case <= 2900:
+                return 1.25; // Expert Artisan
+            default:
+                return 1.3; // Master Artisan
+        }
+    }
+
+    private double CalculateSuccessRate(int totalTimesCrafted, int timesCraftedThisItem, double baseSuccessRate)
+    {
+        double noviceBoost = totalTimesCrafted <= 100 ? 5 : 0; // Provide a little boost to novices
+        var multiplier = GetMultiplier(totalTimesCrafted);
+        var successRate = (baseSuccessRate + noviceBoost + timesCraftedThisItem / 10.0) * multiplier;
+
+        return Math.Min(successRate, 95); // Cap the success rate at 95
+    }
+
+    private void UpdateLegendmark(Aisling source, int legendMarkCount)
+    {
+        var unused = source.Legend.TryGetValue("alch", out var existingMark);
+        if (existingMark is not null)
+        {
+            switch (legendMarkCount)
+            {
+                case > 2900 when !existingMark.Text.Contains("Master Alchemist"):
+                    existingMark.Text = "Master Alchemist";
+
+                    break;
+                case > 2200 when !existingMark.Text.Contains("Expert Alchemist"):
+                    existingMark.Text = "Expert Alchemist";
+
+                    break;
+                case > 1500 when !existingMark.Text.Contains("Artisan Alchemist"):
+                    existingMark.Text = "Artisan Alchemist";
+
+                    break;
+                case > 1000 when !existingMark.Text.Contains("Craftsman Alchemist"):
+                    existingMark.Text = "Craftsman Alchemist";
+
+                    break;
+                case > 500 when !existingMark.Text.Contains("Journeyman Alchemist"):
+                    existingMark.Text = "Journeyman Alchemist";
+
+                    break;
+                case > 100 when !existingMark.Text.Contains("Apprentice Alchemist"):
+                    existingMark.Text = "Apprentice Alchemist";
+
+                    break;
+                case >= 0 when !existingMark.Text.Contains("Novice Alchemist"):
+                    source.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Novice Alchemist",
+                            "alch",
+                            MarkIcon.Yay,
+                            MarkColor.White,
+                            1,
+                            GameTime.Now));
+
+                    break;
+            }
+        }
+        if (existingMark is null)
+        {
+            source.Legend.AddOrAccumulate(
+                new LegendMark(
+                    "Novice Alchemist",
+                    "alch",
+                    MarkIcon.Yay,
+                    MarkColor.White,
+                    1,
+                    GameTime.Now));
+        }
+    }
+    
     /// <inheritdoc />
     public AlchemyScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
         : base(subject)
@@ -133,14 +219,12 @@ public class AlchemyScript : DialogScriptBase
                     }
                 }
                 
-                var legendMark = source.Legend.GetCount("alch");
-                var timesCraftedSuccessfully =
+                var legendMarkCount = source.Legend.GetCount("alch");
+                var timesCraftedThisItem =
                     source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + itemName, out var value) ? value : 0;
-                var successRate = Math.Min(
-                    BASE_SUCCESS_RATE + (legendMark * (timesCraftedSuccessfully * SUCCESS_RATE_MULTIPLIER)),
-                    100);
-                
-                source.Say(successRate.ToString(CultureInfo.InvariantCulture));
+
+
+                source.Say(CalculateSuccessRate(legendMarkCount, timesCraftedThisItem, BaseSuccessRate).ToString(CultureInfo.InvariantCulture));
                 
                 var newCraft = ItemFactory.Create(itemName);
                 foreach (var removeRegant in recipeIngredients)
@@ -149,7 +233,7 @@ public class AlchemyScript : DialogScriptBase
                         source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
                 }
         
-                if (!Randomizer.RollChance((int)successRate))
+                if (!Randomizer.RollChance((int)CalculateSuccessRate(legendMarkCount, timesCraftedThisItem, BaseSuccessRate)))
                 {
                     Subject.Close(source);
                     var dialog = DialogFactory.Create("alf_craftAlchemyFailed", Subject.DialogSource);
@@ -162,16 +246,10 @@ public class AlchemyScript : DialogScriptBase
         
                 source.Inventory.TryAddToNextSlot(newCraft);
                 source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + itemName);
-        
-                source.Legend.AddOrAccumulate(
-                    new LegendMark(
-                        "Alchemy",
-                        "alch",
-                        MarkIcon.Yay,
-                        MarkColor.White,
-                        1,
-                        GameTime.Now));
-        
+                
+                if (timesCraftedThisItem <= 40) 
+                    UpdateLegendmark(source, legendMarkCount);
+
                 Subject.InjectTextParameters(newCraft.DisplayName);
                 source.Animate(SuccessAnimation);
             } 
