@@ -130,17 +130,17 @@ public class AlchemyScript : DialogScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "alf_craftalchemyinitial":
+            case "alchemy_initial":
             {
                 OnDisplayingInitial(source);
                 break;
             }
-            case "alf_craftalchemyconfirmation":
+            case "alchemy_confirmation":
             {
                 OnDisplayingConfirmation(source);
                 break;
             }
-            case "alf_craftalchemyaccepted":
+            case "alchemy_accepted":
             {
                 OnDisplayingAccepted(source);
                 break;
@@ -236,7 +236,7 @@ public class AlchemyScript : DialogScriptBase
                 if (!Randomizer.RollChance((int)CalculateSuccessRate(legendMarkCount, timesCraftedThisItem, BaseSuccessRate)))
                 {
                     Subject.Close(source);
-                    var dialog = DialogFactory.Create("alf_craftAlchemyFailed", Subject.DialogSource);
+                    var dialog = DialogFactory.Create("alchemy_Failed", Subject.DialogSource);
                     dialog.MenuArgs = Subject.MenuArgs;
                     dialog.InjectTextParameters(itemName);
                     dialog.Display(source);

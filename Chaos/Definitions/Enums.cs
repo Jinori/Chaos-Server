@@ -682,3 +682,43 @@ public enum ArmorSmithRecipes
     adeptarmors = 1 << 11,
     advancedarmors = 1 << 12,
 }
+
+[Flags]
+public enum WeaponSmithRecipes
+{
+    None = 0,
+    basicswords = 1,
+    apprenticeswords = 1 << 2,
+    journeymanswords = 1 << 3,
+    adeptswords = 1 << 4,
+    basicweapons = 1 << 5,
+    apprenticeweapons = 1 << 6,
+    journeymanweapons = 1 << 7,
+    adeptweapons = 1 << 8,
+    basicstaves = 1 << 9,
+    apprenticestaves = 1 << 10,
+    journeymanstaves = 1 << 11,
+    adeptstaves = 1 << 12,
+    basicdaggers = 1 << 13,
+    apprenticedaggers = 1 << 14,
+    journeymandaggers = 1 << 15,
+    adeptdaggers = 1 << 16,
+    basicclaws = 1 << 17,
+    apprenticeclaws = 1 << 18,
+    journeymanclaws = 1 << 19,
+    basicshields = 1 << 20,
+    apprenticeshields = 1 << 21,
+    journeymanshields = 1 << 22,
+}
+
+[Flags]
+public enum EnchantingRecipes
+{
+    None = 0,
+}
+
+[Flags]
+public enum JewelcraftingRecipes
+{
+    None = 0,
+}
