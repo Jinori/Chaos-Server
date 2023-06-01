@@ -19,12 +19,21 @@ public class AlchemyScript : DialogScriptBase
     
     //Constants to change based on crafting profession
     private const string ITEM_COUNTER_PREFIX = "[Alchemy]";
+    private const string LEGENDMARK_KEY = "alch";
     private const double BASE_SUCCESS_RATE = 30;
     private const double NOVICEBOOST = 5;
     private const double SUCCESSRATEMAX = 95;
+    //Ranks from lowest to highest
+    private const string RANK_ONE_TITLE = "Novice Alchemist";
+    private const string RANK_TWO_TITLE = "Apprentice Alchemist";
+    private const string RANK_THREE_TITLE = "Journeyman Alchemist";
+    private const string RANK_FOUR_TITLE = "Craftsman Alchemist";
+    private const string RANK_FIVE_TITLE = "Artisan Alchemist";
+    private const string RANK_SIX_TITLE = "Expert Alchemist";
+    private const string RANK_SEVEN_TITLE = "Master Alchemist";
     //Set this to true if doing armorsmithing type crafting
     private readonly bool CRAFTGOODGREATGRAND = false;
-    
+
     private Animation FailAnimation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -41,13 +50,13 @@ public class AlchemyScript : DialogScriptBase
     {
         var rankMappings = new Dictionary<string, int>
         {
-            { "Master Alchemist", 7 },
-            { "Expert Alchemist", 6 },
-            { "Artisan Alchemist", 5 },
-            { "Craftsman Alchemist", 4 },
-            { "Journeyman Alchemist", 3 },
-            { "Apprentice Alchemist", 2 },
-            { "Novice Alchemist", 1 }
+            { RANK_SEVEN_TITLE, 7 },
+            { RANK_SIX_TITLE, 6 },
+            { RANK_FIVE_TITLE, 5 },
+            { RANK_FOUR_TITLE, 4 },
+            { RANK_THREE_TITLE, 3 },
+            { RANK_TWO_TITLE, 2 },
+            { RANK_ONE_TITLE, 1 }
         };
 
         if (rankMappings.TryGetValue(rank, out var i))
@@ -81,19 +90,19 @@ public class AlchemyScript : DialogScriptBase
         switch (totalTimesCrafted)
         {
             case <= 100:
-                return 1.0; // Novice
+                return 1.0;
             case <= 500:
-                return 1.05; // Apprentice
+                return 1.05;
             case <= 1000:
-                return 1.1; // Journeyman
+                return 1.1;
             case <= 1500:
-                return 1.15; // Craftsman
+                return 1.15;
             case <= 2200:
-                return 1.2; // Artisan
+                return 1.2;
             case <= 2900:
-                return 1.25; // Expert Artisan
+                return 1.25;
             default:
-                return 1.3; // Master Artisan
+                return 1.3;
         }
     }
     
@@ -113,39 +122,39 @@ public class AlchemyScript : DialogScriptBase
 
     private void UpdateLegendmark(Aisling source, int legendMarkCount)
     {
-        var unused = source.Legend.TryGetValue("alch", out var existingMark);
+        var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
         if (existingMark is not null)
         {
             switch (legendMarkCount)
             {
-                case > 2900 when !existingMark.Text.Contains("Master Alchemist"):
-                    existingMark.Text = "Master Alchemist";
+                case > 2900 when !existingMark.Text.Contains(RANK_SEVEN_TITLE):
+                    existingMark.Text = RANK_SEVEN_TITLE;
 
                     break;
-                case > 2200 when !existingMark.Text.Contains("Expert Alchemist"):
-                    existingMark.Text = "Expert Alchemist";
+                case > 2200 when !existingMark.Text.Contains(RANK_SIX_TITLE):
+                    existingMark.Text = RANK_SIX_TITLE;
 
                     break;
-                case > 1500 when !existingMark.Text.Contains("Artisan Alchemist"):
-                    existingMark.Text = "Artisan Alchemist";
+                case > 1500 when !existingMark.Text.Contains(RANK_FIVE_TITLE):
+                    existingMark.Text = RANK_FIVE_TITLE;
 
                     break;
-                case > 1000 when !existingMark.Text.Contains("Craftsman Alchemist"):
-                    existingMark.Text = "Craftsman Alchemist";
+                case > 1000 when !existingMark.Text.Contains(RANK_FOUR_TITLE):
+                    existingMark.Text = RANK_FOUR_TITLE;
 
                     break;
-                case > 500 when !existingMark.Text.Contains("Journeyman Alchemist"):
-                    existingMark.Text = "Journeyman Alchemist";
+                case > 500 when !existingMark.Text.Contains(RANK_THREE_TITLE):
+                    existingMark.Text = RANK_THREE_TITLE;
 
                     break;
-                case > 100 when !existingMark.Text.Contains("Apprentice Alchemist"):
-                    existingMark.Text = "Apprentice Alchemist";
+                case > 100 when !existingMark.Text.Contains(RANK_TWO_TITLE):
+                    existingMark.Text = RANK_TWO_TITLE;
 
                     break;
-                case >= 0 when !existingMark.Text.Contains("Novice Alchemist"):
+                case >= 0 when !existingMark.Text.Contains(RANK_ONE_TITLE):
                     source.Legend.AddOrAccumulate(
                         new LegendMark(
-                            "Novice Alchemist",
+                            RANK_ONE_TITLE,
                             "alch",
                             MarkIcon.Yay,
                             MarkColor.White,
@@ -172,7 +181,7 @@ public class AlchemyScript : DialogScriptBase
         {
             case "alchemy_initial":
             {
-                OnDisplayingInitial(source);
+                OnDisplayingShowItems(source);
                 break;
             }
             case "alchemy_confirmation":
@@ -188,7 +197,8 @@ public class AlchemyScript : DialogScriptBase
         }
     }
 
-    private void OnDisplayingInitial(Aisling source)
+    //ShowItems in a Shop Window to the player
+    private void OnDisplayingShowItems(Aisling source)
     {
         //Checking if the Alchemy recipe is available or not.
         if (source.Trackers.Flags.TryGetFlag(out AlchemyRecipes recipes))
@@ -208,43 +218,70 @@ public class AlchemyScript : DialogScriptBase
         }
     }
 
-private void OnDisplayingConfirmation(Aisling source)
-{
-    // Try to get the selected menu item name from the menu arguments
-    if (!Subject.MenuArgs.TryGet<string>(0, out var itemName) || string.IsNullOrWhiteSpace(itemName))
+    //Show the players a dialog asking if they want to use the ingredients, yes or no
+    private void OnDisplayingConfirmation(Aisling source)
     {
-        // If the name is not found or is empty, display an error message and return
-        Subject.Reply(source, DialogString.UnknownInput.Value);
-        return;
-    }
-    
-     // Remove any spaces from the name
-    itemName = itemName.Replace(" ", "");
-     // Try to parse the selected recipe from the name
-    if (Enum.TryParse(itemName, out AlchemyRecipes selectedRecipe))
-    {
-        // If the recipe is found, check if the player meets the level requirement
-        if (CraftingRequirements.AlchemyRequirements.TryGetValue(selectedRecipe, out var requirement))
+        // Try to get the selected menu item name from the menu arguments
+        if (!Subject.MenuArgs.TryGet<string>(0, out var itemName) || string.IsNullOrWhiteSpace(itemName))
         {
-            if (requirement.Item3 > source.StatSheet.Level)
+            // If the name is not found or is empty, display an error message and return
+            Subject.Reply(source, DialogString.UnknownInput.Value);
+
+            return;
+        }
+
+        // Remove any spaces from the name
+        itemName = itemName.Replace(" ", "");
+
+        // Try to parse the selected recipe from the name
+        if (Enum.TryParse(itemName, out AlchemyRecipes selectedRecipe))
+        {
+            // If the recipe is found, check if the player meets the level requirement
+            if (CraftingRequirements.AlchemyRequirements.TryGetValue(selectedRecipe, out var requirement))
             {
-                // If the player doesn't meet the requirement, close the menu and display an error message
-                Subject.Close(source);
-                source.SendOrangeBarMessage($"You are not the required Level of {requirement.Item3} for this recipe.");
-                return;
+                if (requirement.Item3 > source.StatSheet.Level)
+                {
+                    // If the player doesn't meet the requirement, close the menu and display an error message
+                    Subject.Close(source);
+
+                    source.SendOrangeBarMessage(
+                        $"You are not the required Level of {requirement.Item3} for this recipe.");
+
+                    return;
+                }
+
+                var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
+
+                if (existingMark is not null)
+                {
+                    var recipeStatus = GetStatusAsInt(requirement.Item2);
+                    var playerRank = GetRankAsInt(existingMark.Text);
+
+                    if (playerRank < recipeStatus)
+                    {
+                        Subject.Close(source);
+
+                        source.SendOrangeBarMessage(
+                            $"You do not have the crafting rank of {requirement.Item2} required for this recipe.");
+
+                        return;
+                    }
+                }
+
+                // If the player meets the requirement, create a list of ingredient names and amounts
+                var ingredientList = new List<string>();
+
+                foreach (var regeant in requirement.Item1)
+                {
+                    ingredientList.Add($"({regeant.Amount}) {regeant.DisplayName}");
+                }
+
+                // Join the ingredient list into a single string and inject it into the confirmation message
+                var ingredients = string.Join(" and ", ingredientList);
+                Subject.InjectTextParameters(itemName, ingredients);
             }
-             // If the player meets the requirement, create a list of ingredient names and amounts
-            var ingredientList = new List<string>();
-            foreach (var regeant in requirement.Item1)
-            {
-                ingredientList.Add($"({regeant.Amount}) {regeant.DisplayName}");
-            }
-             // Join the ingredient list into a single string and inject it into the confirmation message
-            var ingredients = string.Join(" and ", ingredientList);
-            Subject.InjectTextParameters(itemName, ingredients);
         }
     }
-}
 
     private void OnDisplayingAccepted(Aisling source)
     {
@@ -269,7 +306,7 @@ private void OnDisplayingConfirmation(Aisling source)
                     }
                 }
                 
-                var unused = source.Legend.TryGetValue("alch", out var existingMark);
+                var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
                 var legendMarkCount = existingMark?.Count ?? 0;
                 
                 var timesCraftedThisItem =

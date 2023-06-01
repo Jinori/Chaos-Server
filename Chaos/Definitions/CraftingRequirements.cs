@@ -36,4 +36,19 @@ public static class CraftingRequirements
             )
         }
     };
+    
+    public static Dictionary<EnchantingRecipes, Tuple<List<Ingredient>, string, int>> EnchantingRequirements { get; } = new()
+    {
+        {
+            EnchantingRecipes.MiraelisEmbrace, new Tuple<List<Ingredient>, string, int>(
+                new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "magicalessence", DisplayName = "Magical Essence", Amount = 5 },
+                    new Ingredient { TemplateKey = "ruby", DisplayName = "Ruby", Amount = 1 }
+                },
+                "Basic",
+                3
+            )
+        }
+    };
 }

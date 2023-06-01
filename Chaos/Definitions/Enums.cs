@@ -11,14 +11,6 @@ public enum AoeShape
 }
 
 [Flags]
-public enum AlchemyRecipes
-{
-    None = 0,
-    Hemloch = 1,
-    BetonyDeum = 1 << 2,
-}
-
-[Flags]
 public enum Status : ulong
 {
     None = 0,
@@ -953,10 +945,19 @@ public enum Shields
 public enum EnchantingRecipes
 {
     None = 0,
+    MiraelisEmbrace = 1,
 }
 
 [Flags]
 public enum JewelcraftingRecipes
 {
     None = 0,
+}
+
+[Flags]
+public enum AlchemyRecipes
+{
+    None = 0,
+    Hemloch = 1,
+    BetonyDeum = 1 << 2,
 }
