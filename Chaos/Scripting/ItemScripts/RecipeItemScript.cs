@@ -200,6 +200,13 @@ public class RecipeItemScript : ItemScriptBase
                         ArmorSmithRecipes.basicarmors,
                         "Basic Armors",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedscoutleather);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedgardcorp);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedcowl);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedcotte);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedmagiskirt);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedgorgetgown);
 
                     return;
                 }
@@ -219,6 +226,13 @@ public class RecipeItemScript : ItemScriptBase
                         ArmorSmithRecipes.apprenticearmors,
                         "Apprentice Armors",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refineddwarvishleather);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedjourneyman);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedgaluchatcoat);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedbrigadine);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedbenusta);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedmysticgown);
 
                     return;
                 }
@@ -237,6 +251,13 @@ public class RecipeItemScript : ItemScriptBase
                         ArmorSmithRecipes.journeymanarmors,
                         "Journeyman Armors",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedpaluten);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedlorum);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedmantle);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedcorsette);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedstoller);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedelle);
 
                     return;
                 }
@@ -255,6 +276,13 @@ public class RecipeItemScript : ItemScriptBase
                         ArmorSmithRecipes.adeptarmors,
                         "Adept Armors",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedkeaton);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedmane);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedhierophant);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedpebblerose);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedclymouth);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refineddolman);
 
                     return;
                 }
@@ -273,6 +301,13 @@ public class RecipeItemScript : ItemScriptBase
                         ArmorSmithRecipes.advancedarmors,
                         "Advanced Armors",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedkagum);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedclamyth);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedbansagart);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedbardocle);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedduinuasal);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.refineddalmatica);
 
                     return;
                 }

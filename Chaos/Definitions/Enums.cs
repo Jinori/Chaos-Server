@@ -443,6 +443,7 @@ public enum IceWallQuest
     Complete = 7
 }
 
+#region Cooking Enums
 public enum CookFoodStage
 {
     None = 0,
@@ -591,6 +592,21 @@ public enum ExtraIngredientsStage3
     salt = 5
 }
 
+[Flags]
+public enum CookingRecipes
+{
+    None,
+    dinnerplate = 1,
+    fruitbasket = 1 << 1,
+    lobsterdinner = 1 << 2,
+    pie = 1 << 3,
+    salad = 1 << 4,
+    sandwich = 1 << 5,
+    soup = 1 << 6,
+    steakmeal = 1 << 7,
+    sweetbuns = 1 << 8
+}
+#endregion
 public enum FiskSecretStage
 {
     None = 0,
@@ -650,20 +666,9 @@ public enum CurrentMount
     WhiteWolf = 2,
 }
 
-[Flags]
-public enum CookingRecipes
-{
-    None,
-    dinnerplate = 1,
-    fruitbasket = 1 << 1,
-    lobsterdinner = 1 << 2,
-    pie = 1 << 3,
-    salad = 1 << 4,
-    sandwich = 1 << 5,
-    soup = 1 << 6,
-    steakmeal = 1 << 7,
-    sweetbuns = 1 << 8
-}
+#region  Armor Smithing Recipes
+
+#region Armor Smith Categories
 
 [Flags]
 public enum ArmorSmithRecipes
@@ -683,6 +688,123 @@ public enum ArmorSmithRecipes
     advancedarmors = 1 << 12,
 }
 
+#endregion
+
+#region Gauntlets
+
+[Flags]
+public enum BasicGauntletRecipes
+{
+    None = 0,
+    leathersapphiregauntlet = 1,
+    leatherrubygauntlet = 1 << 2,
+    leatheremeraldgauntlet = 1 << 3,
+    leatherheartstonegauntlet = 1 << 4,
+}
+
+[Flags]
+public enum ApprenticeGauntletRecipes
+{
+    None = 0,
+    ironsapphiregauntlet = 1,
+    ironrubygauntlet = 2,
+    ironemeraldgauntlet = 3,
+    ironheartstonegauntlet = 4,
+}
+
+[Flags]
+public enum JourneymanGauntletRecipes
+{
+    None = 0,
+    mythrilsapphiregauntlet = 1,
+    mythrilrubygauntlet = 2,
+    mythrilemeraldgauntlet = 3,
+    mythrilheartstonegauntlet = 4,
+}
+[Flags]
+public enum AdeptGauntletRecipes
+{
+    None = 0,
+    hybrasylsapphiregauntlet = 1,
+    hybrasylrubygauntlet = 2,
+    hybrasylemeraldgauntlet = 3,
+    hybrasylheartstonegauntlet = 4,
+}
+#endregion
+
+#region Belts
+
+[Flags]
+public enum BasicBelts
+{
+    None = 0,
+    jeweledseabelt = 1,
+    jeweledfirebelt = 1 << 2,
+    jeweledwindbelt = 1 << 3,
+    jeweledearthbelt = 1 << 4
+}
+
+public enum ApprenticeBelts
+ {
+     None = 0,
+     jewelednaturebelt = 1,
+     jeweledmetalbelt = 1 << 2
+ }
+public enum JourneymanBelts
+{
+    None = 0,
+    jeweleddarkbelt = 1,
+    jeweledlightbelt = 1 << 2
+}
+
+
+    #endregion
+
+#region CraftedArmors
+
+[Flags]
+public enum CraftedArmors
+{
+    None = 0,
+    refinedscoutleather = 1,
+    refineddwarvishleather = 1 << 2,
+    refinedpaluten = 1 << 3,
+    refinedkeaton = 1 << 4,
+    refinedbardocle = 1 << 5,
+    refinedgardcorp = 1 << 6,
+    refinedjourneyman = 1 << 7,
+    refinedlorum = 1 << 8,
+    refinedmane = 1 << 9,
+    refinedduinuasal = 1 << 10,
+    refinedcowl = 1 << 11,
+    refinedgaluchatcoat = 1 << 12,
+    refinedmantle = 1 << 13,
+    refinedhierophant = 1 << 14,
+    refineddalmatica = 1 << 15,
+    refinedcotte = 1 << 16,
+    refinedbrigadine = 1 << 17,
+    refinedcorsette = 1 << 18,
+    refinedpebblerose = 1 << 19,
+    refinedkagum = 1 << 20,
+    refinedmagiskirt = 1 << 21,
+    refinedbenusta = 1 << 22,
+    refinedstoller = 1 << 23,
+    refinedclymouth = 1 << 24,
+    refinedclamyth = 1 << 25,
+    refinedgorgetgown = 1 << 26,
+    refinedmysticgown = 1 << 27,
+    refinedelle = 1 << 28,
+    refineddolman = 1 << 29,
+    refinedbansagart = 1 << 30
+}
+
+    #endregion
+
+#endregion
+
+#region Weapon Smithing Recipes
+
+#region Weapon Smith Categories
 [Flags]
 public enum WeaponSmithRecipes
 {
@@ -710,7 +832,123 @@ public enum WeaponSmithRecipes
     apprenticeshields = 1 << 21,
     journeymanshields = 1 << 22,
 }
+#endregion
 
+#region Swords
+
+[Flags]
+public enum Swords
+{
+    None = 0,
+    eppe = 1,
+    saber = 1 << 2,
+    claidheamh = 1 << 3,
+    broadsword = 1 << 4,
+    battlesword = 1 << 5,
+    masquerade = 1 << 6,
+    bramble = 1 << 7,
+    longsword = 1 << 8,
+    claidhmore = 1 << 9,
+    emeraldsword = 1 << 10,
+    gladius = 1 << 11,
+    kindjal = 1 << 12,
+    dragonslayer = 1 << 13
+}
+
+    #endregion
+
+#region Weapons
+
+[Flags]
+public enum Weapons
+{
+    None = 0,
+    hatchet = 1,
+    harpoon = 1 << 2,
+    scimitar = 1 << 3,
+    club = 1 << 4,
+    spikedclub = 1 << 5,
+    chainmace = 1 << 6,
+    handaxe = 1 << 7,
+    cutlass = 1 << 8,
+    talgoniteaxe = 1 << 9,
+    hybrasylaxe = 1 << 10
+}
+#endregion
+
+#region Staves
+
+[Flags]
+public enum Staves
+{
+    None = 0,
+    magusares = 1,
+    holyhermes = 1 << 2,
+    maguszeus = 1 << 3,
+    holykronos = 1 << 4,
+    magusdiana = 1 << 5,
+    holydiana = 1 << 6,
+    stonecross = 1 << 7,
+    oakstaff = 1 << 8,
+    staffofwisdom = 1 << 9
+}
+
+
+    #endregion
+
+#region Daggers
+
+[Flags]
+public enum Daggers
+{
+    None = 0, 
+    snowdagger = 1,
+    centerdagger = 1 << 2,
+    blossomdagger = 1 << 3,
+    curveddagger = 1 << 4,
+    moondagger = 1 << 5,
+    lightdagger = 1 << 6,
+    sundagger = 1 << 7,
+    lotusdagger = 1 << 8,
+    blooddagger = 1 << 9,
+    nagetierdagger = 1 << 10
+}
+    #endregion
+
+#region Claws
+
+[Flags]
+public enum Claws
+{
+    None = 0,
+    dullclaw = 1,
+    wolfclaw = 1 << 2,
+    eagletalon = 1 << 3,
+    phoenixclaw = 1 << 4,
+    nunchaku = 1 << 5,
+}
+
+    #endregion
+
+#region Shields
+
+[Flags]
+public enum Shields
+{
+    None = 0,
+    woodenshield = 1,
+    leathershield = 1 << 2,
+    bronzeshield = 1 << 3,
+    gravelshield = 1 << 4,
+    ironshield = 1 << 5,
+    lightshield = 1 << 6,
+    mythrilshield = 1 << 7,
+    hybrasylshield = 1 << 8,
+}
+
+    #endregion
+
+    #endregion
 [Flags]
 public enum EnchantingRecipes
 {
