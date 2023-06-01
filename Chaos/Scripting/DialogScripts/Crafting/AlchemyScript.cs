@@ -16,11 +16,14 @@ public class AlchemyScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
     private readonly IDialogFactory DialogFactory;
+    
+    //Constants to change based on crafting profession
     private const string ITEM_COUNTER_PREFIX = "[Alchemy]";
     private const double BASE_SUCCESS_RATE = 30;
     private const double NOVICEBOOST = 5;
     private const double SUCCESSRATEMAX = 95;
-    private readonly bool CRAFTGOODGREATGRAND = true;
+    //Set this to true if doing armorsmithing type crafting
+    private readonly bool CRAFTGOODGREATGRAND = false;
     
     private Animation FailAnimation { get; } = new()
     {
