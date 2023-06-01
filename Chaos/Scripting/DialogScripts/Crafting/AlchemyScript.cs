@@ -1,4 +1,3 @@
-using System.Globalization;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
@@ -19,6 +18,10 @@ public class AlchemyScript : DialogScriptBase
     private readonly IDialogFactory DialogFactory;
     private const string ITEM_COUNTER_PREFIX = "[Alchemy]";
     private const double BASE_SUCCESS_RATE = 30;
+    private const double NOVICEBOOST = 5;
+    private const double SUCCESSRATEMAX = 95;
+    private readonly bool CRAFTGOODGREATGRAND = true;
+    
     private Animation FailAnimation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -30,45 +33,44 @@ public class AlchemyScript : DialogScriptBase
         TargetAnimation = 127
     };
 
+    // Converts the rank string to an integer value
     private int GetRankAsInt(string rank)
     {
-        if (rank.Contains("Master Alchemist"))
-            return 6;
-        if (rank.Contains("Expert Alchemist"))
-            return 5;
-        if (rank.Contains("Artisan Alchemist"))
-            return 4;
-        if (rank.Contains("Craftsman Alchemist"))
-            return 3;
-        if (rank.Contains("Journeyman Alchemist"))
-            return 2;
-        if (rank.Contains("Apprentice Alchemist"))
-            return 1;
-        if (rank.Contains("Novice Alchemist"))
-            return 0;
+        var rankMappings = new Dictionary<string, int>
+        {
+            { "Master Alchemist", 7 },
+            { "Expert Alchemist", 6 },
+            { "Artisan Alchemist", 5 },
+            { "Craftsman Alchemist", 4 },
+            { "Journeyman Alchemist", 3 },
+            { "Apprentice Alchemist", 2 },
+            { "Novice Alchemist", 1 }
+        };
+
+        if (rankMappings.TryGetValue(rank, out var i))
+            return i;
 
         return -1;
     }
     
+    // Converts the status string to an integer value
     private int GetStatusAsInt(string status)
     {
-        switch (status)
+        var statusMappings = new Dictionary<string, int>
         {
-            case "Basic":
-                return 1;
-            case "Apprentice":
-                return 2;
-            case "Journeyman":
-                return 3;
-            case "Adept":
-                return 4;
-            case "Advanced":
-                return 5;
-            case "Master":
-                return 6;
-            default:
-                return 0;
-        }
+            { "Basic", 1 },
+            { "Apprentice", 2 },
+            { "Journeyman", 3 },
+            { "Adept", 4 },
+            { "Advanced", 5 },
+            { "Expert", 6 },
+            { "Master", 7 }
+        };
+
+        if (statusMappings.TryGetValue(status, out var i))
+            return i;
+
+        return 0;
     }
     
     private double GetMultiplier(int totalTimesCrafted)
@@ -91,14 +93,19 @@ public class AlchemyScript : DialogScriptBase
                 return 1.3; // Master Artisan
         }
     }
-
+    
+    // Calculates the success rate of crafting an item
     private double CalculateSuccessRate(int totalTimesCrafted, int timesCraftedThisItem, double baseSuccessRate)
     {
-        double noviceBoost = totalTimesCrafted <= 100 ? 5 : 0; // Provide a little boost to novices
+        // Provide a little boost to novices
+        var noviceBoost = totalTimesCrafted <= 100 ? NOVICEBOOST : 0;
+        // Get the multiplier based on total times crafted
         var multiplier = GetMultiplier(totalTimesCrafted);
+        // Calculate the success rate with all the factors
         var successRate = (baseSuccessRate + noviceBoost + timesCraftedThisItem / 10.0) * multiplier;
 
-        return Math.Min(successRate, 95); // Cap the success rate at 95
+        // Ensure the success rate does not exceed the maximum allowed value
+        return Math.Min(successRate, SUCCESSRATEMAX);
     }
 
     private void UpdateLegendmark(Aisling source, int legendMarkCount)
@@ -145,17 +152,6 @@ public class AlchemyScript : DialogScriptBase
                     break;
             }
         }
-        if (existingMark is null)
-        {
-            source.Legend.AddOrAccumulate(
-                new LegendMark(
-                    "Novice Alchemist",
-                    "alch",
-                    MarkIcon.Yay,
-                    MarkColor.White,
-                    1,
-                    GameTime.Now));
-        }
     }
     
     /// <inheritdoc />
@@ -191,52 +187,61 @@ public class AlchemyScript : DialogScriptBase
 
     private void OnDisplayingInitial(Aisling source)
     {
+        //Checking if the Alchemy recipe is available or not.
         if (source.Trackers.Flags.TryGetFlag(out AlchemyRecipes recipes))
         {
+            //Iterating through the Alchemy recipe requirements.
             foreach (var recipe in CraftingRequirements.AlchemyRequirements)
             {
+                //Checking if the recipe is available or not.
                 if ((recipes & recipe.Key) == recipe.Key)
                 {
+                    //Creating a faux item for the recipe.
                     var item = ItemFactory.CreateFaux(recipe.Key.ToString());
+                    //Adding the recipe to the subject's dialog window
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
             }
         }
     }
 
-    private void OnDisplayingConfirmation(Aisling source)
+private void OnDisplayingConfirmation(Aisling source)
+{
+    // Try to get the selected menu item name from the menu arguments
+    if (!Subject.MenuArgs.TryGet<string>(0, out var itemName) || string.IsNullOrWhiteSpace(itemName))
     {
-        if (!Subject.MenuArgs.TryGet<string>(0, out var itemName) || string.IsNullOrWhiteSpace(itemName))
+        // If the name is not found or is empty, display an error message and return
+        Subject.Reply(source, DialogString.UnknownInput.Value);
+        return;
+    }
+    
+     // Remove any spaces from the name
+    itemName = itemName.Replace(" ", "");
+     // Try to parse the selected recipe from the name
+    if (Enum.TryParse(itemName, out AlchemyRecipes selectedRecipe))
+    {
+        // If the recipe is found, check if the player meets the level requirement
+        if (CraftingRequirements.AlchemyRequirements.TryGetValue(selectedRecipe, out var requirement))
         {
-            Subject.Reply(source, DialogString.UnknownInput.Value);
-            return;
-        }
-
-        itemName = itemName.Replace(" ", "");
-
-        if (Enum.TryParse(itemName, out AlchemyRecipes selectedRecipe))
-        {
-            if (CraftingRequirements.AlchemyRequirements.TryGetValue(selectedRecipe, out var requirement))
+            if (requirement.Item3 > source.StatSheet.Level)
             {
-                if (requirement.Item3 > source.StatSheet.Level)
-                {
-                    Subject.Close(source);
-                    source.SendOrangeBarMessage($"You are not the required Level of {requirement.Item3} for this recipe.");
-                    return;
-                }
-                
-                var ingredientList = new List<string>();
-
-                foreach (var regeant in requirement.Item1)
-                {
-                    ingredientList.Add($"({regeant.Amount}) {regeant.DisplayName}");
-                }
-
-                var ingredients = string.Join(" and ", ingredientList);
-                Subject.InjectTextParameters(itemName, ingredients);
+                // If the player doesn't meet the requirement, close the menu and display an error message
+                Subject.Close(source);
+                source.SendOrangeBarMessage($"You are not the required Level of {requirement.Item3} for this recipe.");
+                return;
             }
+             // If the player meets the requirement, create a list of ingredient names and amounts
+            var ingredientList = new List<string>();
+            foreach (var regeant in requirement.Item1)
+            {
+                ingredientList.Add($"({regeant.Amount}) {regeant.DisplayName}");
+            }
+             // Join the ingredient list into a single string and inject it into the confirmation message
+            var ingredients = string.Join(" and ", ingredientList);
+            Subject.InjectTextParameters(itemName, ingredients);
         }
     }
+}
 
     private void OnDisplayingAccepted(Aisling source)
     {
@@ -261,15 +266,12 @@ public class AlchemyScript : DialogScriptBase
                     }
                 }
                 
-                var legendMark = source.Legend.TryGetValue("alch", out var existingMark);
+                var unused = source.Legend.TryGetValue("alch", out var existingMark);
                 var legendMarkCount = existingMark?.Count ?? 0;
                 
                 var timesCraftedThisItem =
                     source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + itemName, out var value) ? value : 0;
                 
-                source.Say(CalculateSuccessRate(legendMarkCount, timesCraftedThisItem, BASE_SUCCESS_RATE).ToString(CultureInfo.InvariantCulture));
-                
-                var newCraft = ItemFactory.Create(itemName);
                 foreach (var removeRegant in recipeIngredients.Item1)
                 {
                     if (removeRegant.DisplayName != null)
@@ -286,8 +288,7 @@ public class AlchemyScript : DialogScriptBase
                     source.Animate(FailAnimation);
                     return;
                 }
-        
-                source.Inventory.TryAddToNextSlot(newCraft);
+                
                 source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + itemName);
 
                 if (existingMark is not null)
@@ -302,10 +303,46 @@ public class AlchemyScript : DialogScriptBase
                     if (playerRank <= recipeStatus)
                     {
                         UpdateLegendmark(source, legendMarkCount);
+                        existingMark.Count++;
                     }
                 }
+                if (existingMark is null)
+                    UpdateLegendmark(source, 0);
 
-                Subject.InjectTextParameters(newCraft.DisplayName);
+                
+                if (CRAFTGOODGREATGRAND)
+                {
+                    var roll = Randomizer.RollSingle(100);
+
+                    var newCraft = roll switch
+                    {
+                        < 5  => ItemFactory.Create("grand" + itemName),
+                        < 10 => ItemFactory.Create("great" + itemName),
+                        < 15 => ItemFactory.Create("good" + itemName),
+                        _    => ItemFactory.Create(itemName)
+                    };
+
+                    if (!source.Inventory.TryAddToNextSlot(newCraft))
+                    {
+                        source.Bank.Deposit(newCraft);
+                        source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
+                    }
+
+                    Subject.InjectTextParameters(newCraft.DisplayName);
+                }
+                else
+                {
+                    var newCraft = ItemFactory.Create(itemName);
+
+                    if (!source.Inventory.TryAddToNextSlot(newCraft))
+                    {
+                        source.Bank.Deposit(newCraft);
+                        source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
+                    }
+
+                    Subject.InjectTextParameters(newCraft.DisplayName);
+                }
+                
                 source.Animate(SuccessAnimation);
             } 
             else
