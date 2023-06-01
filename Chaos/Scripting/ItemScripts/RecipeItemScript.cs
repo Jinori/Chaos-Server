@@ -326,6 +326,11 @@ public class RecipeItemScript : ItemScriptBase
                         ArmorSmithRecipes.basicgauntlets,
                         "Basic Gauntlets",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(BasicGauntletRecipes.leathersapphiregauntlet);
+                    source.Trackers.Flags.AddFlag(BasicGauntletRecipes.leatherrubygauntlet);
+                    source.Trackers.Flags.AddFlag(BasicGauntletRecipes.leatheremeraldgauntlet);
+                    source.Trackers.Flags.AddFlag(BasicGauntletRecipes.leatherheartstonegauntlet);
 
                     return;
                 }
@@ -344,6 +349,11 @@ public class RecipeItemScript : ItemScriptBase
                         ArmorSmithRecipes.apprenticegauntlets,
                         "Apprentice Gauntlets",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(ApprenticeGauntletRecipes.ironemeraldgauntlet);
+                    source.Trackers.Flags.AddFlag(ApprenticeGauntletRecipes.ironrubygauntlet);
+                    source.Trackers.Flags.AddFlag(ApprenticeGauntletRecipes.ironheartstonegauntlet);
+                    source.Trackers.Flags.AddFlag(ApprenticeGauntletRecipes.ironsapphiregauntlet);
 
                     return;
                 }
@@ -362,6 +372,11 @@ public class RecipeItemScript : ItemScriptBase
                         ArmorSmithRecipes.journeymangauntlets,
                         "Journeyman Gauntlets",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(JourneymanGauntletRecipes.mythrilemeraldgauntlet);
+                    source.Trackers.Flags.AddFlag(JourneymanGauntletRecipes.mythrilrubygauntlet);
+                    source.Trackers.Flags.AddFlag(JourneymanGauntletRecipes.mythrilheartstonegauntlet);
+                    source.Trackers.Flags.AddFlag(JourneymanGauntletRecipes.mythrilsapphiregauntlet);
 
                     return;
                 }
@@ -380,6 +395,11 @@ public class RecipeItemScript : ItemScriptBase
                         ArmorSmithRecipes.adeptgauntlets,
                         "Adept Gauntlets",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(AdeptGauntletRecipes.hybrasylemeraldgauntlet);
+                    source.Trackers.Flags.AddFlag(AdeptGauntletRecipes.hybrasylrubygauntlet);
+                    source.Trackers.Flags.AddFlag(AdeptGauntletRecipes.hybrasylheartstonegauntlet);
+                    source.Trackers.Flags.AddFlag(AdeptGauntletRecipes.hybrasylsapphiregauntlet);
 
                     return;
                 }
@@ -398,6 +418,11 @@ public class RecipeItemScript : ItemScriptBase
                         ArmorSmithRecipes.basicbelts,
                         "Basic Belts",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(BasicBelts.jeweledseabelt);
+                    source.Trackers.Flags.AddFlag(BasicBelts.jeweledearthbelt);
+                    source.Trackers.Flags.AddFlag(BasicBelts.jeweledwindbelt);
+                    source.Trackers.Flags.AddFlag(BasicBelts.jeweledfirebelt);
 
                     return;
                 }
@@ -416,6 +441,9 @@ public class RecipeItemScript : ItemScriptBase
                         ArmorSmithRecipes.apprenticebelts,
                         "Apprentice Belts",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(ApprenticeBelts.jeweledmetalbelt);
+                    source.Trackers.Flags.AddFlag(ApprenticeBelts.jewelednaturebelt);
 
                     return;
                 }
@@ -434,6 +462,9 @@ public class RecipeItemScript : ItemScriptBase
                         ArmorSmithRecipes.journeymanbelts,
                         "Journeyman Belts",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(JourneymanBelts.jeweleddarkbelt);
+                    source.Trackers.Flags.AddFlag(JourneymanBelts.jeweledlightbelt);
 
                     return;
                 }
@@ -455,6 +486,11 @@ public class RecipeItemScript : ItemScriptBase
                         WeaponSmithRecipes.basicswords,
                         "Basic Swords",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(Swords.claidheamh);
+                    source.Trackers.Flags.AddFlag(Swords.broadsword);
+                    source.Trackers.Flags.AddFlag(Swords.battlesword);
+                    source.Trackers.Flags.AddFlag(Swords.masquerade);
 
                     return;
                 }
@@ -473,6 +509,9 @@ public class RecipeItemScript : ItemScriptBase
                         WeaponSmithRecipes.apprenticeswords,
                         "Apprentice Swords",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(Swords.bramble);
+                    source.Trackers.Flags.AddFlag(Swords.longsword);
 
                     return;
                 }
@@ -491,6 +530,10 @@ public class RecipeItemScript : ItemScriptBase
                         WeaponSmithRecipes.journeymanswords,
                         "Journeyman Swords",
                         $"{Subject.Template.TemplateKey}");
+                        
+                        source.Trackers.Flags.AddFlag(Swords.claidhmore);
+                        source.Trackers.Flags.AddFlag(Swords.emeraldsword);
+                        source.Trackers.Flags.AddFlag(Swords.gladius);
 
                     return;
                 }
@@ -509,6 +552,9 @@ public class RecipeItemScript : ItemScriptBase
                         WeaponSmithRecipes.adeptswords,
                         "Adept Swords",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(Swords.kindjal);
+                    source.Trackers.Flags.AddFlag(Swords.dragonslayer);
 
                     return;
                 }
@@ -527,6 +573,10 @@ public class RecipeItemScript : ItemScriptBase
                         WeaponSmithRecipes.basicweapons,
                         "Basic Weapons",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(Weapons.hatchet);
+                    source.Trackers.Flags.AddFlag(Weapons.harpoon);
+                    source.Trackers.Flags.AddFlag(Weapons.scimitar);
 
                     return;
                 }
@@ -545,6 +595,10 @@ public class RecipeItemScript : ItemScriptBase
                         WeaponSmithRecipes.apprenticeweapons,
                         "Apprentice Weapons",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(Weapons.club);
+                    source.Trackers.Flags.AddFlag(Weapons.spikedclub);
+                    source.Trackers.Flags.AddFlag(Weapons.chainmace);
 
                     return;
                 }
@@ -563,6 +617,9 @@ public class RecipeItemScript : ItemScriptBase
                         WeaponSmithRecipes.journeymanweapons,
                         "Journeyman Weapons",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(Weapons.handaxe);
+                    source.Trackers.Flags.AddFlag(Weapons.cutlass);
 
                     return;
                 }
@@ -581,6 +638,9 @@ public class RecipeItemScript : ItemScriptBase
                         WeaponSmithRecipes.adeptweapons,
                         "Adept Weapons",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(Weapons.talgoniteaxe);
+                    source.Trackers.Flags.AddFlag(Weapons.hybrasylaxe);
 
                     return;
                 }
@@ -599,6 +659,9 @@ public class RecipeItemScript : ItemScriptBase
                         WeaponSmithRecipes.basicstaves,
                         "Basic Staves",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(Staves.magusares);
+                    source.Trackers.Flags.AddFlag(Staves.holyhermes);
 
                     return;
                 }
@@ -618,6 +681,9 @@ public class RecipeItemScript : ItemScriptBase
                         "Apprentice Staves",
                         $"{Subject.Template.TemplateKey}");
 
+                    source.Trackers.Flags.AddFlag(Staves.maguszeus);
+                    source.Trackers.Flags.AddFlag(Staves.holykronos);
+
                     return;
                 }
 
@@ -635,6 +701,9 @@ public class RecipeItemScript : ItemScriptBase
                         WeaponSmithRecipes.journeymanstaves,
                         "Journeyman Staves",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(Staves.magusdiana);
+                    source.Trackers.Flags.AddFlag(Staves.holydiana);
 
                     return;
                 }
@@ -653,6 +722,10 @@ public class RecipeItemScript : ItemScriptBase
                         WeaponSmithRecipes.adeptstaves,
                         "Adept Staves",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(Staves.stonecross);
+                    source.Trackers.Flags.AddFlag(Staves.oakstaff);
+                    source.Trackers.Flags.AddFlag(Staves.staffofwisdom);
 
                     return;
                 }
