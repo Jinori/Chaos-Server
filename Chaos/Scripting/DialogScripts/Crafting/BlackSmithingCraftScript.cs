@@ -12,25 +12,25 @@ using Chaos.Utilities;
 
 namespace Chaos.Scripting.DialogScripts.Crafting;
 
-public class AlchemyScript : DialogScriptBase
+public class BlackSmithingCraftScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
     private readonly IDialogFactory DialogFactory;
-    
+
     //Constants to change based on crafting profession
-    private const string ITEM_COUNTER_PREFIX = "[Alchemy]";
-    private const string LEGENDMARK_KEY = "alch";
+    private const string ITEM_COUNTER_PREFIX = "[Blacksmithing]";
+    private const string LEGENDMARK_KEY = "Blacksmithing";
     private const double BASE_SUCCESS_RATE = 30;
     private const double NOVICEBOOST = 5;
     private const double SUCCESSRATEMAX = 95;
     //Ranks from lowest to highest
-    private const string RANK_ONE_TITLE = "Novice Alchemist";
-    private const string RANK_TWO_TITLE = "Apprentice Alchemist";
-    private const string RANK_THREE_TITLE = "Journeyman Alchemist";
-    private const string RANK_FOUR_TITLE = "Craftsman Alchemist";
-    private const string RANK_FIVE_TITLE = "Artisan Alchemist";
-    private const string RANK_SIX_TITLE = "Expert Alchemist";
-    private const string RANK_SEVEN_TITLE = "Master Alchemist";
+    private const string RANK_ONE_TITLE = "Novice Blacksmith";
+    private const string RANK_TWO_TITLE = "Apprentice Blacksmith";
+    private const string RANK_THREE_TITLE = "Journeyman Blacksmith";
+    private const string RANK_FOUR_TITLE = "Craftsman Blacksmith";
+    private const string RANK_FIVE_TITLE = "Artisan Blacksmith";
+    private const string RANK_SIX_TITLE = "Expert Blacksmith";
+    private const string RANK_SEVEN_TITLE = "Master Blacksmith";
     //Set this to true if doing armorsmithing type crafting
     private readonly bool CRAFTGOODGREATGRAND = false;
 
@@ -64,7 +64,7 @@ public class AlchemyScript : DialogScriptBase
 
         return 1;
     }
-    
+
     // Converts the status string to an integer value
     private int GetStatusAsInt(string status)
     {
@@ -84,7 +84,7 @@ public class AlchemyScript : DialogScriptBase
 
         return 0;
     }
-    
+
     private double GetMultiplier(int totalTimesCrafted)
     {
         switch (totalTimesCrafted)
@@ -105,7 +105,7 @@ public class AlchemyScript : DialogScriptBase
                 return 1.3;
         }
     }
-    
+
     // Calculates the success rate of crafting an item
     private double CalculateSuccessRate(int totalTimesCrafted, int timesCraftedThisItem, double baseSuccessRate)
     {
@@ -123,6 +123,7 @@ public class AlchemyScript : DialogScriptBase
     private void UpdateLegendmark(Aisling source, int legendMarkCount)
     {
         var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
+
         if (existingMark is not null)
         {
             switch (legendMarkCount)
@@ -155,7 +156,7 @@ public class AlchemyScript : DialogScriptBase
                     source.Legend.AddOrAccumulate(
                         new LegendMark(
                             RANK_ONE_TITLE,
-                            "alch",
+                            "blacksmith",
                             MarkIcon.Yay,
                             MarkColor.White,
                             1,
@@ -165,9 +166,9 @@ public class AlchemyScript : DialogScriptBase
             }
         }
     }
-    
+
     /// <inheritdoc />
-    public AlchemyScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
+    public BlackSmithingCraftScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -179,19 +180,22 @@ public class AlchemyScript : DialogScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "alchemy_initial":
+            case "blacksmithing_craftinitial":
             {
                 OnDisplayingShowItems(source);
+
                 break;
             }
-            case "alchemy_confirmation":
+            case "blacksmithing_craftconfirmation":
             {
                 OnDisplayingConfirmation(source);
+
                 break;
             }
-            case "alchemy_accepted":
+            case "blacksmithing_craftaccepted":
             {
                 OnDisplayingAccepted(source);
+
                 break;
             }
         }
@@ -201,10 +205,10 @@ public class AlchemyScript : DialogScriptBase
     private void OnDisplayingShowItems(Aisling source)
     {
         //Checking if the Alchemy recipe is available or not.
-        if (source.Trackers.Flags.TryGetFlag(out AlchemyRecipes recipes))
+        if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes recipes))
         {
             //Iterating through the Alchemy recipe requirements.
-            foreach (var recipe in CraftingRequirements.AlchemyRequirements)
+            foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
             {
                 //Checking if the recipe is available or not.
                 if ((recipes & recipe.Key) == recipe.Key)
@@ -234,10 +238,10 @@ public class AlchemyScript : DialogScriptBase
         itemName = itemName.Replace(" ", "");
 
         // Try to parse the selected recipe from the name
-        if (Enum.TryParse(itemName, out AlchemyRecipes selectedRecipe))
+        if (Enum.TryParse(itemName, out WeaponSmithingRecipes selectedRecipe))
         {
             // If the recipe is found, check if the player meets the level requirement
-            if (CraftingRequirements.AlchemyRequirements.TryGetValue(selectedRecipe, out var requirement))
+            if (CraftingRequirements.WeaponSmithingCraftRequirements.TryGetValue(selectedRecipe, out var requirement))
             {
                 if (requirement.Item3 > source.StatSheet.Level)
                 {
@@ -285,114 +289,112 @@ public class AlchemyScript : DialogScriptBase
 
     private void OnDisplayingAccepted(Aisling source)
     {
-        if (!Subject.MenuArgs.TryGet<string>(0, out var itemName) || string.IsNullOrWhiteSpace(itemName))
+        if (!Subject.MenuArgs.TryGet<WeaponSmithingRecipes>(0, out var selectedRecipe))
         {
             Subject.Reply(source, DialogString.UnknownInput.Value);
+
             return;
         }
-        
-        itemName = itemName.Replace(" ", "");
-        if (Enum.TryParse(itemName, out AlchemyRecipes selectedRecipe))
+
+        if (CraftingRequirements.WeaponSmithingCraftRequirements.TryGetValue(selectedRecipe, out var recipeIngredients))
         {
-            if (CraftingRequirements.AlchemyRequirements.TryGetValue(selectedRecipe, out var recipeIngredients))
+            foreach (var reagant in recipeIngredients.Item1)
             {
-                foreach (var reagant in recipeIngredients.Item1)
-                {
-                    if ((reagant.DisplayName != null) && !source.Inventory.HasCount(reagant.DisplayName, reagant.Amount))
-                    {
-                        Subject.Close(source);
-                        source.SendOrangeBarMessage($"You do not have the required amount ({reagant.Amount}) of {reagant.DisplayName}.");
-                        return;
-                    }
-                }
-                
-                var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
-                var legendMarkCount = existingMark?.Count ?? 0;
-                
-                var timesCraftedThisItem =
-                    source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + itemName, out var value) ? value : 0;
-                
-                foreach (var removeRegant in recipeIngredients.Item1)
-                {
-                    if (removeRegant.DisplayName != null)
-                        source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
-                }
-        
-                if (!Randomizer.RollChance((int)CalculateSuccessRate(legendMarkCount, timesCraftedThisItem, BASE_SUCCESS_RATE)))
+                if ((reagant.DisplayName != null) && !source.Inventory.HasCount(reagant.DisplayName, reagant.Amount))
                 {
                     Subject.Close(source);
-                    var dialog = DialogFactory.Create("alchemy_Failed", Subject.DialogSource);
-                    dialog.MenuArgs = Subject.MenuArgs;
-                    dialog.InjectTextParameters(itemName);
-                    dialog.Display(source);
-                    source.Animate(FailAnimation);
+
+                    source.SendOrangeBarMessage(
+                        $"You do not have the required amount ({reagant.Amount}) of {reagant.DisplayName}.");
+
                     return;
                 }
-                
-                source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + itemName);
-
-                if (existingMark is not null)
-                {
-                    var recipeStatus = GetStatusAsInt(recipeIngredients.Item2);
-                    var playerRank = GetRankAsInt(existingMark.Text);
-
-                    if (playerRank > recipeStatus)
-                    {
-                        source.SendOrangeBarMessage("You can no longer gain experience from this recipe.");
-                    }
-                    if (playerRank <= recipeStatus)
-                    {
-                        UpdateLegendmark(source, legendMarkCount);
-                        existingMark.Count++;
-                    }
-                }
-                if (existingMark is null)
-                    UpdateLegendmark(source, 0);
-
-                
-                if (CRAFTGOODGREATGRAND)
-                {
-                    var roll = Randomizer.RollSingle(100);
-
-                    var newCraft = roll switch
-                    {
-                        < 5  => ItemFactory.Create("grand" + itemName),
-                        < 10 => ItemFactory.Create("great" + itemName),
-                        < 15 => ItemFactory.Create("good" + itemName),
-                        _    => ItemFactory.Create(itemName)
-                    };
-
-                    if (!source.Inventory.TryAddToNextSlot(newCraft))
-                    {
-                        source.Bank.Deposit(newCraft);
-                        source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
-                    }
-
-                    Subject.InjectTextParameters(newCraft.DisplayName);
-                }
-                else
-                {
-                    var newCraft = ItemFactory.Create(itemName);
-
-                    if (!source.Inventory.TryAddToNextSlot(newCraft))
-                    {
-                        source.Bank.Deposit(newCraft);
-                        source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
-                    }
-
-                    Subject.InjectTextParameters(newCraft.DisplayName);
-                }
-                
-                source.Animate(SuccessAnimation);
-            } 
-            else
-            {
-                Subject.Reply(source, "Recipe not found or something went wrong.");
             }
-        } 
-        else
+
+            var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
+            var legendMarkCount = existingMark?.Count ?? 0;
+
+            var timesCraftedThisItem =
+                source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + selectedRecipe, out var value) ? value : 0;
+
+            foreach (var removeRegant in recipeIngredients.Item1)
+            {
+                if (removeRegant.DisplayName != null)
+                    source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
+            }
+
+            if (!Randomizer.RollChance(
+                    (int)CalculateSuccessRate(legendMarkCount, timesCraftedThisItem, BASE_SUCCESS_RATE)))
+            {
+                Subject.Close(source);
+                var dialog = DialogFactory.Create("blacksmithing_craftfailed", Subject.DialogSource);
+                dialog.MenuArgs = Subject.MenuArgs;
+                dialog.InjectTextParameters(selectedRecipe);
+                dialog.Display(source);
+                source.Animate(FailAnimation);
+
+                return;
+            }
+
+            source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + selectedRecipe);
+
+            if (existingMark is not null)
+            {
+                var recipeStatus = GetStatusAsInt(recipeIngredients.Item2);
+                var playerRank = GetRankAsInt(existingMark.Text);
+
+                if (playerRank > recipeStatus)
+                {
+                    source.SendOrangeBarMessage("You can no longer gain experience from this recipe.");
+                }
+
+                if (playerRank <= recipeStatus)
+                {
+                    UpdateLegendmark(source, legendMarkCount);
+                    existingMark.Count++;
+                }
+            }
+
+            if (existingMark is null)
+                UpdateLegendmark(source, 0);
+
+
+            if (CRAFTGOODGREATGRAND)
+            {
+                var roll = Randomizer.RollSingle(100);
+
+                var newCraft = roll switch
+                {
+                    < 5  => ItemFactory.Create("grand" + selectedRecipe),
+                    < 10 => ItemFactory.Create("great" + selectedRecipe),
+                    < 15 => ItemFactory.Create("good" + selectedRecipe),
+                    _    => ItemFactory.Create(selectedRecipe.ToString())
+                };
+
+                if (!source.Inventory.TryAddToNextSlot(newCraft))
+                {
+                    source.Bank.Deposit(newCraft);
+                    source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
+                }
+
+                Subject.InjectTextParameters(newCraft.DisplayName);
+            } else
+            {
+                var newCraft = ItemFactory.Create(selectedRecipe.ToString());
+
+                if (!source.Inventory.TryAddToNextSlot(newCraft))
+                {
+                    source.Bank.Deposit(newCraft);
+                    source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
+                }
+
+                Subject.InjectTextParameters(newCraft.DisplayName);
+            }
+
+            source.Animate(SuccessAnimation);
+        } else
         {
-            Subject.Reply(source, "Invalid recipe selection.");
+            Subject.Reply(source, "Recipe not found or something went wrong.");
         }
     }
 }

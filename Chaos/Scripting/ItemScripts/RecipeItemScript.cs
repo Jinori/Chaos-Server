@@ -191,101 +191,101 @@ public class RecipeItemScript : ItemScriptBase
 
             #region Armor Smithing Recipes
             case "recipe_basicarmors":
-            {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.basicarmors))
-                {
-                    ArmorSmithRecipeLearn(
-                        source,
-                        ani,
-                        ArmorSmithRecipes.basicarmors,
-                        "Basic Armors",
-                        $"{Subject.Template.TemplateKey}");
-                    
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedscoutleather);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedgardcorp);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedcowl);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedcotte);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedmagiskirt);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedgorgetgown);
+{
+    if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.Basicarmors))
+    {
+        ArmorSmithRecipeLearn(
+            source,
+            ani,
+            ArmorSmithCategories.Basicarmors,
+            "Basic Armors",
+            $"{Subject.Template.TemplateKey}");
 
-                    return;
-                }
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedscoutleather);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedgardcorp);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedcowl);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedcotte);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedmagiskirt);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedgorgetgown);
 
-                source.SendOrangeBarMessage("You already know this recipe.");
+        return;
+    }
 
-                return;
-            }
+    source.SendOrangeBarMessage("You already know this recipe");
 
-            case "recipe_apprenticearmors":
-            {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.apprenticearmors))
-                {
-                    ArmorSmithRecipeLearn(
-                        source,
-                        ani,
-                        ArmorSmithRecipes.apprenticearmors,
-                        "Apprentice Armors",
-                        $"{Subject.Template.TemplateKey}");
-                    
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refineddwarvishleather);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedjourneyman);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedgaluchatcoat);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedbrigadine);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedbenusta);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedmysticgown);
+    return;
+}
 
-                    return;
-                }
+case "recipe_apprenticearmors":
+{
+    if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.Apprenticearmors))
+    {
+        ArmorSmithRecipeLearn(
+            source,
+            ani,
+            ArmorSmithCategories.Apprenticearmors,
+            "Apprentice Armors",
+            $"{Subject.Template.TemplateKey}");
 
-                source.SendOrangeBarMessage("You already know this recipe.");
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refineddwarvishleather);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedjourneyman);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedgaluchatcoat);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedbrigadine);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedbenusta);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedmysticgown);
 
-                return;
-            }
-            case "recipe_journeymanarmors":
-            {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.journeymanarmors))
-                {
-                    ArmorSmithRecipeLearn(
-                        source,
-                        ani,
-                        ArmorSmithRecipes.journeymanarmors,
-                        "Journeyman Armors",
-                        $"{Subject.Template.TemplateKey}");
-                    
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedpaluten);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedlorum);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedmantle);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedcorsette);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedstoller);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedelle);
+        return;
+    }
 
-                    return;
-                }
+    source.SendOrangeBarMessage("You already know this recipe");
 
-                source.SendOrangeBarMessage("You already know this recipe.");
+    return;
+}
+case "recipe_journeymanarmors":
+{
+    if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.Journeymanarmors))
+    {
+        ArmorSmithRecipeLearn(
+            source,
+            ani,
+            ArmorSmithCategories.Journeymanarmors,
+            "Journeyman Armors",
+            $"{Subject.Template.TemplateKey}");
 
-                return;
-            }
-            case "recipe_adeptarmors":
-            {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.adeptarmors))
-                {
-                    ArmorSmithRecipeLearn(
-                        source,
-                        ani,
-                        ArmorSmithRecipes.adeptarmors,
-                        "Adept Armors",
-                        $"{Subject.Template.TemplateKey}");
-                    
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedkeaton);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedmane);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedhierophant);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedpebblerose);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedclymouth);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refineddolman);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedpaluten);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedlorum);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedmantle);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedcorsette);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedstoller);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedelle);
 
-                    return;
-                }
+        return;
+    }
+
+    source.SendOrangeBarMessage("You already know this recipe.");
+
+    return;
+}
+case "recipe_adeptarmors":
+{
+    if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.Adeptarmors))
+    {
+        ArmorSmithRecipeLearn(
+            source,
+            ani,
+            ArmorSmithCategories.Adeptarmors,
+            "Adept Armors",
+            $"{Subject.Template.TemplateKey}");
+
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedkeaton);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedmane);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedhierophant);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedpebblerose);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedclymouth);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refineddolman);
+
+        return;
+    }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
 
@@ -293,21 +293,21 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_advancedarmors":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.advancedarmors))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.Advancedarmors))
                 {
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
-                        ArmorSmithRecipes.advancedarmors,
+                        ArmorSmithCategories.Advancedarmors,
                         "Advanced Armors",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedkagum);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedclamyth);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedbansagart);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedbardocle);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refinedduinuasal);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.refineddalmatica);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.Refinedkagum);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.Refinedclamyth);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.Refinedbansagart);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.Refinedbardocle);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.Refinedduinuasal);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.Refineddalmatica);
 
                     return;
                 }
@@ -318,19 +318,19 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_basicgauntlets":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.basicgauntlets))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.Basicgauntlets))
                 {
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
-                        ArmorSmithRecipes.basicgauntlets,
+                        ArmorSmithCategories.Basicgauntlets,
                         "Basic Gauntlets",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(BasicGauntletRecipes.leathersapphiregauntlet);
-                    source.Trackers.Flags.AddFlag(BasicGauntletRecipes.leatherrubygauntlet);
-                    source.Trackers.Flags.AddFlag(BasicGauntletRecipes.leatheremeraldgauntlet);
-                    source.Trackers.Flags.AddFlag(BasicGauntletRecipes.leatherheartstonegauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Leathersapphiregauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Leatherrubygauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Leatheremeraldgauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Leatherheartstonegauntlet);
 
                     return;
                 }
@@ -341,19 +341,19 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_apprenticegauntlets":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.apprenticegauntlets))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.Apprenticegauntlets))
                 {
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
-                        ArmorSmithRecipes.apprenticegauntlets,
+                        ArmorSmithCategories.Apprenticegauntlets,
                         "Apprentice Gauntlets",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(ApprenticeGauntletRecipes.ironemeraldgauntlet);
-                    source.Trackers.Flags.AddFlag(ApprenticeGauntletRecipes.ironrubygauntlet);
-                    source.Trackers.Flags.AddFlag(ApprenticeGauntletRecipes.ironheartstonegauntlet);
-                    source.Trackers.Flags.AddFlag(ApprenticeGauntletRecipes.ironsapphiregauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Ironemeraldgauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Ironrubygauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Ironheartstonegauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Ironsapphiregauntlet);
 
                     return;
                 }
@@ -364,19 +364,19 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_journeymangauntlets":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.journeymangauntlets))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.Journeymangauntlets))
                 {
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
-                        ArmorSmithRecipes.journeymangauntlets,
+                        ArmorSmithCategories.Journeymangauntlets,
                         "Journeyman Gauntlets",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(JourneymanGauntletRecipes.mythrilemeraldgauntlet);
-                    source.Trackers.Flags.AddFlag(JourneymanGauntletRecipes.mythrilrubygauntlet);
-                    source.Trackers.Flags.AddFlag(JourneymanGauntletRecipes.mythrilheartstonegauntlet);
-                    source.Trackers.Flags.AddFlag(JourneymanGauntletRecipes.mythrilsapphiregauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Mythrilemeraldgauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Mythrilrubygauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Mythrilheartstonegauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Mythrilsapphiregauntlet);
 
                     return;
                 }
@@ -387,19 +387,19 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_adeptgauntlets":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.adeptgauntlets))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.Adeptgauntlets))
                 {
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
-                        ArmorSmithRecipes.adeptgauntlets,
+                        ArmorSmithCategories.Adeptgauntlets,
                         "Adept Gauntlets",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(AdeptGauntletRecipes.hybrasylemeraldgauntlet);
-                    source.Trackers.Flags.AddFlag(AdeptGauntletRecipes.hybrasylrubygauntlet);
-                    source.Trackers.Flags.AddFlag(AdeptGauntletRecipes.hybrasylheartstonegauntlet);
-                    source.Trackers.Flags.AddFlag(AdeptGauntletRecipes.hybrasylsapphiregauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Hybrasylemeraldgauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Hybrasylrubygauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Hybrasylheartstonegauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Hybrasylsapphiregauntlet);
 
                     return;
                 }
@@ -408,21 +408,21 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_basicbelts":
+            case "recipe_Basicbelts":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.basicbelts))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.Basicbelts))
                 {
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
-                        ArmorSmithRecipes.basicbelts,
+                        ArmorSmithCategories.Basicbelts,
                         "Basic Belts",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(BasicBelts.jeweledseabelt);
-                    source.Trackers.Flags.AddFlag(BasicBelts.jeweledearthbelt);
-                    source.Trackers.Flags.AddFlag(BasicBelts.jeweledwindbelt);
-                    source.Trackers.Flags.AddFlag(BasicBelts.jeweledfirebelt);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jeweledseabelt);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jeweledearthbelt);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jeweledwindbelt);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jeweledfirebelt);
 
                     return;
                 }
@@ -433,17 +433,17 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_apprenticebelts":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.apprenticebelts))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.Apprenticebelts))
                 {
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
-                        ArmorSmithRecipes.apprenticebelts,
+                        ArmorSmithCategories.Apprenticebelts,
                         "Apprentice Belts",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(ApprenticeBelts.jeweledmetalbelt);
-                    source.Trackers.Flags.AddFlag(ApprenticeBelts.jewelednaturebelt);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jeweledmetalbelt);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jewelednaturebelt);
 
                     return;
                 }
@@ -454,17 +454,17 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_journeymanbelts":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithRecipes.journeymanbelts))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.Journeymanbelts))
                 {
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
-                        ArmorSmithRecipes.journeymanbelts,
+                        ArmorSmithCategories.Journeymanbelts,
                         "Journeyman Belts",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(JourneymanBelts.jeweleddarkbelt);
-                    source.Trackers.Flags.AddFlag(JourneymanBelts.jeweledlightbelt);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jeweleddarkbelt);
+                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jeweledlightbelt);
 
                     return;
                 }
@@ -478,19 +478,19 @@ public class RecipeItemScript : ItemScriptBase
             #region Weapon Smithing Recipes
             case "recipe_basicswords":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.basicswords))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Basicswords))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.basicswords,
+                        WeaponSmithingCategories.Basicswords,
                         "Basic Swords",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(Swords.claidheamh);
-                    source.Trackers.Flags.AddFlag(Swords.broadsword);
-                    source.Trackers.Flags.AddFlag(Swords.battlesword);
-                    source.Trackers.Flags.AddFlag(Swords.masquerade);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Claidheamh);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Broadsword);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Battlesword);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Masquerade);
 
                     return;
                 }
@@ -501,17 +501,17 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_apprenticeswords":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.apprenticeswords))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Apprenticeswords))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.apprenticeswords,
+                        WeaponSmithingCategories.Apprenticeswords,
                         "Apprentice Swords",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(Swords.bramble);
-                    source.Trackers.Flags.AddFlag(Swords.longsword);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Bramble);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Longsword);
 
                     return;
                 }
@@ -522,18 +522,18 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_journeymanswords":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.journeymanswords))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Journeymanswords))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.journeymanswords,
+                        WeaponSmithingCategories.Journeymanswords,
                         "Journeyman Swords",
                         $"{Subject.Template.TemplateKey}");
                         
-                        source.Trackers.Flags.AddFlag(Swords.claidhmore);
-                        source.Trackers.Flags.AddFlag(Swords.emeraldsword);
-                        source.Trackers.Flags.AddFlag(Swords.gladius);
+                        source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Claidhmore);
+                        source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Emeraldsword);
+                        source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Gladius);
 
                     return;
                 }
@@ -544,17 +544,17 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_adeptswords":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.adeptswords))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Adeptswords))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.adeptswords,
+                        WeaponSmithingCategories.Adeptswords,
                         "Adept Swords",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(Swords.kindjal);
-                    source.Trackers.Flags.AddFlag(Swords.dragonslayer);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Kindjal);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Dragonslayer);
 
                     return;
                 }
@@ -565,18 +565,18 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_basicweapons":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.basicweapons))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Basicweapons))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.basicweapons,
+                        WeaponSmithingCategories.Basicweapons,
                         "Basic Weapons",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(Weapons.hatchet);
-                    source.Trackers.Flags.AddFlag(Weapons.harpoon);
-                    source.Trackers.Flags.AddFlag(Weapons.scimitar);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Hatchet);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Harpoon);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Scimitar);
 
                     return;
                 }
@@ -587,18 +587,18 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_apprenticeweapons":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.apprenticeweapons))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Apprenticeweapons))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.apprenticeweapons,
+                        WeaponSmithingCategories.Apprenticeweapons,
                         "Apprentice Weapons",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(Weapons.club);
-                    source.Trackers.Flags.AddFlag(Weapons.spikedclub);
-                    source.Trackers.Flags.AddFlag(Weapons.chainmace);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Club);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Spikedclub);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Chainmace);
 
                     return;
                 }
@@ -609,17 +609,17 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_journeymanweapons":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.journeymanweapons))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Journeymanweapons))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.journeymanweapons,
+                        WeaponSmithingCategories.Journeymanweapons,
                         "Journeyman Weapons",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(Weapons.handaxe);
-                    source.Trackers.Flags.AddFlag(Weapons.cutlass);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Handaxe);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Cutlass);
 
                     return;
                 }
@@ -630,17 +630,17 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_adeptweapons":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.adeptweapons))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Adeptweapons))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.adeptweapons,
+                        WeaponSmithingCategories.Adeptweapons,
                         "Adept Weapons",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(Weapons.talgoniteaxe);
-                    source.Trackers.Flags.AddFlag(Weapons.hybrasylaxe);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Talgoniteaxe);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Hybrasylaxe);
 
                     return;
                 }
@@ -651,17 +651,17 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_basicstaves":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.basicstaves))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Basicstaves))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.basicstaves,
+                        WeaponSmithingCategories.Basicstaves,
                         "Basic Staves",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(Staves.magusares);
-                    source.Trackers.Flags.AddFlag(Staves.holyhermes);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Magusares);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Holyhermes);
 
                     return;
                 }
@@ -672,17 +672,17 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_apprenticestaves":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.apprenticestaves))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Apprenticestaves))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.apprenticestaves,
+                        WeaponSmithingCategories.Apprenticestaves,
                         "Apprentice Staves",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(Staves.maguszeus);
-                    source.Trackers.Flags.AddFlag(Staves.holykronos);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Maguszeus);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Holykronos);
 
                     return;
                 }
@@ -693,17 +693,17 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_journeymanstaves":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.journeymanstaves))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Journeymanstaves))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.journeymanstaves,
+                        WeaponSmithingCategories.Journeymanstaves,
                         "Journeyman Staves",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(Staves.magusdiana);
-                    source.Trackers.Flags.AddFlag(Staves.holydiana);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Magusdiana);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Holydiana);
 
                     return;
                 }
@@ -714,18 +714,18 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_adeptstaves":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.adeptstaves))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Adeptstaves))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.adeptstaves,
+                        WeaponSmithingCategories.Adeptstaves,
                         "Adept Staves",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(Staves.stonecross);
-                    source.Trackers.Flags.AddFlag(Staves.oakstaff);
-                    source.Trackers.Flags.AddFlag(Staves.staffofwisdom);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Stonecross);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Oakstaff);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Staffofwisdom);
 
                     return;
                 }
@@ -734,160 +734,229 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "basicdaggers":
+            case "recipe_basicdaggers":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.basicdaggers))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Basicdaggers))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.basicdaggers,
+                        WeaponSmithingCategories.Basicdaggers,
                         "Basic Daggers",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Blossomdagger);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Curveddagger);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Moondagger);
+
+                    return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
             }
-            case "apprenticedaggers":
+            case "recipe_apprenticedaggers":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.apprenticedaggers))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Apprenticedaggers))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.apprenticedaggers,
+                        WeaponSmithingCategories.Apprenticedaggers,
                         "Apprentice Daggers",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Lightdagger);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Sundagger);
+                    
+                    return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
             }
-            case "journeymandaggers":
+            case "recipe_journeymandaggers":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.journeymandaggers))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Journeymandaggers))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.journeymandaggers,
+                        WeaponSmithingCategories.Journeymandaggers,
                         "Journeyman Daggers",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Lotusdagger);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Blooddagger);
+
+                    return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
             }
-            case "adeptdaggers":
+            case "recipe_adeptdaggers":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.adeptdaggers))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Adeptdaggers))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.adeptdaggers,
+                        WeaponSmithingCategories.Adeptdaggers,
                         "Adept Daggers",
                         $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Nagetierdagger);
+                  
+                    return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
             }
-            case "basicclaws":
+            case "recipe_basicclaws":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.basicclaws))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Basicclaws))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.basicclaws,
+                        WeaponSmithingCategories.Basicclaws,
                         "Basic Claws",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Wolfclaw);
+
+                    return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
             }
-            case "apprenticeclaws":
+            case "recipe_apprenticeclaws":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.apprenticeclaws))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Apprenticeclaws))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.apprenticeclaws,
+                        WeaponSmithingCategories.Apprenticeclaws,
                         "Apprentice Claws",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Eagletalon);
+
+                    return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
             }
-            case "journeymanclaws":
+            case "recipe_journeymanclaws":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.journeymanclaws))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Journeymanclaws))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.journeymanclaws,
+                        WeaponSmithingCategories.Journeymanclaws,
                         "Journeyman Claws",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Phoenixclaw);
+
+                    return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
             }
-            case "basicshields":
+            
+            case "recipe_adeptclaws":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.basicshields))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Adeptclaws))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.basicshields,
+                        WeaponSmithingCategories.Adeptclaws,
+                        "Adept Claws",
+                        $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Nunchaku);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_basicshields":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Basicshields))
+                {
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithingCategories.Basicshields,
                         "Basic Shields",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Leathershield);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Bronzeshield);
+
+                    return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
             }
-            case "apprenticeshields":
+            case "recipe_apprenticeshields":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.apprenticeshields))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Apprenticeshields))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.apprenticeshields,
+                        WeaponSmithingCategories.Apprenticeshields,
                         "Apprentice Shields",
                         $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Ironshield);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Gravelshield);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Lightshield);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Mythrilshield);
+                    
+                    return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
             }
-            case "journeymanshields":
+            case "recipe_journeymanshields":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithRecipes.journeymanshields))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.Journeymanshields))
                 {
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithRecipes.journeymanshields,
+                        WeaponSmithingCategories.Journeymanshields,
                         "Journeyman Shields",
                         $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Hybrasylshield);
+                    
+                    return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
@@ -955,7 +1024,7 @@ public class RecipeItemScript : ItemScriptBase
     public static void ArmorSmithRecipeLearn(
         Aisling source,
         Animation ani,
-        ArmorSmithRecipes recipe,
+        ArmorSmithCategories recipe,
         string serverMessage,
         string templatekey
     )
@@ -968,13 +1037,13 @@ public class RecipeItemScript : ItemScriptBase
     public static void WeaponSmithRecipeLearn(
         Aisling source,
         Animation ani,
-        WeaponSmithRecipes recipe,
+        WeaponSmithingCategories category,
         string serverMessage,
         string templatekey
     )
     {
         source.Animate(ani);
-        source.Trackers.Flags.AddFlag(recipe);
+        source.Trackers.Flags.AddFlag(category);
         source.SendOrangeBarMessage($"You've learned {serverMessage}.");
         source.Inventory.RemoveQuantity(templatekey, 1);
     }

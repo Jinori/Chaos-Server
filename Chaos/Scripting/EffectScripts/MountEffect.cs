@@ -7,10 +7,8 @@ public class MountEffect : NonOverwritableEffectBase
 {
     public override byte Icon => 92;
     public override string Name => "mount";
-
     protected override TimeSpan Duration { get; } = TimeSpan.FromHours(999);
-
-    protected override Animation? Animation { get; } = new()
+    protected override Animation? Animation { get; } = new Animation
     {
         TargetAnimation = 6,
         AnimationSpeed = 100
@@ -20,18 +18,17 @@ public class MountEffect : NonOverwritableEffectBase
         "MountEffect",
     };
     protected override byte? Sound => 115;
-    
+
     public override void OnTerminated()
     {
         if (AislingSubject != null)
         {
             AislingSubject.Sprite = 0;
             AislingSubject.Refresh(true);
-            
+
             if (!AislingSubject.Trackers.TimedEvents.HasActiveEvent("mount", out var mountEvent))
             {
                 AislingSubject.Trackers.TimedEvents.AddEvent("mount", TimeSpan.FromSeconds(5), true);
-
                 return;
             }
         }
