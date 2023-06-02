@@ -12,25 +12,25 @@ using Chaos.Utilities;
 
 namespace Chaos.Scripting.DialogScripts.Crafting;
 
-public class AlchemyScript : DialogScriptBase
+public class BlackSmithingCraftScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
     private readonly IDialogFactory DialogFactory;
 
     //Constants to change based on crafting profession
-    private const string ITEM_COUNTER_PREFIX = "[Alchemy]";
-    private const string LEGENDMARK_KEY = "alch";
+    private const string ITEM_COUNTER_PREFIX = "[Blacksmithing]";
+    private const string LEGENDMARK_KEY = "Blacksmithing";
     private const double BASE_SUCCESS_RATE = 30;
     private const double NOVICEBOOST = 5;
     private const double SUCCESSRATEMAX = 95;
     //Ranks from lowest to highest
-    private const string RANK_ONE_TITLE = "Novice Alchemist";
-    private const string RANK_TWO_TITLE = "Apprentice Alchemist";
-    private const string RANK_THREE_TITLE = "Journeyman Alchemist";
-    private const string RANK_FOUR_TITLE = "Craftsman Alchemist";
-    private const string RANK_FIVE_TITLE = "Artisan Alchemist";
-    private const string RANK_SIX_TITLE = "Expert Alchemist";
-    private const string RANK_SEVEN_TITLE = "Master Alchemist";
+    private const string RANK_ONE_TITLE = "Novice Blacksmith";
+    private const string RANK_TWO_TITLE = "Apprentice Blacksmith";
+    private const string RANK_THREE_TITLE = "Journeyman Blacksmith";
+    private const string RANK_FOUR_TITLE = "Craftsman Blacksmith";
+    private const string RANK_FIVE_TITLE = "Artisan Blacksmith";
+    private const string RANK_SIX_TITLE = "Expert Blacksmith";
+    private const string RANK_SEVEN_TITLE = "Master Blacksmith";
     //Set this to true if doing armorsmithing type crafting
     private readonly bool CRAFTGOODGREATGRAND = false;
 
@@ -85,17 +85,26 @@ public class AlchemyScript : DialogScriptBase
         return 0;
     }
 
-    private double GetMultiplier(int totalTimesCrafted) =>
-        totalTimesCrafted switch
+    private double GetMultiplier(int totalTimesCrafted)
+    {
+        switch (totalTimesCrafted)
         {
-            <= 100  => 1.0,
-            <= 500  => 1.05,
-            <= 1000 => 1.1,
-            <= 1500 => 1.15,
-            <= 2200 => 1.2,
-            <= 2900 => 1.25,
-            _       => 1.3
-        };
+            case <= 100:
+                return 1.0;
+            case <= 500:
+                return 1.05;
+            case <= 1000:
+                return 1.1;
+            case <= 1500:
+                return 1.15;
+            case <= 2200:
+                return 1.2;
+            case <= 2900:
+                return 1.25;
+            default:
+                return 1.3;
+        }
+    }
 
     // Calculates the success rate of crafting an item
     private double CalculateSuccessRate(int totalTimesCrafted, int timesCraftedThisItem, double baseSuccessRate)
@@ -114,18 +123,6 @@ public class AlchemyScript : DialogScriptBase
     private void UpdateLegendmark(Aisling source, int legendMarkCount)
     {
         var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
-
-        if (existingMark is null)
-        {
-            source.Legend.AddOrAccumulate(
-                new LegendMark(
-                    RANK_ONE_TITLE,
-                    LEGENDMARK_KEY,
-                    MarkIcon.Yay,
-                    MarkColor.White,
-                    1,
-                    GameTime.Now));
-        }
 
         if (existingMark is not null)
         {
@@ -155,14 +152,23 @@ public class AlchemyScript : DialogScriptBase
                     existingMark.Text = RANK_TWO_TITLE;
 
                     break;
-            }
+                case >= 0 when !existingMark.Text.Contains(RANK_ONE_TITLE):
+                    source.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            RANK_ONE_TITLE,
+                            "blacksmith",
+                            MarkIcon.Yay,
+                            MarkColor.White,
+                            1,
+                            GameTime.Now));
 
-            existingMark.Count++;
+                    break;
+            }
         }
     }
 
     /// <inheritdoc />
-    public AlchemyScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
+    public BlackSmithingCraftScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -174,19 +180,19 @@ public class AlchemyScript : DialogScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "alchemy_initial":
+            case "blacksmithing_craftinitial":
             {
                 OnDisplayingShowItems(source);
 
                 break;
             }
-            case "alchemy_confirmation":
+            case "blacksmithing_craftconfirmation":
             {
                 OnDisplayingConfirmation(source);
 
                 break;
             }
-            case "alchemy_accepted":
+            case "blacksmithing_craftaccepted":
             {
                 OnDisplayingAccepted(source);
 
@@ -198,18 +204,18 @@ public class AlchemyScript : DialogScriptBase
     //ShowItems in a Shop Window to the player
     private void OnDisplayingShowItems(Aisling source)
     {
-        // Checking if the Alchemy recipe is available or not.
-        if (source.Trackers.Flags.TryGetFlag(out AlchemyRecipes recipes))
+        //Checking if the Alchemy recipe is available or not.
+        if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes recipes))
         {
-            // Iterating through the Alchemy recipe requirements.
-            foreach (var recipe in CraftingRequirements.AlchemyRequirements)
+            //Iterating through the Alchemy recipe requirements.
+            foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
             {
-                // Checking if the recipe is available or not.
-                if ((recipes & (AlchemyRecipes)Enum.Parse(typeof(AlchemyRecipes), recipe.Key)) == (AlchemyRecipes)Enum.Parse(typeof(AlchemyRecipes), recipe.Key))
+                //Checking if the recipe is available or not.
+                if ((recipes & recipe.Key) == recipe.Key)
                 {
-                    // Creating a faux item for the recipe.
-                    var item = ItemFactory.CreateFaux(recipe.Key);
-                    // Adding the recipe to the subject's dialog window.
+                    //Creating a faux item for the recipe.
+                    var item = ItemFactory.CreateFaux(recipe.Key.ToString());
+                    //Adding the recipe to the subject's dialog window
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
             }
@@ -219,82 +225,78 @@ public class AlchemyScript : DialogScriptBase
     //Show the players a dialog asking if they want to use the ingredients, yes or no
     private void OnDisplayingConfirmation(Aisling source)
     {
-        if (!Subject.MenuArgs.TryGet<string>(0, out var selectedRecipeName))
+        // Try to get the selected menu item name from the menu arguments
+        if (!Subject.MenuArgs.TryGet<string>(0, out var itemName) || string.IsNullOrWhiteSpace(itemName))
         {
             // If the name is not found or is empty, display an error message and return
             Subject.Reply(source, DialogString.UnknownInput.Value);
+
             return;
         }
 
-        if (!Enum.TryParse(selectedRecipeName.Replace(" ", string.Empty), out AlchemyRecipes selectedRecipe))
+        // Remove any spaces from the name
+        itemName = itemName.Replace(" ", "");
+
+        // Try to parse the selected recipe from the name
+        if (Enum.TryParse(itemName, out WeaponSmithingRecipes selectedRecipe))
         {
-            // If the name cannot be parsed to the AlchemyRecipes enum, display an error message and return
-            Subject.Reply(source, DialogString.UnknownInput.Value);
-            return;
-        }
-
-        // If the recipe is found, check if the player meets the level requirement
-        if (CraftingRequirements.AlchemyRequirements.TryGetValue(selectedRecipe.ToString(), out var requirement))
-        {
-            if (requirement.Item3 > source.StatSheet.Level)
+            // If the recipe is found, check if the player meets the level requirement
+            if (CraftingRequirements.WeaponSmithingCraftRequirements.TryGetValue(selectedRecipe, out var requirement))
             {
-                // If the player doesn't meet the requirement, close the menu and display an error message
-                Subject.Close(source);
-
-                source.SendOrangeBarMessage($"You are not the required Level of {requirement.Item3} for this recipe.");
-
-                return;
-            }
-
-            var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
-
-            if (existingMark is not null)
-            {
-                var recipeStatus = GetStatusAsInt(requirement.Item2);
-                var playerRank = GetRankAsInt(existingMark.Text);
-
-                if (playerRank < recipeStatus)
+                if (requirement.Item3 > source.StatSheet.Level)
                 {
+                    // If the player doesn't meet the requirement, close the menu and display an error message
                     Subject.Close(source);
 
                     source.SendOrangeBarMessage(
-                        $"You do not have the crafting rank of {requirement.Item2} required for this recipe.");
+                        $"You are not the required Level of {requirement.Item3} for this recipe.");
 
                     return;
                 }
+
+                var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
+
+                if (existingMark is not null)
+                {
+                    var recipeStatus = GetStatusAsInt(requirement.Item2);
+                    var playerRank = GetRankAsInt(existingMark.Text);
+
+                    if (playerRank < recipeStatus)
+                    {
+                        Subject.Close(source);
+
+                        source.SendOrangeBarMessage(
+                            $"You do not have the crafting rank of {requirement.Item2} required for this recipe.");
+
+                        return;
+                    }
+                }
+
+                // If the player meets the requirement, create a list of ingredient names and amounts
+                var ingredientList = new List<string>();
+
+                foreach (var regeant in requirement.Item1)
+                {
+                    ingredientList.Add($"({regeant.Amount}) {regeant.DisplayName}");
+                }
+
+                // Join the ingredient list into a single string and inject it into the confirmation message
+                var ingredients = string.Join(" and ", ingredientList);
+                Subject.InjectTextParameters(itemName, ingredients);
             }
-
-            // If the player meets the requirement, create a list of ingredient names and amounts
-            var ingredientList = new List<string>();
-
-            foreach (var regeant in requirement.Item1)
-            {
-                ingredientList.Add($"({regeant.Amount}) {regeant.DisplayName}");
-            }
-
-            // Join the ingredient list into a single string and inject it into the confirmation message
-            var ingredients = string.Join(" and ", ingredientList);
-            Subject.InjectTextParameters(selectedRecipe, ingredients);
         }
     }
 
     private void OnDisplayingAccepted(Aisling source)
     {
-        if (!Subject.MenuArgs.TryGet<string>(0, out var selectedRecipeName))
+        if (!Subject.MenuArgs.TryGet<WeaponSmithingRecipes>(0, out var selectedRecipe))
         {
-            // If the name is not found or is empty, display an error message and return
             Subject.Reply(source, DialogString.UnknownInput.Value);
+
             return;
         }
 
-        if (!Enum.TryParse(selectedRecipeName.Replace(" ", string.Empty), out AlchemyRecipes selectedRecipe))
-        {
-            // If the name cannot be parsed to the AlchemyRecipes enum, display an error message and return
-            Subject.Reply(source, DialogString.UnknownInput.Value);
-            return;
-        }
-
-        if (CraftingRequirements.AlchemyRequirements.TryGetValue(selectedRecipe.ToString(), out var recipeIngredients))
+        if (CraftingRequirements.WeaponSmithingCraftRequirements.TryGetValue(selectedRecipe, out var recipeIngredients))
         {
             foreach (var reagant in recipeIngredients.Item1)
             {
@@ -325,7 +327,7 @@ public class AlchemyScript : DialogScriptBase
                     (int)CalculateSuccessRate(legendMarkCount, timesCraftedThisItem, BASE_SUCCESS_RATE)))
             {
                 Subject.Close(source);
-                var dialog = DialogFactory.Create("alchemy_Failed", Subject.DialogSource);
+                var dialog = DialogFactory.Create("blacksmithing_craftfailed", Subject.DialogSource);
                 dialog.MenuArgs = Subject.MenuArgs;
                 dialog.InjectTextParameters(selectedRecipe);
                 dialog.Display(source);
@@ -336,11 +338,6 @@ public class AlchemyScript : DialogScriptBase
 
             source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + selectedRecipe);
 
-            if (existingMark is null)
-            {
-                UpdateLegendmark(source, legendMarkCount);
-            }
-            
             if (existingMark is not null)
             {
                 var recipeStatus = GetStatusAsInt(recipeIngredients.Item2);
@@ -354,8 +351,13 @@ public class AlchemyScript : DialogScriptBase
                 if (playerRank <= recipeStatus)
                 {
                     UpdateLegendmark(source, legendMarkCount);
+                    existingMark.Count++;
                 }
             }
+
+            if (existingMark is null)
+                UpdateLegendmark(source, 0);
+
 
             if (CRAFTGOODGREATGRAND)
             {
