@@ -1729,4 +1729,815 @@ public static class CraftingRequirements
         }
     };
     #endregion
+
+    #region Armor Smithing
+
+    public static Dictionary<CraftedArmors, Recipe> ArmorSmithingArmorRequirements { get; } = new()
+    {
+        {
+            CraftedArmors.Refinedscoutleather,
+            new Recipe()
+            {
+                Name = "Refined Scout Leather",
+                TemplateKey = "refinedscoutleather",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "basic",
+                Level = 8,
+                Difficulty = 1
+            }
+        },
+        {
+            CraftedArmors.Refineddwarvishleather,
+            new Recipe()
+            {
+                Name = "Refined Dwarvish Leather",
+                TemplateKey = "refineddwarvishleather",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 26,
+                Difficulty = 2
+            }
+        },
+        {
+            CraftedArmors.Refinedpaluten,
+            new Recipe()
+            {
+                Name = "Refined Paluten",
+                TemplateKey = "refinedpaluten",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 56,
+                Difficulty = 3
+            }
+        },
+        {
+            CraftedArmors.Refinedkeaton,
+            new Recipe()
+            {
+                Name = "Refined Keaton",
+                TemplateKey = "refinedkeaton",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Adept",
+                Level = 86,
+                Difficulty = 4
+            }
+        },
+        {
+            CraftedArmors.Refinedbardocle,
+            new Recipe()
+            {
+                Name = "Refined Bardocle",
+                TemplateKey = "refinedbardocle",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            CraftedArmors.Refinedgardcorp,
+            new Recipe()
+            {
+                Name = "Refined Gardcorp",
+                TemplateKey = "refinedgardcorp",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "refined",
+                Level = 8,
+                Difficulty = 1
+            }
+        },
+        {
+            CraftedArmors.Refinedjourneyman,
+            new Recipe()
+            {
+                Name = "Refined Journeyman",
+                TemplateKey = "refinedjourneyman",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 26,
+                Difficulty = 2
+            }
+        },
+        {
+            CraftedArmors.Refinedlorum,
+            new Recipe()
+            {
+                Name = "Refined Lorum",
+                TemplateKey = "refinedlorum",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 56,
+                Difficulty = 3
+            }
+        },
+        {
+            CraftedArmors.Refinedmane,
+            new Recipe()
+            {
+                Name = "Refined Mane",
+                TemplateKey = "refinedmane",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Adept",
+                Level = 86,
+                Difficulty = 4
+            }
+        },
+        {
+            CraftedArmors.Refinedduinuasal,
+            new Recipe()
+            {
+                Name = "Refined Duin-Uasal",
+                TemplateKey = "refinedduinuasal",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            CraftedArmors.Refinedcowl,
+            new Recipe()
+            {
+                Name = "Refined Cowl",
+                TemplateKey = "refinedcowl",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 8,
+                Difficulty = 1
+            }
+        },
+        {
+            CraftedArmors.Refinedgaluchatcoat,
+            new Recipe()
+            {
+                Name = "Refined Galuchat Coat",
+                TemplateKey = "refinedgaluchatcoat",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 26,
+                Difficulty = 2
+            }
+        },
+        {
+            CraftedArmors.Refinedmantle,
+            new Recipe()
+            {
+                Name = "Refined Mantle",
+                TemplateKey = "refinedmantle",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 56,
+                Difficulty = 3
+            }
+        },
+        {
+            CraftedArmors.Refinedhierophant,
+            new Recipe()
+            {
+                Name = "Refined Hierophant",
+                TemplateKey = "refinedhierophant",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Adept",
+                Level = 86,
+                Difficulty = 4
+            }
+        },
+        {
+            CraftedArmors.Refineddalmatica,
+            new Recipe()
+            {
+                Name = "Refined Dalmatica",
+                TemplateKey = "refineddalmatica",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            CraftedArmors.Refineddobok,
+            new Recipe()
+            {
+                Name = "Refined Dobok",
+                TemplateKey = "refineddobok",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 8,
+                Difficulty = 1
+            }
+        },
+        {
+            CraftedArmors.Refinedculotte,
+            new Recipe()
+            {
+                Name = "Refined Culotte",
+                TemplateKey = "refinedculotte",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 26,
+                Difficulty = 2
+            }
+        },
+        {
+            CraftedArmors.Refinedearthgarb,
+            new Recipe()
+            {
+                Name = "Refined Earth Garb",
+                TemplateKey = "refinedearthgarb",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 56,
+                Difficulty = 3
+            }
+        },
+        {
+            CraftedArmors.Refinedwindgarb,
+            new Recipe()
+            {
+                Name = "Refined Wind Garb",
+                TemplateKey = "refinedwindgarb",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Adept",
+                Level = 86,
+                Difficulty = 4
+            }
+        },
+        {
+            CraftedArmors.Refinedmountaingarb,
+            new Recipe()
+            {
+                Name = "Refined Mountain Garb",
+                TemplateKey = "refinedmountaingarb",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            CraftedArmors.Refinedleathertunic,
+            new Recipe()
+            {
+                Name = "Refined Leather Tunic",
+                TemplateKey = "refinedleathertunic",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 8,
+                Difficulty = 1
+            }
+        },
+        {
+            CraftedArmors.Refinedlorica,
+            new Recipe()
+            {
+                Name = "Refined Lorica",
+                TemplateKey = "refinedlorica",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 26,
+                Difficulty = 2
+            }
+        },
+        {
+            CraftedArmors.Refinedkasmaniumarmor,
+            new Recipe()
+            {
+                Name = "Refined Kasmanium Armor",
+                TemplateKey = "refinedkasmaniumarmor",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 56,
+                Difficulty = 3
+            }
+        },
+        {
+            CraftedArmors.Refinedipletmail,
+            new Recipe()
+            {
+                Name = "Refined Iplet Mail",
+                TemplateKey = "refinedipletmail",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Adept",
+                Level = 86,
+                Difficulty = 4
+            }
+        },
+        {
+            CraftedArmors.Refinedhybrasylplate,
+            new Recipe()
+            {
+                Name = "Refined Hy-brasyl Plate",
+                TemplateKey = "refinedhybrasylplate",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+
+        {
+            CraftedArmors.Refinedcotte,
+            new Recipe()
+            {
+                Name = "Refined Cotte",
+                TemplateKey = "refinedcotte",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 8,
+                Difficulty = 1
+            }
+        },
+        {
+            CraftedArmors.Refinedbrigandine,
+            new Recipe()
+            {
+                Name = "Refined Brigandine",
+                TemplateKey = "refinedbrigandine",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 26,
+                Difficulty = 2
+            }
+        },
+        {
+            CraftedArmors.Refinedcorsette,
+            new Recipe()
+            {
+                Name = "Refined Corsette",
+                TemplateKey = "refinedcorsette",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 56,
+                Difficulty = 3
+            }
+        },
+        {
+            CraftedArmors.Refinedpebblerose,
+            new Recipe()
+            {
+                Name = "Refined Pebble Rose",
+                TemplateKey = "refinedpebblerose",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Adept",
+                Level = 86,
+                Difficulty = 4
+            }
+        },
+        {
+            CraftedArmors.Refinedkagum,
+            new Recipe()
+            {
+                Name = "Refined Kagum",
+                TemplateKey = "refinedkagum",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            CraftedArmors.Refinedmagiskirt,
+            new Recipe()
+            {
+                Name = "Refined Magi Skirt",
+                TemplateKey = "refinedmagiskirt",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 8,
+                Difficulty = 1
+            }
+        },
+        {
+            CraftedArmors.Refinedbenusta,
+            new Recipe()
+            {
+                Name = "Refined Benusta",
+                TemplateKey = "refinedbenusta",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 26,
+                Difficulty = 2
+            }
+        },
+        {
+            CraftedArmors.Refinedstoller,
+            new Recipe()
+            {
+                Name = "Refined Stoller",
+                TemplateKey = "refinedstoller",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 56,
+                Difficulty = 3
+            }
+        },
+        {
+            CraftedArmors.Refinedclymouth,
+            new Recipe()
+            {
+                Name = "Refined Clymouth",
+                TemplateKey = "refinedclymouth",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Adept",
+                Level = 86,
+                Difficulty = 4
+            }
+        },
+        {
+            CraftedArmors.Refinedclamyth,
+            new Recipe()
+            {
+                Name = "Refined Clamyth",
+                TemplateKey = "refinedclamyth",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+    CraftedArmors.Refinedgorgetgown,
+    new Recipe()
+    {
+        Name = "Refined Gorget Gown",
+        TemplateKey = "refinedgorgetgown",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Basic",
+        Level = 8,
+        Difficulty = 1
+    }
+},
+{
+    CraftedArmors.Refinedmysticgown,
+    new Recipe()
+    {
+        Name = "Refined Mystic Gown",
+        TemplateKey = "refinedmysticgown",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Apprentice",
+        Level = 26,
+        Difficulty = 2
+    }
+},
+{
+    CraftedArmors.Refinedelle,
+    new Recipe()
+    {
+        Name = "Refined Elle",
+        TemplateKey = "refinedelle",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Journeyman",
+        Level = 56,
+        Difficulty = 3
+    }
+},
+{
+    CraftedArmors.Refineddolman,
+    new Recipe()
+    {
+        Name = "Refined Dolman",
+        TemplateKey = "refineddolman",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Adept",
+        Level = 86,
+        Difficulty = 4
+    }
+},
+{
+    CraftedArmors.Refinedbansagart,
+    new Recipe()
+    {
+        Name = "Refined Bansagart",
+        TemplateKey = "refinedbansagart",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Advanced",
+        Level = 99,
+        Difficulty = 5
+    }
+},
+{
+    CraftedArmors.Refinedearthbodice,
+    new Recipe()
+    {
+        Name = "Refined Earth Bodice",
+        TemplateKey = "refinedearthbodice",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Basic",
+        Level = 8,
+        Difficulty = 1
+    }
+},
+{
+    CraftedArmors.Refinedlotusbodice,
+    new Recipe()
+    {
+        Name = "Refined Lotus Bodice",
+        TemplateKey = "refinedlotusbodice",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Apprentice",
+        Level = 26,
+        Difficulty = 2
+    }
+},
+{
+    CraftedArmors.Refinedmoonbodice,
+    new Recipe()
+    {
+        Name = "Refined Moon Bodice",
+        TemplateKey = "refinedmoonbodice",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Journeyman",
+        Level = 56,
+        Difficulty = 3
+    }
+},
+{
+    CraftedArmors.Refinedlightninggarb,
+    new Recipe()
+    {
+        Name = "Refined Lightning Garb",
+        TemplateKey = "refinedlightninggarb",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Adept",
+        Level = 86,
+        Difficulty = 4
+    }
+},
+{
+    CraftedArmors.Refinedseagarb,
+    new Recipe()
+    {
+        Name = "Refined Sea Garb",
+        TemplateKey = "refinedseagarb",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Advanced",
+        Level = 99,
+        Difficulty = 5
+    }
+},
+{
+    CraftedArmors.Refinedleatherbliaut,
+    new Recipe()
+    {
+        Name = "Refined Leather Bliaut",
+        TemplateKey = "refinedleatherbliaut",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Basic",
+        Level = 8,
+        Difficulty = 1
+    }
+},
+{
+    CraftedArmors.Refinedcuirass,
+    new Recipe()
+    {
+        Name = "Refined Cuirass",
+        TemplateKey = "refinedcuirass",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Apprentice",
+        Level = 26,
+        Difficulty = 2
+    }
+},
+{
+    CraftedArmors.Refinedkasmaniumhauberk,
+    new Recipe()
+    {
+        Name = "Refined Kasmanium Hauberk",
+        TemplateKey = "refinedkasmaniumhauberk",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Journeyman",
+        Level = 56,
+        Difficulty = 3
+    }
+},
+{
+    CraftedArmors.Refinedphoenixmail,
+    new Recipe()
+    {
+        Name = "Refined Phoenix Mail",
+        TemplateKey = "refinedphoenixmail",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Adept",
+        Level = 86,
+        Difficulty = 4
+    }
+},
+{
+    CraftedArmors.Refinedhybrasylarmor,
+    new Recipe()
+    {
+        Name = "Refined Hybrasyl Armor",
+        TemplateKey = "refinedhybrasylarmor",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Advanced",
+        Level = 99,
+        Difficulty = 5
+    }
+}
+
+
+    };
+
+    #endregion
 }

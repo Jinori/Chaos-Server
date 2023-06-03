@@ -230,7 +230,7 @@ case "recipe_apprenticearmors":
         source.Trackers.Flags.AddFlag(CraftedArmors.Refineddwarvishleather);
         source.Trackers.Flags.AddFlag(CraftedArmors.Refinedjourneyman);
         source.Trackers.Flags.AddFlag(CraftedArmors.Refinedgaluchatcoat);
-        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedbrigadine);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedbrigandine);
         source.Trackers.Flags.AddFlag(CraftedArmors.Refinedbenusta);
         source.Trackers.Flags.AddFlag(CraftedArmors.Refinedmysticgown);
 
