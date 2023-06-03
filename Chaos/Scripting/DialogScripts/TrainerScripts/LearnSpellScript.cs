@@ -85,7 +85,9 @@ public class LearnSpellScript : DialogScriptBase
         switch (learnSpellResult)
         {
             case ComplexActionHelper.LearnSpellResult.Success:
-                Logger.WithProperties(source, spell, SpellTeacherSource)
+                Logger.WithProperty(source)
+                      .WithProperty(spell)
+                      .WithProperty(SpellTeacherSource)
                       .LogDebug("Aisling {@AislingName} learned spell {@SpellName}", source.Name, spell.Template.Name);
 
                 var animation = new Animation
@@ -175,7 +177,9 @@ public class LearnSpellScript : DialogScriptBase
         {
             dialog.ReplyToUnknownInput(source);
 
-            Logger.WithProperties(source, spellToLearn, SpellTeacherSource)
+            Logger.WithProperty(source)
+                  .WithProperty(spellToLearn)
+                  .WithProperty(SpellTeacherSource)
                   .LogWarning(
                       "Aisling {@AislingName} tried to learn spell {@SpellName} but is not the correct class (possibly packeting)",
                       source.Name,
@@ -188,7 +192,9 @@ public class LearnSpellScript : DialogScriptBase
         {
             dialog.ReplyToUnknownInput(source);
 
-            Logger.WithProperties(source, spellToLearn, SpellTeacherSource)
+            Logger.WithProperty(source)
+                  .WithProperty(spellToLearn)
+                  .WithProperty(SpellTeacherSource)
                   .LogWarning(
                       "Aisling {@AislingName} tried to learn spell {@SpellName} but is not the correct adv class (possibly packeting)",
                       source.Name,

@@ -129,6 +129,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		docs\articles\Visibility.md = docs\articles\Visibility.md
 		docs\articles\Components.md = docs\articles\Components.md
 		docs\articles\Scripting.md = docs\articles\Scripting.md
+		docs\articles\LootTables.md = docs\articles\LootTables.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{431395E2-5117-4988-A2E3-14F8FBA078E0}"
@@ -142,6 +143,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulkEditTool", "Tools\BulkEditTool\BulkEditTool.csproj", "{4DA779B2-3CE1-40CC-B884-E6A46C4BD291}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chaos.MetaData", "Chaos.MetaData\Chaos.MetaData.csproj", "{1F36E08E-BEF4-46BE-9D15-67D413CD0A6D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{D5DE58CA-F39A-4656-9890-DA737AC428E1}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\docs.yml = .github\workflows\docs.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

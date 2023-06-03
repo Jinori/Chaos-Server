@@ -50,7 +50,8 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
         {
             var stackTrace = new StackTrace(true).ToString();
 
-            Logger.WithProperties(aisling, stackTrace)
+            Logger.WithProperty(aisling)
+                  .WithProperty(stackTrace)
                   .LogError("Tried to give {Amount:N0} experience to {@AislingName}", amount, aisling.Name);
 
             return;
@@ -112,7 +113,8 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
         {
             var stackTrace = new StackTrace(true).ToString();
 
-            Logger.WithProperties(aisling, stackTrace)
+            Logger.WithProperty(aisling)
+                  .WithProperty(stackTrace)
                   .LogError("Tried to take {Amount:N0} experience from {@AislingName}", amount, aisling.Name);
 
             return false;

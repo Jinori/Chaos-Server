@@ -54,19 +54,27 @@ collection and JIT recompilation/OSR.
 
 This is the template key of the merchant to display when a player presses F1. This is generally some kind of help npc
 
+### LootDropsLockToRewardTargetSecs
+
+This is the amount of time in seconds that loot drops will be locked to the reward target(s) of those loot drops. If
+this value is not specified, loot drops will not lock at all.
+
+### GroundItemDespawnTimeMins
+
+This is the amount of time in minutes that ground items will remain on the ground before despawning. This applies to all
+ground items, including items dropped by players.
+
 ## Channel Settings
 
 ---
 
 A channel is a membership of players that can send message to eachother. Think global and trade chat in other games, but
-also group and
-guild chat in Dark Ages. These settings represent the parts of those systems that are configurable.
+also group and guild chat in Dark Ages. These settings represent the parts of those systems that are configurable.
 
 ### DefaultChannels
 
 This is a collection of channel names that new characters will join by default. These channels are also registered with
-the channel service
-during startup.
+the channel service during startup.
 
 | Name         | Type                                                         | Description                                  |
 |--------------|--------------------------------------------------------------|----------------------------------------------|
@@ -83,8 +91,16 @@ An alternative string that can be typed into the client to speak to the group ch
 ### GroupMessageColor
 
 The color the message will be for the group chat. In Dark Ages this chat was sent over a specific channel, and that
-channel had it's own
-color. To keep that color, specify "Default" as the color, so as not to use any color.
+channel had it's own color. To keep that color, specify "Default" as the color, so as not to use any color.
+
+### GuildChatName
+
+An alternative string that can be typed into the client to speak to the guild chat. In Dark Ages this was "!"
+
+### GuildMessageColor
+
+The color the message will be for the guild chat. In Dark Ages this chat was sent over a specific channel, and that
+channel had it's own color. To keep that color, specify "Default" as the color, so as not to use any color.
 
 ## Aisling Settings
 
