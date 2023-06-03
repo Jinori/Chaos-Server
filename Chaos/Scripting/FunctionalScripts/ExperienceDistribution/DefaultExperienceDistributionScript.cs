@@ -57,7 +57,7 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
             return;
         }
 
-        if (Randomizer.RollChance(1))
+        if (IntegerRandomizer.RollChance(1))
         {
             amount = amount * 2;
             aisling.SendActiveMessage($"Experience critical! Amount was doubled.");

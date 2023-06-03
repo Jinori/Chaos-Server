@@ -48,7 +48,7 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
         switch (target)
         {
             case Aisling aisling:
-                if (aisling.Status.HasFlag(Status.SmokeStance) && Randomizer.RollChance(15))
+                if (aisling.Status.HasFlag(Status.SmokeStance) && IntegerRandomizer.RollChance(15))
                 {
                     switch (source)
                     {
@@ -58,7 +58,7 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
                             break;
                     }
                 }
-                if (aisling.Status.HasFlag(Status.AsgallFaileas) && Randomizer.RollChance(70) || aisling.Status.HasFlag(Status.EarthenStance) && Randomizer.RollChance(20))
+                if ((aisling.Status.HasFlag(Status.AsgallFaileas) && IntegerRandomizer.RollChance(70)) || (aisling.Status.HasFlag(Status.EarthenStance) && IntegerRandomizer.RollChance(20)))
                 {
                     switch (source)
                     {
@@ -102,7 +102,7 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
 
                 break;
             case Monster monster:
-                if (monster.Status.HasFlag(Status.AsgallFaileas) && Randomizer.RollChance(70) || monster.Status.HasFlag(Status.EarthenStance) && Randomizer.RollChance(20))
+                if ((monster.Status.HasFlag(Status.AsgallFaileas) && IntegerRandomizer.RollChance(70)) || (monster.Status.HasFlag(Status.EarthenStance) && IntegerRandomizer.RollChance(20)))
                 {
                     switch (source)
                     {

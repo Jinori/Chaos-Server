@@ -37,8 +37,17 @@ public class FishingEffect : ContinuousAnimationEffectBase
 
     public FishingEffect(IItemFactory itemFactory) => _itemFactory = itemFactory;
 
-    private static readonly List<string> FishList = new List<string> { "uselessboot", "trout", "bass", "perch", "pike", "rockfish", "lionfish", "purplewhopper"};
-    private static readonly List<decimal> FishWeight = new List<decimal> { 20, 30, 25, 20, 15, 10, 8, 5 };
+    private static readonly List<KeyValuePair<string, decimal>> FishData = new()
+    {
+        new KeyValuePair<string, decimal>("uselessboot", 20),
+        new KeyValuePair<string, decimal>("trout", 30),
+        new KeyValuePair<string, decimal>("bass", 25),
+        new KeyValuePair<string, decimal>("perch", 20),
+        new KeyValuePair<string, decimal>("pike", 15),
+        new KeyValuePair<string, decimal>("rockfish", 10),
+        new KeyValuePair<string, decimal>("lionfish", 8),
+        new KeyValuePair<string, decimal>("purplewhopper", 5)
+    };
     
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
@@ -54,12 +63,12 @@ public class FishingEffect : ContinuousAnimationEffectBase
             return;
         }
         
-        if (!Randomizer.RollChance(2))
+        if (!IntegerRandomizer.RollChance(2))
         {
             return;
         }
 
-        var templateKey = FishList.PickRandom(FishWeight);
+        var templateKey = FishData.PickRandomWeighted();
         var fish = _itemFactory.Create(templateKey);
         if (!aisling.TryGiveItem(fish))
             return;

@@ -44,8 +44,8 @@ public class LockPickChestScript : DialogScriptBase
             return;
         }
 
-        var numberToWinChest = Randomizer.RollSingle(5);
-        var prizeGold = Randomizer.RollSingle(10000);
+        var numberToWinChest = IntegerRandomizer.RollSingle(5);
+        var prizeGold = IntegerRandomizer.RollSingle(10000);
 
         if (numberToWinChest.Equals(numberguessed))
         {
@@ -69,7 +69,7 @@ public class LockPickChestScript : DialogScriptBase
         }
         else
         {
-            var breakPick = Randomizer.RollChance(50);
+            var breakPick = IntegerRandomizer.RollChance(50);
 
             if (breakPick)
             {

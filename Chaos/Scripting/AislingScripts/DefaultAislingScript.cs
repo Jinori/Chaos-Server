@@ -106,7 +106,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         if (Subject.Status.HasFlag(Status.ThunderStance))
         {
             var result = damage * 3;
-            if (Randomizer.RollChance(2))
+            if (IntegerRandomizer.RollChance(2))
             {
                 var effect = EffectFactory.Create("Suain");
                 source.Effects.Apply(Subject, effect);
@@ -212,12 +212,15 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         var itemsToBreak = Subject.Equipment.Where(x => x.Template.AccountBound is false);
 
         foreach (var item in itemsToBreak)
-            if (Randomizer.RollChance(2))
+            if (IntegerRandomizer.RollChance(2))
             {
-                Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{item.DisplayName} has been consumed by the Death God.");
+                Subject.Client.SendServerMessage(
+                    ServerMessageType.OrangeBar1,
+                    $"{item.DisplayName} has been consumed by death.");
+
                 Subject.Equipment.TryGetRemove(item.Slot, out _);
             }
-        
+
         var tenPercent = MathEx.GetPercentOf<int>((int)Subject.UserStatSheet.TotalExp, 10);
         if (ExperienceDistributionScript.TryTakeExp(Subject, tenPercent))
         {

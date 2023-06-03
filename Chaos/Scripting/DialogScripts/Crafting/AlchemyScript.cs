@@ -329,7 +329,7 @@ public class AlchemyScript : DialogScriptBase
                     source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
             }
             
-            if ((recipe.Rank != null) && !Randomizer.RollChance(
+            if ((recipe.Rank != null) && !IntegerRandomizer.RollChance(
                     (int)CalculateSuccessRate(
                         legendMarkCount,
                         timesCraftedThisItem,
@@ -378,7 +378,7 @@ public class AlchemyScript : DialogScriptBase
 
         if (Craftgoodgreatgrand)
         {
-            var roll = Randomizer.RollSingle(100);
+            var roll = IntegerRandomizer.RollSingle(100);
 
             if (recipe.TemplateKey != null)
             {

@@ -36,7 +36,7 @@ public class SpareAStickRewardScript : DialogScriptBase
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"5 Gamepoints, 1000 gold, and 2500 Exp Rewarded!");
             
             
-            if (Randomizer.RollChance(8))
+            if (IntegerRandomizer.RollChance(8))
             {
                 source.Legend.AddOrAccumulate(
                     new LegendMark(

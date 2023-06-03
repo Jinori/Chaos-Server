@@ -19,7 +19,7 @@ public class MagicResistanceComponent : IConditionalComponent
 
         foreach (var target in targets)
         {
-            if (Randomizer.RollChance(100 - target.StatSheet.EffectiveMagicResistance))
+            if (IntegerRandomizer.RollChance(100 - target.StatSheet.EffectiveMagicResistance))
                 return true;
             
             target.Animate(MissAnimation);

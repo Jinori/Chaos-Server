@@ -16,7 +16,7 @@ public class GreetingScript : MerchantScriptBase
         if (source is not Aisling aisling)
             return;
         
-        if (Randomizer.RollChance(60))
+        if (IntegerRandomizer.RollChance(60))
             return;
         
         switch (Subject.Template.TemplateKey.ToLower())

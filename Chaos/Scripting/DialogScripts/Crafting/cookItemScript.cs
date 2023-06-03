@@ -707,7 +707,7 @@ public class cookItemScript : DialogScriptBase
                     
                     #endregion
 
-                    if (Randomizer.RollChance(20))
+                    if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
                         return;
@@ -1720,7 +1720,7 @@ public class cookItemScript : DialogScriptBase
                     
                     #endregion
 
-                    if (Randomizer.RollChance(20))
+                    if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
                         return;
@@ -1890,7 +1890,7 @@ public class cookItemScript : DialogScriptBase
                     
                     #endregion
 
-                    if (Randomizer.RollChance(20))
+                    if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
                         return;
@@ -2056,7 +2056,7 @@ public class cookItemScript : DialogScriptBase
 
                     #endregion
 
-                    if (Randomizer.RollChance(20))
+                    if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
                         return;
@@ -2324,7 +2324,7 @@ public class cookItemScript : DialogScriptBase
                     
                     #endregion
 
-                    if (Randomizer.RollChance(20))
+                    if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
                         return;
@@ -2614,7 +2614,7 @@ public class cookItemScript : DialogScriptBase
 
                     #endregion
 
-                    if (Randomizer.RollChance(20))
+                    if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
                         return;
@@ -2847,7 +2847,7 @@ public class cookItemScript : DialogScriptBase
 
                     #endregion
 
-                    if (Randomizer.RollChance(20))
+                    if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
                         return;

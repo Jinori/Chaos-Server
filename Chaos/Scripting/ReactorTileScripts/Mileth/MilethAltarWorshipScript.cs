@@ -35,7 +35,7 @@ public class MilethAltarWorshipScript : ReactorTileScriptBase
         
         ExperienceDistributionScript.GiveExp(aisling, 200);
         
-        if (Randomizer.RollChance(10))
+        if (IntegerRandomizer.RollChance(10))
         {
             var randomMessages = new List<string>
             {
@@ -47,7 +47,7 @@ public class MilethAltarWorshipScript : ReactorTileScriptBase
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, randomMessages[index]);
         }
 
-        if (!Randomizer.RollChance(2)) 
+        if (!IntegerRandomizer.RollChance(2)) 
             return;
         
         if (aisling.UserStatSheet.BaseClass.Equals(BaseClass.Priest))
