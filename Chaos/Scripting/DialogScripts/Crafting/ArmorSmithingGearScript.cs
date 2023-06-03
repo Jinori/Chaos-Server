@@ -229,7 +229,7 @@ public class ArmorSmithingGearScript : DialogScriptBase
         }
 
         var recipe =
-            CraftingRequirements.ArmorSmithingArmorRequirements.Values.FirstOrDefault(
+            CraftingRequirements.ArmorSmithingGearRequirements.Values.FirstOrDefault(
                 recipe1 =>
                     (recipe1.Name != null) && recipe1.Name.EqualsI(selectedRecipeName));
         
