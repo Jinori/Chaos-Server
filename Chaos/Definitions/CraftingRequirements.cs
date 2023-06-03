@@ -2536,6 +2536,395 @@ public static class CraftingRequirements
     }
 }
 
+    };
+
+    public static Dictionary<ArmorSmithRecipes, Recipe> ArmorSmithingGearRequirements { get; } = new()
+    {
+        {
+            ArmorSmithRecipes.Leathersapphiregauntlet,
+            new Recipe()
+            {
+                Name = "Leather Sapphire Gauntlet",
+                TemplateKey = "leathersapphiregauntlet",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+    ArmorSmithRecipes.Leatherrubygauntlet,
+    new Recipe()
+    {
+        Name = "Leather Ruby Gauntlet",
+        TemplateKey = "leatherrubygauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "basic",
+        Level = 11,
+        Difficulty = 1
+    }
+},
+{
+    ArmorSmithRecipes.Leatheremeraldgauntlet,
+    new Recipe()
+    {
+        Name = "Leather Emerald Gauntlet",
+        TemplateKey = "leatheremeraldgauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "basic",
+        Level = 11,
+        Difficulty = 1
+    }
+},
+{
+    ArmorSmithRecipes.Leatherheartstonegauntlet,
+    new Recipe()
+    {
+        Name = "Leather Heartstone Gauntlet",
+        TemplateKey = "leatherheartstonegauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "basic",
+        Level = 11,
+        Difficulty = 1
+    }
+},
+{
+    ArmorSmithRecipes.Ironsapphiregauntlet,
+    new Recipe()
+    {
+        Name = "Iron Sapphire Gauntlet",
+        TemplateKey = "ironsapphiregauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Apprentice",
+        Level = 41,
+        Difficulty = 2
+    }
+},
+{
+    ArmorSmithRecipes.Ironrubygauntlet,
+    new Recipe()
+    {
+        Name = "Iron Ruby Gauntlet",
+        TemplateKey = "ironrubygauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Apprentice",
+        Level = 41,
+        Difficulty = 2
+    }
+},
+{
+    ArmorSmithRecipes.Ironemeraldgauntlet,
+    new Recipe()
+    {
+        Name = "Iron Emerald Gauntlet",
+        TemplateKey = "ironemeraldgauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Apprentice",
+        Level = 41,
+        Difficulty = 2
+    }
+},
+{
+    ArmorSmithRecipes.Ironheartstonegauntlet,
+    new Recipe()
+    {
+        Name = "Iron Heartstone Gauntlet",
+        TemplateKey = "ironheartstonegauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Apprentice",
+        Level = 41,
+        Difficulty = 2
+    }
+},
+{
+    ArmorSmithRecipes.Mythrilsapphiregauntlet,
+    new Recipe()
+    {
+        Name = "Mythril Sapphire Gauntlet",
+        TemplateKey = "mythrilsapphiregauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Journeyman",
+        Level = 71,
+        Difficulty = 3
+    }
+},
+{
+    ArmorSmithRecipes.Mythrilrubygauntlet,
+    new Recipe()
+    {
+        Name = "Mythril Ruby Gauntlet",
+        TemplateKey = "mythrilrubygauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Journeyman",
+        Level = 71,
+        Difficulty = 3
+    }
+},
+{
+    ArmorSmithRecipes.Mythrilemeraldgauntlet,
+    new Recipe()
+    {
+        Name = "Mythril Emerald Gauntlet",
+        TemplateKey = "mythriltegauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Journeyman",
+        Level = 71,
+        Difficulty = 3
+    }
+},
+{
+    ArmorSmithRecipes.Mythrilheartstonegauntlet,
+    new Recipe()
+    {
+        Name = "Mythril Heartstone Gauntlet",
+        TemplateKey = "mythrilheartstonegauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Journeyman",
+        Level = 71,
+        Difficulty = 3
+    }
+},
+{
+    ArmorSmithRecipes.Hybrasylsapphiregauntlet,
+    new Recipe()
+    {
+        Name = "Hy-brasyl Sapphire Gauntlet",
+        TemplateKey = "hybrasylsapphiregauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Adept",
+        Level = 97,
+        Difficulty = 5
+    }
+},
+{
+    ArmorSmithRecipes.Hybrasylrubygauntlet,
+    new Recipe()
+    {
+        Name = "Hy-brasyl Ruby Gauntlet",
+        TemplateKey = "hybrasylrubygauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Adept",
+        Level = 97,
+        Difficulty = 5
+    }
+},
+{
+    ArmorSmithRecipes.Hybrasylemeraldgauntlet,
+    new Recipe()
+    {
+        Name = "Hy-brasyl Emerald Gauntlet",
+        TemplateKey = "hybrasylemeraldgauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Adept",
+        Level = 97,
+        Difficulty = 5
+    }
+},
+{
+    ArmorSmithRecipes.Hybrasylheartstonegauntlet,
+    new Recipe()
+    {
+        Name = "Hy-brasyl Heartstone Gauntlet",
+        TemplateKey = "hybrasylheartstonegauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Adept",
+        Level = 97,
+        Difficulty = 5
+    }
+},
+        {
+            ArmorSmithRecipes.Jeweledseabelt,
+            new Recipe()
+            {
+                Name = "Jeweled Sea Belt",
+                TemplateKey = "jeweledseabelt",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+    ArmorSmithRecipes.Jeweledfirebelt,
+    new Recipe()
+    {
+        Name = "Jeweled Fire Belt",
+        TemplateKey = "jeweledfirebelt",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Basic",
+        Level = 11,
+        Difficulty = 1
+    }
+},
+{
+    ArmorSmithRecipes.Jeweledwindbelt,
+    new Recipe()
+    {
+        Name = "Jeweled Wind Belt",
+        TemplateKey = "jeweledwindbelt",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Basic",
+        Level = 11,
+        Difficulty = 1
+    }
+},
+{
+    ArmorSmithRecipes.Jeweledearthbelt,
+    new Recipe()
+    {
+        Name = "Jeweled Earth Belt",
+        TemplateKey = "jewelearthbelt",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Basic",
+        Level = 11,
+        Difficulty = 1
+    }
+},
+{
+    ArmorSmithRecipes.Jewelednaturebelt,
+    new Recipe()
+    {
+        Name = "Jeweled Nature Belt",
+        TemplateKey = "jewelednaturebelt",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Apprentice",
+        Level = 41,
+        Difficulty = 2
+    }
+},
+{
+    ArmorSmithRecipes.Jeweledmetalbelt,
+    new Recipe()
+    {
+        Name = "Jeweled Metal Belt",
+        TemplateKey = "jeweledmetalbelt",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Apprentice",
+        Level = 41,
+        Difficulty = 2
+    }
+},
+{
+    ArmorSmithRecipes.Jeweledlightbelt,
+    new Recipe()
+    {
+        Name = "Jeweled Light Belt",
+        TemplateKey = "jeweledlightbelt",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Journeyman",
+        Level = 71,
+        Difficulty = 3
+    }
+},
+{
+    ArmorSmithRecipes.Jeweleddarkbelt,
+    new Recipe()
+    {
+        Name = "Jeweled Dark Belt",
+        TemplateKey = "jeweleddarkbelt",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+        },
+        Rank = "Journeyman",
+        Level = 71,
+        Difficulty = 3
+    }
+}
+
 
     };
 
