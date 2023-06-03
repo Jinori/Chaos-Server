@@ -5,12 +5,12 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.ReactorTileScripts;
 
-public class BlacksmithingSpotScript : ReactorTileScriptBase
+public class WeaponSmithingSpotScript : ReactorTileScriptBase
 {
     private readonly IDialogFactory DialogFactory;
     private readonly IMerchantFactory MerchantFactory;
 
-    public BlacksmithingSpotScript(ReactorTile subject, IMerchantFactory merchantFactory, IDialogFactory dialogFactory)
+    public WeaponSmithingSpotScript(ReactorTile subject, IMerchantFactory merchantFactory, IDialogFactory dialogFactory)
         : base(subject)
     {
         MerchantFactory = merchantFactory;
@@ -23,7 +23,7 @@ public class BlacksmithingSpotScript : ReactorTileScriptBase
             return;
 
         var blank = MerchantFactory.Create("anvil_merchant", source.MapInstance, new Point(6, 6));
-        var dialog = DialogFactory.Create("blacksmithing_initial", blank);
+        var dialog = DialogFactory.Create("weaponsmithing_initial", blank);
         dialog.Display(aisling);
     }
 }

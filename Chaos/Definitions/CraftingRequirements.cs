@@ -12,7 +12,7 @@ public static class CraftingRequirements
         public int Level { get; set; }
         public int Difficulty { get; set; }
     }
-    
+
     public sealed class Ingredient
     {
         public string? TemplateKey { get; set; }
@@ -21,7 +21,7 @@ public static class CraftingRequirements
     }
 
 
-    
+
     public static Dictionary<AlchemyRecipes, Recipe> AlchemyRequirements { get; } = new()
     {
         {
@@ -57,493 +57,1676 @@ public static class CraftingRequirements
             }
         },
     };
-    
-    #region WeaponSmithing
-    public static Dictionary<string, Tuple<List<Ingredient>, string, int>> WeaponSmithingCraftRequirements { get; } =
-        new()
+
+    #region Weapon Smithing
+    public static Dictionary<WeaponSmithingRecipes, Recipe> WeaponSmithingCraftRequirements { get; } = new()
+    {
         {
+            WeaponSmithingRecipes.Eppe,
+            new Recipe()
             {
-                "Eppe", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                        new Ingredient { TemplateKey = "ruby", DisplayName = "Ruby", Amount = 1 }
-                    },
-                    "Basic",
-                    2)
-            },
+                Name = "Eppe",
+                TemplateKey = "eppe",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 2,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Saber,
+            new Recipe()
             {
-                "Saber", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                        new Ingredient { TemplateKey = "ruby", DisplayName = "Ruby", Amount = 1 }
-                    },
-                    "Basic",
-                    7)
-            },
+                Name = "Saber",
+                TemplateKey = "saber",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 7,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Claidheamh,
+            new Recipe()
             {
-                "Claidheamh", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                        new Ingredient { TemplateKey = "ruby", DisplayName = "Ruby", Amount = 1 }
-                    },
-                    "Basic",
-                    11)
-            },
+                Name = "Claidheamh",
+                TemplateKey = "claidheamh",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Broadsword,
+            new Recipe()
             {
-                "Broadsword", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                        new Ingredient { TemplateKey = "ruby", DisplayName = "Ruby", Amount = 1 }
-                    },
-                    "Basic",
-                    17)
-            },
+                Name = "Broad Sword",
+                TemplateKey = "broadsword",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 17,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Battlesword,
+            new Recipe()
             {
-                "Battlesword", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    26)
-            },
+                Name = "Battle Sword",
+                TemplateKey = "battlesword",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 26,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Masquerade,
+            new Recipe()
             {
-                "Masquerade", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    31)
-            },
+                Name = "Masquerade",
+                TemplateKey = "masquerade",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 31,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Bramble,
+            new Recipe()
             {
-                "Bramble", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                        new Ingredient { TemplateKey = "ruby", DisplayName = "Ruby", Amount = 1 }
-                    },
-                    "Apprentice",
-                    41)
-            },
+                Name = "Bramble",
+                TemplateKey = "bramble",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "ruby", DisplayName = "Ruby", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Longsword,
+            new Recipe()
             {
-                "Longsword", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Apprentice",
-                    56)
-            },
+                Name = "Longsword",
+                TemplateKey = "longsword",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 56,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Claidhmore,
+            new Recipe()
             {
-                "Claidhmore", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Journeyman",
-                    71)
-            },
+                Name = "Claidhmore",
+                TemplateKey = "claidhmore",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Emeraldsword,
+            new Recipe()
             {
-                "Emeraldsword", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Journeyman",
-                    77)
-            },
+                Name = "Emerald Sword",
+                TemplateKey = "emeraldsword",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 77,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Gladius,
+            new Recipe()
             {
-                "Kindjal", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Adept",
-                    90)
-            },
+                Name = "Gladius",
+                TemplateKey = "gladius",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 85,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Kindjal,
+            new Recipe()
             {
-                "Dragonslayer", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Adept",
-                    99)
-            },
+                Name = "Kindjal",
+                TemplateKey = "kindjal",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 90,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Dragonslayer,
+            new Recipe()
             {
-                "Hatchet", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    11)
-            },
+                Name = "Dragon Slayer",
+                TemplateKey = "dragonslayer",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 99,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Hatchet,
+            new Recipe()
             {
-                "Harpoon", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    21)
-            },
+                Name = "Hatchet",
+                TemplateKey = "hatchet",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Harpoon,
+            new Recipe()
             {
-                "Club", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Apprentice",
-                    41)
-            },
+                Name = "Harpoon",
+                TemplateKey = "harpoon",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 21,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Scimitar,
+            new Recipe()
             {
-                "Spikedclub", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Apprentice",
-                    50)
-            },
+                Name = "Scimitar",
+                TemplateKey = "scimitar",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 31,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Club,
+            new Recipe()
             {
-                "Chainmace", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Apprentice",
-                    60)
-            },
+                Name = "Club",
+                TemplateKey = "club",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Spikedclub,
+            new Recipe()
             {
-                "Handaxe", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Journeyman",
-                    71)
-            },
+                Name = "Spiked Club",
+                TemplateKey = "spikedclub",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 50,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Chainmace,
+            new Recipe()
             {
-                "Cutlass", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Journeyman",
-                    80)
-            },
+                Name = "Chain Mace",
+                TemplateKey = "chainmace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 60,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Handaxe,
+            new Recipe()
             {
-                "Talgoniteaxe", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Adept",
-                    95)
-            },
+                Name = "Handaxe",
+                TemplateKey = "handaxe",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 70,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Cutlass,
+            new Recipe()
             {
-                "Hybrasylaxe", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Adept",
-                    99)
-            },
+                Name = "Cutlass",
+                TemplateKey = "cutlass",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Talgoniteaxe,
+            new Recipe()
             {
-                "Magusares", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    11)
-            },
+                Name = "Talgonite Axe",
+                TemplateKey = "talgoniteaxe",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 95,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Hybrasylaxe,
+            new Recipe()
             {
-                "Holyhermes", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    11)
-            },
+                Name = "Hy-brasyl Axe",
+                TemplateKey = "hybrasylaxe",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 99,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Magusares,
+            new Recipe()
             {
-                "Maguszeus", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Apprentice",
-                    41)
-            },
+                Name = "Magus Ares",
+                TemplateKey = "magusares",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Holyhermes,
+            new Recipe()
             {
-                "Holykronos", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Apprentice",
-                    41)
-            },
+                Name = "Holy Hermes",
+                TemplateKey = "holyhermes",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Maguszeus,
+            new Recipe()
             {
-                "Magusdiana", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Journeyman",
-                    71)
-            },
+                Name = "Magus Zeus",
+                TemplateKey = "maguszeus",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Holykronos,
+            new Recipe()
             {
-                "Holydiana", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Journeyman",
-                    71)
-            },
+                Name = "Holy Kronos",
+                TemplateKey = "holykronos",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Magusdiana,
+            new Recipe()
             {
-                "Stonecross", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Adept",
-                    90)
-            },
+                Name = "Magus Diana",
+                TemplateKey = "magusdiana",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 3
+            }
+        },
+        {
+            WeaponSmithingRecipes.Holydiana,
+            new Recipe()
             {
-                "Oakstaff", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Adept",
-                    97)
-            },
+                Name = "Holy Diana",
+                TemplateKey = "holydiana",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 3
+            }
+        },
+        {
+            WeaponSmithingRecipes.Stonecross,
+            new Recipe()
             {
-                "Staffofwisdom", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Adept",
-                    97)
-            },
+                Name = "Stone Cross",
+                TemplateKey = "stonecross",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 90,
+                Difficulty = 4
+            }
+        },
+        {
+            WeaponSmithingRecipes.Oakstaff,
+            new Recipe()
             {
-                "Snowdagger", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    2)
-            },
+                Name = "Oak Staff",
+                TemplateKey = "oakstaff",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 4
+            }
+        },
+        {
+            WeaponSmithingRecipes.Staffofwisdom,
+            new Recipe()
             {
-                "Centerdagger", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    4)
-            },
+                Name = "Staff of Wisdom",
+                TemplateKey = "staffofwisdom",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 4
+            }
+        },
+        {
+            WeaponSmithingRecipes.Snowdagger,
+            new Recipe()
             {
-                "Blossomdagger", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    14)
-            },
+                Name = "Snow Dagger",
+                TemplateKey = "snowdagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 2,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Centerdagger,
+            new Recipe()
             {
-                "Curveddagger", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    30)
-            },
+                Name = "Center Dagger",
+                TemplateKey = "centerdagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 4,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Blossomdagger,
+            new Recipe()
             {
-                "Moondagger", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    31)
-            },
+                Name = "Blossom Dagger",
+                TemplateKey = "blossomdagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 14,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Curveddagger,
+            new Recipe()
             {
-                "Lightdagger", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Apprentice",
-                    42)
-            },
+                Name = "Curved Dagger",
+                TemplateKey = "curveddagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 30,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Moondagger,
+            new Recipe()
             {
-                "Sundagger", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Apprentice",
-                    62)
-            },
+                Name = "Moondagger",
+                TemplateKey = "moondagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 31,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Lightdagger,
+            new Recipe()
             {
-                "Lotusdagger", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Journeyman",
-                    75)
-            },
+                Name = "Light Dagger",
+                TemplateKey = "lightdagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Sundagger,
+            new Recipe()
             {
-                "Blooddagger", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Journeyman",
-                    89)
-            },
+                Name = "Sun Dagger",
+                TemplateKey = "sundagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 62,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Lotusdagger,
+            new Recipe()
             {
-                "Nagetierdagger", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Adept",
-                    97)
-            },
+                Name = "Lotus Dagger",
+                TemplateKey = "lotusdagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 75,
+                Difficulty = 3
+            }
+        },
+        {
+            WeaponSmithingRecipes.Blooddagger,
+            new Recipe()
             {
-                "Dullclaw", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    3)
-            },
+                Name = "Blood Dagger",
+                TemplateKey = "blooddagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 89,
+                Difficulty = 3
+            }
+        },
+        {
+            WeaponSmithingRecipes.Nagetierdagger,
+            new Recipe()
             {
-                "Wolfclaw", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    11)
-            },
+                Name = "Nagetierdagger",
+                TemplateKey = "nagetierdagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 4
+            }
+        },
+        {
+            WeaponSmithingRecipes.Dullclaw,
+            new Recipe()
             {
-                "Eagletalon", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Apprentice",
-                    41)
-            },
+                Name = "Dull Claw",
+                TemplateKey = "dullclaw",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 3,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Wolfclaw,
+            new Recipe()
             {
-                "Phoenixclaw", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Journeyman",
-                    71)
-            },
+                Name = "Wolf Claw",
+                TemplateKey = "wolfclaw",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Eagletalon,
+            new Recipe()
             {
-                "Nunchaku", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Adept",
-                    97)
-            },
+                Name = "Eagle Talon",
+                TemplateKey = "eagletalon",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Phoenixclaw,
+            new Recipe()
             {
-                "Woodenshield", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    3)
-            },
+                Name = "Phoenix Claw",
+                TemplateKey = "phoenixclaw",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 3
+            }
+        },
+        {
+            WeaponSmithingRecipes.Nunchaku,
+            new Recipe()
             {
-                "Leathershield", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    15)
-            },
+                Name = "Nunchaku",
+                TemplateKey = "nunchaku",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 4
+            }
+        },
+        {
+            WeaponSmithingRecipes.Woodenshield,
+            new Recipe()
             {
-                "Bronzeshield", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Basic",
-                    31)
-            },
+                Name = "Wooden Shield",
+                TemplateKey = "woodenshield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 3,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Leathershield,
+            new Recipe()
             {
-                "Gravelshield", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Apprentice",
-                    41)
-            },
+                Name = "Leather Shield",
+                TemplateKey = "leathershield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 15,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Bronzeshield,
+            new Recipe()
             {
-                "Lightshield", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Apprentice",
-                    50)
-            },
+                Name = "Bronze Shield",
+                TemplateKey = "bronzeshield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 31,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Gravelshield,
+            new Recipe()
             {
-                "Ironshield", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Apprentice",
-                    45)
-            },
+                Name = "Gravel Shield",
+                TemplateKey = "gravelshield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Ironshield,
+            new Recipe()
             {
-                "Mythrilshield", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Apprentice",
-                    61)
-            },
+                Name = "Iron Shield",
+                TemplateKey = "ironshield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 45,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Lightshield,
+            new Recipe()
             {
-                "Hybrasylshield", new Tuple<List<Ingredient>, string, int>(
-                    new List<Ingredient>()
-                    {
-                        new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    },
-                    "Journeyman",
-                    77)
-            },
-        };
+                Name = "Light Shield",
+                TemplateKey = "lightshield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 50,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Mythrilshield,
+            new Recipe()
+            {
+                Name = "Mythril Shield",
+                TemplateKey = "mythrilshield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 61,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Hybrasylshield,
+            new Recipe()
+            {
+                Name = "Hybrasyl Shield",
+                TemplateKey = "hybrasylshield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 77,
+                Difficulty = 3
+            }
+        }
+    };
+
+    public static Dictionary<WeaponSmithingRecipes, Recipe> WeaponSmithingUpgradeRequirements { get; } = new()
+    {
+        {
+            WeaponSmithingRecipes.Eppe,
+            new Recipe()
+            {
+                Name = "Eppe",
+                TemplateKey = "eppe",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "eppe", DisplayName = "Eppe", Amount = 1 },
+                    new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 2,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Saber,
+            new Recipe()
+            {
+                Name = "Saber",
+                TemplateKey = "saber",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 7,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Claidheamh,
+            new Recipe()
+            {
+                Name = "Claidheamh",
+                TemplateKey = "claidheamh",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Broadsword,
+            new Recipe()
+            {
+                Name = "Broad Sword",
+                TemplateKey = "broadsword",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 17,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Battlesword,
+            new Recipe()
+            {
+                Name = "Battle Sword",
+                TemplateKey = "battlesword",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 26,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Masquerade,
+            new Recipe()
+            {
+                Name = "Masquerade",
+                TemplateKey = "masquerade",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 31,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Bramble,
+            new Recipe()
+            {
+                Name = "Bramble",
+                TemplateKey = "bramble",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "ruby", DisplayName = "Ruby", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Longsword,
+            new Recipe()
+            {
+                Name = "Longsword",
+                TemplateKey = "longsword",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 56,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Claidhmore,
+            new Recipe()
+            {
+                Name = "Claidhmore",
+                TemplateKey = "claidhmore",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Emeraldsword,
+            new Recipe()
+            {
+                Name = "Emerald Sword",
+                TemplateKey = "emeraldsword",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 77,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Gladius,
+            new Recipe()
+            {
+                Name = "Gladius",
+                TemplateKey = "gladius",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 85,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Kindjal,
+            new Recipe()
+            {
+                Name = "Kindjal",
+                TemplateKey = "kindjal",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 90,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Dragonslayer,
+            new Recipe()
+            {
+                Name = "Dragon Slayer",
+                TemplateKey = "dragonslayer",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 99,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Hatchet,
+            new Recipe()
+            {
+                Name = "Hatchet",
+                TemplateKey = "hatchet",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Harpoon,
+            new Recipe()
+            {
+                Name = "Harpoon",
+                TemplateKey = "harpoon",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 21,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Scimitar,
+            new Recipe()
+            {
+                Name = "Scimitar",
+                TemplateKey = "scimitar",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 31,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Club,
+            new Recipe()
+            {
+                Name = "Club",
+                TemplateKey = "club",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Spikedclub,
+            new Recipe()
+            {
+                Name = "Spiked Club",
+                TemplateKey = "spikedclub",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 50,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Chainmace,
+            new Recipe()
+            {
+                Name = "Chain Mace",
+                TemplateKey = "chainmace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 60,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Handaxe,
+            new Recipe()
+            {
+                Name = "Handaxe",
+                TemplateKey = "handaxe",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 70,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Cutlass,
+            new Recipe()
+            {
+                Name = "Cutlass",
+                TemplateKey = "cutlass",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Talgoniteaxe,
+            new Recipe()
+            {
+                Name = "Talgonite Axe",
+                TemplateKey = "talgoniteaxe",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 95,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Hybrasylaxe,
+            new Recipe()
+            {
+                Name = "Hy-brasyl Axe",
+                TemplateKey = "hybrasylaxe",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 99,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Magusares,
+            new Recipe()
+            {
+                Name = "Magus Ares",
+                TemplateKey = "magusares",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Holyhermes,
+            new Recipe()
+            {
+                Name = "Holy Hermes",
+                TemplateKey = "holyhermes",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Maguszeus,
+            new Recipe()
+            {
+                Name = "Magus Zeus",
+                TemplateKey = "maguszeus",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Holykronos,
+            new Recipe()
+            {
+                Name = "Holy Kronos",
+                TemplateKey = "holykronos",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Magusdiana,
+            new Recipe()
+            {
+                Name = "Magus Diana",
+                TemplateKey = "magusdiana",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 3
+            }
+        },
+        {
+            WeaponSmithingRecipes.Holydiana,
+            new Recipe()
+            {
+                Name = "Holy Diana",
+                TemplateKey = "holydiana",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 3
+            }
+        },
+        {
+            WeaponSmithingRecipes.Stonecross,
+            new Recipe()
+            {
+                Name = "Stone Cross",
+                TemplateKey = "stonecross",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 90,
+                Difficulty = 4
+            }
+        },
+        {
+            WeaponSmithingRecipes.Oakstaff,
+            new Recipe()
+            {
+                Name = "Oak Staff",
+                TemplateKey = "oakstaff",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 4
+            }
+        },
+        {
+            WeaponSmithingRecipes.Staffofwisdom,
+            new Recipe()
+            {
+                Name = "Staff of Wisdom",
+                TemplateKey = "staffofwisdom",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 4
+            }
+        },
+        {
+            WeaponSmithingRecipes.Snowdagger,
+            new Recipe()
+            {
+                Name = "Snow Dagger",
+                TemplateKey = "snowdagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 2,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Centerdagger,
+            new Recipe()
+            {
+                Name = "Center Dagger",
+                TemplateKey = "centerdagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 4,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Blossomdagger,
+            new Recipe()
+            {
+                Name = "Blossom Dagger",
+                TemplateKey = "blossomdagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 14,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Curveddagger,
+            new Recipe()
+            {
+                Name = "Curved Dagger",
+                TemplateKey = "curveddagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 30,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Moondagger,
+            new Recipe()
+            {
+                Name = "Moondagger",
+                TemplateKey = "moondagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 31,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Lightdagger,
+            new Recipe()
+            {
+                Name = "Light Dagger",
+                TemplateKey = "lightdagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Sundagger,
+            new Recipe()
+            {
+                Name = "Sun Dagger",
+                TemplateKey = "sundagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 62,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Lotusdagger,
+            new Recipe()
+            {
+                Name = "Lotus Dagger",
+                TemplateKey = "lotusdagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 75,
+                Difficulty = 3
+            }
+        },
+        {
+            WeaponSmithingRecipes.Blooddagger,
+            new Recipe()
+            {
+                Name = "Blood Dagger",
+                TemplateKey = "blooddagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 89,
+                Difficulty = 3
+            }
+        },
+        {
+            WeaponSmithingRecipes.Nagetierdagger,
+            new Recipe()
+            {
+                Name = "Nagetierdagger",
+                TemplateKey = "nagetierdagger",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 4
+            }
+        },
+        {
+            WeaponSmithingRecipes.Dullclaw,
+            new Recipe()
+            {
+                Name = "Dull Claw",
+                TemplateKey = "dullclaw",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 3,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Wolfclaw,
+            new Recipe()
+            {
+                Name = "Wolf Claw",
+                TemplateKey = "wolfclaw",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Eagletalon,
+            new Recipe()
+            {
+                Name = "Eagle Talon",
+                TemplateKey = "eagletalon",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Phoenixclaw,
+            new Recipe()
+            {
+                Name = "Phoenix Claw",
+                TemplateKey = "phoenixclaw",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 3
+            }
+        },
+        {
+            WeaponSmithingRecipes.Nunchaku,
+            new Recipe()
+            {
+                Name = "Nunchaku",
+                TemplateKey = "nunchaku",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 4
+            }
+        },
+        {
+            WeaponSmithingRecipes.Woodenshield,
+            new Recipe()
+            {
+                Name = "Wooden Shield",
+                TemplateKey = "woodenshield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 3,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Leathershield,
+            new Recipe()
+            {
+                Name = "Leather Shield",
+                TemplateKey = "leathershield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 15,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Bronzeshield,
+            new Recipe()
+            {
+                Name = "Bronze Shield",
+                TemplateKey = "bronzeshield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Basic",
+                Level = 31,
+                Difficulty = 1
+            }
+        },
+        {
+            WeaponSmithingRecipes.Gravelshield,
+            new Recipe()
+            {
+                Name = "Gravel Shield",
+                TemplateKey = "gravelshield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Ironshield,
+            new Recipe()
+            {
+                Name = "Iron Shield",
+                TemplateKey = "ironshield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 45,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Lightshield,
+            new Recipe()
+            {
+                Name = "Light Shield",
+                TemplateKey = "lightshield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 50,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Mythrilshield,
+            new Recipe()
+            {
+                Name = "Mythril Shield",
+                TemplateKey = "mythrilshield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 61,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes.Hybrasylshield,
+            new Recipe()
+            {
+                Name = "Hybrasyl Shield",
+                TemplateKey = "hybrasylshield",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
+                },
+                Rank = "Journeyman",
+                Level = 77,
+                Difficulty = 3
+            }
+        }
+    };
     #endregion
 }
