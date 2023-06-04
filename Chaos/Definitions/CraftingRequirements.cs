@@ -611,7 +611,7 @@ public static class CraftingRequirements
             WeaponSmithingRecipes.Moondagger,
             new Recipe()
             {
-                Name = "Moondagger",
+                Name = "Moon Dagger",
                 TemplateKey = "moondagger",
                 Ingredients = new List<Ingredient>()
                 {
@@ -1446,7 +1446,7 @@ public static class CraftingRequirements
             WeaponSmithingRecipes.Moondagger,
             new Recipe()
             {
-                Name = "Moondagger",
+                Name = "Moon Dagger",
                 TemplateKey = "moondagger",
                 Ingredients = new List<Ingredient>()
                 {
