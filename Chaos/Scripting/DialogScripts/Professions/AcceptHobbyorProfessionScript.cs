@@ -1,14 +1,22 @@
+using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
+using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Professions;
 
 public class AcceptHobbyorProfessionScript : DialogScriptBase
 {
-    public AcceptHobbyorProfessionScript(Dialog subject)
-        : base(subject) { }
+    private readonly IItemFactory ItemFactory;
+    public AcceptHobbyorProfessionScript(Dialog subject, IItemFactory itemFactory)
+        : base(subject)
+    {
+        ItemFactory = itemFactory;
+    }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -54,8 +62,6 @@ public class AcceptHobbyorProfessionScript : DialogScriptBase
 
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
-
-                    return;
                 }
             }
 
@@ -63,7 +69,54 @@ public class AcceptHobbyorProfessionScript : DialogScriptBase
             case "cooking_accepthobby":
             {
                 source.Trackers.Flags.AddFlag(Hobbies.Cooking);
+                source.Trackers.Flags.AddFlag(CookingRecipes.dinnerplate);
+                source.Trackers.Flags.AddFlag(CookingRecipes.fruitbasket);
+                source.Legend.AddOrAccumulate(
+                new LegendMark(
+                    "Beginner Chef",
+                    "cooking",
+                    MarkIcon.Yay,
+                    MarkColor.White,
+                    1,
+                    GameTime.Now));
                 source.SendOrangeBarMessage("You are now a Chef!");
+
+                return;
+            }
+            case "thorin_initial":
+            {
+                if (!hasCraft)
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "weaponsmithing_startcraft",
+                        OptionText = "I want to be an Weaponsmith."
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                break;
+            }
+
+            case "weaponsmith_acceptcraft":
+            {
+                source.Trackers.Enums.Set(Craft.Weaponsmithing);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Eppe);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Saber);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Dullclaw);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Snowdagger);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Centerdagger);
+                source.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        "Beginner Weaponsmith",
+                        "wpnsmth",
+                        MarkIcon.Yay,
+                        MarkColor.White,
+                        1,
+                        GameTime.Now));
+                source.SendOrangeBarMessage("You are now a Beginner Weaponsmith!");
 
                 return;
             }
@@ -90,6 +143,16 @@ public class AcceptHobbyorProfessionScript : DialogScriptBase
             case "armorsmith_acceptcraft":
             {
                 source.Trackers.Enums.Set(Craft.Armorsmithing);
+                var book = ItemFactory.Create("recipe_basicarmors");
+                source.TryGiveItem(book);
+                source.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        "Beginner Armorsmith",
+                        "armsmth",
+                        MarkIcon.Yay,
+                        MarkColor.White,
+                        1,
+                        GameTime.Now));
                 source.SendOrangeBarMessage("You are now an Armorsmith!");
 
                 return;

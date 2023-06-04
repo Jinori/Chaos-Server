@@ -18,13 +18,13 @@ public class MountDialogScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         var effect = _effectFactory.Create("mount");
+        var hasFlag = source.Trackers.Flags.TryGetFlag(out AvailableMounts mount);
+        var hasMount = source.Trackers.Enums.TryGetValue(out CurrentMount currentMount);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "terminus_initial":
             {
-                var hasFlag = source.Trackers.Flags.TryGetFlag(out AvailableMounts mount);
-
                 if (hasFlag)
                 {
                     var option = new DialogOption
@@ -42,31 +42,28 @@ public class MountDialogScript : DialogScriptBase
             
             case "mount_initial":
             {
-                if (source.Trackers.Flags.TryGetFlag(out AvailableMounts mount))
+                if (source.Trackers.Flags.HasFlag(AvailableMounts.WhiteHorse))
                 {
-                    if (source.Trackers.Flags.HasFlag(AvailableMounts.WhiteHorse))
+                    var option = new DialogOption
                     {
-                        var option = new DialogOption
-                        {
-                            DialogKey = "mount_whitehorse",
-                            OptionText = "White Horse"
-                        };
+                        DialogKey = "mount_whitehorse",
+                        OptionText = "White Horse"
+                    };
 
-                        if (!Subject.HasOption(option.OptionText))
-                            Subject.Options.Insert(0, option);
-                    }
-                    if (source.Trackers.Flags.HasFlag(AvailableMounts.WhiteWolf))
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+                if (source.Trackers.Flags.HasFlag(AvailableMounts.WhiteWolf))
+                {
+                    var option = new DialogOption
                     {
-                        var option = new DialogOption
-                        {
-                            DialogKey = "mount_whitewolf",
-                            OptionText = "White Wolf"
-                        };
+                        DialogKey = "mount_whitewolf",
+                        OptionText = "White Wolf"
+                    };
 
-                        if (!Subject.HasOption(option.OptionText))
-                            Subject.Options.Insert(0, option);
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
 
-                    }
                 }
             }
 
@@ -74,18 +71,28 @@ public class MountDialogScript : DialogScriptBase
 
             case "mount_whitehorse":
             {
-                source.Trackers.Enums.Set(CurrentMount.WhiteHorse);
+                if (currentMount != CurrentMount.WhiteHorse)
+                {
+                    source.Trackers.Enums.Set(CurrentMount.WhiteHorse);
+                    Subject.Reply(source, "Skip", "Close");
+                    source.SendOrangeBarMessage("You've equipped your White Horse.");
+                }
                 Subject.Reply(source, "Skip", "Close");
-                source.SendOrangeBarMessage("You've equipped your White Horse.");
+                source.SendOrangeBarMessage("You've already equipped your White Horse.");
 
                 return;
             }
                 
             case "mount_whitewolf":
             {
-                source.Trackers.Enums.Set(CurrentMount.WhiteWolf);
+                if (currentMount != CurrentMount.WhiteWolf)
+                {
+                    source.Trackers.Enums.Set(CurrentMount.WhiteWolf);
+                    Subject.Reply(source, "Skip", "Close");
+                    source.SendOrangeBarMessage("You've equipped your White Wolf.");
+                }
                 Subject.Reply(source, "Skip", "Close");
-                source.SendOrangeBarMessage("You've equipped your White Wolf.");
+                source.SendOrangeBarMessage("You've already equipped your White Wolf.");
             }
 
                 break;

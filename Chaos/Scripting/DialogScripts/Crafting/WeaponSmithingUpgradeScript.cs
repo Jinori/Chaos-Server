@@ -23,13 +23,14 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
     private const double BASE_SUCCESS_RATE = 60;
     private const double SUCCESSRATEMAX = 95;
     //Ranks from lowest to highest
-    private const string RANK_ONE_TITLE = "Novice Weaponsmith";
-    private const string RANK_TWO_TITLE = "Apprentice Weaponsmith";
-    private const string RANK_THREE_TITLE = "Journeyman Weaponsmith";
-    private const string RANK_FOUR_TITLE = "Adept Weaponsmith";
-    private const string RANK_FIVE_TITLE = "Advanced Weaponsmith";
-    private const string RANK_SIX_TITLE = "Expert Weaponsmith";
-    private const string RANK_SEVEN_TITLE = "Master Weaponsmith";
+    private const string RANK_ONE_TITLE = "Beginner Weaponsmith";
+    private const string RANK_TWO_TITLE = "Novice Weaponsmith";
+    private const string RANK_THREE_TITLE = "Apprentice Weaponsmith";
+    private const string RANK_FOUR_TITLE = "Journeyman Weaponsmith";
+    private const string RANK_FIVE_TITLE = "Adept Weaponsmith";
+    private const string RANK_SIX_TITLE = "Advanced Weaponsmith";
+    private const string RANK_SEVEN_TITLE = "Expert Weaponsmith";
+    private const string RANK_EIGHT_TITLE = "Master Weaponsmith";
     //Set this to true if doing armorsmithing type crafting
     private readonly bool Craftgoodgreatgrand = true;
 
@@ -49,6 +50,7 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
     {
         var rankMappings = new Dictionary<string, int>
         {
+            { RANK_EIGHT_TITLE, 8 },
             { RANK_SEVEN_TITLE, 7 },
             { RANK_SIX_TITLE, 6 },
             { RANK_FIVE_TITLE, 5 },
@@ -69,13 +71,14 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
     {
         var statusMappings = new Dictionary<string, int>
         {
-            { "Basic", 1 },
-            { "Apprentice", 2 },
-            { "Journeyman", 3 },
-            { "Adept", 4 },
-            { "Advanced", 5 },
-            { "Expert", 6 },
-            { "Master", 7 }
+            { "Beginner", 1 },
+            { "Basic", 2 },
+            { "Apprentice", 3 },
+            { "Journeyman", 4 },
+            { "Adept", 5 },
+            { "Advanced", 6 },
+            { "Expert", 7 },
+            { "Master", 8 }
         };
 
         if (statusMappings.TryGetValue(status, out var i))
@@ -87,13 +90,14 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
     private double GetMultiplier(int totalTimesCrafted) =>
         totalTimesCrafted switch
         {
-            <= 100  => 1.0,
-            <= 500  => 1.05,
-            <= 1000 => 1.1,
-            <= 1500 => 1.15,
-            <= 2200 => 1.2,
-            <= 2900 => 1.25,
-            _       => 1.3
+            <= 25   => 1.0,
+            <= 75   => 1.05,
+            <= 150  => 1.1,
+            <= 300  => 1.15,
+            <= 500  => 1.2,
+            <= 1000 => 1.25,
+            <= 1500 => 1.3,
+            _       => 1.35
         };
 
     // Calculates the success rate of crafting an item
@@ -108,6 +112,7 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
             5 => 25,
             6 => 30,
             7 => 35,
+            8 => 40,
             _ => 0
         };
         
@@ -138,27 +143,17 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
 
         if (existingMark is not null)
         {
-            switch (legendMarkCount)
+            existingMark.Text = legendMarkCount switch
             {
-                case > 2900 when !existingMark.Text.Contains(RANK_SEVEN_TITLE):
-                    existingMark.Text = RANK_SEVEN_TITLE;
-                    break;
-                case > 2200 when !existingMark.Text.Contains(RANK_SIX_TITLE):
-                    existingMark.Text = RANK_SIX_TITLE;
-                    break;
-                case > 1500 when !existingMark.Text.Contains(RANK_FIVE_TITLE):
-                    existingMark.Text = RANK_FIVE_TITLE;
-                    break;
-                case > 1000 when !existingMark.Text.Contains(RANK_FOUR_TITLE):
-                    existingMark.Text = RANK_FOUR_TITLE;
-                    break;
-                case > 500 when !existingMark.Text.Contains(RANK_THREE_TITLE):
-                    existingMark.Text = RANK_THREE_TITLE;
-                    break;
-                case > 100 when !existingMark.Text.Contains(RANK_TWO_TITLE):
-                    existingMark.Text = RANK_TWO_TITLE;
-                    break;
-            }
+                > 1500 when !existingMark.Text.Contains(RANK_EIGHT_TITLE) => RANK_EIGHT_TITLE,
+                > 1000 when !existingMark.Text.Contains(RANK_SEVEN_TITLE) => RANK_SEVEN_TITLE,
+                > 500 when !existingMark.Text.Contains(RANK_SIX_TITLE)    => RANK_SIX_TITLE,
+                > 300 when !existingMark.Text.Contains(RANK_FIVE_TITLE)   => RANK_FIVE_TITLE,
+                > 150 when !existingMark.Text.Contains(RANK_FOUR_TITLE)   => RANK_FOUR_TITLE,
+                > 75 when !existingMark.Text.Contains(RANK_THREE_TITLE)   => RANK_THREE_TITLE,
+                > 25 when !existingMark.Text.Contains(RANK_TWO_TITLE)     => RANK_TWO_TITLE,
+                _                                                         => existingMark.Text
+            };
 
             existingMark.Count++;
         }
@@ -229,8 +224,6 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
         if (Subject.Items.Count == 0)
         {
             Subject.Reply(source, "You do not have any recipes learned.","weaponsmithing_initial");
-
-            return;
         }
     }
 
@@ -378,12 +371,20 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
                     var recipeStatus = GetStatusAsInt(recipe.Rank);
                     var playerRank = GetRankAsInt(existingMark.Text);
 
-                    if (playerRank > recipeStatus)
+                    if (playerRank >= 2)
                     {
-                        source.SendOrangeBarMessage("You can no longer gain experience from this recipe.");
+                        if ((playerRank - 1) > (recipeStatus))
+                        {
+                            source.SendOrangeBarMessage("You can no longer gain experience from this recipe.");
+                        }
                     }
 
-                    if (playerRank <= recipeStatus)
+                    if (playerRank <= (recipeStatus + 1))
+                    {
+                        UpdateLegendmark(source, legendMarkCount);
+                    }
+
+                    if (playerRank == recipeStatus)
                     {
                         UpdateLegendmark(source, legendMarkCount);
                     }
@@ -399,9 +400,9 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
             {
                 var newCraft = roll switch
                 {
-                    < 10  => ItemFactory.Create("grand" + recipe.TemplateKey),
-                    < 40 => ItemFactory.Create("great" + recipe.TemplateKey),
-                    <= 100 => ItemFactory.Create("good" + recipe.TemplateKey),
+                    < 10   => ItemFactory.Create("grand" + recipe.TemplateKey),
+                    < 40   => ItemFactory.Create("great" + recipe.TemplateKey),
+                    <= 100 => ItemFactory.Create("good" + recipe.TemplateKey)
                 };
 
                 if (!source.Inventory.TryAddToNextSlot(newCraft))
