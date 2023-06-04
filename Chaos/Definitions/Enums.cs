@@ -77,22 +77,22 @@ public enum VisibilityType
     GmHidden
 }
 
-public enum ProfessionCount
+public enum Craft
 {
-    None,
-    One = 1,
-    Two = 2
+    None = 0,
+    Armorsmithing = 1,
+    Enchanting = 2,
+    Alchemy = 3,
+    Weaponsmithing = 4,
+    Jewelcrafting = 5
 }
 
-public enum Professions
+[Flags]
+public enum Hobbies
 {
-    None,
+    None = 0,
     Fishing = 1,
-    Tailoring = 2,
-    Cooking = 3,
-    Enchanting = 4,
-    Alchemy = 5,
-    Blacksmithing = 6
+    Cooking = 1 << 2,
 }
 
 public enum Religion
@@ -211,6 +211,7 @@ public enum CryptSlayerStage
     Completed = 14
 }
 
+#region Mythic Quests
 public enum MythicQuestMain
 {
     None = 0,
@@ -368,6 +369,7 @@ public enum MythicGrimlock
     BossStarted = 9,
     BossDefeated = 10,
 }
+#endregion
 
 public enum WolfProblemStage
 {

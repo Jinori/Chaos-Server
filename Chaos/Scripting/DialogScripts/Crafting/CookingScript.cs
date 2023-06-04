@@ -96,6 +96,13 @@ public class CookingScript : ConfigurableDialogScriptBase
                     var item = ItemFactory.CreateFaux("sweetbuns");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
+                
+                if (Subject.Items.Count == 0)
+                {
+                    Subject.Reply(source, "You do not have any recipes learned.","Close");
+
+                    return;
+                }
                 #endregion
             }
                 break;

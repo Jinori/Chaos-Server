@@ -3,7 +3,6 @@ using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
-using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts;
 
@@ -207,6 +206,10 @@ public class RecipeItemScript : ItemScriptBase
         source.Trackers.Flags.AddFlag(CraftedArmors.Refinedcotte);
         source.Trackers.Flags.AddFlag(CraftedArmors.Refinedmagiskirt);
         source.Trackers.Flags.AddFlag(CraftedArmors.Refinedgorgetgown);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refineddobok);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedleathertunic);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedearthbodice);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedleatherbliaut);
 
         return;
     }
@@ -216,7 +219,157 @@ public class RecipeItemScript : ItemScriptBase
     return;
 }
 
-case "recipe_apprenticearmors":
+                #region All Recipes
+            case "recipe_allcrafts":
+            {
+                source.Trackers.Flags.AddFlag(CookingRecipes.dinnerplate);
+                source.Trackers.Flags.AddFlag(CookingRecipes.fruitbasket);
+                source.Trackers.Flags.AddFlag(CookingRecipes.lobsterdinner);
+                source.Trackers.Flags.AddFlag(CookingRecipes.sandwich);
+                source.Trackers.Flags.AddFlag(CookingRecipes.pie);
+                source.Trackers.Flags.AddFlag(CookingRecipes.salad);
+                source.Trackers.Flags.AddFlag(CookingRecipes.soup);
+                source.Trackers.Flags.AddFlag(CookingRecipes.steakmeal);
+                source.Trackers.Flags.AddFlag(CookingRecipes.sweetbuns);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refineddwarvishleather);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedjourneyman);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedgaluchatcoat);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedbrigandine);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedbenusta);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedmysticgown);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedlotusbodice);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedcuirass);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedculotte);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedlorica);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedpaluten);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedlorum);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedmantle);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedcorsette);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedstoller);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedelle);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedmoonbodice);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedkasmaniumhauberk);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedearthgarb);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedkasmaniumarmor);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedkeaton);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedmane);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedhierophant);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedpebblerose);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedclymouth);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refineddolman);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedlightninggarb);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedphoenixmail);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedwindgarb);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedipletmail);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedkagum);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedclamyth);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedbansagart);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedbardocle);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedduinuasal);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refineddalmatica);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedseagarb);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedhybrasylarmor);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedmountaingarb);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedhybrasylplate);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedscoutleather);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedgardcorp);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedcowl);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedcotte);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedmagiskirt);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedgorgetgown);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refineddobok);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedleathertunic);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedearthbodice);
+                source.Trackers.Flags.AddFlag(CraftedArmors.Refinedleatherbliaut);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Leathersapphiregauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Leatherrubygauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Leatheremeraldgauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Leatherheartstonegauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Ironemeraldgauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Ironrubygauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Ironheartstonegauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Ironsapphiregauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Mythrilemeraldgauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Mythrilrubygauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Mythrilheartstonegauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Mythrilsapphiregauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Hybrasylemeraldgauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Hybrasylrubygauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Hybrasylheartstonegauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Hybrasylsapphiregauntlet);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jeweledseabelt);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jeweledearthbelt);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jeweledwindbelt);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jeweledfirebelt);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jeweledmetalbelt);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jewelednaturebelt);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jeweleddarkbelt);
+                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.Jeweledlightbelt);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Eppe);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Saber);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Snowdagger);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Centerdagger);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Dullclaw);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Woodenshield);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Claidheamh);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Broadsword);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Battlesword);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Masquerade);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Bramble);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Longsword);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Claidhmore);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Emeraldsword);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Gladius);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Kindjal);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Dragonslayer);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Hatchet);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Harpoon);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Scimitar);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Club);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Spikedclub);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Chainmace);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Handaxe);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Cutlass);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Talgoniteaxe);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Hybrasylaxe);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Magusares);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Holyhermes);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Maguszeus);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Holykronos);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Magusdiana);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Holydiana);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Stonecross);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Oakstaff);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Staffofwisdom);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Blossomdagger);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Curveddagger);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Moondagger);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Lightdagger);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Sundagger);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Lotusdagger);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Blooddagger);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Nagetierdagger);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Wolfclaw);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Eagletalon);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Phoenixclaw);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Nunchaku);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Leathershield);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Bronzeshield);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Ironshield);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Gravelshield);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Lightshield);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Mythrilshield);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Hybrasylshield);
+                
+                source.Animate(ani);
+                source.SendOrangeBarMessage($"You've learned all recipes.");
+                source.Inventory.RemoveQuantity("recipe_allcrafts", 1);
+
+                return;
+            }
+                
+            #endregion
+            case "recipe_apprenticearmors":
 {
     if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.Apprenticearmors))
     {
@@ -233,6 +386,10 @@ case "recipe_apprenticearmors":
         source.Trackers.Flags.AddFlag(CraftedArmors.Refinedbrigandine);
         source.Trackers.Flags.AddFlag(CraftedArmors.Refinedbenusta);
         source.Trackers.Flags.AddFlag(CraftedArmors.Refinedmysticgown);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedlotusbodice);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedcuirass);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedculotte);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedlorica);
 
         return;
     }
@@ -258,6 +415,10 @@ case "recipe_journeymanarmors":
         source.Trackers.Flags.AddFlag(CraftedArmors.Refinedcorsette);
         source.Trackers.Flags.AddFlag(CraftedArmors.Refinedstoller);
         source.Trackers.Flags.AddFlag(CraftedArmors.Refinedelle);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedmoonbodice);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedkasmaniumhauberk);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedearthgarb);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedkasmaniumarmor);
 
         return;
     }
@@ -283,6 +444,11 @@ case "recipe_adeptarmors":
         source.Trackers.Flags.AddFlag(CraftedArmors.Refinedpebblerose);
         source.Trackers.Flags.AddFlag(CraftedArmors.Refinedclymouth);
         source.Trackers.Flags.AddFlag(CraftedArmors.Refineddolman);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedlightninggarb);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedphoenixmail);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedwindgarb);
+        source.Trackers.Flags.AddFlag(CraftedArmors.Refinedipletmail);
+        
 
         return;
     }
@@ -308,6 +474,10 @@ case "recipe_adeptarmors":
                     source.Trackers.Flags.AddFlag(CraftedArmors.Refinedbardocle);
                     source.Trackers.Flags.AddFlag(CraftedArmors.Refinedduinuasal);
                     source.Trackers.Flags.AddFlag(CraftedArmors.Refineddalmatica);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.Refinedseagarb);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.Refinedhybrasylarmor);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.Refinedmountaingarb);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.Refinedhybrasylplate);
 
                     return;
                 }

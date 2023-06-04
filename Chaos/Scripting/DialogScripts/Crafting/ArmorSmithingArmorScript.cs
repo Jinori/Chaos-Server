@@ -23,13 +23,14 @@ public class ArmorSmithingArmorScript : DialogScriptBase
     private const double BASE_SUCCESS_RATE = 60;
     private const double SUCCESSRATEMAX = 95;
     //Ranks from lowest to highest
-    private const string RANK_ONE_TITLE = "Novice Armorsmithing";
-    private const string RANK_TWO_TITLE = "Apprentice Armorsmithing";
-    private const string RANK_THREE_TITLE = "Journeyman Armorsmithing";
-    private const string RANK_FOUR_TITLE = "Adept Armorsmithing";
-    private const string RANK_FIVE_TITLE = "Advanced Armorsmithing";
-    private const string RANK_SIX_TITLE = "Expert Armorsmithing";
-    private const string RANK_SEVEN_TITLE = "Master Armorsmithing";
+    private const string RANK_ONE_TITLE = "Beginner Armorsmith";
+    private const string RANK_TWO_TITLE = "Novice Armorsmith";
+    private const string RANK_THREE_TITLE = "Apprentice Armorsmith";
+    private const string RANK_FOUR_TITLE = "Journeyman Armorsmith";
+    private const string RANK_FIVE_TITLE = "Adept Armorsmith";
+    private const string RANK_SIX_TITLE = "Advanced Armorsmith";
+    private const string RANK_SEVEN_TITLE = "Expert Armorsmith";
+    private const string RANK_EIGHT_TITLE = "Master Armorsmith";
     //Set this to true if doing armorsmithing type crafting
     private readonly bool Craftgoodgreatgrand = false;
 
@@ -49,6 +50,7 @@ public class ArmorSmithingArmorScript : DialogScriptBase
     {
         var rankMappings = new Dictionary<string, int>
         {
+            { RANK_EIGHT_TITLE, 8 },
             { RANK_SEVEN_TITLE, 7 },
             { RANK_SIX_TITLE, 6 },
             { RANK_FIVE_TITLE, 5 },
@@ -69,13 +71,14 @@ public class ArmorSmithingArmorScript : DialogScriptBase
     {
         var statusMappings = new Dictionary<string, int>
         {
-            { "Basic", 1 },
-            { "Apprentice", 2 },
-            { "Journeyman", 3 },
-            { "Adept", 4 },
-            { "Advanced", 5 },
-            { "Expert", 6 },
-            { "Master", 7 }
+            { "Beginner", 1 },
+            { "Basic", 2 },
+            { "Apprentice", 3 },
+            { "Journeyman", 4 },
+            { "Adept", 5 },
+            { "Advanced", 6 },
+            { "Expert", 7 },
+            { "Master", 8 }
         };
 
         if (statusMappings.TryGetValue(status, out var i))
@@ -87,13 +90,14 @@ public class ArmorSmithingArmorScript : DialogScriptBase
     private double GetMultiplier(int totalTimesCrafted) =>
         totalTimesCrafted switch
         {
-            <= 100  => 1.0,
-            <= 500  => 1.05,
-            <= 1000 => 1.1,
-            <= 1500 => 1.15,
-            <= 2200 => 1.2,
-            <= 2900 => 1.25,
-            _       => 1.3
+            <= 25   => 1.0,
+            <= 75   => 1.05,
+            <= 150  => 1.1,
+            <= 300  => 1.15,
+            <= 500  => 1.2,
+            <= 1000 => 1.25,
+            <= 1500 => 1.3,
+            _       => 1.35
         };
 
     // Calculates the success rate of crafting an item
@@ -108,6 +112,7 @@ public class ArmorSmithingArmorScript : DialogScriptBase
             5 => 25,
             6 => 30,
             7 => 35,
+            8 => 40,
             _ => 0
         };
         
@@ -140,22 +145,25 @@ public class ArmorSmithingArmorScript : DialogScriptBase
         {
             switch (legendMarkCount)
             {
-                case > 2900 when !existingMark.Text.Contains(RANK_SEVEN_TITLE):
+                case > 1500 when !existingMark.Text.Contains(RANK_EIGHT_TITLE):
+                    existingMark.Text = RANK_EIGHT_TITLE;
+                    break;
+                case > 1000 when !existingMark.Text.Contains(RANK_SEVEN_TITLE):
                     existingMark.Text = RANK_SEVEN_TITLE;
                     break;
-                case > 2200 when !existingMark.Text.Contains(RANK_SIX_TITLE):
+                case > 500 when !existingMark.Text.Contains(RANK_SIX_TITLE):
                     existingMark.Text = RANK_SIX_TITLE;
                     break;
-                case > 1500 when !existingMark.Text.Contains(RANK_FIVE_TITLE):
+                case > 300 when !existingMark.Text.Contains(RANK_FIVE_TITLE):
                     existingMark.Text = RANK_FIVE_TITLE;
                     break;
-                case > 1000 when !existingMark.Text.Contains(RANK_FOUR_TITLE):
+                case > 150 when !existingMark.Text.Contains(RANK_FOUR_TITLE):
                     existingMark.Text = RANK_FOUR_TITLE;
                     break;
-                case > 500 when !existingMark.Text.Contains(RANK_THREE_TITLE):
+                case > 75 when !existingMark.Text.Contains(RANK_THREE_TITLE):
                     existingMark.Text = RANK_THREE_TITLE;
                     break;
-                case > 100 when !existingMark.Text.Contains(RANK_TWO_TITLE):
+                case > 25 when !existingMark.Text.Contains(RANK_TWO_TITLE):
                     existingMark.Text = RANK_TWO_TITLE;
                     break;
             }
@@ -217,6 +225,12 @@ public class ArmorSmithingArmorScript : DialogScriptBase
                 }
             }
         }
+        if (Subject.Items.Count == 0)
+        {
+            Subject.Reply(source, "You do not have any recipes learned.","armorsmithing_initial");
+
+            return;
+        }
     }
 
     //Show the players a dialog asking if they want to use the ingredients, yes or no
@@ -243,7 +257,7 @@ public class ArmorSmithingArmorScript : DialogScriptBase
         {
             // If the player doesn't meet the requirement, close the menu and display an error message
             Subject.Close(source);
-            source.SendOrangeBarMessage($"You are not the required Level of {recipe.Level} for this recipe.");
+            source.SendOrangeBarMessage($"Level: {recipe.Level} required to craft or upgrade.");
             return;
         }
 
@@ -260,7 +274,7 @@ public class ArmorSmithingArmorScript : DialogScriptBase
                 {
                     Subject.Close(source);
                     source.SendOrangeBarMessage(
-                        $"You do not have the crafting rank of {recipe.Rank} required for this recipe.");
+                        $"Crafting rank: {recipe.Rank} required.");
 
                     return;
                 }
@@ -363,12 +377,20 @@ public class ArmorSmithingArmorScript : DialogScriptBase
                     var recipeStatus = GetStatusAsInt(recipe.Rank);
                     var playerRank = GetRankAsInt(existingMark.Text);
 
-                    if (playerRank > recipeStatus)
+                    if (playerRank >= 2)
                     {
-                        source.SendOrangeBarMessage("You can no longer gain experience from this recipe.");
+                        if ((playerRank - 1) > (recipeStatus))
+                        {
+                            source.SendOrangeBarMessage("You can no longer gain experience from this recipe.");
+                        }
                     }
 
-                    if (playerRank <= recipeStatus)
+                    if (playerRank <= (recipeStatus + 1))
+                    {
+                        UpdateLegendmark(source, legendMarkCount);
+                    }
+
+                    if (playerRank == recipeStatus)
                     {
                         UpdateLegendmark(source, legendMarkCount);
                     }

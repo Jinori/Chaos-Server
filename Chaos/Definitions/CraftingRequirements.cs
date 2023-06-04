@@ -2551,7 +2551,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
-                Rank = "basic",
+                Rank = "Basic",
                 Level = 11,
                 Difficulty = 1
             }
@@ -2567,7 +2567,7 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
             new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
         },
-        Rank = "basic",
+        Rank = "Basic",
         Level = 11,
         Difficulty = 1
     }
@@ -2583,7 +2583,7 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
             new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
         },
-        Rank = "basic",
+        Rank = "Basic",
         Level = 11,
         Difficulty = 1
     }
@@ -2599,7 +2599,7 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
             new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
         },
-        Rank = "basic",
+        Rank = "Basic",
         Level = 11,
         Difficulty = 1
     }
@@ -2705,7 +2705,7 @@ public static class CraftingRequirements
     new Recipe()
     {
         Name = "Mythril Emerald Gauntlet",
-        TemplateKey = "mythriltegauntlet",
+        TemplateKey = "mythrilemeraldgauntlet",
         Ingredients = new List<Ingredient>()
         {
             new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
@@ -2849,7 +2849,7 @@ public static class CraftingRequirements
     new Recipe()
     {
         Name = "Jeweled Earth Belt",
-        TemplateKey = "jewelearthbelt",
+        TemplateKey = "jeweledearthbelt",
         Ingredients = new List<Ingredient>()
         {
             new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
@@ -2924,9 +2924,7 @@ public static class CraftingRequirements
         Difficulty = 3
     }
 }
+        };
 
-
-    };
-
-    #endregion
+        #endregion
 }

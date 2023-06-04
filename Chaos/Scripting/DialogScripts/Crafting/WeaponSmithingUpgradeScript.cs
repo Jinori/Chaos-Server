@@ -226,6 +226,12 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
                 }
             }
         }
+        if (Subject.Items.Count == 0)
+        {
+            Subject.Reply(source, "You do not have any recipes learned.","weaponsmithing_initial");
+
+            return;
+        }
     }
 
     //Show the players a dialog asking if they want to use the ingredients, yes or no
@@ -252,7 +258,7 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
         {
             // If the player doesn't meet the requirement, close the menu and display an error message
             Subject.Close(source);
-            source.SendOrangeBarMessage($"You are not the required Level of {recipe.Level} for this recipe.");
+            source.SendOrangeBarMessage($"Level: {recipe.Level} required to craft or upgrade.");
             return;
         }
 
