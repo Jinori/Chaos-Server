@@ -37,7 +37,7 @@ public class AdminTrinketScript : DialogScriptBase
         SimpleCache = simpleCache;
     }
 
-    const string BotToken = @"";
+    const string BOT_TOKEN = @"";
     readonly ulong _channelId = 1089331247999885372;
 
     private void ReportActivity(Aisling source, Aisling target, string command)
@@ -46,7 +46,7 @@ public class AdminTrinketScript : DialogScriptBase
             async () =>
             {
                 var client = new DiscordSocketClient();
-                await client.LoginAsync(TokenType.Bot, BotToken);
+                await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
                 await client.StartAsync();
                 var channel = await client.GetChannelAsync(_channelId) as IMessageChannel;
 
@@ -121,7 +121,7 @@ public class AdminTrinketScript : DialogScriptBase
 
                 var player = _clientRegistry
                              .Select(c => c.Aisling)
-                             .Where(a => true);
+                             .Where(_ => true);
 
                 foreach (var aisling in player)
                 {
@@ -144,7 +144,7 @@ public class AdminTrinketScript : DialogScriptBase
 
                 var player = _clientRegistry
                              .Select(c => c.Aisling)
-                             .Where(a => a != null)
+                             .Where(a => true)
                              .FirstOrDefault(a => a.Name.EqualsI(playerName));
 
                 if (player == null)

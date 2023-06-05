@@ -1,5 +1,10 @@
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Schemas.Aisling;
+using Chaos.Scripting.Abstractions;
+using Chaos.Scripting.ItemScripts.Enchantments;
+using Chaos.TypeMapper;
+using Chaos.TypeMapper.Abstractions;
 
 namespace Chaos.Definitions;
 
@@ -15,7 +20,7 @@ public static class CraftingRequirements
         public int Level { get; set; } 
         public int Difficulty { get; set; }
 
-        public Action<Item>? Modification { get; set; }
+        public Func<ITypeMapper, Item, Item>? Modification { get; set; }
     }
 
     public sealed class Ingredient
@@ -41,19 +46,12 @@ public static class CraftingRequirements
                 Rank = "Beginner",
                 Level = 1,
                 Difficulty = 1,
-                Modification = item =>
+                Modification = ((mapper, item) =>
                 {
-                    var attributes = new Attributes()
-                    {
-                        Int = 1
-                    };
-
-                    item.DisplayName += " of Miraelis";
-                    if (item.Modifiers is null)
-                        item.Modifiers = attributes;
-                    else
-                        item.Modifiers.Add(attributes);
-                }
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MiraelisSuffixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+                    return mapper.Map<Item>(schema);
+                })
             }
         }
     };

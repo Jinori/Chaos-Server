@@ -2,6 +2,7 @@ using System.Configuration;
 using System.Net;
 using System.Net.Sockets;
 using Chaos.Common.Abstractions;
+using Chaos.Extensions.Common;
 using Chaos.MetaData;
 using Chaos.MetaData.ItemMetadata;
 using Chaos.Networking.Abstractions;
@@ -65,6 +66,15 @@ public sealed class OptionsConfigurer : IPostConfigureOptions<IConnectionInfo>,
         // ReSharper disable once ArrangeMethodOrOperatorBody
         options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(MagicPrefixScript.Mutate));
         //add more mutators here
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(ScrollVariant));
+    }
+
+    private IEnumerable<ItemMetaNode> ScrollVariant(ItemMetaNode node)
+    {
+        if (!node.Name.EqualsI("Beginner Scroll"))
+            yield break;
+        
+        yield return node with { Name = "Miraelis Embrace" };
     }
 
     /// <inheritdoc />

@@ -63,4 +63,7 @@
     <ItemGroup>
         <EmbeddedResource Include="Resources\sotp.dat" />
     </ItemGroup>
+    <ItemGroup>
+      <Reference Include="Microsoft.Extensions.Logging.Configuration" />
+    </ItemGroup>
 </Project>

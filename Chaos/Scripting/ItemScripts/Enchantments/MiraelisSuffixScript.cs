@@ -6,18 +6,20 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class MagicPrefixScript : ItemScriptBase, IEnchantmentScript
+public class MiraelisSuffixScript : ItemScriptBase, IEnchantmentScript
 {
+    private const string SUFFIX = " of Miraelis";
     /// <inheritdoc />
-    public MagicPrefixScript(Item subject)
+    public MiraelisSuffixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Magic"))
-            subject.DisplayName = $"Magic {subject.DisplayName}";
+        
+        if (!subject.DisplayName.EndsWithI(SUFFIX))
+            subject.DisplayName = $"{subject.DisplayName}{SUFFIX}";
 
         var attributes = new Attributes
         {
-            MaximumMp = 50
+            Int = 1
         };
 
         subject.Modifiers.Add(attributes);
@@ -26,7 +28,7 @@ public class MagicPrefixScript : ItemScriptBase, IEnchantmentScript
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node)
     {
-        if (!node.Name.StartsWithI("Magic"))
-            yield return node with { Name = $"Magic {node.Name}" };
+        if (!node.Name.EndsWithI(SUFFIX))
+            yield return node with { Name = $"{node.Name}{SUFFIX}" };
     }
 }

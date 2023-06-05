@@ -8,6 +8,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
+using Chaos.TypeMapper.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Crafting;
 
@@ -15,6 +16,7 @@ public class EnchantingScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
     private readonly IDialogFactory DialogFactory;
+    private readonly ITypeMapper Mapper;
 
     //Constants to change based on crafting profession
     private const string ITEM_COUNTER_PREFIX = "[Enchant]";
@@ -196,11 +198,14 @@ public class EnchantingScript : DialogScriptBase
     }
 
     /// <inheritdoc />
-    public EnchantingScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
+    public EnchantingScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory,
+        ITypeMapper mapper
+    )
         : base(subject)
     {
         ItemFactory = itemFactory;
         DialogFactory = dialogFactory;
+        Mapper = mapper;
     }
 
     /// <inheritdoc />
@@ -423,9 +428,13 @@ public class EnchantingScript : DialogScriptBase
                 UpdateLegendmark(source, legendMarkCount);
             }
         }
-        
-        if (recipe.Modification is not null) 
-            source.Inventory.Update(item.Slot, recipe.Modification);
+
+        if (recipe.Modification is not null)
+        {
+            source.Inventory.Remove(item.Slot);
+            var enchanted = recipe.Modification(Mapper, item);
+            source.Inventory.TryAddDirect(item.Slot, enchanted);
+        }
         
         Subject.InjectTextParameters(recipe.Name);
 
