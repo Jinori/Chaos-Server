@@ -23,82 +23,84 @@ public class MonkFormDedicationScript : DialogScriptBase
             return;
         }
 
-        if (monkForm)
+        switch (monkForm)
         {
-            Subject.Reply(source, "You have already dedicated yourself to a elemental path, Aisling.");
-            return;
+            case true:
+                Subject.Reply(source, "You have already dedicated yourself to a elemental path, Aisling.");
+                return;
+            case false:
+                switch (Subject.Template.TemplateKey.ToLower())
+                {
+                    case "fei_chosefire":
+                    {
+                        source.Trackers.Enums.Set(MonkElementForm.Fire);
+                        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Fire!");
+
+                        source.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Fire Elemental Dedication",
+                                "fireMonk",
+                                MarkIcon.Monk,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                    }
+
+                        break;
+
+                    case "fei_chosewater":
+                    {
+                        source.Trackers.Enums.Set(MonkElementForm.Water);
+                        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Water!");
+
+                        source.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Water Elemental Dedication",
+                                "waterMonk",
+                                MarkIcon.Monk,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                    }
+
+                        break;
+
+                    case "fei_choseearth":
+                    {
+                        source.Trackers.Enums.Set(MonkElementForm.Earth);
+                        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Earth!");
+
+                        source.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Earth Elemental Dedication",
+                                "earthMonk",
+                                MarkIcon.Monk,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                    }
+
+                        break;
+
+                    case "fei_choseair":
+                    {
+                        source.Trackers.Enums.Set(MonkElementForm.Air);
+                        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Air!");
+
+                        source.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Air Elemental Dedication",
+                                "airMonk",
+                                MarkIcon.Monk,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                    }
+
+                        break;
+                }
+
+                break;
         }
-
-        if (!monkForm)
-            switch (Subject.Template.TemplateKey.ToLower())
-            {
-                case "fei_chosefire":
-                {
-                    source.Trackers.Enums.Set(MonkElementForm.Fire);
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Fire!");
-
-                    source.Legend.AddOrAccumulate(
-                        new LegendMark(
-                            "Fire Elemental Dedication",
-                            "fireMonk",
-                            MarkIcon.Monk,
-                            MarkColor.Blue,
-                            1,
-                            GameTime.Now));
-                }
-
-                    break;
-
-                case "fei_chosewater":
-                {
-                    source.Trackers.Enums.Set(MonkElementForm.Water);
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Water!");
-
-                    source.Legend.AddOrAccumulate(
-                        new LegendMark(
-                            "Water Elemental Dedication",
-                            "waterMonk",
-                            MarkIcon.Monk,
-                            MarkColor.Blue,
-                            1,
-                            GameTime.Now));
-                }
-
-                    break;
-
-                case "fei_choseearth":
-                {
-                    source.Trackers.Enums.Set(MonkElementForm.Earth);
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Earth!");
-
-                    source.Legend.AddOrAccumulate(
-                        new LegendMark(
-                            "Earth Elemental Dedication",
-                            "earthMonk",
-                            MarkIcon.Monk,
-                            MarkColor.Blue,
-                            1,
-                            GameTime.Now));
-                }
-
-                    break;
-
-                case "fei_choseair":
-                {
-                    source.Trackers.Enums.Set(MonkElementForm.Air);
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Air!");
-
-                    source.Legend.AddOrAccumulate(
-                        new LegendMark(
-                            "Air Elemental Dedication",
-                            "airMonk",
-                            MarkIcon.Monk,
-                            MarkColor.Blue,
-                            1,
-                            GameTime.Now));
-                }
-
-                    break;
-            }
     }
 }

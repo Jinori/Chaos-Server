@@ -7,110 +7,140 @@ using Chaos.Networking.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Time;
 
-namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
-
-public class ClassDedicationScript : DialogScriptBase
+namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing
 {
-    private readonly IClientRegistry<IWorldClient> ClientRegistry;
-    
-    public ClassDedicationScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry) : base(subject) => ClientRegistry = clientRegistry;
-
-    private void SetUserToLevel1Stats(Aisling source, BaseClass baseClass)
+    public class ClassDedicationScript : DialogScriptBase
     {
-        source.Inventory.RemoveQuantity("ard ioc deum", 10);
-        source.UserStatSheet.SetLevel(1);
-        source.UserStatSheet.SubtractTotalExp(source.UserStatSheet.TotalExp);
-        if (source.UserStatSheet.ToNextLevel >= 1)
-            source.UserStatSheet.SubtractTnl(source.UserStatSheet.ToNextLevel);
-        source.UserStatSheet.AddTnl(599);
-        source.UserStatSheet.Str = 1;
-        source.UserStatSheet.Int = 1;
-        source.UserStatSheet.Wis = 1;
-        source.UserStatSheet.Con = 1;
-        source.UserStatSheet.Dex = 1;
-        source.UserStatSheet.SetMaxWeight(51);
-        source.UserStatSheet.SetBaseClass(baseClass);
-        var statBuyCost = new Attributes
+        private readonly IClientRegistry<IWorldClient> ClientRegistry;
+
+        private const int REQUIRED_EXPERIENCE = 60000000;
+
+        private readonly Dictionary<BaseClass, (int requiredHealth, int requiredMana)> BaseClassRequirements = new Dictionary<BaseClass, (int, int)>
         {
-            MaximumHp = source.UserStatSheet.MaximumHp - 100,
-            MaximumMp = source.UserStatSheet.MaximumMp - 100
+            { BaseClass.Monk, (8400, 3600) },
+            { BaseClass.Warrior, (8400, 2000) },
+            { BaseClass.Rogue, (6600, 3600) },
+            { BaseClass.Wizard, (6000, 6600) },
+            { BaseClass.Priest, (6600, 7250) },
         };
-        source.UserStatSheet.Subtract(statBuyCost);
-        source.Client.SendAttributes(StatUpdateType.Full);
-        source.Refresh(true);
 
-        var player = ClientRegistry
-            .Select(c => c.Aisling);
+        private readonly Dictionary<string, BaseClass> ClassNameMappings = new Dictionary<string, BaseClass>
+        {
+            { "aoife_selectwizard", BaseClass.Wizard },
+            { "aoife_selectwarrior", BaseClass.Warrior },
+            { "aoife_selectrogue", BaseClass.Rogue },
+            { "aoife_selectpriest", BaseClass.Priest },
+            { "aoife_selectmonk", BaseClass.Monk }
+        };
 
-        foreach (var aisling in player)
+        public ClassDedicationScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry) : base(subject) => ClientRegistry = clientRegistry;
+
+        private void SetUserToLevel1Stats(Aisling source, BaseClass baseClass)
         {
-            aisling.SendOrangeBarMessage($"{source.Name} has dedicated to the path of {baseClass.ToString()}.");
-        }
-    }
-    
-    public override void OnDisplaying(Aisling source)
-    {
-        switch (Subject.Template.TemplateKey.ToLower())
-        {
-            case "aoife_confirmrequirements":
+            source.Inventory.RemoveQuantity("ard ioc deum", 10);
+            source.UserStatSheet.SetLevel(1);
+            source.UserStatSheet.SubtractTotalExp(source.UserStatSheet.TotalExp);
+
+            if (source.UserStatSheet.ToNextLevel >= 1)
+                source.UserStatSheet.SubtractTnl(source.UserStatSheet.ToNextLevel);
+
+            source.UserStatSheet.AddTnl(599);
+            source.UserStatSheet.Str = 1;
+            source.UserStatSheet.Int = 1;
+            source.UserStatSheet.Wis = 1;
+            source.UserStatSheet.Con = 1;
+            source.UserStatSheet.Dex = 1;
+            source.UserStatSheet.SetMaxWeight(51);
+            source.UserStatSheet.SetBaseClass(baseClass);
+
+            var statBuyCost = new Attributes
             {
-                string builtReply;
+                MaximumHp = source.UserStatSheet.MaximumHp - 100,
+                MaximumMp = source.UserStatSheet.MaximumMp - 100
+            };
+
+            source.UserStatSheet.Subtract(statBuyCost);
+            source.Client.SendAttributes(StatUpdateType.Full);
+            source.Refresh(true);
+
+            var player = ClientRegistry
+                .Select(c => c.Aisling);
+
+            foreach (var aisling in player)
+            {
+                aisling.SendOrangeBarMessage($"{source.Name} has dedicated to the path of {baseClass.ToString()}.");
+            }
+        }
+
+        private void DedicateUserToClass(Aisling source, BaseClass baseClass, string templateKey)
+        {
+            if (templateKey.ToLower() == Subject.Template.TemplateKey.ToLower())
+            {
+                SetUserToLevel1Stats(source, baseClass);
+                source.Legend.AddUnique(new LegendMark($"Dedicated to {baseClass.ToString()}", "dedicated", GetMarkIcon(baseClass), MarkColor.Cyan, 1, GameTime.Now));
+            }
+        }
+
+        private MarkIcon GetMarkIcon(BaseClass baseClass) =>
+            baseClass switch
+            {
+                BaseClass.Wizard  => MarkIcon.Wizard,
+                BaseClass.Warrior => MarkIcon.Warrior,
+                BaseClass.Rogue   => MarkIcon.Rogue,
+                BaseClass.Priest  => MarkIcon.Priest,
+                BaseClass.Monk    => MarkIcon.Monk,
+                _                 => MarkIcon.Yay
+            };
+
+        public override void OnDisplaying(Aisling source)
+        {
+            var classConfirmRequirements = "aoife_confirmrequirements";
+            var classChooseNew = "aoife_choosenewclass";
+            var currentTemplateKey = Subject.Template.TemplateKey.ToLower();
+
+            if (currentTemplateKey == classConfirmRequirements)
+            {
                 if (source.Legend.ContainsKey("dedicated"))
                 {
                     Subject.Reply(source, "You have already dedicated yourself to a new path.");
                     Subject.PrevDialogKey = null;
                     Subject.NextDialogKey = null;
+
                     return;
                 }
+
                 if (source.UserStatSheet.Level != 99)
                 {
                     Subject.Reply(source, "You are not Level 99 and cannot dedicate your class.");
                     Subject.PrevDialogKey = null;
                     Subject.NextDialogKey = null;
+
                     return;
                 }
+
                 if (source.UserStatSheet.Master)
                 {
                     Subject.Reply(source, "You are already a Master of your class and cannot rededicate yourself.");
                     Subject.PrevDialogKey = null;
                     Subject.NextDialogKey = null;
+
                     return;
                 }
-                var requiredHealth = 0;
-                var requiredMana = 0;
 
-                switch (source.UserStatSheet.BaseClass)
-                {
-                    case BaseClass.Monk:
-                        requiredHealth = 8400;
-                        requiredMana = 3600;
-                        break;
-                    case BaseClass.Warrior:
-                        requiredHealth = 8400;
-                        requiredMana = 2000;
-                        break;
-                    case BaseClass.Rogue:
-                        requiredHealth = 6600;
-                        requiredMana = 3600;
-                        break;
-                    case BaseClass.Wizard:
-                        requiredHealth = 6000;
-                        requiredMana = 6600;
-                        break;
-                    case BaseClass.Priest:
-                        requiredHealth = 6600;
-                        requiredMana = 7250;
-                        break;
-                }
-                if (source.UserStatSheet.MaximumHp >= requiredHealth && source.UserStatSheet.MaximumMp >= requiredMana)
+                var requiredStats = BaseClassRequirements[source.UserStatSheet.BaseClass];
+
+                string builtReply;
+
+                if (source.UserStatSheet.MaximumHp >= requiredStats.requiredHealth && source.UserStatSheet.MaximumMp >= requiredStats.requiredMana)
                 {
                     builtReply = "You have enough vitality to continue.";
                 }
                 else
                 {
-                    Subject.Reply(source, $"You do not have the required {requiredHealth} health and {requiredMana} mana to continue.");
+                    Subject.Reply(source, $"You do not have the required {requiredStats.requiredHealth} health and {requiredStats.requiredMana} mana to continue.");
                     return;
                 }
+
                 if (source.Inventory.CountOf("ard ioc deum") >= 10)
                 {
                     builtReply += " Looks like you've also brought enough ard ioc deum";
@@ -121,7 +151,8 @@ public class ClassDedicationScript : DialogScriptBase
                     Subject.Reply(source, builtReply);
                     return;
                 }
-                if (source.UserStatSheet.TotalExp >= 60000000)
+
+                if (source.UserStatSheet.TotalExp >= REQUIRED_EXPERIENCE)
                 {
                     builtReply += " and you've hunted enough experience! Let's continue.";
                     Subject.Reply(source, builtReply, "aoife_chooseNewClass");
@@ -131,52 +162,19 @@ public class ClassDedicationScript : DialogScriptBase
                     builtReply += " but you do not have the required experience of 60 million.";
                     Subject.Reply(source, builtReply);
                 }
-                break;
             }
-
-            case "aoife_choosenewclass":
+            else if (currentTemplateKey == classChooseNew)
             {
                 if (Subject.GetOptionIndex(source.UserStatSheet.BaseClass.ToString()).HasValue)
                 {
                     var s = Subject.GetOptionIndex(source.UserStatSheet.BaseClass.ToString())!.Value;
                     Subject.Options.RemoveAt(s);
                 }
-                break;
             }
-            
-            case "aoife_selectwizard":
+
+            foreach (var mapping in ClassNameMappings)
             {
-                SetUserToLevel1Stats(source, BaseClass.Wizard);
-                source.Legend.AddUnique(new LegendMark("Dedicated to Wizard", "dedicated", MarkIcon.Wizard, MarkColor.Cyan, 1, GameTime.Now));
-                break;
-            }
-            
-            case "aoife_selectwarrior":
-            {
-                SetUserToLevel1Stats(source, BaseClass.Warrior);
-                source.Legend.AddUnique(new LegendMark("Dedicated to Warrior", "dedicated", MarkIcon.Warrior, MarkColor.Cyan, 1, GameTime.Now));
-                break;
-            }
-            
-            case "aoife_selectrogue":
-            {
-                SetUserToLevel1Stats(source, BaseClass.Rogue);
-                source.Legend.AddUnique(new LegendMark("Dedicated to Rogue", "dedicated", MarkIcon.Rogue, MarkColor.Cyan, 1, GameTime.Now));
-                break;
-            }
-            
-            case "aoife_selectpriest":
-            {
-                SetUserToLevel1Stats(source, BaseClass.Priest);
-                source.Legend.AddUnique(new LegendMark("Dedicated to Priest", "dedicated", MarkIcon.Priest, MarkColor.Cyan, 1, GameTime.Now));
-                break;
-            }
-            
-            case "aoife_selectmonk":
-            {
-                SetUserToLevel1Stats(source, BaseClass.Monk);
-                source.Legend.AddUnique(new LegendMark("Dedicated to Monk", "dedicated", MarkIcon.Monk, MarkColor.Cyan, 1, GameTime.Now));
-                break;
+                DedicateUserToClass(source, mapping.Value, mapping.Key);
             }
         }
     }

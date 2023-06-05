@@ -8,214 +8,83 @@ namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 
 public class StatBuyingScript : DialogScriptBase
 {
+    private readonly Dictionary<BaseClass, int> BaseClassHealthLimits = new Dictionary<BaseClass, int>
+    {
+        { BaseClass.Warrior, 4149 },
+        { BaseClass.Wizard, 3899 },
+        { BaseClass.Priest, 3649 },
+        { BaseClass.Monk, 6149 },
+        { BaseClass.Rogue, 4399 }
+    };
+
+    private readonly Dictionary<BaseClass, int> BaseClassOffset = new Dictionary<BaseClass, int>
+    {
+        { BaseClass.Warrior, 4000 },
+        { BaseClass.Wizard, 3750 },
+        { BaseClass.Priest, 3500 },
+        { BaseClass.Monk, 6000 },
+        { BaseClass.Rogue, 4250 }
+    };
+
+    private readonly Dictionary<byte, Action<Aisling, Attributes>> OptionActionMappings = new Dictionary<byte, Action<Aisling, Attributes>>
+    {
+        { 1, (source, cost) => IncreaseAttribute(source, "Strength", cost, attribute => attribute.Str++) },
+        { 2, (source, cost) => IncreaseAttribute(source, "Intelligence", cost, attribute => attribute.Int++) },
+        { 3, (source, cost) => IncreaseAttribute(source, "Wisdom", cost, attribute => attribute.Wis++) },
+        { 4, (source, cost) => IncreaseAttribute(source, "Constitution", cost, attribute => attribute.Con++) },
+        { 5, (source, cost) => IncreaseAttribute(source, "Dexterity", cost, attribute => attribute.Dex++) }
+    };
+
+    private static void IncreaseAttribute(Aisling source, string attribute, Attributes cost, Action<Attributes> update)
+    {
+        update(cost);
+        source.UserStatSheet.Add(cost);
+        source.SendOrangeBarMessage($"{attribute} increased by one to {cost}. 150 Health taken.");
+    }
 
     public StatBuyingScript(Dialog subject)
         : base(subject) { }
 
-    
-    
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
         if (optionIndex is null)
             return;
-        
+
         if (source.UserStatSheet.Level < 99)
         {
             source.SendOrangeBarMessage("You cannot buy stats until you are of the 99th level.");
             Subject.Close(source);
             return;
         }
-        
-        switch (source.UserStatSheet.BaseClass)
+
+        if (source.StatSheet.MaximumHp <= BaseClassHealthLimits[source.UserStatSheet.BaseClass])
         {
-            case BaseClass.Warrior:
-            {
-                if (source.StatSheet.MaximumHp <= 4149)
-                {
-                    source.SendOrangeBarMessage("Doing so would make you too feeble to stand. Return with more health.");
-                    Subject.Close(source);
-                    return;
-                }
-            }
-                break;
-            
-            case BaseClass.Wizard:
-            {
-                if (source.StatSheet.MaximumHp <= 3899)
-                {
-                    source.SendOrangeBarMessage("Doing so would make you too feeble to stand. Return with more health.");
-                    Subject.Close(source);
-                    return;
-                }
-            }
-                break;
-            
-            case BaseClass.Priest:
-            {
-                if (source.StatSheet.MaximumHp <= 3649)
-                {
-                    source.SendOrangeBarMessage("Doing so would make you too feeble to stand. Return with more health.");
-                    Subject.Close(source);
-                    return;
-                }
-            }
-                break;
-            
-            case BaseClass.Monk:
-            {
-                if (source.StatSheet.MaximumHp <= 6149)
-                {
-                    source.SendOrangeBarMessage("Doing so would make you too feeble to stand. Return with more health.");
-                    Subject.Close(source);
-                    return;
-                }
-            }
-                break;
-            
-            case BaseClass.Rogue:
-            {
-                if (source.StatSheet.MaximumHp <= 4399)
-                {
-                    source.SendOrangeBarMessage("Doing so would make you too feeble to stand. Return with more health.");
-                    Subject.Close(source);
-                    return;
-                }
-            }
-                break;
+            source.SendOrangeBarMessage("Doing so would make you too feeble to stand. Return with more health.");
+            Subject.Close(source);
+            return;
         }
 
-        var statBuyCost = new Attributes
-        {
-            MaximumHp = 150
-        };
-        
+        var statBuyCost = new Attributes { MaximumHp = 150 };
         source.StatSheet.Subtract(statBuyCost);
 
-        switch (optionIndex)
+        if (OptionActionMappings.TryGetValue(optionIndex.Value, out var action))
         {
-            case 1:
-            {
-                var str = new Attributes { Str = 1 };
-                source.UserStatSheet.Add(str);
-                source.SendOrangeBarMessage($"Strength increased by one to {source.UserStatSheet.Str}. 150 Health taken.");
-
-                break;
-            }
-            case 2:
-            {
-                var intel = new Attributes { Int = 1 };
-                source.UserStatSheet.Add(intel);
-                source.SendOrangeBarMessage($"Intelligence increased by one to {source.UserStatSheet.Int}. 150 Health taken.");
-
-                break;
-            }
-            case 3:
-            {
-                var wis = new Attributes { Wis = 1 };
-                source.UserStatSheet.Add(wis);
-                source.SendOrangeBarMessage($"Wisdom increased by one to {source.UserStatSheet.Wis}. 150 Health taken.");
-
-                break;
-            }
-            case 4:
-            {
-                var con = new Attributes { Con = 1 };
-                source.UserStatSheet.Add(con);
-                source.SendOrangeBarMessage($"Constitution increased by one to {source.UserStatSheet.Con}. 150 Health taken.");
-
-                break;
-            }
-            case 5:
-            {
-                var dex = new Attributes { Dex = 1 };
-                source.UserStatSheet.Add(dex);
-                source.SendOrangeBarMessage($"Dexterity increased by one to {source.UserStatSheet.Dex}. 150 Health taken.");
-
-                break;
-            }
+            action(source, statBuyCost);
         }
         source.Client.SendAttributes(StatUpdateType.Primary);
     }
-    
-    
+
     public override void OnDisplaying(Aisling source)
     {
-        switch (source.UserStatSheet.BaseClass)
+        var formula = (source.StatSheet.MaximumHp - BaseClassOffset[source.UserStatSheet.BaseClass]) / 150;
+        if (formula > 0)
         {
-            case BaseClass.Warrior:
-            {
-               var formula = (source.StatSheet.MaximumHp - 4000) / 150;
-               if (formula > 0)
-                   Subject.Reply(source, $"Looks like you can get {formula} stats. Which one did you want?");
-               else
-               {
-                   Subject.Reply(source, "You cannot buy any stats at this time, with your current vitality.");
-                 
-                   Subject.Options.Clear();
-               }
-            }
-
-                break;
-            
-            case BaseClass.Wizard:
-            {
-                var formula = (source.StatSheet.MaximumHp - 3750) / 150;
-                if (formula > 0)
-                    Subject.Reply(source, $"Looks like you can get {formula} stats. Which one did you want?");
-                else
-                {
-                    Subject.Reply(source, "You cannot buy any stats at this time, with your current vitality.");
-                  
-                    Subject.Options.Clear();
-                }
-            }
-
-                break;
-                
-            case BaseClass.Priest:
-            {
-                var formula = (source.StatSheet.MaximumHp - 3500) / 150;
-                if (formula > 0)
-                    Subject.Reply(source, $"Looks like you can get {formula} stats. Which one did you want?");
-                else
-                {
-                    Subject.Reply(source, "You cannot buy any stats at this time, with your current vitality.");
-                  
-                    Subject.Options.Clear();
-                }
-            }
-
-                break;
-            
-            case BaseClass.Monk:
-            {
-                var formula = (source.StatSheet.MaximumHp - 6000) / 150;
-                if (formula > 0)
-                    Subject.Reply(source, $"Looks like you can get {formula} stats. Which one did you want?");
-                else
-                {
-                    Subject.Reply(source, "You cannot buy any stats at this time, with your current vitality.");
-                  
-                    Subject.Options.Clear();
-                }
-            }
-
-                break;
-            
-            case BaseClass.Rogue:
-            {
-                var formula = (source.StatSheet.MaximumHp - 4250) / 150;
-                if (formula > 0)
-                    Subject.Reply(source, $"Looks like you can get {formula} stats. Which one did you want?");
-                else
-                {
-                    Subject.Reply(source, "You cannot buy any stats at this time, with your current vitality.");
-                  
-                    Subject.Options.Clear();
-                }
-            }
-
-                break;
+            Subject.InjectTextParameters(formula);
+        }
+        else
+        {
+            Subject.Reply(source, "You cannot buy any stats at this time, with your current vitality.");
+            Subject.Options.Clear();
         }
     }
 }

@@ -113,8 +113,5 @@ public class GenericDyeScript : DialogScriptBase
         Subject.InjectTextParameters(item.DisplayName);
     }
     
-    private void OnDisplayingInitial(Aisling source)
-    {
-        Subject.Slots = source.Inventory.Where(x => x.Template.IsDyeable).Select(x => x.Slot).ToList();
-    }
+    private void OnDisplayingInitial(Aisling source) => Subject.Slots = source.Inventory.Where(x => x.Template.IsDyeable).Select(x => x.Slot).ToList();
 }

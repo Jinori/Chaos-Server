@@ -238,8 +238,6 @@ public class WeaponSmithingCraftScript : DialogScriptBase
         if (Subject.Items.Count == 0)
         {
             Subject.Reply(source, "You do not have any recipes learned.","weaponsmithing_initial");
-
-            return;
         }
     }
 

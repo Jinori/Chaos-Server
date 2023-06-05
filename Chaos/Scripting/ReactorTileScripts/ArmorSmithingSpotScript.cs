@@ -19,7 +19,7 @@ public class ArmorSmithingSpotScript : ReactorTileScriptBase
 
     public override void OnWalkedOn(Creature source)
     {
-        if (!(source is Aisling aisling))
+        if (source is not Aisling aisling)
             return;
 
         var blank = MerchantFactory.Create("sewing_merchant", source.MapInstance, new Point(6, 6));

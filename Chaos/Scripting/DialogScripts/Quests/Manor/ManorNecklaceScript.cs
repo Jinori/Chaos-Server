@@ -14,10 +14,7 @@ public class ManorNecklaceScript : DialogScriptBase
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
     
-    public ManorNecklaceScript(Dialog subject) : base(subject)
-    {
-        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
-    }
+    public ManorNecklaceScript(Dialog subject) : base(subject) => ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplaying(Aisling source)
     {
@@ -54,39 +51,43 @@ public class ManorNecklaceScript : DialogScriptBase
             }
             case "zulera_initial":
             {
-                if (stage == ManorNecklaceStage.ReturnedNecklace)
+                switch (stage)
                 {
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"She smiles and nods while clutching the necklace.");
-                    Subject.Close(source);
-                }
-                if (stage == ManorNecklaceStage.KeptNecklace)
-                {
-                    Subject.Reply(source, "I don't really want to talk to you anymore. You're mean!");
+                    case ManorNecklaceStage.ReturnedNecklace:
+                        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"She smiles and nods while clutching the necklace.");
+                        Subject.Close(source);
 
-                    return;
-                }
-                if (stage == ManorNecklaceStage.ObtainedNecklace)
-                {
-                    Subject.Reply(source, "You found it! Would you please hand over my precious necklace?");
-                    Subject.Type = ChaosDialogType.Menu;
-                    Subject.NextDialogKey?.Remove(0);
+                        break;
+                    case ManorNecklaceStage.KeptNecklace:
+                        Subject.Reply(source, "I don't really want to talk to you anymore. You're mean!");
+
+                        return;
+                    case ManorNecklaceStage.ObtainedNecklace:
+                    {
+                        Subject.Reply(source, "You found it! Would you please hand over my precious necklace?");
+                        Subject.Type = ChaosDialogType.Menu;
+                        Subject.NextDialogKey?.Remove(0);
                     
-                    var option = new DialogOption
-                    {
-                        DialogKey = "zulera_giveNecklaceBack",
-                        OptionText = "Yes, here you go."
-                    };
-                    var optionTwo = new DialogOption
-                    {
-                        DialogKey = "zulera_keepHerNecklace",
-                        OptionText = "It's nice. I'm keeping it!"
-                    };
+                        var option = new DialogOption
+                        {
+                            DialogKey = "zulera_giveNecklaceBack",
+                            OptionText = "Yes, here you go."
+                        };
+                        var optionTwo = new DialogOption
+                        {
+                            DialogKey = "zulera_keepHerNecklace",
+                            OptionText = "It's nice. I'm keeping it!"
+                        };
 
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Add(option);
-                    if (!Subject.HasOption(optionTwo.OptionText))
-                        Subject.Options.Add(optionTwo);
+                        if (!Subject.HasOption(option.OptionText))
+                            Subject.Options.Add(option);
+                        if (!Subject.HasOption(optionTwo.OptionText))
+                            Subject.Options.Add(optionTwo);
+
+                        break;
+                    }
                 }
+
                 break;
             }
             case "zulera_acceptedquest":

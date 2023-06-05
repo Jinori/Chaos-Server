@@ -10,5 +10,5 @@ public sealed record ItemSprite(ushort PanelSprite, ushort DisplaySprite)
     /// <summary>
     ///     The sprite number for displaying the item on the UI. (Inventory and Equipment panels)
     /// </summary>
-    public ushort PanelSprite { get; init; } = PanelSprite;
+    public ushort PanelSprite { get; set; } = PanelSprite;
 }

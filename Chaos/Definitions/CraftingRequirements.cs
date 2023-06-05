@@ -1,3 +1,6 @@
+using Chaos.Models.Data;
+using Chaos.Models.Panel;
+
 namespace Chaos.Definitions;
 
 public static class CraftingRequirements
@@ -5,22 +8,55 @@ public static class CraftingRequirements
 
     public sealed class Recipe
     {
-        public string? Name { get; set; }
-        public string? TemplateKey { get; set; }
-        public List<Ingredient>? Ingredients { get; set; }
-        public string? Rank { get; set; }
-        public int Level { get; set; }
+        public string Name { get; set; } = null!;
+        public string TemplateKey { get; set; } = null!;
+        public List<Ingredient>  Ingredients { get; set; } = null!;
+        public string Rank { get; set; } = null!;
+        public int Level { get; set; } 
         public int Difficulty { get; set; }
+
+        public Action<Item>? Modification { get; set; }
     }
 
     public sealed class Ingredient
     {
-        public string? TemplateKey { get; set; }
-        public string? DisplayName { get; set; }
+        public string TemplateKey { get; set; } = null!;
+        public string DisplayName { get; set; } = null!;
         public int Amount { get; set; }
     }
 
+    public static Dictionary<EnchantingRecipes, Recipe> EnchantingRequirements { get; } = new()
+    {
+        {
+            EnchantingRecipes.MiraelisEmbrace,
+            new Recipe()
+            {
+                Name = "Miraelis Embrace",
+                TemplateKey = "beginnerScroll",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Beginner",
+                Level = 1,
+                Difficulty = 1,
+                Modification = item =>
+                {
+                    var attributes = new Attributes()
+                    {
+                        Int = 1
+                    };
 
+                    item.DisplayName = item.Template.Name + "[ of Miraelis]";
+                    if (item.Modifiers is null)
+                        item.Modifiers = attributes;
+                    else
+                        item.Modifiers.Add(attributes);
+                }
+            }
+        }
+    };
 
     public static Dictionary<AlchemyRecipes, Recipe> AlchemyRequirements { get; } = new()
     {
