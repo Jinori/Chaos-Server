@@ -183,7 +183,7 @@ public class AcceptHobbyorProfessionScript : DialogScriptBase
 
                 return;
             }
-            case "enchantingnpc_initial":
+            case "elara_initial":
             {
                 if (!hasCraft)
                 {
