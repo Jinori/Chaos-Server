@@ -7,7 +7,7 @@ namespace Chaos.Formulae.LevelUp;
 public class DefaultLevelUpFormula : ILevelUpFormula
 {
     /// <inheritdoc />
-    public Attributes CalculateAttributesIncrease(Aisling aisling) =>
+    public virtual Attributes CalculateAttributesIncrease(Aisling aisling) =>
         new()
         {
             //each level, add (Level * 0.3) + 10 hp
@@ -19,7 +19,7 @@ public class DefaultLevelUpFormula : ILevelUpFormula
         };
 
     /// <inheritdoc />
-    public int CalculateMaxWeight(Aisling aisling) => 40 + aisling.UserStatSheet.Level / 2 + aisling.UserStatSheet.Str;
+    public virtual int CalculateMaxWeight(Aisling aisling) => 40 + aisling.UserStatSheet.Level / 2 + aisling.UserStatSheet.Str;
 
     /// <inheritdoc />
     public int CalculateTnl(Aisling aisling) => Convert.ToInt32(Math.Pow(aisling.UserStatSheet.Level, 3.4) * 450 / 140 + 2500 * aisling.UserStatSheet.Level);
