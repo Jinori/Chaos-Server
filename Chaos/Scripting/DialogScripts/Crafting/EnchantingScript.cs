@@ -38,8 +38,33 @@ public class EnchantingScript : DialogScriptBase
     private const string RECIPE_SIX_RANK = "Advanced";
     private const string RECIPE_SEVEN_RANK = "Expert";
     private const string RECIPE_EIGHT_RANK = "Master";
+
+    private readonly string[] Prefix =
+    {
+        "Swift",
+        "Heavy",
+        "Sharp",
+        "Durable",
+        "Light",
+        "Ancient",
+        "Potent",
+        "Sturdy",
+        "Might",
+    };
     
-    
+    private readonly string[] Suffix =
+    {
+        "of Miraelis",
+        "of Skandara",
+        "of Theselene",
+        "of Serendael",
+        "of Ignatar",
+        "of Geolith",
+        "of Zephyra",
+        "of Aquaedon"
+    };
+
+
     private Animation FailAnimation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -107,7 +132,12 @@ public class EnchantingScript : DialogScriptBase
         };
 
     // Calculates the success rate of crafting an item
-    private double CalculateSuccessRate(int totalTimesCrafted, int timesCraftedThisItem, double baseSuccessRate, int recipeRank)
+    private double CalculateSuccessRate(
+        int totalTimesCrafted,
+        int timesCraftedThisItem,
+        double baseSuccessRate,
+        int recipeRank
+    )
     {
         var rankDifficultyReduction = recipeRank switch
         {
@@ -121,12 +151,12 @@ public class EnchantingScript : DialogScriptBase
             8 => 40,
             _ => 0
         };
-        
+
         // Get the multiplier based on total times crafted
         var multiplier = GetMultiplier(totalTimesCrafted);
         // Calculate the success rate with all the factors
         var successRate = ((baseSuccessRate - rankDifficultyReduction) + timesCraftedThisItem / 10.0) * multiplier;
-        
+
         // Ensure the success rate does not exceed the maximum allowed value
         return Math.Min(successRate, SUCCESSRATEMAX);
     }
@@ -181,21 +211,25 @@ public class EnchantingScript : DialogScriptBase
             case "enchanting_initial":
             {
                 OnDisplayingShowItems(source);
+
                 break;
             }
             case "enchanting_selectitem":
             {
                 OnDisplayingShowPlayerItems(source);
+
                 break;
             }
             case "enchanting_confirmation":
             {
                 OnDisplayingConfirmation(source);
+
                 break;
             }
             case "enchanting_accepted":
             {
                 OnDisplayingAccepted(source);
+
                 break;
             }
         }
@@ -210,7 +244,7 @@ public class EnchantingScript : DialogScriptBase
         }
         
         Subject.InjectTextParameters(recipe.Name);
-        Subject.Slots = source.Inventory.Where(x => x.Template.IsModifiable).Select(x => x.Slot).ToList();   
+        Subject.Slots = source.Inventory.Where(x => x.Template.IsModifiable && !Prefix.Any(x.DisplayName.Contains) && !Suffix.Any(x.DisplayName.Contains)).Select(x => x.Slot).ToList();   
     }
 
     //ShowItems in a Shop Window to the player
@@ -308,14 +342,12 @@ public class EnchantingScript : DialogScriptBase
         if (!TryFetchArg<byte>(1, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
         {
             Subject.ReplyToUnknownInput(source);
-
             return;
         }
 
         if (Subject.Context is not CraftingRequirements.Recipe recipe)
         {
             Subject.Reply(source, "Something went wrong with the recipe.");
-
             return;
         }
 
@@ -358,7 +390,6 @@ public class EnchantingScript : DialogScriptBase
             dialog.InjectTextParameters(recipe.Name, item.DisplayName);
             dialog.Display(source);
             source.Animate(FailAnimation);
-
             return;
         }
 
@@ -393,7 +424,9 @@ public class EnchantingScript : DialogScriptBase
             }
         }
         
-        recipe.Modification?.Invoke(item);
+        if (recipe.Modification is not null) 
+            source.Inventory.Update(item.Slot, recipe.Modification);
+        
         Subject.InjectTextParameters(recipe.Name);
 
         source.Animate(SuccessAnimation);

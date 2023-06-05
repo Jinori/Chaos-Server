@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
 using Chaos.Extensions.Common;
 using Chaos.Models.Abstractions;
 using Chaos.Models.Data;
@@ -49,7 +50,7 @@ public sealed class Item : PanelEntityBase, IScripted<IItemScript>, IDialogSourc
         Color = template.Color;
         Count = 1;
         CurrentDurability = template.MaxDurability;
-        Modifiers = template.Modifiers;
+        Modifiers = template.Modifiers is null ? null : ShallowCopy<Attributes>.Create(template.Modifiers);
         Weight = template.Weight;
         Level = template.Level;
         ItemSprite = template.ItemSprite;

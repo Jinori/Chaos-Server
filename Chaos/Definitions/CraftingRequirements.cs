@@ -48,7 +48,7 @@ public static class CraftingRequirements
                         Int = 1
                     };
 
-                    item.DisplayName = item.Template.Name + "[ of Miraelis]";
+                    item.DisplayName += " of Miraelis";
                     if (item.Modifiers is null)
                         item.Modifiers = attributes;
                     else
