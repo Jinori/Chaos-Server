@@ -18,17 +18,18 @@ public sealed class EnumCollectionConverter : JsonConverter<EnumCollection>
 
         var possibleTypes = AppDomain.CurrentDomain
                                      .GetAssemblies()
-                                     .Where(a => !a.IsDynamic)
-                                     .SelectMany(a =>
-                                     {
-                                         try
+                                     .Where(a => !a.IsDynamic && !a.ReflectionOnly)
+                                     .SelectMany(
+                                         a =>
                                          {
-                                             return a.GetTypes();
-                                         } catch
-                                         {
-                                             return Enumerable.Empty<Type>();
-                                         }
-                                     })
+                                             try
+                                             {
+                                                 return a.GetTypes();
+                                             } catch
+                                             {
+                                                 return Enumerable.Empty<Type>();
+                                             }
+                                         })
                                      .Where(asmType => asmType.IsEnum && asmType is { IsInterface: false, IsAbstract: false })
                                      .ToList();
 
