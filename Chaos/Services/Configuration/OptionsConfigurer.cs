@@ -66,15 +66,14 @@ public sealed class OptionsConfigurer : IPostConfigureOptions<IConnectionInfo>,
         // ReSharper disable once ArrangeMethodOrOperatorBody
         options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(MagicPrefixScript.Mutate));
         //add more mutators here
-        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(ScrollVariant));
-    }
-
-    private IEnumerable<ItemMetaNode> ScrollVariant(ItemMetaNode node)
-    {
-        if (!node.Name.EqualsI("Beginner Scroll"))
-            yield break;
-        
-        yield return node with { Name = "Miraelis Embrace" };
+        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(AquaedonSuffixScript.Mutate));
+        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(GeolithSuffixScript.Mutate));
+        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(IgnatarSuffixScript.Mutate));
+        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(SerendaelSuffixScript.Mutate));
+        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(MiraelisSuffixScript.Mutate));
+        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(SkandaraSuffixScript.Mutate));
+        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(TheseleneSuffixScript.Mutate));
+        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(ZephyraSuffixScript.Mutate));
     }
 
     /// <inheritdoc />
