@@ -53,7 +53,29 @@ public static class CraftingRequirements
                     return mapper.Map<Item>(schema);
                 })
             }
+        },    
+        {
+        EnchantingRecipes.SkandaraResolve,
+        new Recipe()
+        {
+            Name = "Skandara Resolve",
+            TemplateKey = "beginnerScroll",
+            Ingredients = new List<Ingredient>()
+            {
+                new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            },
+            Rank = "Beginner",
+            Level = 1,
+            Difficulty = 1,
+            Modification = ((mapper, item) =>
+            {
+                item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SkandaraSuffixScript)));
+                var schema = mapper.Map<ItemSchema>(item);
+                return mapper.Map<Item>(schema);
+            })
         }
+    }
     };
 
     public static Dictionary<AlchemyRecipes, Recipe> AlchemyRequirements { get; } = new()

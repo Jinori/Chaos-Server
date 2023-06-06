@@ -9,6 +9,7 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.TypeMapper.Abstractions;
+using Chaos.Utilities;
 
 namespace Chaos.Scripting.DialogScripts.Crafting;
 
@@ -242,13 +243,21 @@ public class EnchantingScript : DialogScriptBase
     
     private void OnDisplayingShowPlayerItems(Aisling source)
     {
-        if (Subject.Context is not CraftingRequirements.Recipe recipe)
+        if (!TryFetchArg<string>(0, out var selected))
         {
-            Subject.Reply(source, "Cannot get recipe.");
+            Subject.ReplyToUnknownInput(source);
             return;
         }
+
+        foreach (var recipe in CraftingRequirements.EnchantingRequirements)
+        {
+            if (selected.Replace(" ", "") == recipe.Key.ToString())
+            {
+                Subject.Context = recipe.Value;
+                Subject.InjectTextParameters(recipe.Value.Name);
+            }
+        }
         
-        Subject.InjectTextParameters(recipe.Name);
         Subject.Slots = source.Inventory.Where(x => x.Template.IsModifiable && !Prefix.Any(x.DisplayName.Contains) && !Suffix.Any(x.DisplayName.Contains)).Select(x => x.Slot).ToList();   
     }
 
@@ -281,7 +290,6 @@ public class EnchantingScript : DialogScriptBase
                 };
 
                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                Subject.Context = recipe.Value;
             }
         }
         if (Subject.Items.Count == 0)
@@ -289,7 +297,7 @@ public class EnchantingScript : DialogScriptBase
             Subject.Reply(source, "You do not have any recipes learned.","enchanting_initial");
         }
     }
-
+    
     //Show the players a dialog asking if they want to use the ingredients, yes or no
     private void OnDisplayingConfirmation(Aisling source)
     {

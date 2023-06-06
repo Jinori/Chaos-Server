@@ -863,6 +863,7 @@ public enum EnchantingRecipes
 {
     None = 0,
     MiraelisEmbrace = 1,
+    SkandaraResolve = 2,
 }
 
 [Flags]
