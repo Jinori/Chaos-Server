@@ -3,12 +3,15 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
+using BulkEditTool.Comparers;
+using BulkEditTool.Extensions;
 using BulkEditTool.Model;
 using BulkEditTool.Model.Observables;
 using Chaos.Extensions.Common;
-using Chaos.Schemas.Aisling;
 using Chaos.Schemas.Templates;
 using MaterialDesignExtensions.Controls;
+using TOOL_CONSTANTS = BulkEditTool.Definitions.CONSTANTS;
 
 namespace BulkEditTool.Controls.ItemControls;
 
@@ -17,69 +20,6 @@ namespace BulkEditTool.Controls.ItemControls;
 /// </summary>
 public sealed partial class ItemEditor
 {
-    private const string TEMP_PATH = "NEW.json";
-
-    private static readonly List<string> ModifierProperties = new()
-    {
-        nameof(AttributesSchema.AtkSpeedPct),
-        nameof(AttributesSchema.Ac),
-        nameof(AttributesSchema.MagicResistance),
-        nameof(AttributesSchema.Hit),
-        nameof(AttributesSchema.Dmg),
-        nameof(AttributesSchema.FlatSkillDamage),
-        nameof(AttributesSchema.FlatSpellDamage),
-        nameof(AttributesSchema.SkillDamagePct),
-        nameof(AttributesSchema.SpellDamagePct),
-        nameof(AttributesSchema.MaximumHp),
-        nameof(AttributesSchema.MaximumMp),
-        nameof(AttributesSchema.Str),
-        nameof(AttributesSchema.Int),
-        nameof(AttributesSchema.Wis),
-        nameof(AttributesSchema.Con),
-        nameof(AttributesSchema.Dex)
-    };
-    private static readonly List<string> PropertyOrder = new()
-    {
-        nameof(ItemTemplateSchema.TemplateKey),
-        nameof(ItemTemplateSchema.Name),
-        nameof(ItemTemplateSchema.PanelSprite),
-        nameof(ItemTemplateSchema.DisplaySprite),
-        nameof(ItemTemplateSchema.Color),
-        nameof(ItemTemplateSchema.PantsColor),
-        nameof(ItemTemplateSchema.MaxStacks),
-        nameof(ItemTemplateSchema.AccountBound),
-        nameof(ItemTemplateSchema.BuyCost),
-        nameof(ItemTemplateSchema.SellValue),
-        nameof(ItemTemplateSchema.Weight),
-        nameof(ItemTemplateSchema.MaxDurability),
-        nameof(ItemTemplateSchema.Class),
-        nameof(ItemTemplateSchema.AdvClass),
-        nameof(ItemTemplateSchema.Level),
-        nameof(ItemTemplateSchema.RequiresMaster),
-        nameof(AttributesSchema.AtkSpeedPct),
-        nameof(AttributesSchema.Ac),
-        nameof(AttributesSchema.MagicResistance),
-        nameof(AttributesSchema.Hit),
-        nameof(AttributesSchema.Dmg),
-        nameof(AttributesSchema.FlatSkillDamage),
-        nameof(AttributesSchema.FlatSpellDamage),
-        nameof(AttributesSchema.SkillDamagePct),
-        nameof(AttributesSchema.SpellDamagePct),
-        nameof(AttributesSchema.MaximumHp),
-        nameof(AttributesSchema.MaximumMp),
-        nameof(AttributesSchema.Str),
-        nameof(AttributesSchema.Int),
-        nameof(AttributesSchema.Wis),
-        nameof(AttributesSchema.Con),
-        nameof(AttributesSchema.Dex),
-        nameof(ItemTemplateSchema.CooldownMs),
-        nameof(ItemTemplateSchema.EquipmentType),
-        nameof(ItemTemplateSchema.Gender),
-        nameof(ItemTemplateSchema.IsDyeable),
-        nameof(ItemTemplateSchema.IsModifiable),
-        nameof(ItemTemplateSchema.Category),
-        nameof(ItemTemplateSchema.Description)
-    };
     public ObservableCollection<ObservableListItem<ItemPropertyEditor>> ItemTemplates { get; }
 
     public ItemEditor()
@@ -87,84 +27,135 @@ public sealed partial class ItemEditor
         ItemTemplates = new ObservableCollection<ObservableListItem<ItemPropertyEditor>>();
 
         InitializeComponent();
+
+        AddBtn.IsEnabled = false;
+        GridViewBtn.IsEnabled = false;
     }
 
-    private async void AddButton_Click(object sender, RoutedEventArgs e)
+    private async void UserControl_Initialized(object sender, EventArgs e)
     {
-        var path = TEMP_PATH;
-        var baseDir = JsonContext.ItemTemplates.Options.Directory;
-        var fullBaseDir = Path.GetFullPath(baseDir);
+        var loadingTask = JsonContext.LoadingTask;
 
-        var result = await OpenDirectoryDialog.ShowDialogAsync(
-            DialogHost,
-            new OpenDirectoryDialogArguments { CurrentDirectory = fullBaseDir });
+        Snackbar.MessageQueue?.Enqueue(
+            "Loading...",
+            null,
+            null,
+            null,
+            false,
+            true,
+            TimeSpan.FromHours(1));
 
-        if (result is null || result.Canceled)
-            return;
-
-        path = Path.Combine(result.Directory, path);
-        //path = Path.GetRelativePath(Environment.CurrentDirectory, path);
-
-        var template = new ItemTemplateSchema { TemplateKey = Path.GetFileNameWithoutExtension(TEMP_PATH) };
-        var wrapper = new TraceWrapper<ItemTemplateSchema>(path, template);
-        var editor = new ItemPropertyEditor(ItemTemplates, wrapper);
-
-        var listItem = new ObservableListItem<ItemPropertyEditor>(editor)
+        while (true)
         {
-            Key = template.TemplateKey
-        };
+            await Task.Delay(250);
 
-        ItemTemplates.Add(listItem);
+            if (loadingTask.IsCompleted)
+                break;
+        }
 
-        ItemTemplatesView.SelectedItem = listItem;
+        Snackbar.MessageQueue?.Clear();
+
+        var objs = JsonContext.ItemTemplates.Objects.Select(
+                                  wrapper =>
+                                  {
+                                      var editor = new ItemPropertyEditor(ItemTemplates, wrapper);
+
+                                      var listItem = new ObservableListItem<ItemPropertyEditor>(editor)
+                                      {
+                                          Key = wrapper.Obj.TemplateKey
+                                      };
+
+                                      return listItem;
+                                  })
+                              .OrderBy(_ => _, ObservableListItemComparer.Instance);
+
+        ItemTemplates.AddRange(objs);
+
+        AddBtn.IsEnabled = true;
+        GridViewBtn.IsEnabled = true;
     }
 
-    private void DataGrid_AutoGeneratedColumns(object? sender, EventArgs e)
+    #region CTRL+F (Find)
+    private void FindTbox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
-        if (sender is null)
+        var tbox = (TextBox)sender;
+
+        if (string.IsNullOrWhiteSpace(tbox.Text))
             return;
 
-        var dataGrid = (DataGrid)sender;
+        var text = tbox.Text;
 
-        foreach (var column in dataGrid.Columns)
+        var currentView = PropertyEditor.Children
+                                        .OfType<object>()
+                                        .FirstOrDefault();
+
+        switch (currentView)
         {
-            var index = PropertyOrder.IndexOf(column.Header.ToString()!);
+            case DataGrid dataGrid:
+            {
+                var searchResult = dataGrid.ItemsSource
+                                           .OfType<ItemTemplateSchema>()
+                                           .Select(ItemTemplateSchemaExtensions.EnumerateProperties)
+                                           .SelectMany(
+                                               (rowValue, rowIndex) =>
+                                                   rowValue.Select((cellValue, columnIndex) => (cellValue, columnIndex, rowIndex)))
+                                           .FirstOrDefault(set => set.cellValue?.ContainsI(text) == true);
 
-            if (index == -1)
-                continue;
+                if (searchResult.cellValue is null)
+                    return;
 
-            column.DisplayIndex = index;
+                var column = dataGrid.Columns.SingleOrDefault(col => col.DisplayIndex == searchResult.columnIndex);
+                var columnIndex = dataGrid.Columns.IndexOf(column);
+
+                dataGrid.SelectCellByIndex(searchResult.rowIndex, columnIndex, false);
+
+                break;
+            }
+
+            default:
+            {
+                var searchResult = ItemTemplates
+                                   .Select(listItem => listItem.Control.Item.Obj.EnumerateProperties())
+                                   .SelectMany(
+                                       (rowValue, rowIndex) =>
+                                           rowValue.Select((cellValue, columnIndex) => (cellValue, columnIndex, rowIndex)))
+                                   .FirstOrDefault(set => set.cellValue?.ContainsI(text) == true);
+
+                if (searchResult.cellValue is null)
+                    return;
+
+                ItemTemplatesView.SelectedIndex = searchResult.rowIndex;
+
+                break;
+            }
         }
     }
 
-    private void DataGrid_AutoGeneratingColumn(object? sender, DataGridAutoGeneratingColumnEventArgs e)
+    private void ItemEditor_OnPreviewKeyDown(object sender, KeyEventArgs e)
     {
-        if (sender is null)
-            return;
-
-        var dataGrid = (DataGrid)sender;
-
-        if (e.PropertyName.EqualsI(nameof(ItemTemplateSchema.Modifiers)))
+        // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
+        switch (e.Key)
         {
-            e.Cancel = true;
+            case Key.F when Keyboard.Modifiers == ModifierKeys.Control:
+                e.Handled = true;
 
-            foreach (var propertyName in ModifierProperties)
-            {
-                var column = new DataGridTextColumn
-                {
-                    Header = propertyName,
-                    Binding = new Binding($"{nameof(ItemTemplateSchema.Modifiers)}.{propertyName}")
-                    {
-                        ValidatesOnDataErrors = true
-                    }
-                };
+                FindTbox.Visibility = Visibility.Visible;
+                FindTbox.Focus();
 
-                dataGrid.Columns.Add(column);
-            }
-        } else if (!PropertyOrder.ContainsI(e.PropertyName))
-            e.Cancel = true;
+                break;
+            case Key.Escape when FindTbox.IsVisible:
+                e.Handled = true;
+
+                FindTbox.Text = null;
+                FindTbox.Visibility = Visibility.Collapsed;
+                ItemTemplatesView.Focus();
+
+                break;
+        }
     }
+    #endregion
 
+    #region ListView
     private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var selected = e.AddedItems.OfType<ObservableListItem<ItemPropertyEditor>>().FirstOrDefault();
@@ -183,6 +174,37 @@ public sealed partial class ItemEditor
         PropertyEditor.Children.Add(selected.Control);
     }
 
+    private async void AddButton_Click(object sender, RoutedEventArgs e)
+    {
+        var path = TOOL_CONSTANTS.TEMP_PATH;
+        var baseDir = JsonContext.ItemTemplates.Options.Directory;
+        var fullBaseDir = Path.GetFullPath(baseDir);
+
+        var result = await OpenDirectoryDialog.ShowDialogAsync(
+            DialogHost,
+            new OpenDirectoryDialogArguments { CurrentDirectory = fullBaseDir, CreateNewDirectoryEnabled = true });
+
+        if (result is null || result.Canceled)
+            return;
+
+        path = Path.Combine(result.Directory, path);
+
+        var template = new ItemTemplateSchema { TemplateKey = Path.GetFileNameWithoutExtension(TOOL_CONSTANTS.TEMP_PATH) };
+        var wrapper = new TraceWrapper<ItemTemplateSchema>(path, template);
+        var editor = new ItemPropertyEditor(ItemTemplates, wrapper);
+
+        var listItem = new ObservableListItem<ItemPropertyEditor>(editor)
+        {
+            Key = template.TemplateKey
+        };
+
+        ItemTemplates.Add(listItem);
+
+        ItemTemplatesView.SelectedItem = listItem;
+    }
+    #endregion
+
+    #region DataGrid
     private async void ToggleGridViewBtn_OnClick(object sender, RoutedEventArgs e)
     {
         var button = (Button)sender;
@@ -193,6 +215,7 @@ public sealed partial class ItemEditor
             var dataGrid = new DataGrid();
             dataGrid.AutoGeneratedColumns += DataGrid_AutoGeneratedColumns;
             dataGrid.AutoGeneratingColumn += DataGrid_AutoGeneratingColumn;
+            dataGrid.SelectionUnit = DataGridSelectionUnit.Cell;
 
             await JsonContext.LoadingTask;
 
@@ -215,23 +238,51 @@ public sealed partial class ItemEditor
         }
     }
 
-    private async void UserControl_Initialized(object sender, EventArgs e)
+    private void DataGrid_AutoGeneratedColumns(object? sender, EventArgs e)
     {
-        await JsonContext.LoadingTask;
+        if (sender is null)
+            return;
 
-        var objs = JsonContext.ItemTemplates.Objects.Select(
-            wrapper =>
+        var dataGrid = (DataGrid)sender;
+        var index = 0;
+
+        foreach (var property in TOOL_CONSTANTS.PropertyOrder)
+        {
+            var column = dataGrid.Columns.FirstOrDefault(c => c.Header.ToString()!.EqualsI(property));
+
+            if (column is null)
+                continue;
+
+            column.DisplayIndex = index++;
+        }
+    }
+
+    private void DataGrid_AutoGeneratingColumn(object? sender, DataGridAutoGeneratingColumnEventArgs e)
+    {
+        if (sender is null)
+            return;
+
+        var dataGrid = (DataGrid)sender;
+
+        if (e.PropertyName.EqualsI(nameof(ItemTemplateSchema.Modifiers)))
+        {
+            e.Cancel = true;
+
+            foreach (var propertyName in TOOL_CONSTANTS.ModifierProperties)
             {
-                var editor = new ItemPropertyEditor(ItemTemplates, wrapper);
-
-                var listItem = new ObservableListItem<ItemPropertyEditor>(editor)
+                var column = new DataGridTextColumn
                 {
-                    Key = wrapper.Obj.TemplateKey
+                    Header = propertyName,
+                    Binding = new Binding($"{nameof(ItemTemplateSchema.Modifiers)}.{propertyName}")
+                    {
+                        ValidatesOnDataErrors = true
+                    }
                 };
 
-                return listItem;
-            });
-
-        ItemTemplates.AddRange(objs);
+                dataGrid.Columns.Add(column);
+            }
+        } else if (!TOOL_CONSTANTS.PropertyOrder.ContainsI(e.PropertyName))
+            e.Cancel = true;
     }
+    #endregion
 }
