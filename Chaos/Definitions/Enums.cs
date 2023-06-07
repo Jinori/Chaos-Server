@@ -870,6 +870,7 @@ public enum EnchantingRecipes
 public enum JewelcraftingRecipes
 {
     None = 0,
+    
 }
 
 [Flags]

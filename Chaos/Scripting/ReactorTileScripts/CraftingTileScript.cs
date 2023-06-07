@@ -62,6 +62,14 @@ public class CraftingTileScript : ReactorTileScriptBase
             var blank = MerchantFactory.Create("crystalball_merchant", source.MapInstance, new Point(6, 6));
             var dialog = DialogFactory.Create("enchanting_initial", blank);
             dialog.Display(aisling);
+            return;
+        }
+        
+        if (aisling?.MapInstance.InstanceId == "rucesion_jeweler")
+        {
+            var blank = MerchantFactory.Create("jewelerbench_merchant", source.MapInstance, new Point(6, 6));
+            var dialog = DialogFactory.Create("jewelcrafting_initial", blank);
+            dialog.Display(aisling);
         }
     }
 }

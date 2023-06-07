@@ -114,6 +114,36 @@ public static class CraftingRequirements
         },
     };
 
+    #region Jewelcrafting
+
+    public static Dictionary<JewelcraftingRecipes, Recipe> JewelcraftingRequirements { get; } = new()
+    {
+        {
+            JewelcraftingRecipes.None,
+            new Recipe()
+            {
+                Name = "Miraelis Embrace",
+                TemplateKey = "beginnerScroll",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                },
+                Rank = "Beginner",
+                Level = 1,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MiraelisSuffixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+    };
+
+    #endregion
+
     #region Weapon Smithing
     public static Dictionary<WeaponSmithingRecipes, Recipe> WeaponSmithingCraftRequirements { get; } = new()
     {
