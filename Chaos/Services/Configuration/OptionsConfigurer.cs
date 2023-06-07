@@ -66,15 +66,9 @@ public sealed class OptionsConfigurer : IPostConfigureOptions<IConnectionInfo>,
         // ReSharper disable once ArrangeMethodOrOperatorBody
         options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(MagicPrefixScript.Mutate));
         //add more mutators here
-        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(AquaedonSuffixScript.Mutate));
-        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(GeolithSuffixScript.Mutate));
-        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(IgnatarSuffixScript.Mutate));
-        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(SerendaelSuffixScript.Mutate));
-        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(MiraelisSuffixScript.Mutate));
-        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(SkandaraSuffixScript.Mutate));
-        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(TheseleneSuffixScript.Mutate));
-        options.SuffixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(ZephyraSuffixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(SwiftPrefixScript.Mutate));
     }
+    
 
     /// <inheritdoc />
     public void PostConfigure(string? name, AislingStoreOptions options) => options.UseBaseDirectory(StagingDirectory.StagingDirectory);

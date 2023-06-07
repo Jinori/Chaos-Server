@@ -6,20 +6,18 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class SerendaelSuffixScript : ItemScriptBase, IEnchantmentScript
+public class SwiftPrefixScript : ItemScriptBase, IEnchantmentScript
 {
-    private const string SUFFIX = " of Serendael";
     /// <inheritdoc />
-    public SerendaelSuffixScript(Item subject)
+    public SwiftPrefixScript(Item subject)
         : base(subject)
     {
-        
-        if (!subject.DisplayName.EndsWithI(SUFFIX))
-            subject.DisplayName = $"{subject.DisplayName}{SUFFIX}";
+        if (!subject.DisplayName.StartsWithI("Swift"))
+            subject.DisplayName = $"Swift {subject.DisplayName}";
 
         var attributes = new Attributes
         {
-            MagicResistance = 1
+            MaximumMp = 50
         };
 
         subject.Modifiers.Add(attributes);
@@ -28,7 +26,7 @@ public class SerendaelSuffixScript : ItemScriptBase, IEnchantmentScript
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node)
     {
-        if (!node.Name.EndsWithI(SUFFIX))
-            yield return node with { Name = $"{node.Name}{SUFFIX}" };
+        if (!node.Name.StartsWithI("Swift"))
+            yield return node with { Name = $"Swift {node.Name}" };
     }
 }

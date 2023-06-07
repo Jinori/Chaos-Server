@@ -19,7 +19,6 @@ public static class CraftingRequirements
         public string Rank { get; set; } = null!;
         public int Level { get; set; } 
         public int Difficulty { get; set; }
-
         public Func<ITypeMapper, Item, Item>? Modification { get; set; }
     }
 
@@ -37,7 +36,7 @@ public static class CraftingRequirements
             new Recipe()
             {
                 Name = "Miraelis Embrace",
-                TemplateKey = "beginnerScroll",
+                TemplateKey = "miraelisembrace",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
@@ -48,7 +47,7 @@ public static class CraftingRequirements
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MiraelisSuffixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
                     return mapper.Map<Item>(schema);
                 })
@@ -59,7 +58,7 @@ public static class CraftingRequirements
         new Recipe()
         {
             Name = "Skandara Resolve",
-            TemplateKey = "basicScroll",
+            TemplateKey = "skandararesolve",
             Ingredients = new List<Ingredient>()
             {
                 new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
@@ -70,7 +69,7 @@ public static class CraftingRequirements
             Difficulty = 1,
             Modification = ((mapper, item) =>
             {
-                item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SkandaraSuffixScript)));
+                item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
                 var schema = mapper.Map<ItemSchema>(item);
                 return mapper.Map<Item>(schema);
             })
@@ -134,7 +133,7 @@ public static class CraftingRequirements
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MiraelisSuffixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
                     return mapper.Map<Item>(schema);
                 })

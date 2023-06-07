@@ -1,6 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
@@ -9,7 +10,6 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.TypeMapper.Abstractions;
-using Chaos.Utilities;
 
 namespace Chaos.Scripting.DialogScripts.Crafting;
 
@@ -54,19 +54,7 @@ public class EnchantingScript : DialogScriptBase
         "Sturdy",
         "Might",
     };
-    
-    private readonly string[] Suffix =
-    {
-        "of Miraelis",
-        "of Skandara",
-        "of Theselene",
-        "of Serendael",
-        "of Ignatar",
-        "of Geolith",
-        "of Zephyra",
-        "of Aquaedon"
-    };
-    
+
     /// <inheritdoc />
     public EnchantingScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory,
         ITypeMapper mapper
@@ -107,7 +95,38 @@ public class EnchantingScript : DialogScriptBase
 
                 break;
             }
+            case "enchanting_confirmdisenchant":
+            {
+                OnDisplayingDisenchant(source);
+
+                break;
+            }
         }
+    }
+
+    private void OnDisplayingDisenchant(Aisling source)
+    {
+        if (!TryFetchArg<byte>(1, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
+        {
+            Subject.ReplyToUnknownInput(source);
+            return;
+        }
+
+        if (Subject.Context is not CraftingRequirements.Recipe recipe)
+        {
+            Subject.Reply(source, "Something went wrong with the recipe.");
+            return;
+        }
+        
+        item.DisplayName = Prefix
+                           .Where(prefix => item.DisplayName.StartsWith(prefix + " ", StringComparison.Ordinal))
+                           .Select(prefix => item.DisplayName.Replace(prefix + " ", ""))
+                           .FirstOrDefault() ?? item.DisplayName;
+
+
+        item.Modifiers = new Attributes();
+        source.Inventory.Update(item.Slot);
+        Subject.InjectTextParameters(recipe.Name, item.DisplayName);
     }
     
     private void OnDisplayingShowPlayerItems(Aisling source)
@@ -135,7 +154,7 @@ public class EnchantingScript : DialogScriptBase
         
         Subject.Context = selectedRecipe;
         Subject.InjectTextParameters(selectedRecipe.Name);
-        Subject.Slots = source.Inventory.Where(x => x.Template.IsModifiable && !Prefix.Any(x.DisplayName.Contains) && !Suffix.Any(x.DisplayName.Contains)).Select(x => x.Slot).ToList();   
+        Subject.Slots = source.Inventory.Where(x => x.Template.IsModifiable).Select(x => x.Slot).ToList();   
     }
 
     //ShowItems in a Shop Window to the player
@@ -174,6 +193,17 @@ public class EnchantingScript : DialogScriptBase
         if (Subject.Context is not CraftingRequirements.Recipe recipe)
         {
             Subject.Reply(source, "Something went wrong with the recipe.");
+            return;
+        }
+
+        if (Prefix.Any(item.DisplayName.Contains))
+        {
+            Subject.Close(source);
+            var dialog = DialogFactory.Create("enchanting_disenchant", Subject.DialogSource);
+            dialog.MenuArgs = Subject.MenuArgs;
+            dialog.Context = Subject.Context;
+            dialog.InjectTextParameters(recipe.Name, item.DisplayName);
+            dialog.Display(source);
             return;
         }
 
