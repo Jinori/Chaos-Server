@@ -202,13 +202,10 @@ public class JewelcraftingScript : DialogScriptBase
                 // Checking if the recipe is available or not.
                 if (recipes.HasFlag(recipe.Key))
                 {
-                    // Creating a faux item for the recipe.
-                    if (recipe.Value.TemplateKey != null)
-                    {
-                        var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
-                        // Adding the recipe to the subject's dialog window.
-                        Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                    }
+                    var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+                    // Adding the recipe to the subject's dialog window.
+                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+
                 }
             }
         }

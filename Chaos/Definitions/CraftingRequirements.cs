@@ -59,13 +59,13 @@ public static class CraftingRequirements
         new Recipe()
         {
             Name = "Skandara Resolve",
-            TemplateKey = "beginnerScroll",
+            TemplateKey = "basicScroll",
             Ingredients = new List<Ingredient>()
             {
                 new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
                 new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
             },
-            Rank = "Beginner",
+            Rank = "Basic",
             Level = 1,
             Difficulty = 1,
             Modification = ((mapper, item) =>

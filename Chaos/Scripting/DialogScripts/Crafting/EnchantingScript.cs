@@ -66,138 +66,7 @@ public class EnchantingScript : DialogScriptBase
         "of Zephyra",
         "of Aquaedon"
     };
-
-
-    private Animation FailAnimation { get; } = new()
-    {
-        AnimationSpeed = 100,
-        TargetAnimation = 59
-    };
-    private Animation SuccessAnimation { get; } = new()
-    {
-        AnimationSpeed = 100,
-        TargetAnimation = 127
-    };
-
-    // Converts the rank string to an integer value
-    private int GetRankAsInt(string rank)
-    {
-        var rankMappings = new Dictionary<string, int>
-        {
-            { RANK_EIGHT_TITLE, 8 },
-            { RANK_SEVEN_TITLE, 7 },
-            { RANK_SIX_TITLE, 6 },
-            { RANK_FIVE_TITLE, 5 },
-            { RANK_FOUR_TITLE, 4 },
-            { RANK_THREE_TITLE, 3 },
-            { RANK_TWO_TITLE, 2 },
-            { RANK_ONE_TITLE, 1 }
-        };
-
-        if (rankMappings.TryGetValue(rank, out var i))
-            return i;
-
-        return -1;
-    }
-
-    // Converts the status string to an integer value
-    private int GetStatusAsInt(string status)
-    {
-        var statusMappings = new Dictionary<string, int>
-        {
-            { RECIPE_ONE_RANK, 1 },
-            { RECIPE_TWO_RANK, 2 },
-            { RECIPE_THREE_RANK, 3 },
-            { RECIPE_FOUR_RANK, 4 },
-            { RECIPE_FIVE_RANK, 5 },
-            { RECIPE_SIX_RANK, 6 },
-            { RECIPE_SEVEN_RANK, 7 },
-            { RECIPE_EIGHT_RANK, 8 }
-        };
-
-        if (statusMappings.TryGetValue(status, out var i))
-            return i;
-
-        return 0;
-    }
-
-    private double GetMultiplier(int totalTimesCrafted) =>
-        totalTimesCrafted switch
-        {
-            <= 25   => 1.0,
-            <= 75   => 1.05,
-            <= 150  => 1.1,
-            <= 300  => 1.15,
-            <= 500  => 1.2,
-            <= 1000 => 1.25,
-            <= 1500 => 1.3,
-            _       => 1.35
-        };
-
-    // Calculates the success rate of crafting an item
-    private double CalculateSuccessRate(
-        int totalTimesCrafted,
-        int timesCraftedThisItem,
-        double baseSuccessRate,
-        int recipeRank
-    )
-    {
-        var rankDifficultyReduction = recipeRank switch
-        {
-            1 => 0,
-            2 => 10,
-            3 => 15,
-            4 => 20,
-            5 => 25,
-            6 => 30,
-            7 => 35,
-            8 => 40,
-            _ => 0
-        };
-
-        // Get the multiplier based on total times crafted
-        var multiplier = GetMultiplier(totalTimesCrafted);
-        // Calculate the success rate with all the factors
-        var successRate = ((baseSuccessRate - rankDifficultyReduction) + timesCraftedThisItem / 10.0) * multiplier;
-
-        // Ensure the success rate does not exceed the maximum allowed value
-        return Math.Min(successRate, SUCCESSRATEMAX);
-    }
-
-    private void UpdateLegendmark(Aisling source, int legendMarkCount)
-    {
-        var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
-
-        if (existingMark is null)
-        {
-            source.Legend.AddOrAccumulate(
-                new LegendMark(
-                    RANK_ONE_TITLE,
-                    LEGENDMARK_KEY,
-                    MarkIcon.Yay,
-                    MarkColor.White,
-                    1,
-                    GameTime.Now));
-        }
-
-        if (existingMark is not null)
-        {
-            existingMark.Text = legendMarkCount switch
-            {
-                > 1500 when !existingMark.Text.Contains(RANK_EIGHT_TITLE) => RANK_EIGHT_TITLE,
-                > 1000 when !existingMark.Text.Contains(RANK_SEVEN_TITLE) => RANK_SEVEN_TITLE,
-                > 500 when !existingMark.Text.Contains(RANK_SIX_TITLE)    => RANK_SIX_TITLE,
-                > 300 when !existingMark.Text.Contains(RANK_FIVE_TITLE)   => RANK_FIVE_TITLE,
-                > 150 when !existingMark.Text.Contains(RANK_FOUR_TITLE)   => RANK_FOUR_TITLE,
-                > 75 when !existingMark.Text.Contains(RANK_THREE_TITLE)   => RANK_THREE_TITLE,
-                > 25 when !existingMark.Text.Contains(RANK_TWO_TITLE)     => RANK_TWO_TITLE,
-                _                                                         => existingMark.Text
-            };
-
-            existingMark.Count++;
-        }
-    }
-
+    
     /// <inheritdoc />
     public EnchantingScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory,
         ITypeMapper mapper
@@ -248,16 +117,24 @@ public class EnchantingScript : DialogScriptBase
             Subject.ReplyToUnknownInput(source);
             return;
         }
-
-        foreach (var recipe in CraftingRequirements.EnchantingRequirements)
+        
+        if (!Enum.TryParse<EnchantingRecipes>(selected.Replace(" ", ""), out var selectedRecipeEnum))
         {
-            if (selected.Replace(" ", "") == recipe.Key.ToString())
-            {
-                Subject.Context = recipe.Value;
-                Subject.InjectTextParameters(recipe.Value.Name);
-            }
+            Subject.Reply(source, "Recipe could not be found in Enchanting.");
+            return;
         }
         
+        var selectedRecipe = CraftingRequirements.EnchantingRequirements
+                                                 .FirstOrDefault(x => x.Key == selectedRecipeEnum).Value;
+        
+        if (selectedRecipe == null)
+        {
+            Subject.Reply(source, "Something went wrong with the selected recipe.");
+            return;
+        }
+        
+        Subject.Context = selectedRecipe;
+        Subject.InjectTextParameters(selectedRecipe.Name);
         Subject.Slots = source.Inventory.Where(x => x.Template.IsModifiable && !Prefix.Any(x.DisplayName.Contains) && !Suffix.Any(x.DisplayName.Contains)).Select(x => x.Slot).ToList();   
     }
 
@@ -276,19 +153,6 @@ public class EnchantingScript : DialogScriptBase
                 
                 var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
                 item.DisplayName = recipe.Value.Name;
-                item.ItemSprite.PanelSprite = recipe.Value.Rank switch
-                {
-                    RECIPE_ONE_RANK   => 146,
-                    RECIPE_TWO_RANK   => 877,
-                    RECIPE_THREE_RANK => 879,
-                    RECIPE_FOUR_RANK  => 880,
-                    RECIPE_FIVE_RANK  => 882,
-                    RECIPE_SIX_RANK   => 878,
-                    RECIPE_SEVEN_RANK => 883,
-                    RECIPE_EIGHT_RANK => 903,
-                    _                 => item.ItemSprite.PanelSprite
-                };
-
                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
             }
         }
@@ -448,4 +312,138 @@ public class EnchantingScript : DialogScriptBase
 
         source.Animate(SuccessAnimation);
     }
+    
+    #region Methods
+        
+    private Animation FailAnimation { get; } = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 59
+    };
+    private Animation SuccessAnimation { get; } = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 127
+    };
+
+    // Converts the rank string to an integer value
+    private int GetRankAsInt(string rank)
+    {
+        var rankMappings = new Dictionary<string, int>
+        {
+            { RANK_EIGHT_TITLE, 8 },
+            { RANK_SEVEN_TITLE, 7 },
+            { RANK_SIX_TITLE, 6 },
+            { RANK_FIVE_TITLE, 5 },
+            { RANK_FOUR_TITLE, 4 },
+            { RANK_THREE_TITLE, 3 },
+            { RANK_TWO_TITLE, 2 },
+            { RANK_ONE_TITLE, 1 }
+        };
+
+        if (rankMappings.TryGetValue(rank, out var i))
+            return i;
+
+        return -1;
+    }
+
+    // Converts the status string to an integer value
+    private int GetStatusAsInt(string status)
+    {
+        var statusMappings = new Dictionary<string, int>
+        {
+            { RECIPE_ONE_RANK, 1 },
+            { RECIPE_TWO_RANK, 2 },
+            { RECIPE_THREE_RANK, 3 },
+            { RECIPE_FOUR_RANK, 4 },
+            { RECIPE_FIVE_RANK, 5 },
+            { RECIPE_SIX_RANK, 6 },
+            { RECIPE_SEVEN_RANK, 7 },
+            { RECIPE_EIGHT_RANK, 8 }
+        };
+
+        if (statusMappings.TryGetValue(status, out var i))
+            return i;
+
+        return 0;
+    }
+
+    private double GetMultiplier(int totalTimesCrafted) =>
+        totalTimesCrafted switch
+        {
+            <= 25   => 1.0,
+            <= 75   => 1.05,
+            <= 150  => 1.1,
+            <= 300  => 1.15,
+            <= 500  => 1.2,
+            <= 1000 => 1.25,
+            <= 1500 => 1.3,
+            _       => 1.35
+        };
+
+    // Calculates the success rate of crafting an item
+    private double CalculateSuccessRate(
+        int totalTimesCrafted,
+        int timesCraftedThisItem,
+        double baseSuccessRate,
+        int recipeRank
+    )
+    {
+        var rankDifficultyReduction = recipeRank switch
+        {
+            1 => 0,
+            2 => 10,
+            3 => 15,
+            4 => 20,
+            5 => 25,
+            6 => 30,
+            7 => 35,
+            8 => 40,
+            _ => 0
+        };
+
+        // Get the multiplier based on total times crafted
+        var multiplier = GetMultiplier(totalTimesCrafted);
+        // Calculate the success rate with all the factors
+        var successRate = ((baseSuccessRate - rankDifficultyReduction) + timesCraftedThisItem / 10.0) * multiplier;
+
+        // Ensure the success rate does not exceed the maximum allowed value
+        return Math.Min(successRate, SUCCESSRATEMAX);
+    }
+
+    private void UpdateLegendmark(Aisling source, int legendMarkCount)
+    {
+        var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
+
+        if (existingMark is null)
+        {
+            source.Legend.AddOrAccumulate(
+                new LegendMark(
+                    RANK_ONE_TITLE,
+                    LEGENDMARK_KEY,
+                    MarkIcon.Yay,
+                    MarkColor.White,
+                    1,
+                    GameTime.Now));
+        }
+
+        if (existingMark is not null)
+        {
+            existingMark.Text = legendMarkCount switch
+            {
+                > 1500 when !existingMark.Text.Contains(RANK_EIGHT_TITLE) => RANK_EIGHT_TITLE,
+                > 1000 when !existingMark.Text.Contains(RANK_SEVEN_TITLE) => RANK_SEVEN_TITLE,
+                > 500 when !existingMark.Text.Contains(RANK_SIX_TITLE)    => RANK_SIX_TITLE,
+                > 300 when !existingMark.Text.Contains(RANK_FIVE_TITLE)   => RANK_FIVE_TITLE,
+                > 150 when !existingMark.Text.Contains(RANK_FOUR_TITLE)   => RANK_FOUR_TITLE,
+                > 75 when !existingMark.Text.Contains(RANK_THREE_TITLE)   => RANK_THREE_TITLE,
+                > 25 when !existingMark.Text.Contains(RANK_TWO_TITLE)     => RANK_TWO_TITLE,
+                _                                                         => existingMark.Text
+            };
+
+            existingMark.Count++;
+        }
+    }
+
+    #endregion Methods
 }
