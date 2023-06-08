@@ -1,7 +1,6 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
-using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
@@ -288,7 +287,7 @@ public class EnchantingScript : DialogScriptBase
                     legendMarkCount,
                     timesCraftedThisItem,
                     BASE_SUCCESS_RATE,
-                    GetStatusAsInt(recipe.Rank))))
+                    GetStatusAsInt(recipe.Rank), recipe.Difficulty)))
         {
             Subject.Close(source);
             var dialog = DialogFactory.Create("enchanting_failed", Subject.DialogSource);
@@ -416,7 +415,7 @@ public class EnchantingScript : DialogScriptBase
         int totalTimesCrafted,
         int timesCraftedThisItem,
         double baseSuccessRate,
-        int recipeRank
+        int recipeRank, int difficulty
     )
     {
         var rankDifficultyReduction = recipeRank switch
@@ -435,7 +434,7 @@ public class EnchantingScript : DialogScriptBase
         // Get the multiplier based on total times crafted
         var multiplier = GetMultiplier(totalTimesCrafted);
         // Calculate the success rate with all the factors
-        var successRate = ((baseSuccessRate - rankDifficultyReduction) + timesCraftedThisItem / 10.0) * multiplier;
+        var successRate = ((baseSuccessRate - rankDifficultyReduction - difficulty) + timesCraftedThisItem / 10.0) * multiplier;
 
         // Ensure the success rate does not exceed the maximum allowed value
         return Math.Min(successRate, SUCCESSRATEMAX);
