@@ -26,12 +26,12 @@ public class RecipeItemScript : ItemScriptBase
             #region Cooking Recipes
             case "recipe_dinnerplate":
             {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.dinnerplate))
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.DinnerPlate))
                 {
                     CookingRecipeLearn(
                         source,
                         ani,
-                        CookingRecipes.dinnerplate,
+                        CookingRecipes.DinnerPlate,
                         "Dinner Plate",
                         $"{Subject.Template.TemplateKey}");
 
@@ -44,12 +44,12 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_sweetbuns":
             {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.sweetbuns))
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.SweetBuns))
                 {
                     CookingRecipeLearn(
                         source,
                         ani,
-                        CookingRecipes.sweetbuns,
+                        CookingRecipes.SweetBuns,
                         "Sweet Buns",
                         $"{Subject.Template.TemplateKey}");
 
@@ -62,12 +62,12 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_fruitbasket":
             {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.fruitbasket))
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.FruitBasket))
                 {
                     CookingRecipeLearn(
                         source,
                         ani,
-                        CookingRecipes.fruitbasket,
+                        CookingRecipes.FruitBasket,
                         "Fruit Basket",
                         $"{Subject.Template.TemplateKey}");
 
@@ -80,12 +80,12 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_salad":
             {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.salad))
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.Salad))
                 {
                     CookingRecipeLearn(
                         source,
                         ani,
-                        CookingRecipes.salad,
+                        CookingRecipes.Salad,
                         "Salad",
                         $"{Subject.Template.TemplateKey}");
 
@@ -98,12 +98,12 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_lobsterdinner":
             {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.lobsterdinner))
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.LobsterDinner))
                 {
                     CookingRecipeLearn(
                         source,
                         ani,
-                        CookingRecipes.lobsterdinner,
+                        CookingRecipes.LobsterDinner,
                         "Lobster Dinner",
                         $"{Subject.Template.TemplateKey}");
 
@@ -116,12 +116,12 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_pie":
             {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.pie))
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.Pie))
                 {
                     CookingRecipeLearn(
                         source,
                         ani,
-                        CookingRecipes.pie,
+                        CookingRecipes.Pie,
                         "Pie",
                         $"{Subject.Template.TemplateKey}");
 
@@ -134,12 +134,12 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_sandwich":
             {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.sandwich))
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.Sandwich))
                 {
                     CookingRecipeLearn(
                         source,
                         ani,
-                        CookingRecipes.sandwich,
+                        CookingRecipes.Sandwich,
                         "Sandwich",
                         $"{Subject.Template.TemplateKey}");
 
@@ -152,12 +152,12 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_soup":
             {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.soup))
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.Soup))
                 {
                     CookingRecipeLearn(
                         source,
                         ani,
-                        CookingRecipes.soup,
+                        CookingRecipes.Soup,
                         "Soup",
                         $"{Subject.Template.TemplateKey}");
 
@@ -170,12 +170,12 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_steakmeal":
             {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.steakmeal))
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.SteakMeal))
                 {
                     CookingRecipeLearn(
                         source,
                         ani,
-                        CookingRecipes.steakmeal,
+                        CookingRecipes.SteakMeal,
                         "Steak Meal",
                         $"{Subject.Template.TemplateKey}");
 
@@ -222,15 +222,15 @@ public class RecipeItemScript : ItemScriptBase
                 #region All Recipes
             case "recipe_allcrafts":
             {
-                source.Trackers.Flags.AddFlag(CookingRecipes.dinnerplate);
-                source.Trackers.Flags.AddFlag(CookingRecipes.fruitbasket);
-                source.Trackers.Flags.AddFlag(CookingRecipes.lobsterdinner);
-                source.Trackers.Flags.AddFlag(CookingRecipes.sandwich);
-                source.Trackers.Flags.AddFlag(CookingRecipes.pie);
-                source.Trackers.Flags.AddFlag(CookingRecipes.salad);
-                source.Trackers.Flags.AddFlag(CookingRecipes.soup);
-                source.Trackers.Flags.AddFlag(CookingRecipes.steakmeal);
-                source.Trackers.Flags.AddFlag(CookingRecipes.sweetbuns);
+                source.Trackers.Flags.AddFlag(CookingRecipes.DinnerPlate);
+                source.Trackers.Flags.AddFlag(CookingRecipes.FruitBasket);
+                source.Trackers.Flags.AddFlag(CookingRecipes.LobsterDinner);
+                source.Trackers.Flags.AddFlag(CookingRecipes.Sandwich);
+                source.Trackers.Flags.AddFlag(CookingRecipes.Pie);
+                source.Trackers.Flags.AddFlag(CookingRecipes.Salad);
+                source.Trackers.Flags.AddFlag(CookingRecipes.Soup);
+                source.Trackers.Flags.AddFlag(CookingRecipes.SteakMeal);
+                source.Trackers.Flags.AddFlag(CookingRecipes.SweetBuns);
                 source.Trackers.Flags.AddFlag(CraftedArmors.Refineddwarvishleather);
                 source.Trackers.Flags.AddFlag(CraftedArmors.Refinedjourneyman);
                 source.Trackers.Flags.AddFlag(CraftedArmors.Refinedgaluchatcoat);

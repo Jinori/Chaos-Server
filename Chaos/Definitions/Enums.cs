@@ -590,15 +590,15 @@ public enum ExtraIngredientsStage3
 public enum CookingRecipes
 {
     None,
-    dinnerplate = 1,
-    fruitbasket = 1 << 1,
-    lobsterdinner = 1 << 2,
-    pie = 1 << 3,
-    salad = 1 << 4,
-    sandwich = 1 << 5,
-    soup = 1 << 6,
-    steakmeal = 1 << 7,
-    sweetbuns = 1 << 8
+    DinnerPlate = 1,
+    FruitBasket = 1 << 1,
+    LobsterDinner = 1 << 2,
+    Pie = 1 << 3,
+    Salad = 1 << 4,
+    Sandwich = 1 << 5,
+    Soup = 1 << 6,
+    SteakMeal = 1 << 7,
+    SweetBuns = 1 << 8
 }
 #endregion
 public enum FiskSecretStage

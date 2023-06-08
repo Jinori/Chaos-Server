@@ -51,47 +51,47 @@ public class CookingScript : ConfigurableDialogScriptBase
                 source.Trackers.Flags.RemoveFlag(CookFoodProgression.NotenoughIngredients);
 
                 #region FlagCheck
-                if (source.Trackers.Flags.HasFlag(CookingRecipes.dinnerplate))
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.DinnerPlate))
                 {
                     var item = ItemFactory.CreateFaux("dinnerplate");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
-                if (source.Trackers.Flags.HasFlag(CookingRecipes.fruitbasket))
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.FruitBasket))
                 {
                     var item = ItemFactory.CreateFaux("fruitbasket");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
-                if (source.Trackers.Flags.HasFlag(CookingRecipes.lobsterdinner))
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.LobsterDinner))
                 {
                     var item = ItemFactory.CreateFaux("lobsterdinner");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
-                if (source.Trackers.Flags.HasFlag(CookingRecipes.pie))
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.Pie))
                 {
                     var item = ItemFactory.CreateFaux("pie");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
-                if (source.Trackers.Flags.HasFlag(CookingRecipes.salad))
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.Salad))
                 {
                     var item = ItemFactory.CreateFaux("salad");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
-                if (source.Trackers.Flags.HasFlag(CookingRecipes.sandwich))
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.Sandwich))
                 {
                     var item = ItemFactory.CreateFaux("sandwich");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
-                if (source.Trackers.Flags.HasFlag(CookingRecipes.soup))
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.Soup))
                 {
                     var item = ItemFactory.CreateFaux("soup");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
-                if (source.Trackers.Flags.HasFlag(CookingRecipes.steakmeal))
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.SteakMeal))
                 {
                     var item = ItemFactory.CreateFaux("steakmeal");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
-                if (source.Trackers.Flags.HasFlag(CookingRecipes.sweetbuns))
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.SweetBuns))
                 {
                     var item = ItemFactory.CreateFaux("sweetbuns");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));

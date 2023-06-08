@@ -69,8 +69,8 @@ public class AcceptHobbyorProfessionScript : DialogScriptBase
             case "cooking_accepthobby":
             {
                 source.Trackers.Flags.AddFlag(Hobbies.Cooking);
-                source.Trackers.Flags.AddFlag(CookingRecipes.dinnerplate);
-                source.Trackers.Flags.AddFlag(CookingRecipes.fruitbasket);
+                source.Trackers.Flags.AddFlag(CookingRecipes.DinnerPlate);
+                source.Trackers.Flags.AddFlag(CookingRecipes.FruitBasket);
                 source.Legend.AddOrAccumulate(
                 new LegendMark(
                     "Beginner Chef",
