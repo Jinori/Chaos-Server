@@ -360,6 +360,7 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Lightshield);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Mythrilshield);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Hybrasylshield);
+                source.Trackers.Flags.AddFlag(EnchantingRecipes.MiraelisEmbrace);
                 
                 source.Animate(ani);
                 source.SendOrangeBarMessage($"You've learned all recipes.");
