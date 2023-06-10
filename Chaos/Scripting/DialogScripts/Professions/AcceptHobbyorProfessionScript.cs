@@ -204,7 +204,7 @@ public class AcceptHobbyorProfessionScript : DialogScriptBase
 
             case "enchanting_acceptcraft":
             {
-                source.Trackers.Enums.Set(Craft.Alchemy);
+                source.Trackers.Enums.Set(Craft.Enchanting);
                 source.SendOrangeBarMessage("You are now an Enchanter!");
 
                 return;

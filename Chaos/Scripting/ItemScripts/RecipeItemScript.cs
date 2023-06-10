@@ -15,6 +15,8 @@ public class RecipeItemScript : ItemScriptBase
 
     public override void OnUse(Aisling source)
     {
+        var craft1 = source.Trackers.Enums.TryGetValue(out Craft craft);
+
         var ani = new Animation
         {
             AnimationSpeed = 100,
@@ -190,36 +192,43 @@ public class RecipeItemScript : ItemScriptBase
 
             #region Armor Smithing Recipes
             case "recipe_basicarmors":
-{
-    if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicArmors))
-    {
-        ArmorSmithRecipeLearn(
-            source,
-            ani,
-            ArmorSmithCategories.BasicArmors,
-            "Basic Armors",
-            $"{Subject.Template.TemplateKey}");
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicArmors))
+                {
+                    if (craft != Craft.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedScoutLeather);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGardcorp);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCowl);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCotte);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMagiSkirt);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGorgetGown);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDobok);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherTunic);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedEarthBodice);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherBliaut);
+                        return;
+                    }
 
-        return;
-    }
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithCategories.BasicArmors,
+                        "Basic Armors",
+                        $"{Subject.Template.TemplateKey}");
 
-    source.SendOrangeBarMessage("You already know this recipe");
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedScoutLeather);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGardcorp);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCowl);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCotte);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMagiSkirt);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGorgetGown);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDobok);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherTunic);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedEarthBodice);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherBliaut);
 
-    return;
-}
+                    return;
+                }
 
-                #region All Recipes
+                source.SendOrangeBarMessage("You already know this recipe");
+
+                return;
+            }
+
+            #region All Recipes
             case "recipe_allcrafts":
             {
                 source.Trackers.Flags.AddFlag(CookingRecipes.DinnerPlate);
@@ -468,89 +477,111 @@ public class RecipeItemScript : ItemScriptBase
             }
 
             #endregion
+
             case "recipe_apprenticearmors":
-{
-    if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.ApprenticeArmors))
-    {
-        ArmorSmithRecipeLearn(
-            source,
-            ani,
-            ArmorSmithCategories.ApprenticeArmors,
-            "Apprentice Armors",
-            $"{Subject.Template.TemplateKey}");
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.ApprenticeArmors))
+                {
+                    if (craft != Craft.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDwarvishLeather);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedJourneyman);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGaluchatCoat);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedBrigandine);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedBenusta);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMysticGown);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLotusBodice);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCuirass);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCulotte);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLorica);
+                        return;
+                    }
 
-        return;
-    }
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithCategories.ApprenticeArmors,
+                        "Apprentice Armors",
+                        $"{Subject.Template.TemplateKey}");
 
-    source.SendOrangeBarMessage("You already know this recipe");
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDwarvishLeather);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedJourneyman);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGaluchatCoat);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedBrigandine);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedBenusta);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMysticGown);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLotusBodice);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCuirass);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCulotte);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLorica);
 
-    return;
-}
-case "recipe_journeymanarmors":
-{
-    if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.JourneymanArmors))
-    {
-        ArmorSmithRecipeLearn(
-            source,
-            ani,
-            ArmorSmithCategories.JourneymanArmors,
-            "Journeyman Armors",
-            $"{Subject.Template.TemplateKey}");
+                    return;
+                }
 
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedPaluten);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLorum);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMantle);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCorsette);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedStoller);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedElle);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMoonBodice);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedKasmaniumHauberk);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedEarthGarb);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedKasmaniumArmor);
+                source.SendOrangeBarMessage("You already know this recipe");
 
-        return;
-    }
+                return;
+            }
+            case "recipe_journeymanarmors":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.JourneymanArmors))
+                {
+                    if (craft != Craft.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
-    source.SendOrangeBarMessage("You already know this recipe.");
+                        return;
+                    }
 
-    return;
-}
-case "recipe_adeptarmors":
-{
-    if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.AdeptArmors))
-    {
-        ArmorSmithRecipeLearn(
-            source,
-            ani,
-            ArmorSmithCategories.AdeptArmors,
-            "Adept Armors",
-            $"{Subject.Template.TemplateKey}");
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithCategories.JourneymanArmors,
+                        "Journeyman Armors",
+                        $"{Subject.Template.TemplateKey}");
 
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedKeaton);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMane);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedHierophant);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedPebbleRose);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedClymouth);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDolman);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLightningGarb);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedPhoenixMail);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedWindGarb);
-        source.Trackers.Flags.AddFlag(CraftedArmors.RefinedIpletMail);
-        
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedPaluten);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLorum);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMantle);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCorsette);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedStoller);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedElle);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMoonBodice);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedKasmaniumHauberk);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedEarthGarb);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedKasmaniumArmor);
 
-        return;
-    }
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_adeptarmors":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.AdeptArmors))
+                {
+                    if (craft != Craft.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithCategories.AdeptArmors,
+                        "Adept Armors",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedKeaton);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMane);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedHierophant);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedPebbleRose);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedClymouth);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDolman);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLightningGarb);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedPhoenixMail);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedWindGarb);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedIpletMail);
+
+
+                    return;
+                }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
 
@@ -560,13 +591,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.AdvancedArmors))
                 {
+                    if (craft != Craft.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
                         ArmorSmithCategories.AdvancedArmors,
                         "Advanced Armors",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedKagum);
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedClamyth);
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedBansagart);
@@ -589,13 +627,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicGauntlets))
                 {
+                    if (craft != Craft.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
                         ArmorSmithCategories.BasicGauntlets,
                         "Basic Gauntlets",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.LeatherSapphireGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.LeatherRubyGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.LeatherEmeraldGauntlet);
@@ -612,13 +657,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.ApprenticeGauntlets))
                 {
+                    if (craft != Craft.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
                         ArmorSmithCategories.ApprenticeGauntlets,
                         "Apprentice Gauntlets",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.IronEmeraldGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.IronRubyGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.IronHeartstoneGauntlet);
@@ -635,13 +687,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.JourneymanGauntlets))
                 {
+                    if (craft != Craft.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
                         ArmorSmithCategories.JourneymanGauntlets,
                         "Journeyman Gauntlets",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.MythrilEmeraldGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.MythrilRubyGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.MythrilHeartstoneGauntlet);
@@ -658,13 +717,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.AdeptGauntlets))
                 {
+                    if (craft != Craft.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
                         ArmorSmithCategories.AdeptGauntlets,
                         "Adept Gauntlets",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.HybrasylEmeraldGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.HybrasylRubyGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.HybrasylHeartstoneGauntlet);
@@ -681,13 +747,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicBelts))
                 {
+                    if (craft != Craft.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
                         ArmorSmithCategories.BasicBelts,
                         "Basic Belts",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledSeaBelt);
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledEarthBelt);
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledWindBelt);
@@ -704,13 +777,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.ApprenticeBelts))
                 {
+                    if (craft != Craft.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
                         ArmorSmithCategories.ApprenticeBelts,
                         "Apprentice Belts",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledMetalBelt);
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledNatureBelt);
 
@@ -725,13 +805,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.JourneymanBelts))
                 {
+                    if (craft != Craft.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
                         ArmorSmithCategories.JourneymanBelts,
                         "Journeyman Belts",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledDarkBelt);
                     source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledLightBelt);
 
@@ -749,13 +836,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicSwords))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.BasicSwords,
                         "Basic Swords",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Claidheamh);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.BroadSword);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.BattleSword);
@@ -772,13 +866,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeSwords))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.ApprenticeSwords,
                         "Apprentice Swords",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Bramble);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.LongSword);
 
@@ -793,16 +894,23 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanSwords))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.JourneymanSwords,
                         "Journeyman Swords",
                         $"{Subject.Template.TemplateKey}");
-                        
-                        source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Claidhmore);
-                        source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.EmeraldSword);
-                        source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Gladius);
+
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Claidhmore);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.EmeraldSword);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Gladius);
 
                     return;
                 }
@@ -815,13 +923,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdeptSwords))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.AdeptSwords,
                         "Adept Swords",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Kindjal);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.DragonSlayer);
 
@@ -836,13 +951,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicWeapons))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.BasicWeapons,
                         "Basic Weapons",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Hatchet);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Harpoon);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Scimitar);
@@ -858,13 +980,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeWeapons))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.ApprenticeWeapons,
                         "Apprentice Weapons",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Club);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.SpikedClub);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.ChainMace);
@@ -880,13 +1009,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanWeapons))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.JourneymanWeapons,
                         "Journeyman Weapons",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.HandAxe);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Cutlass);
 
@@ -901,13 +1037,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdeptWeapons))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.AdeptWeapons,
                         "Adept Weapons",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.TalgoniteAxe);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.HybrasylBattleAxe);
 
@@ -922,13 +1065,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicStaves))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.BasicStaves,
                         "Basic Staves",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.MagusAres);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.HolyHermes);
 
@@ -943,6 +1093,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeStaves))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
@@ -964,13 +1121,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanStaves))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.JourneymanStaves,
                         "Journeyman Staves",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.MagusDiana);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.HolyDiana);
 
@@ -985,13 +1149,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdeptStaves))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.AdeptStaves,
                         "Adept Staves",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.StoneCross);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.OakStaff);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.StaffOfWisdom);
@@ -1007,13 +1178,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicDaggers))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.BasicDaggers,
                         "Basic Daggers",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.BlossomDagger);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.CurvedDagger);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.MoonDagger);
@@ -1029,16 +1207,23 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeDaggers))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.ApprenticeDaggers,
                         "Apprentice Daggers",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.LightDagger);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.SunDagger);
-                    
+
                     return;
                 }
 
@@ -1050,13 +1235,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanDaggers))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.JourneymanDaggers,
                         "Journeyman Daggers",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.LotusDagger);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.BloodDagger);
 
@@ -1071,6 +1263,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdeptDaggers))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
@@ -1079,7 +1278,7 @@ case "recipe_adeptarmors":
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.NagetierDagger);
-                  
+
                     return;
                 }
 
@@ -1091,13 +1290,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicClaws))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.BasicClaws,
                         "Basic Claws",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.WolfClaw);
 
                     return;
@@ -1111,13 +1317,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeClaws))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.ApprenticeClaws,
                         "Apprentice Claws",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.EagleTalon);
 
                     return;
@@ -1131,13 +1344,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanClaws))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.JourneymanClaws,
                         "Journeyman Claws",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.PhoenixClaw);
 
                     return;
@@ -1147,18 +1367,25 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_adeptclaws":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdeptClaws))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.AdeptClaws,
                         "Adept Claws",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Nunchaku);
 
                     return;
@@ -1172,13 +1399,20 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicShields))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
                         WeaponSmithingCategories.BasicShields,
                         "Basic Shields",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.LeatherShield);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.BronzeShield);
 
@@ -1193,6 +1427,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeShields))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
@@ -1204,7 +1445,7 @@ case "recipe_adeptarmors":
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.GravelShield);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.LightShield);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.MythrilShield);
-                    
+
                     return;
                 }
 
@@ -1216,6 +1457,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanShields))
                 {
+                    if (craft != Craft.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
@@ -1224,7 +1472,7 @@ case "recipe_adeptarmors":
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.HybrasylShield);
-                    
+
                     return;
                 }
 
@@ -1233,13 +1481,20 @@ case "recipe_adeptarmors":
                 return;
             }
             #endregion
-            
+
             #region Alchemy Recipes
-            
+
             case "recipe_hemloch":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.Hemloch))
                 {
+                    if (craft != Craft.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
                     AlchemyRecipeLearn(
                         source,
                         ani,
@@ -1258,6 +1513,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.BetonyDeum))
                 {
+                    if (craft != Craft.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
                     AlchemyRecipeLearn(
                         source,
                         ani,
@@ -1273,13 +1535,20 @@ case "recipe_adeptarmors":
                 return;
             }
             #endregion
-            
-               #region Enchanting Recipes
-            
+
+            #region Enchanting Recipes
+
             case "recipe_ignatarenvy":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarEnvy))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1294,11 +1563,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_geolithgratitude":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.GeolithGratitude))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1313,11 +1589,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_miraelisserenity":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.MiraelisSerenity))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1332,11 +1615,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_theseleneelusion":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.TheseleneElusion))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1351,11 +1641,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_aquaedonclarity":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.AquaedonClarity))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1370,11 +1667,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_serendaelluck":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SerendaelLuck))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1389,11 +1693,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_skandaramight":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SkandaraMight))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1408,11 +1719,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_zephyraspirit":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.ZephyraSpirit))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1427,11 +1745,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_ignatargrief":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarGrief))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1446,11 +1771,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_geolithpride":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.GeolithPride))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1465,11 +1797,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "miraelisblessing":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.MiraelisBlessing))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1484,11 +1823,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_theseleneshadow":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.TheseleneShadow))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1503,11 +1849,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_aquaedoncalming":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.AquaedonCalming))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1522,11 +1875,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_serendaelmagic":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SerendaelMagic))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1545,6 +1905,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SkandaraTriumph))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1559,11 +1926,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_zephyramist":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.ZephyraMist))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1578,12 +1952,19 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
-            
+
+
             case "recipe_ignatarregret":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarRegret))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1603,6 +1984,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.GeolithConstitution))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1617,11 +2005,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_miraelisintellect":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.MiraelisIntellect))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1636,11 +2031,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_theselenedexterity":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.TheseleneDexterity))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1655,11 +2057,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_aquaedonwisdom":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.AquaedonWisdom))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1674,11 +2083,18 @@ case "recipe_adeptarmors":
 
                 return;
             }
-            
+
             case "recipe_serendaelchance":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SerendaelChance))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1697,6 +2113,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SkandaraStrength))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1715,6 +2138,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.ZephyraWind))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1733,6 +2163,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarJealousy))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1751,6 +2188,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.GeolithObsession))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1769,6 +2213,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.MiraelisHarmony))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1787,6 +2238,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.TheseleneBalance))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1805,6 +2263,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.AquaedonWill))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1823,6 +2288,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SerendaelRoll))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1841,6 +2313,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SkandaraDrive))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1859,6 +2338,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.ZephyraVortex))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1877,6 +2363,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarDestruction))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1895,6 +2388,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.GeolithFortitude))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1913,6 +2413,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.MiraelisNurturing))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1931,6 +2438,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.TheseleneRisk))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1949,6 +2463,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.AquaedonResolve))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1967,6 +2488,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SerendaelAddiction))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -1985,6 +2513,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SkandaraPierce))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -2003,6 +2538,13 @@ case "recipe_adeptarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.ZephyraGust))
                 {
+                    if (craft != Craft.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
                     EnchantingRecipeLearn(
                         source,
                         ani,
@@ -2034,7 +2576,7 @@ case "recipe_adeptarmors":
         source.SendOrangeBarMessage($"You've learned {serverMessage}.");
         source.Inventory.RemoveQuantity(templatekey, 1);
     }
-    
+
     public static void ArmorSmithRecipeLearn(
         Aisling source,
         Animation ani,
@@ -2048,6 +2590,7 @@ case "recipe_adeptarmors":
         source.SendOrangeBarMessage($"You've learned {serverMessage}.");
         source.Inventory.RemoveQuantity(templatekey, 1);
     }
+
     public static void WeaponSmithRecipeLearn(
         Aisling source,
         Animation ani,
@@ -2061,6 +2604,7 @@ case "recipe_adeptarmors":
         source.SendOrangeBarMessage($"You've learned {serverMessage}.");
         source.Inventory.RemoveQuantity(templatekey, 1);
     }
+
     public static void AlchemyRecipeLearn(
         Aisling source,
         Animation ani,
@@ -2074,6 +2618,7 @@ case "recipe_adeptarmors":
         source.SendOrangeBarMessage($"You've learned {serverMessage}.");
         source.Inventory.RemoveQuantity(templatekey, 1);
     }
+
     public static void EnchantingRecipeLearn(
         Aisling source,
         Animation ani,
@@ -2087,6 +2632,7 @@ case "recipe_adeptarmors":
         source.SendOrangeBarMessage($"You've learned {serverMessage}.");
         source.Inventory.RemoveQuantity(templatekey, 1);
     }
+
     public static void JewelcraftingRecipeLearn(
         Aisling source,
         Animation ani,

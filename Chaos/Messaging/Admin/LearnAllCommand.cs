@@ -47,7 +47,7 @@ public class LearnAllCommand : ICommand<Aisling>
 
     private readonly string[] _rogueSkills =
     {
-        "assassinStrike", "pierce", "sapNeedle", "shadowFigure", "smokescreen", "stab", "stabAndTwist", "stabTwice",
+        "birthdaysuit", "pierce", "sapNeedle", "shadowFigure", "smokescreen", "stab", "stabAndTwist", "stabTwice",
         "studyCreature", "throwsmokebomb"
     };
 

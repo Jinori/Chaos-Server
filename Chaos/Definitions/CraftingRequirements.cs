@@ -40,7 +40,7 @@ public static class CraftingRequirements
                 TemplateKey = "ignatarenvy",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 1 },
                 },
                 Rank = "Beginner",
                 Level = 3,
@@ -62,14 +62,14 @@ public static class CraftingRequirements
                 TemplateKey = "ignatargrief",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 1 },
                 },
                 Rank = "Basic",
                 Level = 24,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MinorPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -84,14 +84,14 @@ public static class CraftingRequirements
                 TemplateKey = "ignatarregret",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 3 },
                 },
                 Rank = "Apprentice",
                 Level = 48,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(FieryPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -106,14 +106,14 @@ public static class CraftingRequirements
                 TemplateKey = "ignatarjealousy",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 5 },
                 },
                 Rank = "Apprentice",
                 Level = 60,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(CripplingPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -128,14 +128,14 @@ public static class CraftingRequirements
                 TemplateKey = "ignatardestruction",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 7 },
                 },
                 Rank = "Journeyman",
                 Level = 80,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(RuthlessPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -151,14 +151,14 @@ public static class CraftingRequirements
                 TemplateKey = "geolithgratitude",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 1 },
                 },
                 Rank = "Beginner",
                 Level = 3,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SkillfulPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -173,14 +173,14 @@ public static class CraftingRequirements
                 TemplateKey = "geolithpride",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 3 },
                 },
                 Rank = "Basic",
                 Level = 28,
                 Difficulty = 2,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(ModestPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -195,14 +195,14 @@ public static class CraftingRequirements
                 TemplateKey = "geolithconstitution",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 5},
                 },
                 Rank = "Apprentice",
                 Level = 50,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HalePrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -217,14 +217,14 @@ public static class CraftingRequirements
                 TemplateKey = "geolithobsession",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 5 },
                 },
                 Rank = "Apprentice",
                 Level = 65,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(PowerfulPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -239,14 +239,14 @@ public static class CraftingRequirements
                 TemplateKey = "geolithfortitude",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 7 },
                 },
                 Rank = "Journeyman",
                 Level = 83,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(EternalPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -261,14 +261,14 @@ public static class CraftingRequirements
                 TemplateKey = "miraelisserenity",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 1 },
                 },
                 Rank = "Beginner",
                 Level = 5,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MysticalPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -283,14 +283,14 @@ public static class CraftingRequirements
                 TemplateKey = "miraelisblessing",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 3 },
                 },
                 Rank = "Basic",
                 Level = 34,
                 Difficulty = 2,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(TinyPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -305,14 +305,14 @@ public static class CraftingRequirements
                 TemplateKey = "miraelisintellect",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 5 },
                 },
                 Rank = "Apprentice",
                 Level = 50,
                 Difficulty = 2,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(BrilliantPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -327,14 +327,14 @@ public static class CraftingRequirements
                 TemplateKey = "miraelisharmony",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 5 },
                 },
                 Rank = "Apprentice",
                 Level = 69,
                 Difficulty = 2,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(BrightPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -349,14 +349,14 @@ public static class CraftingRequirements
                 TemplateKey = "miraelisnurturing",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 7 },
                 },
                 Rank = "Journeyman",
                 Level = 88,
                 Difficulty = 2,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(AncientPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -371,14 +371,14 @@ public static class CraftingRequirements
                 TemplateKey = "theseleneelusion",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 1 },
                 },
                 Rank = "Beginner",
                 Level = 5,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(ShroudedPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -393,14 +393,14 @@ public static class CraftingRequirements
                 TemplateKey = "theseleneshadow",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 3 }
                 },
                 Rank = "Basic",
                 Level = 37,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(DarkPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -415,14 +415,14 @@ public static class CraftingRequirements
                 TemplateKey = "theselenedexterity",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 5 }
                 },
                 Rank = "Apprentice",
                 Level = 50,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(NimblePrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -437,14 +437,14 @@ public static class CraftingRequirements
                 TemplateKey = "theselenebalance",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 7 }
                 },
                 Rank = "Journeyman",
                 Level = 71,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(TightPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -459,14 +459,14 @@ public static class CraftingRequirements
                 TemplateKey = "theselenerisk",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                    new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 10 }
                 },
                 Rank = "Adept",
                 Level = 90,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(CursedPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -481,14 +481,14 @@ public static class CraftingRequirements
                 TemplateKey = "aquaedonclarity",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 1 }
                 },
                 Rank = "Beginner",
                 Level = 5,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MeagerPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -503,14 +503,14 @@ public static class CraftingRequirements
                 TemplateKey = "aquaedoncalming",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 3 }
                 },
                 Rank = "Basic",
                 Level = 40,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SerenePrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -525,14 +525,14 @@ public static class CraftingRequirements
                 TemplateKey = "aquaedonwisdom",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 5 }
                 },
                 Rank = "Apprentice",
                 Level = 50,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(WisePrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -547,14 +547,14 @@ public static class CraftingRequirements
                 TemplateKey = "aquaedonwill",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 7 }
                 },
                 Rank = "Journeyman",
                 Level = 71,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(PotentPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -569,14 +569,14 @@ public static class CraftingRequirements
                 TemplateKey = "aquaedonresolve",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 10 }
                 },
                 Rank = "Adept",
                 Level = 90,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SoothingPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -591,14 +591,14 @@ public static class CraftingRequirements
                 TemplateKey = "serendaelluck",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 1 }
                 },
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(LuckyPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -613,14 +613,14 @@ public static class CraftingRequirements
                 TemplateKey = "serendaelmagic",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 2 }
+                    new Ingredient { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 3 }
                 },
                 Rank = "Apprentice",
                 Level = 41,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(LightPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -635,14 +635,14 @@ public static class CraftingRequirements
                 TemplateKey = "serendaelchance",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 3 }
+                    new Ingredient { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 5 }
                 },
                 Rank = "Apprentice",
                 Level = 55,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(FocusedPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -657,14 +657,14 @@ public static class CraftingRequirements
                 TemplateKey = "serendaelroll",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 4 }
+                    new Ingredient { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 7 }
                 },
                 Rank = "Journeyman",
                 Level = 71,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(PrecisionPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -679,14 +679,14 @@ public static class CraftingRequirements
                 TemplateKey = "serendaeladdiction",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 5 }
+                    new Ingredient { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 10 }
                 },
                 Rank = "Adept",
                 Level = 90,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(PersistingPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -701,14 +701,14 @@ public static class CraftingRequirements
                 TemplateKey = "skandaramight",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 1 }
                 },
                 Rank = "Basic",
                 Level = 16,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MightyPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -723,14 +723,14 @@ public static class CraftingRequirements
                 TemplateKey = "skandaratriumph",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 2 }
+                    new Ingredient { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 3 }
                 },
                 Rank = "Apprentice",
                 Level = 44,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(ValiantPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -745,14 +745,14 @@ public static class CraftingRequirements
                 TemplateKey = "skandarastrength",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 3 }
+                    new Ingredient { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 5 }
                 },
                 Rank = "Apprentice",
                 Level = 50,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(ToughPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -767,14 +767,14 @@ public static class CraftingRequirements
                 TemplateKey = "skandaradrive",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 4 }
+                    new Ingredient { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 7 }
                 },
                 Rank = "Journeyman",
                 Level = 75,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SavagePrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -789,14 +789,14 @@ public static class CraftingRequirements
                 TemplateKey = "skandarapierce",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 5 }
+                    new Ingredient { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 10 }
                 },
                 Rank = "Adept",
                 Level = 95,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(BlazingPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -811,14 +811,14 @@ public static class CraftingRequirements
                 TemplateKey = "zephyraspirit",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 1 }
                 },
                 Rank = "Basic",
                 Level = 20,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(BreezyPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -833,14 +833,14 @@ public static class CraftingRequirements
                 TemplateKey = "zephyramist",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 2 }
+                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 3 }
                 },
                 Rank = "Apprentice",
                 Level = 45,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SoftPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -855,14 +855,14 @@ public static class CraftingRequirements
                 TemplateKey = "zephyrawind",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 2 }
+                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 5 }
                 },
                 Rank = "Apprentice",
                 Level = 58,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HazyPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -877,14 +877,14 @@ public static class CraftingRequirements
                 TemplateKey = "zephyravortex",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 3 }
+                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 7 }
                 },
                 Rank = "Journeyman",
                 Level = 78,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(WhirlingPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -899,14 +899,14 @@ public static class CraftingRequirements
                 TemplateKey = "zephyragust",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 2 }
+                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 10 }
                 },
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HowlingPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -962,11 +962,11 @@ public static class CraftingRequirements
     public static Dictionary<JewelcraftingRecipes, Recipe> JewelcraftingRequirements { get; } = new()
     {
         {
-            JewelcraftingRecipes.None,
+            JewelcraftingRecipes.BronzeBerylEarring,
             new Recipe()
             {
-                Name = "Miraelis Embrace",
-                TemplateKey = "beginnerScroll",
+                Name = "Bronze Beryl Earring",
+                TemplateKey = "bronzeberylearring",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },

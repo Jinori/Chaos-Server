@@ -219,7 +219,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
                 case "armorsmithingbook":
                 {
                     // Checking if the Alchemy recipe is available or not.
-                    if (source.Trackers.Flags.TryGetFlag(out ArmorSmithRecipes recipes))
+                    if (source.Trackers.Flags.TryGetFlag(out CraftedArmors recipes))
                     {
                         // Iterating through the Alchemy recipe requirements.
                         foreach (var recipe in CraftingRequirements.ArmorSmithingArmorRequirements)
@@ -233,16 +233,19 @@ namespace Chaos.Scripting.DialogScripts.Generic
                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                             }
                         }
-                        
-                        foreach (var recipe in CraftingRequirements.ArmorSmithingGearRequirements)
+
+                        if (source.Trackers.Flags.TryGetFlag(out ArmorSmithRecipes recipes2))
                         {
-                            // Checking if the recipe is available or not.
-                            if (recipes.HasFlag(recipe.Key))
+                            foreach (var recipe2 in CraftingRequirements.ArmorSmithingGearRequirements)
                             {
-                                // Creating a faux item for the recipe.
-                                var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
-                                // Adding the recipe to the subject's dialog window.
-                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                                // Checking if the recipe is available or not.
+                                if (recipes2.HasFlag(recipe2.Key))
+                                {
+                                    // Creating a faux item for the recipe.
+                                    var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+                                    // Adding the recipe to the subject's dialog window.
+                                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                                }
                             }
                         }
                     }
