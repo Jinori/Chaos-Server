@@ -15,9 +15,9 @@ public static class CraftingRequirements
     {
         public string Name { get; set; } = null!;
         public string TemplateKey { get; set; } = null!;
-        public List<Ingredient>  Ingredients { get; set; } = null!;
+        public List<Ingredient> Ingredients { get; set; } = null!;
         public string Rank { get; set; } = null!;
-        public int Level { get; set; } 
+        public int Level { get; set; }
         public int Difficulty { get; set; }
         public Func<ITypeMapper, Item, Item>? Modification { get; set; }
     }
@@ -29,54 +29,898 @@ public static class CraftingRequirements
         public int Amount { get; set; }
     }
 
+    #region Enchanting Recipes
     public static Dictionary<EnchantingRecipes, Recipe> EnchantingRequirements { get; } = new()
     {
         {
-            EnchantingRecipes.MiraelisEmbrace,
+            EnchantingRecipes.IgnatarEnvy,
             new Recipe()
             {
-                Name = "Miraelis Embrace",
-                TemplateKey = "miraelisembrace",
+                Name = "Ignatar's Envy",
+                TemplateKey = "ignatarenvy",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
                 Rank = "Beginner",
-                Level = 1,
+                Level = 3,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
                     item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
+
                     return mapper.Map<Item>(schema);
                 })
             }
-        },    
+        },
         {
-        EnchantingRecipes.SkandaraResolve,
-        new Recipe()
-        {
-            Name = "Skandara Resolve",
-            TemplateKey = "skandararesolve",
-            Ingredients = new List<Ingredient>()
+            EnchantingRecipes.IgnatarGrief,
+            new Recipe()
             {
-                new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                Name = "Ignatar's Grief",
+                TemplateKey = "ignatargrief",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Basic",
+                Level = 24,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+        {
+            EnchantingRecipes.IgnatarRegret,
+            new Recipe()
+            {
+                Name = "Ignatar's Regret",
+                TemplateKey = "ignatarregret",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Apprentice",
+                Level = 48,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+        {
+            EnchantingRecipes.IgnatarJealousy,
+            new Recipe()
+            {
+                Name = "Ignatar's Jealousy",
+                TemplateKey = "ignatarjealousy",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Apprentice",
+                Level = 60,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+        {
+            EnchantingRecipes.IgnatarDestruction,
+            new Recipe()
+            {
+                Name = "Ignatar's Destruction",
+                TemplateKey = "ignatardestruction",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Journeyman",
+                Level = 80,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
             },
-            Rank = "Basic",
-            Level = 1,
-            Difficulty = 1,
-            Modification = ((mapper, item) =>
+        
+        {
+            EnchantingRecipes.GeolithGratitude,
+            new Recipe()
             {
-                item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
-                var schema = mapper.Map<ItemSchema>(item);
-                return mapper.Map<Item>(schema);
-            })
-        }
-    }
+                Name = "Geolith's Gratitude",
+                TemplateKey = "geolithgratitude",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Beginner",
+                Level = 3,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.GeolithPride,
+            new Recipe()
+            {
+                Name = "Geolith's Pride",
+                TemplateKey = "geolithpride",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Basic",
+                Level = 28,
+                Difficulty = 2,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.GeolithConstitution,
+            new Recipe()
+            {
+                Name = "Geolith's Constitution",
+                TemplateKey = "geolithconstitution",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Apprentice",
+                Level = 50,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.GeolithObsession,
+            new Recipe()
+            {
+                Name = "Geolith's Obsession",
+                TemplateKey = "geolithobsession",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 65,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.GeolithFortitude,
+            new Recipe()
+            {
+                Name = "Geolith's Fortitude",
+                TemplateKey = "geolithfortitude",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 83,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.MiraelisSerenity,
+            new Recipe()
+            {
+                Name = "Miraelis' Serenity",
+                TemplateKey = "miraelisserenity",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                },
+                Rank = "Beginner",
+                Level = 5,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.MiraelisBlessing,
+            new Recipe()
+            {
+                Name = "Miraelis' Blessing",
+                TemplateKey = "miraelisblessing",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 34,
+                Difficulty = 2,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.MiraelisIntellect,
+            new Recipe()
+            {
+                Name = "Miraelis' Intellect",
+                TemplateKey = "miraelisintellect",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 50,
+                Difficulty = 2,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.MiraelisHarmony,
+            new Recipe()
+            {
+                Name = "Miraelis' Harmony",
+                TemplateKey = "miraelisharmony",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 69,
+                Difficulty = 2,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.MiraelisNurturing,
+            new Recipe()
+            {
+                Name = "Miraelis' Nurturing",
+                TemplateKey = "miraelisnurturing",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 88,
+                Difficulty = 2,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.TheseleneElusion,
+            new Recipe()
+            {
+                Name = "Theselene's Elusion",
+                TemplateKey = "theseleneelusion",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Beginner",
+                Level = 5,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.TheseleneShadow,
+            new Recipe()
+            {
+                Name = "Theselene's Shadow",
+                TemplateKey = "theseleneshadow",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Basic",
+                Level = 37,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.TheseleneDexterity,
+            new Recipe()
+            {
+                Name = "Theselene's Dexterity",
+                TemplateKey = "theselenedexterity",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Apprentice",
+                Level = 50,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.TheseleneBalance,
+            new Recipe()
+            {
+                Name = "Theselene's Balance",
+                TemplateKey = "theselenebalance",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.TheseleneRisk,
+            new Recipe()
+            {
+                Name = "Theselene's Risk",
+                TemplateKey = "theselenerisk",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Adept",
+                Level = 90,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.AquaedonClarity,
+            new Recipe()
+            {
+                Name = "Aquaedon's Clarity",
+                TemplateKey = "aquaedonclarity",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                },
+                Rank = "Beginner",
+                Level = 5,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.AquaedonCalming,
+            new Recipe()
+            {
+                Name = "Aquaedon's Calming",
+                TemplateKey = "aquaedoncalming",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 40,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.AquaedonWisdom,
+            new Recipe()
+            {
+                Name = "Aquaedon's Wisdom",
+                TemplateKey = "aquaedonwisdom",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 50,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.AquaedonWill,
+            new Recipe()
+            {
+                Name = "Aquaedon's Will",
+                TemplateKey = "aquaedonwill",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.AquaedonResolve,
+            new Recipe()
+            {
+                Name = "Aquaedon's Resolve",
+                TemplateKey = "aquaedonresolve",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                },
+                Rank = "Adept",
+                Level = 90,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.SerendaelLuck,
+            new Recipe()
+            {
+                Name = "Serendael's Luck",
+                TemplateKey = "serendaelluck",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.SerendaelMagic,
+            new Recipe()
+            {
+                Name = "Serendael's Magic",
+                TemplateKey = "serendaelmagic",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.SerendaelChance,
+            new Recipe()
+            {
+                Name = "Serendael's Chance",
+                TemplateKey = "serendaelchance",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 3 }
+                },
+                Rank = "Apprentice",
+                Level = 55,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.SerendaelRoll,
+            new Recipe()
+            {
+                Name = "Serendael's Roll",
+                TemplateKey = "serendaelroll",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 4 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.SerendaelAddiction,
+            new Recipe()
+            {
+                Name = "Serendael's Addiction",
+                TemplateKey = "serendaeladdiction",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 5 }
+                },
+                Rank = "Adept",
+                Level = 90,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.SkandaraMight,
+            new Recipe()
+            {
+                Name = "Skandara's Might",
+                TemplateKey = "skandaramight",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 16,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.SkandaraTriumph,
+            new Recipe()
+            {
+                Name = "Skandara's Triumph",
+                TemplateKey = "skandaratriumph",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 44,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.SkandaraStrength,
+            new Recipe()
+            {
+                Name = "Skandara's Strength",
+                TemplateKey = "skandarastrength",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 3 }
+                },
+                Rank = "Apprentice",
+                Level = 50,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.SkandaraDrive,
+            new Recipe()
+            {
+                Name = "Skandara's Drive",
+                TemplateKey = "skandaradrive",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 4 }
+                },
+                Rank = "Journeyman",
+                Level = 75,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.SkandaraPierce,
+            new Recipe()
+            {
+                Name = "Skandara's Pierce",
+                TemplateKey = "skandarapierce",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 5 }
+                },
+                Rank = "Adept",
+                Level = 95,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.ZephyraSpirit,
+            new Recipe()
+            {
+                Name = "Zephyra's Spirit",
+                TemplateKey = "zephyraspirit",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 20,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.ZephyraMist,
+            new Recipe()
+            {
+                Name = "Zephyra's Mist",
+                TemplateKey = "zephyramist",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 45,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.ZephyraWind,
+            new Recipe()
+            {
+                Name = "Zephyra's Wind",
+                TemplateKey = "zephyrawind",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 2 }
+                },
+                Rank = "Apprentice",
+                Level = 58,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+        {
+            EnchantingRecipes.ZephyraVortex,
+            new Recipe()
+            {
+                Name = "Zephyra's Vortex",
+                TemplateKey = "zephyravortex",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 3 }
+                },
+                Rank = "Journeyman",
+                Level = 78,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+        {
+            EnchantingRecipes.ZephyraGust,
+            new Recipe()
+            {
+                Name = "Zephyra's Gust",
+                TemplateKey = "zephyragust",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 2 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+
+
+
+
+
     };
 
+    #endregion
     public static Dictionary<AlchemyRecipes, Recipe> AlchemyRequirements { get; } = new()
     {
         {
@@ -195,7 +1039,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Broadsword,
+            WeaponSmithingRecipes.BroadSword,
             new Recipe()
             {
                 Name = "Broad Sword",
@@ -211,7 +1055,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Battlesword,
+            WeaponSmithingRecipes.BattleSword,
             new Recipe()
             {
                 Name = "Battle Sword",
@@ -257,7 +1101,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Longsword,
+            WeaponSmithingRecipes.LongSword,
             new Recipe()
             {
                 Name = "Longsword",
@@ -287,7 +1131,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Emeraldsword,
+            WeaponSmithingRecipes.EmeraldSword,
             new Recipe()
             {
                 Name = "Emerald Sword",
@@ -332,7 +1176,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Dragonslayer,
+            WeaponSmithingRecipes.DragonSlayer,
             new Recipe()
             {
                 Name = "Dragon Slayer",
@@ -408,7 +1252,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Spikedclub,
+            WeaponSmithingRecipes.SpikedClub,
             new Recipe()
             {
                 Name = "Spiked Club",
@@ -423,7 +1267,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Chainmace,
+            WeaponSmithingRecipes.ChainMace,
             new Recipe()
             {
                 Name = "Chain Mace",
@@ -438,7 +1282,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Handaxe,
+            WeaponSmithingRecipes.HandAxe,
             new Recipe()
             {
                 Name = "Handaxe",
@@ -468,7 +1312,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Talgoniteaxe,
+            WeaponSmithingRecipes.TalgoniteAxe,
             new Recipe()
             {
                 Name = "Talgonite Axe",
@@ -483,11 +1327,11 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Hybrasylaxe,
+            WeaponSmithingRecipes.HybrasylBattleAxe,
             new Recipe()
             {
-                Name = "Hy-brasyl Axe",
-                TemplateKey = "hybrasylaxe",
+                Name = "Hy-brasyl Battle Axe",
+                TemplateKey = "hybrasylbattleaxe",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
@@ -498,7 +1342,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Magusares,
+            WeaponSmithingRecipes.MagusAres,
             new Recipe()
             {
                 Name = "Magus Ares",
@@ -513,7 +1357,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Holyhermes,
+            WeaponSmithingRecipes.HolyHermes,
             new Recipe()
             {
                 Name = "Holy Hermes",
@@ -528,7 +1372,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Maguszeus,
+            WeaponSmithingRecipes.MagusZeus,
             new Recipe()
             {
                 Name = "Magus Zeus",
@@ -543,7 +1387,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Holykronos,
+            WeaponSmithingRecipes.HolyKronos,
             new Recipe()
             {
                 Name = "Holy Kronos",
@@ -558,7 +1402,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Magusdiana,
+            WeaponSmithingRecipes.MagusDiana,
             new Recipe()
             {
                 Name = "Magus Diana",
@@ -573,7 +1417,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Holydiana,
+            WeaponSmithingRecipes.HolyDiana,
             new Recipe()
             {
                 Name = "Holy Diana",
@@ -588,7 +1432,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Stonecross,
+            WeaponSmithingRecipes.StoneCross,
             new Recipe()
             {
                 Name = "Stone Cross",
@@ -603,7 +1447,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Oakstaff,
+            WeaponSmithingRecipes.OakStaff,
             new Recipe()
             {
                 Name = "Oak Staff",
@@ -618,7 +1462,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Staffofwisdom,
+            WeaponSmithingRecipes.StaffOfWisdom,
             new Recipe()
             {
                 Name = "Staff of Wisdom",
@@ -633,7 +1477,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Snowdagger,
+            WeaponSmithingRecipes.SnowDagger,
             new Recipe()
             {
                 Name = "Snow Dagger",
@@ -648,7 +1492,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Centerdagger,
+            WeaponSmithingRecipes.CenterDagger,
             new Recipe()
             {
                 Name = "Center Dagger",
@@ -663,7 +1507,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Blossomdagger,
+            WeaponSmithingRecipes.BlossomDagger,
             new Recipe()
             {
                 Name = "Blossom Dagger",
@@ -678,7 +1522,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Curveddagger,
+            WeaponSmithingRecipes.CurvedDagger,
             new Recipe()
             {
                 Name = "Curved Dagger",
@@ -693,7 +1537,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Moondagger,
+            WeaponSmithingRecipes.MoonDagger,
             new Recipe()
             {
                 Name = "Moon Dagger",
@@ -708,7 +1552,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Lightdagger,
+            WeaponSmithingRecipes.LightDagger,
             new Recipe()
             {
                 Name = "Light Dagger",
@@ -723,7 +1567,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Sundagger,
+            WeaponSmithingRecipes.SunDagger,
             new Recipe()
             {
                 Name = "Sun Dagger",
@@ -738,7 +1582,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Lotusdagger,
+            WeaponSmithingRecipes.LotusDagger,
             new Recipe()
             {
                 Name = "Lotus Dagger",
@@ -753,7 +1597,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Blooddagger,
+            WeaponSmithingRecipes.BloodDagger,
             new Recipe()
             {
                 Name = "Blood Dagger",
@@ -768,7 +1612,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Nagetierdagger,
+            WeaponSmithingRecipes.NagetierDagger,
             new Recipe()
             {
                 Name = "Nagetierdagger",
@@ -783,7 +1627,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Dullclaw,
+            WeaponSmithingRecipes.DullClaw,
             new Recipe()
             {
                 Name = "Dull Claw",
@@ -798,7 +1642,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Wolfclaw,
+            WeaponSmithingRecipes.WolfClaw,
             new Recipe()
             {
                 Name = "Wolf Claw",
@@ -813,7 +1657,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Eagletalon,
+            WeaponSmithingRecipes.EagleTalon,
             new Recipe()
             {
                 Name = "Eagle Talon",
@@ -828,7 +1672,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Phoenixclaw,
+            WeaponSmithingRecipes.PhoenixClaw,
             new Recipe()
             {
                 Name = "Phoenix Claw",
@@ -858,7 +1702,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Woodenshield,
+            WeaponSmithingRecipes.WoodenShield,
             new Recipe()
             {
                 Name = "Wooden Shield",
@@ -873,7 +1717,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Leathershield,
+            WeaponSmithingRecipes.LeatherShield,
             new Recipe()
             {
                 Name = "Leather Shield",
@@ -888,7 +1732,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Bronzeshield,
+            WeaponSmithingRecipes.BronzeShield,
             new Recipe()
             {
                 Name = "Bronze Shield",
@@ -903,7 +1747,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Gravelshield,
+            WeaponSmithingRecipes.GravelShield,
             new Recipe()
             {
                 Name = "Gravel Shield",
@@ -918,7 +1762,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Ironshield,
+            WeaponSmithingRecipes.IronShield,
             new Recipe()
             {
                 Name = "Iron Shield",
@@ -933,7 +1777,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Lightshield,
+            WeaponSmithingRecipes.LightShield,
             new Recipe()
             {
                 Name = "Light Shield",
@@ -948,7 +1792,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Mythrilshield,
+            WeaponSmithingRecipes.MythrilShield,
             new Recipe()
             {
                 Name = "Mythril Shield",
@@ -963,7 +1807,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Hybrasylshield,
+            WeaponSmithingRecipes.HybrasylShield,
             new Recipe()
             {
                 Name = "Hybrasyl Shield",
@@ -1030,7 +1874,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Broadsword,
+            WeaponSmithingRecipes.BroadSword,
             new Recipe()
             {
                 Name = "Broad Sword",
@@ -1046,7 +1890,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Battlesword,
+            WeaponSmithingRecipes.BattleSword,
             new Recipe()
             {
                 Name = "Battle Sword",
@@ -1092,7 +1936,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Longsword,
+            WeaponSmithingRecipes.LongSword,
             new Recipe()
             {
                 Name = "Longsword",
@@ -1122,7 +1966,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Emeraldsword,
+            WeaponSmithingRecipes.EmeraldSword,
             new Recipe()
             {
                 Name = "Emerald Sword",
@@ -1167,7 +2011,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Dragonslayer,
+            WeaponSmithingRecipes.DragonSlayer,
             new Recipe()
             {
                 Name = "Dragon Slayer",
@@ -1243,7 +2087,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Spikedclub,
+            WeaponSmithingRecipes.SpikedClub,
             new Recipe()
             {
                 Name = "Spiked Club",
@@ -1258,7 +2102,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Chainmace,
+            WeaponSmithingRecipes.ChainMace,
             new Recipe()
             {
                 Name = "Chain Mace",
@@ -1273,7 +2117,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Handaxe,
+            WeaponSmithingRecipes.HandAxe,
             new Recipe()
             {
                 Name = "Handaxe",
@@ -1303,7 +2147,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Talgoniteaxe,
+            WeaponSmithingRecipes.TalgoniteAxe,
             new Recipe()
             {
                 Name = "Talgonite Axe",
@@ -1318,11 +2162,11 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Hybrasylaxe,
+            WeaponSmithingRecipes.HybrasylBattleAxe,
             new Recipe()
             {
-                Name = "Hy-brasyl Axe",
-                TemplateKey = "hybrasylaxe",
+                Name = "Hy-brasyl Battle Axe",
+                TemplateKey = "hybrasylbattleaxe",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
@@ -1333,7 +2177,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Magusares,
+            WeaponSmithingRecipes.MagusAres,
             new Recipe()
             {
                 Name = "Magus Ares",
@@ -1348,7 +2192,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Holyhermes,
+            WeaponSmithingRecipes.HolyHermes,
             new Recipe()
             {
                 Name = "Holy Hermes",
@@ -1363,7 +2207,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Maguszeus,
+            WeaponSmithingRecipes.MagusZeus,
             new Recipe()
             {
                 Name = "Magus Zeus",
@@ -1378,7 +2222,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Holykronos,
+            WeaponSmithingRecipes.HolyKronos,
             new Recipe()
             {
                 Name = "Holy Kronos",
@@ -1393,7 +2237,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Magusdiana,
+            WeaponSmithingRecipes.MagusDiana,
             new Recipe()
             {
                 Name = "Magus Diana",
@@ -1408,7 +2252,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Holydiana,
+            WeaponSmithingRecipes.HolyDiana,
             new Recipe()
             {
                 Name = "Holy Diana",
@@ -1423,7 +2267,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Stonecross,
+            WeaponSmithingRecipes.StoneCross,
             new Recipe()
             {
                 Name = "Stone Cross",
@@ -1438,7 +2282,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Oakstaff,
+            WeaponSmithingRecipes.OakStaff,
             new Recipe()
             {
                 Name = "Oak Staff",
@@ -1453,7 +2297,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Staffofwisdom,
+            WeaponSmithingRecipes.StaffOfWisdom,
             new Recipe()
             {
                 Name = "Staff of Wisdom",
@@ -1468,7 +2312,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Snowdagger,
+            WeaponSmithingRecipes.SnowDagger,
             new Recipe()
             {
                 Name = "Snow Dagger",
@@ -1483,7 +2327,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Centerdagger,
+            WeaponSmithingRecipes.CenterDagger,
             new Recipe()
             {
                 Name = "Center Dagger",
@@ -1498,7 +2342,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Blossomdagger,
+            WeaponSmithingRecipes.BlossomDagger,
             new Recipe()
             {
                 Name = "Blossom Dagger",
@@ -1513,7 +2357,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Curveddagger,
+            WeaponSmithingRecipes.CurvedDagger,
             new Recipe()
             {
                 Name = "Curved Dagger",
@@ -1528,7 +2372,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Moondagger,
+            WeaponSmithingRecipes.MoonDagger,
             new Recipe()
             {
                 Name = "Moon Dagger",
@@ -1543,7 +2387,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Lightdagger,
+            WeaponSmithingRecipes.LightDagger,
             new Recipe()
             {
                 Name = "Light Dagger",
@@ -1558,7 +2402,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Sundagger,
+            WeaponSmithingRecipes.SunDagger,
             new Recipe()
             {
                 Name = "Sun Dagger",
@@ -1573,7 +2417,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Lotusdagger,
+            WeaponSmithingRecipes.LotusDagger,
             new Recipe()
             {
                 Name = "Lotus Dagger",
@@ -1588,7 +2432,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Blooddagger,
+            WeaponSmithingRecipes.BloodDagger,
             new Recipe()
             {
                 Name = "Blood Dagger",
@@ -1603,7 +2447,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Nagetierdagger,
+            WeaponSmithingRecipes.NagetierDagger,
             new Recipe()
             {
                 Name = "Nagetierdagger",
@@ -1618,7 +2462,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Dullclaw,
+            WeaponSmithingRecipes.DullClaw,
             new Recipe()
             {
                 Name = "Dull Claw",
@@ -1633,7 +2477,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Wolfclaw,
+            WeaponSmithingRecipes.WolfClaw,
             new Recipe()
             {
                 Name = "Wolf Claw",
@@ -1648,7 +2492,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Eagletalon,
+            WeaponSmithingRecipes.EagleTalon,
             new Recipe()
             {
                 Name = "Eagle Talon",
@@ -1663,7 +2507,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Phoenixclaw,
+            WeaponSmithingRecipes.PhoenixClaw,
             new Recipe()
             {
                 Name = "Phoenix Claw",
@@ -1693,7 +2537,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Woodenshield,
+            WeaponSmithingRecipes.WoodenShield,
             new Recipe()
             {
                 Name = "Wooden Shield",
@@ -1708,7 +2552,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Leathershield,
+            WeaponSmithingRecipes.LeatherShield,
             new Recipe()
             {
                 Name = "Leather Shield",
@@ -1723,7 +2567,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Bronzeshield,
+            WeaponSmithingRecipes.BronzeShield,
             new Recipe()
             {
                 Name = "Bronze Shield",
@@ -1738,7 +2582,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Gravelshield,
+            WeaponSmithingRecipes.GravelShield,
             new Recipe()
             {
                 Name = "Gravel Shield",
@@ -1753,7 +2597,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Ironshield,
+            WeaponSmithingRecipes.IronShield,
             new Recipe()
             {
                 Name = "Iron Shield",
@@ -1768,7 +2612,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Lightshield,
+            WeaponSmithingRecipes.LightShield,
             new Recipe()
             {
                 Name = "Light Shield",
@@ -1783,7 +2627,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Mythrilshield,
+            WeaponSmithingRecipes.MythrilShield,
             new Recipe()
             {
                 Name = "Mythril Shield",
@@ -1798,7 +2642,7 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.Hybrasylshield,
+            WeaponSmithingRecipes.HybrasylShield,
             new Recipe()
             {
                 Name = "Hybrasyl Shield",
@@ -1820,7 +2664,7 @@ public static class CraftingRequirements
     public static Dictionary<CraftedArmors, Recipe> ArmorSmithingArmorRequirements { get; } = new()
     {
         {
-            CraftedArmors.Refinedscoutleather,
+            CraftedArmors.RefinedScoutLeather,
             new Recipe()
             {
                 Name = "Refined Scout Leather",
@@ -1836,7 +2680,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refineddwarvishleather,
+            CraftedArmors.RefinedDwarvishLeather,
             new Recipe()
             {
                 Name = "Refined Dwarvish Leather",
@@ -1852,7 +2696,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedpaluten,
+            CraftedArmors.RefinedPaluten,
             new Recipe()
             {
                 Name = "Refined Paluten",
@@ -1868,7 +2712,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedkeaton,
+            CraftedArmors.RefinedKeaton,
             new Recipe()
             {
                 Name = "Refined Keaton",
@@ -1884,7 +2728,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedbardocle,
+            CraftedArmors.RefinedBardocle,
             new Recipe()
             {
                 Name = "Refined Bardocle",
@@ -1900,7 +2744,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedgardcorp,
+            CraftedArmors.RefinedGardcorp,
             new Recipe()
             {
                 Name = "Refined Gardcorp",
@@ -1916,7 +2760,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedjourneyman,
+            CraftedArmors.RefinedJourneyman,
             new Recipe()
             {
                 Name = "Refined Journeyman",
@@ -1932,7 +2776,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedlorum,
+            CraftedArmors.RefinedLorum,
             new Recipe()
             {
                 Name = "Refined Lorum",
@@ -1948,7 +2792,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedmane,
+            CraftedArmors.RefinedMane,
             new Recipe()
             {
                 Name = "Refined Mane",
@@ -1964,7 +2808,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedduinuasal,
+            CraftedArmors.RefinedDuinUasal,
             new Recipe()
             {
                 Name = "Refined Duin-Uasal",
@@ -1980,7 +2824,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedcowl,
+            CraftedArmors.RefinedCowl,
             new Recipe()
             {
                 Name = "Refined Cowl",
@@ -1996,7 +2840,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedgaluchatcoat,
+            CraftedArmors.RefinedGaluchatCoat,
             new Recipe()
             {
                 Name = "Refined Galuchat Coat",
@@ -2012,7 +2856,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedmantle,
+            CraftedArmors.RefinedMantle,
             new Recipe()
             {
                 Name = "Refined Mantle",
@@ -2028,7 +2872,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedhierophant,
+            CraftedArmors.RefinedHierophant,
             new Recipe()
             {
                 Name = "Refined Hierophant",
@@ -2044,7 +2888,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refineddalmatica,
+            CraftedArmors.RefinedDalmatica,
             new Recipe()
             {
                 Name = "Refined Dalmatica",
@@ -2060,7 +2904,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refineddobok,
+            CraftedArmors.RefinedDobok,
             new Recipe()
             {
                 Name = "Refined Dobok",
@@ -2076,7 +2920,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedculotte,
+            CraftedArmors.RefinedCulotte,
             new Recipe()
             {
                 Name = "Refined Culotte",
@@ -2092,7 +2936,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedearthgarb,
+            CraftedArmors.RefinedEarthGarb,
             new Recipe()
             {
                 Name = "Refined Earth Garb",
@@ -2108,7 +2952,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedwindgarb,
+            CraftedArmors.RefinedWindGarb,
             new Recipe()
             {
                 Name = "Refined Wind Garb",
@@ -2124,7 +2968,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedmountaingarb,
+            CraftedArmors.RefinedMountainGarb,
             new Recipe()
             {
                 Name = "Refined Mountain Garb",
@@ -2140,7 +2984,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedleathertunic,
+            CraftedArmors.RefinedLeatherTunic,
             new Recipe()
             {
                 Name = "Refined Leather Tunic",
@@ -2156,7 +3000,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedlorica,
+            CraftedArmors.RefinedLorica,
             new Recipe()
             {
                 Name = "Refined Lorica",
@@ -2172,7 +3016,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedkasmaniumarmor,
+            CraftedArmors.RefinedKasmaniumArmor,
             new Recipe()
             {
                 Name = "Refined Kasmanium Armor",
@@ -2188,7 +3032,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedipletmail,
+            CraftedArmors.RefinedIpletMail,
             new Recipe()
             {
                 Name = "Refined Iplet Mail",
@@ -2204,7 +3048,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedhybrasylplate,
+            CraftedArmors.RefinedHybrasylPlate,
             new Recipe()
             {
                 Name = "Refined Hy-brasyl Plate",
@@ -2221,7 +3065,7 @@ public static class CraftingRequirements
         },
 
         {
-            CraftedArmors.Refinedcotte,
+            CraftedArmors.RefinedCotte,
             new Recipe()
             {
                 Name = "Refined Cotte",
@@ -2237,7 +3081,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedbrigandine,
+            CraftedArmors.RefinedBrigandine,
             new Recipe()
             {
                 Name = "Refined Brigandine",
@@ -2253,7 +3097,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedcorsette,
+            CraftedArmors.RefinedCorsette,
             new Recipe()
             {
                 Name = "Refined Corsette",
@@ -2269,7 +3113,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedpebblerose,
+            CraftedArmors.RefinedPebbleRose,
             new Recipe()
             {
                 Name = "Refined Pebble Rose",
@@ -2285,7 +3129,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedkagum,
+            CraftedArmors.RefinedKagum,
             new Recipe()
             {
                 Name = "Refined Kagum",
@@ -2301,7 +3145,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedmagiskirt,
+            CraftedArmors.RefinedMagiSkirt,
             new Recipe()
             {
                 Name = "Refined Magi Skirt",
@@ -2317,7 +3161,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedbenusta,
+            CraftedArmors.RefinedBenusta,
             new Recipe()
             {
                 Name = "Refined Benusta",
@@ -2333,7 +3177,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedstoller,
+            CraftedArmors.RefinedStoller,
             new Recipe()
             {
                 Name = "Refined Stoller",
@@ -2349,7 +3193,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedclymouth,
+            CraftedArmors.RefinedClymouth,
             new Recipe()
             {
                 Name = "Refined Clymouth",
@@ -2365,7 +3209,7 @@ public static class CraftingRequirements
             }
         },
         {
-            CraftedArmors.Refinedclamyth,
+            CraftedArmors.RefinedClamyth,
             new Recipe()
             {
                 Name = "Refined Clamyth",
@@ -2381,7 +3225,7 @@ public static class CraftingRequirements
             }
         },
         {
-    CraftedArmors.Refinedgorgetgown,
+    CraftedArmors.RefinedGorgetGown,
     new Recipe()
     {
         Name = "Refined Gorget Gown",
@@ -2397,7 +3241,7 @@ public static class CraftingRequirements
     }
 },
 {
-    CraftedArmors.Refinedmysticgown,
+    CraftedArmors.RefinedMysticGown,
     new Recipe()
     {
         Name = "Refined Mystic Gown",
@@ -2413,7 +3257,7 @@ public static class CraftingRequirements
     }
 },
 {
-    CraftedArmors.Refinedelle,
+    CraftedArmors.RefinedElle,
     new Recipe()
     {
         Name = "Refined Elle",
@@ -2429,7 +3273,7 @@ public static class CraftingRequirements
     }
 },
 {
-    CraftedArmors.Refineddolman,
+    CraftedArmors.RefinedDolman,
     new Recipe()
     {
         Name = "Refined Dolman",
@@ -2445,7 +3289,7 @@ public static class CraftingRequirements
     }
 },
 {
-    CraftedArmors.Refinedbansagart,
+    CraftedArmors.RefinedBansagart,
     new Recipe()
     {
         Name = "Refined Bansagart",
@@ -2461,7 +3305,7 @@ public static class CraftingRequirements
     }
 },
 {
-    CraftedArmors.Refinedearthbodice,
+    CraftedArmors.RefinedEarthBodice,
     new Recipe()
     {
         Name = "Refined Earth Bodice",
@@ -2477,7 +3321,7 @@ public static class CraftingRequirements
     }
 },
 {
-    CraftedArmors.Refinedlotusbodice,
+    CraftedArmors.RefinedLotusBodice,
     new Recipe()
     {
         Name = "Refined Lotus Bodice",
@@ -2493,7 +3337,7 @@ public static class CraftingRequirements
     }
 },
 {
-    CraftedArmors.Refinedmoonbodice,
+    CraftedArmors.RefinedMoonBodice,
     new Recipe()
     {
         Name = "Refined Moon Bodice",
@@ -2509,7 +3353,7 @@ public static class CraftingRequirements
     }
 },
 {
-    CraftedArmors.Refinedlightninggarb,
+    CraftedArmors.RefinedLightningGarb,
     new Recipe()
     {
         Name = "Refined Lightning Garb",
@@ -2525,7 +3369,7 @@ public static class CraftingRequirements
     }
 },
 {
-    CraftedArmors.Refinedseagarb,
+    CraftedArmors.RefinedSeaGarb,
     new Recipe()
     {
         Name = "Refined Sea Garb",
@@ -2541,7 +3385,7 @@ public static class CraftingRequirements
     }
 },
 {
-    CraftedArmors.Refinedleatherbliaut,
+    CraftedArmors.RefinedLeatherBliaut,
     new Recipe()
     {
         Name = "Refined Leather Bliaut",
@@ -2557,7 +3401,7 @@ public static class CraftingRequirements
     }
 },
 {
-    CraftedArmors.Refinedcuirass,
+    CraftedArmors.RefinedCuirass,
     new Recipe()
     {
         Name = "Refined Cuirass",
@@ -2573,7 +3417,7 @@ public static class CraftingRequirements
     }
 },
 {
-    CraftedArmors.Refinedkasmaniumhauberk,
+    CraftedArmors.RefinedKasmaniumHauberk,
     new Recipe()
     {
         Name = "Refined Kasmanium Hauberk",
@@ -2589,7 +3433,7 @@ public static class CraftingRequirements
     }
 },
 {
-    CraftedArmors.Refinedphoenixmail,
+    CraftedArmors.RefinedPhoenixMail,
     new Recipe()
     {
         Name = "Refined Phoenix Mail",
@@ -2605,7 +3449,7 @@ public static class CraftingRequirements
     }
 },
 {
-    CraftedArmors.Refinedhybrasylarmor,
+    CraftedArmors.RefinedHybrasylArmor,
     new Recipe()
     {
         Name = "Refined Hybrasyl Armor",
@@ -2626,7 +3470,7 @@ public static class CraftingRequirements
     public static Dictionary<ArmorSmithRecipes, Recipe> ArmorSmithingGearRequirements { get; } = new()
     {
         {
-            ArmorSmithRecipes.Leathersapphiregauntlet,
+            ArmorSmithRecipes.LeatherSapphireGauntlet,
             new Recipe()
             {
                 Name = "Leather Sapphire Gauntlet",
@@ -2642,7 +3486,7 @@ public static class CraftingRequirements
             }
         },
         {
-    ArmorSmithRecipes.Leatherrubygauntlet,
+    ArmorSmithRecipes.LeatherRubyGauntlet,
     new Recipe()
     {
         Name = "Leather Ruby Gauntlet",
@@ -2658,7 +3502,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Leatheremeraldgauntlet,
+    ArmorSmithRecipes.LeatherEmeraldGauntlet,
     new Recipe()
     {
         Name = "Leather Emerald Gauntlet",
@@ -2674,7 +3518,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Leatherheartstonegauntlet,
+    ArmorSmithRecipes.LeatherHeartstoneGauntlet,
     new Recipe()
     {
         Name = "Leather Heartstone Gauntlet",
@@ -2690,7 +3534,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Ironsapphiregauntlet,
+    ArmorSmithRecipes.IronSapphireGauntlet,
     new Recipe()
     {
         Name = "Iron Sapphire Gauntlet",
@@ -2706,7 +3550,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Ironrubygauntlet,
+    ArmorSmithRecipes.IronRubyGauntlet,
     new Recipe()
     {
         Name = "Iron Ruby Gauntlet",
@@ -2722,7 +3566,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Ironemeraldgauntlet,
+    ArmorSmithRecipes.IronEmeraldGauntlet,
     new Recipe()
     {
         Name = "Iron Emerald Gauntlet",
@@ -2738,7 +3582,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Ironheartstonegauntlet,
+    ArmorSmithRecipes.IronHeartstoneGauntlet,
     new Recipe()
     {
         Name = "Iron Heartstone Gauntlet",
@@ -2754,7 +3598,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Mythrilsapphiregauntlet,
+    ArmorSmithRecipes.MythrilSapphireGauntlet,
     new Recipe()
     {
         Name = "Mythril Sapphire Gauntlet",
@@ -2770,7 +3614,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Mythrilrubygauntlet,
+    ArmorSmithRecipes.MythrilRubyGauntlet,
     new Recipe()
     {
         Name = "Mythril Ruby Gauntlet",
@@ -2786,7 +3630,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Mythrilemeraldgauntlet,
+    ArmorSmithRecipes.MythrilEmeraldGauntlet,
     new Recipe()
     {
         Name = "Mythril Emerald Gauntlet",
@@ -2802,7 +3646,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Mythrilheartstonegauntlet,
+    ArmorSmithRecipes.MythrilHeartstoneGauntlet,
     new Recipe()
     {
         Name = "Mythril Heartstone Gauntlet",
@@ -2818,7 +3662,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Hybrasylsapphiregauntlet,
+    ArmorSmithRecipes.HybrasylSapphireGauntlet,
     new Recipe()
     {
         Name = "Hy-brasyl Sapphire Gauntlet",
@@ -2834,7 +3678,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Hybrasylrubygauntlet,
+    ArmorSmithRecipes.HybrasylRubyGauntlet,
     new Recipe()
     {
         Name = "Hy-brasyl Ruby Gauntlet",
@@ -2850,7 +3694,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Hybrasylemeraldgauntlet,
+    ArmorSmithRecipes.HybrasylEmeraldGauntlet,
     new Recipe()
     {
         Name = "Hy-brasyl Emerald Gauntlet",
@@ -2866,7 +3710,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Hybrasylheartstonegauntlet,
+    ArmorSmithRecipes.HybrasylHeartstoneGauntlet,
     new Recipe()
     {
         Name = "Hy-brasyl Heartstone Gauntlet",
@@ -2882,7 +3726,7 @@ public static class CraftingRequirements
     }
 },
         {
-            ArmorSmithRecipes.Jeweledseabelt,
+            ArmorSmithRecipes.JeweledSeaBelt,
             new Recipe()
             {
                 Name = "Jeweled Sea Belt",
@@ -2898,7 +3742,7 @@ public static class CraftingRequirements
             }
         },
         {
-    ArmorSmithRecipes.Jeweledfirebelt,
+    ArmorSmithRecipes.JeweledFireBelt,
     new Recipe()
     {
         Name = "Jeweled Fire Belt",
@@ -2914,7 +3758,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Jeweledwindbelt,
+    ArmorSmithRecipes.JeweledWindBelt,
     new Recipe()
     {
         Name = "Jeweled Wind Belt",
@@ -2930,7 +3774,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Jeweledearthbelt,
+    ArmorSmithRecipes.JeweledEarthBelt,
     new Recipe()
     {
         Name = "Jeweled Earth Belt",
@@ -2946,7 +3790,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Jewelednaturebelt,
+    ArmorSmithRecipes.JeweledNatureBelt,
     new Recipe()
     {
         Name = "Jeweled Nature Belt",
@@ -2962,7 +3806,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Jeweledmetalbelt,
+    ArmorSmithRecipes.JeweledMetalBelt,
     new Recipe()
     {
         Name = "Jeweled Metal Belt",
@@ -2978,7 +3822,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Jeweledlightbelt,
+    ArmorSmithRecipes.JeweledLightBelt,
     new Recipe()
     {
         Name = "Jeweled Light Belt",
@@ -2994,7 +3838,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.Jeweleddarkbelt,
+    ArmorSmithRecipes.JeweledDarkBelt,
     new Recipe()
     {
         Name = "Jeweled Dark Belt",

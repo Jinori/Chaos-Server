@@ -105,9 +105,9 @@ public class AcceptHobbyorProfessionScript : DialogScriptBase
                 source.Trackers.Enums.Set(Craft.Weaponsmithing);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Eppe);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Saber);
-                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Dullclaw);
-                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Snowdagger);
-                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Centerdagger);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.DullClaw);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.SnowDagger);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.CenterDagger);
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Beginner Weaponsmith",
