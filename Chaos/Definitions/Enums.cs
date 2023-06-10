@@ -55,6 +55,18 @@ public enum MonkElementForm
     Fire = 3,
 }
 
+public enum ReligionPrayer
+{
+    None,
+    First = 1,
+    Second = 2,
+    Third = 3, 
+    Fourth = 4,
+    Fifth = 5,
+    End = 6
+}
+
+
 [Flags]
 public enum TargetFilter
 {

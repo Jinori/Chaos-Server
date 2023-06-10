@@ -8,28 +8,36 @@ namespace Chaos.Scripting.SpellScripts;
 
 public class SummonPetScript : ConfigurableSpellScriptBase
 {
-    private readonly IMonsterFactory MonsterFactory;
+    private const string MONSTER_KEY = "gloop";
+    private readonly IMonsterFactory _monsterFactory;
 
-    /// <inheritdoc />
     public SummonPetScript(Spell subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject) => _monsterFactory = monsterFactory;
 
     public override void OnUse(SpellContext context)
     {
-        var checkForOldPets = context.Source.MapInstance.GetEntities<Monster>();
+        RemoveExistingPets(context);
+        SpawnNewPet(context);
+    }
 
-        foreach (var mob in checkForOldPets)
+    private void RemoveExistingPets(SpellContext context)
+    {
+        var monsters = context.Source.MapInstance.GetEntities<Monster>();
+
+        foreach (var monster in monsters)
         {
-            if (mob.Template.TemplateKey == "gloop".ToLower())
+            if (string.Equals(monster.Template.TemplateKey, MONSTER_KEY, StringComparison.OrdinalIgnoreCase) &&
+                monster.Name.Contains(context.Source.Name))
             {
-                if (mob.Name.Contains(context.Source.Name))
-                    mob.MapInstance.RemoveObject(mob);
+                monster.MapInstance.RemoveObject(monster);
             }
         }
+    }
 
-        var monster = MonsterFactory.Create("gloop", context.SourceMap, context.SourcePoint);
-        monster.Name = context.Source.Name + "'s Gloop";
-        context.Source.MapInstance.AddObject(monster, new Point(context.Source.X, context.Source.Y));
+    private void SpawnNewPet(SpellContext context)
+    {
+        var newMonster = _monsterFactory.Create(MONSTER_KEY, context.SourceMap, context.SourcePoint);
+        newMonster.Name = $"{context.Source.Name}'s {MONSTER_KEY}";
+        context.Source.MapInstance.AddObject(newMonster, new Point(context.Source.X, context.Source.Y));
     }
 }
