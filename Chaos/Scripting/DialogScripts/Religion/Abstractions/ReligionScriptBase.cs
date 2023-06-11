@@ -1,6 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
+using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -17,6 +18,11 @@ public class ReligionScriptBase : DialogScriptBase
     private const string THESELENE_LEGEND_KEY = "Theselene";
     private const string SERENDAEL_LEGEND_KEY = "Serendael";
     private const string SKANDARA_LEGEND_KEY = "Skandara";
+    protected Animation PrayerSuccess { get; } = new()
+    {
+        AnimationSpeed = 60,
+        TargetAnimation = 5
+    };
     #region Prayers
     public readonly Dictionary<string, List<string>> DeityPrayers = new Dictionary<string, List<string>>()
     {
@@ -119,6 +125,89 @@ public class ReligionScriptBase : DialogScriptBase
         Champion
     }
 
+    public static void SendOnJoinQuest(Aisling source, string deity)
+    {
+        switch (deity)
+        {
+            case "Miraelis":
+                source.Trackers.Enums.Set(typeof(JoinReligionQuest), JoinReligionQuest.MiraelisQuest);
+                break;
+            case "Skandara":
+                source.Trackers.Enums.Set(typeof(JoinReligionQuest), JoinReligionQuest.SkandaraQuest);
+                break;
+            case "Theselene":
+                source.Trackers.Enums.Set(typeof(JoinReligionQuest), JoinReligionQuest.TheseleneQuest);
+                break;
+            case "Serendael":
+                source.Trackers.Enums.Set(typeof(JoinReligionQuest), JoinReligionQuest.SerendaelQuest);
+                break;
+        }
+        source.SendActiveMessage($"{deity} wants you to retreive (3) Essence of {deity}.");
+    }
+
+    public void HideDialogOptions(Aisling source, string deity, Dialog subject)
+    {
+        if (!source.Trackers.Enums.TryGetValue(typeof(JoinReligionQuest), out var enumValue))
+        {
+            enumValue = JoinReligionQuest.None;
+        }
+
+        if (enumValue is JoinReligionQuest.None or JoinReligionQuest.MiraelisQuest or JoinReligionQuest.SerendaelQuest or JoinReligionQuest.SkandaraQuest or JoinReligionQuest.TheseleneQuest)
+        {
+            RemoveOption(subject, "Pray");
+        }
+
+        if (enumValue is not JoinReligionQuest.JoinReligionComplete && 
+            enumValue is not JoinReligionQuest.None)
+        {
+            RemoveOption(subject, "Join the Temple");
+
+            if (!subject.GetOptionIndex($"Essence of {deity}").HasValue)
+            {
+                subject.AddOption($"Essence of {deity}", $"{deity}_temple_completejoinQuest");
+            }
+        }
+
+        if (enumValue is JoinReligionQuest.JoinReligionComplete)
+        {
+            RemoveOption(subject, "Join the Temple");
+        }
+    }
+
+    private void RemoveOption(Dialog subject, string optionName)
+    {
+        if (subject.GetOptionIndex(optionName).HasValue)
+        {
+            var s = subject.GetOptionIndex(optionName)!.Value;
+            subject.Options.RemoveAt(s);
+        }
+    }
+    
+    public void CheckJoinQuestCompletion(Aisling source, string deity)
+    {
+        if (source.Inventory.CountOf($"Essence of {deity}") < 3)
+        {
+            source.SendActiveMessage($"You do not have the required Essence of {deity}.");
+
+            Subject.Reply(
+                source,
+                "Though the essence of Miraelis eludes you, seeker, remember that the journey itself holds wisdom. Reflect on your quest, learn from its challenges, and embrace compassion, nature, and intellect in your future endeavors. The path to enlightenment awaits your renewed efforts.");
+            return;
+        }
+        
+        source.Trackers.Enums.Set(typeof(JoinReligionQuest), JoinReligionQuest.JoinReligionComplete);
+        source.Legend.AddOrAccumulate(
+            new LegendMark(
+                $"Worshipper of {deity}",
+                deity,
+                MarkIcon.Heart,
+                MarkColor.White,
+                1,
+                GameTime.Now));
+        
+        source.SendActiveMessage($"You have joined the temple of {deity} as a Worshipper!");
+    }
+    
     public void Pray(Aisling source, string deity)
     {
         if (source.Trackers.TimedEvents.HasActiveEvent("PrayerCooldown", out var timedEvent))
@@ -140,6 +229,7 @@ public class ReligionScriptBase : DialogScriptBase
             count++;
             source.Trackers.Enums.Set(typeof(ReligionPrayer), count);
             UpdateReligionRank(source);
+            source.Animate(PrayerSuccess);
         } 
         else
         {

@@ -135,8 +135,10 @@ public class EnchantingScript : DialogScriptBase
             Subject.ReplyToUnknownInput(source);
             return;
         }
+
+        var correctRecipe = selected.Replace(" ", "").Replace("'", "");
         
-        if (!Enum.TryParse<EnchantingRecipes>(selected.Replace(" ", ""), out var selectedRecipeEnum))
+        if (!Enum.TryParse<EnchantingRecipes>(correctRecipe, out var selectedRecipeEnum))
         {
             Subject.Reply(source, "Recipe could not be found in Enchanting.");
             return;
