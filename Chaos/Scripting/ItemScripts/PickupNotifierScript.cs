@@ -19,7 +19,13 @@ public class PickupNotifierScript : ItemScriptBase
 
             if (Subject.Count > 1)
                 aisling.SendOrangeBarMessage($"You picked up {Subject.Count} of {Subject.DisplayName}.");
+            
+            var aislings = aisling.MapInstance.GetEntitiesWithinRange<Aisling>(aisling, 8).Where(x => aisling.Id != x.Id);
 
+            foreach (var player in aislings)
+            {
+                player.SendOrangeBarMessage($"{aisling.Name} has picked up {Subject.DisplayName}.");
+            }
             return;
         }
 
