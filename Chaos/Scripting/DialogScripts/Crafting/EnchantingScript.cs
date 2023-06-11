@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
@@ -167,7 +168,7 @@ public class EnchantingScript : DialogScriptBase
             return;
         }
         
-        var correctRecipe = selected.Replace(" ", "").Replace("'s", "").Replace("'", "");
+        var correctRecipe = Regex.Replace(selected, @"(\s+'s|')", "");
         if (!Enum.TryParse<EnchantingRecipes>(correctRecipe, out var selectedRecipeEnum))
         {
             Subject.Reply(source, "Recipe could not be found in Enchanting.");

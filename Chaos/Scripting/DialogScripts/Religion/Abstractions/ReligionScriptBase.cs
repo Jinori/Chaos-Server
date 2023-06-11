@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
@@ -7,6 +8,7 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Religion.Abstractions;
@@ -14,10 +16,14 @@ namespace Chaos.Scripting.DialogScripts.Religion.Abstractions;
 public class ReligionScriptBase : DialogScriptBase
 {
     protected IClientRegistry<IWorldClient> ClientRegistry { get; }
+    protected IItemFactory ItemFactory { get; }
     private const string MIRAELIS_LEGEND_KEY = "Miraelis";
     private const string THESELENE_LEGEND_KEY = "Theselene";
     private const string SERENDAEL_LEGEND_KEY = "Serendael";
     private const string SKANDARA_LEGEND_KEY = "Skandara";
+    private const int TEMPLE_SCROLL_FAITH_COST = 1;
+    private const int AMOUNT_TO_TRANSFER_FAITH = 5;
+    
     protected Animation PrayerSuccess { get; } = new()
     {
         AnimationSpeed = 60,
@@ -111,9 +117,13 @@ public class ReligionScriptBase : DialogScriptBase
     };
     #endregion Prayers
     /// <inheritdoc />
-    public ReligionScriptBase(Dialog subject, IClientRegistry<IWorldClient> clientRegistry)
-        : base(subject) =>
+    public ReligionScriptBase(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IItemFactory itemFactory)
+        : base(subject)
+    {
         ClientRegistry = clientRegistry;
+        ItemFactory = itemFactory;
+    }
+    
 
     public enum Rank
     {
@@ -125,6 +135,71 @@ public class ReligionScriptBase : DialogScriptBase
         Champion
     }
 
+    public void TransferFaith(Aisling source, string deity)
+    {
+        //ensure the name is present
+        if (!TryFetchArgs<string>(out var name) || string.IsNullOrEmpty(name))
+        {
+            Subject.ReplyToUnknownInput(source);
+            return;
+        }
+
+        var target = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(name))?.Aisling;
+
+        //ensure the player is online
+        if (target is null)
+        {
+            Subject.Reply(source, $"{name} is not online", $"{deity}_temple_initial");
+            return;
+        }
+        
+        if (CheckCurrentFaith(source) <= AMOUNT_TO_TRANSFER_FAITH)
+        {
+            Subject.Reply(source, "Your faith is too low to transfer yours to another.", $"{deity}_temple_initial");
+            return;
+        }
+
+        if (!TryTransferFaith(source, target))
+        {
+            Subject.Reply(source, "Your faith may be too low or there was an issue.", $"{deity}_temple_initial");
+            return;
+        }
+        
+        source.SendActiveMessage($"You bestow your faith upon {target.Name}. May {deity} bless you both.");
+        target.SendActiveMessage($"{source.Name} has bestowed faith of {deity} upon you!");
+        target.Animate(PrayerSuccess);
+    }
+    
+    public void CreateTempleScroll(Aisling source, string deity)
+    {
+        if (CheckCurrentFaith(source) <= 1)
+        {
+            Subject.Reply(source, "Your faith is too low to create a scroll to the temple.", $"{deity}_temple_initial");
+            return;
+        }
+
+        if (!TrySubtractFaith(source, TEMPLE_SCROLL_FAITH_COST))
+        {
+            Subject.Reply(source, "Your faith may be too low or there was an issue.", $"{deity}_temple_initial");
+            return;
+        }
+        
+        source.SendActiveMessage($"In gratitude for your loyalty, {deity} hands you a temple scroll.");
+
+        //Change to the specific god's temple map
+        var templeScroll = deity switch
+        {
+            "Miraelis"  => "milethScroll",
+            "Skandara"  => "milethScroll",
+            "Theselene" => "milethScroll",
+            "Serendael" => "milethScroll",
+            _           => ""
+        };
+
+        var scroll = ItemFactory.Create(templeScroll);
+        source.Inventory.TryAddToNextSlot(scroll);
+    }
+    
     public static void SendOnJoinQuest(Aisling source, string deity)
     {
         switch (deity)
@@ -155,6 +230,8 @@ public class ReligionScriptBase : DialogScriptBase
         if (enumValue is JoinReligionQuest.None or JoinReligionQuest.MiraelisQuest or JoinReligionQuest.SerendaelQuest or JoinReligionQuest.SkandaraQuest or JoinReligionQuest.TheseleneQuest)
         {
             RemoveOption(subject, "Pray");
+            RemoveOption(subject, "Transfer Faith");
+            RemoveOption(subject, "Scroll of the Temple");
         }
 
         if (enumValue is not JoinReligionQuest.JoinReligionComplete && 
@@ -205,6 +282,7 @@ public class ReligionScriptBase : DialogScriptBase
                 1,
                 GameTime.Now));
         
+        source.Inventory.RemoveQuantity($"Essence of {deity}", 3);
         source.SendActiveMessage($"You have joined the temple of {deity} as a Worshipper!");
     }
     
@@ -212,7 +290,7 @@ public class ReligionScriptBase : DialogScriptBase
     {
         if (source.Trackers.TimedEvents.HasActiveEvent("PrayerCooldown", out var timedEvent))
         {
-            Subject.Reply(source, $"You cannot pray to {deity} at this time. \nTry again in {
+            Subject.Reply(source, $"You cannot pray with {deity} at this time. \nTry again in {
                 timedEvent.Remaining.ToReadableString()}.");
             
             return;
@@ -230,6 +308,12 @@ public class ReligionScriptBase : DialogScriptBase
             source.Trackers.Enums.Set(typeof(ReligionPrayer), count);
             UpdateReligionRank(source);
             source.Animate(PrayerSuccess);
+            if (IntegerRandomizer.RollChance(5))
+            {
+                var essence = ItemFactory.Create($"essenceof{deity}");
+                source.Inventory.TryAddToNextSlot(essence);
+                source.SendActiveMessage($"Through prayer, you receive a Essence of {deity}!");
+            }
         } 
         else
         {
@@ -363,5 +447,39 @@ public class ReligionScriptBase : DialogScriptBase
         return 0;
     }
 
+    public bool TryTransferFaith(Aisling source, Aisling target)
+    {
+        var sourceKey = CheckDeity(source);
+        var targetKey = CheckDeity(target);
+        
+        if (sourceKey is not null && targetKey is not null && (sourceKey == targetKey) && source.Legend.TryGetValue(sourceKey, out var faith) && target.Legend.TryGetValue(targetKey, out var targetFaith))
+        {
+            if (AMOUNT_TO_TRANSFER_FAITH < faith.Count)
+            {
+                faith.Count -= AMOUNT_TO_TRANSFER_FAITH;
+                targetFaith.Count += AMOUNT_TO_TRANSFER_FAITH;
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    public bool TrySubtractFaith(Aisling source, int amount)
+    {
+        var key = CheckDeity(source);
+        
+        if ((key != null) && source.Legend.TryGetValue(key, out var faith))
+        {
+            if (amount < faith.Count)
+            {
+                source.Legend.RemoveCount(key, amount, out _);
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
     public static bool IsDeityMember(Aisling source, string deity) => source.Legend.ContainsKey(deity);
 }
