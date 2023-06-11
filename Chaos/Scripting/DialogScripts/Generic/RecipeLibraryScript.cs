@@ -56,80 +56,39 @@ namespace Chaos.Scripting.DialogScripts.Generic
 
                 case "recipelibrary_initial":
                 {
+                    void AddBookOption(string dialogKey, string optionText)
+                    {
+                        var option = new DialogOption
+                        {
+                            DialogKey = dialogKey,
+                            OptionText = optionText
+                        };
+
+                        if (!Subject.HasOption(optionText))
+                            Subject.Options.Insert(0, option);
+                    }
+
                     if (hasFlag1)
-                    {
-                        var option = new DialogOption
-                        {
-                            DialogKey = "cookbook",
-                            OptionText = "Cook Book"
-                        };
-
-                        if (!Subject.HasOption(option.OptionText))
-                            Subject.Options.Insert(0, option);
-                    }
-                    
+                        AddBookOption("cookbook", "Cook Book");
+    
                     if (hasFlag2)
-                    {
-                        var option = new DialogOption
-                        {
-                            DialogKey = "alchemybook",
-                            OptionText = "Alchemy Book"
-                        };
-
-                        if (!Subject.HasOption(option.OptionText))
-                            Subject.Options.Insert(0, option);
-                    }
-                    
+                        AddBookOption("alchemybook", "Alchemy Book");
+    
                     if (hasFlag3)
-                    {
-                        var option = new DialogOption
-                        {
-                            DialogKey = "armorsmithingbook",
-                            OptionText = "Armorsmithing Book"
-                        };
-
-                        if (!Subject.HasOption(option.OptionText))
-                            Subject.Options.Insert(0, option);
-                    }
-                    
+                        AddBookOption("armorsmithingbook", "Armorsmithing Book");
+    
                     if (hasFlag4)
-                    {
-                        var option = new DialogOption
-                        {
-                            DialogKey = "weaponsmithingbook",
-                            OptionText = "Weaponsmithing Book"
-                        };
-
-                        if (!Subject.HasOption(option.OptionText))
-                            Subject.Options.Insert(0, option);
-                    }
-                    
+                        AddBookOption("weaponsmithingbook", "Weaponsmithing Book");
+    
                     if (hasFlag5)
-                    {
-                        var option = new DialogOption
-                        {
-                            DialogKey = "enchantingbook",
-                            OptionText = "Enchanting Book"
-                        };
-
-                        if (!Subject.HasOption(option.OptionText))
-                            Subject.Options.Insert(0, option);
-                    }
-                    
+                        AddBookOption("enchantingbook", "Enchanting Book");
+    
                     if (hasFlag6)
-                    {
-                        var option = new DialogOption
-                        {
-                            DialogKey = "jewelcraftingbook",
-                            OptionText = "Jewelcrafting Book"
-                        };
-
-                        if (!Subject.HasOption(option.OptionText))
-                            Subject.Options.Insert(0, option);
-                    }
+                        AddBookOption("jewelcraftingbook", "Jewelcrafting Book");
 
                     break;
                 }
+
 
                     #region Cook Book
                 case "cookbook":
@@ -218,34 +177,26 @@ namespace Chaos.Scripting.DialogScripts.Generic
                 #region Armorsmithing Book
                 case "armorsmithingbook":
                 {
-                    // Checking if the Alchemy recipe is available or not.
-                    if (source.Trackers.Flags.TryGetFlag(out CraftedArmors recipes))
+                    if (source.Trackers.Flags.TryGetFlag(out CraftedArmors armorRecipes))
                     {
-                        // Iterating through the Alchemy recipe requirements.
                         foreach (var recipe in CraftingRequirements.ArmorSmithingArmorRequirements)
                         {
-                            // Checking if the recipe is available or not.
-                            if (recipes.HasFlag(recipe.Key))
+                            if (armorRecipes.HasFlag(recipe.Key))
                             {
-                                // Creating a faux item for the recipe.
                                 var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
-                                // Adding the recipe to the subject's dialog window.
                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                             }
                         }
+                    }
 
-                        if (source.Trackers.Flags.TryGetFlag(out ArmorSmithRecipes recipes2))
+                    if (source.Trackers.Flags.TryGetFlag(out ArmorSmithRecipes gearRecipes))
+                    {
+                        foreach (var recipe in CraftingRequirements.ArmorSmithingGearRequirements)
                         {
-                            foreach (var recipe2 in CraftingRequirements.ArmorSmithingGearRequirements)
+                            if (gearRecipes.HasFlag(recipe.Key))
                             {
-                                // Checking if the recipe is available or not.
-                                if (recipes2.HasFlag(recipe2.Key))
-                                {
-                                    // Creating a faux item for the recipe.
-                                    var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
-                                    // Adding the recipe to the subject's dialog window.
-                                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                                }
+                                var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                             }
                         }
                     }
@@ -257,18 +208,13 @@ namespace Chaos.Scripting.DialogScripts.Generic
                 #region Weaponsmithing Book
                 case "weaponsmithingbook":
                 {
-                    // Checking if the Alchemy recipe is available or not.
                     if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes recipes))
                     {
-                        // Iterating through the Alchemy recipe requirements.
                         foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
                         {
-                            // Checking if the recipe is available or not.
                             if (recipes.HasFlag(recipe.Key))
                             {
-                                // Creating a faux item for the recipe.
                                 var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
-                                // Adding the recipe to the subject's dialog window.
                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                             }
                         }
@@ -276,6 +222,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
 
                     break;
                 }
+
                 #endregion
                 
                 #region Enchanting Book
@@ -425,17 +372,14 @@ namespace Chaos.Scripting.DialogScripts.Generic
                         if (!Subject.MenuArgs.TryGet<string>(0, out var itemName))
                         {
                             Subject.Reply(source, DialogString.UnknownInput.Value);
-
                             return;
                         }
 
-                        ItemDetails =
-                            Subject.Items.FirstOrDefault(details => details.Item.DisplayName.EqualsI(itemName));
+                        ItemDetails = Subject.Items.FirstOrDefault(details => details.Item.DisplayName.EqualsI(itemName));
 
                         if (ItemDetails == null)
                         {
                             Subject.Reply(source, DialogString.UnknownInput.Value);
-
                             return;
                         }
                     }
@@ -443,14 +387,13 @@ namespace Chaos.Scripting.DialogScripts.Generic
                     switch (FauxItem?.Template.TemplateKey.ToLower())
                     {
                         case "hemloch":
-                        {
-                            Subject.Reply(source, "This recipe requires something, To brew this, go to the Piet Alchemy Lab and go to the tables.", "alchemybook");
+                            Subject.Reply(source, "This recipe requires something. To brew this, go to the Piet Alchemy Lab and go to the tables.", "alchemybook");
                             return;
-                        }
                     }
 
                     break;
                 }
+
                 #endregion
                 
                 

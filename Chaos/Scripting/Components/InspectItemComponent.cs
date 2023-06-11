@@ -36,7 +36,9 @@ public class InspectItemComponent : IComponent
                           $"\nConstitution: {item?.Template.Modifiers?.Con}" +
                           $"\nDexterity: {item?.Template.Modifiers?.Dex}" +
                           $"\nDMG: {item?.Template.Modifiers?.Dmg}" +
-                          $"\nHIT: {item?.Template.Modifiers?.Hit}";
+                          $"\nHIT: {item?.Template.Modifiers?.Hit}" +
+                          $"\nSkill Pct Damage: {item?.Template.Modifiers?.SkillDamagePct}" +
+                          $"\nSpell Pct Damage: {item?.Template.Modifiers?.SpellDamagePct}";
 
             context.SourceAisling?.SendServerMessage(options.OutputType.Value, message);
         }

@@ -44,14 +44,45 @@ public class EnchantingScript : DialogScriptBase
     private readonly string[] Prefix =
     {
         "Swift",
-        "Heavy",
-        "Sharp",
-        "Durable",
+        "Skillful",
+        "Mystical",
+        "Shrouded",
+        "Meager",
+        "Lucky",
+        "Mighty",
+        "Breezy",
+        "Minor",
+        "Modest",
+        "Tiny",
+        "Dark",
+        "Serene",
         "Light",
-        "Ancient",
+        "Valiant",
+        "Soft",
+        "Fiery",
+        "Hale",
+        "Brilliant",
+        "Nimble",
+        "Wise",
+        "Focused",
+        "Tough",
+        "Hazy",
+        "Crippling",
+        "Powerful",
+        "Bright",
+        "Tight",
         "Potent",
-        "Sturdy",
-        "Might",
+        "Precision",
+        "Savage",
+        "Whirling",
+        "Ruthless",
+        "Eternal",
+        "Ancient",
+        "Cursed",
+        "Soothing",
+        "Persisting",
+        "Blazing",
+        "Howling",
     };
 
     /// <inheritdoc />
@@ -135,26 +166,37 @@ public class EnchantingScript : DialogScriptBase
             Subject.ReplyToUnknownInput(source);
             return;
         }
-        
-        if (!Enum.TryParse<EnchantingRecipes>(selected.Replace(" ", ""), out var selectedRecipeEnum))
+
+        var correctRecipe = selected.Replace(" ", "").Replace("'s", "").Replace("'", "");
+
+        if (!Enum.TryParse<EnchantingRecipes>(correctRecipe, out var selectedRecipeEnum))
         {
             Subject.Reply(source, "Recipe could not be found in Enchanting.");
             return;
         }
-        
+
         var selectedRecipe = CraftingRequirements.EnchantingRequirements
                                                  .FirstOrDefault(x => x.Key == selectedRecipeEnum).Value;
-        
+
         if (selectedRecipe == null)
         {
             Subject.Reply(source, "Something went wrong with the selected recipe.");
             return;
         }
-        
+
         Subject.Context = selectedRecipe;
         Subject.InjectTextParameters(selectedRecipe.Name);
-        Subject.Slots = source.Inventory.Where(x => x.Template.IsModifiable).Select(x => x.Slot).ToList();   
+
+        var modifiableItems = source.Inventory.Where(x => x.Template.IsModifiable).ToList();
+        if (modifiableItems.Count == 0)
+        {
+            Subject.Reply(source, "You don't have anything in your inventory to enchant.", "Close");
+            return;
+        }
+
+        Subject.Slots = modifiableItems.Select(x => x.Slot).ToList();
     }
+
 
     //ShowItems in a Shop Window to the player
     private void OnDisplayingShowItems(Aisling source)
@@ -188,7 +230,7 @@ public class EnchantingScript : DialogScriptBase
             Subject.ReplyToUnknownInput(source);
             return;
         }
-        
+
         if (Subject.Context is not CraftingRequirements.Recipe recipe)
         {
             Subject.Reply(source, "Something went wrong with the recipe.");
@@ -210,7 +252,7 @@ public class EnchantingScript : DialogScriptBase
         {
             // If the player doesn't meet the requirement, close the menu and display an error message
             Subject.Close(source);
-            source.SendOrangeBarMessage($"Level: {recipe.Level} required to craft or upgrade.");
+            source.SendOrangeBarMessage($"Level: {recipe.Level} required to use this enchant.");
             return;
         }
 
@@ -250,6 +292,7 @@ public class EnchantingScript : DialogScriptBase
             Subject.ReplyToUnknownInput(source);
             return;
         }
+        
 
         if (Subject.Context is not CraftingRequirements.Recipe recipe)
         {
