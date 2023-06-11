@@ -1004,3 +1004,13 @@ public enum AlchemyRecipes
     Hemloch = 1,
     BetonyDeum = 1 << 2,
 }
+
+public enum JoinReligionQuest
+{
+    None = 0, 
+    MiraelisQuest = 1,
+    SkandaraQuest = 2,
+    TheseleneQuest = 3,
+    SerendaelQuest = 4,
+    JoinReligionComplete = 5
+}

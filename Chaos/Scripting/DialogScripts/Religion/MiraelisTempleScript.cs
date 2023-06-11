@@ -1,4 +1,5 @@
 using Chaos.Common.Utilities;
+using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
@@ -17,11 +18,24 @@ public class MiraelisTempleScript : ReligionScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
+            case "miraelis_temple_initial":
+                TempleInitial(source);
+                break;
             case "miraelis_temple_pray":
                 PrayToMiraelis(source);
                 break;
+            case "miraelis_temple_joinquest":
+                SendOnJoinQuest(source);
+                break;
+            case "miraelis_temple_completejoinquest":
+                CheckJoinQuestCompletion(source, "Miraelis");
+                break;
         }
     }
+    
+    public void TempleInitial(Aisling source) => HideDialogOptions(source, "Miraelis", Subject);
+
+    private void SendOnJoinQuest(Aisling source) => SendOnJoinQuest(source, "Miraelis");
 
     private void PrayToMiraelis(Aisling source)
     {
