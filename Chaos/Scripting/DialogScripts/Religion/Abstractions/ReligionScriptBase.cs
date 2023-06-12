@@ -10,6 +10,7 @@ using Chaos.Networking.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
+using Humanizer;
 
 namespace Chaos.Scripting.DialogScripts.Religion.Abstractions;
 
@@ -23,12 +24,114 @@ public class ReligionScriptBase : DialogScriptBase
     private const string SKANDARA_LEGEND_KEY = "Skandara";
     private const int TEMPLE_SCROLL_FAITH_COST = 1;
     private const int AMOUNT_TO_TRANSFER_FAITH = 5;
+    private const int MASS_DURATION_SECONDS = 90;
+    private const int MASS_CONCLUSION_DELAY_SECONDS = 5;
+    private const int MASS_ANNOUNCEMENT_DELAY_SECONDS = 15;
+    private const int FAITH_REWARD = 25;
+    private const int ESSENCE_CHANCE = 10;
+    private const int MASS_SERMON_COUNT = 9;
+    private const int SERMON_DELAY_SECONDS = 10;
     
     protected Animation PrayerSuccess { get; } = new()
     {
         AnimationSpeed = 60,
         TargetAnimation = 5
     };
+
+    #region MassMessages
+    private readonly List<string> MiraelisMassMessages = new List<string>
+    {
+        "Gather as Miraelis' embrace fills this space.",
+        "Compassion unites hearts, fosters understanding.",
+        "Embrace nature, wisdom; inspire love and harmony.",
+        "Let Miraelis' light guide a compassionate world.",
+        "Blessings empower kindness, wisdom illuminates.",
+        "Carry Miraelis' spirit, nurture compassion in all.",
+        "May empathy bind us in a tapestry of unity.",
+        "In Miraelis' embrace, solace and grace reside.",
+        "Nature inspires; wisdom's flame enlightens.",
+        "Seek wisdom's touch; let enlightenment guide.",
+        "Open hearts blossom with compassion's touch.",
+        "Nature's harmony reveals life's mysteries.",
+        "Kindness begets kindness; let compassion flow.",
+        "Miraelis' light guides compassionate souls.",
+        "In nature's whispers, hear wisdom's voice.",
+        "Let love and understanding be our foundation.",
+        "Miraelis' grace heals and unifies our world.",
+        "Embrace all life's beings, interconnectedness.",
+        "Nature's tapestry reveals existence's secrets.",
+        "Wisdom unveils the boundless universe within.",
+        "Kindness ripples, spreading love endlessly.",
+        "Miraelis' compassion soothes our troubled world.",
+        "Nature's embrace offers peace and renewal.",
+        "Wisdom enlightens on the quest for truth.",
+        "Kindness ignites compassion's flame.",
+        "Miraelis' touch heals and comforts.",
+        "Nature whispers, universe's secrets unfold.",
+        "Wisdom's path leads to profound understanding.",
+        "Compassion flows, bridging divides between souls.",
+        "Miraelis' blessings nurture and heal our world.",
+        "Nature's sanctuary grants solace and renewal.",
+        "Enlightenment blooms, hearts open to wisdom.",
+        "Kindness, a gentle rain nourishes the soul.",
+        "Miraelis' light guides through darkness' depths.",
+        "Nature's embrace soothes and rejuvenates.",
+        "Wisdom's journey unveils life's mysteries.",
+        "Kindness, ripples of love, reverberates.",
+        "Miraelis' wisdom guides in uncertain times.",
+        "Nature's melody whispers cosmic secrets.",
+        "Wisdom's flame illuminates paths of truth.",
+        "Compassion connects souls, harmonious empathy.",
+        "Miraelis' grace heals our fractured world.",
+        "Nature's embrace restores inner peace.",
+        "Enlightenment blooms when wisdom awakens.",
+        "Kindness, language of the heart, transcends.",
+        "Miraelis' touch stirs the spirit's essence.",
+        "Nature's whispers unveil cosmic mysteries.",
+        "Wisdom's path winds through understanding's depths.",
+        "Compassion's flame guides through shadows' veil.",
+        "Miraelis' love mends our fractured humanity.",
+        "Nature's sanctuary renews and rejuvenates.",
+        "Enlightenment dawns, wisdom illuminates minds.",
+        "Kindness, gentle touch reverberates eternally.",
+        "Miraelis' wisdom navigates uncertainty's sea.",
+        "Nature's melody sings the cosmic symphony.",
+        "Wisdom's flame illuminates the path.",
+        "Compassion's bridge unites souls harmoniously.",
+        "Miraelis' grace heals our divided world.",
+        "Nature's eyes unveil the tapestry of existence.",
+        "Wisdom's current carries to shores of enlightenment.",
+        "Kindness, love's manifestation, radiant brilliance.",
+        "Miraelis' embrace offers solace, renewal.",
+        "Enlightenment blooms, mind receptive to light.",
+        "Kindness, gentle rain nourishes soul's garden.",
+        "Miraelis' touch whispers truth, guiding wisdom.",
+        "Nature's whispers unveil cosmic secrets.",
+        "Wisdom's path meanders, profound understanding.",
+        "Compassion's flame guides in shadows' realm.",
+        "Miraelis' love heals our fractured humanity.",
+        "Nature's sanctuary brings serenity, renewal.",
+        "Enlightenment blooms, mind receptive to light.",
+        "Kindness, language of the heart, transcends.",
+        "Miraelis' touch stirs the spirit's essence.",
+        "Nature's whispers unveil cosmic mysteries.",
+        "Wisdom's path winds through understanding's depths.",
+        "Compassion's flame guides through shadows' veil.",
+        "Miraelis' love mends our fractured humanity.",
+        "Nature's sanctuary renews and rejuvenates.",
+        "Enlightenment dawns, wisdom illuminates minds.",
+        "Kindness, gentle touch reverberates eternally.",
+        "Miraelis' wisdom navigates uncertainty's sea.",
+        "Nature's melody sings the cosmic symphony.",
+        "Wisdom's flame illuminates the path.",
+        "Compassion's bridge unites souls harmoniously.",
+        "Miraelis' grace heals our divided world.",
+        "Nature's eyes unveil the tapestry of existence.",
+        "Wisdom's current carries to shores of enlightenment.",
+        "Kindness, love's manifestation, radiant brilliance.",
+        "Miraelis' embrace offers solace, renewal."
+    };
+    #endregion MassMessages
     #region Prayers
     public readonly Dictionary<string, List<string>> DeityPrayers = new Dictionary<string, List<string>>()
     {
@@ -133,6 +236,117 @@ public class ReligionScriptBase : DialogScriptBase
         Seer,
         Favor,
         Champion
+    }
+    
+    public async Task GoddessHoldMass(Aisling source, string deity)
+    {
+        AnnounceMassStart(deity);
+        await Task.Delay(TimeSpan.FromSeconds(MASS_ANNOUNCEMENT_DELAY_SECONDS));
+
+        AnnounceOneMinuteWarning(deity);
+        await Task.Delay(TimeSpan.FromSeconds(MASS_ANNOUNCEMENT_DELAY_SECONDS));
+
+        var aislingsAtStart = AnnounceMassBeginning(source, deity);
+        await ConductMass(source, deity);
+        await Task.Delay(TimeSpan.FromSeconds(MASS_DURATION_SECONDS));
+
+        AwardAttendees(source, deity, aislingsAtStart);
+        AnnounceMassEnd(deity);
+        await Task.Delay(TimeSpan.FromSeconds(MASS_CONCLUSION_DELAY_SECONDS));
+    }
+
+    private void AnnounceMassStart(string deity)
+    {
+        foreach (var client in ClientRegistry)
+            client.Aisling.SendActiveMessage($"{deity} will be holding mass at her temple in five minutes.");
+    }
+
+    private void AnnounceOneMinuteWarning(string deity)
+    {
+        foreach (var client in ClientRegistry)
+            client.Aisling.SendActiveMessage($"Mass held by {deity} will begin in one minute.");
+    }
+
+    private IEnumerable<Aisling> AnnounceMassBeginning(Aisling source, string deity)
+    {
+        foreach (var client in ClientRegistry)
+            client.Aisling.SendActiveMessage($"Mass held by {deity} at the temple is starting now.");
+
+        var merchant = source.MapInstance.GetEntities<Merchant>().FirstOrDefault(m => m.Name == deity);
+
+        if (merchant == null)
+            throw new InvalidOperationException($"Merchant deity {deity} not found.");
+
+        var aislingsAtStart = merchant.MapInstance.GetEntities<Aisling>().ToList();
+
+        merchant.Say(
+            $"{aislingsAtStart.Count.ToWords().Humanize((LetterCasing.Title))} aislings bless me with their presence.");
+
+        return aislingsAtStart;
+    }
+
+    private async Task ConductMass(Aisling source, string deity)
+    {
+        var merchant = source.MapInstance.GetEntities<Merchant>().FirstOrDefault(m => m.Name == deity);
+
+        if (merchant == null)
+            throw new InvalidOperationException($"Merchant deity {deity} not found.");
+
+        var random = new Random();
+        var usedIndexes = new HashSet<int>();
+        var messageCount = 0;
+
+        while (messageCount < MASS_SERMON_COUNT)
+        {
+            var index = random.Next(MiraelisMassMessages.Count);
+
+            if (usedIndexes.Add(index))
+            {
+                var selectedMessage = MiraelisMassMessages[index];
+                merchant.Say(selectedMessage);
+                await Task.Delay(TimeSpan.FromSeconds(SERMON_DELAY_SECONDS));
+                messageCount++;
+            }
+        } 
+
+        merchant.Say("This concludes our mass.");
+    }
+
+    private void AwardAttendees(Aisling source, string deity, IEnumerable<Aisling> aislingsAtStart)
+    {
+        var merchant = source.MapInstance.GetEntities<Merchant>().FirstOrDefault(m => m.Name == deity);
+
+        if (merchant == null)
+            throw new InvalidOperationException($"Merchant deity {deity} not found.");
+
+        var aislingsAtEnd = merchant.MapInstance.GetEntities<Aisling>().ToList();
+        var aislingsStillHere = aislingsAtStart.Intersect(aislingsAtEnd).ToList();
+
+        foreach (var player in aislingsStillHere)
+        {
+            player.Animate(PrayerSuccess);
+
+            if (IntegerRandomizer.RollChance(ESSENCE_CHANCE))
+            {
+                var item = ItemFactory.Create($"essenceof{deity}");
+                player.Inventory.TryAddToNextSlot(item);
+                player.SendActiveMessage($"You received an Essence of {deity} and faith!");
+            } else
+            {
+                player.SendActiveMessage($"You receive faith!");
+            }
+
+            TryAddFaith(player, FAITH_REWARD);
+        }
+
+        foreach (var latePlayers in aislingsAtEnd.Except(aislingsStillHere))
+            latePlayers.SendActiveMessage("You must be present from start to finish to receive full benefits.");
+    }
+
+    private void AnnounceMassEnd(string deity)
+    {
+        foreach (var client in ClientRegistry)
+            client.Aisling.SendActiveMessage($"{deity} mass has been concluded.");
     }
 
     public void TransferFaith(Aisling source, string deity)
@@ -460,6 +674,19 @@ public class ReligionScriptBase : DialogScriptBase
                 targetFaith.Count += AMOUNT_TO_TRANSFER_FAITH;
                 return true;
             }
+        }
+
+        return false;
+    }
+    
+    public bool TryAddFaith(Aisling source, int amount)
+    {
+        var key = CheckDeity(source);
+        
+        if ((key != null) && source.Legend.TryGetValue(key, out var faith))
+        {
+            faith.Count += amount;
+            return true;
         }
 
         return false;

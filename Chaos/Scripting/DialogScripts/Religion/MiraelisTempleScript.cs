@@ -36,6 +36,9 @@ public class MiraelisTempleScript : ReligionScriptBase
             case "miraelis_temple_transferfaithaccepted":
                 TransferFaith(source, "Miraelis");
                 break;
+            case "miraelis_temple_holdmassmiraelis":
+                var _ = GoddessHoldMass(source, "Miraelis");
+                break;
         }
     }
     
