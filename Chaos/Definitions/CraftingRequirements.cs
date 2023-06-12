@@ -962,28 +962,903 @@ public static class CraftingRequirements
     public static Dictionary<JewelcraftingRecipes, Recipe> JewelcraftingRequirements { get; } = new()
     {
         {
-            JewelcraftingRecipes.BronzeBerylEarring,
+            JewelcraftingRecipes.BasicBerylEarrings,
             new Recipe()
             {
-                Name = "Bronze Beryl Earring",
-                TemplateKey = "bronzeberylearring",
+                Name = "Basic Beryl Earrings",
+                TemplateKey = "basicberylearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "flawedberyl", DisplayName = "Flawed Beryl", Amount = 1 }
                 },
-                Rank = "Beginner",
-                Level = 1,
+                Rank = "Basic",
+                Level = 11,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
+            }
+        },
+        {
+            JewelcraftingRecipes.BasicRubyEarrings,
+            new Recipe()
+            {
+                Name = "Basic Ruby Earrings",
+                TemplateKey = "basicrubyearrings",
+                Ingredients = new List<Ingredient>()
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-                    return mapper.Map<Item>(schema);
-                })
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "flawedruby", DisplayName = "Flawed Ruby", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.BasicSapphireEarrings,
+            new Recipe()
+            {
+                Name = "Basic Sapphire Earrings",
+                TemplateKey = "basicsapphireearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "flawedsapphire", DisplayName = "Flawed Sapphire", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.BasicEmeraldEarrings,
+            new Recipe()
+            {
+                Name = "Basic Emerald Earrings",
+                TemplateKey = "basicemeraldearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "flawedemerald", DisplayName = "Flawed Emerald", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.BasicHeartstoneEarrings,
+            new Recipe()
+            {
+                Name = "Basic Heartstone Earrings",
+                TemplateKey = "basicheartstoneearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "flawedheartstone", DisplayName = "Flawed Heartstone", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.IronBerylEarrings,
+            new Recipe()
+            {
+                Name = "Iron Beryl Earrings",
+                TemplateKey = "ironberylearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "uncutberyl", DisplayName = "Uncut Beryl", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.IronRubyEarrings,
+            new Recipe()
+            {
+                Name = "Iron Ruby Earrings",
+                TemplateKey = "ironrubyearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "uncutruby", DisplayName = "Uncut Ruby", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.IronSapphireEarrings,
+            new Recipe()
+            {
+                Name = "Iron Sapphire Earrings",
+                TemplateKey = "ironsapphireearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "uncutsapphire", DisplayName = "Uncut Sapphire", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.IronEmeraldEarrings,
+            new Recipe()
+            {
+                Name = "Iron Emerald Earrings",
+                TemplateKey = "ironemeraldearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "uncutemerald", DisplayName = "Uncut Emerald", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.IronHeartstoneEarrings,
+            new Recipe()
+            {
+                Name = "Iron Heartstone Earrings",
+                TemplateKey = "ironheartstoneearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "uncutheartstone", DisplayName = "Uncut Heartstone", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1,
+            }
+        },
+                {
+            JewelcraftingRecipes.MythrilBerylEarrings,
+            new Recipe()
+            {
+                Name = "Mythril Beryl Earrings",
+                TemplateKey = "mythrilberylearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.MythrilRubyEarrings,
+            new Recipe()
+            {
+                Name = "Mythril Ruby Earrings",
+                TemplateKey = "mythrilrubyearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedruby", DisplayName = "Finished Ruby", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.MythrilSapphireEarrings,
+            new Recipe()
+            {
+                Name = "Mythril Sapphire Earrings",
+                TemplateKey = "mythrilsapphireearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedsapphire", DisplayName = "Finished Sapphire", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.MythrilEmeraldEarrings,
+            new Recipe()
+            {
+                Name = "Mythril Emerald Earrings",
+                TemplateKey = "mythrilemeraldearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedemerald", DisplayName = "Finished Emerald", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.MythrilHeartstoneEarrings,
+            new Recipe()
+            {
+                Name = "Mythril Heartstone Earrings",
+                TemplateKey = "mythrilheartstoneearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedheartstone", DisplayName = "Finished Heartstone", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+                        {
+            JewelcraftingRecipes.HybrasylBerylEarrings,
+            new Recipe()
+            {
+                Name = "Hybrasyl Beryl Earrings",
+                TemplateKey = "hybrasylberylearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 3 }
+                },
+                Rank = "Adept",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.HybrasylRubyEarrings,
+            new Recipe()
+            {
+                Name = "Hybrasyl Ruby Earrings",
+                TemplateKey = "hybrasylrubyearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedruby", DisplayName = "Finished Ruby", Amount = 3 }
+                },
+                Rank = "Adept",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.HybrasylSapphireEarrings,
+            new Recipe()
+            {
+                Name = "Hybrasyl Sapphire Earrings",
+                TemplateKey = "hybrasylsapphireearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedsapphire", DisplayName = "Finished Sapphire", Amount = 3 }
+                },
+                Rank = "Adept",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.HybrasylEmeraldEarrings,
+            new Recipe()
+            {
+                Name = "Hybrasyl Emerald Earrings",
+                TemplateKey = "hybrasylemeraldearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedemerald", DisplayName = "Finished Emerald", Amount = 3 }
+                },
+                Rank = "Adept",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.HybrasylHeartstoneEarrings,
+            new Recipe()
+            {
+                Name = "Hybrasyl Heartstone Earrings",
+                TemplateKey = "hybrasylheartstoneearrings",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedheartstone", DisplayName = "Finished Heartstone", Amount = 3 }
+                },
+                Rank = "Adept",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.BronzeBerylRing,
+            new Recipe()
+            {
+                Name = "Bronze Beryl Ring",
+                TemplateKey = "bronzeberylring",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "flawedberyl", DisplayName = "Flawed Beryl", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.BronzeRubyRing,
+            new Recipe()
+            {
+                Name = "Bronze Ruby Ring",
+                TemplateKey = "bronzerubyring",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "flawedruby", DisplayName = "Flawed Ruby", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.BronzeSapphireRing,
+            new Recipe()
+            {
+                Name = "Bronze Sapphire Ring",
+                TemplateKey = "bronzesapphirering",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "flawedsapphire", DisplayName = "Flawed Sapphire", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.BronzeEmeraldRing,
+            new Recipe()
+            {
+                Name = "Bronze Emerald Ring",
+                TemplateKey = "bronzeemeraldring",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "flawedemerald", DisplayName = "Flawed Emerald", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.BronzeHeartstoneRing,
+            new Recipe()
+            {
+                Name = "Bronze Heartstone Ring",
+                TemplateKey = "bronzeheartstonering",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "flawedheartstone", DisplayName = "Flawed Heartstone", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.IronBerylRing,
+            new Recipe()
+            {
+                Name = "Iron Beryl Ring",
+                TemplateKey = "ironberylring",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "uncutberyl", DisplayName = "Uncut Beryl", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.IronRubyRing,
+            new Recipe()
+            {
+                Name = "Iron Ruby Ring",
+                TemplateKey = "ironrubyring",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "uncutruby", DisplayName = "Uncut Ruby", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.IronSapphireRing,
+            new Recipe()
+            {
+                Name = "Iron Sapphire Ring",
+                TemplateKey = "ironsapphirering",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "uncutsapphire", DisplayName = "Uncut Sapphire", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.IronEmeraldRing,
+            new Recipe()
+            {
+                Name = "Iron Emerald Ring",
+                TemplateKey = "ironemeraldring",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "uncutemerald", DisplayName = "Uncut Emerald", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.IronHeartstoneRing,
+            new Recipe()
+            {
+                Name = "Iron Heartstone Ring",
+                TemplateKey = "ironheartstonering",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "uncutheartstone", DisplayName = "Uncut Heartstone", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1,
+            }
+        },
+                {
+            JewelcraftingRecipes.MythrilBerylRing,
+            new Recipe()
+            {
+                Name = "Mythril Beryl Ring",
+                TemplateKey = "mythrilberylring",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.MythrilRubyRing,
+            new Recipe()
+            {
+                Name = "Mythril Ruby Ring",
+                TemplateKey = "mythrilrubyring",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedruby", DisplayName = "Finished Ruby", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.MythrilSapphireRing,
+            new Recipe()
+            {
+                Name = "Mythril Sapphire Ring",
+                TemplateKey = "mythrilsapphirering",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedsapphire", DisplayName = "Finished Sapphire", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.MythrilEmeraldRing,
+            new Recipe()
+            {
+                Name = "Mythril Emerald Ring",
+                TemplateKey = "mythrilemeraldring",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedemerald", DisplayName = "Finished Emerald", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.MythrilHeartstoneRing,
+            new Recipe()
+            {
+                Name = "Mythril Heartstone Ring",
+                TemplateKey = "mythrilheartstonering",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedheartstone", DisplayName = "Finished Heartstone", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+                        {
+            JewelcraftingRecipes.HybrasylBerylRing,
+            new Recipe()
+            {
+                Name = "Hy-Brasyl Beryl Ring",
+                TemplateKey = "hybrasylberylring",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 3 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.HybrasylRubyRing,
+            new Recipe()
+            {
+                Name = "Hy-Brasyl Ruby Ring",
+                TemplateKey = "hybrasylrubyring",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedruby", DisplayName = "Finished Ruby", Amount = 3 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.HybrasylSapphireRing,
+            new Recipe()
+            {
+                Name = "Hy-Brasyl Sapphire Ring",
+                TemplateKey = "hybrasylsapphirering",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedsapphire", DisplayName = "Finished Sapphire", Amount = 3 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.HybrasylEmeraldRing,
+            new Recipe()
+            {
+                Name = "Hy-Brasyl Emerald Ring",
+                TemplateKey = "hybrasylemeraldring",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedemerald", DisplayName = "Finished Emerald", Amount = 3 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.HybrasylHeartstoneRing,
+            new Recipe()
+            {
+                Name = "Hy-Brasyl Heartstone Ring",
+                TemplateKey = "hybrasylheartstonering",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedheartstone", DisplayName = "Finished Heartstone", Amount = 3 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.BasicEarthNecklace,
+            new Recipe()
+            {
+                Name = "Basic Earth Necklace",
+                TemplateKey = "basicearthnecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "flawedberyl", DisplayName = "Flawed Beryl", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.BasicFireNecklace,
+            new Recipe()
+            {
+                Name = "Basic Fire Necklace",
+                TemplateKey = "basicfirenecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "flawedruby", DisplayName = "Flawed Ruby", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.BasicSeaNecklace,
+            new Recipe()
+            {
+                Name = "Basic Sea Necklace",
+                TemplateKey = "basicseanecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "flawedsapphire", DisplayName = "Flawed Sapphire", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.BasicWindNecklace,
+            new Recipe()
+            {
+                Name = "Basic Wind Necklace",
+                TemplateKey = "basicwindnecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "flawedemerald", DisplayName = "Flawed Emerald", Amount = 1}
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.ApprenticeEarthNecklace,
+            new Recipe()
+            {
+                Name = "Apprentice Earth Necklace",
+                TemplateKey = "apprenticeearthnecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "uncutberyl", DisplayName = "Uncut Beryl", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.ApprenticeWindNecklace,
+            new Recipe()
+            {
+                Name = "Apprentice Wind Necklace",
+                TemplateKey = "apprenticewindnecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "uncutemerald", DisplayName = "Uncut Emerald", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.ApprenticeFireNecklace,
+            new Recipe()
+            {
+                Name = "Apprentice Fire Necklace",
+                TemplateKey = "apprenticefirenecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "uncutruby", DisplayName = "Uncut Ruby", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.ApprenticeSeaNecklace,
+            new Recipe()
+            {
+                Name = "Apprentice Sea Necklace",
+                TemplateKey = "apprenticeseanecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "uncutsapphire", DisplayName = "Uncut Sapphire", Amount = 1 }
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.PolishedEarthNecklace,
+            new Recipe()
+            {
+                Name = "Polished Earth Necklace",
+                TemplateKey = "polishedearthnecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.PolishedWindNecklace,
+            new Recipe()
+            {
+                Name = "Polished Wind Necklace",
+                TemplateKey = "polishedwindnecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedemerald", DisplayName = "Finished Emerald", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.PolishedFireNecklace,
+            new Recipe()
+            {
+                Name = "Polished Fire Necklace",
+                TemplateKey = "polishedfirenecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedruby", DisplayName = "Finished Ruby", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.PolishedSeaNecklace,
+            new Recipe()
+            {
+                Name = "Polished Sea Necklace",
+                TemplateKey = "polishedseanecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedsapphire", DisplayName = "Finished Sapphire", Amount = 1 }
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.StarSeaNecklace,
+            new Recipe()
+            {
+                Name = "Star Sea Necklace",
+                TemplateKey = "starseanecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedsapphire", DisplayName = "Finished Sapphire", Amount = 3 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.StarFireNecklace,
+            new Recipe()
+            {
+                Name = "Star Fire Necklace",
+                TemplateKey = "starfirenecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedruby", DisplayName = "Finished Ruby", Amount = 3 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.StarEarthNecklace,
+            new Recipe()
+            {
+                Name = "Star Earth Necklace",
+                TemplateKey = "starearthnecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 3 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.StarWindNecklace,
+            new Recipe()
+            {
+                Name = "Star Wind Necklace",
+                TemplateKey = "starwindnecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedemerald", DisplayName = "Finished Emerald", Amount = 3 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1,
             }
         },
     };
+
 
     #endregion
 
