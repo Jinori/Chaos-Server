@@ -15,7 +15,7 @@ public class RecipeItemScript : ItemScriptBase
 
     public override void OnUse(Aisling source)
     {
-        var craft1 = source.Trackers.Enums.TryGetValue(out Craft craft);
+        source.Trackers.Enums.TryGetValue(out Craft craft);
 
         var ani = new Animation
         {
@@ -429,22 +429,22 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylSapphireRing);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylEmeraldRing);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylHeartstoneRing);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeBerylNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeRubyNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeSapphireNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeEmeraldNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronBerylNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronRubyNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronSapphireNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronEmeraldNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilBerylNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilRubyNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilSapphireNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilEmeraldNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylBerylNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylRubyNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylSapphireNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylEmeraldNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicEarthNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicFireNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicSeaNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicWindNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeEarthNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeFireNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeSeaNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeWindNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedEarthNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedFireNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedSeaNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedWindNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarEarthNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarFireNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarSeaNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarWindNecklace);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeBerylEarring);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeRubyEarring);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeSapphireEarring);
@@ -2560,6 +2560,333 @@ public class RecipeItemScript : ItemScriptBase
                 return;
             }
             #endregion
+            
+            #region Jewelcrafting Recipes
+            case "recipe_basicrings":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.BasicRings))
+                {
+                    if (craft != Craft.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.BasicRings,
+                        "Basic Rings",
+                        $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeRubyRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeSapphireRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeHeartstoneRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeEmeraldRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeBerylRing);
+                }
+
+                break;
+            }
+            case "recipe_apprenticerings":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ApprenticeRings))
+                {
+                    if (craft != Craft.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.ApprenticeRings,
+                        "Apprentice Rings",
+                        $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronRubyRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronSapphireRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronHeartstoneRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronEmeraldRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronBerylRing);
+                }
+
+                break;
+            }
+            case "recipe_journeymanrings":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.JourneymanRings))
+                {
+                    if (craft != Craft.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.JourneymanRings,
+                        "Journeyman Rings",
+                        $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilRubyRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilSapphireRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilHeartstoneRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilEmeraldRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilBerylRing);
+                }
+
+                break;
+            }
+            case "recipe_adeptrings":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdeptRings))
+                {
+                    if (craft != Craft.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.AdeptRings,
+                        "Adept Rings",
+                        $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylRubyRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylSapphireRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylHeartstoneRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylEmeraldRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylBerylRing);
+                }
+
+                break;
+            }
+            
+            case "recipe_basicearrings":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.BasicEarrings))
+                {
+                    if (craft != Craft.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.BasicEarrings,
+                        "Basic Earrings",
+                        $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeBerylEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeEmeraldEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeHeartstoneEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeEmeraldEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeBerylEarring);
+                }
+
+                break;
+            }
+            
+            case "recipe_apprenticeearrings":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ApprenticeEarrings))
+                {
+                    if (craft != Craft.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.ApprenticeEarrings,
+                        "Apprentice Earrings",
+                        $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronBerylEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronEmeraldEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronHeartstoneEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronEmeraldEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronBerylEarring);
+                }
+
+                break;
+            }
+            case "recipe_journeymanearrings":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.JourneymanEarrings))
+                {
+                    if (craft != Craft.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.JourneymanEarrings,
+                        "Journeyman Earrings",
+                        $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilBerylEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilEmeraldEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilHeartstoneEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilEmeraldEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilBerylEarring);
+                }
+
+                break;
+            }
+            case "recipe_adeptearrings":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdeptEarrings))
+                {
+                    if (craft != Craft.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.AdeptEarrings,
+                        "Adept Earrings",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylBerylEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylEmeraldEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylHeartstoneEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylEmeraldEarring);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylBerylEarring);
+                }
+
+                break;
+            }
+            
+            case "recipe_basicnecklaces":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.BasicNecklaces))
+                {
+                    if (craft != Craft.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.BasicNecklaces,
+                        "Basic Necklaces",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicEarthNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicFireNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicSeaNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicWindNecklace);
+                }
+
+                break;
+            }
+            
+            case "recipe_apprenticenecklaces":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ApprenticeNecklaces))
+                {
+                    if (craft != Craft.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.ApprenticeNecklaces,
+                        "Apprentice Necklaces",
+                        $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeEarthNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeFireNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeSeaNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeWindNecklace);
+                }
+
+                break;
+            }
+            case "recipe_journeymannecklaces":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.JourneymanNecklaces))
+                {
+                    if (craft != Craft.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.JourneymanNecklaces,
+                        "Journeyman Necklaces",
+                        $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedWindNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedSeaNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedFireNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedEarthNecklace);
+                }
+
+                break;
+            }
+            case "recipe_adeptnecklaces":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdeptNecklaces))
+                {
+                    if (craft != Craft.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.AdeptNecklaces,
+                        "Adept Necklaces",
+                        $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarEarthNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarFireNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarSeaNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarWindNecklace);
+                }
+
+                break;
+            }
+                #endregion
         }
     }
 
@@ -2636,7 +2963,7 @@ public class RecipeItemScript : ItemScriptBase
     public static void JewelcraftingRecipeLearn(
         Aisling source,
         Animation ani,
-        JewelcraftingRecipes recipe,
+        JewelcraftingCategories recipe,
         string serverMessage,
         string templatekey
     )

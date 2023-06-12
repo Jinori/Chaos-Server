@@ -1,6 +1,3 @@
-using System.Text;
-using System.Text.RegularExpressions;
-using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
@@ -8,7 +5,6 @@ using Chaos.Models.Menu;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Utilities;
 
@@ -312,50 +308,49 @@ namespace Chaos.Scripting.DialogScripts.Generic
                         }
                         case "sweetbuns":
                         {
-                            Subject.Reply(source, "Skip", "cooking_directory");
+                            Subject.Reply(source, "This recipe requires 15 fruit of any type, 5 vegetable of any type, and 2 flour.", "cookbook");
 
                             return;
                         }
                         case "fruitbasket":
                         {
-                            Subject.Reply(source, "Skip", "cooking_directory");
+                            Subject.Reply(source, "This recipe requires 15 fruit of any type, 10 fruit of any type, and 5 fruit of any type. Must be all different fruits.", "cookbook");
 
                             return;
                         }
                         case "lobsterdinner":
                         {
-                            Subject.Reply(source, "Skip", "cooking_directory");
+                            Subject.Reply(source, "This recipe requires a lobster tail, 25 cherries, 5 vegetables, 5 tomatos, and 1 salt.", "cookbook");
 
                             return;
                         }
                         case "pie":
                         {
-                            Subject.Reply(source, "Skip", "cooking_directory");
+                            Subject.Reply(source, "This recipe requires 50 fruit of any type. The type of pie made depends on the fruit used.", "cookbook");
 
                             return;
                         }
                         case "salad":
                         {
-                            Subject.Reply(source, "Skip", "cooking_directory");
+                            Subject.Reply(source, "This recipe requires 1 meat of any type, 15 vegetables of any type, 15 vegetables of any type, and 1 cheese. The two vegetables must be different.", "cookbook");
 
                             return;
                         }
                         case "sandwich":
                         {
-                            Subject.Reply(source, "Skip", "cooking_directory");
+                            Subject.Reply(source, "This recipe requires 1 meat of any type, 5 vegetable, 5 tomato, 2 bread, and 1 cheese.", "cookbook");
 
                             return;
                         }
                         case "soup":
                         {
-                            Subject.Reply(source, "Skip", "cooking_directory");
+                            Subject.Reply(source, "This recipe requires 1 meat of any type, 5 vegetable of any type, 1 flour, and 1 salt.", "cookbook");
 
                             return;
                         }
                         case "steakmeal":
                         {
-                            Subject.Reply(source, "Skip", "cooking_directory");
-
+                            Subject.Reply(source, "This recipe requires 1 raw meat, 10 fruit of any type, 5 vegetable of any type, and 1 marinade.", "cookbook");
                             return;
                         }
                     }
@@ -389,6 +384,355 @@ namespace Chaos.Scripting.DialogScripts.Generic
                         case "hemloch":
                             Subject.Reply(source, "This recipe requires something. To brew this, go to the Piet Alchemy Lab and go to the tables.", "alchemybook");
                             return;
+                    }
+
+                    break;
+                }
+
+                #endregion
+                
+                #region Jewelcrafting Book
+                case "jewelcraftingbook":
+                {
+                    if (ItemDetails == null)
+                    {
+                        if (!Subject.MenuArgs.TryGet<string>(0, out var itemName))
+                        {
+                            Subject.Reply(source, DialogString.UnknownInput.Value);
+                            return;
+                        }
+
+                        ItemDetails = Subject.Items.FirstOrDefault(details => details.Item.DisplayName.EqualsI(itemName));
+
+                        if (ItemDetails == null)
+                        {
+                            Subject.Reply(source, DialogString.UnknownInput.Value);
+                            return;
+                        }
+                    }
+
+                    switch (FauxItem?.Template.TemplateKey.ToLower())
+                    {
+                        case "bronzeberylring":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished bronze and 1 flawed beryl.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "bronzerubyring":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished bronze and 1 flawed ruby.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "bronzesapphirering":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished bronze and 1 flawed sapphire.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "bronzeheartstonering":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished bronze and 1 flawed heartstone.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "bronzeemeraldring":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished bronze and 1 flawed emerald.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "ironberylring":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished iron and 1 uncut beryl.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "ironrubyring":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished iron and 1 uncut ruby.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "ironsapphirering":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished iron and 1 uncut sapphire.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "ironheartstonering":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished iron and 1 uncut heartstone.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "ironemeraldring":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished iron and 1 uncut emerald.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "mythrilberylring":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished mythril and 1 finished beryl.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "mythrilrubyring":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished mythril and 1 finished ruby.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "mythrilsapphirering":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished mythril and 1 finished sapphire.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "mythrilheartstonering":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished mythril and 1 finished heartstone.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "mythrilemeraldring":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished mythril and 1 finished emerald.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "hybrasylberylring":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished hybrasyl and 3 finished beryl.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "hybrasylrubyring":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished hybrasyl and 3 finished ruby.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "hybrasylsapphirering":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished hybrasyl and 3 finished sapphire.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "hybrasylheartstonering":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished hybrasyl and 3 finished heartstone.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "hybrasylemeraldring":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished hybrasyl and 3 finished emerald.", "jewelcraftingbook");
+                            return;
+                        }
+                        case "basicberylearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished bronze and 1 flawed beryl.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "basicrubyearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished bronze and 1 flawed ruby.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "basicsapphireearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished bronze and 1 flawed sapphire.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "basicheartstoneearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished bronze and 1 flawed heartstone.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "basicemeraldearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished bronze and 1 flawed emerald.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "ironberylearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished iron, and 1 uncut beryl.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "ironrubyearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished iron and 1 uncut ruby.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "ironsapphireearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished iron and 1 uncut sapphire.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "ironheartstoneearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished iron and 1 uncut heartstone.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "ironemeraldearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished iron and 1 uncut emerald.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "mythrilberylearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished mythril and 1 finished beryl.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "mythrilrubyearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished mythril and 1 finished ruby.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "mythrilsapphireearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished mythril and 1 finished sapphire.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "mythrilheartstoneearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished mythril and 1 finished heartstone.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "mythrilemeraldearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished mythril and 1 finished emerald.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "hybrasylberylearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished hybrasyl and 3 finished beryl.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "hybrasylrubyearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished hybrasyl and 3 finished ruby.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "hybrasylsapphireearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished hybrasyl and 3 finished sapphire.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "hybrasylheartstoneearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished hybrasyl and 3 finished heartstone.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "hybrasylemeraldearrings":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished hybrasyl and 3 finished emerald.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "basicearthnecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished bronze and 1 flawed beryl.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "basicfirenecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished bronze and 1 flawed ruby.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "basicseanecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished bronze and 1 flawed sapphire.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "basicwindnecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished bronze and 1 flawed emerald.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "apprenticeearthnecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished iron and 1 uncut beryl.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "apprenticefirenecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished iron and 1 uncut ruby.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "apprenticeseanecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished iron and 1 uncut sapphire.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "apprenticewindnecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished iron and 1 uncut emerald.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "polishedearthnecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished mythril and 1 finished beryl.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "polishedfirenecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished mythril and 1 finished ruby.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "polishedseanecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished mythril and 1 finished sapphire.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "polishedwindnecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished mythril and 1 finished emerald.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "starearthnecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished hybrasyl and 3 finished beryl.", "jewelcraftingbook");
+
+                            return;
+                            
+                        }
+                        case "starfirenecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished hybrasyl and 3 finished ruby.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "starseanecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished hybrasyl and 3 finished sapphire.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        case "starwindnecklace":
+                        {
+                            Subject.Reply(source, "This recipe requires 1 polished hybrasyl and 3 finished emerald.", "jewelcraftingbook");
+
+                            return;
+                        }
+                        
+                        
+                        
                     }
 
                     break;
