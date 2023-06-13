@@ -209,7 +209,7 @@ public class AcceptHobbyorProfessionScript : DialogScriptBase
 
                 return;
             }
-            case "jewelcraftingnpc_initial":
+            case "celestia_initial":
             {
                 if (!hasCraft)
                 {

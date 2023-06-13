@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
@@ -223,10 +224,12 @@ public class JewelcraftingScript : DialogScriptBase
             Subject.ReplyToUnknownInput(source);
             return;
         }
+        
+        var correctRecipe = Regex.Replace(selectedRecipeName, @"(\s+'s|'|-)", "");
 
         var recipe =
             CraftingRequirements.JewelcraftingRequirements.Values.FirstOrDefault(
-                recipe1 => recipe1.Name.EqualsI(selectedRecipeName));
+                recipe1 => recipe1.Name.EqualsI(correctRecipe));
         
         if (recipe is null)
         {
