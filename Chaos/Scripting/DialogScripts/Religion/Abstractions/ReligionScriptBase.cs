@@ -6,7 +6,6 @@ using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
-using Chaos.Models.World.Abstractions;
 using Chaos.Networking.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -27,10 +26,21 @@ public class ReligionScriptBase : DialogScriptBase
     private const int AMOUNT_TO_TRANSFER_FAITH = 5;
     private const int MASS_ANNOUNCEMENT_DELAY_SECONDS = 15;
     private const int FAITH_REWARD = 25;
+    private const int LATE_FAITH_REWARD = 25;
     private const int ESSENCE_CHANCE = 10;
     private const int MASS_SERMON_COUNT = 9;
     private const int SERMON_DELAY_SECONDS = 10;
-
+    
+    public class FaithThresholds
+    {
+        public const int WORSHIPPER = 150;
+        public const int ACOLYTE = 300;
+        public const int EMISSARY = 500;
+        public const int SEER = 750;
+        public const int FAVOR = 1000;
+        public const int CHAMPION = 1500;
+    }
+    
     protected Animation PrayerSuccess { get; } = new()
     {
         AnimationSpeed = 60,
@@ -229,6 +239,7 @@ public class ReligionScriptBase : DialogScriptBase
 
     public enum Rank
     {
+        None,
         Worshipper,
         Acolyte,
         Emissary,
@@ -236,7 +247,7 @@ public class ReligionScriptBase : DialogScriptBase
         Favor,
         Champion
     }
-
+    
     public async Task GoddessHoldMass(Aisling source, string deity, Merchant? goddess)
     {
         if (source.Trackers.TimedEvents.HasActiveEvent("Mass", out var timedEvent))
@@ -265,29 +276,66 @@ public class ReligionScriptBase : DialogScriptBase
                         1,
                         GameTime.Now));
 
-                AnnounceMassStart(deity);
+                AnnounceMassStart(source, deity, false);
                 await Task.Delay(TimeSpan.FromSeconds(MASS_ANNOUNCEMENT_DELAY_SECONDS));
-                AnnounceOneMinuteWarning(deity);
+                AnnounceOneMinuteWarning(source, deity, false);
                 await Task.Delay(TimeSpan.FromSeconds(MASS_ANNOUNCEMENT_DELAY_SECONDS));
                 var aislingsAtStart = AnnounceMassBeginning(source, deity);
                 await ConductMass(goddess);
-                AwardAttendees(deity, aislingsAtStart, goddess);
+                AwardAttendees(source, deity, aislingsAtStart, goddess, false);
                 AnnounceMassEnd(deity);
                 break;
             }
         }
     }
 
-    private void AnnounceMassStart(string deity)
+    public void AnnounceMassStart(Aisling source, string deity, bool self)
     {
+        if (source.Trackers.TimedEvents.HasActiveEvent("Mass", out var timedEvent))
+        {
+            Subject.Reply(
+                source,
+                $"You cannot host a mass at this time or use your voice to shout. \nTry again in {
+                    timedEvent.Remaining.ToReadableString()}.");
+            return;
+        }
         foreach (var client in ClientRegistry)
-            client.Aisling.SendActiveMessage($"{deity} will be holding mass at her temple in five minutes.");
+        {
+            switch (self)
+            {
+                case true:
+                    client.Aisling.SendActiveMessage($"{source.Name} will be hosting {deity} mass in five minutes.");
+                    break;
+                case false:
+                    client.Aisling.SendActiveMessage($"{deity} will be holding mass at her temple in five minutes.");
+                    break;
+            }
+        }
     }
 
-    private void AnnounceOneMinuteWarning(string deity)
+    public void AnnounceOneMinuteWarning(Aisling source, string deity, bool self)
     {
+        if (source.Trackers.TimedEvents.HasActiveEvent("Mass", out var timedEvent))
+        {
+            Subject.Reply(
+                source,
+                $"You cannot host a mass at this time or use your voice to shout. \nTry again in {
+                    timedEvent.Remaining.ToReadableString()}.");
+            return;
+        }
+        
         foreach (var client in ClientRegistry)
-            client.Aisling.SendActiveMessage($"Mass held by {deity} will begin in one minute.");
+        {
+            switch (self)
+            {
+                case true:
+                    client.Aisling.SendActiveMessage($"{deity} mass held by {source.Name} starts in a minute.");
+                    break;
+                case false:
+                    client.Aisling.SendActiveMessage($"Mass held by {deity} will begin in one minute.");
+                    break;
+            }
+        }
     }
 
     private IEnumerable<Aisling> AnnounceMassBeginning(Aisling source, string deity)
@@ -334,31 +382,77 @@ public class ReligionScriptBase : DialogScriptBase
             goddess.CurrentlyHostingMass = false;
     }
 
-    private void AwardAttendees(string deity, IEnumerable<Aisling> aislingsAtStart, MapEntity? goddess)
+    public void AwardAttendees(Aisling source, string deity, IEnumerable<Aisling> aislingsAtStart, Merchant? goddess, bool self)
     {
-        var aislingsAtEnd = goddess?.MapInstance.GetEntities<Aisling>().ToList();
-        var aislingsStillHere = aislingsAtStart.Intersect(aislingsAtEnd!).ToList();
-
-        foreach (var player in aislingsStillHere)
+        if (source.Trackers.TimedEvents.HasActiveEvent("Mass", out var timedEvent))
         {
-            player.Animate(PrayerSuccess);
-
-            if (IntegerRandomizer.RollChance(ESSENCE_CHANCE))
-            {
-                var item = ItemFactory.Create($"essenceof{deity}");
-                player.Inventory.TryAddToNextSlot(item);
-                player.SendActiveMessage($"You received an Essence of {deity} and faith!");
-            } 
-            else
-            {
-                player.SendActiveMessage($"You receive faith!");
-            }
-
-            TryAddFaith(player, FAITH_REWARD);
+            Subject.Reply(
+                source,
+                $"You cannot hold Mass at this time. You've already hosted it recently. \nTry again in {
+                    timedEvent.Remaining.ToReadableString()}.");
+            return;
         }
+        
+        switch (self)
+        {
+            case true:
+            {
+                var aislings = goddess?.MapInstance.GetEntities<Aisling>().ToList();
 
-        foreach (var latePlayers in aislingsAtEnd!.Except(aislingsStillHere))
-            latePlayers.SendActiveMessage("You must be present from start to finish to receive full benefits.");
+                if (aislings != null)
+                    foreach (var player in aislings)
+                    {
+                        player.Animate(PrayerSuccess);
+
+                        if (IntegerRandomizer.RollChance(ESSENCE_CHANCE))
+                        {
+                            var item = ItemFactory.Create($"essenceof{deity}");
+                            player.Inventory.TryAddToNextSlot(item);
+                            player.SendActiveMessage($"You received an Essence of {deity} and faith!");
+                        } else
+                        {
+                            player.SendActiveMessage($"You receive faith!");
+                        }
+
+                        TryAddFaith(player, FAITH_REWARD);
+                    }
+
+                goddess?.Say($"Thank you, {source.Name}. You honor me.");
+                AnnounceMassEnd(deity);
+                break;
+            }
+            case false:
+            {
+                var aislingsAtEnd = goddess?.MapInstance.GetEntities<Aisling>().ToList();
+                var aislingsStillHere = aislingsAtStart.Intersect(aislingsAtEnd!).ToList();
+
+                foreach (var player in aislingsStillHere)
+                {
+                    player.Animate(PrayerSuccess);
+
+                    if (IntegerRandomizer.RollChance(ESSENCE_CHANCE))
+                    {
+                        var item = ItemFactory.Create($"essenceof{deity}");
+                        player.Inventory.TryAddToNextSlot(item);
+                        player.SendActiveMessage($"You received an Essence of {deity} and faith!");
+                    } 
+                    else
+                    {
+                        player.SendActiveMessage($"You receive faith!");
+                    }
+
+                    TryAddFaith(player, FAITH_REWARD);
+                }
+
+                foreach (var latePlayers in aislingsAtEnd!.Except(aislingsStillHere))
+                {
+                    latePlayers.SendActiveMessage("You must be present from start to finish to receive full benefits.");   
+                    TryAddFaith(latePlayers, LATE_FAITH_REWARD);
+                }
+
+                break;
+            }
+        }
     }
 
     private void AnnounceMassEnd(string deity)
@@ -437,16 +531,16 @@ public class ReligionScriptBase : DialogScriptBase
         switch (deity)
         {
             case "Miraelis":
-                source.Trackers.Enums.Set(typeof(JoinReligionQuest), JoinReligionQuest.MiraelisQuest);
+                source.Trackers.Enums.Set(JoinReligionQuest.MiraelisQuest);
                 break;
             case "Skandara":
-                source.Trackers.Enums.Set(typeof(JoinReligionQuest), JoinReligionQuest.SkandaraQuest);
+                source.Trackers.Enums.Set(JoinReligionQuest.SkandaraQuest);
                 break;
             case "Theselene":
-                source.Trackers.Enums.Set(typeof(JoinReligionQuest), JoinReligionQuest.TheseleneQuest);
+                source.Trackers.Enums.Set(JoinReligionQuest.TheseleneQuest);
                 break;
             case "Serendael":
-                source.Trackers.Enums.Set(typeof(JoinReligionQuest), JoinReligionQuest.SerendaelQuest);
+                source.Trackers.Enums.Set(JoinReligionQuest.SerendaelQuest);
                 break;
         }
         source.SendActiveMessage($"{deity} wants you to retreive (3) Essence of {deity}.");
@@ -454,35 +548,40 @@ public class ReligionScriptBase : DialogScriptBase
 
     public void HideDialogOptions(Aisling source, string deity, Dialog subject)
     {
-        if (!source.Trackers.Enums.TryGetValue(typeof(JoinReligionQuest), out var enumValue))
-        {
-            enumValue = JoinReligionQuest.None;
-        }
+        var rank = GetPlayerRank(source);
 
-        if (enumValue is JoinReligionQuest.None or JoinReligionQuest.MiraelisQuest or JoinReligionQuest.SerendaelQuest or JoinReligionQuest.SkandaraQuest or JoinReligionQuest.TheseleneQuest)
+        /*if (rank <= Rank.Emissary) 
+            RemoveOption(subject, "Hold Mass");*/
+        
+        if (rank <= Rank.Champion)
+            RemoveOption(subject, "Join the Temple");
+
+        if (rank == Rank.None)
         {
             RemoveOption(subject, "Pray");
             RemoveOption(subject, "Transfer Faith");
             RemoveOption(subject, "Scroll of the Temple");
-        }
 
-        if (enumValue is not JoinReligionQuest.JoinReligionComplete && 
-            enumValue is not JoinReligionQuest.None)
-        {
-            RemoveOption(subject, "Join the Temple");
+            source.Trackers.Enums.TryGetValue(out JoinReligionQuest stage);
 
-            if (!subject.GetOptionIndex($"Essence of {deity}").HasValue)
+            if (stage is JoinReligionQuest.MiraelisQuest or JoinReligionQuest.SerendaelQuest
+                                                         or JoinReligionQuest.SkandaraQuest
+                                                         or JoinReligionQuest.TheseleneQuest)
             {
-                subject.AddOption($"Essence of {deity}", $"{deity}_temple_completejoinQuest");
+                RemoveOption(subject, "Join the Temple");
+                AddOption(subject, $"Essence of {deity}", $"{deity}_temple_completejoinQuest");
             }
-        }
-
-        if (enumValue is JoinReligionQuest.JoinReligionComplete)
-        {
-            RemoveOption(subject, "Join the Temple");
         }
     }
 
+    private void AddOption(Dialog subject, string optionName, string templateKey)
+    {
+        if (!subject.GetOptionIndex(optionName).HasValue)
+        {
+            subject.AddOption(optionName, templateKey);
+        }
+    }
+    
     private void RemoveOption(Dialog subject, string optionName)
     {
         if (subject.GetOptionIndex(optionName).HasValue)
@@ -637,24 +736,20 @@ public class ReligionScriptBase : DialogScriptBase
         {
             var faithCount = faith.Count;
 
-            switch (faithCount)
+            return faithCount switch
             {
-                case < 150:
-                    return Rank.Worshipper;
-                case < 300:
-                    return Rank.Acolyte;
-                case < 500:
-                    return Rank.Emissary;
-                case < 750:
-                    return Rank.Seer;
-                case < 1000:
-                    return Rank.Favor;
-                case < 1500:
-                    return Rank.Champion;
-            }
+                <= 0                         => Rank.None,
+                < FaithThresholds.WORSHIPPER => Rank.Worshipper,
+                < FaithThresholds.ACOLYTE    => Rank.Acolyte,
+                < FaithThresholds.EMISSARY   => Rank.Emissary,
+                < FaithThresholds.SEER       => Rank.Seer,
+                < FaithThresholds.FAVOR      => Rank.Favor,
+                < FaithThresholds.CHAMPION   => Rank.Champion,
+                _                            => Rank.Champion
+            };
         }
 
-        return Rank.Worshipper;
+        return Rank.None;
     }
     
     public static string? CheckDeity(Aisling source)

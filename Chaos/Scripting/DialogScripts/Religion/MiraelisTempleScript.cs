@@ -12,6 +12,8 @@ public class MiraelisTempleScript : ReligionScriptBase
     /// <inheritdoc />
     public MiraelisTempleScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IItemFactory itemFactory)
         : base(subject, clientRegistry, itemFactory) { }
+
+    private const string GODNAME = "Miraelis";
     
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -25,19 +27,28 @@ public class MiraelisTempleScript : ReligionScriptBase
                 PrayToMiraelis(source);
                 break;
             case "miraelis_temple_joinquest":
-                SendOnJoinQuest(source, "Miraelis");
+                SendOnJoinQuest(source, GODNAME);
                 break;
             case "miraelis_temple_completejoinquest":
-                CheckJoinQuestCompletion(source, "Miraelis");
+                CheckJoinQuestCompletion(source, GODNAME);
                 break;
             case "miraelis_temple_createscroll":
-                CreateTempleScroll(source, "Miraelis");
+                CreateTempleScroll(source, GODNAME);
                 break;
             case "miraelis_temple_transferfaithaccepted":
-                TransferFaith(source, "Miraelis");
+                TransferFaith(source, GODNAME);
+                break;
+            case "miraelis_temple_holdmassself5minute":
+                AnnounceMassStart(source, GODNAME, true);
+                break;
+            case "miraelis_temple_holdmassself1minute":
+                AnnounceOneMinuteWarning(source, GODNAME, true);
+                break;
+            case "miraelis_temple_holdmassselfendmass":
+                AwardAttendees(source, GODNAME, null!, Subject.DialogSource as Merchant, true);
                 break;
             case "miraelis_temple_holdmassmiraelis":
-                var _ = GoddessHoldMass(source, "Miraelis", Subject.DialogSource as Merchant);
+                var _ = GoddessHoldMass(source, GODNAME, Subject.DialogSource as Merchant);
                 break;
         }
     }
