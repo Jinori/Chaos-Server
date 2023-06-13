@@ -8,7 +8,7 @@ namespace Chaos.Scripting.SpellScripts;
 
 public class SummonPetScript : ConfigurableSpellScriptBase
 {
-    private const string MONSTER_KEY = "gloop";
+    private const string MONSTER_KEY = "Gloop";
     private readonly IMonsterFactory _monsterFactory;
 
     public SummonPetScript(Spell subject, IMonsterFactory monsterFactory)

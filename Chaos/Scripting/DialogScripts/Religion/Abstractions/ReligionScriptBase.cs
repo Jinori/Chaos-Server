@@ -6,6 +6,7 @@ using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Networking.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -24,14 +25,12 @@ public class ReligionScriptBase : DialogScriptBase
     private const string SKANDARA_LEGEND_KEY = "Skandara";
     private const int TEMPLE_SCROLL_FAITH_COST = 1;
     private const int AMOUNT_TO_TRANSFER_FAITH = 5;
-    private const int MASS_DURATION_SECONDS = 90;
-    private const int MASS_CONCLUSION_DELAY_SECONDS = 5;
     private const int MASS_ANNOUNCEMENT_DELAY_SECONDS = 15;
     private const int FAITH_REWARD = 25;
     private const int ESSENCE_CHANCE = 10;
     private const int MASS_SERMON_COUNT = 9;
     private const int SERMON_DELAY_SECONDS = 10;
-    
+
     protected Animation PrayerSuccess { get; } = new()
     {
         AnimationSpeed = 60,
@@ -237,22 +236,46 @@ public class ReligionScriptBase : DialogScriptBase
         Favor,
         Champion
     }
-    
-    public async Task GoddessHoldMass(Aisling source, string deity)
+
+    public async Task GoddessHoldMass(Aisling source, string deity, Merchant? goddess)
     {
-        AnnounceMassStart(deity);
-        await Task.Delay(TimeSpan.FromSeconds(MASS_ANNOUNCEMENT_DELAY_SECONDS));
+        if (source.Trackers.TimedEvents.HasActiveEvent("Mass", out var timedEvent))
+        {
+            Subject.Reply(
+                source,
+                $"You cannot hold Mass at this time. \nTry again in {
+                    timedEvent.Remaining.ToReadableString()}.");
+            return;
+        }
+        switch (goddess)
+        {
+            case { CurrentlyHostingMass: true }:
+                Subject.Reply(source, "I am currently busy already holding Mass at this time.");
+                return;
+            case { CurrentlyHostingMass: false }:
+            {
+                goddess.CurrentlyHostingMass = true;
+                source.Trackers.TimedEvents.AddEvent("Mass", TimeSpan.FromDays(7));
+                source.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        $"Last Held Mass for {deity}",
+                        $"{deity}Mass",
+                        MarkIcon.Heart,
+                        MarkColor.White,
+                        1,
+                        GameTime.Now));
 
-        AnnounceOneMinuteWarning(deity);
-        await Task.Delay(TimeSpan.FromSeconds(MASS_ANNOUNCEMENT_DELAY_SECONDS));
-
-        var aislingsAtStart = AnnounceMassBeginning(source, deity);
-        await ConductMass(source, deity);
-        await Task.Delay(TimeSpan.FromSeconds(MASS_DURATION_SECONDS));
-
-        AwardAttendees(source, deity, aislingsAtStart);
-        AnnounceMassEnd(deity);
-        await Task.Delay(TimeSpan.FromSeconds(MASS_CONCLUSION_DELAY_SECONDS));
+                AnnounceMassStart(deity);
+                await Task.Delay(TimeSpan.FromSeconds(MASS_ANNOUNCEMENT_DELAY_SECONDS));
+                AnnounceOneMinuteWarning(deity);
+                await Task.Delay(TimeSpan.FromSeconds(MASS_ANNOUNCEMENT_DELAY_SECONDS));
+                var aislingsAtStart = AnnounceMassBeginning(source, deity);
+                await ConductMass(goddess);
+                AwardAttendees(deity, aislingsAtStart, goddess);
+                AnnounceMassEnd(deity);
+                break;
+            }
+        }
     }
 
     private void AnnounceMassStart(string deity)
@@ -281,17 +304,14 @@ public class ReligionScriptBase : DialogScriptBase
 
         merchant.Say(
             $"{aislingsAtStart.Count.ToWords().Humanize((LetterCasing.Title))} aislings bless me with their presence.");
-
+        
         return aislingsAtStart;
     }
 
-    private async Task ConductMass(Aisling source, string deity)
+    private async Task ConductMass(Merchant? goddess)
     {
-        var merchant = source.MapInstance.GetEntities<Merchant>().FirstOrDefault(m => m.Name == deity);
-
-        if (merchant == null)
-            throw new InvalidOperationException($"Merchant deity {deity} not found.");
-
+        await Task.Delay(TimeSpan.FromSeconds(6));
+        
         var random = new Random();
         var usedIndexes = new HashSet<int>();
         var messageCount = 0;
@@ -303,24 +323,21 @@ public class ReligionScriptBase : DialogScriptBase
             if (usedIndexes.Add(index))
             {
                 var selectedMessage = MiraelisMassMessages[index];
-                merchant.Say(selectedMessage);
+                goddess?.Say(selectedMessage);
                 await Task.Delay(TimeSpan.FromSeconds(SERMON_DELAY_SECONDS));
                 messageCount++;
             }
         } 
-
-        merchant.Say("This concludes our mass.");
+        await Task.Delay(TimeSpan.FromSeconds(6));
+        goddess?.Say("This concludes our mass.");
+        if (goddess != null)
+            goddess.CurrentlyHostingMass = false;
     }
 
-    private void AwardAttendees(Aisling source, string deity, IEnumerable<Aisling> aislingsAtStart)
+    private void AwardAttendees(string deity, IEnumerable<Aisling> aislingsAtStart, MapEntity? goddess)
     {
-        var merchant = source.MapInstance.GetEntities<Merchant>().FirstOrDefault(m => m.Name == deity);
-
-        if (merchant == null)
-            throw new InvalidOperationException($"Merchant deity {deity} not found.");
-
-        var aislingsAtEnd = merchant.MapInstance.GetEntities<Aisling>().ToList();
-        var aislingsStillHere = aislingsAtStart.Intersect(aislingsAtEnd).ToList();
+        var aislingsAtEnd = goddess?.MapInstance.GetEntities<Aisling>().ToList();
+        var aislingsStillHere = aislingsAtStart.Intersect(aislingsAtEnd!).ToList();
 
         foreach (var player in aislingsStillHere)
         {
@@ -331,7 +348,8 @@ public class ReligionScriptBase : DialogScriptBase
                 var item = ItemFactory.Create($"essenceof{deity}");
                 player.Inventory.TryAddToNextSlot(item);
                 player.SendActiveMessage($"You received an Essence of {deity} and faith!");
-            } else
+            } 
+            else
             {
                 player.SendActiveMessage($"You receive faith!");
             }
@@ -339,7 +357,7 @@ public class ReligionScriptBase : DialogScriptBase
             TryAddFaith(player, FAITH_REWARD);
         }
 
-        foreach (var latePlayers in aislingsAtEnd.Except(aislingsStillHere))
+        foreach (var latePlayers in aislingsAtEnd!.Except(aislingsStillHere))
             latePlayers.SendActiveMessage("You must be present from start to finish to receive full benefits.");
     }
 

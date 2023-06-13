@@ -37,7 +37,7 @@ public class MiraelisTempleScript : ReligionScriptBase
                 TransferFaith(source, "Miraelis");
                 break;
             case "miraelis_temple_holdmassmiraelis":
-                var _ = GoddessHoldMass(source, "Miraelis");
+                var _ = GoddessHoldMass(source, "Miraelis", Subject.DialogSource as Merchant);
                 break;
         }
     }

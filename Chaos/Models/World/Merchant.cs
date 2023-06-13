@@ -28,6 +28,8 @@ public sealed class Merchant : Creature,
 
     /// <inheritdoc />
     public ICollection<Item> ItemsForSale { get; }
+    
+    public bool CurrentlyHostingMass { get; set; }
 
     /// <inheritdoc />
     public ICollection<string> ItemsToBuy { get; }
