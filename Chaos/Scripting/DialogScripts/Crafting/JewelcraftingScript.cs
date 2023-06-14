@@ -237,7 +237,7 @@ public class JewelcraftingScript : DialogScriptBase
             return;
         }
         
-        if (recipe.Level > source.StatSheet.Level)
+        if ((recipe.Level > source.StatSheet.Level) && (!source.IsAdmin))
         {
             // If the player doesn't meet the requirement, close the menu and display an error message
             Subject.Close(source);
@@ -253,7 +253,7 @@ public class JewelcraftingScript : DialogScriptBase
             var recipeStatus = GetStatusAsInt(recipe.Rank);
             var playerRank = GetRankAsInt(existingMark.Text);
 
-            if (playerRank < recipeStatus)
+            if ((playerRank < recipeStatus) && !source.IsAdmin)
             {
                 Subject.Close(source);
                 source.SendOrangeBarMessage($"Crafting rank: {recipe.Rank} required.");
@@ -294,18 +294,25 @@ public class JewelcraftingScript : DialogScriptBase
         }
 
 
+        var hasAllIngredients = true;
+
         foreach (var reagant in recipe.Ingredients)
         {
             if (!source.Inventory.HasCount(reagant.DisplayName, reagant.Amount))
             {
-                Subject.Close(source);
+                hasAllIngredients = false;
 
                 source.SendOrangeBarMessage(
-                    $"You do not have the required amount ({reagant.Amount}) of {reagant.DisplayName}.");
-
-                return;
+                    $"You are missing ({reagant.Amount}) of {reagant.DisplayName}.");
             }
         }
+
+        if (!hasAllIngredients)
+        {
+            Subject.Close(source);
+            return;
+        }
+
 
         var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
             var legendMarkCount = existingMark?.Count ?? 0;

@@ -10,7 +10,6 @@ namespace Chaos.Definitions;
 
 public static class CraftingRequirements
 {
-
     public sealed class Recipe
     {
         public string Name { get; set; } = null!;
@@ -1050,7 +1049,11 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutberyl", DisplayName = "Uncut Beryl", Amount = 1 }
+                    new Ingredient { TemplateKey = "uncutberyl", DisplayName = "Uncut Beryl", Amount = 1 },
+                    new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 1 },
+                new Ingredient { TemplateKey = "flawedberyl", DisplayName = "Flawed Beryl", Amount = 1 },
+            new Ingredient { TemplateKey = "mantiseye", DisplayName = "Mantis Eye", Amount = 1 }
+        
                 },
                 Rank = "Apprentice",
                 Level = 41,

@@ -25,209 +25,6 @@ public class RecipeItemScript : ItemScriptBase
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            #region Cooking Recipes
-            case "recipe_dinnerplate":
-            {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.DinnerPlate))
-                {
-                    CookingRecipeLearn(
-                        source,
-                        ani,
-                        CookingRecipes.DinnerPlate,
-                        "Dinner Plate",
-                        $"{Subject.Template.TemplateKey}");
-
-                    return;
-                }
-
-                source.SendOrangeBarMessage("You already know this recipe.");
-
-                return;
-            }
-            case "recipe_sweetbuns":
-            {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.SweetBuns))
-                {
-                    CookingRecipeLearn(
-                        source,
-                        ani,
-                        CookingRecipes.SweetBuns,
-                        "Sweet Buns",
-                        $"{Subject.Template.TemplateKey}");
-
-                    return;
-                }
-
-                source.SendOrangeBarMessage("You already know this recipe.");
-
-                return;
-            }
-            case "recipe_fruitbasket":
-            {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.FruitBasket))
-                {
-                    CookingRecipeLearn(
-                        source,
-                        ani,
-                        CookingRecipes.FruitBasket,
-                        "Fruit Basket",
-                        $"{Subject.Template.TemplateKey}");
-
-                    return;
-                }
-
-                source.SendOrangeBarMessage("You already know this recipe.");
-
-                return;
-            }
-            case "recipe_salad":
-            {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.Salad))
-                {
-                    CookingRecipeLearn(
-                        source,
-                        ani,
-                        CookingRecipes.Salad,
-                        "Salad",
-                        $"{Subject.Template.TemplateKey}");
-
-                    return;
-                }
-
-                source.SendOrangeBarMessage("You already know this recipe.");
-
-                return;
-            }
-            case "recipe_lobsterdinner":
-            {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.LobsterDinner))
-                {
-                    CookingRecipeLearn(
-                        source,
-                        ani,
-                        CookingRecipes.LobsterDinner,
-                        "Lobster Dinner",
-                        $"{Subject.Template.TemplateKey}");
-
-                    return;
-                }
-
-                source.SendOrangeBarMessage("You already know this recipe.");
-
-                return;
-            }
-            case "recipe_pie":
-            {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.Pie))
-                {
-                    CookingRecipeLearn(
-                        source,
-                        ani,
-                        CookingRecipes.Pie,
-                        "Pie",
-                        $"{Subject.Template.TemplateKey}");
-
-                    return;
-                }
-
-                source.SendOrangeBarMessage("You already know this recipe.");
-
-                return;
-            }
-            case "recipe_sandwich":
-            {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.Sandwich))
-                {
-                    CookingRecipeLearn(
-                        source,
-                        ani,
-                        CookingRecipes.Sandwich,
-                        "Sandwich",
-                        $"{Subject.Template.TemplateKey}");
-
-                    return;
-                }
-
-                source.SendOrangeBarMessage("You already know this recipe.");
-
-                return;
-            }
-            case "recipe_soup":
-            {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.Soup))
-                {
-                    CookingRecipeLearn(
-                        source,
-                        ani,
-                        CookingRecipes.Soup,
-                        "Soup",
-                        $"{Subject.Template.TemplateKey}");
-
-                    return;
-                }
-
-                source.SendOrangeBarMessage("You already know this recipe.");
-
-                return;
-            }
-            case "recipe_steakmeal":
-            {
-                if (!source.Trackers.Flags.HasFlag(CookingRecipes.SteakMeal))
-                {
-                    CookingRecipeLearn(
-                        source,
-                        ani,
-                        CookingRecipes.SteakMeal,
-                        "Steak Meal",
-                        $"{Subject.Template.TemplateKey}");
-
-                    return;
-                }
-
-                source.SendOrangeBarMessage("You already know this recipe.");
-
-                return;
-            }
-            #endregion
-
-            #region Armor Smithing Recipes
-            case "recipe_basicarmors":
-            {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicArmors))
-                {
-                    if (craft != Craft.Armorsmithing)
-                    {
-                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
-
-                        return;
-                    }
-
-                    ArmorSmithRecipeLearn(
-                        source,
-                        ani,
-                        ArmorSmithCategories.BasicArmors,
-                        "Basic Armors",
-                        $"{Subject.Template.TemplateKey}");
-
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedScoutLeather);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGardcorp);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCowl);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCotte);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMagiSkirt);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGorgetGown);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDobok);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherTunic);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedEarthBodice);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherBliaut);
-
-                    return;
-                }
-
-                source.SendOrangeBarMessage("You already know this recipe");
-
-                return;
-            }
-
             #region All Recipes
             case "recipe_allcrafts":
             {
@@ -465,6 +262,7 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylSapphireEarrings);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylEmeraldEarrings);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylHeartstoneEarrings);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.Hemloch);
 
 
 
@@ -477,6 +275,209 @@ public class RecipeItemScript : ItemScriptBase
             }
 
             #endregion
+            
+            #region Cooking Recipes
+            case "recipe_dinnerplate":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.DinnerPlate))
+                {
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.DinnerPlate,
+                        "Dinner Plate",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_sweetbuns":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.SweetBuns))
+                {
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.SweetBuns,
+                        "Sweet Buns",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_fruitbasket":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.FruitBasket))
+                {
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.FruitBasket,
+                        "Fruit Basket",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_salad":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.Salad))
+                {
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.Salad,
+                        "Salad",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_lobsterdinner":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.LobsterDinner))
+                {
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.LobsterDinner,
+                        "Lobster Dinner",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_pie":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.Pie))
+                {
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.Pie,
+                        "Pie",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_sandwich":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.Sandwich))
+                {
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.Sandwich,
+                        "Sandwich",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_soup":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.Soup))
+                {
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.Soup,
+                        "Soup",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_steakmeal":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.SteakMeal))
+                {
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.SteakMeal,
+                        "Steak Meal",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            #endregion
+
+            #region Armor Smithing Recipes
+            case "recipe_basicarmors":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicArmors))
+                {
+                    if (craft != Craft.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithCategories.BasicArmors,
+                        "Basic Armors",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedScoutLeather);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGardcorp);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCowl);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCotte);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMagiSkirt);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGorgetGown);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDobok);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherTunic);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedEarthBodice);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherBliaut);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe");
+
+                return;
+            }
 
             case "recipe_apprenticearmors":
             {
