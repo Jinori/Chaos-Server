@@ -34,7 +34,7 @@ public class DefaultDamageFormula : IDamageFormula
         // @formatter:on
     }.ToImmutableArray();
 
-    protected virtual void ApplyAcModifier(ref int damage, int defenderAc) => damage = Convert.ToInt32(damage * (1 + defenderAc / 100.0m));
+    protected virtual void ApplyAcModifier(ref int damage, int defenderAc) => damage = Convert.ToInt32(damage * (1 + defenderAc / 100m));
 
     protected virtual void ApplyElementalModifier(ref int damage, Element attackElement, Element defenseElement) =>
         damage = Convert.ToInt32(damage * ElementalModifierLookup[(int)attackElement][(int)defenseElement]);
@@ -45,15 +45,15 @@ public class DefaultDamageFormula : IDamageFormula
         {
             case ISkillScript:
             {
-                var addedFromPct = damage * (attacker.StatSheet.EffectiveSkillDamagePct / 100);
-                damage += attacker.StatSheet.EffectiveFlatSkillDamage + addedFromPct;
+                var addedFromPct = damage * (attacker.StatSheet.EffectiveSkillDamagePct / 100m);
+                damage += Convert.ToInt32(attacker.StatSheet.EffectiveFlatSkillDamage + addedFromPct);
 
                 break;
             }
             case ISpellScript:
             {
-                var addedFromPct = damage * (attacker.StatSheet.EffectiveSpellDamagePct / 100);
-                damage += attacker.StatSheet.EffectiveFlatSpellDamage + addedFromPct;
+                var addedFromPct = damage * (attacker.StatSheet.EffectiveSpellDamagePct / 100m);
+                damage += Convert.ToInt32(attacker.StatSheet.EffectiveFlatSpellDamage + addedFromPct);
 
                 break;
             }
