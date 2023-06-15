@@ -546,31 +546,45 @@ public class ReligionScriptBase : DialogScriptBase
         source.SendActiveMessage($"{deity} wants you to retreive (3) Essence of {deity}.");
     }
 
-    public void HideDialogOptions(Aisling source, string deity, Dialog subject)
+    private static readonly Dictionary<Rank, List<string>> RoleOptions = new Dictionary<Rank, List<string>>
     {
+        { Rank.None, new List<string> { "Join the Temple", "The Gods" } },
+        { Rank.Worshipper, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith" } },
+        { Rank.Acolyte, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith"} },
+        { Rank.Emissary, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith"} },
+        { Rank.Seer, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "The Gods", "Leave Faith" } },
+        { Rank.Favor, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "The Gods", "Leave Faith"} },
+        { Rank.Champion, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "The Gods", "Leave Faith" } },
+    };
+    
+    public void HideDialogOptions(Aisling source, string? deity, Dialog subject)
+    {
+        var playerGod = CheckDeity(source);
+        if ((playerGod != null) && (playerGod != deity))
+        {
+            Subject.Reply(source, $"Your faith lies within {playerGod} already. Please seek them out.");
+            return;
+        }
+        
         var rank = GetPlayerRank(source);
 
-        /*if (rank <= Rank.Emissary) 
-            RemoveOption(subject, "Hold Mass");*/
-        
-        if (rank <= Rank.Champion)
-            RemoveOption(subject, "Join the Temple");
+        // Get all options.
+        var allOptions = new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "Join the Temple", "Leave Faith" };
+
+        // Remove the options that are not available for this rank.
+        foreach (var option in allOptions.Except(RoleOptions[rank]))
+        {
+            RemoveOption(subject, option);
+        }
 
         if (rank == Rank.None)
         {
-            RemoveOption(subject, "Pray");
-            RemoveOption(subject, "Transfer Faith");
-            RemoveOption(subject, "Scroll of the Temple");
-
             source.Trackers.Enums.TryGetValue(out JoinReligionQuest stage);
-
-            if (stage is JoinReligionQuest.MiraelisQuest or JoinReligionQuest.SerendaelQuest
-                                                         or JoinReligionQuest.SkandaraQuest
-                                                         or JoinReligionQuest.TheseleneQuest)
+            if (stage is JoinReligionQuest.MiraelisQuest or JoinReligionQuest.SerendaelQuest or JoinReligionQuest.SkandaraQuest or JoinReligionQuest.TheseleneQuest)
             {
-                RemoveOption(subject, "Join the Temple");
                 AddOption(subject, $"Essence of {deity}", $"{deity}_temple_completejoinQuest");
             }
+            RemoveOption(subject, "Leave Faith");
         }
     }
 
@@ -689,6 +703,7 @@ public class ReligionScriptBase : DialogScriptBase
             return;
         }
 
+        source.Trackers.Enums.Set(JoinReligionQuest.None);
         source.Legend.Remove(deity, out _);
         source.SendActiveMessage($"You turn your back on {deity} and leave the ranks of worship.");
     }
@@ -761,7 +776,15 @@ public class ReligionScriptBase : DialogScriptBase
             SKANDARA_LEGEND_KEY
         };
 
-        return deityKeys.FirstOrDefault(key => source.Legend.ContainsKey(key));
+        foreach (var key in deityKeys)
+        {
+            if (source.Legend.ContainsKey(key))
+            {
+                return key;
+            }
+        }
+    
+        return null;
     }
     
     public int CheckCurrentFaith(Aisling source)
