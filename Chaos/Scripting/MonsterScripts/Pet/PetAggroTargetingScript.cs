@@ -39,67 +39,59 @@ public class PetAggroTargetingScript : MonsterScriptBase
         AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro);
     }
 
-    /// <inheritdoc />
+    private bool IsCurrentTargetValid() => Target is { IsAlive: true } && Target.OnSameMapAs(Subject);
+
     public override void Update(TimeSpan delta)
     {
         base.Update(delta);
-
         TargetUpdateTimer.Update(delta);
 
-        if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject)))
+
+        if (!IsCurrentTargetValid())
         {
-            AggroList.Remove(Target.Id, out _);
+            if (Target != null)
+                AggroList.Remove(Target.Id, out _);
+
             Target = null;
         }
 
         if (!TargetUpdateTimer.IntervalElapsed)
             return;
 
-        Target = null;
+        var owner = GetOwner();
 
-        var substringEndIndex = Subject.Name.IndexOf("'s Gloop", StringComparison.Ordinal);
-        var substring = Subject.Name[..substringEndIndex];
-
-        var player = ClientRegistry.Where(x => x.Aisling.IsAlive && (x.Aisling.Name == substring))
-                                   .Select(x => x.Aisling)
-                                   .FirstOrDefault();
-
-        if (player is not null)
-        {
-            var target = Map.GetEntitiesWithinRange<Monster>(player)
-                            .Where(x => x.IsAlive && x.AggroList.ContainsKey(player.Id));
-
-            foreach (var kvp in target)
-            {
-                if (!Map.TryGetObject<Monster>(kvp.Id, out var possibleTarget))
-                    continue;
-                
-                if (!possibleTarget.IsAlive || !Subject.CanObserve(possibleTarget) || !possibleTarget.WithinRange(Subject))
-                    continue;
-
-                if (possibleTarget.DistanceFrom(player) > 5)
-                    continue;
-
-                Target = possibleTarget;
-                break;
-            }
-        }
-
-        if (Target != null)
-            return;
-
-        //if we failed to get a target via aggroList, grab the closest aisling within aggro range
-        Target ??= Map.GetEntitiesWithinRange<Monster>(Subject, AggroRange)
-                      .ThatAreObservedBy(Subject)
-                      .Where(
-                          obj => !obj.Equals(Subject)
-                                 && obj.IsAlive
-                                 && Subject.ApproachTime.TryGetValue(obj.Id, out var time)
-                                 && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
-                      .ClosestOrDefault(Subject);
+        Target = FindAggroedMonster(owner) ?? FindClosestMonster() ?? Target;
 
         //since we grabbed a new target, give them some initial aggro so we stick to them
         if (Target != null)
             AggroList[Target.Id] = InitialAggro++;
+    }
+    
+    private Monster? FindClosestMonster() =>
+        Map.GetEntitiesWithinRange<Monster>(Subject, AggroRange)
+           .ThatAreObservedBy(Subject)
+           .Where(obj => !obj.Equals(Subject)
+                         && obj.IsAlive
+                         && Subject.ApproachTime.TryGetValue(obj.Id, out var time)
+                         && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
+           .ClosestOrDefault(Subject);
+
+    private Monster? FindAggroedMonster(Aisling? owner)
+    {
+        if (owner == null) return null;
+
+        return Map.GetEntitiesWithinRange<Monster>(owner)
+                  .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id));
+    }
+    
+    private Aisling? GetOwner()
+    {
+        var substringEndIndex = Subject.Name.IndexOf("'s Gloop", StringComparison.Ordinal);
+        var substring = Subject.Name[..substringEndIndex];
+
+        return ClientRegistry
+               .Where(x => x.Aisling.IsAlive && (x.Aisling.Name == substring))
+               .Select(x => x.Aisling)
+               .FirstOrDefault();
     }
 }
