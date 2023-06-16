@@ -99,7 +99,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                 
                 if (Subject.Items.Count == 0)
                 {
-                    Subject.Reply(source, "You do not have any recipes learned.","Close");
+                    Subject.Reply(source, "You do not have any recipes to craft. Check your recipe book (F1 Menu) to see your recipes and their requirements.","Close");
 
                     return;
                 }

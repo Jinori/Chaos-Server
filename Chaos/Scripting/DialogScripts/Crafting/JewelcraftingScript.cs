@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
@@ -32,7 +31,7 @@ public class JewelcraftingScript : DialogScriptBase
     private const string RANK_SIX_TITLE = "Advanced Jewelcrafter";
     private const string RANK_SEVEN_TITLE = "Expert Jewelcrafter";
     private const string RANK_EIGHT_TITLE = "Master Jewelcrafter";
-    //Set this to true if doing weaponsmithing type crafting
+    //Set this to true if doing armorsmithing type crafting
     private readonly bool Craftgoodgreatgrand = false;
 
     private Animation FailAnimation { get; } = new()
@@ -102,7 +101,13 @@ public class JewelcraftingScript : DialogScriptBase
         };
 
     // Calculates the success rate of crafting an item
-    private double CalculateSuccessRate(int totalTimesCrafted, int timesCraftedThisItem, double baseSuccessRate, int recipeRank, int difficulty)
+    private double CalculateSuccessRate(
+        int totalTimesCrafted,
+        int timesCraftedThisItem,
+        double baseSuccessRate,
+        int recipeRank,
+        int difficulty
+    )
     {
         var rankDifficultyReduction = recipeRank switch
         {
@@ -116,21 +121,21 @@ public class JewelcraftingScript : DialogScriptBase
             8 => 40,
             _ => 0
         };
-        
+
         // Get the multiplier based on total times crafted
         var multiplier = GetMultiplier(totalTimesCrafted);
+
         // Calculate the success rate with all the factors
-        var successRate = ((baseSuccessRate - rankDifficultyReduction - difficulty) + timesCraftedThisItem / 10.0) * multiplier;
-        
+        var successRate = (baseSuccessRate - rankDifficultyReduction - difficulty + timesCraftedThisItem / 10.0)
+                          * multiplier;
+
         // Ensure the success rate does not exceed the maximum allowed value
         return Math.Min(successRate, SUCCESSRATEMAX);
     }
 
     private void UpdateLegendmark(Aisling source, int legendMarkCount)
     {
-        var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
-
-        if (existingMark is null)
+        if (!source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark))
         {
             source.Legend.AddOrAccumulate(
                 new LegendMark(
@@ -140,25 +145,37 @@ public class JewelcraftingScript : DialogScriptBase
                     MarkColor.White,
                     1,
                     GameTime.Now));
-        }
-
-        if (existingMark is not null)
+        } else
         {
-            existingMark.Text = legendMarkCount switch
+            var rankThresholds = new[]
             {
-                > 1500 when !existingMark.Text.Contains(RANK_EIGHT_TITLE) => RANK_EIGHT_TITLE,
-                > 1000 when !existingMark.Text.Contains(RANK_SEVEN_TITLE) => RANK_SEVEN_TITLE,
-                > 500 when !existingMark.Text.Contains(RANK_SIX_TITLE)    => RANK_SIX_TITLE,
-                > 300 when !existingMark.Text.Contains(RANK_FIVE_TITLE)   => RANK_FIVE_TITLE,
-                > 150 when !existingMark.Text.Contains(RANK_FOUR_TITLE)   => RANK_FOUR_TITLE,
-                > 75 when !existingMark.Text.Contains(RANK_THREE_TITLE)   => RANK_THREE_TITLE,
-                > 25 when !existingMark.Text.Contains(RANK_TWO_TITLE)     => RANK_TWO_TITLE,
-                _                                                         => existingMark.Text
+                25, 75, 150, 300, 500, 1000, 1500
             };
 
+            var rankTitles = new[]
+            {
+                RANK_TWO_TITLE, RANK_THREE_TITLE, RANK_FOUR_TITLE, RANK_FIVE_TITLE, RANK_SIX_TITLE,
+                RANK_SEVEN_TITLE, RANK_EIGHT_TITLE
+            };
+
+            var currentRankIndex = Array.IndexOf(rankTitles, existingMark.Text);
+
             existingMark.Count++;
+
+            for (var i = currentRankIndex + 1; i < rankThresholds.Length; i++)
+            {
+                if (legendMarkCount >= rankThresholds[i])
+                {
+                    existingMark.Text = rankTitles[i];
+                    source.SendOrangeBarMessage($"You have reached the rank of {rankTitles[i]}");
+
+                    break;
+                }
+            }
         }
     }
+
+
 
     /// <inheritdoc />
     public JewelcraftingScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
@@ -176,16 +193,19 @@ public class JewelcraftingScript : DialogScriptBase
             case "jewelcrafting_initial":
             {
                 OnDisplayingShowItems(source);
+
                 break;
             }
             case "jewelcrafting_confirmation":
             {
                 OnDisplayingConfirmation(source);
+
                 break;
             }
             case "jewelcrafting_accepted":
             {
                 OnDisplayingAccepted(source);
+
                 break;
             }
         }
@@ -194,25 +214,43 @@ public class JewelcraftingScript : DialogScriptBase
     //ShowItems in a Shop Window to the player
     private void OnDisplayingShowItems(Aisling source)
     {
-        // Checking if the Jewelcrafting recipe is available or not.
-        if (source.Trackers.Flags.TryGetFlag(out JewelcraftingRecipes recipes))
+        if (source.IsAdmin)
         {
-            // Iterating through the Jewelcrafting recipe requirements.
             foreach (var recipe in CraftingRequirements.JewelcraftingRequirements)
             {
-                // Checking if the recipe is available or not.
-                if (recipes.HasFlag(recipe.Key))
-                {
-                    var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
-                    // Adding the recipe to the subject's dialog window.
-                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+            }
+        } else
+        {
+            var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
 
+            if (existingMark == null)
+                UpdateLegendmark(source, 0);
+
+            if (existingMark != null)
+            {
+                var playerRank = GetRankAsInt(existingMark.Text);
+
+                if (source.Trackers.Flags.TryGetFlag(out JewelcraftingRecipes recipes))
+                {
+                    foreach (var recipe in CraftingRequirements.JewelcraftingRequirements)
+                    {
+                        if (recipes.HasFlag(recipe.Key) && playerRank >= GetStatusAsInt(recipe.Value.Rank))
+                        {
+                            var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+
+                            if (source.UserStatSheet.Level >= item.Level)
+                            {
+                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                            }
+                        }
+                    }
                 }
             }
-        }
-        if (Subject.Items.Count == 0)
-        {
-            Subject.Reply(source, "You do not have any recipes learned.","jewelcrafting_initial");
+
+            if (Subject.Items.Count == 0)
+                Subject.Reply(source, "You do not have any recipes to craft. Check your recipe book (F1 Menu) to see your recipes and their requirements.","jewelcrafting_initial");
         }
     }
 
@@ -222,53 +260,26 @@ public class JewelcraftingScript : DialogScriptBase
         if (!TryFetchArgs<string>(out var selectedRecipeName))
         {
             Subject.ReplyToUnknownInput(source);
+
             return;
         }
-        
-        var correctRecipe = Regex.Replace(selectedRecipeName, @"(\s+'s|'|-)", "");
 
         var recipe =
             CraftingRequirements.JewelcraftingRequirements.Values.FirstOrDefault(
-                recipe1 => recipe1.Name.EqualsI(correctRecipe));
-        
+                recipe1 => recipe1.Name.EqualsI(selectedRecipeName));
+
         if (recipe is null)
         {
-            Subject.Reply(source, "Something went wrong with the recipe.");
+            Subject.Reply(source, "Notify a GM that this recipe is missing.");
+
             return;
-        }
-        
-        if ((recipe.Level > source.StatSheet.Level) && (!source.IsAdmin))
-        {
-            // If the player doesn't meet the requirement, close the menu and display an error message
-            Subject.Close(source);
-            source.SendOrangeBarMessage($"Level: {recipe.Level} required to craft or upgrade.");
-            return;
-        }
-
-        var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
-
-        if (existingMark is not null)
-        {
-
-            var recipeStatus = GetStatusAsInt(recipe.Rank);
-            var playerRank = GetRankAsInt(existingMark.Text);
-
-            if ((playerRank < recipeStatus) && !source.IsAdmin)
-            {
-                Subject.Close(source);
-                source.SendOrangeBarMessage($"Crafting rank: {recipe.Rank} required.");
-
-                return;
-            }
         }
 
         // If the player meets the requirement, create a list of ingredient names and amounts
         var ingredientList = new List<string>();
 
         foreach (var regeant in recipe.Ingredients)
-        {
             ingredientList.Add($"({regeant.Amount}) {regeant.DisplayName}");
-        }
 
         // Join the ingredient list into a single string and inject it into the confirmation message
         var ingredients = string.Join(" and ", ingredientList);
@@ -280,6 +291,7 @@ public class JewelcraftingScript : DialogScriptBase
         if (!TryFetchArgs<string>(out var selectedRecipeName))
         {
             Subject.ReplyToUnknownInput(source);
+
             return;
         }
 
@@ -289,10 +301,9 @@ public class JewelcraftingScript : DialogScriptBase
 
         if (recipe is null)
         {
-            Subject.Reply(source, "Something went wrong with the recipe.");
+            Subject.Reply(source, "Notify a GM that this recipe is missing.");
             return;
         }
-
 
         var hasAllIngredients = true;
 
@@ -313,100 +324,96 @@ public class JewelcraftingScript : DialogScriptBase
             return;
         }
 
-
         var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
-            var legendMarkCount = existingMark?.Count ?? 0;
+        var legendMarkCount = existingMark?.Count ?? 0;
 
-            var timesCraftedThisItem =
-                source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + recipe.Name, out var value) ? value : 0;
+        var timesCraftedThisItem =
+            source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + recipe.Name, out var value) ? value : 0;
 
-            foreach (var removeRegant in recipe.Ingredients)
-            {
-                source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
-            }
-            
-            if (!IntegerRandomizer.RollChance(
-                    (int)CalculateSuccessRate(
-                        legendMarkCount,
-                        timesCraftedThisItem,
-                        BASE_SUCCESS_RATE,
-                        GetStatusAsInt(recipe.Rank), recipe.Difficulty)))
-            {
-                Subject.Close(source);
-                var dialog = DialogFactory.Create("jewelcrafting_Failed", Subject.DialogSource);
-                dialog.MenuArgs = Subject.MenuArgs;
+        foreach (var removeRegant in recipe.Ingredients)
+            source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
 
-                dialog.InjectTextParameters(recipe.Name);
-                dialog.Display(source);
-                source.Animate(FailAnimation);
-                return;
-            }
+        if (!IntegerRandomizer.RollChance(
+                (int)CalculateSuccessRate(
+                    legendMarkCount,
+                    timesCraftedThisItem,
+                    BASE_SUCCESS_RATE,
+                    GetStatusAsInt(recipe.Rank),
+                    recipe.Difficulty)))
+        {
+            Subject.Close(source);
+            var dialog = DialogFactory.Create("jewelcrafting_Failed", Subject.DialogSource);
+            dialog.MenuArgs = Subject.MenuArgs;
 
-            source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + recipe.Name);
+            dialog.InjectTextParameters(recipe.Name);
+            dialog.Display(source);
+            source.Animate(FailAnimation);
 
-            if (existingMark is null)
-            {
-                UpdateLegendmark(source, legendMarkCount);
-            }
+            return;
+        }
+
+        source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + recipe.Name);
+
+        if (existingMark is null)
+            UpdateLegendmark(source, legendMarkCount);
 
         if (existingMark is not null)
         {
             var recipeStatus = GetStatusAsInt(recipe.Rank);
             var playerRank = GetRankAsInt(existingMark.Text);
 
-            if (playerRank >= 2)
+            if ((playerRank >= 2) && (playerRank - 1 > recipeStatus))
             {
-                if ((playerRank - 1) > (recipeStatus))
+                source.SendOrangeBarMessage("You can no longer gain experience from this recipe.");
+            }
+
+
+            if ((playerRank >= recipeStatus) && (playerRank <= recipeStatus + 1))
+            {
+                UpdateLegendmark(source, legendMarkCount);
+
+                if (playerRank == recipeStatus)
                 {
-                    source.SendOrangeBarMessage("You can no longer gain experience from this recipe.");
+                    UpdateLegendmark(source, legendMarkCount);
                 }
             }
 
-            if (playerRank <= (recipeStatus + 1))
-            {
-                UpdateLegendmark(source, legendMarkCount);
-            }
-
-            if (playerRank == recipeStatus)
-            {
-                UpdateLegendmark(source, legendMarkCount);
-            }
         }
 
         if (Craftgoodgreatgrand)
         {
             var roll = IntegerRandomizer.RollSingle(100);
-
             var newCraft = roll switch
             {
-                < 5  => ItemFactory.Create("grand" + recipe.TemplateKey),
-                < 15 => ItemFactory.Create("great" + recipe.TemplateKey),
-                < 30 => ItemFactory.Create("good" + recipe.TemplateKey),
-                _    => ItemFactory.Create(recipe.TemplateKey)
+                < 10  => ItemFactory.Create("grand" + recipe.TemplateKey),
+                < 40  => ItemFactory.Create("great" + recipe.TemplateKey),
+                < 100 => ItemFactory.Create("good" + recipe.TemplateKey),
+                _     => ItemFactory.Create(recipe.TemplateKey)
             };
 
-            if (!source.Inventory.TryAddToNextSlot(newCraft))
+            if (!source.CanCarry(newCraft))
             {
                 source.Bank.Deposit(newCraft);
                 source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
-            }
+            } 
+            else
+                source.Inventory.TryAddToNextSlot(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);
         } 
         else
         {
-
             var newCraft = ItemFactory.Create(recipe.TemplateKey);
-
-            if (!source.Inventory.TryAddToNextSlot(newCraft))
+            if (!source.CanCarry(newCraft))
             {
                 source.Bank.Deposit(newCraft);
                 source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
             }
+            else
+                source.Inventory.TryAddToNextSlot(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);
         }
-
         source.Animate(SuccessAnimation);
     }
 }

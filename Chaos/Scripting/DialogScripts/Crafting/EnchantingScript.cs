@@ -201,24 +201,43 @@ public class EnchantingScript : DialogScriptBase
     //ShowItems in a Shop Window to the player
     private void OnDisplayingShowItems(Aisling source)
     {
-        // Checking if the Alchemy recipe is available or not.
-        if (source.Trackers.Flags.TryGetFlag(out EnchantingRecipes recipes))
+        if (source.IsAdmin)
         {
-            // Iterating through the Alchemy recipe requirements.
             foreach (var recipe in CraftingRequirements.EnchantingRequirements)
             {
-                // Checking if the recipe is available or not.
-                if (!recipes.HasFlag(recipe.Key))
-                    continue;
-                
                 var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
-                item.DisplayName = recipe.Value.Name;
                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
             }
-        }
-        if (Subject.Items.Count == 0)
+        } else
         {
-            Subject.Reply(source, "You do not have any recipes learned.","enchanting_initial");
+            var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
+
+            if (existingMark == null)
+                UpdateLegendmark(source, 0);
+
+            if (existingMark != null)
+            {
+                var playerRank = GetRankAsInt(existingMark.Text);
+
+                if (source.Trackers.Flags.TryGetFlag(out EnchantingRecipes recipes))
+                {
+                    foreach (var recipe in CraftingRequirements.EnchantingRequirements)
+                    {
+                        if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
+                        {
+                            var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+
+                            if (source.UserStatSheet.Level >= item.Level)
+                            {
+                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (Subject.Items.Count == 0)
+                Subject.Reply(source, "You do not have any recipes to craft. Check your recipe book (F1 Menu) to see your recipes and their requirements.", "weaponsmithing_initial");
         }
     }
     
@@ -233,7 +252,7 @@ public class EnchantingScript : DialogScriptBase
 
         if (Subject.Context is not CraftingRequirements.Recipe recipe)
         {
-            Subject.Reply(source, "Something went wrong with the recipe.");
+            Subject.Reply(source, "Notify a GM that this recipe is missing.");
             return;
         }
 
@@ -248,37 +267,11 @@ public class EnchantingScript : DialogScriptBase
             return;
         }
 
-        if (recipe.Level > source.StatSheet.Level)
-        {
-            // If the player doesn't meet the requirement, close the menu and display an error message
-            Subject.Close(source);
-            source.SendOrangeBarMessage($"Level: {recipe.Level} required to use this enchant.");
-            return;
-        }
-
-        var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
-
-        if (existingMark is not null)
-        {
-            var recipeStatus = GetStatusAsInt(recipe.Rank);
-            var playerRank = GetRankAsInt(existingMark.Text);
-
-            if (playerRank < recipeStatus)
-            {
-                Subject.Close(source);
-                source.SendOrangeBarMessage($"Crafting rank: {recipe.Rank} required.");
-
-                return;
-            }
-        }
-
         // If the player meets the requirement, create a list of ingredient names and amounts
         var ingredientList = new List<string>();
 
         foreach (var regeant in recipe.Ingredients)
-        {
             ingredientList.Add($"({regeant.Amount}) {regeant.DisplayName}");
-        }
 
         // Join the ingredient list into a single string and inject it into the confirmation message
         var ingredients = string.Join(" and ", ingredientList);
@@ -296,7 +289,7 @@ public class EnchantingScript : DialogScriptBase
 
         if (Subject.Context is not CraftingRequirements.Recipe recipe)
         {
-            Subject.Reply(source, "Something went wrong with the recipe.");
+            Subject.Reply(source, "Notify a GM that this recipe is missing.");
             return;
         }
 
@@ -327,9 +320,7 @@ public class EnchantingScript : DialogScriptBase
             source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + recipe.Name, out var value) ? value : 0;
 
         foreach (var removeRegant in recipe.Ingredients)
-        {
             source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
-        }
 
         if (!IntegerRandomizer.RollChance(
                 (int)CalculateSuccessRate(
@@ -360,22 +351,18 @@ public class EnchantingScript : DialogScriptBase
             var recipeStatus = GetStatusAsInt(recipe.Rank);
             var playerRank = GetRankAsInt(existingMark.Text);
 
-            if (playerRank >= 2)
+            if ((playerRank >= 2) && (playerRank - 1 > recipeStatus))
             {
-                if ((playerRank - 1) > (recipeStatus))
-                {
-                    source.SendOrangeBarMessage("You can no longer gain experience from this recipe.");
-                }
+                source.SendOrangeBarMessage("You can no longer gain experience from this recipe.");
             }
 
-            if (playerRank <= (recipeStatus + 1))
-            {
-                UpdateLegendmark(source, legendMarkCount);
-            }
 
-            if (playerRank == recipeStatus)
+            if ((playerRank >= recipeStatus) && (playerRank <= recipeStatus + 1))
             {
                 UpdateLegendmark(source, legendMarkCount);
+
+                if (playerRank == recipeStatus)
+                    UpdateLegendmark(source, legendMarkCount);
             }
         }
 
@@ -491,9 +478,7 @@ public class EnchantingScript : DialogScriptBase
 
     private void UpdateLegendmark(Aisling source, int legendMarkCount)
     {
-        var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
-
-        if (existingMark is null)
+        if (!source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark))
         {
             source.Legend.AddOrAccumulate(
                 new LegendMark(
@@ -503,23 +488,33 @@ public class EnchantingScript : DialogScriptBase
                     MarkColor.White,
                     1,
                     GameTime.Now));
-        }
-
-        if (existingMark is not null)
+        } else
         {
-            existingMark.Text = legendMarkCount switch
+            var rankThresholds = new[]
             {
-                > 1500 when !existingMark.Text.Contains(RANK_EIGHT_TITLE) => RANK_EIGHT_TITLE,
-                > 1000 when !existingMark.Text.Contains(RANK_SEVEN_TITLE) => RANK_SEVEN_TITLE,
-                > 500 when !existingMark.Text.Contains(RANK_SIX_TITLE)    => RANK_SIX_TITLE,
-                > 300 when !existingMark.Text.Contains(RANK_FIVE_TITLE)   => RANK_FIVE_TITLE,
-                > 150 when !existingMark.Text.Contains(RANK_FOUR_TITLE)   => RANK_FOUR_TITLE,
-                > 75 when !existingMark.Text.Contains(RANK_THREE_TITLE)   => RANK_THREE_TITLE,
-                > 25 when !existingMark.Text.Contains(RANK_TWO_TITLE)     => RANK_TWO_TITLE,
-                _                                                         => existingMark.Text
+                25, 75, 150, 300, 500, 1000, 1500
             };
 
+            var rankTitles = new[]
+            {
+                RANK_TWO_TITLE, RANK_THREE_TITLE, RANK_FOUR_TITLE, RANK_FIVE_TITLE, RANK_SIX_TITLE,
+                RANK_SEVEN_TITLE, RANK_EIGHT_TITLE
+            };
+
+            var currentRankIndex = Array.IndexOf(rankTitles, existingMark.Text);
+
             existingMark.Count++;
+
+            for (var i = currentRankIndex + 1; i < rankThresholds.Length; i++)
+            {
+                if (legendMarkCount >= rankThresholds[i])
+                {
+                    existingMark.Text = rankTitles[i];
+                    source.SendOrangeBarMessage($"You have reached the rank of {rankTitles[i]}");
+
+                    break;
+                }
+            }
         }
     }
 

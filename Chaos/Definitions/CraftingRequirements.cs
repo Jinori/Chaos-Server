@@ -912,11 +912,6 @@ public static class CraftingRequirements
                 })
             }
         },
-
-
-
-
-
     };
 
     #endregion
@@ -937,23 +932,7 @@ public static class CraftingRequirements
                 Level = 1,
                 Difficulty = 1
             }
-        },
-        {
-            AlchemyRecipes.BetonyDeum,
-            new Recipe()
-            {
-                Name = "Betony Deum",
-                TemplateKey = "betonydeum",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
-                Rank = "Basic",
-                Level = 8,
-                Difficulty = 2
-            }
-        },
+        }
     };
 
     #region Jewelcrafting
@@ -1285,6 +1264,36 @@ public static class CraftingRequirements
             }
         },
         {
+            JewelcraftingRecipes.SmallRubyRing,
+            new Recipe()
+            {
+                Name = "Small Ruby Ring",
+                TemplateKey = "smallrubyring",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "rawruby", DisplayName = "Raw Ruby", Amount = 1 }
+                },
+                Rank = "Beginner",
+                Level = 1,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.BerylRing,
+            new Recipe()
+            {
+                Name = "Beryl Ring",
+                TemplateKey = "berylring",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "rawberyl", DisplayName = "Raw Beryl", Amount = 1 }
+                },
+                Rank = "Beginner",
+                Level = 1,
+                Difficulty = 1,
+            }
+        },
+        {
             JewelcraftingRecipes.BronzeBerylRing,
             new Recipe()
             {
@@ -1605,11 +1614,71 @@ public static class CraftingRequirements
             }
         },
         {
-            JewelcraftingRecipes.BasicEarthNecklace,
+            JewelcraftingRecipes.FireNecklace,
             new Recipe()
             {
-                Name = "Basic Earth Necklace",
-                TemplateKey = "basicearthnecklace",
+                Name = "Fire Necklace",
+                TemplateKey = "firenecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "rawruby", DisplayName = "Raw Ruby", Amount = 1 }
+                },
+                Rank = "Beginner",
+                Level = 1,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.SeaNecklace,
+            new Recipe()
+            {
+                Name = "Sea Necklace",
+                TemplateKey = "seanecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "rawsapphire", DisplayName = "Raw Sapphire", Amount = 1 }
+                },
+                Rank = "Beginner",
+                Level = 1,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.WindNecklace,
+            new Recipe()
+            {
+                Name = "Wind Necklace",
+                TemplateKey = "windnecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "rawemerald", DisplayName = "Raw Emerald", Amount = 1 }
+                },
+                Rank = "Beginner",
+                Level = 1,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.EarthNecklace,
+            new Recipe()
+            {
+                Name = "Earth Necklace",
+                TemplateKey = "earthnecklace",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "rawberyl", DisplayName = "Raw Beryl", Amount = 1 }
+                },
+                Rank = "Beginner",
+                Level = 1,
+                Difficulty = 1,
+            }
+        },
+        {
+            JewelcraftingRecipes.BoneEarthNecklace,
+            new Recipe()
+            {
+                Name = "Bone Earth Necklace",
+                TemplateKey = "boneearthnecklace",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
@@ -1621,11 +1690,11 @@ public static class CraftingRequirements
             }
         },
         {
-            JewelcraftingRecipes.BasicFireNecklace,
+            JewelcraftingRecipes.BoneFireNecklace,
             new Recipe()
             {
-                Name = "Basic Fire Necklace",
-                TemplateKey = "basicfirenecklace",
+                Name = "Bone Fire Necklace",
+                TemplateKey = "bonefirenecklace",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
@@ -1637,11 +1706,11 @@ public static class CraftingRequirements
             }
         },
         {
-            JewelcraftingRecipes.BasicSeaNecklace,
+            JewelcraftingRecipes.BoneSeaNecklace,
             new Recipe()
             {
-                Name = "Basic Sea Necklace",
-                TemplateKey = "basicseanecklace",
+                Name = "Bone Sea Necklace",
+                TemplateKey = "boneseanecklace",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
@@ -1653,11 +1722,11 @@ public static class CraftingRequirements
             }
         },
         {
-            JewelcraftingRecipes.BasicWindNecklace,
+            JewelcraftingRecipes.BoneWindNecklace,
             new Recipe()
             {
-                Name = "Basic Wind Necklace",
-                TemplateKey = "basicwindnecklace",
+                Name = "Bone Wind Necklace",
+                TemplateKey = "bonewindnecklace",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
@@ -1669,11 +1738,11 @@ public static class CraftingRequirements
             }
         },
         {
-            JewelcraftingRecipes.ApprenticeEarthNecklace,
+            JewelcraftingRecipes.KannaEarthNecklace,
             new Recipe()
             {
-                Name = "Apprentice Earth Necklace",
-                TemplateKey = "apprenticeearthnecklace",
+                Name = "Kanna Earth Necklace",
+                TemplateKey = "kannaearthnecklace",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
@@ -1685,11 +1754,11 @@ public static class CraftingRequirements
             }
         },
         {
-            JewelcraftingRecipes.ApprenticeWindNecklace,
+            JewelcraftingRecipes.KannaWindNecklace,
             new Recipe()
             {
-                Name = "Apprentice Wind Necklace",
-                TemplateKey = "apprenticewindnecklace",
+                Name = "Kanna Wind Necklace",
+                TemplateKey = "kannawindnecklace",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
@@ -1701,11 +1770,11 @@ public static class CraftingRequirements
             }
         },
         {
-            JewelcraftingRecipes.ApprenticeFireNecklace,
+            JewelcraftingRecipes.KannaFireNecklace,
             new Recipe()
             {
-                Name = "Apprentice Fire Necklace",
-                TemplateKey = "apprenticefirenecklace",
+                Name = "Kanna Fire Necklace",
+                TemplateKey = "kannafirenecklace",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
@@ -1717,11 +1786,11 @@ public static class CraftingRequirements
             }
         },
         {
-            JewelcraftingRecipes.ApprenticeSeaNecklace,
+            JewelcraftingRecipes.KannaSeaNecklace,
             new Recipe()
             {
-                Name = "Apprentice Sea Necklace",
-                TemplateKey = "apprenticeseanecklace",
+                Name = "Kanna Sea Necklace",
+                TemplateKey = "kannaseanecklace",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
@@ -1879,7 +1948,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 2,
                 Difficulty = 1
             }
@@ -1895,7 +1964,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 7,
                 Difficulty = 1
             }
@@ -1982,7 +2051,7 @@ public static class CraftingRequirements
             WeaponSmithingRecipes.LongSword,
             new Recipe()
             {
-                Name = "Longsword",
+                Name = "Long Sword",
                 TemplateKey = "longsword",
                 Ingredients = new List<Ingredient>()
                 {
@@ -2364,7 +2433,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 2,
                 Difficulty = 1
             }
@@ -2379,7 +2448,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 4,
                 Difficulty = 1
             }
@@ -2514,7 +2583,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 3,
                 Difficulty = 1
             }
@@ -2589,7 +2658,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 3,
                 Difficulty = 1
             }
@@ -2625,21 +2694,6 @@ public static class CraftingRequirements
             }
         },
         {
-            WeaponSmithingRecipes.GravelShield,
-            new Recipe()
-            {
-                Name = "Gravel Shield",
-                TemplateKey = "gravelshield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
-                },
-                Rank = "Apprentice",
-                Level = 41,
-                Difficulty = 2
-            }
-        },
-        {
             WeaponSmithingRecipes.IronShield,
             new Recipe()
             {
@@ -2651,21 +2705,6 @@ public static class CraftingRequirements
                 },
                 Rank = "Apprentice",
                 Level = 45,
-                Difficulty = 2
-            }
-        },
-        {
-            WeaponSmithingRecipes.LightShield,
-            new Recipe()
-            {
-                Name = "Light Shield",
-                TemplateKey = "lightshield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
-                },
-                Rank = "Apprentice",
-                Level = 50,
                 Difficulty = 2
             }
         },
@@ -2714,7 +2753,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "eppe", DisplayName = "Eppe", Amount = 1 },
                     new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 1 }
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 2,
                 Difficulty = 1
             }
@@ -2730,7 +2769,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 7,
                 Difficulty = 1
             }
@@ -3199,7 +3238,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 2,
                 Difficulty = 1
             }
@@ -3214,7 +3253,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 4,
                 Difficulty = 1
             }
@@ -3349,7 +3388,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 3,
                 Difficulty = 1
             }
@@ -3424,7 +3463,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "petunia", DisplayName = "Petunia", Amount = 2 }
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 3,
                 Difficulty = 1
             }
@@ -4345,10 +4384,10 @@ public static class CraftingRequirements
 
     };
 
-    public static Dictionary<ArmorSmithRecipes, Recipe> ArmorSmithingGearRequirements { get; } = new()
+    public static Dictionary<ArmorsmithingRecipes, Recipe> ArmorSmithingGearRequirements { get; } = new()
     {
         {
-            ArmorSmithRecipes.LeatherSapphireGauntlet,
+            ArmorsmithingRecipes.LeatherSapphireGauntlet,
             new Recipe()
             {
                 Name = "Leather Sapphire Gauntlet",
@@ -4364,7 +4403,7 @@ public static class CraftingRequirements
             }
         },
         {
-    ArmorSmithRecipes.LeatherRubyGauntlet,
+    ArmorsmithingRecipes.LeatherRubyGauntlet,
     new Recipe()
     {
         Name = "Leather Ruby Gauntlet",
@@ -4380,7 +4419,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.LeatherEmeraldGauntlet,
+    ArmorsmithingRecipes.LeatherEmeraldGauntlet,
     new Recipe()
     {
         Name = "Leather Emerald Gauntlet",
@@ -4396,7 +4435,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.LeatherHeartstoneGauntlet,
+    ArmorsmithingRecipes.LeatherHeartstoneGauntlet,
     new Recipe()
     {
         Name = "Leather Heartstone Gauntlet",
@@ -4412,7 +4451,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.IronSapphireGauntlet,
+    ArmorsmithingRecipes.IronSapphireGauntlet,
     new Recipe()
     {
         Name = "Iron Sapphire Gauntlet",
@@ -4428,7 +4467,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.IronRubyGauntlet,
+    ArmorsmithingRecipes.IronRubyGauntlet,
     new Recipe()
     {
         Name = "Iron Ruby Gauntlet",
@@ -4444,7 +4483,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.IronEmeraldGauntlet,
+    ArmorsmithingRecipes.IronEmeraldGauntlet,
     new Recipe()
     {
         Name = "Iron Emerald Gauntlet",
@@ -4460,7 +4499,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.IronHeartstoneGauntlet,
+    ArmorsmithingRecipes.IronHeartstoneGauntlet,
     new Recipe()
     {
         Name = "Iron Heartstone Gauntlet",
@@ -4476,7 +4515,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.MythrilSapphireGauntlet,
+    ArmorsmithingRecipes.MythrilSapphireGauntlet,
     new Recipe()
     {
         Name = "Mythril Sapphire Gauntlet",
@@ -4492,7 +4531,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.MythrilRubyGauntlet,
+    ArmorsmithingRecipes.MythrilRubyGauntlet,
     new Recipe()
     {
         Name = "Mythril Ruby Gauntlet",
@@ -4508,7 +4547,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.MythrilEmeraldGauntlet,
+    ArmorsmithingRecipes.MythrilEmeraldGauntlet,
     new Recipe()
     {
         Name = "Mythril Emerald Gauntlet",
@@ -4524,7 +4563,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.MythrilHeartstoneGauntlet,
+    ArmorsmithingRecipes.MythrilHeartstoneGauntlet,
     new Recipe()
     {
         Name = "Mythril Heartstone Gauntlet",
@@ -4540,7 +4579,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.HybrasylSapphireGauntlet,
+    ArmorsmithingRecipes.HybrasylSapphireGauntlet,
     new Recipe()
     {
         Name = "Hy-brasyl Sapphire Gauntlet",
@@ -4556,7 +4595,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.HybrasylRubyGauntlet,
+    ArmorsmithingRecipes.HybrasylRubyGauntlet,
     new Recipe()
     {
         Name = "Hy-brasyl Ruby Gauntlet",
@@ -4572,7 +4611,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.HybrasylEmeraldGauntlet,
+    ArmorsmithingRecipes.HybrasylEmeraldGauntlet,
     new Recipe()
     {
         Name = "Hy-brasyl Emerald Gauntlet",
@@ -4588,7 +4627,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.HybrasylHeartstoneGauntlet,
+    ArmorsmithingRecipes.HybrasylHeartstoneGauntlet,
     new Recipe()
     {
         Name = "Hy-brasyl Heartstone Gauntlet",
@@ -4604,7 +4643,7 @@ public static class CraftingRequirements
     }
 },
         {
-            ArmorSmithRecipes.JeweledSeaBelt,
+            ArmorsmithingRecipes.JeweledSeaBelt,
             new Recipe()
             {
                 Name = "Jeweled Sea Belt",
@@ -4620,7 +4659,7 @@ public static class CraftingRequirements
             }
         },
         {
-    ArmorSmithRecipes.JeweledFireBelt,
+    ArmorsmithingRecipes.JeweledFireBelt,
     new Recipe()
     {
         Name = "Jeweled Fire Belt",
@@ -4636,7 +4675,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.JeweledWindBelt,
+    ArmorsmithingRecipes.JeweledWindBelt,
     new Recipe()
     {
         Name = "Jeweled Wind Belt",
@@ -4652,7 +4691,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.JeweledEarthBelt,
+    ArmorsmithingRecipes.JeweledEarthBelt,
     new Recipe()
     {
         Name = "Jeweled Earth Belt",
@@ -4668,7 +4707,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.JeweledNatureBelt,
+    ArmorsmithingRecipes.JeweledNatureBelt,
     new Recipe()
     {
         Name = "Jeweled Nature Belt",
@@ -4684,7 +4723,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.JeweledMetalBelt,
+    ArmorsmithingRecipes.JeweledMetalBelt,
     new Recipe()
     {
         Name = "Jeweled Metal Belt",
@@ -4700,7 +4739,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.JeweledLightBelt,
+    ArmorsmithingRecipes.JeweledLightBelt,
     new Recipe()
     {
         Name = "Jeweled Light Belt",
@@ -4716,7 +4755,7 @@ public static class CraftingRequirements
     }
 },
 {
-    ArmorSmithRecipes.JeweledDarkBelt,
+    ArmorsmithingRecipes.JeweledDarkBelt,
     new Recipe()
     {
         Name = "Jeweled Dark Belt",

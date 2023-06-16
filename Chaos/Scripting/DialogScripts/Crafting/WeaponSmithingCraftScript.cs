@@ -133,38 +133,49 @@ public class WeaponSmithingCraftScript : DialogScriptBase
         return Math.Min(successRate, SUCCESSRATEMAX);
     }
 
- private void UpdateLegendmark(Aisling source, int legendMarkCount)
-{
-    if (!source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark))
+    private void UpdateLegendmark(Aisling source, int legendMarkCount)
     {
-        source.Legend.AddOrAccumulate(
-            new LegendMark(
-                RANK_ONE_TITLE,
-                LEGENDMARK_KEY,
-                MarkIcon.Yay,
-                MarkColor.White,
-                1,
-                GameTime.Now));
+        if (!source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark))
+        {
+            source.Legend.AddOrAccumulate(
+                new LegendMark(
+                    RANK_ONE_TITLE,
+                    LEGENDMARK_KEY,
+                    MarkIcon.Yay,
+                    MarkColor.White,
+                    1,
+                    GameTime.Now));
+        } else
+        {
+            var rankThresholds = new[]
+            {
+                25, 75, 150, 300, 500, 1000, 1500
+            };
+
+            var rankTitles = new[]
+            {
+                RANK_TWO_TITLE, RANK_THREE_TITLE, RANK_FOUR_TITLE, RANK_FIVE_TITLE, RANK_SIX_TITLE,
+                RANK_SEVEN_TITLE, RANK_EIGHT_TITLE
+            };
+
+            var currentRankIndex = Array.IndexOf(rankTitles, existingMark.Text);
+
+            existingMark.Count++;
+
+            for (var i = currentRankIndex + 1; i < rankThresholds.Length; i++)
+            {
+                if (legendMarkCount >= rankThresholds[i])
+                {
+                    existingMark.Text = rankTitles[i];
+                    source.SendOrangeBarMessage($"You have reached the rank of {rankTitles[i]}");
+
+                    break;
+                }
+            }
+        }
     }
-    else
-    {
-        if (legendMarkCount > 1500 && !existingMark.Text.Contains(RANK_EIGHT_TITLE))
-            existingMark.Text = RANK_EIGHT_TITLE;
-        else if (legendMarkCount > 1000 && !existingMark.Text.Contains(RANK_SEVEN_TITLE))
-            existingMark.Text = RANK_SEVEN_TITLE;
-        else if (legendMarkCount > 500 && !existingMark.Text.Contains(RANK_SIX_TITLE))
-            existingMark.Text = RANK_SIX_TITLE;
-        else if (legendMarkCount > 300 && !existingMark.Text.Contains(RANK_FIVE_TITLE))
-            existingMark.Text = RANK_FIVE_TITLE;
-        else if (legendMarkCount > 150 && !existingMark.Text.Contains(RANK_FOUR_TITLE))
-            existingMark.Text = RANK_FOUR_TITLE;
-        else if (legendMarkCount > 75 && !existingMark.Text.Contains(RANK_THREE_TITLE))
-            existingMark.Text = RANK_THREE_TITLE;
-        else if (legendMarkCount > 25 && !existingMark.Text.Contains(RANK_TWO_TITLE))
-            existingMark.Text = RANK_TWO_TITLE;
-         existingMark.Count++;
-    }
-}
+
+
 
     /// <inheritdoc />
     public WeaponSmithingCraftScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
@@ -203,33 +214,44 @@ public class WeaponSmithingCraftScript : DialogScriptBase
     //ShowItems in a Shop Window to the player
     private void OnDisplayingShowItems(Aisling source)
     {
-        var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
-
-        if (existingMark == null)
-            UpdateLegendmark(source, 0);
-
-        if (existingMark != null)
+        if (source.IsAdmin)
         {
-            var playerRank = GetRankAsInt(existingMark.Text);
+            foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
+            {
+                var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+            }
+        } else
+        {
+            var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
 
-            // Checking if the WeaponSmithing recipe is available or not.
-            if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes recipes))
-                // Iterating through the WeaponSmithing recipe requirements.
-                foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
+            if (existingMark == null)
+                UpdateLegendmark(source, 0);
+
+            if (existingMark != null)
+            {
+                var playerRank = GetRankAsInt(existingMark.Text);
+
+                if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes recipes))
                 {
-                    // Checking if the recipe is available or not.
-                    if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
+                    foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
                     {
-                        // Creating a faux item for the recipe.
-                        var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
-                        // Adding the recipe to the subject's dialog window.
-                        Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
+                        {
+                            var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+
+                            if (source.UserStatSheet.Level >= item.Level)
+                            {
+                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                            }
+                        }
                     }
                 }
-        }
+            }
 
-        if (Subject.Items.Count == 0)
-            Subject.Reply(source, "You do not have any recipes learned.", "weaponsmithing_initial");
+            if (Subject.Items.Count == 0)
+                Subject.Reply(source, "You do not have any recipes to craft. Check your recipe book (F1 Menu) to see your recipes and their requirements.", "weaponsmithing_initial");
+        }
     }
 
     //Show the players a dialog asking if they want to use the ingredients, yes or no
@@ -248,34 +270,9 @@ public class WeaponSmithingCraftScript : DialogScriptBase
 
         if (recipe is null)
         {
-            Subject.Reply(source, "Something went wrong with the recipe.");
+            Subject.Reply(source, "Notify a GM that this recipe is missing.");
 
             return;
-        }
-
-        if (recipe.Level > source.StatSheet.Level)
-        {
-            // If the player doesn't meet the requirement, close the menu and display an error message
-            Subject.Close(source);
-            source.SendOrangeBarMessage($"Level: {recipe.Level} required to craft or upgrade.");
-
-            return;
-        }
-
-        var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
-
-        if (existingMark is not null)
-        {
-            var recipeStatus = GetStatusAsInt(recipe.Rank);
-            var playerRank = GetRankAsInt(existingMark.Text);
-
-            if (playerRank < recipeStatus)
-            {
-                Subject.Close(source);
-                source.SendOrangeBarMessage($"Crafting rank: {recipe.Rank} required.");
-
-                return;
-            }
         }
 
         // If the player meets the requirement, create a list of ingredient names and amounts
@@ -304,7 +301,7 @@ public class WeaponSmithingCraftScript : DialogScriptBase
 
         if (recipe is null)
         {
-            Subject.Reply(source, "Something went wrong with the recipe.");
+            Subject.Reply(source, "Notify a GM that this recipe is missing.");
             return;
         }
 
@@ -365,15 +362,17 @@ public class WeaponSmithingCraftScript : DialogScriptBase
             var recipeStatus = GetStatusAsInt(recipe.Rank);
             var playerRank = GetRankAsInt(existingMark.Text);
 
-            if (playerRank >= 2)
-                if (playerRank - 1 > recipeStatus)
-                    source.SendOrangeBarMessage("You can no longer gain experience from this recipe.");
+            if ((playerRank >= 2) && (playerRank - 1 > recipeStatus))
+                source.SendOrangeBarMessage("You can no longer gain experience from this recipe.");
 
-            if (playerRank <= recipeStatus + 1)
+            if ((playerRank >= recipeStatus) && (playerRank <= recipeStatus + 1))
+            {
                 UpdateLegendmark(source, legendMarkCount);
 
-            if (playerRank == recipeStatus)
-                UpdateLegendmark(source, legendMarkCount);
+                if (playerRank == recipeStatus)
+                    UpdateLegendmark(source, legendMarkCount);
+            }
+
         }
 
         if (Craftgoodgreatgrand)
@@ -387,21 +386,26 @@ public class WeaponSmithingCraftScript : DialogScriptBase
                 _     => ItemFactory.Create(recipe.TemplateKey)
             };
 
-            if (!source.Inventory.TryAddToNextSlot(newCraft))
+            if (!source.CanCarry(newCraft))
             {
                 source.Bank.Deposit(newCraft);
                 source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
-            }
+            } 
+            else
+                source.Inventory.TryAddToNextSlot(newCraft);
+
             Subject.InjectTextParameters(newCraft.DisplayName);
         } 
         else
         {
             var newCraft = ItemFactory.Create(recipe.TemplateKey);
-            if (!source.Inventory.TryAddToNextSlot(newCraft))
+            if (!source.CanCarry(newCraft))
             {
                 source.Bank.Deposit(newCraft);
                 source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
             }
+            else
+                source.Inventory.TryAddToNextSlot(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);
         }

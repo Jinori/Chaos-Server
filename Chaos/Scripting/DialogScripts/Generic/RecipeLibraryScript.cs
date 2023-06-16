@@ -27,7 +27,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
         {
             var hasFlag1 = source.Trackers.Flags.TryGetFlag(out CookingRecipes _);
             var hasFlag2 = source.Trackers.Flags.TryGetFlag(out AlchemyRecipes _);
-            var hasFlag3 = source.Trackers.Flags.TryGetFlag(out ArmorSmithRecipes _);
+            var hasFlag3 = source.Trackers.Flags.TryGetFlag(out ArmorsmithingRecipes _);
             var hasFlag4 = source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes _);
             var hasFlag5 = source.Trackers.Flags.TryGetFlag(out EnchantingRecipes _);
             var hasFlag6 = source.Trackers.Flags.TryGetFlag(out JewelcraftingRecipes _);
@@ -187,7 +187,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
                         }
                     }
 
-                    if (source.Trackers.Flags.TryGetFlag(out ArmorSmithRecipes gearRecipes))
+                    if (source.Trackers.Flags.TryGetFlag(out ArmorsmithingRecipes gearRecipes))
                     {
                         foreach (var recipe in CraftingRequirements.ArmorSmithingGearRequirements)
                         {

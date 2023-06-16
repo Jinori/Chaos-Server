@@ -15,7 +15,7 @@ public class RecipeItemScript : ItemScriptBase
 
     public override void OnUse(Aisling source)
     {
-        source.Trackers.Enums.TryGetValue(out Craft craft);
+        source.Trackers.Enums.TryGetValue(out Crafts craft);
 
         var ani = new Animation
         {
@@ -87,30 +87,30 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherTunic);
                 source.Trackers.Flags.AddFlag(CraftedArmors.RefinedEarthBodice);
                 source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherBliaut);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.LeatherSapphireGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.LeatherRubyGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.LeatherEmeraldGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.LeatherHeartstoneGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.IronEmeraldGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.IronRubyGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.IronHeartstoneGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.IronSapphireGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.MythrilEmeraldGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.MythrilRubyGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.MythrilHeartstoneGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.MythrilSapphireGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.HybrasylEmeraldGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.HybrasylRubyGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.HybrasylHeartstoneGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.HybrasylSapphireGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledSeaBelt);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledEarthBelt);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledWindBelt);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledFireBelt);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledMetalBelt);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledNatureBelt);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledDarkBelt);
-                source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledLightBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherSapphireGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherRubyGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherEmeraldGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherHeartstoneGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronEmeraldGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronRubyGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronHeartstoneGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronSapphireGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilEmeraldGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilRubyGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilHeartstoneGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilSapphireGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylEmeraldGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylRubyGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylHeartstoneGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylSapphireGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledSeaBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledEarthBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledWindBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledFireBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledMetalBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledNatureBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledDarkBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledLightBelt);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Eppe);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Saber);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.SnowDagger);
@@ -226,14 +226,14 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylSapphireRing);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylEmeraldRing);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylHeartstoneRing);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicEarthNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicFireNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicSeaNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicWindNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeEarthNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeFireNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeSeaNecklace);
-                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeWindNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BoneEarthNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BoneFireNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BoneSeaNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BoneWindNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.KannaEarthNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.KannaFireNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.KannaSeaNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes.KannaWindNecklace);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedEarthNecklace);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedFireNecklace);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedSeaNecklace);
@@ -446,7 +446,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicArmors))
                 {
-                    if (craft != Craft.Armorsmithing)
+                    if (craft != Crafts.Armorsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
@@ -483,7 +483,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.ApprenticeArmors))
                 {
-                    if (craft != Craft.Armorsmithing)
+                    if (craft != Crafts.Armorsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
@@ -519,7 +519,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.JourneymanArmors))
                 {
-                    if (craft != Craft.Armorsmithing)
+                    if (craft != Crafts.Armorsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
@@ -555,7 +555,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.AdeptArmors))
                 {
-                    if (craft != Craft.Armorsmithing)
+                    if (craft != Crafts.Armorsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
@@ -592,7 +592,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.AdvancedArmors))
                 {
-                    if (craft != Craft.Armorsmithing)
+                    if (craft != Crafts.Armorsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
@@ -628,7 +628,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicGauntlets))
                 {
-                    if (craft != Craft.Armorsmithing)
+                    if (craft != Crafts.Armorsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
@@ -642,10 +642,10 @@ public class RecipeItemScript : ItemScriptBase
                         "Basic Gauntlets",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.LeatherSapphireGauntlet);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.LeatherRubyGauntlet);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.LeatherEmeraldGauntlet);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.LeatherHeartstoneGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherSapphireGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherRubyGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherEmeraldGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherHeartstoneGauntlet);
 
                     return;
                 }
@@ -658,7 +658,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.ApprenticeGauntlets))
                 {
-                    if (craft != Craft.Armorsmithing)
+                    if (craft != Crafts.Armorsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
@@ -672,10 +672,10 @@ public class RecipeItemScript : ItemScriptBase
                         "Apprentice Gauntlets",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.IronEmeraldGauntlet);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.IronRubyGauntlet);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.IronHeartstoneGauntlet);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.IronSapphireGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronEmeraldGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronRubyGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronHeartstoneGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronSapphireGauntlet);
 
                     return;
                 }
@@ -688,7 +688,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.JourneymanGauntlets))
                 {
-                    if (craft != Craft.Armorsmithing)
+                    if (craft != Crafts.Armorsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
@@ -702,10 +702,10 @@ public class RecipeItemScript : ItemScriptBase
                         "Journeyman Gauntlets",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.MythrilEmeraldGauntlet);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.MythrilRubyGauntlet);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.MythrilHeartstoneGauntlet);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.MythrilSapphireGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilEmeraldGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilRubyGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilHeartstoneGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilSapphireGauntlet);
 
                     return;
                 }
@@ -718,7 +718,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.AdeptGauntlets))
                 {
-                    if (craft != Craft.Armorsmithing)
+                    if (craft != Crafts.Armorsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
@@ -732,10 +732,10 @@ public class RecipeItemScript : ItemScriptBase
                         "Adept Gauntlets",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.HybrasylEmeraldGauntlet);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.HybrasylRubyGauntlet);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.HybrasylHeartstoneGauntlet);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.HybrasylSapphireGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylEmeraldGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylRubyGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylHeartstoneGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylSapphireGauntlet);
 
                     return;
                 }
@@ -748,7 +748,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicBelts))
                 {
-                    if (craft != Craft.Armorsmithing)
+                    if (craft != Crafts.Armorsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
@@ -762,10 +762,10 @@ public class RecipeItemScript : ItemScriptBase
                         "Basic Belts",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledSeaBelt);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledEarthBelt);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledWindBelt);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledFireBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledSeaBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledEarthBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledWindBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledFireBelt);
 
                     return;
                 }
@@ -778,7 +778,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.ApprenticeBelts))
                 {
-                    if (craft != Craft.Armorsmithing)
+                    if (craft != Crafts.Armorsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
@@ -792,8 +792,8 @@ public class RecipeItemScript : ItemScriptBase
                         "Apprentice Belts",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledMetalBelt);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledNatureBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledMetalBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledNatureBelt);
 
                     return;
                 }
@@ -806,7 +806,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.JourneymanBelts))
                 {
-                    if (craft != Craft.Armorsmithing)
+                    if (craft != Crafts.Armorsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
@@ -820,8 +820,8 @@ public class RecipeItemScript : ItemScriptBase
                         "Journeyman Belts",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledDarkBelt);
-                    source.Trackers.Flags.AddFlag(ArmorSmithRecipes.JeweledLightBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledDarkBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledLightBelt);
 
                     return;
                 }
@@ -837,7 +837,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicSwords))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -867,7 +867,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeSwords))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -895,7 +895,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanSwords))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -924,7 +924,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdeptSwords))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -952,7 +952,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicWeapons))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -981,7 +981,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeWeapons))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1010,7 +1010,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanWeapons))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1038,7 +1038,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdeptWeapons))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1066,7 +1066,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicStaves))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1094,7 +1094,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeStaves))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1122,7 +1122,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanStaves))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1150,7 +1150,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdeptStaves))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1179,7 +1179,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicDaggers))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1208,7 +1208,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeDaggers))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1236,7 +1236,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanDaggers))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1264,7 +1264,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdeptDaggers))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1291,7 +1291,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicClaws))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1318,7 +1318,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeClaws))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1345,7 +1345,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanClaws))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1373,7 +1373,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdeptClaws))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1400,7 +1400,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicShields))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1428,7 +1428,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeShields))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1458,7 +1458,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanShields))
                 {
-                    if (craft != Craft.Weaponsmithing)
+                    if (craft != Crafts.Weaponsmithing)
                     {
                         source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
 
@@ -1489,7 +1489,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.Hemloch))
                 {
-                    if (craft != Craft.Alchemy)
+                    if (craft != Crafts.Alchemy)
                     {
                         source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
 
@@ -1510,31 +1510,6 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_betonydeum":
-            {
-                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.BetonyDeum))
-                {
-                    if (craft != Craft.Alchemy)
-                    {
-                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
-
-                        return;
-                    }
-
-                    AlchemyRecipeLearn(
-                        source,
-                        ani,
-                        AlchemyRecipes.BetonyDeum,
-                        "Betony Deum",
-                        $"{Subject.Template.TemplateKey}");
-
-                    return;
-                }
-
-                source.SendOrangeBarMessage("You already know this recipe.");
-
-                return;
-            }
             #endregion
 
             #region Enchanting Recipes
@@ -1543,7 +1518,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarEnvy))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1569,7 +1544,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.GeolithGratitude))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1595,7 +1570,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.MiraelisSerenity))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1621,7 +1596,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.TheseleneElusion))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1647,7 +1622,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.AquaedonClarity))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1673,7 +1648,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SerendaelLuck))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1699,7 +1674,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SkandaraMight))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1725,7 +1700,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.ZephyraSpirit))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1751,7 +1726,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarGrief))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1777,7 +1752,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.GeolithPride))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1803,7 +1778,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.MiraelisBlessing))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1829,7 +1804,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.TheseleneShadow))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1855,7 +1830,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.AquaedonCalming))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1881,7 +1856,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SerendaelMagic))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1906,7 +1881,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SkandaraTriumph))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1932,7 +1907,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.ZephyraMist))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1959,7 +1934,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarRegret))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -1985,7 +1960,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.GeolithConstitution))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2011,7 +1986,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.MiraelisIntellect))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2037,7 +2012,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.TheseleneDexterity))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2063,7 +2038,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.AquaedonWisdom))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2089,7 +2064,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SerendaelChance))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2114,7 +2089,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SkandaraStrength))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2139,7 +2114,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.ZephyraWind))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2164,7 +2139,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarJealousy))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2189,7 +2164,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.GeolithObsession))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2214,7 +2189,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.MiraelisHarmony))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2239,7 +2214,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.TheseleneBalance))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2264,7 +2239,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.AquaedonWill))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2289,7 +2264,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SerendaelRoll))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2314,7 +2289,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SkandaraDrive))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2339,7 +2314,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.ZephyraVortex))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2364,7 +2339,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarDestruction))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2389,7 +2364,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.GeolithFortitude))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2414,7 +2389,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.MiraelisNurturing))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2439,7 +2414,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.TheseleneRisk))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2464,7 +2439,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.AquaedonResolve))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2489,7 +2464,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SerendaelAddiction))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2514,7 +2489,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SkandaraPierce))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2539,7 +2514,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.ZephyraGust))
                 {
-                    if (craft != Craft.Enchanting)
+                    if (craft != Crafts.Enchanting)
                     {
                         source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
 
@@ -2567,7 +2542,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.BasicRings))
                 {
-                    if (craft != Craft.Jewelcrafting)
+                    if (craft != Crafts.Jewelcrafting)
                     {
                         source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
 
@@ -2594,7 +2569,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ApprenticeRings))
                 {
-                    if (craft != Craft.Jewelcrafting)
+                    if (craft != Crafts.Jewelcrafting)
                     {
                         source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
 
@@ -2621,7 +2596,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.JourneymanRings))
                 {
-                    if (craft != Craft.Jewelcrafting)
+                    if (craft != Crafts.Jewelcrafting)
                     {
                         source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
 
@@ -2648,7 +2623,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdeptRings))
                 {
-                    if (craft != Craft.Jewelcrafting)
+                    if (craft != Crafts.Jewelcrafting)
                     {
                         source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
 
@@ -2676,7 +2651,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.BasicEarrings))
                 {
-                    if (craft != Craft.Jewelcrafting)
+                    if (craft != Crafts.Jewelcrafting)
                     {
                         source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
 
@@ -2704,7 +2679,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ApprenticeEarrings))
                 {
-                    if (craft != Craft.Jewelcrafting)
+                    if (craft != Crafts.Jewelcrafting)
                     {
                         source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
 
@@ -2731,7 +2706,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.JourneymanEarrings))
                 {
-                    if (craft != Craft.Jewelcrafting)
+                    if (craft != Crafts.Jewelcrafting)
                     {
                         source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
 
@@ -2758,7 +2733,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdeptEarrings))
                 {
-                    if (craft != Craft.Jewelcrafting)
+                    if (craft != Crafts.Jewelcrafting)
                     {
                         source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
 
@@ -2786,7 +2761,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.BasicNecklaces))
                 {
-                    if (craft != Craft.Jewelcrafting)
+                    if (craft != Crafts.Jewelcrafting)
                     {
                         source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
 
@@ -2800,10 +2775,10 @@ public class RecipeItemScript : ItemScriptBase
                         "Basic Necklaces",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicEarthNecklace);
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicFireNecklace);
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicSeaNecklace);
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicWindNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BoneEarthNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BoneFireNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BoneSeaNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BoneWindNecklace);
                 }
 
                 break;
@@ -2813,7 +2788,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ApprenticeNecklaces))
                 {
-                    if (craft != Craft.Jewelcrafting)
+                    if (craft != Crafts.Jewelcrafting)
                     {
                         source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
 
@@ -2827,10 +2802,10 @@ public class RecipeItemScript : ItemScriptBase
                         "Apprentice Necklaces",
                         $"{Subject.Template.TemplateKey}");
                     
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeEarthNecklace);
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeFireNecklace);
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeSeaNecklace);
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.ApprenticeWindNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.KannaEarthNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.KannaFireNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.KannaSeaNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.KannaWindNecklace);
                 }
 
                 break;
@@ -2839,7 +2814,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.JourneymanNecklaces))
                 {
-                    if (craft != Craft.Jewelcrafting)
+                    if (craft != Crafts.Jewelcrafting)
                     {
                         source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
 
@@ -2865,7 +2840,7 @@ public class RecipeItemScript : ItemScriptBase
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdeptNecklaces))
                 {
-                    if (craft != Craft.Jewelcrafting)
+                    if (craft != Crafts.Jewelcrafting)
                     {
                         source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
 

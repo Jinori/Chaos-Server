@@ -89,7 +89,7 @@ public enum VisibilityType
     GmHidden
 }
 
-public enum Craft
+public enum Crafts
 {
     None = 0,
     Armorsmithing = 1,
@@ -693,7 +693,7 @@ public enum ArmorSmithCategories
 }
 
 [Flags]
-public enum ArmorSmithRecipes : ulong
+public enum ArmorsmithingRecipes : ulong
 {
     None = 0,
     LeatherSapphireGauntlet = 1L,
@@ -719,7 +719,12 @@ public enum ArmorSmithRecipes : ulong
     JeweledNatureBelt = 1L << 21,
     JeweledMetalBelt = 1L << 22,
     JeweledDarkBelt = 1L << 23,
-    JeweledLightBelt = 1L << 24
+    JeweledLightBelt = 1L << 24,
+    EarthBelt = 1L << 25,
+    SeaBelt = 1L << 26,
+    FireBelt = 1L << 27,
+    WindBelt = 1L << 28,
+    LeatherGauntlet = 1L << 29
 }
 
 [Flags]
@@ -958,14 +963,14 @@ public enum JewelcraftingRecipes : ulong
     HybrasylSapphireRing = 1 << 18,
     HybrasylEmeraldRing = 1 << 19,
     HybrasylHeartstoneRing = 1 << 20,
-    BasicWindNecklace = 1 << 21,
-    BasicEarthNecklace = 1 << 22,
-    BasicFireNecklace = 1 << 23,
-    BasicSeaNecklace = 1 << 24,
-    ApprenticeEarthNecklace = 1 << 25,
-    ApprenticeFireNecklace = 1 << 26,
-    ApprenticeSeaNecklace = 1 << 27,
-    ApprenticeWindNecklace = 1 << 28,
+    BoneWindNecklace = 1 << 21,
+    BoneEarthNecklace = 1 << 22,
+    BoneFireNecklace = 1 << 23,
+    BoneSeaNecklace = 1 << 24,
+    KannaEarthNecklace = 1 << 25,
+    KannaFireNecklace = 1 << 26,
+    KannaSeaNecklace = 1 << 27,
+    KannaWindNecklace = 1 << 28,
     PolishedWindNecklace = 1 << 29,
     PolishedFireNecklace = 1 << 30,
     PolishedSeaNecklace = 1L << 31,
@@ -994,16 +999,54 @@ public enum JewelcraftingRecipes : ulong
     HybrasylSapphireEarrings = 1L << 54,
     HybrasylEmeraldEarrings = 1L << 55,
     HybrasylHeartstoneEarrings = 1L << 56,
+    SmallRubyRing = 1L << 57,
+    BerylRing = 1L << 58,
+    FireNecklace = 1L << 59,
+    SeaNecklace = 1L << 60,
+    WindNecklace = 1L << 61,
+    EarthNecklace = 1L << 62
     
 }
 
 [Flags]
-public enum AlchemyRecipes
+public enum AlchemyRecipes : ulong
 {
     None = 0,
-    Hemloch = 1,
-    BetonyDeum = 1 << 2,
+    Hemloch = 1L,
+    SmallHealthPotion = 1L << 2,
+    SmallManaPotion = 1L << 3,
+    SmallRejuvinationPotion = 1L << 4,
+    SmallHasteBrew = 1L << 5,
+    SmallPowerBrew = 1L << 6,
+    SmallAccuracyPotion = 1L << 7,
+    JuggernautBrew = 1L << 8,
+    RenewingBrew = 1L << 9,
+    AntidotePotion = 1L << 10,
+    SmallFirestormTonic = 1L << 11,
+    SmallStunTonic = 1L << 12,
+    HealthPotion = 1L << 13,
+    ManaPotion = 1L << 14,
+    RejuvinationPotion = 1L << 15,
+    HasteBrew = 1L << 16,
+    PowerBrew = 1L << 17,
+    AccuracyPotion = 1L << 18,
+    RevivePotion = 1L << 19,
+    StrongJuggernautBrew = 1L << 20,
+    StrongRenewingBrew = 1L << 21,
+    CleansingBrew = 1L << 22,
+    FirestormTonic = 1L << 23,
+    StunTonic = 1L << 24,
+    WarmthPotion = 1L << 25,
+    AmnesiaBrew = 1L << 26,
+    StrongHealthPotion = 1L << 27,
+    StrongManaPotion = 1L << 28,
+    StrongHasteBrew = 1L << 29,
+    StrongPowerBrew = 1L << 30,
+    StrongAccuracyPotion = 1L << 31,
+    StatBoostElixir = 1L << 32,
+    KnowledgeElixir = 1L << 33
 }
+
 
 public enum JoinReligionQuest
 {

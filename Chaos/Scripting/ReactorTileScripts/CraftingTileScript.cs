@@ -25,16 +25,20 @@ public class CraftingTileScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
      
-        var hasStage = aisling.Trackers.Enums.TryGetValue(out Craft stage);
+        var hasStage = aisling.Trackers.Enums.TryGetValue(out Crafts stage);
         
         if (aisling?.MapInstance.InstanceId == "mileth_kitchen")
         {
-            if (!aisling.Trackers.Flags.HasFlag(Hobbies.Cooking) && !aisling.IsAdmin)
+            if (!aisling.IsAdmin)
             {
-                aisling.SendOrangeBarMessage("You are not a chef.");
+                if (!aisling.Trackers.Flags.HasFlag(Hobbies.Cooking))
+                {
+                    aisling.SendOrangeBarMessage("You are not a chef.");
 
-                return;
+                    return;
+                }
             }
+
 
             var blank = MerchantFactory.Create("stove_merchant", source.MapInstance, new Point(6, 6));
             var dialog = DialogFactory.Create("cooking_initial", blank);
@@ -44,12 +48,16 @@ public class CraftingTileScript : ReactorTileScriptBase
         }
         if (aisling?.MapInstance.InstanceId == "tagor_forge")
         {
-            if (!hasStage || ((stage == Craft.Weaponsmithing) && !aisling.IsAdmin))
+            if (!aisling.IsAdmin)
             {
-                aisling.SendOrangeBarMessage("You are not a Weaponsmith.");
+                if (!hasStage || (stage != Crafts.Weaponsmithing))
+                {
+                    aisling.SendOrangeBarMessage("You are not a Weaponsmith.");
 
-                return;
+                    return;
+                }
             }
+
             var blank = MerchantFactory.Create("anvil_merchant", source.MapInstance, new Point(6, 6));
             var dialog = DialogFactory.Create("weaponsmithing_initial", blank);
             dialog.Display(aisling);
@@ -58,11 +66,14 @@ public class CraftingTileScript : ReactorTileScriptBase
         }
         if (aisling?.MapInstance.InstanceId == "piet_alchemy_lab")
         {
-            if (!hasStage || ((stage == Craft.Alchemy) && !aisling.IsAdmin))
+            if (!aisling.IsAdmin)
             {
-                aisling.SendOrangeBarMessage("You are not a Alchemist.");
+                if (!hasStage || (stage == Crafts.Alchemy))
+                {
+                    aisling.SendOrangeBarMessage("You are not a Alchemist.");
 
-                return;
+                    return;
+                }
             }
             var blank = MerchantFactory.Create("table_merchant", source.MapInstance, new Point(6, 6));
             var dialog = DialogFactory.Create("alchemy_initial", blank);
@@ -73,12 +84,16 @@ public class CraftingTileScript : ReactorTileScriptBase
         
         if (aisling?.MapInstance.InstanceId == "mileth_inn")
         {
-            if (!hasStage || ((stage == Craft.Armorsmithing) && !aisling.IsAdmin))
+            if (!aisling.IsAdmin)
             {
-                aisling.SendOrangeBarMessage("You are not an Armorsmith.");
+                if (!hasStage || (stage == Crafts.Armorsmithing))
+                {
+                    aisling.SendOrangeBarMessage("You are not an Armorsmith.");
 
-                return;
+                    return;
+                }
             }
+
             var blank = MerchantFactory.Create("sewing_merchant", source.MapInstance, new Point(6, 6));
             var dialog = DialogFactory.Create("armorsmithing_initial", blank);
             dialog.Display(aisling);
@@ -87,12 +102,16 @@ public class CraftingTileScript : ReactorTileScriptBase
         }
         if (aisling?.MapInstance.InstanceId == "undine_enchanted_haven")
         {
-            if (!hasStage || ((stage == Craft.Enchanting) && !aisling.IsAdmin))
+            if (!aisling.IsAdmin)
             {
-                aisling.SendOrangeBarMessage("You are not an Enchanter.");
+                if (!hasStage || (stage == Crafts.Enchanting))
+                {
+                    aisling.SendOrangeBarMessage("You are not an Enchanter.");
 
-                return;
+                    return;
+                }
             }
+
             var blank = MerchantFactory.Create("crystalball_merchant", source.MapInstance, new Point(6, 6));
             var dialog = DialogFactory.Create("enchanting_initial", blank);
             dialog.Display(aisling);
@@ -101,12 +120,16 @@ public class CraftingTileScript : ReactorTileScriptBase
         
         if (aisling?.MapInstance.InstanceId == "rucesion_jeweler")
         {
-            if (!hasStage || ((stage == Craft.Jewelcrafting) && !aisling.IsAdmin))
+            if (!aisling.IsAdmin)
             {
-                aisling.SendOrangeBarMessage("You are not a Jeweler.");
+                if (!hasStage || (stage == Crafts.Jewelcrafting))
+                {
+                    aisling.SendOrangeBarMessage("You are not a Jeweler.");
 
-                return;
+                    return;
+                }
             }
+
             var blank = MerchantFactory.Create("jewelerbench_merchant", source.MapInstance, new Point(6, 6));
             var dialog = DialogFactory.Create("jewelcrafting_initial", blank);
             dialog.Display(aisling);
