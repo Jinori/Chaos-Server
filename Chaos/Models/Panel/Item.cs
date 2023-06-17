@@ -21,7 +21,7 @@ public sealed class Item : PanelEntityBase, IScripted<IItemScript>, IDialogSourc
     public int Count { get; set; }
     public int? CurrentDurability { get; set; }
     public string DisplayName { get; set; }
-    public int LastWarningLevel { get; set; }
+    public int LastWarningLevel { get; set; } = 100;
     public ItemSprite ItemSprite { get; set; }
     public int Level { get; set; }
     public Attributes Modifiers { get; set; }
