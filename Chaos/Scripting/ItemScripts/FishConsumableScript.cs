@@ -12,45 +12,49 @@ namespace Chaos.Scripting.ItemScripts;
 
 public class FishConsumableScript : ItemScriptBase
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
-    private protected int Percent { get; set; }
+    private static readonly Dictionary<string, double> FishExperienceMultipliers = new Dictionary<string, double>
+    {
+        { "Trout", 0.006 },
+        { "Bass", 0.007 },
+        { "Perch", 0.008 },
+        { "Pike", 0.009 },
+        { "Rock Fish", 0.01 },
+        { "Lion Fish", 0.02 },
+        { "Purple Whopper", 0.03 }
+    };
 
-    public FishConsumableScript(Item subject)
-        : base(subject) => ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    private readonly IExperienceDistributionScript ExperienceDistributionScript;
+
+    public FishConsumableScript(Item subject) : base(subject) 
+        => ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
 
     public override void OnUse(Aisling source)
     {
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
+        var expGain = CalculateExperienceGain(source, tnl);
 
-        switch (Subject.DisplayName)
+        ExperienceDistributionScript.GiveExp(source, expGain);
+        RemoveItemFromInventory(source);
+        NotifyPlayer(source, expGain);
+        UpdatePlayerLegend(source);
+    }
+
+    private int CalculateExperienceGain(Aisling source, int tnl)
+    {
+        if (!FishExperienceMultipliers.TryGetValue(Subject.DisplayName, out var multiplier))
         {
-            case "Trout":
-                Percent = Convert.ToInt32(0.006 * tnl);
-                break;
-            case "Bass":
-                Percent = Convert.ToInt32(0.007 * tnl);
-                break;
-            case "Perch":
-                Percent = Convert.ToInt32(0.008 * tnl);
-                break;
-            case "Pike":
-                Percent = Convert.ToInt32(0.009 * tnl);
-                break;
-            case "Rock Fish":
-                Percent = Convert.ToInt32(0.01 * tnl);
-                break;
-            case "Lion Fish":
-                Percent = Convert.ToInt32(0.02 * tnl);
-                break;
-            case "Purple Whopper":
-                Percent = Convert.ToInt32(0.03 * tnl);
-                break;
+            source.SendActiveMessage("Something went wrong when trying to eat the fish!");
+            return 0;
         }
 
-        ExperienceDistributionScript.GiveExp(source, Percent);
-        source.Inventory.RemoveQuantity(Subject.DisplayName, 1, out _);
-        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You ate {Subject.DisplayName} and it gave you {Percent} exp.");
+        return Convert.ToInt32(multiplier * tnl);
+    }
 
+    private void RemoveItemFromInventory(Aisling source) => source.Inventory.RemoveQuantity(Subject.DisplayName, 1, out _);
+
+    private void NotifyPlayer(Aisling source, int expGain) => source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You ate {Subject.DisplayName} and it gave you {expGain} exp.");
+
+    private void UpdatePlayerLegend(Aisling source) =>
         source.Legend.AddOrAccumulate(
             new LegendMark(
                 "Caught a fish and ate it",
@@ -59,5 +63,4 @@ public class FishConsumableScript : ItemScriptBase
                 MarkColor.White,
                 1,
                 GameTime.Now));
-    }
 }

@@ -5,51 +5,47 @@ using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.ItemScripts;
-
-public class MountScript : ItemScriptBase
+namespace Chaos.Scripting.ItemScripts
 {
-    private readonly IEffectFactory _effectFactory;
-    
-    public MountScript(Item subject, IEffectFactory effectFactory)
-        : base(subject) =>
-        _effectFactory = effectFactory;
-
-    public override void OnUse(Aisling source)
+    public class MountScript : ItemScriptBase
     {
-        var effect = _effectFactory.Create("mount");
-
-        if (source.Trackers.Enums.TryGetValue(out CurrentMount mount))
+        private readonly IEffectFactory _effectFactory;
+        private static readonly Dictionary<CurrentMount, int> MountSprites = new()
         {
+            { CurrentMount.WhiteHorse, 1296 },
+            { CurrentMount.WhiteWolf, 1297 }
+            // Add more mount types here as needed
+        };
 
-            if (source.Sprite != 0)
+        public MountScript(Item subject, IEffectFactory effectFactory)
+            : base(subject) => _effectFactory = effectFactory;
+
+        public override void OnUse(Aisling source)
+        {
+            var effect = _effectFactory.Create("mount");
+
+            if (source.Trackers.Enums.TryGetValue(out CurrentMount mount))
             {
-                source.SendOrangeBarMessage("You jump off your mount.");
-                source.Effects.Dispel("mount");
+                if (source.Sprite != 0)
+                {
+                    source.SendOrangeBarMessage("You jump off your mount.");
+                    source.Effects.Dispel("mount");
+                    return;
+                }
 
-                return;
-            }
+                if (source.Trackers.TimedEvents.HasActiveEvent("mount", out var timedEvent))
+                {
+                    source.SendOrangeBarMessage($"You can mount again in {timedEvent.Remaining.ToReadableString()}");
+                    return;
+                }
 
-            if (source.Trackers.TimedEvents.HasActiveEvent("mount", out var timedEvent))
-            {
-                source.SendOrangeBarMessage($"You can mount again in {timedEvent.Remaining.ToReadableString()}");
-
-                return;
-            }
-
-            if (mount == CurrentMount.WhiteHorse)
-            {
-                source.Sprite = 1296;
-                source.Refresh(true);
-                source.SendOrangeBarMessage("You jump on your mount.");
-                source.Effects.Apply(source, effect);
-            }
-            if (mount == CurrentMount.WhiteWolf)
-            {
-                source.Sprite = 1297;
-                source.Refresh(true);
-                source.SendOrangeBarMessage("You jump on your mount.");
-                source.Effects.Apply(source, effect);
+                if (MountSprites.TryGetValue(mount, out var sprite))
+                {
+                    source.Sprite = (ushort)sprite;
+                    source.Refresh(true);
+                    source.SendOrangeBarMessage("You jump on your mount.");
+                    source.Effects.Apply(source, effect);
+                }
             }
         }
     }

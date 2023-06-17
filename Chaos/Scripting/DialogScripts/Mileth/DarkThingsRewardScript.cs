@@ -22,18 +22,23 @@ public class DarkThingsRewardScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        if (source.Inventory.CountOf("Spider's Eye") == 0)
-            Subject.Reply(source, "You have no Spider's Eye, which is what I need now.");
+        var spidersEyeCount = source.Inventory.CountOf("Spider's Eye");
 
-        if (source.Inventory.CountOf("Spider's Eye") >= 1)
+        if (spidersEyeCount == 0)
         {
-            var amountToReward = source.Inventory.CountOf("Spider's Eye") * 1000;
-            source.TryGiveGold(amountToReward);
-            ExperienceDistributionScript.GiveExp(source, amountToReward);
-            source.Inventory.RemoveQuantity("Spider's Eye", source.Inventory.CountOf("Spider's Eye"), out _);
-            source.TryGiveGamePoints(1);
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive a gamepoint and {amountToReward} gold/exp!");
-            Subject.Reply(source, "Thank you for grabbing what I needed.");
+            Subject.Reply(source, "You have no Spider's Eye, which is what I need now.");
+            return;
         }
+
+        var amountToReward = spidersEyeCount * 1000;
+
+        source.TryGiveGold(amountToReward);
+        ExperienceDistributionScript.GiveExp(source, amountToReward);
+        source.Inventory.RemoveQuantity("Spider's Eye", spidersEyeCount, out _);
+        source.TryGiveGamePoints(1);
+
+        var message = $"You receive a gamepoint and {amountToReward} gold/exp!";
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, message);
+        Subject.Reply(source, "Thank you for grabbing what I needed.");
     }
 }

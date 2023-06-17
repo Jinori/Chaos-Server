@@ -29,7 +29,7 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>, IDialogSource
     public override int AssailIntervalMs => Template.AssailIntervalMs;
     public ConcurrentDictionary<uint, int> Contribution { get; }
     public List<Item> Items { get; }
-    public int Gold { get; set; }
+    public new int Gold { get; set; }
     public override ILogger<Monster> Logger { get; }
     public IIntervalTimer MoveTimer { get; }
 

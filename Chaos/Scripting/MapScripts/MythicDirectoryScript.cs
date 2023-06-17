@@ -9,8 +9,6 @@ public class MythicDirectoryScript : MapScriptBase
     private readonly ISimpleCache SimpleCache;
     
     public MythicDirectoryScript(MapInstance subject, ISimpleCache simpleCache)
-        : base(subject)
-    {
+        : base(subject) =>
         SimpleCache = simpleCache;
-    }
 }

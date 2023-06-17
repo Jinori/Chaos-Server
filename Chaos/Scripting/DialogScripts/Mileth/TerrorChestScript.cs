@@ -1,5 +1,4 @@
-﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
+﻿using Chaos.Common.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae;
 using Chaos.Models.Legend;
@@ -11,6 +10,8 @@ using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
+using Chaos.Collections;
+using Chaos.Models.Panel;
 
 namespace Chaos.Scripting.DialogScripts.Mileth;
 
@@ -30,83 +31,44 @@ public class TerrorChestScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        //Check which item they chose in the previous dialog option.
-        if (Subject.Template.TemplateKey.EqualsI("terrorChest_randomArmorDye"))
+        var isArmorDye = Subject.Template.TemplateKey.EqualsI("terrorChest_randomArmorDye");
+        var isOvercoat = Subject.Template.TemplateKey.EqualsI("terrorChest_randomOvercoat");
+
+        if (isArmorDye || isOvercoat)
         {
-            //Generate a random town
-            var random = new Random();
-            var armorDye = new List<string> { "Mileth", "Rucesion", "Suomi", "Loures" };
-            var index = random.Next(armorDye.Count);
-            //Start creating the item
-            var item = ItemFactory.Create("armorDyeContainer");
-            //Give it a name and color based on the town
-            item.DisplayName = $"{armorDye[index]} Armor Dye";
+            Item item;
 
-            if (armorDye[index].EqualsI("Mileth"))
-                item.Color = DisplayColor.Green;
+            if (isArmorDye)
+            {
+                var armorDye = new List<string> { "Mileth", "Rucesion", "Suomi", "Loures" };
+                var random = new Random();
+                var index = random.Next(armorDye.Count);
+                item = ItemFactory.Create("armorDyeContainer");
+                item.DisplayName = $"{armorDye[index]} Armor Dye";
 
-            if (armorDye[index].EqualsI("Rucesion"))
-                item.Color = DisplayColor.Blue;
+                item.Color = armorDye[index] switch
+                {
+                    "Mileth"   => DisplayColor.Green,
+                    "Rucesion" => DisplayColor.Blue,
+                    "Suomi"    => DisplayColor.Red,
+                    "Loures"   => DisplayColor.White,
+                    _          => item.Color
+                };
+            }
+            else // isOvercoat
+            {
+                var templateKeyRewards = new List<string> { "dyeableTrainingOutfit" };
+                var index = new Random().Next(templateKeyRewards.Count);
+                item = ItemFactory.Create(templateKeyRewards[index]);
+            }
 
-            if (armorDye[index].EqualsI("Suomi"))
-                item.Color = DisplayColor.Red;
-
-            if (armorDye[index].EqualsI("Loures"))
-                item.Color = DisplayColor.White;
-
-            //Give 20% of current TNL
             var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-            var thirtyPercent = Convert.ToInt32(0.30 * tnl);
-
-            ExperienceDistributionScript.GiveExp(source, thirtyPercent);
-            //Give Gold
+            var expAmount = Convert.ToInt32(0.30 * tnl);
+            ExperienceDistributionScript.GiveExp(source, expAmount);
             source.TryGiveGold(20000);
-
-            //Give item to inventory we built previously
             source.TryGiveItem(item);
             source.TryGiveGamePoints(10);
-            //Lets send them an orange bar message and give them a Legend Mark for completing the quest
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've received {item.DisplayName}, 20,000 coins and 10 game points!");
 
-            source.Legend.AddOrAccumulate(
-                new LegendMark(
-                    "Vanquished Terror of the Crypt",
-                    "cryptTerror",
-                    MarkIcon.Victory,
-                    MarkColor.White,
-                    1,
-                    GameTime.Now));
-            
-            source.Trackers.TimedEvents.AddEvent("TerrorOfTheCrypt", TimeSpan.FromDays(1));
-
-            //Warp Player back to Tavern
-            var mapInstance = SimpleCache.Get<MapInstance>("mileth_tavern");
-            source.TraverseMap(mapInstance, new Point(9, 10));
-            //Close Dialog
-            Subject.Close(source);
-        }
-
-        if (Subject.Template.TemplateKey.EqualsI("terrorChest_randomOvercoat"))
-        {
-            //Lets generate a random overcoat to give to the player
-            var templateKeyRewards = new List<string> { "dyeableTrainingOutfit" };
-            var random = new Random();
-            var index = random.Next(templateKeyRewards.Count);
-            //Create the item
-            var item = ItemFactory.Create(templateKeyRewards[index]);
-
-            //Give 20% of current TNL
-            var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-            var thirtyPercent = Convert.ToInt32(0.30 * tnl);
-
-            ExperienceDistributionScript.GiveExp(source, thirtyPercent);
-            //Give Gold
-            source.TryGiveGold(20000);
-
-            //Give item to inventory we built previously
-            source.TryGiveItem(item);
-            source.TryGiveGamePoints(10);
-            //Lets send them an orange bar message and give them a Legend Mark for completing the quest
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've received {item.DisplayName}, 20,000 coins and 10 game points!");
 
             source.Legend.AddOrAccumulate(
@@ -120,10 +82,8 @@ public class TerrorChestScript : DialogScriptBase
 
             source.Trackers.TimedEvents.AddEvent("TerrorOfTheCrypt", TimeSpan.FromDays(1));
 
-            //Warp Player back to Tavern
             var mapInstance = SimpleCache.Get<MapInstance>("mileth_tavern");
             source.TraverseMap(mapInstance, new Point(9, 10));
-            //Close Dialog
             Subject.Close(source);
         }
     }

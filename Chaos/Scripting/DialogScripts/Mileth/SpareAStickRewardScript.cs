@@ -25,45 +25,46 @@ public class SpareAStickRewardScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        if (source.Trackers.Flags.HasFlag(QuestFlag1.GatheringSticks) && (source.Inventory.CountOf("Branch") >= 6))
+        var branchCount = source.Inventory.CountOf("Branch");
+
+        if (source.Trackers.Flags.HasFlag(QuestFlag1.GatheringSticks))
         {
-            Subject.Reply(source, "Excellent! You'll make a fine spark. Now, go and find your way.");
-            source.Trackers.Flags.RemoveFlag(QuestFlag1.GatheringSticks);
-            source.Trackers.Flags.AddFlag(QuestFlag1.SpareAStickComplete);
-            ExperienceDistributionScript.GiveExp(source, 2500);
-            source.TryGiveGold(1000);
-            source.TryGiveGamePoints(5);
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"5 Gamepoints, 1000 gold, and 2500 Exp Rewarded!");
-            
-            
-            if (IntegerRandomizer.RollChance(8))
+            if (branchCount >= 6)
             {
-                source.Legend.AddOrAccumulate(
-                    new LegendMark(
-                        "Loved by Mileth Mundanes",
-                        "milethLoved",
-                        MarkIcon.Heart,
-                        MarkColor.Blue,
-                        1,
-                        GameTime.Now));
+                Subject.Reply(source, "Excellent! You'll make a fine spark. Now, go and find your way.");
+                source.Trackers.Flags.RemoveFlag(QuestFlag1.GatheringSticks);
+                source.Trackers.Flags.AddFlag(QuestFlag1.SpareAStickComplete);
+                ExperienceDistributionScript.GiveExp(source, 2500);
+                source.TryGiveGold(1000);
+                source.TryGiveGamePoints(5);
+                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"5 Gamepoints, 1000 gold, and 2500 Exp Rewarded!");
 
-                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
+                if (IntegerRandomizer.RollChance(8))
+                {
+                    source.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Loved by Mileth Mundanes",
+                            "milethLoved",
+                            MarkIcon.Heart,
+                            MarkColor.Blue,
+                            1,
+                            GameTime.Now));
+
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
+                }
+
+                source.Inventory.RemoveQuantity("branch", 6, out _);
+                var stick = ItemFactory.Create("Stick");
+                var shield = ItemFactory.Create("woodenshield");
+                source.TryGiveItems(stick, shield);
             }
-
-            source.Inventory.RemoveQuantity("branch", 6, out _);
-            var stick = ItemFactory.Create("Stick");
-            var shield = ItemFactory.Create("woodenshield");
-            source.TryGiveItems(stick, shield);
-        }
-
-        if (source.Trackers.Flags.HasFlag(QuestFlag1.GatheringSticks) && (source.Inventory.CountOf("Branch") < 6))
-        {
-            if (source.Inventory.CountOf("Branch") == 0)
-                Subject.Reply(source, "What? No branches?! You haven't even tried.");
             else
             {
-                var count = source.Inventory.CountOf("branch");
-                Subject.Reply(source, $"Only {count} branches.. you need six! Go get the rest.");
+                Subject.Reply(
+                    source,
+                    branchCount == 0
+                        ? "What? No branches?! You haven't even tried."
+                        : $"Only {branchCount} branches.. you need six! Go get the rest.");
             }
         }
     }

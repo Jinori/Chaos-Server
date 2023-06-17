@@ -94,81 +94,79 @@ namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing
 
         public override void OnDisplaying(Aisling source)
         {
-            var classConfirmRequirements = "aoife_confirmrequirements";
-            var classChooseNew = "aoife_choosenewclass";
+            const string CLASS_CONFIRM_REQUIREMENTS = "aoife_confirmrequirements";
+            const string CLASS_CHOOSE_NEW = "aoife_choosenewclass";
             var currentTemplateKey = Subject.Template.TemplateKey.ToLower();
 
-            if (currentTemplateKey == classConfirmRequirements)
+            switch (currentTemplateKey)
             {
-                if (source.Legend.ContainsKey("dedicated"))
-                {
+                case CLASS_CONFIRM_REQUIREMENTS when source.Legend.ContainsKey("dedicated"):
                     Subject.Reply(source, "You have already dedicated yourself to a new path.");
                     Subject.PrevDialogKey = null;
                     Subject.NextDialogKey = null;
 
                     return;
-                }
-
-                if (source.UserStatSheet.Level != 99)
-                {
+                case CLASS_CONFIRM_REQUIREMENTS when source.UserStatSheet.Level != 99:
                     Subject.Reply(source, "You are not Level 99 and cannot dedicate your class.");
                     Subject.PrevDialogKey = null;
                     Subject.NextDialogKey = null;
 
                     return;
-                }
-
-                if (source.UserStatSheet.Master)
-                {
+                case CLASS_CONFIRM_REQUIREMENTS when source.UserStatSheet.Master:
                     Subject.Reply(source, "You are already a Master of your class and cannot rededicate yourself.");
                     Subject.PrevDialogKey = null;
                     Subject.NextDialogKey = null;
 
                     return;
-                }
+                case CLASS_CONFIRM_REQUIREMENTS:
+                {
+                    var requiredStats = BaseClassRequirements[source.UserStatSheet.BaseClass];
 
-                var requiredStats = BaseClassRequirements[source.UserStatSheet.BaseClass];
+                    string builtReply;
 
-                string builtReply;
+                    if (source.UserStatSheet.MaximumHp >= requiredStats.requiredHealth && source.UserStatSheet.MaximumMp >= requiredStats.requiredMana)
+                    {
+                        builtReply = "You have enough vitality to continue.";
+                    }
+                    else
+                    {
+                        Subject.Reply(source, $"You do not have the required {requiredStats.requiredHealth} health and {requiredStats.requiredMana} mana to continue.");
+                        return;
+                    }
 
-                if (source.UserStatSheet.MaximumHp >= requiredStats.requiredHealth && source.UserStatSheet.MaximumMp >= requiredStats.requiredMana)
-                {
-                    builtReply = "You have enough vitality to continue.";
-                }
-                else
-                {
-                    Subject.Reply(source, $"You do not have the required {requiredStats.requiredHealth} health and {requiredStats.requiredMana} mana to continue.");
-                    return;
-                }
+                    if (source.Inventory.CountOf("ard ioc deum") >= 10)
+                    {
+                        builtReply += " Looks like you've also brought enough ard ioc deum";
+                    }
+                    else
+                    {
+                        builtReply += " but you do not have the required ard ioc deum. Come back with what you need.";
+                        Subject.Reply(source, builtReply);
+                        return;
+                    }
 
-                if (source.Inventory.CountOf("ard ioc deum") >= 10)
-                {
-                    builtReply += " Looks like you've also brought enough ard ioc deum";
-                }
-                else
-                {
-                    builtReply += " but you do not have the required ard ioc deum. Come back with what you need.";
-                    Subject.Reply(source, builtReply);
-                    return;
-                }
+                    if (source.UserStatSheet.TotalExp >= REQUIRED_EXPERIENCE)
+                    {
+                        builtReply += " and you've hunted enough experience! Let's continue.";
+                        Subject.Reply(source, builtReply, "aoife_chooseNewClass");
+                    }
+                    else
+                    {
+                        builtReply += " but you do not have the required experience of 60 million.";
+                        Subject.Reply(source, builtReply);
+                    }
 
-                if (source.UserStatSheet.TotalExp >= REQUIRED_EXPERIENCE)
-                {
-                    builtReply += " and you've hunted enough experience! Let's continue.";
-                    Subject.Reply(source, builtReply, "aoife_chooseNewClass");
+                    break;
                 }
-                else
+                case CLASS_CHOOSE_NEW:
                 {
-                    builtReply += " but you do not have the required experience of 60 million.";
-                    Subject.Reply(source, builtReply);
-                }
-            }
-            else if (currentTemplateKey == classChooseNew)
-            {
-                if (Subject.GetOptionIndex(source.UserStatSheet.BaseClass.ToString()).HasValue)
-                {
-                    var s = Subject.GetOptionIndex(source.UserStatSheet.BaseClass.ToString())!.Value;
-                    Subject.Options.RemoveAt(s);
+                    if (Subject.GetOptionIndex(source.UserStatSheet.BaseClass.ToString()).HasValue)
+                    {
+                        var s = Subject.GetOptionIndex(source.UserStatSheet.BaseClass.ToString())!.Value;
+                        Subject.Options.RemoveAt(s);
+                    }
+
+                    break;
                 }
             }
 

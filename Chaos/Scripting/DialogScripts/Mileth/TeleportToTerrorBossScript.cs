@@ -1,10 +1,11 @@
-﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
-using Chaos.Extensions;
+﻿using Chaos.Common.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
+using System.Linq;
+using Chaos.Collections;
+using Chaos.Extensions;
 
 namespace Chaos.Scripting.DialogScripts.Mileth;
 
@@ -12,45 +13,36 @@ public class TeleportToTerrorBossScript : DialogScriptBase
 {
     private readonly ISimpleCache SimpleCache;
 
-    /// <inheritdoc />
     public TeleportToTerrorBossScript(Dialog subject, ISimpleCache simpleCache)
         : base(subject) =>
         SimpleCache = simpleCache;
 
     public override void OnDisplaying(Aisling source)
     {
-        var point = new Point(source.X, source.Y);
-        var group = source.Group?.Where(x => x.WithinRange(point));
+        var group = source.Group?.Where(x => x.WithinRange(new Point(source.X, source.Y))).ToList();
 
-        if (group is null)
+        if ((group == null) || !group.Any())
         {
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure you group your companions for this quest!");
             Subject.Reply(source, "What? You don't have any friends with you.. who are you talking to?");
+            return;
         }
 
-        if (group is not null)
+        if (!group.All(member => member.WithinLevelRange(source)))
         {
-            var groupCount = 0;
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure your companions are within level range.");
+            Subject.Reply(source, "Some of your companions are not within your level range.");
+            return;
+        }
 
-            foreach (var member in group)
-                if (member.WithinLevelRange(source))
-                    ++groupCount;
-
-            if (groupCount.Equals(group.Count()))
-            {
-                Subject.Close(source);
-
-                foreach (var member in group)
-                {
-                    var mapInstance = SimpleCache.Get<MapInstance>("cryptTerror");
-                    var pointS = new Point(13, 8);
-                    member.TraverseMap(mapInstance, pointS);
-                }
-            } else
-            {
-                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure your companions are within level range.");
-                Subject.Reply(source, "Some of your companions are not within your level range.");
-            }
+        Subject.Close(source);
+        
+        var mapInstance = SimpleCache.Get<MapInstance>("cryptTerror");
+        var pointS = new Point(13, 8);
+        
+        foreach (var member in group)
+        {
+            member.TraverseMap(mapInstance, pointS);
         }
     }
 }

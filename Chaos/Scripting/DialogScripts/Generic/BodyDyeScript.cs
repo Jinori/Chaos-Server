@@ -33,24 +33,22 @@ public class BodyDyeScript : DialogScriptBase
         if (!Subject.MenuArgs.TryGet<string>(0, out var dye))
         {
             Subject.Reply(source, DialogString.UnknownInput.Value);
-
             return;
         }
 
         var itemDetails = Subject.Items.FirstOrDefault(x => x.Item.DisplayName.EqualsI(dye));
-        var item = itemDetails?.Item;
-
-        if (item == null)
+    
+        if (itemDetails == null)
         {
             Subject.Reply(source, DialogString.UnknownInput.Value);
-
             return;
         }
 
-        if (!source.TryTakeGold(itemDetails!.Price))
+        var item = itemDetails.Item;
+
+        if (!source.TryTakeGold(itemDetails.Price))
         {
             Subject.Close(source);
-
             return;
         }
 

@@ -3,67 +3,45 @@ using Chaos.Extensions.Geometry;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MapScripts;
-
-public class SuomiGatheringScript : MapScriptBase
+namespace Chaos.Scripting.MapScripts
 {
-    private readonly IReactorTileFactory ReactorTileFactory;
-    
-    public SuomiGatheringScript(MapInstance subject, IReactorTileFactory reactorTileFactory)
-        : base(subject)
+    public class SuomiGatheringScript : MapScriptBase
     {
-        ReactorTileFactory = reactorTileFactory;
+        private readonly IReactorTileFactory ReactorTileFactory;
 
-        var cherryrectangle = new Rectangle(
-            27,
-            69,
-            16,
-            21);
-
-        var graperectangle = new Rectangle(
-            76,
-            38,
-            13,
-            19);
-        
-        var cherrypoints = new HashSet<Point>();
-        var count = cherryrectangle.Area / 3;
-        var count2 = graperectangle.Area / 3;
-        var grapepoints = new HashSet<Point>();
-
-        for (var i = 0; i < count; i++)
+        public SuomiGatheringScript(MapInstance subject, IReactorTileFactory reactorTileFactory)
+            : base(subject)
         {
-            var cherrypoint = cherryrectangle.GetRandomPoint();
-            cherrypoints.Add(cherrypoint);
+            ReactorTileFactory = reactorTileFactory;
+
+            var cherryRectangle = new Rectangle(27, 69, 16, 21);
+            var grapeRectangle = new Rectangle(76, 38, 13, 19);
+
+            var cherryPoints = GenerateRandomPoints(cherryRectangle, cherryRectangle.Area / 3);
+            var grapePoints = GenerateRandomPoints(grapeRectangle, grapeRectangle.Area / 3);
+
+            CreateReactorTiles("cherry", cherryPoints);
+            CreateReactorTiles("grape", grapePoints);
         }
 
-        for (var i = 0; i < count2; i++)
+        private HashSet<Point> GenerateRandomPoints(Rectangle rectangle, int count)
         {
-            var grapepoint = graperectangle.GetRandomPoint();
-            grapepoints.Add(grapepoint);
+            var points = new HashSet<Point>();
+            for (var i = 0; i < count; i++)
+            {
+                var point = rectangle.GetRandomPoint();
+                points.Add(point);
+            }
+            return points;
         }
 
-        foreach (var cherrypoint in cherrypoints)
+        private void CreateReactorTiles(string reactorName, HashSet<Point> points)
         {
-            var cherry = ReactorTileFactory.Create(
-                "cherry",
-                Subject,
-                cherrypoint);
-
-            Subject.SimpleAdd(cherry);
+            foreach (var point in points)
+            {
+                var reactor = ReactorTileFactory.Create(reactorName, Subject, point);
+                Subject.SimpleAdd(reactor);
+            }
         }
-        
-        foreach (var grapepoint in grapepoints)
-        {
-            var grape = ReactorTileFactory.Create(
-                "grape",
-                Subject,
-                grapepoint);
-
-            Subject.SimpleAdd(grape);
-        }
-
     }
-    
-    
 }

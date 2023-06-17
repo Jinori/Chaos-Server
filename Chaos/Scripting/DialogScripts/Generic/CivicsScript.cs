@@ -4,126 +4,99 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Generic;
-
-public class CivicsScript : DialogScriptBase
+namespace Chaos.Scripting.DialogScripts.Generic
 {
-    public CivicsScript(Dialog subject) : base(subject)
+    public class CivicsScript : DialogScriptBase
     {
-    }
-
-    
-    public override void OnDisplaying(Aisling source)
-    {
-        switch (Subject.Template.TemplateKey.ToLower())
+        public CivicsScript(Dialog subject) : base(subject)
         {
-            //Rucesion
-            case "angelo_civics":
-            {
-                if (source.Nation != Nation.Exile)
-                {
-                    if (Subject.GetOptionIndex("Become Rucesion Citizen").HasValue)
-                    {
-                        var s = Subject.GetOptionIndex("Become Rucesion Citizen")!.Value;
-                        Subject.Options.RemoveAt(s);
-                    }
-                }
+        }
 
-                break;
-            }
-            case "angelo_renounceyes":
+        public override void OnDisplaying(Aisling source)
+        {
+            switch (Subject.Template.TemplateKey.ToLower())
             {
-                if (source.Nation != Nation.Rucesion)
-                {
-                    source.SendOrangeBarMessage("You are of a different Nation. Begone.");
-                    Subject.Close(source);
-                }
-                if (source.Nation == Nation.Rucesion)
-                {
-                    source.Nation = Nation.Exile;
-                    source.SendOrangeBarMessage("You renounce your citizenship and turn to Exile.");   
-                }
-            }
-                break;
-            
-            case "angelo_becomecitizenyes":
-            {
-                if (source.Nation != Nation.Exile && source.Nation != Nation.Rucesion)
-                {
-                    source.SendOrangeBarMessage("You are already of another Nation. Begone.");
-                    Subject.Close(source);
-                }
-                if (source.Nation != Nation.Exile && source.Nation == Nation.Rucesion)
-                {
-                    source.SendOrangeBarMessage("Citizen? You already have the seal upon your legend.");
-                    Subject.Close(source);
-                }
-                if (source.Nation == Nation.Exile)
-                {
-                    var ani = new Animation
-                    {
-                        AnimationSpeed = 100,
-                        TargetAnimation = 78
-                    };
-                    source.Nation = Nation.Rucesion;
-                    source.SendOrangeBarMessage("You become a Rucesion Citizen. Hooray!"); 
-                    source.Animate(ani, source.Id);
-                }
-            }
-                break;
-            //Mileth
-            case "aingeal_civics":
-            {
-                if (source.Nation != Nation.Exile)
-                {
-                    if (Subject.GetOptionIndex("Become Mileth Citizen").HasValue)
-                    {
-                        var s = Subject.GetOptionIndex("Become Mileth Citizen")!.Value;
-                        Subject.Options.RemoveAt(s);
-                    }
-                }
+                // Rucesion
+                case "angelo_civics":
+                    HandleRucesionCivics(source);
+                    break;
 
-                break;
+                case "angelo_renounceyes":
+                    HandleRenounceCitizenship(source, Nation.Rucesion);
+                    break;
+
+                case "angelo_becomecitizenyes":
+                    HandleBecomeCitizen(source, Nation.Rucesion);
+                    break;
+
+                // Mileth
+                case "aingeal_civics":
+                    HandleMilethCivics(source);
+                    break;
+
+                case "aingeal_renounceyes":
+                    HandleRenounceCitizenship(source, Nation.Mileth);
+                    break;
+
+                case "aingeal_becomecitizenyes":
+                    HandleBecomeCitizen(source, Nation.Mileth);
+                    break;
             }
-            case "aingeal_renounceyes":
+        }
+
+        private void HandleRucesionCivics(Aisling source)
+        {
+            if ((source.Nation != Nation.Exile) && Subject.GetOptionIndex("Become Rucesion Citizen") is { } optionIndex)
+                Subject.Options.RemoveAt(optionIndex);
+        }
+
+        private void HandleRenounceCitizenship(Aisling source, Nation nation)
+        {
+            if (source.Nation != nation)
             {
-                if (source.Nation != Nation.Mileth)
-                {
-                    source.SendOrangeBarMessage("You are of a different Nation. Begone.");
-                    Subject.Close(source);
-                }
-                if (source.Nation == Nation.Mileth)
-                {
-                    source.Nation = Nation.Exile;
-                    source.SendOrangeBarMessage("You renounce your citizenship and turn to Exile.");   
-                }
+                source.SendOrangeBarMessage("You are of a different Nation. Begone.");
+                Subject.Close(source);
             }
-                break;
-            case "aingeal_becomecitizenyes":
+
+            if (source.Nation == nation)
             {
-                if (source.Nation != Nation.Exile && source.Nation != Nation.Mileth)
-                {
-                    source.SendOrangeBarMessage("You are already of another Nation. Begone.");
-                    Subject.Close(source);
-                }
-                if (source.Nation != Nation.Exile && source.Nation == Nation.Mileth)
-                {
-                    source.SendOrangeBarMessage("Citizen? You already have the seal upon your legend.");
-                    Subject.Close(source);
-                }
-                if (source.Nation == Nation.Exile)
-                {
-                    var ani = new Animation
-                    {
-                        AnimationSpeed = 100,
-                        TargetAnimation = 78
-                    };
-                    source.Nation = Nation.Mileth;
-                    source.SendOrangeBarMessage("You become a Mileth Citizen. Hooray!"); 
-                    source.Animate(ani, source.Id);
-                }
+                source.Nation = Nation.Exile;
+                source.SendOrangeBarMessage("You renounce your citizenship and turn to Exile.");
             }
-                break;
+        }
+
+        private void HandleBecomeCitizen(Aisling source, Nation nation)
+        {
+            if ((source.Nation != Nation.Exile) && (source.Nation != nation))
+            {
+                source.SendOrangeBarMessage("You are already of another Nation. Begone.");
+                Subject.Close(source);
+            }
+
+            if ((source.Nation != Nation.Exile) && (source.Nation == nation))
+            {
+                source.SendOrangeBarMessage("Citizen? You already have the seal upon your legend.");
+                Subject.Close(source);
+            }
+
+            if (source.Nation == Nation.Exile)
+            {
+                var animation = new Animation
+                {
+                    AnimationSpeed = 100,
+                    TargetAnimation = 78
+                };
+
+                source.Nation = nation;
+                source.SendOrangeBarMessage($"You become a {nation} Citizen. Hooray!");
+                source.Animate(animation, source.Id);
+            }
+        }
+
+        private void HandleMilethCivics(Aisling source)
+        {
+            if ((source.Nation != Nation.Exile) && Subject.GetOptionIndex("Become Mileth Citizen") is { } optionIndex)
+                Subject.Options.RemoveAt(optionIndex);
         }
     }
 }

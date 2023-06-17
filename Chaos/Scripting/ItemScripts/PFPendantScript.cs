@@ -6,73 +6,89 @@ using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripting.ItemScripts;
-
-[SuppressMessage("ReSharper", "UnusedVariable")]
-public class PFPendantScript : ItemScriptBase
+namespace Chaos.Scripting.ItemScripts
 {
-    private readonly IMonsterFactory MonsterFactory;
-    private readonly ISimpleCache SimpleCache;
-
-    public PFPendantScript(Item subject, ISimpleCache simpleCache, IMonsterFactory monsterFactory)
-        : base(subject)
+    public class PFPendantScript : ItemScriptBase
     {
-        SimpleCache = simpleCache;
-        MonsterFactory = monsterFactory;
-    }
+        private readonly IMonsterFactory _monsterFactory;
+        private readonly ISimpleCache _simpleCache;
 
-    public override void OnUse(Aisling source)
-    {
-        var mapInstance = SimpleCache.Get<MapInstance>("PF_peak");
-        var hasStage = source.Trackers.Enums.TryGetValue(out PFQuestStage stage);
-
-        if (!source.IsAlive || (stage != PFQuestStage.FoundPendant) || !source.MapInstance.Name.EqualsI(mapInstance.Name))
-            return;
-
-        var mantisisspawned = mapInstance.GetEntities<Monster>().Any(x => x.Template.TemplateKey.EqualsI("PF_giant_mantis"));
-
-        if (mantisisspawned)
+        public PFPendantScript(Item subject, ISimpleCache simpleCache, IMonsterFactory monsterFactory)
+            : base(subject)
         {
-            source.SendOrangeBarMessage("The Giant Mantis is already on the map.");
-
-            return;
+            _simpleCache = simpleCache;
+            _monsterFactory = monsterFactory;
         }
 
-        var animation = new Animation
+        private Animation GetPlayerAnimation() => new Animation { AnimationSpeed = 100, TargetAnimation = 160 };
+
+        private Animation GetMonsterAnimation() => new Animation { AnimationSpeed = 100, TargetAnimation = 97 };
+        
+        public override void OnUse(Aisling source)
         {
-            AnimationSpeed = 100,
-            TargetAnimation = 160
-        };
+            if (!CanSpawnMantis(source, out var mapInstance))
+                return;
 
-        var monsteranimation = new Animation
+            SpawnMantis(source, mapInstance);
+        }
+
+        private bool CanSpawnMantis(Aisling source, out MapInstance mapInstance)
         {
-            AnimationSpeed = 100,
-            TargetAnimation = 97
-        };
+            mapInstance = _simpleCache.Get<MapInstance>("PF_peak");
+            source.Trackers.Enums.TryGetValue(out PFQuestStage stage);
 
-        var monsterSpawn = new Rectangle(source, 10, 10);
-        var outline = monsterSpawn.GetOutline().ToList();
-        var mantis = MonsterFactory.Create("pf_giant_mantis", mapInstance, Point.From(source));
-        Point point;
+            if (!source.IsAlive || (stage != PFQuestStage.FoundPendant) || !source.MapInstance.Name.EqualsI(mapInstance.Name))
+                return false;
 
-        do
-            point = outline.PickRandom();
-        while (!mapInstance.IsWalkable(point, mantis.Type));
+            var mantisIsSpawned = mapInstance.GetEntities<Monster>().Any(x => x.Template.TemplateKey.EqualsI("PF_giant_mantis"));
 
-        mantis.AggroRange = 12;
-        mantis.Experience = 1000;
-        mantis.SetLocation(point);
-        source.MapInstance.AddObject(mantis, point);
-        mantis.Animate(monsteranimation);
+            if (mantisIsSpawned)
+            {
+                source.SendOrangeBarMessage("The Giant Mantis is already on the map.");
+                return false;
+            }
 
-        foreach (var players in mapInstance.GetEntities<Aisling>())
+            return true;
+        }
+
+        private void SpawnMantis(Aisling source, MapInstance mapInstance)
         {
-            source.SendOrangeBarMessage("You feel the ground shake, a quick shadow overcasts you");
-            source.Animate(animation);
+            var mantis = CreateMantis(mapInstance, source);
+            var point = GetSpawnPoint(mantis, source);
+
+            mantis.AggroRange = 12;
+            mantis.Experience = 1000;
+            mantis.SetLocation(point);
+
+            source.MapInstance.AddObject(mantis, point);
+            mantis.Animate(GetMonsterAnimation());
+
+            foreach (var player in mapInstance.GetEntities<Aisling>())
+            {
+                player.SendOrangeBarMessage("You feel the ground shake, a quick shadow overcasts you");
+                player.Animate(GetPlayerAnimation());
+            }
+        }
+
+        private Monster CreateMantis(MapInstance mapInstance, Aisling source) =>
+            _monsterFactory.Create("pf_giant_mantis", mapInstance, Point.From(source));
+
+        private Point GetSpawnPoint(Creature mantis, MapEntity source)
+        {
+            var monsterSpawn = new Rectangle(source, 10, 10);
+            var outline = monsterSpawn.GetOutline().ToList();
+            Point point;
+
+            do
+                point = outline.PickRandom();
+            while (!source.MapInstance.IsWalkable(point, mantis.Type));
+
+            return point;
         }
     }
 }

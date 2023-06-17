@@ -8,7 +8,7 @@ namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 
 public class StatBuyingScript : DialogScriptBase
 {
-    private readonly Dictionary<BaseClass, int> BaseClassHealthLimits = new Dictionary<BaseClass, int>
+    private readonly Dictionary<BaseClass, int> BaseClassHealthLimits = new()
     {
         { BaseClass.Warrior, 4149 },
         { BaseClass.Wizard, 3899 },
@@ -17,7 +17,7 @@ public class StatBuyingScript : DialogScriptBase
         { BaseClass.Rogue, 4399 }
     };
 
-    private readonly Dictionary<BaseClass, int> BaseClassOffset = new Dictionary<BaseClass, int>
+    private readonly Dictionary<BaseClass, int> BaseClassOffset = new()
     {
         { BaseClass.Warrior, 4000 },
         { BaseClass.Wizard, 3750 },
@@ -26,7 +26,7 @@ public class StatBuyingScript : DialogScriptBase
         { BaseClass.Rogue, 4250 }
     };
 
-    private readonly Dictionary<byte, Action<Aisling, Attributes>> OptionActionMappings = new Dictionary<byte, Action<Aisling, Attributes>>
+    private readonly Dictionary<byte, Action<Aisling, Attributes>> OptionActionMappings = new()
     {
         { 1, (source, cost) => IncreaseAttribute(source, "Strength", cost, attribute => attribute.Str++) },
         { 2, (source, cost) => IncreaseAttribute(source, "Intelligence", cost, attribute => attribute.Int++) },

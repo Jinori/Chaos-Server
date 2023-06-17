@@ -57,6 +57,11 @@ public class AdminTrinketScript : DialogScriptBase
             });
     }
 
+    private Aisling? GetPlayerByName(string playerName) =>
+        _clientRegistry
+            .Select(c => c.Aisling)
+            .FirstOrDefault(a => a.Name.EqualsI(playerName));
+
     public override void OnDisplaying(Aisling source)
     {
         if (!source.IsAdmin)
@@ -142,10 +147,7 @@ public class AdminTrinketScript : DialogScriptBase
                     return;
                 }
 
-                var player = _clientRegistry
-                             .Select(c => c.Aisling)
-                             .Where(a => true)
-                             .FirstOrDefault(a => a.Name.EqualsI(playerName));
+                var player = GetPlayerByName(playerName);
 
                 if (player == null)
                 {
@@ -173,10 +175,9 @@ public class AdminTrinketScript : DialogScriptBase
 
                 var mapCache = _cacheProvider.GetCache<MapInstance>();
 
-                var aisling = mapCache.SelectMany(map => map.GetEntities<Aisling>())
-                                      .FirstOrDefault(aisling => aisling.Name.EqualsI(playerName));
+                var player = GetPlayerByName(playerName);
 
-                if (aisling == null)
+                if (player == null)
                 {
                     source.SendOrangeBarMessage($"{playerName} is not online");
                     Subject.Close(source);
@@ -184,11 +185,10 @@ public class AdminTrinketScript : DialogScriptBase
                     return;
                 }
 
-                aisling.TraverseMap(source.MapInstance, source, true);
+                player.TraverseMap(source.MapInstance, source, true);
                 source.SendOrangeBarMessage($"You teleported {playerName} to you.");
                 Subject.Close(source);
-                ReportActivity(source, aisling, "Summon");
-
+                ReportActivity(source, player, "Summon");
                 return;
             }
 
@@ -203,16 +203,11 @@ public class AdminTrinketScript : DialogScriptBase
 
                 var mapInstance = _cache.Get<MapInstance>("loures_underground_jail");
 
-                // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-                var player = _clientRegistry
-                             .Select(c => c.Aisling)
-                             .Where(a => a != null)
-                             .FirstOrDefault(a => a.Name.EqualsI(playerName));
+                var player = GetPlayerByName(playerName);
 
                 if (player == null)
                 {
                     source.SendOrangeBarMessage($"{playerName} is not online");
-
                     return;
                 }
 

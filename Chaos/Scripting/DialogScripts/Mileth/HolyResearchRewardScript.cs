@@ -3,36 +3,33 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
-using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
-using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Mileth;
-
-public class HolyResearchRewardScript : DialogScriptBase
+namespace Chaos.Scripting.DialogScripts.Mileth
 {
-    private readonly IItemFactory ItemFactory;
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
-
-    public HolyResearchRewardScript(Dialog subject, IItemFactory itemFactory)
-        : base(subject)
+    public class HolyResearchRewardScript : DialogScriptBase
     {
-        ItemFactory = itemFactory;
-        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
-    }
+        private readonly IExperienceDistributionScript ExperienceDistributionScript;
 
-    public override void OnDisplaying(Aisling source)
-    {
-        if (source.Inventory.CountOf("Raw Wax") == 0)
-            Subject.Reply(source, "You have no Raw Wax, which is what I need now.");
+        public HolyResearchRewardScript(Dialog subject, IExperienceDistributionScript experienceDistributionScript)
+            : base(subject) =>
+            ExperienceDistributionScript = experienceDistributionScript;
 
-        if (source.Inventory.CountOf("Raw Wax") >= 1)
+        public override void OnDisplaying(Aisling source)
         {
-            var amountToReward = source.Inventory.CountOf("Raw Wax") * 1000;
+            var rawWaxCount = source.Inventory.CountOf("Raw Wax");
+
+            if (rawWaxCount == 0)
+            {
+                Subject.Reply(source, "You have no Raw Wax, which is what I need now.");
+                return;
+            }
+
+            var amountToReward = rawWaxCount * 1000;
             source.TryGiveGold(amountToReward);
             ExperienceDistributionScript.GiveExp(source, amountToReward);
-            source.Inventory.RemoveQuantity("Raw Wax", source.Inventory.CountOf("Raw Wax"), out _);
+            source.Inventory.RemoveQuantity("Raw Wax", rawWaxCount);
             source.TryGiveGamePoints(1);
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive a gamepoint and {amountToReward} gold/exp!");
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive a game point and {amountToReward} gold/exp!");
             Subject.Reply(source, "Thank you for grabbing what I needed.");
         }
     }
