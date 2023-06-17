@@ -89,26 +89,6 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
 
     public override void OnAttacked(Creature source, int damage)
     {
-        var equipment = Subject.Equipment.Where(x => x.CurrentDurability.HasValue ).ToList();
-        foreach (var item in equipment)
-        {
-            var percent = (200 * item.CurrentDurability + 1) / (item.Template.MaxDurability * 2);
-
-            var warningLevel = percent switch
-            {
-                <= 5  => 5,
-                <= 10 => 10,
-                <= 30 => 30,
-                _     => 0
-            };
-
-            if ((warningLevel > 0) && (warningLevel != item.LastWarningLevel))
-            {
-                Subject.SendOrangeBarMessage($"{item.DisplayName} is at {percent}% durability!");
-                item.LastWarningLevel = warningLevel;
-            }
-        }
-        
         if (Subject.Status.HasFlag(Status.Pramh))
         {
             Subject.Status &= ~Status.Pramh;

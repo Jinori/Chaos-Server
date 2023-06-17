@@ -15,7 +15,7 @@ public class DurabilityComponent : IComponent
 
         if (options.ShouldDamageItems is false)
             return;
-        
+
         foreach (var target in targets)
         {
             foreach (var item in target.Equipment)
@@ -24,6 +24,22 @@ public class DurabilityComponent : IComponent
                 {
                     if (item.CurrentDurability >= 1) 
                         item.CurrentDurability--;
+
+                    var percent = (200 * item.CurrentDurability + 1) / (item.Template.MaxDurability * 2);
+
+                    var warningLevel = percent switch
+                    {
+                        <= 5  => 5,
+                        <= 10 => 10,
+                        <= 30 => 30,
+                        _     => 0
+                    };
+
+                    if ((warningLevel > 0) && (warningLevel != item.LastWarningLevel))
+                    {
+                        target.SendActiveMessage($"Your {item.DisplayName} is at {percent}% durability.");
+                        item.LastWarningLevel = warningLevel;
+                    }
 
                     if (item is { CurrentDurability: <= 0, Template.AccountBound: false })
                     {
@@ -47,7 +63,7 @@ public class DurabilityComponent : IComponent
             }
         }
     }
-    
+
     public interface IDurabilityComponentOptions
     {
         bool? ShouldDamageItems { get; init; }
