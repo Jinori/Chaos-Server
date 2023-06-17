@@ -93,8 +93,20 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         foreach (var item in equipment)
         {
             var percent = (200 * item.CurrentDurability + 1) / (item.Template.MaxDurability * 2);
-            if (percent <= 10)
-                Subject.SendOrangeBarMessage($"{item.DisplayName} is at {percent}% durability");
+
+            var warningLevel = percent switch
+            {
+                <= 5  => 5,
+                <= 10 => 10,
+                <= 30 => 30,
+                _     => 0
+            };
+
+            if ((warningLevel > 0) && (warningLevel != item.LastWarningLevel))
+            {
+                Subject.SendOrangeBarMessage($"{item.DisplayName} is at {percent}% durability!");
+                item.LastWarningLevel = warningLevel;
+            }
         }
         
         if (Subject.Status.HasFlag(Status.Pramh))

@@ -52,6 +52,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
                 source.Inventory.Update(slot, item1 =>
                 {
                     item1.CurrentDurability = item1.Template.MaxDurability;
+                    item1.LastWarningLevel = 100;
                 });
 
                 source.SendOrangeBarMessage($"Your {item.DisplayName} has been repaired.");

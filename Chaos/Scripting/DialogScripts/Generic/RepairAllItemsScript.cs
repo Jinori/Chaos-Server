@@ -43,6 +43,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
                 if ((repair.Template.MaxDurability > 0) && (repair.CurrentDurability != repair.Template.MaxDurability))
                 {
                     repair.CurrentDurability = repair.Template.MaxDurability;
+                    repair.LastWarningLevel = 100;
                 }
             }
 
@@ -53,6 +54,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
                     source.Inventory.Update(repair.Slot, _ =>
                     {
                         repair.CurrentDurability = repair.Template.MaxDurability;
+                        repair.LastWarningLevel = 100;
                     });
                 }
             }
