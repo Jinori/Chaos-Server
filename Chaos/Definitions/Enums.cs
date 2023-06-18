@@ -38,6 +38,7 @@ public enum Status : ulong
     Hide = 1 << 22,
     LastStand = 1 << 23,
     Amensia = 1 << 24,
+    PreventRecradh = 1 << 25
     //add more statuses here, double each time
 }
 

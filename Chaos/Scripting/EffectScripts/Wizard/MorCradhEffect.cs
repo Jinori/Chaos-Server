@@ -1,5 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Models.Data;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Wizard;
@@ -55,5 +57,21 @@ public class MorCradhEffect : NonOverwritableEffectBase
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "mor cradh curse has been lifted.");
+    }
+    
+    /// <inheritdoc />
+    public override bool ShouldApply(Creature source, Creature target)
+    {
+        if (target.Effects.Contains("preventrecradh"))
+        {
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target cannot be cursed at this time.");
+            return false;
+        }
+        if (target.Effects.Contains("ard cradh") || target.Effects.Contains("mor cradh") || target.Effects.Contains("cradh") || target.Effects.Contains("beag cradh"))
+        {
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already cursed.");
+            return false;
+        }
+        return true;
     }
 }

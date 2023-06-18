@@ -6,7 +6,7 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Wizard;
 
-public class PreventAffliction : EffectBase
+public class PreventAfflictionEffect : EffectBase
 {
     public override byte Icon => 112;
     public override string Name => "preventaffliction";
