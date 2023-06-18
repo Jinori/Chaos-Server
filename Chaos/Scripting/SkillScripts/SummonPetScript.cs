@@ -1,26 +1,26 @@
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
-using Chaos.Scripting.SpellScripts.Abstractions;
+using Chaos.Scripting.SkillScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.SpellScripts;
+namespace Chaos.Scripting.SkillScripts;
 
-public class SummonPetScript : ConfigurableSpellScriptBase
+public class SummonPetScript : ConfigurableSkillScriptBase
 {
     private const string MONSTER_KEY = "Gloop";
     private readonly IMonsterFactory _monsterFactory;
-
-    public SummonPetScript(Spell subject, IMonsterFactory monsterFactory)
+    
+    /// <inheritdoc />
+    public SummonPetScript(Skill subject, IMonsterFactory monsterFactory)
         : base(subject) => _monsterFactory = monsterFactory;
-
-    public override void OnUse(SpellContext context)
+    
+    public override void OnUse(ActivationContext context)
     {
         RemoveExistingPets(context);
         SpawnNewPet(context);
     }
-
-    private void RemoveExistingPets(SpellContext context)
+    private void RemoveExistingPets(ActivationContext context)
     {
         var monsters = context.Source.MapInstance.GetEntities<Monster>();
 
@@ -33,8 +33,8 @@ public class SummonPetScript : ConfigurableSpellScriptBase
             }
         }
     }
-
-    private void SpawnNewPet(SpellContext context)
+    
+    private void SpawnNewPet(ActivationContext context)
     {
         var newMonster = _monsterFactory.Create(MONSTER_KEY, context.SourceMap, context.SourcePoint);
         newMonster.Name = $"{context.Source.Name}'s {MONSTER_KEY}";
