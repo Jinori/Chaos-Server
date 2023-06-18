@@ -17,7 +17,8 @@ public class LearningRequirementMapperProfile : IMapperProfile<LearningRequireme
         PrerequisiteSkillTemplateKeys = obj.PrerequisiteSkillTemplateKeys,
         PrerequisiteSpellTemplateKeys = obj.PrerequisiteSpellTemplateKeys,
         ItemRequirements = Mapper.MapMany<ItemRequirement>(obj.ItemRequirements).ToList(),
-        RequiredGold = obj.RequiredGold
+        RequiredGold = obj.RequiredGold,
+        SkillSpellToUpgrade = obj.SkillSpellToUpgrade
     };
 
     /// <inheritdoc />

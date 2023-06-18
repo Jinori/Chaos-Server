@@ -98,7 +98,17 @@ public class LearnSpellScript : DialogScriptBase
                 };
 
                 source.MapInstance.ShowAnimation(animation);
-
+                
+                if (!string.IsNullOrEmpty(spellToLearn.Template.LearningRequirements?.SkillSpellToUpgrade))
+                {
+                    var oldSpell = source.SpellBook.FirstOrDefault(s => s.Template.Name.Equals(spellToLearn.Template.LearningRequirements?.SkillSpellToUpgrade, StringComparison.OrdinalIgnoreCase));
+                    if (oldSpell != null)
+                    {
+                        source.SpellBook.Remove(oldSpell.Template.Name);
+                        source.SendOrangeBarMessage($"{oldSpell.Template.Name} has been upgraded to {spellToLearn.Template.Name}.");
+                    }
+                }
+                
                 break;
             case ComplexActionHelper.LearnSpellResult.NoRoom:
                 Subject.Reply(
@@ -121,15 +131,15 @@ public class LearnSpellScript : DialogScriptBase
             var requiredBaseClass = spell.Template.Class;
             var requiredAdvClass = spell.Template.AdvClass;
 
-            //if this spell is not available to the player's class, skip it
+            // If this spell is not available to the player's class, skip it.
             if (requiredBaseClass.HasValue && !source.HasClass(requiredBaseClass.Value))
                 continue;
 
-            //if this spell is not available to the player's adv class, skip it
+            // If this spell is not available to the player's adv class, skip it.
             if (requiredAdvClass.HasValue && (requiredAdvClass.Value != source.UserStatSheet.AdvClass))
                 continue;
 
-            //if the player already knows this spell, skip it
+            // If the player already knows this spell, skip it.
             if (source.SpellBook.Contains(spell))
                 continue;
 
@@ -143,10 +153,18 @@ public class LearnSpellScript : DialogScriptBase
                         continue;
                 }
             }
+        
+            // Check if the source's spellbook contains a spell that upgrades the current spell.
+            var upgradedSpell = source.SpellBook.FirstOrDefault(s => s.Template.LearningRequirements?.SkillSpellToUpgrade?.Equals(spell.Template.Name, StringComparison.OrdinalIgnoreCase) ?? false);
+        
+            // If the player knows a spell that upgrades the current spell, skip it.
+            if (upgradedSpell != null)
+                continue;
 
             Subject.Spells.Add(spell);
         }
     }
+
 
     private void OnDisplayingRequirements(Aisling source)
     {
@@ -309,7 +327,21 @@ public class LearnSpellScript : DialogScriptBase
 
         if (requirements.RequiredGold.HasValue)
             source.TryTakeGold(requirements.RequiredGold.Value);
-
+        
         return true;
+    }
+    
+    public sealed class TieredSpell
+    {
+        public string TemplateKey { get; }
+        public string Name { get; }
+        public int Tier { get; }
+
+        public TieredSpell(string templateKey, string name, int tier)
+        {
+            TemplateKey = templateKey;
+            Name = name;
+            Tier = tier;
+        }
     }
 }

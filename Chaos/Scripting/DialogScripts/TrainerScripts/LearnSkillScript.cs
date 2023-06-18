@@ -96,7 +96,17 @@ public class LearnSkillScript : DialogScriptBase
                 };
 
                 source.MapInstance.ShowAnimation(animation);
-
+                
+                if (!string.IsNullOrEmpty(skillToLearn.Template.LearningRequirements?.SkillSpellToUpgrade))
+                {
+                    var oldSkill = source.SpellBook.FirstOrDefault(s => s.Template.Name.Equals(skillToLearn.Template.LearningRequirements?.SkillSpellToUpgrade, StringComparison.OrdinalIgnoreCase));
+                    if (oldSkill != null)
+                    {
+                        source.SpellBook.Remove(oldSkill.Template.Name);
+                        source.SendOrangeBarMessage($"{oldSkill.Template.Name} has been upgraded to {skillToLearn.Template.Name}.");
+                    }
+                }
+                
                 break;
             case ComplexActionHelper.LearnSkillResult.NoRoom:
                 Subject.Reply(
@@ -129,6 +139,13 @@ public class LearnSkillScript : DialogScriptBase
 
             //if the player already knows this skill, skip it
             if (source.SkillBook.Contains(skill))
+                continue;
+            
+            // Check if the source's skillbook contains a skill that upgrades the current skill.
+            var upgradedSkill = source.SkillBook.FirstOrDefault(s => s.Template.LearningRequirements?.SkillSpellToUpgrade?.Equals(skill.Template.Name, StringComparison.OrdinalIgnoreCase) ?? false);
+        
+            // If the player knows a spell that upgrades the current spell, skip it.
+            if (upgradedSkill != null)
                 continue;
 
             Subject.Skills.Add(skill);

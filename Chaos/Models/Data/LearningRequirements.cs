@@ -25,6 +25,12 @@ public sealed record LearningRequirements
     ///     The amount of gold required to learn this ability
     /// </summary>
     public required int? RequiredGold { get; init; }
+    
+    /// <summary>
+    ///     The skill or spell to remove when learning a new spell
+    /// </summary>
+    /// 
+    public string? SkillSpellToUpgrade { get; set; }
 
     /// <summary>
     ///     The attributes required to learn this skill
