@@ -6,81 +6,87 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.EffectScripts.Jobs;
-
-public class FishingEffect : ContinuousAnimationEffectBase
+namespace Chaos.Scripting.EffectScripts.Jobs
 {
-    private readonly IItemFactory _itemFactory;
-    private readonly List<string> _sayings = new()
+    public class FishingEffect : ContinuousAnimationEffectBase
     {
-        "Your bobber slightly dips but nothing happens.", "You feel a bite at the line.", "*yawn* The water is calm and serene.",
-        "Cursing at the sky, you say you'll never give up!", "A small patch of water ripples."
-    };
+        private readonly IItemFactory _itemFactory;
+        private List<Point> _fishingSpots = new List<Point>();
 
-    /// <inheritdoc />
-    public override byte Icon { get; } = 203;
-    /// <inheritdoc />
-    public override string Name { get; } = "Fishing";
+        private const int FISH_CATCH_CHANCE = 2;
+        private const byte FISHING_ICON = 203;
 
-    /// <inheritdoc />
-    protected override Animation Animation { get; } = new()
-    {
-        AnimationSpeed = 100,
-        TargetAnimation = 169
-    };
-    /// <inheritdoc />
-    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
-    /// <inheritdoc />
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(18);
-    /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(5));
+        public override byte Icon => FISHING_ICON;
+        public override string Name => "Fishing";
 
-    public FishingEffect(IItemFactory itemFactory) => _itemFactory = itemFactory;
-
-    private static readonly List<KeyValuePair<string, decimal>> FishData = new()
-    {
-        new KeyValuePair<string, decimal>("uselessboot", 20),
-        new KeyValuePair<string, decimal>("trout", 30),
-        new KeyValuePair<string, decimal>("bass", 25),
-        new KeyValuePair<string, decimal>("perch", 20),
-        new KeyValuePair<string, decimal>("pike", 15),
-        new KeyValuePair<string, decimal>("rockfish", 10),
-        new KeyValuePair<string, decimal>("lionfish", 8),
-        new KeyValuePair<string, decimal>("purplewhopper", 5)
-    };
-    
-    /// <inheritdoc />
-    protected override void OnIntervalElapsed()
-    {
-        var aisling = AislingSubject!;
-        
-        var fishingSpots = Subject.MapInstance.GetEntities<ReactorTile>()
-                                  .Where(x => x.ScriptKeys.Contains("FishingSpot") && x.X.Equals(Subject.X) && x.Y.Equals(Subject.Y));
-
-        if (!fishingSpots.Any() || !aisling.Inventory.HasCount("Fishing Bait", 1))
+        protected override Animation Animation { get; } = new()
         {
-            Subject.Effects.Terminate("Fishing");
-            return;
-        }
-        
-        if (!IntegerRandomizer.RollChance(2))
+            AnimationSpeed = 100,
+            TargetAnimation = 169
+        };
+        protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
+        protected override TimeSpan Duration { get; } = TimeSpan.FromHours(1);
+        protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(5));
+
+        public FishingEffect(IItemFactory itemFactory) => _itemFactory = itemFactory;
+
+        private static readonly List<KeyValuePair<string, decimal>> FishData = new()
         {
-            return;
+            new KeyValuePair<string, decimal>("uselessboot", 20),
+            new KeyValuePair<string, decimal>("trout", 30),
+            new KeyValuePair<string, decimal>("bass", 25),
+            new KeyValuePair<string, decimal>("perch", 20),
+            new KeyValuePair<string, decimal>("pike", 15),
+            new KeyValuePair<string, decimal>("rockfish", 10),
+            new KeyValuePair<string, decimal>("lionfish", 8),
+            new KeyValuePair<string, decimal>("purplewhopper", 5)
+        };
+
+        public override void OnApplied() =>
+            _fishingSpots = Subject.MapInstance.GetEntities<ReactorTile>()
+                                   .Where(x => x.ScriptKeys.Contains("FishingSpot"))
+                                   .Select(x => new Point(x.X, x.Y))
+                                   .ToList();
+
+        protected override void OnIntervalElapsed()
+        {
+            var aisling = AislingSubject!;
+            var playerLocation = new Point(Subject.X, Subject.Y);
+
+            if (_fishingSpots.Count == 0 || !_fishingSpots.Contains(playerLocation) || !aisling.Inventory.HasCount("Fishing Bait", 1))
+            {
+                Subject.Effects.Terminate("Fishing");
+                return;
+            }
+
+            if (!IntegerRandomizer.RollChance(FISH_CATCH_CHANCE))
+            {
+                return;
+            }
+
+            var templateKey = FishData.PickRandomWeighted();
+            var fish = _itemFactory.Create(templateKey);
+            if (!aisling.TryGiveItem(fish))
+                return;
+
+            aisling.SendOrangeBarMessage($"You caught a {fish.DisplayName}!");
+            aisling.Inventory.RemoveQuantity("Fishing Bait", 1);
         }
 
-        var templateKey = FishData.PickRandomWeighted();
-        var fish = _itemFactory.Create(templateKey);
-        if (!aisling.TryGiveItem(fish))
-            return;
-        
-        aisling.SendOrangeBarMessage($"You caught a {fish.DisplayName}!");
-        aisling.Inventory.RemoveQuantity("Fishing Bait", 1);
-    }
+        public override void OnTerminated()
+        {
+            var playerLocation = new Point(Subject.X, Subject.Y);
+            if (_fishingSpots.Count == 0 || !_fishingSpots.Contains(playerLocation))
+            {
+                Subject.Effects.Terminate("Fishing");
+                return;
+            }
 
-    public override void OnTerminated()
-    {
-        foreach (var reactor in Subject.MapInstance.GetEntities<ReactorTile>()
-                                       .Where(x => x.ScriptKeys.Contains("FishingSpot") && x.X.Equals(Subject.X) && x.Y.Equals(Subject.Y)))
-            reactor.OnWalkedOn(Subject);
+            var fishingSpot = _fishingSpots.FirstOrDefault(x => x.Equals(playerLocation));
+            var reactorTile = Subject.MapInstance.GetEntities<ReactorTile>()
+                .FirstOrDefault(x => (x.X == fishingSpot.X) && (x.Y == fishingSpot.Y));
+
+            reactorTile?.OnWalkedOn(Subject);
+        }
     }
 }

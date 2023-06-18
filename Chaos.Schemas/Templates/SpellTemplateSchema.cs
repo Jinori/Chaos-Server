@@ -10,6 +10,9 @@ namespace Chaos.Schemas.Templates;
 /// </summary>
 public sealed record SpellTemplateSchema : PanelEntityTemplateSchema
 {
+    /// <summary>
+    /// The element a wizard spell uses when casting, calculated for damage
+    /// </summary>
     public WizardElement? WizardElement { get; set; }
     
     /// <summary>
