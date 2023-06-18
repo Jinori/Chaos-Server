@@ -168,7 +168,7 @@ public class EnchantingScript : DialogScriptBase
             return;
         }
         
-        var correctRecipe = Regex.Replace(selected, @"(\s+'s|')", "");
+        var correctRecipe = Regex.Replace(selected, @"\s+|'s", "");
         if (!Enum.TryParse<EnchantingRecipes>(correctRecipe, out var selectedRecipeEnum))
         {
             Subject.Reply(source, "Recipe could not be found in Enchanting.");
@@ -208,7 +208,8 @@ public class EnchantingScript : DialogScriptBase
                 var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
             }
-        } else
+        } 
+        else
         {
             var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
 
@@ -488,7 +489,8 @@ public class EnchantingScript : DialogScriptBase
                     MarkColor.White,
                     1,
                     GameTime.Now));
-        } else
+        } 
+        else
         {
             var rankThresholds = new[]
             {
@@ -511,7 +513,14 @@ public class EnchantingScript : DialogScriptBase
                 {
                     existingMark.Text = rankTitles[i];
                     source.SendOrangeBarMessage($"You have reached the rank of {rankTitles[i]}");
-
+                    source.Titles.Add(rankTitles[i]);
+                    var first = source.Titles.First();
+                    if (source.Titles.First() is "")
+                    {
+                        source.Titles.Remove(first);
+                        source.Titles.Add(first);
+                        source.Client.SendSelfProfile();
+                    }
                     break;
                 }
             }

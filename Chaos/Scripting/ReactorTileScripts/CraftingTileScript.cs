@@ -4,135 +4,84 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.ReactorTileScripts;
-
-public class CraftingTileScript : ReactorTileScriptBase
+namespace Chaos.Scripting.ReactorTileScripts
 {
-    private readonly IDialogFactory DialogFactory;
-    private readonly IMerchantFactory MerchantFactory;
-
-    /// <inheritdoc />
-    public CraftingTileScript(ReactorTile subject, IMerchantFactory merchantFactory, IDialogFactory dialogFactory)
-        : base(subject)
+    public class CraftingTileScript : ReactorTileScriptBase
     {
-        MerchantFactory = merchantFactory;
-        DialogFactory = dialogFactory;
-    }
+        private readonly IDialogFactory DialogFactory;
+        private readonly IMerchantFactory MerchantFactory;
 
-    /// <inheritdoc />
-    public override void OnWalkedOn(Creature source)
-    {
-        if (source is not Aisling aisling)
-            return;
-     
-        var hasStage = aisling.Trackers.Enums.TryGetValue(out Crafts stage);
-        
-        if (aisling?.MapInstance.InstanceId == "mileth_kitchen")
+        private readonly Dictionary<string, CraftingDetails?> CraftDetails;
+
+        /// <inheritdoc />
+        public CraftingTileScript(ReactorTile subject, IMerchantFactory merchantFactory, IDialogFactory dialogFactory)
+            : base(subject)
         {
-            if (!aisling.IsAdmin)
-            {
-                if (!aisling.Trackers.Flags.HasFlag(Hobbies.Cooking))
-                {
-                    aisling.SendOrangeBarMessage("You are not a chef.");
+            MerchantFactory = merchantFactory;
+            DialogFactory = dialogFactory;
 
-                    return;
+            CraftDetails = new Dictionary<string, CraftingDetails?>
+            {
+                ["mileth_kitchen"] = new("stove_merchant", "cooking_initial", Hobbies.Cooking, Crafts.None),
+                ["tagor_forge"] = new("anvil_merchant", "weaponsmithing_initial", null, Crafts.Weaponsmithing),
+                ["piet_alchemy_lab"] = new("table_merchant", "alchemy_initial", null, Crafts.Alchemy),
+                ["mileth_inn"] = new("sewing_merchant", "armorsmithing_initial", null, Crafts.Armorsmithing),
+                ["undine_enchanted_haven"] = new("crystalball_merchant", "enchanting_initial", null, Crafts.Enchanting),
+                ["rucesion_jeweler"] = new("jewelerbench_merchant", "jewelcrafting_initial", null, Crafts.Jewelcrafting),
+            };
+        }
+
+        /// <inheritdoc />
+        public override void OnWalkedOn(Creature source)
+        {
+            if (source is not Aisling aisling)
+                return;
+
+            aisling.Trackers.Enums.TryGetValue(out Crafts stage);
+
+            if (CraftDetails.TryGetValue(aisling.MapInstance.InstanceId, out var details))
+            {
+                if (details is not null)
+                {
+                    if (!aisling.IsAdmin)
+                    {
+                        if ((details.RequiredHobby != null) && !aisling.Trackers.Flags.HasFlag(details.RequiredHobby.Value))
+                        {
+                            aisling.SendOrangeBarMessage($"You do not know {details.RequiredHobby.Value.ToString().ToLower()}.");
+                            return;
+                        }
+                    
+                        if ((details.RequiredCraft != Crafts.None) && (!aisling.Trackers.Enums.TryGetValue(out stage) || (stage != details.RequiredCraft)))
+                        {
+                            aisling.SendOrangeBarMessage($"You know nothing of {details.RequiredCraft.ToString().ToLower()}.");
+                            return;
+                        }
+                    }
+
+                    var merchant = MerchantFactory.Create(details.Merchant, source.MapInstance, new Point(6, 6));
+                    var dialog = DialogFactory.Create(details.DialogKey, merchant);
+                    dialog.Display(aisling);   
                 }
             }
+        }
 
-
-            var blank = MerchantFactory.Create("stove_merchant", source.MapInstance, new Point(6, 6));
-            var dialog = DialogFactory.Create("cooking_initial", blank);
-            dialog.Display(aisling);
+        private sealed class CraftingDetails
+        {
+            public CraftingDetails(string merchant, string dialogKey, Hobbies? requiredHobby,
+                Crafts requiredCraft
+            )
+            {
+                Merchant = merchant;
+                DialogKey = dialogKey;
+                RequiredHobby = requiredHobby;
+                RequiredCraft = requiredCraft;
+            }
             
-            return;
-        }
-        if (aisling?.MapInstance.InstanceId == "tagor_forge")
-        {
-            if (!aisling.IsAdmin)
-            {
-                if (!hasStage || (stage != Crafts.Weaponsmithing))
-                {
-                    aisling.SendOrangeBarMessage("You are not a Weaponsmith.");
+            public string Merchant { get; }
+            public string DialogKey { get; }
+            public Hobbies? RequiredHobby { get; }
+            public Crafts RequiredCraft { get; }
 
-                    return;
-                }
-            }
-
-            var blank = MerchantFactory.Create("anvil_merchant", source.MapInstance, new Point(6, 6));
-            var dialog = DialogFactory.Create("weaponsmithing_initial", blank);
-            dialog.Display(aisling);
-            
-            return;
-        }
-        if (aisling?.MapInstance.InstanceId == "piet_alchemy_lab")
-        {
-            if (!aisling.IsAdmin)
-            {
-                if (!hasStage || (stage == Crafts.Alchemy))
-                {
-                    aisling.SendOrangeBarMessage("You are not a Alchemist.");
-
-                    return;
-                }
-            }
-            var blank = MerchantFactory.Create("table_merchant", source.MapInstance, new Point(6, 6));
-            var dialog = DialogFactory.Create("alchemy_initial", blank);
-            dialog.Display(aisling);
-            
-            return;
-        }
-        
-        if (aisling?.MapInstance.InstanceId == "mileth_inn")
-        {
-            if (!aisling.IsAdmin)
-            {
-                if (!hasStage || (stage == Crafts.Armorsmithing))
-                {
-                    aisling.SendOrangeBarMessage("You are not an Armorsmith.");
-
-                    return;
-                }
-            }
-
-            var blank = MerchantFactory.Create("sewing_merchant", source.MapInstance, new Point(6, 6));
-            var dialog = DialogFactory.Create("armorsmithing_initial", blank);
-            dialog.Display(aisling);
-            
-            return;
-        }
-        if (aisling?.MapInstance.InstanceId == "undine_enchanted_haven")
-        {
-            if (!aisling.IsAdmin)
-            {
-                if (!hasStage || (stage == Crafts.Enchanting))
-                {
-                    aisling.SendOrangeBarMessage("You are not an Enchanter.");
-
-                    return;
-                }
-            }
-
-            var blank = MerchantFactory.Create("crystalball_merchant", source.MapInstance, new Point(6, 6));
-            var dialog = DialogFactory.Create("enchanting_initial", blank);
-            dialog.Display(aisling);
-            return;
-        }
-        
-        if (aisling?.MapInstance.InstanceId == "rucesion_jeweler")
-        {
-            if (!aisling.IsAdmin)
-            {
-                if (!hasStage || (stage == Crafts.Jewelcrafting))
-                {
-                    aisling.SendOrangeBarMessage("You are not a Jeweler.");
-
-                    return;
-                }
-            }
-
-            var blank = MerchantFactory.Create("jewelerbench_merchant", source.MapInstance, new Point(6, 6));
-            var dialog = DialogFactory.Create("jewelcrafting_initial", blank);
-            dialog.Display(aisling);
         }
     }
 }

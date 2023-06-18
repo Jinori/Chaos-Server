@@ -168,7 +168,14 @@ public class JewelcraftingScript : DialogScriptBase
                 {
                     existingMark.Text = rankTitles[i];
                     source.SendOrangeBarMessage($"You have reached the rank of {rankTitles[i]}");
-
+                    source.Titles.Add(rankTitles[i]);
+                    var first = source.Titles.First();
+                    if (source.Titles.First() is "")
+                    {
+                        source.Titles.Remove(first);
+                        source.Titles.Add(first);
+                        source.Client.SendSelfProfile();
+                    }
                     break;
                 }
             }
