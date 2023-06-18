@@ -37,6 +37,39 @@ public class LearnSpellScript : DialogScriptBase
         SpellTeacherSource = (ISpellTeacherSource)Subject.DialogSource;
     }
 
+
+    private readonly Dictionary<string, List<string>> SpellUpgrades = new Dictionary<string, List<string>>
+    {
+        //Wizard
+        {"Beag Sal", new List<string> {"Sal", "Mor Sal", "Ard Sal"}},
+        {"Sal", new List<string> {"Mor Sal", "Ard Sal"}},
+        {"Mor Sal", new List<string> {"Ard Sal"}},
+        {"Beag Creag", new List<string> {"Creag", "Mor Creag", "Ard Creag"}},
+        {"Creag", new List<string> {"Mor Creag", "Ard Creag"}},
+        {"Mor Creag", new List<string> {"Ard Creag"}},
+        {"Beag Athar", new List<string> {"Athar", "Mor Athar", "Ard Athar"}},
+        {"Athar", new List<string> {"Mor Athar", "Ard Athar"}},
+        {"Mor Athar", new List<string> {"Ard Athar"}},
+        {"Beag Srad", new List<string> {"Srad", "Mor Srad", "Ard Srad"}},
+        {"Srad", new List<string> {"Mor Srad", "Ard Srad"}},
+        {"Mor Srad", new List<string> {"Ard Srad"}},
+        {"Beag Pramh", new List<string> {"Pramh"}},
+        {"Beag Srad Lamh", new List<string> {"Srad Lamh"}},
+        {"Beag Sal Lamh", new List<string> {"Sal Lamh"}},
+        {"Beag Creag Lamh", new List<string> {"Creag Lamh"}},
+        {"Beag Athar Lamh", new List<string> {"Athar Lamh"}},
+        //Warrior
+        {"Battle Cry", new List<string> {"War Cry"}},
+        //Rogue
+        {"Needle Trap", new List<string> {"Stiletto Trap", "Bolt Trap", "Coiled Bolt Trap", "Spring Trap", "Maiden Trap"}},
+        {"Stiletto", new List<string> {"Bolt Trap", "Coiled Bolt Trap", "Spring Trap", "Maiden Trap"}},
+        {"Bolt Trap", new List<string> {"Coiled Bolt Trap", "Spring Trap", "Maiden Trap"}},
+        {"Coiled Bolt Trap", new List<string> {"Spring Trap", "Maiden Trap"}},
+        {"Spring Trap", new List<string> {"Maiden Trap"}},
+        //Monk
+        {"Goad", new List<string> {"Howl"}}
+    };
+
     
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -154,11 +187,11 @@ public class LearnSpellScript : DialogScriptBase
                 }
             }
         
-            // Check if the source's spellbook contains a spell that upgrades the current spell.
-            var upgradedSpell = source.SpellBook.FirstOrDefault(s => s.Template.LearningRequirements?.SkillSpellToUpgrade?.Equals(spell.Template.Name, StringComparison.OrdinalIgnoreCase) ?? false);
-        
-            // If the player knows a spell that upgrades the current spell, skip it.
-            if (upgradedSpell != null)
+            // Check if the player's spellbook contains any spells that are upgrades of the spell they're trying to learn.
+            var knowsUpgrade = source.SpellBook.Any(s => SpellUpgrades.ContainsKey(spell.Template.Name) && SpellUpgrades[spell.Template.Name].Contains(s.Template.Name));
+
+            // If the player knows an upgrade of the spell they're trying to learn, skip it.
+            if (knowsUpgrade)
                 continue;
 
             Subject.Spells.Add(spell);

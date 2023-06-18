@@ -53,7 +53,7 @@ namespace Chaos.Scripting.EffectScripts.Jobs
             var aisling = AislingSubject!;
             var playerLocation = new Point(Subject.X, Subject.Y);
 
-            if (_fishingSpots.Count == 0 || !_fishingSpots.Contains(playerLocation) || !aisling.Inventory.HasCount("Fishing Bait", 1))
+            if ((_fishingSpots.Count == 0) || !_fishingSpots.Contains(playerLocation) || !aisling.Inventory.HasCount("Fishing Bait", 1))
             {
                 Subject.Effects.Terminate("Fishing");
                 return;

@@ -32,6 +32,7 @@ public class DurabilityComponent : IComponent
                         <= 5  => 5,
                         <= 10 => 10,
                         <= 30 => 30,
+                        <= 50 => 50,
                         _     => 0
                     };
 

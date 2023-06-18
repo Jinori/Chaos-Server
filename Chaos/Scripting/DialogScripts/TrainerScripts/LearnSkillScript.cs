@@ -36,6 +36,12 @@ public class LearnSkillScript : DialogScriptBase
         SkillTeacherSource = (ISkillTeacherSource)Subject.DialogSource;
     }
 
+    private readonly Dictionary<string, List<string>> SkillUpgrades = new()
+    {
+        //Warrior
+        {"Slash", new List<string> {"Scathe"}}
+    };
+    
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
@@ -141,11 +147,11 @@ public class LearnSkillScript : DialogScriptBase
             if (source.SkillBook.Contains(skill))
                 continue;
             
-            // Check if the source's skillbook contains a skill that upgrades the current skill.
-            var upgradedSkill = source.SkillBook.FirstOrDefault(s => s.Template.LearningRequirements?.SkillSpellToUpgrade?.Equals(skill.Template.Name, StringComparison.OrdinalIgnoreCase) ?? false);
-        
-            // If the player knows a spell that upgrades the current spell, skip it.
-            if (upgradedSkill != null)
+            // Check if the player's spellbook contains any spells that are upgrades of the spell they're trying to learn.
+            var knowsUpgrade = source.SkillBook.Any(s => SkillUpgrades.ContainsKey(skill.Template.Name) && SkillUpgrades[skill.Template.Name].Contains(s.Template.Name));
+
+            // If the player knows an upgrade of the spell they're trying to learn, skip it.
+            if (knowsUpgrade)
                 continue;
 
             Subject.Skills.Add(skill);

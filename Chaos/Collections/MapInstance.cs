@@ -525,7 +525,8 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
 
             foreach (var otherCreature in otherVisibles.OfType<Creature>())
                 Helpers.HandleApproach(aisling, otherCreature);
-        } else
+        } 
+        else
         {
             //fast path for non creatures
             if (visibleEntity is not Creature creature)
