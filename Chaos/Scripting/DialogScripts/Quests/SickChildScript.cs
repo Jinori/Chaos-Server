@@ -130,7 +130,7 @@ public class SickChildScript : DialogScriptBase
             case "whiterose1-3":
                 {
 
-                    if (!source.Inventory.Remove("white rose"))
+                    if (!source.Inventory.RemoveQuantity("white rose", 1))
                     {
                         Subject.Reply(source, "Where is it?");
                         source.SendOrangeBarMessage("You do not have a rose.");
@@ -153,10 +153,9 @@ public class SickChildScript : DialogScriptBase
                 }
 
                 break;
-
             case "whiterose2-3":
 
-                if (!source.Inventory.Remove("white rose"))
+                if (!source.Inventory.RemoveQuantity("white rose", 1))
                 {
                     Subject.Reply(source, "Where is it?");
 
@@ -190,7 +189,7 @@ public class SickChildScript : DialogScriptBase
 
             case "goldrose1-3":
                 {
-                    if (!source.Inventory.Remove("gold rose"))
+                    if (!source.Inventory.RemoveQuantity("gold rose", 1))
                     {
                         Subject.Reply(source, "Where is it?");
 
@@ -281,6 +280,7 @@ public class SickChildScript : DialogScriptBase
             
             case "whiterose2wait1":
             {
+
                 var blank = MerchantFactory.Create("blank_merchant", source.MapInstance, new Point(2, 2));
 
                 Subject.DialogSource = blank;

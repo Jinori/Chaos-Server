@@ -115,4 +115,6 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
     /// <inheritdoc />
     public string? EffectKey { get; init; }
     #endregion
+
+    public bool AllAggro { get; set; }
 }

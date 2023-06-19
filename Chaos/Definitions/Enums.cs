@@ -1010,13 +1010,23 @@ public enum JewelcraftingRecipes : ulong
 }
 
 [Flags]
+public enum AlchemyCategories
+{
+    None = 0,
+    BasicAlchemyBook = 1,
+    ApprenticeAlchemyBook = 2,
+    AttackTonics = 3,
+    StrongVitalityBrew = 4,
+}
+
+[Flags]
 public enum AlchemyRecipes : ulong
 {
     None = 0,
     Hemloch = 1L,
     SmallHealthPotion = 1L << 2,
     SmallManaPotion = 1L << 3,
-    SmallRejuvinationPotion = 1L << 4,
+    SmallRejuvenationPotion = 1L << 4,
     SmallHasteBrew = 1L << 5,
     SmallPowerBrew = 1L << 6,
     SmallAccuracyPotion = 1L << 7,
@@ -1027,7 +1037,7 @@ public enum AlchemyRecipes : ulong
     SmallStunTonic = 1L << 12,
     HealthPotion = 1L << 13,
     ManaPotion = 1L << 14,
-    RejuvinationPotion = 1L << 15,
+    RejuvenationPotion = 1L << 15,
     HasteBrew = 1L << 16,
     PowerBrew = 1L << 17,
     AccuracyPotion = 1L << 18,
@@ -1045,7 +1055,8 @@ public enum AlchemyRecipes : ulong
     StrongPowerBrew = 1L << 30,
     StrongAccuracyPotion = 1L << 31,
     StatBoostElixir = 1L << 32,
-    KnowledgeElixir = 1L << 33
+    KnowledgeElixir = 1L << 33,
+    StrongRejuvenationPotion = 1L << 34,
 }
 
 

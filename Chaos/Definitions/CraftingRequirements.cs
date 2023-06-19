@@ -921,18 +921,513 @@ public static class CraftingRequirements
             AlchemyRecipes.Hemloch,
             new Recipe()
             {
-                Name = "Hemloch",
-                TemplateKey = "hemloch",
+                Name = "Hemloch Formula",
+                TemplateKey = "hemlochformula",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
-                Rank = "Adept",
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.SmallHealthPotion,
+            new Recipe()
+            {
+                Name = "Small Health Potion Formula",
+                TemplateKey = "smallhealthpotionformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Beginner",
                 Level = 1,
                 Difficulty = 1
             }
+        },
+        {
+        AlchemyRecipes.SmallManaPotion,
+        new Recipe()
+        {
+            Name = "Small Mana Potion Formula",
+            TemplateKey = "smallmanapotionformula",
+            Ingredients = new List<Ingredient>()
+            {
+                new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            },
+            Rank = "Beginner",
+            Level = 1,
+            Difficulty = 1
         }
+    },
+        {
+        AlchemyRecipes.SmallRejuvenationPotion,
+        new Recipe()
+        {
+            Name = "Small Rejuvenation Potion Formula",
+            TemplateKey = "smallrejuvenationpotionformula",
+            Ingredients = new List<Ingredient>()
+            {
+                new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+            },
+            Rank = "Beginner",
+            Level = 1,
+            Difficulty = 1
+        }
+    },
+        {
+            AlchemyRecipes.SmallHasteBrew,
+            new Recipe()
+            {
+                Name = "Small Haste Brew Formula",
+                TemplateKey = "smallhastebrewformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Beginner",
+                Level = 1,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.SmallPowerBrew,
+            new Recipe()
+            {
+                Name = "Small Power Brew Formula",
+                TemplateKey = "smallpowerbrewformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Beginner",
+                Level = 1,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.SmallAccuracyPotion,
+            new Recipe()
+            {
+                Name = "Small Accuracy Potion Formula",
+                TemplateKey = "smallaccuracypotionformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Beginner",
+                Level = 1,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.JuggernautBrew,
+            new Recipe()
+            {
+                Name = "Juggernaut Brew Formula",
+                TemplateKey = "juggernautbrewformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.RenewingBrew,
+            new Recipe()
+            {
+                Name = "Renewing Brew Formula",
+                TemplateKey = "renewingbrewformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.AntidotePotion,
+            new Recipe()
+            {
+                Name = "Antidote Potion Formula",
+                TemplateKey = "antidotepotionformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.SmallFirestormTonic,
+            new Recipe()
+            {
+                Name = "Small Firestorm Tonic Formula",
+                TemplateKey = "smallfirestormtonicformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.SmallStunTonic,
+            new Recipe()
+            {
+                Name = "Small Stun Tonic Formula",
+                TemplateKey = "smallstuntonicformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Basic",
+                Level = 11,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.HealthPotion,
+            new Recipe()
+            {
+                Name = "Health Potion Formula",
+                TemplateKey = "healthpotionformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.ManaPotion,
+            new Recipe()
+            {
+                Name = "Mana Potion Formula",
+                TemplateKey = "manapotionformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.RejuvenationPotion,
+            new Recipe()
+            {
+                Name = "Rejuvenation Potion Formula",
+                TemplateKey = "rejuvenationpotionformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.HasteBrew,
+            new Recipe()
+            {
+                Name = "Haste Brew Formula",
+                TemplateKey = "hastebrewformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.PowerBrew,
+            new Recipe()
+            {
+                Name = "Power Brew Formula",
+                TemplateKey = "powerbrewformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.AccuracyPotion,
+            new Recipe()
+            {
+                Name = "Accuracy Potion Formula",
+                TemplateKey = "accuracypotionformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Apprentice",
+                Level = 41,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.RevivePotion,
+            new Recipe()
+            {
+                Name = "Revive Potion Formula",
+                TemplateKey = "revivepotionformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.StrongJuggernautBrew,
+            new Recipe()
+            {
+                Name = "Strong Juggernaut Brew Formula",
+                TemplateKey = "strongjuggernautbrewformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.StrongRenewingBrew,
+            new Recipe()
+            {
+                Name = "Strong Renewing Brew Formula",
+                TemplateKey = "strongrenewingbrewformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.CleansingBrew,
+            new Recipe()
+            {
+                Name = "Cleansing Brew Formula",
+                TemplateKey = "cleansingbrewformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.FirestormTonic,
+            new Recipe()
+            {
+                Name = "Firestorm Tonic Formula",
+                TemplateKey = "firestormtonicformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.StunTonic,
+            new Recipe()
+            {
+                Name = "Stun Tonic Formula",
+                TemplateKey = "stuntonicformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.WarmthPotion,
+            new Recipe()
+            {
+                Name = "Warmth Potion Formula",
+                TemplateKey = "warmthpotionformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.AmnesiaBrew,
+            new Recipe()
+            {
+                Name = "Amnesia Brew Formula",
+                TemplateKey = "amnesiaBrewformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Journeyman",
+                Level = 71,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.StrongHealthPotion,
+            new Recipe()
+            {
+                Name = "Strong Health Potion Formula",
+                TemplateKey = "stronghealthpotionformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.StrongManaPotion,
+            new Recipe()
+            {
+                Name = "Strong Mana Potion Formula",
+                TemplateKey = "strongmanapotionformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.StrongRejuvenationPotion,
+            new Recipe()
+            {
+                Name = "Strong Rejuvenation Potion Formula",
+                TemplateKey = "strongrejuvenationpotionformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.StrongHasteBrew,
+            new Recipe()
+            {
+                Name = "Strong Haste Brew Formula",
+                TemplateKey = "stronghastebrewformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.StrongPowerBrew,
+            new Recipe()
+            {
+                Name = "Strong Power Brew Formula",
+                TemplateKey = "strongpowerbrewformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.StrongAccuracyPotion,
+            new Recipe()
+            {
+                Name = "Strong Accuracy Potion Formula",
+                TemplateKey = "strongaccuracypotionformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.StatBoostElixir,
+            new Recipe()
+            {
+                Name = "Stat Boost Elixir Formula",
+                TemplateKey = "statboostelixirformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1
+            }
+        },
+        {
+            AlchemyRecipes.KnowledgeElixir,
+            new Recipe()
+            {
+                Name = "Knowledge Elixir Formula",
+                TemplateKey = "knowledgeelixirformula",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1
+            }
+        },
     };
 
     #region Jewelcrafting

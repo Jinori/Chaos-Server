@@ -77,13 +77,16 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
         creature.StatSheet.SubtractHp(damage);
         creature.ShowHealth();
         creature.Script.OnAttacked(source, damage);
+        
+        if (creature is Aisling aisling)
+            aisling.Client.SendAttributes(StatUpdateType.Vitality);
 
         if (!creature.IsAlive)
         {
             switch (creature)
             {
                 case Aisling mAisling:
-                    mAisling?.Script.OnDeath(source);
+                    mAisling.Script.OnDeath(source);
 
                     break;
                 case Monster mCreature:
