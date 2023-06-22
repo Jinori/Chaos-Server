@@ -262,7 +262,40 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylSapphireEarrings);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylEmeraldEarrings);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylHeartstoneEarrings);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallHealthPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallManaPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallRejuvenationPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallHasteBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallPowerBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallAccuracyPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.JuggernautBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.RenewingBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.AntidotePotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallFirestormTonic);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallStunTonic);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.HealthPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.ManaPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.RejuvenationPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.HasteBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.PowerBrew);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.Hemloch);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.AccuracyPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.RevivePotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongJuggernautBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongRenewingBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.CleansingBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.FirestormTonic);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.StunTonic);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.WarmthPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.AmnesiaBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongHealthPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongManaPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongHasteBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongPowerBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongAccuracyPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.StatBoostElixir);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.KnowledgeElixir);
+
 
 
 
@@ -1509,6 +1542,421 @@ public class RecipeItemScript : ItemScriptBase
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
+            }
+            
+            case "recipe_amnesiabrew":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.AmnesiaBrew))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.AmnesiaBrew,
+                        "Amnesia Brew",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_attacktonics":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyCategories.AttackTonics))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+                    
+                    source.Inventory.RemoveQuantity(Subject.Template.TemplateKey, 1);
+                    source.Trackers.Flags.AddFlag(AlchemyCategories.AttackTonics);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.FirestormTonic);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.StunTonic);
+
+                    return;
+                }
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+                
+            }
+
+            case "recipe_apprenticealchemybook":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyCategories.ApprenticeAlchemyBook))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    source.Inventory.RemoveQuantity(Subject.Template.TemplateKey, 1);
+                    source.Trackers.Flags.AddFlag(AlchemyCategories.ApprenticeAlchemyBook);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.HealthPotion);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.ManaPotion);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.RejuvenationPotion);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.HasteBrew);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.PowerBrew);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.AccuracyPotion);
+                    source.SendOrangeBarMessage("You have learned the Apprentice Alchemy Book.");
+
+                    return;
+                }
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+                
+            }
+            
+            case "recipe_basicalchemybook":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyCategories.BasicAlchemyBook))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+                    
+                    source.Inventory.RemoveQuantity(Subject.Template.TemplateKey, 1);
+                    source.Trackers.Flags.AddFlag(AlchemyCategories.BasicAlchemyBook);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.JuggernautBrew);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.RenewingBrew);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.AntidotePotion);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallFirestormTonic);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallStunTonic);
+                    source.SendOrangeBarMessage("You have learned the Basic Alchemy Book.");
+
+                    return;
+                }
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+                
+            }
+            
+            case "recipe_cleansingbrew":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.CleansingBrew))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.CleansingBrew,
+                        "Cleansing Brew",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_knowledgeelixir":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.KnowledgeElixir))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.KnowledgeElixir,
+                        "Knowledge Elixir",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_statboostelixir":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.StatBoostElixir))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.StatBoostElixir,
+                        "Stat Boost Elixir",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_strongaccuracypotion":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.StrongAccuracyPotion))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.StrongAccuracyPotion,
+                        "Strong Accuracy Potion",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_stronghastebrew":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.StrongHasteBrew))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.StrongHasteBrew,
+                        "Strong Haste Brew",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_stronghealthpotion":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.StrongHealthPotion))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.StrongHealthPotion,
+                        "Strong Health Potion",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_strongmanapotion":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.StrongManaPotion))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.StrongManaPotion,
+                        "Strong Mana Potion",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_strongrejuvenationpotion":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.StrongRejuvenationPotion))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.StrongRejuvenationPotion,
+                        "Strong Rejuvenation Potion",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_strongpowerbrew":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.StrongPowerBrew))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.StrongPowerBrew,
+                        "Strong Power Brew",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_warmthpotion":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.WarmthPotion))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.WarmthPotion,
+                        "Warmth Potion",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_revivepotion":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.RevivePotion))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.RevivePotion,
+                        "Revive Potion",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+                
+            }
+            
+            case "recipe_strongvitalitybrew":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyCategories.StrongVitalityBrew))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+                    
+                    source.Inventory.RemoveQuantity(Subject.Template.TemplateKey, 1);
+                    source.Trackers.Flags.AddFlag(AlchemyCategories.StrongVitalityBrew);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongJuggernautBrew);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongRenewingBrew);
+
+                    return;
+                }
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+                
             }
             #endregion
 

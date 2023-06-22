@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
@@ -309,6 +310,7 @@ public class AlchemyScript : DialogScriptBase
         if (recipe is null)
         {
             Subject.Reply(source, "Notify a GM that this recipe is missing.");
+
             return;
         }
 
@@ -320,14 +322,14 @@ public class AlchemyScript : DialogScriptBase
             {
                 hasAllIngredients = false;
 
-                source.SendOrangeBarMessage(
-                    $"You are missing ({reagant.Amount}) of {reagant.DisplayName}.");
+                source.SendOrangeBarMessage($"You are missing ({reagant.Amount}) of {reagant.DisplayName}.");
             }
         }
 
         if (!hasAllIngredients)
         {
             Subject.Close(source);
+
             return;
         }
 
@@ -390,6 +392,7 @@ public class AlchemyScript : DialogScriptBase
         if (Craftgoodgreatgrand)
         {
             var roll = IntegerRandomizer.RollSingle(100);
+
             var newCraft = roll switch
             {
                 < 10  => ItemFactory.Create("grand" + recipe.TemplateKey),
@@ -402,25 +405,30 @@ public class AlchemyScript : DialogScriptBase
             {
                 source.Bank.Deposit(newCraft);
                 source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
-            } 
-            else
+            } else
                 source.Inventory.TryAddToNextSlot(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);
-        } 
-        else
+        } else
         {
-            var newCraft = ItemFactory.Create(recipe.TemplateKey);
+            var templateKeyWithoutFormula =
+                recipe.TemplateKey.Replace("formula", ""); // Remove "formula" from the template key
+
+            var newCraft = ItemFactory.Create(templateKeyWithoutFormula);
+
             if (!source.CanCarry(newCraft))
             {
                 source.Bank.Deposit(newCraft);
                 source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
-            }
-            else
+            } else
+            {
                 source.Inventory.TryAddToNextSlot(newCraft);
+            }
 
             Subject.InjectTextParameters(newCraft.DisplayName);
         }
+
         source.Animate(SuccessAnimation);
+
     }
 }

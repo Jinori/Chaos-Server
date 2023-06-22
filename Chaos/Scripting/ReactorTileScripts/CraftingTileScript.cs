@@ -25,7 +25,7 @@ namespace Chaos.Scripting.ReactorTileScripts
                 ["mileth_kitchen"] = new("stove_merchant", "cooking_initial", Hobbies.Cooking, Crafts.None),
                 ["tagor_forge"] = new("anvil_merchant", "weaponsmithing_initial", null, Crafts.Weaponsmithing),
                 ["piet_alchemy_lab"] = new("table_merchant", "alchemy_initial", null, Crafts.Alchemy),
-                ["mileth_inn"] = new("sewing_merchant", "armorsmithing_initial", null, Crafts.Armorsmithing),
+                ["wilderness_armorsmithing"] = new("anvil_merchant", "armorsmithing_initial", null, Crafts.Armorsmithing),
                 ["undine_enchanted_haven"] = new("crystalball_merchant", "enchanting_initial", null, Crafts.Enchanting),
                 ["rucesion_jeweler"] = new("jewelerbench_merchant", "jewelcrafting_initial", null, Crafts.Jewelcrafting),
             };

@@ -3,6 +3,7 @@ using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Utilities;
+using Chaos.Time;
 
 namespace Chaos.Scripting.Components;
 
@@ -21,7 +22,7 @@ public class DropAggroComponent : IComponent
             
             var monster = target as Monster;
             if (options.AllAggro) 
-                monster?.AggroList.Clear();
+                monster?.ResetAggro();
         }
     }
     

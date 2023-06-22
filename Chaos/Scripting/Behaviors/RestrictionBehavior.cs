@@ -57,10 +57,16 @@ public class RestrictionBehavior
             if (!aisling.Status.HasFlag(Status.Suain) || !aisling.Status.HasFlag(Status.Pramh))
                 return aisling.IsAlive;
         }
-        
+
+        if (aisling.IsDead && item.Template.TemplateKey.EqualsI("revivePotion"))
+        {
+            return true;
+        }
+
         aisling.SendOrangeBarMessage("You can't do that");
         return false;
     }
+
 
     public virtual bool CanUseSkill(Creature creature, Skill skill)
     {

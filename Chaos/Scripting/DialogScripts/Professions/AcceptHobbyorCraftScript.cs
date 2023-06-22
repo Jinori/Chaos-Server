@@ -34,7 +34,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     };
 
                     if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+                        Subject.Options.Add(option);
                 }
             }
 
@@ -57,7 +57,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     };
 
                     if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+                        Subject.Options.Add(option);
                 }
             }
 
@@ -72,6 +72,13 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             }
             case "thorin_initial":
             {
+                if (hasCraft && (craft != Crafts.Weaponsmithing))
+                {
+                    Subject.Reply(source, "You aren't a Weaponsmith, get out of my forge. I cannot have Aislings wandering around who don't know what they're doing. You could get hurt. Go see Riona to learn about crafts if you're curious.");
+
+                    return;
+                }
+
                 if (!hasCraft)
                 {
                     var option = new DialogOption
@@ -81,7 +88,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     };
 
                     if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+                        Subject.Options.Add(option);
 
                     return;
                 }
@@ -95,7 +102,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     };
 
                     if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+                        Subject.Options.Add(option);
                 }
 
                 break;
@@ -124,6 +131,13 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
 
             case "armorsmithnpc_initial":
             {
+                if (hasCraft && (craft != Crafts.Armorsmithing))
+                {
+                    Subject.Reply(source, "Why are you here Aisling? You are not an Armorsmith, you could get hurt around my equipment here. Please, go see Riona if you want to learn about crafting.");
+
+                    return;
+                }
+                
                 if (!hasCraft)
                 {
                     var option = new DialogOption
@@ -133,7 +147,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     };
 
                     if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+                        Subject.Options.Add(option);
                 }
                 if (hasCraft && (craft == Crafts.Armorsmithing))
                 {
@@ -144,7 +158,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     };
 
                     if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+                        Subject.Options.Add(option);
                 }
 
                 break;
@@ -174,6 +188,12 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             }
             case "mathis_initial":
             {
+                if (hasCraft && (craft != Crafts.Alchemy))
+                {
+                    Subject.Reply(source, "You don't belong in my lab. This is a very dangerous area for those who don't know what they're doing. Go see Riona if you want to learn about crafting.");
+
+                    return;
+                }
                 if (!hasCraft)
                 {
                     var option = new DialogOption
@@ -183,7 +203,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     };
 
                     if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+                        Subject.Options.Add(option);
                 }
                 if (hasCraft && (craft == Crafts.Alchemy))
                 {
@@ -194,7 +214,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     };
 
                     if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+                        Subject.Options.Add(option);
                 }
 
                 break;
@@ -222,6 +242,13 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             }
             case "elara_initial":
             {
+                if (hasCraft && (craft != Crafts.Enchanting))
+                {
+                    Subject.Reply(source, "Shhh, don't bothe... Wait, what are you doing here? You don't know the first thing about enchanting. Get out, you're going to bother others. Go see Riona.");
+
+                    return;
+                }
+                
                 if (!hasCraft)
                 {
                     var option = new DialogOption
@@ -231,7 +258,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     };
 
                     if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+                        Subject.Options.Add(option);
                 }
                 if (hasCraft && (craft == Crafts.Enchanting))
                 {
@@ -242,7 +269,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     };
 
                     if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+                        Subject.Options.Add(option);
                 }
 
                 break;
@@ -270,6 +297,15 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             }
             case "celestia_initial":
             {
+                if (hasCraft && (craft != Crafts.Jewelcrafting))
+                {
+                    Subject.Reply(
+                        source,
+                        "The art of Jewelcrafting is delicate and precious. You are a distraction to those who are working. If you want to learn about crafting, go see Riona.");
+
+                    return;
+                }
+
                 if (!hasCraft)
                 {
                     var option = new DialogOption
@@ -279,7 +315,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     };
 
                     if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+                        Subject.Options.Add(option);
 
                     return;
                 }
@@ -293,25 +329,12 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     };
 
                     if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+                        Subject.Options.Add(option);
                 }
 
                 break;
             }
 
-            case "craft_remove3":
-            {
-                source.Trackers.Enums.Remove<Crafts>();
-                source.Legend.Remove("alch", out _);
-                source.Legend.Remove("jwlcrftng", out _);
-                source.Legend.Remove("wpnsmth", out _);
-                source.Legend.Remove("armsmth", out _);
-                source.Legend.Remove("ench", out _);
-                source.SendOrangeBarMessage("You are no longer a Crafter.");
-
-                return;
-            }
-            
             case "jewelcrafting_acceptcraft":
             {
                 source.Trackers.Enums.Set(Crafts.Jewelcrafting);
@@ -333,6 +356,39 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 
                 
 
+                return;
+            }
+            case "craft_remove3":
+            {
+                if (hasCraft && (craft == Crafts.Armorsmithing))
+                {
+                    source.SendOrangeBarMessage("You are no longer an Armorsmith.");
+                    source.Legend.Remove("armsmth", out _);
+                }
+                if (hasCraft && (craft == Crafts.Weaponsmithing))
+                {
+                    source.SendOrangeBarMessage("You are no longer a Weaponsmith.");
+                    source.Legend.Remove("wpnsmth", out _);
+
+                }
+                if (hasCraft && (craft == Crafts.Jewelcrafting))
+                {
+                    source.SendOrangeBarMessage("You are no longer a Jewelcrafter.");
+                    source.Legend.Remove("jwlcrftng", out _);
+                }
+                if (hasCraft && (craft == Crafts.Alchemy))
+                {
+                    source.SendOrangeBarMessage("You are no longer an Alchemist.");
+                    source.Legend.Remove("alch", out _);
+                }
+                if (hasCraft && (craft == Crafts.Enchanting))
+                {
+                    source.SendOrangeBarMessage("You are no longer an Enchanter.");
+                    source.Legend.Remove("ench", out _);
+                }
+                
+                source.Trackers.Enums.Remove<Crafts>();
+                
                 return;
             }
         }
