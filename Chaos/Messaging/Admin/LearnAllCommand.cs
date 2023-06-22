@@ -53,7 +53,7 @@ public class LearnAllCommand : ICommand<Aisling>
                 BaseClass.Monk, 
                 (
                     new[] { "Airpunch", "ambush", "clawfist", "doublePunch", "dracotailkick", "eaglestrike", "firepunch", "highkick", "kick", "mantiskick", "poisonpunch", "punch", "rockpunch", "roundhousekick", "tripleKick", "waterpunch", "wolfFangFist" }, 
-                    new[] { "mist", "earthenstance", "gentleTouch", "goad", "howl", "innerFire", "laststand", "miststance", "smokestance", "taunt", "thunderstance" } 
+                    new[] { "earthenstance", "gentleTouch", "goad", "howl", "innerFire", "laststand", "miststance", "smokestance", "taunt", "thunderstance" } 
                 )
             }
         };

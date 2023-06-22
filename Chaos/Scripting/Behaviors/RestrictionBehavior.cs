@@ -26,10 +26,7 @@ public class RestrictionBehavior
         return creature.MapInstance.Name.EqualsI("The Afterlife") || creature.IsAlive;
     }
 
-    public virtual bool CanTalk(Creature creature)
-    {
-        return true;
-    }
+    public virtual bool CanTalk(Creature creature) => true;
 
     public virtual bool CanTurn(Creature creature)
     {
