@@ -121,8 +121,6 @@ public class MythicBunnyScript : DialogScriptBase
                         source,
                         $"Every bunny knows your name {source.Name
                         }! It's all around the warren, we really appreciate your hare-oic efforts.");
-
-                    return;
                 }
 
                 break;

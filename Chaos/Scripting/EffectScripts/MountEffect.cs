@@ -29,7 +29,6 @@ public class MountEffect : NonOverwritableEffectBase
             if (!AislingSubject.Trackers.TimedEvents.HasActiveEvent("mount", out var mountEvent))
             {
                 AislingSubject.Trackers.TimedEvents.AddEvent("mount", TimeSpan.FromSeconds(5), true);
-                return;
             }
         }
     }

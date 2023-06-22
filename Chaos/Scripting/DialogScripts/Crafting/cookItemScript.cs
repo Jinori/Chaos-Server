@@ -2697,8 +2697,6 @@ public class cookItemScript : DialogScriptBase
                     if (Subject.Items.Count == 0)
                     {
                         Subject.Reply(source, "You do not have the required fruits.", "cooking_initial");
-
-                        return;
                     }
                 }
 
@@ -2735,8 +2733,6 @@ public class cookItemScript : DialogScriptBase
                     if (Subject.Items.Count == 0)
                     {
                         Subject.Reply(source, "You do not have the required vegetables.","cooking_initial");
-
-                        return;
                     }
                 }
 

@@ -112,9 +112,6 @@ public class SickChildScript : DialogScriptBase
                     {
 
                         Subject.Reply(source, "Long live the princess...");
-
-                        return;
-
                     }
                 }
                 break;

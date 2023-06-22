@@ -32,7 +32,7 @@ public class BodyDyeScript : DialogScriptBase
     {
         if (!Subject.MenuArgs.TryGet<string>(0, out var dye))
         {
-            Subject.Reply(source, DialogString.UnknownInput.Value);
+            Subject.ReplyToUnknownInput(source);
             return;
         }
 
@@ -40,7 +40,7 @@ public class BodyDyeScript : DialogScriptBase
     
         if (itemDetails == null)
         {
-            Subject.Reply(source, DialogString.UnknownInput.Value);
+            Subject.ReplyToUnknownInput(source);
             return;
         }
 

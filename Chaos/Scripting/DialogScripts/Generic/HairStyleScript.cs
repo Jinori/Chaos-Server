@@ -84,7 +84,7 @@ public class HairstyleScript : DialogScriptBase
     {
         if (!Subject.MenuArgs.TryGet<string>(0, out var hairStyleName))
         {
-            Subject.Reply(source, DialogString.UnknownInput.Value);
+            Subject.ReplyToUnknownInput(source);
             return;
         }
 
@@ -94,7 +94,7 @@ public class HairstyleScript : DialogScriptBase
         if (item == null)
 
         {
-            Subject.Reply(source, DialogString.UnknownInput.Value);
+            Subject.ReplyToUnknownInput(source);
             return;
         }
 

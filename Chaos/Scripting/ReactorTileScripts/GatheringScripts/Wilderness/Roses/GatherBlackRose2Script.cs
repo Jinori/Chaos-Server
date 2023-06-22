@@ -35,7 +35,7 @@ public class GatherBlackRose2Script : ReactorTileScriptBase
         var blackrose = _itemFactory.Create("blackrose");
         var dialog = _dialogFactory.Create("wildernessblackrose", blackrose);
         dialog.Display(aisling);
-        aisling.TryGiveItem(blackrose);
+        aisling.TryGiveItem(ref blackrose);
         aisling.SendOrangeBarMessage("You found a Black Rose.");
         aisling.Trackers.TimedEvents.AddEvent("blackrose2cd", TimeSpan.FromHours(24), true);
     }

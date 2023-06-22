@@ -32,7 +32,7 @@ public class HairDyeScript : DialogScriptBase
     {
         if (!Subject.MenuArgs.TryGet<string>(0, out var dye))
         {
-            Subject.Reply(source, DialogString.UnknownInput.Value);
+            Subject.ReplyToUnknownInput(source);
             return;
         }
 
@@ -41,7 +41,7 @@ public class HairDyeScript : DialogScriptBase
 
         if (item == null)
         {
-            Subject.Reply(source, DialogString.UnknownInput.Value);
+            Subject.ReplyToUnknownInput(source);
             return;
         }
 

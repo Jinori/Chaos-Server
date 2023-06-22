@@ -106,8 +106,6 @@ public class DarkThingsQuestScript : DialogScriptBase
                 if (stage == DarkThingsStage.StartedScorpionSting)
                 {
                     Subject.Reply(source,"skip", "darkthings_startscs");
-
-                    return;
                 }
 
                 break;

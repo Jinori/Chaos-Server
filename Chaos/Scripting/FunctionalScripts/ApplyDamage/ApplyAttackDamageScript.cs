@@ -1,7 +1,6 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
-using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
@@ -10,7 +9,6 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
-using Microsoft.AspNetCore.Identity;
 
 namespace Chaos.Scripting.FunctionalScripts.ApplyDamage;
 
@@ -88,7 +86,7 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
             switch (creature)
             {
                 case Aisling mAisling:
-                    mAisling.Script.OnDeath(source);
+                    mAisling.Script.OnDeath();
 
                     break;
                 case Monster mCreature:

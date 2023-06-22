@@ -126,8 +126,6 @@ public class MythicFrogScript : DialogScriptBase
                 {
 
                     Subject.Reply(source, "Thank you again Aisling for your help. You will always be part of our army.");
-
-                    return;
                 }
 
                 break;

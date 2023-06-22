@@ -29,7 +29,7 @@ public class CoralPendantScript : ReactorTileScriptBase
         if ((stage == QueenOctopusQuest.Pendant2) && !aisling.Inventory.HasCount("coral pendant", 1))
         {
             var coralpendant = _itemFactory.Create("coralpendant");
-            aisling.TryGiveItem(coralpendant);
+            aisling.TryGiveItem(ref coralpendant);
             aisling.Client.SendServerMessage(
                 ServerMessageType.OrangeBar1,
                 "You've Found The Coral Pendant!");

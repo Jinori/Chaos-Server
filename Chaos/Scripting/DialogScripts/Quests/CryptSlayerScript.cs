@@ -275,31 +275,31 @@ namespace Chaos.Scripting.DialogScripts.Quests
                         if (source.HasClass(BaseClass.Wizard))
                         {
                             var wizardstaff = ItemFactory.Create("MagusAres");
-                            source.TryGiveItem(wizardstaff);
+                            source.TryGiveItem(ref wizardstaff);
                         }
 
                         if (source.HasClass(BaseClass.Warrior))
                         {
                             var warriorweapon = ItemFactory.Create("Claidheamh");
-                            source.TryGiveItem(warriorweapon);
+                            source.TryGiveItem(ref warriorweapon);
                         }
 
                         if (source.HasClass(BaseClass.Priest))
                         {
                             var prieststaff = ItemFactory.Create("HolyHermes");
-                            source.TryGiveItem(prieststaff);
+                            source.TryGiveItem(ref prieststaff);
                         }
 
                         if (source.HasClass(BaseClass.Rogue))
                         {
                             var rogueweapon = ItemFactory.Create("BlossomDagger");
-                            source.TryGiveItem(rogueweapon);
+                            source.TryGiveItem(ref rogueweapon);
                         }
 
                         if (source.HasClass(BaseClass.Monk))
                         {
                             var monkweapon = ItemFactory.Create("WolfClaw");
-                            source.TryGiveItem(monkweapon);
+                            source.TryGiveItem(ref monkweapon);
                         }
                     }
 

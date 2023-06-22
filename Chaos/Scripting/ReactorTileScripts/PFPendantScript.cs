@@ -32,7 +32,7 @@ public class PFPendantScript : ReactorTileScriptBase
             var pendant = ItemFactory.Create("turucpendant");
             var dialog = DialogFactory.Create("pf_foundpendant", pendant);
             dialog.Display(aisling);
-            aisling.TryGiveItem(pendant);
+            aisling.TryGiveItem(ref pendant);
             aisling.SendOrangeBarMessage("You found the Turuc Pendant, this is what Bertil dropped.");
             aisling.Trackers.Enums.Set(PFQuestStage.FoundPendant);
         }

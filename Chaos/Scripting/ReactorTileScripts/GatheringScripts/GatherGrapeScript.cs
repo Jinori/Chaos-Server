@@ -40,7 +40,7 @@ public class GatherGrapeScript : ReactorTileScriptBase
             var grape = _itemFactory.Create("Grape");
             var grapeCount = Random.Shared.Next(1, 4);
             grape.Count = grapeCount;
-            if (!aisling.TryGiveItem(grape))
+            if (!aisling.TryGiveItem(ref grape))
             {
                 var mapInstance = _simpleCache.Get<MapInstance>("suomi_grape_farmer");
                 var point = new Point(8, 5);

@@ -32,8 +32,7 @@ public class LockPickChestScript : DialogScriptBase
     {
         if (!Subject.MenuArgs.TryGet<int>(0, out var numberguessed))
         {
-            Subject.Reply(source, DialogString.UnknownInput.Value);
-
+            Subject.ReplyToUnknownInput(source);
             return;
         }
 

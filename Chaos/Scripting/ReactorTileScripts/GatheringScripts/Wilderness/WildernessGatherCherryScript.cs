@@ -41,7 +41,7 @@ public class WildernessGatherCherryScript : ReactorTileScriptBase
         }
 
         var cherryitem = ItemFactory.Create("cherry");
-        aisling.TryGiveItem(cherryitem);
+        aisling.TryGiveItem(ref cherryitem);
         aisling.SendOrangeBarMessage("You've gathered some cherries.");
         aisling.Trackers.Counters.AddOrIncrement("cherrypicked");
         

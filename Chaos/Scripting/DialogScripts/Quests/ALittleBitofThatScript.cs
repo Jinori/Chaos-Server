@@ -96,8 +96,6 @@ public class ALittleBitofThatScript : DialogScriptBase
                 if (stage == ALittleBitofThatStage.StartedTomato)
                 {
                     Subject.Reply(source, "Skip","alittlebitofthat_tomatostart");
-
-                    return;
                 }
 
                 break;

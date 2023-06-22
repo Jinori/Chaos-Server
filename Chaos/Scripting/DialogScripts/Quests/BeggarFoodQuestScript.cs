@@ -69,8 +69,6 @@ public class BeggarFoodQuestScript : DialogScriptBase
                 if (stage == BeggarFoodQuestStage.Started)
                 {
                     Subject.Reply(source, "Skip", "beggarfood_turninstart");
-
-                    return;
                 }
 
                 break;

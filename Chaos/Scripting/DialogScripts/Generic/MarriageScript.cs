@@ -37,7 +37,6 @@ public class MarriageScript : DialogScriptBase
                     if (!source.HasClass(BaseClass.Priest))
                     {
                         Subject.Reply(source, "You must be a priest to perform a marriage ceremony.");
-                        return;
                     }
                     break;
                 }
@@ -47,7 +46,6 @@ public class MarriageScript : DialogScriptBase
                     if (!source.Legend.ContainsKey("marriage"))
                     {
                         Subject.Reply(source, "You are not married, I cannot assist you with a divorce.");
-                        return;
                     }
                     break;
                 }
@@ -67,7 +65,7 @@ public class MarriageScript : DialogScriptBase
                 {
                     if (!Subject.MenuArgs.TryGet<string>(0, out var name))
                     {
-                        Subject.Reply(source, DialogString.UnknownInput.Value);
+                        Subject.ReplyToUnknownInput(source);
                         return;
                     }
 
@@ -103,7 +101,7 @@ public class MarriageScript : DialogScriptBase
                 {
                     if (!Subject.MenuArgs.TryGet<string>(1, out var nameTwo))
                     {
-                        Subject.Reply(source, DialogString.UnknownInput.Value);
+                        Subject.ReplyToUnknownInput(source);
                         return;
                     }
 
@@ -134,7 +132,7 @@ public class MarriageScript : DialogScriptBase
                 {
                     if (!Subject.MenuArgs.TryGet<string>(0, out var nameOne))
                     {
-                        source.SendOrangeBarMessage(DialogString.UnknownInput.Value);
+                        source.SendOrangeBarMessage(DialogString.UnknownInput);
                         Subject.Close(source);
                         return;
                     }
@@ -149,7 +147,7 @@ public class MarriageScript : DialogScriptBase
 
                     if (!Subject.MenuArgs.TryGet<string>(1, out var nameTwo))
                     {
-                        source.SendOrangeBarMessage(DialogString.UnknownInput.Value);
+                        source.SendOrangeBarMessage(DialogString.UnknownInput);
                         Subject.Close(source);
                         return;
                     }

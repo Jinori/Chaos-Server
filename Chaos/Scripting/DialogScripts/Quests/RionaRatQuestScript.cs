@@ -67,8 +67,6 @@ public class RionaRatQuestScript : DialogScriptBase
                 if (stage == RionaRatQuestStage.StartedRatQuest)
                 {
                     Subject.Reply(source, "Skip", "ratquest_turninstart");
-
-                    return;
                 }
 
                 break;
@@ -95,7 +93,7 @@ public class RionaRatQuestScript : DialogScriptBase
                     }
                     
                     var mount = ItemFactory.Create("Mount");
-                    source.TryGiveItem(mount);
+                    source.TryGiveItem(ref mount);
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     Subject.Reply(source, "Thank you so much for taking care of those rats!");

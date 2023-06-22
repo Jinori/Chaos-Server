@@ -35,33 +35,27 @@ public class QueenOctopusQuestScript: DialogScriptBase
                 {
                     if (source.UserStatSheet.Level is <= 41 or >= 72)
                         return;
+
                     Subject.Reply(source, "skip", "maria_initial_quest");
                 }
                 
-                if (stage == QueenOctopusQuest.Liver)
+                switch (stage)
                 {
-                    Subject.Reply(source, "skip", "queenoctopus_liver");
-                    return;
-                }
+                    case QueenOctopusQuest.Liver:
+                        Subject.Reply(source, "skip", "queenoctopus_liver");
+                        return;
+                    case QueenOctopusQuest.Pendant:
+                        Subject.Reply(source, "skip", "queenoctopus_liver2");
+                        return;
+                    case QueenOctopusQuest.Pendant3:
+                        Subject.Reply(source, "skip", "queenoctopus_Queen");
 
-                if (stage == QueenOctopusQuest.Pendant)
-                {
-                    Subject.Reply(source, "skip", "queenoctopus_liver2");
-                    return;
-                }
-                
-                if (stage == QueenOctopusQuest.Pendant3)
-                {
-                    Subject.Reply(source, "skip", "queenoctopus_Queen");
-                }
-                
-                if (stage == QueenOctopusQuest.Queen)
-                {
-                    Subject.Reply(source, "Welcome Back. Please make yourself comfortable.");
-                }
-                if (stage == QueenOctopusQuest.Complete)
-                {
-                    Subject.Reply(source, "Welcome Back. Please make yourself comfortable.");
+                        break;
+                    case QueenOctopusQuest.Queen:
+                    case QueenOctopusQuest.Complete:
+                        Subject.Reply(source, "Welcome Back. Please make yourself comfortable.");
+
+                        break;
                 }
             }
                 break;
@@ -99,7 +93,7 @@ public class QueenOctopusQuestScript: DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, 250000);
                 source.SendOrangeBarMessage($"You received 250,000 experience!");
                 source.Trackers.Enums.Set(QueenOctopusQuest.Pendant);
-                source.TryGiveItem(redpearl);
+                source.TryGiveItem(ref redpearl);
 
                 Subject.Reply(source,
                     "Oh wow! That was fast. A deal is a deal. Here is the Red Pearl. The only other clue I can remember is him mentioning a secret entrance in Karlopos Island North. If you see my brother out there please tell him to come home. I'm worried about him.",

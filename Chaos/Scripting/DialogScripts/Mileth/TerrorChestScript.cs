@@ -66,7 +66,7 @@ public class TerrorChestScript : DialogScriptBase
             var expAmount = Convert.ToInt32(0.30 * tnl);
             ExperienceDistributionScript.GiveExp(source, expAmount);
             source.TryGiveGold(20000);
-            source.TryGiveItem(item);
+            source.TryGiveItem(ref item);
             source.TryGiveGamePoints(10);
 
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've received {item.DisplayName}, 20,000 coins and 10 game points!");

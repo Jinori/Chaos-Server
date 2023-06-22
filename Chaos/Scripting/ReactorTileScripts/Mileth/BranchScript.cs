@@ -23,7 +23,7 @@ public class BranchScript : ReactorTileScriptBase
         if (aisling.Trackers.Flags.HasFlag(QuestFlag1.GatheringSticks) && IntegerRandomizer.RollChance(18))
         {
             var branch = ItemFactory.Create("branch");
-            aisling.TryGiveItem(branch);
+            aisling.TryGiveItem(ref branch);
             var branchcount = aisling.Inventory.CountOf("branch");
             aisling.Client.SendServerMessage(
                 ServerMessageType.OrangeBar1,

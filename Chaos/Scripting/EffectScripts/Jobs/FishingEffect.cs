@@ -66,7 +66,7 @@ namespace Chaos.Scripting.EffectScripts.Jobs
 
             var templateKey = FishData.PickRandomWeighted();
             var fish = _itemFactory.Create(templateKey);
-            if (!aisling.TryGiveItem(fish))
+            if (!aisling.TryGiveItem(ref fish))
                 return;
 
             aisling.SendOrangeBarMessage($"You caught a {fish.DisplayName}!");

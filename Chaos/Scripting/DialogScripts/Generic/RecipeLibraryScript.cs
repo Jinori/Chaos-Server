@@ -284,7 +284,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
                     {
                         if (!Subject.MenuArgs.TryGet<string>(0, out var itemName))
                         {
-                            Subject.Reply(source, DialogString.UnknownInput.Value);
+                            Subject.ReplyToUnknownInput(source);
 
                             return;
                         }
@@ -294,7 +294,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
 
                         if (ItemDetails == null)
                         {
-                            Subject.Reply(source, DialogString.UnknownInput.Value);
+                            Subject.ReplyToUnknownInput(source);
 
                             return;
                         }
@@ -405,7 +405,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
                     {
                         if (!Subject.MenuArgs.TryGet<string>(0, out var itemName))
                         {
-                            Subject.Reply(source, DialogString.UnknownInput.Value);
+                            Subject.ReplyToUnknownInput(source);
 
                             return;
                         }
@@ -415,7 +415,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
 
                         if (ItemDetails == null)
                         {
-                            Subject.Reply(source, DialogString.UnknownInput.Value);
+                            Subject.ReplyToUnknownInput(source);
 
                             return;
                         }
@@ -445,7 +445,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
                     {
                         if (!Subject.MenuArgs.TryGet<string>(0, out var itemName))
                         {
-                            Subject.Reply(source, DialogString.UnknownInput.Value);
+                            Subject.ReplyToUnknownInput(source);
 
                             return;
                         }
@@ -455,7 +455,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
 
                         if (ItemDetails == null)
                         {
-                            Subject.Reply(source, DialogString.UnknownInput.Value);
+                            Subject.ReplyToUnknownInput(source);
 
                             return;
                         }
@@ -836,7 +836,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
                     {
                         if (!Subject.MenuArgs.TryGet<string>(0, out var itemName))
                         {
-                            Subject.Reply(source, DialogString.UnknownInput.Value);
+                            Subject.ReplyToUnknownInput(source);
 
                             return;
                         }
@@ -846,7 +846,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
 
                         if (ItemDetails == null)
                         {
-                            Subject.Reply(source, DialogString.UnknownInput.Value);
+                            Subject.ReplyToUnknownInput(source);
 
                             return;
                         }
@@ -1386,7 +1386,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
                     {
                         if (!Subject.MenuArgs.TryGet<string>(0, out var itemName))
                         {
-                            Subject.Reply(source, DialogString.UnknownInput.Value);
+                            Subject.ReplyToUnknownInput(source);
 
                             return;
                         }
@@ -1396,7 +1396,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
 
                         if (ItemDetails == null)
                         {
-                            Subject.Reply(source, DialogString.UnknownInput.Value);
+                            Subject.ReplyToUnknownInput(source);
 
                             return;
                         }
@@ -1426,7 +1426,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
                     {
                         if (!Subject.MenuArgs.TryGet<string>(0, out var itemName))
                         {
-                            Subject.Reply(source, DialogString.UnknownInput.Value);
+                            Subject.ReplyToUnknownInput(source);
 
                             return;
                         }
@@ -1436,7 +1436,7 @@ namespace Chaos.Scripting.DialogScripts.Generic
 
                         if (ItemDetails == null)
                         {
-                            Subject.Reply(source, DialogString.UnknownInput.Value);
+                            Subject.ReplyToUnknownInput(source);
 
                             return;
                         }

@@ -31,7 +31,7 @@ public class IceSample3Script : ReactorTileScriptBase
                 if (stage == IceWallQuest.Start && !aisling.Inventory.HasCount("Ice Sample 3", 1))
                 {
                     var sample = _itemFactory.Create("icesample3");
-                    aisling.TryGiveItem(sample);
+                    aisling.TryGiveItem(ref sample);
 
                     aisling.Client.SendServerMessage(
                         ServerMessageType.OrangeBar1,

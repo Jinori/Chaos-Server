@@ -119,7 +119,7 @@ public class AdminTrinketScript : DialogScriptBase
             {
                 if (!Subject.MenuArgs.TryGetNext<string>(out var message))
                 {
-                    Subject.Reply(source, DialogString.UnknownInput.Value);
+                    Subject.ReplyToUnknownInput(source);
 
                     return;
                 }
@@ -142,7 +142,7 @@ public class AdminTrinketScript : DialogScriptBase
             {
                 if (!Subject.MenuArgs.TryGetNext<string>(out var playerName))
                 {
-                    Subject.Reply(source, DialogString.UnknownInput.Value);
+                    Subject.ReplyToUnknownInput(source);
 
                     return;
                 }
@@ -168,7 +168,7 @@ public class AdminTrinketScript : DialogScriptBase
             {
                 if (!Subject.MenuArgs.TryGetNext<string>(out var playerName))
                 {
-                    Subject.Reply(source, DialogString.UnknownInput.Value);
+                    Subject.ReplyToUnknownInput(source);
 
                     return;
                 }
@@ -196,7 +196,7 @@ public class AdminTrinketScript : DialogScriptBase
             {
                 if (!Subject.MenuArgs.TryGetNext<string>(out var playerName))
                 {
-                    Subject.Reply(source, DialogString.UnknownInput.Value);
+                    Subject.ReplyToUnknownInput(source);
 
                     return;
                 }

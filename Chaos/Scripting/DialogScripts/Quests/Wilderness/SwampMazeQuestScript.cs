@@ -44,7 +44,6 @@ public class SwampMazeQuestScript : DialogScriptBase
                 if (stage == SwampMazeQuest.Complete)
                 {
                     Subject.Reply(source, "skip", "koda_initial3");
-                    return;
                 }
 
                 break;
@@ -60,7 +59,6 @@ public class SwampMazeQuestScript : DialogScriptBase
                 if (stage == SwampMazeQuest.Complete)
                 {
                     Subject.Reply(source, "skip", "joda_initial3");
-                    return;
                 }
                 
 

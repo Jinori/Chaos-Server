@@ -134,8 +134,6 @@ public class MythicKoboldScript : DialogScriptBase
                 {
 
                     Subject.Reply(source, "Thank you again Aisling for your help. We are winning our fight.");
-
-                    return;
                 }
 
                 break;

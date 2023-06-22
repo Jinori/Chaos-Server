@@ -72,8 +72,6 @@ public class HolyResearchQuestScript : DialogScriptBase
                 if (stage == HolyResearchStage.StartedRoyalWax)
                 {
                     Subject.Reply(source, "skip", "holyresearch_royw");
-
-                    return;
                 }
 
                 break;

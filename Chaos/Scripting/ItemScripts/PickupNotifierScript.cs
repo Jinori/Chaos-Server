@@ -11,23 +11,23 @@ namespace Chaos.Scripting.ItemScripts
         public PickupNotifierScript(Item subject)
             : base(subject) { }
 
-        public override void OnPickup(Aisling aisling)
+        public override void OnPickup(Aisling aisling, Item originalItem, int originalCount)
         {
-            NotifyPlayer(aisling);
-            NotifyNearbyPlayers(aisling);
-            NotifyGroupMembers(aisling);
+            NotifyPlayer(aisling, originalItem, originalCount);
+            NotifyNearbyPlayers(aisling, originalItem, originalCount);
+            NotifyGroupMembers(aisling, originalItem, originalCount);
         }
         
-        private void NotifyPlayer(Aisling aisling)
+        private void NotifyPlayer(Aisling aisling, Item originalItem, int originalCount)
         {
             var message = Subject.Count.Equals(1)
                 ? $"You picked up {Subject.DisplayName}."
-                : $"You picked up {Subject.Count} of {Subject.DisplayName}.";
+                : $"You picked up {originalCount} of {Subject.DisplayName}.";
 
             aisling.SendOrangeBarMessage(message);
         }
 
-        private void NotifyNearbyPlayers(NamedEntity aisling)
+        private void NotifyNearbyPlayers(NamedEntity aisling, Item originalItem, int originalCount)
         {
             var nearbyPlayers = aisling.MapInstance
                                        .GetEntitiesWithinRange<Aisling>(aisling, 8)
@@ -38,11 +38,14 @@ namespace Chaos.Scripting.ItemScripts
             
             foreach (var player in nearbyPlayers)
             {
-                player.SendOrangeBarMessage($"{aisling.Name} has picked up {Subject.DisplayName}.");
+                player.SendOrangeBarMessage(
+                    originalCount > 1
+                        ? $"{aisling.Name} has picked up {originalCount} {Subject.DisplayName}."
+                        : $"{aisling.Name} has picked up {Subject.DisplayName}.");
             }
         }
 
-        private void NotifyGroupMembers(Aisling aisling)
+        private void NotifyGroupMembers(Aisling aisling, Item originalItem, int originalCount)
         {
             if (aisling.Group is { Count: > 1 })
             {
@@ -52,7 +55,10 @@ namespace Chaos.Scripting.ItemScripts
 
                 foreach (var member in groupMembersInRange)
                 {
-                    member.SendOrangeBarMessage($"{aisling.Name} has picked up {Subject.DisplayName}.");
+                    member.SendOrangeBarMessage(
+                        originalCount > 1
+                            ? $"{aisling.Name} has picked up {originalCount} {Subject.DisplayName}."
+                            : $"{aisling.Name} has picked up {Subject.DisplayName}.");
                 }
             }
         }

@@ -18,7 +18,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        source.Trackers.Flags.TryGetFlag(out Hobbies hobby);
+        source.Trackers.Flags.TryGetFlag(out Hobbies _);
         var hasCraft = source.Trackers.Enums.TryGetValue(out Crafts craft);
 
         switch (Subject.Template.TemplateKey.ToLower())
@@ -173,7 +173,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.SeaBelt);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherGauntlet);
                 var book = ItemFactory.Create("recipe_basicarmors");
-                source.TryGiveItem(book);
+                source.TryGiveItem(ref book);
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Beginner Armorsmith",

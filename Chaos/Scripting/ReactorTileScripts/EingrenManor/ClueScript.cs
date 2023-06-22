@@ -34,7 +34,7 @@ public class ClueScript : ReactorTileScriptBase
                 if (stage == ManorNecklaceStage.AcceptedQuest && !aisling.Inventory.HasCount("Clue One", 1))
                 {
                     var clue = _itemFactory.Create("clue1");
-                    aisling.TryGiveItem(clue);
+                    aisling.TryGiveItem(ref clue);
 
                     aisling.Client.SendServerMessage(
                         ServerMessageType.OrangeBar1,
@@ -47,7 +47,7 @@ public class ClueScript : ReactorTileScriptBase
                 if (stage == ManorNecklaceStage.AcceptedQuest && !aisling.Inventory.HasCount("Clue Two", 1))
                 {
                     var clue = _itemFactory.Create("clue2");
-                    aisling.TryGiveItem(clue);
+                    aisling.TryGiveItem(ref clue);
 
                     aisling.Client.SendServerMessage(
                         ServerMessageType.OrangeBar1,
@@ -60,7 +60,7 @@ public class ClueScript : ReactorTileScriptBase
                 if (stage == ManorNecklaceStage.AcceptedQuest && !aisling.Inventory.HasCount("Clue Three", 1))
                 {
                     var clue = _itemFactory.Create("clue3");
-                    aisling.TryGiveItem(clue);
+                    aisling.TryGiveItem(ref clue);
 
                     aisling.Client.SendServerMessage(
                         ServerMessageType.OrangeBar1,
@@ -73,7 +73,7 @@ public class ClueScript : ReactorTileScriptBase
                 if (stage == ManorNecklaceStage.AcceptedQuest && !aisling.Inventory.HasCount("Clue Four", 1))
                 {
                     var clue = _itemFactory.Create("clue4");
-                    aisling.TryGiveItem(clue);
+                    aisling.TryGiveItem(ref clue);
 
                     aisling.Client.SendServerMessage(
                         ServerMessageType.OrangeBar1,
@@ -112,7 +112,7 @@ public class ClueScript : ReactorTileScriptBase
                             if (neckStage == ManorNecklaceStage.AcceptedQuest)
                             {
                                 var necklace = _itemFactory.Create("zulerasnecklace");
-                                member.TryGiveItem(necklace);
+                                member.TryGiveItem(ref necklace);
                                 member.Trackers.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
                                 member.Client.SendServerMessage(
                                     ServerMessageType.OrangeBar1,
@@ -123,7 +123,7 @@ public class ClueScript : ReactorTileScriptBase
                     else
                     {
                         var necklace = _itemFactory.Create("zulerasnecklace");
-                        aisling.TryGiveItem(necklace);
+                        aisling.TryGiveItem(ref necklace);
                         aisling.Trackers.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
                         aisling.Client.SendServerMessage(
                             ServerMessageType.OrangeBar1,

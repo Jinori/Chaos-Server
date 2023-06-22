@@ -40,7 +40,7 @@ public class GatherCherryScript : ReactorTileScriptBase
         var cherryCount = Random.Shared.Next(1, 4);
         cherry.Count = cherryCount;
         
-        if (!aisling.TryGiveItem(cherry))
+        if (!aisling.TryGiveItem(ref cherry))
         {
             var mapInstance = _simpleCache.Get<MapInstance>("suomi_cherry_farmer");
             var point = new Point(7, 5);

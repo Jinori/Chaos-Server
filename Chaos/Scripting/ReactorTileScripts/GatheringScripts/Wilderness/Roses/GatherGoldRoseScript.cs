@@ -34,7 +34,7 @@ public class GatherGoldRoseScript : ReactorTileScriptBase
         var goldrose = _itemFactory.Create("goldrose");
         var dialog = _dialogFactory.Create("wildernessgoldrose", goldrose);
         dialog.Display(aisling);
-        aisling.TryGiveItem(goldrose);
+        aisling.TryGiveItem(ref goldrose);
         aisling.SendOrangeBarMessage("You found a Gold Rose.");
         aisling.Trackers.TimedEvents.AddEvent("goldrose1cd", TimeSpan.FromHours(24), true);
 

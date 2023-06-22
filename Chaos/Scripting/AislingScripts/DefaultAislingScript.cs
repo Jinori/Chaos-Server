@@ -128,8 +128,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             if (damage >= Subject.StatSheet.CurrentHp)
             {
                 Subject.StatSheet.SetHp(1);
-                var aisling = Subject as Aisling;
-                aisling.Client.SendAttributes(StatUpdateType.Vitality);
+                Subject.Client.SendAttributes(StatUpdateType.Vitality);
                 return;
             }
         }
@@ -147,8 +146,10 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     /// <inheritdoc />
     public override void OnDeath()
     {
-
-        if (source.MapInstance.Name.Equals("Cain's Farm"))
+        var source = Subject.Trackers.LastDamagedBy;
+        
+        
+        if (source?.MapInstance.Name.Equals("Cain's Farm") == true)
         {
             var mapInstance = SimpleCache.Get<MapInstance>("tutorial_hut");
             var pointS = new Point(2, 9);
@@ -177,7 +178,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         foreach (var effect in effects)
             Subject.Effects.Dispel(effect.Name);
 
-        if (source.MapInstance.Name.Equals("Mr. Hopps's Home"))
+        if (source?.MapInstance.Name.Equals("Mr. Hopps's Home") == true)
         {
             var terminusSpawn = new Rectangle(source, 8, 8);
             var outline = terminusSpawn.GetOutline().ToList();
@@ -198,7 +199,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         foreach (var client in ClientRegistry)
             client.SendServerMessage(
                 ServerMessageType.OrangeBar1,
-                $"{Subject.Name} was killed at {Subject.MapInstance.Name} by {source.Name}.");
+                $"{Subject.Name} was killed at {Subject.MapInstance.Name} by {source?.Name ??  "The Guardians"}.");
 
         //Let's break some items at 2% chance
         var itemsToBreak = Subject.Equipment.Where(x => x.Template.AccountBound is false);
