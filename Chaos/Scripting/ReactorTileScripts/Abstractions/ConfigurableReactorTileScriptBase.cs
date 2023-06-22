@@ -7,8 +7,8 @@ namespace Chaos.Scripting.ReactorTileScripts.Abstractions;
 
 public abstract class ConfigurableReactorTileScriptBase : ConfigurableScriptBase<ReactorTile>, IReactorTileScript
 {
-    protected MapInstance Map => Subject.MapInstance;
     protected Point Point { get; }
+    protected MapInstance Map => Subject.MapInstance;
 
     protected ConfigurableReactorTileScriptBase(ReactorTile subject)
         : base(subject, scriptKey => subject.ScriptVars[scriptKey]) =>
@@ -27,7 +27,7 @@ public abstract class ConfigurableReactorTileScriptBase : ConfigurableScriptBase
     public virtual void OnItemDroppedOn(Creature source, GroundItem groundItem) { }
 
     /// <inheritdoc />
-    public virtual void OnItemPickedUpFrom(Aisling source, GroundItem groundItem) { }
+    public virtual void OnItemPickedUpFrom(Aisling source, GroundItem groundItem, int originalCount) { }
 
     /// <inheritdoc />
     public virtual void OnWalkedOn(Creature source) { }

@@ -47,6 +47,8 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
         if (!source.OnSameMapAs(target))
             return;
 
+        target.Trackers.LastDamagedBy = source;
+        
         var relation = source.DirectionalRelationTo(target);
 
         if (relation == target.Direction.Reverse())

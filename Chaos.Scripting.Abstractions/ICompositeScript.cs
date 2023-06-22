@@ -9,16 +9,16 @@ public interface ICompositeScript
     ///     Gets a script of the specified type
     /// </summary>
     /// <typeparam name="T">The type of the script to retreive</typeparam>
-    T? GetComponent<T>();
+    T? GetScript<T>();
 
     /// <summary>
     ///     Gets all scripts of the specified type
     /// </summary>
     /// <typeparam name="T">The type of the script to retreive</typeparam>
-    IEnumerable<T> GetComponents<T>();
+    IEnumerable<T> GetScripts<T>();
 }
 
-/// <inheritdoc cref="ICompositeScript"/>
+/// <inheritdoc cref="ICompositeScript" />
 /// <typeparam name="TScript">A type that inherits from <see cref="Chaos.Scripting.Abstractions.IScript" /></typeparam>
 public interface ICompositeScript<TScript> : ICompositeScript, IEnumerable<TScript> where TScript: IScript
 {

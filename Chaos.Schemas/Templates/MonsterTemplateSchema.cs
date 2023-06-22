@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
 using Chaos.Collections.Common;
 using Chaos.Common.Definitions;
-using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Schemas.Aisling;
 
 namespace Chaos.Schemas.Templates;
@@ -20,10 +19,6 @@ public sealed record MonsterTemplateSchema
     ///     The number of milliseconds between usages of assails
     /// </summary>
     public int AssailIntervalMs { get; set; }
-    /// <summary>
-    ///     The initial direction of the monster when spawned
-    /// </summary>
-    public Direction Direction { get; set; } = (Direction)Random.Shared.Next(4);
 
     /// <summary>
     ///     The amount of exp this monster will reward when killed
@@ -54,7 +49,8 @@ public sealed record MonsterTemplateSchema
     public ICollection<string> ScriptKeys { get; set; } = Array.Empty<string>();
 
     /// <summary>
-    ///     A collection of key-value pairs of key-value pairs<br />Each script that has variables needs a scriptName-Value pair, and the value of
+    ///     A collection of key-value pairs of key-value pairs<br />Each script that has variables needs a scriptName-Value
+    ///     pair, and the value of
     ///     that entry is a dictionary of propertyName-Value pairs
     /// </summary>
     public IDictionary<string, DynamicVars> ScriptVars { get; set; } =
@@ -90,7 +86,8 @@ public sealed record MonsterTemplateSchema
     [JsonRequired]
     public string TemplateKey { get; set; } = null!;
     /// <summary>
-    ///     The monster's type<br />WhiteSquare has no additional functionality, it just appears as a white square on the tab map
+    ///     The monster's type<br />WhiteSquare has no additional functionality, it just appears as a white square on the tab
+    ///     map
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
     public CreatureType Type { get; set; }

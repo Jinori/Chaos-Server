@@ -9,10 +9,10 @@
       "channelName": "!trade"
     }
   ],
-  "direction": "Right",
+  "direction": "Down",
   "effects": [],
   "gender": "Male",
-  "gold": 98000,
+  "gold": 91790,
   "guildName": "meepers",
   "hairColor": "Default",
   "hairStyle": 5,
@@ -25,9 +25,10 @@
     "advClass": "None",
     "baseClass": "Diacht",
     "maxWeight": 40,
-    "toNextLevel": 100,
+    "toNextLevel": 50,
+    "totalExp": 50,
     "currentHp": 100,
-    "currentMp": 3,
+    "currentMp": 100,
     "level": 1,
     "ac": 100,
     "maximumHp": 100,
@@ -51,6 +52,6 @@
     "whisper": true,
     "wisdom": true
   },
-  "x": 35,
-  "y": 28
+  "x": 27,
+  "y": 27
 }

@@ -26,8 +26,17 @@ public sealed class OptionsConfigurer : IPostConfigureOptions<IConnectionInfo>,
     public OptionsConfigurer(IStagingDirectory stagingDirectory) => StagingDirectory = stagingDirectory;
 
     /// <inheritdoc />
-    public void PostConfigure(string? name, IConnectionInfo options) =>
-        options.Address = Dns.GetHostAddresses(options.HostName).FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)!;
+    public void PostConfigure(string? name, AislingStoreOptions options) => options.UseBaseDirectory(StagingDirectory.StagingDirectory);
+
+    /// <inheritdoc />
+    public void PostConfigure(string? name, GuildStoreOptions options) => options.UseBaseDirectory(StagingDirectory.StagingDirectory);
+
+    /// <inheritdoc />
+    public void PostConfigure(string? name, IConnectionInfo options)
+    {
+        if (!string.IsNullOrEmpty(options.HostName))
+            options.Address = Dns.GetHostAddresses(options.HostName).FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)!;
+    }
 
     /// <inheritdoc />
     public void PostConfigure(string? name, LobbyOptions options)
@@ -51,15 +60,6 @@ public sealed class OptionsConfigurer : IPostConfigureOptions<IConnectionInfo>,
     }
 
     /// <inheritdoc />
-    public void PostConfigure(string? name, WorldOptions options)
-    {
-        PostConfigure(name, (IConnectionInfo)options);
-        PostConfigure(name, options.LoginRedirect);
-
-        WorldOptions.Instance = options;
-    }
-
-    /// <inheritdoc />
     public void PostConfigure(string? name, MetaDataStoreOptions options)
     {
         options.UseBaseDirectory(StagingDirectory.StagingDirectory);
@@ -71,8 +71,11 @@ public sealed class OptionsConfigurer : IPostConfigureOptions<IConnectionInfo>,
     
 
     /// <inheritdoc />
-    public void PostConfigure(string? name, AislingStoreOptions options) => options.UseBaseDirectory(StagingDirectory.StagingDirectory);
+    public void PostConfigure(string? name, WorldOptions options)
+    {
+        PostConfigure(name, (IConnectionInfo)options);
+        PostConfigure(name, options.LoginRedirect);
 
-    /// <inheritdoc />
-    public void PostConfigure(string? name, GuildStoreOptions options) => options.UseBaseDirectory(StagingDirectory.StagingDirectory);
+        WorldOptions.Instance = options;
+    }
 }

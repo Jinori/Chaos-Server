@@ -145,7 +145,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     }
 
     /// <inheritdoc />
-    public override void OnDeath(Creature source)
+    public override void OnDeath()
     {
 
         if (source.MapInstance.Name.Equals("Cain's Farm"))

@@ -1,49 +1,18 @@
-﻿using Chaos.Collections;
-using Chaos.Extensions.Geometry;
-using Chaos.Geometry.Abstractions;
 using Chaos.Models.World;
 using Chaos.Scripting.MerchantScripts.Abstractions;
-using Chaos.Time;
-using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MerchantScripts;
 
-public class WanderScript : ConfigurableMerchantScriptBase
+public class WanderScript : MerchantScriptBase
 {
-    private readonly ICollection<IPoint>? PathingBoundsOutline;
-
-    private readonly IIntervalTimer WanderTimer;
-    protected Rectangle? PathingBounds { get; init; }
-    protected int WanderIntervalMs { get; init; }
-    private MapInstance Map => Subject.MapInstance;
-    private bool ShouldWander => WanderTimer.IntervalElapsed;
-
     /// <inheritdoc />
     public WanderScript(Merchant subject)
-        : base(subject)
-    {
-        WanderTimer = new IntervalTimer(TimeSpan.FromMilliseconds(WanderIntervalMs));
-
-        if (PathingBounds != null)
-            PathingBoundsOutline = PathingBounds.GetOutline().Cast<IPoint>().ToList();
-    }
+        : base(subject) { }
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
-        base.Update(delta);
-
-        WanderTimer.Update(delta);
-
-        if (!ShouldWander)
-            return;
-
-        if (!Map.GetEntitiesWithinRange<Aisling>(Subject).Any())
-            return;
-
-        if (PathingBoundsOutline != null)
-            Subject.Wander(PathingBoundsOutline);
-        else
+        if (Subject.WanderTimer.IntervalElapsed)
             Subject.Wander();
     }
 }

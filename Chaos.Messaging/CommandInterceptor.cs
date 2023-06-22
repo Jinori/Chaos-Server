@@ -1,5 +1,7 @@
 using System.Reflection;
+using System.Text;
 using Chaos.Collections.Common;
+using Chaos.Common.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Messaging.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,18 +41,18 @@ public sealed class CommandInterceptor<T, TOptions> : ICommandInterceptor<T> whe
 
         foreach (var type in commandTypes)
         {
-            var attribute = type.GetCustomAttribute<CommandAttribute>();
+            var attributes = type.GetCustomAttributes<CommandAttribute>();
 
-            if (attribute == null)
-                continue;
-
-            var descriptor = new CommandDescriptor
+            foreach (var attribute in attributes)
             {
-                Details = attribute,
-                Type = type
-            };
+                var descriptor = new CommandDescriptor
+                {
+                    Details = attribute,
+                    Type = type
+                };
 
-            Commands.Add(attribute.CommandName, descriptor);
+                Commands.Add(attribute.CommandName, descriptor);
+            }
         }
     }
 
@@ -89,6 +91,12 @@ public sealed class CommandInterceptor<T, TOptions> : ICommandInterceptor<T> whe
                   .WithProperty(commandStr)
                   .LogTrace("Successfully created command {@CommandName}", commandName);
 
+            if (commandName.EqualsI("help") || commandName.EqualsI("commands"))
+            {
+                var helpStr = BuildHelpText(source);
+                commandParts = new ArgumentCollection(commandParts.Take(1).Append(helpStr));
+            }
+
             var commandArgs = new ArgumentCollection(commandParts.Skip(1));
 
             async ValueTask InnerExecute()
@@ -115,4 +123,35 @@ public sealed class CommandInterceptor<T, TOptions> : ICommandInterceptor<T> whe
 
     /// <inheritdoc />
     public bool IsCommand(string commandStr) => commandStr.StartsWithI(Options.Prefix);
+
+    private string BuildHelpText(T source)
+    {
+        var commands = Commands.Values.Where(
+                                   cmd =>
+                                   {
+                                       if (cmd.Details.RequiresAdmin)
+                                           return source.IsAdmin;
+
+                                       return true;
+                                   })
+                               .OrderBy(cmd => cmd.Details.CommandName)
+                               .ToList();
+
+        var builder = new StringBuilder();
+
+        builder.Append(MessageColor.Orange.ToPrefix());
+        builder.AppendLine("Available Commands:");
+
+        var longestCommandName = 3 + commands.Max(cmd => cmd.Details.CommandName.Length);
+
+        foreach (var command in commands)
+        {
+            builder.Append($"{MessageColor.White.ToPrefix()}{Options.Prefix}{command.Details.CommandName}".PadRight(longestCommandName));
+            builder.Append(MessageColor.Yellow.ToPrefix());
+            builder.Append(command.Details.HelpText);
+            builder.Append('\n');
+        }
+
+        return builder.ToString();
+    }
 }

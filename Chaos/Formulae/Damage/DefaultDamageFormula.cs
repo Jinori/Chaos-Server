@@ -34,6 +34,27 @@ public class DefaultDamageFormula : IDamageFormula
         // @formatter:on
     }.ToImmutableArray();
 
+    /// <inheritdoc />
+    public int Calculate(
+        Creature source,
+        Creature target,
+        IScript script,
+        int damage,
+        Element? elementOverride = null
+    )
+    {
+        ApplySkillSpellModifier(ref damage, script, source);
+
+        var defenderAc = GetDefenderAc(target);
+
+        ApplyAcModifier(ref damage, defenderAc);
+        ApplyElementalModifier(ref damage, elementOverride ?? source.StatSheet.OffenseElement, target.StatSheet.DefenseElement);
+        HandleClawFist(ref damage, script, source);
+        HandleAite(ref damage, target);
+        HandleWeaponDamage(ref damage, source);
+        return damage;
+    }
+    
     protected virtual void ApplyAcModifier(ref int damage, int defenderAc) => damage = Convert.ToInt32(damage * (1 + defenderAc / 100m));
 
     protected virtual void ApplyElementalModifier(ref int damage, Element attackElement, Element defenseElement) =>
@@ -60,62 +81,6 @@ public class DefaultDamageFormula : IDamageFormula
         }
     }
 
-    /// <inheritdoc />
-    public int Calculate(
-        Creature source,
-        Creature target,
-        IScript script,
-        int damage,
-        Element? elementOverride = null
-    )
-    {
-        ApplySkillSpellModifier(ref damage, script, source);
-
-        var defenderAc = GetDefenderAc(target);
-
-        ApplyAcModifier(ref damage, defenderAc);
-        ApplyElementalModifier(ref damage, elementOverride ?? source.StatSheet.OffenseElement, target.StatSheet.DefenseElement);
-        HandleClawFist(ref damage, script, source);
-        HandleAite(ref damage, target);
-        HandleWeaponDamage(ref damage, source);
-        return damage;
-    }
-
-    protected virtual void HandleAite(ref int damage, Creature defender)
-    {
-        if (!defender.Effects.Any(x => x.Name.EndsWithI("aite")))
-            return;
-
-        if (defender.Status.HasFlag(Status.BeagAite))
-        {
-            damage *= Convert.ToInt32(0.92);
-        }
-
-        if (defender.Status.HasFlag(Status.Aite))
-        {
-            damage *= Convert.ToInt32(0.85);
-        }
-
-        if (defender.Status.HasFlag(Status.MorAite))
-        {
-            damage *= Convert.ToInt32(0.78);
-        }
-
-        if (defender.Status.HasFlag(Status.ArdAite))
-        {
-            damage *= Convert.ToInt32(0.70);
-        }
-    }
-
-    protected virtual void HandleWeaponDamage(ref int damage, Creature attacker)
-    {
-        if (attacker is not Aisling aisling || !aisling.Equipment.TryGetObject((byte)EquipmentSlot.Weapon, out var obj)) 
-            return;
-        
-        if (obj.Modifiers != null) 
-            damage += obj.Modifiers.Dmg;
-    }
-    
     protected virtual int GetDefenderAc(Creature defender) => defender switch
     {
         Aisling aisling => Math.Clamp(

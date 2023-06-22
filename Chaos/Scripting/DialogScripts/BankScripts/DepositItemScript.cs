@@ -103,7 +103,7 @@ public class DepositItemScript : DialogScriptBase
 
                 return;
             case ComplexActionHelper.DepositItemResult.BadInput:
-                Subject.Reply(source, DialogString.UnknownInput.Value);
+                Subject.ReplyToUnknownInput(source);
 
                 return;
             default:
