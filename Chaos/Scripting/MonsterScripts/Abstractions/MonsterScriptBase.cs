@@ -1,12 +1,16 @@
 using Chaos.Collections;
+using Chaos.Definitions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
+using Chaos.Scripting.Components;
+using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Abstractions;
 
-public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonsterScript
+public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonsterScript,
+                                          ApplyEffectComponent.IApplyEffectComponentOptions
 {
     protected Creature? Target
     {
@@ -25,8 +29,9 @@ public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonste
     protected virtual IList<Spell> Spells => Subject.Spells;
 
     /// <inheritdoc />
-    protected MonsterScriptBase(Monster subject)
-        : base(subject) { }
+    protected MonsterScriptBase(Monster subject, IEffectFactory effectFactory)
+        : base(subject) =>
+        EffectFactory = effectFactory;
 
     /// <inheritdoc />
     public virtual bool CanMove() => true;
@@ -50,10 +55,24 @@ public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonste
     public virtual void OnApproached(Creature source) { }
 
     /// <inheritdoc />
-    public virtual void OnAttacked(Creature source, int damage) => OnAttacked(source, damage, null);
-
-    /// <inheritdoc />
     public virtual void OnAttacked(Creature source, int damage, int? aggroOverride) { }
+    public virtual void OnAttacked(Creature source, int damage)
+    {
+        if (Subject.Status.HasFlag(Status.Pramh))
+        {
+            Subject.Status &= ~Status.Pramh;
+            Subject.Effects.Dispel("pramh");
+        }
+        if (Subject.Effects.Contains("wolfFangFist"))
+        {
+            Subject.Effects.Dispel("wolfFangFist");
+        }
+        if (Subject.Effects.Contains("Amnesia"))
+        {
+            Subject.Effects.Dispel("Amensia");
+        }
+        OnAttacked(source, damage, null);
+    }
 
     /// <inheritdoc />
     public virtual void OnClicked(Aisling source) { }
@@ -81,4 +100,7 @@ public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonste
 
     /// <inheritdoc />
     public virtual void Update(TimeSpan delta) { }
+
+    public IEffectFactory EffectFactory { get; init; }
+    public string? EffectKey { get; init; }
 }

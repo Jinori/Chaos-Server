@@ -1,9 +1,7 @@
-using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Schemas.Aisling;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.ItemScripts.Enchantments;
-using Chaos.TypeMapper;
 using Chaos.TypeMapper.Abstractions;
 
 namespace Chaos.Definitions;

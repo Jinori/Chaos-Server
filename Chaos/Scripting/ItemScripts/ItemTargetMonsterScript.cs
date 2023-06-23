@@ -7,19 +7,19 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components;
 using Chaos.Scripting.Components.Utilities;
 using Chaos.Scripting.ItemScripts.Abstractions;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts;
 
-public class AmnesiaBrewScript : ConfigurableItemScriptBase,
+public class ItemTargetMonsterScript : ConfigurableItemScriptBase,
                                  ConsumableComponent.IConsumableComponentOptions,
                                  AbilityComponent<Creature>.IAbilityComponentOptions,
-                                 DropAggroComponent.IDropAggroComponentOptions
+                                 ApplyEffectComponent.IApplyEffectComponentOptions
 {
 
-    public AmnesiaBrewScript(Item subject)
-        : base(subject) { }
+    public ItemTargetMonsterScript(Item subject, IEffectFactory effectFactory)
+        : base(subject) =>
+        EffectFactory = effectFactory;
 
     public override void OnUse(Aisling source) =>
         new ComponentExecutor(source, source)
@@ -27,7 +27,7 @@ public class AmnesiaBrewScript : ConfigurableItemScriptBase,
             .ExecuteAndCheck<AbilityComponent<Creature>>()
             ?
             .Execute<ConsumableComponent>()
-            .Execute<DropAggroComponent>();
+            .Execute<ApplyEffectComponent>();
 
     public bool ExcludeSourcePoint { get; init; }
     public TargetFilter Filter { get; init; }
@@ -43,4 +43,7 @@ public class AmnesiaBrewScript : ConfigurableItemScriptBase,
     public bool ShouldNotBreakHide { get; init; }
     public bool AllAggro { get; set; }
     public string ItemName { get; init; } = null!;
+    public bool Message { get; init; }
+    public IEffectFactory EffectFactory { get; init; }
+    public string? EffectKey { get; init; }
 }

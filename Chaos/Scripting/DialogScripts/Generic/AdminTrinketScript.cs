@@ -8,7 +8,6 @@ using Chaos.Networking.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
-using Chaos.Utilities;
 using Discord;
 using Discord.WebSocket;
 

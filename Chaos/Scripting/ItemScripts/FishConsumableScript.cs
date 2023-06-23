@@ -57,7 +57,7 @@ public class FishConsumableScript : ItemScriptBase
     private void UpdatePlayerLegend(Aisling source) =>
         source.Legend.AddOrAccumulate(
             new LegendMark(
-                "Caught a fish and ate it",
+                "Caught a fish and ate it.",
                 "fish",
                 MarkIcon.Yay,
                 MarkColor.White,

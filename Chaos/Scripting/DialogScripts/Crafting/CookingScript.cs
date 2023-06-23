@@ -7,7 +7,6 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.TypeMapper.Abstractions;
-using Chaos.Utilities;
 
 namespace Chaos.Scripting.DialogScripts.Crafting;
 
