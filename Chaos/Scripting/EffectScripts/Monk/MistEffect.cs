@@ -24,13 +24,13 @@ public class MistEffect : EffectBase
 
         var attributesToAdd = new Attributes
         {
-            MagicResistance = 20
+            MagicResistance = -20
         };
         
         Subject?.StatSheet.SubtractBonus(attributesToSubtract);
         Subject?.StatSheet.AddBonus(attributesToAdd);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor increased while MR decreased.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor increased while magic resist decreased.");
     }
 
     public override void OnDispelled() => OnTerminated();

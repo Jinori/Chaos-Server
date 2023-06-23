@@ -95,6 +95,11 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             Subject.Effects.Dispel("pramh");
             Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You awake from your slumber.");
         }
+        if (Subject.Effects.Contains("wolfFangFist"))
+        {
+            Subject.Effects.Dispel("wolfFangFist");
+            Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You awake from your slumber.");
+        }
         if (Subject.Status.HasFlag(Status.ThunderStance))
         {
             var result = damage * 3;

@@ -3,7 +3,6 @@ using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Utilities;
-using Chaos.Time;
 
 namespace Chaos.Scripting.Components;
 

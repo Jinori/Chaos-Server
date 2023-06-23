@@ -2,7 +2,6 @@ using System.Configuration;
 using System.Net;
 using System.Net.Sockets;
 using Chaos.Common.Abstractions;
-using Chaos.Extensions.Common;
 using Chaos.MetaData;
 using Chaos.MetaData.ItemMetadata;
 using Chaos.Networking.Abstractions;

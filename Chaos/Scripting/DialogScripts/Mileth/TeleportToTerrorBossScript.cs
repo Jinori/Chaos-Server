@@ -3,7 +3,6 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
-using System.Linq;
 using Chaos.Collections;
 using Chaos.Extensions;
 

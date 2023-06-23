@@ -7,7 +7,6 @@ using Chaos.Common.Definitions;
 using Chaos.Common.Identity;
 using Chaos.Common.Synchronization;
 using Chaos.Cryptography;
-using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae;

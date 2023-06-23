@@ -6,7 +6,6 @@ using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
-using Chaos.Utilities;
 
 namespace Chaos.Scripting.DialogScripts.Generic
 {

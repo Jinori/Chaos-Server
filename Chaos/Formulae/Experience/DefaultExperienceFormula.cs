@@ -21,11 +21,33 @@ public class DefaultExperienceFormula : IExperienceFormula
                 var groupMultiplier = Math.Max(0, 1 - (groupSizeDeductions + partyLevelDifferenceDeductions));
                 var monsterLevelMultiplier = Math.Max(0, 1 - monsterLevelDeductions);
 
-                return Convert.ToInt64(monster.Experience * groupMultiplier * monsterLevelMultiplier);
+                var experience = monster.Experience * groupMultiplier * monsterLevelMultiplier;
+
+                if (HasKnowledgeEffect(aislings))
+                {
+                    // Apply a 5% experience bonus
+                    experience *= (decimal)1.05;
+                }
+
+                return Convert.ToInt64(experience);
         }
 
         return 0;
     }
+
+    private bool HasKnowledgeEffect(Aisling[] aislings)
+    {
+        // Check if any of the Aislings have the KnowledgeEffect applied
+        foreach (var aisling in aislings)
+        {
+            if (aisling.Effects.Contains("Knowledge"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     protected virtual decimal GetGroupSizeDeductions(ICollection<Aisling> group) => group.Count switch
     {
