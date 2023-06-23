@@ -109,8 +109,8 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
     public decimal PctManaReplenish { get; init; }
     /// <inheritdoc />
     public string ItemName { get; init; }
-    
-    public bool Message { get; init; }
+
+    public bool Message { get; init; } = true;
 
     /// <inheritdoc />
     public IEffectFactory EffectFactory { get; init; }

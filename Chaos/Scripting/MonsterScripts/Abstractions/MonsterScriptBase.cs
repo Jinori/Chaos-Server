@@ -4,13 +4,10 @@ using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
-using Chaos.Scripting.Components;
-using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Abstractions;
 
-public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonsterScript,
-                                          ApplyEffectComponent.IApplyEffectComponentOptions
+public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonsterScript
 {
     protected Creature? Target
     {
@@ -29,9 +26,8 @@ public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonste
     protected virtual IList<Spell> Spells => Subject.Spells;
 
     /// <inheritdoc />
-    protected MonsterScriptBase(Monster subject, IEffectFactory effectFactory)
-        : base(subject) =>
-        EffectFactory = effectFactory;
+    protected MonsterScriptBase(Monster subject)
+        : base(subject) { }
 
     /// <inheritdoc />
     public virtual bool CanMove() => true;
@@ -100,7 +96,4 @@ public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonste
 
     /// <inheritdoc />
     public virtual void Update(TimeSpan delta) { }
-
-    public IEffectFactory EffectFactory { get; init; }
-    public string? EffectKey { get; init; }
 }
