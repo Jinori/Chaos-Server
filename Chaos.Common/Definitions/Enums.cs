@@ -90,6 +90,12 @@ public enum UserState : ulong
     //add more user states here, double each time
 }
 
+public enum LootTableMode
+{
+    ChancePerItem,
+    PickSingleOrDefault
+}
+
 public enum ChaosDialogType : byte
 {
     Menu,
