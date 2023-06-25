@@ -25,6 +25,8 @@ public class RemoveEffectComponent : IComponent
                     target.Effects.Dispel(effect.Name);
                 }
             }
+            //Not that we removed them all, let's break out
+            return;
         }
         
         foreach (var target in targets)
