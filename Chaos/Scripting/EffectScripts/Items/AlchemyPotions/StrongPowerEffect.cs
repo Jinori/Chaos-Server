@@ -29,8 +29,8 @@ public class StrongPowerEffect : NonOverwritableEffectBase
         "Strong Accuracy",
         "Juggernaut",
         "Strong Juggernaut",
-        "Strong Renewing",
-        "Renewing",
+        "Strong Astral",
+        "Astral",
     };
     protected override byte? Sound => 115;
     

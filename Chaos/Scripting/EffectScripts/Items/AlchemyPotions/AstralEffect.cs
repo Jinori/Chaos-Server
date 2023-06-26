@@ -4,10 +4,10 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
-public class SmallHasteEffect : NonOverwritableEffectBase
+public class AstralEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 12;
-    public override string Name => "Small Haste";
+    public override byte Icon => 13;
+    public override string Name => "Astral";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
 
@@ -16,7 +16,6 @@ public class SmallHasteEffect : NonOverwritableEffectBase
         TargetAnimation = 127,
         AnimationSpeed = 100
     };
-    
     protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
     {
         "Small Haste",
@@ -34,20 +33,19 @@ public class SmallHasteEffect : NonOverwritableEffectBase
         "Astral",
     };
     protected override byte? Sound => 115;
-
+    
     public override void OnApplied()
     {
-        
         base.OnApplied();
 
         var attributes = new Attributes
         {
-            AtkSpeedPct = 5
+            MaximumMp = 200
         };
         
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed increased.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Maximum Mana has increased.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -56,11 +54,11 @@ public class SmallHasteEffect : NonOverwritableEffectBase
     {
         var attributes = new Attributes
         {
-            AtkSpeedPct = 5
+            MaximumMp = 200
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed has returned to normal.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Maximum Mana has returned to normal.");
     }
 }

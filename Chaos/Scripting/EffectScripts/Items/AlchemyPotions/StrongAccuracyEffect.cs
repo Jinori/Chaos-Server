@@ -4,18 +4,19 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
-public class RenewingEffect : NonOverwritableEffectBase
+public class StrongAccuracyEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 13;
-    public override string Name => "Renewing";
+    public override byte Icon => 12;
+    public override string Name => "Strong Accuracy";
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
+    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(15);
 
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
         AnimationSpeed = 100
     };
+    
     protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
     {
         "Small Haste",
@@ -29,23 +30,24 @@ public class RenewingEffect : NonOverwritableEffectBase
         "Strong Accuracy",
         "Juggernaut",
         "Strong Juggernaut",
-        "Strong Renewing",
-        "Renewing",
+        "Strong Astral",
+        "Astral",
     };
     protected override byte? Sound => 115;
-    
+
     public override void OnApplied()
     {
+        
         base.OnApplied();
 
         var attributes = new Attributes
         {
-            MaximumMp = 200
+            Hit = 8
         };
         
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Maximum Mana has increased.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your hit chance increased.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -54,11 +56,11 @@ public class RenewingEffect : NonOverwritableEffectBase
     {
         var attributes = new Attributes
         {
-            MaximumMp = 200
+           Hit = 8
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Maximum Mana has returned to normal.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your hit chance has returned to normal.");
     }
 }

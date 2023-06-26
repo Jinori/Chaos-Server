@@ -1037,11 +1037,11 @@ public static class CraftingRequirements
             }
         },
         {
-            AlchemyRecipes.RenewingBrew,
+            AlchemyRecipes.AstralBrew,
             new Recipe()
             {
-                Name = "Renewing Brew Formula",
-                TemplateKey = "renewingbrewformula",
+                Name = "Astral Brew Formula",
+                TemplateKey = "Astralbrewformula",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
@@ -1217,11 +1217,11 @@ public static class CraftingRequirements
             }
         },
         {
-            AlchemyRecipes.StrongRenewingBrew,
+            AlchemyRecipes.StrongAstralBrew,
             new Recipe()
             {
-                Name = "Strong Renewing Brew Formula",
-                TemplateKey = "strongrenewingbrewformula",
+                Name = "Strong Astral Brew Formula",
+                TemplateKey = "strongAstralbrewformula",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },

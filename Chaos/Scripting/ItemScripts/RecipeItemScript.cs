@@ -269,7 +269,7 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallPowerBrew);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallAccuracyPotion);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.JuggernautBrew);
-                source.Trackers.Flags.AddFlag(AlchemyRecipes.RenewingBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.AstralBrew);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.AntidotePotion);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallFirestormTonic);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallStunTonic);
@@ -282,7 +282,7 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.AccuracyPotion);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.RevivePotion);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongJuggernautBrew);
-                source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongRenewingBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongAstralBrew);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.CleansingBrew);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.FirestormTonic);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.StunTonic);
@@ -1637,7 +1637,7 @@ public class RecipeItemScript : ItemScriptBase
                     source.Inventory.RemoveQuantity(Subject.Template.TemplateKey, 1);
                     source.Trackers.Flags.AddFlag(AlchemyCategories.BasicAlchemyBook);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.JuggernautBrew);
-                    source.Trackers.Flags.AddFlag(AlchemyRecipes.RenewingBrew);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.AstralBrew);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.AntidotePotion);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallFirestormTonic);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallStunTonic);
@@ -1949,7 +1949,7 @@ public class RecipeItemScript : ItemScriptBase
                     source.Inventory.RemoveQuantity(Subject.Template.TemplateKey, 1);
                     source.Trackers.Flags.AddFlag(AlchemyCategories.StrongVitalityBrew);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongJuggernautBrew);
-                    source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongRenewingBrew);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongAstralBrew);
 
                     return;
                 }

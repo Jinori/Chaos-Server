@@ -4,12 +4,12 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
-public class SmallHasteEffect : NonOverwritableEffectBase
+public class AccuracyEffect : NonOverwritableEffectBase
 {
     public override byte Icon => 12;
-    public override string Name => "Small Haste";
+    public override string Name => "Accuracy";
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
+    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(10);
 
     protected override Animation? Animation { get; } = new()
     {
@@ -42,12 +42,12 @@ public class SmallHasteEffect : NonOverwritableEffectBase
 
         var attributes = new Attributes
         {
-            AtkSpeedPct = 5
+            Hit = 5
         };
         
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed increased.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your hit chance increased.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -56,11 +56,11 @@ public class SmallHasteEffect : NonOverwritableEffectBase
     {
         var attributes = new Attributes
         {
-            AtkSpeedPct = 5
+           Hit = 5
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed has returned to normal.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your hit chance has returned to normal.");
     }
 }
