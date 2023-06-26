@@ -9,7 +9,6 @@ public class PetScript : CompositeMonsterScript
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(PetFollowScript)),
-        GetScriptKey(typeof(PetLootScript)),
         GetScriptKey(typeof(PetAggroTargetingScript)),
         GetScriptKey(typeof(PetMoveToTargetScript)),
         GetScriptKey(typeof(PetAttackingScript)),
