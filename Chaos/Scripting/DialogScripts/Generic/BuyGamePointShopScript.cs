@@ -39,25 +39,25 @@ public class BuyGamePointShopScript : DialogScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "generic_buyshopGp_initial":
+            case "generic_buyshopgp_initial":
             {
                 OnDisplayingInitial(source);
 
                 break;
             }
-            case "generic_buyshopGp_amountrequest":
+            case "generic_buyshopgp_amountrequest":
             {
                 OnDisplayingAmountRequest(source);
 
                 break;
             }
-            case "generic_buyshopGp_confirmation":
+            case "generic_buyshopgp_confirmation":
             {
                 OnDisplayingConfirmation(source);
 
                 break;
             }
-            case "generic_buyshopGp_accepted":
+            case "generic_buyshopgp_accepted":
             {
                 OnDisplayingAccepted(source);
 
