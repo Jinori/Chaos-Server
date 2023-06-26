@@ -11,7 +11,7 @@ public class AmnesiaEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     public override byte Icon => 100;
     /// <inheritdoc />
-    public override string Name => "Amensia";
+    public override string Name => "Amnesia";
     
     protected IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
     {

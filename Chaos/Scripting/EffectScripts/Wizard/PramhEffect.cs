@@ -1,6 +1,8 @@
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -45,5 +47,16 @@ public sealed class PramhEffect : ContinuousAnimationEffectBase
             Subject.Status &= ~Status.Pramh;
 
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You awake from your slumber.");
+    }
+    
+    public override bool ShouldApply(Creature source, Creature target)
+    {
+        if (target.Effects.Contains("pramh")
+            || target.Effects.Contains("beagpramh"))
+        {
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already asleep.");
+            return false;
+        }
+        return true;
     }
 }

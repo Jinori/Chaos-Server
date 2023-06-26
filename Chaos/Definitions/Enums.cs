@@ -37,9 +37,10 @@ public enum Status : ulong
     ArdAite = 1 << 21,
     Hide = 1 << 22,
     LastStand = 1 << 23,
-    Amensia = 1 << 24,
-    PreventRecradh = 1 << 25
-    //add more statuses here, double each time
+    Amnesia = 1 << 24,
+    PreventRecradh = 1 << 25,
+    WolfFangFist = 1 << 26
+    //add more statuses here
 }
 
 public enum GainExp
