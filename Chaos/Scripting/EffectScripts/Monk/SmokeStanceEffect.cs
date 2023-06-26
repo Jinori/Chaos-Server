@@ -8,7 +8,7 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class SmokeStanceEffect : EffectBase
 {
-    public override byte Icon => 54;
+    public override byte Icon => 93;
     public override string Name => "smokestance";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(15);

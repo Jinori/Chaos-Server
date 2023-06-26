@@ -8,7 +8,7 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 
 public class RageEffect : EffectBase
 {
-    public override byte Icon => 135;
+    public override byte Icon => 87;
     private int _damageSaved;
     public override string Name => "rage";
 

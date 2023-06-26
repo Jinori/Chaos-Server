@@ -8,7 +8,7 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class ThunderStanceEffect : EffectBase
 {
-    public override byte Icon => 54;
+    public override byte Icon => 94;
     public override string Name => "thunderstance";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(15);

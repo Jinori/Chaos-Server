@@ -11,7 +11,7 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class InnerFireEffect : ContinuousAnimationEffectBase
 {
-    public override byte Icon => 126;
+    public override byte Icon => 65;
     public override string Name => "innerFire";
     protected override Animation Animation { get; } = new()
     {

@@ -8,7 +8,7 @@ namespace Chaos.Scripting.EffectScripts.Rogue;
 
 public class DetectTrapsEffect : EffectBase
 {
-    public override byte Icon => 105;
+    public override byte Icon => 84;
     public override string Name => "detectTraps";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(200);

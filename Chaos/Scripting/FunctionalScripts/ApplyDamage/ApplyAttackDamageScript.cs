@@ -74,6 +74,11 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
 
     private void ApplyDamageAndTriggerEvents(Creature creature, int damage, Creature source)
     {
+        //Pet owners cannot damage their pet
+        if (creature is Monster monster && source is Aisling owner && (monster.PetOwner != null) && monster.PetOwner.Equals(owner))
+        {
+            return;
+        }
         creature.StatSheet.SubtractHp(damage);
         creature.ShowHealth();
         creature.Script.OnAttacked(source, damage);

@@ -30,7 +30,6 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>, IDialogSource
     public ConcurrentDictionary<uint, int> AggroList { get; }
     public ConcurrentDictionary<uint, int> Contribution { get; }
     public List<Item> Items { get; }
-    public new int Gold { get; set; }
     public override ILogger<Monster> Logger { get; }
     public IIntervalTimer MoveTimer { get; }
 
@@ -82,7 +81,6 @@ public sealed class Monster : Creature, IScripted<IMonsterScript>, IDialogSource
         Logger = logger;
         StatSheet = ShallowCopy<StatSheet>.Create(template.StatSheet);
         Items = new List<Item>();
-        Gold = new int();
         PetOwner = owner;
         Type = template.Type;
         Direction = (Direction)Random.Shared.Next(4);

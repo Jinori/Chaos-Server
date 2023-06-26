@@ -7,7 +7,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class AiteEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 11;
+    public override byte Icon => 9;
     public override string Name => "naomh aite";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
@@ -35,7 +35,7 @@ public class AiteEffect : NonOverwritableEffectBase
             Subject.Status = Status.Aite;
 
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Glioca has blessed your defenses.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your defenses have been blessed.");
     }
 
     public override void OnDispelled() => OnTerminated();

@@ -12,7 +12,7 @@ namespace Chaos.Scripting.EffectScripts.Rogue;
 public sealed class BlindEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 3;
+    public override byte Icon => 2;
     /// <inheritdoc />
     public override string Name => "Blind";
 

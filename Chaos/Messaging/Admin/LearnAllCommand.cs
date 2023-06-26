@@ -24,7 +24,7 @@ public class LearnAllCommand : ICommand<Aisling>
             { 
                 BaseClass.Warrior, 
                 (
-                    new[] { "aoBeagSuain", "beagSuain", "charge", "cleave", "clobber", "crasher", "execute", "flank", "MadSoul", "cleave", "sever", "slash", "slaughter", "Thrash", "wallop", "windblade" }, 
+                    new[] { "aoBeagSuain", "beagSuain", "charge", "cleave", "clobber", "crasher", "execute", "flank", "MadSoul", "sever", "slash", "slaughter", "Thrash", "wallop", "windblade" }, 
                     new[] { "asgallfaileas", "battlecry", "rage", "warcry", "wrath" } 
                 )
             },
@@ -53,7 +53,7 @@ public class LearnAllCommand : ICommand<Aisling>
                 BaseClass.Monk, 
                 (
                     new[] { "Airpunch", "ambush", "clawfist", "doublePunch", "dracotailkick", "eaglestrike", "firepunch", "highkick", "kick", "mantiskick", "poisonpunch", "punch", "rockpunch", "roundhousekick", "tripleKick", "waterpunch", "wolfFangFist" }, 
-                    new[] { "earthenstance", "gentleTouch", "goad", "howl", "innerFire", "laststand", "miststance", "smokestance", "taunt", "thunderstance" } 
+                    new[] { "dodge", "earthenstance", "gentleTouch", "goad", "howl", "innerFire", "laststand", "miststance", "smokestance", "taunt", "thunderstance" } 
                 )
             }
         };

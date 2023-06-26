@@ -6,7 +6,7 @@ namespace Chaos.Scripting.EffectScripts.Rogue;
 
 public class FocusEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 126;
+    public override byte Icon => 100;
     public override string Name => "focus";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(25);

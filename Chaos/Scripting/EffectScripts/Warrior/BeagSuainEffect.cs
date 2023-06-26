@@ -10,7 +10,7 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 public sealed class BeagSuainEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 97;
+    public override byte Icon => 117;
     /// <inheritdoc />
     public override string Name => "BeagSuain";
 

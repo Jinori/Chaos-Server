@@ -6,7 +6,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class ArmachdEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 94;
+    public override byte Icon => 0;
     public override string Name => "armachd";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);

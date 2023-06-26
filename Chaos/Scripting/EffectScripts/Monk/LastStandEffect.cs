@@ -11,7 +11,7 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class LastStandEffect : ContinuousAnimationEffectBase
 {
-    public override byte Icon => 87;
+    public override byte Icon => 74;
     public override string Name => "laststand";
     protected override Animation Animation { get; } = new()
     {

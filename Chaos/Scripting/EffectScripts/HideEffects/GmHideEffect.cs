@@ -9,7 +9,7 @@ public class GmHideEffect : EffectBase
     /// <inheritdoc />
     protected override TimeSpan Duration { get; } = TimeSpan.FromDays(100);
     /// <inheritdoc />
-    public override byte Icon => 131;
+    public override byte Icon => 8;
     /// <inheritdoc />
     public override string Name => "Gm Hide";
 

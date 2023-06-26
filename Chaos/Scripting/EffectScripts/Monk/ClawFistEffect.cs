@@ -11,7 +11,7 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class ClawFistEffect : ContinuousAnimationEffectBase
 {
-    public override byte Icon => 101;
+    public override byte Icon => 71;
     public override string Name => "clawfist";
     protected override Animation Animation { get; } = new()
     {

@@ -8,7 +8,7 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 
 public class AsgallFaileasEffect : EffectBase
 {
-    public override byte Icon => 54;
+    public override byte Icon => 44;
     public override string Name => "asgallfaileas";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(12);

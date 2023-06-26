@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -62,6 +63,11 @@ public class CradhEffect : NonOverwritableEffectBase
     /// <inheritdoc />
     public override bool ShouldApply(Creature source, Creature target)
     {
+        if (source.Status.HasFlag(Status.PreventAffliction))
+        {
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are prevented from afflicting curses.");
+            return false;
+        }
         if (target.Effects.Contains("preventrecradh"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target cannot be cursed at this time.");

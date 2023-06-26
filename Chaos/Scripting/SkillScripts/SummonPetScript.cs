@@ -38,6 +38,7 @@ public class SummonPetScript : ConfigurableSkillScriptBase
     {
         var newMonster = _monsterFactory.Create(MONSTER_KEY, context.SourceMap, context.SourcePoint);
         newMonster.Name = $"{context.Source.Name}'s {MONSTER_KEY}";
+        newMonster.PetOwner = context.SourceAisling;
         context.Source.MapInstance.AddObject(newMonster, new Point(context.Source.X, context.Source.Y));
     }
 }

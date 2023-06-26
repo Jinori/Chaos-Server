@@ -9,7 +9,7 @@ namespace Chaos.Scripting.EffectScripts.Rogue;
 public class BirthdaySuitEffect : EffectBase
 {
     protected int ArmorClassSaved;
-    public override byte Icon => 109;
+    public override byte Icon => 66;
     public override string Name => "BirthdaySuit";
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(12);
 

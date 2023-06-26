@@ -8,7 +8,7 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class EarthenStanceEffect : EffectBase
 {
-    public override byte Icon => 54;
+    public override byte Icon => 92;
     public override string Name => "earthenstance";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(15);

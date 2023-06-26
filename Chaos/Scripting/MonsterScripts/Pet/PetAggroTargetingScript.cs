@@ -9,21 +9,16 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Pet;
 
-// ReSharper disable once ClassCanBeSealed.Global
 public class PetAggroTargetingScript : MonsterScriptBase
 {
-    private readonly IClientRegistry<IWorldClient> ClientRegistry;
     private readonly IIntervalTimer TargetUpdateTimer;
     private int InitialAggro = 10;
 
     /// <inheritdoc />
-    public PetAggroTargetingScript(Monster subject, IClientRegistry<IWorldClient> clientRegistry)
-        : base(subject)
-    {
+    public PetAggroTargetingScript(Monster subject)
+        : base(subject) =>
         TargetUpdateTimer =
             new IntervalTimer(TimeSpan.FromMilliseconds(Math.Min(250, Subject.Template.SkillIntervalMs)));
-        ClientRegistry = clientRegistry;
-    }
 
     /// <inheritdoc />
     public override void OnAttacked(Creature source, int damage, int? aggroOverride)
@@ -58,7 +53,7 @@ public class PetAggroTargetingScript : MonsterScriptBase
         if (!TargetUpdateTimer.IntervalElapsed)
             return;
 
-        var owner = GetOwner();
+        var owner = Subject.PetOwner;
 
         Target = FindAggroedMonster(owner) ?? FindClosestMonster() ?? Target;
 
@@ -82,16 +77,5 @@ public class PetAggroTargetingScript : MonsterScriptBase
 
         return Map.GetEntitiesWithinRange<Monster>(owner)
                   .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id));
-    }
-    
-    private Aisling? GetOwner()
-    {
-        var substringEndIndex = Subject.Name.IndexOf("'s Gloop", StringComparison.Ordinal);
-        var substring = Subject.Name[..substringEndIndex];
-
-        return ClientRegistry
-               .Where(x => x.Aisling.IsAlive && (x.Aisling.Name == substring))
-               .Select(x => x.Aisling)
-               .FirstOrDefault();
     }
 }

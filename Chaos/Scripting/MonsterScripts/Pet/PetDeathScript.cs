@@ -9,8 +9,9 @@ public sealed class PetDeathScript : MonsterScriptBase
     {
         Subject.Say("*slosh*");
         Map.RemoveObject(Subject);
-        Subject.TryDropGold(Subject, Subject.Gold, out var money);
-        Subject.PetOwner?.SendActiveMessage("Your pet died and dropped it's gold!");
+        
+        if (Subject.TryDropGold(Subject, Subject.Gold, out var money)) 
+            Subject.PetOwner?.SendActiveMessage($"Your pet died and dropped {money?.Amount} gold!");
     }
     
     /// <inheritdoc />

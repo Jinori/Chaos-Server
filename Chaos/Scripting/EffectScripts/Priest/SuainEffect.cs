@@ -10,7 +10,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 public sealed class SuainEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 50;
+    public override byte Icon => 118;
     /// <inheritdoc />
     public override string Name => "Suain";
 

@@ -7,7 +7,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class ArdAiteEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 11;
+    public override byte Icon => 9;
     public override string Name => "ard naomh aite";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(12);
@@ -35,7 +35,7 @@ public class ArdAiteEffect : NonOverwritableEffectBase
             Subject.Status = Status.ArdAite;
 
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Glioca has blessed your defenses.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your defenses have been blessed.");
     }
 
     public override void OnDispelled() => OnTerminated();

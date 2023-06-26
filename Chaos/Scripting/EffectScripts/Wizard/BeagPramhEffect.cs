@@ -10,7 +10,7 @@ namespace Chaos.Scripting.EffectScripts.Wizard;
 public sealed class BeagPramhEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 90;
+    public override byte Icon => 94;
     /// <inheritdoc />
     public override string Name => "beagpramh";
 

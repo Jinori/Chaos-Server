@@ -23,7 +23,7 @@ public class PoisonEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(100));
     /// <inheritdoc />
-    public override byte Icon => 35;
+    public override byte Icon => 27;
     /// <inheritdoc />
     public override string Name => "Poison";
 

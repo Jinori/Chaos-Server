@@ -6,7 +6,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class BeannaichEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 16;
+    public override byte Icon => 105;
     public override string Name => "beannaich";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);

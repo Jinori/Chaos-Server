@@ -9,7 +9,7 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 public class FirePunchEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 35;
+    public override byte Icon => 31;
     /// <inheritdoc />
     public override string Name => "firepunch";
 

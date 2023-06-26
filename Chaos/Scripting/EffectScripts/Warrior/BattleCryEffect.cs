@@ -9,7 +9,7 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 
 public class BattleCryEffect : EffectBase
 {
-    public override byte Icon => 134;
+    public override byte Icon => 88;
     public override string Name => "battlecry";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(18);

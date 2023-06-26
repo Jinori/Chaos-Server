@@ -7,7 +7,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class MorAiteEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 11;
+    public override byte Icon => 9;
     public override string Name => "mor naomh aite";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(8);
@@ -35,7 +35,7 @@ public class MorAiteEffect : NonOverwritableEffectBase
             Subject.Status = Status.MorAite;
 
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Glioca has blessed your defenses.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your defenses have been blessed.");
     }
 
     public override void OnDispelled() => OnTerminated();

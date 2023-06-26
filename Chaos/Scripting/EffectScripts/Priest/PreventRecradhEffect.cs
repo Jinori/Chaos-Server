@@ -8,7 +8,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class PreventRecradhEffect : EffectBase
 {
-    public override byte Icon => 112;
+    public override byte Icon => 102;
     public override string Name => "preventrecradh";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(14);

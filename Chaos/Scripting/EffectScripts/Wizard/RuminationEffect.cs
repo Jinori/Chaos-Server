@@ -13,7 +13,7 @@ namespace Chaos.Scripting.EffectScripts.Wizard;
 public class RuminationEffect : ContinuousAnimationEffectBase
 {
     protected Point Point { get; set; }
-    public override byte Icon => 91;
+    public override byte Icon => 19;
     public override string Name => "rumination";
 
     protected override Animation Animation { get; } = new()

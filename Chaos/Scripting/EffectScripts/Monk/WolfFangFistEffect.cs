@@ -10,7 +10,7 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 public sealed class WolfFangFistEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 50;
+    public override byte Icon => 118;
     /// <inheritdoc />
     public override string Name => "wolfFangFist";
 

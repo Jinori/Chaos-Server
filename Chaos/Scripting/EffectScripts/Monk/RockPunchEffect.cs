@@ -10,7 +10,7 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 public sealed class RockPunchEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 97;
+    public override byte Icon => 46;
     /// <inheritdoc />
     public override string Name => "rockpunch";
 

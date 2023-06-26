@@ -15,7 +15,7 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 public class WrathEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon { get; } = 176;
+    public override byte Icon { get; } = 98;
     /// <inheritdoc />
     public override string Name { get; } = "Wrath";
 

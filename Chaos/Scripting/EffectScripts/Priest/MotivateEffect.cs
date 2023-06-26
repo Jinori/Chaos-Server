@@ -6,7 +6,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class MotivateEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 13;
+    public override byte Icon => 99;
     public override string Name => "Motivate";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(2);
