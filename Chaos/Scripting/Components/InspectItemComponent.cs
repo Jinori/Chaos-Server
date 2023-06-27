@@ -22,6 +22,7 @@ public class InspectItemComponent : IComponent
         if (options.OutputType != null)
         {
             var message = $"Name: {item?.DisplayName}" +
+                          $"Level: {item?.Level}" +
                           $"\nWeight: {item?.Template.Weight}" +
                           $"\nMax Stack: {item?.Template.MaxStacks}" +
                           $"\nSkill Damage: {item?.Modifiers?.FlatSkillDamage}" +

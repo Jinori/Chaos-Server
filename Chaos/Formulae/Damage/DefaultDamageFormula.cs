@@ -95,24 +95,25 @@ public class DefaultDamageFormula : IDamageFormula
 
         if (defender.Status.HasFlag(Status.BeagAite))
         {
-            damage *= Convert.ToInt32(0.92);
+            damage = (int)(damage * 0.92);
         }
 
         if (defender.Status.HasFlag(Status.Aite))
         {
-            damage *= Convert.ToInt32(0.85);
+            damage = (int)(damage * 0.85);
         }
 
         if (defender.Status.HasFlag(Status.MorAite))
         {
-            damage *= Convert.ToInt32(0.78);
+            damage = (int)(damage * 0.78);
         }
 
         if (defender.Status.HasFlag(Status.ArdAite))
         {
-            damage *= Convert.ToInt32(0.70);
+            damage = (int)(damage * 0.70);
         }
     }
+
 
     protected virtual void HandleWeaponDamage(ref int damage, Creature attacker)
     {
