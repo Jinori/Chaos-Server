@@ -6,7 +6,7 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Quests;
+namespace Chaos.Scripting.DialogScripts.Quests.Wilderness;
 
 public class BeeProblemScript : DialogScriptBase
 {
@@ -32,9 +32,11 @@ public class BeeProblemScript : DialogScriptBase
                 if ((!hasStage) || (stage == BeeProblem.None))
                 {
                     if (source.UserStatSheet.Level is <= 1 or >= 16)
-                        return;
+                    {
+                        Subject.Close(source);
 
-                    Subject.Reply(source, "skip", "talula_initial");
+                        return;
+                    }
                     return;
                 }
 
