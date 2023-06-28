@@ -61,4 +61,5 @@ public class StrongPowerEffect : NonOverwritableEffectBase
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage has returned to normal.");
     }
+    
 }

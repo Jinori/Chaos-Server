@@ -15,7 +15,7 @@ public class SpellComponent<TEntity> : IConditionalComponent where TEntity: MapE
             .Execute<BreaksHideComponent>()
             .ExecuteAndCheck<GetTargetsComponent<TEntity>>()
             ?
-            .ExecuteAndCheck<MagicResistanceComponent>()?
+            .Execute<MagicResistanceComponent>()
             .Execute<BodyAnimationComponent>()
             .Execute<AnimationComponent>()
             .Execute<SoundComponent>()

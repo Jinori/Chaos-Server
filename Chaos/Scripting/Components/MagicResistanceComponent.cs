@@ -6,25 +6,27 @@ using Chaos.Scripting.Components.Utilities;
 
 namespace Chaos.Scripting.Components;
 
-public class MagicResistanceComponent : IConditionalComponent
+public class MagicResistanceComponent : IComponent
 {
-    public bool Execute(ActivationContext context, ComponentVars vars)
+    public void Execute(ActivationContext context, ComponentVars vars)
     {
-        var targets = vars.GetTargets<Creature>();
+        var targets = vars.GetTargets<Creature>().ToList();
         var options = vars.GetOptions<IMagicResistanceComponentOptions>();
 
         //Immediately cast spell
         if (options.IgnoreMagicResistance)
-            return true;
+            return;
 
-        foreach (var target in targets)
-        {
-            if (IntegerRandomizer.RollChance(100 - target.StatSheet.EffectiveMagicResistance))
-                return true;
-            
-            target.Animate(MissAnimation);
-        }
-        return false;
+        foreach (var target in targets.ToList())
+            if (!IntegerRandomizer.RollChance(100 - target.StatSheet.EffectiveMagicResistance))
+            {
+                targets.Remove(target);
+                target.Animate(MissAnimation);  
+            }
+        
+        vars.SetTargets(targets);
+
+        return;
     }
 
     public interface IMagicResistanceComponentOptions
