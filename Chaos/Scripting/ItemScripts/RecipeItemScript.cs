@@ -122,7 +122,7 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.BattleSword);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Masquerade);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Bramble);
-                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.LongSword);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Longsword);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Claidhmore);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.EmeraldSword);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Gladius);
@@ -915,7 +915,7 @@ public class RecipeItemScript : ItemScriptBase
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Bramble);
-                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.LongSword);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Longsword);
 
                     return;
                 }

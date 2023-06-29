@@ -827,7 +827,7 @@ public enum WeaponSmithingRecipes : ulong
     BattleSword = 1L << 5,
     Masquerade = 1L << 6,
     Bramble = 1L << 7,
-    LongSword = 1L << 8,
+    Longsword = 1L << 8,
     Claidhmore = 1L << 9,
     EmeraldSword = 1L << 10,
     Gladius = 1L << 11,
