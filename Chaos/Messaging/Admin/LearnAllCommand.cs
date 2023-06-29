@@ -24,7 +24,7 @@ public class LearnAllCommand : ICommand<Aisling>
             { 
                 BaseClass.Warrior, 
                 (
-                    new[] { "aoBeagSuain", "beagSuain", "charge", "cleave", "clobber", "crasher", "execute", "flank", "MadSoul", "sever", "slash", "slaughter", "Thrash", "wallop", "windblade" }, 
+                    new[] { "aoBeagSuain", "beagSuain", "charge", "cleave", "clobber", "crasher", "execute", "flank", "MadSoul", "sever", "slash", "slaughter", "Thrash", "wallop", "windblade", "pulverize", "tempestblade","strike" }, 
                     new[] { "asgallfaileas", "battlecry", "rage", "warcry", "wrath" } 
                 )
             },
