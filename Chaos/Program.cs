@@ -24,8 +24,8 @@ var builder = new ConfigurationBuilder()
                     #if DEBUG
                     .AddJsonFile("appsettings.local.json")
                     #else
-                    //.AddJsonFile("appsettings.prod.json")
-                    .AddJsonFile("appsettings.local.json")
+                    .AddJsonFile("appsettings.prod.json")
+                    //.AddJsonFile("appsettings.local.json")
                     #endif
                     ;
 

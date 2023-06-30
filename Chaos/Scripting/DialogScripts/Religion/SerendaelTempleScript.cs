@@ -48,7 +48,7 @@ public class SerendaelTempleScript : ReligionScriptBase
                 AwardAttendees(source, GODNAME, null!, Subject.DialogSource as Merchant, true);
                 break;
             case "serendael_temple_holdmassserendael":
-                var _ = GoddessHoldMass(source, GODNAME, Subject.DialogSource as Merchant);
+                GoddessHoldMass(source, GODNAME, Subject.DialogSource as Merchant);
                 break;
             case "serendael_temple_leavefaith":
                 LeaveDeity(source, GODNAME);
