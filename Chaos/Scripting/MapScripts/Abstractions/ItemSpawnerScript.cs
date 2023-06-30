@@ -13,7 +13,6 @@ namespace Chaos.Scripting.MapScripts.Abstractions;
 public abstract class ItemSpawnerScript : MapScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    public abstract List<string> MapsToSpawnItemsOn { get; set; }
     public abstract string ItemTemplateKey { get; set; }
     public abstract int MaxAmount { get; set; }
     public abstract int MaxPerSpawn { get; set; }
@@ -40,26 +39,22 @@ public abstract class ItemSpawnerScript : MapScriptBase
 
         if (SpawnTimer.IntervalElapsed)
         {
-            var allCountOfItems = MapsToSpawnItemsOn.Sum(
-                s => SimpleCache.Get<MapInstance>(s)
-                                .GetEntities<GroundItem>()
-                                .Count(obj => obj.Item.Template.TemplateKey.EqualsI(ItemTemplateKey)));
-            
-            var spawnAmount = Math.Min(MaxAmount - allCountOfItems, MaxPerSpawn);
+            var allCountOfItems = Subject.GetEntities<GroundItem>().Count(obj => obj.Item.Template.TemplateKey.EqualsI(ItemTemplateKey));
+
+            var maxSpawns = Math.Min(MaxAmount - allCountOfItems, MaxPerSpawn);
+            var spawnAmount = new Random().Next(0, maxSpawns + 1);
 
             for (var i = 0; i < spawnAmount; i++)
             {
-                var selectedMapId = MapsToSpawnItemsOn.PickRandom();
-
-                var selectedMap = SimpleCache.Get<MapInstance>(selectedMapId);
-                var point = GenerateSpawnPoint(selectedMap);
+                var point = GenerateSpawnPoint(Subject);
                 var item = ItemFactory.Create(ItemTemplateKey);
                 var groundItem = new GroundItem(item, Subject, point);
 
-                selectedMap.AddObject(groundItem, point);
+                Subject.AddObject(groundItem, point);
             }
         }
     }
+
 
     private Point GenerateSpawnPoint(MapInstance selectedMap)
     {
