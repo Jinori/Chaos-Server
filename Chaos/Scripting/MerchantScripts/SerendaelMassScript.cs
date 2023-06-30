@@ -8,10 +8,16 @@ using Humanizer;
 
 namespace Chaos.Scripting.MerchantScripts
 {
-    public class MiraelisMassScript : MerchantScriptBase
+    public class SerendaelMassScript : MerchantScriptBase
     {
+        private const int FAITH_REWARD = 25;
+        private const int LATE_FAITH_REWARD = 15;
+        private const int ESSENCE_CHANCE = 10;
+        private const int SERMON_DELAY_SECONDS = 5;
+        private const int MASS_SERMON_COUNT = 10;
+        
         #region MassMessages
-        private readonly List<string> MiraelisMassMessages = new List<string>
+        private readonly List<string> SerendaelMassMessages = new List<string>
         {
             "Gather as Miraelis' embrace fills this space.",
             "Compassion unites hearts, fosters understanding.",
@@ -104,11 +110,6 @@ namespace Chaos.Scripting.MerchantScripts
             "Miraelis' embrace offers solace, renewal."
         };
         #endregion MassMessages
-        private const int FAITH_REWARD = 25;
-        private const int ESSENCE_CHANCE = 10;
-        private const int LATE_FAITH_REWARD = 15;
-        private const int SERMON_DELAY_SECONDS = 5;
-        private const int MASS_SERMON_COUNT = 10;
         
         protected Animation PrayerSuccess { get; } = new()
         {
@@ -124,13 +125,13 @@ namespace Chaos.Scripting.MerchantScripts
         
         private bool AnnouncedMassBegin { get; set; }
         private DateTime? MassAnnouncementTime { get; set; }
-        private HashSet<string> SpokenMessages { get; set; } = new();
         private DateTime? LastSermonTime { get; set; }
+        private HashSet<string> SpokenMessages { get; set; } = new();
         private int SermonCount { get; set; }
         private IEnumerable<Aisling>? AislingsAtStart { get; set; }
         private bool MassCompleted { get; set; }
 
-        public MiraelisMassScript(
+        public SerendaelMassScript(
             Merchant subject,
             IClientRegistry<IWorldClient> clientRegistry,
             IItemFactory itemFactory
@@ -198,11 +199,11 @@ namespace Chaos.Scripting.MerchantScripts
 
             do
             {
-                index = random.Next(MiraelisMassMessages.Count);
+                index = random.Next(SerendaelMassMessages.Count);
             }
-            while (SpokenMessages.Contains(MiraelisMassMessages[index]));
+            while (SpokenMessages.Contains(SerendaelMassMessages[index]));
     
-            var message = MiraelisMassMessages[index];
+            var message = SerendaelMassMessages[index];
             Subject.Say(message);
             SpokenMessages.Add(message);
             LastSermonTime = DateTime.UtcNow;
@@ -221,9 +222,9 @@ namespace Chaos.Scripting.MerchantScripts
 
                 if (IntegerRandomizer.RollChance(ESSENCE_CHANCE))
                 {
-                    var item = ItemFactory.Create($"essenceofMiraelis");
+                    var item = ItemFactory.Create($"essenceofSerendael");
                     player.Inventory.TryAddToNextSlot(item);
-                    player.SendActiveMessage($"You received an Essence of Miraelis");
+                    player.SendActiveMessage($"You received an Essence of Serendael");
                 }
                 TryAddFaith(player, FAITH_REWARD);
             }
@@ -253,9 +254,9 @@ namespace Chaos.Scripting.MerchantScripts
         
         public static string? CheckDeity(Aisling source)
         {
-            if (source.Legend.ContainsKey("Miraelis"))
+            if (source.Legend.ContainsKey("Serendael"))
             {
-                return "Miraelis";
+                return "Serendael";
             }
             
             return null;
@@ -265,7 +266,7 @@ namespace Chaos.Scripting.MerchantScripts
         {
             foreach (var client in ClientRegistry)
             {
-                client.Aisling.SendActiveMessage("Miraelis will be holding mass at her temple in five minutes.");
+                client.Aisling.SendActiveMessage("Serendael will be holding mass at her temple in five minutes.");
             }
         }
 
@@ -273,14 +274,14 @@ namespace Chaos.Scripting.MerchantScripts
         {
             foreach (var client in ClientRegistry)
             {
-                client.Aisling.SendActiveMessage("Miraelis will be holding mass at her temple in one minute.");
+                client.Aisling.SendActiveMessage("Serendael will be holding mass at her temple in one minute.");
             }
         }
         
         private void AnnounceMassBeginning()
         {
             foreach (var client in ClientRegistry)
-                client.Aisling.SendActiveMessage($"Mass held by Miraelis at the temple is starting now.");
+                client.Aisling.SendActiveMessage($"Mass held by Serendael at the temple is starting now.");
     
             AislingsAtStart = Subject.MapInstance.GetEntities<Aisling>().ToList();
 
