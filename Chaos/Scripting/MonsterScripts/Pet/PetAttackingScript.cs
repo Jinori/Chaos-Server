@@ -25,7 +25,7 @@ public class PetAttackingScript : MonsterScriptBase
         if (Subject.Direction != direction)
             return;
 
-        if (DateTime.UtcNow.Subtract(Subject.LastMove).TotalMilliseconds < Subject.EffectiveAssailIntervalMs)
+        if (DateTime.UtcNow.Subtract(Subject.Trackers.LastWalk ?? DateTime.MinValue).TotalMilliseconds < Subject.EffectiveAssailIntervalMs)
             return;
 
         var attacked = false;
