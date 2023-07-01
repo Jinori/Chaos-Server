@@ -397,7 +397,7 @@ public class ReligionScriptBase : DialogScriptBase
     private static readonly Dictionary<Rank, List<string>> RoleOptions = new Dictionary<Rank, List<string>>
     {
         { Rank.None, new List<string> { "Join the Temple", "The Gods" } },
-        { Rank.Worshipper, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith", "Hold Mass" } },
+        { Rank.Worshipper, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith"} },
         { Rank.Acolyte, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith"} },
         { Rank.Emissary, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith"} },
         { Rank.Seer, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "The Gods", "Leave Faith" } },
@@ -474,7 +474,9 @@ public class ReligionScriptBase : DialogScriptBase
                 MarkColor.White,
                 1,
                 GameTime.Now));
-        
+
+        var trinket = ItemFactory.Create($"{deity}Stone");
+        source.Inventory.TryAddToNextSlot(trinket);
         source.Inventory.RemoveQuantity($"Essence of {deity}", 3);
         source.SendActiveMessage($"You have joined the temple of {deity} as a Worshipper!");
     }
@@ -511,7 +513,7 @@ public class ReligionScriptBase : DialogScriptBase
         else
         {
             Subject.Reply(source, $"You have reached your limit in prayer. Try again tomorrow!");
-            source.Trackers.TimedEvents.AddEvent("PrayerCooldown", TimeSpan.FromDays(1));
+            source.Trackers.TimedEvents.AddEvent("PrayerCooldown", TimeSpan.FromDays(1), true);
         }
     }
     
