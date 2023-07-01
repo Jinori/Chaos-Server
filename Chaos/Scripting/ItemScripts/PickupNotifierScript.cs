@@ -14,8 +14,8 @@ namespace Chaos.Scripting.ItemScripts
         public override void OnPickup(Aisling aisling, Item originalItem, int originalCount)
         {
             NotifyPlayer(aisling, originalItem, originalCount);
-            NotifyNearbyPlayers(aisling, originalItem, originalCount);
-            NotifyGroupMembers(aisling, originalItem, originalCount);
+            var nearbyPlayers = NotifyNearbyPlayers(aisling, originalItem, originalCount);
+            NotifyGroupMembers(aisling, originalItem, originalCount, nearbyPlayers);
         }
         
         private void NotifyPlayer(Aisling aisling, Item originalItem, int originalCount)
@@ -27,15 +27,15 @@ namespace Chaos.Scripting.ItemScripts
             aisling.SendOrangeBarMessage(message);
         }
 
-        private void NotifyNearbyPlayers(NamedEntity aisling, Item originalItem, int originalCount)
+        private List<Aisling> NotifyNearbyPlayers(NamedEntity aisling, Item originalItem, int originalCount)
         {
             var nearbyPlayers = aisling.MapInstance
                                        .GetEntitiesWithinRange<Aisling>(aisling, 8)
                                        .Where(x => aisling.Id != x.Id).ToList();
-            
+
             if (!nearbyPlayers.Any())
-                return;
-            
+                return nearbyPlayers;
+
             foreach (var player in nearbyPlayers)
             {
                 player.SendOrangeBarMessage(
@@ -43,15 +43,17 @@ namespace Chaos.Scripting.ItemScripts
                         ? $"{aisling.Name} has picked up {originalCount} {Subject.DisplayName}."
                         : $"{aisling.Name} has picked up {Subject.DisplayName}.");
             }
+
+            return nearbyPlayers;
         }
 
-        private void NotifyGroupMembers(Aisling aisling, Item originalItem, int originalCount)
+        private void NotifyGroupMembers(Aisling aisling, Item originalItem, int originalCount, List<Aisling> nearbyPlayers)
         {
             if (aisling.Group is { Count: > 1 })
             {
                 var point = new Point(aisling.X, aisling.Y);
                 var groupMembersInRange = aisling.Group
-                                                 .Where(x => x.WithinRange(point) && x.MapInstance.Equals(aisling.MapInstance));
+                                                 .Where(x => x.WithinRange(point) && x.MapInstance.Equals(aisling.MapInstance) && !nearbyPlayers.Contains(x));
 
                 foreach (var member in groupMembersInRange)
                 {
