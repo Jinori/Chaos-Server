@@ -1,7 +1,6 @@
 using System.Collections.Immutable;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
-using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae.Abstractions;
 using Chaos.Models.Panel;
@@ -59,7 +58,7 @@ public class DefaultDamageFormula : IDamageFormula
         HandleClawFist(ref damage, script, source);
         HandleAite(ref damage, target);
         HandleWeaponDamage(ref damage, source);
-
+        HandleDmgStat(ref damage, script, source);
         return damage;
     }
 
@@ -153,5 +152,17 @@ public class DefaultDamageFormula : IDamageFormula
 
         if (skillScript.Subject.Template.IsAssail)
             damage = Convert.ToInt32(damage * 1.3);
+    }
+    
+    protected virtual void HandleDmgStat(ref int damage, IScript source, Creature attacker)
+    {
+        if (source is not SubjectiveScriptBase<Skill> skillScript)
+            return;
+
+        if (!skillScript.Subject.Template.IsAssail)
+            return;
+
+        var damageMultiplier = 1 + (attacker.StatSheet.EffectiveDmg / 6.0) * 0.04;
+        damage = (int)(damage * damageMultiplier);
     }
 }
