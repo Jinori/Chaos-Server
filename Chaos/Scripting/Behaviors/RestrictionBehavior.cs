@@ -88,6 +88,13 @@ public class RestrictionBehavior
 
                 return true;
             }
+            case Aisling aisling when aisling.Effects.Contains("rumination"):
+            {
+                aisling.Effects.Dispel("rumination");
+                aisling.SendOrangeBarMessage("You ended your rumination.");
+
+                return true;
+            }
         }
 
         return creature.IsAlive;
@@ -109,6 +116,13 @@ public class RestrictionBehavior
             case Aisling aisling when aisling.Effects.Contains("mount"):
             {
                 aisling.Effects.Dispel("mount");
+
+                return true;
+            }
+            case Aisling aisling when aisling.Effects.Contains("rumination"):
+            {
+                aisling.Effects.Dispel("rumination");
+                aisling.SendOrangeBarMessage("You ended your rumination.");
 
                 return true;
             }

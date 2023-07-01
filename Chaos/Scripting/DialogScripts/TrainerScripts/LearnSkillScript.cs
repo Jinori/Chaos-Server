@@ -39,7 +39,12 @@ public class LearnSkillScript : DialogScriptBase
     private readonly Dictionary<string, List<string>> SkillUpgrades = new()
     {
         //Warrior
-        {"Slash", new List<string> {"Scathe"}}
+        {"Slash", new List<string> {"Scathe"}},
+        {"Scathe", new List<string> {"Cleave"}},
+        {"Strike", new List<string> {"Clobber"}},
+        {"Clobber", new List<string> {"Wallop"}},
+        {"Wallop", new List<string> {"Pulverize"}},
+        {"Windblade", new List<string> {"Tempestblade"}}
     };
     
     /// <inheritdoc />

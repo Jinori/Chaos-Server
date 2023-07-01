@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae.Abstractions;
 using Chaos.Models.Panel;
@@ -23,8 +24,8 @@ public class DefaultDamageFormula : IDamageFormula
         //                         None,  Fire,  Water,  Wind,  Earth, Holy,  Darkness,  Wood,  Metal,  Undead
         /*      None*/     new[] { 0.50m, 0.45m, 0.45m,  0.45m, 0.45m, 0.45m, 0.45m,     0.45m, 0.45m,  0.45m }.ToImmutableArray(),
         /* O    Fire*/     new[] { 2.00m, 0.50m, 1.00m,  2.00m, 1.00m, 1.00m, 1.00m,     2.01m, 0.83m,  2.01m }.ToImmutableArray(),
-        /* F    Water*/    new[] { 2.00m, 1.00m, 0.50m,  1.00m, 2.00m, 0.93m, 0.83m,     0.58m, 1.74m,  0.93m }.ToImmutableArray(), 
-        /* F    Wind*/     new[] { 2.00m, 2.00m, 1.00m,  0.50m, 1.00m, 0.93m, 0.83m,     1.03m, 1.74m,  0.83m }.ToImmutableArray(),
+        /* F    Water*/    new[] { 2.00m, 2.00m, 0.50m,  1.00m, 1.00m, 0.93m, 0.83m,     0.58m, 1.74m,  0.93m }.ToImmutableArray(), 
+        /* F    Wind*/     new[] { 2.00m, 1.00m, 1.00m,  0.50m, 2.00m, 0.93m, 0.83m,     1.03m, 1.74m,  0.83m }.ToImmutableArray(),
         /* E    Earth*/    new[] { 2.00m, 1.00m, 2.00m,  1.00m, 0.50m, 0.93m, 0.83m,     0.58m, 0.83m,  0.58m }.ToImmutableArray(),
         /* N    Holy*/     new[] { 2.00m, 0.76m, 0.76m,  0.76m, 0.76m, 0.50m, 1.48m,     0.58m, 0.76m,  2.01m }.ToImmutableArray(),
         /* S    Darkness*/ new[] { 2.00m, 1.25m, 1.25m,  1.25m, 1.25m, 1.48m, 0.50m,     1.48m, 0.58m,  0.58m }.ToImmutableArray(),
@@ -52,7 +53,8 @@ public class DefaultDamageFormula : IDamageFormula
         ApplyElementalModifier(
             ref damage,
             elementOverride ?? source.StatSheet.OffenseElement,
-            target.StatSheet.DefenseElement);
+            target.StatSheet.DefenseElement,
+            script);
 
         HandleClawFist(ref damage, script, source);
         HandleAite(ref damage, target);
@@ -64,8 +66,14 @@ public class DefaultDamageFormula : IDamageFormula
     protected virtual void ApplyAcModifier(ref int damage, int defenderAc) =>
         damage = Convert.ToInt32(damage * (1 + defenderAc / 100m));
 
-    protected virtual void ApplyElementalModifier(ref int damage, Element attackElement, Element defenseElement) =>
+    protected virtual void ApplyElementalModifier(ref int damage, Element attackElement, Element defenseElement, IScript script)
+    {
+        if (script is SubjectiveScriptBase<Spell> { Subject.Template.TemplateKey: "zap" })
+            return;
+
         damage = Convert.ToInt32(damage * ElementalModifierLookup[(int)attackElement][(int)defenseElement]);
+        
+    }
 
     protected virtual void ApplySkillSpellModifier(ref int damage, IScript source, Creature attacker)
     {
