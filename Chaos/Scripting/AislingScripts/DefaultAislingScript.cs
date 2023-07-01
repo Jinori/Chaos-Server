@@ -145,6 +145,14 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             return;
         }
         
+        if (Subject.Effects.Contains("rumination"))
+        {
+            Subject.Effects.Terminate("rumination");
+            Subject.SendOrangeBarMessage("Taking damage ended your rumination.");
+
+            return;
+        }
+        
         base.OnAttacked(source, damage);
     }
 

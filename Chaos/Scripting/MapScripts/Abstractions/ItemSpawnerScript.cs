@@ -31,29 +31,32 @@ public abstract class ItemSpawnerScript : MapScriptBase
     }
 
 
-    public override void Update(TimeSpan delta)
+   public override void Update(TimeSpan delta)
+{
+    SpawnTimer ??= new IntervalTimer(TimeSpan.FromMilliseconds(SpawnIntervalMs));
+
+    SpawnTimer.Update(delta);
+
+    if (SpawnTimer.IntervalElapsed)
     {
-        SpawnTimer ??= new IntervalTimer(TimeSpan.FromMilliseconds(SpawnIntervalMs));
+        var allCountOfItems = Subject.GetEntities<GroundItem>().Count(obj => obj.Item.Template.TemplateKey.EqualsI(ItemTemplateKey));
 
-        SpawnTimer.Update(delta);
+        var maxSpawns = Math.Min(MaxAmount - allCountOfItems, MaxPerSpawn);
 
-        if (SpawnTimer.IntervalElapsed)
+        // Generate a random number of spawns between 0 and maxSpawns (exclusive)
+        var random = new Random();
+        var spawnAmount = random.Next(0, maxSpawns);
+
+        for (var i = 0; i < spawnAmount; i++)
         {
-            var allCountOfItems = Subject.GetEntities<GroundItem>().Count(obj => obj.Item.Template.TemplateKey.EqualsI(ItemTemplateKey));
+            var point = GenerateSpawnPoint(Subject);
+            var item = ItemFactory.Create(ItemTemplateKey);
+            var groundItem = new GroundItem(item, Subject, point);
 
-            var maxSpawns = Math.Min(MaxAmount - allCountOfItems, MaxPerSpawn);
-            var spawnAmount = new Random().Next(0, maxSpawns + 1);
-
-            for (var i = 0; i < spawnAmount; i++)
-            {
-                var point = GenerateSpawnPoint(Subject);
-                var item = ItemFactory.Create(ItemTemplateKey);
-                var groundItem = new GroundItem(item, Subject, point);
-
-                Subject.AddObject(groundItem, point);
-            }
+            Subject.AddObject(groundItem, point);
         }
     }
+}
 
 
     private Point GenerateSpawnPoint(MapInstance selectedMap)

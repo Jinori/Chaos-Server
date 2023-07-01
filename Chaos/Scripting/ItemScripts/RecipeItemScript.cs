@@ -1935,7 +1935,7 @@ public class RecipeItemScript : ItemScriptBase
                 
             }
             
-            case "recipe_strongvitalitybrew":
+            case "recipe_strongvitalitybook":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyCategories.StrongVitalityBrew))
                 {

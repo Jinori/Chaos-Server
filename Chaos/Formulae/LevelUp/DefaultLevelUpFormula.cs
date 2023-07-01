@@ -13,7 +13,7 @@ public class DefaultLevelUpFormula : ILevelUpFormula
             //each level, add (Level * 0.3) + 10 hp
             MaximumHp = Convert.ToInt32(50),
             //each level, add (Level * 0.15) + 5 mp
-            MaximumMp = Convert.ToInt32(40),
+            MaximumMp = Convert.ToInt32(25),
             //every 3 levels, subtract 1 ac
             Ac = aisling.StatSheet.Level % 3 == 0 ? -1 : 0
         };
@@ -22,5 +22,5 @@ public class DefaultLevelUpFormula : ILevelUpFormula
     public virtual int CalculateMaxWeight(Aisling aisling) => 40 + aisling.UserStatSheet.Level / 2 + aisling.UserStatSheet.Str;
 
     /// <inheritdoc />
-    public int CalculateTnl(Aisling aisling) => Convert.ToInt32(Math.Pow(aisling.UserStatSheet.Level, 3.4) * 450 / 140 + 2500 * aisling.UserStatSheet.Level);
+    public int CalculateTnl(Aisling aisling) => Convert.ToInt32((Math.Pow(aisling.UserStatSheet.Level, 3.4) * 450 / 140 + 2500 * aisling.UserStatSheet.Level)/4);
 }
