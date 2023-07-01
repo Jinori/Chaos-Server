@@ -508,202 +508,202 @@ public class cookItemScript : DialogScriptBase
                     #region RemoveItems
 
                     if (meatStage && (mStage == MeatsStage.beefslices))
-                        source.Inventory.RemoveQuantity("beefslices", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("beefslices", 1);
 
                     if (meatStage && (mStage == MeatsStage.clam))
-                        source.Inventory.RemoveQuantity("clam", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("clam", 1);
 
                     if (meatStage && (mStage == MeatsStage.egg))
-                        source.Inventory.RemoveQuantity("egg", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("egg", 1);
 
                     if (meatStage && (mStage == MeatsStage.liver))
-                        source.Inventory.RemoveQuantity("liver", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("liver", 1);
 
                     if (meatStage && (mStage == MeatsStage.lobstertail))
-                        source.Inventory.RemoveQuantity("lobstertail", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("lobstertail", 1);
 
                     if (meatStage && (mStage == MeatsStage.rawmeat))
-                        source.Inventory.RemoveQuantity("rawmeat", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("rawmeat", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.beefslices))
-                        source.Inventory.RemoveQuantity("beefslices", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("beefslices", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.clam))
-                        source.Inventory.RemoveQuantity("clam", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("clam", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.egg))
-                        source.Inventory.RemoveQuantity("egg", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("egg", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.liver))
-                        source.Inventory.RemoveQuantity("liver", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("liver", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.lobstertail))
-                        source.Inventory.RemoveQuantity("lobstertail", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("lobstertail", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.rawmeat))
-                        source.Inventory.RemoveQuantity("rawmeat", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("rawmeat", 1);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.beefslices))
-                        source.Inventory.RemoveQuantity("beefslices", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("beefslices", 1);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.clam))
-                        source.Inventory.RemoveQuantity("clam", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("clam", 1);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.egg))
-                        source.Inventory.RemoveQuantity("egg", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("egg", 1);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.liver))
-                        source.Inventory.RemoveQuantity("liver", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("liver", 1);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.lobstertail))
-                        source.Inventory.RemoveQuantity("lobstertail", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("lobstertail", 1);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.rawmeat))
-                        source.Inventory.RemoveQuantity("rawmeat", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("rawmeat", 1);
 
                     if (fruitsStage && (fstage == FruitsStage.cherry))
-                        source.Inventory.RemoveQuantity("cherry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
                     
                     if (fruitsStage && (fstage == FruitsStage.cherry))
-                        source.Inventory.RemoveQuantity("grape", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("grape", 10);
 
                     if (fruitsStage && (fstage == FruitsStage.acorn))
-                        source.Inventory.RemoveQuantity("acorn", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("acorn", 10);
 
                     if (fruitsStage && (fstage == FruitsStage.apple))
-                        source.Inventory.RemoveQuantity("apple", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("apple", 10);
 
                     if (fruitsStage && (fstage == FruitsStage.greengrapes))
-                        source.Inventory.RemoveQuantity("greengrapes", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("greengrapes", 10);
 
                     if (fruitsStage && (fstage == FruitsStage.strawberry))
-                        source.Inventory.RemoveQuantity("strawberry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("strawberry", 10);
 
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
-                        source.Inventory.RemoveQuantity("tangerines", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("tangerines", 10);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.cherry))
-                        source.Inventory.RemoveQuantity("cherry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
                     
                     if (fruitsStage2 && (fstage2 == FruitsStage2.grape))
-                        source.Inventory.RemoveQuantity("grape", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("grape", 10);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.acorn))
-                        source.Inventory.RemoveQuantity("acorn", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("acorn", 10);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.apple))
-                        source.Inventory.RemoveQuantity("apple", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("apple", 10);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.greengrapes))
-                        source.Inventory.RemoveQuantity("greengrapes", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("greengrapes", 10);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.strawberry))
-                        source.Inventory.RemoveQuantity("strawberry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("strawberry", 10);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.tangerines))
-                        source.Inventory.RemoveQuantity("tangerines", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("tangerines", 10);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.cherry))
-                        source.Inventory.RemoveQuantity("cherry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
                     
                     if (fruitsStage3 && (fstage3 == FruitsStage3.grape))
-                        source.Inventory.RemoveQuantity("grape", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("grape", 10);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.acorn))
-                        source.Inventory.RemoveQuantity("acorn", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("acorn", 10);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.apple))
-                        source.Inventory.RemoveQuantity("apple", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("apple", 10);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.greengrapes))
-                        source.Inventory.RemoveQuantity("greengrapes", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("greengrapes", 10);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.strawberry))
-                        source.Inventory.RemoveQuantity("strawberry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("strawberry", 10);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.tangerines))
-                        source.Inventory.RemoveQuantity("tangerines", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("tangerines", 10);
 
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
-                        source.Inventory.RemoveQuantity("vegetable", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("vegetable", 5);
 
                     if (vegetableStage && (vStage == VegetableStage.carrot))
-                        source.Inventory.RemoveQuantity("carrot", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("carrot", 5);
 
                     if (vegetableStage && (vStage == VegetableStage.rambutan))
-                        source.Inventory.RemoveQuantity("rambutan", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("rambutan", 5);
 
                     if (vegetableStage && (vStage == VegetableStage.tomato))
-                        source.Inventory.RemoveQuantity("tomato", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.vegetable))
-                        source.Inventory.RemoveQuantity("vegetable", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("vegetable", 5);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.carrot))
-                        source.Inventory.RemoveQuantity("carrot", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("carrot", 5);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.rambutan))
-                        source.Inventory.RemoveQuantity("rambutan", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("rambutan", 5);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.tomato))
-                        source.Inventory.RemoveQuantity("tomato", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
 
                     if (vegetableStage3 && (vStage3 == VegetableStage3.vegetable))
-                        source.Inventory.RemoveQuantity("vegetable", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("vegetable", 5);
 
                     if (vegetableStage3 && (vStage3 == VegetableStage3.carrot))
-                        source.Inventory.RemoveQuantity("carrot", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("carrot", 5);
 
                     if (vegetableStage3 && (vStage3 == VegetableStage3.rambutan))
-                        source.Inventory.RemoveQuantity("rambutan", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("rambutan", 5);
 
                     if (vegetableStage3 && (vStage3 == VegetableStage3.tomato))
-                        source.Inventory.RemoveQuantity("tomato", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.bread))
-                        source.Inventory.RemoveQuantity("bread", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("bread", 1);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.cheese))
-                        source.Inventory.RemoveQuantity("cheese", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("cheese", 1);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.flour))
-                        source.Inventory.RemoveQuantity("flour", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("flour", 1);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.marinade))
-                        source.Inventory.RemoveQuantity("marinade", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("marinade", 1);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.salt))
-                        source.Inventory.RemoveQuantity("salt", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("salt", 1);
 
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.bread))
-                        source.Inventory.RemoveQuantity("bread", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("bread", 1);
 
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.cheese))
-                        source.Inventory.RemoveQuantity("cheese", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("cheese", 1);
 
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.flour))
-                        source.Inventory.RemoveQuantity("flour", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("flour", 1);
 
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.marinade))
-                        source.Inventory.RemoveQuantity("marinade", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("marinade", 1);
 
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.salt))
-                        source.Inventory.RemoveQuantity("salt", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("salt", 1);
 
                     if (extraIngredients3 && (eStage3 == ExtraIngredientsStage3.bread))
-                        source.Inventory.RemoveQuantity("bread", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("bread", 1);
 
                     if (extraIngredients3 && (eStage3 == ExtraIngredientsStage3.cheese))
-                        source.Inventory.RemoveQuantity("cheese", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("cheese", 1);
 
                     if (extraIngredients3 && (eStage3 == ExtraIngredientsStage3.flour))
-                        source.Inventory.RemoveQuantity("flour", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("flour", 1);
 
                     if (extraIngredients3 && (eStage3 == ExtraIngredientsStage3.marinade))
-                        source.Inventory.RemoveQuantity("marinade", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("marinade", 1);
 
                     if (extraIngredients3 && (eStage3 == ExtraIngredientsStage3.salt))
-                        source.Inventory.RemoveQuantity("salt", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("salt", 1);
                     
                     #endregion
 
@@ -1045,202 +1045,202 @@ public class cookItemScript : DialogScriptBase
                     #endregion
                     #region RemoveItems
                     if (meatStage && (mStage == MeatsStage.beefslices))
-                        source.Inventory.RemoveQuantity("beefslices", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("beefslices", 1);
 
                     if (meatStage && (mStage == MeatsStage.clam))
-                        source.Inventory.RemoveQuantity("clam", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("clam", 1);
 
                     if (meatStage && (mStage == MeatsStage.egg))
-                        source.Inventory.RemoveQuantity("egg", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("egg", 1);
 
                     if (meatStage && (mStage == MeatsStage.liver))
-                        source.Inventory.RemoveQuantity("liver", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("liver", 1);
 
                     if (meatStage && (mStage == MeatsStage.lobstertail))
-                        source.Inventory.RemoveQuantity("lobstertail", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("lobstertail", 1);
 
                     if (meatStage && (mStage == MeatsStage.rawmeat))
-                        source.Inventory.RemoveQuantity("rawmeat", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("rawmeat", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.beefslices))
-                        source.Inventory.RemoveQuantity("beefslices", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("beefslices", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.clam))
-                        source.Inventory.RemoveQuantity("clam", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("clam", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.egg))
-                        source.Inventory.RemoveQuantity("egg", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("egg", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.liver))
-                        source.Inventory.RemoveQuantity("liver", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("liver", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.lobstertail))
-                        source.Inventory.RemoveQuantity("lobstertail", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("lobstertail", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.rawmeat))
-                        source.Inventory.RemoveQuantity("rawmeat", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("rawmeat", 1);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.beefslices))
-                        source.Inventory.RemoveQuantity("beefslices", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("beefslices", 1);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.clam))
-                        source.Inventory.RemoveQuantity("clam", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("clam", 1);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.egg))
-                        source.Inventory.RemoveQuantity("egg", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("egg", 1);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.liver))
-                        source.Inventory.RemoveQuantity("liver", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("liver", 1);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.lobstertail))
-                        source.Inventory.RemoveQuantity("lobstertail", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("lobstertail", 1);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.rawmeat))
-                        source.Inventory.RemoveQuantity("rawmeat", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("rawmeat", 1);
 
                     if (fruitsStage && (fstage == FruitsStage.cherry))
-                        source.Inventory.RemoveQuantity("cherry", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("cherry", 15);
                     
                     if (fruitsStage && (fstage == FruitsStage.grape))
-                        source.Inventory.RemoveQuantity("grape", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("grape", 15);
 
                     if (fruitsStage && (fstage == FruitsStage.acorn))
-                        source.Inventory.RemoveQuantity("acorn", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("acorn", 15);
 
                     if (fruitsStage && (fstage == FruitsStage.apple))
-                        source.Inventory.RemoveQuantity("apple", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("apple", 15);
 
                     if (fruitsStage && (fstage == FruitsStage.greengrapes))
-                        source.Inventory.RemoveQuantity("greengrapes", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("greengrapes", 15);
 
                     if (fruitsStage && (fstage == FruitsStage.strawberry))
-                        source.Inventory.RemoveQuantity("strawberry", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("strawberry", 15);
 
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
-                        source.Inventory.RemoveQuantity("tangerines", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("tangerines", 15);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.cherry))
-                        source.Inventory.RemoveQuantity("cherry", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("cherry", 15);
                     
                     if (fruitsStage2 && (fstage2 == FruitsStage2.grape))
-                        source.Inventory.RemoveQuantity("grape", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("grape", 15);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.acorn))
-                        source.Inventory.RemoveQuantity("acorn", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("acorn", 15);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.apple))
-                        source.Inventory.RemoveQuantity("apple", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("apple", 15);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.greengrapes))
-                        source.Inventory.RemoveQuantity("greengrapes", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("greengrapes", 15);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.strawberry))
-                        source.Inventory.RemoveQuantity("strawberry", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("strawberry", 15);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.tangerines))
-                        source.Inventory.RemoveQuantity("tangerines", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("tangerines", 15);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.cherry))
-                        source.Inventory.RemoveQuantity("cherry", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("cherry", 15);
                     
                     if (fruitsStage3 && (fstage3 == FruitsStage3.grape))
-                        source.Inventory.RemoveQuantity("grape", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("grape", 15);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.acorn))
-                        source.Inventory.RemoveQuantity("acorn", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("acorn", 15);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.apple))
-                        source.Inventory.RemoveQuantity("apple", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("apple", 15);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.greengrapes))
-                        source.Inventory.RemoveQuantity("greengrapes", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("greengrapes", 15);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.strawberry))
-                        source.Inventory.RemoveQuantity("strawberry", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("strawberry", 15);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.tangerines))
-                        source.Inventory.RemoveQuantity("tangerines", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("tangerines", 15);
 
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
-                        source.Inventory.RemoveQuantity("vegetable", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("vegetable", 5);
 
                     if (vegetableStage && (vStage == VegetableStage.carrot))
-                        source.Inventory.RemoveQuantity("carrot", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("carrot", 5);
 
                     if (vegetableStage && (vStage == VegetableStage.rambutan))
-                        source.Inventory.RemoveQuantity("rambutan", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("rambutan", 5);
 
                     if (vegetableStage && (vStage == VegetableStage.tomato))
-                        source.Inventory.RemoveQuantity("tomato", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.vegetable))
-                        source.Inventory.RemoveQuantity("vegetable", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("vegetable", 5);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.carrot))
-                        source.Inventory.RemoveQuantity("carrot", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("carrot", 5);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.rambutan))
-                        source.Inventory.RemoveQuantity("rambutan", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("rambutan", 5);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.tomato))
-                        source.Inventory.RemoveQuantity("tomato", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
 
                     if (vegetableStage3 && (vStage3 == VegetableStage3.vegetable))
-                        source.Inventory.RemoveQuantity("vegetable", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("vegetable", 5);
 
                     if (vegetableStage3 && (vStage3 == VegetableStage3.carrot))
-                        source.Inventory.RemoveQuantity("carrot", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("carrot", 5);
 
                     if (vegetableStage3 && (vStage3 == VegetableStage3.rambutan))
-                        source.Inventory.RemoveQuantity("rambutan", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("rambutan", 5);
 
                     if (vegetableStage3 && (vStage3 == VegetableStage3.tomato))
-                        source.Inventory.RemoveQuantity("tomato", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.bread))
-                        source.Inventory.RemoveQuantity("bread", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("bread", 1);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.cheese))
-                        source.Inventory.RemoveQuantity("cheese", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("cheese", 1);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.flour))
-                        source.Inventory.RemoveQuantity("flour", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("flour", 1);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.marinade))
-                        source.Inventory.RemoveQuantity("marinade", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("marinade", 1);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.salt))
-                        source.Inventory.RemoveQuantity("salt", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("salt", 1);
 
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.bread))
-                        source.Inventory.RemoveQuantity("bread", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("bread", 1);
 
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.cheese))
-                        source.Inventory.RemoveQuantity("cheese", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("cheese", 1);
 
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.flour))
-                        source.Inventory.RemoveQuantity("flour", 2);
+                        source.Inventory.RemoveQuantityByTemplateKey("flour", 2);
 
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.marinade))
-                        source.Inventory.RemoveQuantity("marinade", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("marinade", 1);
 
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.salt))
-                        source.Inventory.RemoveQuantity("salt", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("salt", 1);
 
                     if (extraIngredients3 && (eStage3 == ExtraIngredientsStage3.bread))
-                        source.Inventory.RemoveQuantity("bread", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("bread", 1);
 
                     if (extraIngredients3 && (eStage3 == ExtraIngredientsStage3.cheese))
-                        source.Inventory.RemoveQuantity("cheese", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("cheese", 1);
 
                     if (extraIngredients3 && (eStage3 == ExtraIngredientsStage3.flour))
-                        source.Inventory.RemoveQuantity("flour", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("flour", 1);
 
                     if (extraIngredients3 && (eStage3 == ExtraIngredientsStage3.marinade))
-                        source.Inventory.RemoveQuantity("marinade", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("marinade", 1);
 
                     if (extraIngredients3 && (eStage3 == ExtraIngredientsStage3.salt))
-                        source.Inventory.RemoveQuantity("salt", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("salt", 1);
                     
                     #endregion
 
@@ -1410,70 +1410,70 @@ public class cookItemScript : DialogScriptBase
                     #region RemoveItems
 
                     if (fruitsStage && (fstage == FruitsStage.cherry))
-                        source.Inventory.RemoveQuantity("cherry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
                     
                     if (fruitsStage && (fstage == FruitsStage.grape))
                         if (!source.Inventory.HasCountByTemplateKey("grape", 10)) 
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.acorn))
-                        source.Inventory.RemoveQuantity("acorn", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("acorn", 10);
 
                     if (fruitsStage && (fstage == FruitsStage.apple))
-                        source.Inventory.RemoveQuantity("apple", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("apple", 10);
 
                     if (fruitsStage && (fstage == FruitsStage.greengrapes))
-                        source.Inventory.RemoveQuantity("greengrapes", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("greengrapes", 10);
 
                     if (fruitsStage && (fstage == FruitsStage.strawberry))
-                        source.Inventory.RemoveQuantity("strawberry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("strawberry", 10);
 
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
-                        source.Inventory.RemoveQuantity("tangerines", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("tangerines", 10);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.cherry))
-                        source.Inventory.RemoveQuantity("cherry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
                         
                     if (fruitsStage2 && (fstage2 == FruitsStage2.grape))
                         if (!source.Inventory.HasCountByTemplateKey("grape", 10)) 
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.acorn))
-                        source.Inventory.RemoveQuantity("acorn", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("acorn", 10);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.apple))
-                        source.Inventory.RemoveQuantity("apple", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("apple", 10);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.greengrapes))
-                        source.Inventory.RemoveQuantity("greengrapes", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("greengrapes", 10);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.strawberry))
-                        source.Inventory.RemoveQuantity("strawberry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("strawberry", 10);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.tangerines))
-                        source.Inventory.RemoveQuantity("tangerines", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("tangerines", 10);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.cherry))
-                        source.Inventory.RemoveQuantity("cherry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
                     
                     if (fruitsStage3 && (fstage3 == FruitsStage3.grape))
                         if (!source.Inventory.HasCountByTemplateKey("grape", 10)) 
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.acorn))
-                        source.Inventory.RemoveQuantity("acorn", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("acorn", 10);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.apple))
-                        source.Inventory.RemoveQuantity("apple", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("apple", 10);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.greengrapes))
-                        source.Inventory.RemoveQuantity("greengrapes", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("greengrapes", 10);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.strawberry))
-                        source.Inventory.RemoveQuantity("strawberry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("strawberry", 10);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.tangerines))
-                        source.Inventory.RemoveQuantity("tangerines", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("tangerines", 10);
 
                     #endregion
 
@@ -1674,49 +1674,49 @@ public class cookItemScript : DialogScriptBase
                     #region RemoveItems
 
                     if (meatStage && (mStage == MeatsStage.beefslices))
-                        source.Inventory.RemoveQuantity("beefslices", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("beefslices", 1);
 
                     if (meatStage && (mStage == MeatsStage.clam))
-                        source.Inventory.RemoveQuantity("clam", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("clam", 1);
 
                     if (meatStage && (mStage == MeatsStage.egg))
-                        source.Inventory.RemoveQuantity("egg", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("egg", 1);
 
                     if (meatStage && (mStage == MeatsStage.liver))
-                        source.Inventory.RemoveQuantity("liver", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("liver", 1);
 
                     if (meatStage && (mStage == MeatsStage.lobstertail))
-                        source.Inventory.RemoveQuantity("lobstertail", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("lobstertail", 1);
 
                     if (meatStage && (mStage == MeatsStage.rawmeat))
-                        source.Inventory.RemoveQuantity("rawmeat", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("rawmeat", 1);
 
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
-                        source.Inventory.RemoveQuantity("vegetable", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("vegetable", 15);
 
                     if (vegetableStage && (vStage == VegetableStage.carrot))
-                        source.Inventory.RemoveQuantity("carrot", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("carrot", 15);
 
                     if (vegetableStage && (vStage == VegetableStage.rambutan))
-                        source.Inventory.RemoveQuantity("rambutan", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("rambutan", 15);
 
                     if (vegetableStage && (vStage == VegetableStage.tomato))
-                        source.Inventory.RemoveQuantity("tomato", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("tomato", 15);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.vegetable))
-                        source.Inventory.RemoveQuantity("vegetable", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("vegetable", 15);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.carrot))
-                        source.Inventory.RemoveQuantity("carrot", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("carrot", 15);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.rambutan))
-                        source.Inventory.RemoveQuantity("rambutan", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("rambutan", 15);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.tomato))
-                        source.Inventory.RemoveQuantity("tomato", 15);
+                        source.Inventory.RemoveQuantityByTemplateKey("tomato", 15);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.cheese))
-                        source.Inventory.RemoveQuantity("cheese", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("cheese", 1);
                     
                     #endregion
 
@@ -1868,25 +1868,25 @@ public class cookItemScript : DialogScriptBase
                     #region RemoveItems
                     
                     if (meatStage && (mStage == MeatsStage.lobstertail))
-                        source.Inventory.RemoveQuantity("lobstertail", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("lobstertail", 1);
 
                     if (fruitsStage && (fstage == FruitsStage.cherry))
-                        source.Inventory.RemoveQuantity("cherry", 25);
+                        source.Inventory.RemoveQuantityByTemplateKey("cherry", 25);
                     
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
-                        source.Inventory.RemoveQuantity("vegetable", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("vegetable", 5);
                     
                     if (vegetableStage && (vStage == VegetableStage.tomato))
-                        source.Inventory.RemoveQuantity("tomato", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.vegetable))
-                        source.Inventory.RemoveQuantity("vegetable", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("vegetable", 5);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.tomato))
-                        source.Inventory.RemoveQuantity("tomato", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
                     
                     if (extraIngredients && (eStage == ExtraIngredientsStage.salt))
-                        source.Inventory.RemoveQuantity("salt", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("salt", 1);
                     
                     #endregion
 
@@ -2031,28 +2031,28 @@ public class cookItemScript : DialogScriptBase
                     #region RemoveItems
 
                     if (fruitsStage && (fstage == FruitsStage.cherry))
-                        source.Inventory.RemoveQuantity("cherry", 50);
+                        source.Inventory.RemoveQuantityByTemplateKey("cherry", 50);
                     
                     if (fruitsStage && (fstage == FruitsStage.grape))
-                        source.Inventory.RemoveQuantity("grape", 50);
+                        source.Inventory.RemoveQuantityByTemplateKey("grape", 50);
 
                     if (fruitsStage && (fstage == FruitsStage.acorn))
-                        source.Inventory.RemoveQuantity("acorn", 50);
+                        source.Inventory.RemoveQuantityByTemplateKey("acorn", 50);
 
                     if (fruitsStage && (fstage == FruitsStage.apple))
-                        source.Inventory.RemoveQuantity("apple", 50);
+                        source.Inventory.RemoveQuantityByTemplateKey("apple", 50);
 
                     if (fruitsStage && (fstage == FruitsStage.greengrapes))
-                        source.Inventory.RemoveQuantity("greengrapes", 50);
+                        source.Inventory.RemoveQuantityByTemplateKey("greengrapes", 50);
 
                     if (fruitsStage && (fstage == FruitsStage.strawberry))
-                        source.Inventory.RemoveQuantity("strawberry", 50);
+                        source.Inventory.RemoveQuantityByTemplateKey("strawberry", 50);
 
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
-                        source.Inventory.RemoveQuantity("tangerines", 50);
+                        source.Inventory.RemoveQuantityByTemplateKey("tangerines", 50);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.flour))
-                        source.Inventory.RemoveQuantity("flour", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("flour", 1);
 
                     #endregion
 
@@ -2263,64 +2263,64 @@ public class cookItemScript : DialogScriptBase
                     #region RemoveItems
 
                     if (meatStage && (mStage == MeatsStage.beefslices))
-                        source.Inventory.RemoveQuantity("beefslices", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("beefslices", 1);
 
                     if (meatStage && (mStage == MeatsStage.clam))
-                        source.Inventory.RemoveQuantity("clam", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("clam", 1);
 
                     if (meatStage && (mStage == MeatsStage.egg))
-                        source.Inventory.RemoveQuantity("egg", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("egg", 1);
 
                     if (meatStage && (mStage == MeatsStage.liver))
-                        source.Inventory.RemoveQuantity("liver", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("liver", 1);
 
                     if (meatStage && (mStage == MeatsStage.lobstertail))
-                        source.Inventory.RemoveQuantity("lobstertail", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("lobstertail", 1);
 
                     if (meatStage && (mStage == MeatsStage.rawmeat))
-                        source.Inventory.RemoveQuantity("rawmeat", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("rawmeat", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.beefslices))
-                        source.Inventory.RemoveQuantity("beefslices", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("beefslices", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.clam))
-                        source.Inventory.RemoveQuantity("clam", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("clam", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.egg))
-                        source.Inventory.RemoveQuantity("egg", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("egg", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.liver))
-                        source.Inventory.RemoveQuantity("liver", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("liver", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.lobstertail))
-                        source.Inventory.RemoveQuantity("lobstertail", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("lobstertail", 1);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.rawmeat))
-                        source.Inventory.RemoveQuantity("rawmeat", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("rawmeat", 1);
 
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
-                        source.Inventory.RemoveQuantity("vegetable", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("vegetable", 5);
                     
                     if (vegetableStage && (vStage == VegetableStage.tomato))
-                        source.Inventory.RemoveQuantity("tomato", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.vegetable))
-                        source.Inventory.RemoveQuantity("vegetable", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("vegetable", 5);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.tomato))
-                        source.Inventory.RemoveQuantity("tomato", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.bread))
-                        source.Inventory.RemoveQuantity("bread", 2);
+                        source.Inventory.RemoveQuantityByTemplateKey("bread", 2);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.cheese))
-                        source.Inventory.RemoveQuantity("cheese", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("cheese", 1);
 
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.bread))
-                        source.Inventory.RemoveQuantity("bread", 2);
+                        source.Inventory.RemoveQuantityByTemplateKey("bread", 2);
 
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.cheese))
-                        source.Inventory.RemoveQuantity("cheese", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("cheese", 1);
                     
                     #endregion
 
@@ -2571,46 +2571,46 @@ public class cookItemScript : DialogScriptBase
                     #region RemoveItems
 
                     if (meatStage && (mStage == MeatsStage.beefslices))
-                        source.Inventory.RemoveQuantity("beefslices", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("beefslices", 1);
 
                     if (meatStage && (mStage == MeatsStage.clam))
-                        source.Inventory.RemoveQuantity("clam", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("clam", 1);
 
                     if (meatStage && (mStage == MeatsStage.egg))
-                        source.Inventory.RemoveQuantity("egg", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("egg", 1);
 
                     if (meatStage && (mStage == MeatsStage.liver))
-                        source.Inventory.RemoveQuantity("liver", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("liver", 1);
 
                     if (meatStage && (mStage == MeatsStage.lobstertail))
-                        source.Inventory.RemoveQuantity("lobstertail", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("lobstertail", 1);
 
                     if (meatStage && (mStage == MeatsStage.rawmeat))
-                        source.Inventory.RemoveQuantity("rawmeat", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("rawmeat", 1);
 
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
-                        source.Inventory.RemoveQuantity("vegetable", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("vegetable", 5);
 
                     if (vegetableStage && (vStage == VegetableStage.carrot))
-                        source.Inventory.RemoveQuantity("carrot", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("carrot", 5);
 
                     if (vegetableStage && (vStage == VegetableStage.rambutan))
-                        source.Inventory.RemoveQuantity("rambutan", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("rambutan", 5);
 
                     if (vegetableStage && (vStage == VegetableStage.tomato))
-                        source.Inventory.RemoveQuantity("tomato", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.flour))
-                        source.Inventory.RemoveQuantity("flour", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("flour", 1);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.salt))
-                        source.Inventory.RemoveQuantity("salt", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("salt", 1);
 
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.flour))
-                        source.Inventory.RemoveQuantity("flour", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("flour", 1);
                     
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.salt))
-                        source.Inventory.RemoveQuantity("salt", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("salt", 1);
 
                     #endregion
 
@@ -2796,7 +2796,7 @@ public class cookItemScript : DialogScriptBase
                     #region RemoveItems
 
                     if (meatStage && (mStage == MeatsStage.rawmeat))
-                        source.Inventory.RemoveQuantity("rawmeat", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("rawmeat", 1);
                     
                     if (fruitsStage && (fstage == FruitsStage.cherry))
                         if (!source.Inventory.HasCountByTemplateKey("cherry", 10)) 
@@ -2827,19 +2827,19 @@ public class cookItemScript : DialogScriptBase
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
-                        source.Inventory.RemoveQuantity("vegetable", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("vegetable", 5);
 
                     if (vegetableStage && (vStage == VegetableStage.carrot))
-                        source.Inventory.RemoveQuantity("carrot", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("carrot", 5);
 
                     if (vegetableStage && (vStage == VegetableStage.rambutan))
-                        source.Inventory.RemoveQuantity("rambutan", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("rambutan", 5);
 
                     if (vegetableStage && (vStage == VegetableStage.tomato))
-                        source.Inventory.RemoveQuantity("tomato", 5);
+                        source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.salt))
-                        source.Inventory.RemoveQuantity("marinade", 1);
+                        source.Inventory.RemoveQuantityByTemplateKey("marinade", 1);
 
                     #endregion
 

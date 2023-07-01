@@ -18,9 +18,24 @@ public class WizardElementScript : DialogScriptBase
     {
         var hasElement = source.Trackers.Flags.TryGetFlag(out WizardElement stage);
 
+        if (source.UserStatSheet.BaseClass is not BaseClass.Wizard)
+            return;
+
         if (!hasElement)
             switch (Subject.Template.TemplateKey.ToLower())
             {
+                case "kiril_initial":
+                {
+                    Subject.Reply(source, "Why are you here? I have nothing to teach someone who cannot dedicate themselves to something. Go find Dar and he can help you find your element.");
+
+                    return;
+                }
+                case "hadrian_initial":
+                {
+                    Subject.Reply(source, "What are you doing here? You haven't dedicated yourself to an element? You need to study one first before you ever get another. Go speak to Dar, he is the only one who can help you with your decision.");
+
+                    return;
+                }
                 case "dar_initial":
                 {
                     if (Subject.HasOption("Learn Spells"))

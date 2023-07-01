@@ -182,7 +182,7 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "petunia_turnin":
             {
-                if (!source.Inventory.RemoveQuantity("grapes", 20))
+                if (!source.Inventory.RemoveQuantityByTemplateKey("grape", 20))
                 {
                     Subject.Reply(source, "You don't have enough grapes, where are they?");
                     return;
@@ -203,7 +203,7 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "fisksecret_collectedwaterlilies":
             {
-                if (!source.Inventory.HasCount("waterlily", 5))
+                if (!source.Inventory.HasCountByTemplateKey("waterlily", 5))
                 {
                     Subject.Reply(source, "I thought you got the waterlilies? Where did they go?");
                     source.SendOrangeBarMessage("You don't have enough Water Lilies.");
@@ -215,7 +215,7 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "fisksecret_collectedpetunias":
             {
-                if (!source.Inventory.HasCount("petunia", 5))
+                if (!source.Inventory.HasCountByTemplateKey("petunia", 5))
                 {
                     Subject.Reply(source, "Where are the petunias? Did you lose them?");
                     source.SendOrangeBarMessage("You don't have enough Petunias.");
@@ -227,7 +227,7 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "fisksecret_collectedpinkrose":
             {
-                if (!source.Inventory.HasCount("pinkrose", 1))
+                if (!source.Inventory.HasCountByTemplateKey("pinkrose", 1))
                 {
                     Subject.Reply(source, "The Pink rose? Where is it?");
                     source.SendOrangeBarMessage("You don't have the Pink Rose.");
@@ -239,7 +239,7 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "fisksecret_collectedbouquet":
             {
-                if (!source.Inventory.HasCount("specialbouquet", 1) && !source.Equipment.Contains("specialBouquet"))
+                if (!source.Inventory.HasCountByTemplateKey("specialbouquet", 1) && !source.Equipment.Contains("specialBouquet"))
                 {
                     Subject.Reply(source, "Where's the bouquet? I was so excited!");
                     source.SendOrangeBarMessage("You don't have the Bouquet.");
@@ -251,7 +251,7 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "fisksecret_collectedbrandy":
             {
-                if (!source.Inventory.RemoveQuantity("brandy", 10))
+                if (!source.Inventory.RemoveQuantityByTemplateKey("brandy", 10))
                 {
                     Subject.Reply(source, "Where's the Brandy?");
                     source.SendOrangeBarMessage("You don't have enough Brandy.");
@@ -282,7 +282,7 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "givebertil_start":
             {
-                if (!source.Inventory.HasCount("specialbouquet", 1) && (!source.Equipment.Contains("specialbouquet")))
+                if (!source.Inventory.HasCountByTemplateKey("specialbouquet", 1) && (!source.Equipment.Contains("specialbouquet")))
                 {
                     Subject.Reply(source, "Where'd you put the Bouquet?");
                     source.SendOrangeBarMessage("You don't have the Bouquet.");
@@ -387,7 +387,7 @@ public class FiskSecretScript : DialogScriptBase
 
             case "waterlily_turnin":
             {
-                if (!source.Inventory.RemoveQuantity("wine", 10))
+                if (!source.Inventory.RemoveQuantityByTemplateKey("wine", 10))
                 {
                     Subject.Reply(source, "Where is my wine? Please go get it.");
 
@@ -596,7 +596,7 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "mushroomreturn2":
             {
-                if (!source.Inventory.RemoveQuantity("mushroom", 10))
+                if (!source.Inventory.RemoveQuantityByTemplateKey("mushroom", 10))
                 {
                     Subject.Reply(source, "Where are my mushrooms?");
                     source.SendOrangeBarMessage("You do not have enough mushrooms.");
@@ -681,7 +681,7 @@ public class FiskSecretScript : DialogScriptBase
                     return;
                 }
                 {
-                    if (source.Inventory.HasCount("specialbouquet", 1) || (source.Equipment.Contains("specialBouquet")))
+                    if (source.Inventory.HasCountByTemplateKey("specialbouquet", 1) || (source.Equipment.Contains("specialBouquet")))
                     {
                         Subject.Reply(source, "I already made you a bouquet.");
 
@@ -694,8 +694,8 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "bouquet_start15":
             {
-                if (!source.Inventory.HasCount("petunia", 5)
-                    && (!source.Inventory.HasCount("pinkrose", 1) && (!source.Inventory.HasCount("waterlily", 5))))
+                if (!source.Inventory.HasCountByTemplateKey("petunia", 5)
+                    && (!source.Inventory.HasCountByTemplateKey("pinkrose", 1) && (!source.Inventory.HasCountByTemplateKey("waterlily", 5))))
                 {
                     Subject.Reply(source, "I think you're missing some flowers. I need the five water lilies, five petunias, and one pink rose.");
                     source.SendOrangeBarMessage("Looks like you're missing some flowers.");
@@ -709,9 +709,9 @@ public class FiskSecretScript : DialogScriptBase
                     return;
                 }
 
-                source.Inventory.RemoveQuantity("petunia", 5);
-                source.Inventory.RemoveQuantity("waterlily", 5);
-                source.Inventory.RemoveQuantity("pinkrose", 1);
+                source.Inventory.RemoveQuantityByTemplateKey("petunia", 5);
+                source.Inventory.RemoveQuantityByTemplateKey("waterlily", 5);
+                source.Inventory.RemoveQuantityByTemplateKey("pinkrose", 1);
                 source.Trackers.Enums.Set(FiskSecretStage.StartedBouquet);
                 source.Trackers.TimedEvents.AddEvent("craftbouquet", TimeSpan.FromHours(1), true);
 
@@ -719,8 +719,8 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "bouquet_start19":
             {
-                if (!source.Inventory.HasCount("petunia", 5)
-                    && (!source.Inventory.HasCount("pinkrose", 1) && (!source.Inventory.HasCount("waterlily", 5))))
+                if (!source.Inventory.HasCountByTemplateKey("petunia", 5)
+                    && (!source.Inventory.HasCountByTemplateKey("pinkrose", 1) && (!source.Inventory.HasCountByTemplateKey("waterlily", 5))))
                 {
                     Subject.Reply(source, "I think you're missing some flowers. I need the five water lilies, five petunias, and one pink rose.");
                     source.SendOrangeBarMessage("Looks like you're missing some flowers.");
@@ -734,9 +734,9 @@ public class FiskSecretScript : DialogScriptBase
                     return;
                 }
 
-                source.Inventory.RemoveQuantity("petunia", 5);
-                source.Inventory.RemoveQuantity("waterlily", 5);
-                source.Inventory.RemoveQuantity("pinkrose", 1);
+                source.Inventory.RemoveQuantityByTemplateKey("petunia", 5);
+                source.Inventory.RemoveQuantityByTemplateKey("waterlily", 5);
+                source.Inventory.RemoveQuantityByTemplateKey("pinkrose", 1);
                 source.Trackers.Enums.Set(FiskSecretStage.StartedBouquet);
                 source.Trackers.TimedEvents.AddEvent("craftbouquet2", TimeSpan.FromMinutes(30), true);
 
@@ -744,8 +744,8 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "bouquet_start22":
             {
-                if (!source.Inventory.HasCount("petunia", 5)
-                    && (!source.Inventory.HasCount("pinkrose", 1) && (!source.Inventory.HasCount("waterlily", 5))))
+                if (!source.Inventory.HasCountByTemplateKey("petunia", 5)
+                    && (!source.Inventory.HasCountByTemplateKey("pinkrose", 1) && (!source.Inventory.HasCountByTemplateKey("waterlily", 5))))
                 {
                     Subject.Reply(source, "I think you're missing some flowers. I need the five water lilies, five petunias, and one pink rose.");
                     source.SendOrangeBarMessage("Looks like you're missing some flowers.");
@@ -759,9 +759,9 @@ public class FiskSecretScript : DialogScriptBase
                     return;
                 }
 
-                source.Inventory.RemoveQuantity("petunia", 5);
-                source.Inventory.RemoveQuantity("waterlily", 5);
-                source.Inventory.RemoveQuantity("pinkrose", 1);
+                source.Inventory.RemoveQuantityByTemplateKey("petunia", 5);
+                source.Inventory.RemoveQuantityByTemplateKey("waterlily", 5);
+                source.Inventory.RemoveQuantityByTemplateKey("pinkrose", 1);
                 source.Trackers.Enums.Set(FiskSecretStage.StartedBouquet);
                 source.Trackers.TimedEvents.AddEvent("craftbouquet3", TimeSpan.FromMinutes(5), true);
 
@@ -769,8 +769,8 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "remakebouquet3":
             {
-                if (!source.Inventory.HasCount("petunia", 5)
-                    && (!source.Inventory.HasCount("pinkrose", 1) && (!source.Inventory.HasCount("waterlily", 5))))
+                if (!source.Inventory.HasCountByTemplateKey("petunia", 5)
+                    && (!source.Inventory.HasCountByTemplateKey("pinkrose", 1) && (!source.Inventory.HasCountByTemplateKey("waterlily", 5))))
                 {
                     Subject.Reply(source, "I think you're missing some flowers. I need the five water lilies, five petunias, and one pink rose.");
                     source.SendOrangeBarMessage("Looks like you're missing some flowers.");
@@ -784,9 +784,9 @@ public class FiskSecretScript : DialogScriptBase
                     return;
                 }
 
-                source.Inventory.RemoveQuantity("petunia", 5);
-                source.Inventory.RemoveQuantity("waterlily", 5);
-                source.Inventory.RemoveQuantity("pinkrose", 1);
+                source.Inventory.RemoveQuantityByTemplateKey("petunia", 5);
+                source.Inventory.RemoveQuantityByTemplateKey("waterlily", 5);
+                source.Inventory.RemoveQuantityByTemplateKey("pinkrose", 1);
                 source.Trackers.Enums.Set(FiskRemakeBouquet.BouquetWait);
                 source.Trackers.TimedEvents.AddEvent("craftbouquet4", TimeSpan.FromHours(1), true);
 
@@ -928,7 +928,7 @@ public class FiskSecretScript : DialogScriptBase
             }
             case "deliverbouquet2":
             {
-                if (!source.Inventory.HasCount("specialbouquet", 1) && (!source.Equipment.Contains("specialBouquet")))
+                if (!source.Inventory.HasCountByTemplateKey("specialbouquet", 1) && (!source.Equipment.Contains("specialBouquet")))
                 {
                     Subject.Reply(source, "What bouquet? You don't have one.");
                     source.SendOrangeBarMessage("You don't have the Bouquet.");
