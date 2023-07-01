@@ -15,9 +15,14 @@ namespace Chaos.Scripting.ItemScripts
         {
             NotifyPlayer(aisling, originalItem, originalCount);
             var nearbyPlayers = NotifyNearbyPlayers(aisling, originalItem, originalCount);
-            NotifyGroupMembers(aisling, originalItem, originalCount, nearbyPlayers);
+
+            NotifyGroupMembers(
+                aisling,
+                originalItem,
+                originalCount,
+                nearbyPlayers);
         }
-        
+
         private void NotifyPlayer(Aisling aisling, Item originalItem, int originalCount)
         {
             var message = Subject.Count.Equals(1)
@@ -31,7 +36,8 @@ namespace Chaos.Scripting.ItemScripts
         {
             var nearbyPlayers = aisling.MapInstance
                                        .GetEntitiesWithinRange<Aisling>(aisling, 8)
-                                       .Where(x => aisling.Id != x.Id).ToList();
+                                       .Where(x => aisling.Id != x.Id)
+                                       .ToList();
 
             if (!nearbyPlayers.Any())
                 return nearbyPlayers;
@@ -47,20 +53,32 @@ namespace Chaos.Scripting.ItemScripts
             return nearbyPlayers;
         }
 
-        private void NotifyGroupMembers(Aisling aisling, Item originalItem, int originalCount, List<Aisling> nearbyPlayers)
+        private void NotifyGroupMembers(
+            Aisling aisling,
+            Item originalItem,
+            int originalCount,
+            List<Aisling> nearbyPlayers
+        )
         {
             if (aisling.Group is { Count: > 1 })
             {
                 var point = new Point(aisling.X, aisling.Y);
+
                 var groupMembersInRange = aisling.Group
-                                                 .Where(x => x.WithinRange(point) && x.MapInstance.Equals(aisling.MapInstance) && !nearbyPlayers.Contains(x));
+                                                 .Where(
+                                                     x => x.WithinRange(point)
+                                                          && x.MapInstance.Equals(aisling.MapInstance)
+                                                          && !nearbyPlayers.Contains(x));
 
                 foreach (var member in groupMembersInRange)
                 {
-                    member.SendOrangeBarMessage(
-                        originalCount > 1
-                            ? $"{aisling.Name} has picked up {originalCount} {Subject.DisplayName}."
-                            : $"{aisling.Name} has picked up {Subject.DisplayName}.");
+                    if (member.Id != aisling.Id)
+                    {
+                        member.SendOrangeBarMessage(
+                            originalCount > 1
+                                ? $"{aisling.Name} has picked up {originalCount} {Subject.DisplayName}."
+                                : $"{aisling.Name} has picked up {Subject.DisplayName}.");
+                    }
                 }
             }
         }

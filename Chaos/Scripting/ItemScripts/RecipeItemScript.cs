@@ -302,7 +302,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 source.Animate(ani);
                 source.SendOrangeBarMessage($"You've learned all recipes.");
-                source.Inventory.RemoveQuantity("recipe_allcrafts", 1);
+                source.Inventory.RemoveQuantityByTemplateKey("recipe_allcrafts", 1);
 
                 return;
             }
@@ -1581,7 +1581,7 @@ public class RecipeItemScript : ItemScriptBase
                         return;
                     }
                     
-                    source.Inventory.RemoveQuantity(Subject.Template.TemplateKey, 1);
+                    source.Inventory.RemoveQuantityByTemplateKey(Subject.Template.TemplateKey, 1);
                     source.Trackers.Flags.AddFlag(AlchemyCategories.AttackTonics);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.FirestormTonic);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.StunTonic);
@@ -1605,7 +1605,7 @@ public class RecipeItemScript : ItemScriptBase
                         return;
                     }
 
-                    source.Inventory.RemoveQuantity(Subject.Template.TemplateKey, 1);
+                    source.Inventory.RemoveQuantityByTemplateKey(Subject.Template.TemplateKey, 1);
                     source.Trackers.Flags.AddFlag(AlchemyCategories.ApprenticeAlchemyBook);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.HealthPotion);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.ManaPotion);
@@ -1634,7 +1634,7 @@ public class RecipeItemScript : ItemScriptBase
                         return;
                     }
                     
-                    source.Inventory.RemoveQuantity(Subject.Template.TemplateKey, 1);
+                    source.Inventory.RemoveQuantityByTemplateKey(Subject.Template.TemplateKey, 1);
                     source.Trackers.Flags.AddFlag(AlchemyCategories.BasicAlchemyBook);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.JuggernautBrew);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.AstralBrew);
@@ -1946,7 +1946,7 @@ public class RecipeItemScript : ItemScriptBase
                         return;
                     }
                     
-                    source.Inventory.RemoveQuantity(Subject.Template.TemplateKey, 1);
+                    source.Inventory.RemoveQuantityByTemplateKey(Subject.Template.TemplateKey, 1);
                     source.Trackers.Flags.AddFlag(AlchemyCategories.StrongVitalityBrew);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongJuggernautBrew);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongAstralBrew);
@@ -3325,7 +3325,7 @@ public class RecipeItemScript : ItemScriptBase
         source.Animate(ani);
         source.Trackers.Flags.AddFlag(recipe);
         source.SendOrangeBarMessage($"You've learned {serverMessage}.");
-        source.Inventory.RemoveQuantity(templatekey, 1);
+        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
     }
 
     public static void ArmorSmithRecipeLearn(
@@ -3339,7 +3339,7 @@ public class RecipeItemScript : ItemScriptBase
         source.Animate(ani);
         source.Trackers.Flags.AddFlag(recipe);
         source.SendOrangeBarMessage($"You've learned {serverMessage}.");
-        source.Inventory.RemoveQuantity(templatekey, 1);
+        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
     }
 
     public static void WeaponSmithRecipeLearn(
@@ -3353,7 +3353,7 @@ public class RecipeItemScript : ItemScriptBase
         source.Animate(ani);
         source.Trackers.Flags.AddFlag(category);
         source.SendOrangeBarMessage($"You've learned {serverMessage}.");
-        source.Inventory.RemoveQuantity(templatekey, 1);
+        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
     }
 
     public static void AlchemyRecipeLearn(
@@ -3367,7 +3367,7 @@ public class RecipeItemScript : ItemScriptBase
         source.Animate(ani);
         source.Trackers.Flags.AddFlag(recipe);
         source.SendOrangeBarMessage($"You've learned {serverMessage}.");
-        source.Inventory.RemoveQuantity(templatekey, 1);
+        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
     }
 
     public static void EnchantingRecipeLearn(
@@ -3381,7 +3381,7 @@ public class RecipeItemScript : ItemScriptBase
         source.Animate(ani);
         source.Trackers.Flags.AddFlag(recipe);
         source.SendOrangeBarMessage($"You've learned {serverMessage}.");
-        source.Inventory.RemoveQuantity(templatekey, 1);
+        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
     }
 
     public static void JewelcraftingRecipeLearn(
@@ -3395,6 +3395,6 @@ public class RecipeItemScript : ItemScriptBase
         source.Animate(ani);
         source.Trackers.Flags.AddFlag(recipe);
         source.SendOrangeBarMessage($"You've learned {serverMessage}.");
-        source.Inventory.RemoveQuantity(templatekey, 1);
+        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
     }
 }

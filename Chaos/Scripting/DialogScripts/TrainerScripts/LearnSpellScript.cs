@@ -113,6 +113,16 @@ public class LearnSpellScript : DialogScriptBase
 
         var spellToLearn = SpellFactory.Create(spell.Template.TemplateKey);
 
+        if (!string.IsNullOrEmpty(spellToLearn.Template.LearningRequirements?.SkillSpellToUpgrade))
+        {
+            var oldSpell = source.SpellBook.FirstOrDefault(s => s.Template.Name.Equals(spellToLearn.Template.LearningRequirements?.SkillSpellToUpgrade, StringComparison.OrdinalIgnoreCase));
+            if (oldSpell != null)
+            {
+                source.SpellBook.Remove(oldSpell.Template.Name);
+                source.SendOrangeBarMessage($"{oldSpell.Template.Name} has been upgraded to {spellToLearn.Template.Name}.");
+            }
+        }
+        
         var learnSpellResult = ComplexActionHelper.LearnSpell(source, spellToLearn);
 
         switch (learnSpellResult)
@@ -131,17 +141,7 @@ public class LearnSpellScript : DialogScriptBase
                 };
 
                 source.MapInstance.ShowAnimation(animation);
-                
-                if (!string.IsNullOrEmpty(spellToLearn.Template.LearningRequirements?.SkillSpellToUpgrade))
-                {
-                    var oldSpell = source.SpellBook.FirstOrDefault(s => s.Template.Name.Equals(spellToLearn.Template.LearningRequirements?.SkillSpellToUpgrade, StringComparison.OrdinalIgnoreCase));
-                    if (oldSpell != null)
-                    {
-                        source.SpellBook.Remove(oldSpell.Template.Name);
-                        source.SendOrangeBarMessage($"{oldSpell.Template.Name} has been upgraded to {spellToLearn.Template.Name}.");
-                    }
-                }
-                
+
                 break;
             case ComplexActionHelper.LearnSpellResult.NoRoom:
                 Subject.Reply(

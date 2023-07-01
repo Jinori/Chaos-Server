@@ -18,13 +18,16 @@ public class WizardElementScript : DialogScriptBase
     {
         var hasElement = source.Trackers.Flags.TryGetFlag(out WizardElement stage);
 
-
         if (!hasElement)
             switch (Subject.Template.TemplateKey.ToLower())
             {
-
                 case "dar_initial":
                 {
+                    if (Subject.HasOption("Learn Spells"))
+                    {
+                        var s = Subject.GetOptionIndex("Learn Spells")!.Value;
+                        Subject.Options.RemoveAt(s);
+                    }
 
                     if (source.UserStatSheet.BaseClass is BaseClass.Wizard)
                     {
@@ -33,7 +36,7 @@ public class WizardElementScript : DialogScriptBase
                             DialogKey = "wizardElement_initial",
                             OptionText = "Wizard Element"
                         };
-                        
+
                         if (!Subject.HasOption(option.OptionText))
                             Subject.Options.Insert(0, option);
                     }
