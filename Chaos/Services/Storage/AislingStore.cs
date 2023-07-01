@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Chaos.Collections;
-using Chaos.Extensions.Common;
+using Chaos.Extensions;
 using Chaos.IO.FileSystem;
 using Chaos.Models.Legend;
 using Chaos.Models.Panel;
@@ -78,8 +78,12 @@ public sealed class AislingStore : IAsyncStore<Aisling>
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
-            await directory.SafeExecuteAsync(dir => InnerSaveAsync(dir, aisling));
-            Directory.SetLastWriteTimeUtc(directory, DateTime.UtcNow);
+            await directory.SafeExecuteAsync(
+                async dir =>
+                {
+                    await InnerSaveAsync(dir, aisling);
+                    Directory.SetLastWriteTimeUtc(directory, DateTime.UtcNow);
+                });
 
             Logger.WithProperty(aisling)
                   .LogDebug("Saved aisling {@AislingName}, took {@Elapsed}", aisling.Name, Stopwatch.GetElapsedTime(start));
@@ -157,14 +161,14 @@ public sealed class AislingStore : IAsyncStore<Aisling>
         var effectsPath = Path.Combine(directory, "effects.json");
 
         return Task.WhenAll(
-            EntityRepository.SaveAsync<Aisling, AislingSchema>(aisling, aislingPath),
-            EntityRepository.SaveAsync<Bank, BankSchema>(aisling.Bank, bankPath),
-            EntityRepository.SaveAsync<Trackers, TrackersSchema>(aisling.Trackers, trackersPath),
-            EntityRepository.SaveAsync<LegendMark, LegendMarkSchema>(aisling.Legend, legendPath),
-            EntityRepository.SaveAsync<Item, ItemSchema>(aisling.Inventory, inventoryPath),
-            EntityRepository.SaveAsync<Skill, SkillSchema>(aisling.SkillBook, skillsPath),
-            EntityRepository.SaveAsync<Spell, SpellSchema>(aisling.SpellBook, spellsPath),
-            EntityRepository.SaveAsync<Item, ItemSchema>(aisling.Equipment, equipmentPath),
-            EntityRepository.SaveAsync<IEffect, EffectSchema>(aisling.Effects, effectsPath));
+            EntityRepository.SaveAndMapAsync<Aisling, AislingSchema>(aisling, aislingPath),
+            EntityRepository.SaveAndMapAsync<Bank, BankSchema>(aisling.Bank, bankPath),
+            EntityRepository.SaveAndMapAsync<Trackers, TrackersSchema>(aisling.Trackers, trackersPath),
+            EntityRepository.SaveAndMapManyAsync<LegendMark, LegendMarkSchema>(aisling.Legend, legendPath),
+            EntityRepository.SaveAndMapManyAsync<Item, ItemSchema>(aisling.Inventory, inventoryPath),
+            EntityRepository.SaveAndMapManyAsync<Skill, SkillSchema>(aisling.SkillBook, skillsPath),
+            EntityRepository.SaveAndMapManyAsync<Spell, SpellSchema>(aisling.SpellBook, spellsPath),
+            EntityRepository.SaveAndMapManyAsync<Item, ItemSchema>(aisling.Equipment, equipmentPath),
+            EntityRepository.SaveAndMapManyAsync<IEffect, EffectSchema>(aisling.Effects, effectsPath));
     }
 }

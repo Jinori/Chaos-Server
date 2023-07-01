@@ -3,6 +3,7 @@ using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Cryptography.Abstractions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Networking;
 using Chaos.Geometry.Abstractions.Definitions;
@@ -98,13 +99,20 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
     /// <inheritdoc />
     public void SendBoard()
     {
-        var packet = ServerPacketEx.FromData(
-            ServerOpCode.BulletinBoard,
-            PacketSerializer.Encoding,
-            1,
-            0);
+        var args = new BoardArgs
+        {
+            Type = BoardOrResponseType.BoardList,
+            Boards = new List<BoardInfo>
+            {
+                new()
+                {
+                    Name = "Under Construction",
+                    Posts = new List<PostInfo>()
+                }
+            }
+        };
 
-        Send(ref packet);
+        Send(args);
     }
 
     public void SendBodyAnimation(

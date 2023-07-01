@@ -3,6 +3,7 @@ using Chaos.Common.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
 using Chaos.Models.Data;
@@ -38,7 +39,7 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
     public virtual void DistributeExperience(Creature killedCreature, params Aisling[] aislings)
     {
         var exp = ExperienceFormula.Calculate(killedCreature, aislings);
-        
+
         foreach (var aisling in aislings)
             GiveExp(aisling, exp);
     }
@@ -56,31 +57,16 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
             return;
         }
 
-        if (IntegerRandomizer.RollChance(1))
-        {
-            amount = amount * 2;
-            aisling.SendActiveMessage($"Experience critical! Amount was doubled.");
-            var ani = new Animation
-            {
-                AnimationSpeed = 100,
-                TargetAnimation = 341
-            };
-            aisling.Animate(ani, aisling.Id);
-        }
-        
         if (amount + aisling.UserStatSheet.TotalExp > uint.MaxValue)
             amount = uint.MaxValue - aisling.UserStatSheet.TotalExp;
 
-        //if you're at max level, you don't gain exp
-        //feel free to put a message here if you want
-        var hasFlag = aisling.Trackers.Enums.TryGetValue(out GainExp stage);
-        if ((amount <= 0 || stage == GainExp.No))
+        if (amount <= 0)
             return;
 
         aisling.SendActiveMessage($"You have gained {amount:N0} experience!");
 
         Logger.WithProperty(aisling)
-              .LogTrace("Aisling {@AislingName} has gained {Amount:N0} experience", aisling, amount);
+              .LogTrace("Aisling {@AislingName} has gained {Amount:N0} experience", aisling.Name, amount);
 
         while (amount > 0)
             if (aisling.UserStatSheet.Level >= WorldOptions.Instance.MaxLevel)

@@ -10,6 +10,8 @@ using Chaos.Extensions;
 using Chaos.Extensions.DependencyInjection;
 using Chaos.Geometry.JsonConverters;
 using Chaos.Services.Configuration;
+using Chaos.Storage;
+using Chaos.Storage.Abstractions;
 using Chaos.Utilities;
 using ChaosTool.Model.Tables;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +24,6 @@ namespace ChaosTool;
 public class JsonContext
 {
     private static readonly SerializationContext Context;
-    private static readonly JsonSerializerOptions JsonSerializerOptions;
     private static readonly TaskCompletionSource LoadingCompletion;
     private static readonly IServiceProvider Services;
     private static bool IsInitialized;
@@ -39,6 +40,7 @@ public class JsonContext
     public static SkillTemplateRepository SkillTemplates { get; private set; } = null!;
     public static SpellTemplateRepository SpellTemplates { get; private set; } = null!;
     public static string BaseDirectory { get; }
+    public static JsonSerializerOptions JsonSerializerOptions { get; }
 
     static JsonContext()
     {
@@ -80,6 +82,8 @@ public class JsonContext
         // @formatter:on
         var configuration = builder.Build();
         services.AddSingleton<IConfiguration>(configuration);
+        services.AddTypeMapper();
+        services.AddTransient<IEntityRepository, EntityRepository>();
         services.AddLogging();
 
         services.AddOptions<JsonSerializerOptions>()

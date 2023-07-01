@@ -35,7 +35,7 @@ public static class RectangleExtensions
     /// <returns>
     ///     <c>true</c> if <paramref name="point" /> is inside of the <paramref name="rect" />, otherwise <c>false</c>
     /// </returns>
-    public static bool Contains(this IRectangle rect, IPoint point)
+    public static bool Contains<TPoint>(this IRectangle rect, TPoint point) where TPoint: IPoint
     {
         ArgumentNullException.ThrowIfNull(rect);
 

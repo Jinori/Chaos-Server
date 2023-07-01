@@ -1,4 +1,4 @@
-using Chaos.Extensions.Common;
+using Chaos.Extensions;
 using Chaos.Models.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
@@ -94,9 +94,10 @@ public class LearnSkillScript : DialogScriptBase
         switch (learnSkillResult)
         {
             case ComplexActionHelper.LearnSkillResult.Success:
-                Logger.WithProperty(source)
+                Logger.WithProperty(Subject)
+                      .WithProperty(Subject.DialogSource)
+                      .WithProperty(source)
                       .WithProperty(skill)
-                      .WithProperty(SkillTeacherSource)
                       .LogDebug("Aisling {@AislingName} learned skill {@SkillName}", source.Name, skill.Template.Name);
 
                 var animation = new Animation
@@ -192,9 +193,10 @@ public class LearnSkillScript : DialogScriptBase
         {
             dialog.ReplyToUnknownInput(source);
 
-            Logger.WithProperty(source)
+            Logger.WithProperty(Subject)
+                  .WithProperty(Subject.DialogSource)
+                  .WithProperty(source)
                   .WithProperty(skillToLearn)
-                  .WithProperty(SkillTeacherSource)
                   .LogWarning(
                       "Aisling {@AislingName} tried to learn skill {@SkillName} but is not the correct class (possibly packeting)",
                       source.Name,
@@ -207,9 +209,10 @@ public class LearnSkillScript : DialogScriptBase
         {
             dialog.ReplyToUnknownInput(source);
 
-            Logger.WithProperty(source)
+            Logger.WithProperty(Subject)
+                  .WithProperty(Subject.DialogSource)
+                  .WithProperty(source)
                   .WithProperty(skillToLearn)
-                  .WithProperty(SkillTeacherSource)
                   .LogWarning(
                       "Aisling {@AislingName} tried to learn skill {@SkillName} but is not the correct adv class (possibly packeting)",
                       source.Name,

@@ -260,7 +260,8 @@ public sealed partial class MonsterTemplateEditor
             }
         } else if (e.PropertyName.EqualsI(nameof(MonsterTemplateSchema.ScriptKeys))
                    || e.PropertyName.EqualsI(nameof(MonsterTemplateSchema.SpellTemplateKeys))
-                   || e.PropertyName.EqualsI(nameof(MonsterTemplateSchema.SkillTemplateKeys)))
+                   || e.PropertyName.EqualsI(nameof(MonsterTemplateSchema.SkillTemplateKeys))
+                   || e.PropertyName.EqualsI(nameof(MonsterTemplateSchema.LootTableKeys)))
         {
             e.Cancel = true;
 

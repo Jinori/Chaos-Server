@@ -1,4 +1,4 @@
-using Chaos.Extensions.Common;
+using Chaos.Extensions;
 using Chaos.Models.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
@@ -128,9 +128,10 @@ public class LearnSpellScript : DialogScriptBase
         switch (learnSpellResult)
         {
             case ComplexActionHelper.LearnSpellResult.Success:
-                Logger.WithProperty(source)
+                Logger.WithProperty(Subject)
+                      .WithProperty(Subject.DialogSource)
+                      .WithProperty(source)
                       .WithProperty(spell)
-                      .WithProperty(SpellTeacherSource)
                       .LogDebug("Aisling {@AislingName} learned spell {@SpellName}", source.Name, spell.Template.Name);
 
                 var animation = new Animation
@@ -228,9 +229,10 @@ public class LearnSpellScript : DialogScriptBase
         {
             dialog.ReplyToUnknownInput(source);
 
-            Logger.WithProperty(source)
+            Logger.WithProperty(Subject)
+                  .WithProperty(Subject.DialogSource)
+                  .WithProperty(source)
                   .WithProperty(spellToLearn)
-                  .WithProperty(SpellTeacherSource)
                   .LogWarning(
                       "Aisling {@AislingName} tried to learn spell {@SpellName} but is not the correct class (possibly packeting)",
                       source.Name,
@@ -243,9 +245,10 @@ public class LearnSpellScript : DialogScriptBase
         {
             dialog.ReplyToUnknownInput(source);
 
-            Logger.WithProperty(source)
+            Logger.WithProperty(Subject)
+                  .WithProperty(Subject.DialogSource)
+                  .WithProperty(source)
                   .WithProperty(spellToLearn)
-                  .WithProperty(SpellTeacherSource)
                   .LogWarning(
                       "Aisling {@AislingName} tried to learn spell {@SpellName} but is not the correct adv class (possibly packeting)",
                       source.Name,
