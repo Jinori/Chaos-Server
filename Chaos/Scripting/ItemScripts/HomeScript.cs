@@ -1,24 +1,23 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.World;
 using Chaos.Scripting.Components;
 using Chaos.Scripting.Components.Utilities;
-using Chaos.Scripting.SpellScripts.Abstractions;
+using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripting.SpellScripts;
+namespace Chaos.Scripting.ItemScripts;
 
-public class HomeScript : ConfigurableSpellScriptBase, TeleportComponent.ITeleportComponentOptions, ManaCostComponent.IManaCostComponentOptions
+public class HomeScript : ConfigurableItemScriptBase,  TeleportComponent.ITeleportComponentOptions
 {
-    public HomeScript(Spell subject, ISimpleCache simpleCache)
-        : base(subject) => SimpleCache = simpleCache;
+    /// <inheritdoc />
+    public HomeScript(Item subject, ISimpleCache simpleCache)
+        : base(subject) =>
+        SimpleCache = simpleCache;
 
-    public override void OnUse(SpellContext context)
+    public override void OnUse(Aisling source)
     {
-        if (context.SourceAisling is null)
-            return;
-
-        switch (context.SourceAisling.Nation)
+        switch (source.Nation)
         {
             case Nation.Exile:
                 OriginPoint = new Point(8, 5);
@@ -83,7 +82,8 @@ public class HomeScript : ConfigurableSpellScriptBase, TeleportComponent.ITelepo
                 throw new ArgumentOutOfRangeException();
         }
 
-        new ComponentExecutor(context).WithOptions(this).ExecuteAndCheck<ManaCostComponent>()?.Execute<TeleportComponent>();
+        new ComponentExecutor(source, source).WithOptions(this).Execute<TeleportComponent>();
+        source.Inventory.Remove(Subject.Slot);
     }
 
     /// <inheritdoc />
@@ -92,8 +92,4 @@ public class HomeScript : ConfigurableSpellScriptBase, TeleportComponent.ITelepo
     public string DestinationMapKey { get; set; } = null!;
     /// <inheritdoc />
     public Point OriginPoint { get; set; }
-    /// <inheritdoc />
-    public int? ManaCost { get; init; }
-    /// <inheritdoc />
-    public decimal PctManaCost { get; init; }
 }

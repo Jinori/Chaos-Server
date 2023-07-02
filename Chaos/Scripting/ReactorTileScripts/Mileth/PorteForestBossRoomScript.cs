@@ -26,22 +26,19 @@ public override void OnWalkedOn(Creature source)
     // Check if the source is an Aisling
     if (source is  not Aisling aisling)
         return;
-     // Get the current point of the Aisling
-    var currentPoint = new Point(aisling.X, aisling.Y);
-     // Get the group of Aislings near the current point
-    var group = aisling.Group?.Where(x => x.WithinRange(currentPoint)).ToList();
+
      // Check if the group is null or has only one member
-    if (group is null || (group.Count <= 1))
+    if (aisling.Group is null || aisling.Group.Any(x => !x.OnSameMapAs(aisling) || !x.WithinRange(aisling)))
     {
         // Send a message to the Aisling
-        aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You're nervous to enter without a group...");
+        aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You're nervous to enter without your full group...");
          // Warp the source back
         var point = source.DirectionalOffset(source.Direction.Reverse());
         source.WarpTo(point);
         return;
     }
      // Check if all members of the group have the quest flag and are within level range
-    var allMembersHaveQuestEnum = group.All(member => member.Trackers.Enums.TryGetValue(out PFQuestStage stage) && (stage == PFQuestStage.FoundPendant));
+    var allMembersHaveQuestEnum = aisling.Group.All(member => member.Trackers.Enums.TryGetValue(out PFQuestStage stage) && (stage == PFQuestStage.FoundPendant));
     if (allMembersHaveQuestEnum)
     {
         // Create a merchant at the Aisling's current point
