@@ -4,6 +4,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 
 namespace Chaos.Scripting.DialogScripts.Mileth;
@@ -22,23 +23,21 @@ public class TeagueSendOnQuestScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        var group = source.Group?.Where(x => x.WithinRange(new Point(source.X, source.Y))).ToList();
-
-        if ((group == null) || !group.Any())
+        if ((source.Group is null) || source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source)))
         {
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure you group your companions for this quest!");
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure your friends are close and grouped!");
             Subject.Reply(source, "What? You don't have any friends with you.. who are you talking to?");
             return;
         }
 
-        if (!group.All(member => member.WithinLevelRange(source)))
+        if (!source.Group.All(member => member.WithinLevelRange(source)))
         {
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure your companions are within level range.");
             Subject.Reply(source, "Some of your companions are not within your level range.");
             return;
         }
 
-        foreach (var member in group)
+        foreach (var member in source.Group)
         {
             var merchant = MerchantFactory.Create("teague", member.MapInstance, new Point(member.X, member.Y));
             var dialog = DialogFactory.Create("teague_groupDialog", merchant);

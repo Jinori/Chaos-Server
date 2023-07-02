@@ -13,8 +13,8 @@ public class TerminusBugReportScript : DialogScriptBase
     }
 
     //Place Bot Token Here When Live
-    private const string BotToken = @"";
-    private const ulong ChannelId = 1083522838817939566;
+    private const string BOT_TOKEN = @"";
+    private const ulong CHANNEL_ID = 1083522838817939566;
 
 
     public override void OnDisplaying(Aisling source)
@@ -41,9 +41,9 @@ public class TerminusBugReportScript : DialogScriptBase
             async () =>
             {
                 var client = new DiscordSocketClient();
-                await client.LoginAsync(TokenType.Bot, BotToken);
+                await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
                 await client.StartAsync();
-                var channel = await client.GetChannelAsync(ChannelId) as IMessageChannel;
+                var channel = await client.GetChannelAsync(CHANNEL_ID) as IMessageChannel;
                 await channel!.SendMessageAsync($"```"
                                                 + "User Description: " + description + Environment.NewLine +
                                                 "Character Name: " + source.Name + Environment.NewLine +

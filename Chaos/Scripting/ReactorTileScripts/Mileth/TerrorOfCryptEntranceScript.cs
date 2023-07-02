@@ -25,12 +25,9 @@ public override void OnWalkedOn(Creature source)
     // Check if the source is an Aisling
     if (source is  not Aisling aisling)
         return;
-     // Get the current point of the Aisling
-    var currentPoint = new Point(aisling.X, aisling.Y);
-     // Get the group of Aislings near the current point
-    var group = aisling.Group?.Where(x => x.WithinRange(currentPoint)).ToList();
-     // Check if the group is null or has only one member
-    if (group is null || (group.Count <= 1))
+    
+    // Check if the group is null or has only one member
+    if (aisling.Group is null || aisling.Group.Any(x => !x.OnSameMapAs(aisling) || !x.WithinRange(aisling)))
     {
         // Send a message to the Aisling
         aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure you are grouped or your group is near you.");
@@ -40,7 +37,7 @@ public override void OnWalkedOn(Creature source)
         return;
     }
      // Check if all members of the group have the quest flag and are within level range
-    var allMembersHaveQuestFlag = group.All(member => member.Trackers.Flags.HasFlag(QuestFlag1.TerrorOfCryptHunt) && member.WithinLevelRange(source));
+    var allMembersHaveQuestFlag = aisling.Group.All(member => member.Trackers.Flags.HasFlag(QuestFlag1.TerrorOfCryptHunt) && member.WithinLevelRange(source));
      if (allMembersHaveQuestFlag)
     {
         // Create a merchant at the Aisling's current point
