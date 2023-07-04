@@ -10,7 +10,6 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.SpellScripts.Buffs;
 
-
 public class ApplyEffectScript : ConfigurableSpellScriptBase,
                                  SpellComponent<Creature>.ISpellComponentOptions,
                                  ApplyEffectComponent.IApplyEffectComponentOptions

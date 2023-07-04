@@ -1,12 +1,8 @@
 using System.Diagnostics;
 using Chaos.Common.Definitions;
-using Chaos.Extensions.Common;
-using Chaos.Common.Utilities;
-using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
-using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
@@ -73,8 +69,7 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
             {
                 aisling.UserStatSheet.AddTotalExp(amount);
                 amount = 0;
-            } 
-            else
+            } else
             {
                 var expToGive = Math.Min(amount, aisling.UserStatSheet.ToNextLevel);
                 aisling.UserStatSheet.AddTotalExp(expToGive);

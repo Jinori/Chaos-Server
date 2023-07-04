@@ -13,9 +13,16 @@ using Chaos.Scripting.SpellScripts.Abstractions;
 namespace Chaos.Scripting.SpellScripts.Damage;
 
 public class DamageWithSplashScript : ConfigurableSpellScriptBase,
-                            SpellComponent<Creature>.ISpellComponentOptions,
-                            DamageComponent.IDamageComponentOptions, SpreadComponent.ISpreadComponentOptions
+                                      SpellComponent<Creature>.ISpellComponentOptions,
+                                      DamageComponent.IDamageComponentOptions,
+                                      SpreadComponent.ISpreadComponentOptions
 {
+    /// <inheritdoc />
+    public int SpreadChance { get; init; }
+
+    /// <inheritdoc />
+    public int SpreadDistance { get; init; }
+
     /// <inheritdoc />
     public DamageWithSplashScript(Spell subject)
         : base(subject)
@@ -74,9 +81,4 @@ public class DamageWithSplashScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public bool IgnoreMagicResistance { get; init; }
     #endregion
-
-    /// <inheritdoc />
-    public int SpreadDistance { get; init; }
-    /// <inheritdoc />
-    public int SpreadChance { get; init; }
 }

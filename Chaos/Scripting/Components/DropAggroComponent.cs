@@ -18,13 +18,14 @@ public class DropAggroComponent : IComponent
         {
             if (target is Aisling or Merchant)
                 break;
-            
+
             var monster = target as Monster;
-            if (options.AllAggro) 
+
+            if (options.AllAggro)
                 monster?.ResetAggro();
         }
     }
-    
+
     public interface IDropAggroComponentOptions
     {
         bool AllAggro { get; set; }

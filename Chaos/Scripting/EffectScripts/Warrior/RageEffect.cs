@@ -8,25 +8,25 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 
 public class RageEffect : EffectBase
 {
-    public override byte Icon => 87;
     private int _damageSaved;
-    public override string Name => "rage";
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(25);
+    public override byte Icon => 87;
+    public override string Name => "rage";
 
     public override void OnApplied()
     {
         base.OnApplied();
 
         var damFormula = (Subject.StatSheet.EffectiveStr + Subject.StatSheet.EffectiveCon) / 5;
-        
+
         var attributes = new Attributes
         {
             Dmg = 10 + damFormula
         };
 
         _damageSaved = 10 + damFormula;
-        
+
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bA violent rage builds up inside you.");

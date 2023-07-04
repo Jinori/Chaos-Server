@@ -14,9 +14,7 @@ public class ConsumableComponent : IComponent
         context.SourceAisling?.Inventory.RemoveQuantity(options.ItemName, 1);
 
         if (options.Message)
-        {
             context.SourceAisling?.SendOrangeBarMessage("You consumed a " + options.ItemName + ".");
-        }
     }
 
     public interface IConsumableComponentOptions

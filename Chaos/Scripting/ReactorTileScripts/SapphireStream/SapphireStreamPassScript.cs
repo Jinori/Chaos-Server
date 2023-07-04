@@ -18,10 +18,6 @@ public class SapphireStreamPassScript : ReactorTileScriptBase
         SimpleCache = simpleCache;
 
     /// <inheritdoc />
-    /// This event is triggered when a Creature steps on this map tile. If the Creature is an Aisling and they are not of the Monk class,
-    /// they will be prevented from entering this map and sent back to their previous location. Otherwise, the Creature will be warped to the
-    /// Sapphire Stream map at coordinates (13, 11).
-    
     public override void OnWalkedOn(Creature source)
     {
         var targetMap = SimpleCache.Get<MapInstance>("sapphire_stream");
@@ -32,12 +28,10 @@ public class SapphireStreamPassScript : ReactorTileScriptBase
 
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);
+
             return;
         }
 
         source.TraverseMap(targetMap, new Point(13, 11));
     }
-
-    #region ScriptVars
-    #endregion
 }

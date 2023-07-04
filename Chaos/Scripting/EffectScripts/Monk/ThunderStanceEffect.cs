@@ -8,10 +8,9 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class ThunderStanceEffect : EffectBase
 {
+    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(15);
     public override byte Icon => 94;
     public override string Name => "thunderstance";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(15);
 
     public override void OnApplied()
     {
@@ -19,7 +18,7 @@ public class ThunderStanceEffect : EffectBase
 
         if (!Subject.Status.HasFlag(Status.ThunderStance))
             Subject.Status = Status.ThunderStance;
-        
+
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Electrical surges and charges around your body.");
     }

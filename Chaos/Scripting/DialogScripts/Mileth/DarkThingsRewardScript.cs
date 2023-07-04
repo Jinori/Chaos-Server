@@ -27,6 +27,7 @@ public class DarkThingsRewardScript : DialogScriptBase
         if (spidersEyeCount == 0)
         {
             Subject.Reply(source, "You have no Spider's Eye, which is what I need now.");
+
             return;
         }
 

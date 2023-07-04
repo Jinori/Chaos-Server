@@ -24,12 +24,14 @@ public class SgriosReviveScript : DialogScriptBase
             {
                 if (source.BodySprite is not BodySprite.Male)
                     source.BodySprite = BodySprite.Male;
+
                 break;
             }
             case Gender.Female:
             {
                 if (source.BodySprite is not BodySprite.Female)
                     source.BodySprite = BodySprite.Female;
+
                 break;
             }
         }
@@ -55,6 +57,7 @@ public class SgriosReviveScript : DialogScriptBase
 
             return;
         }
+
         switch (source.Nation)
         {
             case Nation.Rucesion:
@@ -63,6 +66,7 @@ public class SgriosReviveScript : DialogScriptBase
                 point = new Point(25, 36);
                 var mapInstance = _simpleCache.Get<MapInstance>("rucesion");
                 source.TraverseMap(mapInstance, point, true);
+
                 break;
             }
             case Nation.Mileth:
@@ -71,6 +75,7 @@ public class SgriosReviveScript : DialogScriptBase
                 point = new Point(23, 18);
                 var mapInstance = _simpleCache.Get<MapInstance>("mileth");
                 source.TraverseMap(mapInstance, point, true);
+
                 break;
             }
             case Nation.Exile:
@@ -79,6 +84,7 @@ public class SgriosReviveScript : DialogScriptBase
                 point = new Point(3, 13);
                 var mapInstance = _simpleCache.Get<MapInstance>("mileth_village_way");
                 source.TraverseMap(mapInstance, point, true);
+
                 break;
             }
             case Nation.Suomi:
@@ -87,6 +93,7 @@ public class SgriosReviveScript : DialogScriptBase
                 point = new Point(16, 8);
                 var mapInstance = _simpleCache.Get<MapInstance>("suomi_village_way");
                 source.TraverseMap(mapInstance, point, true);
+
                 break;
             }
             case Nation.Loures:
@@ -95,6 +102,7 @@ public class SgriosReviveScript : DialogScriptBase
                 point = new Point(10, 6);
                 var mapInstance = _simpleCache.Get<MapInstance>("mileth_village_way");
                 source.TraverseMap(mapInstance, point, true);
+
                 break;
             }
             case Nation.Tagor:
@@ -103,6 +111,7 @@ public class SgriosReviveScript : DialogScriptBase
                 point = new Point(22, 94);
                 var mapInstance = _simpleCache.Get<MapInstance>("tagor");
                 source.TraverseMap(mapInstance, point, true);
+
                 break;
             }
             case Nation.Piet:
@@ -111,6 +120,7 @@ public class SgriosReviveScript : DialogScriptBase
                 point = new Point(16, 8);
                 var mapInstance = _simpleCache.Get<MapInstance>("piet_village_way");
                 source.TraverseMap(mapInstance, point, true);
+
                 break;
             }
             case Nation.Abel:
@@ -119,6 +129,7 @@ public class SgriosReviveScript : DialogScriptBase
                 point = new Point(11, 13);
                 var mapInstance = _simpleCache.Get<MapInstance>("abel_port_way");
                 source.TraverseMap(mapInstance, point, true);
+
                 break;
             }
             case Nation.Undine:
@@ -127,6 +138,7 @@ public class SgriosReviveScript : DialogScriptBase
                 point = new Point(11, 12);
                 var mapInstance = _simpleCache.Get<MapInstance>("undine_village_way");
                 source.TraverseMap(mapInstance, point, true);
+
                 break;
             }
         }

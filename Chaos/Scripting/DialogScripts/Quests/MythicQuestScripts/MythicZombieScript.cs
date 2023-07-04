@@ -46,68 +46,78 @@ public class MythicZombieScript : DialogScriptBase
             {
                 if (hasZombie && (zombie == MythicZombie.EnemyAllied))
                 {
-                    Subject.Reply(source, "You have allied yourself with our enemies and that fills me with rabbit-like fear. I cannot trust you to hop on our side again. Please leave our warren.");
+                    Subject.Reply(
+                        source,
+                        "You have allied yourself with our enemies and that fills me with rabbit-like fear. I cannot trust you to hop on our side again. Please leave our warren.");
+
                     return;
                 }
 
                 if (hasMain && !hasZombie)
                 {
                     Subject.Reply(source, "skip", "zombie_start1start");
+
                     return;
                 }
 
                 if (zombie == MythicZombie.Lower)
                 {
-                    Subject.Reply(source, "skip","Zombie_lower2start");
+                    Subject.Reply(source, "skip", "Zombie_lower2start");
+
                     return;
                 }
 
                 if (zombie == MythicZombie.LowerComplete)
                 {
                     Subject.Reply(source, "skip", "Zombie_start3start");
+
                     return;
                 }
 
                 if (zombie == MythicZombie.Higher)
                 {
-                    Subject.Reply(source, "skip","Zombie_higher2start");
+                    Subject.Reply(source, "skip", "Zombie_higher2start");
+
                     return;
                 }
 
                 if (zombie == MythicZombie.HigherComplete)
                 {
                     Subject.Reply(source, "skip", "zombie_itemstart");
+
                     return;
                 }
 
                 if (zombie == MythicZombie.Item)
                 {
                     Subject.Reply(source, "skip", "zombie_item2start");
+
                     return;
                 }
 
                 if (zombie == MythicZombie.ItemComplete)
                 {
                     Subject.Reply(source, "skip", "zombie_allystart");
+
                     return;
                 }
 
                 if (zombie == MythicZombie.Allied)
                 {
                     Subject.Reply(source, "skip", "zombie_start5start");
+
                     return;
                 }
 
                 if (zombie == MythicZombie.BossStarted)
                 {
                     Subject.Reply(source, "skip", "zombie_boss2start");
+
                     return;
                 }
 
                 if (zombie == MythicZombie.BossDefeated)
-                {
                     Subject.Reply(source, "Thank you again Aisling for your help. We are winning our fight.");
-                }
 
                 break;
             }
@@ -117,15 +127,16 @@ public class MythicZombieScript : DialogScriptBase
                 Subject.Reply(source, "Get moooooving. Now where are my braaaaaaainss at... Uuuuurgh.");
                 source.SendOrangeBarMessage("Kill 15 Mythic Dunans for the Superior Zombie");
                 source.Trackers.Enums.Set(MythicZombie.Lower);
+
                 return;
             }
 
             case "zombie_lower2":
             {
-
                 if (!source.Trackers.Counters.TryGetValue("mythicdunan", out var zombielower) || (zombielower < 15))
                 {
                     Subject.Reply(source, "Uuuurgh! I can still hear them mmooooocking us!");
+
                     return;
                 }
 
@@ -139,12 +150,12 @@ public class MythicZombieScript : DialogScriptBase
                 } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
-                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                    source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
                 source.Trackers.Counters.Remove("mythicdunan", out _);
                 Subject.Reply(source, " ");
-                
+
                 break;
             }
 
@@ -153,6 +164,7 @@ public class MythicZombieScript : DialogScriptBase
                 Subject.Reply(source, "Great, clear 10 Gargoyle Servants and 10 Guards");
                 source.SendOrangeBarMessage("Kill 10 Gargoyle Servants and 10 Guards");
                 source.Trackers.Enums.Set(MythicZombie.Higher);
+
                 return;
             }
 
@@ -164,12 +176,12 @@ public class MythicZombieScript : DialogScriptBase
                 if ((gargoyleservant < 10) || (gargoyleguard < 10))
                 {
                     Subject.Reply(source, "I can still hear themmmmmm.");
+
                     return;
                 }
 
                 Subject.Reply(source, "Gooooood job. Soon we will be able to roooooooammm in peace. Uuuurgh!");
-                
-                
+
                 source.Animate(ani, source.Id);
 
                 if (source.UserStatSheet.Level <= 98)
@@ -179,13 +191,13 @@ public class MythicZombieScript : DialogScriptBase
                 } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
-                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                    source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
                 source.Trackers.Enums.Set(MythicZombie.HigherComplete);
                 source.Trackers.Counters.Remove("gargoyleservant", out _);
                 source.Trackers.Counters.Remove("gargoyleguard", out _);
-                
+
                 break;
             }
 
@@ -194,17 +206,16 @@ public class MythicZombieScript : DialogScriptBase
                 Subject.Reply(source, " ");
                 source.SendOrangeBarMessage("Collect 25 Dark Flames for Superior Zombie");
                 source.Trackers.Enums.Set(MythicZombie.Item);
-                
 
                 return;
             }
 
             case "zombie_item2":
             {
-
                 if (!source.Inventory.RemoveQuantity("Dark Flame", 25))
                 {
                     Subject.Reply(source, " ");
+
                     return;
                 }
 
@@ -212,7 +223,7 @@ public class MythicZombieScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Trackers.Enums.Set(MythicZombie.ItemComplete);
                 Subject.Reply(source, " ");
-                
+
                 break;
             }
 
@@ -221,7 +232,6 @@ public class MythicZombieScript : DialogScriptBase
                 if (hasFrog
                     && (hasFrog == frog is MythicFrog.Allied or MythicFrog.BossStarted or MythicFrog.BossDefeated))
                 {
-                    
                     Subject.Reply(source, "Thank you again for your help.");
                     source.Trackers.Enums.Set(MythicZombie.EnemyAllied);
 
@@ -231,10 +241,9 @@ public class MythicZombieScript : DialogScriptBase
                 source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Trackers.Enums.Set(MythicZombie.Allied);
                 source.SendOrangeBarMessage("You are now allied with the Zombies!");
-                Subject.Reply(source, $" ");
-                
-                break;
+                Subject.Reply(source, " ");
 
+                break;
             }
 
             case "zombie_boss":
@@ -251,7 +260,7 @@ public class MythicZombieScript : DialogScriptBase
                 if (!source.Trackers.Counters.TryGetValue("gargoylefiend", out var zombieboss1) || (zombieboss1 < 3))
                 {
                     Subject.Reply(source, " ");
-                    
+
                     source.SendOrangeBarMessage("You haven't completely defeated Gargoyle Fiend.");
 
                     return;
@@ -273,7 +282,7 @@ public class MythicZombieScript : DialogScriptBase
                 } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 25000000);
-                    source.SendOrangeBarMessage($"You received 25000000 experience!");
+                    source.SendOrangeBarMessage("You received 25000000 experience!");
                 }
 
                 source.Trackers.Counters.Remove("gargoylefiend", out _);
@@ -281,9 +290,7 @@ public class MythicZombieScript : DialogScriptBase
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
                 if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
-                {
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
-                }
             }
 
                 break;

@@ -12,7 +12,7 @@ namespace Chaos.Scripting.ItemScripts;
 
 public class FishConsumableScript : ItemScriptBase
 {
-    private static readonly Dictionary<string, double> FishExperienceMultipliers = new Dictionary<string, double>
+    private static readonly Dictionary<string, double> FishExperienceMultipliers = new()
     {
         { "Trout", 0.006 },
         { "Bass", 0.007 },
@@ -25,8 +25,25 @@ public class FishConsumableScript : ItemScriptBase
 
     private readonly IExperienceDistributionScript ExperienceDistributionScript;
 
-    public FishConsumableScript(Item subject) : base(subject) 
+    public FishConsumableScript(Item subject)
+        : base(subject)
         => ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+
+    private int CalculateExperienceGain(Aisling source, int tnl)
+    {
+        if (!FishExperienceMultipliers.TryGetValue(Subject.DisplayName, out var multiplier))
+        {
+            source.SendActiveMessage("Something went wrong when trying to eat the fish!");
+
+            return 0;
+        }
+
+        return Convert.ToInt32(multiplier * tnl);
+    }
+
+    private void NotifyPlayer(Aisling source, int expGain) => source.Client.SendServerMessage(
+        ServerMessageType.OrangeBar1,
+        $"You ate {Subject.DisplayName} and it gave you {expGain} exp.");
 
     public override void OnUse(Aisling source)
     {
@@ -39,20 +56,7 @@ public class FishConsumableScript : ItemScriptBase
         UpdatePlayerLegend(source);
     }
 
-    private int CalculateExperienceGain(Aisling source, int tnl)
-    {
-        if (!FishExperienceMultipliers.TryGetValue(Subject.DisplayName, out var multiplier))
-        {
-            source.SendActiveMessage("Something went wrong when trying to eat the fish!");
-            return 0;
-        }
-
-        return Convert.ToInt32(multiplier * tnl);
-    }
-
     private void RemoveItemFromInventory(Aisling source) => source.Inventory.RemoveQuantity(Subject.DisplayName, 1, out _);
-
-    private void NotifyPlayer(Aisling source, int expGain) => source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You ate {Subject.DisplayName} and it gave you {expGain} exp.");
 
     private void UpdatePlayerLegend(Aisling source) =>
         source.Legend.AddOrAccumulate(

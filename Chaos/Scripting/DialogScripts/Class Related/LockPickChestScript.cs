@@ -18,12 +18,13 @@ public class LockPickChestScript : DialogScriptBase
         if (source.UserStatSheet.BaseClass != BaseClass.Rogue)
         {
             Subject.Reply(source, "Only a Rogue may pick this lock.");
+
             return;
         }
 
-        if (source.Inventory.HasCount("Lockpicks", 1)) 
+        if (source.Inventory.HasCount("Lockpicks", 1))
             return;
-       
+
         Subject.Reply(source, "Perhaps you'd need some keys to attempt to open this chest.");
     }
 
@@ -32,6 +33,7 @@ public class LockPickChestScript : DialogScriptBase
         if (!Subject.MenuArgs.TryGet<int>(0, out var numberguessed))
         {
             Subject.ReplyToUnknownInput(source);
+
             return;
         }
 
@@ -56,16 +58,17 @@ public class LockPickChestScript : DialogScriptBase
                 case MapEntity mapEntity:
                 {
                     mapEntity.MapInstance.RemoveObject(mapEntity);
+
                     break;
                 }
                 case Item itemEntity:
                 {
                     source.Inventory.RemoveQuantity(itemEntity.Slot, 1);
+
                     break;
                 }
             }
-        }
-        else
+        } else
         {
             var breakPick = IntegerRandomizer.RollChance(50);
 

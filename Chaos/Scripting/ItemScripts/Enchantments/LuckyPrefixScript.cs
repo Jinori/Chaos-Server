@@ -17,7 +17,7 @@ public class LuckyPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           Hit = 1,
+            Hit = 1
         };
 
         subject.Modifiers.Add(attributes);

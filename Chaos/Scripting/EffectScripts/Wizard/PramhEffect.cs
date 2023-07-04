@@ -12,11 +12,6 @@ namespace Chaos.Scripting.EffectScripts.Wizard;
 public sealed class PramhEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 95;
-    /// <inheritdoc />
-    public override string Name => "pramh";
-
-    /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -28,6 +23,10 @@ public sealed class PramhEffect : ContinuousAnimationEffectBase
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(12);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+    /// <inheritdoc />
+    public override byte Icon => 95;
+    /// <inheritdoc />
+    public override string Name => "pramh";
 
     public override void OnApplied()
     {
@@ -36,8 +35,7 @@ public sealed class PramhEffect : ContinuousAnimationEffectBase
         if (!Subject.Status.HasFlag(Status.Pramh))
             Subject.Status = Status.Pramh;
     }
-    
-    
+
     /// <inheritdoc />
     protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
 
@@ -48,15 +46,17 @@ public sealed class PramhEffect : ContinuousAnimationEffectBase
 
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You awake from your slumber.");
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (target.Effects.Contains("pramh")
             || target.Effects.Contains("beagpramh"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already asleep.");
+
             return false;
         }
+
         return true;
     }
 }

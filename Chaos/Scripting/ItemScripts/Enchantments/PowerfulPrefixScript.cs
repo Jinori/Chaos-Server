@@ -18,7 +18,7 @@ public class PowerfulPrefixScript : ItemScriptBase, IEnchantmentScript
         var attributes = new Attributes
         {
             Dmg = 7,
-            Con = 1,
+            Con = 1
         };
 
         subject.Modifiers.Add(attributes);

@@ -2,7 +2,6 @@ using Chaos.Common.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Components;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -11,11 +10,6 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class FirestormEffect : ContinuousAnimationEffectBase
 {
-    /// <inheritdoc />
-    public override byte Icon => 100;
-    /// <inheritdoc />
-    public override string Name => "Firestorm";
-
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
@@ -28,6 +22,10 @@ public class FirestormEffect : ContinuousAnimationEffectBase
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(12);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+    /// <inheritdoc />
+    public override byte Icon => 100;
+    /// <inheritdoc />
+    public override string Name => "Firestorm";
 
     protected void OnApply()
     {
@@ -68,5 +66,4 @@ public class FirestormEffect : ContinuousAnimationEffectBase
 
         return true;
     }
-
 }

@@ -6,11 +6,6 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class SmallPowerEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 13;
-    public override string Name => "Small Power";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
-
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
@@ -30,10 +25,14 @@ public class SmallPowerEffect : NonOverwritableEffectBase
         "Juggernaut",
         "Strong Juggernaut",
         "Strong Astral",
-        "Astral",
+        "Astral"
     };
+
+    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
+    public override byte Icon => 13;
+    public override string Name => "Small Power";
     protected override byte? Sound => 115;
-    
+
     public override void OnApplied()
     {
         base.OnApplied();
@@ -42,7 +41,7 @@ public class SmallPowerEffect : NonOverwritableEffectBase
         {
             Dmg = 1
         };
-        
+
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage has increased.");

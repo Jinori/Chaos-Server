@@ -22,10 +22,10 @@ public class SpellComponent<TEntity> : IConditionalComponent where TEntity: MapE
         != null;
 
     public interface ISpellComponentOptions : GetTargetsComponent<TEntity>.IGetTargetsComponentOptions,
-                                                MagicResistanceComponent.IMagicResistanceComponentOptions,
-                                                SoundComponent.ISoundComponentOptions,
-                                                BodyAnimationComponent.IBodyAnimationComponentOptions,
-                                                AnimationComponent.IAnimationComponentOptions,
-                                                ManaCostComponent.IManaCostComponentOptions,
-                                                BreaksHideComponent.IBreaksHideComponentOptions { }
+                                              MagicResistanceComponent.IMagicResistanceComponentOptions,
+                                              SoundComponent.ISoundComponentOptions,
+                                              BodyAnimationComponent.IBodyAnimationComponentOptions,
+                                              AnimationComponent.IAnimationComponentOptions,
+                                              ManaCostComponent.IManaCostComponentOptions,
+                                              BreaksHideComponent.IBreaksHideComponentOptions { }
 }

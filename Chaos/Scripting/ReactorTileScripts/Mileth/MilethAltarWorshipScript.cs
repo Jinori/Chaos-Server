@@ -25,16 +25,16 @@ public class MilethAltarWorshipScript : ReactorTileScriptBase
 
     public override void OnItemDroppedOn(Creature source, GroundItem groundItem)
     {
-        if (source is not Aisling aisling) 
+        if (source is not Aisling aisling)
             return;
-        
+
         aisling.MapInstance.RemoveObject(groundItem);
-        
-        if (groundItem.Item.Template is { BuyCost: < 1000, SellValue: < 1000 }) 
+
+        if (groundItem.Item.Template is { BuyCost: < 1000, SellValue: < 1000 })
             return;
-        
+
         ExperienceDistributionScript.GiveExp(aisling, 200);
-        
+
         if (IntegerRandomizer.RollChance(10))
         {
             var randomMessages = new List<string>
@@ -42,14 +42,15 @@ public class MilethAltarWorshipScript : ReactorTileScriptBase
                 "The gods are pleased with your sacrifice.", "The item glows before dissolving into the altar.",
                 "Good fortune the gods will grant."
             };
+
             var random = new Random();
             var index = random.Next(randomMessages.Count);
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, randomMessages[index]);
         }
 
-        if (!IntegerRandomizer.RollChance(2)) 
+        if (!IntegerRandomizer.RollChance(2))
             return;
-        
+
         if (aisling.UserStatSheet.BaseClass.Equals(BaseClass.Priest))
         {
             aisling.Legend.AddOrAccumulate(
@@ -60,11 +61,11 @@ public class MilethAltarWorshipScript : ReactorTileScriptBase
                     MarkColor.Pink,
                     1,
                     GameTime.Now));
+
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
             ExperienceDistributionScript.GiveExp(aisling, 100000);
             aisling.TryGiveItems(_itemFactory.Create("amethystring"));
-        }
-        else
+        } else
         {
             ExperienceDistributionScript.GiveExp(aisling, 40000);
             aisling.TryGiveItems(_itemFactory.Create("emeraldring"));

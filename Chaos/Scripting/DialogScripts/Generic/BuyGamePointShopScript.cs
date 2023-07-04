@@ -9,7 +9,6 @@ using Chaos.TypeMapper.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
 
-
 namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class BuyGamePointShopScript : DialogScriptBase

@@ -6,7 +6,6 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.ReactorTileScripts.GatheringScripts.Wilderness.Roses;
 
-
 public class GatherWhiteRoseScript : ReactorTileScriptBase
 {
     private readonly IDialogFactory _dialogFactory;
@@ -19,6 +18,7 @@ public class GatherWhiteRoseScript : ReactorTileScriptBase
         _itemFactory = itemFactory;
         _dialogFactory = dialogFactory;
     }
+
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
     {
@@ -28,6 +28,7 @@ public class GatherWhiteRoseScript : ReactorTileScriptBase
         if (aisling.Trackers.TimedEvents.HasActiveEvent("whiterose1cd", out var timedEvent))
         {
             aisling.SendOrangeBarMessage($"You can pick another White Rose in {timedEvent.Remaining.ToReadableString()}");
+
             return;
         }
 

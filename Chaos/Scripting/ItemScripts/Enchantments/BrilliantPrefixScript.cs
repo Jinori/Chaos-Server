@@ -17,7 +17,7 @@ public class BrilliantPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           Int = 1,
+            Int = 1
         };
 
         subject.Modifiers.Add(attributes);

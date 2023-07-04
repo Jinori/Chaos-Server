@@ -12,11 +12,6 @@ namespace Chaos.Scripting.EffectScripts.Rogue;
 public sealed class BlindEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 2;
-    /// <inheritdoc />
-    public override string Name => "Blind";
-
-    /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 75,
@@ -28,6 +23,10 @@ public sealed class BlindEffect : ContinuousAnimationEffectBase
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(20);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+    /// <inheritdoc />
+    public override byte Icon => 2;
+    /// <inheritdoc />
+    public override string Name => "Blind";
 
     public override void OnApplied()
     {

@@ -6,7 +6,6 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.ReactorTileScripts.GatheringScripts.Wilderness.Roses;
 
-
 public class GatherBlackRoseScript : ReactorTileScriptBase
 {
     private readonly IDialogFactory _dialogFactory;
@@ -19,6 +18,7 @@ public class GatherBlackRoseScript : ReactorTileScriptBase
         _itemFactory = itemFactory;
         _dialogFactory = dialogFactory;
     }
+
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
     {
@@ -28,6 +28,7 @@ public class GatherBlackRoseScript : ReactorTileScriptBase
         if (aisling.Trackers.TimedEvents.HasActiveEvent("blackrose1cd", out var timedEvent))
         {
             aisling.SendOrangeBarMessage($"You can pick another Black Rose in {timedEvent.Remaining.ToReadableString()}");
+
             return;
         }
 
@@ -37,6 +38,5 @@ public class GatherBlackRoseScript : ReactorTileScriptBase
         aisling.TryGiveItem(ref blackrose);
         aisling.SendOrangeBarMessage("You found a Black Rose.");
         aisling.Trackers.TimedEvents.AddEvent("blackrose1cd", TimeSpan.FromHours(24), true);
-
     }
 }

@@ -9,7 +9,7 @@ public class TrapRoomScript : MapScriptBase
 {
     private readonly IMonsterFactory MonsterFactory;
     private readonly IReactorTileFactory ReactorTileFactory;
-    
+
     public TrapRoomScript(MapInstance subject, IReactorTileFactory reactorTileFactory, IMonsterFactory monsterFactory)
         : base(subject)
     {

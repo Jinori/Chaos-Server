@@ -17,7 +17,7 @@ public class SoothingPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            MaximumMp = 500,
+            MaximumMp = 500
         };
 
         subject.Modifiers.Add(attributes);

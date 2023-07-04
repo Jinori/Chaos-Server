@@ -8,10 +8,9 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class SmokeStanceEffect : EffectBase
 {
+    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(15);
     public override byte Icon => 93;
     public override string Name => "smokestance";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(15);
 
     public override void OnApplied()
     {
@@ -19,7 +18,7 @@ public class SmokeStanceEffect : EffectBase
 
         if (!Subject.Status.HasFlag(Status.SmokeStance))
             Subject.Status = Status.SmokeStance;
-        
+
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body becomes surrounded in smoke.");
     }
@@ -43,6 +42,7 @@ public class SmokeStanceEffect : EffectBase
 
             return false;
         }
+
         return true;
     }
 }

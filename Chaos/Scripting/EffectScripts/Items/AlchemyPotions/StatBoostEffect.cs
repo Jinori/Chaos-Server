@@ -6,11 +6,6 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class StatBoostEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 10;
-    public override string Name => "Stat Boost";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(15);
-
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
@@ -18,8 +13,12 @@ public class StatBoostEffect : NonOverwritableEffectBase
     };
     protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
     {
-        "Stat Boost",
+        "Stat Boost"
     };
+
+    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(15);
+    public override byte Icon => 10;
+    public override string Name => "Stat Boost";
     protected override byte? Sound => 115;
 
     public override void OnApplied()
@@ -32,9 +31,9 @@ public class StatBoostEffect : NonOverwritableEffectBase
             Int = 1,
             Wis = 1,
             Con = 1,
-            Dex = 1,
+            Dex = 1
         };
-        
+
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your stats are temporarily increased.");
@@ -50,7 +49,7 @@ public class StatBoostEffect : NonOverwritableEffectBase
             Int = 1,
             Wis = 1,
             Con = 1,
-            Dex = 1,
+            Dex = 1
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

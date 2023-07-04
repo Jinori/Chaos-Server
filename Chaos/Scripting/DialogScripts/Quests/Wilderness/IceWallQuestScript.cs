@@ -11,8 +11,8 @@ namespace Chaos.Scripting.DialogScripts.Quests;
 
 public class IceWallQuestScript : DialogScriptBase
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
     private readonly IItemFactory ItemFactory;
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     public IceWallQuestScript(Dialog subject, IItemFactory itemFactory)
         : base(subject)
@@ -21,11 +21,9 @@ public class IceWallQuestScript : DialogScriptBase
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
-
     public override void OnDisplaying(Aisling source)
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out IceWallQuest stage);
-
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -34,50 +32,54 @@ public class IceWallQuestScript : DialogScriptBase
                 if (source.UserStatSheet.Level < 30)
                 {
                     Subject.Reply(source, "skip", "lilia_initial");
+
                     return;
                 }
 
                 if (stage == IceWallQuest.Start)
                 {
                     Subject.Reply(source, "skip", "lilia_initial2");
+
                     return;
                 }
-                
+
                 if (stage == IceWallQuest.SampleComplete)
                 {
                     Subject.Reply(source, "skip", "lilia_initial3");
+
                     return;
                 }
 
                 if (stage == IceWallQuest.KillWolves)
                 {
                     Subject.Reply(source, "skip", "lilia_initial4");
+
                     return;
                 }
-                
+
                 if (stage == IceWallQuest.WolfComplete)
                 {
                     Subject.Reply(source, "skip", "lilia_initial5");
+
                     return;
                 }
 
                 if (stage == IceWallQuest.Charm)
                 {
                     Subject.Reply(source, "skip", "lilia_initial6");
+
                     return;
                 }
-                
+
                 if (stage == IceWallQuest.KillBoss)
                 {
                     Subject.Reply(source, "skip", "lilia_initial7");
+
                     return;
                 }
 
                 if (stage == IceWallQuest.Complete)
-                {
                     Subject.Reply(source, "skip", "lilia_initial8");
-                    
-                }
 
                 break;
 
@@ -86,28 +88,31 @@ public class IceWallQuestScript : DialogScriptBase
                 source.Trackers.Enums.Set(IceWallQuest.Start);
                 source.SendOrangeBarMessage("Collect 3 ice samples.");
             }
+
                 break;
 
             case "lilia_quest3":
             {
                 if (stage == IceWallQuest.Start)
                 {
-                    if (!source.Inventory.HasCount("Ice Sample 1", 1) && !source.Inventory.HasCount("Ice Sample 2", 1) && !source.Inventory.HasCount("Ice Sample 3", 1))
+                    if (!source.Inventory.HasCount("Ice Sample 1", 1)
+                        && !source.Inventory.HasCount("Ice Sample 2", 1)
+                        && !source.Inventory.HasCount("Ice Sample 3", 1))
                     {
                         source.SendOrangeBarMessage("You need to collect 3 samples.");
                         Subject.Close(source);
 
                         return;
                     }
+
                     source.Inventory.RemoveQuantity("Ice Sample 1", 1);
                     source.Inventory.RemoveQuantity("Ice Sample 2", 1);
                     source.Inventory.RemoveQuantity("Ice Sample 3", 1);
                     ExperienceDistributionScript.GiveExp(source, 75000);
                     source.Trackers.Enums.Set(IceWallQuest.SampleComplete);
                     source.TryGiveGamePoints(5);
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and 75000 exp!");
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive five gamepoints and 75000 exp!");
                 }
-                
 
                 break;
             }
@@ -116,8 +121,9 @@ public class IceWallQuestScript : DialogScriptBase
                 source.Trackers.Enums.Set(IceWallQuest.KillWolves);
                 source.SendOrangeBarMessage("Kill 10 Snow Wolves.");
             }
+
                 break;
-            
+
             case "lilia_quest5":
                 if (!source.Trackers.Counters.TryGetValue("wolf", out var value) || (value < 10))
                 {
@@ -132,14 +138,15 @@ public class IceWallQuestScript : DialogScriptBase
                 source.SendOrangeBarMessage("You receive five gamepoints and 150000 exp!");
                 source.Trackers.Counters.Remove("wolf", out _);
                 source.Trackers.Enums.Set(IceWallQuest.WolfComplete);
-        
-        break;
+
+                break;
 
             case "lilia_quest8":
             {
                 source.Trackers.Enums.Set(IceWallQuest.Charm);
                 source.SendOrangeBarMessage("Bring Lilia a Ruby and Bronze Bar.");
             }
+
                 break;
 
             case "lilia_quest9":
@@ -157,9 +164,9 @@ public class IceWallQuestScript : DialogScriptBase
                 source.TryGiveItems(ItemFactory.Create("charm"));
                 ExperienceDistributionScript.GiveExp(source, 50000);
                 source.Trackers.Enums.Set(IceWallQuest.KillBoss);
-                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive a Charm and 50000 exp!");
-
+                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive a Charm and 50000 exp!");
             }
+
                 break;
 
             case "lilia_quest10":
@@ -179,7 +186,6 @@ public class IceWallQuestScript : DialogScriptBase
                 source.Trackers.Enums.Set(IceWallQuest.Complete);
 
                 break;
-            }
         }
-    
     }
+}

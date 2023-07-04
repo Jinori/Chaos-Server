@@ -14,10 +14,10 @@ namespace Chaos.Scripting.FunctionalScripts.ApplyDamage;
 
 public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
 {
-    public IDamageFormula DamageFormula { get; set; }
     protected readonly IEffectFactory EffectFactory;
+    public IDamageFormula DamageFormula { get; set; }
     public static string Key { get; } = GetScriptKey(typeof(ApplyAttackDamageScript));
-    
+
     public ApplyAttackDamageScript(IEffectFactory effectFactory)
     {
         DamageFormula = DamageFormulae.Default;
@@ -46,7 +46,7 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
             return;
 
         target.Trackers.LastDamagedBy = source;
-        
+
         var relation = source.DirectionalRelationTo(target);
 
         if (relation == target.Direction.Reverse())
@@ -57,37 +57,42 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
         switch (target)
         {
             case Aisling aisling:
-                if (ReflectDamage(source, aisling, damage)) return;
+                if (ReflectDamage(source, aisling, damage))
+                    return;
 
                 ApplyDamageAndTriggerEvents(aisling, damage, source);
+
                 break;
             case Monster monster:
-                if (ReflectDamage(source, monster, damage)) return;
+                if (ReflectDamage(source, monster, damage))
+                    return;
 
                 ApplyDamageAndTriggerEvents(monster, damage, source);
+
                 break;
             case Merchant merchant:
                 merchant.Script.OnAttacked(source, damage);
+
                 break;
         }
     }
+
+    public static IApplyDamageScript Create() => FunctionalScriptRegistry.Instance.Get<IApplyDamageScript>(Key);
 
     private void ApplyDamageAndTriggerEvents(Creature creature, int damage, Creature source)
     {
         //Pet owners cannot damage their pet
         if (creature is Monster monster && source is Aisling owner && (monster.PetOwner != null) && monster.PetOwner.Equals(owner))
-        {
             return;
-        }
+
         creature.StatSheet.SubtractHp(damage);
         creature.ShowHealth();
         creature.Script.OnAttacked(source, damage);
-        
+
         if (creature is Aisling aisling)
             aisling.Client.SendAttributes(StatUpdateType.Vitality);
 
         if (!creature.IsAlive)
-        {
             switch (creature)
             {
                 case Aisling mAisling:
@@ -96,22 +101,25 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
                     break;
                 case Monster mCreature:
                     mCreature.Script.OnDeath();
+
                     break;
             }
-        }
     }
 
     private bool ReflectDamage(Creature source, Creature target, int damage)
     {
-        if ((target.Status.HasFlag(Status.AsgallFaileas) && IntegerRandomizer.RollChance(70)) || (target.Status.HasFlag(Status.EarthenStance) && IntegerRandomizer.RollChance(20)))
+        if ((target.Status.HasFlag(Status.AsgallFaileas) && IntegerRandomizer.RollChance(70))
+            || (target.Status.HasFlag(Status.EarthenStance) && IntegerRandomizer.RollChance(20)))
         {
             switch (source)
             {
                 case Aisling sourceAisling:
                     ApplyDamageAndTriggerEvents(sourceAisling, damage, target);
+
                     break;
                 case Monster monster:
                     ApplyDamageAndTriggerEvents(monster, damage, target);
+
                     break;
             }
 
@@ -126,6 +134,4 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
 
         return false;
     }
-
-    public static IApplyDamageScript Create() => FunctionalScriptRegistry.Instance.Get<IApplyDamageScript>(Key);
 }

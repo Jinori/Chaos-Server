@@ -20,32 +20,36 @@ public class RevivePotionScript : ConfigurableItemScriptBase
 
             return false;
         }
+
         if (!source.IsAlive)
         {
             if (source.Trackers.TimedEvents.HasActiveEvent("revivepotion", out _))
             {
                 source.SendOrangeBarMessage("You have already used a revive potion too recently.");
+
                 return false;
             }
+
             return true;
         }
+
         return false;
-    } 
+    }
 
     public override void OnUse(Aisling source)
     {
-            source.IsDead = false;
-            source.Inventory.RemoveQuantity("Revive Potion", 1);
+        source.IsDead = false;
+        source.Inventory.RemoveQuantity("Revive Potion", 1);
         //Let's restore their maximums
-            source.StatSheet.AddHp(source.StatSheet.MaximumHp);
-            source.StatSheet.AddMp(source.StatSheet.MaximumMp);
+        source.StatSheet.AddHp(source.StatSheet.MaximumHp);
+        source.StatSheet.AddMp(source.StatSheet.MaximumMp);
 
-            //Refresh the users health bar
-            source.Client.SendAttributes(StatUpdateType.Vitality);
+        //Refresh the users health bar
+        source.Client.SendAttributes(StatUpdateType.Vitality);
 
-            //Let's tell the player they have been revived
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are revived.");
-            source.Refresh(true);
-            source.Trackers.TimedEvents.AddEvent("revivepotion", TimeSpan.FromMinutes(1), true);
+        //Let's tell the player they have been revived
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are revived.");
+        source.Refresh(true);
+        source.Trackers.TimedEvents.AddEvent("revivepotion", TimeSpan.FromMinutes(1), true);
     }
 }

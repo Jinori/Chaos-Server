@@ -12,7 +12,7 @@ public class RemoveEffectComponent : IComponent
     {
         var options = vars.GetOptions<IRemoveEffectComponentOptions>();
         var targets = vars.GetTargets<Creature>();
-        
+
         if (string.IsNullOrEmpty(options.EffectKey))
             return;
 
@@ -21,20 +21,17 @@ public class RemoveEffectComponent : IComponent
             foreach (var target in targets)
             {
                 foreach (var effect in target.Effects)
-                {
                     target.Effects.Dispel(effect.Name);
-                }
             }
+
             //Now that we removed them all, let's break out
             return;
         }
-        
+
         foreach (var target in targets)
-        {
             target.Effects.Dispel(options.EffectKey);
-        }
     }
-    
+
     public interface IRemoveEffectComponentOptions
     {
         string? EffectKey { get; init; }

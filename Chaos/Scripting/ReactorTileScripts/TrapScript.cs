@@ -54,7 +54,7 @@ If this reactor was created through a script, you must specify the owner in the 
 
         if (DurationSecs.HasValue)
             Timer = new IntervalTimer(TimeSpan.FromSeconds(DurationSecs.Value), false);
-        
+
         AnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         ApplyDamageScript.DamageFormula = DamageFormulae.PureDamage;
@@ -102,9 +102,10 @@ If this reactor was created through a script, you must specify the owner in the 
             Subject.Owner.MapInstance.ShowAnimation(
                 DetectTrapAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y), Subject.Owner.Id));
 
-        if (Timer !=null)
+        if (Timer != null)
         {
             Timer.Update(delta);
+
             if (Timer.IntervalElapsed)
                 Map.RemoveObject(Subject);
         }

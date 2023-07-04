@@ -12,11 +12,6 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 public sealed class StunEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 97;
-    /// <inheritdoc />
-    public override string Name => "Stun";
-
-    /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -28,12 +23,16 @@ public sealed class StunEffect : ContinuousAnimationEffectBase
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(8);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+    /// <inheritdoc />
+    public override byte Icon => 97;
+    /// <inheritdoc />
+    public override string Name => "Stun";
 
     public override void OnApplied()
     {
         if (Subject is not Monster monster)
             return;
-        
+
         if (!Subject.Status.HasFlag(Status.BeagSuain))
             Subject.Status = Status.BeagSuain;
     }
@@ -55,8 +54,10 @@ public sealed class StunEffect : ContinuousAnimationEffectBase
             || target.Effects.Contains("Stun"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already stunned.");
+
             return false;
         }
+
         return false;
     }
 }

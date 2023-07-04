@@ -18,7 +18,7 @@ public class PrecisionPrefixScript : ItemScriptBase, IEnchantmentScript
         var attributes = new Attributes
         {
             Hit = 5,
-            Dmg = -2,
+            Dmg = -2
         };
 
         subject.Modifiers.Add(attributes);

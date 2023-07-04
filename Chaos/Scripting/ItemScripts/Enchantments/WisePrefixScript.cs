@@ -17,7 +17,7 @@ public class WisePrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           Wis = 1,
+            Wis = 1
         };
 
         subject.Modifiers.Add(attributes);

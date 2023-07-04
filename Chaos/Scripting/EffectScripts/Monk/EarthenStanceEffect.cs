@@ -8,10 +8,9 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class EarthenStanceEffect : EffectBase
 {
+    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(15);
     public override byte Icon => 92;
     public override string Name => "earthenstance";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(15);
 
     public override void OnApplied()
     {
@@ -19,7 +18,7 @@ public class EarthenStanceEffect : EffectBase
 
         if (!Subject.Status.HasFlag(Status.EarthenStance))
             Subject.Status = Status.EarthenStance;
-        
+
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Gaea protects your body, surrounding you in stone.");
     }

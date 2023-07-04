@@ -72,7 +72,7 @@ public class PFQuestMerchant : MerchantScriptBase
                     return;
 
                 var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
-                
+
                 if (!hasStage || (stage == PFQuestStage.None))
                 {
                     var dialog = DialogFactory.Create("bertil_pf", Subject);
@@ -290,7 +290,7 @@ public class PFQuestMerchant : MerchantScriptBase
 
                 break;
             }
-            
+
             case "thulin":
             {
                 if (source is not Aisling aisling)
@@ -312,7 +312,7 @@ public class PFQuestMerchant : MerchantScriptBase
 
                 break;
             }
-            
+
             case "vivianne":
             {
                 if (source is not Aisling aisling)

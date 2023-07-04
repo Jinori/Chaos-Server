@@ -8,10 +8,9 @@ namespace Chaos.Scripting.EffectScripts.Rogue;
 
 public class DetectTrapsEffect : EffectBase
 {
+    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(200);
     public override byte Icon => 84;
     public override string Name => "detectTraps";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(200);
 
     public override void OnApplied()
     {
@@ -19,7 +18,7 @@ public class DetectTrapsEffect : EffectBase
 
         if (!Subject.Status.HasFlag(Status.DetectTraps))
             Subject.Status = Status.DetectTraps;
-        
+
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your sense of survival peaks.");
     }

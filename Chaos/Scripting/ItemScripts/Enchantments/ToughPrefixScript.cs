@@ -17,7 +17,7 @@ public class ToughPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           Str = 1,
+            Str = 1
         };
 
         subject.Modifiers.Add(attributes);

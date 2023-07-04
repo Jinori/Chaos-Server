@@ -7,9 +7,6 @@ namespace Chaos.Scripting.MonsterScripts;
 
 public class RandomSpellScript : MonsterScriptBase
 {
-    private readonly ISpellFactory SpellFactory;
-
-
     private static readonly string[] AllSpells =
     {
         "ardioc", "beagioc", "ioc", "morioc", "nuadhaich", "salvation",
@@ -21,6 +18,7 @@ public class RandomSpellScript : MonsterScriptBase
         "ardsrad", "morsrad", "sradmeall",
         "arcaneblast", "arcanebolt", "zap"
     };
+    private readonly ISpellFactory SpellFactory;
 
     public RandomSpellScript(Monster subject, ISpellFactory spellFactory)
         : base(subject)

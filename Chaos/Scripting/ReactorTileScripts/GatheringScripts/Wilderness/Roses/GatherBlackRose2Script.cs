@@ -6,7 +6,6 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.ReactorTileScripts.GatheringScripts.Wilderness.Roses;
 
-
 public class GatherBlackRose2Script : ReactorTileScriptBase
 {
     private readonly IDialogFactory _dialogFactory;
@@ -25,13 +24,14 @@ public class GatherBlackRose2Script : ReactorTileScriptBase
     {
         if (source is not Aisling aisling)
             return;
-        
+
         if (aisling.Trackers.TimedEvents.HasActiveEvent("blackrose2cd", out var timedEvent))
         {
             aisling.SendOrangeBarMessage($"You can pick another Black Rose in {timedEvent.Remaining.ToReadableString()}");
+
             return;
         }
-        
+
         var blackrose = _itemFactory.Create("blackrose");
         var dialog = _dialogFactory.Create("wildernessblackrose", blackrose);
         dialog.Display(aisling);

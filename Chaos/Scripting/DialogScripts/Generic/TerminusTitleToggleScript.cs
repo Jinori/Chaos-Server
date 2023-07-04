@@ -10,7 +10,6 @@ public class TerminusTitleToggleScript : DialogScriptBase
     public TerminusTitleToggleScript(Dialog subject)
         : base(subject) { }
 
-
     public override void OnDisplaying(Aisling source)
     {
         source.Trackers.Enums.TryGetValue(out TutorialQuestStage stage);
@@ -25,7 +24,6 @@ public class TerminusTitleToggleScript : DialogScriptBase
         {
             case "terminus_initial":
             {
-
                 var option = new DialogOption
                 {
                     DialogKey = "terminus_titleChange",

@@ -17,7 +17,7 @@ public class CursedPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           MagicResistance = 10,
+            MagicResistance = 10,
             AtkSpeedPct = 15,
             Dex = 1
         };

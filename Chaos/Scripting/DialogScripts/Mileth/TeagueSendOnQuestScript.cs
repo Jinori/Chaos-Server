@@ -1,11 +1,11 @@
 ﻿using Chaos.Common.Definitions;
+using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
+using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
-using Chaos.Extensions;
-using Chaos.Extensions.Geometry;
-using Chaos.Models.Data;
 
 namespace Chaos.Scripting.DialogScripts.Mileth;
 
@@ -23,10 +23,11 @@ public class TeagueSendOnQuestScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        if ((source.Group is null) || source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source)))
+        if (source.Group is null || source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source)))
         {
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure your friends are close and grouped!");
             Subject.Reply(source, "What? You don't have any friends with you.. who are you talking to?");
+
             return;
         }
 
@@ -34,6 +35,7 @@ public class TeagueSendOnQuestScript : DialogScriptBase
         {
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure your companions are within level range.");
             Subject.Reply(source, "Some of your companions are not within your level range.");
+
             return;
         }
 
@@ -43,7 +45,10 @@ public class TeagueSendOnQuestScript : DialogScriptBase
             var dialog = DialogFactory.Create("teague_groupDialog", merchant);
             dialog.Display(member);
 
-            member.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Head to the crypts to end the horrific nightmares of the Old Man");
+            member.Client.SendServerMessage(
+                ServerMessageType.OrangeBar1,
+                "Head to the crypts to end the horrific nightmares of the Old Man");
+
             member.Trackers.Flags.AddFlag(QuestFlag1.TerrorOfCryptHunt);
             member.Animate(new Animation { AnimationSpeed = 100, TargetAnimation = 78 });
         }

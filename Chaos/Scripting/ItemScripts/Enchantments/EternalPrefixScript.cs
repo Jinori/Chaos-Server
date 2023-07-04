@@ -17,9 +17,9 @@ public class EternalPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           Ac = -1,
+            Ac = -1,
             Con = 1,
-            MaximumHp = 250,
+            MaximumHp = 250
         };
 
         subject.Modifiers.Add(attributes);

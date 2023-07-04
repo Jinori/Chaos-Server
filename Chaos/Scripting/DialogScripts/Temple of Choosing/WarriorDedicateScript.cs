@@ -67,7 +67,7 @@ public class WarriorDedicateScript : DialogScriptBase
 
             source.SkillBook.Remove("assail");
 
-                if (!source.SpellBook.Contains(spell))
+            if (!source.SpellBook.Contains(spell))
                 source.SpellBook.TryAddToNextSlot(spell);
 
             if (!source.SkillBook.Contains(skill2))

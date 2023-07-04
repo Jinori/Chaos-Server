@@ -17,7 +17,6 @@ public class ReviveComponent : IComponent
         if (options.ReviveSelf)
         {
             foreach (var target in targets)
-            {
                 if ((context.Source.Id == target.Id) && !target.IsAlive)
                 {
                     target.IsDead = false;
@@ -26,14 +25,14 @@ public class ReviveComponent : IComponent
                     target.Client.SendAttributes(StatUpdateType.Vitality);
                     target.SendActiveMessage("You have self revived.");
                     target.Refresh();
+
                     break;
                 }
-            }
+
             return;
         }
-        
+
         foreach (var target in targets)
-        {
             if (!target.IsAlive)
             {
                 target.IsDead = false;
@@ -43,9 +42,8 @@ public class ReviveComponent : IComponent
                 target.SendActiveMessage("You have been revived.");
                 target.Refresh();
             }
-        }
     }
-    
+
     public interface IReviveComponentOptions
     {
         public bool ReviveSelf { get; init; }

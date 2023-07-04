@@ -19,7 +19,6 @@ public class DeathScript : MonsterScriptBase
     /// <inheritdoc />
     public override void OnDeath()
     {
-
         if (!Map.RemoveObject(Subject))
             return;
 

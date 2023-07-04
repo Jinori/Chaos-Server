@@ -33,7 +33,6 @@ public class DamageScript : ConfigurableSkillScriptBase,
             ?
             .Execute<DamageComponent>()
             .Execute<DurabilityComponent>();
-    
 
     #region ScriptVars
     /// <inheritdoc />

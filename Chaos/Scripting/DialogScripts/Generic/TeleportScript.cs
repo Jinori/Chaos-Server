@@ -5,10 +5,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
-
 namespace Chaos.Scripting.DialogScripts.Generic;
-
-
 
 public class TeleportScript : DialogScriptBase
 {

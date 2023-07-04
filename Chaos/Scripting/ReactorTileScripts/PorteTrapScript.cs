@@ -18,12 +18,12 @@ using Chaos.Time.Abstractions;
 namespace Chaos.Scripting.ReactorTileScripts;
 
 public class PorteTrapScript : ConfigurableReactorTileScriptBase,
-                          GetTargetsComponent<Creature>.IGetTargetsComponentOptions,
-                          SoundComponent.ISoundComponentOptions,
-                          AnimationComponent.IAnimationComponentOptions,
-                          DamageComponent.IDamageComponentOptions,
-                          ManaDrainComponent.IManaDrainComponentOptions,
-                          ApplyEffectComponent.IApplyEffectComponentOptions
+                               GetTargetsComponent<Creature>.IGetTargetsComponentOptions,
+                               SoundComponent.ISoundComponentOptions,
+                               AnimationComponent.IAnimationComponentOptions,
+                               DamageComponent.IDamageComponentOptions,
+                               ManaDrainComponent.IManaDrainComponentOptions,
+                               ApplyEffectComponent.IApplyEffectComponentOptions
 {
     protected IIntervalTimer AnimationTimer { get; set; }
     protected Creature Owner { get; set; }
@@ -54,7 +54,7 @@ If this reactor was created through a script, you must specify the owner in the 
 
         if (DurationSecs.HasValue)
             Timer = new IntervalTimer(TimeSpan.FromSeconds(DurationSecs.Value), false);
-        
+
         AnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         ApplyDamageScript.DamageFormula = DamageFormulae.PureDamage;
@@ -73,18 +73,23 @@ If this reactor was created through a script, you must specify the owner in the 
         if ((aisling?.MapInstance.InstanceId == "pf_path") && aisling.Inventory.HasCount("Giant Ant Wing", 1))
         {
             aisling.Inventory.RemoveQuantity("Giant Ant Wing", 1);
-            aisling.SendOrangeBarMessage($"You lay down a Giant Ant Wing to avoid the trap, {aisling.Inventory.CountOf("Giant Ant Wing")} left.");
+
+            aisling.SendOrangeBarMessage(
+                $"You lay down a Giant Ant Wing to avoid the trap, {aisling.Inventory.CountOf("Giant Ant Wing")} left.");
 
             return;
         }
+
         if ((aisling?.MapInstance.InstanceId == "karlopostrap") && aisling.Inventory.HasCount("Giant Ant Wing", 1))
         {
             aisling.Inventory.RemoveQuantity("Giant Ant Wing", 1);
-            aisling.SendOrangeBarMessage($"You lay down a Giant Ant Wing to avoid the trap, {aisling.Inventory.CountOf("Giant Ant Wing")} left.");
+
+            aisling.SendOrangeBarMessage(
+                $"You lay down a Giant Ant Wing to avoid the trap, {aisling.Inventory.CountOf("Giant Ant Wing")} left.");
 
             return;
         }
-        
+
         var executed = new ComponentExecutor(Owner, source)
                        .WithOptions(this)
                        .ExecuteAndCheck<GetTargetsComponent<Creature>>()
@@ -119,9 +124,10 @@ If this reactor was created through a script, you must specify the owner in the 
             Subject.Owner.MapInstance.ShowAnimation(
                 DetectTrapAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y), Subject.Owner.Id));
 
-        if (Timer !=null)
+        if (Timer != null)
         {
             Timer.Update(delta);
+
             if (Timer.IntervalElapsed)
                 Map.RemoveObject(Subject);
         }

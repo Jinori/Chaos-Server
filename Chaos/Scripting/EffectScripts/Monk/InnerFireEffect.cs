@@ -11,8 +11,6 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class InnerFireEffect : ContinuousAnimationEffectBase
 {
-    public override byte Icon => 65;
-    public override string Name => "innerFire";
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 300,
@@ -24,6 +22,8 @@ public class InnerFireEffect : ContinuousAnimationEffectBase
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(8);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(400));
+    public override byte Icon => 65;
+    public override string Name => "innerFire";
 
     public override void OnApplied()
     {

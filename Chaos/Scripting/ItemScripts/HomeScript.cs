@@ -8,8 +8,16 @@ using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts;
 
-public class HomeScript : ConfigurableItemScriptBase,  TeleportComponent.ITeleportComponentOptions
+public class HomeScript : ConfigurableItemScriptBase, TeleportComponent.ITeleportComponentOptions
 {
+    /// <inheritdoc />
+    public string DestinationMapKey { get; set; } = null!;
+    /// <inheritdoc />
+    public Point OriginPoint { get; set; }
+
+    /// <inheritdoc />
+    public ISimpleCache SimpleCache { get; init; }
+
     /// <inheritdoc />
     public HomeScript(Item subject, ISimpleCache simpleCache)
         : base(subject) =>
@@ -22,11 +30,12 @@ public class HomeScript : ConfigurableItemScriptBase,  TeleportComponent.ITelepo
             case Nation.Exile:
                 OriginPoint = new Point(8, 5);
                 DestinationMapKey = "toc";
-                
+
                 break;
             case Nation.Suomi:
                 OriginPoint = new Point(9, 5);
                 DestinationMapKey = "suomi_inn";
+
                 break;
             case Nation.Ellas:
                 OriginPoint = new Point(9, 2);
@@ -35,20 +44,22 @@ public class HomeScript : ConfigurableItemScriptBase,  TeleportComponent.ITelepo
             case Nation.Loures:
                 OriginPoint = new Point(5, 6);
                 DestinationMapKey = "loures_2_floor_empty_room_1";
-                
+
                 break;
             case Nation.Mileth:
                 OriginPoint = new Point(4, 8);
                 DestinationMapKey = "mileth_inn";
+
                 break;
             case Nation.Tagor:
                 OriginPoint = new Point(4, 8);
                 DestinationMapKey = "tagor_inn";
-                
+
                 break;
             case Nation.Rucesion:
                 OriginPoint = new Point(7, 5);
                 DestinationMapKey = "rucesion_inn";
+
                 break;
             case Nation.Noes:
                 OriginPoint = new Point(9, 9);
@@ -61,6 +72,7 @@ public class HomeScript : ConfigurableItemScriptBase,  TeleportComponent.ITelepo
             case Nation.Piet:
                 OriginPoint = new Point(5, 8);
                 DestinationMapKey = "piet_inn";
+
                 break;
             case Nation.Atlantis:
                 OriginPoint = new Point(9, 12);
@@ -69,10 +81,12 @@ public class HomeScript : ConfigurableItemScriptBase,  TeleportComponent.ITelepo
             case Nation.Abel:
                 OriginPoint = new Point(4, 7);
                 DestinationMapKey = "abel_inn";
+
                 break;
             case Nation.Undine:
                 OriginPoint = new Point(12, 4);
                 DestinationMapKey = "undine_tavern";
+
                 break;
             case Nation.Purgatory:
                 OriginPoint = new Point(9, 15);
@@ -85,11 +99,4 @@ public class HomeScript : ConfigurableItemScriptBase,  TeleportComponent.ITelepo
         new ComponentExecutor(source, source).WithOptions(this).Execute<TeleportComponent>();
         source.Inventory.Remove(Subject.Slot);
     }
-
-    /// <inheritdoc />
-    public ISimpleCache SimpleCache { get; init; }
-    /// <inheritdoc />
-    public string DestinationMapKey { get; set; } = null!;
-    /// <inheritdoc />
-    public Point OriginPoint { get; set; }
 }

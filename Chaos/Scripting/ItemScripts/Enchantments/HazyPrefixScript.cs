@@ -17,7 +17,7 @@ public class HazyPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           SpellDamagePct = 7,
+            SpellDamagePct = 7
         };
 
         subject.Modifiers.Add(attributes);

@@ -12,7 +12,7 @@ public class ClueScript : ReactorTileScriptBase
 {
     private readonly IItemFactory _itemFactory;
     private readonly IMonsterFactory _monsterFactory;
-    
+
     public ClueScript(ReactorTile subject, IItemFactory itemFactory, IMonsterFactory monsterFactory)
         : base(subject)
     {
@@ -31,54 +31,58 @@ public class ClueScript : ReactorTileScriptBase
         {
             case "Manor Room 3":
             {
-                if (stage == ManorNecklaceStage.AcceptedQuest && !aisling.Inventory.HasCount("Clue One", 1))
+                if ((stage == ManorNecklaceStage.AcceptedQuest) && !aisling.Inventory.HasCount("Clue One", 1))
                 {
                     var clue = _itemFactory.Create("clue1");
                     aisling.TryGiveItem(ref clue);
 
                     aisling.Client.SendServerMessage(
                         ServerMessageType.OrangeBar1,
-                        $"You've received the first clue!");
+                        "You've received the first clue!");
                 }
+
                 break;
             }
             case "Manor Room 6":
             {
-                if (stage == ManorNecklaceStage.AcceptedQuest && !aisling.Inventory.HasCount("Clue Two", 1))
+                if ((stage == ManorNecklaceStage.AcceptedQuest) && !aisling.Inventory.HasCount("Clue Two", 1))
                 {
                     var clue = _itemFactory.Create("clue2");
                     aisling.TryGiveItem(ref clue);
 
                     aisling.Client.SendServerMessage(
                         ServerMessageType.OrangeBar1,
-                        $"You've received the second clue!");
+                        "You've received the second clue!");
                 }
+
                 break;
             }
             case "Manor Room 1":
             {
-                if (stage == ManorNecklaceStage.AcceptedQuest && !aisling.Inventory.HasCount("Clue Three", 1))
+                if ((stage == ManorNecklaceStage.AcceptedQuest) && !aisling.Inventory.HasCount("Clue Three", 1))
                 {
                     var clue = _itemFactory.Create("clue3");
                     aisling.TryGiveItem(ref clue);
 
                     aisling.Client.SendServerMessage(
                         ServerMessageType.OrangeBar1,
-                        $"You've received the third clue!");
+                        "You've received the third clue!");
                 }
+
                 break;
             }
             case "Manor Room 7":
             {
-                if (stage == ManorNecklaceStage.AcceptedQuest && !aisling.Inventory.HasCount("Clue Four", 1))
+                if ((stage == ManorNecklaceStage.AcceptedQuest) && !aisling.Inventory.HasCount("Clue Four", 1))
                 {
                     var clue = _itemFactory.Create("clue4");
                     aisling.TryGiveItem(ref clue);
 
                     aisling.Client.SendServerMessage(
                         ServerMessageType.OrangeBar1,
-                        $"You've received the fourth and final clue!");
+                        "You've received the fourth and final clue!");
                 }
+
                 break;
             }
             case "Manor Room 8":
@@ -103,33 +107,35 @@ public class ClueScript : ReactorTileScriptBase
                     aisling.MapInstance.AddObject(monster4, monster4);
 
                     var group = aisling.Group?.Where(x => x.WithinRange(aisling)).ToList();
-                    
+
                     if (group is { Count: > 1 })
-                    {
                         foreach (var member in group)
                         {
                             var hasNeck = member.Trackers.Enums.TryGetValue(out ManorNecklaceStage neckStage);
+
                             if (neckStage == ManorNecklaceStage.AcceptedQuest)
                             {
                                 var necklace = _itemFactory.Create("zulerasnecklace");
                                 member.TryGiveItem(ref necklace);
                                 member.Trackers.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
+
                                 member.Client.SendServerMessage(
                                     ServerMessageType.OrangeBar1,
-                                    $"You've found Zulera's necklace but have disturbed some ghosts.");   
+                                    "You've found Zulera's necklace but have disturbed some ghosts.");
                             }
                         }
-                    }
                     else
                     {
                         var necklace = _itemFactory.Create("zulerasnecklace");
                         aisling.TryGiveItem(ref necklace);
                         aisling.Trackers.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
+
                         aisling.Client.SendServerMessage(
                             ServerMessageType.OrangeBar1,
-                            $"You've found Zulera's necklace but have disturbed some ghosts.");
+                            "You've found Zulera's necklace but have disturbed some ghosts.");
                     }
                 }
+
                 break;
             }
         }

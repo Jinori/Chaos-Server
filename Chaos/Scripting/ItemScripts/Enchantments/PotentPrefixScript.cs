@@ -17,7 +17,7 @@ public class PotentPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            MaximumMp = 150,
+            MaximumMp = 150
         };
 
         subject.Modifiers.Add(attributes);

@@ -59,12 +59,12 @@ public class MonkDedicateScript : DialogScriptBase
                     MarkColor.Blue,
                     1,
                     GameTime.Now));
-            
+
             source.Trackers.Flags.AddFlag(QuestFlag1.ChosenClass);
             var skill = SkillFactory.Create("punch");
             var skill2 = SkillFactory.Create("kick");
             var spell = SpellFactory.Create("taunt");
-            
+
             if (!source.SpellBook.Contains(spell))
                 source.SpellBook.TryAddToNextSlot(spell);
 

@@ -11,16 +11,6 @@ namespace Chaos.Scripting.Components;
 
 public class HealthBasedDamageComponent : IComponent
 {
-    protected virtual int CalculateDamage(
-        Creature source,
-        decimal? healthMultiplier
-    )
-    {
-        var multiplier = healthMultiplier ?? 1;
-        var finalDamage = Convert.ToInt32(multiplier * source.StatSheet.CurrentHp);
-        return finalDamage;
-    }
-
     /// <inheritdoc />
     public virtual void Execute(ActivationContext context, ComponentVars vars)
     {
@@ -37,9 +27,9 @@ public class HealthBasedDamageComponent : IComponent
             if (damage <= 0)
                 continue;
 
-            if (options.TrueDamage) 
+            if (options.TrueDamage)
                 options.ApplyDamageScript.DamageFormula = DamageFormulae.PureDamage;
-            
+
             options.ApplyDamageScript.ApplyDamage(
                 context.Source,
                 target,
@@ -47,7 +37,7 @@ public class HealthBasedDamageComponent : IComponent
                 damage,
                 options.Element);
         }
-        
+
         if (context.Source.StatSheet.HealthPercent <= options.HealthCostPct)
             context.Source.StatSheet.SetHp(1);
         else
@@ -56,13 +46,24 @@ public class HealthBasedDamageComponent : IComponent
         context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
     }
 
+    protected virtual int CalculateDamage(
+        Creature source,
+        decimal? healthMultiplier
+    )
+    {
+        var multiplier = healthMultiplier ?? 1;
+        var finalDamage = Convert.ToInt32(multiplier * source.StatSheet.CurrentHp);
+
+        return finalDamage;
+    }
+
     public interface IHealthBasedDamageComponentOptions
     {
         IApplyDamageScript ApplyDamageScript { get; init; }
         Element? Element { get; init; }
-        decimal? HealthMultiplier { get; init; }
         int? HealthCostPct { get; init; }
-        bool TrueDamage { get; init; }
+        decimal? HealthMultiplier { get; init; }
         IScript SourceScript { get; init; }
+        bool TrueDamage { get; init; }
     }
 }

@@ -9,11 +9,6 @@ namespace Chaos.Scripting.EffectScripts.Jobs;
 public sealed class SmashVialHealEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 145;
-    /// <inheritdoc />
-    public override string Name => "HealthRegen";
-
-    /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -25,6 +20,10 @@ public sealed class SmashVialHealEffect : ContinuousAnimationEffectBase
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(7);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(100));
+    /// <inheritdoc />
+    public override byte Icon => 145;
+    /// <inheritdoc />
+    public override string Name => "HealthRegen";
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()

@@ -91,6 +91,7 @@ public class WithdrawItemScript : DialogScriptBase
                           source.Name,
                           amount,
                           item.DisplayName);
+
                 return;
             case ComplexActionHelper.WithdrawItemResult.CantCarry:
                 Subject.Reply(source, "You can't carry that");

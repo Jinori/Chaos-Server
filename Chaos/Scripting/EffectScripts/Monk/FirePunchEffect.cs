@@ -11,11 +11,6 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 public class FirePunchEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 31;
-    /// <inheritdoc />
-    public override string Name => "Firepunch";
-
-    /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -28,6 +23,10 @@ public class FirePunchEffect : ContinuousAnimationEffectBase
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(5);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+    /// <inheritdoc />
+    public override byte Icon => 31;
+    /// <inheritdoc />
+    public override string Name => "Firepunch";
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
@@ -43,14 +42,16 @@ public class FirePunchEffect : ContinuousAnimationEffectBase
             Subject.ShowHealth();
         }
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (target.Effects.Contains("Small Firestorm") || target.Effects.Contains("Firestorm") || target.Effects.Contains("Firepunch"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already burning.");
+
             return false;
         }
+
         return true;
     }
 }

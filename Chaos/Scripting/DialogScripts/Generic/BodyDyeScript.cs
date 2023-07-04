@@ -32,14 +32,16 @@ public class BodyDyeScript : DialogScriptBase
         if (!Subject.MenuArgs.TryGet<string>(0, out var dye))
         {
             Subject.ReplyToUnknownInput(source);
+
             return;
         }
 
         var itemDetails = Subject.Items.FirstOrDefault(x => x.Item.DisplayName.EqualsI(dye));
-    
+
         if (itemDetails == null)
         {
             Subject.ReplyToUnknownInput(source);
+
             return;
         }
 
@@ -48,6 +50,7 @@ public class BodyDyeScript : DialogScriptBase
         if (!source.TryTakeGold(itemDetails.Price))
         {
             Subject.Close(source);
+
             return;
         }
 

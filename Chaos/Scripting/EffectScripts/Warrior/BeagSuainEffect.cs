@@ -12,11 +12,6 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 public sealed class BeagSuainEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 117;
-    /// <inheritdoc />
-    public override string Name => "BeagSuain";
-
-    /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -28,6 +23,10 @@ public sealed class BeagSuainEffect : ContinuousAnimationEffectBase
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(15);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+    /// <inheritdoc />
+    public override byte Icon => 117;
+    /// <inheritdoc />
+    public override string Name => "BeagSuain";
 
     public override void OnApplied()
     {
@@ -49,7 +48,7 @@ public sealed class BeagSuainEffect : ContinuousAnimationEffectBase
 
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.");
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (target.Effects.Contains("Beag Suain")
@@ -58,8 +57,10 @@ public sealed class BeagSuainEffect : ContinuousAnimationEffectBase
             || target.Effects.Contains("Stun"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already stunned.");
+
             return false;
         }
+
         return true;
     }
 }

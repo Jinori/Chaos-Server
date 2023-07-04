@@ -9,22 +9,22 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MapScripts.Abstractions;
 
-public abstract class ItemSpawnerScript : MapScriptBase
+public abstract class MerchantSpawnerScript : MapScriptBase
 {
-    private readonly IItemFactory ItemFactory;
+    private readonly IMerchantFactory MerchantFactory;
 
     private readonly ISimpleCache SimpleCache;
 
     private IIntervalTimer? SpawnTimer;
-    public abstract string ItemTemplateKey { get; set; }
     public abstract int MaxAmount { get; set; }
     public abstract int MaxPerSpawn { get; set; }
+    public abstract string MerchantTemplateKey { get; set; }
     public abstract int SpawnIntervalMs { get; set; }
 
-    protected ItemSpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)
+    protected MerchantSpawnerScript(MapInstance subject, IMerchantFactory merchantFactory, ISimpleCache simpleCache)
         : base(subject)
     {
-        ItemFactory = itemFactory;
+        MerchantFactory = merchantFactory;
         SimpleCache = simpleCache;
     }
 
@@ -47,9 +47,10 @@ public abstract class ItemSpawnerScript : MapScriptBase
 
         if (SpawnTimer.IntervalElapsed)
         {
-            var allCountOfItems = Subject.GetEntities<GroundItem>().Count(obj => obj.Item.Template.TemplateKey.EqualsI(ItemTemplateKey));
+            var countOfAllMerchants = Subject.GetEntities<Merchant>()
+                                             .Count(obj => obj.Template.TemplateKey.EqualsI(MerchantTemplateKey));
 
-            var maxSpawns = Math.Min(MaxAmount - allCountOfItems, MaxPerSpawn);
+            var maxSpawns = Math.Min(MaxAmount - countOfAllMerchants, MaxPerSpawn);
 
             // Generate a random number of spawns between 0 and maxSpawns (exclusive)
             var random = new Random();
@@ -58,10 +59,8 @@ public abstract class ItemSpawnerScript : MapScriptBase
             for (var i = 0; i < spawnAmount; i++)
             {
                 var point = GenerateSpawnPoint(Subject);
-                var item = ItemFactory.Create(ItemTemplateKey);
-                var groundItem = new GroundItem(item, Subject, point);
-
-                Subject.AddObject(groundItem, point);
+                var merchant = MerchantFactory.Create(MerchantTemplateKey, Subject, point);
+                Subject.AddObject(merchant, point);
             }
         }
     }

@@ -13,7 +13,7 @@ public class KarloposIslandSecretEntranceScript : ConfigurableReactorTileScriptB
     private readonly ISimpleCache SimpleCache;
 
     #region ScriptVars
-    protected Location Destination { get; init; }
+    protected Location Destination { get; init; } = null!;
     #endregion
 
     /// <inheritdoc />
@@ -50,16 +50,16 @@ public class KarloposIslandSecretEntranceScript : ConfigurableReactorTileScriptB
         if ((aisling != null) && !aisling.Inventory.HasCount("red pearl", 1))
         {
             aisling.SendOrangeBarMessage("You are missing the Red Pearl.");
+
             return;
         }
 
         if ((aisling != null)
-            && aisling.Trackers.Enums.TryGetValue<QueenOctopusQuest>(out var stage) 
+            && aisling.Trackers.Enums.TryGetValue<QueenOctopusQuest>(out var stage)
             && (stage == QueenOctopusQuest.Pendant))
-            
+
             source.TraverseMap(targetMap, Destination);
         else
             aisling?.SendOrangeBarMessage("You see something frightening ahead, best not to disturb it.");
-        
     }
 }

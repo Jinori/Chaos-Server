@@ -18,7 +18,7 @@ public class DarkPrefixScript : ItemScriptBase, IEnchantmentScript
         var attributes = new Attributes
         {
             Dmg = 5,
-            Dex = -3,
+            Dex = -3
         };
 
         subject.Modifiers.Add(attributes);

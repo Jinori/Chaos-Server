@@ -34,12 +34,11 @@ public class FiskSecretScript : DialogScriptBase
         switch (Subject.Template.TemplateKey.ToLower())
         {
             #region Fisk
-            
             case "fisk_initial":
             {
                 if (hasStage && (stage == FiskSecretStage.CompletedFiskSecret))
                     return;
-                
+
                 if (source.UserStatSheet.Level >= 11)
                 {
                     var option = new DialogOption
@@ -53,48 +52,64 @@ public class FiskSecretScript : DialogScriptBase
 
                     return;
                 }
+
                 return;
             }
-            
+
             case "fisksecret_initial":
             {
                 if (hasStage && (stage == FiskSecretStage.ExposedFisk))
                 {
-                    Subject.Reply(source, "You really told them? I knew I couldn't trust you Aisling! Begone! We are through. I can't show my face anywhere. *Fisk is embarrassed and walks off*");
+                    Subject.Reply(
+                        source,
+                        "You really told them? I knew I couldn't trust you Aisling! Begone! We are through. I can't show my face anywhere. *Fisk is embarrassed and walks off*");
 
                     return;
                 }
-                if ((hasStage && (stage == FiskSecretStage.Started)) || (stage == FiskSecretStage.StartedWaterLilies) || (stage == FiskSecretStage.CollectedWaterLilies))
+
+                if ((hasStage && (stage == FiskSecretStage.Started))
+                    || (stage == FiskSecretStage.StartedWaterLilies)
+                    || (stage == FiskSecretStage.CollectedWaterLilies))
                 {
                     Subject.Reply(source, "Skip", "FiskSecret_startedreturn");
 
                     return;
                 }
 
-                if (hasStage && (stage == FiskSecretStage.Started2) || (stage == FiskSecretStage.StartedPetunias) || (stage == FiskSecretStage.CollectedPetunias))
+                if ((hasStage && (stage == FiskSecretStage.Started2))
+                    || (stage == FiskSecretStage.StartedPetunias)
+                    || (stage == FiskSecretStage.CollectedPetunias))
                 {
                     Subject.Reply(source, "Skip", "FiskSecret_startedreturn2");
 
                     return;
                 }
-                if (hasStage && (stage == FiskSecretStage.Started3) || (stage == FiskSecretStage.StartedPinkRose) || (stage == FiskSecretStage.CollectedPinkRose))
+
+                if ((hasStage && (stage == FiskSecretStage.Started3))
+                    || (stage == FiskSecretStage.StartedPinkRose)
+                    || (stage == FiskSecretStage.CollectedPinkRose))
                 {
                     Subject.Reply(source, "Skip", "FiskSecret_startedreturn3");
 
                     return;
                 }
-                if (hasStage && (stage == FiskSecretStage.Started4) || (stage == FiskSecretStage.StartedBouquet) || (stage == FiskSecretStage.CollectedBouquet))
+
+                if ((hasStage && (stage == FiskSecretStage.Started4))
+                    || (stage == FiskSecretStage.StartedBouquet)
+                    || (stage == FiskSecretStage.CollectedBouquet))
                 {
                     Subject.Reply(source, "Skip", "FiskSecret_startedreturn4");
 
                     return;
                 }
-                if (hasStage && (stage == FiskSecretStage.Started5) || (stage == FiskSecretStage.DeliverBouquet))
+
+                if ((hasStage && (stage == FiskSecretStage.Started5)) || (stage == FiskSecretStage.DeliverBouquet))
                 {
                     Subject.Reply(source, "Skip", "FiskSecret_startedreturn5");
 
                     return;
                 }
+
                 if (hasStage && (stage == FiskSecretStage.DeliveredBouquet))
                 {
                     Subject.Reply(source, "Skip", "deliveredbouquet");
@@ -122,29 +137,34 @@ public class FiskSecretScript : DialogScriptBase
 
                     return;
                 }
+
                 if (hasStage && (stage == FiskSecretStage.DeliveredBouquet))
                 {
                     Subject.Reply(source, "Skip", "FiskSecret_deliveredbouquet");
 
                     return;
                 }
+
                 if (hasStage && (stage == FiskSecretStage.Started6))
                 {
                     Subject.Reply(source, "Skip", "FiskSecret_collectedbrandy");
 
                     return;
                 }
+
                 if (hasStage && (stage == FiskSecretStage.BrandyTurnin))
                 {
                     if (source.Trackers.TimedEvents.HasActiveEvent("fiskbrandy", out var timedEvent))
                     {
-                        Subject.Reply(source, $"I haven't been over to see her yet... Come see me again in {timedEvent.Remaining.ToReadableString()}");
+                        Subject.Reply(
+                            source,
+                            $"I haven't been over to see her yet... Come see me again in {timedEvent.Remaining.ToReadableString()}");
 
                         return;
                     }
+
                     Subject.Reply(source, "Skip", "FiskSecret_fiskcheckin");
                 }
-
 
                 break;
             }
@@ -160,17 +180,20 @@ public class FiskSecretScript : DialogScriptBase
             {
                 source.SendOrangeBarMessage("Go talk to Thulin at the theater to get water lilies.");
                 source.Trackers.Enums.Set(FiskSecretStage.Started);
+
                 return;
             }
             case "pinkrose_start4":
             {
                 source.SendOrangeBarMessage("Go talk to Vivianne at Deoch's Shrine to get a Pink Rose.");
                 source.Trackers.Enums.Set(FiskSecretStage.Started3);
+
                 return;
             }
             case "bouquet_start4":
             {
                 source.Trackers.Enums.Set(FiskSecretStage.Started4);
+
                 return;
             }
             case "bouquet_start9":
@@ -178,6 +201,7 @@ public class FiskSecretScript : DialogScriptBase
                 source.Trackers.Enums.Set(FiskSecretStage.Started4);
                 source.TryGiveGold(25000);
                 source.SendOrangeBarMessage("Fisk hands you 25,000 gold. Ask Viveka to make the bouquet.");
+
                 return;
             }
             case "petunia_turnin":
@@ -185,6 +209,7 @@ public class FiskSecretScript : DialogScriptBase
                 if (!source.Inventory.RemoveQuantityByTemplateKey("grape", 20))
                 {
                     Subject.Reply(source, "You don't have enough grapes, where are they?");
+
                     return;
                 }
 
@@ -199,7 +224,6 @@ public class FiskSecretScript : DialogScriptBase
                     "Thank you Aisling, now my guest will have grapes. Good luck with whatever you're doing with those Petunias.");
 
                 return;
-
             }
             case "fisksecret_collectedwaterlilies":
             {
@@ -207,11 +231,13 @@ public class FiskSecretScript : DialogScriptBase
                 {
                     Subject.Reply(source, "I thought you got the waterlilies? Where did they go?");
                     source.SendOrangeBarMessage("You don't have enough Water Lilies.");
+
                     return;
                 }
-                source.Trackers.Enums.Set(FiskSecretStage.Started2);
-                break;
 
+                source.Trackers.Enums.Set(FiskSecretStage.Started2);
+
+                break;
             }
             case "fisksecret_collectedpetunias":
             {
@@ -219,11 +245,13 @@ public class FiskSecretScript : DialogScriptBase
                 {
                     Subject.Reply(source, "Where are the petunias? Did you lose them?");
                     source.SendOrangeBarMessage("You don't have enough Petunias.");
+
                     return;
                 }
-                source.Trackers.Enums.Set(FiskSecretStage.Started3);
-                break;
 
+                source.Trackers.Enums.Set(FiskSecretStage.Started3);
+
+                break;
             }
             case "fisksecret_collectedpinkrose":
             {
@@ -231,11 +259,13 @@ public class FiskSecretScript : DialogScriptBase
                 {
                     Subject.Reply(source, "The Pink rose? Where is it?");
                     source.SendOrangeBarMessage("You don't have the Pink Rose.");
+
                     return;
                 }
-                source.Trackers.Enums.Set(FiskSecretStage.Started4);
-                break;
 
+                source.Trackers.Enums.Set(FiskSecretStage.Started4);
+
+                break;
             }
             case "fisksecret_collectedbouquet":
             {
@@ -243,11 +273,13 @@ public class FiskSecretScript : DialogScriptBase
                 {
                     Subject.Reply(source, "Where's the bouquet? I was so excited!");
                     source.SendOrangeBarMessage("You don't have the Bouquet.");
+
                     return;
                 }
-                source.Trackers.Enums.Set(FiskSecretStage.Started5);
-                break;
 
+                source.Trackers.Enums.Set(FiskSecretStage.Started5);
+
+                break;
             }
             case "fisksecret_collectedbrandy":
             {
@@ -255,12 +287,14 @@ public class FiskSecretScript : DialogScriptBase
                 {
                     Subject.Reply(source, "Where's the Brandy?");
                     source.SendOrangeBarMessage("You don't have enough Brandy.");
+
                     return;
                 }
+
                 source.Trackers.Enums.Set(FiskSecretStage.BrandyTurnin);
                 source.Trackers.TimedEvents.AddEvent("fiskbrandy", TimeSpan.FromHours(1), true);
-                break;
 
+                break;
             }
             case "fisksecret_fiskcheckin2":
             {
@@ -268,6 +302,7 @@ public class FiskSecretScript : DialogScriptBase
                 source.TryGiveGold(125000);
                 source.TryGiveGamePoints(10);
                 ExperienceDistributionScript.GiveExp(source, 300000);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Inspired Fisk to Reach for the Stars",
@@ -278,19 +313,20 @@ public class FiskSecretScript : DialogScriptBase
                         GameTime.Now));
 
                 break;
-
             }
             case "givebertil_start":
             {
-                if (!source.Inventory.HasCountByTemplateKey("specialbouquet", 1) && (!source.Equipment.Contains("specialbouquet")))
+                if (!source.Inventory.HasCountByTemplateKey("specialbouquet", 1) && !source.Equipment.Contains("specialbouquet"))
                 {
                     Subject.Reply(source, "Where'd you put the Bouquet?");
                     source.SendOrangeBarMessage("You don't have the Bouquet.");
+
                     return;
                 }
-                source.Trackers.Enums.Set(FiskSecretStage.DeliverBouquet);
-                break;
 
+                source.Trackers.Enums.Set(FiskSecretStage.DeliverBouquet);
+
+                break;
             }
             case "deliveredbouquet4":
             {
@@ -298,6 +334,7 @@ public class FiskSecretScript : DialogScriptBase
                 source.TryGiveGold(75000);
                 source.TryGiveGamePoints(10);
                 ExperienceDistributionScript.GiveExp(source, 250000);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Kept Fisk's Secret",
@@ -306,21 +343,19 @@ public class FiskSecretScript : DialogScriptBase
                         MarkColor.White,
                         1,
                         GameTime.Now));
-                break;
 
+                break;
             }
             case "deliveredbouquet11":
             {
                 source.Trackers.Enums.Set(FiskSecretStage.Started6);
                 source.SendOrangeBarMessage("Bring Fisk 10 Brandy");
+
                 break;
-
             }
-
             #endregion
 
             #region ThulinWaterLily
-            
             case "fiskangeredthulin3":
             {
                 source.Trackers.Enums.Set(FiskSecretStage.AngeredThulinReturn);
@@ -330,7 +365,10 @@ public class FiskSecretScript : DialogScriptBase
 
             case "thulin_initial":
             {
-                if ((hasStage && (stage == FiskSecretStage.Started)) || (stage == FiskSecretStage.AngeredThulin) || (stage == FiskSecretStage.StartedWaterLilies) || (stage == FiskSecretStage.CollectedWaterLilies))
+                if ((hasStage && (stage == FiskSecretStage.Started))
+                    || (stage == FiskSecretStage.AngeredThulin)
+                    || (stage == FiskSecretStage.StartedWaterLilies)
+                    || (stage == FiskSecretStage.CollectedWaterLilies))
                 {
                     var option = new DialogOption
                     {
@@ -362,9 +400,7 @@ public class FiskSecretScript : DialogScriptBase
                 }
 
                 if (hasStage && (stage == FiskSecretStage.CollectedWaterLilies))
-                {
                     Subject.Reply(source, "Skip", "Waterlily_thanks");
-                }
 
                 break;
             }
@@ -402,14 +438,15 @@ public class FiskSecretScript : DialogScriptBase
                 Subject.Reply(source, "I knew I can count on you. I wish I knew the secret, but this will do. Thank you and Good luck!");
 
                 return;
-
             }
             #endregion
-            
+
             #region EevaPetunia
             case "eeva_initial":
             {
-                if (hasStage && (stage == FiskSecretStage.Started2) || (stage == FiskSecretStage.CollectedPetunias) || (stage == FiskSecretStage.StartedPetunias))
+                if ((hasStage && (stage == FiskSecretStage.Started2))
+                    || (stage == FiskSecretStage.CollectedPetunias)
+                    || (stage == FiskSecretStage.StartedPetunias))
                 {
                     var option = new DialogOption
                     {
@@ -440,9 +477,7 @@ public class FiskSecretScript : DialogScriptBase
                 }
 
                 if (hasStage && (stage == FiskSecretStage.StartedPetunias))
-                {
                     Subject.Reply(source, "Skip", "petunia_return");
-                }
 
                 break;
             }
@@ -454,13 +489,17 @@ public class FiskSecretScript : DialogScriptBase
 
                 return;
             }
-            
             #endregion
 
             #region ViviannePinkRose
             case "vivianne_initial":
             {
-                if (hasStage && (stage == FiskSecretStage.Started3) || (stage == FiskSecretStage.CollectedPinkRose) || (stage == FiskSecretStage.MushroomStart) || (stage == FiskSecretStage.StartedPinkRose) || (stage == FiskSecretStage.WontTell) || (stage == FiskSecretStage.WontTell2))
+                if ((hasStage && (stage == FiskSecretStage.Started3))
+                    || (stage == FiskSecretStage.CollectedPinkRose)
+                    || (stage == FiskSecretStage.MushroomStart)
+                    || (stage == FiskSecretStage.StartedPinkRose)
+                    || (stage == FiskSecretStage.WontTell)
+                    || (stage == FiskSecretStage.WontTell2))
                 {
                     var option = new DialogOption
                     {
@@ -512,9 +551,7 @@ public class FiskSecretScript : DialogScriptBase
                 }
 
                 if (hasStage && (stage == FiskSecretStage.MushroomStart))
-                {
                     Subject.Reply(source, "Skip", "MushroomReturn");
-                }
 
                 break;
             }
@@ -539,6 +576,7 @@ public class FiskSecretScript : DialogScriptBase
 
                     return;
                 }
+
                 source.Trackers.Enums.Set(FiskSecretStage.CollectedPinkRose);
 
                 var pinkrose = ItemFactory.Create("pinkrose");
@@ -550,7 +588,6 @@ public class FiskSecretScript : DialogScriptBase
                     "That will do. Here's your pink rose. Thank you, tell Fisk I said hi.");
 
                 return;
-
             }
             case "pinkrose_start16":
             {
@@ -565,7 +602,6 @@ public class FiskSecretScript : DialogScriptBase
                     "Close");
 
                 return;
-
             }
             case "pinkrose_start24":
             {
@@ -575,6 +611,7 @@ public class FiskSecretScript : DialogScriptBase
 
                     return;
                 }
+
                 source.Trackers.Enums.Set(FiskSecretStage.CollectedPinkRose);
 
                 var pinkrose = ItemFactory.Create("pinkrose");
@@ -586,7 +623,6 @@ public class FiskSecretScript : DialogScriptBase
                     "That will do. Here's your pink rose. Thank you, tell Fisk I said hi.");
 
                 return;
-
             }
             case "pinkrose_start26":
             {
@@ -603,6 +639,7 @@ public class FiskSecretScript : DialogScriptBase
 
                     return;
                 }
+
                 source.Trackers.Enums.Set(FiskSecretStage.CollectedPinkRose);
 
                 var pinkrose = ItemFactory.Create("pinkrose");
@@ -618,10 +655,8 @@ public class FiskSecretScript : DialogScriptBase
             #endregion
 
             #region VivekaBouquet
-
             case "viveka_initial":
             {
-
                 if (hasStage)
                 {
                     var option = new DialogOption
@@ -633,34 +668,47 @@ public class FiskSecretScript : DialogScriptBase
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
+
                 break;
             }
             case "bouquet_initial":
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("craftbouquet", out var timedEvent))
                 {
-                    Subject.Reply(source, $"I am not quite done yet. It can wait till later. Come back in {timedEvent.Remaining.ToReadableString()}");
+                    Subject.Reply(
+                        source,
+                        $"I am not quite done yet. It can wait till later. Come back in {timedEvent.Remaining.ToReadableString()}");
 
                     return;
                 }
+
                 if (source.Trackers.TimedEvents.HasActiveEvent("craftbouquet2", out var timedEvent1))
                 {
-                    Subject.Reply(source, $"I am not quite done yet. I will work on it soon. Come back in {timedEvent1.Remaining.ToReadableString()}");
+                    Subject.Reply(
+                        source,
+                        $"I am not quite done yet. I will work on it soon. Come back in {timedEvent1.Remaining.ToReadableString()}");
 
                     return;
                 }
+
                 if (source.Trackers.TimedEvents.HasActiveEvent("craftbouquet3", out var timedEvent2))
                 {
-                    Subject.Reply(source, $"I am not quite done yet. I am working on it right now. Come back in {timedEvent2.Remaining.ToReadableString()}");
+                    Subject.Reply(
+                        source,
+                        $"I am not quite done yet. I am working on it right now. Come back in {timedEvent2.Remaining.ToReadableString()}");
 
                     return;
                 }
+
                 if (source.Trackers.TimedEvents.HasActiveEvent("craftbouquet4", out var timedEvent3))
                 {
-                    Subject.Reply(source, $"I am not quite done yet. I am a bit busy now. Come back in {timedEvent3.Remaining.ToReadableString()}");
+                    Subject.Reply(
+                        source,
+                        $"I am not quite done yet. I am a bit busy now. Come back in {timedEvent3.Remaining.ToReadableString()}");
 
                     return;
                 }
+
                 if (hasStage && (stage == FiskSecretStage.Started4))
                 {
                     Subject.Reply(source, "Skip", "bouquet_start10");
@@ -674,19 +722,22 @@ public class FiskSecretScript : DialogScriptBase
 
                     return;
                 }
+
                 if (hasStage2 && (stage2 == FiskRemakeBouquet.BouquetWait))
                 {
                     Subject.Reply(source, "Skip", "bouquet_remake");
 
                     return;
                 }
+
                 {
-                    if (source.Inventory.HasCountByTemplateKey("specialbouquet", 1) || (source.Equipment.Contains("specialBouquet")))
+                    if (source.Inventory.HasCountByTemplateKey("specialbouquet", 1) || source.Equipment.Contains("specialBouquet"))
                     {
                         Subject.Reply(source, "I already made you a bouquet.");
 
                         return;
                     }
+
                     Subject.Reply(source, "Skip", "RemakeBouquet");
                 }
 
@@ -695,12 +746,18 @@ public class FiskSecretScript : DialogScriptBase
             case "bouquet_start15":
             {
                 if (!source.Inventory.HasCountByTemplateKey("petunia", 5)
-                    && (!source.Inventory.HasCountByTemplateKey("pinkrose", 1) && (!source.Inventory.HasCountByTemplateKey("waterlily", 5))))
+                    && !source.Inventory.HasCountByTemplateKey("pinkrose", 1)
+                    && !source.Inventory.HasCountByTemplateKey("waterlily", 5))
                 {
-                    Subject.Reply(source, "I think you're missing some flowers. I need the five water lilies, five petunias, and one pink rose.");
+                    Subject.Reply(
+                        source,
+                        "I think you're missing some flowers. I need the five water lilies, five petunias, and one pink rose.");
+
                     source.SendOrangeBarMessage("Looks like you're missing some flowers.");
+
                     return;
                 }
+
                 if (!source.TryTakeGold(25000))
                 {
                     Subject.Reply(source, "You can't afford my services. Come back when you have enough gold.");
@@ -720,12 +777,18 @@ public class FiskSecretScript : DialogScriptBase
             case "bouquet_start19":
             {
                 if (!source.Inventory.HasCountByTemplateKey("petunia", 5)
-                    && (!source.Inventory.HasCountByTemplateKey("pinkrose", 1) && (!source.Inventory.HasCountByTemplateKey("waterlily", 5))))
+                    && !source.Inventory.HasCountByTemplateKey("pinkrose", 1)
+                    && !source.Inventory.HasCountByTemplateKey("waterlily", 5))
                 {
-                    Subject.Reply(source, "I think you're missing some flowers. I need the five water lilies, five petunias, and one pink rose.");
+                    Subject.Reply(
+                        source,
+                        "I think you're missing some flowers. I need the five water lilies, five petunias, and one pink rose.");
+
                     source.SendOrangeBarMessage("Looks like you're missing some flowers.");
+
                     return;
                 }
+
                 if (!source.TryTakeGold(15000))
                 {
                     Subject.Reply(source, "You can't afford my services. Come back when you have enough gold.");
@@ -745,12 +808,18 @@ public class FiskSecretScript : DialogScriptBase
             case "bouquet_start22":
             {
                 if (!source.Inventory.HasCountByTemplateKey("petunia", 5)
-                    && (!source.Inventory.HasCountByTemplateKey("pinkrose", 1) && (!source.Inventory.HasCountByTemplateKey("waterlily", 5))))
+                    && !source.Inventory.HasCountByTemplateKey("pinkrose", 1)
+                    && !source.Inventory.HasCountByTemplateKey("waterlily", 5))
                 {
-                    Subject.Reply(source, "I think you're missing some flowers. I need the five water lilies, five petunias, and one pink rose.");
+                    Subject.Reply(
+                        source,
+                        "I think you're missing some flowers. I need the five water lilies, five petunias, and one pink rose.");
+
                     source.SendOrangeBarMessage("Looks like you're missing some flowers.");
+
                     return;
                 }
+
                 if (!source.TryTakeGold(10000))
                 {
                     Subject.Reply(source, "You can't afford my services. Come back when you have enough gold.");
@@ -770,12 +839,18 @@ public class FiskSecretScript : DialogScriptBase
             case "remakebouquet3":
             {
                 if (!source.Inventory.HasCountByTemplateKey("petunia", 5)
-                    && (!source.Inventory.HasCountByTemplateKey("pinkrose", 1) && (!source.Inventory.HasCountByTemplateKey("waterlily", 5))))
+                    && !source.Inventory.HasCountByTemplateKey("pinkrose", 1)
+                    && !source.Inventory.HasCountByTemplateKey("waterlily", 5))
                 {
-                    Subject.Reply(source, "I think you're missing some flowers. I need the five water lilies, five petunias, and one pink rose.");
+                    Subject.Reply(
+                        source,
+                        "I think you're missing some flowers. I need the five water lilies, five petunias, and one pink rose.");
+
                     source.SendOrangeBarMessage("Looks like you're missing some flowers.");
+
                     return;
                 }
+
                 if (!source.TryTakeGold(50000))
                 {
                     Subject.Reply(source, "You can't afford my services. Come back when you have enough gold.");
@@ -821,6 +896,7 @@ public class FiskSecretScript : DialogScriptBase
                 waterlily.Count = 10;
                 source.TryGiveItems(waterlily);
                 source.Trackers.Enums.Set(FiskSecretStage.ExposedFisk);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Betrayed Fisk's Trust",
@@ -835,6 +911,7 @@ public class FiskSecretScript : DialogScriptBase
             case "exposefisk_eeva":
             {
                 source.Trackers.Enums.Set(FiskSecretStage.ExposedFisk);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Betrayed Fisk's Trust",
@@ -852,6 +929,7 @@ public class FiskSecretScript : DialogScriptBase
                 pinkrose.Count = 5;
                 source.TryGiveItems(pinkrose);
                 source.Trackers.Enums.Set(FiskSecretStage.ExposedFisk);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Betrayed Fisk's Trust",
@@ -866,6 +944,7 @@ public class FiskSecretScript : DialogScriptBase
             case "exposefisk_viveka":
             {
                 source.Trackers.Enums.Set(FiskSecretStage.ExposedFisk);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Betrayed Fisk's Trust",
@@ -880,6 +959,7 @@ public class FiskSecretScript : DialogScriptBase
             case "exposefisk_bertil":
             {
                 source.Trackers.Enums.Set(FiskSecretStage.ExposedFisk);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Betrayed Fisk's Trust",
@@ -896,7 +976,7 @@ public class FiskSecretScript : DialogScriptBase
             #region BertilBouquet
             case "bertil_initial":
             {
-                if (hasStage && (stage == FiskSecretStage.DeliverBouquet) || (stage == FiskSecretStage.DeliveredBouquet))
+                if ((hasStage && (stage == FiskSecretStage.DeliverBouquet)) || (stage == FiskSecretStage.DeliveredBouquet))
                 {
                     var option = new DialogOption
                     {
@@ -920,15 +1000,15 @@ public class FiskSecretScript : DialogScriptBase
                 }
 
                 if (hasStage && (stage == FiskSecretStage.DeliveredBouquet))
-                {
-                    Subject.Reply(source, "Thank you again Aisling for bringing me the bouquet, they sure are lovely. I hope my secret admirer comes for me soon.");
-                }
+                    Subject.Reply(
+                        source,
+                        "Thank you again Aisling for bringing me the bouquet, they sure are lovely. I hope my secret admirer comes for me soon.");
 
                 break;
             }
             case "deliverbouquet2":
             {
-                if (!source.Inventory.HasCountByTemplateKey("specialbouquet", 1) && (!source.Equipment.Contains("specialBouquet")))
+                if (!source.Inventory.HasCountByTemplateKey("specialbouquet", 1) && !source.Equipment.Contains("specialBouquet"))
                 {
                     Subject.Reply(source, "What bouquet? You don't have one.");
                     source.SendOrangeBarMessage("You don't have the Bouquet.");
@@ -939,8 +1019,8 @@ public class FiskSecretScript : DialogScriptBase
                 source.Inventory.TryGetRemove("specialbouquet", out _);
                 source.Equipment.Remove("specialbouquet");
                 source.Trackers.Enums.Set(FiskSecretStage.DeliveredBouquet);
-                break;
 
+                break;
             }
             #endregion
         }

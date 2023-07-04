@@ -10,11 +10,6 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 public sealed class RockPunchEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 46;
-    /// <inheritdoc />
-    public override string Name => "rockpunch";
-
-    /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -26,6 +21,10 @@ public sealed class RockPunchEffect : ContinuousAnimationEffectBase
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(2);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+    /// <inheritdoc />
+    public override byte Icon => 46;
+    /// <inheritdoc />
+    public override string Name => "rockpunch";
 
     public override void OnApplied()
     {

@@ -8,10 +8,9 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class PreventRecradhEffect : EffectBase
 {
+    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(14);
     public override byte Icon => 102;
     public override string Name => "preventrecradh";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(14);
 
     public override void OnApplied()
     {
@@ -34,6 +33,7 @@ public class PreventRecradhEffect : EffectBase
         if (target.Effects.Contains("preventrecradh"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "This magic has already been applied.");
+
             return false;
         }
 

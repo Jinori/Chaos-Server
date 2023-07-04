@@ -12,8 +12,8 @@ namespace Chaos.Scripting.DialogScripts.Quests;
 
 public class RionaRatQuestScript : DialogScriptBase
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
     private readonly IItemFactory ItemFactory;
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
     public RionaRatQuestScript(Dialog subject, IItemFactory itemFactory)
@@ -52,11 +52,10 @@ public class RionaRatQuestScript : DialogScriptBase
                         DialogKey = "riona_beginnerquest",
                         OptionText = "Got any other quest?"
                     };
-                    
+
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
-
 
                 break;
 
@@ -65,9 +64,7 @@ public class RionaRatQuestScript : DialogScriptBase
                     return;
 
                 if (stage == RionaRatQuestStage.StartedRatQuest)
-                {
                     Subject.Reply(source, "Skip", "ratquest_turninstart");
-                }
 
                 break;
 
@@ -91,7 +88,7 @@ public class RionaRatQuestScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     var mount = ItemFactory.Create("Mount");
                     source.TryGiveItem(ref mount);
                     source.TryGiveGamePoints(5);

@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.BankScripts;
 
-
 public class DepositItemScript : DialogScriptBase
 {
     private readonly ILogger<DepositItemScript> Logger;

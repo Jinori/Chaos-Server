@@ -6,11 +6,6 @@ namespace Chaos.Scripting.EffectScripts.Foods;
 
 public class SweetBunsEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 72;
-    public override string Name => "Sweet Buns";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(2);
-
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
@@ -18,8 +13,12 @@ public class SweetBunsEffect : NonOverwritableEffectBase
     };
     protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
     {
-        "Sweet Buns",
+        "Sweet Buns"
     };
+
+    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(2);
+    public override byte Icon => 72;
+    public override string Name => "Sweet Buns";
     protected override byte? Sound => 115;
 
     public override void OnApplied()
@@ -30,7 +29,7 @@ public class SweetBunsEffect : NonOverwritableEffectBase
         {
             AtkSpeedPct = 40
         };
-        
+
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed increased.");

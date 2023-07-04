@@ -8,7 +8,7 @@ namespace Chaos.Scripting.MapScripts;
 public class WildernessGatheringScript : MapScriptBase
 {
     private readonly IReactorTileFactory ReactorTileFactory;
-    
+
     public WildernessGatheringScript(MapInstance subject, IReactorTileFactory reactorTileFactory)
         : base(subject)
     {
@@ -19,7 +19,7 @@ public class WildernessGatheringScript : MapScriptBase
             152,
             13,
             10);
-        
+
         var wildernesscherryrectangle = new Rectangle(
             33,
             81,
@@ -36,11 +36,13 @@ public class WildernessGatheringScript : MapScriptBase
             var cottonpoint = cottonrectangle.GetRandomPoint();
             cottonpoints.Add(cottonpoint);
         }
+
         for (var i = 0; i < count2; i++)
         {
             var wildernesscherrypoint = wildernesscherryrectangle.GetRandomPoint();
             wildernesscherrypoints.Add(wildernesscherrypoint);
         }
+
         foreach (var cottonpoint in cottonpoints)
         {
             var cotton = ReactorTileFactory.Create(
@@ -50,6 +52,7 @@ public class WildernessGatheringScript : MapScriptBase
 
             Subject.SimpleAdd(cotton);
         }
+
         foreach (var wildernesscherrypoint in wildernesscherrypoints)
         {
             var wildernesscherry = ReactorTileFactory.Create(

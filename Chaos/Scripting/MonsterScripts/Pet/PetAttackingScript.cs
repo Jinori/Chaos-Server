@@ -43,8 +43,6 @@ public class PetAttackingScript : MonsterScriptBase
                 }
 
         if (attacked)
-        {
             Subject.MoveTimer.Reset();
-        }
     }
 }

@@ -26,7 +26,7 @@ public class GatherCherryScript : ReactorTileScriptBase
     {
         if (source is not Aisling aisling)
             return;
-        
+
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("cherry", 23))
         {
             var mapInstance = _simpleCache.Get<MapInstance>("suomi_cherry_farmer");
@@ -39,7 +39,7 @@ public class GatherCherryScript : ReactorTileScriptBase
         var cherry = _itemFactory.Create("Cherry");
         var cherryCount = Random.Shared.Next(1, 4);
         cherry.Count = cherryCount;
-        
+
         if (!aisling.TryGiveItem(ref cherry))
         {
             var mapInstance = _simpleCache.Get<MapInstance>("suomi_cherry_farmer");
@@ -47,6 +47,7 @@ public class GatherCherryScript : ReactorTileScriptBase
             aisling.SendOrangeBarMessage("The farmer waves, you head inside.");
             aisling.TraverseMap(mapInstance, point);
             aisling.Trackers.Counters.Remove("cherry", out _);
+
             return;
         }
 
@@ -55,7 +56,7 @@ public class GatherCherryScript : ReactorTileScriptBase
             AnimationSpeed = 100,
             TargetAnimation = 20
         };
-        
+
         aisling.Animate(animation);
         aisling.SendOrangeBarMessage("You gathered some cherries!");
         aisling.Trackers.Counters.AddOrIncrement("cherry");

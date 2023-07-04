@@ -8,10 +8,9 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 
 public class AsgallFaileasEffect : EffectBase
 {
+    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(12);
     public override byte Icon => 44;
     public override string Name => "asgallfaileas";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(12);
 
     public override void OnApplied()
     {
@@ -19,7 +18,7 @@ public class AsgallFaileasEffect : EffectBase
 
         if (!Subject.Status.HasFlag(Status.AsgallFaileas))
             Subject.Status = Status.AsgallFaileas;
-        
+
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your stance is more defensive.");
     }

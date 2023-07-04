@@ -37,7 +37,7 @@ public class SpareAStickRewardScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, 2500);
                 source.TryGiveGold(1000);
                 source.TryGiveGamePoints(5);
-                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"5 Gamepoints, 1000 gold, and 2500 Exp Rewarded!");
+                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "5 Gamepoints, 1000 gold, and 2500 Exp Rewarded!");
 
                 if (IntegerRandomizer.RollChance(8))
                 {
@@ -57,15 +57,12 @@ public class SpareAStickRewardScript : DialogScriptBase
                 var stick = ItemFactory.Create("Stick");
                 var shield = ItemFactory.Create("woodenshield");
                 source.TryGiveItems(stick, shield);
-            }
-            else
-            {
+            } else
                 Subject.Reply(
                     source,
                     branchCount == 0
                         ? "What? No branches?! You haven't even tried."
                         : $"Only {branchCount} branches.. you need six! Go get the rest.");
-            }
         }
     }
 }

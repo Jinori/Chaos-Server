@@ -10,11 +10,6 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 public sealed class WolfFangFistEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 118;
-    /// <inheritdoc />
-    public override string Name => "wolfFangFist";
-
-    /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -26,6 +21,10 @@ public sealed class WolfFangFistEffect : ContinuousAnimationEffectBase
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(6);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+    /// <inheritdoc />
+    public override byte Icon => 118;
+    /// <inheritdoc />
+    public override string Name => "wolfFangFist";
 
     public override void OnApplied()
     {

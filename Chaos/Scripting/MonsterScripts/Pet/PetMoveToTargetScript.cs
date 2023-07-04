@@ -21,7 +21,7 @@ public class PetMoveToTargetScript : MonsterScriptBase
 
         if (!Map.GetEntities<Monster>().Any())
             return;
-        
+
         var distance = Subject.DistanceFrom(Target);
 
         if (distance != 1)
@@ -31,7 +31,7 @@ public class PetMoveToTargetScript : MonsterScriptBase
             var direction = Target.DirectionalRelationTo(Subject);
             Subject.Turn(direction);
         }
-        
+
         Subject.SkillTimer.Reset();
     }
 }

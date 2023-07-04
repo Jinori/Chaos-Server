@@ -1,10 +1,10 @@
-﻿using Chaos.Common.Definitions;
+﻿using Chaos.Collections;
+using Chaos.Common.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
-using Chaos.Collections;
-using Chaos.Extensions;
 
 namespace Chaos.Scripting.DialogScripts.Mileth;
 
@@ -24,6 +24,7 @@ public class TeleportToTerrorBossScript : DialogScriptBase
         {
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure you group your companions for this quest!");
             Subject.Reply(source, "What? You don't have any friends with you.. who are you talking to?");
+
             return;
         }
 
@@ -31,17 +32,16 @@ public class TeleportToTerrorBossScript : DialogScriptBase
         {
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure your companions are within level range.");
             Subject.Reply(source, "Some of your companions are not within your level range.");
+
             return;
         }
 
         Subject.Close(source);
-        
+
         var mapInstance = SimpleCache.Get<MapInstance>("cryptTerror");
         var pointS = new Point(13, 8);
-        
+
         foreach (var member in group)
-        {
             member.TraverseMap(mapInstance, pointS);
-        }
     }
 }

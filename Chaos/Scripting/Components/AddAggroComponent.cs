@@ -21,18 +21,19 @@ public class AddAggroComponent : IComponent
         {
             if (target is Aisling or Merchant)
                 break;
-            
+
             var monster = target as Monster;
+
             monster?.AggroList.AddOrUpdate(
                 context.Source.Id,
-                _ => (aggroAmount * (int)aggroMultiplier),
-                (_, currentAggro) => currentAggro + (aggroAmount * (int)aggroMultiplier));
+                _ => aggroAmount * (int)aggroMultiplier,
+                (_, currentAggro) => currentAggro + aggroAmount * (int)aggroMultiplier);
         }
     }
-    
+
     public interface IAddAggroComponentOptions
     {
-        Stat? AggroMultiplier { get; init; }
         int? AggroAmount { get; init; }
+        Stat? AggroMultiplier { get; init; }
     }
 }

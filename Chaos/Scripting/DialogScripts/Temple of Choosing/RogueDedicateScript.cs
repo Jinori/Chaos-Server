@@ -64,7 +64,7 @@ public class RogueDedicateScript : DialogScriptBase
             var skill = SkillFactory.Create("assail");
             var skill2 = SkillFactory.Create("stab");
             var spell = SpellFactory.Create("needletrap");
-            
+
             if (!source.SpellBook.Contains(spell))
                 source.SpellBook.TryAddToNextSlot(spell);
 

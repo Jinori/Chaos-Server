@@ -48,14 +48,12 @@ public class ALittleBitofThatScript : DialogScriptBase
 
             case "alittlebitofthat_initial":
                 if (!hasStage || (stage == ALittleBitofThatStage.None))
-                {
                     if (source.Trackers.TimedEvents.HasActiveEvent("ALittleBitofThatCd", out var timedEvent))
                     {
                         Subject.Reply(source, $"I'm still working on this, come back later. (({timedEvent.Remaining.ToReadableString()}))");
 
                         return;
                     }
-                }
 
                 if (stage == ALittleBitofThatStage.StartedApple)
                 {
@@ -73,30 +71,27 @@ public class ALittleBitofThatScript : DialogScriptBase
 
                 if (stage == ALittleBitofThatStage.StartedCherry)
                 {
-                    Subject.Reply(source, "Skip","alittlebitofthat_startcherry");
-                    
+                    Subject.Reply(source, "Skip", "alittlebitofthat_startcherry");
 
                     return;
                 }
 
                 if (stage == ALittleBitofThatStage.StartedGrapes)
                 {
-                    Subject.Reply(source, "Skip","alittlebitofthat_startgrapes");
+                    Subject.Reply(source, "Skip", "alittlebitofthat_startgrapes");
 
                     return;
                 }
 
                 if (stage == ALittleBitofThatStage.StartedMold)
                 {
-                    Subject.Reply(source, "skip","alittlebitofthat_startMold");
+                    Subject.Reply(source, "skip", "alittlebitofthat_startMold");
 
                     return;
                 }
 
                 if (stage == ALittleBitofThatStage.StartedTomato)
-                {
-                    Subject.Reply(source, "Skip","alittlebitofthat_tomatostart");
-                }
+                    Subject.Reply(source, "Skip", "alittlebitofthat_tomatostart");
 
                 break;
 

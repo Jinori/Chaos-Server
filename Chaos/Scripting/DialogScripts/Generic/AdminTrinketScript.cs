@@ -15,11 +15,13 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class AdminTrinketScript : DialogScriptBase
 {
+    private const string BOT_TOKEN = @"";
+    private readonly ISimpleCache _cache;
+    private readonly ISimpleCacheProvider _cacheProvider;
+    private readonly ulong _channelId = 1089331247999885372;
 
     private readonly IClientRegistry<IWorldClient> _clientRegistry;
     private readonly ISimpleCache SimpleCache;
-    private readonly ISimpleCacheProvider _cacheProvider;
-    private readonly ISimpleCache _cache;
 
     public AdminTrinketScript(
         Dialog subject,
@@ -36,26 +38,6 @@ public class AdminTrinketScript : DialogScriptBase
         SimpleCache = simpleCache;
     }
 
-    const string BOT_TOKEN = @"";
-    readonly ulong _channelId = 1089331247999885372;
-
-    private void ReportActivity(Aisling source, Aisling target, string command)
-    {
-        Task.Run(
-            async () =>
-            {
-                var client = new DiscordSocketClient();
-                await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
-                await client.StartAsync();
-                var channel = await client.GetChannelAsync(_channelId) as IMessageChannel;
-
-                await channel!.SendMessageAsync(
-                    $"```" + $"Admin {source.Name} has used the {command} command on Player {target.Name}" + "```");
-
-                await client.StopAsync();
-            });
-    }
-
     private Aisling? GetPlayerByName(string playerName) =>
         _clientRegistry
             .Select(c => c.Aisling)
@@ -65,7 +47,7 @@ public class AdminTrinketScript : DialogScriptBase
     {
         if (!source.IsAdmin)
         {
-            source.SendOrangeBarMessage($"You are not an admin.");
+            source.SendOrangeBarMessage("You are not an admin.");
 
             return;
         }
@@ -107,7 +89,7 @@ public class AdminTrinketScript : DialogScriptBase
     {
         if (!source.IsAdmin)
         {
-            source.SendOrangeBarMessage($"You are not an admin.");
+            source.SendOrangeBarMessage("You are not an admin.");
 
             return;
         }
@@ -128,9 +110,7 @@ public class AdminTrinketScript : DialogScriptBase
                              .Where(_ => true);
 
                 foreach (var aisling in player)
-                {
                     aisling.SendOrangeBarMessage($"[{source.Name}]: {message}.");
-                }
 
                 Subject.Close(source);
 
@@ -188,6 +168,7 @@ public class AdminTrinketScript : DialogScriptBase
                 source.SendOrangeBarMessage($"You teleported {playerName} to you.");
                 Subject.Close(source);
                 ReportActivity(source, player, "Summon");
+
                 return;
             }
 
@@ -207,6 +188,7 @@ public class AdminTrinketScript : DialogScriptBase
                 if (player == null)
                 {
                     source.SendOrangeBarMessage($"{playerName} is not online");
+
                     return;
                 }
 
@@ -231,4 +213,19 @@ public class AdminTrinketScript : DialogScriptBase
             }
         }
     }
+
+    private void ReportActivity(Aisling source, Aisling target, string command) =>
+        Task.Run(
+            async () =>
+            {
+                var client = new DiscordSocketClient();
+                await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
+                await client.StartAsync();
+                var channel = await client.GetChannelAsync(_channelId) as IMessageChannel;
+
+                await channel!.SendMessageAsync(
+                    $"```" + $"Admin {source.Name} has used the {command} command on Player {target.Name}" + "```");
+
+                await client.StopAsync();
+            });
 }

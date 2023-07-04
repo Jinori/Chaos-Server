@@ -18,6 +18,7 @@ public class HairDyeScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         var colors = Enum.GetValues<DisplayColor>();
+
         foreach (var color in colors)
         {
             var item = ItemFactory.CreateFaux("hairDyeContainer");
@@ -32,6 +33,7 @@ public class HairDyeScript : DialogScriptBase
         if (!Subject.MenuArgs.TryGet<string>(0, out var dye))
         {
             Subject.ReplyToUnknownInput(source);
+
             return;
         }
 
@@ -41,12 +43,14 @@ public class HairDyeScript : DialogScriptBase
         if (item == null)
         {
             Subject.ReplyToUnknownInput(source);
+
             return;
         }
 
         if (!source.TryTakeGold(itemDetails!.Price))
         {
             Subject.Close(source);
+
             return;
         }
 

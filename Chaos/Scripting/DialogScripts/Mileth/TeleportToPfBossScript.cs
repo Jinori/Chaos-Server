@@ -32,7 +32,7 @@ public class TeleportToPfBossScript : DialogScriptBase
         if (group is not null)
         {
             var groupCount = 0;
-            
+
             var rectangle = new Rectangle(
                 9,
                 16,

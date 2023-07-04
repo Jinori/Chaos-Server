@@ -15,11 +15,6 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 public class WrathEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon { get; } = 98;
-    /// <inheritdoc />
-    public override string Name { get; } = "Wrath";
-
-    /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -31,20 +26,13 @@ public class WrathEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(1);
     /// <inheritdoc />
+    public override byte Icon { get; } = 98;
+    /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(400));
+    /// <inheritdoc />
+    public override string Name { get; } = "Wrath";
 
     public WrathEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
-
-    /// <inheritdoc />
-    public override bool ShouldApply(Creature source, Creature target)
-    {
-        if (target.StatSheet.ManaPercent <= 5) 
-            return false;
-        else
-        {
-            return true;
-        }
-    }
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
@@ -52,6 +40,7 @@ public class WrathEffect : ContinuousAnimationEffectBase
         if (Subject.StatSheet.ManaPercent < 1)
         {
             Subject.Effects.Terminate(Name);
+
             return;
         }
 
@@ -65,7 +54,12 @@ public class WrathEffect : ContinuousAnimationEffectBase
 
         foreach (var target in targets)
         {
-            ApplyDamageScript.ApplyDamage(Subject, target, this, Subject.StatSheet.Level);
+            ApplyDamageScript.ApplyDamage(
+                Subject,
+                target,
+                this,
+                Subject.StatSheet.Level);
+
             target.ShowHealth();
         }
     }
@@ -73,4 +67,13 @@ public class WrathEffect : ContinuousAnimationEffectBase
     public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(
         ServerMessageType.OrangeBar1,
         "You end your wrath and your skin turns to normal.");
+
+    /// <inheritdoc />
+    public override bool ShouldApply(Creature source, Creature target)
+    {
+        if (target.StatSheet.ManaPercent <= 5)
+            return false;
+
+        return true;
+    }
 }

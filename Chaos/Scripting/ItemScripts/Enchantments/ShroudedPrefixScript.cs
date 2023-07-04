@@ -17,7 +17,7 @@ public class ShroudedPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           Dmg = 1,
+            Dmg = 1
         };
 
         subject.Modifiers.Add(attributes);

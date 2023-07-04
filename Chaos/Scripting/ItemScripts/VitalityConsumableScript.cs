@@ -25,6 +25,8 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
                                         ApplyEffectComponent.IApplyEffectComponentOptions
 
 {
+    public bool AllAggro { get; set; }
+
     /// <inheritdoc />
     public VitalityConsumableScript(Item subject, IEffectFactory effectFactory)
         : base(subject)
@@ -117,6 +119,4 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
     /// <inheritdoc />
     public string? EffectKey { get; init; }
     #endregion
-
-    public bool AllAggro { get; set; }
 }

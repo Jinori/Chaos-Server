@@ -11,8 +11,8 @@ namespace Chaos.Scripting.DialogScripts.Crafting;
 public class cookItemScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    protected HashSet<string>? ItemTemplateKeys { get; init; }
     public int BuyCost { get; init; }
+    protected HashSet<string>? ItemTemplateKeys { get; init; }
 
     public cookItemScript(
         Dialog subject,
@@ -43,7 +43,6 @@ public class cookItemScript : DialogScriptBase
                 #region meatadd
                 case "meat_initial":
                 {
-
                     if (source.Inventory.HasCountByTemplateKey("beefslices", 1))
                     {
                         var item = ItemFactory.CreateFaux("beefslices");
@@ -82,7 +81,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (Subject.Items.Count == 0)
                     {
-                        Subject.Reply(source, "You do not have the required meats.","cooking_initial");
+                        Subject.Reply(source, "You do not have the required meats.", "cooking_initial");
 
                         return;
                     }
@@ -117,6 +116,7 @@ public class cookItemScript : DialogScriptBase
                         var item = ItemFactory.CreateFaux("greengrapes");
                         Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                     }
+
                     if (source.Inventory.HasCountByTemplateKey("grape", 10))
                     {
                         var item = ItemFactory.CreateFaux("grape");
@@ -175,14 +175,14 @@ public class cookItemScript : DialogScriptBase
 
                     if (Subject.Items.Count == 0)
                     {
-                        Subject.Reply(source, "You do not have the required vegetables.","cooking_initial");
+                        Subject.Reply(source, "You do not have the required vegetables.", "cooking_initial");
 
                         return;
                     }
                 }
 
                     break;
-                    #endregion
+                #endregion
 
                 #region addextraingredients
                 case "extraingredients_initial":
@@ -219,7 +219,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (Subject.Items.Count == 0)
                     {
-                        Subject.Reply(source, "You do not have the required extra ingredients.","cooking_initial");
+                        Subject.Reply(source, "You do not have the required extra ingredients.", "cooking_initial");
 
                         return;
                     }
@@ -232,97 +232,96 @@ public class cookItemScript : DialogScriptBase
                 case "cook_item":
                 {
                     #region CheckItems
-
                     if (meatStage && (mStage == MeatsStage.beefslices))
                         if (!source.Inventory.HasCountByTemplateKey("beefslices", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.clam))
-                        if (!source.Inventory.HasCountByTemplateKey("clam", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("clam", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.egg))
-                        if (!source.Inventory.HasCountByTemplateKey("egg", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("egg", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.liver))
-                        if (!source.Inventory.HasCountByTemplateKey("liver", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("liver", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.lobstertail))
-                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.rawmeat))
-                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.beefslices))
-                        if (!source.Inventory.HasCountByTemplateKey("beefslices", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("beefslices", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (meatStage2 && (mStage2 == MeatsStage2.clam))
-                        if (!source.Inventory.HasCountByTemplateKey("clam", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("clam", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.egg))
-                        if (!source.Inventory.HasCountByTemplateKey("egg", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("egg", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.liver))
-                        if (!source.Inventory.HasCountByTemplateKey("liver", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("liver", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.lobstertail))
-                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.rawmeat))
-                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.beefslices))
-                        if (!source.Inventory.HasCountByTemplateKey("beefslices", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("beefslices", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.clam))
-                        if (!source.Inventory.HasCountByTemplateKey("clam", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("clam", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.egg))
-                        if (!source.Inventory.HasCountByTemplateKey("egg", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("egg", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.liver))
-                        if (!source.Inventory.HasCountByTemplateKey("liver", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("liver", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.lobstertail))
-                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.rawmeat))
-                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.cherry))
-                        if (!source.Inventory.HasCountByTemplateKey("cherry", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("cherry", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (fruitsStage && (fstage == FruitsStage.grape))
-                        if (!source.Inventory.HasCountByTemplateKey("grape", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("grape", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.acorn))
-                        if (!source.Inventory.HasCountByTemplateKey("acorn", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("acorn", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.apple))
-                        if (!source.Inventory.HasCountByTemplateKey("apple", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("apple", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.greengrapes))
-                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.strawberry))
@@ -330,13 +329,13 @@ public class cookItemScript : DialogScriptBase
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
-                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.cherry))
                         if (!source.Inventory.HasCountByTemplateKey("cherry", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (fruitsStage2 && (fstage2 == FruitsStage2.grape))
                         if (!source.Inventory.HasCountByTemplateKey("grape", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
@@ -350,23 +349,23 @@ public class cookItemScript : DialogScriptBase
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.greengrapes))
-                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.strawberry))
-                        if (!source.Inventory.HasCountByTemplateKey("strawberry", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("strawberry", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.tangerines))
-                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.cherry))
-                        if (!source.Inventory.HasCountByTemplateKey("cherry", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("cherry", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (fruitsStage3 && (fstage3 == FruitsStage3.grape))
-                        if (!source.Inventory.HasCountByTemplateKey("grape", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("grape", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.acorn))
@@ -374,7 +373,7 @@ public class cookItemScript : DialogScriptBase
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.apple))
-                        if (!source.Inventory.HasCountByTemplateKey("apple", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("apple", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.greengrapes))
@@ -382,47 +381,47 @@ public class cookItemScript : DialogScriptBase
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.strawberry))
-                        if (!source.Inventory.HasCountByTemplateKey("strawberry", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("strawberry", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.tangerines))
-                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
-                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.carrot))
-                        if (!source.Inventory.HasCountByTemplateKey("carrot", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("carrot", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.rambutan))
-                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.tomato))
-                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.vegetable))
-                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.carrot))
-                        if (!source.Inventory.HasCountByTemplateKey("carrot", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("carrot", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.rambutan))
-                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.tomato))
-                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage3 && (vStage3 == VegetableStage3.vegetable))
-                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage3 && (vStage3 == VegetableStage3.carrot))
@@ -505,8 +504,8 @@ public class cookItemScript : DialogScriptBase
                         return;
                     }
                     #endregion
-                    #region RemoveItems
 
+                    #region RemoveItems
                     if (meatStage && (mStage == MeatsStage.beefslices))
                         source.Inventory.RemoveQuantityByTemplateKey("beefslices", 1);
 
@@ -563,7 +562,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (fruitsStage && (fstage == FruitsStage.cherry))
                         source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
-                    
+
                     if (fruitsStage && (fstage == FruitsStage.cherry))
                         source.Inventory.RemoveQuantityByTemplateKey("grape", 10);
 
@@ -584,7 +583,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.cherry))
                         source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
-                    
+
                     if (fruitsStage2 && (fstage2 == FruitsStage2.grape))
                         source.Inventory.RemoveQuantityByTemplateKey("grape", 10);
 
@@ -605,7 +604,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.cherry))
                         source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
-                    
+
                     if (fruitsStage3 && (fstage3 == FruitsStage3.grape))
                         source.Inventory.RemoveQuantityByTemplateKey("grape", 10);
 
@@ -704,12 +703,12 @@ public class cookItemScript : DialogScriptBase
 
                     if (extraIngredients3 && (eStage3 == ExtraIngredientsStage3.salt))
                         source.Inventory.RemoveQuantityByTemplateKey("salt", 1);
-                    
                     #endregion
 
                     if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
+
                         return;
                     }
 
@@ -751,6 +750,7 @@ public class cookItemScript : DialogScriptBase
                         var item = ItemFactory.CreateFaux("greengrapes");
                         Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                     }
+
                     if (source.Inventory.HasCountByTemplateKey("grape", 15))
                     {
                         var item = ItemFactory.CreateFaux("grape");
@@ -809,14 +809,14 @@ public class cookItemScript : DialogScriptBase
 
                     if (Subject.Items.Count == 0)
                     {
-                        Subject.Reply(source, "You do not have the required vegetables.","cooking_initial");
+                        Subject.Reply(source, "You do not have the required vegetables.", "cooking_initial");
 
                         return;
                     }
                 }
 
                     break;
-                    #endregion
+                #endregion
 
                 #region addextraingredients
                 case "extraingredients_initial":
@@ -829,7 +829,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (Subject.Items.Count == 0)
                     {
-                        Subject.Reply(source, "You do not have the required extra ingredients.","cooking_initial");
+                        Subject.Reply(source, "You do not have the required extra ingredients.", "cooking_initial");
 
                         return;
                     }
@@ -842,25 +842,24 @@ public class cookItemScript : DialogScriptBase
                 case "cook_item":
                 {
                     #region CheckItems
-                    
                     if (fruitsStage && (fstage == FruitsStage.cherry))
-                        if (!source.Inventory.HasCountByTemplateKey("cherry", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("cherry", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (fruitsStage && (fstage == FruitsStage.grape))
-                        if (!source.Inventory.HasCountByTemplateKey("grape", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("grape", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.acorn))
-                        if (!source.Inventory.HasCountByTemplateKey("acorn", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("acorn", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.apple))
-                        if (!source.Inventory.HasCountByTemplateKey("apple", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("apple", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.greengrapes))
-                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.strawberry))
@@ -868,15 +867,15 @@ public class cookItemScript : DialogScriptBase
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
-                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.cherry))
                         if (!source.Inventory.HasCountByTemplateKey("cherry", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (fruitsStage2 && (fstage2 == FruitsStage2.grape))
-                        if (!source.Inventory.HasCountByTemplateKey("grape", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("grape", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.acorn))
@@ -888,23 +887,23 @@ public class cookItemScript : DialogScriptBase
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.greengrapes))
-                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.strawberry))
-                        if (!source.Inventory.HasCountByTemplateKey("strawberry", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("strawberry", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.tangerines))
-                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.cherry))
-                        if (!source.Inventory.HasCountByTemplateKey("cherry", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("cherry", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (fruitsStage3 && (fstage3 == FruitsStage3.grape))
-                        if (!source.Inventory.HasCountByTemplateKey("grape", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("grape", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.acorn))
@@ -912,7 +911,7 @@ public class cookItemScript : DialogScriptBase
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.apple))
-                        if (!source.Inventory.HasCountByTemplateKey("apple", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("apple", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.greengrapes))
@@ -920,47 +919,47 @@ public class cookItemScript : DialogScriptBase
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.strawberry))
-                        if (!source.Inventory.HasCountByTemplateKey("strawberry", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("strawberry", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.tangerines))
-                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
-                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.carrot))
-                        if (!source.Inventory.HasCountByTemplateKey("carrot", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("carrot", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.rambutan))
-                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.tomato))
-                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.vegetable))
-                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.carrot))
-                        if (!source.Inventory.HasCountByTemplateKey("carrot", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("carrot", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.rambutan))
-                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.tomato))
-                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage3 && (vStage3 == VegetableStage3.vegetable))
-                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage3 && (vStage3 == VegetableStage3.carrot))
@@ -1043,6 +1042,7 @@ public class cookItemScript : DialogScriptBase
                         return;
                     }
                     #endregion
+
                     #region RemoveItems
                     if (meatStage && (mStage == MeatsStage.beefslices))
                         source.Inventory.RemoveQuantityByTemplateKey("beefslices", 1);
@@ -1100,7 +1100,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (fruitsStage && (fstage == FruitsStage.cherry))
                         source.Inventory.RemoveQuantityByTemplateKey("cherry", 15);
-                    
+
                     if (fruitsStage && (fstage == FruitsStage.grape))
                         source.Inventory.RemoveQuantityByTemplateKey("grape", 15);
 
@@ -1121,7 +1121,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.cherry))
                         source.Inventory.RemoveQuantityByTemplateKey("cherry", 15);
-                    
+
                     if (fruitsStage2 && (fstage2 == FruitsStage2.grape))
                         source.Inventory.RemoveQuantityByTemplateKey("grape", 15);
 
@@ -1142,7 +1142,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.cherry))
                         source.Inventory.RemoveQuantityByTemplateKey("cherry", 15);
-                    
+
                     if (fruitsStage3 && (fstage3 == FruitsStage3.grape))
                         source.Inventory.RemoveQuantityByTemplateKey("grape", 15);
 
@@ -1241,7 +1241,6 @@ public class cookItemScript : DialogScriptBase
 
                     if (extraIngredients3 && (eStage3 == ExtraIngredientsStage3.salt))
                         source.Inventory.RemoveQuantityByTemplateKey("salt", 1);
-                    
                     #endregion
 
                     source.TryGiveItems(ItemFactory.Create("sweetbuns"));
@@ -1253,7 +1252,6 @@ public class cookItemScript : DialogScriptBase
                 #endregion
             }
 
-        
         if (foodSelected && (foodStage == CookFoodStage.fruitbasket))
             switch (Subject.Template.TemplateKey.ToLower())
             {
@@ -1283,6 +1281,7 @@ public class cookItemScript : DialogScriptBase
                         var item = ItemFactory.CreateFaux("greengrapes");
                         Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                     }
+
                     if (source.Inventory.HasCountByTemplateKey("grape", 10))
                     {
                         var item = ItemFactory.CreateFaux("grape");
@@ -1302,9 +1301,7 @@ public class cookItemScript : DialogScriptBase
                     }
 
                     if (Subject.Items.Count == 0)
-                    {
                         Subject.Reply(source, "You do not have the required fruits.", "cooking_initial");
-                    }
                 }
 
                     break;
@@ -1315,23 +1312,23 @@ public class cookItemScript : DialogScriptBase
                 {
                     #region CheckItems
                     if (fruitsStage && (fstage == FruitsStage.cherry))
-                        if (!source.Inventory.HasCountByTemplateKey("cherry", 15)) 
+                        if (!source.Inventory.HasCountByTemplateKey("cherry", 15))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (fruitsStage && (fstage == FruitsStage.grape))
-                        if (!source.Inventory.HasCountByTemplateKey("grape", 15)) 
+                        if (!source.Inventory.HasCountByTemplateKey("grape", 15))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.acorn))
-                        if (!source.Inventory.HasCountByTemplateKey("acorn", 15)) 
+                        if (!source.Inventory.HasCountByTemplateKey("acorn", 15))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.apple))
-                        if (!source.Inventory.HasCountByTemplateKey("apple", 15)) 
+                        if (!source.Inventory.HasCountByTemplateKey("apple", 15))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.greengrapes))
-                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 15)) 
+                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 15))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.strawberry))
@@ -1339,13 +1336,13 @@ public class cookItemScript : DialogScriptBase
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
-                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 15)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 15))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.cherry))
                         if (!source.Inventory.HasCountByTemplateKey("cherry", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (fruitsStage2 && (fstage2 == FruitsStage2.grape))
                         if (!source.Inventory.HasCountByTemplateKey("grape", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
@@ -1359,23 +1356,23 @@ public class cookItemScript : DialogScriptBase
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.greengrapes))
-                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.strawberry))
-                        if (!source.Inventory.HasCountByTemplateKey("strawberry", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("strawberry", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.tangerines))
-                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.cherry))
-                        if (!source.Inventory.HasCountByTemplateKey("cherry", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("cherry", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (fruitsStage3 && (fstage3 == FruitsStage3.grape))
-                        if (!source.Inventory.HasCountByTemplateKey("grape", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("grape", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.acorn))
@@ -1383,7 +1380,7 @@ public class cookItemScript : DialogScriptBase
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.apple))
-                        if (!source.Inventory.HasCountByTemplateKey("apple", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("apple", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.greengrapes))
@@ -1391,13 +1388,12 @@ public class cookItemScript : DialogScriptBase
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.strawberry))
-                        if (!source.Inventory.HasCountByTemplateKey("strawberry", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("strawberry", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.tangerines))
-                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
 
                     if (source.Trackers.Flags.HasFlag(CookFoodProgression.NotenoughIngredients))
                     {
@@ -1407,13 +1403,13 @@ public class cookItemScript : DialogScriptBase
                         return;
                     }
                     #endregion
-                    #region RemoveItems
 
+                    #region RemoveItems
                     if (fruitsStage && (fstage == FruitsStage.cherry))
                         source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
-                    
+
                     if (fruitsStage && (fstage == FruitsStage.grape))
-                        if (!source.Inventory.HasCountByTemplateKey("grape", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("grape", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.acorn))
@@ -1433,9 +1429,9 @@ public class cookItemScript : DialogScriptBase
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.cherry))
                         source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
-                        
+
                     if (fruitsStage2 && (fstage2 == FruitsStage2.grape))
-                        if (!source.Inventory.HasCountByTemplateKey("grape", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("grape", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.acorn))
@@ -1455,9 +1451,9 @@ public class cookItemScript : DialogScriptBase
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.cherry))
                         source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
-                    
+
                     if (fruitsStage3 && (fstage3 == FruitsStage3.grape))
-                        if (!source.Inventory.HasCountByTemplateKey("grape", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("grape", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.acorn))
@@ -1474,7 +1470,6 @@ public class cookItemScript : DialogScriptBase
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.tangerines))
                         source.Inventory.RemoveQuantityByTemplateKey("tangerines", 10);
-
                     #endregion
 
                     source.TryGiveItems(ItemFactory.Create("fruitbasket"));
@@ -1485,14 +1480,13 @@ public class cookItemScript : DialogScriptBase
                     break;
                 #endregion
             }
-        
+
         if (foodSelected && (foodStage == CookFoodStage.salad))
             switch (Subject.Template.TemplateKey.ToLower())
             {
                 #region meatadd
                 case "meat_initial":
                 {
-
                     if (source.Inventory.HasCountByTemplateKey("beefslices", 1))
                     {
                         var item = ItemFactory.CreateFaux("beefslices");
@@ -1531,7 +1525,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (Subject.Items.Count == 0)
                     {
-                        Subject.Reply(source, "You do not have the required meats.","cooking_initial");
+                        Subject.Reply(source, "You do not have the required meats.", "cooking_initial");
 
                         return;
                     }
@@ -1569,7 +1563,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (Subject.Items.Count == 0)
                     {
-                        Subject.Reply(source, "You do not have the required vegetables.","cooking_initial");
+                        Subject.Reply(source, "You do not have the required vegetables.", "cooking_initial");
 
                         return;
                     }
@@ -1589,7 +1583,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (Subject.Items.Count == 0)
                     {
-                        Subject.Reply(source, "You do not have the required extra ingredients.","cooking_initial");
+                        Subject.Reply(source, "You do not have the required extra ingredients.", "cooking_initial");
 
                         return;
                     }
@@ -1602,61 +1596,60 @@ public class cookItemScript : DialogScriptBase
                 case "cook_item":
                 {
                     #region CheckItems
-                    
                     if (meatStage && (mStage == MeatsStage.beefslices))
                         if (!source.Inventory.HasCountByTemplateKey("beefslices", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.clam))
-                        if (!source.Inventory.HasCountByTemplateKey("clam", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("clam", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.egg))
-                        if (!source.Inventory.HasCountByTemplateKey("egg", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("egg", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.liver))
-                        if (!source.Inventory.HasCountByTemplateKey("liver", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("liver", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.lobstertail))
-                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.rawmeat))
-                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
-                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 15)) 
+                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 15))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.carrot))
-                        if (!source.Inventory.HasCountByTemplateKey("carrot", 15)) 
+                        if (!source.Inventory.HasCountByTemplateKey("carrot", 15))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.rambutan))
-                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 15)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 15))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.tomato))
-                        if (!source.Inventory.HasCountByTemplateKey("tomato", 15)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tomato", 15))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.vegetable))
-                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 15)) 
+                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 15))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.carrot))
-                        if (!source.Inventory.HasCountByTemplateKey("carrot", 15)) 
+                        if (!source.Inventory.HasCountByTemplateKey("carrot", 15))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.rambutan))
-                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 15)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 15))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.tomato))
-                        if (!source.Inventory.HasCountByTemplateKey("tomato", 15)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tomato", 15))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.cheese))
@@ -1671,8 +1664,8 @@ public class cookItemScript : DialogScriptBase
                         return;
                     }
                     #endregion
-                    #region RemoveItems
 
+                    #region RemoveItems
                     if (meatStage && (mStage == MeatsStage.beefslices))
                         source.Inventory.RemoveQuantityByTemplateKey("beefslices", 1);
 
@@ -1717,12 +1710,12 @@ public class cookItemScript : DialogScriptBase
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.cheese))
                         source.Inventory.RemoveQuantityByTemplateKey("cheese", 1);
-                    
                     #endregion
 
                     if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
+
                         return;
                     }
 
@@ -1734,7 +1727,7 @@ public class cookItemScript : DialogScriptBase
                     break;
                 #endregion
             }
-        
+
         if (foodSelected && (foodStage == CookFoodStage.lobsterdinner))
             switch (Subject.Template.TemplateKey.ToLower())
             {
@@ -1749,7 +1742,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (Subject.Items.Count == 0)
                     {
-                        Subject.Reply(source, "You do not have the required meats.","cooking_initial");
+                        Subject.Reply(source, "You do not have the required meats.", "cooking_initial");
 
                         return;
                     }
@@ -1786,6 +1779,7 @@ public class cookItemScript : DialogScriptBase
                         var item = ItemFactory.CreateFaux("vegetable");
                         Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                     }
+
                     if (source.Inventory.HasCountByTemplateKey("tomato", 5))
                     {
                         var item = ItemFactory.CreateFaux("tomato");
@@ -1794,7 +1788,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (Subject.Items.Count == 0)
                     {
-                        Subject.Reply(source, "You do not have the required vegetables.","cooking_initial");
+                        Subject.Reply(source, "You do not have the required vegetables.", "cooking_initial");
 
                         return;
                     }
@@ -1814,7 +1808,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (Subject.Items.Count == 0)
                     {
-                        Subject.Reply(source, "You do not have the required extra ingredients.","cooking_initial");
+                        Subject.Reply(source, "You do not have the required extra ingredients.", "cooking_initial");
 
                         return;
                     }
@@ -1827,36 +1821,34 @@ public class cookItemScript : DialogScriptBase
                 case "cook_item":
                 {
                     #region CheckItems
-                    
                     if (meatStage && (mStage == MeatsStage.lobstertail))
-                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.cherry))
-                        if (!source.Inventory.HasCountByTemplateKey("cherry", 25)) 
+                        if (!source.Inventory.HasCountByTemplateKey("cherry", 25))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
-                    
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
-                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (vegetableStage && (vStage == VegetableStage.tomato))
-                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.vegetable))
-                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (vegetableStage2 && (vStage2 == VegetableStage2.tomato))
-                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (extraIngredients && (eStage == ExtraIngredientsStage.salt))
                         if (!source.Inventory.HasCountByTemplateKey("salt", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (source.Trackers.Flags.HasFlag(CookFoodProgression.NotenoughIngredients))
                     {
                         Subject.Reply(source, "You don't have enough ingredients to cook this again.", "cooking_initial");
@@ -1865,17 +1857,17 @@ public class cookItemScript : DialogScriptBase
                         return;
                     }
                     #endregion
+
                     #region RemoveItems
-                    
                     if (meatStage && (mStage == MeatsStage.lobstertail))
                         source.Inventory.RemoveQuantityByTemplateKey("lobstertail", 1);
 
                     if (fruitsStage && (fstage == FruitsStage.cherry))
                         source.Inventory.RemoveQuantityByTemplateKey("cherry", 25);
-                    
+
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
                         source.Inventory.RemoveQuantityByTemplateKey("vegetable", 5);
-                    
+
                     if (vegetableStage && (vStage == VegetableStage.tomato))
                         source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
 
@@ -1884,15 +1876,15 @@ public class cookItemScript : DialogScriptBase
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.tomato))
                         source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
-                    
+
                     if (extraIngredients && (eStage == ExtraIngredientsStage.salt))
                         source.Inventory.RemoveQuantityByTemplateKey("salt", 1);
-                    
                     #endregion
 
                     if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
+
                         return;
                     }
 
@@ -1904,10 +1896,10 @@ public class cookItemScript : DialogScriptBase
                     break;
                 #endregion
             }
+
         if (foodSelected && (foodStage == CookFoodStage.pie))
             switch (Subject.Template.TemplateKey.ToLower())
             {
-
                 #region fruitadd
                 case "fruit_initial":
                 {
@@ -1934,6 +1926,7 @@ public class cookItemScript : DialogScriptBase
                         var item = ItemFactory.CreateFaux("greengrapes");
                         Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                     }
+
                     if (source.Inventory.HasCountByTemplateKey("grape", 50))
                     {
                         var item = ItemFactory.CreateFaux("grape");
@@ -1974,7 +1967,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (Subject.Items.Count == 0)
                     {
-                        Subject.Reply(source, "You do not have the required extra ingredients.","cooking_initial");
+                        Subject.Reply(source, "You do not have the required extra ingredients.", "cooking_initial");
 
                         return;
                     }
@@ -1987,25 +1980,24 @@ public class cookItemScript : DialogScriptBase
                 case "cook_item":
                 {
                     #region CheckItems
-
                     if (fruitsStage && (fstage == FruitsStage.cherry))
-                        if (!source.Inventory.HasCountByTemplateKey("cherry", 50)) 
+                        if (!source.Inventory.HasCountByTemplateKey("cherry", 50))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (fruitsStage && (fstage == FruitsStage.grape))
-                        if (!source.Inventory.HasCountByTemplateKey("grape", 50)) 
+                        if (!source.Inventory.HasCountByTemplateKey("grape", 50))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.acorn))
-                        if (!source.Inventory.HasCountByTemplateKey("acorn", 50)) 
+                        if (!source.Inventory.HasCountByTemplateKey("acorn", 50))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.apple))
-                        if (!source.Inventory.HasCountByTemplateKey("apple", 50)) 
+                        if (!source.Inventory.HasCountByTemplateKey("apple", 50))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.greengrapes))
-                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 50)) 
+                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 50))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.strawberry))
@@ -2013,7 +2005,7 @@ public class cookItemScript : DialogScriptBase
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
-                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 50)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 50))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.flour))
@@ -2028,11 +2020,11 @@ public class cookItemScript : DialogScriptBase
                         return;
                     }
                     #endregion
-                    #region RemoveItems
 
+                    #region RemoveItems
                     if (fruitsStage && (fstage == FruitsStage.cherry))
                         source.Inventory.RemoveQuantityByTemplateKey("cherry", 50);
-                    
+
                     if (fruitsStage && (fstage == FruitsStage.grape))
                         source.Inventory.RemoveQuantityByTemplateKey("grape", 50);
 
@@ -2053,18 +2045,18 @@ public class cookItemScript : DialogScriptBase
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.flour))
                         source.Inventory.RemoveQuantityByTemplateKey("flour", 1);
-
                     #endregion
 
                     if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
+
                         return;
                     }
-                    
+
                     if (fruitsStage && (fstage == FruitsStage.cherry))
                         source.TryGiveItems(ItemFactory.Create("pie_cherry"));
-                    
+
                     if (fruitsStage && (fstage == FruitsStage.grape))
                         source.TryGiveItems(ItemFactory.Create("pie_grape"));
 
@@ -2082,7 +2074,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
                         source.TryGiveItems(ItemFactory.Create("pie_tangerines"));
-                    
+
                     source.SendOrangeBarMessage("You have cooked a Pie!");
                     Subject.Reply(source, "Skip", "cook_itemrepeat");
                 }
@@ -2090,14 +2082,13 @@ public class cookItemScript : DialogScriptBase
                     break;
                 #endregion
             }
-        
+
         if (foodSelected && (foodStage == CookFoodStage.sandwich))
             switch (Subject.Template.TemplateKey.ToLower())
             {
                 #region meatadd
                 case "meat_initial":
                 {
-
                     if (source.Inventory.HasCountByTemplateKey("beefslices", 1))
                     {
                         var item = ItemFactory.CreateFaux("beefslices");
@@ -2135,13 +2126,11 @@ public class cookItemScript : DialogScriptBase
                     }
 
                     if (Subject.Items.Count == 0)
-                    {
-                        Subject.Reply(source, "You do not have the required meats.","cooking_initial");
-                    }
+                        Subject.Reply(source, "You do not have the required meats.", "cooking_initial");
                 }
 
                     break;
-                    #endregion
+                #endregion
 
                 #region vegetableadd
                 case "vegetable_initial":
@@ -2159,9 +2148,7 @@ public class cookItemScript : DialogScriptBase
                     }
 
                     if (Subject.Items.Count == 0)
-                    {
-                        Subject.Reply(source, "You do not have the required vegetables.","cooking_initial");
-                    }
+                        Subject.Reply(source, "You do not have the required vegetables.", "cooking_initial");
                 }
 
                     break;
@@ -2183,9 +2170,7 @@ public class cookItemScript : DialogScriptBase
                     }
 
                     if (Subject.Items.Count == 0)
-                    {
-                        Subject.Reply(source, "You do not have the required extra ingredients.","cooking_initial");
-                    }
+                        Subject.Reply(source, "You do not have the required extra ingredients.", "cooking_initial");
                 }
 
                     break;
@@ -2195,45 +2180,44 @@ public class cookItemScript : DialogScriptBase
                 case "cook_item":
                 {
                     #region CheckItems
-                    
                     if (meatStage && (mStage == MeatsStage.beefslices))
                         if (!source.Inventory.HasCountByTemplateKey("beefslices", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.clam))
-                        if (!source.Inventory.HasCountByTemplateKey("clam", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("clam", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.egg))
-                        if (!source.Inventory.HasCountByTemplateKey("egg", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("egg", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.liver))
-                        if (!source.Inventory.HasCountByTemplateKey("liver", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("liver", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.lobstertail))
-                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.rawmeat))
-                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
-                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (vegetableStage && (vStage == VegetableStage.tomato))
-                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.vegetable))
-                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage2 && (vStage2 == VegetableStage2.tomato))
-                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.bread))
@@ -2260,8 +2244,8 @@ public class cookItemScript : DialogScriptBase
                         return;
                     }
                     #endregion
-                    #region RemoveItems
 
+                    #region RemoveItems
                     if (meatStage && (mStage == MeatsStage.beefslices))
                         source.Inventory.RemoveQuantityByTemplateKey("beefslices", 1);
 
@@ -2300,7 +2284,7 @@ public class cookItemScript : DialogScriptBase
 
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
                         source.Inventory.RemoveQuantityByTemplateKey("vegetable", 5);
-                    
+
                     if (vegetableStage && (vStage == VegetableStage.tomato))
                         source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
 
@@ -2321,12 +2305,12 @@ public class cookItemScript : DialogScriptBase
 
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.cheese))
                         source.Inventory.RemoveQuantityByTemplateKey("cheese", 1);
-                    
                     #endregion
 
                     if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
+
                         return;
                     }
 
@@ -2338,14 +2322,13 @@ public class cookItemScript : DialogScriptBase
                     break;
                 #endregion
             }
-        
+
         if (foodSelected && (foodStage == CookFoodStage.soup))
             switch (Subject.Template.TemplateKey.ToLower())
             {
                 #region meatadd
                 case "meat_initial":
                 {
-
                     if (source.Inventory.HasCountByTemplateKey("beefslices", 1))
                     {
                         var item = ItemFactory.CreateFaux("beefslices");
@@ -2383,14 +2366,12 @@ public class cookItemScript : DialogScriptBase
                     }
 
                     if (Subject.Items.Count == 0)
-                    {
-                        Subject.Reply(source, "You do not have the required meats.","cooking_initial");
-                    }
+                        Subject.Reply(source, "You do not have the required meats.", "cooking_initial");
                 }
 
                     break;
                 #endregion
-                
+
                 #region vegetableadd
                 case "vegetable_initial":
                 {
@@ -2419,9 +2400,7 @@ public class cookItemScript : DialogScriptBase
                     }
 
                     if (Subject.Items.Count == 0)
-                    {
-                        Subject.Reply(source, "You do not have the required vegetables.","cooking_initial");
-                    }
+                        Subject.Reply(source, "You do not have the required vegetables.", "cooking_initial");
                 }
 
                     break;
@@ -2443,9 +2422,7 @@ public class cookItemScript : DialogScriptBase
                     }
 
                     if (Subject.Items.Count == 0)
-                    {
-                        Subject.Reply(source, "You do not have the required extra ingredients.","cooking_initial");
-                    }
+                        Subject.Reply(source, "You do not have the required extra ingredients.", "cooking_initial");
                 }
 
                     break;
@@ -2455,103 +2432,102 @@ public class cookItemScript : DialogScriptBase
                 case "cook_item":
                 {
                     #region CheckItems
-
                     if (meatStage && (mStage == MeatsStage.beefslices))
                         if (!source.Inventory.HasCountByTemplateKey("beefslices", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.clam))
-                        if (!source.Inventory.HasCountByTemplateKey("clam", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("clam", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.egg))
-                        if (!source.Inventory.HasCountByTemplateKey("egg", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("egg", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.liver))
-                        if (!source.Inventory.HasCountByTemplateKey("liver", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("liver", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.lobstertail))
-                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage && (mStage == MeatsStage.rawmeat))
-                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.beefslices))
-                        if (!source.Inventory.HasCountByTemplateKey("beefslices", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("beefslices", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (meatStage2 && (mStage2 == MeatsStage2.clam))
-                        if (!source.Inventory.HasCountByTemplateKey("clam", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("clam", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.egg))
-                        if (!source.Inventory.HasCountByTemplateKey("egg", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("egg", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.liver))
-                        if (!source.Inventory.HasCountByTemplateKey("liver", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("liver", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.lobstertail))
-                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage2 && (mStage2 == MeatsStage2.rawmeat))
-                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.beefslices))
-                        if (!source.Inventory.HasCountByTemplateKey("beefslices", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("beefslices", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.clam))
-                        if (!source.Inventory.HasCountByTemplateKey("clam", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("clam", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.egg))
-                        if (!source.Inventory.HasCountByTemplateKey("egg", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("egg", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.liver))
-                        if (!source.Inventory.HasCountByTemplateKey("liver", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("liver", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.lobstertail))
-                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("lobstertail", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (meatStage3 && (mStage3 == MeatsStage3.rawmeat))
-                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
-                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.carrot))
-                        if (!source.Inventory.HasCountByTemplateKey("carrot", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("carrot", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.rambutan))
-                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.tomato))
-                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (extraIngredients && (eStage == ExtraIngredientsStage.flour))
                         if (!source.Inventory.HasCountByTemplateKey("flour", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (extraIngredients && (eStage == ExtraIngredientsStage.salt))
                         if (!source.Inventory.HasCountByTemplateKey("salt", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.flour))
                         if (!source.Inventory.HasCountByTemplateKey("flour", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
@@ -2559,7 +2535,7 @@ public class cookItemScript : DialogScriptBase
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.salt))
                         if (!source.Inventory.HasCountByTemplateKey("salt", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (source.Trackers.Flags.HasFlag(CookFoodProgression.NotenoughIngredients))
                     {
                         Subject.Reply(source, "You don't have enough ingredients to cook this again.", "cooking_initial");
@@ -2568,8 +2544,8 @@ public class cookItemScript : DialogScriptBase
                         return;
                     }
                     #endregion
-                    #region RemoveItems
 
+                    #region RemoveItems
                     if (meatStage && (mStage == MeatsStage.beefslices))
                         source.Inventory.RemoveQuantityByTemplateKey("beefslices", 1);
 
@@ -2608,15 +2584,15 @@ public class cookItemScript : DialogScriptBase
 
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.flour))
                         source.Inventory.RemoveQuantityByTemplateKey("flour", 1);
-                    
+
                     if (extraIngredients2 && (eStage2 == ExtraIngredientsStage2.salt))
                         source.Inventory.RemoveQuantityByTemplateKey("salt", 1);
-
                     #endregion
 
                     if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
+
                         return;
                     }
 
@@ -2628,7 +2604,7 @@ public class cookItemScript : DialogScriptBase
                     break;
                 #endregion
             }
-        
+
         if (foodSelected && (foodStage == CookFoodStage.steakmeal))
             switch (Subject.Template.TemplateKey.ToLower())
             {
@@ -2642,15 +2618,13 @@ public class cookItemScript : DialogScriptBase
                     }
 
                     if (Subject.Items.Count == 0)
-                    {
-                        Subject.Reply(source, "You do not have the required meats.","cooking_initial");
-                    }
+                        Subject.Reply(source, "You do not have the required meats.", "cooking_initial");
                 }
 
                     break;
                 #endregion
-                
-                             #region fruitadd
+
+                #region fruitadd
                 case "fruit_initial":
                 {
                     if (source.Inventory.HasCountByTemplateKey("cherry", 10))
@@ -2676,6 +2650,7 @@ public class cookItemScript : DialogScriptBase
                         var item = ItemFactory.CreateFaux("greengrapes");
                         Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                     }
+
                     if (source.Inventory.HasCountByTemplateKey("grape", 10))
                     {
                         var item = ItemFactory.CreateFaux("grape");
@@ -2695,9 +2670,7 @@ public class cookItemScript : DialogScriptBase
                     }
 
                     if (Subject.Items.Count == 0)
-                    {
                         Subject.Reply(source, "You do not have the required fruits.", "cooking_initial");
-                    }
                 }
 
                     break;
@@ -2731,13 +2704,12 @@ public class cookItemScript : DialogScriptBase
                     }
 
                     if (Subject.Items.Count == 0)
-                    {
-                        Subject.Reply(source, "You do not have the required vegetables.","cooking_initial");
-                    }
+                        Subject.Reply(source, "You do not have the required vegetables.", "cooking_initial");
                 }
 
                     break;
-                    #endregion
+                #endregion
+
                 #region addextraingredients
                 case "extraingredients_initial":
                 {
@@ -2748,9 +2720,7 @@ public class cookItemScript : DialogScriptBase
                     }
 
                     if (Subject.Items.Count == 0)
-                    {
-                        Subject.Reply(source, "You do not have the required extra ingredients.","cooking_initial");
-                    }
+                        Subject.Reply(source, "You do not have the required extra ingredients.", "cooking_initial");
                 }
 
                     break;
@@ -2760,27 +2730,26 @@ public class cookItemScript : DialogScriptBase
                 case "cook_item":
                 {
                     #region CheckItems
-                    
                     if (meatStage && (mStage == MeatsStage.rawmeat))
-                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rawmeat", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
-                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("vegetable", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.carrot))
-                        if (!source.Inventory.HasCountByTemplateKey("carrot", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("carrot", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.rambutan))
-                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("rambutan", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.tomato))
-                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tomato", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (extraIngredients && (eStage == ExtraIngredientsStage.flour))
                         if (!source.Inventory.HasCountByTemplateKey("marinade", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
@@ -2793,29 +2762,29 @@ public class cookItemScript : DialogScriptBase
                         return;
                     }
                     #endregion
-                    #region RemoveItems
 
+                    #region RemoveItems
                     if (meatStage && (mStage == MeatsStage.rawmeat))
                         source.Inventory.RemoveQuantityByTemplateKey("rawmeat", 1);
-                    
+
                     if (fruitsStage && (fstage == FruitsStage.cherry))
-                        if (!source.Inventory.HasCountByTemplateKey("cherry", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("cherry", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (fruitsStage && (fstage == FruitsStage.grape))
-                        if (!source.Inventory.HasCountByTemplateKey("grape", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("grape", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.acorn))
-                        if (!source.Inventory.HasCountByTemplateKey("acorn", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("acorn", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.apple))
-                        if (!source.Inventory.HasCountByTemplateKey("apple", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("apple", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.greengrapes))
-                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("greengrapes", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.strawberry))
@@ -2823,7 +2792,7 @@ public class cookItemScript : DialogScriptBase
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
-                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10)) 
+                        if (!source.Inventory.HasCountByTemplateKey("tangerines", 10))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
                     if (vegetableStage && (vStage == VegetableStage.vegetable))
@@ -2840,12 +2809,12 @@ public class cookItemScript : DialogScriptBase
 
                     if (extraIngredients && (eStage == ExtraIngredientsStage.salt))
                         source.Inventory.RemoveQuantityByTemplateKey("marinade", 1);
-
                     #endregion
 
                     if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
+
                         return;
                     }
 

@@ -13,7 +13,7 @@ public class TutorialBossCheckScript : ConfigurableReactorTileScriptBase
     private readonly ISimpleCache SimpleCache;
 
     #region ScriptVars
-    protected Location Destination { get; init; }
+    protected Location Destination { get; init; } = null!;
     #endregion
 
     /// <inheritdoc />

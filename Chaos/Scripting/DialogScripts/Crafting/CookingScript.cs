@@ -31,7 +31,6 @@ public class CookingScript : ConfigurableDialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "cooking_initial":
@@ -55,56 +54,65 @@ public class CookingScript : ConfigurableDialogScriptBase
                     var item = ItemFactory.CreateFaux("dinnerplate");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
+
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.FruitBasket))
                 {
                     var item = ItemFactory.CreateFaux("fruitbasket");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
+
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.LobsterDinner))
                 {
                     var item = ItemFactory.CreateFaux("lobsterdinner");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
+
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.Pie))
                 {
                     var item = ItemFactory.CreateFaux("pie");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
+
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.Salad))
                 {
                     var item = ItemFactory.CreateFaux("salad");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
+
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.Sandwich))
                 {
                     var item = ItemFactory.CreateFaux("sandwich");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
+
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.Soup))
                 {
                     var item = ItemFactory.CreateFaux("soup");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
+
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.SteakMeal))
                 {
                     var item = ItemFactory.CreateFaux("steakmeal");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
+
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.SweetBuns))
                 {
                     var item = ItemFactory.CreateFaux("sweetbuns");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
-                
+
                 if (Subject.Items.Count == 0)
-                {
-                    Subject.Reply(source, "You do not have any recipes to craft. Check your recipe book (F1 Menu) to see your recipes and their requirements.","Close");
-                }
+                    Subject.Reply(
+                        source,
+                        "You do not have any recipes to craft. Check your recipe book (F1 Menu) to see your recipes and their requirements.",
+                        "Close");
                 #endregion
             }
+
                 break;
         }
-
     }
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
@@ -122,6 +130,7 @@ public class CookingScript : ConfigurableDialogScriptBase
         var extraIngredientsStage = source.Trackers.Enums.TryGetValue(out ExtraIngredientsStage eStage);
         var extraIngredientsStage2 = source.Trackers.Enums.TryGetValue(out ExtraIngredientsStage2 eStage2);
         var extraIngredientsStage3 = source.Trackers.Enums.TryGetValue(out ExtraIngredientsStage3 eStage3);
+
         switch (Subject.Template.TemplateKey.ToLower())
         {
             #region recipeselection
@@ -216,6 +225,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                 break;
             }
             #endregion
+
             #region meatselection
             case "meat_initial":
             {
@@ -287,6 +297,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                 break;
             }
             #endregion
+
             #region fruitselection
             case "fruit_initial":
             {
@@ -317,20 +328,26 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(FruitsStage.cherry);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!fruitsStage2 && (fstage != FruitsStage.cherry))
                         {
                             source.Trackers.Enums.Set(FruitsStage2.cherry);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!fruitsStage3 && (fstage != FruitsStage.cherry) && (fstage2 != FruitsStage2.cherry))
                         {
                             source.Trackers.Enums.Set(FruitsStage3.cherry);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         Subject.Reply(source, "This fruit is already being used for this recipe.", "cooking_directory");
 
                         return;
@@ -341,20 +358,26 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(FruitsStage.acorn);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!fruitsStage2 && (fstage != FruitsStage.acorn))
                         {
                             source.Trackers.Enums.Set(FruitsStage2.acorn);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!fruitsStage3 && (fstage != FruitsStage.acorn) && (fstage2 != FruitsStage2.acorn))
                         {
                             source.Trackers.Enums.Set(FruitsStage3.acorn);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         Subject.Reply(source, "This fruit is already being used for this recipe.", "cooking_directory");
 
                         return;
@@ -365,20 +388,26 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(FruitsStage.apple);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!fruitsStage2 && (fstage != FruitsStage.apple))
                         {
                             source.Trackers.Enums.Set(FruitsStage2.apple);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!fruitsStage3 && (fstage != FruitsStage.apple) && (fstage2 != FruitsStage2.apple))
                         {
                             source.Trackers.Enums.Set(FruitsStage3.apple);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         Subject.Reply(source, "This fruit is already being used for this recipe.", "cooking_directory");
 
                         return;
@@ -389,20 +418,26 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(FruitsStage.grape);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!fruitsStage2 && (fstage != FruitsStage.grape))
                         {
                             source.Trackers.Enums.Set(FruitsStage2.grape);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!fruitsStage3 && (fstage != FruitsStage.grape) && (fstage2 != FruitsStage2.grape))
                         {
                             source.Trackers.Enums.Set(FruitsStage3.grape);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         Subject.Reply(source, "This fruit is already being used for this recipe.", "cooking_directory");
 
                         return;
@@ -413,20 +448,26 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(FruitsStage.greengrapes);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!fruitsStage2 && (fstage != FruitsStage.greengrapes))
                         {
                             source.Trackers.Enums.Set(FruitsStage2.apple);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!fruitsStage3 && (fstage != FruitsStage.greengrapes) && (fstage2 != FruitsStage2.greengrapes))
                         {
                             source.Trackers.Enums.Set(FruitsStage3.greengrapes);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         Subject.Reply(source, "This fruit is already being used for this recipe.", "cooking_directory");
 
                         return;
@@ -437,20 +478,26 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(FruitsStage.strawberry);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!fruitsStage2 && (fstage != FruitsStage.strawberry))
                         {
                             source.Trackers.Enums.Set(FruitsStage2.strawberry);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!fruitsStage3 && (fstage != FruitsStage.strawberry) && (fstage2 != FruitsStage2.strawberry))
                         {
                             source.Trackers.Enums.Set(FruitsStage3.strawberry);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         Subject.Reply(source, "This fruit is already being used for this recipe.", "cooking_directory");
 
                         return;
@@ -461,20 +508,26 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(FruitsStage.tangerines);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!fruitsStage2 && (fstage != FruitsStage.tangerines))
                         {
                             source.Trackers.Enums.Set(FruitsStage2.tangerines);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!fruitsStage3 && (fstage != FruitsStage.tangerines) && (fstage2 != FruitsStage2.tangerines))
                         {
                             source.Trackers.Enums.Set(FruitsStage3.tangerines);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         Subject.Reply(source, "This fruit is already being used for this recipe.", "cooking_directory");
 
                         return;
@@ -484,6 +537,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                 break;
             }
             #endregion
+
             #region vegetableselection
             case "vegetable_initial":
             {
@@ -514,20 +568,26 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(VegetableStage.vegetable);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!vegetableStage2 && (vStage != VegetableStage.vegetable))
                         {
                             source.Trackers.Enums.Set(VegetableStage2.vegetable);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!vegetableStage3 && (vStage != VegetableStage.vegetable) && (vStage2 != VegetableStage2.vegetable))
                         {
                             source.Trackers.Enums.Set(VegetableStage3.vegetable);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         Subject.Reply(source, "This vegetable is already being used for this recipe.", "cooking_directory");
 
                         return;
@@ -538,20 +598,26 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(VegetableStage.carrot);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!vegetableStage2 && (vStage != VegetableStage.carrot))
                         {
                             source.Trackers.Enums.Set(VegetableStage2.carrot);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!vegetableStage3 && (vStage != VegetableStage.carrot) && (vStage2 != VegetableStage2.carrot))
                         {
                             source.Trackers.Enums.Set(VegetableStage3.carrot);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         Subject.Reply(source, "This vegetable is already being used for this recipe.", "cooking_directory");
 
                         return;
@@ -562,20 +628,26 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(VegetableStage.rambutan);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!vegetableStage2 && (vStage != VegetableStage.rambutan))
                         {
                             source.Trackers.Enums.Set(VegetableStage2.rambutan);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!vegetableStage3 && (vStage != VegetableStage.rambutan) && (vStage2 != VegetableStage2.rambutan))
                         {
                             source.Trackers.Enums.Set(VegetableStage3.rambutan);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         Subject.Reply(source, "This vegetable is already being used for this recipe.", "cooking_directory");
 
                         return;
@@ -586,20 +658,26 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(VegetableStage.tomato);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!vegetableStage2 && (vStage != VegetableStage.tomato))
                         {
                             source.Trackers.Enums.Set(VegetableStage2.tomato);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!vegetableStage3 && (vStage != VegetableStage.tomato) && (vStage2 != VegetableStage2.tomato))
                         {
                             source.Trackers.Enums.Set(VegetableStage3.tomato);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         Subject.Reply(source, "This vegetable is already being used for this recipe.", "cooking_directory");
 
                         return;
@@ -609,6 +687,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                 break;
             }
             #endregion
+
             #region extraingredientsselection
             case "extraingredients_initial":
             {
@@ -639,22 +718,28 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage.bread);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!extraIngredientsStage2 && (eStage != ExtraIngredientsStage.bread))
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage2.bread);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!extraIngredientsStage3 && (eStage != ExtraIngredientsStage.bread) && (eStage2 != ExtraIngredientsStage2.bread))
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage3.bread);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
-                        
+
                         Subject.Reply(source, "This ingredient is already being used in this recipe.", "cooking_directory");
+
                         return;
                     }
                     case "cheese":
@@ -663,22 +748,30 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage.cheese);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!extraIngredientsStage2 && (eStage != ExtraIngredientsStage.cheese))
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage2.cheese);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
-                        if (!extraIngredientsStage3 && (eStage != ExtraIngredientsStage.cheese) && (eStage2 != ExtraIngredientsStage2.cheese))
+
+                        if (!extraIngredientsStage3
+                            && (eStage != ExtraIngredientsStage.cheese)
+                            && (eStage2 != ExtraIngredientsStage2.cheese))
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage3.cheese);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
-                        
+
                         Subject.Reply(source, "This ingredient is already being used in this recipe.", "cooking_directory");
+
                         return;
                     }
                     case "flour":
@@ -687,22 +780,28 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage.flour);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!extraIngredientsStage2 && (eStage != ExtraIngredientsStage.flour))
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage2.flour);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!extraIngredientsStage3 && (eStage != ExtraIngredientsStage.flour) && (eStage2 != ExtraIngredientsStage2.flour))
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage3.flour);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
-                        
+
                         Subject.Reply(source, "This ingredient is already being used in this recipe.", "cooking_directory");
+
                         return;
                     }
                     case "marinade":
@@ -711,22 +810,30 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage.marinade);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!extraIngredientsStage2 && (eStage != ExtraIngredientsStage.marinade))
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage2.marinade);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
-                        if (!extraIngredientsStage3 && (eStage != ExtraIngredientsStage.marinade) && (eStage2 != ExtraIngredientsStage2.marinade))
+
+                        if (!extraIngredientsStage3
+                            && (eStage != ExtraIngredientsStage.marinade)
+                            && (eStage2 != ExtraIngredientsStage2.marinade))
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage3.marinade);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
-                        
+
                         Subject.Reply(source, "This ingredient is already being used in this recipe.", "cooking_directory");
+
                         return;
                     }
                     case "salt":
@@ -735,22 +842,28 @@ public class CookingScript : ConfigurableDialogScriptBase
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage.salt);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!extraIngredientsStage2 && (eStage != ExtraIngredientsStage.salt))
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage2.salt);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
+
                         if (!extraIngredientsStage3 && (eStage != ExtraIngredientsStage.salt) && (eStage2 != ExtraIngredientsStage2.salt))
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage3.salt);
                             Subject.Reply(source, "Skip", "cooking_directory");
+
                             return;
                         }
-                        
+
                         Subject.Reply(source, "This ingredient is already being used in this recipe.", "cooking_directory");
+
                         return;
                     }
                 }

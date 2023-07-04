@@ -12,6 +12,7 @@ namespace Chaos.Scripting.DialogScripts.Professions;
 public class AcceptHobbyorCraftScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
+
     public AcceptHobbyorCraftScript(Dialog subject, IItemFactory itemFactory)
         : base(subject) =>
         ItemFactory = itemFactory;
@@ -74,7 +75,9 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             {
                 if (hasCraft && (craft != Crafts.Weaponsmithing))
                 {
-                    Subject.Reply(source, "You aren't a Weaponsmith, get out of my forge. I cannot have Aislings wandering around who don't know what they're doing. You could get hurt. Go see Riona to learn about crafts if you're curious.");
+                    Subject.Reply(
+                        source,
+                        "You aren't a Weaponsmith, get out of my forge. I cannot have Aislings wandering around who don't know what they're doing. You could get hurt. Go see Riona to learn about crafts if you're curious.");
 
                     return;
                 }
@@ -92,7 +95,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
 
                     return;
                 }
-                
+
                 if (hasCraft && (craft == Crafts.Weaponsmithing))
                 {
                     var option = new DialogOption
@@ -116,6 +119,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.DullClaw);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.SnowDagger);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.CenterDagger);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Beginner Weaponsmith",
@@ -124,6 +128,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                         MarkColor.White,
                         1,
                         GameTime.Now));
+
                 source.SendOrangeBarMessage("You are now a Beginner Weaponsmith!");
 
                 return;
@@ -133,11 +138,13 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             {
                 if (hasCraft && (craft != Crafts.Armorsmithing))
                 {
-                    Subject.Reply(source, "Why are you here Aisling? You are not an Armorsmith, you could get hurt around my equipment here. Please, go see Riona if you want to learn about crafting.");
+                    Subject.Reply(
+                        source,
+                        "Why are you here Aisling? You are not an Armorsmith, you could get hurt around my equipment here. Please, go see Riona if you want to learn about crafting.");
 
                     return;
                 }
-                
+
                 if (!hasCraft)
                 {
                     var option = new DialogOption
@@ -149,6 +156,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
+
                 if (hasCraft && (craft == Crafts.Armorsmithing))
                 {
                     var option = new DialogOption
@@ -174,6 +182,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherGauntlet);
                 var book = ItemFactory.Create("recipe_basicarmors");
                 source.TryGiveItem(ref book);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Beginner Armorsmith",
@@ -182,6 +191,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                         MarkColor.White,
                         1,
                         GameTime.Now));
+
                 source.SendOrangeBarMessage("You are now an Armorsmith!");
 
                 return;
@@ -190,10 +200,13 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             {
                 if (hasCraft && (craft != Crafts.Alchemy))
                 {
-                    Subject.Reply(source, "You don't belong in my lab. This is a very dangerous area for those who don't know what they're doing. Go see Riona if you want to learn about crafting.");
+                    Subject.Reply(
+                        source,
+                        "You don't belong in my lab. This is a very dangerous area for those who don't know what they're doing. Go see Riona if you want to learn about crafting.");
 
                     return;
                 }
+
                 if (!hasCraft)
                 {
                     var option = new DialogOption
@@ -205,6 +218,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
+
                 if (hasCraft && (craft == Crafts.Alchemy))
                 {
                     var option = new DialogOption
@@ -228,6 +242,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallHasteBrew);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallPowerBrew);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallAccuracyPotion);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Beginner Alchemist",
@@ -236,6 +251,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                         MarkColor.White,
                         1,
                         GameTime.Now));
+
                 source.SendOrangeBarMessage("You are now an Alchemist!");
 
                 return;
@@ -244,11 +260,13 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             {
                 if (hasCraft && (craft != Crafts.Enchanting))
                 {
-                    Subject.Reply(source, "Shhh, don't bothe... Wait, what are you doing here? You don't know the first thing about enchanting. Get out, you're going to bother others. Go see Riona.");
+                    Subject.Reply(
+                        source,
+                        "Shhh, don't bothe... Wait, what are you doing here? You don't know the first thing about enchanting. Get out, you're going to bother others. Go see Riona.");
 
                     return;
                 }
-                
+
                 if (!hasCraft)
                 {
                     var option = new DialogOption
@@ -260,6 +278,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
+
                 if (hasCraft && (craft == Crafts.Enchanting))
                 {
                     var option = new DialogOption
@@ -283,6 +302,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 source.Trackers.Flags.AddFlag(EnchantingRecipes.MiraelisSerenity);
                 source.Trackers.Flags.AddFlag(EnchantingRecipes.TheseleneElusion);
                 source.Trackers.Flags.AddFlag(EnchantingRecipes.AquaedonClarity);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Beginner Enchanter",
@@ -291,6 +311,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                         MarkColor.White,
                         1,
                         GameTime.Now));
+
                 source.SendOrangeBarMessage("You are now an Enchanter!");
 
                 return;
@@ -344,6 +365,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.SeaNecklace);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.FireNecklace);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.WindNecklace);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Beginner Jewelcrafter",
@@ -352,9 +374,8 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                         MarkColor.White,
                         1,
                         GameTime.Now));
+
                 source.SendOrangeBarMessage("You are now a Jewelcrafter!");
-                
-                
 
                 return;
             }
@@ -365,30 +386,33 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     source.SendOrangeBarMessage("You are no longer an Armorsmith.");
                     source.Legend.Remove("armsmth", out _);
                 }
+
                 if (hasCraft && (craft == Crafts.Weaponsmithing))
                 {
                     source.SendOrangeBarMessage("You are no longer a Weaponsmith.");
                     source.Legend.Remove("wpnsmth", out _);
-
                 }
+
                 if (hasCraft && (craft == Crafts.Jewelcrafting))
                 {
                     source.SendOrangeBarMessage("You are no longer a Jewelcrafter.");
                     source.Legend.Remove("jwlcrftng", out _);
                 }
+
                 if (hasCraft && (craft == Crafts.Alchemy))
                 {
                     source.SendOrangeBarMessage("You are no longer an Alchemist.");
                     source.Legend.Remove("alch", out _);
                 }
+
                 if (hasCraft && (craft == Crafts.Enchanting))
                 {
                     source.SendOrangeBarMessage("You are no longer an Enchanter.");
                     source.Legend.Remove("ench", out _);
                 }
-                
+
                 source.Trackers.Enums.Remove<Crafts>();
-                
+
                 return;
             }
         }

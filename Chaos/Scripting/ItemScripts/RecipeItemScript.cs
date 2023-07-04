@@ -8,10 +8,78 @@ namespace Chaos.Scripting.ItemScripts;
 
 public class RecipeItemScript : ItemScriptBase
 {
-
     public RecipeItemScript(Item subject)
         : base(subject) { }
 
+    public static void AlchemyRecipeLearn(
+        Aisling source,
+        Animation ani,
+        AlchemyRecipes recipe,
+        string serverMessage,
+        string templatekey
+    )
+    {
+        source.Animate(ani);
+        source.Trackers.Flags.AddFlag(recipe);
+        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
+        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
+    }
+
+    public static void ArmorSmithRecipeLearn(
+        Aisling source,
+        Animation ani,
+        ArmorSmithCategories recipe,
+        string serverMessage,
+        string templatekey
+    )
+    {
+        source.Animate(ani);
+        source.Trackers.Flags.AddFlag(recipe);
+        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
+        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
+    }
+
+    public static void CookingRecipeLearn(
+        Aisling source,
+        Animation ani,
+        CookingRecipes recipe,
+        string serverMessage,
+        string templatekey
+    )
+    {
+        source.Animate(ani);
+        source.Trackers.Flags.AddFlag(recipe);
+        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
+        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
+    }
+
+    public static void EnchantingRecipeLearn(
+        Aisling source,
+        Animation ani,
+        EnchantingRecipes recipe,
+        string serverMessage,
+        string templatekey
+    )
+    {
+        source.Animate(ani);
+        source.Trackers.Flags.AddFlag(recipe);
+        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
+        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
+    }
+
+    public static void JewelcraftingRecipeLearn(
+        Aisling source,
+        Animation ani,
+        JewelcraftingCategories recipe,
+        string serverMessage,
+        string templatekey
+    )
+    {
+        source.Animate(ani);
+        source.Trackers.Flags.AddFlag(recipe);
+        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
+        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
+    }
 
     public override void OnUse(Aisling source)
     {
@@ -296,19 +364,14 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.StatBoostElixir);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.KnowledgeElixir);
 
-
-
-
-
                 source.Animate(ani);
-                source.SendOrangeBarMessage($"You've learned all recipes.");
+                source.SendOrangeBarMessage("You've learned all recipes.");
                 source.Inventory.RemoveQuantityByTemplateKey("recipe_allcrafts", 1);
 
                 return;
             }
-
             #endregion
-            
+
             #region Cooking Recipes
             case "recipe_dinnerplate":
             {
@@ -612,7 +675,6 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedPhoenixMail);
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedWindGarb);
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedIpletMail);
-
 
                     return;
                 }
@@ -1517,7 +1579,6 @@ public class RecipeItemScript : ItemScriptBase
             #endregion
 
             #region Alchemy Recipes
-
             case "recipe_hemloch":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.Hemloch))
@@ -1543,7 +1604,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_amnesiabrew":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.AmnesiaBrew))
@@ -1569,7 +1630,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_attacktonics":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyCategories.AttackTonics))
@@ -1580,7 +1641,7 @@ public class RecipeItemScript : ItemScriptBase
 
                         return;
                     }
-                    
+
                     source.Inventory.RemoveQuantityByTemplateKey(Subject.Template.TemplateKey, 1);
                     source.Trackers.Flags.AddFlag(AlchemyCategories.AttackTonics);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.FirestormTonic);
@@ -1588,10 +1649,10 @@ public class RecipeItemScript : ItemScriptBase
 
                     return;
                 }
+
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
-                
             }
 
             case "recipe_apprenticealchemybook":
@@ -1617,12 +1678,12 @@ public class RecipeItemScript : ItemScriptBase
 
                     return;
                 }
+
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
-                
             }
-            
+
             case "recipe_basicalchemybook":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyCategories.BasicAlchemyBook))
@@ -1633,7 +1694,7 @@ public class RecipeItemScript : ItemScriptBase
 
                         return;
                     }
-                    
+
                     source.Inventory.RemoveQuantityByTemplateKey(Subject.Template.TemplateKey, 1);
                     source.Trackers.Flags.AddFlag(AlchemyCategories.BasicAlchemyBook);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.JuggernautBrew);
@@ -1645,12 +1706,12 @@ public class RecipeItemScript : ItemScriptBase
 
                     return;
                 }
+
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
-                
             }
-            
+
             case "recipe_cleansingbrew":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.CleansingBrew))
@@ -1701,7 +1762,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_statboostelixir":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.StatBoostElixir))
@@ -1727,7 +1788,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_strongaccuracypotion":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.StrongAccuracyPotion))
@@ -1753,7 +1814,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_stronghastebrew":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.StrongHasteBrew))
@@ -1779,7 +1840,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_stronghealthpotion":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.StrongHealthPotion))
@@ -1805,7 +1866,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_strongmanapotion":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.StrongManaPotion))
@@ -1856,7 +1917,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_strongpowerbrew":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.StrongPowerBrew))
@@ -1882,7 +1943,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_warmthpotion":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.WarmthPotion))
@@ -1908,7 +1969,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_revivepotion":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.RevivePotion))
@@ -1929,12 +1990,12 @@ public class RecipeItemScript : ItemScriptBase
 
                     return;
                 }
+
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
-                
             }
-            
+
             case "recipe_strongvitalitybook":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyCategories.StrongVitalityBrew))
@@ -1945,7 +2006,7 @@ public class RecipeItemScript : ItemScriptBase
 
                         return;
                     }
-                    
+
                     source.Inventory.RemoveQuantityByTemplateKey(Subject.Template.TemplateKey, 1);
                     source.Trackers.Flags.AddFlag(AlchemyCategories.StrongVitalityBrew);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongJuggernautBrew);
@@ -1953,15 +2014,14 @@ public class RecipeItemScript : ItemScriptBase
 
                     return;
                 }
+
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
-                
             }
             #endregion
 
             #region Enchanting Recipes
-
             case "recipe_ignatarenvy":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarEnvy))
@@ -2376,7 +2436,6 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-
 
             case "recipe_ignatarregret":
             {
@@ -2984,7 +3043,7 @@ public class RecipeItemScript : ItemScriptBase
                 return;
             }
             #endregion
-            
+
             #region Jewelcrafting Recipes
             case "recipe_basicrings":
             {
@@ -3003,7 +3062,7 @@ public class RecipeItemScript : ItemScriptBase
                         JewelcraftingCategories.BasicRings,
                         "Basic Rings",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeRubyRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeSapphireRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeHeartstoneRing);
@@ -3030,7 +3089,7 @@ public class RecipeItemScript : ItemScriptBase
                         JewelcraftingCategories.ApprenticeRings,
                         "Apprentice Rings",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronRubyRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronSapphireRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronHeartstoneRing);
@@ -3057,7 +3116,7 @@ public class RecipeItemScript : ItemScriptBase
                         JewelcraftingCategories.JourneymanRings,
                         "Journeyman Rings",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilRubyRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilSapphireRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilHeartstoneRing);
@@ -3084,7 +3143,7 @@ public class RecipeItemScript : ItemScriptBase
                         JewelcraftingCategories.AdeptRings,
                         "Adept Rings",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylRubyRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylSapphireRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylHeartstoneRing);
@@ -3094,7 +3153,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            
+
             case "recipe_basicearrings":
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.BasicEarrings))
@@ -3112,7 +3171,7 @@ public class RecipeItemScript : ItemScriptBase
                         JewelcraftingCategories.BasicEarrings,
                         "Basic Earrings",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicBerylEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicEmeraldEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicHeartstoneEarrings);
@@ -3122,7 +3181,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            
+
             case "recipe_apprenticeearrings":
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ApprenticeEarrings))
@@ -3140,7 +3199,7 @@ public class RecipeItemScript : ItemScriptBase
                         JewelcraftingCategories.ApprenticeEarrings,
                         "Apprentice Earrings",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronBerylEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronEmeraldEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronHeartstoneEarrings);
@@ -3167,7 +3226,7 @@ public class RecipeItemScript : ItemScriptBase
                         JewelcraftingCategories.JourneymanEarrings,
                         "Journeyman Earrings",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilBerylEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilEmeraldEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilHeartstoneEarrings);
@@ -3204,7 +3263,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            
+
             case "recipe_basicnecklaces":
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.BasicNecklaces))
@@ -3231,7 +3290,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            
+
             case "recipe_apprenticenecklaces":
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ApprenticeNecklaces))
@@ -3249,7 +3308,7 @@ public class RecipeItemScript : ItemScriptBase
                         JewelcraftingCategories.ApprenticeNecklaces,
                         "Apprentice Necklaces",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.KannaEarthNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.KannaFireNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.KannaSeaNecklace);
@@ -3275,7 +3334,7 @@ public class RecipeItemScript : ItemScriptBase
                         JewelcraftingCategories.JourneymanNecklaces,
                         "Journeyman Necklaces",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedWindNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedSeaNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedFireNecklace);
@@ -3301,7 +3360,7 @@ public class RecipeItemScript : ItemScriptBase
                         JewelcraftingCategories.AdeptNecklaces,
                         "Adept Necklaces",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarEarthNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarFireNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarSeaNecklace);
@@ -3310,36 +3369,8 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-                #endregion
+            #endregion
         }
-    }
-
-    public static void CookingRecipeLearn(
-        Aisling source,
-        Animation ani,
-        CookingRecipes recipe,
-        string serverMessage,
-        string templatekey
-    )
-    {
-        source.Animate(ani);
-        source.Trackers.Flags.AddFlag(recipe);
-        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
-        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
-    }
-
-    public static void ArmorSmithRecipeLearn(
-        Aisling source,
-        Animation ani,
-        ArmorSmithCategories recipe,
-        string serverMessage,
-        string templatekey
-    )
-    {
-        source.Animate(ani);
-        source.Trackers.Flags.AddFlag(recipe);
-        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
-        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
     }
 
     public static void WeaponSmithRecipeLearn(
@@ -3352,48 +3383,6 @@ public class RecipeItemScript : ItemScriptBase
     {
         source.Animate(ani);
         source.Trackers.Flags.AddFlag(category);
-        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
-        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
-    }
-
-    public static void AlchemyRecipeLearn(
-        Aisling source,
-        Animation ani,
-        AlchemyRecipes recipe,
-        string serverMessage,
-        string templatekey
-    )
-    {
-        source.Animate(ani);
-        source.Trackers.Flags.AddFlag(recipe);
-        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
-        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
-    }
-
-    public static void EnchantingRecipeLearn(
-        Aisling source,
-        Animation ani,
-        EnchantingRecipes recipe,
-        string serverMessage,
-        string templatekey
-    )
-    {
-        source.Animate(ani);
-        source.Trackers.Flags.AddFlag(recipe);
-        source.SendOrangeBarMessage($"You've learned {serverMessage}.");
-        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
-    }
-
-    public static void JewelcraftingRecipeLearn(
-        Aisling source,
-        Animation ani,
-        JewelcraftingCategories recipe,
-        string serverMessage,
-        string templatekey
-    )
-    {
-        source.Animate(ani);
-        source.Trackers.Flags.AddFlag(recipe);
         source.SendOrangeBarMessage($"You've learned {serverMessage}.");
         source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
     }

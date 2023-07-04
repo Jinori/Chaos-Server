@@ -7,7 +7,6 @@ namespace Chaos.Scripting.MapScripts.SpawnerScripts;
 
 public class BlossomofBetrayalSpawnerScript : ItemSpawnerScript
 {
-
     public override string ItemTemplateKey { get; set; } = "blossomofbetrayal";
     public override int MaxAmount { get; set; } = 2;
     public override int MaxPerSpawn { get; set; } = 1;

@@ -17,7 +17,7 @@ public class FieryPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           AtkSpeedPct = 5,
+            AtkSpeedPct = 5
         };
 
         subject.Modifiers.Add(attributes);

@@ -1,8 +1,10 @@
-﻿using Chaos.Common.Definitions;
+﻿using Chaos.Collections;
+using Chaos.Common.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
+using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -10,8 +12,6 @@ using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
-using Chaos.Collections;
-using Chaos.Models.Panel;
 
 namespace Chaos.Scripting.DialogScripts.Mileth;
 
@@ -54,8 +54,7 @@ public class TerrorChestScript : DialogScriptBase
                     "Loures"   => DisplayColor.White,
                     _          => item.Color
                 };
-            }
-            else // isOvercoat
+            } else // isOvercoat
             {
                 var templateKeyRewards = new List<string> { "dyeableTrainingOutfit" };
                 var index = new Random().Next(templateKeyRewards.Count);
@@ -69,7 +68,9 @@ public class TerrorChestScript : DialogScriptBase
             source.TryGiveItem(ref item);
             source.TryGiveGamePoints(10);
 
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've received {item.DisplayName}, 20,000 coins and 10 game points!");
+            source.Client.SendServerMessage(
+                ServerMessageType.OrangeBar1,
+                $"You've received {item.DisplayName}, 20,000 coins and 10 game points!");
 
             source.Legend.AddOrAccumulate(
                 new LegendMark(

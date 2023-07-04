@@ -6,17 +6,12 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class StrongAccuracyEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 12;
-    public override string Name => "Strong Accuracy";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(15);
-
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
         AnimationSpeed = 100
     };
-    
+
     protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
     {
         "Small Haste",
@@ -31,20 +26,23 @@ public class StrongAccuracyEffect : NonOverwritableEffectBase
         "Juggernaut",
         "Strong Juggernaut",
         "Strong Astral",
-        "Astral",
+        "Astral"
     };
+
+    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(15);
+    public override byte Icon => 12;
+    public override string Name => "Strong Accuracy";
     protected override byte? Sound => 115;
 
     public override void OnApplied()
     {
-        
         base.OnApplied();
 
         var attributes = new Attributes
         {
             Hit = 8
         };
-        
+
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your hit chance increased.");
@@ -56,7 +54,7 @@ public class StrongAccuracyEffect : NonOverwritableEffectBase
     {
         var attributes = new Attributes
         {
-           Hit = 8
+            Hit = 8
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

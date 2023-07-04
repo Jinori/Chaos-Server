@@ -15,8 +15,8 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class TerminusTutorialScript : DialogScriptBase
 {
-    private readonly ISimpleCache SimpleCache;
     private readonly IMerchantFactory MerchantFactory;
+    private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     public TerminusTutorialScript(
@@ -93,7 +93,6 @@ public class TerminusTutorialScript : DialogScriptBase
                     point = new Point(13, 10);
                     var mapInstance = SimpleCache.Get<MapInstance>("after_life");
                     source.TraverseMap(mapInstance, point, true);
-                    
                 }
 
                 break;

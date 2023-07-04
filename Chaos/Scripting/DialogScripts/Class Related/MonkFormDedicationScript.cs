@@ -20,6 +20,7 @@ public class MonkFormDedicationScript : DialogScriptBase
         if (source.UserStatSheet.BaseClass is not BaseClass.Monk)
         {
             Subject.Reply(source, "How did you get here?.");
+
             return;
         }
 
@@ -27,6 +28,7 @@ public class MonkFormDedicationScript : DialogScriptBase
         {
             case true:
                 Subject.Reply(source, "You have already dedicated yourself to a elemental path, Aisling.");
+
                 return;
             case false:
                 switch (Subject.Template.TemplateKey.ToLower())

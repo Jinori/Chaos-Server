@@ -16,7 +16,7 @@ public class PriestDedicateScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
     private readonly ISimpleCache SimpleCache;
     private readonly ISkillFactory SkillFactory;
-    private readonly ISpellFactory SpellFactory;    
+    private readonly ISpellFactory SpellFactory;
 
     public PriestDedicateScript(
         Dialog subject,
@@ -65,7 +65,7 @@ public class PriestDedicateScript : DialogScriptBase
             var skill = SkillFactory.Create("assail");
             var spell = SpellFactory.Create("beagioc");
             var spell2 = SpellFactory.Create("beothaich");
-            
+
             if (!source.SpellBook.Contains(spell))
                 source.SpellBook.TryAddToNextSlot(spell);
 

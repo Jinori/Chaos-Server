@@ -1,10 +1,10 @@
+using Chaos.Common.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
-using Chaos.Common.Definitions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Utilities;
@@ -19,6 +19,38 @@ public class LearnSpellScript : DialogScriptBase
     private readonly ISkillFactory SkillFactory;
     private readonly ISpellFactory SpellFactory;
     private readonly ISpellTeacherSource SpellTeacherSource;
+
+    private readonly Dictionary<string, List<string>> SpellUpgrades = new()
+    {
+        //Wizard
+        { "Beag Sal", new List<string> { "Sal", "Mor Sal", "Ard Sal" } },
+        { "Sal", new List<string> { "Mor Sal", "Ard Sal" } },
+        { "Mor Sal", new List<string> { "Ard Sal" } },
+        { "Beag Creag", new List<string> { "Creag", "Mor Creag", "Ard Creag" } },
+        { "Creag", new List<string> { "Mor Creag", "Ard Creag" } },
+        { "Mor Creag", new List<string> { "Ard Creag" } },
+        { "Beag Athar", new List<string> { "Athar", "Mor Athar", "Ard Athar" } },
+        { "Athar", new List<string> { "Mor Athar", "Ard Athar" } },
+        { "Mor Athar", new List<string> { "Ard Athar" } },
+        { "Beag Srad", new List<string> { "Srad", "Mor Srad", "Ard Srad" } },
+        { "Srad", new List<string> { "Mor Srad", "Ard Srad" } },
+        { "Mor Srad", new List<string> { "Ard Srad" } },
+        { "Beag Pramh", new List<string> { "Pramh" } },
+        { "Beag Srad Lamh", new List<string> { "Srad Lamh" } },
+        { "Beag Sal Lamh", new List<string> { "Sal Lamh" } },
+        { "Beag Creag Lamh", new List<string> { "Creag Lamh" } },
+        { "Beag Athar Lamh", new List<string> { "Athar Lamh" } },
+        //Warrior
+        { "Battle Cry", new List<string> { "War Cry" } },
+        //Rogue
+        { "Needle Trap", new List<string> { "Stiletto Trap", "Bolt Trap", "Coiled Bolt Trap", "Spring Trap", "Maiden Trap" } },
+        { "Stiletto", new List<string> { "Bolt Trap", "Coiled Bolt Trap", "Spring Trap", "Maiden Trap" } },
+        { "Bolt Trap", new List<string> { "Coiled Bolt Trap", "Spring Trap", "Maiden Trap" } },
+        { "Coiled Bolt Trap", new List<string> { "Spring Trap", "Maiden Trap" } },
+        { "Spring Trap", new List<string> { "Maiden Trap" } },
+        //Monk
+        { "Goad", new List<string> { "Howl" } }
+    };
 
     /// <inheritdoc />
     public LearnSpellScript(
@@ -37,40 +69,6 @@ public class LearnSpellScript : DialogScriptBase
         SpellTeacherSource = (ISpellTeacherSource)Subject.DialogSource;
     }
 
-
-    private readonly Dictionary<string, List<string>> SpellUpgrades = new Dictionary<string, List<string>>
-    {
-        //Wizard
-        {"Beag Sal", new List<string> {"Sal", "Mor Sal", "Ard Sal"}},
-        {"Sal", new List<string> {"Mor Sal", "Ard Sal"}},
-        {"Mor Sal", new List<string> {"Ard Sal"}},
-        {"Beag Creag", new List<string> {"Creag", "Mor Creag", "Ard Creag"}},
-        {"Creag", new List<string> {"Mor Creag", "Ard Creag"}},
-        {"Mor Creag", new List<string> {"Ard Creag"}},
-        {"Beag Athar", new List<string> {"Athar", "Mor Athar", "Ard Athar"}},
-        {"Athar", new List<string> {"Mor Athar", "Ard Athar"}},
-        {"Mor Athar", new List<string> {"Ard Athar"}},
-        {"Beag Srad", new List<string> {"Srad", "Mor Srad", "Ard Srad"}},
-        {"Srad", new List<string> {"Mor Srad", "Ard Srad"}},
-        {"Mor Srad", new List<string> {"Ard Srad"}},
-        {"Beag Pramh", new List<string> {"Pramh"}},
-        {"Beag Srad Lamh", new List<string> {"Srad Lamh"}},
-        {"Beag Sal Lamh", new List<string> {"Sal Lamh"}},
-        {"Beag Creag Lamh", new List<string> {"Creag Lamh"}},
-        {"Beag Athar Lamh", new List<string> {"Athar Lamh"}},
-        //Warrior
-        {"Battle Cry", new List<string> {"War Cry"}},
-        //Rogue
-        {"Needle Trap", new List<string> {"Stiletto Trap", "Bolt Trap", "Coiled Bolt Trap", "Spring Trap", "Maiden Trap"}},
-        {"Stiletto", new List<string> {"Bolt Trap", "Coiled Bolt Trap", "Spring Trap", "Maiden Trap"}},
-        {"Bolt Trap", new List<string> {"Coiled Bolt Trap", "Spring Trap", "Maiden Trap"}},
-        {"Coiled Bolt Trap", new List<string> {"Spring Trap", "Maiden Trap"}},
-        {"Spring Trap", new List<string> {"Maiden Trap"}},
-        //Monk
-        {"Goad", new List<string> {"Howl"}}
-    };
-
-    
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
@@ -115,14 +113,18 @@ public class LearnSpellScript : DialogScriptBase
 
         if (!string.IsNullOrEmpty(spellToLearn.Template.LearningRequirements?.SkillSpellToUpgrade))
         {
-            var oldSpell = source.SpellBook.FirstOrDefault(s => s.Template.Name.Equals(spellToLearn.Template.LearningRequirements?.SkillSpellToUpgrade, StringComparison.OrdinalIgnoreCase));
+            var oldSpell = source.SpellBook.FirstOrDefault(
+                s => s.Template.Name.Equals(
+                    spellToLearn.Template.LearningRequirements?.SkillSpellToUpgrade,
+                    StringComparison.OrdinalIgnoreCase));
+
             if (oldSpell != null)
             {
                 source.SpellBook.Remove(oldSpell.Template.Name);
                 source.SendOrangeBarMessage($"{oldSpell.Template.Name} has been upgraded to {spellToLearn.Template.Name}.");
             }
         }
-        
+
         var learnSpellResult = ComplexActionHelper.LearnSpell(source, spellToLearn);
 
         switch (learnSpellResult)
@@ -179,17 +181,14 @@ public class LearnSpellScript : DialogScriptBase
 
             // Check if the source has the Wizard class and the spell also has a Wizard element, then check if the source has a matching
             // Wizard Element flag. If not, skip the spell.
-            if (source.HasClass(BaseClass.Wizard) && spell.Template.WizardElement != null)
-            {
+            if (source.HasClass(BaseClass.Wizard) && (spell.Template.WizardElement != null))
                 if (source.Trackers.Flags.TryGetFlag(out WizardElement ele))
-                {
                     if (spell.Template.WizardElement != ele)
                         continue;
-                }
-            }
-        
+
             // Check if the player's spellbook contains any spells that are upgrades of the spell they're trying to learn.
-            var knowsUpgrade = source.SpellBook.Any(s => SpellUpgrades.ContainsKey(spell.Template.Name) && SpellUpgrades[spell.Template.Name].Contains(s.Template.Name));
+            var knowsUpgrade = source.SpellBook.Any(
+                s => SpellUpgrades.ContainsKey(spell.Template.Name) && SpellUpgrades[spell.Template.Name].Contains(s.Template.Name));
 
             // If the player knows an upgrade of the spell they're trying to learn, skip it.
             if (knowsUpgrade)
@@ -198,7 +197,6 @@ public class LearnSpellScript : DialogScriptBase
             Subject.Spells.Add(spell);
         }
     }
-
 
     private void OnDisplayingRequirements(Aisling source)
     {
@@ -363,14 +361,14 @@ public class LearnSpellScript : DialogScriptBase
 
         if (requirements.RequiredGold.HasValue)
             source.TryTakeGold(requirements.RequiredGold.Value);
-        
+
         return true;
     }
-    
+
     public sealed class TieredSpell
     {
-        public string TemplateKey { get; }
         public string Name { get; }
+        public string TemplateKey { get; }
         public int Tier { get; }
 
         public TieredSpell(string templateKey, string name, int tier)

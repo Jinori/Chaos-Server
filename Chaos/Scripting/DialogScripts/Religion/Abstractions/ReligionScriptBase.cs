@@ -15,8 +15,17 @@ namespace Chaos.Scripting.DialogScripts.Religion.Abstractions;
 
 public class ReligionScriptBase : DialogScriptBase
 {
-    protected IClientRegistry<IWorldClient> ClientRegistry { get; }
-    protected IItemFactory ItemFactory { get; }
+    public enum Rank
+    {
+        None,
+        Worshipper,
+        Acolyte,
+        Emissary,
+        Seer,
+        Favor,
+        Champion
+    }
+
     private const string MIRAELIS_LEGEND_KEY = "Miraelis";
     private const string THESELENE_LEGEND_KEY = "Theselene";
     private const string SERENDAEL_LEGEND_KEY = "Serendael";
@@ -27,30 +36,25 @@ public class ReligionScriptBase : DialogScriptBase
     private const int LATE_FAITH_REWARD = 25;
     private const int ESSENCE_CHANCE = 10;
 
-    public class FaithThresholds
+    private static readonly Dictionary<Rank, List<string>> RoleOptions = new()
     {
-        public const int WORSHIPPER = 150;
-        public const int ACOLYTE = 300;
-        public const int EMISSARY = 500;
-        public const int SEER = 750;
-        public const int FAVOR = 1000;
-        public const int CHAMPION = 1500;
-    }
-    
-    protected Animation PrayerSuccess { get; } = new()
-    {
-        AnimationSpeed = 60,
-        TargetAnimation = 5
+        { Rank.None, new List<string> { "Join the Temple", "The Gods" } },
+        { Rank.Worshipper, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith" } },
+        { Rank.Acolyte, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith" } },
+        { Rank.Emissary, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith" } },
+        { Rank.Seer, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "The Gods", "Leave Faith" } },
+        { Rank.Favor, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "The Gods", "Leave Faith" } },
+        { Rank.Champion, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "The Gods", "Leave Faith" } }
     };
-    
+
     #region Prayers
-    public readonly Dictionary<string, List<string>> DeityPrayers = new Dictionary<string, List<string>>()
+    public readonly Dictionary<string, List<string>> DeityPrayers = new()
     {
         {
             "Serendael", new List<string>
             {
                 "Oh Serendael, Lady of Fortune, bless us with your favorable hand.",
-                "Serendael, the weaver of destiny, guide us through the twists and turns of fate.",
+                "Serendael, the weaver of destiny, guide us through the twists and turns of fate."
                 // Add more prayers for Serendael as desired
             }
         },
@@ -58,7 +62,7 @@ public class ReligionScriptBase : DialogScriptBase
             "Skandara", new List<string>
             {
                 "Mighty Skandara, grant us strength and courage to triumph in battle.",
-                "Skandara, goddess of war, may your fury drive us to victory.",
+                "Skandara, goddess of war, may your fury drive us to victory."
                 // Add more prayers for Skandara as desired
             }
         },
@@ -66,7 +70,7 @@ public class ReligionScriptBase : DialogScriptBase
             "Theselene", new List<string>
             {
                 "Theselene, Keeper of Secrets, reveal to us the hidden truths that lie in the shadows.",
-                "Grant us the wisdom to unravel the mysteries that cloak our path.",
+                "Grant us the wisdom to unravel the mysteries that cloak our path."
                 // Add more prayers for Theselene as desired
             }
         },
@@ -125,11 +129,21 @@ public class ReligionScriptBase : DialogScriptBase
                 "Goddess of Compassion, may our voices be filled with kindness and our words bring solace to those who listen.",
                 "Miraelis, in your name, may we be catalysts for positive change, igniting a world driven by empathy and compassion.",
                 "Grant us the strength to protect and restore the natural world, guided by your divine wisdom, Miraelis.",
-                "May the love and compassion we receive from you, Miraelis, overflow into the lives of those around us.",
+                "May the love and compassion we receive from you, Miraelis, overflow into the lives of those around us."
             }
         }
     };
     #endregion Prayers
+
+    protected IClientRegistry<IWorldClient> ClientRegistry { get; }
+    protected IItemFactory ItemFactory { get; }
+
+    protected Animation PrayerSuccess { get; } = new()
+    {
+        AnimationSpeed = 60,
+        TargetAnimation = 5
+    };
+
     /// <inheritdoc />
     public ReligionScriptBase(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IItemFactory itemFactory)
         : base(subject)
@@ -137,50 +151,17 @@ public class ReligionScriptBase : DialogScriptBase
         ClientRegistry = clientRegistry;
         ItemFactory = itemFactory;
     }
-    
 
-    public enum Rank
+    private void AddOption(Dialog subject, string optionName, string templateKey)
     {
-        None,
-        Worshipper,
-        Acolyte,
-        Emissary,
-        Seer,
-        Favor,
-        Champion
+        if (!subject.GetOptionIndex(optionName).HasValue)
+            subject.AddOption(optionName, templateKey);
     }
-    
-    public void GoddessHoldMass(Aisling source, string deity, Merchant? goddess)
+
+    private void AnnounceMassEnd(string deity)
     {
-        if (source.Trackers.TimedEvents.HasActiveEvent("Mass", out var timedEvent))
-        {
-            Subject.Reply(
-                source,
-                $"You cannot hold Mass at this time. \nTry again in {
-                    timedEvent.Remaining.ToReadableString()}.");
-            return;
-        }
-        switch (goddess)
-        {
-            case { CurrentlyHostingMass: true }:
-                Subject.Reply(source, "I am currently busy already holding Mass at this time.");
-                return;
-            
-            case { CurrentlyHostingMass: false }:
-            {
-                goddess.CurrentlyHostingMass = true;
-                source.Trackers.TimedEvents.AddEvent("Mass", TimeSpan.FromDays(7));
-                source.Legend.AddOrAccumulate(
-                    new LegendMark(
-                        $"Last Held Mass for {deity}",
-                        $"{deity}Mass",
-                        MarkIcon.Heart,
-                        MarkColor.White,
-                        1,
-                        GameTime.Now));
-                break;
-            }
-        }
+        foreach (var client in ClientRegistry)
+            client.Aisling.SendActiveMessage($"{deity} mass has been concluded.");
     }
 
     public void AnnounceMassStart(Aisling source, string deity, bool self)
@@ -191,20 +172,22 @@ public class ReligionScriptBase : DialogScriptBase
                 source,
                 $"You cannot host a mass at this time or use your voice to shout. \nTry again in {
                     timedEvent.Remaining.ToReadableString()}.");
+
             return;
         }
+
         foreach (var client in ClientRegistry)
-        {
             switch (self)
             {
                 case true:
                     client.Aisling.SendActiveMessage($"{source.Name} will be hosting {deity} mass in five minutes.");
+
                     break;
                 case false:
                     client.Aisling.SendActiveMessage($"{deity} will be holding mass at her temple in five minutes.");
+
                     break;
             }
-        }
     }
 
     public void AnnounceOneMinuteWarning(Aisling source, string deity, bool self)
@@ -215,24 +198,31 @@ public class ReligionScriptBase : DialogScriptBase
                 source,
                 $"You cannot host a mass at this time or use your voice to shout. \nTry again in {
                     timedEvent.Remaining.ToReadableString()}.");
+
             return;
         }
-        
+
         foreach (var client in ClientRegistry)
-        {
             switch (self)
             {
                 case true:
                     client.Aisling.SendActiveMessage($"{deity} mass held by {source.Name} starts in a minute.");
+
                     break;
                 case false:
                     client.Aisling.SendActiveMessage($"Mass held by {deity} will begin in one minute.");
+
                     break;
             }
-        }
     }
-    
-    public void AwardAttendees(Aisling source, string deity, IEnumerable<Aisling> aislingsAtStart, Merchant? goddess, bool self)
+
+    public void AwardAttendees(
+        Aisling source,
+        string deity,
+        IEnumerable<Aisling> aislingsAtStart,
+        Merchant? goddess,
+        bool self
+    )
     {
         if (source.Trackers.TimedEvents.HasActiveEvent("Mass", out var timedEvent))
         {
@@ -240,9 +230,10 @@ public class ReligionScriptBase : DialogScriptBase
                 source,
                 $"You cannot hold Mass at this time. You've already hosted it recently. \nTry again in {
                     timedEvent.Remaining.ToReadableString()}.");
+
             return;
         }
-        
+
         switch (self)
         {
             case true:
@@ -260,15 +251,14 @@ public class ReligionScriptBase : DialogScriptBase
                             player.Inventory.TryAddToNextSlot(item);
                             player.SendActiveMessage($"You received an Essence of {deity} and faith!");
                         } else
-                        {
-                            player.SendActiveMessage($"You receive faith!");
-                        }
+                            player.SendActiveMessage("You receive faith!");
 
                         TryAddFaith(player, FAITH_REWARD);
                     }
 
                 goddess?.Say($"Thank you, {source.Name}. You honor me.");
                 AnnounceMassEnd(deity);
+
                 break;
             }
             case false:
@@ -285,18 +275,15 @@ public class ReligionScriptBase : DialogScriptBase
                         var item = ItemFactory.Create($"essenceof{deity}");
                         player.Inventory.TryAddToNextSlot(item);
                         player.SendActiveMessage($"You received an Essence of {deity} and faith!");
-                    } 
-                    else
-                    {
-                        player.SendActiveMessage($"You receive faith!");
-                    }
+                    } else
+                        player.SendActiveMessage("You receive faith!");
 
                     TryAddFaith(player, FAITH_REWARD);
                 }
 
                 foreach (var latePlayers in aislingsAtEnd!.Except(aislingsStillHere))
                 {
-                    latePlayers.SendActiveMessage("You must be present from start to finish to receive full benefits.");   
+                    latePlayers.SendActiveMessage("You must be present from start to finish to receive full benefits.");
                     TryAddFaith(latePlayers, LATE_FAITH_REWARD);
                 }
 
@@ -305,59 +292,79 @@ public class ReligionScriptBase : DialogScriptBase
         }
     }
 
-    private void AnnounceMassEnd(string deity)
+    public int CheckCurrentFaith(Aisling source)
     {
-        foreach (var client in ClientRegistry)
-            client.Aisling.SendActiveMessage($"{deity} mass has been concluded.");
+        var key = CheckDeity(source);
+
+        if ((key != null) && source.Legend.TryGetValue(key, out var faith))
+            return faith.Count;
+
+        return 0;
     }
 
-    public void TransferFaith(Aisling source, string deity)
+    public static string? CheckDeity(Aisling source)
     {
-        if (!TryFetchArgs<string>(out var name) || string.IsNullOrEmpty(name))
+        var deityKeys = new[]
         {
-            Subject.ReplyToUnknownInput(source);
-            return;
-        }
+            MIRAELIS_LEGEND_KEY,
+            THESELENE_LEGEND_KEY,
+            SERENDAEL_LEGEND_KEY,
+            SKANDARA_LEGEND_KEY
+        };
 
-        var target = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(name))?.Aisling;
-        
-        if (target is null)
-        {
-            Subject.Reply(source, $"{name} is not online", $"{deity}_temple_initial");
-            return;
-        }
-        
-        if (CheckCurrentFaith(source) <= AMOUNT_TO_TRANSFER_FAITH)
-        {
-            Subject.Reply(source, "Your faith is too low to transfer yours to another.", $"{deity}_temple_initial");
-            return;
-        }
+        foreach (var key in deityKeys)
+            if (source.Legend.ContainsKey(key))
+                return key;
 
-        if (!TryTransferFaith(source, target))
-        {
-            Subject.Reply(source, "Your faith may be too low or there was an issue.", $"{deity}_temple_initial");
-            return;
-        }
-        
-        source.SendActiveMessage($"You bestow your faith upon {target.Name}. May {deity} bless you both.");
-        target.SendActiveMessage($"{source.Name} has bestowed faith of {deity} upon you!");
-        target.Animate(PrayerSuccess);
+        return null;
     }
-    
+
+    public void CheckJoinQuestCompletion(Aisling source, string deity)
+    {
+        if (source.Inventory.CountOf($"Essence of {deity}") < 3)
+        {
+            source.SendActiveMessage($"You do not have the required Essence of {deity}.");
+
+            Subject.Reply(
+                source,
+                "Though the essence of Miraelis eludes you, seeker, remember that the journey itself holds wisdom. Reflect on your quest, learn from its challenges, and embrace compassion, nature, and intellect in your future endeavors. The path to enlightenment awaits your renewed efforts.");
+
+            return;
+        }
+
+        source.Trackers.Enums.Set(typeof(JoinReligionQuest), JoinReligionQuest.JoinReligionComplete);
+
+        source.Legend.AddOrAccumulate(
+            new LegendMark(
+                $"Worshipper of {deity}",
+                deity,
+                MarkIcon.Heart,
+                MarkColor.White,
+                1,
+                GameTime.Now));
+
+        var trinket = ItemFactory.Create($"{deity}Stone");
+        source.Inventory.TryAddToNextSlot(trinket);
+        source.Inventory.RemoveQuantity($"Essence of {deity}", 3);
+        source.SendActiveMessage($"You have joined the temple of {deity} as a Worshipper!");
+    }
+
     public void CreateTempleScroll(Aisling source, string deity)
     {
         if (CheckCurrentFaith(source) <= 1)
         {
             Subject.Reply(source, "Your faith is too low to create a scroll to the temple.", $"{deity}_temple_initial");
+
             return;
         }
 
         if (!TrySubtractFaith(source, TEMPLE_SCROLL_FAITH_COST))
         {
             Subject.Reply(source, "Your faith may be too low or there was an issue.", $"{deity}_temple_initial");
+
             return;
         }
-        
+
         source.SendActiveMessage($"In gratitude for your loyalty, {deity} hands you a temple scroll.");
 
         //Change to the specific god's temple map
@@ -373,226 +380,7 @@ public class ReligionScriptBase : DialogScriptBase
         var scroll = ItemFactory.Create(templeScroll);
         source.Inventory.TryAddToNextSlot(scroll);
     }
-    
-    public static void SendOnJoinQuest(Aisling source, string deity)
-    {
-        switch (deity)
-        {
-            case "Miraelis":
-                source.Trackers.Enums.Set(JoinReligionQuest.MiraelisQuest);
-                break;
-            case "Skandara":
-                source.Trackers.Enums.Set(JoinReligionQuest.SkandaraQuest);
-                break;
-            case "Theselene":
-                source.Trackers.Enums.Set(JoinReligionQuest.TheseleneQuest);
-                break;
-            case "Serendael":
-                source.Trackers.Enums.Set(JoinReligionQuest.SerendaelQuest);
-                break;
-        }
-        source.SendActiveMessage($"{deity} wants you to retreive (3) Essence of {deity}.");
-    }
 
-    private static readonly Dictionary<Rank, List<string>> RoleOptions = new Dictionary<Rank, List<string>>
-    {
-        { Rank.None, new List<string> { "Join the Temple", "The Gods" } },
-        { Rank.Worshipper, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith"} },
-        { Rank.Acolyte, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith"} },
-        { Rank.Emissary, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith"} },
-        { Rank.Seer, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "The Gods", "Leave Faith" } },
-        { Rank.Favor, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "The Gods", "Leave Faith"} },
-        { Rank.Champion, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "The Gods", "Leave Faith" } },
-    };
-    
-    public void HideDialogOptions(Aisling source, string? deity, Dialog subject)
-    {
-        var playerGod = CheckDeity(source);
-        if ((playerGod != null) && (playerGod != deity))
-        {
-            Subject.Reply(source, $"Your faith lies within {playerGod} already. Please seek them out.");
-            return;
-        }
-        
-        var rank = GetPlayerRank(source);
-
-        // Get all options.
-        var allOptions = new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "Join the Temple", "Leave Faith" };
-
-        // Remove the options that are not available for this rank.
-        foreach (var option in allOptions.Except(RoleOptions[rank]))
-        {
-            RemoveOption(subject, option);
-        }
-
-        if (rank == Rank.None)
-        {
-            source.Trackers.Enums.TryGetValue(out JoinReligionQuest stage);
-            if (stage is JoinReligionQuest.MiraelisQuest or JoinReligionQuest.SerendaelQuest or JoinReligionQuest.SkandaraQuest or JoinReligionQuest.TheseleneQuest)
-            {
-                AddOption(subject, $"Essence of {deity}", $"{deity}_temple_completejoinQuest");
-            }
-            RemoveOption(subject, "Leave Faith");
-        }
-    }
-
-    private void AddOption(Dialog subject, string optionName, string templateKey)
-    {
-        if (!subject.GetOptionIndex(optionName).HasValue)
-        {
-            subject.AddOption(optionName, templateKey);
-        }
-    }
-    
-    private void RemoveOption(Dialog subject, string optionName)
-    {
-        if (subject.GetOptionIndex(optionName).HasValue)
-        {
-            var s = subject.GetOptionIndex(optionName)!.Value;
-            subject.Options.RemoveAt(s);
-        }
-    }
-    
-    public void CheckJoinQuestCompletion(Aisling source, string deity)
-    {
-        if (source.Inventory.CountOf($"Essence of {deity}") < 3)
-        {
-            source.SendActiveMessage($"You do not have the required Essence of {deity}.");
-
-            Subject.Reply(
-                source,
-                "Though the essence of Miraelis eludes you, seeker, remember that the journey itself holds wisdom. Reflect on your quest, learn from its challenges, and embrace compassion, nature, and intellect in your future endeavors. The path to enlightenment awaits your renewed efforts.");
-            return;
-        }
-        
-        source.Trackers.Enums.Set(typeof(JoinReligionQuest), JoinReligionQuest.JoinReligionComplete);
-        source.Legend.AddOrAccumulate(
-            new LegendMark(
-                $"Worshipper of {deity}",
-                deity,
-                MarkIcon.Heart,
-                MarkColor.White,
-                1,
-                GameTime.Now));
-
-        var trinket = ItemFactory.Create($"{deity}Stone");
-        source.Inventory.TryAddToNextSlot(trinket);
-        source.Inventory.RemoveQuantity($"Essence of {deity}", 3);
-        source.SendActiveMessage($"You have joined the temple of {deity} as a Worshipper!");
-    }
-    
-    public void Pray(Aisling source, string deity)
-    {
-        if (source.Trackers.TimedEvents.HasActiveEvent("PrayerCooldown", out var timedEvent))
-        {
-            Subject.Reply(source, $"You cannot pray with {deity} at this time. \nTry again in {
-                timedEvent.Remaining.ToReadableString()}.");
-            
-            return;
-        }
-        
-        
-        var currentPrayerCount = source.Trackers.Enums.TryGetValue(out ReligionPrayer count);
-
-        if (!currentPrayerCount)
-            count = ReligionPrayer.None;
-
-        if (count < ReligionPrayer.End)
-        {
-            count++;
-            source.Trackers.Enums.Set(typeof(ReligionPrayer), count);
-            UpdateReligionRank(source);
-            source.Animate(PrayerSuccess);
-            if (IntegerRandomizer.RollChance(5))
-            {
-                var essence = ItemFactory.Create($"essenceof{deity}");
-                source.Inventory.TryAddToNextSlot(essence);
-                source.SendActiveMessage($"Through prayer, you receive a Essence of {deity}!");
-            }
-        } 
-        else
-        {
-            Subject.Reply(source, $"You have reached your limit in prayer. Try again tomorrow!");
-            source.Trackers.TimedEvents.AddEvent("PrayerCooldown", TimeSpan.FromDays(1), true);
-        }
-    }
-    
-    public void JoinDeity(Aisling source, string deity)
-    {
-        if (!IsDeityMember(source, deity))
-        {
-            source.Legend.TryGetValue(deity, out var existingMark);
-
-            if (existingMark is not null)
-            {
-                source.SendActiveMessage("You already belong to a deity.");
-                return;
-            }
-            
-            source.Legend.AddOrAccumulate(
-                new LegendMark(
-                    $"Worshipper of {deity}",
-                    deity,
-                    MarkIcon.Heart,
-                    MarkColor.White,
-                    1,
-                    GameTime.Now));
-
-            var worldClients = ClientRegistry.Where(x => x.Aisling.Legend.ContainsKey(deity));
-            foreach (var client in worldClients)
-                client.Aisling.SendActiveMessage($"{source.Name} has joined the ranks of {deity}.");
-        }
-    }
-
-    public void LeaveDeity(Aisling source, string deity)
-    {
-        source.Legend.TryGetValue(deity, out var existingMark);
-        if (existingMark is null)
-        {
-            source.SendActiveMessage("You do not belong to a deity.");
-            return;
-        }
-
-        source.Trackers.Enums.Set(JoinReligionQuest.None);
-        source.Legend.Remove(deity, out _);
-        source.SendActiveMessage($"You turn your back on {deity} and leave the ranks of worship.");
-    }
-    
-    private void UpdateReligionRank(Aisling source)
-    {
-        var key = CheckDeity(source);
-        source.Legend.TryGetValue(key!, out var existingMark);
-
-        if (existingMark is null)
-        {
-            source.Legend.AddOrAccumulate(
-                new LegendMark($"Worshipper of {key}",
-                    key!,
-                    MarkIcon.Heart,
-                    MarkColor.White,
-                    1,
-                    GameTime.Now));
-        }
-        
-        if (existingMark is not null)
-        {
-            var faithCount = existingMark.Count;
-
-            existingMark.Text = faithCount switch
-            {
-                > 1499 when !existingMark.Text.Contains("Champion") => $"Champion of {key}",
-                > 999 when !existingMark.Text.Contains("Favor")     => $"Favor of {key}",
-                > 749 when !existingMark.Text.Contains("Seer")      => $"Seer of {key}",
-                > 499 when !existingMark.Text.Contains("Emissary")  => $"Emissary of {key}",
-                > 299 when !existingMark.Text.Contains("Acolyte")  => $"Acolyte of {key}",
-                _ when !existingMark.Text.Contains("Novice")        => $"Worshipper of {key}",
-                _                                                   => existingMark.Text
-            };
-
-            existingMark.Count++;
-        }
-    }
-    
     public Rank GetPlayerRank(Aisling source)
     {
         var key = CheckDeity(source);
@@ -616,83 +404,324 @@ public class ReligionScriptBase : DialogScriptBase
 
         return Rank.None;
     }
-    
-    public static string? CheckDeity(Aisling source)
-    {
-        var deityKeys = new[] {
-            MIRAELIS_LEGEND_KEY,
-            THESELENE_LEGEND_KEY,
-            SERENDAEL_LEGEND_KEY,
-            SKANDARA_LEGEND_KEY
-        };
 
-        foreach (var key in deityKeys)
+    public void GoddessHoldMass(Aisling source, string deity, Merchant? goddess)
+    {
+        if (source.Trackers.TimedEvents.HasActiveEvent("Mass", out var timedEvent))
         {
-            if (source.Legend.ContainsKey(key))
+            Subject.Reply(
+                source,
+                $"You cannot hold Mass at this time. \nTry again in {
+                    timedEvent.Remaining.ToReadableString()}.");
+
+            return;
+        }
+
+        switch (goddess)
+        {
+            case { CurrentlyHostingMass: true }:
+                Subject.Reply(source, "I am currently busy already holding Mass at this time.");
+
+                return;
+
+            case { CurrentlyHostingMass: false }:
             {
-                return key;
+                goddess.CurrentlyHostingMass = true;
+                source.Trackers.TimedEvents.AddEvent("Mass", TimeSpan.FromDays(7));
+
+                source.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        $"Last Held Mass for {deity}",
+                        $"{deity}Mass",
+                        MarkIcon.Heart,
+                        MarkColor.White,
+                        1,
+                        GameTime.Now));
+
+                break;
             }
         }
-    
-        return null;
     }
-    
-    public int CheckCurrentFaith(Aisling source)
+
+    public void HideDialogOptions(Aisling source, string? deity, Dialog subject)
+    {
+        var playerGod = CheckDeity(source);
+
+        if ((playerGod != null) && (playerGod != deity))
+        {
+            Subject.Reply(source, $"Your faith lies within {playerGod} already. Please seek them out.");
+
+            return;
+        }
+
+        var rank = GetPlayerRank(source);
+
+        // Get all options.
+        var allOptions = new List<string>
+            { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "Join the Temple", "Leave Faith" };
+
+        // Remove the options that are not available for this rank.
+        foreach (var option in allOptions.Except(RoleOptions[rank]))
+            RemoveOption(subject, option);
+
+        if (rank == Rank.None)
+        {
+            source.Trackers.Enums.TryGetValue(out JoinReligionQuest stage);
+
+            if (stage is JoinReligionQuest.MiraelisQuest or JoinReligionQuest.SerendaelQuest or JoinReligionQuest.SkandaraQuest
+                         or JoinReligionQuest.TheseleneQuest)
+                AddOption(subject, $"Essence of {deity}", $"{deity}_temple_completejoinQuest");
+
+            RemoveOption(subject, "Leave Faith");
+        }
+    }
+
+    public static bool IsDeityMember(Aisling source, string deity) => source.Legend.ContainsKey(deity);
+
+    public void JoinDeity(Aisling source, string deity)
+    {
+        if (!IsDeityMember(source, deity))
+        {
+            source.Legend.TryGetValue(deity, out var existingMark);
+
+            if (existingMark is not null)
+            {
+                source.SendActiveMessage("You already belong to a deity.");
+
+                return;
+            }
+
+            source.Legend.AddOrAccumulate(
+                new LegendMark(
+                    $"Worshipper of {deity}",
+                    deity,
+                    MarkIcon.Heart,
+                    MarkColor.White,
+                    1,
+                    GameTime.Now));
+
+            var worldClients = ClientRegistry.Where(x => x.Aisling.Legend.ContainsKey(deity));
+
+            foreach (var client in worldClients)
+                client.Aisling.SendActiveMessage($"{source.Name} has joined the ranks of {deity}.");
+        }
+    }
+
+    public void LeaveDeity(Aisling source, string deity)
+    {
+        source.Legend.TryGetValue(deity, out var existingMark);
+
+        if (existingMark is null)
+        {
+            source.SendActiveMessage("You do not belong to a deity.");
+
+            return;
+        }
+
+        source.Trackers.Enums.Set(JoinReligionQuest.None);
+        source.Legend.Remove(deity, out _);
+        source.SendActiveMessage($"You turn your back on {deity} and leave the ranks of worship.");
+    }
+
+    public void Pray(Aisling source, string deity)
+    {
+        if (source.Trackers.TimedEvents.HasActiveEvent("PrayerCooldown", out var timedEvent))
+        {
+            Subject.Reply(
+                source,
+                $"You cannot pray with {deity} at this time. \nTry again in {
+                    timedEvent.Remaining.ToReadableString()}.");
+
+            return;
+        }
+
+        var currentPrayerCount = source.Trackers.Enums.TryGetValue(out ReligionPrayer count);
+
+        if (!currentPrayerCount)
+            count = ReligionPrayer.None;
+
+        if (count < ReligionPrayer.End)
+        {
+            count++;
+            source.Trackers.Enums.Set(typeof(ReligionPrayer), count);
+            UpdateReligionRank(source);
+            source.Animate(PrayerSuccess);
+
+            if (IntegerRandomizer.RollChance(5))
+            {
+                var essence = ItemFactory.Create($"essenceof{deity}");
+                source.Inventory.TryAddToNextSlot(essence);
+                source.SendActiveMessage($"Through prayer, you receive a Essence of {deity}!");
+            }
+        } else
+        {
+            Subject.Reply(source, "You have reached your limit in prayer. Try again tomorrow!");
+            source.Trackers.TimedEvents.AddEvent("PrayerCooldown", TimeSpan.FromDays(1), true);
+        }
+    }
+
+    private void RemoveOption(Dialog subject, string optionName)
+    {
+        if (subject.GetOptionIndex(optionName).HasValue)
+        {
+            var s = subject.GetOptionIndex(optionName)!.Value;
+            subject.Options.RemoveAt(s);
+        }
+    }
+
+    public static void SendOnJoinQuest(Aisling source, string deity)
+    {
+        switch (deity)
+        {
+            case "Miraelis":
+                source.Trackers.Enums.Set(JoinReligionQuest.MiraelisQuest);
+
+                break;
+            case "Skandara":
+                source.Trackers.Enums.Set(JoinReligionQuest.SkandaraQuest);
+
+                break;
+            case "Theselene":
+                source.Trackers.Enums.Set(JoinReligionQuest.TheseleneQuest);
+
+                break;
+            case "Serendael":
+                source.Trackers.Enums.Set(JoinReligionQuest.SerendaelQuest);
+
+                break;
+        }
+
+        source.SendActiveMessage($"{deity} wants you to retreive (3) Essence of {deity}.");
+    }
+
+    public void TransferFaith(Aisling source, string deity)
+    {
+        if (!TryFetchArgs<string>(out var name) || string.IsNullOrEmpty(name))
+        {
+            Subject.ReplyToUnknownInput(source);
+
+            return;
+        }
+
+        var target = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(name))?.Aisling;
+
+        if (target is null)
+        {
+            Subject.Reply(source, $"{name} is not online", $"{deity}_temple_initial");
+
+            return;
+        }
+
+        if (CheckCurrentFaith(source) <= AMOUNT_TO_TRANSFER_FAITH)
+        {
+            Subject.Reply(source, "Your faith is too low to transfer yours to another.", $"{deity}_temple_initial");
+
+            return;
+        }
+
+        if (!TryTransferFaith(source, target))
+        {
+            Subject.Reply(source, "Your faith may be too low or there was an issue.", $"{deity}_temple_initial");
+
+            return;
+        }
+
+        source.SendActiveMessage($"You bestow your faith upon {target.Name}. May {deity} bless you both.");
+        target.SendActiveMessage($"{source.Name} has bestowed faith of {deity} upon you!");
+        target.Animate(PrayerSuccess);
+    }
+
+    public static bool TryAddFaith(Aisling source, int amount)
     {
         var key = CheckDeity(source);
 
         if ((key != null) && source.Legend.TryGetValue(key, out var faith))
-            return faith.Count;
+        {
+            faith.Count += amount;
 
-        return 0;
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool TrySubtractFaith(Aisling source, int amount)
+    {
+        var key = CheckDeity(source);
+
+        if ((key != null) && source.Legend.TryGetValue(key, out var faith))
+            if (amount < faith.Count)
+            {
+                source.Legend.RemoveCount(key, amount, out _);
+
+                return true;
+            }
+
+        return false;
     }
 
     public bool TryTransferFaith(Aisling source, Aisling target)
     {
         var sourceKey = CheckDeity(source);
         var targetKey = CheckDeity(target);
-        
-        if (sourceKey is not null && targetKey is not null && (sourceKey == targetKey) && source.Legend.TryGetValue(sourceKey, out var faith) && target.Legend.TryGetValue(targetKey, out var targetFaith))
-        {
+
+        if (sourceKey is not null
+            && targetKey is not null
+            && (sourceKey == targetKey)
+            && source.Legend.TryGetValue(sourceKey, out var faith)
+            && target.Legend.TryGetValue(targetKey, out var targetFaith))
             if (AMOUNT_TO_TRANSFER_FAITH < faith.Count)
             {
                 faith.Count -= AMOUNT_TO_TRANSFER_FAITH;
                 targetFaith.Count += AMOUNT_TO_TRANSFER_FAITH;
+
                 return true;
             }
-        }
 
         return false;
     }
-    
-    public bool TryAddFaith(Aisling source, int amount)
-    {
-        var key = CheckDeity(source);
-        
-        if ((key != null) && source.Legend.TryGetValue(key, out var faith))
-        {
-            faith.Count += amount;
-            return true;
-        }
 
-        return false;
-    }
-    
-    public bool TrySubtractFaith(Aisling source, int amount)
+    private void UpdateReligionRank(Aisling source)
     {
         var key = CheckDeity(source);
-        
-        if ((key != null) && source.Legend.TryGetValue(key, out var faith))
+        source.Legend.TryGetValue(key!, out var existingMark);
+
+        if (existingMark is null)
+            source.Legend.AddOrAccumulate(
+                new LegendMark(
+                    $"Worshipper of {key}",
+                    key!,
+                    MarkIcon.Heart,
+                    MarkColor.White,
+                    1,
+                    GameTime.Now));
+
+        if (existingMark is not null)
         {
-            if (amount < faith.Count)
+            var faithCount = existingMark.Count;
+
+            existingMark.Text = faithCount switch
             {
-                source.Legend.RemoveCount(key, amount, out _);
-                return true;
-            }
-        }
+                > 1499 when !existingMark.Text.Contains("Champion") => $"Champion of {key}",
+                > 999 when !existingMark.Text.Contains("Favor")     => $"Favor of {key}",
+                > 749 when !existingMark.Text.Contains("Seer")      => $"Seer of {key}",
+                > 499 when !existingMark.Text.Contains("Emissary")  => $"Emissary of {key}",
+                > 299 when !existingMark.Text.Contains("Acolyte")   => $"Acolyte of {key}",
+                _ when !existingMark.Text.Contains("Novice")        => $"Worshipper of {key}",
+                _                                                   => existingMark.Text
+            };
 
-        return false;
+            existingMark.Count++;
+        }
     }
-    
-    public static bool IsDeityMember(Aisling source, string deity) => source.Legend.ContainsKey(deity);
+
+    public class FaithThresholds
+    {
+        public const int WORSHIPPER = 150;
+        public const int ACOLYTE = 300;
+        public const int EMISSARY = 500;
+        public const int SEER = 750;
+        public const int FAVOR = 1000;
+        public const int CHAMPION = 1500;
+    }
 }

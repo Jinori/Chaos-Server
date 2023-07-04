@@ -13,8 +13,6 @@ namespace Chaos.Scripting.EffectScripts.Wizard;
 public class RuminationEffect : ContinuousAnimationEffectBase
 {
     protected Point Point { get; set; }
-    public override byte Icon => 19;
-    public override string Name => "rumination";
 
     protected override Animation Animation { get; } = new()
     {
@@ -28,6 +26,8 @@ public class RuminationEffect : ContinuousAnimationEffectBase
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(15);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1));
+    public override byte Icon => 19;
+    public override string Name => "rumination";
 
     public override void OnApplied()
     {
@@ -41,7 +41,7 @@ public class RuminationEffect : ContinuousAnimationEffectBase
         AislingSubject?.Client.SendServerMessage(
             ServerMessageType.OrangeBar1,
             $"{MessageColor.Silver.ToPrefix()}You begin to sacrifice your health in return for mana gains..");
-        
+
         Point = new Point(Subject.X, Subject.Y);
     }
 
@@ -86,7 +86,7 @@ public class RuminationEffect : ContinuousAnimationEffectBase
 
             return;
         }
-        
+
         //Remove and Add HP
         Subject.StatSheet.SubtractHealthPct(6);
         Subject.StatSheet.AddManaPct(4);

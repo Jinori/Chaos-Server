@@ -17,7 +17,7 @@ public class LightPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           Hit = 5,
+            Hit = 5,
             Int = -2
         };
 

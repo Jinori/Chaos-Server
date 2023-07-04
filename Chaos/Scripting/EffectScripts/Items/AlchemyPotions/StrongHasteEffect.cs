@@ -6,11 +6,6 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class StrongHasteEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 13;
-    public override string Name => "Strong Haste";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(15);
-
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
@@ -30,8 +25,12 @@ public class StrongHasteEffect : NonOverwritableEffectBase
         "Juggernaut",
         "Strong Juggernaut",
         "Strong Astral",
-        "Astral",
+        "Astral"
     };
+
+    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(15);
+    public override byte Icon => 13;
+    public override string Name => "Strong Haste";
     protected override byte? Sound => 115;
 
     public override void OnApplied()
@@ -42,7 +41,7 @@ public class StrongHasteEffect : NonOverwritableEffectBase
         {
             AtkSpeedPct = 25
         };
-        
+
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed increased.");

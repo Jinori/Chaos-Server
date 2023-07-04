@@ -17,7 +17,7 @@ public class SoftPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           MagicResistance = 10,
+            MagicResistance = 10
         };
 
         subject.Modifiers.Add(attributes);

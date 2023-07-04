@@ -47,20 +47,23 @@ public class MythicKoboldScript : DialogScriptBase
                 if (hasKobold && (kobold == MythicKobold.EnemyAllied))
                 {
                     Subject.Reply(
-                        source,"I told you to get lost, do not make me use these claws. I am still so angry at you. They steal our land and now our allies. (Kobold Leader growls in anger)");
+                        source,
+                        "I told you to get lost, do not make me use these claws. I am still so angry at you. They steal our land and now our allies. (Kobold Leader growls in anger)");
+
                     return;
                 }
 
                 if (hasMain && !hasKobold)
                 {
-                    Subject.Reply(
-                        source,"Skip","kobold_start1start");
+                    Subject.Reply(source, "Skip", "kobold_start1start");
+
                     return;
                 }
 
                 if (kobold == MythicKobold.Lower)
                 {
                     Subject.Reply(source, "Skip", "kobold_lower2start");
+
                     return;
                 }
 
@@ -72,7 +75,6 @@ public class MythicKoboldScript : DialogScriptBase
                         "kobold_start3start");
 
                     return;
-
                 }
 
                 if (kobold == MythicKobold.Higher)
@@ -80,7 +82,6 @@ public class MythicKoboldScript : DialogScriptBase
                     Subject.Reply(source, "Skip", "kobold_higher2start");
 
                     return;
-
                 }
 
                 if (kobold == MythicKobold.HigherComplete)
@@ -88,7 +89,6 @@ public class MythicKoboldScript : DialogScriptBase
                     Subject.Reply(source, "Skip", "kobold_itemstart");
 
                     return;
-
                 }
 
                 if (kobold == MythicKobold.Item)
@@ -96,7 +96,6 @@ public class MythicKoboldScript : DialogScriptBase
                     Subject.Reply(source, "Skip", "kobold_item2start");
 
                     return;
-
                 }
 
                 if (kobold == MythicKobold.ItemComplete)
@@ -107,7 +106,6 @@ public class MythicKoboldScript : DialogScriptBase
                         "kobold_allystart");
 
                     return;
-
                 }
 
                 if (kobold == MythicKobold.Allied)
@@ -131,10 +129,7 @@ public class MythicKoboldScript : DialogScriptBase
                 }
 
                 if (kobold == MythicKobold.BossDefeated)
-                {
-
                     Subject.Reply(source, "Thank you again Aisling for your help. We are winning our fight.");
-                }
 
                 break;
             }
@@ -148,17 +143,14 @@ public class MythicKoboldScript : DialogScriptBase
                 source.SendOrangeBarMessage("Kill 15 Grimlock Workers for Kobold Leader");
                 source.Trackers.Enums.Set(MythicKobold.Lower);
 
-
                 return;
             }
 
             case "kobold_lower2":
             {
-
                 if (!source.Trackers.Counters.TryGetValue("grimlockworker", out var grimlockworker) || (grimlockworker < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough Grimlock Workers, they are still in the area. It isn't enough.");
-
 
                     return;
                 }
@@ -173,7 +165,7 @@ public class MythicKoboldScript : DialogScriptBase
                 } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
-                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                    source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
                 source.Trackers.Counters.Remove("grimlockworker", out _);
@@ -182,9 +174,6 @@ public class MythicKoboldScript : DialogScriptBase
                     source,
                     "Your actions have caused a major distraction for the Grimlocks, giving us the opportunity to safely farm resources on our old land, which is crucial for our survival. Thank you.",
                     "kobold_initial");
-
-
-
 
                 break;
             }
@@ -198,20 +187,17 @@ public class MythicKoboldScript : DialogScriptBase
                 source.SendOrangeBarMessage("Kill 10 Grimlock Guards and 10 Grimlock Rogues");
                 source.Trackers.Enums.Set(MythicKobold.Higher);
 
-
                 return;
             }
 
             case "kobold_higher2":
             {
-
                 source.Trackers.Counters.TryGetValue("grimlockguard", out var grimlockguard);
                 source.Trackers.Counters.TryGetValue("grimlockrogue", out var grimlockrogue);
 
                 if ((grimlockguard < 10) || (grimlockrogue < 10))
                 {
                     Subject.Reply(source, "You haven't killed enough Grimlock Guards and Grimlock Rogues.");
-
 
                     return;
                 }
@@ -220,8 +206,6 @@ public class MythicKoboldScript : DialogScriptBase
                     source,
                     "That's great news. They are pretty riled up about it and will probably retreat for now. Thank you Aisling, my people will hear about your impressive abilities for many moons.",
                     "kobold_initial");
-
-
 
                 source.Animate(ani, source.Id);
 
@@ -232,7 +216,7 @@ public class MythicKoboldScript : DialogScriptBase
                 } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
-                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                    source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
                 source.Trackers.Enums.Set(MythicKobold.HigherComplete);
@@ -251,17 +235,14 @@ public class MythicKoboldScript : DialogScriptBase
                 source.SendOrangeBarMessage("Collect 25 Strange Potion");
                 source.Trackers.Enums.Set(MythicKobold.Item);
 
-
                 return;
             }
 
             case "kobold_item2":
             {
-
                 if (!source.Inventory.RemoveQuantity("Strange Potion", 25))
                 {
                     Subject.Reply(source, "This won't be enough. Please get us some more.");
-
 
                     return;
                 }
@@ -275,7 +256,7 @@ public class MythicKoboldScript : DialogScriptBase
                 } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
-                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                    source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
                 source.Trackers.Enums.Set(MythicKobold.ItemComplete);
@@ -285,9 +266,6 @@ public class MythicKoboldScript : DialogScriptBase
                     "Perfect! I cannot wait to use this stuff! I missed it so much. My people will be thrilled. Thank you Aisling, this is just short of a miracle.",
                     "kobold_initial");
 
-
-
-
                 break;
             }
 
@@ -296,8 +274,6 @@ public class MythicKoboldScript : DialogScriptBase
                 if (hasGrimlock
                     && (hasGrimlock == grimlock is MythicGrimlock.Allied or MythicGrimlock.BossStarted or MythicGrimlock.BossDefeated))
                 {
-
-
                     Subject.Reply(
                         source,
                         "No way! You have been allied to the Grimlocks this entire time!? I was so blind in need that I didn't see the traitor before me. I will gouge your eyes out with my new sharp claws. Go far away from me.");
@@ -313,14 +289,10 @@ public class MythicKoboldScript : DialogScriptBase
 
                 Subject.Reply(
                     source,
-                    $"We Kobolds are not always trusted by other races, but your actions have shown us that there are still those who are willing to stand with us.",
+                    "We Kobolds are not always trusted by other races, but your actions have shown us that there are still those who are willing to stand with us.",
                     "kobold_initial");
 
-
-
-
                 break;
-
             }
 
             case "kobold_boss":
@@ -328,8 +300,6 @@ public class MythicKoboldScript : DialogScriptBase
                 Subject.Reply(
                     source,
                     "We owe you for everything but this is the utmost important. My people shall be safe once you defeat the Grimlock Princess, remember you need to defeat her three times.");
-
-
 
                 source.Trackers.Enums.Set(MythicKobold.BossStarted);
                 source.SendOrangeBarMessage("Kill Grimlock Princess three times.");
@@ -342,7 +312,6 @@ public class MythicKoboldScript : DialogScriptBase
                 if (!source.Trackers.Counters.TryGetValue("Grimlock Princess", out var koboldboss1) || (koboldboss1 < 3))
                 {
                     Subject.Reply(source, "She is still out there, I can smell her.");
-
 
                     source.SendOrangeBarMessage("You haven't completely defeated the Grimlock Princess");
 
@@ -376,9 +345,7 @@ public class MythicKoboldScript : DialogScriptBase
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
                 if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
-                {
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
-                }
             }
 
                 break;

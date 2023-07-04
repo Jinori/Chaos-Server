@@ -19,40 +19,50 @@ public class ExecuteComponent : IComponent
         var hasKilled = false;
 
         foreach (var target in targets)
-        {
             if (target.StatSheet.HealthPercent <= options.KillTargetAtHealthPct)
             {
-                options.ApplyDamageScript.ApplyDamage(context.Source, target, options.SourceScript, 9999);
-                
+                options.ApplyDamageScript.ApplyDamage(
+                    context.Source,
+                    target,
+                    options.SourceScript,
+                    9999);
+
                 var healAmount = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, options.HealAmountIfExecuted);
-                options.ApplyHealScript.ApplyHeal(target, context.Source, options.SourceScript, healAmount);
+
+                options.ApplyHealScript.ApplyHeal(
+                    target,
+                    context.Source,
+                    options.SourceScript,
+                    healAmount);
+
                 context.SourceAisling?.SendActiveMessage($"You've been healed by {healAmount} from Execute!");
 
                 if (!target.IsAlive)
                     hasKilled = true;
-            } 
-            else
+            } else
             {
                 var tenPercent = MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, options.DmgHealthPct);
-                options.ApplyDamageScript.ApplyDamage(context.Source, target, options.SourceScript, tenPercent);
+
+                options.ApplyDamageScript.ApplyDamage(
+                    context.Source,
+                    target,
+                    options.SourceScript,
+                    tenPercent);
             }
-        }
 
         if (hasKilled)
-        {
             options.PanelEntityBase.Elapsed = options.PanelEntityBase.Cooldown / 2;
-        }
     }
-    
+
     public interface IExecuteComponentOptions
     {
-        PanelEntityBase PanelEntityBase { get; init; }
-        IApplyHealScript ApplyHealScript { get; init; }
         IApplyDamageScript ApplyDamageScript { get; init; }
-        IScript SourceScript { get; init; }
-        int? KillTargetAtHealthPct { get; init; }
+        IApplyHealScript ApplyHealScript { get; init; }
         int? CooldownReduction { get; init; }
-        decimal HealAmountIfExecuted { get; init; }
         decimal DmgHealthPct { get; init; }
+        decimal HealAmountIfExecuted { get; init; }
+        int? KillTargetAtHealthPct { get; init; }
+        PanelEntityBase PanelEntityBase { get; init; }
+        IScript SourceScript { get; init; }
     }
 }

@@ -12,17 +12,23 @@ public class RestrictionBehavior
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh) || aisling.Status.HasFlag(Status.BeagSuain):
+            case Aisling aisling when aisling.Status.HasFlag(Status.Suain)
+                                      || aisling.Status.HasFlag(Status.Pramh)
+                                      || aisling.Status.HasFlag(Status.BeagSuain):
             {
                 aisling.SendOrangeBarMessage("You cannot move.");
-                return false;   
+
+                return false;
             }
-            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Blind) || monster.Status.HasFlag(Status.Pramh) || monster.Status.HasFlag(Status.BeagSuain):
+            case Monster monster when monster.Status.HasFlag(Status.Suain)
+                                      || monster.Status.HasFlag(Status.Blind)
+                                      || monster.Status.HasFlag(Status.Pramh)
+                                      || monster.Status.HasFlag(Status.BeagSuain):
             {
                 return false;
             }
         }
-        
+
         return creature.MapInstance.Name.EqualsI("The Afterlife") || creature.IsAlive;
     }
 
@@ -35,13 +41,17 @@ public class RestrictionBehavior
             case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh):
             {
                 aisling.SendOrangeBarMessage("You cannot turn.");
-                return false;   
+
+                return false;
             }
-            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Pramh)|| monster.Status.HasFlag(Status.BeagSuain):
+            case Monster monster when monster.Status.HasFlag(Status.Suain)
+                                      || monster.Status.HasFlag(Status.Pramh)
+                                      || monster.Status.HasFlag(Status.BeagSuain):
             {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -52,33 +62,37 @@ public class RestrictionBehavior
             if (aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out var timedEvent))
             {
                 aisling.SendOrangeBarMessage("You can't do that");
+
                 return false;
             }
+
             if (!aisling.Status.HasFlag(Status.Suain) || !aisling.Status.HasFlag(Status.Pramh))
                 return aisling.IsAlive;
         }
 
         if (aisling.IsDead && item.Template.TemplateKey.EqualsI("revivePotion"))
-        {
             return true;
-        }
 
         aisling.SendOrangeBarMessage("You can't do that");
+
         return false;
     }
 
-
     public virtual bool CanUseSkill(Creature creature, Skill skill)
     {
-        
         switch (creature)
         {
-            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh) || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out var timedEvent):
+            case Aisling aisling when aisling.Status.HasFlag(Status.Suain)
+                                      || aisling.Status.HasFlag(Status.Pramh)
+                                      || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out var timedEvent):
             {
                 aisling.SendOrangeBarMessage("You cannot use skills.");
+
                 return false;
             }
-            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Pramh) || monster.Status.HasFlag(Status.BeagSuain):
+            case Monster monster when monster.Status.HasFlag(Status.Suain)
+                                      || monster.Status.HasFlag(Status.Pramh)
+                                      || monster.Status.HasFlag(Status.BeagSuain):
             {
                 return false;
             }
@@ -104,12 +118,17 @@ public class RestrictionBehavior
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh) || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out var timedEvent):
+            case Aisling aisling when aisling.Status.HasFlag(Status.Suain)
+                                      || aisling.Status.HasFlag(Status.Pramh)
+                                      || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out var timedEvent):
             {
                 aisling.SendOrangeBarMessage("You cannot use spells.");
+
                 return false;
             }
-            case Monster monster when monster.Status.HasFlag(Status.Suain) || monster.Status.HasFlag(Status.Pramh) || monster.Status.HasFlag(Status.BeagSuain):
+            case Monster monster when monster.Status.HasFlag(Status.Suain)
+                                      || monster.Status.HasFlag(Status.Pramh)
+                                      || monster.Status.HasFlag(Status.BeagSuain):
             {
                 return false;
             }
@@ -127,10 +146,10 @@ public class RestrictionBehavior
                 return true;
             }
         }
-        
+
         if (creature.IsDead && (spell.Template.Name == "Self Revive"))
             return true;
-        
+
         return creature.IsAlive;
     }
 }

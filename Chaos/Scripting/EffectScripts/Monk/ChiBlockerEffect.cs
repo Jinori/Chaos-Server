@@ -6,9 +6,9 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class ChiBlockerEffect : EffectBase
 {
+    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(25);
     public override byte Icon => 171;
     public override string Name => "chiBlocker";
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(25);
 
     public override void OnApplied()
     {

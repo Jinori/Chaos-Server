@@ -13,6 +13,32 @@ namespace Chaos.Scripting.SkillScripts.Rogue;
 public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent<Creature>.IAbilityComponentOptions
 {
     /// <inheritdoc />
+    public bool AnimatePoints { get; init; }
+    /// <inheritdoc />
+    public Animation? Animation { get; init; }
+    /// <inheritdoc />
+    public BodyAnimation BodyAnimation { get; init; }
+
+    /// <inheritdoc />
+    public bool ExcludeSourcePoint { get; init; }
+    /// <inheritdoc />
+    public TargetFilter Filter { get; init; }
+    /// <inheritdoc />
+    public int? ManaCost { get; init; }
+    /// <inheritdoc />
+    public bool MustHaveTargets { get; init; }
+    /// <inheritdoc />
+    public decimal PctManaCost { get; init; }
+    /// <inheritdoc />
+    public int Range { get; init; }
+    /// <inheritdoc />
+    public AoeShape Shape { get; init; }
+    /// <inheritdoc />
+    public bool ShouldNotBreakHide { get; init; }
+    /// <inheritdoc />
+    public byte? Sound { get; init; }
+
+    /// <inheritdoc />
     public StudyCreatureScript(Skill subject)
         : base(subject) { }
 
@@ -26,49 +52,26 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent
             excludeSource: true);
 
         var mob = context.SourceMap.GetEntitiesAtPoints<Creature>(points.OfType<IPoint>()).FirstOrDefault();
-        
+
         if (mob is not null)
         {
-            context.SourceAisling?.Client.SendServerMessage(ServerMessageType.ScrollWindow,
-                $"Name: {mob.Name}\nLevel: {mob.StatSheet.Level}\nCurrent Health: {mob.StatSheet.CurrentHp}\nArmor Class: {mob.StatSheet.EffectiveAc}\nCurrent Mana: {mob.StatSheet.CurrentMp}\nOffensive Element: {mob.StatSheet.OffenseElement}\nDefensive Element: {mob.StatSheet.DefenseElement}"
-            );
-            
+            context.SourceAisling?.Client.SendServerMessage(
+                ServerMessageType.ScrollWindow,
+                $"Name: {mob.Name}\nLevel: {mob.StatSheet.Level}\nCurrent Health: {mob.StatSheet.CurrentHp}\nArmor Class: {
+                    mob.StatSheet.EffectiveAc}\nCurrent Mana: {mob.StatSheet.CurrentMp}\nOffensive Element: {mob.StatSheet.OffenseElement
+                    }\nDefensive Element: {mob.StatSheet.DefenseElement}");
+
             var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint));
+
             if (group != null)
-            {
                 foreach (var entity in group)
                 {
                     var showMobEle = entity.MapInstance.GetEntities<Creature>().FirstOrDefault(x => x.Equals(mob));
                     showMobEle?.Chant(showMobEle.StatSheet.DefenseElement.ToString());
                 }
-            }
         }
+
         if (mob == null)
             context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your attempt to examine failed.");
     }
-
-    /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
-    /// <inheritdoc />
-    public TargetFilter Filter { get; init; }
-    /// <inheritdoc />
-    public bool MustHaveTargets { get; init; }
-    /// <inheritdoc />
-    public int Range { get; init; }
-    /// <inheritdoc />
-    public AoeShape Shape { get; init; }
-    /// <inheritdoc />
-    public byte? Sound { get; init; }
-    /// <inheritdoc />
-    public BodyAnimation BodyAnimation { get; init; }
-    /// <inheritdoc />
-    public bool AnimatePoints { get; init; }
-    /// <inheritdoc />
-    public Animation? Animation { get; init; }
-    /// <inheritdoc />
-    public int? ManaCost { get; init; }
-    /// <inheritdoc />
-    public decimal PctManaCost { get; init; }
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
 }

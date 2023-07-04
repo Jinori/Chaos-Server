@@ -17,8 +17,8 @@ public class PersistingPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           Hit = 6,
-            MaximumMp = 150,
+            Hit = 6,
+            MaximumMp = 150
         };
 
         subject.Modifiers.Add(attributes);

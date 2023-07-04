@@ -17,7 +17,7 @@ public class HowlingPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           Ac = 2,
+            Ac = 2,
             Int = 1,
             SpellDamagePct = 12
         };

@@ -10,7 +10,8 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class HairstyleScript : DialogScriptBase
 {
-    private static readonly string[] FemaleHairstyles = {
+    private static readonly string[] FemaleHairstyles =
+    {
         "female_hairstyle_1", "female_hairstyle_2", "female_hairstyle_3", "female_hairstyle_4", "female_hairstyle_5", "female_hairstyle_6",
         "female_hairstyle_7", "female_hairstyle_8", "female_hairstyle_9", "female_hairstyle_10", "female_hairstyle_11",
         "female_hairstyle_12", "female_hairstyle_13", "female_hairstyle_14", "female_hairstyle_15", "female_hairstyle_16",
@@ -28,7 +29,8 @@ public class HairstyleScript : DialogScriptBase
         "female_hairstyle_54", "female_hairstyle_55", "female_hairstyle_56", "female_hairstyle_57", "female_hairstyle_58",
         "female_hairstyle_59", "female_hairstyle_60"
     };
-    private static readonly string[] MaleHairstyles = {
+    private static readonly string[] MaleHairstyles =
+    {
         "male_hairstyle_1", "male_hairstyle_2", "male_hairstyle_3", "male_hairstyle_4", "male_hairstyle_5", "male_hairstyle_6",
         "male_hairstyle_7", "male_hairstyle_8", "male_hairstyle_9", "male_hairstyle_10", "male_hairstyle_11",
         "male_hairstyle_12", "male_hairstyle_13", "male_hairstyle_14", "male_hairstyle_15", "male_hairstyle_16", "male_hairstyle_17",
@@ -45,7 +47,7 @@ public class HairstyleScript : DialogScriptBase
         "male_hairstyle_54", "male_hairstyle_55", "male_hairstyle_56", "male_hairstyle_57", "male_hairstyle_58", "male_hairstyle_59",
         "male_hairstyle_60"
     };
-    
+
     private readonly IItemFactory _itemFactory;
 
     public HairstyleScript(Dialog subject, IItemFactory itemFactory)
@@ -74,6 +76,7 @@ public class HairstyleScript : DialogScriptBase
                     item.Color = source.HairColor;
                     Subject.Items.Add(ItemDetails.BuyWithGold(item));
                 }
+
                 break;
             }
         }
@@ -84,6 +87,7 @@ public class HairstyleScript : DialogScriptBase
         if (!Subject.MenuArgs.TryGet<string>(0, out var hairStyleName))
         {
             Subject.ReplyToUnknownInput(source);
+
             return;
         }
 
@@ -94,12 +98,14 @@ public class HairstyleScript : DialogScriptBase
 
         {
             Subject.ReplyToUnknownInput(source);
+
             return;
         }
 
         if (!source.TryTakeGold(itemDetails!.Price))
         {
             Subject.Close(source);
+
             return;
         }
 

@@ -16,8 +16,9 @@ public class CombatAdvantageComponent : IComponent
 
         if (options.DistanceToAmbush is null)
             return;
-        
+
         var endPoint = context.Source.DirectionalOffset(context.Source.Direction, options.DistanceToAmbush.Value);
+
         var points = context.Source.GetDirectPath(endPoint)
                             .Skip(1);
 
@@ -25,10 +26,10 @@ public class CombatAdvantageComponent : IComponent
         {
             if (context.TargetMap.IsWall(point) || context.TargetMap.IsBlockingReactor(point))
                 return;
-            
+
             var entity = context.TargetMap.GetEntitiesAtPoint<Creature>(point)
                                 .TopOrDefault();
-            
+
             if (entity != null)
             {
                 //get the direction that vectors behind the target relative to the source
@@ -49,12 +50,13 @@ public class CombatAdvantageComponent : IComponent
                     context.Source.WarpTo(destinationPoint);
                     var newDirection = entity.DirectionalRelationTo(context.Source);
                     context.Source.Turn(newDirection);
+
                     return;
                 }
             }
         }
     }
-    
+
     public interface ICombatAdvantageComponentOptions
     {
         int? DistanceToAmbush { get; init; }

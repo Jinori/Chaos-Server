@@ -17,8 +17,8 @@ public class AncientPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           MaximumHp = 200,
-            MaximumMp = 200,
+            MaximumHp = 200,
+            MaximumMp = 200
         };
 
         subject.Modifiers.Add(attributes);

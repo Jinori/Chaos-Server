@@ -22,6 +22,7 @@ public class TerminusReviveScript : DialogScriptBase
                 point = new Point(13, 10);
                 var mapInstance = SimpleCache.Get<MapInstance>("after_life");
                 source.TraverseMap(mapInstance, point, true);
+
                 break;
         }
     }

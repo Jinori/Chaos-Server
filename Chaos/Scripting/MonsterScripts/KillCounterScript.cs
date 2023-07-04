@@ -328,7 +328,6 @@ public class KillCounterScript : MonsterScriptBase
                         aisling.SendOrangeBarMessage($"You've killed {value} {Subject.Template.Name}.");
 
                         break;
-
                     }
                     case "horse1-2":
                     case "horse2-2":
@@ -386,9 +385,7 @@ public class KillCounterScript : MonsterScriptBase
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Big Bunny.");
 
                             if (!aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("AppleJack", 3))
-                            {
                                 aisling.Trackers.Counters.AddOrIncrement("AppleJack");
-                            }
 
                             continue;
                         }
@@ -475,9 +472,7 @@ public class KillCounterScript : MonsterScriptBase
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Horse Leader.");
 
                             if (!aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("MrHopps", 3))
-                            {
                                 aisling.Trackers.Counters.AddOrIncrement("MrHopps");
-                            }
 
                             continue;
                         }
@@ -564,9 +559,7 @@ public class KillCounterScript : MonsterScriptBase
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to King Frog.");
 
                             if (!aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Nymeria", 3))
-                            {
                                 aisling.Trackers.Counters.AddOrIncrement("Nymeria");
-                            }
 
                             continue;
                         }
@@ -632,9 +625,7 @@ public class KillCounterScript : MonsterScriptBase
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Bee Queen.");
 
                             if (!aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("FireTree", 3))
-                            {
                                 aisling.Trackers.Counters.AddOrIncrement("FireTree");
-                            }
 
                             continue;
                         }
@@ -700,9 +691,7 @@ public class KillCounterScript : MonsterScriptBase
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Mantis King.");
 
                             if (!aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Carolina", 3))
-                            {
                                 aisling.Trackers.Counters.AddOrIncrement("Carolina");
-                            }
 
                             continue;
                         }
@@ -789,9 +778,7 @@ public class KillCounterScript : MonsterScriptBase
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Wolf Pack Leader.");
 
                             if (!aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Frogger", 3))
-                            {
                                 aisling.Trackers.Counters.AddOrIncrement("Frogger");
-                            }
 
                             continue;
                         }
@@ -878,9 +865,7 @@ public class KillCounterScript : MonsterScriptBase
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Superior Zombie");
 
                             if (!aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("GargoyleFiend", 3))
-                            {
                                 aisling.Trackers.Counters.AddOrIncrement("GargoyleFiend");
-                            }
 
                             continue;
                         }
@@ -967,9 +952,7 @@ public class KillCounterScript : MonsterScriptBase
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Lord Gargoyle.");
 
                             if (!aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Brains", 3))
-                            {
                                 aisling.Trackers.Counters.AddOrIncrement("Brains");
-                            }
 
                             continue;
                         }
@@ -1056,9 +1039,7 @@ public class KillCounterScript : MonsterScriptBase
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Kobold Pack Leader.");
 
                             if (!aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("GrimlockPrincess", 3))
-                            {
                                 aisling.Trackers.Counters.AddOrIncrement("GrimlockPrincess");
-                            }
 
                             continue;
                         }
@@ -1145,9 +1126,7 @@ public class KillCounterScript : MonsterScriptBase
                             aisling.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}. Return to Grimlock Queen.");
 
                             if (!aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Shank", 3))
-                            {
                                 aisling.Trackers.Counters.AddOrIncrement("Shank");
-                            }
 
                             continue;
                         }
@@ -1156,18 +1135,19 @@ public class KillCounterScript : MonsterScriptBase
                         aisling.SendOrangeBarMessage($"You defeated Shank {value} times!");
 
                         break;
-                    }  
+                    }
                     case "wilderness_questwolf":
-                        {
-                            var hasWolf = aisling.Trackers.Enums.TryGetValue(out WolfProblemStage wolf);
+                    {
+                        var hasWolf = aisling.Trackers.Enums.TryGetValue(out WolfProblemStage wolf);
 
-                            if (!hasWolf || (wolf != WolfProblemStage.Start))
-                                return;
+                        if (!hasWolf || (wolf != WolfProblemStage.Start))
+                            return;
 
-                            var value = aisling.Trackers.Counters.AddOrIncrement("Wolf");
-                            aisling.SendOrangeBarMessage($"You defeated the Wolf.");
-                            break;
-                        }
+                        var value = aisling.Trackers.Counters.AddOrIncrement("Wolf");
+                        aisling.SendOrangeBarMessage("You defeated the Wolf.");
+
+                        break;
+                    }
                     case "undead_king":
                     {
                         var hasUndeadking = aisling.Trackers.Enums.TryGetValue(out CrHorror Undeadking);
@@ -1176,14 +1156,17 @@ public class KillCounterScript : MonsterScriptBase
                             return;
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("Undead_king");
-                        aisling.SendOrangeBarMessage($"You defeated the Undead King!");
+                        aisling.SendOrangeBarMessage("You defeated the Undead King!");
+
                         break;
                     }
                     case "wilderness_bee":
                     {
-                        var hasBee = aisling.Trackers.Enums.TryGetValue(out BeeProblem Bee );
+                        var hasBee = aisling.Trackers.Enums.TryGetValue(out BeeProblem Bee);
+
                         if (!hasBee || (Bee != BeeProblem.Started))
                             return;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Bee", 5))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
@@ -1193,42 +1176,48 @@ public class KillCounterScript : MonsterScriptBase
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("wilderness_bee");
                         aisling.SendOrangeBarMessage($"You've killed {value} {Subject.Template.Name}.");
+
                         break;
                     }
                     case "wilderness_snowwolf1":
                     case "wilderness_snowwolf2":
                     {
-                        var haswolf = aisling.Trackers.Enums.TryGetValue(out IceWallQuest wolf );
+                        var haswolf = aisling.Trackers.Enums.TryGetValue(out IceWallQuest wolf);
+
                         if (!haswolf || (wolf != IceWallQuest.KillWolves))
                             return;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("wolf", 10))
                         {
-                            aisling.SendOrangeBarMessage($"You've killed enough Snow Wolves.");
+                            aisling.SendOrangeBarMessage("You've killed enough Snow Wolves.");
 
                             continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("wolf");
                         aisling.SendOrangeBarMessage($"You've killed {value} Snow wolves.");
+
                         break;
                     }
                     case "wilderness_abomination":
                     {
-                        var hasabomination = aisling.Trackers.Enums.TryGetValue(out IceWallQuest abomination );
+                        var hasabomination = aisling.Trackers.Enums.TryGetValue(out IceWallQuest abomination);
+
                         if (!hasabomination || (abomination != IceWallQuest.KillBoss))
                             return;
+
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("abomination", 1))
                         {
-                            aisling.SendOrangeBarMessage($"You didn't defeat the Abomination yet.");
+                            aisling.SendOrangeBarMessage("You didn't defeat the Abomination yet.");
 
                             continue;
                         }
 
                         var value = aisling.Trackers.Counters.AddOrIncrement("abomination");
-                        aisling.SendOrangeBarMessage($"You've Slain the Abomination!");
+                        aisling.SendOrangeBarMessage("You've Slain the Abomination!");
+
                         break;
                     }
-
                 }
     }
 }

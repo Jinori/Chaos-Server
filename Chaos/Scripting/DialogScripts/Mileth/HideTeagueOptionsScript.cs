@@ -21,12 +21,9 @@ internal class HideTeagueOptionsScript : DialogScriptBase
         }
 
         if (source.Trackers.TimedEvents.HasActiveEvent("TerrorOfTheCrypt", out var timedEvent))
-        {
-
             Subject.Reply(
                 source,
                 $"Thank you for ending my terrors Aisling, I hope I sleep better tonight. Come see me later (({
                     timedEvent.Remaining.ToReadableString()}))");
-        }
     }
 }

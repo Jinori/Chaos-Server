@@ -7,13 +7,8 @@ namespace Chaos.Scripting.DialogScripts.Crafting;
 
 public class CookingDirectoryScript : DialogScriptBase
 {
-
-    public CookingDirectoryScript(
-        Dialog subject
-    )
-        : base(subject)
-    {
-    }
+    public CookingDirectoryScript(Dialog subject)
+        : base(subject) { }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -28,7 +23,7 @@ public class CookingDirectoryScript : DialogScriptBase
         var extraIngredients = source.Trackers.Enums.TryGetValue(out ExtraIngredientsStage eStage);
         var extraIngredients2 = source.Trackers.Enums.TryGetValue(out ExtraIngredientsStage2 eStage2);
         var extraIngredients3 = source.Trackers.Enums.TryGetValue(out ExtraIngredientsStage3 eStage3);
-        
+
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "cooking_directory":
@@ -56,7 +51,7 @@ public class CookingDirectoryScript : DialogScriptBase
 
                     return;
                 }
-                
+
                 if (foodSelected && (foodStage == CookFoodStage.sweetbuns))
                 {
                     switch (foodSelected)
@@ -83,7 +78,6 @@ public class CookingDirectoryScript : DialogScriptBase
                 }
 
                 if (foodSelected && (foodStage == CookFoodStage.fruitbasket))
-                {
                     switch (foodSelected)
                     {
                         case true when !fruitsStage:
@@ -103,9 +97,8 @@ public class CookingDirectoryScript : DialogScriptBase
 
                             return;
                     }
-                }
+
                 if (foodSelected && (foodStage == CookFoodStage.salad))
-                {
                     switch (foodSelected)
                     {
                         case true when !meatStage:
@@ -124,15 +117,14 @@ public class CookingDirectoryScript : DialogScriptBase
                             Subject.Reply(source, "Skip", "extraingredients_initial");
 
                             return;
-                            
+
                         case true when meatStage && vegetableStage && vegetableStage2 && extraIngredients:
                             Subject.Reply(source, "Skip", "cook_item");
 
                             return;
                     }
-                }
+
                 if (foodSelected && (foodStage == CookFoodStage.lobsterdinner))
-                {
                     switch (foodSelected)
                     {
                         case true when !meatStage:
@@ -151,7 +143,7 @@ public class CookingDirectoryScript : DialogScriptBase
                             Subject.Reply(source, "Skip", "vegetable_initial");
 
                             return;
-                            
+
                         case true when meatStage && fruitsStage && vegetableStage && vegetableStage2 && !extraIngredients:
                             Subject.Reply(source, "Skip", "extraingredients_initial");
 
@@ -161,9 +153,8 @@ public class CookingDirectoryScript : DialogScriptBase
 
                             return;
                     }
-                }
+
                 if (foodSelected && (foodStage == CookFoodStage.sandwich))
-                {
                     switch (foodSelected)
                     {
                         case true when !meatStage:
@@ -178,7 +169,7 @@ public class CookingDirectoryScript : DialogScriptBase
                             Subject.Reply(source, "Skip", "vegetable_initial");
 
                             return;
-                            
+
                         case true when meatStage && vegetableStage && vegetableStage2 && !extraIngredients:
                             Subject.Reply(source, "Skip", "extraingredients_initial");
 
@@ -192,10 +183,8 @@ public class CookingDirectoryScript : DialogScriptBase
 
                             return;
                     }
-                }
-                
+
                 if (foodSelected && (foodStage == CookFoodStage.pie))
-                {
                     switch (foodSelected)
                     {
                         case true when !fruitsStage:
@@ -211,10 +200,8 @@ public class CookingDirectoryScript : DialogScriptBase
 
                             return;
                     }
-                }
-                
+
                 if (foodSelected && (foodStage == CookFoodStage.soup))
-                {
                     switch (foodSelected)
                     {
                         case true when !meatStage:
@@ -229,7 +216,7 @@ public class CookingDirectoryScript : DialogScriptBase
                             Subject.Reply(source, "Skip", "extraingredients_initial");
 
                             return;
-                            
+
                         case true when meatStage && vegetableStage && extraIngredients && !extraIngredients2:
                             Subject.Reply(source, "Skip", "extraingredients_initial");
 
@@ -239,9 +226,8 @@ public class CookingDirectoryScript : DialogScriptBase
 
                             return;
                     }
-                }
+
                 if (foodSelected && (foodStage == CookFoodStage.steakmeal))
-                {
                     switch (foodSelected)
                     {
                         case true when !meatStage:
@@ -256,7 +242,7 @@ public class CookingDirectoryScript : DialogScriptBase
                             Subject.Reply(source, "Skip", "vegetable_initial");
 
                             return;
-                            
+
                         case true when meatStage && fruitsStage && vegetableStage && !extraIngredients2:
                             Subject.Reply(source, "Skip", "extraingredients_initial");
 
@@ -266,7 +252,7 @@ public class CookingDirectoryScript : DialogScriptBase
 
                             return;
                     }
-                }
+
                 break;
         }
     }

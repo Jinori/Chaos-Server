@@ -17,8 +17,8 @@ public class FocusedPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           Hit = 1,
-            Dmg = -1,
+            Hit = 1,
+            Dmg = -1
         };
 
         subject.Modifiers.Add(attributes);

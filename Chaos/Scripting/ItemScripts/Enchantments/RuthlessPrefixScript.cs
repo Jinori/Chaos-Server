@@ -17,9 +17,9 @@ public class RuthlessPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           AtkSpeedPct = 10,
+            AtkSpeedPct = 10,
             Dmg = 6,
-            Str = 1,
+            Str = 1
         };
 
         subject.Modifiers.Add(attributes);

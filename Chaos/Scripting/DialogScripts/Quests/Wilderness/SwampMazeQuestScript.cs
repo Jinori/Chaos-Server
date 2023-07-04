@@ -10,8 +10,8 @@ namespace Chaos.Scripting.DialogScripts.Quests.Wilderness;
 
 public class SwampMazeQuestScript : DialogScriptBase
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
     private readonly IItemFactory ItemFactory;
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     public SwampMazeQuestScript(Dialog subject, IItemFactory itemFactory)
         : base(subject)
@@ -24,7 +24,6 @@ public class SwampMazeQuestScript : DialogScriptBase
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out SwampMazeQuest stage);
 
-
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "koda_initial":
@@ -32,45 +31,44 @@ public class SwampMazeQuestScript : DialogScriptBase
                 if (source.UserStatSheet.Level < 11)
                 {
                     Subject.Reply(source, "skip", "koda_initiallow");
+
                     return;
                 }
 
                 if (stage == SwampMazeQuest.Start)
                 {
                     Subject.Reply(source, "skip", "koda_initial2");
+
                     return;
                 }
 
                 if (stage == SwampMazeQuest.Complete)
-                {
                     Subject.Reply(source, "skip", "koda_initial3");
-                }
 
                 break;
-                
+
             case "joda_initial2":
-                
+
                 if (stage == SwampMazeQuest.Start)
                 {
                     Subject.Reply(source, "skip", "joda_initial");
+
                     return;
                 }
 
                 if (stage == SwampMazeQuest.Complete)
-                {
                     Subject.Reply(source, "skip", "joda_initial3");
-                }
-                
 
                 break;
-            
+
             case "koda_bye":
             {
                 source.Trackers.Enums.Set(SwampMazeQuest.Start);
                 source.SendOrangeBarMessage("Koda seemed worried about his brother.");
             }
+
                 break;
-            
+
             case "joda_quest5":
             {
                 if (stage == SwampMazeQuest.Start)
@@ -81,6 +79,7 @@ public class SwampMazeQuestScript : DialogScriptBase
                     source.SendOrangeBarMessage("You receive 50000 exp and a Mushroom Hat!");
                 }
             }
+
                 break;
         }
     }

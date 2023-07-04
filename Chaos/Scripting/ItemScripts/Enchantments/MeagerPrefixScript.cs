@@ -17,7 +17,7 @@ public class MeagerPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           MaximumMp = 25,
+            MaximumMp = 25
         };
 
         subject.Modifiers.Add(attributes);

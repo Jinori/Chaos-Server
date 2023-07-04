@@ -17,7 +17,7 @@ public class TinyPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            MaximumMp = 75,
+            MaximumMp = 75
         };
 
         subject.Modifiers.Add(attributes);

@@ -28,22 +28,70 @@ public class StatBuyingScript : DialogScriptBase
 
     private readonly Dictionary<byte, Action<Aisling, Attributes>> OptionActionMappings = new()
     {
-        { 1, (source, cost) => IncreaseAttribute(source, "Strength", cost, attribute => attribute.Str++) },
-        { 2, (source, cost) => IncreaseAttribute(source, "Intelligence", cost, attribute => attribute.Int++) },
-        { 3, (source, cost) => IncreaseAttribute(source, "Wisdom", cost, attribute => attribute.Wis++) },
-        { 4, (source, cost) => IncreaseAttribute(source, "Constitution", cost, attribute => attribute.Con++) },
-        { 5, (source, cost) => IncreaseAttribute(source, "Dexterity", cost, attribute => attribute.Dex++) }
+        {
+            1, (source, cost) => IncreaseAttribute(
+                source,
+                "Strength",
+                cost,
+                attribute => attribute.Str++)
+        },
+        {
+            2, (source, cost) => IncreaseAttribute(
+                source,
+                "Intelligence",
+                cost,
+                attribute => attribute.Int++)
+        },
+        {
+            3, (source, cost) => IncreaseAttribute(
+                source,
+                "Wisdom",
+                cost,
+                attribute => attribute.Wis++)
+        },
+        {
+            4, (source, cost) => IncreaseAttribute(
+                source,
+                "Constitution",
+                cost,
+                attribute => attribute.Con++)
+        },
+        {
+            5, (source, cost) => IncreaseAttribute(
+                source,
+                "Dexterity",
+                cost,
+                attribute => attribute.Dex++)
+        }
     };
 
-    private static void IncreaseAttribute(Aisling source, string attribute, Attributes cost, Action<Attributes> update)
+    public StatBuyingScript(Dialog subject)
+        : base(subject) { }
+
+    private static void IncreaseAttribute(
+        Aisling source,
+        string attribute,
+        Attributes cost,
+        Action<Attributes> update
+    )
     {
         update(cost);
         source.UserStatSheet.Add(cost);
         source.SendOrangeBarMessage($"{attribute} increased by one to {cost}. 150 Health taken.");
     }
 
-    public StatBuyingScript(Dialog subject)
-        : base(subject) { }
+    public override void OnDisplaying(Aisling source)
+    {
+        var formula = (source.StatSheet.MaximumHp - BaseClassOffset[source.UserStatSheet.BaseClass]) / 150;
+
+        if (formula > 0)
+            Subject.InjectTextParameters(formula);
+        else
+        {
+            Subject.Reply(source, "You cannot buy any stats at this time, with your current vitality.");
+            Subject.Options.Clear();
+        }
+    }
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
@@ -54,6 +102,7 @@ public class StatBuyingScript : DialogScriptBase
         {
             source.SendOrangeBarMessage("You cannot buy stats until you are of the 99th level.");
             Subject.Close(source);
+
             return;
         }
 
@@ -61,6 +110,7 @@ public class StatBuyingScript : DialogScriptBase
         {
             source.SendOrangeBarMessage("Doing so would make you too feeble to stand. Return with more health.");
             Subject.Close(source);
+
             return;
         }
 
@@ -68,23 +118,8 @@ public class StatBuyingScript : DialogScriptBase
         source.StatSheet.Subtract(statBuyCost);
 
         if (OptionActionMappings.TryGetValue(optionIndex.Value, out var action))
-        {
             action(source, statBuyCost);
-        }
-        source.Client.SendAttributes(StatUpdateType.Primary);
-    }
 
-    public override void OnDisplaying(Aisling source)
-    {
-        var formula = (source.StatSheet.MaximumHp - BaseClassOffset[source.UserStatSheet.BaseClass]) / 150;
-        if (formula > 0)
-        {
-            Subject.InjectTextParameters(formula);
-        }
-        else
-        {
-            Subject.Reply(source, "You cannot buy any stats at this time, with your current vitality.");
-            Subject.Options.Clear();
-        }
+        source.Client.SendAttributes(StatUpdateType.Primary);
     }
 }

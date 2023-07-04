@@ -17,6 +17,17 @@ public class LearnSkillScript : DialogScriptBase
     private readonly ILogger<LearnSkillScript> Logger;
     private readonly ISkillFactory SkillFactory;
     private readonly ISkillTeacherSource SkillTeacherSource;
+
+    private readonly Dictionary<string, List<string>> SkillUpgrades = new()
+    {
+        //Warrior
+        { "Slash", new List<string> { "Scathe" } },
+        { "Scathe", new List<string> { "Cleave" } },
+        { "Strike", new List<string> { "Clobber" } },
+        { "Clobber", new List<string> { "Wallop" } },
+        { "Wallop", new List<string> { "Pulverize" } },
+        { "Windblade", new List<string> { "Tempestblade" } }
+    };
     private readonly ISpellFactory SpellFactory;
 
     /// <inheritdoc />
@@ -36,17 +47,6 @@ public class LearnSkillScript : DialogScriptBase
         SkillTeacherSource = (ISkillTeacherSource)Subject.DialogSource;
     }
 
-    private readonly Dictionary<string, List<string>> SkillUpgrades = new()
-    {
-        //Warrior
-        {"Slash", new List<string> {"Scathe"}},
-        {"Scathe", new List<string> {"Cleave"}},
-        {"Strike", new List<string> {"Clobber"}},
-        {"Clobber", new List<string> {"Wallop"}},
-        {"Wallop", new List<string> {"Pulverize"}},
-        {"Windblade", new List<string> {"Tempestblade"}}
-    };
-    
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
@@ -108,17 +108,21 @@ public class LearnSkillScript : DialogScriptBase
                 };
 
                 source.MapInstance.ShowAnimation(animation);
-                
+
                 if (!string.IsNullOrEmpty(skillToLearn.Template.LearningRequirements?.SkillSpellToUpgrade))
                 {
-                    var oldSkill = source.SpellBook.FirstOrDefault(s => s.Template.Name.Equals(skillToLearn.Template.LearningRequirements?.SkillSpellToUpgrade, StringComparison.OrdinalIgnoreCase));
+                    var oldSkill = source.SpellBook.FirstOrDefault(
+                        s => s.Template.Name.Equals(
+                            skillToLearn.Template.LearningRequirements?.SkillSpellToUpgrade,
+                            StringComparison.OrdinalIgnoreCase));
+
                     if (oldSkill != null)
                     {
                         source.SpellBook.Remove(oldSkill.Template.Name);
                         source.SendOrangeBarMessage($"{oldSkill.Template.Name} has been upgraded to {skillToLearn.Template.Name}.");
                     }
                 }
-                
+
                 break;
             case ComplexActionHelper.LearnSkillResult.NoRoom:
                 Subject.Reply(
@@ -152,9 +156,10 @@ public class LearnSkillScript : DialogScriptBase
             //if the player already knows this skill, skip it
             if (source.SkillBook.Contains(skill))
                 continue;
-            
+
             // Check if the player's spellbook contains any spells that are upgrades of the spell they're trying to learn.
-            var knowsUpgrade = source.SkillBook.Any(s => SkillUpgrades.ContainsKey(skill.Template.Name) && SkillUpgrades[skill.Template.Name].Contains(s.Template.Name));
+            var knowsUpgrade = source.SkillBook.Any(
+                s => SkillUpgrades.ContainsKey(skill.Template.Name) && SkillUpgrades[skill.Template.Name].Contains(s.Template.Name));
 
             // If the player knows an upgrade of the spell they're trying to learn, skip it.
             if (knowsUpgrade)

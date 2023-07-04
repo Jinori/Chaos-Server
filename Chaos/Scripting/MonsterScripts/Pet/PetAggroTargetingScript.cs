@@ -2,7 +2,6 @@ using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
-using Chaos.Networking.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -20,6 +19,27 @@ public class PetAggroTargetingScript : MonsterScriptBase
         TargetUpdateTimer =
             new IntervalTimer(TimeSpan.FromMilliseconds(Math.Min(250, Subject.Template.SkillIntervalMs)));
 
+    private Monster? FindAggroedMonster(Aisling? owner)
+    {
+        if (owner == null)
+            return null;
+
+        return Map.GetEntitiesWithinRange<Monster>(owner)
+                  .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id));
+    }
+
+    private Monster? FindClosestMonster() =>
+        Map.GetEntitiesWithinRange<Monster>(Subject, AggroRange)
+           .ThatAreObservedBy(Subject)
+           .Where(
+               obj => !obj.Equals(Subject)
+                      && obj.IsAlive
+                      && Subject.ApproachTime.TryGetValue(obj.Id, out var time)
+                      && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
+           .ClosestOrDefault(Subject);
+
+    private bool IsCurrentTargetValid() => Target is { IsAlive: true } && Target.OnSameMapAs(Subject);
+
     /// <inheritdoc />
     public override void OnAttacked(Creature source, int damage, int? aggroOverride)
     {
@@ -34,13 +54,10 @@ public class PetAggroTargetingScript : MonsterScriptBase
         AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro);
     }
 
-    private bool IsCurrentTargetValid() => Target is { IsAlive: true } && Target.OnSameMapAs(Subject);
-
     public override void Update(TimeSpan delta)
     {
         base.Update(delta);
         TargetUpdateTimer.Update(delta);
-
 
         if (!IsCurrentTargetValid())
         {
@@ -60,22 +77,5 @@ public class PetAggroTargetingScript : MonsterScriptBase
         //since we grabbed a new target, give them some initial aggro so we stick to them
         if (Target != null)
             AggroList[Target.Id] = InitialAggro++;
-    }
-    
-    private Monster? FindClosestMonster() =>
-        Map.GetEntitiesWithinRange<Monster>(Subject, AggroRange)
-           .ThatAreObservedBy(Subject)
-           .Where(obj => !obj.Equals(Subject)
-                         && obj.IsAlive
-                         && Subject.ApproachTime.TryGetValue(obj.Id, out var time)
-                         && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
-           .ClosestOrDefault(Subject);
-
-    private Monster? FindAggroedMonster(Aisling? owner)
-    {
-        if (owner == null) return null;
-
-        return Map.GetEntitiesWithinRange<Monster>(owner)
-                  .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id));
     }
 }

@@ -4,8 +4,6 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-
-
 namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class PoisonEffect : ContinuousAnimationEffectBase

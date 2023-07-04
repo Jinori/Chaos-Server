@@ -26,7 +26,7 @@ public class GatherGrapeScript : ReactorTileScriptBase
     {
         if (source is not Aisling aisling)
             return;
-        
+
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("grape", 23))
         {
             var mapInstance = _simpleCache.Get<MapInstance>("suomi_grape_farmer");
@@ -34,12 +34,12 @@ public class GatherGrapeScript : ReactorTileScriptBase
             aisling.SendOrangeBarMessage("The farmer is staring, you head inside.");
             aisling.TraverseMap(mapInstance, point);
             aisling.Trackers.Counters.Remove("grape", out _);
-        }
-        else
+        } else
         {
             var grape = _itemFactory.Create("Grape");
             var grapeCount = Random.Shared.Next(1, 4);
             grape.Count = grapeCount;
+
             if (!aisling.TryGiveItem(ref grape))
             {
                 var mapInstance = _simpleCache.Get<MapInstance>("suomi_grape_farmer");
@@ -47,6 +47,7 @@ public class GatherGrapeScript : ReactorTileScriptBase
                 aisling.SendOrangeBarMessage("The farmer is staring, you head inside.");
                 aisling.TraverseMap(mapInstance, point);
                 aisling.Trackers.Counters.Remove("grape", out _);
+
                 return;
             }
 
@@ -55,6 +56,7 @@ public class GatherGrapeScript : ReactorTileScriptBase
                 AnimationSpeed = 100,
                 TargetAnimation = 20
             };
+
             aisling.Animate(animation);
             aisling.SendOrangeBarMessage("You gathered some grapes!");
             aisling.Trackers.Counters.AddOrIncrement("grape");

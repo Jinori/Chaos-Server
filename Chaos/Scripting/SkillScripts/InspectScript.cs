@@ -9,8 +9,38 @@ using Chaos.Scripting.SkillScripts.Abstractions;
 
 namespace Chaos.Scripting.SkillScripts;
 
-public class InspectScript : ConfigurableSkillScriptBase, InspectItemComponent.IInspectItemComponentOptions, AbilityComponent<Creature>.IAbilityComponentOptions
+public class InspectScript : ConfigurableSkillScriptBase,
+                             InspectItemComponent.IInspectItemComponentOptions,
+                             AbilityComponent<Creature>.IAbilityComponentOptions
 {
+    /// <inheritdoc />
+    public bool AnimatePoints { get; init; }
+    /// <inheritdoc />
+    public Animation? Animation { get; init; }
+    /// <inheritdoc />
+    public BodyAnimation BodyAnimation { get; init; }
+    /// <inheritdoc />
+    public bool ExcludeSourcePoint { get; init; }
+    /// <inheritdoc />
+    public TargetFilter Filter { get; init; }
+    /// <inheritdoc />
+    public int? ManaCost { get; init; }
+    /// <inheritdoc />
+    public bool MustHaveTargets { get; init; }
+
+    /// <inheritdoc />
+    public ServerMessageType? OutputType { get; init; }
+    /// <inheritdoc />
+    public decimal PctManaCost { get; init; }
+    /// <inheritdoc />
+    public int Range { get; init; }
+    /// <inheritdoc />
+    public AoeShape Shape { get; init; }
+    /// <inheritdoc />
+    public bool ShouldNotBreakHide { get; init; }
+    /// <inheritdoc />
+    public byte? Sound { get; init; }
+
     /// <inheritdoc />
     public InspectScript(Skill subject)
         : base(subject) { }
@@ -22,31 +52,4 @@ public class InspectScript : ConfigurableSkillScriptBase, InspectItemComponent.I
             .ExecuteAndCheck<AbilityComponent<Creature>>()
             ?
             .Execute<InspectItemComponent>();
-    
-    /// <inheritdoc />
-    public ServerMessageType? OutputType { get; init; }
-    /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
-    /// <inheritdoc />
-    public TargetFilter Filter { get; init; }
-    /// <inheritdoc />
-    public bool MustHaveTargets { get; init; }
-    /// <inheritdoc />
-    public int Range { get; init; }
-    /// <inheritdoc />
-    public AoeShape Shape { get; init; }
-    /// <inheritdoc />
-    public byte? Sound { get; init; }
-    /// <inheritdoc />
-    public BodyAnimation BodyAnimation { get; init; }
-    /// <inheritdoc />
-    public bool AnimatePoints { get; init; }
-    /// <inheritdoc />
-    public Animation? Animation { get; init; }
-    /// <inheritdoc />
-    public int? ManaCost { get; init; }
-    /// <inheritdoc />
-    public decimal PctManaCost { get; init; }
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
 }

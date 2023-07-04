@@ -39,7 +39,7 @@ public class MountDialogScript : DialogScriptBase
             }
 
                 break;
-            
+
             case "mount_initial":
             {
                 if (source.Trackers.Flags.HasFlag(AvailableMounts.WhiteHorse))
@@ -53,6 +53,7 @@ public class MountDialogScript : DialogScriptBase
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
+
                 if (source.Trackers.Flags.HasFlag(AvailableMounts.WhiteWolf))
                 {
                     var option = new DialogOption
@@ -63,7 +64,6 @@ public class MountDialogScript : DialogScriptBase
 
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
-
                 }
             }
 
@@ -77,12 +77,13 @@ public class MountDialogScript : DialogScriptBase
                     Subject.Reply(source, "Skip", "Close");
                     source.SendOrangeBarMessage("You've equipped your White Horse.");
                 }
+
                 Subject.Reply(source, "Skip", "Close");
                 source.SendOrangeBarMessage("You've already equipped your White Horse.");
 
                 return;
             }
-                
+
             case "mount_whitewolf":
             {
                 if (currentMount != CurrentMount.WhiteWolf)
@@ -91,6 +92,7 @@ public class MountDialogScript : DialogScriptBase
                     Subject.Reply(source, "Skip", "Close");
                     source.SendOrangeBarMessage("You've equipped your White Wolf.");
                 }
+
                 Subject.Reply(source, "Skip", "Close");
                 source.SendOrangeBarMessage("You've already equipped your White Wolf.");
             }

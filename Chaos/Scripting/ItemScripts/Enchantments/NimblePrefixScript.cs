@@ -17,7 +17,7 @@ public class NimblePrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           Dex = 1,
+            Dex = 1
         };
 
         subject.Modifiers.Add(attributes);

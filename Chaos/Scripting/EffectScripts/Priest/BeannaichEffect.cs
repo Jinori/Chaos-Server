@@ -6,11 +6,6 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class BeannaichEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 105;
-    public override string Name => "beannaich";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
-
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 125,
@@ -21,6 +16,10 @@ public class BeannaichEffect : NonOverwritableEffectBase
         "beannaich",
         "mor beannaich"
     };
+
+    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
+    public override byte Icon => 105;
+    public override string Name => "beannaich";
     protected override byte? Sound => 140;
 
     public override void OnApplied()
@@ -31,7 +30,7 @@ public class BeannaichEffect : NonOverwritableEffectBase
         {
             Dmg = 5
         };
-        
+
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage increased.");

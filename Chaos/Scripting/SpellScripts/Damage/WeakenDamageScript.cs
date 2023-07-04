@@ -8,16 +8,16 @@ namespace Chaos.Scripting.SpellScripts.Damage;
 
 public class WeakenDamageScript : ConfigurableSpellScriptBase
 {
-    /// <inheritdoc />
-    public WeakenDamageScript(Spell subject)
-        : base(subject) { }
-
     protected Animation Animation { get; } = new()
     {
         AnimationSpeed = 75,
         TargetAnimation = 2
     };
-    
+
+    /// <inheritdoc />
+    public WeakenDamageScript(Spell subject)
+        : base(subject) { }
+
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
     {
@@ -25,7 +25,7 @@ public class WeakenDamageScript : ConfigurableSpellScriptBase
         {
             if (aisling.Inventory.Contains("Silver Wolf Leather"))
                 return;
-            
+
             aisling.StatSheet.SetHp(1);
             aisling.Client.SendAttributes(StatUpdateType.Vitality);
             aisling.SendOrangeBarMessage("Mantis weakens your body.");

@@ -16,6 +16,7 @@ public class CrHorrorTeleportScript : DialogScriptBase
     public CrHorrorTeleportScript(Dialog subject, ISimpleCache simpleCache)
         : base(subject) =>
         SimpleCache = simpleCache;
+
     public override void OnDisplaying(Aisling source)
     {
         var point = new Point(source.X, source.Y);

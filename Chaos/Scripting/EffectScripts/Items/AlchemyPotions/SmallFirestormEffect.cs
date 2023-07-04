@@ -11,11 +11,6 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 public class SmallFirestormEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon => 100;
-    /// <inheritdoc />
-    public override string Name => "Small Firestorm";
-
-    /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -27,6 +22,10 @@ public class SmallFirestormEffect : ContinuousAnimationEffectBase
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(12);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(700));
+    /// <inheritdoc />
+    public override byte Icon => 100;
+    /// <inheritdoc />
+    public override string Name => "Small Firestorm";
 
     protected void OnApply()
     {
@@ -35,7 +34,7 @@ public class SmallFirestormEffect : ContinuousAnimationEffectBase
 
         Subject.StatSheet.TrySubtractHp(500);
     }
-    
+
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
@@ -52,16 +51,17 @@ public class SmallFirestormEffect : ContinuousAnimationEffectBase
             AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
             Subject.ShowHealth();
         }
-
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (target.Effects.Contains("Small Firestorm") || target.Effects.Contains("Firestorm") || target.Effects.Contains("Firepunch"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already burning.");
+
             return false;
         }
+
         return true;
     }
 }

@@ -5,18 +5,18 @@ namespace Chaos.Scripting.EffectScripts;
 
 public class MountEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 92;
-    public override string Name => "mount";
-    protected override TimeSpan Duration { get; } = TimeSpan.FromHours(999);
-    protected override Animation? Animation { get; } = new Animation
+    protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 6,
         AnimationSpeed = 100
     };
     protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
     {
-        "MountEffect",
+        "MountEffect"
     };
+    protected override TimeSpan Duration { get; } = TimeSpan.FromHours(999);
+    public override byte Icon => 92;
+    public override string Name => "mount";
     protected override byte? Sound => 115;
 
     public override void OnTerminated()
@@ -27,9 +27,7 @@ public class MountEffect : NonOverwritableEffectBase
             AislingSubject.Refresh(true);
 
             if (!AislingSubject.Trackers.TimedEvents.HasActiveEvent("mount", out var mountEvent))
-            {
                 AislingSubject.Trackers.TimedEvents.AddEvent("mount", TimeSpan.FromSeconds(5), true);
-            }
         }
     }
 }

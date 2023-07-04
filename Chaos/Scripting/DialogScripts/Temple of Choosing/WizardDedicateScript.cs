@@ -63,7 +63,7 @@ public class WizardDedicateScript : DialogScriptBase
             source.Trackers.Flags.AddFlag(QuestFlag1.ChosenClass);
             var skill = SkillFactory.Create("assail");
             var spell = SpellFactory.Create("arcanebolt");
-            
+
             if (!source.SpellBook.Contains(spell))
                 source.SpellBook.TryAddToNextSlot(spell);
 

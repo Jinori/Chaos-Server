@@ -17,8 +17,8 @@ public class ModestPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           Ac = -2,
-           MaximumHp = -250,
+            Ac = -2,
+            MaximumHp = -250
         };
 
         subject.Modifiers.Add(attributes);

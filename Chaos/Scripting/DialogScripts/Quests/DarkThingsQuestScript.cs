@@ -53,60 +53,57 @@ public class DarkThingsQuestScript : DialogScriptBase
 
             case "darkthings_initial":
                 if (!hasStage || (stage == DarkThingsStage.None))
-                {
                     if (source.Trackers.TimedEvents.HasActiveEvent("DarkThingsCd", out var timedEvent))
                     {
                         Subject.Reply(source, $"I have enough for now. Return later. (({timedEvent.Remaining.ToReadableString()}))");
 
                         return;
                     }
-                }
 
                 if (stage == DarkThingsStage.StartedSpidersEye)
                 {
-                    Subject.Reply(source,"skip", "darkthings_startse");
+                    Subject.Reply(source, "skip", "darkthings_startse");
+
                     return;
                 }
 
                 if (stage == DarkThingsStage.StartedCentipedesGland)
                 {
-                    Subject.Reply(source,"skip", "darkthings_startcg");
+                    Subject.Reply(source, "skip", "darkthings_startcg");
 
                     return;
                 }
 
                 if (stage == DarkThingsStage.StartedSpidersSilk)
                 {
-                    Subject.Reply(source,"skip", "darkthings_startss");
+                    Subject.Reply(source, "skip", "darkthings_startss");
 
                     return;
                 }
 
                 if (stage == DarkThingsStage.StartedBatsWing)
                 {
-                    Subject.Reply(source,"skip", "darkthings_startbw");
+                    Subject.Reply(source, "skip", "darkthings_startbw");
 
                     return;
                 }
 
                 if (stage == DarkThingsStage.StartedGiantBatsWing)
                 {
-                    Subject.Reply(source,"skip", "darkthings_startgbw");
+                    Subject.Reply(source, "skip", "darkthings_startgbw");
 
                     return;
                 }
 
                 if (stage == DarkThingsStage.StartedWhiteBatsWing)
                 {
-                    Subject.Reply(source,"skip", "darkthings_startwbw");
+                    Subject.Reply(source, "skip", "darkthings_startwbw");
 
                     return;
                 }
 
                 if (stage == DarkThingsStage.StartedScorpionSting)
-                {
-                    Subject.Reply(source,"skip", "darkthings_startscs");
-                }
+                    Subject.Reply(source, "skip", "darkthings_startscs");
 
                 break;
 

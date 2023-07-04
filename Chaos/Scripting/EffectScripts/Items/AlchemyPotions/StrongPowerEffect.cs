@@ -6,11 +6,6 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class StrongPowerEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 13;
-    public override string Name => "Strong Power";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(15);
-
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
@@ -30,10 +25,14 @@ public class StrongPowerEffect : NonOverwritableEffectBase
         "Juggernaut",
         "Strong Juggernaut",
         "Strong Astral",
-        "Astral",
+        "Astral"
     };
+
+    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(15);
+    public override byte Icon => 13;
+    public override string Name => "Strong Power";
     protected override byte? Sound => 115;
-    
+
     public override void OnApplied()
     {
         base.OnApplied();
@@ -42,7 +41,7 @@ public class StrongPowerEffect : NonOverwritableEffectBase
         {
             Dmg = 8
         };
-        
+
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage has increased.");
@@ -61,5 +60,4 @@ public class StrongPowerEffect : NonOverwritableEffectBase
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage has returned to normal.");
     }
-    
 }

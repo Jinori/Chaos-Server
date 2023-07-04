@@ -51,14 +51,17 @@ public class BeggarFoodQuestScript : DialogScriptBase
                 {
                     if (source.Trackers.TimedEvents.HasActiveEvent("BeggarFood", out var timedEvent))
                     {
-                        Subject.Reply(source, $"Thank you again for the dinner plate, it was delicious! I hope you come back tomorrow. \n(({timedEvent.Remaining.ToReadableString()}))");
+                        Subject.Reply(
+                            source,
+                            $"Thank you again for the dinner plate, it was delicious! I hope you come back tomorrow. \n(({
+                                timedEvent.Remaining.ToReadableString()}))");
 
                         return;
                     }
+
                     source.Trackers.Enums.Remove(typeof(BeggarFoodQuestStage));
                     Subject.Reply(source, "Skip", "beggarfood_initial");
                 }
-
 
                 break;
 
@@ -67,9 +70,7 @@ public class BeggarFoodQuestScript : DialogScriptBase
                     return;
 
                 if (stage == BeggarFoodQuestStage.Started)
-                {
                     Subject.Reply(source, "Skip", "beggarfood_turninstart");
-                }
 
                 break;
 
@@ -96,7 +97,11 @@ public class BeggarFoodQuestScript : DialogScriptBase
 
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, 25000);
-                    Subject.Reply(source, "That's exactly what I needed, delicious! I wonder where I'll get my next meal. Thank you kind Aisling.");
+
+                    Subject.Reply(
+                        source,
+                        "That's exactly what I needed, delicious! I wonder where I'll get my next meal. Thank you kind Aisling.");
+
                     source.Trackers.Enums.Set(BeggarFoodQuestStage.Completed);
                     source.Trackers.TimedEvents.AddEvent("BeggarFood", TimeSpan.FromHours(24), true);
                 }

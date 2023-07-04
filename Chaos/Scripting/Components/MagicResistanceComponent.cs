@@ -8,6 +8,12 @@ namespace Chaos.Scripting.Components;
 
 public sealed class MagicResistanceComponent : IComponent
 {
+    private static readonly Animation MissAnimation = new()
+    {
+        TargetAnimation = 33,
+        AnimationSpeed = 100
+    };
+
     public void Execute(ActivationContext context, ComponentVars vars)
     {
         var userHit = context.Source.StatSheet.EffectiveHit;
@@ -19,7 +25,7 @@ public sealed class MagicResistanceComponent : IComponent
             return;
 
         // Calculate additional Hit
-        var additionalHitChance = (userHit / 6) * 2;
+        var additionalHitChance = userHit / 6 * 2;
 
         foreach (var target in targets.ToList())
         {
@@ -30,7 +36,7 @@ public sealed class MagicResistanceComponent : IComponent
             if (!IntegerRandomizer.RollChance(chanceToHit))
             {
                 targets.Remove(target);
-                target.Animate(MissAnimation);  
+                target.Animate(MissAnimation);
             }
         }
 
@@ -41,10 +47,4 @@ public sealed class MagicResistanceComponent : IComponent
     {
         bool IgnoreMagicResistance { get; init; }
     }
-    
-    private static readonly Animation MissAnimation = new()
-    {
-        TargetAnimation = 33,
-        AnimationSpeed = 100
-    };
 }

@@ -43,13 +43,15 @@ public class MythicFabrizioScript : DialogScriptBase
             {
                 if (source.UserStatSheet.Level < 9)
                 {
-                    Subject.Reply(source,  "Greetings Young Aisling, you are too weak to be here. Please get out of here.");
+                    Subject.Reply(source, "Greetings Young Aisling, you are too weak to be here. Please get out of here.");
+
                     return;
                 }
-                
+
                 if (main == MythicQuestMain.CompletedMythic)
                 {
                     Subject.Reply(source, "Thank you for all your hard work Aisling. These lands are forever in your debt.");
+
                     return;
                 }
 
@@ -70,9 +72,10 @@ public class MythicFabrizioScript : DialogScriptBase
 
                 if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
                 {
-                    Subject.Reply(source, 
+                    Subject.Reply(
+                        source,
                         "You really did it! You've made alliances with some of the leaders. They have been feuding forever! Whichever alliances you made will be victorious. The others will perish and these lands shall be peaceful once again. Unfortunately, it was the only way.");
-                   
+
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedMythic);
                     ExperienceDistributionScript.GiveExp(source, source.UserStatSheet.Level <= 98 ? tnl : 50000000);
 
@@ -93,9 +96,10 @@ public class MythicFabrizioScript : DialogScriptBase
             {
                 source.Trackers.Enums.Set(MythicQuestMain.MythicStarted);
 
-                Subject.Reply(source, 
+                Subject.Reply(
+                    source,
                     "Farewell for now, adventurer. Remember, our land's fate rests in your hands. Please return to me once you've made alliances and finished helping the leaders.. The more allies we have, the stronger our position will be. I trust in your abilities and look forward to hearing about your progress. Good luck.");
-                
+
                 source.SendOrangeBarMessage("Talk to any of the leaders.");
 
                 break;

@@ -10,8 +10,8 @@ namespace Chaos.Scripting.DialogScripts.Quests.Wilderness;
 
 public class BeeProblemScript : DialogScriptBase
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
     private readonly IItemFactory ItemFactory;
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     public BeeProblemScript(Dialog subject, IItemFactory itemFactory)
         : base(subject)
@@ -20,16 +20,14 @@ public class BeeProblemScript : DialogScriptBase
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
-
     public override void OnDisplaying(Aisling source)
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out BeeProblem stage);
 
-
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "talula_initial":
-                if ((!hasStage) || (stage == BeeProblem.None))
+                if (!hasStage || (stage == BeeProblem.None))
                 {
                     if (source.UserStatSheet.Level is <= 1 or >= 16)
                     {
@@ -37,24 +35,22 @@ public class BeeProblemScript : DialogScriptBase
 
                         return;
                     }
+
                     return;
                 }
 
                 if (stage == BeeProblem.Started)
                 {
                     Subject.Reply(source, "skip", "talula_initial2");
+
                     return;
                 }
 
                 if (stage == BeeProblem.Completed)
-                {
                     Subject.Reply(source, "skip", "talula_initial3");
-                }
 
                 if (source.UserStatSheet.Level is < 16)
-                {
                     Subject.Reply(source, "skip", "talula_initial3");
-                }
 
                 break;
 
@@ -62,6 +58,7 @@ public class BeeProblemScript : DialogScriptBase
             {
                 source.Trackers.Enums.Set(BeeProblem.Started);
             }
+
                 break;
 
             case "talula_bee3":
@@ -81,6 +78,7 @@ public class BeeProblemScript : DialogScriptBase
                 source.Trackers.Counters.Remove("wilderness_bee", out _);
                 source.Trackers.Enums.Set(BeeProblem.Completed);
             }
+
                 break;
         }
     }

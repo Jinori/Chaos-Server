@@ -19,10 +19,9 @@ public class DurabilityComponent : IComponent
         foreach (var target in targets)
         {
             foreach (var item in target.Equipment)
-            {
                 if (item.Slot is > 1 and < 14)
                 {
-                    if (item.CurrentDurability >= 1) 
+                    if (item.CurrentDurability >= 1)
                         item.CurrentDurability--;
 
                     var percent = (200 * item.CurrentDurability + 1) / (item.Template.MaxDurability * 2);
@@ -47,8 +46,8 @@ public class DurabilityComponent : IComponent
                         target.SendActiveMessage($"Your {item.DisplayName} broke.");
                         target.Equipment.TryGetRemove(item.Slot, out _);
                     }
+
                     if (item is { CurrentDurability: <= 0, Template.AccountBound: true })
-                    {
                         if (target.Equipment.TryGetRemove(item.Slot, out var removedItem))
                         {
                             if (target.CanCarry(removedItem))
@@ -59,9 +58,7 @@ public class DurabilityComponent : IComponent
                                 target.SendActiveMessage($"{item.DisplayName} was nearly broke and sent to your bank.");
                             }
                         }
-                    }
                 }
-            }
         }
     }
 

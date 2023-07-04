@@ -40,14 +40,16 @@ public class HolyResearchQuestScript : DialogScriptBase
                     Subject.Options.Insert(0, option);
 
                 break;
-            
+
             case "holyresearch_initial":
                 if (!hasStage || (stage == HolyResearchStage.None))
                 {
                     if (source.Trackers.TimedEvents.HasActiveEvent("HolyResearchCd", out var timedEvent))
                     {
-                        Subject.Reply(source, $"I don't need any more right now, please come back later. (({timedEvent.Remaining.ToReadableString()
-                        }))");
+                        Subject.Reply(
+                            source,
+                            $"I don't need any more right now, please come back later. (({timedEvent.Remaining.ToReadableString()
+                            }))");
 
                         return;
                     }
@@ -57,7 +59,6 @@ public class HolyResearchQuestScript : DialogScriptBase
 
                 if (stage == HolyResearchStage.StartedRawHoney)
                 {
-                    
                     Subject.Reply(source, "skip", "holyresearch_rh");
 
                     return;
@@ -66,13 +67,12 @@ public class HolyResearchQuestScript : DialogScriptBase
                 if (stage == HolyResearchStage.StartedRawWax)
                 {
                     Subject.Reply(source, "skip", "holyresearch_rw");
+
                     return;
                 }
 
                 if (stage == HolyResearchStage.StartedRoyalWax)
-                {
                     Subject.Reply(source, "skip", "holyresearch_royw");
-                }
 
                 break;
 
@@ -128,7 +128,7 @@ public class HolyResearchQuestScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, 2000);
                     source.Trackers.Enums.Set(HolyResearchStage.None);
                     source.TryGiveGamePoints(5);
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and 2000 exp!");
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive five gamepoints and 2000 exp!");
                     Subject.Close(source);
                     source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(1), true);
                 }
@@ -150,7 +150,7 @@ public class HolyResearchQuestScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, 2000);
                     source.Trackers.Enums.Set(HolyResearchStage.None);
                     source.TryGiveGamePoints(5);
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and 2000 exp!");
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive five gamepoints and 2000 exp!");
                     Subject.Close(source);
                     source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(1), true);
                 }
@@ -172,7 +172,7 @@ public class HolyResearchQuestScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, 2000);
                     source.Trackers.Enums.Set(HolyResearchStage.None);
                     source.TryGiveGamePoints(5);
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and 2000 exp!");
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive five gamepoints and 2000 exp!");
                     Subject.Close(source);
                     source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(1), true);
                 }

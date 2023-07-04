@@ -9,11 +9,6 @@ namespace Chaos.Scripting.EffectScripts;
 public class ManaBurnEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    public override byte Icon { get; } = 187;
-    /// <inheritdoc />
-    public override string Name { get; } = "Manaburn";
-
-    /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -24,7 +19,11 @@ public class ManaBurnEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(18);
     /// <inheritdoc />
+    public override byte Icon { get; } = 187;
+    /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(500));
+    /// <inheritdoc />
+    public override string Name { get; } = "Manaburn";
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()

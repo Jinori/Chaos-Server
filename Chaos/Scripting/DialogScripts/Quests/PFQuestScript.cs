@@ -65,7 +65,8 @@ public class PFQuestScript : DialogScriptBase
                 }
 
                 if (stage is PFQuestStage.CompletedPFQuest or PFQuestStage.TurnedInTristar)
-                    Subject.Reply(source,
+                    Subject.Reply(
+                        source,
                         "Well done Aisling, I'm glad that beast won't bother us again. I can go farm my own trent roots again. Thank you.");
             }
 
@@ -139,7 +140,8 @@ public class PFQuestScript : DialogScriptBase
                 }
 
                 if (stage is PFQuestStage.CompletedPFQuest or PFQuestStage.TurnedInTristar)
-                    Subject.Reply(source,
+                    Subject.Reply(
+                        source,
                         "It is so great to hear about your battle with the Giant Mantis. I can't believe you took it down. Praise you Aisling.");
 
                 break;
@@ -218,13 +220,15 @@ public class PFQuestScript : DialogScriptBase
                 {
                     if (!source.Inventory.HasCount("Silver Wolf Mane Hair", 5))
                     {
-                        Subject.Reply(source,
+                        Subject.Reply(
+                            source,
                             "You don't have enough Aisling, I need at least five Silver Wolf Mane Hair to make the Silver Wolf Leather.");
 
                         return;
                     }
 
-                    Subject.Reply(source,
+                    Subject.Reply(
+                        source,
                         "Great work Aisling! Here is your Silver Wolf Leather, that should help you fight that beast off. Go talk to Isabelle again, she may know where to go with it.");
 
                     source.Inventory.RemoveQuantity("Silver Wolf Mane Hair", 5);

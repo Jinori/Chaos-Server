@@ -8,10 +8,9 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class MistEffect : EffectBase
 {
+    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(10);
     public override byte Icon => 18;
     public override string Name => "mist";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(10);
 
     public override void OnApplied()
     {
@@ -26,7 +25,7 @@ public class MistEffect : EffectBase
         {
             MagicResistance = -20
         };
-        
+
         Subject?.StatSheet.SubtractBonus(attributesToSubtract);
         Subject?.StatSheet.AddBonus(attributesToAdd);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);

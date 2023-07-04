@@ -8,10 +8,9 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class MistStanceEffect : EffectBase
 {
+    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(15);
     public override byte Icon => 91;
     public override string Name => "miststance";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(15);
 
     public override void OnApplied()
     {
@@ -19,7 +18,7 @@ public class MistStanceEffect : EffectBase
 
         if (!Subject.Status.HasFlag(Status.MistStance))
             Subject.Status = Status.MistStance;
-        
+
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A heavy, soothing mist envelops your body.");
     }

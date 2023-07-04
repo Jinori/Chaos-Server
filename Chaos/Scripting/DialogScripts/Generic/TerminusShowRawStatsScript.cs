@@ -21,7 +21,7 @@ public class TerminusShowRawStatsScript : DialogScriptBase
             case "terminus_checkrawstats":
             {
                 var sb = new StringBuilder();
-                
+
                 sb.AppendLineFColored(MessageColor.Yellow, "Base Vitality", MessageColor.Gray);
                 sb.Append($"HP: {source.StatSheet.MaximumHp} ");
                 sb.AppendLine($"MP: {source.StatSheet.MaximumMp} ");
@@ -36,7 +36,7 @@ public class TerminusShowRawStatsScript : DialogScriptBase
                 sb.AppendLineFColored(MessageColor.Yellow, "Base Defenses", MessageColor.Gray);
                 sb.Append($"MR: {source.StatSheet.MagicResistance}% ");
                 sb.AppendLine($"AC: {source.StatSheet.Ac} ");
-                
+
                 sb.AppendLineFColored(MessageColor.Yellow, "Base Offenses", MessageColor.Gray);
                 sb.AppendLineF($"DMG: {source.StatSheet.Dmg} ");
                 sb.AppendLineF($"HIT: {source.StatSheet.Hit} ");
@@ -48,12 +48,13 @@ public class TerminusShowRawStatsScript : DialogScriptBase
 
                 source.Client.SendServerMessage(ServerMessageType.ScrollWindow, sb.ToString());
                 Subject.Close(source);
+
                 break;
             }
             case "terminus_checkgearedstats":
             {
                 var sb = new StringBuilder();
-                
+
                 sb.AppendLineFColored(MessageColor.Yellow, "Geared Vitality", MessageColor.Gray);
                 sb.Append($"HP: {source.StatSheet.EffectiveMaximumHp} ");
                 sb.AppendLine($"MP: {source.StatSheet.EffectiveMaximumMp} ");
@@ -68,7 +69,7 @@ public class TerminusShowRawStatsScript : DialogScriptBase
                 sb.AppendLineFColored(MessageColor.Yellow, "Geared Defenses", MessageColor.Gray);
                 sb.Append($"MR: {source.StatSheet.EffectiveMagicResistance}% ");
                 sb.AppendLine($"AC: {source.StatSheet.EffectiveAc} ");
-                
+
                 sb.AppendLineFColored(MessageColor.Yellow, "Geared Offenses", MessageColor.Gray);
                 sb.AppendLineF($"DMG: {source.StatSheet.EffectiveDmg} ");
                 sb.AppendLineF($"HIT: {source.StatSheet.EffectiveHit} ");
@@ -80,6 +81,7 @@ public class TerminusShowRawStatsScript : DialogScriptBase
 
                 source.Client.SendServerMessage(ServerMessageType.ScrollWindow, sb.ToString());
                 Subject.Close(source);
+
                 break;
             }
         }

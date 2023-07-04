@@ -11,8 +11,6 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class LastStandEffect : ContinuousAnimationEffectBase
 {
-    public override byte Icon => 74;
-    public override string Name => "laststand";
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -24,6 +22,8 @@ public class LastStandEffect : ContinuousAnimationEffectBase
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(9);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+    public override byte Icon => 74;
+    public override string Name => "laststand";
 
     public override void OnApplied()
     {
@@ -54,6 +54,7 @@ public class LastStandEffect : ContinuousAnimationEffectBase
         if (target.Effects.Contains("laststand"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Double rainbow? What does it mean?");
+
             return false;
         }
 

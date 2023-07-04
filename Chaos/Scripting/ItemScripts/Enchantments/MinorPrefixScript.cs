@@ -17,7 +17,7 @@ public class MinorPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-           MaximumHp = -50,
+            MaximumHp = -50,
             Dmg = 2
         };
 

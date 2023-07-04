@@ -6,11 +6,6 @@ namespace Chaos.Scripting.EffectScripts.Rogue;
 
 public class FocusEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 100;
-    public override string Name => "focus";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(25);
-
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 88,
@@ -18,22 +13,26 @@ public class FocusEffect : NonOverwritableEffectBase
     };
     protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
     {
-        "Focus",
+        "Focus"
     };
-    
+
+    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(25);
+    public override byte Icon => 100;
+    public override string Name => "focus";
+
     protected override byte? Sound => 140;
 
     public override void OnApplied()
     {
         base.OnApplied();
 
-        var atkSpeed = Math.Ceiling(((double)Subject.StatSheet.EffectiveDex / 10) + 10);
+        var atkSpeed = Math.Ceiling((double)Subject.StatSheet.EffectiveDex / 10 + 10);
 
         var attributes = new Attributes
         {
             AtkSpeedPct = (int)atkSpeed
         };
-        
+
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are now focused.");
@@ -45,7 +44,7 @@ public class FocusEffect : NonOverwritableEffectBase
     {
         var attributes = new Attributes
         {
-            AtkSpeedPct = 10 + (Subject.StatSheet.Dex / 10)
+            AtkSpeedPct = 10 + Subject.StatSheet.Dex / 10
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

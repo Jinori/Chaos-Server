@@ -12,7 +12,8 @@ using Chaos.Scripting.SpellScripts.Abstractions;
 
 namespace Chaos.Scripting.SpellScripts.Damage;
 
-public class ManaBasedDamageScript : ConfigurableSpellScriptBase, SpellComponent<Creature>.ISpellComponentOptions,
+public class ManaBasedDamageScript : ConfigurableSpellScriptBase,
+                                     SpellComponent<Creature>.ISpellComponentOptions,
                                      ManaBasedDamageComponent.IManaBasedDamageComponentOptions
 {
     /// <inheritdoc />

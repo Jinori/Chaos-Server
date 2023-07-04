@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
-        <ProjectReference Include="..\Chaos.Common\Chaos.Common.csproj" />
+        <ProjectReference Include="..\Chaos.Common\Chaos.Common.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" />
-        <PackageReference Include="Microsoft.Extensions.Logging" />
-        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+        <PackageReference Include="JetBrains.Annotations"/>
+        <PackageReference Include="Microsoft.Extensions.Logging"/>
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions"/>
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="Chaos.Testing.Infrastructure" />
+        <InternalsVisibleTo Include="Chaos.Testing.Infrastructure"/>
     </ItemGroup>
 </Project>

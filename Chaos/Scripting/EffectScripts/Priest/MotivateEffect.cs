@@ -6,11 +6,6 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class MotivateEffect : NonOverwritableEffectBase
 {
-    public override byte Icon => 99;
-    public override string Name => "Motivate";
-
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(2);
-
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
@@ -18,8 +13,12 @@ public class MotivateEffect : NonOverwritableEffectBase
     };
     protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
     {
-        "Motivate",
+        "Motivate"
     };
+
+    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(2);
+    public override byte Icon => 99;
+    public override string Name => "Motivate";
     protected override byte? Sound => 115;
 
     public override void OnApplied()
@@ -30,7 +29,7 @@ public class MotivateEffect : NonOverwritableEffectBase
         {
             AtkSpeedPct = 40
         };
-        
+
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed increased.");

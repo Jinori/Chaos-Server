@@ -7,6 +7,10 @@ namespace Chaos.Scripting.MonsterScripts.Pet;
 public sealed class PetFollowScript : MonsterScriptBase
 {
     /// <inheritdoc />
+    public PetFollowScript(Monster subject)
+        : base(subject) { }
+
+    /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         base.Update(delta);
@@ -16,7 +20,7 @@ public sealed class PetFollowScript : MonsterScriptBase
 
         const double TIME_SPAN_SECONDS = 3;
         var now = DateTime.UtcNow;
-        
+
         if (Subject.PetOwner is null)
             return;
 
@@ -49,8 +53,4 @@ public sealed class PetFollowScript : MonsterScriptBase
 
         Subject.MoveTimer.Reset();
     }
-
-    /// <inheritdoc />
-    public PetFollowScript(Monster subject)
-        : base(subject) { }
 }

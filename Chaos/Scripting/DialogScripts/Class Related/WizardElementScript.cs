@@ -10,9 +10,7 @@ namespace Chaos.Scripting.DialogScripts.Class_Related;
 public class WizardElementScript : DialogScriptBase
 {
     public WizardElementScript(Dialog subject)
-        : base(subject)
-    {
-    }
+        : base(subject) { }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -26,13 +24,17 @@ public class WizardElementScript : DialogScriptBase
             {
                 case "kiril_initial":
                 {
-                    Subject.Reply(source, "Why are you here? I have nothing to teach someone who cannot dedicate themselves to something. Go find Dar and he can help you find your element.");
+                    Subject.Reply(
+                        source,
+                        "Why are you here? I have nothing to teach someone who cannot dedicate themselves to something. Go find Dar and he can help you find your element.");
 
                     return;
                 }
                 case "hadrian_initial":
                 {
-                    Subject.Reply(source, "What are you doing here? You haven't dedicated yourself to an element? You need to study one first before you ever get another. Go speak to Dar, he is the only one who can help you with your decision.");
+                    Subject.Reply(
+                        source,
+                        "What are you doing here? You haven't dedicated yourself to an element? You need to study one first before you ever get another. Go speak to Dar, he is the only one who can help you with your decision.");
 
                     return;
                 }
@@ -128,5 +130,4 @@ public class WizardElementScript : DialogScriptBase
                     break;
             }
     }
-
 }

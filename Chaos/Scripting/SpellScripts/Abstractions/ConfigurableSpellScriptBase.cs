@@ -23,9 +23,11 @@ public abstract class ConfigurableSpellScriptBase : ConfigurableScriptBase<Spell
             if (context.Source.StatSheet.CurrentMp < cost)
             {
                 context.SourceAisling?.SendActiveMessage("You don't have enough mana.");
-                return false;   
+
+                return false;
             }
         }
+
         return true;
     }
 

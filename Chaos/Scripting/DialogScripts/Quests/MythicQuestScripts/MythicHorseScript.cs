@@ -39,7 +39,8 @@ public class MythicHorseScript : DialogScriptBase
             {
                 if (hasHorse && (horse == MythicHorse.EnemyAllied))
                 {
-                    Subject.Reply(source,
+                    Subject.Reply(
+                        source,
                         "You're already allied with the bunnies! That's like a kick in the teeth! Giddy-up and leave my sight immediately.");
 
                     return;
@@ -58,9 +59,8 @@ public class MythicHorseScript : DialogScriptBase
                 if (horse == MythicHorse.Lower)
                 {
                     Subject.Reply(source, "Skip", "horse_lower2start");
-                    
-                    return;
 
+                    return;
                 }
 
                 if (horse == MythicHorse.LowerComplete)
@@ -68,7 +68,6 @@ public class MythicHorseScript : DialogScriptBase
                     Subject.Reply(source, "Skip", "horse_start3start");
 
                     return;
-
                 }
 
                 if (horse == MythicHorse.Higher)
@@ -77,19 +76,15 @@ public class MythicHorseScript : DialogScriptBase
                         source,
                         "Skip",
                         "horse_higher2start");
-                    
-                    return;
 
+                    return;
                 }
 
                 if (horse == MythicHorse.HigherComplete)
-                {
                     Subject.Reply(
                         source,
                         "Skip",
                         "horse_start4start");
-
-                }
 
                 if (horse == MythicHorse.Item)
                 {
@@ -99,7 +94,6 @@ public class MythicHorseScript : DialogScriptBase
                         "horse_item2start");
 
                     return;
-
                 }
 
                 if (horse == MythicHorse.ItemComplete)
@@ -110,7 +104,6 @@ public class MythicHorseScript : DialogScriptBase
                         "horse_allystart");
 
                     return;
-
                 }
 
                 if (horse == MythicHorse.Allied)
@@ -134,10 +127,7 @@ public class MythicHorseScript : DialogScriptBase
                 }
 
                 if (horse == MythicHorse.BossDefeated)
-                {
-
                     Subject.Reply(source, "Thank you again partner, you really have saved my herd and our carrot fields are thriving.");
-                }
 
                 break;
             }
@@ -147,18 +137,15 @@ public class MythicHorseScript : DialogScriptBase
                 Subject.Reply(source, "I knew i could count on you, I'll see you soon traveler.");
                 source.SendOrangeBarMessage("Kill 15 White Bunnies for the Horse Leader");
                 source.Trackers.Enums.Set(MythicHorse.Lower);
-                
 
                 return;
             }
 
             case "horse_lower2":
             {
-
                 if (!source.Trackers.Counters.TryGetValue("whitebunny", out var whitebunny) || (whitebunny < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough White Bunnies.");
-                    
 
                     return;
                 }
@@ -172,27 +159,27 @@ public class MythicHorseScript : DialogScriptBase
                 } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
-                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                    source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
+
                 source.Trackers.Counters.Remove("whitebunny", out _);
 
-                Subject.Reply(source,
-                    "Well done, adventurer! We saw you thundering through the fields with those bunnies in tow. You've lassoed 15 of them, by our count! That should teach them to stay away from our carrots.", "horse_initial");
-
-                
-                
+                Subject.Reply(
+                    source,
+                    "Well done, adventurer! We saw you thundering through the fields with those bunnies in tow. You've lassoed 15 of them, by our count! That should teach them to stay away from our carrots.",
+                    "horse_initial");
 
                 break;
             }
 
             case "horse_higher":
             {
-                Subject.Reply(source,
+                Subject.Reply(
+                    source,
                     "We knew we could count on you, partner. Good luck out there, and remember, don't let those brown and purple bunnies get the best of you! (The horse leader lets out a hearty neigh)");
 
                 source.SendOrangeBarMessage("Kill 10 Brown and 10 Purple Bunnies for the Horse Leader");
                 source.Trackers.Enums.Set(MythicHorse.Higher);
-                
 
                 return;
             }
@@ -205,16 +192,14 @@ public class MythicHorseScript : DialogScriptBase
                 if ((brownbunny < 10) || (purplebunny < 10))
                 {
                     Subject.Reply(source, "You haven't killed enough brown and purple bunnies");
-                    
 
                     return;
                 }
 
-                Subject.Reply(source,
-                    "Well done, partner! We saw you charging through the fields, and we knew you meant business. Those bunnies didn't stand a chance against you.", "horse_initial");
-
-                
-                
+                Subject.Reply(
+                    source,
+                    "Well done, partner! We saw you charging through the fields, and we knew you meant business. Those bunnies didn't stand a chance against you.",
+                    "horse_initial");
 
                 if (source.UserStatSheet.Level <= 98)
                 {
@@ -223,7 +208,7 @@ public class MythicHorseScript : DialogScriptBase
                 } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
-                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                    source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
                 source.Trackers.Enums.Set(MythicHorse.HigherComplete);
@@ -235,29 +220,26 @@ public class MythicHorseScript : DialogScriptBase
 
             case "horse_item":
             {
-                Subject.Reply(source,
+                Subject.Reply(
+                    source,
                     "Great! And be careful out there. The bunnies can be quite sneaky, and they're not too fond of outsiders messing with their crops.");
 
                 source.SendOrangeBarMessage("Collect 25 carrots for the Horse Leader");
                 source.Trackers.Enums.Set(MythicHorse.Item);
-                
 
                 return;
             }
 
             case "horse_item2":
             {
-
                 if (!source.Inventory.RemoveQuantity("Carrot", 25))
                 {
-                    Subject.Reply(source,
+                    Subject.Reply(
+                        source,
                         "Hmm, that's a start, but it's not quite enough to feed our herd. We were really hoping for at least 25. Any chance you can go out and find some more?");
-
-                    
 
                     return;
                 }
-
 
                 if (source.UserStatSheet.Level <= 98)
                 {
@@ -266,16 +248,15 @@ public class MythicHorseScript : DialogScriptBase
                 } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
-                    source.SendOrangeBarMessage($"You received 10000000 experience!");
+                    source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
                 source.Trackers.Enums.Set(MythicHorse.ItemComplete);
 
-                Subject.Reply(source,
-                    "Hot diggity! You really are a hero to our herd, my friend. We were getting mighty worried about our carrot supply, but you came through in the clutch. And just in the nick of time, too.", "horse_initial");
-
-                
-                
+                Subject.Reply(
+                    source,
+                    "Hot diggity! You really are a hero to our herd, my friend. We were getting mighty worried about our carrot supply, but you came through in the clutch. And just in the nick of time, too.",
+                    "horse_initial");
 
                 break;
             }
@@ -285,9 +266,8 @@ public class MythicHorseScript : DialogScriptBase
                 if (hasBunny
                     && (hasBunny == bunny is MythicBunny.Allied or MythicBunny.BossStarted or MythicBunny.BossDefeated))
                 {
-                    
-
-                    Subject.Reply(source,
+                    Subject.Reply(
+                        source,
                         "What?! You're allied with the bunnies? How could you do this to us? We trusted you, and you went and made an alliance with our sworn enemies! Go away!");
 
                     source.Trackers.Enums.Set(MythicHorse.EnemyAllied);
@@ -299,19 +279,21 @@ public class MythicHorseScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicHorse.Allied);
                 source.SendOrangeBarMessage("You are now allied with the bunnies!");
 
-                Subject.Reply(source, $"(neighs gratefully) Thank you, thank you, {source.Name}. You've shown us that you're not just any old mare or stallion. You've proven yourself to be a true herd member, and for that, we are truly grateful.", "horse_initial");
-
-                
-                
+                Subject.Reply(
+                    source,
+                    $"(neighs gratefully) Thank you, thank you, {source.Name
+                    }. You've shown us that you're not just any old mare or stallion. You've proven yourself to be a true herd member, and for that, we are truly grateful.",
+                    "horse_initial");
 
                 break;
-
             }
 
             case "horse_boss":
             {
-                Subject.Reply(source,
+                Subject.Reply(
+                    source,
                     "That's what I like to hear, my little pony! You've proven yourself to be a dependable ally, and I know you have the chops to take down Mr.Hopps. Just watch your back, he's a slippery sucker, and he'll do anything to keep those carrots for himself.");
+
                 source.Trackers.Enums.Set(MythicHorse.BossStarted);
                 source.SendOrangeBarMessage("Kill Mr.Hopps three times.");
             }
@@ -322,17 +304,17 @@ public class MythicHorseScript : DialogScriptBase
             {
                 if (!source.Trackers.Counters.TryGetValue("MrHopps", out var mrhopps) || (mrhopps < 3))
                 {
-                    Subject.Reply(source,
+                    Subject.Reply(
+                        source,
                         "Don't feel down, partner. You gave it your all, and that's all any of us can do. Mr.Hopps may be a tough nut to crack, but we won't give up. We'll keep on fighting until we reach the finish line.");
 
-                    
-                    
                     source.SendOrangeBarMessage("Kill Mr.Hopps three times.");
 
                     return;
                 }
 
-                Subject.Reply(source,
+                Subject.Reply(
+                    source,
                     "Oh, horseshoes and hay bales! You've done it, my trusty ally! We knew you had it in you all along. You've earned your oats today, and then some. I can't thank you enough for what you've done for our herd.");
 
                 if (source.UserStatSheet.Level <= 98)
@@ -342,7 +324,7 @@ public class MythicHorseScript : DialogScriptBase
                 } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 25000000);
-                    source.SendOrangeBarMessage($"You received 25000000 experience!");
+                    source.SendOrangeBarMessage("You received 25000000 experience!");
                 }
 
                 source.Trackers.Counters.Remove("mrhopps", out _);
@@ -350,9 +332,7 @@ public class MythicHorseScript : DialogScriptBase
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
                 if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
-                {
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
-                }
             }
 
                 break;
