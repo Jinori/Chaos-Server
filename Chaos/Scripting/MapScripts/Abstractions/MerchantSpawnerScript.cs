@@ -1,6 +1,7 @@
 using Chaos.Collections;
 using Chaos.Extensions.Common;
-using Chaos.Extensions.Geometry;
+using Chaos.Geometry.Abstractions;
+using Chaos.Models.Templates;
 using Chaos.Models.World;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
@@ -28,15 +29,59 @@ public abstract class MerchantSpawnerScript : MapScriptBase
         SimpleCache = simpleCache;
     }
 
-    private Point GenerateSpawnPoint(MapInstance selectedMap)
+    private IPoint GenerateSpawnPoint(MapTemplate selectedMap)
     {
-        Point point;
+        var validPoints = GenerateValidSpawnPoints(selectedMap, 3);
 
-        do
-            point = selectedMap.Template.Bounds.GetRandomPoint();
-        while (selectedMap.IsWall(point) || selectedMap.IsBlockingReactor(point));
+        if (validPoints.Count == 0)
+            throw new Exception("No valid spawn points!");
 
-        return point;
+        // Randomly pick a valid point
+        var index = new Random().Next(validPoints.Count);
+
+        return validPoints[index];
+    }
+
+    private List<IPoint> GenerateValidSpawnPoints(MapTemplate selectedMap, int minDistanceFromWall)
+    {
+        var validPoints = new List<IPoint>();
+
+        for (var x = 0; x < selectedMap.Width; x++)
+        {
+            for (var y = 0; y < selectedMap.Height; y++)
+            {
+                IPoint point = new Point(x, y);
+
+                // Exclude walls
+                if (selectedMap.IsWall(point))
+                    continue;
+
+                // Exclude points near walls
+                if (!IsNearWall(point, selectedMap, minDistanceFromWall))
+                    validPoints.Add(point);
+            }
+        }
+
+        return validPoints;
+    }
+
+    public bool IsNearWall(IPoint point, MapTemplate selectedMap, int radius)
+    {
+        for (var x = -radius; x <= radius; x++)
+        {
+            for (var y = -radius; y <= radius; y++)
+            {
+                var checkPoint = new Point(point.X + x, point.Y + y);
+
+                if (!selectedMap.IsWithinMap(checkPoint))
+                    continue;
+
+                if (selectedMap.IsWall(checkPoint))
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     public override void Update(TimeSpan delta)
@@ -58,7 +103,7 @@ public abstract class MerchantSpawnerScript : MapScriptBase
 
             for (var i = 0; i < spawnAmount; i++)
             {
-                var point = GenerateSpawnPoint(Subject);
+                var point = GenerateSpawnPoint(Subject.Template);
                 var merchant = MerchantFactory.Create(MerchantTemplateKey, Subject, point);
                 Subject.AddObject(merchant, point);
             }

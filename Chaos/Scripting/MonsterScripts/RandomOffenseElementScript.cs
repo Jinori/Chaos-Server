@@ -7,7 +7,13 @@ namespace Chaos.Scripting.MonsterScripts;
 
 public class RandomOffenseElementScript : ConfigurableMonsterScriptBase
 {
-    private Element[] Elements { get; } = Array.Empty<Element>();
+    private Element[] Elements { get; } =
+    {
+        Element.Fire,
+        Element.Water,
+        Element.Wind,
+        Element.Earth
+    };
 
     /// <inheritdoc />
     public RandomOffenseElementScript(Monster subject)
