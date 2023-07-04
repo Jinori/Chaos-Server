@@ -20,7 +20,7 @@ public class MarriageEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(100));
     /// <inheritdoc />
-    public override byte Icon => 152;
+    public override byte Icon => 82;
     /// <inheritdoc />
     public override string Name => "Marriage";
 
