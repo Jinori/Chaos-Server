@@ -7,12 +7,12 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Religion;
 
-public class SerendaelTempleScript : ReligionScriptBase
+public class TheseleneTempleScript : ReligionScriptBase
 {
-    private const string GODNAME = "Serendael";
+    private const string GODNAME = "Theselene";
 
     /// <inheritdoc />
-    public SerendaelTempleScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IItemFactory itemFactory)
+    public TheseleneTempleScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IItemFactory itemFactory)
         : base(subject, clientRegistry, itemFactory) { }
 
     /// <inheritdoc />
@@ -20,39 +20,39 @@ public class SerendaelTempleScript : ReligionScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "serendael_temple_initial":
+            case "theselene_temple_initial":
                 TempleInitial(source);
 
                 break;
-            case "serendael_temple_pray":
-                PrayToMiraelis(source);
+            case "theselene_temple_pray":
+                PrayToTheselene(source);
 
                 break;
-            case "serendael_temple_joinquest":
+            case "theselene_temple_joinquest":
                 SendOnJoinQuest(source, GODNAME);
 
                 break;
-            case "serendael_temple_completejoinquest":
+            case "theselene_temple_completejoinquest":
                 CheckJoinQuestCompletion(source, GODNAME);
 
                 break;
-            case "serendael_temple_createscroll":
+            case "theselene_temple_createscroll":
                 CreateTempleScroll(source, GODNAME);
 
                 break;
-            case "serendael_temple_transferfaithaccepted":
+            case "theselene_temple_transferfaithaccepted":
                 TransferFaith(source, GODNAME);
 
                 break;
-            case "serendael_temple_holdmassself5minute":
+            case "theselene_temple_holdmassself5minute":
                 AnnounceMassStart(source, GODNAME, true);
 
                 break;
-            case "serendael_temple_holdmassself1minute":
+            case "theselene_temple_holdmassself1minute":
                 AnnounceOneMinuteWarning(source, GODNAME, true);
 
                 break;
-            case "serendael_temple_holdmassselfendmass":
+            case "theselene_temple_holdmassselfendmass":
                 AwardAttendees(
                     source,
                     GODNAME,
@@ -61,21 +61,21 @@ public class SerendaelTempleScript : ReligionScriptBase
                     true);
 
                 break;
-            case "serendael_temple_holdmassserendael":
+            case "theselene_temple_holdmassmiraelis":
                 GoddessHoldMass(source, GODNAME, Subject.DialogSource as Merchant);
 
                 break;
-            case "serendael_temple_leavefaith":
+            case "theselene_temple_leavefaith":
                 LeaveDeity(source, GODNAME);
 
                 break;
         }
     }
 
-    private void PrayToMiraelis(Aisling source)
+    private void PrayToTheselene(Aisling source)
     {
-        Pray(source, "Serendael");
-        Subject.InjectTextParameters(DeityPrayers["Serendael"].PickRandom());
+        Pray(source, "Theselene");
+        Subject.InjectTextParameters(DeityPrayers["Theselene"].PickRandom());
     }
 
     public void TempleInitial(Aisling source) => HideDialogOptions(source, GODNAME, Subject);

@@ -8,96 +8,85 @@ using Humanizer;
 
 namespace Chaos.Scripting.MerchantScripts;
 
-public class MiraelisMassScript : MerchantScriptBase
+public class SkandaraMassScript : MerchantScriptBase
 {
     private const int FAITH_REWARD = 25;
-    private const int ESSENCE_CHANCE = 10;
     private const int LATE_FAITH_REWARD = 15;
+    private const int ESSENCE_CHANCE = 10;
     private const int SERMON_DELAY_SECONDS = 5;
     private const int MASS_SERMON_COUNT = 10;
 
     #region MassMessages
-    private readonly List<string> MiraelisMassMessages = new()
+    private readonly List<string> SkandaraMassMessages = new()
     {
-        "Compassion unites hearts, fosters understanding.",
-        "Embrace nature, wisdom; inspire love and harmony.",
-        "Let the light of compassion guide our actions.",
-        "May empathy bind us in a tapestry of unity.",
-        "In solace and grace, embrace resides.",
-        "Nature inspires; wisdom illuminates our path.",
-        "Kindness begets kindness; let compassion flow.",
-        "The light of compassion guides compassionate souls.",
-        "In nature's whispers, hear wisdom's voice.",
-        "Let love and understanding be our foundation.",
-        "Grace heals and unifies our world.",
-        "Embrace all life's beings, interconnectedness.",
-        "Nature's tapestry reveals existence's secrets.",
-        "Wisdom unveils the boundless universe within.",
-        "Kindness ripples, spreading love endlessly.",
-        "Compassion soothes our troubled world.",
-        "Nature's embrace offers peace and renewal.",
-        "Wisdom's journey unveils life's mysteries.",
-        "Kindness ignites compassion's flame.",
-        "The touch heals and comforts.",
-        "Nature whispers, universe's secrets unfold.",
-        "Wisdom's path leads to profound understanding.",
-        "Compassion flows, bridging divides between souls.",
-        "Blessings nurture and heal our world.",
-        "Nature's sanctuary grants solace and renewal.",
-        "Enlightenment blooms, hearts open to wisdom.",
-        "Kindness, a gentle rain nourishes the soul.",
-        "The light guides through darkness' depths.",
-        "Nature's embrace soothes and rejuvenates.",
-        "Wisdom's journey unveils life's mysteries.",
-        "Compassion connects souls, harmonious empathy.",
-        "Grace heals our fractured world.",
-        "Nature's sanctuary brings serenity, renewal.",
-        "Enlightenment dawns, wisdom illuminates minds.",
-        "Kindness, gentle touch reverberates eternally.",
-        "Wisdom navigates uncertainty's sea.",
-        "Nature's melody sings the cosmic symphony.",
-        "Wisdom's flame illuminates the path.",
-        "Compassion's bridge unites souls harmoniously.",
-        "Love mends our fractured humanity.",
-        "Nature's sanctuary renews and rejuvenates.",
-        "Enlightenment blooms, mind receptive to light.",
-        "Kindness, language of the heart, transcends.",
-        "The touch stirs the spirit's essence.",
-        "Nature's whispers unveil cosmic mysteries.",
-        "Wisdom's path winds through understanding's depths.",
-        "Compassion's flame guides through shadows' veil.",
-        "Love heals our fractured humanity.",
-        "Nature's sanctuary renews and rejuvenates.",
-        "Enlightenment dawns, wisdom illuminates minds.",
-        "Kindness, gentle touch reverberates eternally.",
-        "Wisdom navigates uncertainty's sea.",
-        "Nature's melody sings the cosmic symphony.",
-        "Wisdom's flame illuminates the path.",
-        "Compassion's bridge unites souls harmoniously.",
-        "Grace heals our divided world.",
-        "Nature's eyes unveil the tapestry of existence.",
-        "Wisdom's current carries to shores of enlightenment.",
-        "Kindness, love's manifestation, radiant brilliance.",
-        "The embrace offers solace, renewal.",
-        "Enlightenment blooms, mind receptive to light.",
-        "Kindness, gentle rain nourishes soul's garden.",
-        "The touch whispers truth, guiding wisdom.",
-        "Nature's whispers unveil cosmic secrets.",
-        "Wisdom's path winds through understanding's depths.",
-        "Compassion's flame guides in shadows' realm.",
-        "Love mends our fractured humanity.",
-        "Nature's sanctuary renews and rejuvenates.",
-        "Enlightenment dawns, wisdom illuminates minds.",
-        "Kindness, gentle touch reverberates eternally.",
-        "Wisdom navigates uncertainty's sea.",
-        "Nature's melody sings the cosmic symphony.",
-        "Wisdom's flame illuminates the path.",
-        "Compassion's bridge unites souls harmoniously.",
-        "Grace heals our divided world.",
-        "Nature's eyes unveil the tapestry of existence.",
-        "Wisdom's current carries to shores of enlightenment.",
-        "Kindness, love's manifestation, radiant brilliance.",
-        "The embrace offers solace, renewal."
+        "Gather as warriors, united in strength.",
+        "Ignite the fire of courage within your hearts.",
+        "Embrace the fury of battle, let it fuel your spirit.",
+        "Stand firm, unwavering, like a mighty fortress.",
+        "May the might of Skandara guide our every step.",
+        "Unleash your inner warrior, fierce and determined.",
+        "Let the strength of Skandara surge through your veins.",
+        "Embrace the power within, for you are mighty.",
+        "Forge your path with the resilience of stone.",
+        "May Skandara's blessings grant us victory.",
+        "Channel your inner strength, unstoppable and resolute.",
+        "Unleash your battle cry, let it echo in the winds.",
+        "Embrace the unity of warriors, bound by honor.",
+        "May Skandara's might be our shield and sword.",
+        "Harness the power of Skandara, unwavering and fierce.",
+        "Embody the indomitable spirit of the warrior.",
+        "Let Skandara's strength guide our every strike.",
+        "Stand tall, unyielding in the face of adversity.",
+        "May the fires of Skandara burn bright within us.",
+        "Rise as warriors, ready to conquer any challenge.",
+        "Embrace the courage within, for you are unstoppable.",
+        "Ignite the flames of determination in your hearts.",
+        "May Skandara's presence inspire courage in us all.",
+        "Unleash your inner power, strong as the earth.",
+        "Forge your destiny with the strength of Skandara.",
+        "Stand together, a force that cannot be shaken.",
+        "Embrace the path of the warrior, honor as your guide.",
+        "May Skandara's blessings grant us victory and glory.",
+        "Unleash your passion, let it fuel your every stride.",
+        "Harness the might of Skandara, a force to be reckoned with.",
+        "Embody the spirit of Skandara, unyielding and relentless.",
+        "Let the valor of warriors fill the air, resolute and fierce.",
+        "May Skandara's presence fortify our hearts and minds.",
+        "Stand firm, united in the strength of Skandara.",
+        "Embrace the warrior within, a force to be reckoned with.",
+        "Unleash your inner hero, brave and unstoppable.",
+        "Forge your legacy with the power of Skandara.",
+        "May Skandara's blessings embolden our every action.",
+        "Ignite the flame of determination, burn bright and fierce.",
+        "Embody the resilience of Skandara, unyielding and steadfast.",
+        "Let the battlefield echo with the might of warriors.",
+        "Stand together, unbreakable, in Skandara's name.",
+        "Embrace the warrior's code, honor and strength.",
+        "May Skandara's presence inspire greatness within us.",
+        "Unleash your battle prowess, let it shine on the battlefield.",
+        "Harness the raw power of Skandara, an unstoppable force.",
+        "Embody the spirit of Skandara, undaunted and resolute.",
+        "Let your actions speak of valor and unwavering resolve.",
+        "Stand tall, warriors, defenders of Skandara's realm.",
+        "Embrace the path of the warrior, fierce and noble.",
+        "Unleash your inner warrior, fearless and relentless.",
+        "Forge your destiny with the fire of Skandara's might.",
+        "May Skandara's blessings guide our blades to victory.",
+        "Ignite the flames of passion, let them consume your foes.",
+        "Embody the strength of Skandara, unbreakable and true.",
+        "Let the battlefield witness your unyielding courage.",
+        "Stand united, warriors, in Skandara's name.",
+        "Embrace the warrior's spirit, fearless and honorable.",
+        "Unleash your warrior heart, let it roar in battle.",
+        "Forge your legacy with Skandara's unmatched might.",
+        "May Skandara's presence fill us with unwavering resolve.",
+        "Harness the power of Skandara, fierce and formidable.",
+        "Embody the indomitable spirit of the warrior.",
+        "Let Skandara's strength flow through you, unstoppable.",
+        "Stand firm, unshakable in the face of adversity.",
+        "May the fires of Skandara light our path to glory.",
+        "Rise as warriors, ready to conquer any challenge.",
+        "Embrace the courage within, for you are warriors."
     };
     #endregion MassMessages
 
@@ -122,7 +111,7 @@ public class MiraelisMassScript : MerchantScriptBase
     };
     private HashSet<string> SpokenMessages { get; } = new();
 
-    public MiraelisMassScript(
+    public SkandaraMassScript(
         Merchant subject,
         IClientRegistry<IWorldClient> clientRegistry,
         IItemFactory itemFactory
@@ -136,7 +125,7 @@ public class MiraelisMassScript : MerchantScriptBase
     private void AnnounceMassBeginning()
     {
         foreach (var client in ClientRegistry)
-            client.Aisling.SendActiveMessage("Mass held by Miraelis at the temple is starting now.");
+            client.Aisling.SendActiveMessage("Mass held by Skandara at the temple is starting now.");
 
         AislingsAtStart = Subject.MapInstance.GetEntities<Aisling>().ToList();
 
@@ -146,19 +135,19 @@ public class MiraelisMassScript : MerchantScriptBase
     public void AnnounceMassFiveMinuteStart()
     {
         foreach (var client in ClientRegistry)
-            client.Aisling.SendActiveMessage("Miraelis will be holding mass at her temple in five minutes.");
+            client.Aisling.SendActiveMessage("Skandara will be holding mass at her temple in five minutes.");
     }
 
     public void AnnounceMassOneMinuteStart()
     {
         foreach (var client in ClientRegistry)
-            client.Aisling.SendActiveMessage("Miraelis will be holding mass at her temple in one minute.");
+            client.Aisling.SendActiveMessage("Skandara will be holding mass at her temple in one minute.");
     }
 
     public static string? CheckDeity(Aisling source)
     {
-        if (source.Legend.ContainsKey("Miraelis"))
-            return "Miraelis";
+        if (source.Legend.ContainsKey("Skandara"))
+            return "Skandara";
 
         return null;
     }
@@ -184,10 +173,10 @@ public class MiraelisMassScript : MerchantScriptBase
         int index;
 
         do
-            index = random.Next(MiraelisMassMessages.Count);
-        while (SpokenMessages.Contains(MiraelisMassMessages[index]));
+            index = random.Next(SkandaraMassMessages.Count);
+        while (SpokenMessages.Contains(SkandaraMassMessages[index]));
 
-        var message = MiraelisMassMessages[index];
+        var message = SkandaraMassMessages[index];
         Subject.Say(message);
         SpokenMessages.Add(message);
         LastSermonTime = DateTime.UtcNow;
@@ -206,9 +195,9 @@ public class MiraelisMassScript : MerchantScriptBase
 
             if (IntegerRandomizer.RollChance(ESSENCE_CHANCE))
             {
-                var item = ItemFactory.Create("essenceofMiraelis");
+                var item = ItemFactory.Create("essenceofSkandara");
                 player.Inventory.TryAddToNextSlot(item);
-                player.SendActiveMessage("You received an Essence of Miraelis");
+                player.SendActiveMessage("You received an Essence of Skandara");
             }
 
             TryAddFaith(player, FAITH_REWARD);

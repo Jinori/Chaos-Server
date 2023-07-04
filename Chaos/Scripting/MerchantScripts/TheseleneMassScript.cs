@@ -8,7 +8,7 @@ using Humanizer;
 
 namespace Chaos.Scripting.MerchantScripts;
 
-public class MiraelisMassScript : MerchantScriptBase
+public class TheseleneMassScript : MerchantScriptBase
 {
     private const int FAITH_REWARD = 25;
     private const int ESSENCE_CHANCE = 10;
@@ -17,87 +17,56 @@ public class MiraelisMassScript : MerchantScriptBase
     private const int MASS_SERMON_COUNT = 10;
 
     #region MassMessages
-    private readonly List<string> MiraelisMassMessages = new()
+    private readonly List<string> TheseleneMassMessages = new()
     {
-        "Compassion unites hearts, fosters understanding.",
-        "Embrace nature, wisdom; inspire love and harmony.",
-        "Let the light of compassion guide our actions.",
-        "May empathy bind us in a tapestry of unity.",
-        "In solace and grace, embrace resides.",
-        "Nature inspires; wisdom illuminates our path.",
-        "Kindness begets kindness; let compassion flow.",
-        "The light of compassion guides compassionate souls.",
-        "In nature's whispers, hear wisdom's voice.",
-        "Let love and understanding be our foundation.",
-        "Grace heals and unifies our world.",
-        "Embrace all life's beings, interconnectedness.",
-        "Nature's tapestry reveals existence's secrets.",
-        "Wisdom unveils the boundless universe within.",
-        "Kindness ripples, spreading love endlessly.",
-        "Compassion soothes our troubled world.",
-        "Nature's embrace offers peace and renewal.",
-        "Wisdom's journey unveils life's mysteries.",
-        "Kindness ignites compassion's flame.",
-        "The touch heals and comforts.",
-        "Nature whispers, universe's secrets unfold.",
-        "Wisdom's path leads to profound understanding.",
-        "Compassion flows, bridging divides between souls.",
-        "Blessings nurture and heal our world.",
-        "Nature's sanctuary grants solace and renewal.",
-        "Enlightenment blooms, hearts open to wisdom.",
-        "Kindness, a gentle rain nourishes the soul.",
-        "The light guides through darkness' depths.",
-        "Nature's embrace soothes and rejuvenates.",
-        "Wisdom's journey unveils life's mysteries.",
-        "Compassion connects souls, harmonious empathy.",
-        "Grace heals our fractured world.",
-        "Nature's sanctuary brings serenity, renewal.",
-        "Enlightenment dawns, wisdom illuminates minds.",
-        "Kindness, gentle touch reverberates eternally.",
-        "Wisdom navigates uncertainty's sea.",
-        "Nature's melody sings the cosmic symphony.",
-        "Wisdom's flame illuminates the path.",
-        "Compassion's bridge unites souls harmoniously.",
-        "Love mends our fractured humanity.",
-        "Nature's sanctuary renews and rejuvenates.",
-        "Enlightenment blooms, mind receptive to light.",
-        "Kindness, language of the heart, transcends.",
-        "The touch stirs the spirit's essence.",
-        "Nature's whispers unveil cosmic mysteries.",
-        "Wisdom's path winds through understanding's depths.",
-        "Compassion's flame guides through shadows' veil.",
-        "Love heals our fractured humanity.",
-        "Nature's sanctuary renews and rejuvenates.",
-        "Enlightenment dawns, wisdom illuminates minds.",
-        "Kindness, gentle touch reverberates eternally.",
-        "Wisdom navigates uncertainty's sea.",
-        "Nature's melody sings the cosmic symphony.",
-        "Wisdom's flame illuminates the path.",
-        "Compassion's bridge unites souls harmoniously.",
-        "Grace heals our divided world.",
-        "Nature's eyes unveil the tapestry of existence.",
-        "Wisdom's current carries to shores of enlightenment.",
-        "Kindness, love's manifestation, radiant brilliance.",
-        "The embrace offers solace, renewal.",
-        "Enlightenment blooms, mind receptive to light.",
-        "Kindness, gentle rain nourishes soul's garden.",
-        "The touch whispers truth, guiding wisdom.",
-        "Nature's whispers unveil cosmic secrets.",
-        "Wisdom's path winds through understanding's depths.",
-        "Compassion's flame guides in shadows' realm.",
-        "Love mends our fractured humanity.",
-        "Nature's sanctuary renews and rejuvenates.",
-        "Enlightenment dawns, wisdom illuminates minds.",
-        "Kindness, gentle touch reverberates eternally.",
-        "Wisdom navigates uncertainty's sea.",
-        "Nature's melody sings the cosmic symphony.",
-        "Wisdom's flame illuminates the path.",
-        "Compassion's bridge unites souls harmoniously.",
-        "Grace heals our divided world.",
-        "Nature's eyes unveil the tapestry of existence.",
-        "Wisdom's current carries to shores of enlightenment.",
-        "Kindness, love's manifestation, radiant brilliance.",
-        "The embrace offers solace, renewal."
+        "In shadows' embrace, mysteries find solace.",
+        "Whispers of secrets reveal hidden truths.",
+        "Nature of secrets, behold the dance of shadows.",
+        "Shadows cloak secrets, unveiling their essence.",
+        "In whispers of shadows, wisdom lies hidden.",
+        "Illuminate hidden paths of knowledge.",
+        "Through shadows' realm, secrets take flight.",
+        "Silent whispers echo within the grasp of shadow.",
+        "Secrets hold untold knowledge and revelations.",
+        "Shadows conceal, offering veiled revelations.",
+        "Within shadows' depths, truth's essence resides.",
+        "Pierce the veil of secrets with your gaze.",
+        "Hidden truths awaken in shadows' embrace.",
+        "The realm reveals the unseen truths, hidden and profound.",
+        "Secrets unfold, guided by unseen hands.",
+        "In the realm of shadows, secrets are unveiled.",
+        "Uncover hidden whispers of truth.",
+        "Secrets whispered in shadows speak the truth.",
+        "Mysteries dance in the shadows, waiting to be discovered.",
+        "The unseen realm holds secrets and enigmatic wisdom.",
+        "In shadows' realm, secrets lie in wait.",
+        "Whispers carry hidden knowledge and truth.",
+        "Hidden truths unfurl within shadows' embrace.",
+        "Essence reveals the hidden world, both mystical and profound.",
+        "Within shadows' depths, the realm blooms with hidden knowledge.",
+        "Hold the keys to the secrets, unraveling mysteries.",
+        "Mysteries unravel within the unseen domain, guided by presence.",
+        "In the realm of secrets, truth whispers.",
+        "Shadows hold the keys to eternal domains.",
+        "Secrets unfold in shadow's embrace, revealing the unknown.",
+        "Whispers unveil hidden truths and profound wisdom.",
+        "In the realm of shadows, wisdom awaits seekers of truth.",
+        "Touch uncovers the mysteries within the shadows.",
+        "Secrets reside in eternal embrace, waiting to be discovered.",
+        "Whispers carry the weight of truth, guiding seekers in the dark.",
+        "Shadows conceal enigmatic wisdom, waiting to be revealed.",
+        "Within the veil of shadows, knowledge thrives and illuminates.",
+        "Realm breathes life into hidden secrets, unlocking their power.",
+        "In the realm of shadows, essence resonates, beckoning the curious.",
+        "Secrets bloom in the depths of darkness, offering profound insights.",
+        "Within the shadows, whispers hold the key to hidden truths.",
+        "Touch reveals the hidden tapestry, connecting the threads of knowledge.",
+        "Shadows offer solace as secrets unfold in their comforting embrace.",
+        "Whispers guide seekers of hidden truths, leading them on profound journeys.",
+        "In the realm of shadows, the realm takes form, inviting explorations of the unknown.",
+        "Secrets unravel within shadows' depths, revealing the mysteries they hold.",
+        "Whispers guide seekers of the unknown, unveiling profound revelations.",
+        "In the realm of shadows, wisdom beckons, calling forth those who seek enlightenment."
     };
     #endregion MassMessages
 
@@ -122,7 +91,7 @@ public class MiraelisMassScript : MerchantScriptBase
     };
     private HashSet<string> SpokenMessages { get; } = new();
 
-    public MiraelisMassScript(
+    public TheseleneMassScript(
         Merchant subject,
         IClientRegistry<IWorldClient> clientRegistry,
         IItemFactory itemFactory
@@ -136,7 +105,7 @@ public class MiraelisMassScript : MerchantScriptBase
     private void AnnounceMassBeginning()
     {
         foreach (var client in ClientRegistry)
-            client.Aisling.SendActiveMessage("Mass held by Miraelis at the temple is starting now.");
+            client.Aisling.SendActiveMessage("Mass held by Theselene at the temple is starting now.");
 
         AislingsAtStart = Subject.MapInstance.GetEntities<Aisling>().ToList();
 
@@ -146,19 +115,19 @@ public class MiraelisMassScript : MerchantScriptBase
     public void AnnounceMassFiveMinuteStart()
     {
         foreach (var client in ClientRegistry)
-            client.Aisling.SendActiveMessage("Miraelis will be holding mass at her temple in five minutes.");
+            client.Aisling.SendActiveMessage("Theselene will be holding mass at her temple in five minutes.");
     }
 
     public void AnnounceMassOneMinuteStart()
     {
         foreach (var client in ClientRegistry)
-            client.Aisling.SendActiveMessage("Miraelis will be holding mass at her temple in one minute.");
+            client.Aisling.SendActiveMessage("Theselene will be holding mass at her temple in one minute.");
     }
 
     public static string? CheckDeity(Aisling source)
     {
-        if (source.Legend.ContainsKey("Miraelis"))
-            return "Miraelis";
+        if (source.Legend.ContainsKey("Theselene"))
+            return "Theselene";
 
         return null;
     }
@@ -184,10 +153,10 @@ public class MiraelisMassScript : MerchantScriptBase
         int index;
 
         do
-            index = random.Next(MiraelisMassMessages.Count);
-        while (SpokenMessages.Contains(MiraelisMassMessages[index]));
+            index = random.Next(TheseleneMassMessages.Count);
+        while (SpokenMessages.Contains(TheseleneMassMessages[index]));
 
-        var message = MiraelisMassMessages[index];
+        var message = TheseleneMassMessages[index];
         Subject.Say(message);
         SpokenMessages.Add(message);
         LastSermonTime = DateTime.UtcNow;
@@ -206,9 +175,9 @@ public class MiraelisMassScript : MerchantScriptBase
 
             if (IntegerRandomizer.RollChance(ESSENCE_CHANCE))
             {
-                var item = ItemFactory.Create("essenceofMiraelis");
+                var item = ItemFactory.Create("essenceofTheselene");
                 player.Inventory.TryAddToNextSlot(item);
-                player.SendActiveMessage("You received an Essence of Miraelis");
+                player.SendActiveMessage("You received an Essence of Theselene");
             }
 
             TryAddFaith(player, FAITH_REWARD);

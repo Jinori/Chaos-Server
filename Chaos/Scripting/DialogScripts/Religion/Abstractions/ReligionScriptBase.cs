@@ -54,24 +54,123 @@ public class ReligionScriptBase : DialogScriptBase
             "Serendael", new List<string>
             {
                 "Oh Serendael, Lady of Fortune, bless us with your favorable hand.",
-                "Serendael, the weaver of destiny, guide us through the twists and turns of fate."
-                // Add more prayers for Serendael as desired
+                "Serendael, the weaver of destiny, guide us through the twists and turns of fate.",
+                "Grant us your wisdom, Serendael, to navigate the capricious paths of chance.",
+                "Serendael, in your multicolored gaze, may we find the courage to seize our destiny.",
+                "Guide us to favorable odds, Serendael, in the ever-shifting game of life.",
+                "Oh Serendael, bless our endeavours with your lucky charm.",
+                "May our paths cross the lines of your favor, Serendael.",
+                "Let your coin flip in our favor, mighty Serendael.",
+                "Serendael, guide us through the uncertainty of the morrow.",
+                "May we dance with fortune under your gaze, Serendael.",
+                "Oh Serendael, in your realm of chance, may we find our purpose.",
+                "Serendael, may your light guide us through the labyrinth of fate.",
+                "Serendael, let your multicolor radiance illuminate our journey.",
+                "Bless us with your serendipity, Serendael, to find joy in unexpected places.",
+                "May our journey align with your threads of destiny, Serendael.",
+                "Guide us in the dance of chance and choice, Serendael.",
+                "Bless us with the courage to seize the opportunities you weave, Serendael.",
+                "Serendael, in your endless dance of possibilities, may we find our rhythm.",
+                "May your winds of fortune steer us to calm waters, Serendael.",
+                "Serendael, may we be swift and sure in seizing the chances you offer.",
+                "Guide us through the vast tapestry of destiny, Serendael.",
+                "Bless us with your playful spirit, Serendael, to find joy in the dance of life.",
+                "Serendael, may we dance with destiny and pirouette with fortune.",
+                "Bless us with your kaleidoscopic gaze, Serendael, to see the beauty in change.",
+                "May we walk the tightrope of chance with your grace, Serendael.",
+                "Guide us to our destiny across your multicolored canvas, Serendael.",
+                "Serendael, may your playful winds guide our sails.",
+                "Bless us with the serenity to accept fate's turns, Serendael.",
+                "Serendael, guide us to find fortune in each day's sunrise.",
+                "May we find serenity in the uncertainty of fate, Serendael.",
+                "Bless our journey with your lucky stars, Serendael.",
+                "May we find joy in the unexpected gifts of life, Serendael.",
+                "Serendael, guide our steps in the dance of fortune and fate.",
+                "Bless us with the wisdom to see opportunity in uncertainty, Serendael.",
+                "May we dance with destiny in your cosmic ballroom, Serendael.",
+                "Bless our path with your guiding stars, Serendael.",
+                "Serendael, let us find joy in the dance of chance.",
+                "Bless our journey with the warmth of your radiant colors, Serendael.",
+                "May we navigate the maze of destiny under your watchful gaze, Serendael.",
+                "Serendael, bless us with the courage to take a chance."
             }
         },
         {
             "Skandara", new List<string>
             {
                 "Mighty Skandara, grant us strength and courage to triumph in battle.",
-                "Skandara, goddess of war, may your fury drive us to victory."
-                // Add more prayers for Skandara as desired
+                "Skandara, goddess of war, may your fury drive us to victory.",
+                "Skandara, in the heart of the conflict, may we find the resolve to endure.",
+                "May our chains be broken under your watch, Skandara, freeing us to face our battles.",
+                "Skandara, bless us with the sharpness of your blade and the steadiness of your resolve.",
+                "Grant us your warrior spirit, Skandara, to face our trials.",
+                "May we stand strong in the face of adversity, guided by your light, Skandara.",
+                "Skandara, lend us your might to overcome the obstacles in our path.",
+                "May your battle cry echo in our hearts, Skandara, as we face our struggles.",
+                "Skandara, guide our sword hand and steady our shield arm in the face of battle.",
+                "Bless us with the courage of a lion and the strength of a bear, Skandara.",
+                "May we face our battles with unwavering resolve, guided by your light, Skandara.",
+                "Grant us your fury, Skandara, to face our trials with untamed spirit.",
+                "May we find the strength to endure in the heart of your storm, Skandara.",
+                "Skandara, bless our journey with the courage to face the unknown.",
+                "Guide us in the dance of war, Skandara, so we may stand victorious.",
+                "May our spirits burn with your ferocity, Skandara, as we face our trials.",
+                "Skandara, lend us your warrior heart to face our battles with bravery.",
+                "May we wield your courage as our sword and your wisdom as our shield, Skandara.",
+                "Skandara, guide us to face our struggles with the fierceness of a storm.",
+                "Bless us with your relentless spirit, Skandara, to face our battles.",
+                "Guide us through the tempest of struggle, Skandara, to find our strength.",
+                "May we find the strength to endure in the heart of the storm, Skandara.",
+                "Skandara, bless us with the courage to face our fears.",
+                "Guide us in the dance of battle, Skandara, so we may stand strong.",
+                "May our spirits burn with your fierce flame, Skandara, as we face our trials.",
+                "Skandara, lend us your strength to shatter the chains of our struggles.",
+                "May we wield your courage as our weapon and your wisdom as our armor, Skandara.",
+                "Skandara, guide us through the battlefield of life, to find our victory.",
+                "Bless us with the strength of your spirit, Skandara, to overcome our challenges.",
+                "Guide us in the symphony of conflict, Skandara, so we may find harmony.",
+                "May we face our battles with the courage of a lion and the strength of a bear, Skandara.",
+                "Skandara, lend us your fierce heart to stand strong in the face of adversity.",
+                "May our spirits roar with your courage, Skandara, as we face our trials.",
+                "Skandara, bless us with the steadfastness of your shield, to protect us in conflict.",
+                "Guide us through the storm of battle, Skandara, to find our calm.",
+                "May we stand strong in the face of the storm, guided by your strength, Skandara.",
+                "Skandara, lend us your warrior spirit to face our struggles with bravery."
             }
         },
         {
             "Theselene", new List<string>
             {
                 "Theselene, Keeper of Secrets, reveal to us the hidden truths that lie in the shadows.",
-                "Grant us the wisdom to unravel the mysteries that cloak our path."
-                // Add more prayers for Theselene as desired
+                "In your silent realm we seek clarity, guide us, Theselene, through the mysteries of life.",
+                "We walk in darkness, Theselene. Illuminate our path with the gleam of unveiled secrets.",
+                "Theselene, your whispers echo in the shadows. Grant us the discernment to understand their meaning.",
+                "In the quiet night, we seek your counsel, Theselene. Guide us to the secrets that sleep in its depths.",
+                "Theselene, cast your cloak of understanding over us. Let us perceive what lies beneath the surface.",
+                "Through a veil of shadows, may we glimpse the truth with your guidance, Theselene.",
+                "In obscurity, we find enlightenment. Theselene, lend us your night-born wisdom.",
+                "Silent Theselene, who treads the corridors of the unknown, reveal to us the enigmas of the universe.",
+                "In the moon's pale light, Theselene, we seek the knowledge hidden by day.",
+                "Theselene, your whispers stir the silence. Let us understand the secrets they carry.",
+                "Under your star-strewn mantle, Theselene, we seek the wisdom to decrypt the universe's riddles.",
+                "Theselene, Goddess of Shadows, guide us through the murk of confusion towards clarity.",
+                "Your wisdom, Theselene, is the lantern in the shadowy maze of existence.",
+                "Theselene, in the hush of twilight, we listen for your whispers of wisdom.",
+                "Under the starlit vault, we seek the mysteries only you can reveal, Theselene.",
+                "Theselene, in the quietude of shadows, your secrets reverberate. Help us comprehend their meaning.",
+                "In the penumbra of your domain, Theselene, we seek the wisdom to perceive what is veiled.",
+                "May the secrets of the night unravel under your guidance, Theselene.",
+                "Theselene, you walk the twilight path between known and unknown. Guide us along this way.",
+                "Oh silent Theselene, in the tranquility of your domain, let us hear the whispers of the cosmos.",
+                "Theselene, beneath the cloak of night, let us discover the universe's hidden narratives.",
+                "In your realm of quietude and mystery, Theselene, we seek the wisdom of the stars.",
+                "Theselene, when night descends, your secrets shimmer in the darkness. Help us decipher them.",
+                "May the wisdom of your twilight realm guide us, Theselene, to the concealed truths of existence.",
+                "Theselene, your silent whispers stir the darkness. Let their echoes be our guide.",
+                "Beneath the moon's quiet gaze, Theselene, we seek the knowledge hidden in its light.",
+                "In your realm, Theselene, secrets bloom like night flowers. Let us understand their language.",
+                "Theselene, in the obscurity of shadows, your wisdom gleams. Guide us to its source.",
+                "We seek the concealed wisdom of your shadowy realm, Theselene. Guide us on this quest."
             }
         },
         {
@@ -365,19 +464,9 @@ public class ReligionScriptBase : DialogScriptBase
             return;
         }
 
-        source.SendActiveMessage($"In gratitude for your loyalty, {deity} hands you a temple scroll.");
+        source.SendActiveMessage($"In gratitude for your loyalty, {deity} hands you a passport to return home.");
 
-        //Change to the specific god's temple map
-        var templeScroll = deity switch
-        {
-            "Miraelis"  => "milethScroll",
-            "Skandara"  => "milethScroll",
-            "Theselene" => "milethScroll",
-            "Serendael" => "milethScroll",
-            _           => ""
-        };
-
-        var scroll = ItemFactory.Create(templeScroll);
+        var scroll = ItemFactory.Create("passport");
         source.Inventory.TryAddToNextSlot(scroll);
     }
 

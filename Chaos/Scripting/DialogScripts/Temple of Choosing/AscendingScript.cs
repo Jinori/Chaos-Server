@@ -10,9 +10,9 @@ namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 
 public class AscendingScript : DialogScriptBase
 {
-    private static readonly int HealthGain = 50;
-    private static readonly int ManaGain = 25;
-    private static readonly int AscendLevelRequirement = 99;
+    private const int HEALTH_GAIN = 50;
+    private const int MANA_GAIN = 25;
+    private const int ASCEND_LEVEL_REQUIREMENT = 99;
 
     private readonly IExperienceDistributionScript ExperienceDistributionScript;
 
@@ -23,7 +23,7 @@ public class AscendingScript : DialogScriptBase
     private int CalculateAscensionsCount(Aisling source, string hPorMP)
     {
         var loopCounter = 0;
-        var gains = hPorMP == "HP" ? HealthGain : ManaGain;
+        var gains = hPorMP == "HP" ? HEALTH_GAIN : MANA_GAIN;
         var baseVal = hPorMP == "HP" ? source.StatSheet.MaximumHp : source.StatSheet.MaximumMp;
         float currentExp = source.UserStatSheet.TotalExp;
 
@@ -83,7 +83,7 @@ public class AscendingScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        if (source.UserStatSheet.Level <= AscendLevelRequirement)
+        if (source.UserStatSheet.Level <= ASCEND_LEVEL_REQUIREMENT)
         {
             Subject.Reply(source, "You must be level 99 to buy health and mana.");
             source.SendOrangeBarMessage("You may not ascend until level 99.");
@@ -111,7 +111,7 @@ public class AscendingScript : DialogScriptBase
                     source,
                     "HP",
                     timesToAscend,
-                    HealthGain,
+                    HEALTH_GAIN,
                     beforeBaseHealth);
 
                 break;
@@ -123,7 +123,7 @@ public class AscendingScript : DialogScriptBase
                     source,
                     "MP",
                     timesToAscend,
-                    ManaGain,
+                    MANA_GAIN,
                     beforeBaseMana);
 
                 break;
@@ -133,7 +133,7 @@ public class AscendingScript : DialogScriptBase
                     source,
                     "HP",
                     1,
-                    HealthGain,
+                    HEALTH_GAIN,
                     beforeBaseHealth);
 
                 break;
@@ -143,7 +143,7 @@ public class AscendingScript : DialogScriptBase
                     source,
                     "MP",
                     1,
-                    ManaGain,
+                    MANA_GAIN,
                     beforeBaseMana);
 
                 break;
