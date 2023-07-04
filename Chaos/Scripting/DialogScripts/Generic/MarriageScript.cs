@@ -18,13 +18,13 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 public class MarriageScript : DialogScriptBase
 {
     private readonly IEffectFactory _effectFactory;
-    private readonly IClientRegistry<IWorldClient> ClientRegistry;
-    private readonly IDialogFactory DialogFactory;
     private readonly Animation Animation = new()
     {
         AnimationSpeed = 300,
         TargetAnimation = 36
     };
+    private readonly IClientRegistry<IWorldClient> ClientRegistry;
+    private readonly IDialogFactory DialogFactory;
 
     public MarriageScript(
         Dialog subject,
@@ -38,47 +38,50 @@ public class MarriageScript : DialogScriptBase
         DialogFactory = dialogFactory;
         _effectFactory = effectFactory;
     }
-    
-    public override void OnDisplaying(Aisling source)
-    {
-        switch (Subject.Template.TemplateKey.ToLower())
-        {
-            case "generic_marriageinitial":
-                HandleMarriageInitialization(source);
-                break;
 
-            case "generic_divorceinitial":
-                HandleDivorceInitialization(source);
-                break;
+    private List<IPoint> GenerateValidSpawnPoints(MapTemplate selectedMap)
+    {
+        var validPoints = new List<IPoint>();
+
+        for (var x = 0; x < selectedMap.Width; x++)
+        {
+            for (var y = 0; y < selectedMap.Height; y++)
+            {
+                IPoint point = new Point(x, y);
+
+                if (selectedMap.IsWall(point))
+                    continue;
+
+                validPoints.Add(point);
+            }
         }
+
+        return validPoints;
     }
 
-    public override void OnNext(Aisling source, byte? optionIndex = null)
+    private void HandleDivorce(Aisling source, byte? optionIndex)
     {
-        switch (Subject.Template.TemplateKey.ToLower())
+        source.Legend.TryGetValue("marriage", out var marriageMark);
+
+        if (marriageMark is null)
+            return;
+
+        var markSplit = marriageMark.Text.Split();
+
+        if (optionIndex is 1)
         {
-            case "generic_marriageinitial":
-                HandleMarriage(source);
-                break;
+            source.Legend.Remove("marriage", out _);
+            source.SendOrangeBarMessage($"You are no longer married to {markSplit[1]}.");
+            var partner = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(markSplit[1]));
+            partner?.Aisling.Legend.Remove("marriage", out _);
+            partner?.Aisling.SendOrangeBarMessage($"{source.Name} has divorced you.");
+            Subject.Close(source);
 
-            case "generic_marriagesecondary":
-                HandleMarriageSecondary(source);
-                break;
-
-            case "generic_marriagefinal":
-                HandleMarriageFinal(source, optionIndex);
-                break;
-
-            case "generic_divorceinitial":
-                HandleDivorce(source, optionIndex);
-                break;
+            return;
         }
-    }
 
-    private void HandleMarriageInitialization(Aisling source)
-    {
-        if (!source.HasClass(BaseClass.Priest))
-            Subject.Reply(source, "You must be a priest to perform a marriage ceremony.");
+        source.SendOrangeBarMessage("You have decided not to get a divorce.");
+        Subject.Close(source);
     }
 
     private void HandleDivorceInitialization(Aisling source)
@@ -93,6 +96,7 @@ public class MarriageScript : DialogScriptBase
         if (!Subject.MenuArgs.TryGet<string>(0, out var name))
         {
             Subject.ReplyToUnknownInput(source);
+
             return;
         }
 
@@ -110,12 +114,14 @@ public class MarriageScript : DialogScriptBase
         if (partner.Aisling.Equals(source))
         {
             Subject.Reply(source, "Unfortunately you are not able to marry yourself.");
+
             return;
         }
 
         if (partner.Aisling.Legend.ContainsKey("marriage"))
         {
             Subject.Reply(source, "That Aisling is already married.");
+
             return;
         }
 
@@ -126,45 +132,13 @@ public class MarriageScript : DialogScriptBase
         Subject.Close(source);
     }
 
-    private void HandleMarriageSecondary(Aisling source)
-    {
-        //First partner entered second partners name
-        if (!Subject.MenuArgs.TryGet<string>(1, out var nameTwo))
-        {
-            Subject.ReplyToUnknownInput(source);
-            return;
-        }
-
-        var partnerTwo = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(nameTwo));
-        
-        if ((partnerTwo == null) || !partnerTwo.Aisling.OnSameMapAs(source))
-        {
-            Subject.Reply(
-                source,
-                "It does not look like they are here, I cannot proceed without your partner being here with you.");
-
-            return;
-        }
-
-        if (partnerTwo.Aisling.Name.Equals(source.Name))
-        {
-            Subject.Reply(source, "Unfortunately you are not able to marry yourself.");
-            return;
-        }
-
-        var dialog = DialogFactory.Create("generic_marriagefinal", Subject.DialogSource);
-        dialog.MenuArgs = Subject.MenuArgs;
-        dialog.InjectTextParameters(source.Name);
-        dialog.Display(partnerTwo.Aisling);
-        Subject.Close(source);
-    }
-
     private void HandleMarriageFinal(Aisling source, byte? optionIndex)
     {
         if (!Subject.MenuArgs.TryGet<string>(0, out var nameOne))
         {
             source.SendOrangeBarMessage(DialogString.UnknownInput);
             Subject.Close(source);
+
             return;
         }
 
@@ -174,6 +148,7 @@ public class MarriageScript : DialogScriptBase
         {
             source.SendOrangeBarMessage("It does not look like they are here.");
             Subject.Close(source);
+
             return;
         }
 
@@ -181,6 +156,7 @@ public class MarriageScript : DialogScriptBase
         {
             source.SendOrangeBarMessage(DialogString.UnknownInput);
             Subject.Close(source);
+
             return;
         }
 
@@ -190,6 +166,7 @@ public class MarriageScript : DialogScriptBase
         {
             source.SendOrangeBarMessage("It does not look like they are here.");
             Subject.Close(source);
+
             return;
         }
 
@@ -222,63 +199,105 @@ public class MarriageScript : DialogScriptBase
 
             partnerOne.Aisling.Legend.AddOrAccumulate(markOne);
             partnerTwo.Aisling.Legend.AddOrAccumulate(markTwo);
-            
+
             var effect = _effectFactory.Create("marriage");
             var effect2 = _effectFactory.Create("marriage");
             partnerOne.Aisling.Effects.Apply(partnerOne.Aisling, effect);
             partnerTwo.Aisling.Effects.Apply(partnerTwo.Aisling, effect2);
             var heartList = GenerateValidSpawnPoints(source.MapInstance.Template);
+
             foreach (var point in heartList)
             {
-                source.MapInstance.ShowAnimation(Animation.GetPointAnimation(point));   
+                source.MapInstance.ShowAnimation(Animation.GetPointAnimation(point));
             }
+
+            foreach (var person in ClientRegistry)
+                person.Aisling.SendActiveMessage($"Congratulations newlyweds {partnerOne.Aisling.Name} and {partnerTwo.Aisling.Name}!");
         }
 
         Subject.Close(source);
     }
 
-    
-    private List<IPoint> GenerateValidSpawnPoints(MapTemplate selectedMap)
+    private void HandleMarriageInitialization(Aisling source)
     {
-        var validPoints = new List<IPoint>();
-
-        for (var x = 0; x < selectedMap.Width; x++)
-        {
-            for (var y = 0; y < selectedMap.Height; y++)
-            {
-                IPoint point = new Point(x, y);
-                
-                if (selectedMap.IsWall(point))
-                    continue;
-                
-                validPoints.Add(point);
-            }
-        }
-
-        return validPoints;
+        if (!source.HasClass(BaseClass.Priest))
+            Subject.Reply(source, "You must be a priest to perform a marriage ceremony.");
     }
-    
-    private void HandleDivorce(Aisling source, byte? optionIndex)
+
+    private void HandleMarriageSecondary(Aisling source)
     {
-        source.Legend.TryGetValue("marriage", out var marriageMark);
-
-        if (marriageMark is null)
-            return;
-
-        var markSplit = marriageMark.Text.Split();
-
-        if (optionIndex is 1)
+        //First partner entered second partners name
+        if (!Subject.MenuArgs.TryGet<string>(1, out var nameTwo))
         {
-            source.Legend.Remove("marriage", out _);
-            source.SendOrangeBarMessage($"You are no longer married to {markSplit[1]}.");
-            var partner = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(markSplit[1]));
-            partner?.Aisling.Legend.Remove("marriage", out _);
-            partner?.Aisling.SendOrangeBarMessage($"{source.Name} has divorced you.");
-            Subject.Close(source);
+            Subject.ReplyToUnknownInput(source);
+
             return;
         }
 
-        source.SendOrangeBarMessage("You have decided not to get a divorce.");
+        var partnerTwo = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(nameTwo));
+
+        if ((partnerTwo == null) || !partnerTwo.Aisling.OnSameMapAs(source))
+        {
+            Subject.Reply(
+                source,
+                "It does not look like they are here, I cannot proceed without your partner being here with you.");
+
+            return;
+        }
+
+        if (partnerTwo.Aisling.Name.Equals(source.Name))
+        {
+            Subject.Reply(source, "Unfortunately you are not able to marry yourself.");
+
+            return;
+        }
+
+        var dialog = DialogFactory.Create("generic_marriagefinal", Subject.DialogSource);
+        dialog.MenuArgs = Subject.MenuArgs;
+        dialog.InjectTextParameters(source.Name);
+        dialog.Display(partnerTwo.Aisling);
         Subject.Close(source);
+    }
+
+    public override void OnDisplaying(Aisling source)
+    {
+        switch (Subject.Template.TemplateKey.ToLower())
+        {
+            case "generic_marriageinitial":
+                HandleMarriageInitialization(source);
+
+                break;
+
+            case "generic_divorceinitial":
+                HandleDivorceInitialization(source);
+
+                break;
+        }
+    }
+
+    public override void OnNext(Aisling source, byte? optionIndex = null)
+    {
+        switch (Subject.Template.TemplateKey.ToLower())
+        {
+            case "generic_marriageinitial":
+                HandleMarriage(source);
+
+                break;
+
+            case "generic_marriagesecondary":
+                HandleMarriageSecondary(source);
+
+                break;
+
+            case "generic_marriagefinal":
+                HandleMarriageFinal(source, optionIndex);
+
+                break;
+
+            case "generic_divorceinitial":
+                HandleDivorce(source, optionIndex);
+
+                break;
+        }
     }
 }
