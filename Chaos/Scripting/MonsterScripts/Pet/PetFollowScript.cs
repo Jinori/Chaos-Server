@@ -41,6 +41,10 @@ public sealed class PetFollowScript : MonsterScriptBase
 
         switch (playerDistance)
         {
+            case <= 4:
+                Subject.Wander();
+
+                break;
             case > 4 and < 13:
                 Subject.Pathfind(new Point(Subject.PetOwner.X, Subject.PetOwner.Y));
 

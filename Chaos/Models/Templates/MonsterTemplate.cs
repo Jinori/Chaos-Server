@@ -71,7 +71,7 @@ public sealed record MonsterTemplate : ITemplate, IScripted
     /// <summary>
     ///     The sprite id of the monster minus the offset
     /// </summary>
-    public required ushort Sprite { get; init; }
+    public required ushort Sprite { get; set; }
     /// <summary>
     ///     The base stats of this monster
     /// </summary>

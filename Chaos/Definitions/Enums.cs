@@ -62,12 +62,11 @@ public enum ReligionPrayer
     None,
     First = 1,
     Second = 2,
-    Third = 3, 
+    Third = 3,
     Fourth = 4,
     Fifth = 5,
     End = 6
 }
-
 
 [Flags]
 public enum TargetFilter
@@ -193,6 +192,7 @@ public enum RionaRatQuestStage
     StartedRatQuest = 1,
     CompletedRatQuest = 2
 }
+
 public enum PFQuestStage
 {
     None = 0,
@@ -406,6 +406,7 @@ public enum SickChildStage
     SickChildComplete = 9,
     SickChildKilled = 10,
 }
+
 public enum CrHorror
 {
     None = 0,
@@ -471,7 +472,6 @@ public enum CookFoodProgression
 {
     None = 0,
     NotenoughIngredients = 1,
-    
 }
 
 public enum MeatsStage
@@ -524,6 +524,7 @@ public enum FruitsStage
     strawberry = 6,
     tangerines = 7
 }
+
 public enum FruitsStage2
 {
     none = 0,
@@ -535,6 +536,7 @@ public enum FruitsStage2
     strawberry = 6,
     tangerines = 7
 }
+
 public enum FruitsStage3
 {
     None = 0,
@@ -555,6 +557,7 @@ public enum VegetableStage
     tomato = 3,
     vegetable = 4
 }
+
 public enum VegetableStage2
 {
     none = 0,
@@ -563,6 +566,7 @@ public enum VegetableStage2
     tomato = 3,
     vegetable = 4
 }
+
 public enum VegetableStage3
 {
     none = 0,
@@ -581,6 +585,7 @@ public enum ExtraIngredientsStage
     marinade = 4,
     salt = 5
 }
+
 public enum ExtraIngredientsStage2
 {
     none = 0,
@@ -590,6 +595,7 @@ public enum ExtraIngredientsStage2
     marinade = 4,
     salt = 5
 }
+
 public enum ExtraIngredientsStage3
 {
     none = 0,
@@ -615,6 +621,7 @@ public enum CookingRecipes
     SweetBuns = 1 << 8
 }
 #endregion
+
 public enum FiskSecretStage
 {
     None = 0,
@@ -656,7 +663,6 @@ public enum SwampMazeQuest
     None = 0,
     Start = 1,
     Complete = 2
-
 }
 
 [Flags]
@@ -674,8 +680,7 @@ public enum CurrentMount
     WhiteWolf = 2,
 }
 
-#region  Armor Smithing
-
+#region Armor Smithing
 [Flags]
 public enum ArmorSmithCategories
 {
@@ -877,6 +882,7 @@ public enum WeaponSmithingRecipes : ulong
     HybrasylShield = 1L << 55
 }
 #endregion
+
 [Flags]
 public enum EnchantingRecipes : ulong
 {
@@ -1007,7 +1013,6 @@ public enum JewelcraftingRecipes : ulong
     SeaNecklace = 1L << 60,
     WindNecklace = 1L << 61,
     EarthNecklace = 1L << 62
-    
 }
 
 [Flags]
@@ -1060,13 +1065,23 @@ public enum AlchemyRecipes : ulong
     StrongRejuvenationPotion = 1L << 34,
 }
 
-
 public enum JoinReligionQuest
 {
-    None = 0, 
+    None = 0,
     MiraelisQuest = 1,
     SkandaraQuest = 2,
     TheseleneQuest = 3,
     SerendaelQuest = 4,
     JoinReligionComplete = 5
+}
+
+public enum SummonChosenPet
+{
+    None = 0,
+    Gloop = 1,
+    Bunny = 2,
+    Faerie = 3,
+    Dog = 4,
+    Ducklings = 5,
+    Cat = 6
 }
