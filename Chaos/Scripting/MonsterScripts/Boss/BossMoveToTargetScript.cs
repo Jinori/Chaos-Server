@@ -5,7 +5,7 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss;
 
-public class BossMoveToTargetScript : MonsterScriptBase
+public sealed class BossMoveToTargetScript : MonsterScriptBase
 {
     /// <inheritdoc />
     public BossMoveToTargetScript(Monster subject)

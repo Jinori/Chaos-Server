@@ -22,6 +22,8 @@ public class QuakeEffect : ContinuousAnimationEffectBase
         TargetAnimation = 55
     };
 
+    private Creature SourceOfEffect { get; set; } = null!;
+    
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(20000));
     protected IApplyDamageScript ApplyDamageScript { get; }
@@ -61,12 +63,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
                 Subject,
                 target,
                 this,
-                Subject.StatSheet.Level +
-                (Subject.StatSheet.EffectiveStr +
-                Subject.StatSheet.EffectiveInt +
-                Subject.StatSheet.EffectiveWis +
-                Subject.StatSheet.EffectiveCon +
-                Subject.StatSheet.EffectiveDex), 
+                SourceOfEffect.StatSheet.Level + SourceOfEffect.StatSheet.EffectiveInt,
                 Element.None);
 
             target.ShowHealth();
@@ -81,6 +78,8 @@ public class QuakeEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     public override bool ShouldApply(Creature source, Creature target)
     {
+        SourceOfEffect = source;
+        
         if (!target.IsFriendlyTo(source))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is not an ally.");

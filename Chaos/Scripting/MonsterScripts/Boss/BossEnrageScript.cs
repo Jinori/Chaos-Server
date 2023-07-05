@@ -1,34 +1,46 @@
+using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss;
 
-public class BossEnrageScript : MonsterScriptBase
+public sealed class BossEnrageScript : MonsterScriptBase
 {
     private bool Bonus30Applied;
     private bool Bonus50Applied;
-
     private bool Bonus75Applied;
+    private readonly IMonsterFactory MonsterFactory;
 
-    protected Animation UpgradeAnimation { get; } = new()
+    private Animation UpgradeAnimation { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 189
     };
 
     /// <inheritdoc />
-    public BossEnrageScript(Monster subject)
-        : base(subject) { }
+    public BossEnrageScript(Monster subject, IMonsterFactory monsterFactory)
+        : base(subject) =>
+        MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+            //Give Bonuses
             var attrib = new Attributes { AtkSpeedPct = 25 };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+            //Spawn Monsters
+            var rectange = new Rectangle(Subject, 4, 4);
+            for (var i = 0; i <= 3; i++)
+            {
+                var point = rectange.GetRandomPoint();
+                var mobs = MonsterFactory.Create("crypt_bat", Subject.MapInstance, point);
+                Subject.MapInstance.AddObject(mobs, point);   
+            }
         }
 
         if (!Bonus50Applied && (Subject.StatSheet.HealthPercent <= 50))
