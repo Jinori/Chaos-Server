@@ -29,7 +29,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
     protected Animation CreatureAnimation { get; } = new()
     {
         AnimationSpeed = 100,
-        TargetAnimation = 135
+        TargetAnimation = 55
     };
     /// <inheritdoc />
     protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(20);
@@ -45,7 +45,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
     public override void OnApplied() =>
         AislingSubject?.Client.SendServerMessage(
             ServerMessageType.OrangeBar1,
-            "Your body is empowered with Earth.");
+            "A quake has started around you.");
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
@@ -61,8 +61,13 @@ public class QuakeEffect : ContinuousAnimationEffectBase
                 Subject,
                 target,
                 this,
-                Subject.StatSheet.Level + Subject.StatSheet.EffectiveInt,
-                Element.Earth);
+                Subject.StatSheet.Level +
+                (Subject.StatSheet.EffectiveStr +
+                Subject.StatSheet.EffectiveInt +
+                Subject.StatSheet.EffectiveWis +
+                Subject.StatSheet.EffectiveCon +
+                Subject.StatSheet.EffectiveDex), 
+                Element.None);
 
             target.ShowHealth();
             target.Animate(CreatureAnimation);
@@ -71,21 +76,21 @@ public class QuakeEffect : ContinuousAnimationEffectBase
 
     public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(
         ServerMessageType.OrangeBar1,
-        "Your are no longer empowered with Earth.");
+        "Quake has worn off.");
 
     /// <inheritdoc />
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (!target.IsFriendlyTo(source))
         {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target cannot be empowered.");
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is not an ally.");
 
             return false;
         }
 
         if (target.Effects.Contains("quake"))
         {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has already been empowered with Earth.");
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has already has Quake.");
 
             return false;
         }
