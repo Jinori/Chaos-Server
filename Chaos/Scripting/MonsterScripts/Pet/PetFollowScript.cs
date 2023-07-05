@@ -17,10 +17,7 @@ public sealed class PetFollowScript : MonsterScriptBase
 
         if (!ShouldMove || (Target != null))
             return;
-
-        const double TIME_SPAN_SECONDS = 3;
-        var now = DateTime.UtcNow;
-
+        
         if (Subject.PetOwner is null)
             return;
 
@@ -30,12 +27,6 @@ public sealed class PetFollowScript : MonsterScriptBase
 
             return;
         }
-
-        var item = Subject.MapInstance.GetEntitiesWithinRange<GroundItem>(Subject.PetOwner)
-                          .FirstOrDefault(x => now - x.Creation > TimeSpan.FromSeconds(TIME_SPAN_SECONDS));
-
-        if (item is not null)
-            return;
 
         var playerDistance = Subject.PetOwner.DistanceFrom(Subject);
 
@@ -57,4 +48,18 @@ public sealed class PetFollowScript : MonsterScriptBase
 
         Subject.MoveTimer.Reset();
     }
+    
+    /*
+        DateTime now;
+        private const bool PET_LOOT = false;
+        const double TIME_SPAN_SECONDS = 3;
+        if (PET_LOOT)
+        {
+            var item = Subject.MapInstance.GetEntitiesWithinRange<GroundItem>(Subject.PetOwner)
+                              .FirstOrDefault(x => now - x.Creation > TimeSpan.FromSeconds(TIME_SPAN_SECONDS));
+
+            if (item is not null)
+                return;   
+        }
+*/
 }
