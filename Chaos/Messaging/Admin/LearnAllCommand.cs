@@ -39,14 +39,14 @@ public class LearnAllCommand : ICommand<Aisling>
                 BaseClass.Wizard, 
                 (
                     new[] { "wieldmagusstaff", "rumination" }, 
-                    new[] { "arcaneBlast", "arcaneBolt", "ardathar", "athar", "atharlamh", "atharmeall", "beagathar", "beagatharlamh", "morathar", "ardcreag", "beagcreag", "beagcreaglamh", "creag", "creaglamh", "creagmeall", "morcreag", "ardcradh", "beagcradh", "cradh", "morcradh", "beagPramh", "pramh", "ardsal", "beagsal", "beagsallamh", "morsal", "sal", "sallamh", "salmeall", "ardsrad", "beagsrad", "beagsradlamh", "morsrad", "srad", "sradlamh", "sradmeall" } 
+                    new[] { "arcaneBlast", "arcaneBolt", "ardathar", "athar", "atharlamh", "atharmeall", "beagathar", "beagatharlamh", "morathar", "ardcreag", "beagcreag", "beagcreaglamh", "creag", "creaglamh", "creagmeall", "morcreag", "ardcradh", "beagcradh", "cradh", "morcradh", "beagPramh", "pramh", "ardsal", "beagsal", "beagsallamh", "morsal", "sal", "sallamh", "salmeall", "ardsrad", "beagsrad", "beagsradlamh", "morsrad", "srad", "sradlamh", "sradmeall","homeWizard" } 
                 )
             },
             { 
                 BaseClass.Priest, 
                 (
                     new[] { "wieldholystaff", "summonpet" }, 
-                    new[] { "aoardcradh", "aobeagcradh", "aocradh", "aomorcradh", "aopoison", "aosith", "dinarcoli", "ardnaomhaite", "armachd", "beagnaomhaite", "beannaich", "mornaomhaite", "motivate", "naomhaite", "zap", "poison", "preventAffliction", "suain", "ardioc", "beagIoc", "beagIocComlha", "ioc", "IocComlha", "morioc", "morIocComlha", "nuadhaich", "salvation", "beothaich", "revive", "selfrevive" } 
+                    new[] { "aoardcradh", "aobeagcradh", "aocradh", "aomorcradh", "aopoison", "aosith", "dinarcoli", "ardnaomhaite", "armachd", "beagnaomhaite", "beannaich", "mornaomhaite", "motivate", "naomhaite", "zap", "poison", "preventAffliction", "suain", "ardioc", "beagIoc", "beagIocComlha", "ioc", "IocComlha", "morioc", "morIocComlha", "nuadhaich", "salvation", "beothaich", "revive", "selfrevive", "fasdeireas", "morfasdeireas","quake","morbeannaich","homePriest" } 
                 )
             },
             { 

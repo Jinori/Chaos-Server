@@ -4,7 +4,7 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
-public class BeannaichEffect : NonOverwritableEffectBase
+public class MorFasDeireasEffect : NonOverwritableEffectBase
 {
     protected override Animation? Animation { get; } = new()
     {
@@ -13,13 +13,13 @@ public class BeannaichEffect : NonOverwritableEffectBase
     };
     protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
     {
-        "beannaich",
-        "mor beannaich"
+        "fas deireas",
+        "mor fas deireas"
     };
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
-    public override byte Icon => 105;
-    public override string Name => "beannaich";
+    public override byte Icon => 106;
+    public override string Name => "mor fas deireas";
     protected override byte? Sound => 140;
 
     public override void OnApplied()
@@ -28,12 +28,12 @@ public class BeannaichEffect : NonOverwritableEffectBase
 
         var attributes = new Attributes
         {
-            Hit = 10
+            Dmg = 12
         };
 
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Hit increased.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage increased.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -42,11 +42,11 @@ public class BeannaichEffect : NonOverwritableEffectBase
     {
         var attributes = new Attributes
         {
-            Hit = 10
+            Dmg = 12
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Hit has returned to normal.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage has returned to normal.");
     }
 }

@@ -4,7 +4,7 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
-public class BeannaichEffect : NonOverwritableEffectBase
+public class MorBeannaichEffect : NonOverwritableEffectBase
 {
     protected override Animation? Animation { get; } = new()
     {
@@ -19,7 +19,7 @@ public class BeannaichEffect : NonOverwritableEffectBase
 
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
     public override byte Icon => 105;
-    public override string Name => "beannaich";
+    public override string Name => "mor beannaich";
     protected override byte? Sound => 140;
 
     public override void OnApplied()
@@ -28,7 +28,7 @@ public class BeannaichEffect : NonOverwritableEffectBase
 
         var attributes = new Attributes
         {
-            Hit = 10
+            Hit = 20
         };
 
         Subject.StatSheet.AddBonus(attributes);
@@ -42,7 +42,7 @@ public class BeannaichEffect : NonOverwritableEffectBase
     {
         var attributes = new Attributes
         {
-            Hit = 10
+            Hit = 20
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

@@ -11,7 +11,7 @@ public abstract class NonOverwritableEffectBase : EffectBase
     protected abstract byte? Sound { get; }
 
     protected virtual string GetAlreadyAffectedMessage(Creature target, IEffect existingEffect) =>
-        $"{target.Name} is already affected by {existingEffect.Name} Effect.";
+        $"{target.Name} is already affected by {existingEffect.Name}.";
 
     /// <inheritdoc />
     public override void OnApplied()

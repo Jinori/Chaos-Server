@@ -680,7 +680,7 @@ public class ReligionScriptBase : DialogScriptBase
                 break;
         }
 
-        source.SendActiveMessage($"{deity} wants you to retreive (3) Essence of {deity}.");
+        source.SendActiveMessage($"{deity} is requesting (3) Essence of {deity}.");
     }
 
     public void TransferFaith(Aisling source, string deity)
