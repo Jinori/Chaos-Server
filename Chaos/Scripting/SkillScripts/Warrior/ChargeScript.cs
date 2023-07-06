@@ -41,6 +41,8 @@ public class ChargeScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public int? ManaCost { get; init; }
     /// <inheritdoc />
+    public bool? MoreDmgLowTargetHp { get; init; }
+    /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }

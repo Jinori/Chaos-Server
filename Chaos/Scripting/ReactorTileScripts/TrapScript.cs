@@ -124,6 +124,8 @@ If this reactor was created through a script, you must specify the owner in the 
     public bool MustHaveTargets { get; init; } = true;
     public bool ExcludeSourcePoint { get; init; }
     public int? BaseDamage { get; init; }
+    /// <inheritdoc />
+    public bool? MoreDmgLowTargetHp { get; init; }
     public Stat? DamageStat { get; init; }
     public decimal? DamageStatMultiplier { get; init; }
     public decimal? PctHpDamage { get; init; }

@@ -44,6 +44,8 @@ public class SapStabScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public int? ManaReplenish { get; init; }
     /// <inheritdoc />
+    public bool? MoreDmgLowTargetHp { get; init; }
+    /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }

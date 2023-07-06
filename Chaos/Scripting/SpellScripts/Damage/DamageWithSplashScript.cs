@@ -66,6 +66,8 @@ public class DamageWithSplashScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public int? BaseDamage { get; init; }
     /// <inheritdoc />
+    public bool? MoreDmgLowTargetHp { get; init; }
+    /// <inheritdoc />
     public Stat? DamageStat { get; init; }
     /// <inheritdoc />
     public decimal? DamageStatMultiplier { get; init; }

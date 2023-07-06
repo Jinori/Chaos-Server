@@ -25,7 +25,8 @@ public class DamageComponent : IComponent
                 options.BaseDamage,
                 options.PctHpDamage,
                 options.DamageStat,
-                options.DamageStatMultiplier);
+                options.DamageStatMultiplier,
+                options.MoreDmgLowTargetHp);
 
             if (damage <= 0)
                 continue;
@@ -45,12 +46,20 @@ public class DamageComponent : IComponent
         int? baseDamage = null,
         decimal? pctHpDamage = null,
         Stat? damageStat = null,
-        decimal? damageStatMultiplier = null
+        decimal? damageStatMultiplier = null,
+        bool? moreDmgLowTargetHp = null
     )
     {
         var finalDamage = baseDamage ?? 0;
 
-        finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0);
+        if (moreDmgLowTargetHp is true)
+        {
+            var healthPercentFactor = 1 + (1 - target.StatSheet.HealthPercent / 100m);
+
+            finalDamage += Convert.ToInt32(
+                MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0) * healthPercentFactor);
+        } else
+            finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0);
 
         if (!damageStat.HasValue)
             return finalDamage;
@@ -74,6 +83,7 @@ public class DamageComponent : IComponent
         Stat? DamageStat { get; init; }
         decimal? DamageStatMultiplier { get; init; }
         Element? Element { get; init; }
+        bool? MoreDmgLowTargetHp { get; init; }
         decimal? PctHpDamage { get; init; }
         IScript SourceScript { get; init; }
     }

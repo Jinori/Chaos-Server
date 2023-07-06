@@ -9,10 +9,9 @@ namespace Chaos.Messaging.Admin;
 [Command("learnall")]
 public class LearnAllCommand : ICommand<Aisling>
 {
+    private readonly Dictionary<BaseClass, (string[] skills, string[] spells)> _classSkillsAndSpells;
     private readonly ISkillFactory _skillFactory;
     private readonly ISpellFactory _spellFactory;
-
-    private readonly Dictionary<BaseClass, (string[] skills, string[] spells)> _classSkillsAndSpells;
 
     public LearnAllCommand(ISpellFactory spellFactory, ISkillFactory skillFactory)
     {
@@ -21,39 +20,74 @@ public class LearnAllCommand : ICommand<Aisling>
 
         _classSkillsAndSpells = new Dictionary<BaseClass, (string[] skills, string[] spells)>
         {
-            { 
-                BaseClass.Warrior, 
+            {
+                BaseClass.Warrior,
                 (
-                    new[] { "aoBeagSuain", "beagSuain", "charge", "cleave", "clobber", "crasher", "execute", "flank", "MadSoul", "sever", "slash", "slaughter", "Thrash", "wallop", "windblade", "pulverize", "tempestblade","strike" }, 
-                    new[] { "asgallfaileas", "battlecry", "rage", "warcry", "wrath" } 
+                    new[]
+                    {
+                        "aoBeagSuain", "beagSuain", "charge", "cleave", "clobber", "crasher", "execute", "flank", "MadSoul", "sever",
+                        "slash", "slaughter", "Thrash", "wallop", "windblade", "pulverize", "tempestblade", "strike"
+                    },
+                    new[] { "asgallfaileas", "battlecry", "rage", "warcry", "wrath" }
                 )
             },
-            { 
-                BaseClass.Rogue, 
+            {
+                BaseClass.Rogue,
                 (
-                    new[] { "amnesia", "assault", "birthdaySuit", "midnightSlash", "pierce", "PoisonBomb", "sapNeedle", "shadowFigure", "smokescreen", "stab", "stabAndTwist", "stabTwice", "studyCreature", "throwSmokeBomb", "throwSurigum" }, 
-                    new[] { "bolttrap", "coiledBolttrap", "detectTraps", "focus", "hide", "maidentrap", "needletrap", "see_hide", "springtrap", "stilettotrap" } 
+                    new[]
+                    {
+                        "assassinStrike", "amnesia", "assault", "birthdaySuit", "midnightSlash", "pierce", "PoisonBomb", "sapNeedle",
+                        "shadowFigure", "smokescreen", "stab", "stabAndTwist", "stabTwice", "studyCreature", "throwSmokeBomb",
+                        "throwSurigum"
+                    },
+                    new[]
+                    {
+                        "bolttrap", "coiledBolttrap", "detectTraps", "focus", "hide", "maidentrap", "needletrap", "see_hide", "springtrap",
+                        "stilettotrap"
+                    }
                 )
             },
-            { 
-                BaseClass.Wizard, 
+            {
+                BaseClass.Wizard,
                 (
-                    new[] { "wieldmagusstaff", "rumination" }, 
-                    new[] { "arcaneBlast", "arcaneBolt", "ardathar", "athar", "atharlamh", "atharmeall", "beagathar", "beagatharlamh", "morathar", "ardcreag", "beagcreag", "beagcreaglamh", "creag", "creaglamh", "creagmeall", "morcreag", "ardcradh", "beagcradh", "cradh", "morcradh", "beagPramh", "pramh", "ardsal", "beagsal", "beagsallamh", "morsal", "sal", "sallamh", "salmeall", "ardsrad", "beagsrad", "beagsradlamh", "morsrad", "srad", "sradlamh", "sradmeall","homeWizard" } 
+                    new[] { "wieldmagusstaff", "rumination" },
+                    new[]
+                    {
+                        "arcaneBlast", "arcaneBolt", "ardathar", "athar", "atharlamh", "atharmeall", "beagathar", "beagatharlamh",
+                        "morathar", "ardcreag", "beagcreag", "beagcreaglamh", "creag", "creaglamh", "creagmeall", "morcreag", "ardcradh",
+                        "beagcradh", "cradh", "morcradh", "beagPramh", "pramh", "ardsal", "beagsal", "beagsallamh", "morsal", "sal",
+                        "sallamh", "salmeall", "ardsrad", "beagsrad", "beagsradlamh", "morsrad", "srad", "sradlamh", "sradmeall",
+                        "homeWizard"
+                    }
                 )
             },
-            { 
-                BaseClass.Priest, 
+            {
+                BaseClass.Priest,
                 (
-                    new[] { "wieldholystaff", "summonpet" }, 
-                    new[] { "aoardcradh", "aobeagcradh", "aocradh", "aomorcradh", "aopoison", "aosith", "dinarcoli", "ardnaomhaite", "armachd", "beagnaomhaite", "beannaich", "mornaomhaite", "motivate", "naomhaite", "zap", "poison", "preventAffliction", "suain", "ardioc", "beagIoc", "beagIocComlha", "ioc", "IocComlha", "morioc", "morIocComlha", "nuadhaich", "salvation", "beothaich", "revive", "selfrevive", "fasdeireas", "morfasdeireas","quake","morbeannaich","homePriest" } 
+                    new[] { "wieldholystaff", "summonpet" },
+                    new[]
+                    {
+                        "aoardcradh", "aobeagcradh", "aocradh", "aomorcradh", "aopoison", "aosith", "dinarcoli", "ardnaomhaite", "armachd",
+                        "beagnaomhaite", "beannaich", "mornaomhaite", "motivate", "naomhaite", "zap", "poison", "preventAffliction",
+                        "suain", "ardioc", "beagIoc", "beagIocComlha", "ioc", "IocComlha", "morioc", "morIocComlha", "nuadhaich",
+                        "salvation", "beothaich", "revive", "selfrevive", "fasdeireas", "morfasdeireas", "quake", "morbeannaich",
+                        "homePriest"
+                    }
                 )
             },
-            { 
-                BaseClass.Monk, 
+            {
+                BaseClass.Monk,
                 (
-                    new[] { "Airpunch", "ambush", "clawfist", "doublePunch", "dracotailkick", "eaglestrike", "firepunch", "highkick", "kick", "mantiskick", "poisonpunch", "punch", "rockpunch", "roundhousekick", "tripleKick", "waterpunch", "wolfFangFist" }, 
-                    new[] { "dodge", "earthenstance", "gentleTouch", "goad", "howl", "innerFire", "laststand", "miststance", "smokestance", "taunt", "thunderstance" } 
+                    new[]
+                    {
+                        "Airpunch", "ambush", "clawfist", "doublePunch", "dracotailkick", "eaglestrike", "firepunch", "highkick", "kick",
+                        "mantiskick", "poisonpunch", "punch", "rockpunch", "roundhousekick", "tripleKick", "waterpunch", "wolfFangFist"
+                    },
+                    new[]
+                    {
+                        "dodge", "earthenstance", "gentleTouch", "goad", "howl", "innerFire", "laststand", "miststance", "smokestance",
+                        "taunt", "thunderstance"
+                    }
                 )
             }
         };
@@ -65,6 +99,7 @@ public class LearnAllCommand : ICommand<Aisling>
             return default;
 
         AddSkillsAndSpells(source, skillsAndSpells.skills, skillsAndSpells.spells);
+
         return default;
     }
 
