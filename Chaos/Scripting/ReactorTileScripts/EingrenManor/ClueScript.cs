@@ -81,7 +81,7 @@ public class ClueScript : ReactorTileScriptBase
 
                     aisling.Client.SendServerMessage(
                         ServerMessageType.OrangeBar1,
-                        "You've received the fourth and final clue!");
+                        "You've received the fourth clue!");
                 }
 
                 break;
@@ -109,7 +109,14 @@ public class ClueScript : ReactorTileScriptBase
                     var allMembersHaveQuestFlag = aisling.Group.All(
                         member => member.Trackers.Flags.HasFlag(ManorNecklaceStage.AcceptedQuest) && member.WithinLevelRange(source));
 
-                    if (allMembersHaveQuestFlag)
+                    // Check if all members have all four clues
+                    var allMembersHaveAllClues = aisling.Group.All(
+                        member => member.Inventory.HasCount("Clue One", 1)
+                                  && member.Inventory.HasCount("Clue Two", 1)
+                                  && member.Inventory.HasCount("Clue Three", 1)
+                                  && member.Inventory.HasCount("Clue Four", 1));
+
+                    if (allMembersHaveQuestFlag && allMembersHaveAllClues)
                     {
                         var monster = _monsterFactory.Create("airphasedGhost", aisling.MapInstance, new Point(3, 6));
                         monster.AggroRange = 10;
@@ -148,7 +155,7 @@ public class ClueScript : ReactorTileScriptBase
                         // Send a message to the Aisling
                         aisling.Client.SendServerMessage(
                             ServerMessageType.OrangeBar1,
-                            "Make sure everyone is within level range and has all clues.");
+                            "Make sure everyone is within level range and has all four clues.");
 
                         // Warp the source back
                         var point = source.DirectionalOffset(source.Direction.Reverse());

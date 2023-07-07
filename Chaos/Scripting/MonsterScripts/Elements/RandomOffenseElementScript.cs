@@ -3,7 +3,7 @@ using Chaos.Common.Utilities;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts;
+namespace Chaos.Scripting.MonsterScripts.Elements;
 
 public class RandomOffenseElementScript : ConfigurableMonsterScriptBase
 {
