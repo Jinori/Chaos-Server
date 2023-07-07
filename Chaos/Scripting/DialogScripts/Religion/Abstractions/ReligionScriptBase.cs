@@ -39,12 +39,12 @@ public class ReligionScriptBase : DialogScriptBase
     private static readonly Dictionary<Rank, List<string>> RoleOptions = new()
     {
         { Rank.None, new List<string> { "Join the Temple", "The Gods" } },
-        { Rank.Worshipper, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith" } },
-        { Rank.Acolyte, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith" } },
-        { Rank.Emissary, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "The Gods", "Leave Faith" } },
-        { Rank.Seer, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "The Gods", "Leave Faith" } },
-        { Rank.Favor, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "The Gods", "Leave Faith" } },
-        { Rank.Champion, new List<string> { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "The Gods", "Leave Faith" } }
+        { Rank.Worshipper, new List<string> { "Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith" } },
+        { Rank.Acolyte, new List<string> { "Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith" } },
+        { Rank.Emissary, new List<string> { "Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith" } },
+        { Rank.Seer, new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith" } },
+        { Rank.Favor, new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith" } },
+        { Rank.Champion, new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith" } }
     };
 
     #region Prayers
@@ -547,7 +547,7 @@ public class ReligionScriptBase : DialogScriptBase
 
         // Get all options.
         var allOptions = new List<string>
-            { "Pray", "Transfer Faith", "Scroll of the Temple", "Hold Mass", "Join the Temple", "Leave Faith" };
+            { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "Join the Temple", "Leave Faith" };
 
         // Remove the options that are not available for this rank.
         foreach (var option in allOptions.Except(RoleOptions[rank]))

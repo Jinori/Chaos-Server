@@ -115,6 +115,12 @@ public class ManorNecklaceScript : DialogScriptBase
 
                         break;
                     }
+                    case ManorNecklaceStage.AcceptedQuest:
+                        Subject.Reply(source, "Come back when you've found the necklace, please!");
+
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
 
                 break;

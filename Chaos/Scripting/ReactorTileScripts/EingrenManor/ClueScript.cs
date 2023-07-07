@@ -1,6 +1,7 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
@@ -25,7 +26,7 @@ public class ClueScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        var hasStage = aisling.Trackers.Enums.TryGetValue(out ManorNecklaceStage stage);
+        aisling.Trackers.Enums.TryGetValue(out ManorNecklaceStage stage);
 
         switch (Subject.MapInstance.Name)
         {
@@ -89,50 +90,69 @@ public class ClueScript : ReactorTileScriptBase
             {
                 if (stage == ManorNecklaceStage.AcceptedQuest)
                 {
-                    var monster = _monsterFactory.Create("phasedGhost", aisling.MapInstance, new Point(3, 6));
-                    monster.AggroRange = 10;
-                    monster.Experience = 2000;
-                    var monster2 = _monsterFactory.Create("phasedGhost", aisling.MapInstance, new Point(3, 3));
-                    monster2.AggroRange = 10;
-                    monster2.Experience = 2000;
-                    var monster3 = _monsterFactory.Create("phasedGhost", aisling.MapInstance, new Point(5, 3));
-                    monster3.AggroRange = 10;
-                    monster3.Experience = 2000;
-                    var monster4 = _monsterFactory.Create("phasedGhost", aisling.MapInstance, new Point(5, 5));
-                    monster4.AggroRange = 10;
-                    monster4.Experience = 2000;
-                    aisling.MapInstance.AddObject(monster, monster);
-                    aisling.MapInstance.AddObject(monster2, monster2);
-                    aisling.MapInstance.AddObject(monster3, monster3);
-                    aisling.MapInstance.AddObject(monster4, monster4);
-
-                    var group = aisling.Group?.Where(x => x.WithinRange(aisling)).ToList();
-
-                    if (group is { Count: > 1 })
-                        foreach (var member in group)
-                        {
-                            var hasNeck = member.Trackers.Enums.TryGetValue(out ManorNecklaceStage neckStage);
-
-                            if (neckStage == ManorNecklaceStage.AcceptedQuest)
-                            {
-                                var necklace = _itemFactory.Create("zulerasnecklace");
-                                member.TryGiveItem(ref necklace);
-                                member.Trackers.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
-
-                                member.Client.SendServerMessage(
-                                    ServerMessageType.OrangeBar1,
-                                    "You've found Zulera's necklace but have disturbed some ghosts.");
-                            }
-                        }
-                    else
+                    // Check if the group is null or has only one member
+                    if (aisling.Group is null || aisling.Group.Any(x => !x.OnSameMapAs(aisling) || !x.WithinRange(aisling)))
                     {
-                        var necklace = _itemFactory.Create("zulerasnecklace");
-                        aisling.TryGiveItem(ref necklace);
-                        aisling.Trackers.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
-
+                        // Send a message to the Aisling
                         aisling.Client.SendServerMessage(
                             ServerMessageType.OrangeBar1,
-                            "You've found Zulera's necklace but have disturbed some ghosts.");
+                            "Make sure you are grouped or your group is near you.");
+
+                        // Warp the source back
+                        var point = source.DirectionalOffset(source.Direction.Reverse());
+                        source.WarpTo(point);
+
+                        return;
+                    }
+
+                    // Check if all members of the group have the quest flag and are within level range
+                    var allMembersHaveQuestFlag = aisling.Group.All(
+                        member => member.Trackers.Flags.HasFlag(ManorNecklaceStage.AcceptedQuest) && member.WithinLevelRange(source));
+
+                    if (allMembersHaveQuestFlag)
+                    {
+                        var monster = _monsterFactory.Create("airphasedGhost", aisling.MapInstance, new Point(3, 6));
+                        monster.AggroRange = 10;
+                        monster.Experience = 2000;
+                        var monster2 = _monsterFactory.Create("earthphasedGhost", aisling.MapInstance, new Point(3, 3));
+                        monster2.AggroRange = 10;
+                        monster2.Experience = 2000;
+                        var monster3 = _monsterFactory.Create("waterphasedGhost", aisling.MapInstance, new Point(5, 3));
+                        monster3.AggroRange = 10;
+                        monster3.Experience = 2000;
+                        var monster4 = _monsterFactory.Create("firephasedGhost", aisling.MapInstance, new Point(5, 5));
+                        monster4.AggroRange = 10;
+                        monster4.Experience = 2000;
+                        aisling.MapInstance.AddObject(monster, monster);
+                        aisling.MapInstance.AddObject(monster2, monster2);
+                        aisling.MapInstance.AddObject(monster3, monster3);
+                        aisling.MapInstance.AddObject(monster4, monster4);
+
+                        foreach (var member in aisling.Group)
+                        {
+                            var necklace = _itemFactory.Create("zulerasnecklace");
+                            member.TryGiveItem(ref necklace);
+                            member.Trackers.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
+
+                            member.Client.SendServerMessage(
+                                ServerMessageType.OrangeBar1,
+                                "You've found Zulera's necklace! Defeat the ghosts to cleanse the curse!");
+
+                            member.Inventory.RemoveByTemplateKey("clue1");
+                            member.Inventory.RemoveByTemplateKey("clue2");
+                            member.Inventory.RemoveByTemplateKey("clue3");
+                            member.Inventory.RemoveByTemplateKey("clue4");
+                        }
+                    } else
+                    {
+                        // Send a message to the Aisling
+                        aisling.Client.SendServerMessage(
+                            ServerMessageType.OrangeBar1,
+                            "Make sure everyone is within level range and has all clues.");
+
+                        // Warp the source back
+                        var point = source.DirectionalOffset(source.Direction.Reverse());
+                        source.WarpTo(point);
                     }
                 }
 

@@ -9,7 +9,6 @@ namespace Chaos.Scripting.SkillScripts;
 
 public class SummonPetScript : ConfigurableSkillScriptBase
 {
-    private const string MONSTER_KEY = "Pet";
     private readonly IMonsterFactory _monsterFactory;
 
     /// <inheritdoc />
@@ -27,15 +26,15 @@ public class SummonPetScript : ConfigurableSkillScriptBase
         var monsters = context.Source.MapInstance.GetEntities<Monster>();
 
         foreach (var monster in monsters)
-            if (string.Equals(monster.Template.TemplateKey, MONSTER_KEY, StringComparison.OrdinalIgnoreCase)
-                && monster.Name.Contains(context.Source.Name))
+            if (monster.Name.Contains(context.Source.Name))
                 monster.MapInstance.RemoveObject(monster);
     }
 
     private void SpawnNewPet(ActivationContext context)
     {
-        var newMonster = _monsterFactory.Create(MONSTER_KEY, context.SourceMap, context.SourcePoint);
-        newMonster.Name = $"{context.Source.Name}'s {MONSTER_KEY}";
+        context.Source.Trackers.Enums.TryGetValue(out SummonChosenPet petKey);
+        var newMonster = _monsterFactory.Create(petKey + "pet", context.SourceMap, context.SourcePoint);
+        newMonster.Name = $"{context.Source.Name}'s {petKey}";
         newMonster.PetOwner = context.SourceAisling;
 
         if (newMonster.PetOwner != null)
@@ -53,11 +52,6 @@ public class SummonPetScript : ConfigurableSkillScriptBase
                 MaximumMp = (int)newMonster.PetOwner.StatSheet.EffectiveMaximumMp / 2
             };
 
-            context.Source.Trackers.Enums.TryGetValue(out SummonChosenPet pet);
-
-            if (SpriteDictionary.SpriteIds.TryGetValue(pet, out var id))
-                newMonster.Template.Sprite = (ushort)id;
-
             newMonster.StatSheet.SetLevel(newMonster.PetOwner.StatSheet.Level);
             newMonster.StatSheet.AddBonus(attrib);
             newMonster.StatSheet.SetHealthPct(100);
@@ -65,19 +59,5 @@ public class SummonPetScript : ConfigurableSkillScriptBase
         }
 
         context.Source.MapInstance.AddObject(newMonster, new Point(context.Source.X, context.Source.Y));
-    }
-
-    public static class SpriteDictionary
-    {
-        public static readonly Dictionary<SummonChosenPet, int> SpriteIds = new()
-        {
-            { SummonChosenPet.None, 1 },
-            { SummonChosenPet.Gloop, 845 },
-            { SummonChosenPet.Bunny, 846 },
-            { SummonChosenPet.Faerie, 848 },
-            { SummonChosenPet.Dog, 849 },
-            { SummonChosenPet.Ducklings, 839 },
-            { SummonChosenPet.Cat, 841 }
-        };
     }
 }
