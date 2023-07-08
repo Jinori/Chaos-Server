@@ -86,11 +86,7 @@ public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonste
     }
 
     /// <inheritdoc />
-    public virtual void OnClicked(Aisling source)
-    {
-        source.SendOrangeBarMessage($"{Subject.Name}");
-        
-    }
+    public virtual void OnClicked(Aisling source) => source.SendOrangeBarMessage($"{Subject.Name}");
 
     /// <inheritdoc />
     public virtual void OnDeath() { }

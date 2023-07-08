@@ -8,10 +8,10 @@ namespace Chaos.Scripting.MonsterScripts.Boss;
 
 public sealed class BossEnrageScript : MonsterScriptBase
 {
+    private readonly IMonsterFactory MonsterFactory;
     private bool Bonus30Applied;
     private bool Bonus50Applied;
     private bool Bonus75Applied;
-    private readonly IMonsterFactory MonsterFactory;
 
     private Animation UpgradeAnimation { get; } = new()
     {
@@ -35,11 +35,12 @@ public sealed class BossEnrageScript : MonsterScriptBase
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
             var rectange = new Rectangle(Subject, 4, 4);
+
             for (var i = 0; i <= 3; i++)
             {
                 var point = rectange.GetRandomPoint();
                 var mobs = MonsterFactory.Create("crypt_bat", Subject.MapInstance, point);
-                Subject.MapInstance.AddObject(mobs, point);   
+                Subject.MapInstance.AddObject(mobs, point);
             }
         }
 

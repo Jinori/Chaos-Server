@@ -17,7 +17,7 @@ public sealed class PetFollowScript : MonsterScriptBase
 
         if (!ShouldMove || (Target != null))
             return;
-        
+
         if (Subject.PetOwner is null)
             return;
 
@@ -48,7 +48,7 @@ public sealed class PetFollowScript : MonsterScriptBase
 
         Subject.MoveTimer.Reset();
     }
-    
+
     /*
         DateTime now;
         private const bool PET_LOOT = false;

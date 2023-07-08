@@ -16,7 +16,7 @@ public class DefaultBossScript : CompositeMonsterScript
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
-        GetScriptKey(typeof(AttackingScript)), 
+        GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(DeathScript))
     };

@@ -7,12 +7,55 @@ namespace Chaos.Scripting.MonsterScripts.Boss;
 
 public sealed class BossGroupScalingScript : MonsterScriptBase
 {
-    private readonly ISpellFactory _spellFactory;
     private static bool GroupBonusApplied;
+    private readonly ISpellFactory _spellFactory;
 
     public BossGroupScalingScript(Monster subject, ISpellFactory spellFactory)
         : base(subject) =>
         _spellFactory = spellFactory;
+
+    private void AddSpellsBasedOnGroupLevel(IEnumerable<int> groupLevel)
+    {
+        var averageLevel = groupLevel.Average();
+
+        switch (averageLevel)
+        {
+            case > 10 and < 24:
+                AddSpellsToBoss("beagsradlamh", "beagcradh");
+
+                break;
+            case > 25:
+                AddSpellsToBoss("srad", "beagcradh");
+
+                break;
+        }
+    }
+
+    private void AddSpellsToBoss(string spellName1, string spellName2)
+    {
+        Subject.Spells.Add(_spellFactory.Create(spellName1));
+        Subject.Spells.Add(_spellFactory.Create(spellName2));
+    }
+
+    private Attributes CreateGroupBonusAttributes(IReadOnlyCollection<int> groupLevel)
+    {
+        var averageLevel = (int)groupLevel.Average();
+        var groupCount = groupLevel.Count;
+
+        return new Attributes
+        {
+            Con = averageLevel,
+            Dex = averageLevel,
+            Int = averageLevel,
+            Str = averageLevel,
+            Wis = averageLevel,
+            AtkSpeedPct = groupCount * 3,
+            MaximumHp = averageLevel * groupCount * 500,
+            MaximumMp = averageLevel * groupCount * 500,
+            SkillDamagePct = groupCount * 2,
+            SpellDamagePct = groupCount * 2
+        };
+    }
 
     public override void Update(TimeSpan delta)
     {
@@ -36,46 +79,5 @@ public sealed class BossGroupScalingScript : MonsterScriptBase
         Subject.StatSheet.SetHealthPct(100);
         Subject.StatSheet.SetManaPct(100);
         GroupBonusApplied = true;
-    }
-
-    private Attributes CreateGroupBonusAttributes(IReadOnlyCollection<int> groupLevel)
-    {
-        var averageLevel = (int)groupLevel.Average();
-        var groupCount = groupLevel.Count;
-
-        return new Attributes
-        {
-            Con = averageLevel,
-            Dex = averageLevel,
-            Int = averageLevel,
-            Str = averageLevel,
-            Wis = averageLevel,
-            AtkSpeedPct = groupCount * 3,
-            MaximumHp = averageLevel * groupCount * 500,
-            MaximumMp = averageLevel * groupCount * 500,
-            SkillDamagePct = groupCount * 2,
-            SpellDamagePct = groupCount * 2
-        };
-    }
-
-    private void AddSpellsBasedOnGroupLevel(IEnumerable<int> groupLevel)
-    {
-        var averageLevel = groupLevel.Average();
-        
-        switch (averageLevel)
-        {
-            case > 10 and < 24:
-                AddSpellsToBoss("beagsradlamh", "beagcradh");
-                break;
-            case > 25:
-                AddSpellsToBoss("srad", "beagcradh");
-                break;
-        }
-    }
-
-    private void AddSpellsToBoss(string spellName1, string spellName2)
-    {
-        Subject.Spells.Add(_spellFactory.Create(spellName1));
-        Subject.Spells.Add(_spellFactory.Create(spellName2));
     }
 }

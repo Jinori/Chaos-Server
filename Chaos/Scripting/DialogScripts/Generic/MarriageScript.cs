@@ -207,9 +207,7 @@ public class MarriageScript : DialogScriptBase
             var heartList = GenerateValidSpawnPoints(source.MapInstance.Template);
 
             foreach (var point in heartList)
-            {
                 source.MapInstance.ShowAnimation(Animation.GetPointAnimation(point));
-            }
 
             foreach (var person in ClientRegistry)
                 person.Aisling.SendActiveMessage($"Congratulations newlyweds {partnerOne.Aisling.Name} and {partnerTwo.Aisling.Name}!");

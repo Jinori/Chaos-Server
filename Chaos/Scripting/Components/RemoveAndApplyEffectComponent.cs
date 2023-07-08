@@ -36,7 +36,8 @@ public class RemoveAndApplyEffectComponent : IComponent
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
                     target.Effects.Dispel(options.EffectKeyToRemove);
-                } else
+                } 
+                else
                     return;
             }
 
@@ -47,7 +48,8 @@ public class RemoveAndApplyEffectComponent : IComponent
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
                     target.Effects.Dispel(options.EffectKeyToRemove);
-                } else
+                } 
+                else
                     return;
             }
 
@@ -58,7 +60,8 @@ public class RemoveAndApplyEffectComponent : IComponent
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
                     target.Effects.Dispel(options.EffectKeyToRemove);
-                } else
+                } 
+                else
                     return;
             }
 
@@ -69,9 +72,11 @@ public class RemoveAndApplyEffectComponent : IComponent
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
                     target.Effects.Dispel(options.EffectKeyToRemove);
-                } else
+                } 
+                else
                     return;
-            } else
+            } 
+            else
             {
                 target.Effects.Dispel(options.EffectKeyToRemove);
                 var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);

@@ -15,6 +15,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class QuakeEffect : ContinuousAnimationEffectBase
 {
+    private Creature SourceOfEffect { get; set; } = null!;
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
@@ -22,8 +23,6 @@ public class QuakeEffect : ContinuousAnimationEffectBase
         TargetAnimation = 55
     };
 
-    private Creature SourceOfEffect { get; set; } = null!;
-    
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(20000));
     protected IApplyDamageScript ApplyDamageScript { get; }
@@ -79,7 +78,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
     public override bool ShouldApply(Creature source, Creature target)
     {
         SourceOfEffect = source;
-        
+
         if (!target.IsFriendlyTo(source))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is not an ally.");

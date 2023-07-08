@@ -6,15 +6,12 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss;
 
-
 public sealed class BossDefenseScript : MonsterScriptBase
 {
     /// <inheritdoc />
     public BossDefenseScript(Monster subject)
         : base(subject) { }
 
-    
-    
     /// <inheritdoc />
     public override bool CanSee(VisibleEntity entity)
     {
@@ -23,6 +20,15 @@ public sealed class BossDefenseScript : MonsterScriptBase
             return true;
 
         return false;
+    }
+
+    private void RemoveEffect(IEffect effect) => Subject.Effects.Dispel(effect.Name);
+
+    private void RemoveEffectAndHeal(IEffect effect)
+    {
+        Subject.Effects.Dispel(effect.Name);
+        Subject.StatSheet.AddHealthPct(35);
+        Subject.ShowHealth();
     }
 
     /// <inheritdoc />
@@ -62,14 +68,5 @@ public sealed class BossDefenseScript : MonsterScriptBase
 
                     break;
             }
-    }
-
-    private void RemoveEffect(IEffect effect) => Subject.Effects.Dispel(effect.Name);
-
-    private void RemoveEffectAndHeal(IEffect effect)
-    {
-        Subject.Effects.Dispel(effect.Name);
-        Subject.StatSheet.AddHealthPct(35);
-        Subject.ShowHealth();
     }
 }
