@@ -38,10 +38,13 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     private readonly IExchangeFactory ExchangeFactory;
     private readonly ICloningService<Item> ItemCloner;
     public Bank Bank { get; private set; }
+
+    public bool BetGoldOnTwentyOne { get; set; }
     public BodyColor BodyColor { get; set; }
     public BodySprite BodySprite { get; set; }
     public SynchronizedHashSet<ChannelSettings> ChannelSettings { get; init; }
     public IWorldClient Client { get; set; }
+    public int CurrentDiceScore { get; set; }
     public IEquipment Equipment { get; private set; }
     public int FaceSprite { get; set; }
     public Gender Gender { get; set; }
@@ -69,12 +72,15 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         private set => base.Trackers = value;
     }
 
+    public bool TwentyOneBust { get; set; }
+    public bool TwentyOneStayOption { get; set; }
+
     public UserState UserState { get; set; }
     public UserStatSheet UserStatSheet { get; init; }
     public ResettingCounter ActionThrottle { get; }
     public IInterlockedObject<Dialog> ActiveDialog { get; }
     public IInterlockedObject<object> ActiveObject { get; }
-    
+
     /// <inheritdoc />
     public override int AssailIntervalMs { get; }
     public ChantTimer ChantTimer { get; }
@@ -229,7 +235,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         Script = null!;
         SaveTimer = null!;
     }
-    
+
     /// <inheritdoc />
     void IDialogSourceEntity.Activate(Aisling source) => Script.OnClicked(source);
 
@@ -624,7 +630,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         return true;
     }
-    
+
     public bool TryGiveGold(int amount)
     {
         if (amount < 0)
@@ -827,7 +833,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         return true;
     }
-    
+
     public bool TryTakeGold(int amount)
     {
         // ReSharper disable once ConvertIfStatementToSwitchStatement

@@ -26,11 +26,12 @@ public sealed class Merchant : Creature,
                                ISpellTeacherSource
 {
     public ICollection<IPoint> BlackList { get; set; }
+    public bool CurrentlyHosting21Game { get; set; }
+
+    public bool CurrentlyHostingMass { get; set; }
 
     /// <inheritdoc />
     public ICollection<Item> ItemsForSale { get; }
-    
-    public bool CurrentlyHostingMass { get; set; }
 
     /// <inheritdoc />
     public ICollection<Item> ItemsToBuy { get; }
