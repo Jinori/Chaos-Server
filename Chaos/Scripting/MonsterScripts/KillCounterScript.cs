@@ -27,7 +27,7 @@ public class KillCounterScript : MonsterScriptBase
 
         IncrementCounter(aisling);
     }
-    
+
     private void HandleTavernRatKill(Aisling aisling)
     {
         if (!aisling.Trackers.Enums.TryGetValue(out RionaRatQuestStage ratquest) || (ratquest != RionaRatQuestStage.StartedRatQuest))
@@ -305,6 +305,201 @@ public class KillCounterScript : MonsterScriptBase
         IncrementCounter(aisling);
     }
 
+    private void HandleCryptSuccubusKill(Aisling aisling)
+    {
+        if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage suc) || (suc != CryptSlayerStage.Succubus))
+            return;
+
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        {
+            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+            return;
+        }
+
+        IncrementCounter(aisling);
+    }
+
+    private void HandleCryptMimicKill(Aisling aisling)
+    {
+        if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage mimic) || (mimic != CryptSlayerStage.Mimic))
+            return;
+
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        {
+            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+            return;
+        }
+
+        IncrementCounter(aisling);
+    }
+
+    private void HandleCryptSpider2Kill(Aisling aisling)
+    {
+        if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage spider2) || (spider2 != CryptSlayerStage.Spider2))
+            return;
+
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        {
+            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+            return;
+        }
+
+        IncrementCounter(aisling);
+    }
+
+    private void HandleCryptSpiderKill(Aisling aisling)
+    {
+        if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage spider) || (spider != CryptSlayerStage.Spider1))
+            return;
+
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        {
+            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+            return;
+        }
+
+        IncrementCounter(aisling);
+    }
+
+    private void HandleCryptScorpionKill(Aisling aisling)
+    {
+        if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage scorpion) || (scorpion != CryptSlayerStage.Scorpion))
+            return;
+
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        {
+            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+            return;
+        }
+
+        IncrementCounter(aisling);
+    }
+
+    private void HandleCryptMarauderKill(Aisling aisling)
+    {
+        if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage mar) || (mar != CryptSlayerStage.Marauder))
+            return;
+
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        {
+            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+            return;
+        }
+
+        IncrementCounter(aisling);
+    }
+
+    private void HandleCryptKardiKill(Aisling aisling)
+    {
+        if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage kardi) || (kardi != CryptSlayerStage.Kardi))
+            return;
+
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        {
+            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+            return;
+        }
+
+        IncrementCounter(aisling);
+    }
+
+    private void HandleCryptWhiteBatKill(Aisling aisling)
+    {
+        if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage whitebat) || (whitebat != CryptSlayerStage.WhiteBat))
+            return;
+
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        {
+            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+            return;
+        }
+
+        IncrementCounter(aisling);
+    }
+
+    private void HandleCryptGiantBatKill(Aisling aisling)
+    {
+        if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage giantbat) || (giantbat != CryptSlayerStage.GiantBat))
+            return;
+
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        {
+            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+            return;
+        }
+
+        IncrementCounter(aisling);
+    }
+
+    private void HandleCryptCentipede2Kill(Aisling aisling)
+    {
+        if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage centipede2) || (centipede2 != CryptSlayerStage.Centipede2))
+            return;
+
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        {
+            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+            return;
+        }
+
+        IncrementCounter(aisling);
+    }
+
+    private void HandleCryptCentipedeKill(Aisling aisling)
+    {
+        if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage centipede) || (centipede != CryptSlayerStage.Centipede1))
+            return;
+
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        {
+            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+            return;
+        }
+
+        IncrementCounter(aisling);
+    }
+
+    private void HandleCryptRatKill(Aisling aisling)
+    {
+        if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage rat) || (rat != CryptSlayerStage.Rat))
+            return;
+
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        {
+            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+            return;
+        }
+
+        IncrementCounter(aisling);
+    }
+
+    private void HandleCryptBatKill(Aisling aisling)
+    {
+        if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage bat) || (bat != CryptSlayerStage.Bat))
+            return;
+
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        {
+            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+
+            return;
+        }
+
+        IncrementCounter(aisling);
+    }
+
     private void IncrementCounter(Aisling aisling)
     {
         var value = aisling.Trackers.Counters.AddOrIncrement(Subject.Template.TemplateKey);
@@ -503,9 +698,63 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     case "manorghost":
                         HandleManorGhostKill(aisling);
+
                         break;
                     case "tavern_rat":
                         HandleTavernRatKill(aisling);
+
+                        break;
+                    case "crypt_rat":
+                        HandleCryptRatKill(aisling);
+
+                        break;
+                    case "crypt_bat":
+                        HandleCryptBatKill(aisling);
+
+                        break;
+                    case "crypt_centipede":
+                        HandleCryptCentipedeKill(aisling);
+
+                        break;
+                    case "crypt_centipede2":
+                        HandleCryptCentipede2Kill(aisling);
+
+                        break;
+                    case "crypt_giantbat":
+                        HandleCryptGiantBatKill(aisling);
+
+                        break;
+                    case "crypt_whitebat":
+                        HandleCryptWhiteBatKill(aisling);
+
+                        break;
+                    case "crypt_kardi":
+                        HandleCryptKardiKill(aisling);
+
+                        break;
+                    case "crypt_marauder":
+                        HandleCryptMarauderKill(aisling);
+
+                        break;
+                    case "crypt_scorpion":
+                        HandleCryptScorpionKill(aisling);
+
+                        break;
+                    case "crypt_spider":
+                        HandleCryptSpiderKill(aisling);
+
+                        break;
+                    case "crypt_spider2":
+                        HandleCryptSpider2Kill(aisling);
+
+                        break;
+                    case "crypt_mimic":
+                        HandleCryptMimicKill(aisling);
+
+                        break;
+                    case "crypt_succubus":
+                        HandleCryptSuccubusKill(aisling);
+
                         break;
                 }
     }
