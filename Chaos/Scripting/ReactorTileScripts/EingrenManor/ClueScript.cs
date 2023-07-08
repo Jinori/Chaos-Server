@@ -137,7 +137,7 @@ public class ClueScript : ReactorTileScriptBase
 
                         foreach (var member in aisling.Group)
                         {
-                            var necklace = _itemFactory.Create("zulerasnecklace");
+                            var necklace = _itemFactory.Create("zulerasHeirloom");
                             member.TryGiveItem(ref necklace);
                             member.Trackers.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
 

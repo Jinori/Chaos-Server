@@ -155,6 +155,13 @@ public enum ManorNecklaceStage
     KeptNecklace = 4,
 }
 
+public enum ManorLouegieStage
+{
+    None = 0,
+    AcceptedQuest = 1,
+    CompletedQuest = 2
+}
+
 public enum HolyResearchStage
 {
     None = 0,
