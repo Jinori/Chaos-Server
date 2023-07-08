@@ -63,19 +63,25 @@ public class ManorFloorWarpScript : ConfigurableReactorTileScriptBase
 
             return;
         }
-
-        // Check if all members of the group have the quest flag and are within level range
-        var allMembersHaveQuestFlag = aisling.Group.All(
-            member => member.Trackers.Flags.HasFlag(ManorLouegieStage.AcceptedQuest) && member.WithinLevelRange(source));
+        
+        // Check if all members of the group have the quest enum and are within level range
+        var allMembersHaveQuestFlag = aisling.Group.All(member =>
+            (member.Trackers.Enums.TryGetValue(out ManorLouegieStage value) && (value == ManorLouegieStage.AcceptedQuest)) || ((value == ManorLouegieStage.CompletedQuest) &&
+                member.WithinLevelRange(source)));
 
         if (allMembersHaveQuestFlag)
-            source.TraverseMap(targetMap, Destination);
+        {
+            foreach (var member in aisling.Group)
+            {
+                member.TraverseMap(targetMap, Destination);  
+            }
+        }
         else
         {
             // Send a message to the Aisling
             aisling.Client.SendServerMessage(
                 ServerMessageType.OrangeBar1,
-                "Make sure everyone is within level range and has accepted Louegie's quest.");
+                "Make sure everyone is within level range and has accepted the quest.");
 
             // Warp the source back
             var point = source.DirectionalOffset(source.Direction.Reverse());
