@@ -27,6 +27,24 @@ public class KillCounterScript : MonsterScriptBase
 
         IncrementCounter(aisling);
     }
+    
+    private void HandleTavernRatKill(Aisling aisling)
+    {
+        if (!aisling.Trackers.Enums.TryGetValue(out RionaRatQuestStage ratquest) || (ratquest != RionaRatQuestStage.StartedRatQuest))
+            return;
+
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("tavern_rat", 4))
+        {
+            aisling.SendOrangeBarMessage($"You've killed {Subject.Template.Name}.");
+
+            if (!aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("tavern_rat", 5))
+                aisling.Trackers.Counters.AddOrIncrement("tavern_rat");
+
+            return;
+        }
+
+        IncrementCounter(aisling);
+    }
 
     private void HandleBeeBossKill(Aisling aisling)
     {
@@ -485,7 +503,9 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     case "manorghost":
                         HandleManorGhostKill(aisling);
-
+                        break;
+                    case "tavern_rat":
+                        HandleTavernRatKill(aisling);
                         break;
                 }
     }

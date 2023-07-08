@@ -92,9 +92,9 @@ public class RestrictionBehavior
     {
         switch (creature)
         {
-            case Aisling aisling when !aisling.Status.HasFlag(Status.Suain)
-                                      && !aisling.Status.HasFlag(Status.Pramh)
-                                      && !aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _):
+            case Aisling aisling when aisling.Status.HasFlag(Status.Suain)
+                                      || aisling.Status.HasFlag(Status.Pramh)
+                                      || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _):
             {
                 aisling.SendOrangeBarMessage("You cannot use skills.");
 

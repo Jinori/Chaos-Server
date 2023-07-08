@@ -83,7 +83,7 @@ public class AscendingScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        if (source.UserStatSheet.Level <= ASCEND_LEVEL_REQUIREMENT)
+        if (source.UserStatSheet.Level < ASCEND_LEVEL_REQUIREMENT)
         {
             Subject.Reply(source, "You must be level 99 to buy health and mana.");
             source.SendOrangeBarMessage("You may not ascend until level 99.");

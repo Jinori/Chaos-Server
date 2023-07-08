@@ -4,6 +4,7 @@ using Chaos.Formulae;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Scripting.DialogScripts.Mileth;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
@@ -56,6 +57,19 @@ public class RionaRatQuestScript : DialogScriptBase
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
+                if (source.UserStatSheet.Level < 11 && stage == RionaRatQuestStage.CompletedRatQuest &&
+                    !source.Trackers.Flags.HasFlag(QuestFlag1.HeadedToBeautyShop) &&
+                     !source.Trackers.Flags.HasFlag(QuestFlag1.TalkedToJosephine))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "riona_headToBeautyShop",
+                        OptionText = "Sure!"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Add(option);
+                }
 
                 break;
 
@@ -81,7 +95,7 @@ public class RionaRatQuestScript : DialogScriptBase
             case "ratquest_turnin":
                 if (stage == RionaRatQuestStage.StartedRatQuest)
                 {
-                    if (!source.Trackers.Counters.TryGetValue("StartedRatQuest", out var value) || (value < 5))
+                    if (!source.Trackers.Counters.TryGetValue("tavern_rat", out var value) || (value < 5))
                     {
                         Subject.Reply(source, "They're still everywhere! Please take care of them.");
                         source.SendOrangeBarMessage("You watch a rat crawl across your foot");
@@ -92,7 +106,7 @@ public class RionaRatQuestScript : DialogScriptBase
                     var mount = ItemFactory.Create("Mount");
                     source.TryGiveItem(ref mount);
                     source.TryGiveGamePoints(5);
-                    ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    ExperienceDistributionScript.GiveExp(source, 1000);
                     Subject.Reply(source, "Thank you so much for taking care of those rats!");
                     source.Trackers.Enums.Set(RionaRatQuestStage.CompletedRatQuest);
                     source.SendServerMessage(ServerMessageType.PersistentMessage, "");

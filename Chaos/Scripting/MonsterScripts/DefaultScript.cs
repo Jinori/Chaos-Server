@@ -16,7 +16,8 @@ public class DefaultScript : CompositeMonsterScript
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(WanderingScript)),
-        GetScriptKey(typeof(DeathScript))
+        GetScriptKey(typeof(DeathScript)),
+        GetScriptKey(typeof(DisplayNameScript))
     };
 
     /// <inheritdoc />
