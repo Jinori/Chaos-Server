@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 using Chaos.Collections;
+using Chaos.Collections.Abstractions;
 using Chaos.Collections.Common;
 using Chaos.Common.Abstractions;
 using Chaos.Common.Definitions;
@@ -20,6 +21,7 @@ using Chaos.Packets;
 using Chaos.Packets.Abstractions;
 using Chaos.Packets.Abstractions.Definitions;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Services.Other;
 using Chaos.Services.Other.Abstractions;
 using Chaos.Services.Servers.Options;
 using Chaos.Services.Storage.Abstractions;
@@ -32,10 +34,13 @@ namespace Chaos.Services.Servers;
 public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldClient>
 {
     private readonly IAsyncStore<Aisling> AislingStore;
+    private readonly BulletinBoardKeyMapper BulletinBoardKeyMapper;
+    private readonly IStore<BulletinBoard> BulletinBoardStore;
     private readonly IChannelService ChannelService;
-    private readonly IClientProvider ClientProvider;
+    private readonly IFactory<IWorldClient> ClientFactory;
     private readonly ICommandInterceptor<Aisling> CommandInterceptor;
     private readonly IGroupService GroupService;
+    private readonly IStore<MailBox> MailStore;
     private readonly IMerchantFactory MerchantFactory;
     private readonly IMetaDataStore MetaDataStore;
     private new WorldOptions Options { get; }
@@ -46,7 +51,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
 
     public WorldServer(
         IClientRegistry<IWorldClient> clientRegistry,
-        IClientProvider clientProvider,
+        IFactory<IWorldClient> clientFactory,
         IAsyncStore<Aisling> aislingStore,
         IRedirectManager redirectManager,
         IPacketSerializer packetSerializer,
@@ -56,7 +61,10 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         IOptions<WorldOptions> options,
         ILogger<WorldServer> logger,
         IMetaDataStore metaDataStore,
-        IChannelService channelService
+        IChannelService channelService,
+        IStore<MailBox> mailStore,
+        BulletinBoardKeyMapper bulletinBoardKeyMapper,
+        IStore<BulletinBoard> bulletinBoardStore
     )
         : base(
             redirectManager,
@@ -66,13 +74,16 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             logger)
     {
         Options = options.Value;
-        ClientProvider = clientProvider;
+        ClientFactory = clientFactory;
         AislingStore = aislingStore;
         CommandInterceptor = commandInterceptor;
         GroupService = groupService;
         MerchantFactory = merchantFactory;
         MetaDataStore = metaDataStore;
         ChannelService = channelService;
+        MailStore = mailStore;
+        BulletinBoardKeyMapper = bulletinBoardKeyMapper;
+        BulletinBoardStore = bulletinBoardStore;
 
         IndexHandlers();
     }
@@ -97,14 +108,149 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         return ExecuteHandler(client, args, InnerOnBeginChant);
     }
 
+    #region Board Request
+    private bool TryGetBoard(IWorldClient client, BoardRequestArgs args, [MaybeNullWhen(false)] out BoardBase boardBase)
+    {
+        boardBase = null;
+
+        switch (args.BoardId)
+        {
+            case null:
+                break;
+            case MailBox.BOARD_ID:
+                boardBase = client.Aisling.MailBox;
+
+                break;
+            default:
+            {
+                var key = BulletinBoardKeyMapper.GetKey(args.BoardId.Value);
+
+                if (!string.IsNullOrEmpty(key))
+                    boardBase = BulletinBoardStore.Load(key);
+
+                break;
+            }
+        }
+
+        if (boardBase is null)
+        {
+            Logger.WithProperty(client)
+                  .LogError("{@AislingName} requested an invalid board id: {@BoardId}", client.Aisling.Name, args.BoardId);
+
+            return false;
+        }
+
+        return true;
+    }
+    #endregion
+
     public ValueTask OnBoardRequest(IWorldClient client, in ClientPacket clientPacket)
     {
         var args = PacketSerializer.Deserialize<BoardRequestArgs>(in clientPacket);
 
-        static ValueTask InnerOnBoardRequest(IWorldClient localClient, BoardRequestArgs localArgs)
+        ValueTask InnerOnBoardRequest(IWorldClient localClient, BoardRequestArgs localArgs)
         {
-            //TODO: maybe implement board, but not sure if it's worth it
-            localClient.SendBoard();
+            switch (localArgs.BoardRequestType)
+            {
+                case BoardRequestType.BoardList:
+                {
+                    var boards = localClient.Aisling.Script.GetBoardList();
+                    localClient.SendBoardList(boards);
+
+                    break;
+                }
+                case BoardRequestType.ViewBoard:
+                {
+                    if (!TryGetBoard(localClient, localArgs, out var board))
+                        return default;
+
+                    board.Show(localClient.Aisling, localArgs.StartPostId!.Value);
+
+                    break;
+                }
+                case BoardRequestType.ViewPost:
+                {
+                    if (!TryGetBoard(localClient, localArgs, out var board))
+                        return default;
+
+                    board.ShowPost(localClient.Aisling, localArgs.PostId!.Value, localArgs.Controls!.Value);
+
+                    break;
+                }
+                case BoardRequestType.NewPost:
+                {
+                    if (!TryGetBoard(localClient, localArgs, out var board))
+                        return default;
+
+                    //mailboxes use a different boardRequestType for sending mail
+                    if (board is MailBox)
+                    {
+                        Logger.WithProperty(client)
+                              .LogError(
+                                  "{@AislingName} requested an invalid board id for request type {@BoardRequestType}: {@BoardId}",
+                                  client.Aisling.Name,
+                                  localArgs.BoardRequestType,
+                                  args.BoardId);
+
+                        return default;
+                    }
+
+                    board.Post(
+                        localClient.Aisling,
+                        localClient.Aisling.Name,
+                        localArgs.Subject!,
+                        localArgs.Message!);
+
+                    break;
+                }
+                case BoardRequestType.Delete:
+                {
+                    if (!TryGetBoard(localClient, localArgs, out var board))
+                        return default;
+
+                    board.Delete(localClient.Aisling, localArgs.PostId!.Value);
+
+                    break;
+                }
+                case BoardRequestType.SendMail:
+                {
+                    if (!TryGetBoard(localClient, localArgs, out var board))
+                        return default;
+
+                    board.Post(
+                        localClient.Aisling,
+                        localClient.Aisling.Name,
+                        localArgs.Subject!,
+                        localArgs.Message!,
+                        true);
+
+                    break;
+                }
+                case BoardRequestType.Highlight:
+                {
+                    if (!TryGetBoard(localClient, localArgs, out var board))
+                        return default;
+
+                    //you cant highlight mail messages
+                    if (board is MailBox)
+                    {
+                        Logger.WithProperty(client)
+                              .LogError(
+                                  "{@AislingName} requested an invalid board id for request type {@BoardRequestType}: {@BoardId}",
+                                  client.Aisling.Name,
+                                  localArgs.BoardRequestType,
+                                  args.BoardId);
+
+                        return default;
+                    }
+
+                    board.Highlight(localClient.Aisling, localArgs.PostId!.Value);
+
+                    break;
+                }
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
             return default;
         }
@@ -231,6 +377,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             try
             {
                 aisling.Guild?.Associate(aisling);
+                aisling.MailBox = MailStore.Load(aisling.Name);
                 aisling.BeginObserving();
                 client.SendAttributes(StatUpdateType.Full);
                 client.SendLightLevel(LightLevel.Lightest);
@@ -1352,7 +1499,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         var ip = clientSocket.RemoteEndPoint as IPEndPoint;
         Logger.LogDebug("Incoming connection from {@Ip}", ip!.ToString());
 
-        var client = ClientProvider.CreateClient<IWorldClient>(clientSocket);
+        var client = ClientFactory.Create(clientSocket);
         client.OnDisconnected += OnDisconnect;
 
         Logger.LogDebug("Connection established with {@ClientIp}", client.RemoteIp.ToString());

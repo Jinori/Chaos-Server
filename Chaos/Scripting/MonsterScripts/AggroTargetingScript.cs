@@ -62,7 +62,7 @@ public class AggroTargetingScript : MonsterScriptBase
             if (!Map.TryGetObject<Creature>(kvp.Key, out var possibleTarget))
                 continue;
 
-            if (!possibleTarget.IsAlive || !Subject.Script.CanSee(possibleTarget) || !possibleTarget.WithinRange(Subject))
+            if (!possibleTarget.IsAlive || !Subject.CanSee(possibleTarget) || !possibleTarget.WithinRange(Subject))
                 continue;
 
             Target = possibleTarget;

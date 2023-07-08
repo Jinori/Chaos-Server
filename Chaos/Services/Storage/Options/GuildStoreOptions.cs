@@ -1,9 +1,10 @@
 using Chaos.Common.Utilities;
+using Chaos.Services.Storage.Abstractions;
 using Chaos.Storage.Abstractions;
 
 namespace Chaos.Services.Storage.Options;
 
-public sealed class GuildStoreOptions : IDirectoryBackupOptions
+public sealed class GuildStoreOptions : IDirectoryBackupOptions, IPeriodicSaveStoreOptions
 {
     /// <inheritdoc />
     public string BackupDirectory { get; set; } = null!;

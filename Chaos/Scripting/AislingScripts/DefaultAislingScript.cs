@@ -1,4 +1,6 @@
 using Chaos.Collections;
+using Chaos.Collections;
+using Chaos.Collections.Abstractions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
@@ -12,6 +14,7 @@ using Chaos.Networking.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.AislingScripts.Abstractions;
 using Chaos.Scripting.Behaviors;
+using Chaos.Storage.Abstractions;
 using Chaos.Scripting.Components;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyHealing;
@@ -34,6 +37,8 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     };
     private readonly IMerchantFactory MerchantFactory;
     private readonly ISimpleCache SimpleCache;
+    private readonly IStore<BulletinBoard> BoardStore;
+    private readonly IStore<MailBox> MailStore;
     private readonly IIntervalTimer SleepAnimationTimer;
 
     /// <inheritdoc />
@@ -64,10 +69,13 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         IClientRegistry<IWorldClient> clientRegistry,
         IMerchantFactory merchantFactory,
         ISimpleCache simpleCache,
-        IEffectFactory effectFactory
+        IEffectFactory effectFactory,
+        IStore<MailBox> mailStore, IStore<BulletinBoard> boardStore
     )
         : base(subject)
     {
+        MailStore = mailStore;
+        BoardStore = boardStore;
         RestrictionBehavior = new RestrictionBehavior();
         VisibilityBehavior = new VisibilityBehavior();
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
@@ -183,6 +191,42 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         }
 
         base.OnAttacked(source, damage);
+    }
+
+    /// <inheritdoc />
+    public override IEnumerable<BoardBase> GetBoardList()
+    {
+        //mailbox board
+        yield return MailStore.Load(Subject.Name);
+
+        //change this to whatever naming scheme you want to follow for guild boards
+        if (Subject.Guild is not null && BoardStore.Exists(Subject.Guild.Name))
+            yield return BoardStore.Load(Subject.Guild.Name);
+
+        yield return BoardStore.Load("public_test_board");
+
+        //things like... get board based on Nation, Guild, Enums, Flags, whatever
+        //e.g.
+        //var nationBoard = Subject.Nation switch
+        //{
+        //    Nation.Exile      => BoardStore.Load("nation_board_exile"),
+        //    Nation.Suomi      => BoardStore.Load("nation_board_suomi"),
+        //    Nation.Ellas      => BoardStore.Load("nation_board_ellas"),
+        //    Nation.Loures     => BoardStore.Load("nation_board_loures"),
+        //    Nation.Mileth     => BoardStore.Load("nation_board_mileth"),
+        //    Nation.Tagor      => BoardStore.Load("nation_board_tagor"),
+        //    Nation.Rucesion   => BoardStore.Load("nation_board_rucesion"),
+        //    Nation.Noes       => BoardStore.Load("nation_board_noes"),
+        //    Nation.Illuminati => BoardStore.Load("nation_board_illuminati"),
+        //    Nation.Piet       => BoardStore.Load("nation_board_piet"),
+        //    Nation.Atlantis   => BoardStore.Load("nation_board_atlantis"),
+        //    Nation.Abel       => BoardStore.Load("nation_board_abel"),
+        //    Nation.Undine     => BoardStore.Load("nation_board_undine"),
+        //    Nation.Purgatory  => BoardStore.Load("nation_board_purgatory"),
+        //    _                 => throw new ArgumentOutOfRangeException()
+        //};
+        //
+        //yield return nationBoard;
     }
 
     /// <inheritdoc />

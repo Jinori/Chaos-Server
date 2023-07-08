@@ -12,6 +12,31 @@
 By default, the staging directory is inside the git repo, at the root directory, in the "Data" folder. This staging
 directory can be changed if desired via `appsettings.json` at `Options:ChaosOptions:StagingDirectory`.
 
+## Default Folder Structure
+
+<pre>
+📂Data
+┣📂Backups
+┣📂Configuration
+┃ ┣📂Access
+┃ ┣📂LootTables
+┃ ┣📂MapData
+┃ ┣📂MapInstances
+┃ ┣📂MetaData
+┃ ┣📂Templates
+┃ ┃ ┣📂BulletinBoards
+┃ ┃ ┣📂Dialogs
+┃ ┃ ┣📂Items
+┃ ┃ ┣📂Maps
+┃ ┃ ┣📂Merchants
+┃ ┃ ┣📂Monsters
+┃ ┃ ┣📂ReactorTiles
+┃ ┃ ┣📂Skills
+┃ ┃ ┗📂Spells
+┃ ┗📂WorldMaps
+┗📂Saved
+</pre>
+
 ## Connecting
 
 If you have the necessary skills, you can edit a Dark Ages client to connect to 127.0.0.1 (localhost) and use it for
@@ -33,7 +58,6 @@ in the [LobbyOptions](LobbyOptions.md), [LoginOptions](LoginOptions.md), and [Wo
 > [!TIP]
 > There's a tool to help create content, look for the [ChaosTool](ChaosTool.md)
 
-- Add [Maps](Maps.md)
 - Add [Items](Items.md)
 - Add [Spells](Spells.md)
 - Add [Skills](Skills.md)
@@ -41,6 +65,7 @@ in the [LobbyOptions](LobbyOptions.md), [LoginOptions](LoginOptions.md), and [Wo
 - Add [Dialogs](Dialogs.md)
 - Add [Monsters](Monsters.md)
 - Add [Loot Tables](LootTables.md)
+- Add [Maps](Maps.md)
 - Write custom [Components](Components.md)
 - Write custom [Scripts](Scripting.md)
 - Write custom [Formulae](Formulae.md)

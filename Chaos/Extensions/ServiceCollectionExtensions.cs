@@ -1,4 +1,6 @@
+using System.Net.Sockets;
 using Chaos.Collections;
+using Chaos.Common.Configuration;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.DependencyInjection;
 using Chaos.Models.Menu;
@@ -13,6 +15,7 @@ using Chaos.Schemas.Templates;
 using Chaos.Scripting;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.AislingScripts.Abstractions;
+using Chaos.Scripting.BulletinBoardScripts.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -59,21 +62,17 @@ public static class ServiceCollectionExtensions
 
     public static void AddLobbyServer(this IServiceCollection services)
     {
-        services.AddTransient<IClientFactory<ILobbyClient>, LobbyClientFactory>();
         services.AddSingleton<IClientRegistry<ILobbyClient>, ClientRegistry<ILobbyClient>>();
 
         services.AddOptionsFromConfig<LobbyOptions>(Startup.ConfigKeys.Options.Key);
-
         services.AddSingleton<ILobbyServer<ILobbyClient>, IHostedService, LobbyServer>();
     }
 
     public static void AddLoginserver(this IServiceCollection services)
     {
-        services.AddTransient<IClientFactory<ILoginClient>, LoginClientFactory>();
         services.AddSingleton<IClientRegistry<ILoginClient>, ClientRegistry<ILoginClient>>();
 
         services.AddOptionsFromConfig<LoginOptions>(Startup.ConfigKeys.Options.Key);
-
         services.AddSingleton<ILoginServer<ILoginClient>, IHostedService, LoginServer>();
     }
 
@@ -91,6 +90,7 @@ public static class ServiceCollectionExtensions
         services.AddScriptFactory<IReactorTileScript, ReactorTile>();
 
         services.AddScriptFactory<IDialogScript, Dialog>();
+        services.AddScriptFactory<IBulletinBoardScript, BulletinBoard>();
 
         services.AddTransient<IScriptProvider, ScriptProvider>();
         services.AddTransient<ICloningService<Item>, ItemCloningService>();
@@ -106,14 +106,38 @@ public static class ServiceCollectionExtensions
     {
         services.AddTransient<IEntityRepository, EntityRepository>();
 
+        //add mail store with backup service
+        services.AddOptionsFromConfig<MailStoreOptions>(Startup.ConfigKeys.Options.Key);
+        services.AddSingleton<IStore<MailBox>, IHostedService, MailStore>();
+        services.AddHostedService<DirectoryBackupService<MailStoreOptions>>();
+        services.ConfigureOptions<DirectoryBoundOptionsConfigurer<MailStoreOptions>>();
+
+        //add guild store with backup service
         services.AddOptionsFromConfig<GuildStoreOptions>(Startup.ConfigKeys.Options.Key);
         services.AddSingleton<IStore<Guild>, IHostedService, GuildStore>();
         services.AddHostedService<DirectoryBackupService<GuildStoreOptions>>();
+        services.ConfigureOptions<DirectoryBoundOptionsConfigurer<GuildStoreOptions>>();
 
+        //add bulletinboard store with backup service
+        services.AddOptionsFromConfig<BulletinBoardStoreOptions>(Startup.ConfigKeys.Options.Key);
+        services.AddSingleton<IStore<BulletinBoard>, IHostedService, BulletinBoardStore>();
+        services.AddHostedService<DirectoryBackupService<BulletinBoardStoreOptions>>();
+        services.ConfigureOptions<DirectoryBoundOptionsConfigurer<BulletinBoardStoreOptions>>();
+
+        //add aisling store with backup service
         services.AddOptionsFromConfig<AislingStoreOptions>(Startup.ConfigKeys.Options.Key);
         services.AddSingleton<IAsyncStore<Aisling>, AislingStore>();
         services.AddHostedService<DirectoryBackupService<AislingStoreOptions>>();
+        services.ConfigureOptions<DirectoryBoundOptionsConfigurer<AislingStoreOptions>>();
 
+        //add metadata store
+        services.AddOptionsFromConfig<MetaDataStoreOptions>(Startup.ConfigKeys.Options.Key); //bound
+        services.AddSingleton<IMetaDataStore, MetaDataStore>();
+
+        //add bulletinboard key mapper service
+        services.AddSingleton<BulletinBoardKeyMapper>();
+
+        //add caches
         services.AddExpiringCache<ItemTemplate, ItemTemplateSchema, ItemTemplateCacheOptions>(Startup.ConfigKeys.Options.Key);
         services.AddExpiringCache<SkillTemplate, SkillTemplateSchema, SkillTemplateCacheOptions>(Startup.ConfigKeys.Options.Key);
         services.AddExpiringCache<SpellTemplate, SpellTemplateSchema, SpellTemplateCacheOptions>(Startup.ConfigKeys.Options.Key);
@@ -127,16 +151,17 @@ public static class ServiceCollectionExtensions
         services.AddExpiringCache<WorldMap, WorldMapSchema, WorldMapCacheOptions>(Startup.ConfigKeys.Options.Key);
         services.AddExpiringCache<WorldMapNode, WorldMapNodeSchema, WorldMapNodeCacheOptions>(Startup.ConfigKeys.Options.Key);
 
+        services.AddExpiringCache<BulletinBoardTemplate, BulletinBoardTemplateSchema, BulletinBoardTemplateCacheOptions>(
+            Startup.ConfigKeys.Options.Key);
+
         services.AddExpiringCache<ReactorTileTemplate, ReactorTileTemplateSchema, ReactorTileTemplateCacheOptions>(
             Startup.ConfigKeys.Options.Key);
 
+        //add custom cache implementations
         services.AddExpiringCacheImpl<MapTemplate, ExpiringMapTemplateCache, MapTemplateCacheOptions>(Startup.ConfigKeys.Options.Key);
         services.AddExpiringCacheImpl<MapInstance, ExpiringMapInstanceCache, MapInstanceCacheOptions>(Startup.ConfigKeys.Options.Key);
 
-        services.AddOptionsFromConfig<MetaDataStoreOptions>(Startup.ConfigKeys.Options.Key); //bound
-
-        services.AddSingleton<IMetaDataStore, MetaDataStore>();
-
+        //add cache locator
         services.AddSingleton<ISimpleCache, ISimpleCacheProvider, SimpleCache>();
     }
 
@@ -157,21 +182,23 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IMonsterFactory, MonsterFactory>();
         services.AddTransient<IMerchantFactory, MerchantFactory>();
         services.AddTransient<IDialogFactory, DialogFactory>();
+
         services.AddSingleton<IEffectFactory, EffectFactory>();
-        services.AddTransient<IExchangeFactory, ExchangeFactory>();
-        services.AddTransient<IGuildFactory, GuildFactory>();
-        services.AddTransient<IClientProvider, ClientProvider>();
+
+        services.AddSimpleFactory<Guild>(typeof(string));
+        services.AddSimpleFactory<ILobbyClient, LobbyClient>(typeof(Socket));
+        services.AddSimpleFactory<ILoginClient, LoginClient>(typeof(Socket));
+        services.AddSimpleFactory<IWorldClient, WorldClient>(typeof(Socket));
+        services.AddSimpleFactory<Exchange>(typeof(Aisling), typeof(Aisling));
+        services.AddSimpleFactory<MailBox>(typeof(string));
     }
 
     public static void AddWorldServer(this IServiceCollection services)
     {
         services.AddSingleton<IGroupService, GroupService>();
-
-        services.AddTransient<IClientFactory<IWorldClient>, WorldClientFactory>();
         services.AddSingleton<IClientRegistry<IWorldClient>, WorldClientRegistry>();
 
         services.AddOptionsFromConfig<WorldOptions>(Startup.ConfigKeys.Options.Key);
-
         services.AddSingleton<IWorldServer<IWorldClient>, IHostedService, WorldServer>();
     }
 }

@@ -22,20 +22,18 @@ using Chaos.Observers;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.AislingScripts;
 using Chaos.Scripting.AislingScripts.Abstractions;
-using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Servers.Options;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 using Chaos.TypeMapper.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
-using PointExtensions = Chaos.Extensions.Geometry.PointExtensions;
 
 namespace Chaos.Models.World;
 
 public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSourceEntity, ICommandSubject, IChannelSubscriber
 {
-    private readonly IExchangeFactory ExchangeFactory;
+    private readonly IFactory<Exchange> ExchangeFactory;
     private readonly ICloningService<Item> ItemCloner;
     public Bank Bank { get; private set; }
 
@@ -57,6 +55,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public IInventory Inventory { get; private set; }
     public bool IsAdmin { get; set; }
     public Collections.Legend Legend { get; private set; }
+    public MailBox MailBox { get; set; } = null!;
     public Nation Nation { get; set; }
     public bool OnTwentyOneTile { get; set; }
     public UserOptions Options { get; init; }
@@ -142,7 +141,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         string name,
         MapInstance mapInstance,
         IPoint point,
-        IExchangeFactory exchangeFactory,
+        IFactory<Exchange> exchangeFactory,
         IScriptProvider scriptProvider,
         ILogger<Aisling> logger,
         ICloningService<Item> itemCloner
@@ -341,6 +340,14 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
             return true;
 
         return base.CanObserve(entity);
+    }
+
+    public override bool CanSee(VisibleEntity entity)
+    {
+        if (IsAdmin)
+            return true;
+
+        return base.CanSee(entity);
     }
 
     /// <inheritdoc />
@@ -995,7 +1002,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         Direction = direction;
         var startPosition = Location.From(this);
         var startPoint = Point.From(this);
-        var endPoint = PointExtensions.DirectionalOffset(this, direction);
+        var endPoint = this.DirectionalOffset(direction);
 
         //admins can walk through creatures and walls
         if (!IsAdmin && !MapInstance.IsWalkable(endPoint, Type))
