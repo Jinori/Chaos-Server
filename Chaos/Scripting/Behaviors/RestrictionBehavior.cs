@@ -20,6 +20,12 @@ public class RestrictionBehavior
 
                 return false;
             }
+            case Aisling { OnTwentyOneTile: true } aislingCasino:
+            {
+                aislingCasino.SendOrangeBarMessage("You cannot move when at a game table.");
+
+                return false;
+            }
             case Monster monster when monster.Status.HasFlag(Status.Suain)
                                       || monster.Status.HasFlag(Status.Blind)
                                       || monster.Status.HasFlag(Status.Pramh)
@@ -44,6 +50,10 @@ public class RestrictionBehavior
 
                 return false;
             }
+            case Aisling { OnTwentyOneTile: true }:
+            {
+                return false;
+            }
             case Monster monster when monster.Status.HasFlag(Status.Suain)
                                       || monster.Status.HasFlag(Status.Pramh)
                                       || monster.Status.HasFlag(Status.BeagSuain):
@@ -59,7 +69,7 @@ public class RestrictionBehavior
     {
         if (aisling.IsAlive)
         {
-            if (aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out var timedEvent))
+            if (aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _))
             {
                 aisling.SendOrangeBarMessage("You can't do that");
 
@@ -82,9 +92,9 @@ public class RestrictionBehavior
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.Status.HasFlag(Status.Suain)
-                                      || aisling.Status.HasFlag(Status.Pramh)
-                                      || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out var timedEvent):
+            case Aisling aisling when !aisling.Status.HasFlag(Status.Suain)
+                                      && !aisling.Status.HasFlag(Status.Pramh)
+                                      && !aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _):
             {
                 aisling.SendOrangeBarMessage("You cannot use skills.");
 
@@ -120,7 +130,7 @@ public class RestrictionBehavior
         {
             case Aisling aisling when aisling.Status.HasFlag(Status.Suain)
                                       || aisling.Status.HasFlag(Status.Pramh)
-                                      || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out var timedEvent):
+                                      || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _):
             {
                 aisling.SendOrangeBarMessage("You cannot use spells.");
 

@@ -3,7 +3,7 @@ using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 
-namespace Chaos.Scripting.ReactorTileScripts.SapphireStream;
+namespace Chaos.Scripting.ReactorTileScripts.Jail;
 
 public class JailScript : ReactorTileScriptBase
 {
@@ -20,7 +20,4 @@ public class JailScript : ReactorTileScriptBase
         var point = source.DirectionalOffset(source.Direction.Reverse());
         source.WarpTo(point);
     }
-
-    #region ScriptVars
-    #endregion
 }

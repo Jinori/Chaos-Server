@@ -3,7 +3,7 @@ using Chaos.Networking.Abstractions;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 using Humanizer;
 
-namespace Chaos.Scripting.MerchantScripts;
+namespace Chaos.Scripting.MerchantScripts.Casino;
 
 public class TwentyOneScript : MerchantScriptBase
 {
@@ -13,6 +13,7 @@ public class TwentyOneScript : MerchantScriptBase
     private IEnumerable<Aisling>? AislingsAtStart;
     private bool AnnouncedOneMinuteTimer;
     private DateTime? AnnouncedStart;
+    private bool AnnouncedThirtySecondTimer;
     private bool CountdownStarted;
     private int CountdownStep;
     private DateTime LastCountdownTime;
@@ -78,6 +79,7 @@ public class TwentyOneScript : MerchantScriptBase
             player.Aisling.TwentyOneBust = false;
             player.Aisling.BetGoldOnTwentyOne = false;
             player.Aisling.TwentyOneStayOption = false;
+            player.Aisling.OnTwentyOneTile = false;
         }
 
         AislingsAtStart = null;
@@ -104,16 +106,22 @@ public class TwentyOneScript : MerchantScriptBase
             {
                 ProcessGameCompletion();
                 ResetGame();
+            } else if (AnnouncedStart.HasValue
+                       && (DateTime.UtcNow.Subtract(AnnouncedStart.Value).TotalSeconds >= 30)
+                       && !AnnouncedThirtySecondTimer)
+            {
+                Subject.Say("Game starting in thirty seconds!");
+                AnnouncedThirtySecondTimer = true;
             } else if (AnnouncedStart.HasValue && (DateTime.UtcNow.Subtract(AnnouncedStart.Value).TotalSeconds >= 50) && !CountdownStarted)
             {
-                Subject.Say("Game starting in 10 seconds!");
+                Subject.Say("Game starting in ten seconds!");
                 CountdownStarted = true;
                 CountdownStep = 9;
                 LastCountdownTime = DateTime.UtcNow;
             } else if (CountdownStarted && (CountdownStep >= 0))
                 if (DateTime.UtcNow.Subtract(LastCountdownTime).TotalSeconds >= 1)
                 {
-                    Subject.Say($"{CountdownStep}...");
+                    Subject.Say($"{CountdownStep.ToWords().Titleize()}...");
                     LastCountdownTime = DateTime.UtcNow;
                     CountdownStep--;
                 }

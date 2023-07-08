@@ -15,8 +15,9 @@ public static class ScriptExtensions
     {
         var scriptKey = ScriptBase.GetScriptKey(scriptTypeToAdd);
         var script = scriptFactory.CreateScript(new[] { scriptKey }, scripted);
+        var scriptActual = ((IEnumerable<TScript>)script).First();
         var composite = (ICompositeScript<TScript>)scripted.Script;
-        composite.Add(script);
+        composite.Add(scriptActual);
         scripted.ScriptKeys.Add(scriptKey);
 
         if (scripted is PanelEntityBase panelEntity && panelToUpdate is not null)

@@ -58,6 +58,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public bool IsAdmin { get; set; }
     public Collections.Legend Legend { get; private set; }
     public Nation Nation { get; set; }
+    public bool OnTwentyOneTile { get; set; }
     public UserOptions Options { get; init; }
     public byte[] Portrait { get; set; }
     public string ProfileText { get; set; }

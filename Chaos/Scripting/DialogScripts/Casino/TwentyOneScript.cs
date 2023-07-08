@@ -1,4 +1,6 @@
+using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
@@ -33,6 +35,12 @@ public class TwentyOneScript : DialogScriptBase
 
                 break;
             }
+            case "ladyluck_leavetable":
+            {
+                OnDisplayingLeaveTable(source);
+
+                break;
+            }
         }
     }
 
@@ -62,6 +70,13 @@ public class TwentyOneScript : DialogScriptBase
 
     private void OnDisplayingInitial(Aisling source)
     {
+        if (!source.OnTwentyOneTile)
+        {
+            Subject.Reply(source, "Please step up to my counter if you wish to play, dear.");
+
+            return;
+        }
+
         if (source.Gold < 25000)
         {
             Subject.Reply(source, "Looks like your luck has ran out, sweetie. Come back with more gold.");
@@ -71,6 +86,25 @@ public class TwentyOneScript : DialogScriptBase
 
         if (source.TwentyOneStayOption || source.TwentyOneBust)
             Subject.Reply(source, $"Please wait while everyone has finished. Your score was {source.CurrentDiceScore}.");
+    }
+
+    private void OnDisplayingLeaveTable(Aisling source)
+    {
+        var point = source.DirectionalOffset(source.Direction.Reverse());
+        source.WarpTo(point);
+        source.OnTwentyOneTile = false;
+
+        switch (source.Gender)
+        {
+            case Gender.Female:
+                Subject.InjectTextParameters("sugar");
+
+                break;
+            case Gender.Male:
+                Subject.InjectTextParameters("cowboy");
+
+                break;
+        }
     }
 
     private void OnDisplayingStay(Aisling source)
