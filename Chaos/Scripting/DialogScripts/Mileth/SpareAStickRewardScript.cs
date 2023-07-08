@@ -57,7 +57,8 @@ public class SpareAStickRewardScript : DialogScriptBase
                 var stick = ItemFactory.Create("Stick");
                 var shield = ItemFactory.Create("woodenshield");
                 source.TryGiveItems(stick, shield);
-            } else
+            }
+            else
                 Subject.Reply(
                     source,
                     branchCount == 0

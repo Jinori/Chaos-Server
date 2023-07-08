@@ -268,11 +268,13 @@ public class ArmorsmithingGearScript : DialogScriptBase
             {
                 source.Bank.Deposit(newCraft);
                 source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
-            } else
+            }
+            else
                 source.Inventory.TryAddToNextSlot(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);
-        } else
+        }
+        else
         {
             var newCraft = ItemFactory.Create(recipe.TemplateKey);
 
@@ -280,7 +282,8 @@ public class ArmorsmithingGearScript : DialogScriptBase
             {
                 source.Bank.Deposit(newCraft);
                 source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
-            } else
+            }
+            else
                 source.Inventory.TryAddToNextSlot(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);

@@ -349,7 +349,8 @@ public class ReligionScriptBase : DialogScriptBase
                             var item = ItemFactory.Create($"essenceof{deity}");
                             player.Inventory.TryAddToNextSlot(item);
                             player.SendActiveMessage($"You received an Essence of {deity} and faith!");
-                        } else
+                        }
+                        else
                             player.SendActiveMessage("You receive faith!");
 
                         TryAddFaith(player, FAITH_REWARD);
@@ -374,7 +375,8 @@ public class ReligionScriptBase : DialogScriptBase
                         var item = ItemFactory.Create($"essenceof{deity}");
                         player.Inventory.TryAddToNextSlot(item);
                         player.SendActiveMessage($"You received an Essence of {deity} and faith!");
-                    } else
+                    }
+                    else
                         player.SendActiveMessage("You receive faith!");
 
                     TryAddFaith(player, FAITH_REWARD);
@@ -642,7 +644,8 @@ public class ReligionScriptBase : DialogScriptBase
                 source.Inventory.TryAddToNextSlot(essence);
                 source.SendActiveMessage($"Through prayer, you receive a Essence of {deity}!");
             }
-        } else
+        }
+        else
         {
             Subject.Reply(source, "You have reached your limit in prayer. Try again tomorrow!");
             source.Trackers.TimedEvents.AddEvent("PrayerCooldown", TimeSpan.FromDays(1), true);

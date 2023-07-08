@@ -69,7 +69,8 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
             {
                 aisling.UserStatSheet.AddTotalExp(amount);
                 amount = 0;
-            } else
+            }
+            else
             {
                 var expToGive = Math.Min(amount, aisling.UserStatSheet.ToNextLevel);
                 aisling.UserStatSheet.AddTotalExp(expToGive);

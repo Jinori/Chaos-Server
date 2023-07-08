@@ -107,9 +107,11 @@ public class ClueScript : ReactorTileScriptBase
 
                     // Check if all members of the group have the quest flag and are within level range
                     // Check if all members of the group have the quest enum and are within level range
-                    var allMembersHaveQuestFlag = aisling.Group.All(member =>
-                        member.Trackers.Enums.TryGetValue(out ManorNecklaceStage value) && (value == ManorNecklaceStage.AcceptedQuest) &&
-                        member.WithinLevelRange(source));
+                    var allMembersHaveQuestFlag = aisling.Group.All(
+                        member =>
+                            member.Trackers.Enums.TryGetValue(out ManorNecklaceStage value)
+                            && (value == ManorNecklaceStage.AcceptedQuest)
+                            && member.WithinLevelRange(source));
 
                     // Check if all members have all four clues
                     var allMembersHaveAllClues = aisling.Group.All(
@@ -152,7 +154,8 @@ public class ClueScript : ReactorTileScriptBase
                             member.Inventory.RemoveByTemplateKey("clue3");
                             member.Inventory.RemoveByTemplateKey("clue4");
                         }
-                    } else
+                    }
+                    else
                     {
                         // Send a message to the Aisling
                         aisling.Client.SendServerMessage(

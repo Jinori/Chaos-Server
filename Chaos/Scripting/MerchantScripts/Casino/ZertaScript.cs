@@ -52,17 +52,20 @@ public class ZertaScript : MerchantScriptBase
 
                 Subject.Pathfind(CasinoDoorPoint);
             }
-        } else if ((Subject.DistanceFrom(CasinoPoint) > 0) && Subject.OnSameMapAs(CasinoPoint) && !AnnouncedPutItOnRed)
+        }
+        else if ((Subject.DistanceFrom(CasinoPoint) > 0) && Subject.OnSameMapAs(CasinoPoint) && !AnnouncedPutItOnRed)
         {
             WalkTimer.Update(delta);
 
             if (WalkTimer.IntervalElapsed)
                 Subject.Pathfind(CasinoPoint);
-        } else if ((Subject.DistanceFrom(CasinoPoint) <= 1) && !AnnouncedPutItOnRed)
+        }
+        else if ((Subject.DistanceFrom(CasinoPoint) <= 1) && !AnnouncedPutItOnRed)
         {
             Subject.Say("Put it all on red!");
             AnnouncedPutItOnRed = true;
-        } else if (AnnouncedPutItOnRed && !AnnouncedWinOrLoss)
+        }
+        else if (AnnouncedPutItOnRed && !AnnouncedWinOrLoss)
         {
             DelayTimer.Update(delta);
 
@@ -71,7 +74,8 @@ public class ZertaScript : MerchantScriptBase
                 Subject.Say(IntegerRandomizer.RollChance(50) ? "Woohoo! I won!" : "Shucks.. I lost.");
                 AnnouncedWinOrLoss = true;
             }
-        } else if (AnnouncedWinOrLoss && AnnouncedPutItOnRed)
+        }
+        else if (AnnouncedWinOrLoss && AnnouncedPutItOnRed)
         {
             if ((Subject.DistanceFrom(InsideCasinoDoorPoint) > 0) && Subject.OnSameMapAs(InsideCasinoDoorPoint))
             {
@@ -79,13 +83,15 @@ public class ZertaScript : MerchantScriptBase
 
                 if (WalkTimer.IntervalElapsed)
                     Subject.Pathfind(InsideCasinoDoorPoint);
-            } else if ((Subject.DistanceFrom(HomePoint) > 0) && Subject.OnSameMapAs(HomePoint))
+            }
+            else if ((Subject.DistanceFrom(HomePoint) > 0) && Subject.OnSameMapAs(HomePoint))
             {
                 WalkTimer.Update(delta);
 
                 if (WalkTimer.IntervalElapsed)
                     Subject.Pathfind(HomePoint);
-            } else if ((Subject.DistanceFrom(HomePoint) == 0) && Subject.OnSameMapAs(HomePoint))
+            }
+            else if ((Subject.DistanceFrom(HomePoint) == 0) && Subject.OnSameMapAs(HomePoint))
             {
                 Subject.Say("*shrugs*");
                 AnnouncedWinOrLoss = false;

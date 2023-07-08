@@ -78,7 +78,8 @@ public class LockPickChestScript : DialogScriptBase
                     break;
                 }
             }
-        } else
+        }
+        else
         {
             var breakPick = IntegerRandomizer.RollChance(50);
 
@@ -89,7 +90,8 @@ public class LockPickChestScript : DialogScriptBase
                 source.SendServerMessage(
                     ServerMessageType.OrangeBar1,
                     "The lock defeats your clumsy efforts and claims your lockpick as a trophy. Better luck next time!");
-            } else
+            }
+            else
                 source.SendServerMessage(
                     ServerMessageType.OrangeBar1,
                     "You fail to pick the lock. The chest giggles, 'That tickled, try again!'");

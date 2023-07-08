@@ -44,7 +44,8 @@ public class TwentyOneScript : MerchantScriptBase
                 var winnings = AislingsAtCompletion.Count() * 25000;
                 winner.TryGiveGold(winnings);
                 winner.SendActiveMessage($"You won the game and receive {winnings.ToWords()} gold!");
-            } else
+            }
+            else
             {
                 var winnerNames = string.Join(", ", enumerable.Select(w => w.Name));
                 Subject.Say($"It's a tie between {winnerNames} with a score of {highestScore}!");
@@ -56,7 +57,8 @@ public class TwentyOneScript : MerchantScriptBase
                     winner.TryGiveGold(winnings);
                 }
             }
-        } else
+        }
+        else
             Subject.Say("Everyone bust! There are no winners.");
     }
 
@@ -100,25 +102,29 @@ public class TwentyOneScript : MerchantScriptBase
                     aisling.SendActiveMessage("A game of twenty one has started! Come join!");
 
                 Subject.Say("Let's begin!");
-            } else if (AnnouncedStart.HasValue
-                       && (DateTime.UtcNow.Subtract(AnnouncedStart.Value).TotalMinutes >= 1)
-                       && AnnouncedOneMinuteTimer)
+            }
+            else if (AnnouncedStart.HasValue
+                     && (DateTime.UtcNow.Subtract(AnnouncedStart.Value).TotalMinutes >= 1)
+                     && AnnouncedOneMinuteTimer)
             {
                 ProcessGameCompletion();
                 ResetGame();
-            } else if (AnnouncedStart.HasValue
-                       && (DateTime.UtcNow.Subtract(AnnouncedStart.Value).TotalSeconds >= 30)
-                       && !AnnouncedThirtySecondTimer)
+            }
+            else if (AnnouncedStart.HasValue
+                     && (DateTime.UtcNow.Subtract(AnnouncedStart.Value).TotalSeconds >= 30)
+                     && !AnnouncedThirtySecondTimer)
             {
                 Subject.Say("Game starting in thirty seconds!");
                 AnnouncedThirtySecondTimer = true;
-            } else if (AnnouncedStart.HasValue && (DateTime.UtcNow.Subtract(AnnouncedStart.Value).TotalSeconds >= 50) && !CountdownStarted)
+            }
+            else if (AnnouncedStart.HasValue && (DateTime.UtcNow.Subtract(AnnouncedStart.Value).TotalSeconds >= 50) && !CountdownStarted)
             {
                 Subject.Say("Game starting in ten seconds!");
                 CountdownStarted = true;
                 CountdownStep = 9;
                 LastCountdownTime = DateTime.UtcNow;
-            } else if (CountdownStarted && (CountdownStep >= 0))
+            }
+            else if (CountdownStarted && (CountdownStep >= 0))
                 if (DateTime.UtcNow.Subtract(LastCountdownTime).TotalSeconds >= 1)
                 {
                     Subject.Say($"{CountdownStep.ToWords().Titleize()}...");

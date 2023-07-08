@@ -59,7 +59,8 @@ public class TeleportToPfBossScript : DialogScriptBase
 
                     member.TraverseMap(mapInstance, point);
                 }
-            } else
+            }
+            else
             {
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your group must be nearby.");
                 Subject.Reply(source, "Your group is not near.");

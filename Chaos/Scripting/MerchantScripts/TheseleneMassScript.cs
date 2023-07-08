@@ -216,20 +216,23 @@ public class TheseleneMassScript : MerchantScriptBase
                 AnnounceMassFiveMinuteStart();
                 MassAnnouncementTime = DateTime.UtcNow;
                 AnnouncedMassFiveMinutes = true;
-            } else if (MassAnnouncementTime.HasValue
-                       && (DateTime.UtcNow.Subtract(MassAnnouncementTime.Value).TotalMinutes >= 4)
-                       && !AnnouncedMassOneMinute)
+            }
+            else if (MassAnnouncementTime.HasValue
+                     && (DateTime.UtcNow.Subtract(MassAnnouncementTime.Value).TotalMinutes >= 4)
+                     && !AnnouncedMassOneMinute)
             {
                 AnnounceMassOneMinuteStart();
                 AnnouncedMassOneMinute = true;
-            } else if (MassAnnouncementTime.HasValue
-                       && (DateTime.UtcNow.Subtract(MassAnnouncementTime.Value).TotalMinutes >= 5)
-                       && !AnnouncedMassBegin)
+            }
+            else if (MassAnnouncementTime.HasValue
+                     && (DateTime.UtcNow.Subtract(MassAnnouncementTime.Value).TotalMinutes >= 5)
+                     && !AnnouncedMassBegin)
             {
                 AnnounceMassBeginning();
                 AnnouncedMassBegin = true;
                 MassAnnouncementTime = null; // Resetting the timer
-            } else if (AnnouncedMassBegin && !MassCompleted)
+            }
+            else if (AnnouncedMassBegin && !MassCompleted)
                 ConductMass();
             else if (MassCompleted)
                 PostMassActions();

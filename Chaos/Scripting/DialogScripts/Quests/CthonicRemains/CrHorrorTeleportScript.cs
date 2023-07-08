@@ -46,7 +46,8 @@ public class CrHorrorTeleportScript : DialogScriptBase
                     var pointS = new Point(22, 15);
                     member.TraverseMap(mapInstance, pointS);
                 }
-            } else
+            }
+            else
             {
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure your companions are within level range.");
                 Subject.Reply(source, "Some of your companions are not within your level range.");

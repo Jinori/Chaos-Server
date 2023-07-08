@@ -42,7 +42,8 @@ public class GetCascadingTargetsComponent<TEntity> : IConditionalComponent where
                                          .ToList();
 
             vars.SetAllPoints(allPoints);
-        } else
+        }
+        else
             allPoints = vars.GetAllPoints();
 
         //get the slice of points for the current stage

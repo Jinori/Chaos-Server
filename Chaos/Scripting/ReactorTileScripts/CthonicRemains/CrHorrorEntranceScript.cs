@@ -59,7 +59,8 @@ public class CrHorrorEntranceScript : ReactorTileScriptBase
             // Create a dialog for the merchant
             var dialog = _dialogFactory.Create("crhorrorenter", merchant);
             dialog.Display(aisling);
-        } else
+        }
+        else
         {
             // Send a message to the Aisling
             aisling.Client.SendServerMessage(

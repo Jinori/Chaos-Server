@@ -34,7 +34,8 @@ public class GatherGrapeScript : ReactorTileScriptBase
             aisling.SendOrangeBarMessage("The farmer is staring, you head inside.");
             aisling.TraverseMap(mapInstance, point);
             aisling.Trackers.Counters.Remove("grape", out _);
-        } else
+        }
+        else
         {
             var grape = _itemFactory.Create("Grape");
             var grapeCount = Random.Shared.Next(1, 4);

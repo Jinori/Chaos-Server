@@ -162,7 +162,8 @@ public class MythicKoboldScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                } else
+                }
+                else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -213,7 +214,8 @@ public class MythicKoboldScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                } else
+                }
+                else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -253,7 +255,8 @@ public class MythicKoboldScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                } else
+                }
+                else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -334,7 +337,8 @@ public class MythicKoboldScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                     source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                } else
+                }
+                else
                 {
                     ExperienceDistributionScript.GiveExp(source, 25000000);
                     source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");

@@ -63,19 +63,16 @@ public class ManorFloorWarpScript : ConfigurableReactorTileScriptBase
 
             return;
         }
-        
+
         // Check if all members of the group have the quest enum and are within level range
-        var allMembersHaveQuestFlag = aisling.Group.All(member =>
-            (member.Trackers.Enums.TryGetValue(out ManorLouegieStage value) && (value == ManorLouegieStage.AcceptedQuest)) || ((value == ManorLouegieStage.CompletedQuest) &&
-                member.WithinLevelRange(source)));
+        var allMembersHaveQuestFlag = aisling.Group.All(
+            member =>
+                (member.Trackers.Enums.TryGetValue(out ManorLouegieStage value) && (value == ManorLouegieStage.AcceptedQuest))
+                || ((value == ManorLouegieStage.CompletedQuest) && member.WithinLevelRange(source)));
 
         if (allMembersHaveQuestFlag)
-        {
             foreach (var member in aisling.Group)
-            {
-                member.TraverseMap(targetMap, Destination);  
-            }
-        }
+                member.TraverseMap(targetMap, Destination);
         else
         {
             // Send a message to the Aisling

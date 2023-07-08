@@ -47,9 +47,11 @@ public class ShrineScript : MerchantScriptBase
 
                 ReligionScriptBase.TryAddFaith(source, 5);
                 Subject.MapInstance.RemoveObject(Subject);
-            } else
+            }
+            else
                 source.SendActiveMessage("You attempt to pray at the shrine but no god will listen..");
-        } else
+        }
+        else
             source.SendActiveMessage("The shrine seems to beckon you closer...");
     }
 }

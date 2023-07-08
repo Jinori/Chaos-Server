@@ -122,7 +122,8 @@ public class ClassDedicationScript : DialogScriptBase
                 {
                     builtReply += " and you've hunted enough experience! Let's continue.";
                     Subject.Reply(source, builtReply, "aoife_chooseNewClass");
-                } else
+                }
+                else
                 {
                     builtReply += " but you do not have the required experience of 60 million.";
                     Subject.Reply(source, builtReply);

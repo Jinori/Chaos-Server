@@ -64,7 +64,8 @@ public sealed class BossMoveToTargetScript : MonsterScriptBase
                     }
                 }
             }
-        } else
+        }
+        else
         {
             var direction = Target.DirectionalRelationTo(Subject);
             Subject.Turn(direction);

@@ -65,7 +65,8 @@ public class MilethAltarWorshipScript : ReactorTileScriptBase
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
             ExperienceDistributionScript.GiveExp(aisling, 100000);
             aisling.TryGiveItems(_itemFactory.Create("amethystring"));
-        } else
+        }
+        else
         {
             ExperienceDistributionScript.GiveExp(aisling, 40000);
             aisling.TryGiveItems(_itemFactory.Create("emeraldring"));

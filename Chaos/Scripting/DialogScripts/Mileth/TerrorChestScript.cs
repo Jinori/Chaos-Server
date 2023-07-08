@@ -54,7 +54,8 @@ public class TerrorChestScript : DialogScriptBase
                     "Loures"   => DisplayColor.White,
                     _          => item.Color
                 };
-            } else // isOvercoat
+            }
+            else // isOvercoat
             {
                 var templateKeyRewards = new List<string> { "dyeableTrainingOutfit" };
                 var index = new Random().Next(templateKeyRewards.Count);

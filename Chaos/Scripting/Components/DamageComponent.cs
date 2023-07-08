@@ -58,7 +58,8 @@ public class DamageComponent : IComponent
 
             finalDamage += Convert.ToInt32(
                 MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0) * healthPercentFactor);
-        } else
+        }
+        else
             finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0);
 
         if (!damageStat.HasValue)

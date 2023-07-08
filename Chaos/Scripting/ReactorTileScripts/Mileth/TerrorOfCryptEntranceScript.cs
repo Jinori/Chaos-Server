@@ -50,7 +50,8 @@ public class TerrorOfCryptEntranceScript : ReactorTileScriptBase
             // Create a dialog for the merchant
             var dialog = _dialogFactory.Create("teague_enterTerror", merchant);
             dialog.Display(aisling);
-        } else
+        }
+        else
         {
             // Send a message to the Aisling
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure everyone is within level range and has quest.");

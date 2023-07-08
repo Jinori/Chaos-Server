@@ -22,7 +22,8 @@ public class AnnaGiveArmorScript : DialogScriptBase
                 return;
 
             source.TryGiveItems(ItemFactory.Create("blouse"));
-        } else
+        }
+        else
         {
             if (source.Inventory.Any(Item => Item.Template.TemplateKey.EqualsI("shirt")))
                 return;

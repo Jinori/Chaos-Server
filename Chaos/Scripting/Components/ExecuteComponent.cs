@@ -39,7 +39,8 @@ public class ExecuteComponent : IComponent
 
                 if (!target.IsAlive)
                     hasKilled = true;
-            } else
+            }
+            else
             {
                 var tenPercent = MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, options.DmgHealthPct);
 

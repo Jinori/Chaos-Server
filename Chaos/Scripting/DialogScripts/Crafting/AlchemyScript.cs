@@ -268,11 +268,13 @@ public class AlchemyScript : DialogScriptBase
             {
                 source.Bank.Deposit(newCraft);
                 source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
-            } else
+            }
+            else
                 source.Inventory.TryAddToNextSlot(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);
-        } else
+        }
+        else
         {
             var templateKeyWithoutFormula =
                 recipe.TemplateKey.Replace("formula", ""); // Remove "formula" from the template key
@@ -283,7 +285,8 @@ public class AlchemyScript : DialogScriptBase
             {
                 source.Bank.Deposit(newCraft);
                 source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
-            } else
+            }
+            else
                 source.Inventory.TryAddToNextSlot(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);

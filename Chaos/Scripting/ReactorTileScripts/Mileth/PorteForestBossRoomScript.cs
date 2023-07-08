@@ -51,7 +51,8 @@ public class PorteForestBossRoomScript : ReactorTileScriptBase
             // Create a dialog for the merchant
             var dialog = _dialogFactory.Create("pf_bossroomentrance", merchant);
             dialog.Display(aisling);
-        } else
+        }
+        else
         {
             // Send a message to the Aisling
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Not all group members have found the pendant.");
