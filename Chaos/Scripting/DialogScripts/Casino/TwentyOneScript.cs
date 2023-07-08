@@ -5,7 +5,7 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts;
+namespace Chaos.Scripting.DialogScripts.Casino;
 
 public class TwentyOneScript : DialogScriptBase
 {
@@ -13,6 +13,8 @@ public class TwentyOneScript : DialogScriptBase
     public TwentyOneScript(Dialog subject)
         : base(subject) { }
 
+    private bool HasPaid;
+    
     public override void OnDisplaying(Aisling source)
     {
         switch (Subject.Template.TemplateKey.ToLower())
@@ -46,26 +48,29 @@ public class TwentyOneScript : DialogScriptBase
 
     private void OnDisplayingDiceRoll(Aisling source)
     {
-        if (source.TryTakeGold(25000))
+        if (!HasPaid)
         {
+            source.TryTakeGold(25000);
             source.BetGoldOnTwentyOne = true;
+            HasPaid = true;
+        }
+        
+        if (Subject.DialogSource is Merchant merchant)
+        {
+            merchant.CurrentlyHosting21Game = true;
+            var roll = IntegerRandomizer.RollDouble(6);
+            source.CurrentDiceScore += roll;
 
-            if (Subject.DialogSource is Merchant merchant)
+            if (source.CurrentDiceScore <= 21)
+                Subject.InjectTextParameters(source.CurrentDiceScore);
+            else
             {
-                merchant.CurrentlyHosting21Game = true;
-                var roll = IntegerRandomizer.RollDouble(6);
-                source.CurrentDiceScore += roll;
-
-                if (source.CurrentDiceScore <= 21)
-                    Subject.InjectTextParameters(source.CurrentDiceScore);
-                else
-                {
-                    source.TwentyOneBust = true;
-                    merchant.Say($"{source.Name} has bust!");
-                    Subject.Reply(source, $"You've bust! Your total is {source.CurrentDiceScore}. Please wait while others finish.");
-                }
+                source.TwentyOneBust = true;
+                merchant.Say($"{source.Name} has bust!");
+                Subject.Reply(source, $"You've bust! Your total is {source.CurrentDiceScore}. Please wait while others finish.");
             }
         }
+
     }
 
     private void OnDisplayingInitial(Aisling source)
