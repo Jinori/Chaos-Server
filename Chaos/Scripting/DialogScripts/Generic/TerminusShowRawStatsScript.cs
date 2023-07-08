@@ -1,5 +1,6 @@
 using System.Text;
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -16,8 +17,26 @@ public class TerminusShowRawStatsScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
+        source.Trackers.Enums.TryGetValue(out TutorialQuestStage tutorial);
+        if (tutorial != TutorialQuestStage.CompletedTutorial)
+            return;
+        
         switch (Subject.Template.TemplateKey.ToLower())
         {
+            case "terminus_initial":
+            {
+                var option = new DialogOption
+                {
+                    DialogKey = "terminus_checkStatsInitial",
+                    OptionText = "Check Stats"
+                };
+
+                if (!Subject.HasOption(option.OptionText))
+                    Subject.Options.Add(option);
+
+                break;
+            }
+            
             case "terminus_checkrawstats":
             {
                 var sb = new StringBuilder();

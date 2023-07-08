@@ -8,7 +8,7 @@ using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.ReactorTileScripts;
 
-public class WarpScript : ConfigurableReactorTileScriptBase
+public class MilethInnWarpScript : ConfigurableReactorTileScriptBase
 {
     private readonly ISimpleCache SimpleCache;
 
@@ -17,7 +17,7 @@ public class WarpScript : ConfigurableReactorTileScriptBase
     #endregion
 
     /// <inheritdoc />
-    public WarpScript(ReactorTile subject, ISimpleCache simpleCache)
+    public MilethInnWarpScript(ReactorTile subject, ISimpleCache simpleCache)
         : base(subject) =>
         SimpleCache = simpleCache;
 
@@ -26,6 +26,14 @@ public class WarpScript : ConfigurableReactorTileScriptBase
     {
         var targetMap = SimpleCache.Get<MapInstance>(Destination.Map);
         var aisling = source as Aisling;
+        
+        var hasStage = source.Trackers.Enums.TryGetValue(out RionaRatQuestStage stage);
+
+        if (!hasStage || hasStage != (stage == RionaRatQuestStage.CompletedRatQuest))
+        {
+         aisling?.SendOrangeBarMessage("Speak to Riona and complete the rat quest to leave.");
+         return;
+        }
 
         if (source.StatSheet.Level < (targetMap.MinimumLevel ?? 0))
         {
