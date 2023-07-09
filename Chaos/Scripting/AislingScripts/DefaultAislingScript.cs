@@ -201,7 +201,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         if (Subject.Guild is not null && BoardStore.Exists(Subject.Guild.Name))
             yield return BoardStore.Load(Subject.Guild.Name);
 
-        yield return BoardStore.Load("public_test_board");
+        //yield return BoardStore.Load("public_test_board");
 
         //things like... get board based on Nation, Guild, Enums, Flags, whatever
         //e.g.

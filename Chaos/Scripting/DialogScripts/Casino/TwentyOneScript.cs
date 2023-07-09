@@ -84,8 +84,10 @@ public class TwentyOneScript : DialogScriptBase
 
         if (source.Gold < 25000)
         {
+            source.OnTwentyOneTile = false;
             Subject.Reply(source, "Looks like your luck has ran out, sweetie. Come back with more gold.");
-
+            var point = source.DirectionalOffset(source.Direction.Reverse());
+            source.WarpTo(point);
             return;
         }
 
