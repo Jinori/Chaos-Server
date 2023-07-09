@@ -4,7 +4,6 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts;
 
-// ReSharper disable once ClassCanBeSealed.Global
 public class MoveToTargetScript : MonsterScriptBase
 {
     /// <inheritdoc />

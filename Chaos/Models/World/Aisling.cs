@@ -36,8 +36,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     private readonly IFactory<Exchange> ExchangeFactory;
     private readonly ICloningService<Item> ItemCloner;
     public Bank Bank { get; private set; }
-
     public bool BetGoldOnTwentyOne { get; set; }
+    public bool BetOnMonsterRaceOption { get; set; }
     public BodyColor BodyColor { get; set; }
     public BodySprite BodySprite { get; set; }
     public SynchronizedHashSet<ChannelSettings> ChannelSettings { get; init; }
@@ -56,7 +56,9 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public bool IsAdmin { get; set; }
     public Collections.Legend Legend { get; private set; }
     public MailBox MailBox { get; set; } = null!;
+    public int MonsterRacingLane { get; set; }
     public Nation Nation { get; set; }
+    public bool OnMonsterRacingTile { get; set; }
     public bool OnTwentyOneTile { get; set; }
     public UserOptions Options { get; init; }
     public byte[] Portrait { get; set; }
@@ -467,7 +469,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
             LastClicked[source.Id] = DateTime.UtcNow;
             Script.OnClicked(source);
-        } else if (source.CanObserve(this))
+        }
+        else if (source.CanObserve(this))
         {
             source.Client.SendProfile(this);
 
@@ -585,7 +588,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
             if (Inventory.RemoveQuantity(item.Slot, amount.Value, out var items))
                 return TryDrop(point, items.FixStacks(ItemCloner), out groundItems);
-        } else
+        }
+        else
         {
             if (Inventory.TryGetRemove(slot, out var droppedItem))
                 return TryDrop(point, out groundItems, droppedItem);
@@ -930,7 +934,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
                 return false;
 
             target = this;
-        } else if (!MapInstance.TryGetObject(targetId.Value, out target))
+        }
+        else if (!MapInstance.TryGetObject(targetId.Value, out target))
             return false;
 
         if (!CanUse(

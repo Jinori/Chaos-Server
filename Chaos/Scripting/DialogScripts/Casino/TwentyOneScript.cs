@@ -9,12 +9,12 @@ namespace Chaos.Scripting.DialogScripts.Casino;
 
 public class TwentyOneScript : DialogScriptBase
 {
+    private bool HasPaid;
+
     /// <inheritdoc />
     public TwentyOneScript(Dialog subject)
         : base(subject) { }
 
-    private bool HasPaid;
-    
     public override void OnDisplaying(Aisling source)
     {
         switch (Subject.Template.TemplateKey.ToLower())
@@ -54,7 +54,7 @@ public class TwentyOneScript : DialogScriptBase
             source.BetGoldOnTwentyOne = true;
             HasPaid = true;
         }
-        
+
         if (Subject.DialogSource is Merchant merchant)
         {
             merchant.CurrentlyHosting21Game = true;
@@ -70,7 +70,6 @@ public class TwentyOneScript : DialogScriptBase
                 Subject.Reply(source, $"You've bust! Your total is {source.CurrentDiceScore}. Please wait while others finish.");
             }
         }
-
     }
 
     private void OnDisplayingInitial(Aisling source)
@@ -82,12 +81,13 @@ public class TwentyOneScript : DialogScriptBase
             return;
         }
 
-        if (source.Gold < 25000)
+        if ((source.Gold < 25000) && !HasPaid)
         {
             source.OnTwentyOneTile = false;
             Subject.Reply(source, "Looks like your luck has ran out, sweetie. Come back with more gold.");
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);
+
             return;
         }
 

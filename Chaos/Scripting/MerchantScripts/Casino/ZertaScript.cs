@@ -97,8 +97,7 @@ public class ZertaScript : MerchantScriptBase
                 AnnouncedWinOrLoss = false;
                 AnnouncedPutItOnRed = false;
                 Subject.Turn(Direction.Down);
-                var script = Subject.Script.As<CompositeMerchantScript>();
-                script?.Remove(this);
+                Subject.RemoveScript<IMerchantScript, ZertaScript>();
             }
         }
     }
