@@ -29,8 +29,11 @@ public class CasinoMonsterRaceLaneTwoScript : ReactorTileScriptBase
 
         if (Subject.DistanceFrom(source) <= 0)
         {
-            source.MapInstance.ShowAnimation(Winner.GetPointAnimation(Subject));
-            source.MapInstance.PlaySound(165, Subject);
+            var monsters = source.MapInstance.GetEntities<Monster>().Where(x => x.Template.TemplateKey == "amusementMonster");
+
+            foreach (var monster in monsters)
+                monster.MapInstance.RemoveObject(monster);
+
 
             AislingsAtCompletion = Subject.MapInstance.GetEntities<Aisling>().Where(x => x.BetOnMonsterRaceOption).ToList();
 
@@ -67,10 +70,8 @@ public class CasinoMonsterRaceLaneTwoScript : ReactorTileScriptBase
                 foreach (var aisling in AislingsAtCompletion)
                     aisling.SendActiveMessage("Nobody guessed the right lane!");
 
-            var monsters = source.MapInstance.GetEntities<Monster>().Where(x => x.Template.TemplateKey == "amusementMonster");
-
-            foreach (var monster in monsters)
-                monster.MapInstance.RemoveObject(monster);
+            source.MapInstance.ShowAnimation(Winner.GetPointAnimation(Subject));
+            source.MapInstance.PlaySound(165, Subject);
 
             foreach (var aislings in AislingsAtCompletion)
             {
