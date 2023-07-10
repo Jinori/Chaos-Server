@@ -310,14 +310,14 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage suc) || (suc != CryptSlayerStage.Succubus))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
         {
             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
             return;
         }
 
-        IncrementCounter(aisling);
+        IncrementCryptSlayerCounter(aisling);
     }
 
     private void HandleCryptMimicKill(Aisling aisling)
@@ -325,14 +325,14 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage mimic) || (mimic != CryptSlayerStage.Mimic))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
         {
             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
             return;
         }
 
-        IncrementCounter(aisling);
+        IncrementCryptSlayerCounter(aisling);
     }
 
     private void HandleCryptSpider2Kill(Aisling aisling)
@@ -340,14 +340,14 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage spider2) || (spider2 != CryptSlayerStage.Spider2))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
         {
             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
             return;
         }
 
-        IncrementCounter(aisling);
+        IncrementCryptSlayerCounter(aisling);
     }
 
     private void HandleCryptSpiderKill(Aisling aisling)
@@ -355,14 +355,14 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage spider) || (spider != CryptSlayerStage.Spider1))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
         {
             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
             return;
         }
 
-        IncrementCounter(aisling);
+        IncrementCryptSlayerCounter(aisling);
     }
 
     private void HandleCryptScorpionKill(Aisling aisling)
@@ -370,14 +370,14 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage scorpion) || (scorpion != CryptSlayerStage.Scorpion))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
         {
             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
             return;
         }
 
-        IncrementCounter(aisling);
+        IncrementCryptSlayerCounter(aisling);
     }
 
     private void HandleCryptMarauderKill(Aisling aisling)
@@ -385,14 +385,14 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage mar) || (mar != CryptSlayerStage.Marauder))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
         {
             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
             return;
         }
 
-        IncrementCounter(aisling);
+        IncrementCryptSlayerCounter(aisling);
     }
 
     private void HandleCryptKardiKill(Aisling aisling)
@@ -400,14 +400,14 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage kardi) || (kardi != CryptSlayerStage.Kardi))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
         {
             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
             return;
         }
 
-        IncrementCounter(aisling);
+        IncrementCryptSlayerCounter(aisling);
     }
 
     private void HandleCryptWhiteBatKill(Aisling aisling)
@@ -415,14 +415,14 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage whitebat) || (whitebat != CryptSlayerStage.WhiteBat))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
         {
             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
             return;
         }
 
-        IncrementCounter(aisling);
+        IncrementCryptSlayerCounter(aisling);
     }
 
     private void HandleCryptGiantBatKill(Aisling aisling)
@@ -430,14 +430,14 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage giantbat) || (giantbat != CryptSlayerStage.GiantBat))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
         {
             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
             return;
         }
 
-        IncrementCounter(aisling);
+        IncrementCryptSlayerCounter(aisling);
     }
 
     private void HandleCryptCentipede2Kill(Aisling aisling)
@@ -445,14 +445,14 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage centipede2) || (centipede2 != CryptSlayerStage.Centipede2))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
         {
             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
             return;
         }
 
-        IncrementCounter(aisling);
+        IncrementCryptSlayerCounter(aisling);
     }
 
     private void HandleCryptCentipedeKill(Aisling aisling)
@@ -460,14 +460,14 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage centipede) || (centipede != CryptSlayerStage.Centipede1))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
         {
             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
             return;
         }
 
-        IncrementCounter(aisling);
+        IncrementCryptSlayerCounter(aisling);
     }
 
     private void HandleCryptRatKill(Aisling aisling)
@@ -475,14 +475,14 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage rat) || (rat != CryptSlayerStage.Rat))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
         {
             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
             return;
         }
 
-        IncrementCounter(aisling);
+        IncrementCryptSlayerCounter(aisling);
     }
 
     private void HandleCryptBatKill(Aisling aisling)
@@ -490,21 +490,29 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out CryptSlayerStage bat) || (bat != CryptSlayerStage.Bat))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 10))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("CryptSlayer", 10))
         {
             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 
             return;
         }
 
-        IncrementCounter(aisling);
+        IncrementCryptSlayerCounter(aisling);
     }
+    
 
     private void IncrementCounter(Aisling aisling)
     {
         var value = aisling.Trackers.Counters.AddOrIncrement(Subject.Template.TemplateKey);
         aisling.Client.SendServerMessage(ServerMessageType.PersistentMessage, $"{value.ToWords().Titleize()} - {Subject.Template.Name}");
     }
+    
+    private void IncrementCryptSlayerCounter(Aisling aisling)
+    {
+        var value = aisling.Trackers.Counters.AddOrIncrement("CryptSlayer");
+        aisling.Client.SendServerMessage(ServerMessageType.PersistentMessage, $"{value.ToWords().Titleize()} - {Subject.Template.Name}");
+    }
+    
 
     /// <inheritdoc />
     public override void OnDeath() => ProcessKillCount();
