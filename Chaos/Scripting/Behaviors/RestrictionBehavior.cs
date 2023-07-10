@@ -20,7 +20,7 @@ public class RestrictionBehavior
 
                 return false;
             }
-            case Aisling aislingCasino when aislingCasino.OnTwentyOneTile || aislingCasino.OnMonsterRacingTile:
+            case Aisling { OnTwentyOneTile: true } aislingCasino:
             {
                 aislingCasino.SendOrangeBarMessage("You cannot move when at a game table.");
 

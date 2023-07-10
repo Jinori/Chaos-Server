@@ -20,7 +20,7 @@ public class ArmachdEffect : NonOverwritableEffectBase
     public override byte Icon => 0;
     public override string Name => "armachd";
 
-    protected override byte? Sound => 140;
+    protected override byte? Sound => 122;
 
     public override void OnApplied()
     {

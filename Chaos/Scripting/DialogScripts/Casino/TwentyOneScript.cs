@@ -19,25 +19,25 @@ public class TwentyOneScript : DialogScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "ladyluck_initial":
+            case "twentyonetable_initial":
             {
                 OnDisplayingInitial(source);
 
                 break;
             }
-            case "ladyluck_rolldice":
+            case "twentyonetable_rolldice":
             {
                 OnDisplayingDiceRoll(source);
 
                 break;
             }
-            case "ladyluck_stay":
+            case "twentyonetable_stay":
             {
                 OnDisplayingStay(source);
 
                 break;
             }
-            case "ladyluck_leavetable":
+            case "twentyonetable_leavetable":
             {
                 OnDisplayingLeaveTable(source);
 
@@ -76,7 +76,7 @@ public class TwentyOneScript : DialogScriptBase
     {
         if (!source.OnTwentyOneTile)
         {
-            Subject.Reply(source, "Please step up to my counter if you wish to play, dear.");
+            Subject.Reply(source, "Please step up if you wish to play.");
 
             return;
         }
@@ -84,7 +84,7 @@ public class TwentyOneScript : DialogScriptBase
         if ((source.Gold < 25000) && !HasPaid)
         {
             source.OnTwentyOneTile = false;
-            Subject.Reply(source, "Looks like your luck has ran out, sweetie. Come back with more gold.");
+            Subject.Reply(source, "Looks like your luck has ran out. Come back with more gold.");
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);
 

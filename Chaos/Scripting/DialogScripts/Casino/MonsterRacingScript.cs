@@ -6,7 +6,6 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.MerchantScripts.Abstractions;
-using Humanizer;
 
 namespace Chaos.Scripting.DialogScripts.Casino;
 
@@ -31,12 +30,6 @@ public class MonsterRacingScript : DialogScriptBase
 
                 break;
             }
-            case "ladychance_enterrace":
-            {
-                OnDisplayingEnterRace(source);
-
-                break;
-            }
             case "ladychance_setlane":
             {
                 OnDisplayingSetLane(source);
@@ -51,46 +44,30 @@ public class MonsterRacingScript : DialogScriptBase
             }
         }
     }
-
-    private void OnDisplayingEnterRace(Aisling source)
-    {
-        if (!HasPaid)
-        {
-            source.TryTakeGold(25000);
-            source.BetOnMonsterRaceOption = true;
-            HasPaid = true;
-        }
-    }
-
+    
     private void OnDisplayingInitial(Aisling source)
     {
-        if (!source.OnMonsterRacingTile)
-        {
-            Subject.Reply(source, "Please step up to the line if you wish to play, dear.");
-
-            return;
-        }
-
         if ((source.Gold < 25000) && !HasPaid)
         {
-            source.OnMonsterRacingTile = false;
             Subject.Reply(source, "Looks like your luck has ran out, sweetie. Come back with more gold.");
-            var point = source.DirectionalOffset(source.Direction.Reverse());
-            source.WarpTo(point);
-
+            var rect = new Rectangle(new Point(11, 10), 11, 3);
+            source.WarpTo(rect.GetRandomPoint());
             return;
         }
 
         if (source.BetOnMonsterRaceOption)
-            Subject.Reply(source, $"Please wait while everyone has finished. You chose lane {source.MonsterRacingLane.ToWords()}.");
+        {
+            Subject.Reply(source, $"Please wait while everyone has finished. You chose lane {source.MonsterRacingLane}.", "ladychance_leaveGame");
+        }
     }
 
     private void OnDisplayingLeaveTable(Aisling source)
     {
-        var point = source.DirectionalOffset(source.Direction.Reverse());
-        source.WarpTo(point);
-        source.OnMonsterRacingTile = false;
-
+        var rect = new Rectangle(new Point(11, 16), 7, 3);
+        source.WarpTo(rect.GetRandomPoint());
+        source.MonsterRacingLane = "";
+        source.BetOnMonsterRaceOption = false;
+        
         switch (source.Gender)
         {
             case Gender.Female:
@@ -115,8 +92,8 @@ public class MonsterRacingScript : DialogScriptBase
             if (script == null)
                 merchant.AddScript(typeof(MerchantScripts.Casino.MonsterRacingScript), ScriptFactory);
 
-            merchant.Say($"{source.Name} has bet on lane {source.MonsterRacingLane.ToWords()}!");
-            Subject.InjectTextParameters(source.MonsterRacingLane.ToWords());
+            merchant.Say($"{source.Name} has bet on lane {source.MonsterRacingLane}!");
+            Subject.InjectTextParameters(source.MonsterRacingLane);
         }
     }
 
@@ -125,17 +102,27 @@ public class MonsterRacingScript : DialogScriptBase
     {
         if (Subject.Template.TemplateKey.ToLower() == "ladychance_enterrace")
         {
-            if (optionIndex is 1)
-                source.MonsterRacingLane = 1;
+            source.MonsterRacingLane = optionIndex switch
+            {
+                1 => "Milk",
+                2 => "Sky",
+                3 => "Sand",
+                4 => "Water",
+                5 => "Grass",
+                6 => "Lava",
+                _ => source.MonsterRacingLane
+            };
 
-            if (optionIndex is 2)
-                source.MonsterRacingLane = 2;
-
-            if (optionIndex is 3)
-                source.MonsterRacingLane = 3;
-
-            if (optionIndex is 4)
-                source.MonsterRacingLane = 4;
+            if (!HasPaid)
+            {
+                source.TryTakeGold(25000);
+                source.SendActiveMessage("Your 25,000 gold is on the books! Good luck!");
+                source.BetOnMonsterRaceOption = true;
+                HasPaid = true;
+            }
+            
+            var rect = new Rectangle(new Point(11, 10), 11, 3);
+            source.WarpTo(rect.GetRandomPoint());
         }
     }
 }

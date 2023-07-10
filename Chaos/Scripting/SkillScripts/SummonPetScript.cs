@@ -33,6 +33,13 @@ public class SummonPetScript : ConfigurableSkillScriptBase
     private void SpawnNewPet(ActivationContext context)
     {
         context.Source.Trackers.Enums.TryGetValue(out SummonChosenPet petKey);
+
+        if (petKey is SummonChosenPet.None)
+        {
+            context.SourceAisling?.SendActiveMessage("You have not selected a pet type with Areini!");
+            return;
+        }
+        
         var newMonster = _monsterFactory.Create(petKey + "pet", context.SourceMap, context.SourcePoint);
         newMonster.Name = $"{context.Source.Name}'s {petKey}";
         newMonster.PetOwner = context.SourceAisling;

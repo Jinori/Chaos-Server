@@ -24,7 +24,7 @@ public class AiteEffect : NonOverwritableEffectBase
     public override byte Icon => 9;
     public override string Name => "naomh aite";
 
-    protected override byte? Sound => 140;
+    protected override byte? Sound => 31;
 
     public override void OnApplied()
     {

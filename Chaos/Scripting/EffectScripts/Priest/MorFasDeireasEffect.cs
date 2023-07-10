@@ -20,7 +20,7 @@ public class MorFasDeireasEffect : NonOverwritableEffectBase
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
     public override byte Icon => 106;
     public override string Name => "mor fas deireas";
-    protected override byte? Sound => 140;
+    protected override byte? Sound => 124;
 
     public override void OnApplied()
     {

@@ -4,7 +4,7 @@ using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
-namespace Chaos.Scripting.EffectScripts.Wizard;
+namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class PreventAfflictionEffect : EffectBase
 {

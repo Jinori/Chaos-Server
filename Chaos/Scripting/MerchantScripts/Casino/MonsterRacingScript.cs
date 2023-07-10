@@ -9,12 +9,11 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MerchantScripts.Casino;
 
-public class MonsterRacingScript : MerchantScriptBase
+public sealed class MonsterRacingScript : MerchantScriptBase
 {
     private readonly IIntervalTimer MessageTimer;
     private readonly IMonsterFactory MonsterFactory;
     private bool CreatedMonsters;
-    public string MonsterWon;
 
     /// <inheritdoc />
     public MonsterRacingScript(Merchant subject, IMonsterFactory monsterFactory)
@@ -38,30 +37,43 @@ public class MonsterRacingScript : MerchantScriptBase
 
     public void CreateMonsters()
     {
-        var racingStallOne = new Point(1, 8);
-        var racingStallTwo = new Point(1, 9);
-        var racingStallThree = new Point(1, 10);
-        var racingStallFour = new Point(1, 11);
+        var racingStallMilk = new Point(2, 7);
+        var racingStallSky = new Point(2, 6);
+        var racingStallSand = new Point(2, 5);
+        var racingStallWater = new Point(2, 4);
+        var racingStallGrass = new Point(2, 3);
+        var racingStallLava = new Point(2, 2);
 
-        var monsterOne = MonsterFactory.Create("amusementMonster", Subject.MapInstance, racingStallOne);
+        var monsterOne = MonsterFactory.Create("amusementMonster", Subject.MapInstance, racingStallMilk);
         monsterOne.Direction = Direction.Right;
         monsterOne.Sprite = (ushort)IntegerRandomizer.RollSingle(965);
-        Subject.MapInstance.AddObject(monsterOne, racingStallOne);
 
-        var monsterTwo = MonsterFactory.Create("amusementMonster", Subject.MapInstance, racingStallTwo);
+        var monsterTwo = MonsterFactory.Create("amusementMonster", Subject.MapInstance, racingStallSky);
         monsterTwo.Direction = Direction.Right;
         monsterTwo.Sprite = (ushort)IntegerRandomizer.RollSingle(965);
-        Subject.MapInstance.AddObject(monsterTwo, racingStallTwo);
 
-        var monsterThree = MonsterFactory.Create("amusementMonster", Subject.MapInstance, racingStallThree);
+        var monsterThree = MonsterFactory.Create("amusementMonster", Subject.MapInstance, racingStallSand);
         monsterThree.Direction = Direction.Right;
         monsterThree.Sprite = (ushort)IntegerRandomizer.RollSingle(965);
-        Subject.MapInstance.AddObject(monsterThree, racingStallThree);
 
-        var monsterFour = MonsterFactory.Create("amusementMonster", Subject.MapInstance, racingStallFour);
+        var monsterFour = MonsterFactory.Create("amusementMonster", Subject.MapInstance, racingStallWater);
         monsterFour.Direction = Direction.Right;
         monsterFour.Sprite = (ushort)IntegerRandomizer.RollSingle(965);
-        Subject.MapInstance.AddObject(monsterFour, racingStallFour);
+
+        var monsterFive = MonsterFactory.Create("amusementMonster", Subject.MapInstance, racingStallGrass);
+        monsterFive.Direction = Direction.Right;
+        monsterFive.Sprite = (ushort)IntegerRandomizer.RollSingle(965);
+
+        var monsterSix = MonsterFactory.Create("amusementMonster", Subject.MapInstance, racingStallLava);
+        monsterSix.Direction = Direction.Right;
+        monsterSix.Sprite = (ushort)IntegerRandomizer.RollSingle(965);
+        
+        Subject.MapInstance.AddObject(monsterOne, racingStallMilk);
+        Subject.MapInstance.AddObject(monsterTwo, racingStallSky);
+        Subject.MapInstance.AddObject(monsterThree, racingStallSand);
+        Subject.MapInstance.AddObject(monsterFour, racingStallWater);
+        Subject.MapInstance.AddObject(monsterFive, racingStallGrass);
+        Subject.MapInstance.AddObject(monsterSix, racingStallLava);
 
         CreatedMonsters = true;
     }
