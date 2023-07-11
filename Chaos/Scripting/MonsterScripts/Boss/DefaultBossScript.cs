@@ -8,6 +8,7 @@ public class DefaultBossScript : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
+        GetScriptKey(typeof(BossThrowHazardousScript)),
         GetScriptKey(typeof(BossMoveToTargetScript)),
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(BossEnrageScript)),

@@ -5,7 +5,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Humanizer;
 
-namespace Chaos.Scripting.MonsterScripts;
+namespace Chaos.Scripting.MonsterScripts.Kill_Counters;
 
 public class KillCounterScript : MonsterScriptBase
 {
