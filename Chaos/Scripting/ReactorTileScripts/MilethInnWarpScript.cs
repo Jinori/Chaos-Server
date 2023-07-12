@@ -26,13 +26,14 @@ public class MilethInnWarpScript : ConfigurableReactorTileScriptBase
     {
         var targetMap = SimpleCache.Get<MapInstance>(Destination.Map);
         var aisling = source as Aisling;
-        
+
         var hasStage = source.Trackers.Enums.TryGetValue(out RionaRatQuestStage stage);
 
-        if (!hasStage || hasStage != (stage == RionaRatQuestStage.CompletedRatQuest))
+        if (!hasStage || (hasStage != (stage == RionaRatQuestStage.CompletedRatQuest)))
         {
-         aisling?.SendOrangeBarMessage("Speak to Riona and complete the rat quest to leave.");
-         return;
+            aisling?.SendOrangeBarMessage("Speak to Riona and complete the rat quest to leave.");
+
+            return;
         }
 
         if (source.StatSheet.Level < (targetMap.MinimumLevel ?? 0))

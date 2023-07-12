@@ -7,9 +7,8 @@ namespace Chaos.Scripting.MerchantScripts;
 
 public class AoifeDialogShowScript : DialogScriptBase
 {
-    public AoifeDialogShowScript(Dialog subject) : base(subject)
-    {
-    }
+    public AoifeDialogShowScript(Dialog subject)
+        : base(subject) { }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -24,6 +23,7 @@ public class AoifeDialogShowScript : DialogScriptBase
                         DialogKey = "aoife_temple",
                         OptionText = "Enter Inner Sanctum"
                     };
+
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
@@ -38,7 +38,7 @@ public class AoifeDialogShowScript : DialogScriptBase
 
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
-                    
+
                     var option1 = new DialogOption
                     {
                         DialogKey = "aoife_ascend",
@@ -47,7 +47,7 @@ public class AoifeDialogShowScript : DialogScriptBase
 
                     if (!Subject.HasOption(option1.OptionText))
                         Subject.Options.Add(option1);
-                    
+
                     var option2 = new DialogOption
                     {
                         DialogKey = "aoife_classdedication",
@@ -58,8 +58,8 @@ public class AoifeDialogShowScript : DialogScriptBase
                         Subject.Options.Add(option2);
                 }
             }
+
                 break;
-            
         }
     }
 }

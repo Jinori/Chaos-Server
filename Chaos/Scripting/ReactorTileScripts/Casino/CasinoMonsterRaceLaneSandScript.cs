@@ -12,11 +12,11 @@ namespace Chaos.Scripting.ReactorTileScripts.Casino;
 
 public class CasinoMonsterRaceLaneSandScript : ReactorTileScriptBase
 {
-    public bool GameOver { get; set; }
+    private readonly IIntervalTimer AfterWinnerDelay;
     private readonly List<Aisling> AislingsThatWon = new();
     private IEnumerable<Aisling>? AislingsAtCompletion;
-    private readonly IIntervalTimer AfterWinnerDelay;
     private bool MonsterHasWon;
+    public bool GameOver { get; set; }
     protected Animation Winner { get; } = new()
     {
         AnimationSpeed = 180,
@@ -29,29 +29,6 @@ public class CasinoMonsterRaceLaneSandScript : ReactorTileScriptBase
         AfterWinnerDelay = new IntervalTimer(TimeSpan.FromSeconds(6), false);
 
     /// <inheritdoc />
-    public override void Update(TimeSpan delta)
-    {
-        if (MonsterHasWon)
-            AfterWinnerDelay.Update(delta);
-
-        if (AfterWinnerDelay.IntervalElapsed && MonsterHasWon)
-        {
-            if (AislingsAtCompletion != null)
-            {
-                foreach (var aislings in AislingsAtCompletion)
-                {
-                    var rect = new Rectangle(new Point(11, 16), 7, 3);
-                    aislings.MonsterRacingLane = "";
-                    aislings.BetOnMonsterRaceOption = false;
-                    aislings.WarpTo(rect.GetRandomPoint());
-                }
-            }
-
-            MonsterHasWon = false;
-        }
-    }
-
-    /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
     {
         if (source is not Monster)
@@ -60,34 +37,22 @@ public class CasinoMonsterRaceLaneSandScript : ReactorTileScriptBase
         foreach (var tile in Subject.MapInstance.GetEntities<ReactorTile>())
         {
             if (tile.Script.Is<CasinoMonsterRaceLaneGrassScript>(out var grass))
-            {
                 grass.GameOver = true;
-            }
 
             if (tile.Script.Is<CasinoMonsterRaceLaneLavaScript>(out var lava))
-            {
                 lava.GameOver = true;
-            }
 
             if (tile.Script.Is<CasinoMonsterRaceLaneMilkScript>(out var milk))
-            {
                 milk.GameOver = true;
-            }
 
             if (tile.Script.Is<CasinoMonsterRaceLaneSandScript>(out var sand))
-            {
                 sand.GameOver = true;
-            }
 
             if (tile.Script.Is<CasinoMonsterRaceLaneSkyScript>(out var sky))
-            {
                 sky.GameOver = true;
-            }
 
             if (tile.Script.Is<CasinoMonsterRaceLaneWaterScript>(out var water))
-            {
                 water.GameOver = true;
-            }
         }
 
         var monsters = source.MapInstance.GetEntities<Monster>().Where(x => x.Template.TemplateKey == "amusementMonster");
@@ -110,11 +75,15 @@ public class CasinoMonsterRaceLaneSandScript : ReactorTileScriptBase
                 var winner = AislingsThatWon.First();
 
                 foreach (var aisling in AislingsAtCompletion)
-                    aisling.SendActiveMessage($"{winner.Name} wins on lane Sand!");
+                    aisling.SendActiveMessage($"{winner.Name} wins on lane Grass!");
 
                 var winnings = AislingsAtCompletion.Count() * 25000;
-                winner.TryGiveGold(winnings);
+                var eightPercent = (int)(winnings * 0.08m);
+                var winningsMinusEight = winnings - eightPercent;
+
+                winner.TryGiveGold(winningsMinusEight);
                 winner.SendActiveMessage($"You won the game and receive {winnings.ToWords()} gold!");
+
 
                 break;
             }
@@ -127,9 +96,12 @@ public class CasinoMonsterRaceLaneSandScript : ReactorTileScriptBase
 
                 foreach (var winner in AislingsThatWon)
                 {
-                    var winnings = AislingsAtCompletion.Count() / AislingsThatWon.Count * 25000;
+                    var winnings = AislingsAtCompletion.Count() * 25000;
+                    var eightPercent = (int)(winnings * 0.08m);
+                    var winningsMinusEight = winnings - eightPercent;
+
+                    winner.TryGiveGold(winningsMinusEight);
                     winner.SendActiveMessage($"You tied and receive {winnings.ToWords()} gold!");
-                    winner.TryGiveGold(winnings);
                 }
 
                 break;
@@ -145,5 +117,26 @@ public class CasinoMonsterRaceLaneSandScript : ReactorTileScriptBase
 
         source.MapInstance.ShowAnimation(Winner.GetPointAnimation(Subject));
         source.MapInstance.PlaySound(165, Subject);
+    }
+
+    /// <inheritdoc />
+    public override void Update(TimeSpan delta)
+    {
+        if (MonsterHasWon)
+            AfterWinnerDelay.Update(delta);
+
+        if (AfterWinnerDelay.IntervalElapsed && MonsterHasWon)
+        {
+            if (AislingsAtCompletion != null)
+                foreach (var aislings in AislingsAtCompletion)
+                {
+                    var rect = new Rectangle(new Point(11, 16), 7, 3);
+                    aislings.MonsterRacingLane = "";
+                    aislings.BetOnMonsterRaceOption = false;
+                    aislings.WarpTo(rect.GetRandomPoint());
+                }
+
+            MonsterHasWon = false;
+        }
     }
 }

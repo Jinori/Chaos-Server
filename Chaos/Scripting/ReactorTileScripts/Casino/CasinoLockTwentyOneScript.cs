@@ -1,5 +1,3 @@
-using System.Reactive.Subjects;
-using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -17,7 +15,7 @@ public class CasinoLockTwentyOneScript : ReactorTileScriptBase
         AnimationSpeed = 100,
         TargetAnimation = 96
     };
-    
+
     /// <inheritdoc />
     public CasinoLockTwentyOneScript(ReactorTile subject)
         : base(subject) =>
@@ -37,14 +35,11 @@ public class CasinoLockTwentyOneScript : ReactorTileScriptBase
     {
         var aislings = Subject.MapInstance.GetEntitiesAtPoint<Aisling>(Subject);
         AnimationTimer.Update(delta);
-        
+
         if (aislings.Any())
             return;
-        
 
         if (AnimationTimer.IntervalElapsed)
-        {
             Subject.MapInstance.ShowAnimation(AvailableTile.GetPointAnimation(Subject));
-        }
     }
 }

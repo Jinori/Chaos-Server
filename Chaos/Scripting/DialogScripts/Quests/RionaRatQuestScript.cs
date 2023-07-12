@@ -4,7 +4,6 @@ using Chaos.Formulae;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.DialogScripts.Mileth;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
@@ -57,9 +56,11 @@ public class RionaRatQuestScript : DialogScriptBase
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
-                if (source.UserStatSheet.Level < 11 && stage == RionaRatQuestStage.CompletedRatQuest &&
-                    !source.Trackers.Flags.HasFlag(QuestFlag1.HeadedToBeautyShop) &&
-                     !source.Trackers.Flags.HasFlag(QuestFlag1.TalkedToJosephine))
+
+                if ((source.UserStatSheet.Level < 11)
+                    && (stage == RionaRatQuestStage.CompletedRatQuest)
+                    && !source.Trackers.Flags.HasFlag(QuestFlag1.HeadedToBeautyShop)
+                    && !source.Trackers.Flags.HasFlag(QuestFlag1.TalkedToJosephine))
                 {
                     var option = new DialogOption
                     {

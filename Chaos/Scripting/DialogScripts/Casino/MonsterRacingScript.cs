@@ -44,7 +44,7 @@ public class MonsterRacingScript : DialogScriptBase
             }
         }
     }
-    
+
     private void OnDisplayingInitial(Aisling source)
     {
         if ((source.Gold < 25000) && !HasPaid)
@@ -52,13 +52,15 @@ public class MonsterRacingScript : DialogScriptBase
             Subject.Reply(source, "Looks like your luck has ran out, sweetie. Come back with more gold.");
             var rect = new Rectangle(new Point(11, 10), 11, 3);
             source.WarpTo(rect.GetRandomPoint());
+
             return;
         }
 
         if (source.BetOnMonsterRaceOption)
-        {
-            Subject.Reply(source, $"Please wait while everyone has finished. You chose lane {source.MonsterRacingLane}.", "ladychance_leaveGame");
-        }
+            Subject.Reply(
+                source,
+                $"Please wait while everyone has finished. You chose lane {source.MonsterRacingLane}.",
+                "ladychance_leaveGame");
     }
 
     private void OnDisplayingLeaveTable(Aisling source)
@@ -67,7 +69,7 @@ public class MonsterRacingScript : DialogScriptBase
         source.WarpTo(rect.GetRandomPoint());
         source.MonsterRacingLane = "";
         source.BetOnMonsterRaceOption = false;
-        
+
         switch (source.Gender)
         {
             case Gender.Female:
@@ -120,7 +122,7 @@ public class MonsterRacingScript : DialogScriptBase
                 source.BetOnMonsterRaceOption = true;
                 HasPaid = true;
             }
-            
+
             var rect = new Rectangle(new Point(11, 10), 11, 3);
             source.WarpTo(rect.GetRandomPoint());
         }

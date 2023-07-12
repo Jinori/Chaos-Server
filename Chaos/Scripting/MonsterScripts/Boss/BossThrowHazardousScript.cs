@@ -14,29 +14,41 @@ namespace Chaos.Scripting.MonsterScripts.Boss;
 
 public sealed class BossThrowHazardousScript : MonsterScriptBase
 {
-    private IApplyDamageScript ApplyDamageScript { get; }
-    private IIntervalTimer SpawnTiles { get; }
-
     private Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 13
     };
-    
+    private IApplyDamageScript ApplyDamageScript { get; }
+    private IIntervalTimer SpawnTiles { get; }
+
     /// <inheritdoc />
     public BossThrowHazardousScript(Monster subject)
         : base(subject)
     {
-        SpawnTiles = new RandomizedIntervalTimer(TimeSpan.FromSeconds(7), 45, RandomizationType.Positive, false);
+        SpawnTiles = new RandomizedIntervalTimer(
+            TimeSpan.FromSeconds(7),
+            45,
+            RandomizationType.Positive,
+            false);
+
         ApplyDamageScript = ApplyAttackDamageScript.Create();
     }
+
+    private Aisling? FindLowestAggro() =>
+        Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
+               .ThatAreObservedBy(Subject)
+               .FirstOrDefault(
+                   obj => !obj.Equals(Subject)
+                          && obj.IsAlive
+                          && (obj.Id == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min()).Key));
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         base.Update(delta);
         SpawnTiles.Update(delta);
-        
+
         if (!Map.GetEntities<Aisling>().Any())
             return;
 
@@ -52,32 +64,26 @@ public sealed class BossThrowHazardousScript : MonsterScriptBase
             var enumerable = points as Point[] ?? points.ToArray();
 
             foreach (var tile in enumerable)
-            {
                 Subject.MapInstance.ShowAnimation(Animation.GetPointAnimation(tile));
-            }
-            
+
             var targets =
-                Subject.MapInstance.GetEntitiesAtPoints<Aisling>(enumerable.Cast<IPoint>()).WithFilter(Subject, TargetFilter.HostileOnly).ToList();
+                Subject.MapInstance.GetEntitiesAtPoints<Aisling>(enumerable.Cast<IPoint>())
+                       .WithFilter(Subject, TargetFilter.HostileOnly)
+                       .ToList();
 
             foreach (var aisling in targets)
             {
                 var damage = (int)(aisling.StatSheet.CurrentHp * 0.1);
+
                 ApplyDamageScript.ApplyDamage(
                     Subject,
                     aisling,
                     this,
-                    damage, Element.Fire);
+                    damage,
+                    Element.Fire);
 
-                
                 target.ShowHealth();
             }
         }
     }
-
-    private Aisling? FindLowestAggro() =>
-        Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
-               .ThatAreObservedBy(Subject)
-               .FirstOrDefault(obj => !obj.Equals(Subject)
-                                      && obj.IsAlive
-                                      && (obj.Id == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min()).Key));
 }

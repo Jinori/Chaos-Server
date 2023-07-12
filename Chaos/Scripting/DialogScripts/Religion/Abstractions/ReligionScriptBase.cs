@@ -609,12 +609,12 @@ public class ReligionScriptBase : DialogScriptBase
             return;
         }
 
-        if (source.Inventory.ContainsByTemplateKey($"{deity}Stone")) 
+        if (source.Inventory.ContainsByTemplateKey($"{deity}Stone"))
             source.Inventory.RemoveQuantityByTemplateKey($"{deity}Stone", 1);
 
         if (source.Bank.Contains($"{deity} Stone"))
             source.Bank.TryWithdraw($"{deity} Stone", 1, out var _);
-        
+
         source.Trackers.Enums.Set(JoinReligionQuest.None);
         source.Legend.Remove(deity, out _);
         source.SendActiveMessage($"You turn your back on {deity} and leave the ranks of worship.");

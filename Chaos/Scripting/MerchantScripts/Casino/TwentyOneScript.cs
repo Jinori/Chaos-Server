@@ -44,7 +44,7 @@ public class TwentyOneScript : MerchantScriptBase
                 Subject.Say($"{winner.Name} wins with a score of {highestScore}!");
                 var winnings = AislingsAtCompletion.Count() * 25000;
                 var eightPercent = (int)(winnings * 0.08m);
-                var winningsMinusEight = (winnings - eightPercent);
+                var winningsMinusEight = winnings - eightPercent;
 
                 winner.TryGiveGold(winningsMinusEight);
                 winner.SendServerMessage(ServerMessageType.Whisper, $"The casino took their cut of {eightPercent.ToWords()} gold!");
@@ -59,7 +59,7 @@ public class TwentyOneScript : MerchantScriptBase
                 {
                     var winnings = AislingsAtCompletion.Count() / enumerable.Length * 25000;
                     var eightPercent = (int)(winnings * 0.08m);
-                    var winningsMinusEight = (winnings - eightPercent);
+                    var winningsMinusEight = winnings - eightPercent;
                     winner.SendServerMessage(ServerMessageType.Whisper, $"The casino took their cut of {eightPercent.ToWords()} gold!");
                     winner.SendServerMessage(ServerMessageType.Whisper, $"You tied and receive {winningsMinusEight.ToWords()} gold!");
                     winner.TryGiveGold(winningsMinusEight);

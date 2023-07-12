@@ -18,9 +18,10 @@ public class TerminusShowRawStatsScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         source.Trackers.Enums.TryGetValue(out TutorialQuestStage tutorial);
+
         if (tutorial != TutorialQuestStage.CompletedTutorial)
             return;
-        
+
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "terminus_initial":
@@ -36,7 +37,7 @@ public class TerminusShowRawStatsScript : DialogScriptBase
 
                 break;
             }
-            
+
             case "terminus_checkrawstats":
             {
                 var sb = new StringBuilder();

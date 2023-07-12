@@ -67,7 +67,7 @@ public sealed class MonsterRacingScript : MerchantScriptBase
         var monsterSix = MonsterFactory.Create("amusementMonster", Subject.MapInstance, racingStallLava);
         monsterSix.Direction = Direction.Right;
         monsterSix.Sprite = (ushort)IntegerRandomizer.RollSingle(965);
-        
+
         Subject.MapInstance.AddObject(monsterOne, racingStallMilk);
         Subject.MapInstance.AddObject(monsterTwo, racingStallSky);
         Subject.MapInstance.AddObject(monsterThree, racingStallSand);
