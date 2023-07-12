@@ -1,3 +1,4 @@
+using Chaos.Common.Definitions;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
 using Chaos.Scripting.MerchantScripts.Abstractions;
@@ -42,8 +43,12 @@ public class TwentyOneScript : MerchantScriptBase
                 var winner = enumerable.First();
                 Subject.Say($"{winner.Name} wins with a score of {highestScore}!");
                 var winnings = AislingsAtCompletion.Count() * 25000;
-                winner.TryGiveGold(winnings);
-                winner.SendActiveMessage($"You won the game and receive {winnings.ToWords()} gold!");
+                var eightPercent = (int)(winnings * 0.08m);
+                var winningsMinusEight = (winnings - eightPercent);
+
+                winner.TryGiveGold(winningsMinusEight);
+                winner.SendServerMessage(ServerMessageType.Whisper, $"The casino took their cut of {eightPercent.ToWords()} gold!");
+                winner.SendServerMessage(ServerMessageType.Whisper, $"You won the game and receive {winningsMinusEight.ToWords()} gold!");
             }
             else
             {
@@ -53,8 +58,11 @@ public class TwentyOneScript : MerchantScriptBase
                 foreach (var winner in enumerable)
                 {
                     var winnings = AislingsAtCompletion.Count() / enumerable.Length * 25000;
-                    winner.SendActiveMessage($"You tied and receive {winnings.ToWords()} gold!");
-                    winner.TryGiveGold(winnings);
+                    var eightPercent = (int)(winnings * 0.08m);
+                    var winningsMinusEight = (winnings - eightPercent);
+                    winner.SendServerMessage(ServerMessageType.Whisper, $"The casino took their cut of {eightPercent.ToWords()} gold!");
+                    winner.SendServerMessage(ServerMessageType.Whisper, $"You tied and receive {winningsMinusEight.ToWords()} gold!");
+                    winner.TryGiveGold(winningsMinusEight);
                 }
             }
         }

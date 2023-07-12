@@ -108,9 +108,11 @@ public class CasinoMonsterRaceLaneGrassScript : ReactorTileScriptBase
                     aisling.SendActiveMessage($"{winner.Name} wins on lane Grass!");
 
                 var winnings = AislingsAtCompletion.Count() * 25000;
-                winner.TryGiveGold(winnings);
-                winner.SendActiveMessage($"You won the game and receive {winnings.ToWords()} gold!");
+                var eightPercent = (int)(winnings * 0.08m);
+                var winningsMinusEight = (winnings - eightPercent);
 
+                winner.TryGiveGold(winningsMinusEight);
+                winner.SendActiveMessage($"You won the game and receive {winnings.ToWords()} gold!");
                 break;
             }
             case > 1:
@@ -122,9 +124,12 @@ public class CasinoMonsterRaceLaneGrassScript : ReactorTileScriptBase
 
                 foreach (var winner in AislingsThatWon)
                 {
-                    var winnings = AislingsAtCompletion.Count() / AislingsThatWon.Count * 25000;
+                    var winnings = AislingsAtCompletion.Count() * 25000;
+                    var eightPercent = (int)(winnings * 0.08m);
+                    var winningsMinusEight = (winnings - eightPercent);
+
+                    winner.TryGiveGold(winningsMinusEight);
                     winner.SendActiveMessage($"You tied and receive {winnings.ToWords()} gold!");
-                    winner.TryGiveGold(winnings);
                 }
 
                 break;
