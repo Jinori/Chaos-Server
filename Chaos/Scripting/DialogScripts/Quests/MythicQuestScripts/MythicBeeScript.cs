@@ -98,7 +98,7 @@ public class MythicBeeScript : DialogScriptBase
 
             case "bee_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("MythicMantis", out var mythicMantis) || (mythicMantis < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicBee", out var mythicMantis) || (mythicMantis < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough Mythic Mantis.");
 
@@ -119,7 +119,7 @@ public class MythicBeeScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("MythicMantis", out _);
+                source.Trackers.Counters.Remove("MythicBee", out _);
 
                 Subject.Reply(
                     source,
@@ -145,7 +145,7 @@ public class MythicBeeScript : DialogScriptBase
 
             case "bee_higher2":
             {
-                if (!source.Trackers.Counters.TryGetValue("brownmantis", out var brownmantis) || (brownmantis < 20))
+                if (!source.Trackers.Counters.TryGetValue("MythicBee", out var brownmantis) || (brownmantis < 20))
                 {
                     Subject.Reply(source, "You haven't killed enough Brown Mantis.");
 
@@ -171,7 +171,7 @@ public class MythicBeeScript : DialogScriptBase
                 }
 
                 source.Trackers.Enums.Set(MythicBee.HigherComplete);
-                source.Trackers.Counters.Remove("brownmantis", out _);
+                source.Trackers.Counters.Remove("MythicBee", out _);
             }
 
                 break;
@@ -254,7 +254,7 @@ public class MythicBeeScript : DialogScriptBase
 
             case "bee_boss2":
             {
-                if (!source.Trackers.Counters.TryGetValue("FireTree", out var firetree) || (firetree < 3))
+                if (!source.Trackers.Counters.TryGetValue("MythicBee", out var firetree) || (firetree < 3))
                 {
                     Subject.Reply(
                         source,
@@ -289,7 +289,7 @@ public class MythicBeeScript : DialogScriptBase
                 }
 
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                source.Trackers.Counters.Remove("FireTree", out _);
+                source.Trackers.Counters.Remove("MythicBee", out _);
                 source.Trackers.Enums.Set(MythicBee.BossDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 

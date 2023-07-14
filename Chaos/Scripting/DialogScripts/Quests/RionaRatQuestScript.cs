@@ -64,8 +64,8 @@ public class RionaRatQuestScript : DialogScriptBase
                 {
                     var option = new DialogOption
                     {
-                        DialogKey = "riona_headToBeautyShop",
-                        OptionText = "Sure!"
+                        DialogKey = "riona_BeautyShop",
+                        OptionText = "Beauty Shop"
                     };
 
                     if (!Subject.HasOption(option.OptionText))

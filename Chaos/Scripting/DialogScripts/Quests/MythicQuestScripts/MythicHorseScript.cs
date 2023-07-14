@@ -143,7 +143,7 @@ public class MythicHorseScript : DialogScriptBase
 
             case "horse_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("whitebunny", out var whitebunny) || (whitebunny < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicHorse", out var whitebunny) || (whitebunny < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough White Bunnies.");
 
@@ -163,7 +163,7 @@ public class MythicHorseScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("whitebunny", out _);
+                source.Trackers.Counters.Remove("MythicHorse", out _);
 
                 Subject.Reply(
                     source,
@@ -187,8 +187,8 @@ public class MythicHorseScript : DialogScriptBase
 
             case "horse_higher2":
             {
-                source.Trackers.Counters.TryGetValue("brownbunny", out var brownbunny);
-                source.Trackers.Counters.TryGetValue("purplebunny", out var purplebunny);
+                source.Trackers.Counters.TryGetValue("MythicHorse", out var brownbunny);
+                source.Trackers.Counters.TryGetValue("MythicHorse1", out var purplebunny);
 
                 if ((brownbunny < 10) || (purplebunny < 10))
                 {
@@ -214,8 +214,8 @@ public class MythicHorseScript : DialogScriptBase
                 }
 
                 source.Trackers.Enums.Set(MythicHorse.HigherComplete);
-                source.Trackers.Counters.Remove("brownbunny", out _);
-                source.Trackers.Counters.Remove("purplebunny", out _);
+                source.Trackers.Counters.Remove("MythicHorse", out _);
+                source.Trackers.Counters.Remove("MythicHorse1", out _);
 
                 break;
             }
@@ -305,7 +305,7 @@ public class MythicHorseScript : DialogScriptBase
 
             case "horse_boss2":
             {
-                if (!source.Trackers.Counters.TryGetValue("MrHopps", out var mrhopps) || (mrhopps < 3))
+                if (!source.Trackers.Counters.TryGetValue("MythicHorse", out var mrhopps) || (mrhopps < 3))
                 {
                     Subject.Reply(
                         source,
@@ -331,7 +331,7 @@ public class MythicHorseScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 25000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("mrhopps", out _);
+                source.Trackers.Counters.Remove("MythicHorse", out _);
                 source.Trackers.Enums.Set(MythicHorse.BossDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 

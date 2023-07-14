@@ -131,7 +131,7 @@ public class MythicBunnyScript : DialogScriptBase
                     source,
                     "You have our paws-tounding gratitude. Don't let the horses get your goat, though - they're quick and nimble, and they can kick like mules. But we believe in you, and we know you'll do us proud. May the bunny luck be with you!");
 
-                source.SendOrangeBarMessage("Kill 20 Purple Horses for Big Bunny");
+                source.SendOrangeBarMessage("Kill 15 Purple Horses for Big Bunny");
                 source.Trackers.Enums.Set(MythicBunny.Lower);
 
                 return;
@@ -139,7 +139,7 @@ public class MythicBunnyScript : DialogScriptBase
 
             case "bunny_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("purplehorse", out var purplehorse) || (purplehorse < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicBunny", out var purplehorse) || (purplehorse < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough Purple Horses.");
 
@@ -160,7 +160,7 @@ public class MythicBunnyScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("purplehorse", out _);
+                source.Trackers.Counters.Remove("MythicBunny", out _);
 
                 Subject.Reply(
                     source,
@@ -184,8 +184,8 @@ public class MythicBunnyScript : DialogScriptBase
 
             case "bunny_higher2":
             {
-                source.Trackers.Counters.TryGetValue("grayhorse", out var grayhorse);
-                source.Trackers.Counters.TryGetValue("redhorse", out var redhorse);
+                source.Trackers.Counters.TryGetValue("MythicBunny", out var grayhorse);
+                source.Trackers.Counters.TryGetValue("MythicBunny1", out var redhorse);
 
                 if ((grayhorse < 10) || (redhorse < 10))
                 {
@@ -213,8 +213,8 @@ public class MythicBunnyScript : DialogScriptBase
                 }
 
                 source.Trackers.Enums.Set(MythicBunny.HigherComplete);
-                source.Trackers.Counters.Remove("grayhorse", out _);
-                source.Trackers.Counters.Remove("redhorse", out _);
+                source.Trackers.Counters.Remove("MythicBunny", out _);
+                source.Trackers.Counters.Remove("MythicBunny1", out _);
 
                 break;
             }
@@ -303,7 +303,7 @@ public class MythicBunnyScript : DialogScriptBase
 
             case "bunny_boss2":
             {
-                if (!source.Trackers.Counters.TryGetValue("AppleJack", out var bunnyboss1) || (bunnyboss1 < 3))
+                if (!source.Trackers.Counters.TryGetValue("MythicBunny", out var bunnyboss1) || (bunnyboss1 < 3))
                 {
                     Subject.Reply(
                         source,
@@ -337,7 +337,7 @@ public class MythicBunnyScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 25000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("AppleJack", out _);
+                source.Trackers.Counters.Remove("MythicBunny", out _);
                 source.Trackers.Enums.Set(MythicBunny.BossDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 

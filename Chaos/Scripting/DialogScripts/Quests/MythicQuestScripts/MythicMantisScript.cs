@@ -136,7 +136,7 @@ public class MythicMantisScript : DialogScriptBase
 
             case "mantis_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("mythicbee", out var mantislower) || (mantislower < 15))
+                if (!source.Trackers.Counters.TryGetValue("mythicmantis", out var mantislower) || (mantislower < 15))
                 {
                     Subject.Reply(source, "Disappointing, loyalty is everything and if you aren't willing, don't come back.");
 
@@ -157,7 +157,7 @@ public class MythicMantisScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("mythicbee", out _);
+                source.Trackers.Counters.Remove("mythicmantis", out _);
                 Subject.Reply(source, "Impressive. 15 Mythic bees without blinking an eye. I admire your loyalty.", "mantis_initial");
 
                 break;
@@ -177,7 +177,7 @@ public class MythicMantisScript : DialogScriptBase
 
             case "mantis_higher2":
             {
-                if (!source.Trackers.Counters.TryGetValue("greenbee", out var mantishigher) || (mantishigher < 20))
+                if (!source.Trackers.Counters.TryGetValue("mythicmantis", out var mantishigher) || (mantishigher < 20))
                 {
                     Subject.Reply(source, "Didn't quite finish them all did you? Go back and make sure they're dead.");
 
@@ -203,7 +203,7 @@ public class MythicMantisScript : DialogScriptBase
                 }
 
                 source.Trackers.Enums.Set(MythicMantis.HigherComplete);
-                source.Trackers.Counters.Remove("greenbee", out _);
+                source.Trackers.Counters.Remove("mythicmantis", out _);
 
                 break;
             }
@@ -253,11 +253,10 @@ public class MythicMantisScript : DialogScriptBase
             {
                 if (hasBee
                     && (hasBee == bee is MythicBee.Allied or MythicBee.BossStarted or MythicBee.BossDefeated))
-                {
+                { 
                     Subject.Reply(
                         source,
-                        $"Welcome to the Colony {source.Name
-                        }. I always knew you were strong enough to be one of us, you will fit in well.");
+                        $"I knew something smelled weak about you. Begone traitor, you will be a fun one to kill.");
 
                     source.Trackers.Enums.Set(MythicMantis.EnemyAllied);
 
@@ -267,7 +266,10 @@ public class MythicMantisScript : DialogScriptBase
                 source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Trackers.Enums.Set(MythicMantis.Allied);
                 source.SendOrangeBarMessage("You are now allied with the Mantis!");
-                Subject.Reply(source, " ");
+                Subject.Reply(
+                    source,
+                    $"Welcome to the Colony {source.Name
+                    }. I always knew you were strong enough to be one of us, you will fit in well.");
 
                 break;
             }
@@ -286,7 +288,7 @@ public class MythicMantisScript : DialogScriptBase
 
             case "mantis_boss2":
             {
-                if (!source.Trackers.Counters.TryGetValue("Carolina", out var mantisboss1) || (mantisboss1 < 3))
+                if (!source.Trackers.Counters.TryGetValue("MythicMantis", out var mantisboss1) || (mantisboss1 < 3))
                 {
                     Subject.Reply(source, "Carolina is still out there, please find her and defeat her three times.");
 
@@ -319,7 +321,7 @@ public class MythicMantisScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 25000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("carolina", out _);
+                source.Trackers.Counters.Remove("MythicMantis", out _);
                 source.Trackers.Enums.Set(MythicMantis.BossDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
