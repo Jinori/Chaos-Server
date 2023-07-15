@@ -44,7 +44,7 @@ public class MythicGargoyleScript : DialogScriptBase
         {
             case "gargoyle_initial":
             {
-                if (hasGargoyle && (gargoyle == MythicGargoyle.EnemyAllied))
+                if (hasGargoyle && (gargoyle == MythicGargoyle.EnemyGargoyleAllied))
                 {
                     Subject.Reply(source, "You would be allied to the zombies, just as braindead as they are.");
 
@@ -61,7 +61,7 @@ public class MythicGargoyleScript : DialogScriptBase
                     return;
                 }
 
-                if (gargoyle == MythicGargoyle.Lower)
+                if (gargoyle == MythicGargoyle.LowerGargoyle)
                 {
                     Subject.Reply(
                         source,
@@ -71,7 +71,7 @@ public class MythicGargoyleScript : DialogScriptBase
                     return;
                 }
 
-                if (gargoyle == MythicGargoyle.LowerComplete)
+                if (gargoyle == MythicGargoyle.LowerGargoyleComplete)
                 {
                     Subject.Reply(
                         source,
@@ -81,7 +81,7 @@ public class MythicGargoyleScript : DialogScriptBase
                     return;
                 }
 
-                if (gargoyle == MythicGargoyle.Higher)
+                if (gargoyle == MythicGargoyle.HigherGargoyle)
                 {
                     Subject.Reply(
                         source,
@@ -91,7 +91,7 @@ public class MythicGargoyleScript : DialogScriptBase
                     return;
                 }
 
-                if (gargoyle == MythicGargoyle.HigherComplete)
+                if (gargoyle == MythicGargoyle.HigherGargoyleComplete)
                 {
                     Subject.Reply(
                         source,
@@ -101,14 +101,14 @@ public class MythicGargoyleScript : DialogScriptBase
                     return;
                 }
 
-                if (gargoyle == MythicGargoyle.Item)
+                if (gargoyle == MythicGargoyle.ItemGargoyle)
                 {
                     Subject.Reply(source, "Skip", "gargoyle_item2start");
 
                     return;
                 }
 
-                if (gargoyle == MythicGargoyle.ItemComplete)
+                if (gargoyle == MythicGargoyle.ItemGargoyleComplete)
                 {
                     Subject.Reply(
                         source,
@@ -118,7 +118,7 @@ public class MythicGargoyleScript : DialogScriptBase
                     return;
                 }
 
-                if (gargoyle == MythicGargoyle.Allied)
+                if (gargoyle == MythicGargoyle.AlliedGargoyle)
                 {
                     Subject.Reply(
                         source,
@@ -128,7 +128,7 @@ public class MythicGargoyleScript : DialogScriptBase
                     return;
                 }
 
-                if (gargoyle == MythicGargoyle.BossStarted)
+                if (gargoyle == MythicGargoyle.BossGargoyleStarted)
                 {
                     Subject.Reply(
                         source,
@@ -138,7 +138,7 @@ public class MythicGargoyleScript : DialogScriptBase
                     return;
                 }
 
-                if (gargoyle == MythicGargoyle.BossDefeated)
+                if (gargoyle == MythicGargoyle.BossGargoyleDefeated)
                     Subject.Reply(
                         source,
                         "Your unwavering support and dedication have brought us to new heights of success in our fight against the undead.");
@@ -150,21 +150,21 @@ public class MythicGargoyleScript : DialogScriptBase
             {
                 Subject.Reply(source, "Thank you Aisling. With your help, we can put an end to this zombie infestation once and for all.");
                 source.SendOrangeBarMessage("Kill 15 Zombie Grunts for Lord Gargoyle");
-                source.Trackers.Enums.Set(MythicGargoyle.Lower);
+                source.Trackers.Enums.Set(MythicGargoyle.LowerGargoyle);
 
                 return;
             }
 
             case "gargoyle_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("zombiegrunt", out var zombiegrunt) || (zombiegrunt < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicGargoyle", out var zombiegrunt) || (zombiegrunt < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough Zombie Grunts.");
 
                     return;
                 }
 
-                source.Trackers.Enums.Set(MythicGargoyle.LowerComplete);
+                source.Trackers.Enums.Set(MythicGargoyle.LowerGargoyleComplete);
                 source.Animate(ani, source.Id);
 
                 if (source.UserStatSheet.Level <= 98)
@@ -178,7 +178,7 @@ public class MythicGargoyleScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("zombiegrunt", out _);
+                source.Trackers.Counters.Remove("MythicGargoyle", out _);
 
                 Subject.Reply(
                     source,
@@ -195,15 +195,15 @@ public class MythicGargoyleScript : DialogScriptBase
                     "Thank you very much, Aisling. Your loyalty to our clan rocks! I know you have the stones to take down those 10 zombie soldiers and 10 zombie lumberjacks.");
 
                 source.SendOrangeBarMessage("Kill 10 Zombie Soldiers and Lumberjacks for Lord Gargoyle");
-                source.Trackers.Enums.Set(MythicGargoyle.Higher);
+                source.Trackers.Enums.Set(MythicGargoyle.HigherGargoyle);
 
                 return;
             }
 
             case "gargoyle_higher2":
             {
-                source.Trackers.Counters.TryGetValue("zombiesoldier", out var zombiesoldier);
-                source.Trackers.Counters.TryGetValue("zombiefarmer", out var zombielumberjack);
+                source.Trackers.Counters.TryGetValue("MythicGargoyle", out var zombiesoldier);
+                source.Trackers.Counters.TryGetValue("MythicGargoyle1", out var zombielumberjack);
 
                 if ((zombielumberjack < 10) || (zombiesoldier < 10))
                 {
@@ -232,9 +232,9 @@ public class MythicGargoyleScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Enums.Set(MythicGargoyle.HigherComplete);
-                source.Trackers.Counters.Remove("zombiesoldier", out _);
-                source.Trackers.Counters.Remove("zombielumberjack", out _);
+                source.Trackers.Enums.Set(MythicGargoyle.HigherGargoyleComplete);
+                source.Trackers.Counters.Remove("MythicGargoyle", out _);
+                source.Trackers.Counters.Remove("MythicGargoyle1", out _);
 
                 break;
             }
@@ -243,7 +243,7 @@ public class MythicGargoyleScript : DialogScriptBase
             {
                 Subject.Reply(source, "We require these zombie bones for our ritual soon. Please bring back 25 zombie bones Aisling.");
                 source.SendOrangeBarMessage("Collect 25 Zombie Bones for Lord Gargoyle");
-                source.Trackers.Enums.Set(MythicGargoyle.Item);
+                source.Trackers.Enums.Set(MythicGargoyle.ItemGargoyle);
 
                 return;
             }
@@ -272,7 +272,7 @@ public class MythicGargoyleScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Enums.Set(MythicGargoyle.ItemComplete);
+                source.Trackers.Enums.Set(MythicGargoyle.ItemGargoyleComplete);
 
                 Subject.Reply(
                     source,
@@ -285,19 +285,19 @@ public class MythicGargoyleScript : DialogScriptBase
             case "gargoyle_ally":
             {
                 if (hasZombie
-                    && (hasZombie == zombie is MythicZombie.Allied or MythicZombie.BossStarted or MythicZombie.BossDefeated))
+                    && (hasZombie == zombie is MythicZombie.AlliedZombie or MythicZombie.BossZombieStarted or MythicZombie.BossZombieDefeated))
                 {
                     Subject.Reply(
                         source,
                         "As the Lord Gargoyle, I am deeply disappointed and saddened to hear that you have allied yourself with our undead enemies, the zombies. How could you betray your own kin and stand alongside those who seek to destroy us?");
 
-                    source.Trackers.Enums.Set(MythicGargoyle.EnemyAllied);
+                    source.Trackers.Enums.Set(MythicGargoyle.EnemyGargoyleAllied);
 
                     return;
                 }
 
                 source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
-                source.Trackers.Enums.Set(MythicGargoyle.Allied);
+                source.Trackers.Enums.Set(MythicGargoyle.AlliedGargoyle);
                 source.SendOrangeBarMessage("You are now allied with the Gargoyles!");
 
                 Subject.Reply(
@@ -313,7 +313,7 @@ public class MythicGargoyleScript : DialogScriptBase
             {
                 Subject.Reply(source, "I shall see you when you return.");
 
-                source.Trackers.Enums.Set(MythicGargoyle.BossStarted);
+                source.Trackers.Enums.Set(MythicGargoyle.BossGargoyleStarted);
                 source.SendOrangeBarMessage("Kill Brains three times.");
             }
 
@@ -321,7 +321,7 @@ public class MythicGargoyleScript : DialogScriptBase
 
             case "gargoyle_boss2":
             {
-                if (!source.Trackers.Counters.TryGetValue("Brains", out var brains) || (brains < 3))
+                if (!source.Trackers.Counters.TryGetValue("MythicGargoyle", out var brains) || (brains < 3))
                 {
                     Subject.Reply(
                         source,
@@ -355,8 +355,8 @@ public class MythicGargoyleScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 25000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("Brains", out _);
-                source.Trackers.Enums.Set(MythicGargoyle.BossDefeated);
+                source.Trackers.Counters.Remove("MythicGargoyle", out _);
+                source.Trackers.Enums.Set(MythicGargoyle.BossGargoyleDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
                 if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))

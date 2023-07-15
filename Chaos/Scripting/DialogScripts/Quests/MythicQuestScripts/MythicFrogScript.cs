@@ -44,7 +44,7 @@ public class MythicFrogScript : DialogScriptBase
         {
             case "frog_initial":
             {
-                if (hasFrog && (frog == MythicFrog.EnemyAllied))
+                if (hasFrog && (frog == MythicFrog.EnemyFrogAllied))
                 {
                     Subject.Reply(
                         source,
@@ -63,28 +63,28 @@ public class MythicFrogScript : DialogScriptBase
                     return;
                 }
 
-                if (frog == MythicFrog.Lower)
+                if (frog == MythicFrog.LowerFrog)
                 {
                     Subject.Reply(source, "Skip", "frog_lower2start");
 
                     return;
                 }
 
-                if (frog == MythicFrog.LowerComplete)
+                if (frog == MythicFrog.LowerFrogComplete)
                 {
                     Subject.Reply(source, "Skip", "frog_start3start");
 
                     return;
                 }
 
-                if (frog == MythicFrog.Higher)
+                if (frog == MythicFrog.HigherFrog)
                 {
                     Subject.Reply(source, "Skip", "frog_higher2start");
 
                     return;
                 }
 
-                if (frog == MythicFrog.HigherComplete)
+                if (frog == MythicFrog.HigherFrogComplete)
                 {
                     Subject.Reply(
                         source,
@@ -94,35 +94,35 @@ public class MythicFrogScript : DialogScriptBase
                     return;
                 }
 
-                if (frog == MythicFrog.Item)
+                if (frog == MythicFrog.ItemFrog)
                 {
                     Subject.Reply(source, "Skip", "frog_item2start");
 
                     return;
                 }
 
-                if (frog == MythicFrog.ItemComplete)
+                if (frog == MythicFrog.ItemFrogComplete)
                 {
                     Subject.Reply(source, "Skip", "Frog_allystart");
 
                     return;
                 }
 
-                if (frog == MythicFrog.Allied)
+                if (frog == MythicFrog.AlliedFrog)
                 {
                     Subject.Reply(source, "Skip", "frog_start5start");
 
                     return;
                 }
 
-                if (frog == MythicFrog.BossStarted)
+                if (frog == MythicFrog.BossFrogStarted)
                 {
                     Subject.Reply(source, "Skip", "frog_boss2start");
 
                     return;
                 }
 
-                if (frog == MythicFrog.BossDefeated)
+                if (frog == MythicFrog.BossFrogDefeated)
                     Subject.Reply(source, "Thank you again Aisling for your help. You will always be part of our army.");
 
                 break;
@@ -132,21 +132,21 @@ public class MythicFrogScript : DialogScriptBase
             {
                 Subject.Reply(source, "Thank you, adventurer. We appreciate your assistance. Good luck on your quest.");
                 source.SendOrangeBarMessage("Kill 15 Mythic Wolves for the Frog King.");
-                source.Trackers.Enums.Set(MythicFrog.Lower);
+                source.Trackers.Enums.Set(MythicFrog.LowerFrog);
 
                 return;
             }
 
             case "frog_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("Mythicwolf", out var mythicwolf) || (mythicwolf < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicFrog", out var mythicwolf) || (mythicwolf < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough Mythic Wolves.");
 
                     return;
                 }
 
-                source.Trackers.Enums.Set(MythicFrog.LowerComplete);
+                source.Trackers.Enums.Set(MythicFrog.LowerFrogComplete);
                 source.Animate(ani, source.Id);
 
                 if (source.UserStatSheet.Level <= 98)
@@ -160,7 +160,7 @@ public class MythicFrogScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("MythicWolf", out _);
+                source.Trackers.Counters.Remove("MythicFrog", out _);
 
                 Subject.Reply(
                     source,
@@ -177,15 +177,15 @@ public class MythicFrogScript : DialogScriptBase
                     "Remember to slay 10 of each of the stronger wolves, the White Wolf and the Bearded Wolf. They are more powerful and cunning than the ones you faced before, so be careful.");
 
                 source.SendOrangeBarMessage("Kill 10 White Wolves and 10 Bearded Wolves.");
-                source.Trackers.Enums.Set(MythicFrog.Higher);
+                source.Trackers.Enums.Set(MythicFrog.HigherFrog);
 
                 return;
             }
 
             case "frog_higher2":
             {
-                source.Trackers.Counters.TryGetValue("WhiteWolf", out var whitewolf);
-                source.Trackers.Counters.TryGetValue("BeardedWolf", out var beardedwolf);
+                source.Trackers.Counters.TryGetValue("MythicFrog", out var whitewolf);
+                source.Trackers.Counters.TryGetValue("MythicFrog1", out var beardedwolf);
 
                 if ((whitewolf < 10) || (beardedwolf < 10))
                 {
@@ -209,9 +209,9 @@ public class MythicFrogScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Enums.Set(MythicFrog.HigherComplete);
-                source.Trackers.Counters.Remove("WhiteWolf", out _);
-                source.Trackers.Counters.Remove("BeardedWolf", out _);
+                source.Trackers.Enums.Set(MythicFrog.HigherFrogComplete);
+                source.Trackers.Counters.Remove("MythicFrog", out _);
+                source.Trackers.Counters.Remove("MythicFrog1", out _);
 
                 var option = new DialogOption
                 {
@@ -241,7 +241,7 @@ public class MythicFrogScript : DialogScriptBase
                     "Please be careful, we don't want you to ribbit the wrong way into danger. They may be more aggressive now that their pack has been weakened. Return to us once you have collected the wolf skins.");
 
                 source.SendOrangeBarMessage("Collect 25 Wolf Skin for the Frog King");
-                source.Trackers.Enums.Set(MythicFrog.Item);
+                source.Trackers.Enums.Set(MythicFrog.ItemFrog);
 
                 return;
             }
@@ -270,7 +270,7 @@ public class MythicFrogScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Enums.Set(MythicFrog.ItemComplete);
+                source.Trackers.Enums.Set(MythicFrog.ItemFrogComplete);
 
                 Subject.Reply(
                     source,
@@ -283,16 +283,16 @@ public class MythicFrogScript : DialogScriptBase
             case "frog_ally":
             {
                 if (hasWolf
-                    && (hasWolf == wolf is MythicWolf.Allied or MythicWolf.BossStarted or MythicWolf.BossDefeated))
+                    && (hasWolf == wolf is MythicWolf.AlliedWolf or MythicWolf.BossWolfStarted or MythicWolf.BossWolfDefeated))
                 {
                     Subject.Reply(source, "Ribbit! It seems you already allied with the Wolves! Go away!");
-                    source.Trackers.Enums.Set(MythicFrog.EnemyAllied);
+                    source.Trackers.Enums.Set(MythicFrog.EnemyFrogAllied);
 
                     return;
                 }
 
                 source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
-                source.Trackers.Enums.Set(MythicFrog.Allied);
+                source.Trackers.Enums.Set(MythicFrog.AlliedFrog);
                 source.SendOrangeBarMessage("You are now allied with the Frogs!");
 
                 Subject.Reply(
@@ -310,7 +310,7 @@ public class MythicFrogScript : DialogScriptBase
                     "Please be careful, Nymeria is a fierce beast and is not to be taken lightly. We need your help to finally be rid of these beast . We'll be waiting for your return, may the frog be with you!");
 
                 Subject.NextDialogKey = "Close";
-                source.Trackers.Enums.Set(MythicFrog.BossStarted);
+                source.Trackers.Enums.Set(MythicFrog.BossFrogStarted);
                 source.SendOrangeBarMessage("Kill Nymeria at least three times.");
             }
 
@@ -318,7 +318,7 @@ public class MythicFrogScript : DialogScriptBase
 
             case "frog_boss2":
             {
-                if (!source.Trackers.Counters.TryGetValue("Nymeria", out var frogboss1) || (frogboss1 < 3))
+                if (!source.Trackers.Counters.TryGetValue("MythicFrog", out var frogboss1) || (frogboss1 < 3))
                 {
                     Subject.Reply(source, "Please rest and recover your strength. We're all cheering for you!");
 
@@ -352,8 +352,8 @@ public class MythicFrogScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 25000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("FrogBoss", out _);
-                source.Trackers.Enums.Set(MythicFrog.BossDefeated);
+                source.Trackers.Counters.Remove("MythicFrog", out _);
+                source.Trackers.Enums.Set(MythicFrog.BossFrogDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
                 if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))

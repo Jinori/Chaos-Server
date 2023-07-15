@@ -44,7 +44,7 @@ public class MythicGrimlockScript : DialogScriptBase
         {
             case "grimlock_initial":
             {
-                if (hasGrimlock && (grimlock == MythicGrimlock.EnemyAllied))
+                if (hasGrimlock && (grimlock == MythicGrimlock.EnemyGrimlockAllied))
                     Subject.Reply(
                         source,
                         "Your actions have brought shame upon yourself, and you will be remembered as a traitor to my people. May the spirits have mercy on your soul, for we will not. Now go, and do not let us catch you lurking in our tunnels again.");
@@ -60,7 +60,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     return;
                 }
 
-                if (grimlock == MythicGrimlock.Lower)
+                if (grimlock == MythicGrimlock.LowerGrimlock)
                 {
                     Subject.Reply(
                         source,
@@ -70,7 +70,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     return;
                 }
 
-                if (grimlock == MythicGrimlock.LowerComplete)
+                if (grimlock == MythicGrimlock.LowerGrimlockComplete)
                 {
                     Subject.Reply(
                         source,
@@ -80,7 +80,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     return;
                 }
 
-                if (grimlock == MythicGrimlock.Higher)
+                if (grimlock == MythicGrimlock.HigherGrimlock)
                 {
                     Subject.Reply(
                         source,
@@ -90,7 +90,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     return;
                 }
 
-                if (grimlock == MythicGrimlock.HigherComplete)
+                if (grimlock == MythicGrimlock.HigherGrimlockComplete)
                 {
                     Subject.Reply(
                         source,
@@ -100,14 +100,14 @@ public class MythicGrimlockScript : DialogScriptBase
                     return;
                 }
 
-                if (grimlock == MythicGrimlock.Item)
+                if (grimlock == MythicGrimlock.ItemGrimlock)
                 {
                     Subject.Reply(source, "Skip", "grimlock_item2start");
 
                     return;
                 }
 
-                if (grimlock == MythicGrimlock.ItemComplete)
+                if (grimlock == MythicGrimlock.ItemGrimlockComplete)
                 {
                     Subject.Reply(
                         source,
@@ -117,7 +117,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     return;
                 }
 
-                if (grimlock == MythicGrimlock.Allied)
+                if (grimlock == MythicGrimlock.AlliedGrimlock)
                 {
                     Subject.Reply(
                         source,
@@ -127,7 +127,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     return;
                 }
 
-                if (grimlock == MythicGrimlock.BossStarted)
+                if (grimlock == MythicGrimlock.BossGrimlockStarted)
                 {
                     Subject.Reply(
                         source,
@@ -137,7 +137,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     return;
                 }
 
-                if (grimlock == MythicGrimlock.BossDefeated)
+                if (grimlock == MythicGrimlock.BossGrimlockDefeated)
                     Subject.Reply(
                         source,
                         "My people will never forget your heroic deeds, I must not ask you another favor for now. You have done more than enough for my people, thank you again.");
@@ -152,21 +152,21 @@ public class MythicGrimlockScript : DialogScriptBase
                     "Please go kill 15 Kobold Workers, that'll stop them from damaging our land any further and supplying any more wars between us. Your willingness to fight on our behalf is appreciated.");
 
                 source.SendOrangeBarMessage("Kill 15 Kobold Workers.");
-                source.Trackers.Enums.Set(MythicGrimlock.Lower);
+                source.Trackers.Enums.Set(MythicGrimlock.LowerGrimlock);
 
                 return;
             }
 
             case "grimlock_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("koboldworker", out var koboldworker) || (koboldworker < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicGrimlock", out var koboldworker) || (koboldworker < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough Kobold Workers");
 
                     return;
                 }
 
-                source.Trackers.Enums.Set(MythicGrimlock.LowerComplete);
+                source.Trackers.Enums.Set(MythicGrimlock.LowerGrimlockComplete);
                 source.Animate(ani, source.Id);
 
                 if (source.UserStatSheet.Level <= 98)
@@ -180,7 +180,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("koboldworker", out _);
+                source.Trackers.Counters.Remove("MythicGrimlock", out _);
 
                 Subject.Reply(
                     source,
@@ -194,15 +194,15 @@ public class MythicGrimlockScript : DialogScriptBase
             {
                 Subject.Reply(source, "Thank you Aisling, I take it I will hear from you soon.");
                 source.SendOrangeBarMessage("Kill 10 Kobold Soldiers and 10 Kobold Warriors.");
-                source.Trackers.Enums.Set(MythicGrimlock.Higher);
+                source.Trackers.Enums.Set(MythicGrimlock.HigherGrimlock);
 
                 return;
             }
 
             case "grimlock_higher2":
             {
-                source.Trackers.Counters.TryGetValue("koboldworker", out var koboldsoldier);
-                source.Trackers.Counters.TryGetValue("koboldsoldier", out var koboldwarrior);
+                source.Trackers.Counters.TryGetValue("MythicGrimlock", out var koboldsoldier);
+                source.Trackers.Counters.TryGetValue("MythicGrimlock1", out var koboldwarrior);
 
                 if ((koboldsoldier < 10) || (koboldwarrior < 10))
                 {
@@ -229,9 +229,9 @@ public class MythicGrimlockScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Enums.Set(MythicGrimlock.HigherComplete);
-                source.Trackers.Counters.Remove("koboldworker", out _);
-                source.Trackers.Counters.Remove("koboldsoldier", out _);
+                source.Trackers.Enums.Set(MythicGrimlock.HigherGrimlockComplete);
+                source.Trackers.Counters.Remove("MythicGrimlock", out _);
+                source.Trackers.Counters.Remove("MythicGrimlock1", out _);
 
                 break;
             }
@@ -243,7 +243,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     "I am counting on you to bring back those Kobold tails. Your success will send a strong message to our enemies that we will not tolerate their attacks on our land. We also really need those tails.");
 
                 source.SendOrangeBarMessage("Collect 25 Kobold Tails for the Grimlock Queen");
-                source.Trackers.Enums.Set(MythicGrimlock.Item);
+                source.Trackers.Enums.Set(MythicGrimlock.ItemGrimlock);
 
                 return;
             }
@@ -272,7 +272,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Enums.Set(MythicGrimlock.ItemComplete);
+                source.Trackers.Enums.Set(MythicGrimlock.ItemGrimlockComplete);
 
                 Subject.Reply(
                     source,
@@ -285,19 +285,19 @@ public class MythicGrimlockScript : DialogScriptBase
             case "grimlock_ally":
             {
                 if (hasKobold
-                    && (hasKobold == kobold is MythicKobold.Allied or MythicKobold.BossStarted or MythicKobold.BossDefeated))
+                    && (hasKobold == kobold is MythicKobold.AlliedKobold or MythicKobold.BossKoboldStarted or MythicKobold.BossKoboldDefeated))
                 {
                     Subject.Reply(
                         source,
                         "I am outraged to discover that you have allied yourself with our sworn enemies, the Kobolds! How dare you betray us in such a manner! I trusted you to be an honorable and loyal ally, but you have proven yourself to be nothing more than a treacherous liar. I have no choice but to order you to leave our territory at once. You are no longer welcome among our people, and we will not hesitate to defend ourselves against you should you attempt to harm us in any way.");
 
-                    source.Trackers.Enums.Set(MythicGrimlock.EnemyAllied);
+                    source.Trackers.Enums.Set(MythicGrimlock.EnemyGrimlockAllied);
 
                     return;
                 }
 
                 source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
-                source.Trackers.Enums.Set(MythicGrimlock.Allied);
+                source.Trackers.Enums.Set(MythicGrimlock.AlliedGrimlock);
                 source.SendOrangeBarMessage("You are now allied with the Grimlocks!");
 
                 Subject.Reply(
@@ -314,7 +314,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     source,
                     "Oh, Aisling. Remember you must defeat him 3 times! Thank you again for handling this, I don't know what we would do without you.");
 
-                source.Trackers.Enums.Set(MythicGrimlock.BossStarted);
+                source.Trackers.Enums.Set(MythicGrimlock.BossGrimlockStarted);
                 source.SendOrangeBarMessage("Kill Shank three times.");
             }
 
@@ -322,7 +322,7 @@ public class MythicGrimlockScript : DialogScriptBase
 
             case "grimlock_boss2":
             {
-                if (!source.Trackers.Counters.TryGetValue("Shank", out var shank) || (shank < 3))
+                if (!source.Trackers.Counters.TryGetValue("MythicGrimlock", out var shank) || (shank < 3))
                 {
                     Subject.Reply(
                         source,
@@ -356,8 +356,8 @@ public class MythicGrimlockScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 25000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("shank", out _);
-                source.Trackers.Enums.Set(MythicGrimlock.BossDefeated);
+                source.Trackers.Counters.Remove("MythicGrimlock", out _);
+                source.Trackers.Enums.Set(MythicGrimlock.BossGrimlockDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
                 if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))

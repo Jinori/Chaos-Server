@@ -1,3 +1,4 @@
+using System.Reflection;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -46,14 +47,15 @@ public class MythicKillCounterScript : ConfigurableMonsterScriptBase
         if (rewardTargets is not null)
             foreach (var aisling in rewardTargets)
             {
-                MythicMantis stage;
-
-                if (Enum.TryParse(QuestEnum, out MythicMantis parsedStage))
-                    stage = parsedStage;
-                else
+                var stageType = GetEnumType(QuestEnum);
+                if (stageType is null)
+                {
+                    // Handle the case where Quest value is not a valid enum value
+                    // You can decide what action to take or skip the iteration
                     continue;
+                }
 
-                if (aisling.Trackers.Enums.TryGetValue(out MythicMantis currentStage) && (currentStage == stage))
+                if (Enum.TryParse(stageType, QuestEnum, out var currentStage) && (currentStage.ToString() == QuestEnum))
                 {
                     aisling.Trackers.Counters.TryGetValue(Counter, out var killedamt);
 
@@ -92,5 +94,20 @@ public class MythicKillCounterScript : ConfigurableMonsterScriptBase
                 }
 
             }
+    }
+    
+    private static Type? GetEnumType(string? enumValue)
+    {
+        if (enumValue is null)
+            return null;
+
+        var enumTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsEnum);
+        foreach (var enumType in enumTypes)
+        {
+            if (Enum.IsDefined(enumType, enumValue))
+                return enumType;
+        }
+
+        return null;
     }
 }

@@ -44,7 +44,7 @@ public class MythicBunnyScript : DialogScriptBase
         {
             case "bunny_initial":
             {
-                if (hasBunny && (bunny == MythicBunny.EnemyAllied))
+                if (hasBunny && (bunny == MythicBunny.EnemyBunnyAllied))
                 {
                     Subject.Reply(
                         source,
@@ -60,63 +60,63 @@ public class MythicBunnyScript : DialogScriptBase
                     return;
                 }
 
-                if (bunny == MythicBunny.Lower)
+                if (bunny == MythicBunny.LowerBunny)
                 {
                     Subject.Reply(source, "Skip", "bunny_lower2start");
 
                     return;
                 }
 
-                if (bunny == MythicBunny.LowerComplete)
+                if (bunny == MythicBunny.LowerBunnyComplete)
                 {
                     Subject.Reply(source, "Skip", "bunny_start3start");
 
                     return;
                 }
 
-                if (bunny == MythicBunny.Higher)
+                if (bunny == MythicBunny.HigherBunny)
                 {
                     Subject.Reply(source, "Skip", "bunny_higher2start");
 
                     return;
                 }
 
-                if (bunny == MythicBunny.HigherComplete)
+                if (bunny == MythicBunny.HigherBunnyComplete)
                 {
                     Subject.Reply(source, "skip", "bunny_itemstart");
 
                     return;
                 }
 
-                if (bunny == MythicBunny.Item)
+                if (bunny == MythicBunny.ItemBunny)
                 {
                     Subject.Reply(source, "Skip", "bunny_item2start");
 
                     return;
                 }
 
-                if (bunny == MythicBunny.ItemComplete)
+                if (bunny == MythicBunny.ItemBunnyComplete)
                 {
                     Subject.Reply(source, "Skip", "bunny_allystart");
 
                     return;
                 }
 
-                if (bunny == MythicBunny.Allied)
+                if (bunny == MythicBunny.AlliedBunny)
                 {
                     Subject.Reply(source, "Skip", "bunny_start5start");
 
                     return;
                 }
 
-                if (bunny == MythicBunny.BossStarted)
+                if (bunny == MythicBunny.BossBunnyStarted)
                 {
                     Subject.Reply(source, "Skip", "bunny_boss2start");
 
                     return;
                 }
 
-                if (bunny == MythicBunny.BossDefeated)
+                if (bunny == MythicBunny.BossBunnyDefeated)
                     Subject.Reply(
                         source,
                         $"Every bunny knows your name {source.Name
@@ -132,7 +132,7 @@ public class MythicBunnyScript : DialogScriptBase
                     "You have our paws-tounding gratitude. Don't let the horses get your goat, though - they're quick and nimble, and they can kick like mules. But we believe in you, and we know you'll do us proud. May the bunny luck be with you!");
 
                 source.SendOrangeBarMessage("Kill 15 Purple Horses for Big Bunny");
-                source.Trackers.Enums.Set(MythicBunny.Lower);
+                source.Trackers.Enums.Set(MythicBunny.LowerBunny);
 
                 return;
             }
@@ -146,7 +146,7 @@ public class MythicBunnyScript : DialogScriptBase
                     return;
                 }
 
-                source.Trackers.Enums.Set(MythicBunny.LowerComplete);
+                source.Trackers.Enums.Set(MythicBunny.LowerBunnyComplete);
                 source.Animate(ani, source.Id);
 
                 if (source.UserStatSheet.Level <= 98)
@@ -177,7 +177,7 @@ public class MythicBunnyScript : DialogScriptBase
                     "I need you to travel deep into the fields and thin out the horse herd. Specifically, I need you to thin out 10 Gray Horses and 10 Red Horses.");
 
                 source.SendOrangeBarMessage("Kill 10 Gray and 10 Red Horses for Big Bunny");
-                source.Trackers.Enums.Set(MythicBunny.Higher);
+                source.Trackers.Enums.Set(MythicBunny.HigherBunny);
 
                 return;
             }
@@ -212,7 +212,7 @@ public class MythicBunnyScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Enums.Set(MythicBunny.HigherComplete);
+                source.Trackers.Enums.Set(MythicBunny.HigherBunnyComplete);
                 source.Trackers.Counters.Remove("MythicBunny", out _);
                 source.Trackers.Counters.Remove("MythicBunny1", out _);
 
@@ -226,7 +226,7 @@ public class MythicBunnyScript : DialogScriptBase
                     "Don't let us down, Warren Wanderer. We're counting on you to hop to it and bring back the horse hair we need. And remember, the early bunny gets the hair!");
 
                 source.SendOrangeBarMessage("Collect 25 horse hair for Big Bunny");
-                source.Trackers.Enums.Set(MythicBunny.Item);
+                source.Trackers.Enums.Set(MythicBunny.ItemBunny);
 
                 return;
             }
@@ -255,7 +255,7 @@ public class MythicBunnyScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Enums.Set(MythicBunny.ItemComplete);
+                source.Trackers.Enums.Set(MythicBunny.ItemBunnyComplete);
 
                 Subject.Reply(
                     source,
@@ -268,16 +268,16 @@ public class MythicBunnyScript : DialogScriptBase
             case "bunny_ally":
             {
                 if (hasHorse
-                    && (hasHorse == horse is MythicHorse.Allied or MythicHorse.BossStarted or MythicHorse.BossDefeated))
+                    && (hasHorse == horse is MythicHorse.AlliedHorse or MythicHorse.BossHorseStarted or MythicHorse.BossHorseDefeated))
                 {
                     Subject.Reply(source, "Oh no! You already allied with the horses! Get away from us!");
-                    source.Trackers.Enums.Set(MythicBunny.EnemyAllied);
+                    source.Trackers.Enums.Set(MythicBunny.EnemyBunnyAllied);
 
                     return;
                 }
 
                 source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
-                source.Trackers.Enums.Set(MythicBunny.Allied);
+                source.Trackers.Enums.Set(MythicBunny.AlliedBunny);
                 source.SendOrangeBarMessage("You are now allied with the bunnies!");
 
                 Subject.Reply(
@@ -295,7 +295,7 @@ public class MythicBunnyScript : DialogScriptBase
                     source,
                     "Please be careful, Warren Wanderer. We rabbits are a fragile and gentle species, and we need your help to survive. We'll be eagerly waiting for your return, hoping to hear tales of your bunny-licious bravery and triumph over Apple Jack. May the bunny gods be with you!");
 
-                source.Trackers.Enums.Set(MythicBunny.BossStarted);
+                source.Trackers.Enums.Set(MythicBunny.BossBunnyStarted);
                 source.SendOrangeBarMessage("Kill Apple Jack at least three times.");
             }
 
@@ -338,7 +338,7 @@ public class MythicBunnyScript : DialogScriptBase
                 }
 
                 source.Trackers.Counters.Remove("MythicBunny", out _);
-                source.Trackers.Enums.Set(MythicBunny.BossDefeated);
+                source.Trackers.Enums.Set(MythicBunny.BossBunnyDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
                 if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))

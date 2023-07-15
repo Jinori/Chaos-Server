@@ -134,7 +134,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 return;
             }
 
-            case "armorsmithnpc_initial":
+            case "gwendolyn_initial":
             {
                 if (hasCraft && (craft != Crafts.Armorsmithing))
                 {
@@ -149,7 +149,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 {
                     var option = new DialogOption
                     {
-                        DialogKey = "armorsmithing_startcraft",
+                        DialogKey = "armorsmith_startcraft",
                         OptionText = "I want to be an Armorsmith."
                     };
 

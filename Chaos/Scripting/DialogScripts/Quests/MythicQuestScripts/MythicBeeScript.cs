@@ -44,7 +44,7 @@ public class MythicBeeScript : DialogScriptBase
         {
             case "bee_initial":
             {
-                if (hasBee && (bee == MythicBee.EnemyAllied))
+                if (hasBee && (bee == MythicBee.EnemyBeeAllied))
                     Subject.Reply(
                         source,
                         "I cannot allow a member of the hive to be allied with our enemies. It puts our entire colony at risk, and I simply cannot tolerate it. So, I must ask you to leave our hive and never return.");
@@ -52,31 +52,31 @@ public class MythicBeeScript : DialogScriptBase
                 if (hasMain && !hasBee)
                     Subject.Reply(source, "Skip", "bee_start1start");
 
-                if (bee == MythicBee.Lower)
+                if (bee == MythicBee.LowerBee)
                     Subject.Reply(source, "Skip", "bee_lower2start");
 
-                if (bee == MythicBee.LowerComplete)
+                if (bee == MythicBee.LowerBeeComplete)
                     Subject.Reply(source, "Skip", "bee_start3start");
 
-                if (bee == MythicBee.Higher)
+                if (bee == MythicBee.HigherBee)
                     Subject.Reply(source, "Skip", "bee_higher2start");
 
-                if (bee == MythicBee.HigherComplete)
+                if (bee == MythicBee.HigherBeeComplete)
                     Subject.Reply(source, "Skip", "bee_itemstart");
 
-                if (bee == MythicBee.Item)
+                if (bee == MythicBee.ItemBee)
                     Subject.Reply(source, "Skip", "bee_item2start");
 
-                if (bee == MythicBee.ItemComplete)
+                if (bee == MythicBee.ItemBeeComplete)
                     Subject.Reply(source, "Skip", "bee_allystart");
 
-                if (bee == MythicBee.Allied)
+                if (bee == MythicBee.AlliedBee)
                     Subject.Reply(source, "Skip", "bee_start5start");
 
-                if (bee == MythicBee.BossStarted)
+                if (bee == MythicBee.BossBeeStarted)
                     Subject.Reply(source, "Skip", "bee_boss2");
 
-                if (bee == MythicBee.BossDefeated)
+                if (bee == MythicBee.BossBeeDefeated)
                     Subject.Reply(
                         source,
                         "The whole hive is buzzing about your efforts, you're an honorary bee around here. Thank you again!");
@@ -91,7 +91,7 @@ public class MythicBeeScript : DialogScriptBase
                     "I wish you the best of luck on your mission. May your stinger be swift and true, and may you return to our hive victorious. Buzz on, my friend!");
 
                 source.SendOrangeBarMessage("Kill 15 Mythic Mantis for Queen Bee");
-                source.Trackers.Enums.Set(MythicBee.Lower);
+                source.Trackers.Enums.Set(MythicBee.LowerBee);
 
                 return;
             }
@@ -105,7 +105,7 @@ public class MythicBeeScript : DialogScriptBase
                     return;
                 }
 
-                source.Trackers.Enums.Set(MythicBee.LowerComplete);
+                source.Trackers.Enums.Set(MythicBee.LowerBeeComplete);
                 source.Animate(ani, source.Id);
 
                 if (source.UserStatSheet.Level <= 98)
@@ -138,7 +138,7 @@ public class MythicBeeScript : DialogScriptBase
                     "Please eliminate 20 Brown Mantis. The nectar from the flowers that they are guarding is among the sweetest we have ever tasted.");
 
                 source.SendOrangeBarMessage("Kill 20 Brown Mantis for the Bee Queen.");
-                source.Trackers.Enums.Set(MythicBee.Higher);
+                source.Trackers.Enums.Set(MythicBee.HigherBee);
 
                 return;
             }
@@ -170,7 +170,7 @@ public class MythicBeeScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Enums.Set(MythicBee.HigherComplete);
+                source.Trackers.Enums.Set(MythicBee.HigherBeeComplete);
                 source.Trackers.Counters.Remove("MythicBee", out _);
             }
 
@@ -180,7 +180,7 @@ public class MythicBeeScript : DialogScriptBase
             {
                 Subject.Reply(source, "Thank you mighty bee! Fight the mantis colony and collect 25 dendron flowers from them.");
                 source.SendOrangeBarMessage("Collect 25 Dendron Flower for the Queen Bee");
-                source.Trackers.Enums.Set(MythicBee.Item);
+                source.Trackers.Enums.Set(MythicBee.ItemBee);
 
                 return;
             }
@@ -207,7 +207,7 @@ public class MythicBeeScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Enums.Set(MythicBee.ItemComplete);
+                source.Trackers.Enums.Set(MythicBee.ItemBeeComplete);
 
                 Subject.Reply(
                     source,
@@ -222,16 +222,16 @@ public class MythicBeeScript : DialogScriptBase
             case "bee_ally":
             {
                 if (hasMantis
-                    && (hasMantis == mantis is MythicMantis.Allied or MythicMantis.BossStarted or MythicMantis.BossDefeated))
+                    && (hasMantis == mantis is MythicMantis.MantisAllied or MythicMantis.BossMantisStarted or MythicMantis.BossMantisDefeated))
                 {
                     Subject.Reply(source, "No way! You have been allied to the Mantis Colony this entire time traitor! Buzz off!");
-                    source.Trackers.Enums.Set(MythicBee.EnemyAllied);
+                    source.Trackers.Enums.Set(MythicBee.EnemyBeeAllied);
 
                     return;
                 }
 
                 source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
-                source.Trackers.Enums.Set(MythicBee.Allied);
+                source.Trackers.Enums.Set(MythicBee.AlliedBee);
                 source.SendOrangeBarMessage("You are now allied with the Bees!");
 
                 Subject.Reply(
@@ -246,7 +246,7 @@ public class MythicBeeScript : DialogScriptBase
             case "bee_boss":
             {
                 Subject.Reply(source, "So fly out, my buzz-worthy ally, and bring us victory over Fire Tree!");
-                source.Trackers.Enums.Set(MythicBee.BossStarted);
+                source.Trackers.Enums.Set(MythicBee.BossBeeStarted);
                 source.SendOrangeBarMessage("Kill Fire Tree three times.");
             }
 
@@ -290,7 +290,7 @@ public class MythicBeeScript : DialogScriptBase
 
                 source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
                 source.Trackers.Counters.Remove("MythicBee", out _);
-                source.Trackers.Enums.Set(MythicBee.BossDefeated);
+                source.Trackers.Enums.Set(MythicBee.BossBeeDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
                 if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))

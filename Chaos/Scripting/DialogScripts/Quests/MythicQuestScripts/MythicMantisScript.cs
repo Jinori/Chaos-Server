@@ -55,49 +55,49 @@ public class MythicMantisScript : DialogScriptBase
                     return;
                 }
 
-                if (mantis == MythicMantis.Lower)
+                if (mantis == MythicMantis.LowerMantis)
                 {
                     Subject.Reply(source, "skip", "mantis_lower2start");
 
                     return;
                 }
 
-                if (mantis == MythicMantis.LowerComplete)
+                if (mantis == MythicMantis.LowerMantisComplete)
                 {
                     Subject.Reply(source, "skip", "mantis_start3start");
 
                     return;
                 }
 
-                if (mantis == MythicMantis.Higher)
+                if (mantis == MythicMantis.HigherMantis)
                 {
                     Subject.Reply(source, "skip", "mantis_higher2start");
 
                     return;
                 }
 
-                if (mantis == MythicMantis.HigherComplete)
+                if (mantis == MythicMantis.HigherMantisComplete)
                 {
                     Subject.Reply(source, "skip", "mantis_itemstart");
 
                     return;
                 }
 
-                if (mantis == MythicMantis.Item)
+                if (mantis == MythicMantis.ItemMantis)
                 {
                     Subject.Reply(source, "skip", "mantis_item2start");
 
                     return;
                 }
 
-                if (mantis == MythicMantis.ItemComplete)
+                if (mantis == MythicMantis.ItemMantisComplete)
                 {
                     Subject.Reply(source, "skip", "mantis_allystart");
 
                     return;
                 }
 
-                if (mantis == MythicMantis.Allied)
+                if (mantis == MythicMantis.MantisAllied)
                 {
                     Subject.Reply(
                         source,
@@ -107,14 +107,14 @@ public class MythicMantisScript : DialogScriptBase
                     return;
                 }
 
-                if (mantis == MythicMantis.BossStarted)
+                if (mantis == MythicMantis.BossMantisStarted)
                 {
                     Subject.Reply(source, "skip", "mantis_boss2start");
 
                     return;
                 }
 
-                if (mantis == MythicMantis.BossDefeated)
+                if (mantis == MythicMantis.BossMantisDefeated)
                     Subject.Reply(
                         source,
                         "My Colony is eating well, nothing to worry about. Thank you again Aisling for taking care of that wasp. We have no troubles these days.");
@@ -129,21 +129,21 @@ public class MythicMantisScript : DialogScriptBase
                     "Good, good. I will see you when you return. Remember, go kill 15 Mythic Bees. Don't leave any alive.");
 
                 source.SendOrangeBarMessage("Kill 15 Mythic Bees for King Mantis");
-                source.Trackers.Enums.Set(MythicMantis.Lower);
+                source.Trackers.Enums.Set(MythicMantis.LowerMantis);
 
                 return;
             }
 
             case "mantis_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("mythicmantis", out var mantislower) || (mantislower < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicMantis", out var mantislower) || (mantislower < 15))
                 {
                     Subject.Reply(source, "Disappointing, loyalty is everything and if you aren't willing, don't come back.");
 
                     return;
                 }
 
-                source.Trackers.Enums.Set(MythicMantis.LowerComplete);
+                source.Trackers.Enums.Set(MythicMantis.LowerMantisComplete);
                 source.Animate(ani, source.Id);
 
                 if (source.UserStatSheet.Level <= 98)
@@ -157,7 +157,7 @@ public class MythicMantisScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("mythicmantis", out _);
+                source.Trackers.Counters.Remove("MythicMantis", out _);
                 Subject.Reply(source, "Impressive. 15 Mythic bees without blinking an eye. I admire your loyalty.", "mantis_initial");
 
                 break;
@@ -170,14 +170,14 @@ public class MythicMantisScript : DialogScriptBase
                     "Show me how you do it. Good luck Aisling, they can be awefully tricky to kill. Make sure you slay 20 of the Green Bees.");
 
                 source.SendOrangeBarMessage("Kill 20 Green Bees for King Mantis");
-                source.Trackers.Enums.Set(MythicMantis.Higher);
+                source.Trackers.Enums.Set(MythicMantis.HigherMantis);
 
                 return;
             }
 
             case "mantis_higher2":
             {
-                if (!source.Trackers.Counters.TryGetValue("mythicmantis", out var mantishigher) || (mantishigher < 20))
+                if (!source.Trackers.Counters.TryGetValue("MythicMantis", out var mantishigher) || (mantishigher < 20))
                 {
                     Subject.Reply(source, "Didn't quite finish them all did you? Go back and make sure they're dead.");
 
@@ -202,8 +202,8 @@ public class MythicMantisScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Enums.Set(MythicMantis.HigherComplete);
-                source.Trackers.Counters.Remove("mythicmantis", out _);
+                source.Trackers.Enums.Set(MythicMantis.HigherMantisComplete);
+                source.Trackers.Counters.Remove("MythicMantis", out _);
 
                 break;
             }
@@ -212,7 +212,7 @@ public class MythicMantisScript : DialogScriptBase
             {
                 Subject.Reply(source, "Does that make us bad parents? Ah, who cares. Grab us 25 Mythic Honey.");
                 source.SendOrangeBarMessage("Collect 25 Mythic Honey for King Mantis");
-                source.Trackers.Enums.Set(MythicMantis.Item);
+                source.Trackers.Enums.Set(MythicMantis.ItemMantis);
 
                 return;
             }
@@ -239,7 +239,7 @@ public class MythicMantisScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Enums.Set(MythicMantis.ItemComplete);
+                source.Trackers.Enums.Set(MythicMantis.ItemMantisComplete);
 
                 Subject.Reply(
                     source,
@@ -252,7 +252,7 @@ public class MythicMantisScript : DialogScriptBase
             case "mantis_ally":
             {
                 if (hasBee
-                    && (hasBee == bee is MythicBee.Allied or MythicBee.BossStarted or MythicBee.BossDefeated))
+                    && (hasBee == bee is MythicBee.AlliedBee or MythicBee.BossBeeStarted or MythicBee.BossBeeDefeated))
                 { 
                     Subject.Reply(
                         source,
@@ -264,7 +264,7 @@ public class MythicMantisScript : DialogScriptBase
                 }
 
                 source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
-                source.Trackers.Enums.Set(MythicMantis.Allied);
+                source.Trackers.Enums.Set(MythicMantis.MantisAllied);
                 source.SendOrangeBarMessage("You are now allied with the Mantis!");
                 Subject.Reply(
                     source,
@@ -280,7 +280,7 @@ public class MythicMantisScript : DialogScriptBase
                     source,
                     "That would be fantastic. Good luck Adventurer, and if I don't see you again, the colony appreciates your loyalty.");
 
-                source.Trackers.Enums.Set(MythicMantis.BossStarted);
+                source.Trackers.Enums.Set(MythicMantis.BossMantisStarted);
                 source.SendOrangeBarMessage("Kill Carolina three times.");
             }
 
@@ -322,7 +322,7 @@ public class MythicMantisScript : DialogScriptBase
                 }
 
                 source.Trackers.Counters.Remove("MythicMantis", out _);
-                source.Trackers.Enums.Set(MythicMantis.BossDefeated);
+                source.Trackers.Enums.Set(MythicMantis.BossMantisDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
                 if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))

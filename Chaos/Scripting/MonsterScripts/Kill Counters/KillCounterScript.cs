@@ -30,7 +30,7 @@ public class KillCounterScript : MonsterScriptBase
 
     private void HandleBeeBossKill(Aisling aisling)
     {
-        if (!aisling.Trackers.Enums.TryGetValue(out MythicMantis mantis) || (mantis != MythicMantis.BossStarted))
+        if (!aisling.Trackers.Enums.TryGetValue(out MythicMantis mantis) || (mantis != MythicMantis.BossMantisStarted))
             return;
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Carolina", 2))
@@ -255,7 +255,7 @@ public class KillCounterScript : MonsterScriptBase
 
     private void HandleFrogBossKill(Aisling aisling)
     {
-        if (!aisling.Trackers.Enums.TryGetValue(out MythicWolf wolf) || (wolf != MythicWolf.BossStarted))
+        if (!aisling.Trackers.Enums.TryGetValue(out MythicWolf wolf) || (wolf != MythicWolf.BossWolfStarted))
             return;
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Frogger", 2))
@@ -273,7 +273,7 @@ public class KillCounterScript : MonsterScriptBase
 
     private void HandleFrogKill(Aisling aisling)
     {
-        if (!aisling.Trackers.Enums.TryGetValue(out MythicWolf wolf) || (wolf != MythicWolf.Lower))
+        if (!aisling.Trackers.Enums.TryGetValue(out MythicWolf wolf) || (wolf != MythicWolf.LowerWolf))
             return;
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 15))
@@ -288,7 +288,7 @@ public class KillCounterScript : MonsterScriptBase
 
     private void HandleGargoyleBossKill(Aisling aisling)
     {
-        if (!aisling.Trackers.Enums.TryGetValue(out MythicZombie zombie) || (zombie != MythicZombie.BossStarted))
+        if (!aisling.Trackers.Enums.TryGetValue(out MythicZombie zombie) || (zombie != MythicZombie.BossZombieStarted))
             return;
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("GargoyleFiend", 2))
@@ -306,7 +306,7 @@ public class KillCounterScript : MonsterScriptBase
 
     private void HandleGargoyleKill(Aisling aisling)
     {
-        if (!aisling.Trackers.Enums.TryGetValue(out MythicZombie zombie) || (zombie != MythicZombie.Lower))
+        if (!aisling.Trackers.Enums.TryGetValue(out MythicZombie zombie) || (zombie != MythicZombie.LowerZombie))
             return;
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 15))
@@ -321,7 +321,7 @@ public class KillCounterScript : MonsterScriptBase
 
     private void HandleGrimlockBossKill(Aisling aisling)
     {
-        if (!aisling.Trackers.Enums.TryGetValue(out MythicKobold kobold) || (kobold != MythicKobold.BossStarted))
+        if (!aisling.Trackers.Enums.TryGetValue(out MythicKobold kobold) || (kobold != MythicKobold.BossKoboldStarted))
             return;
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("GrimlockPrincess", 2))
@@ -339,7 +339,7 @@ public class KillCounterScript : MonsterScriptBase
 
     private void HandleGrimlockKill(Aisling aisling)
     {
-        if (!aisling.Trackers.Enums.TryGetValue(out MythicKobold kobold) || (kobold != MythicKobold.Lower))
+        if (!aisling.Trackers.Enums.TryGetValue(out MythicKobold kobold) || (kobold != MythicKobold.LowerKobold))
             return;
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 15))
@@ -354,7 +354,7 @@ public class KillCounterScript : MonsterScriptBase
 
     private void HandleKoboldBossKill(Aisling aisling)
     {
-        if (!aisling.Trackers.Enums.TryGetValue(out MythicGrimlock grimlock) || (grimlock != MythicGrimlock.BossStarted))
+        if (!aisling.Trackers.Enums.TryGetValue(out MythicGrimlock grimlock) || (grimlock != MythicGrimlock.BossGrimlockStarted))
             return;
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Shank", 2))
@@ -372,7 +372,7 @@ public class KillCounterScript : MonsterScriptBase
 
     private void HandleKoboldKill(Aisling aisling)
     {
-        if (!aisling.Trackers.Enums.TryGetValue(out MythicGrimlock grimlock) || (grimlock != MythicGrimlock.Lower))
+        if (!aisling.Trackers.Enums.TryGetValue(out MythicGrimlock grimlock) || (grimlock != MythicGrimlock.LowerGrimlock))
             return;
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 15))
@@ -469,7 +469,7 @@ public class KillCounterScript : MonsterScriptBase
 
     private void HandleZombieBossKill(Aisling aisling)
     {
-        if (!aisling.Trackers.Enums.TryGetValue(out MythicGargoyle gargoyle) || (gargoyle != MythicGargoyle.BossStarted))
+        if (!aisling.Trackers.Enums.TryGetValue(out MythicGargoyle gargoyle) || (gargoyle != MythicGargoyle.BossGargoyleStarted))
             return;
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Brains", 2))
@@ -487,7 +487,7 @@ public class KillCounterScript : MonsterScriptBase
 
     private void HandleZombieKill(Aisling aisling)
     {
-        if (!aisling.Trackers.Enums.TryGetValue(out MythicGargoyle gargoyle) || (gargoyle != MythicGargoyle.Lower))
+        if (!aisling.Trackers.Enums.TryGetValue(out MythicGargoyle gargoyle) || (gargoyle != MythicGargoyle.LowerGargoyle))
             return;
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Subject.Template.TemplateKey, 15))
