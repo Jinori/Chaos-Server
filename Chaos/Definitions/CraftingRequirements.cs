@@ -1051,7 +1051,7 @@ public static class CraftingRequirements
             new Recipe()
             {
                 Name = "Astral Brew Formula",
-                TemplateKey = "Astralbrewformula",
+                TemplateKey = "astralbrewformula",
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "giantbatwing", DisplayName = "giantbatwing", Amount = 2 },
@@ -1306,7 +1306,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "dochasbloom", DisplayName = "Dochas Bloom", Amount = 2 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
-                    new Ingredient { TemplateKey = "vipergland", DisplayName = "Viper's Gland", Amount = 5 }
+                    new Ingredient { TemplateKey = "vipergland", DisplayName = "Viper's Gland", Amount = 1 }
                 },
                 Rank = "Journeyman",
                 Level = 71,

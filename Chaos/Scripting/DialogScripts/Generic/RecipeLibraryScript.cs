@@ -394,11 +394,277 @@ public class RecipeLibraryScript : DialogScriptBase
 
                 switch (FauxItem?.Template.TemplateKey.ToLower())
                 {
-                    case "hemloch":
+                    case "hemlochformula":
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires something. To brew this, go to the Piet Alchemy Lab and go to the tables.",
+                            } requires 5 Mold and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    
+                    case "smallhealthpotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Apple and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    
+                    case "smallmanapotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Acorn and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "smallrejuvenationpotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Baguette and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "smallhastebrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Sparkflower and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "smallpowerbrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Cactus Flower and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "smallaccuracypotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Kabine Blossom and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "juggernautbrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 2 Scorpion Sting, 1 Kobold Tail and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "astralbrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 2 Giant Bat Wing, 1 Kobold Tail and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "antidotepotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Frog Leg and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "smallfirestormtonicformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Cactus Flower, 3 Wolf's Fur and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "smallstuntonicformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Dochas Bloom, 3 Viper's Gland and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "healthpotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 2 Apple, 1 Passion Flower and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "manapotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Acorn, 1 Lilypad and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "rejuvenationpotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Baguette, 1 Raineach and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "hastebrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 2 Spark Flower and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "powerbrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 2 Cactus Flower and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "accuracypotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 2 Kabine Blossom and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "revivepotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Blossom of Betrayal, 1 Spark Flower and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "strongjuggernautbrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 3 Scorpion Sting, 2 Kobold Tail and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "strongastralbrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 3 Giant Bat Wing, 2 Kobold Tail and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "cleansingbrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Water Lily and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "firestormtonicformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 2 Cactus Flower, 5 Wolf's Fur and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "stuntonicformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 2 Dochas Bloom, 1 Viper Gland and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "warmthpotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 2 Bocan Bough and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "amnesiabrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Blossom of Betrayal and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "stronghealthpotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 5 Apple, 1 Passion Flower and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "strongmanapotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 5 Acorn, 1 Lily Pad and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "strongrejuvenationpotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 2 Baguette, 1 Raineach and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "stronghastebrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 2 Spark Flower, 1 Wisp Core and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "strongpowerbrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Mummy Bandage, 2 Cactus Flower and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "strongaccuracypotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Kabine Blossom, 1 Kraken Tentacle and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "statboostelixirformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Viper's Venom, 1 Murauder's Spine, 1 Satyr's Hoof, 1 Polyp Sac and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "knowledgeelixirformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Ancient Bone, 1 Lion Fish and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;

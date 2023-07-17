@@ -131,7 +131,7 @@ public class MythicWolfScript : DialogScriptBase
 
             case "wolf_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("MythicWolf", out var wolflower) || (wolflower < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicWolf1", out var wolflower) || (wolflower < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough Green Frogs");
 
@@ -152,7 +152,7 @@ public class MythicWolfScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("MythicWolf", out _);
+                source.Trackers.Counters.Remove("MythicWolf1", out _);
                 Subject.Reply(source, "Ha! You seem brave. Please come back when you can, I have another task for you.");
 
                 break;
@@ -172,8 +172,8 @@ public class MythicWolfScript : DialogScriptBase
 
             case "wolf_higher2":
             {
-                source.Trackers.Counters.TryGetValue("MythicWolf", out var bluefrog);
-                source.Trackers.Counters.TryGetValue("MythicWolf1", out var redfrog);
+                source.Trackers.Counters.TryGetValue("MythicWolf2", out var bluefrog);
+                source.Trackers.Counters.TryGetValue("MythicWolf3", out var redfrog);
 
                 if ((bluefrog < 10) || (redfrog < 10))
                 {
@@ -200,8 +200,8 @@ public class MythicWolfScript : DialogScriptBase
                 }
 
                 source.Trackers.Enums.Set(MythicWolf.HigherWolfComplete);
-                source.Trackers.Counters.Remove("MythicWolf", out _);
-                source.Trackers.Counters.Remove("MythicWolf1", out _);
+                source.Trackers.Counters.Remove("MythicWolf2", out _);
+                source.Trackers.Counters.Remove("MythicWolf3", out _);
 
                 break;
             }

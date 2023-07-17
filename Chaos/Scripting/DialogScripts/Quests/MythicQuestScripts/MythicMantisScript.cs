@@ -136,7 +136,7 @@ public class MythicMantisScript : DialogScriptBase
 
             case "mantis_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("MythicMantis", out var mantislower) || (mantislower < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicMantis1", out var mantislower) || (mantislower < 15))
                 {
                     Subject.Reply(source, "Disappointing, loyalty is everything and if you aren't willing, don't come back.");
 
@@ -157,7 +157,7 @@ public class MythicMantisScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("MythicMantis", out _);
+                source.Trackers.Counters.Remove("MythicMantis1", out _);
                 Subject.Reply(source, "Impressive. 15 Mythic bees without blinking an eye. I admire your loyalty.", "mantis_initial");
 
                 break;
@@ -177,7 +177,7 @@ public class MythicMantisScript : DialogScriptBase
 
             case "mantis_higher2":
             {
-                if (!source.Trackers.Counters.TryGetValue("MythicMantis", out var mantishigher) || (mantishigher < 20))
+                if (!source.Trackers.Counters.TryGetValue("MythicMantis2", out var mantishigher) || (mantishigher < 20))
                 {
                     Subject.Reply(source, "Didn't quite finish them all did you? Go back and make sure they're dead.");
 
@@ -203,7 +203,7 @@ public class MythicMantisScript : DialogScriptBase
                 }
 
                 source.Trackers.Enums.Set(MythicMantis.HigherMantisComplete);
-                source.Trackers.Counters.Remove("MythicMantis", out _);
+                source.Trackers.Counters.Remove("MythicMantis2", out _);
 
                 break;
             }

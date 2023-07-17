@@ -207,7 +207,6 @@ public enum PFQuestStage
     TurnedInRoots = 2,
     WolfManes = 3,
     WolfManesTurnedIn = 4,
-    FoundPendant = 5,
     KilledGiantMantis = 6,
     CompletedPFQuest = 7,
     TurnedInTristar = 8,

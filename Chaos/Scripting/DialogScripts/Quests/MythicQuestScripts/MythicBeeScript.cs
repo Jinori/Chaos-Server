@@ -98,7 +98,7 @@ public class MythicBeeScript : DialogScriptBase
 
             case "bee_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("MythicBee", out var mythicMantis) || (mythicMantis < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicBee1", out var mythicMantis) || (mythicMantis < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough Mythic Mantis.");
 
@@ -119,7 +119,7 @@ public class MythicBeeScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("MythicBee", out _);
+                source.Trackers.Counters.Remove("MythicBee1", out _);
 
                 Subject.Reply(
                     source,
@@ -145,7 +145,7 @@ public class MythicBeeScript : DialogScriptBase
 
             case "bee_higher2":
             {
-                if (!source.Trackers.Counters.TryGetValue("MythicBee", out var brownmantis) || (brownmantis < 20))
+                if (!source.Trackers.Counters.TryGetValue("MythicBee2", out var brownmantis) || (brownmantis < 20))
                 {
                     Subject.Reply(source, "You haven't killed enough Brown Mantis.");
 
@@ -171,7 +171,7 @@ public class MythicBeeScript : DialogScriptBase
                 }
 
                 source.Trackers.Enums.Set(MythicBee.HigherBeeComplete);
-                source.Trackers.Counters.Remove("MythicBee", out _);
+                source.Trackers.Counters.Remove("MythicBee2", out _);
             }
 
                 break;

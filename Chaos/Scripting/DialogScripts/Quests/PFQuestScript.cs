@@ -261,6 +261,20 @@ public class PFQuestScript : DialogScriptBase
                 {
                     case PFQuestStage.TurnedInRoots or PFQuestStage.WolfManesTurnedIn:
                     {
+                        if (source.Inventory.Contains("Turuc Pendant"))
+                        {
+                            var option1 = new DialogOption
+                            {
+                                DialogKey = "porteforest_pendant3",
+                                OptionText = "Turuc Pendant"
+                            };
+
+                            if (!Subject.HasOption(option1.OptionText))
+                                Subject.Options.Add(option1);
+
+                            return;
+                        }
+                        
                         var option = new DialogOption
                         {
                             DialogKey = "porteforest_pendant",
@@ -269,19 +283,6 @@ public class PFQuestScript : DialogScriptBase
 
                         if (!Subject.HasOption(option.OptionText))
                             Subject.Options.Insert(0, option);
-
-                        break;
-                    }
-                    case PFQuestStage.FoundPendant:
-                    {
-                        var option = new DialogOption
-                        {
-                            DialogKey = "porteforest_pendant3",
-                            OptionText = "Turuc Pendant"
-                        };
-
-                        if (!Subject.HasOption(option.OptionText))
-                            Subject.Options.Add(option);
 
                         break;
                     }
@@ -339,7 +340,7 @@ public class PFQuestScript : DialogScriptBase
                 break;
 
             case "porteforest_pendant3":
-                if (stage == PFQuestStage.FoundPendant)
+                if (source.Inventory.Contains("Turuc Pendant"))
                 {
                     var option = new DialogOption
                     {
@@ -354,7 +355,7 @@ public class PFQuestScript : DialogScriptBase
                 break;
 
             case "porteforest_pendant4":
-                if (stage == PFQuestStage.FoundPendant)
+                if (source.Inventory.Contains("Turuc Pendant"))
                 {
                     var option = new DialogOption
                     {
@@ -369,7 +370,7 @@ public class PFQuestScript : DialogScriptBase
                 break;
 
             case "porteforest_pendant5":
-                if (stage == PFQuestStage.FoundPendant)
+                if (source.Inventory.Contains("Turuc Pendant"))
                 {
                     var option = new DialogOption
                     {
@@ -384,7 +385,7 @@ public class PFQuestScript : DialogScriptBase
                 break;
 
             case "porteforest_pendant6":
-                if (stage == PFQuestStage.FoundPendant)
+                if (source.Inventory.Contains("Turuc Pendant"))
                 {
                     var option = new DialogOption
                     {

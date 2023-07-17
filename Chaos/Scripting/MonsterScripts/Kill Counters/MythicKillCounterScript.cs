@@ -44,8 +44,8 @@ public class MythicKillCounterScript : ConfigurableMonsterScriptBase
                 .ThatAreWithinRange(rewardTarget)
                 .ToArray();
 
-        if (rewardTargets is not null)
-            foreach (var aisling in rewardTargets)
+           if (rewardTargets is not null)
+                 foreach (var aisling in rewardTargets)
             {
                 var stageType = GetEnumType(QuestEnum);
                 if (stageType is null)
@@ -58,6 +58,10 @@ public class MythicKillCounterScript : ConfigurableMonsterScriptBase
                 if (Enum.TryParse(stageType, QuestEnum, out var currentStage) && (currentStage.ToString() == QuestEnum))
                 {
                     aisling.Trackers.Counters.TryGetValue(Counter, out var killedamt);
+                    aisling.Trackers.Enums.TryGetValue(stageType, out var stage);
+
+                    if (!Equals(stage, currentStage))
+                        return;
 
                     if (killedamt < QuantityReq)
                     {

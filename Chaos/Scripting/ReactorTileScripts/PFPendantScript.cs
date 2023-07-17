@@ -24,6 +24,9 @@ public class PFPendantScript : ReactorTileScriptBase
     {
         if (source is not Aisling aisling)
             return;
+        
+        if (aisling.Inventory.Contains("Turuc Pendant"))
+            return;
 
         var hasStage = aisling.Trackers.Enums.TryGetValue(out PFQuestStage stage);
 
@@ -34,7 +37,6 @@ public class PFPendantScript : ReactorTileScriptBase
             dialog.Display(aisling);
             aisling.TryGiveItem(ref pendant);
             aisling.SendOrangeBarMessage("You found the Turuc Pendant, this is what Bertil dropped.");
-            aisling.Trackers.Enums.Set(PFQuestStage.FoundPendant);
         }
     }
 }

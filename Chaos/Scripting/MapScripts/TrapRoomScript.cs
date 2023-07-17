@@ -10,6 +10,17 @@ public class TrapRoomScript : MapScriptBase
     private readonly IMonsterFactory MonsterFactory;
     private readonly IReactorTileFactory ReactorTileFactory;
 
+    private Point GenerateSpawnPoint(MapInstance selectedMap)
+    {
+        Point point;
+
+        do
+            point = selectedMap.Template.Bounds.GetRandomPoint();
+        while (selectedMap.IsWall(point) || selectedMap.IsBlockingReactor(point));
+
+        return point;
+    }
+    
     public TrapRoomScript(MapInstance subject, IReactorTileFactory reactorTileFactory, IMonsterFactory monsterFactory)
         : base(subject)
     {
@@ -22,7 +33,7 @@ public class TrapRoomScript : MapScriptBase
 
         for (var i = 0; i < count; i++)
         {
-            var point = subject.Template.Bounds.GetRandomPoint();
+            var point = GenerateSpawnPoint(Subject);
             points.Add(point);
         }
 

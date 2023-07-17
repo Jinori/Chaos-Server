@@ -133,7 +133,7 @@ public class MythicZombieScript : DialogScriptBase
 
             case "zombie_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("MythicZombie", out var zombielower) || (zombielower < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicZombie1", out var zombielower) || (zombielower < 15))
                 {
                     Subject.Reply(source, "Uuuurgh! I can still hear them mmooooocking us!");
 
@@ -154,7 +154,7 @@ public class MythicZombieScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("MythicZombie", out _);
+                source.Trackers.Counters.Remove("MythicZombie1", out _);
                 Subject.Reply(source, " ");
 
                 break;
@@ -171,8 +171,8 @@ public class MythicZombieScript : DialogScriptBase
 
             case "zombie_higher2":
             {
-                source.Trackers.Counters.TryGetValue("MythicZombie", out var gargoyleservant);
-                source.Trackers.Counters.TryGetValue("MythicZombie1", out var gargoyleguard);
+                source.Trackers.Counters.TryGetValue("MythicZombie2", out var gargoyleservant);
+                source.Trackers.Counters.TryGetValue("MythicZombie3", out var gargoyleguard);
 
                 if ((gargoyleservant < 10) || (gargoyleguard < 10))
                 {
@@ -197,8 +197,8 @@ public class MythicZombieScript : DialogScriptBase
                 }
 
                 source.Trackers.Enums.Set(MythicZombie.HigherZombieComplete);
-                source.Trackers.Counters.Remove("MythicZombie", out _);
-                source.Trackers.Counters.Remove("MythicZombie1", out _);
+                source.Trackers.Counters.Remove("MythicZombie2", out _);
+                source.Trackers.Counters.Remove("MythicZombie3", out _);
 
                 break;
             }
@@ -263,7 +263,7 @@ public class MythicZombieScript : DialogScriptBase
                 {
                     Subject.Reply(source, " ");
 
-                    source.SendOrangeBarMessage("You haven't completely defeated Gargoyle Fiend.");
+                    source.SendOrangeBarMessage("You haven't defeated Gargoyle Fiend.");
 
                     return;
                 }

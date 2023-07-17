@@ -148,7 +148,7 @@ public class MythicKoboldScript : DialogScriptBase
 
             case "kobold_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("MythicKobold", out var grimlockworker) || (grimlockworker < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicKobold1", out var grimlockworker) || (grimlockworker < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough Grimlock Workers, they are still in the area. It isn't enough.");
 
@@ -169,7 +169,7 @@ public class MythicKoboldScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("MythicKobold", out _);
+                source.Trackers.Counters.Remove("MythicKobold1", out _);
 
                 Subject.Reply(
                     source,
@@ -193,8 +193,8 @@ public class MythicKoboldScript : DialogScriptBase
 
             case "kobold_higher2":
             {
-                source.Trackers.Counters.TryGetValue("MythicKobold", out var grimlockguard);
-                source.Trackers.Counters.TryGetValue("MythicKobold1", out var grimlockrogue);
+                source.Trackers.Counters.TryGetValue("MythicKobold2", out var grimlockguard);
+                source.Trackers.Counters.TryGetValue("MythicKobold3", out var grimlockrogue);
 
                 if ((grimlockguard < 10) || (grimlockrogue < 10))
                 {
@@ -222,8 +222,8 @@ public class MythicKoboldScript : DialogScriptBase
                 }
 
                 source.Trackers.Enums.Set(MythicKobold.HigherKoboldComplete);
-                source.Trackers.Counters.Remove("MythicKobold", out _);
-                source.Trackers.Counters.Remove("MythicKobold1", out _);
+                source.Trackers.Counters.Remove("MythicKobold2", out _);
+                source.Trackers.Counters.Remove("MythicKobold3", out _);
 
                 break;
             }

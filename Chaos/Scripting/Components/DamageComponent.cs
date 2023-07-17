@@ -62,6 +62,11 @@ public class DamageComponent : IComponent
         else
             finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0);
 
+        if (finalDamage > source.StatSheet.CurrentHp)
+        {
+            finalDamage = source.StatSheet.CurrentHp - 1;
+        }
+        
         if (!damageStat.HasValue)
             return finalDamage;
 

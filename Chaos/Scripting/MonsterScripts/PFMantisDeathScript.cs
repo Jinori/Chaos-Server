@@ -29,9 +29,6 @@ public class PFMantisDeathScript : MonsterScriptBase
         {
             var hasStage = member.Trackers.Enums.TryGetValue(out PFQuestStage stage);
 
-            if (stage != PFQuestStage.FoundPendant)
-                return;
-
             var mapInstance = SimpleCache.Get<MapInstance>("pf_giantmantisunderground");
             Point point;
 

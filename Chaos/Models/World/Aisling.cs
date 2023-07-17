@@ -283,6 +283,9 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
     public bool CanCarry(IEnumerable<(Item Item, int Count)> hypotheticalItems)
     {
+        if (IsAdmin)
+            return true;
+        
         var weightSum = 0;
         var slotSum = 0;
 
@@ -577,7 +580,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         var item = Inventory[slot];
 
-        if ((item == null) || item.Template.AccountBound)
+        if ((item == null) || (!IsAdmin && item.Template.AccountBound))
             return false;
 
         if (amount.HasValue)
@@ -596,6 +599,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         return false;
     }
+
 
     /// <inheritdoc />
     public override bool TryDropGold(IPoint point, int amount, [MaybeNullWhen(false)] out Money money)

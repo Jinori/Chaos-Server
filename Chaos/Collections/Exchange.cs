@@ -90,17 +90,17 @@ public sealed class Exchange
         if (!IsActive || !aisling.Inventory.TryGetObject(slot, out var item) || userAccepted)
             return;
 
-        if (item.Template.AccountBound)
+        if (!aisling.IsAdmin && item.Template.AccountBound)
         {
-            aisling.SendActiveMessage($"{item.DisplayName} is account bound");
+            aisling.SendActiveMessage($"{item.DisplayName} is bound to you.");
 
             return;
         }
 
         if (!otherUser.CanCarry(userItems.Prepend(item).ToArray()))
         {
-            aisling.SendActiveMessage($"{otherUser.Name} is unable to carry that");
-            otherUser.SendActiveMessage("You are unable to carry more");
+            aisling.SendActiveMessage($"{otherUser.Name} is unable to carry that.");
+            otherUser.SendActiveMessage("You are unable to carry more.");
 
             return;
         }
@@ -133,12 +133,12 @@ public sealed class Exchange
         if (!IsActive || (amount <= 0) || !aisling.Inventory.TryGetObject(slot, out var item) || userAccepted)
             return;
 
-        if (item.Template.AccountBound)
+        if (!aisling.IsAdmin && item.Template.AccountBound)
         {
-            aisling.SendActiveMessage($"{item.DisplayName} is account bound");
-
+            aisling.SendActiveMessage($"{item.DisplayName} is bound to you.");
             return;
         }
+
 
         if (!aisling.Inventory.HasCount(item.DisplayName, amount))
         {

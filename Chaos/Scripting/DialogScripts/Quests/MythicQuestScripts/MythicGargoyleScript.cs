@@ -157,7 +157,7 @@ public class MythicGargoyleScript : DialogScriptBase
 
             case "gargoyle_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("MythicGargoyle", out var zombiegrunt) || (zombiegrunt < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicGargoyle1", out var zombiegrunt) || (zombiegrunt < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough Zombie Grunts.");
 
@@ -178,7 +178,7 @@ public class MythicGargoyleScript : DialogScriptBase
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
-                source.Trackers.Counters.Remove("MythicGargoyle", out _);
+                source.Trackers.Counters.Remove("MythicGargoyle1", out _);
 
                 Subject.Reply(
                     source,
@@ -202,8 +202,8 @@ public class MythicGargoyleScript : DialogScriptBase
 
             case "gargoyle_higher2":
             {
-                source.Trackers.Counters.TryGetValue("MythicGargoyle", out var zombiesoldier);
-                source.Trackers.Counters.TryGetValue("MythicGargoyle1", out var zombielumberjack);
+                source.Trackers.Counters.TryGetValue("MythicGargoyle2", out var zombiesoldier);
+                source.Trackers.Counters.TryGetValue("MythicGargoyle3", out var zombielumberjack);
 
                 if ((zombielumberjack < 10) || (zombiesoldier < 10))
                 {
@@ -233,8 +233,8 @@ public class MythicGargoyleScript : DialogScriptBase
                 }
 
                 source.Trackers.Enums.Set(MythicGargoyle.HigherGargoyleComplete);
-                source.Trackers.Counters.Remove("MythicGargoyle", out _);
-                source.Trackers.Counters.Remove("MythicGargoyle1", out _);
+                source.Trackers.Counters.Remove("MythicGargoyle2", out _);
+                source.Trackers.Counters.Remove("MythicGargoyle3", out _);
 
                 break;
             }
