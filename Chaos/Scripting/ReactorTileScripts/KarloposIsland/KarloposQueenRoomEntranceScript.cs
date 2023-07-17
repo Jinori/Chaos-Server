@@ -47,13 +47,6 @@ public class KarloposQueenRoomEntranceScript : ConfigurableReactorTileScriptBase
             return;
         }
 
-        if ((aisling != null) && !aisling.Inventory.HasCount("red pearl", 1) || !aisling.Inventory.HasCount("coral pendant", 1))
-        {
-            aisling.SendOrangeBarMessage("You seem to be missing something.");
-
-            return;
-        }
-
         if ((aisling != null)
             && aisling.Trackers.Enums.TryGetValue<QueenOctopusQuest>(out var stage)
             && (stage == QueenOctopusQuest.Pendant3))
