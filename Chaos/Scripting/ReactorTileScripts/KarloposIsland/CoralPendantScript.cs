@@ -25,6 +25,7 @@ public class CoralPendantScript : ReactorTileScriptBase
         {
             var coralpendant = _itemFactory.Create("coralpendant");
             aisling.TryGiveItem(ref coralpendant);
+            source.Trackers.Enums.Set(QueenOctopusQuest.Pendant3);
 
             aisling.Client.SendServerMessage(
                 ServerMessageType.OrangeBar1,

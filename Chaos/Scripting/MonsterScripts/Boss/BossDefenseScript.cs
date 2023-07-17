@@ -62,6 +62,12 @@ public sealed class BossDefenseScript : MonsterScriptBase
                     Subject.Say("Not a chance!");
 
                     break;
+                
+                case "beagsuain":
+                    RemoveEffectAndHeal(effect);
+                    Subject.Say("Not a chance!");
+
+                    break;
                 case "blind":
                     RemoveEffect(effect);
                     Subject.Say("Not a chance!");
