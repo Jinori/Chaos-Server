@@ -1,10 +1,15 @@
+
+using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Time;
+
 
 namespace Chaos.Scripting.DialogScripts.Quests.Rucesion;
 
@@ -50,8 +55,13 @@ public class QueenOctopusQuestScript : DialogScriptBase
                     case QueenOctopusQuest.Pendant3:
                         Subject.Reply(source, "skip", "queenoctopus_Queen");
 
-                        break;
+                        return;
+                    
                     case QueenOctopusQuest.Queen:
+                        Subject.Reply(source, "skip", "queenoctopus_Queenkilled");
+                        
+                        return;
+                    
                     case QueenOctopusQuest.Complete:
                         Subject.Reply(source, "Welcome Back. Please make yourself comfortable.");
 
@@ -94,8 +104,8 @@ public class QueenOctopusQuestScript : DialogScriptBase
                 }
 
                 var redpearl = ItemFactory.Create("redpearl");
-                ExperienceDistributionScript.GiveExp(source, 250000);
-                source.SendOrangeBarMessage("You received 250,000 experience!");
+                ExperienceDistributionScript.GiveExp(source, 200000);
+                source.SendOrangeBarMessage("You received 200,000 experience!");
                 source.Trackers.Enums.Set(QueenOctopusQuest.Pendant);
                 source.TryGiveItem(ref redpearl);
 
@@ -118,6 +128,22 @@ public class QueenOctopusQuestScript : DialogScriptBase
                 source.Trackers.Enums.Set(QueenOctopusQuest.Queen);
             }
 
+                break;
+            
+            case "queenoctopus_queenkilled3":
+            {
+                source.Trackers.Enums.Set(QueenOctopusQuest.Complete);
+                ExperienceDistributionScript.GiveExp(source, 500000);
+                source.SendOrangeBarMessage("You received 500,000 experience!");
+                source.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        "Killed the Queen Octopus of Karlopos Island",
+                        "QueenOctopus",
+                        MarkIcon.Heart,
+                        MarkColor.Blue,
+                        1,
+                        GameTime.Now));
+            }
                 break;
         }
     }

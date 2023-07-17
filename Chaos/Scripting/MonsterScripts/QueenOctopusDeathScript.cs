@@ -22,8 +22,8 @@ public class QueenOctopusDeathScript : MonsterScriptBase
         var rectangle = new Rectangle(
             21,
             5,
-            3,
-            3);
+            2,
+            2);
 
         foreach (var member in Subject.MapInstance.GetEntities<Aisling>().ToList())
         {
@@ -34,19 +34,18 @@ public class QueenOctopusDeathScript : MonsterScriptBase
             do
                 point = rectangle.GetRandomPoint();
             while (!mapInstance.IsWalkable(point, member.Type));
-
-            member.TraverseMap(mapInstance, point);
+            
+            member.Trackers.TimedEvents.AddEvent("QueenOctopusCD", TimeSpan.FromHours(24), true);
             
             var hasStage = member.Trackers.Enums.TryGetValue(out QueenOctopusQuest stage);
 
             if (stage == QueenOctopusQuest.Pendant3)
             {
                 member.Trackers.Enums.Set(QueenOctopusQuest.Queen);
-                member.Inventory.Remove("Coral Pendant");
-                member.Inventory.Remove("Red Pearl");
             }
             
-            break;
+            member.TraverseMap(mapInstance, point);
+            
         }
     }
 }
