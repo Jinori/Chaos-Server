@@ -13,10 +13,10 @@ namespace Chaos.Scripting.MerchantScripts.Casino;
 public class ZertaScript : MerchantScriptBase
 {
     public readonly Location CasinoDoorPoint = new("rucesion", 8, 21);
-    public readonly Location CasinoPoint = new("rucesion_casino", 6, 4);
+    public readonly Location CasinoPoint = new("rucesion_casino", 6, 15);
     private readonly IIntervalTimer DelayTimer;
     public readonly Location HomePoint = new("rucesion", 12, 22);
-    public readonly Location InsideCasinoDoorPoint = new("rucesion_casino", 11, 4);
+    public readonly Location InsideCasinoDoorPoint = new("rucesion_casino", 19, 14);
     private readonly IIntervalTimer WalkTimer;
     public bool AnnouncedPutItOnRed;
     public bool AnnouncedWinOrLoss;
@@ -60,7 +60,7 @@ public class ZertaScript : MerchantScriptBase
             if (WalkTimer.IntervalElapsed)
                 Subject.Pathfind(CasinoPoint);
         }
-        else if ((Subject.DistanceFrom(CasinoPoint) <= 1) && !AnnouncedPutItOnRed)
+        else if ((Subject.DistanceFrom(CasinoPoint) <= 2) && !AnnouncedPutItOnRed)
         {
             Subject.Say("Put it all on red!");
             AnnouncedPutItOnRed = true;
