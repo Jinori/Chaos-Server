@@ -1,21 +1,21 @@
 using System.Text;
+using System.Text.Json;
 using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Extensions.Common;
+using Chaos.IO.FileSystem;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 using Microsoft.Extensions.Configuration;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Chaos.Scripting.DialogScripts;
 
 public class DamageGameScript : DialogScriptBase
 {
-    private readonly ISimpleCache SimpleCache;
-    private static readonly object LockObject = new();
     private readonly IConfiguration Configuration;
+    private readonly ISimpleCache SimpleCache;
 
     /// <inheritdoc />
     public DamageGameScript(Dialog subject, ISimpleCache simpleCache)
@@ -23,6 +23,21 @@ public class DamageGameScript : DialogScriptBase
     {
         SimpleCache = simpleCache;
         Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true).Build();
+    }
+
+    public static void DamageGame(Aisling player, IConfiguration configuration)
+    {
+        var stagingDirectory = configuration.GetSection("Options:ChaosOptions:StagingDirectory").Value;
+        var aislingDirectory = configuration.GetSection("Options:DamageGameOptions:Directory").Value;
+
+        var directory = stagingDirectory + aislingDirectory;
+        var filePath = Path.Combine(stagingDirectory + aislingDirectory, "soloDamageGame.json");
+
+        directory.SafeExecute(
+            _ =>
+            {
+                Save(filePath, player);
+            });
     }
 
     /// <inheritdoc />
@@ -38,47 +53,30 @@ public class DamageGameScript : DialogScriptBase
                 break;
             }
             case "hazel_topscores":
-            { 
+            {
                 DamageGame(source, Configuration);
+
                 break;
             }
         }
     }
 
-    public static void DamageGame(Aisling player, IConfiguration configuration)
+    public static void Save(string filePath, Aisling player)
     {
-        lock (LockObject)
+        var existingJson = File.ReadAllText(filePath);
+        var damageData = JsonSerializer.Deserialize<Dictionary<string, int>>(existingJson);
+
+        if (damageData != null)
         {
-            var stagingDirectory = configuration.GetSection("Options:ChaosOptions:StagingDirectory").Value;
-            var aislingDirectory = configuration.GetSection("Options:DamageGameOptions:Directory").Value;
+            // Sort the scores by damage and send them to the player
+            var sortedScores = damageData.OrderByDescending(kv => kv.Value).ToList();
+            var sb = new StringBuilder();
+            sb.AppendLineFColored(MessageColor.White, "Damage Game Leaderboard:\n");
 
-            var filePath = Path.Combine(stagingDirectory + aislingDirectory, "soloDamageGame.json");
-            Dictionary<string, int>? damageData;
+            foreach (var score in sortedScores)
+                sb.AppendLineFColored(MessageColor.Orange, $"{score.Key}: {score.Value}");
 
-            if (File.Exists(filePath))
-            {
-                var existingJson = File.ReadAllText(filePath);
-                damageData = JsonSerializer.Deserialize<Dictionary<string, int>>(existingJson);
-            }
-            else
-            {
-                return;
-            }
-
-            if (damageData != null)
-            {
-                // Sort the scores by damage and send them to the player
-                var sortedScores = damageData.OrderByDescending(kv => kv.Value).ToList();
-                var sb = new StringBuilder();
-                sb.AppendLineFColored(MessageColor.White, "Damage game scores:");
-
-                foreach (var score in sortedScores)
-                {
-                    sb.AppendLineFColored(MessageColor.Orange, $"{score.Key}: {score.Value}");
-                }
-
-                player.Client.SendServerMessage(ServerMessageType.ScrollWindow, sb.ToString());
-            }
+            player.Client.SendServerMessage(ServerMessageType.ScrollWindow, sb.ToString());
         }
     }
 }
