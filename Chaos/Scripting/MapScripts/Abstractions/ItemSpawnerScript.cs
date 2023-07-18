@@ -50,9 +50,11 @@ public abstract class ItemSpawnerScript : MapScriptBase
             var allCountOfItems = Subject.GetEntities<GroundItem>().Count(obj => obj.Item.Template.TemplateKey.EqualsI(ItemTemplateKey));
 
             var maxSpawns = Math.Min(MaxAmount - allCountOfItems, MaxPerSpawn);
-            
-            var random = new Random();
-            var spawnAmount = random.Next(0, maxSpawns);
+
+            if (maxSpawns >= 1)
+                maxSpawns++;
+
+            var spawnAmount = Random.Shared.Next(0, maxSpawns);
 
             for (var i = 0; i < spawnAmount; i++)
             {
