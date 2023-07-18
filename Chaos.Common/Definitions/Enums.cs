@@ -638,8 +638,7 @@ public enum Element : byte
 public enum MailFlag : byte
 {
     None = 0,
-    Parcel = 1,
-    Letter = 16
+    HasMail = 16
 }
 
 /// <summary>

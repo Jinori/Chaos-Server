@@ -95,10 +95,7 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
     {
         var args = Mapper.Map<AttributesArgs>(Aisling);
 
-        if (Aisling.MailBox.Any(post => post.IsHighlighted))
-            statUpdateType |= StatUpdateType.UnreadMail;
-
-        args.StatUpdateType = statUpdateType;
+        args.StatUpdateType |= statUpdateType;
         Send(args);
     }
 
@@ -381,7 +378,16 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
         Send(args);
     }
 
-    public void SendForcedClientPacket(ref ClientPacket clientPacket) => throw new NotImplementedException();
+    public void SendForcedClientPacket(ref ClientPacket clientPacket)
+    {
+        var args = new ForceClientPacketArgs
+        {
+            ClientOpCode = clientPacket.OpCode,
+            Data = clientPacket.Buffer.ToArray()
+        };
+
+        Send(args);
+    }
 
     public void SendGroupRequest(GroupRequestType groupRequestType, string fromName)
     {
