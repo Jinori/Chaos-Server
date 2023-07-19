@@ -54,6 +54,8 @@ public class SapStabScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public decimal PctManaReplenish { get; init; }
     /// <inheritdoc />
+    public bool ReplenishGroup { get; init; }
+    /// <inheritdoc />
     public int Range { get; init; }
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
