@@ -26,7 +26,7 @@ public class CradhEffect : NonOverwritableEffectBase
     /// <inheritdoc />
     protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
     /// <inheritdoc />
-    public override byte Icon => 82;
+    public override byte Icon => 61;
     /// <inheritdoc />
     public override string Name => "cradh";
     /// <inheritdoc />

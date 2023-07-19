@@ -6,16 +6,22 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Manor;
 
 public class ManorNecklaceScript : DialogScriptBase
 {
+    private readonly IItemFactory _itemFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public ManorNecklaceScript(Dialog subject)
-        : base(subject) => ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    public ManorNecklaceScript(Dialog subject, IItemFactory itemFactory)
+        : base(subject)
+    {
+        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+        _itemFactory = itemFactory;
+    }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -40,12 +46,15 @@ public class ManorNecklaceScript : DialogScriptBase
                 source.Client.SendServerMessage(
                     ServerMessageType.OrangeBar1,
                     "You receive a legend mark. The young one looks terribly sad.");
+                
+                var necklace = _itemFactory.Create("zulerasHeirloom");
+                source.TryGiveItem(ref necklace);
 
                 break;
             }
             case "zulera_givenecklaceback":
             {
-                if (!source.Inventory.HasCount("Zulera's Heirloom", 1))
+                if (!source.Inventory.HasCount("Zulera's Cursed Necklace", 1))
                 {
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Looks like my necklace isn't in your inventory..");
                     Subject.Close(source);
@@ -53,7 +62,7 @@ public class ManorNecklaceScript : DialogScriptBase
                     return;
                 }
 
-                source.Inventory.RemoveQuantity("Zulera's Heirloom", 1);
+                source.Inventory.RemoveQuantity("Zulera's Cursed Necklace", 1);
 
                 if (stage == ManorNecklaceStage.ObtainedNecklace)
                     source.Trackers.Enums.Set(ManorNecklaceStage.ReturnedNecklace);

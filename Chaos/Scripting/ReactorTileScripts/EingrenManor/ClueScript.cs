@@ -141,13 +141,13 @@ public class ClueScript : ReactorTileScriptBase
 
                         foreach (var member in aisling.Group)
                         {
-                            var necklace = _itemFactory.Create("zulerasHeirloom");
+                            var necklace = _itemFactory.Create("zulerasCursedNecklace");
                             member.TryGiveItem(ref necklace);
                             member.Trackers.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
 
                             member.Client.SendServerMessage(
                                 ServerMessageType.OrangeBar1,
-                                "You've found Zulera's necklace! Defeat the ghosts to cleanse the curse!");
+                                "You've found Zulera's necklace! Defeat the ghosts and take it to Zulera.");
 
                             member.Inventory.RemoveByTemplateKey("clue1");
                             member.Inventory.RemoveByTemplateKey("clue2");
