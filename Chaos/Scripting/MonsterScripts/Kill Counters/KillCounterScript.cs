@@ -64,7 +64,7 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out RionaRatQuestStage ratquest) || (ratquest != RionaRatQuestStage.StartedRatQuest))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("tavern_rat", 4))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("tavern_rat", 5))
         {
             aisling.SendOrangeBarMessage($"You've killed {Subject.Template.Name}.");
 

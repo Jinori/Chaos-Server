@@ -1,4 +1,6 @@
+using System.Security.Cryptography;
 using Chaos.Collections;
+using Chaos.Common.Utilities;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
@@ -6,6 +8,7 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
+using Discord.Rest;
 
 namespace Chaos.Scripting.MapScripts.Abstractions;
 
@@ -20,6 +23,7 @@ public abstract class ItemSpawnerScript : MapScriptBase
     public abstract int MaxAmount { get; set; }
     public abstract int MaxPerSpawn { get; set; }
     public abstract int SpawnIntervalMs { get; set; }
+    public abstract int SpawnChance { get; set; }
 
     protected ItemSpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)
         : base(subject)
@@ -54,7 +58,10 @@ public abstract class ItemSpawnerScript : MapScriptBase
             if (maxSpawns >= 1)
                 maxSpawns++;
 
-            var spawnAmount = Random.Shared.Next(0, maxSpawns);
+            var spawnAmount = Random.Shared.Next(1, maxSpawns);
+
+            if (!IntegerRandomizer.RollChance(SpawnChance))
+                return;
 
             for (var i = 0; i < spawnAmount; i++)
             {

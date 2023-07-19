@@ -46,7 +46,7 @@ public sealed class DefaultRegenFormula : IRegenFormula
     /// <inheritdoc />
     public int CalculateManaRegen(Creature creature)
     {
-        if (creature.StatSheet.HealthPercent == 100)
+        if (creature.StatSheet.ManaPercent == 100)
             return 0;
 
         var percentToRegenerate = creature switch

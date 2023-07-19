@@ -91,29 +91,9 @@ public class ManorNecklaceScript : DialogScriptBase
                         return;
                     case ManorNecklaceStage.ObtainedNecklace:
                     {
-                        Subject.Reply(source, "You found it! Would you please hand over my precious necklace?");
-                        Subject.Type = ChaosDialogType.Menu;
-                        Subject.NextDialogKey?.Remove(0);
+                        Subject.Reply(source, "Skip", "zulera_foundnecklace");
 
-                        var option = new DialogOption
-                        {
-                            DialogKey = "zulera_giveNecklaceBack",
-                            OptionText = "Yes, here you go."
-                        };
-
-                        var optionTwo = new DialogOption
-                        {
-                            DialogKey = "zulera_keepHerNecklace",
-                            OptionText = "It's nice. I'm keeping it!"
-                        };
-
-                        if (!Subject.HasOption(option.OptionText))
-                            Subject.Options.Add(option);
-
-                        if (!Subject.HasOption(optionTwo.OptionText))
-                            Subject.Options.Add(optionTwo);
-
-                        break;
+                        return;
                     }
                     case ManorNecklaceStage.AcceptedQuest:
                         Subject.Reply(source, "Come back when you've found the necklace, please!");

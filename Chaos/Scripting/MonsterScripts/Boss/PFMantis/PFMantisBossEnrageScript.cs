@@ -32,9 +32,9 @@ public sealed class PFMantisBossEnrageScript : MonsterScriptBase
             //Give Bonuses
             var attrib = new Attributes
             {
-                AtkSpeedPct = 45,
-                Str = 20,
-                Int = 20,
+                AtkSpeedPct = 15,
+                Str = 5,
+                Int = 2,
                 MagicResistance = 10
             };
             Subject.StatSheet.AddBonus(attrib);
@@ -47,9 +47,9 @@ public sealed class PFMantisBossEnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Dmg = 35,
-                SkillDamagePct = 10,
-                SpellDamagePct = 10
+                Dmg = 6,
+                SkillDamagePct = 5,
+                SpellDamagePct = 5
             };
 
             Subject.StatSheet.AddBonus(attrib);
@@ -62,20 +62,16 @@ public sealed class PFMantisBossEnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Con = 10,
-                Dex = 10,
-                Int = 10,
-                Str = 10,
-                Wis = 10,
-                Ac = 15,
-                AtkSpeedPct = 25,
-                Dmg = 10,
+                Con = 5,
+                Dex = 5,
+                Int = 5,
+                Str = 5,
+                Wis = 5,
+                Ac = 10,
+                AtkSpeedPct = 15,
                 FlatSkillDamage = 5,
                 FlatSpellDamage = 5,
-                Hit = 20,
-                MagicResistance = 10,
-                SkillDamagePct = 20,
-                SpellDamagePct = 20
+                Hit = 10
             };
 
             Subject.StatSheet.AddBonus(attrib);
@@ -88,15 +84,15 @@ public sealed class PFMantisBossEnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Ac = 25,
-                AtkSpeedPct = 45,
-                Dmg = 15,
-                FlatSkillDamage = 15,
-                FlatSpellDamage = 15,
-                Hit = 25,
+                Ac = 5,
+                AtkSpeedPct = 10,
+                Dmg = 6,
+                FlatSkillDamage = 5,
+                FlatSpellDamage = 5,
+                Hit = 6,
                 MagicResistance = 10,
-                SkillDamagePct = 20,
-                SpellDamagePct = 20,
+                SkillDamagePct = 5,
+                SpellDamagePct = 5,
             };
 
             Subject.StatSheet.AddBonus(attrib);

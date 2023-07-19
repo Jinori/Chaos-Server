@@ -8,9 +8,11 @@ namespace Chaos.Scripting.MapScripts.SpawnerScripts;
 public class PassionFlowerSpawnerScript : ItemSpawnerScript
 {
     public override string ItemTemplateKey { get; set; } = "passionflower";
-    public override int MaxAmount { get; set; } = 2;
+    public override int MaxAmount { get; set; } = 6;
     public override int MaxPerSpawn { get; set; } = 1;
-    public override int SpawnIntervalMs { get; set; } = 600000;
+    public override int SpawnIntervalMs { get; set; } = 2000000;
+    
+    public override int SpawnChance { get; set; } = 3;
 
     /// <inheritdoc />
     public PassionFlowerSpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)

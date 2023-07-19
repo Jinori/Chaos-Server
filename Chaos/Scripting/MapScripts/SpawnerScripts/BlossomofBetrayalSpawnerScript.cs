@@ -8,9 +8,10 @@ namespace Chaos.Scripting.MapScripts.SpawnerScripts;
 public class BlossomofBetrayalSpawnerScript : ItemSpawnerScript
 {
     public override string ItemTemplateKey { get; set; } = "blossomofbetrayal";
-    public override int MaxAmount { get; set; } = 3;
-    public override int MaxPerSpawn { get; set; } = 1;
-    public override int SpawnIntervalMs { get; set; } = 600000;
+    public override int MaxAmount { get; set; } = 4;
+    public override int MaxPerSpawn { get; set; } = 2;
+    public override int SpawnIntervalMs { get; set; } = 800000;
+    public override int SpawnChance { get; set; } = 10;
 
     /// <inheritdoc />
     public BlossomofBetrayalSpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)
