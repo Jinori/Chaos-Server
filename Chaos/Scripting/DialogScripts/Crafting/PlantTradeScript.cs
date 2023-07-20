@@ -1,6 +1,6 @@
+using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
-using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -11,16 +11,17 @@ public class PlantTradeScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
     private readonly IDialogFactory DialogFactory;
-    private Item? NewPlant { get; set; }
 
     private readonly List<string> PlantTemplateKeys = new()
     {
-        "waterlily", "petunia", "dochasbloom", "lilypad", "kabineblossom", "cactusflower", "squirtweed", "koboldtail"
+        "waterlily", "petunia", "dochasbloom", "lilypad", "kabineblossom", "cactusflower", "koboldtail"
     };
 
     /// <inheritdoc />
-    public PlantTradeScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory,
-        Item newPlant
+    public PlantTradeScript(
+        Dialog subject,
+        IItemFactory itemFactory,
+        IDialogFactory dialogFactory
     )
         : base(subject)
     {
@@ -71,14 +72,25 @@ public class PlantTradeScript : DialogScriptBase
 
         source.Inventory.RemoveQuantityByTemplateKey(item.Template.TemplateKey, 1);
 
-        if (!source.CanCarry(NewPlant))
+        if (!Subject.MenuArgs.TryGet<string>(1, out var previous))
         {
-            source.Bank.Deposit(NewPlant);
-            source.SendOrangeBarMessage($"{NewPlant.DisplayName} was sent to your bank.");
-        } else
-            source.Inventory.TryAddToNextSlot(NewPlant);
+            Subject.ReplyToUnknownInput(source);
 
-        Subject.InjectTextParameters(item.DisplayName, NewPlant.DisplayName);
+            return;
+        }
+
+        
+        var newPlant = ItemFactory.Create(previous.ToLowerInvariant().Replace(" ", string.Empty));
+        
+        if (!source.CanCarry(newPlant))
+        {
+            source.Bank.Deposit(newPlant);
+            source.SendOrangeBarMessage($"{newPlant.DisplayName} was sent to your bank.");
+        }
+        else
+            source.Inventory.TryAddToNextSlot(newPlant);
+
+        Subject.InjectTextParameters(item.DisplayName, newPlant.DisplayName);
     }
 
     public void OnDisplayingConfirmation(Aisling source)
@@ -101,29 +113,32 @@ public class PlantTradeScript : DialogScriptBase
 
     public void OnDisplayingPlants(Aisling source)
     {
-        Subject.Items.Clear(); // Clear the existing items to show the plant options.
-
         foreach (var plantTemplateKey in PlantTemplateKeys)
         {
             var item = ItemFactory.CreateFaux(plantTemplateKey);
             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
         }
-
-        Subject.Reply(source, "Choose a plant.", "new_plant_pick");
     }
 
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
-        if (optionIndex.HasValue)
+        if (Subject.Template.TemplateKey.ToLower() == "new_plant_pick")
         {
-            // Get the selected plant item from the list.
-            var selectedPlantItem = PlantTemplateKeys.ElementAtOrDefault(optionIndex.Value);
-
-            // Ensure the selection is valid.
-            if (string.IsNullOrEmpty(selectedPlantItem))
+            if (!Subject.MenuArgs.TryGet<string>(1, out var previous))
             {
-                source.SendActiveMessage("Invalid selection.");
+                Subject.ReplyToUnknownInput(source);
+
+                return;
+            }
+
+            var itemDetails = Subject.Items.FirstOrDefault(x => x.Item.DisplayName.EqualsI(previous));
+            var items = itemDetails?.Item;
+
+            if (items == null)
+            {
+                Subject.ReplyToUnknownInput(source);
+
                 return;
             }
 
@@ -131,25 +146,20 @@ public class PlantTradeScript : DialogScriptBase
             if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
             {
                 Subject.Reply(source, $"You ran out of those plants to trade.", "plant_trade_initial");
+
                 return;
             }
-            
+
             // Create the new plant item based on the player's selection.
-            NewPlant = ItemFactory.CreateFaux(selectedPlantItem);
+            var plant = ItemFactory.CreateFaux(items.Template.TemplateKey);
 
             // Proceed to the confirmation dialog.
             Subject.Close(source);
             var dialog = DialogFactory.Create("plant_trade_confirmation", Subject.DialogSource);
             dialog.MenuArgs = Subject.MenuArgs;
             dialog.Context = Subject.Context;
-            dialog.InjectTextParameters(item.DisplayName, NewPlant.DisplayName);
-            dialog.Display(source);
-        }
-        else
-        {
-            Subject.Reply(source, "That plant isn't available.", "new_plant_pick");
+            dialog.InjectTextParameters(item.DisplayName, plant.DisplayName);
+            dialog.Display(source);   
         }
     }
-
-
 }
