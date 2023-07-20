@@ -7,14 +7,15 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Crafting;
 
-public class MiningRefiningScript : DialogScriptBase
+public class MetalRefiningScript : DialogScriptBase
 {
     private const string ITEM_COUNTER_PREFIX = "[Refine]";
-    private const double BASE_SUCCESS_RATE = 60;
+    private const double BASE_SUCCESS_RATE = 30;
     private const double SUCCESSRATEMAX = 90;
     private readonly IItemFactory ItemFactory;
+    private readonly IDialogFactory DialogFactory;
 
-    private readonly List<string> MiningTemplateKeys = new()
+    private readonly List<string> MetalTemplateKeys = new()
     {
         "rawBronze", "tarnishedBronzeBar", "rawIron",
         "tarnishedIronBar", "rawMythril", "tarnishedMythrilBar", "rawHybrasyl",
@@ -33,9 +34,12 @@ public class MiningRefiningScript : DialogScriptBase
     };
 
     /// <inheritdoc />
-    public MiningRefiningScript(Dialog subject, IItemFactory itemFactory)
-        : base(subject) =>
+    public MetalRefiningScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
+        : base(subject)
+    {
         ItemFactory = itemFactory;
+        DialogFactory = dialogFactory;
+    }
 
     public static double CalculateSuccessRate(Aisling source, double baseSuccessRate, int timesCraftedThisItem)
     {
@@ -46,24 +50,24 @@ public class MiningRefiningScript : DialogScriptBase
 
     private string GetDowngradeKey(string rawItemKey)
     {
-        switch (rawItemKey)
+        switch (rawItemKey.ToLower())
         {
-            case "rawBronze":
-                return "ruinedBronze";
-            case "tarnishedBronzeBar":
-                return "ruinedBronze";
-            case "rawIron":
-                return "ruinedIron";
-            case "tarnishedIronBar":
-                return "ruinedIron";
-            case "rawMythril":
-                return "ruinedMythril";
-            case "tarnishedMythrilBar":
-                return "ruinedMythril";
-            case "rawHybrasyl":
-                return "ruinedHybrasyl";
-            case "tarnishedHybrasylBar":
-                return "ruinedHybrasyl";
+            case "rawbronze":
+                return "ruinedbronze";
+            case "tarnishedbronzeBar":
+                return "ruinedbronze";
+            case "rawiron":
+                return "ruinediron";
+            case "tarnishedironbar":
+                return "ruinediron";
+            case "rawmythril":
+                return "ruinedmythril";
+            case "tarnishedmythrilBar":
+                return "ruinedmythril";
+            case "rawhybrasyl":
+                return "ruinedhybrasyl";
+            case "tarnishedhybrasylbar":
+                return "ruinedhybrasyl";
             default:
                 return rawItemKey;
         }
@@ -71,24 +75,24 @@ public class MiningRefiningScript : DialogScriptBase
 
     private string GetUpgradeKey(string rawItemKey)
     {
-        switch (rawItemKey)
+        switch (rawItemKey.ToLower())
         {
-            case "rawBronze":
-                return "tarnishedBronzeBar";
-            case "tarnishedBronzeBar":
-                return "polishedBronzeBar";
-            case "rawIron":
-                return "tarnishedIronBar";
-            case "tarnishedIronBar":
-                return "polishedIronBar";
-            case "rawMythril":
-                return "tarnishedMythrilBar";
-            case "tarnishedMythrilBar":
-                return "polishedMythrilBar";
-            case "rawHybrasyl":
-                return "tarnishedHybrasylBar";
-            case "tarnishedHybrasylBar":
-                return "polishedHybrasylBar";
+            case "rawbronze":
+                return "tarnishedbronzebar";
+            case "tarnishedbronzebar":
+                return "polishedbronzebar";
+            case "rawiron":
+                return "tarnishedironbar";
+            case "tarnishedironbar":
+                return "polishedironbar";
+            case "rawmythril":
+                return "tarnishedmythrilbar";
+            case "tarnishedmythrilbar":
+                return "polishedmythrilbar";
+            case "rawhybrasyl":
+                return "tarnishedhybrasylbar";
+            case "tarnishedhybrasylbar":
+                return "polishedhybrasylbar";
             default:
                 return rawItemKey;
         }
@@ -99,19 +103,19 @@ public class MiningRefiningScript : DialogScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "mining_refining_initial":
+            case "metal_refining_initial":
             {
                 OnDisplayingShowPlayerItems(source);
 
                 break;
             }
-            case "mining_refining_confirmation":
+            case "metal_refining_confirmation":
             {
                 OnDisplayingConfirmation(source);
 
                 break;
             }
-            case "mining_refining_accepted":
+            case "metal_refining_accepted":
             {
                 OnDisplayingAccepted(source);
 
@@ -124,19 +128,24 @@ public class MiningRefiningScript : DialogScriptBase
     {
         if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
         {
-            Subject.ReplyToUnknownInput(source);
+            Subject.Reply(source, $"You ran out of that metal to refine.", "metal_refining_initial");
 
             return;
         }
 
-        source.Inventory.RemoveQuantityByTemplateKey(item.Template.TemplateKey, 1);
+        source.Inventory.RemoveQuantityByTemplateKey(item.Template.TemplateKey, 2);
 
         var timesCraftedThisItem =
             source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + item.Template.TemplateKey, out var value) ? value : 0;
 
         if (!IntegerRandomizer.RollChance((int)CalculateSuccessRate(source, BASE_SUCCESS_RATE, timesCraftedThisItem)))
         {
-            Subject.Reply(source, $"Your attempt to refine {item.Template.Name} has failed.", "mining_refining_initial");
+            Subject.Close(source);
+            var dialog = DialogFactory.Create("metal_refining_failed", Subject.DialogSource);
+            dialog.MenuArgs = Subject.MenuArgs;
+            dialog.Context = Subject.Context;
+            dialog.InjectTextParameters(item.DisplayName);
+            dialog.Display(source);
             var downgradeKey = GetDowngradeKey(item.Template.TemplateKey);
             var downgrade = ItemFactory.Create(downgradeKey);
             source.Inventory.TryAddToNextSlot(downgrade);
@@ -166,14 +175,14 @@ public class MiningRefiningScript : DialogScriptBase
     {
         if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
         {
-            Subject.Reply(source, "Skip", "mining_refining_initial");
+            Subject.Reply(source, "Skip", "metal_refining_initial");
 
             return;
         }
 
-        if (!MiningTemplateKeys.Contains(item.Template.TemplateKey))
+        if (!MetalTemplateKeys.Contains(item.Template.TemplateKey))
         {
-            Subject.Reply(source, "Item cannot be refined", "mining_refining_initial");
+            Subject.Reply(source, "Item cannot be refined", "metal_refining_initial");
 
             return;
         }
@@ -185,6 +194,9 @@ public class MiningRefiningScript : DialogScriptBase
         Subject.InjectTextParameters(item.DisplayName, rate);
     }
 
-    public void OnDisplayingShowPlayerItems(Aisling source) => Subject.Slots =
-        source.Inventory.Where(x => MiningTemplateKeys.Contains(x.Template.TemplateKey)).Select(x => x.Slot).ToList();
+    public void OnDisplayingShowPlayerItems(Aisling source) =>
+        Subject.Slots = source.Inventory
+                              .Where(x => MetalTemplateKeys.Contains(x.Template.TemplateKey) && (x.Count > 1))
+                              .Select(x => x.Slot)
+                              .ToList();
 }

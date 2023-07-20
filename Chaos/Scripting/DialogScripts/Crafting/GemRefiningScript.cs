@@ -10,16 +10,18 @@ namespace Chaos.Scripting.DialogScripts.Crafting;
 public class GemRefiningScript : DialogScriptBase
 {
     private const string ITEM_COUNTER_PREFIX = "[Refine]";
-    private const double BASE_SUCCESS_RATE = 60;
+    private const double BASE_SUCCESS_RATE = 30;
     private const double SUCCESSRATEMAX = 90;
     private readonly IItemFactory ItemFactory;
+    private readonly IDialogFactory DialogFactory;
 
     private readonly List<string> MiningTemplateKeys = new()
     {
-       "rawsapphire", "flawedsapphire", "uncutsapphire", "chippedsapphire", 
-        "rawruby", "flawedruby", "uncutruby", "chippedruby", 
-        "rawemerald", "flawedemerald", "uncutemerald", "chippedemerald", 
-        "rawheartstone", "flawedheartstone", "uncutheartstone", "chippedheartstone"
+        "rawberyl", "flawedberyl", "uncutberyl", 
+       "rawsapphire", "flawedsapphire", "uncutsapphire", 
+        "rawruby", "flawedruby", "uncutruby", 
+        "rawemerald", "flawedemerald", "uncutemerald", 
+        "rawheartstone", "flawedheartstone", "uncutheartstone"
     };
 
     private Animation FailAnimation { get; } = new()
@@ -34,9 +36,12 @@ public class GemRefiningScript : DialogScriptBase
     };
 
     /// <inheritdoc />
-    public GemRefiningScript(Dialog subject, IItemFactory itemFactory)
-        : base(subject) =>
+    public GemRefiningScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
+        : base(subject)
+    {
         ItemFactory = itemFactory;
+        DialogFactory = dialogFactory;
+    }
 
     public static double CalculateSuccessRate(Aisling source, double baseSuccessRate, int timesCraftedThisItem)
     {
@@ -45,67 +50,119 @@ public class GemRefiningScript : DialogScriptBase
         return Math.Min(successRate, SUCCESSRATEMAX);
     }
 
-    private string GetDowngradeKey(string rawItemKey)
-    {
-        switch (rawItemKey)
+    private string GetDowngradeKey(string rawItemKey) =>
+        rawItemKey.ToLower() switch
         {
-            case "rawsapphire":
-                return "chippedsapphire";
-            case "flawedsapphire":
-                return "chippedsapphire";
-            case "uncutsapphire":
-                return "chippedsapphire";
-            case "rawruby":
-                return "chippedruby";
-            case "flawedruby":
-                return "chippedruby";
-            case "uncutruby":
-                return "chippedruby";
-            case "rawemerald":
-                return "chippedemerald";
-            case "flawedemerald":
-                return "chippedemerald";
-            case "uncutemerald":
-                return "chippedemerald";
-            case "rawheartstone":
-                return "chippedheartstone";
-            case "flawedheartstone":
-                return "chippedheartstone";
-            case "uncutheartstone":
-                return "chippedheartstone";
-            default:
-                return rawItemKey;
-        }
-    }
+            "rawberyl"         => "chippedberyl",
+            "flawedberyl"      => "chippedberyl",
+            "uncutberyl"       => "chippedberyl",
+            "rawsapphire"      => "chippedsapphire",
+            "flawedsapphire"   => "chippedsapphire",
+            "uncutsapphire"    => "chippedsapphire",
+            "rawruby"          => "chippedruby",
+            "flawedruby"       => "chippedruby",
+            "uncutruby"        => "chippedruby",
+            "rawemerald"       => "chippedemerald",
+            "flawedemerald"    => "chippedemerald",
+            "uncutemerald"     => "chippedemerald",
+            "rawheartstone"    => "chippedheartstone",
+            "flawedheartstone" => "chippedheartstone",
+            "uncutheartstone"  => "chippedheartstone",
+            _                  => rawItemKey
+        };
 
     private string GetUpgradeKey(string rawItemKey)
     {
-        switch (rawItemKey)
+        var randomNumber = new Random().Next(1, 101);
+
+        switch (rawItemKey.ToLower())
         {
+            case "rawberyl":
+                if (randomNumber <= 10) 
+                    return "pristineberyl";
+                if (randomNumber <= 35) 
+                    return "uncutberyl";
+
+                return "flawedberyl";
+            
+            case "flawedberyl":
+                if (randomNumber <= 15)
+                    return "pristineberyl"; 
+                
+                return "uncutberyl";
+                
+            case "uncutberyl":
+                return "pristineberyl";
+            
             case "rawsapphire":
+                if (randomNumber <= 10) 
+                    return "pristinesapphire";
+                if (randomNumber <= 35) 
+                    return "uncutsapphire";
+
                 return "flawedsapphire";
+            
+
             case "flawedsapphire":
+                if (randomNumber <= 15)
+                    return "pristinesapphire"; 
+                
                 return "uncutsapphire";
+                
             case "uncutsapphire":
                 return "pristinesapphire";
+            
             case "rawruby":
+                if (randomNumber <= 10) 
+                    return "pristineruby";
+                if (randomNumber <= 35) 
+                    return "uncutruby";
+
                 return "flawedruby";
+            
             case "flawedruby":
+                if (randomNumber <= 15)
+                    return "pristineruby";
+ 
                 return "uncutruby";
+            
             case "uncutruby":
                 return "pristineruby";
+            
             case "rawemerald":
+                if (randomNumber <= 10) 
+                    return "pristineemerald";
+                if (randomNumber <= 35) 
+                    return "uncutemerald";
+
                 return "flawedemerald";
+            
             case "flawedemerald":
+                if (randomNumber <= 15)
+                    return "pristineemerald";
+
                 return "uncutemerald";
+            
             case "uncutemerald":
                 return "pristineemerald";
+            
             case "rawheartstone":
+                if (randomNumber <= 10) 
+                    return "pristineheartstone";
+                if (randomNumber <= 35) 
+                    return "uncutheartstone";
+
                 return "flawedheartstone";
+            
             case "flawedheartstone":
+                if (randomNumber <= 15)
+                    return "pristineemerald";
+
                 return "uncutheartstone";
+            
             case "uncutheartstone":
                 return "pristineheartstone";
+            
             default:
                 return rawItemKey;
         }
@@ -141,7 +198,7 @@ public class GemRefiningScript : DialogScriptBase
     {
         if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
         {
-            Subject.ReplyToUnknownInput(source);
+            Subject.Reply(source, $"You ran out of those gems to refine.", "gem_refining_initial");
 
             return;
         }
@@ -153,7 +210,12 @@ public class GemRefiningScript : DialogScriptBase
 
         if (!IntegerRandomizer.RollChance((int)CalculateSuccessRate(source, BASE_SUCCESS_RATE, timesCraftedThisItem)))
         {
-            Subject.Reply(source, $"Your attempt to refine {item.Template.Name} has failed.", "gem_refining_initial");
+            Subject.Close(source);
+            var dialog = DialogFactory.Create("gem_refining_failed", Subject.DialogSource);
+            dialog.MenuArgs = Subject.MenuArgs;
+            dialog.Context = Subject.Context;
+            dialog.InjectTextParameters(item.DisplayName);
+            dialog.Display(source);
             var downgradeKey = GetDowngradeKey(item.Template.TemplateKey);
             var downgrade = ItemFactory.Create(downgradeKey);
             source.Inventory.TryAddToNextSlot(downgrade);
@@ -188,7 +250,7 @@ public class GemRefiningScript : DialogScriptBase
             return;
         }
 
-        if (!MiningTemplateKeys.Contains(item.Template.TemplateKey))
+        if (!MiningTemplateKeys.Contains(item.Template.TemplateKey.ToLower()))
         {
             Subject.Reply(source, "Item cannot be refined", "gem_refining_initial");
 
@@ -203,5 +265,5 @@ public class GemRefiningScript : DialogScriptBase
     }
 
     public void OnDisplayingShowPlayerItems(Aisling source) => Subject.Slots =
-        source.Inventory.Where(x => MiningTemplateKeys.Contains(x.Template.TemplateKey)).Select(x => x.Slot).ToList();
+        source.Inventory.Where(x => MiningTemplateKeys.Contains(x.Template.TemplateKey.ToLower())).Select(x => x.Slot).ToList();
 }

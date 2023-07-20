@@ -26,8 +26,8 @@ public class RefiningTileScript : ReactorTileScriptBase
 
         if (Subject.MapInstance.InstanceId == "tagor_forge")
         {
-            var merchant = MerchantFactory.Create("mining_refining_merchant", source.MapInstance, new Point(9, 2));
-            var dialog = DialogFactory.Create("mining_refining_initial", merchant);
+            var merchant = MerchantFactory.Create("metal_refining_merchant", source.MapInstance, new Point(9, 2));
+            var dialog = DialogFactory.Create("metal_refining_initial", merchant);
             dialog.Display(aisling);
         }
         

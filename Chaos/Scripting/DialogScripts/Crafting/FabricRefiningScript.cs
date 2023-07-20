@@ -13,6 +13,7 @@ public class FabricRefiningScript : DialogScriptBase
     private const double BASE_SUCCESS_RATE = 60;
     private const double SUCCESSRATEMAX = 90;
     private readonly IItemFactory ItemFactory;
+    private readonly IDialogFactory DialogFactory;
 
     private readonly List<string> MiningTemplateKeys = new()
     {
@@ -31,9 +32,12 @@ public class FabricRefiningScript : DialogScriptBase
     };
 
     /// <inheritdoc />
-    public FabricRefiningScript(Dialog subject, IItemFactory itemFactory)
-        : base(subject) =>
+    public FabricRefiningScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
+        : base(subject)
+    {
         ItemFactory = itemFactory;
+        DialogFactory = dialogFactory;
+    }
 
     public static double CalculateSuccessRate(Aisling source, double baseSuccessRate, int timesCraftedThisItem)
     {
@@ -42,55 +46,33 @@ public class FabricRefiningScript : DialogScriptBase
         return Math.Min(successRate, SUCCESSRATEMAX);
     }
 
-    private string GetDowngradeKey(string rawItemKey)
-    {
-        switch (rawItemKey)
+    private string GetDowngradeKey(string rawItemKey) =>
+        rawItemKey.ToLower() switch
         {
-            case "linen":
-                return "tornLinen";
-            case "finelinen":
-                return "tornlinen";
-            case "cotton":
-                return "tornCotton";
-            case "finecotton":
-                return "torncotton";
-            case "wool":
-                return "tornWool";
-            case "finewool":
-                return "tornwool";
-            case "silk":
-                return "tornSilk";
-            case "finesilk":
-                return "tornsilk";
-            default:
-                return rawItemKey;
-        }
-    }
+            "linen"      => "tornlinen",
+            "finelinen"  => "tornlinen",
+            "cotton"     => "torncotton",
+            "finecotton" => "torncotton",
+            "wool"       => "tornwool",
+            "finewool"   => "tornwool",
+            "silk"       => "tornsilk",
+            "finesilk"   => "tornsilk",
+            _            => rawItemKey
+        };
 
-    private string GetUpgradeKey(string rawItemKey)
-    {
-        switch (rawItemKey)
+    private string GetUpgradeKey(string rawItemKey) =>
+        rawItemKey.ToLower() switch
         {
-            case "linen":
-                return "fineLinen";
-            case "finelinen":
-                return "exquisitelinen";
-            case "cotton":
-                return "fineCotton";
-            case "finecotton":
-                return "exquisitecotton";
-            case "wool":
-                return "fineWool";
-            case "finewool":
-                return "exquisitecotton";
-            case "silk":
-                return "fineSilk";
-            case "finesilk":
-                return "exquisitesilk";
-            default:
-                return rawItemKey;
-        }
-    }
+            "linen"      => "finelinen",
+            "finelinen"  => "exquisitelinen",
+            "cotton"     => "finecotton",
+            "finecotton" => "exquisitecotton",
+            "wool"       => "finewool",
+            "finewool"   => "exquisitecotton",
+            "silk"       => "finesilk",
+            "finesilk"   => "exquisitesilk",
+            _            => rawItemKey
+        };
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -122,7 +104,7 @@ public class FabricRefiningScript : DialogScriptBase
     {
         if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
         {
-            Subject.ReplyToUnknownInput(source);
+            Subject.Reply(source, $"You ran out of those fabrics to refine.", "fabric_refining_initial");
 
             return;
         }
@@ -134,7 +116,12 @@ public class FabricRefiningScript : DialogScriptBase
 
         if (!IntegerRandomizer.RollChance((int)CalculateSuccessRate(source, BASE_SUCCESS_RATE, timesCraftedThisItem)))
         {
-            Subject.Reply(source, $"Your attempt to refine {item.Template.Name} has failed.", "fabric_refining_initial");
+            Subject.Close(source);
+            var dialog = DialogFactory.Create("fabric_refining_failed", Subject.DialogSource);
+            dialog.MenuArgs = Subject.MenuArgs;
+            dialog.Context = Subject.Context;
+            dialog.InjectTextParameters(item.DisplayName);
+            dialog.Display(source);
             var downgradeKey = GetDowngradeKey(item.Template.TemplateKey);
             var downgrade = ItemFactory.Create(downgradeKey);
             source.Inventory.TryAddToNextSlot(downgrade);
