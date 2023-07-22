@@ -10,14 +10,14 @@ namespace Chaos.Scripting.DialogScripts.Crafting;
 public class FabricRefiningScript : DialogScriptBase
 {
     private const string ITEM_COUNTER_PREFIX = "[Refine]";
-    private const double BASE_SUCCESS_RATE = 60;
+    private const double BASE_SUCCESS_RATE = 30;
     private const double SUCCESSRATEMAX = 90;
     private readonly IItemFactory ItemFactory;
     private readonly IDialogFactory DialogFactory;
 
     private readonly List<string> MiningTemplateKeys = new()
     {
-       "linen", "finelinen", "cotton", "finecotton", "wool", "finewool", "silk", "finesilk", "tornlinen", "torncotton", "tornwool", "tornsilk"
+       "linen", "finelinen", "cotton", "finecotton", "wool", "finewool", "silk", "finesilk"
     };
 
     private Animation FailAnimation { get; } = new()

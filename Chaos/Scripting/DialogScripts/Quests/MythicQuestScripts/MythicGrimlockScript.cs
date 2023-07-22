@@ -242,7 +242,7 @@ public class MythicGrimlockScript : DialogScriptBase
                     source,
                     "I am counting on you to bring back those Kobold tails. Your success will send a strong message to our enemies that we will not tolerate their attacks on our land. We also really need those tails.");
 
-                source.SendOrangeBarMessage("Collect 25 Kobold Tails for the Grimlock Queen");
+                source.SendOrangeBarMessage("Collect 10 of each Kobold Tail for the Grimlock Queen");
                 source.Trackers.Enums.Set(MythicGrimlock.ItemGrimlock);
 
                 return;
@@ -250,11 +250,13 @@ public class MythicGrimlockScript : DialogScriptBase
 
             case "grimlock_item2":
             {
-                if (!source.Inventory.RemoveQuantity("Kobold Tail", 25))
+                if (!source.Inventory.RemoveQuantity("Brown Kobold Tail", 10) 
+                    && !source.Inventory.RemoveQuantity("Black Kobold Tail", 10) 
+                    && !source.Inventory.RemoveQuantity("Silver Kobold Tail", 10))
                 {
                     Subject.Reply(
                         source,
-                        "This is not enough! My people will blow through that many very quickly, please try harder. We are counting on you.");
+                        "This is not enough tails! My people will blow through that many very quickly, please try harder. We are counting on you.");
 
                     return;
                 }
