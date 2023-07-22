@@ -137,11 +137,21 @@ public class PlantTradeScript : DialogScriptBase
 
     public void OnDisplayingPlants(Aisling source)
     {
-        
+        if (!Subject.MenuArgs.TryGet<int>(0, out var slot))
+            return;
+
+        var selectedItem = source.Inventory.FirstOrDefault(x => x.Slot == slot);
+
+        if (selectedItem == null)
+            return;
+
         foreach (var plantTemplateKey in PlantTemplateKeys)
         {
-            var item = ItemFactory.CreateFaux(plantTemplateKey);
-            Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+            if (!string.Equals(selectedItem.Template.TemplateKey, plantTemplateKey, StringComparison.CurrentCultureIgnoreCase))
+            {
+                var fauxPlantItem = ItemFactory.CreateFaux(plantTemplateKey);
+                Subject.Items.Add(ItemDetails.DisplayRecipe(fauxPlantItem));   
+            }
         }
     }
 
