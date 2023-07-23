@@ -85,6 +85,9 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
         if (creature is Monster monster && source is Aisling owner && (monster.PetOwner != null) && monster.PetOwner.Equals(owner))
             return;
 
+        if (!creature.IsAlive || creature.IsDead)
+            return;
+
         creature.StatSheet.SubtractHp(damage);
         creature.ShowHealth();
         creature.Script.OnAttacked(source, damage);
