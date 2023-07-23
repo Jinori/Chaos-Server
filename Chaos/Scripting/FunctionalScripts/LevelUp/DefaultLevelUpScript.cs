@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
 using Chaos.Models.Data;
@@ -45,5 +46,46 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
         aisling.UserStatSheet.SetMaxWeight(LevelUpFormula.CalculateMaxWeight(aisling));
         aisling.Animate(ani);
         aisling.Client.SendAttributes(StatUpdateType.Full);
+
+        if (aisling.UserStatSheet.BaseClass is BaseClass.Priest)
+        {
+            switch (aisling.StatSheet.Level)
+            {
+                case 10:
+                    SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level10);
+
+                    break;
+                case 25:
+                    SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level25);
+
+                    break;
+                case 40:
+                    SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level40);
+
+                    break;
+                case 55:
+                    SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level55);
+
+                    break;
+                case 70:
+                    SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level70);
+
+                    break;
+                case 85:
+                    SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level85);
+
+                    break;
+                case 99:
+                    SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level99);
+
+                    break;
+            }
+        }
+    }
+
+    private void SetPetEnumAndMessage(Aisling aisling, PetSkillsAvailable tag)
+    {
+        aisling.Trackers.Enums.Set(tag);
+        aisling.SendActiveMessage("{=oA new pet skill is now available!");
     }
 }

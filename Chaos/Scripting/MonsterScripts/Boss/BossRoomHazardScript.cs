@@ -14,8 +14,6 @@ namespace Chaos.Scripting.MonsterScripts.Boss;
 
 public sealed class BossRoomHazardScript : MonsterScriptBase
 {
-    private const int MINIMUM_RECT_SIZE = 3;
-    private const int MAXIMUM_RECT_SIZE = 5;
     private readonly List<IPoint> AnimatedPoints = new();
     private readonly List<IPoint> SafePoints = new();
     private bool IsAnimating;
@@ -35,8 +33,8 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
 
     private Animation PreAnimation { get; } = new()
     {
-        AnimationSpeed = 100, // Adjust the speed as needed
-        TargetAnimation = 214 // Use a different animation ID for the pre-animation
+        AnimationSpeed = 100,
+        TargetAnimation = 214 
     };
     private IIntervalTimer PreAnimationTimer { get; }
 
@@ -52,8 +50,9 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
             false);
 
         ApplyDamageScript = ApplyAttackDamageScript.Create();
+        ApplyDamageScript.DamageFormula = Formulae.DamageFormulae.PureDamage;
         AnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(9));
-        PreAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(7)); // Set pre-animation duration to 7 seconds
+        PreAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(7));
 
         TimePassedSinceTileAnimation = 0;
         TimePassedSincePreAnimationStart = 0;
@@ -69,34 +68,92 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
         foreach (var creature in creaturesToDamage)
             if (creature.Id != Subject.Id)
             {
-                var damage = (int)(creature.StatSheet.EffectiveMaximumHp * 0.15);
+                var damage = (int)(creature.StatSheet.EffectiveMaximumHp * 0.30);
 
                 ApplyDamageScript.ApplyDamage(
                     Subject,
                     creature,
                     this,
-                    damage,
-                    Element.Fire);
+                    damage);
             }
     }
 
-    public static Rectangle GenerateAislingSafeRectangle(IPoint centerPoint)
+    public Rectangle GenerateAislingSafeRectangle(IPoint centerPoint, int width, int height)
     {
-        var width = Random.Shared.Next(MINIMUM_RECT_SIZE, MAXIMUM_RECT_SIZE + 1);
-        var height = Random.Shared.Next(MINIMUM_RECT_SIZE, MAXIMUM_RECT_SIZE + 1);
-        var rect = new Rectangle(centerPoint, width, height);
+        // Calculate the top-left point of the rectangle to keep it within the map bounds
+        var left = Math.Max(centerPoint.X - width / 2, 0);
+        var top = Math.Max(centerPoint.Y - height / 2, 0);
 
+        // Calculate the bottom-right point of the rectangle to keep it within the map bounds
+        var right = Math.Min(left + width - 1, Map.Template.Bounds.Width - 1);
+        var bottom = Math.Min(top + height - 1, Map.Template.Bounds.Height - 1);
+
+        var rect = new Rectangle(left, top, right - left + 1, bottom - top + 1);
         return rect;
     }
 
+    
+    public Point GetRandomWalkablePoint(IRectangle rect)
+    {
+        const int MAX_ATTEMPTS = 100; // Set a maximum number of attempts to avoid infinite loops
+        var attemptCount = 0;
+
+        while (attemptCount < MAX_ATTEMPTS)
+        {
+            var randomX = rect.Left + Random.Shared.Next(rect.Width);
+            var randomY = rect.Top + Random.Shared.Next(rect.Height);
+            var randomPoint = new Point(randomX, randomY);
+
+            if (!Map.IsWall(randomPoint) && !Map.IsBlockingReactor(randomPoint))
+            {
+                return randomPoint; // Found a walkable point
+            }
+
+            attemptCount++;
+        }
+
+        // If no walkable point is found after the maximum attempts, return a default point.
+        // You can handle this case based on your specific needs, such as throwing an exception or returning null.
+        // For example:
+        throw new Exception("Could not find a walkable point within the given bounds.");
+    }
+    
     private void GenerateSafeRectangle()
     {
-        var centerPoint = Map.GetRandomWalkablePoint();
-        SafeRectangle = GenerateAislingSafeRectangle(centerPoint);
+        const int MAX_ATTEMPTS = 100;
+        var attempts = 0;
+        const int WIDTH = 3; // Set the width of the rectangle
+        const int HEIGHT = 3; // Set the height of the rectangle
+
+        // Pass the map's boundary rectangle to GetRandomWalkablePoint
+        var centerPoint = GetRandomWalkablePoint(Map.Template.Bounds);
+
+        do
+        {
+            SafeRectangle = GenerateAislingSafeRectangle(centerPoint, WIDTH, HEIGHT);
+            attempts++;
+
+            if (attempts >= MAX_ATTEMPTS)
+                break;
+        }
+        while (ContainsWallorReactor(SafeRectangle));
 
         // Add individual points within the SafeRectangle to SafePoints
         foreach (var point in SafeRectangle.GetPoints())
             SafePoints.Add(point);
+    }
+
+    private bool ContainsWallorReactor(Rectangle rectangle)
+    {
+        foreach (var point in rectangle)
+        {
+            if (Map.IsWall(point) || Map.IsBlockingReactor(point))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void ResetTimersAndPoints()

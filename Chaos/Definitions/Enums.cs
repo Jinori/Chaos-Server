@@ -1091,3 +1091,38 @@ public enum SummonChosenPet
     Ducklings = 5,
     Cat = 6
 }
+
+[Flags]
+public enum PetSkillsAvailable
+{
+    None,
+    Level10 = 1,
+    Level25 = 1 << 1,
+    Level40 = 1 << 2,
+    Level55 = 1 << 3,
+    Level70 = 1 << 4,
+    Level85 = 1 << 5,
+    Level99 = 1 << 6,
+}
+
+public enum Level10PetSkills
+{
+    None,
+    RabidBite = 1,
+    Growl = 1 << 1,
+    QuickAttack = 1 << 2,
+}
+
+
+[Flags]
+public enum PetSkillsChosen
+{
+    None,
+    Level10 = 1,
+    Level25 = 1 << 1,
+    Level40 = 1 << 2,
+    Level55 = 1 << 3,
+    Level70 = 1 << 4,
+    Level85 = 1 << 5,
+    Level99 = 1 << 6,
+}
