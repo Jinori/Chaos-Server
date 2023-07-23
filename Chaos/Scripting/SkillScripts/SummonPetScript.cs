@@ -50,14 +50,14 @@ public class SummonPetScript : ConfigurableSkillScriptBase
             var attrib = new Attributes
             {
                 Ac = newMonster.PetOwner.StatSheet.Ac,
-                Con = newMonster.PetOwner.StatSheet.EffectiveCon / 2,
-                Dex = newMonster.PetOwner.StatSheet.EffectiveDex / 2,
-                Int = newMonster.PetOwner.StatSheet.EffectiveInt / 2,
-                Str = newMonster.PetOwner.StatSheet.EffectiveStr / 2,
-                Wis = newMonster.PetOwner.StatSheet.EffectiveWis / 2,
+                Con = (newMonster.PetOwner.StatSheet.EffectiveCon + newMonster.PetOwner.StatSheet.Level) / 2,
+                Dex = (newMonster.PetOwner.StatSheet.EffectiveDex + newMonster.PetOwner.StatSheet.Level) / 2,
+                Int = (newMonster.PetOwner.StatSheet.EffectiveInt + newMonster.PetOwner.StatSheet.Level) / 2,
+                Str = (newMonster.PetOwner.StatSheet.EffectiveStr + newMonster.PetOwner.StatSheet.Level) / 2,
+                Wis = (newMonster.PetOwner.StatSheet.EffectiveWis + newMonster.PetOwner.StatSheet.Level) / 2,
                 AtkSpeedPct = newMonster.PetOwner.StatSheet.Level,
-                MaximumHp = (int)newMonster.PetOwner.StatSheet.EffectiveMaximumHp / 2,
-                MaximumMp = (int)newMonster.PetOwner.StatSheet.EffectiveMaximumMp / 2
+                MaximumHp = newMonster.PetOwner.StatSheet.Level * 1000 / 9,
+                MaximumMp = newMonster.PetOwner.StatSheet.Level * 500 / 9
             };
 
             newMonster.StatSheet.SetLevel(newMonster.PetOwner.StatSheet.Level);

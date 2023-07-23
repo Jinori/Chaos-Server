@@ -73,7 +73,7 @@ public sealed class BossThrowHazardousScript : MonsterScriptBase
 
             foreach (var aisling in targets)
             {
-                var damage = (int)(aisling.StatSheet.CurrentHp * 0.1);
+                var damage = (int)(aisling.StatSheet.EffectiveMaximumHp * 0.1);
 
                 ApplyDamageScript.ApplyDamage(
                     Subject,
