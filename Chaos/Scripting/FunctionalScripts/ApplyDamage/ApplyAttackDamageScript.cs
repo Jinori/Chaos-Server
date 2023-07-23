@@ -81,8 +81,8 @@ public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
 
     private void ApplyDamageAndTriggerEvents(Creature creature, int damage, Creature source)
     {
-        //Pet owners cannot damage their pet
-        if (creature is Monster monster && source is Aisling owner && (monster.PetOwner != null) && monster.PetOwner.Equals(owner))
+        //Pets cannot be damaged by Aislings
+        if (creature is Monster { PetOwner: not null } && source is Aisling)
             return;
 
         if (!creature.IsAlive || creature.IsDead)
