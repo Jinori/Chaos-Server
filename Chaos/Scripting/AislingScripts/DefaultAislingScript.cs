@@ -38,6 +38,8 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     private readonly IMerchantFactory MerchantFactory;
     private readonly ISimpleCache SimpleCache;
     private readonly IIntervalTimer SleepAnimationTimer;
+    protected virtual BlindBehavior BlindBehavior { get; }
+    protected virtual RelationshipBehavior RelationshipBehavior { get; }
 
     /// <inheritdoc />
     public IApplyHealScript ApplyHealScript { get; init; }
@@ -77,6 +79,8 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         BoardStore = boardStore;
         RestrictionBehavior = new RestrictionBehavior();
         VisibilityBehavior = new VisibilityBehavior();
+        RelationshipBehavior = new RelationshipBehavior();
+        BlindBehavior = new BlindBehavior();
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         ClientRegistry = clientRegistry;
@@ -144,6 +148,15 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         //
         //yield return nationBoard;
     }
+
+    /// <inheritdoc />
+    public override bool IsBlind() => BlindBehavior.IsBlind(Subject);
+
+    /// <inheritdoc />
+    public override bool IsFriendlyTo(Creature creature) => RelationshipBehavior.IsFriendlyTo(Subject, creature);
+
+    /// <inheritdoc />
+    public override bool IsHostileTo(Creature creature) => RelationshipBehavior.IsHostileTo(Subject, creature);
 
     public override void OnAttacked(Creature source, int damage)
     {
