@@ -96,10 +96,10 @@ public class IceWallQuestScript : DialogScriptBase
                 if (stage == IceWallQuest.Start)
                 {
                     if (!source.Inventory.HasCount("Ice Sample 1", 1)
-                        && !source.Inventory.HasCount("Ice Sample 2", 1)
-                        && !source.Inventory.HasCount("Ice Sample 3", 1))
+                        || !source.Inventory.HasCount("Ice Sample 2", 1)
+                        || !source.Inventory.HasCount("Ice Sample 3", 1))
                     {
-                        source.SendOrangeBarMessage("You need to collect 3 samples.");
+                        source.SendOrangeBarMessage("You need to collect 3 Ice Samples.");
                         Subject.Close(source);
 
                         return;
@@ -144,14 +144,14 @@ public class IceWallQuestScript : DialogScriptBase
             case "lilia_quest8":
             {
                 source.Trackers.Enums.Set(IceWallQuest.Charm);
-                source.SendOrangeBarMessage("Bring Lilia a Ruby and Bronze Bar.");
+                source.SendOrangeBarMessage("Bring Lilia a Pristine Ruby and Polished Bronze Bar.");
             }
 
                 break;
 
             case "lilia_quest9":
             {
-                if (!source.Inventory.HasCount("Ruby", 1) && !source.Inventory.HasCount("Bronze Bar", 1))
+                if (!source.Inventory.HasCount("Pristine Ruby", 1) && !source.Inventory.HasCount("Polished Bronze Bar", 1))
                 {
                     source.SendOrangeBarMessage("You are missing an item.");
                     Subject.Close(source);
@@ -159,8 +159,8 @@ public class IceWallQuestScript : DialogScriptBase
                     return;
                 }
 
-                source.Inventory.RemoveQuantity("Ruby", 1);
-                source.Inventory.RemoveQuantity("Bronze Bar", 1);
+                source.Inventory.RemoveQuantity("Pristine Ruby", 1);
+                source.Inventory.RemoveQuantity("Polished Bronze Bar", 1);
                 source.TryGiveItems(ItemFactory.Create("charm"));
                 ExperienceDistributionScript.GiveExp(source, 50000);
                 source.Trackers.Enums.Set(IceWallQuest.KillBoss);
