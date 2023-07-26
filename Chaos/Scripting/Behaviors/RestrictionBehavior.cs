@@ -8,6 +8,12 @@ namespace Chaos.Scripting.Behaviors;
 
 public class RestrictionBehavior
 {
+    private readonly List<string> MapsGhostsCanMoveOn = new()
+    {
+        "Arena Battle Ring",
+        "The Afterlife"
+    };
+    
     public virtual bool CanMove(Creature creature)
     {
         switch (creature)
@@ -35,7 +41,7 @@ public class RestrictionBehavior
             }
         }
 
-        return creature.MapInstance.Name.EqualsI("The Afterlife") || creature.IsAlive;
+        return MapsGhostsCanMoveOn.Contains(creature.MapInstance.Name) || creature.IsAlive;
     }
 
     public virtual bool CanTalk(Creature creature) => true;

@@ -42,16 +42,15 @@ public class RelationshipBehavior
         if (source.Equals(target))
             return true;
 
-        //var inPvpMap = false;
+        var inPvpMap = (source.MapInstance.InstanceId == "arena_battle_ring") && (target.MapInstance.InstanceId == "arena_battle_ring");
         var inGroup = source.Group?.Contains(target) ?? false;
-
-        /* uncomment this if you want friendly fire in pvp maps
-        if (inPvpMap)
-            return false;
-        */
-
+        
         if (inGroup)
             return true;
+        
+        if (inPvpMap)
+            return false;
+        
 
         return false;
     }
@@ -97,10 +96,10 @@ public class RelationshipBehavior
         if (source.Equals(target))
             return false;
 
-        var onPvpMap = false;
+        var onPvpMap = (source.MapInstance.InstanceId == "arena_battle_ring") && (target.MapInstance.InstanceId == "arena_battle_ring");
         var inGroup = source.Group?.Contains(target) ?? false;
 
-        //comment this if you want friendly fire in pvp maps
+        // Comment this if you want friendly fire in PvP maps
         if (inGroup)
             return false;
 

@@ -33,8 +33,15 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     private readonly List<string> MapsToNotPunishDeathOn = new()
     {
         "Mr. Hopps's Home",
-        "Cain's Farm"
+        "Cain's Farm",
+        "Arena Battle Ring"
     };
+
+    private readonly List<string> ArenaMaps = new()
+    {
+        "Arena Battle Ring"
+    };
+    
     private readonly IMerchantFactory MerchantFactory;
     private readonly ISimpleCache SimpleCache;
     private readonly IIntervalTimer SleepAnimationTimer;
@@ -287,6 +294,18 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             source.MapInstance.AddObject(terminus, point);
         }
 
+        if (ArenaMaps.Contains(Subject.MapInstance.Name))
+        {
+            var aislings = Subject.MapInstance.GetEntities<Aisling>();
+
+            foreach (var aisling in aislings)
+            {
+                aisling.SendServerMessage(
+                    ServerMessageType.OrangeBar1,
+                    $"{Subject.Name} was killed by {source?.Name}.");
+            }
+        }
+        
         if (MapsToNotPunishDeathOn.Contains(Subject.MapInstance.Name))
             return;
 

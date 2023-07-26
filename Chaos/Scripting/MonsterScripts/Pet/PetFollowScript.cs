@@ -1,5 +1,6 @@
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Pet;
