@@ -7,7 +7,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Monk;
 
-public sealed class RockPunchEffect : ContinuousAnimationEffectBase
+public sealed class EarthPunchEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
@@ -24,7 +24,7 @@ public sealed class RockPunchEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     public override byte Icon => 46;
     /// <inheritdoc />
-    public override string Name => "rockpunch";
+    public override string Name => "earthpunch";
 
     public override void OnApplied()
     {
