@@ -50,7 +50,7 @@ public class TerrorChestScript : DialogScriptBase
                 {
                     "Mileth"   => DisplayColor.Green,
                     "Rucesion" => DisplayColor.Blue,
-                    "Suomi"    => DisplayColor.Red,
+                    "Suomi"    => DisplayColor.Apple,
                     "Loures"   => DisplayColor.White,
                     _          => item.Color
                 };

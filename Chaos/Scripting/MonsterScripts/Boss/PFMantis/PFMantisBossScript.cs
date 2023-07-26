@@ -12,7 +12,6 @@ public class PFMantisBossScript : CompositeMonsterScript
         GetScriptKey(typeof(PFMantisBossDefenseScript)),
         GetScriptKey(typeof(PFMantisBossEnrageScript)),
         GetScriptKey(typeof(PFMantisBossGroupScalingScript)),
-        GetScriptKey(typeof(RestrictionScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),

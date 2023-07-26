@@ -12,8 +12,6 @@ public class KarloposBossScript : CompositeMonsterScript
         GetScriptKey(typeof(BossMoveToTargetScript)),
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(KarloposBossEnrageScript)),
-        GetScriptKey(typeof(RestrictionScript)),
-        GetScriptKey(typeof(VisibilityScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),

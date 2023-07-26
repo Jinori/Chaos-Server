@@ -152,7 +152,7 @@ public class AdminTrinketScript : DialogScriptBase
                     return;
                 }
 
-                var mapCache = _cacheProvider.GetCache<MapInstance>();
+                _cacheProvider.GetCache<MapInstance>();
 
                 var player = GetPlayerByName(playerName);
 

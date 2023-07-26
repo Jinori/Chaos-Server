@@ -13,8 +13,6 @@ public class DefaultBossScript : CompositeMonsterScript
         GetScriptKey(typeof(BossMoveToTargetScript)),
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(BossEnrageScript)),
-        GetScriptKey(typeof(RestrictionScript)),
-        GetScriptKey(typeof(VisibilityScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),

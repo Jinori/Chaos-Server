@@ -81,7 +81,7 @@ public class UpsideDownCastingScript : MonsterScriptBase
             // Healing Spells
             if (HealingSpells.ContainsI(spell.Template.TemplateKey))
             {
-                if (ShouldHeal(Subject.StatSheet.HealthPercent))
+                if (ShouldHeal((int)Subject.StatSheet.HealthPercent))
                 {
                     Subject.TryUseSpell(spell, Subject.Id);
 
@@ -90,7 +90,7 @@ public class UpsideDownCastingScript : MonsterScriptBase
 
                 var creatureToHeal = friendlyCreatures.FirstOrDefault(
                     creature =>
-                        ShouldHeal(creature.StatSheet.HealthPercent));
+                        ShouldHeal((int)creature.StatSheet.HealthPercent));
 
                 if (creatureToHeal != null)
                 {

@@ -81,7 +81,7 @@ public class LearnAllCommand : ICommand<Aisling>
                     new[]
                     {
                         "Airpunch", "ambush", "clawfist", "doublePunch", "dracotailkick", "eaglestrike", "firepunch", "highkick", "kick",
-                        "mantiskick", "poisonpunch", "punch", "rockpunch", "roundhousekick", "tripleKick", "waterpunch", "wolfFangFist"
+                        "mantiskick", "poisonpunch", "punch", "earthpunch", "roundhousekick", "tripleKick", "waterpunch", "wolfFangFist"
                     },
                     new[]
                     {

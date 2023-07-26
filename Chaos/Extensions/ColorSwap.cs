@@ -21,16 +21,16 @@ namespace Chaos.Extensions
                     return DisplayColor.Green;
 
                 case BodyColor.Yellow:
-                    return DisplayColor.Lemon;
+                    return DisplayColor.Yellow;
 
                 case BodyColor.Tan:
                     return DisplayColor.Tan;
 
                 case BodyColor.Grey:
-                    return DisplayColor.Grey;
+                    return DisplayColor.Gray;
 
                 case BodyColor.LightBlue:
-                    return DisplayColor.Cerulean;
+                    return DisplayColor.LightBlue;
 
                 case BodyColor.Orange:
                     return DisplayColor.Orange;
@@ -59,16 +59,16 @@ namespace Chaos.Extensions
                 case DisplayColor.Green:
                     return BodyColor.Green;
 
-                case DisplayColor.Lemon:
+                case DisplayColor.Yellow:
                     return BodyColor.Yellow;
 
                 case DisplayColor.Tan:
                     return BodyColor.Tan;
 
-                case DisplayColor.Grey:
+                case DisplayColor.Gray:
                     return BodyColor.Grey;
 
-                case DisplayColor.Cerulean:
+                case DisplayColor.LightBlue:
                     return BodyColor.LightBlue;
 
                 case DisplayColor.Orange:

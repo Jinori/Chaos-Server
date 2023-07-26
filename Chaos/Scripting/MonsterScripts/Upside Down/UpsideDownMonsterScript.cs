@@ -8,7 +8,6 @@ public class UpsideDownMonsterScript : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
-        GetScriptKey(typeof(RestrictionScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(UpsideDownCastingScript)),
