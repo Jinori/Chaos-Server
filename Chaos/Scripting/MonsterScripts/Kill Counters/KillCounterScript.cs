@@ -56,7 +56,7 @@ public class KillCounterScript : MonsterScriptBase
             return;
         }
 
-        IncrementCounter(aisling);
+        SnowWolfIncrementCounter(aisling);
     }
 
     private void HandleTavernRatKill(Aisling aisling)
@@ -128,6 +128,12 @@ public class KillCounterScript : MonsterScriptBase
     {
         var value = aisling.Trackers.Counters.AddOrIncrement(Subject.Template.TemplateKey);
         aisling.Client.SendServerMessage(ServerMessageType.PersistentMessage, $"{value.ToWords().Titleize()} - {Subject.Template.Name}");
+    }
+    
+    private void SnowWolfIncrementCounter(Aisling aisling)
+    {
+        var value = aisling.Trackers.Counters.AddOrIncrement("wolf");
+        aisling.Client.SendServerMessage(ServerMessageType.PersistentMessage, $"{value.ToWords().Titleize()} - Snow Wolf");
     }
     
     /// <inheritdoc />

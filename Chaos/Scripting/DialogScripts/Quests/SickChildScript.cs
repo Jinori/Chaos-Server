@@ -159,21 +159,12 @@ public class SickChildScript : DialogScriptBase
             }
 
                 break;
-            case "whiterose2-3":
 
+            case "whiterose2-3":
+            {
                 if (!source.Inventory.RemoveQuantity("white rose", 1))
                 {
                     Subject.Reply(source, "Where is it?");
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "Close",
-                        OptionText = "Be right back."
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-
                     source.SendOrangeBarMessage("You do not have a rose.");
 
                     return;
@@ -182,9 +173,10 @@ public class SickChildScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, 50000);
                 source.Trackers.Enums.Set(SickChildStage.WhiteRose2Turn);
                 source.SendOrangeBarMessage("50000 Exp Rewarded!");
-                Subject.Reply(source, "Thank you again! Please excuse me while I get this to the healers.", "whiterose2wait1");
-
-                break;
+                Subject.Reply(source, "Thank you again! Please excuse me while I get this to the healers.",
+                    "whiterose2wait1");
+            }
+                return;
 
             case "goldrose1-2":
             {
