@@ -85,7 +85,7 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
 
     private void SetPetEnumAndMessage(Aisling aisling, PetSkillsAvailable tag)
     {
-        aisling.Trackers.Enums.Set(tag);
+        aisling.Trackers.Flags.AddFlag(tag);
         aisling.SendActiveMessage("{=oA new pet skill is now available!");
     }
 }
