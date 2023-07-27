@@ -75,7 +75,7 @@ public sealed record UserStatSheet : StatSheet
     public int UnspentPoints
     {
         get => _unspentPoints;
-        init => _unspentPoints = value;
+        set => _unspentPoints = value;
     }
 
     public static UserStatSheet NewCharacter => new()
@@ -186,7 +186,7 @@ public sealed record UserStatSheet : StatSheet
             case Stat.WIS:
                 Interlocked.Increment(ref _wis);
                 Interlocked.Add(ref _maximumMp, 40);
-                
+
                 break;
             case Stat.CON:
                 Interlocked.Increment(ref _con);
