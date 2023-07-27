@@ -597,10 +597,6 @@ public class FiskSecretScript : DialogScriptBase
                 pinkrose.Count = 1;
                 source.TryGiveItems(pinkrose);
 
-                Subject.Reply(
-                    source,
-                    "Close");
-
                 return;
             }
             case "pinkrose_start24":
@@ -722,6 +718,12 @@ public class FiskSecretScript : DialogScriptBase
 
                     return;
                 }
+                if (hasStage && (stage == FiskSecretStage.StartedBouquet1))
+                {
+                    Subject.Reply(source, "Skip", "bouquet_return3");
+
+                    return;
+                }
 
                 if (hasStage2 && (stage2 == FiskRemakeBouquet.BouquetWait))
                 {
@@ -831,7 +833,7 @@ public class FiskSecretScript : DialogScriptBase
                 source.Inventory.RemoveQuantityByTemplateKey("petunia", 5);
                 source.Inventory.RemoveQuantityByTemplateKey("waterlily", 5);
                 source.Inventory.RemoveQuantityByTemplateKey("pinkrose", 1);
-                source.Trackers.Enums.Set(FiskSecretStage.StartedBouquet);
+                source.Trackers.Enums.Set(FiskSecretStage.StartedBouquet1);
                 source.Trackers.TimedEvents.AddEvent("craftbouquet3", TimeSpan.FromMinutes(5), true);
 
                 return;
@@ -1016,8 +1018,8 @@ public class FiskSecretScript : DialogScriptBase
                     return;
                 }
 
-                source.Inventory.TryGetRemove("specialbouquet", out _);
-                source.Equipment.Remove("specialbouquet");
+                source.Inventory.TryGetRemoveByTemplateKey("specialbouquet", out _);
+                source.Equipment.RemoveByTemplateKey("specialbouquet");
                 source.Trackers.Enums.Set(FiskSecretStage.DeliveredBouquet);
 
                 break;
