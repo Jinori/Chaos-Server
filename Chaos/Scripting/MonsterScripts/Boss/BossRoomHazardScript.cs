@@ -77,21 +77,6 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
                     damage);
             }
     }
-
-    public Rectangle GenerateAislingSafeRectangle(IPoint centerPoint, int width, int height)
-    {
-        // Calculate the top-left point of the rectangle to keep it within the map bounds
-        var left = Math.Max(centerPoint.X - width / 2, 0);
-        var top = Math.Max(centerPoint.Y - height / 2, 0);
-
-        // Calculate the bottom-right point of the rectangle to keep it within the map bounds
-        var right = Math.Min(left + width - 1, Map.Template.Bounds.Width - 1);
-        var bottom = Math.Min(top + height - 1, Map.Template.Bounds.Height - 1);
-
-        var rect = new Rectangle(left, top, right - left + 1, bottom - top + 1);
-        return rect;
-    }
-
     
     public Point GetRandomWalkablePoint(IRectangle rect)
     {
@@ -130,7 +115,7 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
 
         do
         {
-            SafeRectangle = GenerateAislingSafeRectangle(centerPoint, WIDTH, HEIGHT);
+            SafeRectangle = new Rectangle(centerPoint, WIDTH, HEIGHT);
             attempts++;
 
             if (attempts >= MAX_ATTEMPTS)
@@ -143,9 +128,9 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
             SafePoints.Add(point);
     }
 
-    private bool ContainsWallorReactor(Rectangle rectangle)
+    private bool ContainsWallorReactor(IRectangle rectangle)
     {
-        foreach (var point in rectangle)
+        foreach (var point in rectangle.GetPoints())
         {
             if (Map.IsWall(point) || Map.IsBlockingReactor(point))
             {
