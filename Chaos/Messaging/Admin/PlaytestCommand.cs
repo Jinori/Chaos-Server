@@ -91,7 +91,8 @@ public class PlaytestCommand : ICommand<Aisling>
                 && levelValue.HasValue
                 && !string.IsNullOrEmpty(templateKeyValue)
                 && ((classValue == player.UserStatSheet.BaseClass.ToString()) || (classValue == "Peasant"))
-                && (levelValue.Value <= level))
+                && (levelValue.Value <= level)
+                && !string.IsNullOrEmpty(gender))
             {
                 // If the gender property is not specified, treat it as unisex.
                 if (string.IsNullOrEmpty(gender))

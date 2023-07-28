@@ -18,15 +18,8 @@ public class ResetCharacterCommand : ICommand<Aisling>
         if (source.UserStatSheet.ToNextLevel >= 1)
             source.UserStatSheet.SubtractTnl(source.UserStatSheet.ToNextLevel);
 
-        source.UserStatSheet.AddTnl(599);
-        source.UserStatSheet.Str = 1;
-        source.UserStatSheet.Int = 1;
-        source.UserStatSheet.Wis = 1;
-        source.UserStatSheet.Con = 1;
-        source.UserStatSheet.Dex = 1;
-        source.UserStatSheet.SetMaxWeight(51);
-        source.UserStatSheet.UnspentPoints = 0;
-
+        var baseStats = UserStatSheet.NewCharacter;
+        
         foreach (var item in source.Inventory)
             source.Inventory.Remove(item.Slot);
 
@@ -39,13 +32,30 @@ public class ResetCharacterCommand : ICommand<Aisling>
         foreach (var spell in source.SpellBook)
             source.SpellBook.Remove(spell.Slot);
         
-        var statBuyCost = new Attributes
+        var diff = new Attributes()
         {
-            MaximumHp = source.UserStatSheet.MaximumHp - 100,
-            MaximumMp = source.UserStatSheet.MaximumMp - 100
+            Ac = source.StatSheet.Ac - baseStats.Ac,
+            MaximumHp = source.StatSheet.MaximumHp - baseStats.MaximumHp,
+            MaximumMp = source.StatSheet.MaximumMp - baseStats.MaximumMp,
+            Hit = source.StatSheet.Hit - baseStats.Hit,
+            Dmg = source.StatSheet.Dmg - baseStats.Dmg,
+            MagicResistance = source.StatSheet.MagicResistance - baseStats.MagicResistance,
+            AtkSpeedPct = source.StatSheet.AtkSpeedPct - baseStats.AtkSpeedPct,
+            FlatSkillDamage = source.StatSheet.FlatSkillDamage - baseStats.FlatSkillDamage,
+            FlatSpellDamage = source.StatSheet.FlatSpellDamage - baseStats.FlatSpellDamage,
+            SkillDamagePct = source.StatSheet.SkillDamagePct - baseStats.SkillDamagePct,
+            SpellDamagePct = source.StatSheet.SpellDamagePct - baseStats.SpellDamagePct,
+            Str = source.StatSheet.Str - baseStats.Str,
+            Int = source.StatSheet.Int - baseStats.Int,
+            Wis = source.StatSheet.Wis - baseStats.Wis,
+            Con = source.StatSheet.Con - baseStats.Con,
+            Dex = source.StatSheet.Dex - baseStats.Dex
         };
 
-        source.UserStatSheet.Subtract(statBuyCost);
+        source.UserStatSheet.Subtract(diff);
+        source.UserStatSheet.AddTnl(599);
+        source.UserStatSheet.SetMaxWeight(44);
+        source.UserStatSheet.UnspentPoints = 0;
         source.Client.SendAttributes(StatUpdateType.Full);
         source.Refresh(true);
 
