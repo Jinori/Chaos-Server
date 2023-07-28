@@ -35,11 +35,14 @@ public class PlaytestCommand : ICommand<Aisling>
             return default;
 
         for (var i = 0; i < level; i++)
-            LevelUpScript.LevelUp(source);
-
-        source.UserStatSheet.ToNextLevel = 1;
-        // Grant the player appropriate skills and spells for the new level
-
+        {
+            var expToGive = source.UserStatSheet.ToNextLevel;
+            source.UserStatSheet.AddTotalExp(expToGive);
+            source.UserStatSheet.SubtractTnl(expToGive);
+            if (source.UserStatSheet.ToNextLevel <= 0)
+                LevelUpScript.LevelUp(source);
+        }
+        
         foreach (var skill in GetSkillsForLevel(source, level))
             if (!source.SkillBook.ContainsByTemplateKey(skill.TemplateKey))
             {
@@ -122,6 +125,10 @@ public class PlaytestCommand : ICommand<Aisling>
         
         foreach (var equipmentInfo in bestInSlotEquipment.Values)
         {
+            // Skip if the item's gender doesn't match the player's gender and it's not a unisex item.
+            if ((equipmentInfo.Gender != player.Gender.ToString()) && (equipmentInfo.Gender != "Unisex"))
+                continue;
+            
             switch (equipmentInfo.EquipmentType)
             {
                 // Check if the equipment is a gauntlet or ring.
