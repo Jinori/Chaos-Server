@@ -91,7 +91,8 @@ public class PlaytestCommand : ICommand<Aisling>
                 && levelValue.HasValue
                 && !string.IsNullOrEmpty(templateKeyValue)
                 && ((classValue == player.UserStatSheet.BaseClass.ToString()) || (classValue == "Peasant"))
-                && (levelValue.Value <= level))
+                && (levelValue.Value <= level)
+                && !string.IsNullOrEmpty(gender))
             {
                 // Check if the equipment is better than the current best-in-slot for the equipment type.
                 if (!bestInSlotEquipment.ContainsKey(equipmentType))
