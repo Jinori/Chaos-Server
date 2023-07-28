@@ -27,6 +27,18 @@ public class ResetCharacterCommand : ICommand<Aisling>
         source.UserStatSheet.SetMaxWeight(51);
         source.UserStatSheet.UnspentPoints = 0;
 
+        foreach (var item in source.Inventory)
+            source.Inventory.Remove(item.Slot);
+
+        foreach (var item in source.Equipment)
+            source.Equipment.Remove(item.Slot);
+
+        foreach (var skill in source.SkillBook)
+            source.SkillBook.Remove(skill.Slot);
+        
+        foreach (var spell in source.SpellBook)
+            source.SpellBook.Remove(spell.Slot);
+        
         var statBuyCost = new Attributes
         {
             MaximumHp = source.UserStatSheet.MaximumHp - 100,

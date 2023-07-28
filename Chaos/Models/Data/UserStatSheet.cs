@@ -57,7 +57,7 @@ public sealed record UserStatSheet : StatSheet
     public uint ToNextLevel
     {
         get => Convert.ToUInt32(_toNextLevel);
-        init => _toNextLevel = value;
+        set => _toNextLevel = value;
     }
 
     public uint TotalAbility

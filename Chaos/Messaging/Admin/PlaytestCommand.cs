@@ -37,6 +37,7 @@ public class PlaytestCommand : ICommand<Aisling>
         for (var i = 0; i < level; i++)
             LevelUpScript.LevelUp(source);
 
+        source.UserStatSheet.ToNextLevel = 1;
         // Grant the player appropriate skills and spells for the new level
 
         foreach (var skill in GetSkillsForLevel(source, level))
@@ -67,7 +68,6 @@ public class PlaytestCommand : ICommand<Aisling>
         var equipmentDirectory = Configuration.GetSection("Options:ItemTemplateCacheOptions:Directory").Value;
         var rootDirectory = Configuration.GetSection("Options:ChaosOptions:StagingDirectory").Value;
         var equipmentFolderPath = Path.Combine(rootDirectory!, equipmentDirectory!);
-
         var bestInSlotEquipment = new Dictionary<string, EquipmentInfo>();
 
         // Get all JSON files in the specified equipment directory and its subdirectories.
@@ -93,38 +93,66 @@ public class PlaytestCommand : ICommand<Aisling>
                 && ((classValue == player.UserStatSheet.BaseClass.ToString()) || (classValue == "Peasant"))
                 && (levelValue.Value <= level))
             {
-                // Check if the equipment is better than the current best-in-slot for the equipment type.
-                if (!bestInSlotEquipment.ContainsKey(equipmentType))
-                    bestInSlotEquipment[equipmentType] = new EquipmentInfo
+                // If the gender property is not specified, treat it as unisex.
+                if (string.IsNullOrEmpty(gender))
+                    gender = "Unisex";
+
+                // Check if the equipment is better than the current best-in-slot for the equipment type and gender.
+                var key = $"{equipmentType}-{gender}";
+
+                if (!bestInSlotEquipment.ContainsKey(key) || levelValue.Value > bestInSlotEquipment[key].Level)
+                {
+                    bestInSlotEquipment[key] = new EquipmentInfo
                     {
                         EquipmentType = equipmentType,
-                        Gender = gender!,
+                        Gender = gender,
                         Class = classValue,
                         Level = levelValue.Value,
                         TemplateKey = templateKeyValue
                     };
-                else if (levelValue.Value > bestInSlotEquipment[equipmentType].Level)
-                    bestInSlotEquipment[equipmentType] = new EquipmentInfo
-                    {
-                        EquipmentType = equipmentType,
-                        Gender = gender!,
-                        Class = classValue,
-                        Level = levelValue.Value,
-                        TemplateKey = templateKeyValue
-                    };
+                }
             }
             else
+            {
                 // Log the problematic equipment data for troubleshooting.
                 Console.WriteLine($"Invalid equipment data found in {equipmentJsonFile}.");
+            }
         }
-
-        // Equip the best-in-slot equipment for the player.
+        
         foreach (var equipmentInfo in bestInSlotEquipment.Values)
         {
-            var item = ItemFactory.Create(equipmentInfo.TemplateKey);
-            player.Inventory.TryAddToNextSlot(item);
+            switch (equipmentInfo.EquipmentType)
+            {
+                // Check if the equipment is a gauntlet or ring.
+                case "Gauntlet":
+                {
+                    var item = ItemFactory.Create(equipmentInfo.TemplateKey);
+                    player.Inventory.TryAddToNextSlot(item);
+                    var item2 = ItemFactory.Create(equipmentInfo.TemplateKey);
+                    player.Inventory.TryAddToNextSlot(item2);
+
+                    break;
+                }
+                case "Ring":
+                {
+                    var item = ItemFactory.Create(equipmentInfo.TemplateKey);
+                    player.Inventory.TryAddToNextSlot(item);
+                    var item2 = ItemFactory.Create(equipmentInfo.TemplateKey);
+                    player.Inventory.TryAddToNextSlot(item2);
+
+                    break;
+                }
+                default:
+                {
+                    var item = ItemFactory.Create(equipmentInfo.TemplateKey);
+                    player.Inventory.TryAddToNextSlot(item);
+
+                    break;
+                }
+            }
         }
     }
+
 
     private IEnumerable<SkillInfo> GetSkillsForLevel(Aisling source, int level)
     {

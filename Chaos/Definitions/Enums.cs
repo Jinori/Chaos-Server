@@ -1136,3 +1136,10 @@ public enum PetSkillsChosen
     Level85 = 1 << 5,
     Level99 = 1 << 6,
 }
+
+public enum ArenaHost
+{
+    None,
+    Host = 1,
+    MasterHost = 2
+}

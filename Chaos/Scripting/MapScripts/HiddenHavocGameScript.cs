@@ -8,7 +8,7 @@ using Chaos.Scripting.MapScripts.Abstractions;
 
 namespace Chaos.Scripting.MapScripts;
 
-public class HideAndSeekGameScript : MapScriptBase
+public sealed class HiddenHavocGameScript : MapScriptBase
 {
     private bool AislingsTouching;
     private IApplyDamageScript ApplyDamageScript { get; }
@@ -22,7 +22,7 @@ public class HideAndSeekGameScript : MapScriptBase
     };
     
     /// <inheritdoc />
-    public HideAndSeekGameScript(MapInstance subject)
+    public HiddenHavocGameScript(MapInstance subject)
         : base(subject) =>
         ApplyDamageScript = ApplyAttackDamageScript.Create();
 
