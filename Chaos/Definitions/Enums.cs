@@ -1123,7 +1123,6 @@ public enum Level10PetSkills
     QuickAttack = 1 << 2,
 }
 
-
 [Flags]
 public enum PetSkillsChosen
 {
@@ -1142,4 +1141,13 @@ public enum ArenaHost
     None,
     Host = 1,
     MasterHost = 2
+}
+
+public enum ArenaTeam
+{
+    None,
+    Blue = 1,
+    Green = 2,
+    Gold = 3,
+    Red = 4
 }
