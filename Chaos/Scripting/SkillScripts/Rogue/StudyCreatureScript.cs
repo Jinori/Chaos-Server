@@ -1,6 +1,8 @@
+using System.Text;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
@@ -62,16 +64,36 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent
                     }\nDefensive Element: {mob.StatSheet.DefenseElement}");
 
             var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint));
+            var offenseColor = GetElementColor(mob.StatSheet.OffenseElement);
+            var defenseColor = GetElementColor(mob.StatSheet.DefenseElement);
+            var message = $"{mob.Name}: Hp: {mob.StatSheet.CurrentHp}  OFFENSE: {offenseColor}  DEFENSE: {defenseColor}";
 
             if (group != null)
                 foreach (var entity in group)
                 {
                     var showMobEle = entity.MapInstance.GetEntities<Creature>().FirstOrDefault(x => x.Equals(mob));
                     showMobEle?.Chant(showMobEle.StatSheet.DefenseElement.ToString());
+                    entity.SendOrangeBarMessage(message);
                 }
         }
 
         if (mob == null)
             context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your attempt to examine failed.");
     }
+
+    private string GetElementColor(Element element) =>
+        element switch
+        {
+            Element.Fire     => "{=bFIRE{=s",
+            Element.Water    => "{=eWATER{=s",
+            Element.Earth    => "{=qEARTH{=s",
+            Element.Wind     => "{=cWIND{=s",
+            Element.None     => "{=gNONE{=s",
+            Element.Holy     => "{=aHOLY{=s",
+            Element.Darkness => "{=nDARK{=s",
+            Element.Wood     => "{=tWOOD{=s",
+            Element.Metal    => "{=iMETAL{=s",
+            Element.Undead   => "{=dUNDEAD{=s",
+            _                => throw new ArgumentOutOfRangeException(nameof(element), element, null)
+        };
 }
