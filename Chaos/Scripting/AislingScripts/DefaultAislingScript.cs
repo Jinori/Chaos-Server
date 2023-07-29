@@ -45,6 +45,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     private readonly IMerchantFactory MerchantFactory;
     private readonly ISimpleCache SimpleCache;
     private readonly IIntervalTimer SleepAnimationTimer;
+    private SocialStatus PreAfkSocialStatus { get; set; }
     protected virtual BlindBehavior BlindBehavior { get; }
     protected virtual RelationshipBehavior RelationshipBehavior { get; }
 
@@ -340,13 +341,26 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
 
         if (SleepAnimationTimer.IntervalElapsed)
         {
-            if (!Subject.IsAlive)
-                return;
-
             var lastManualAction = Subject.Trackers.LastManualAction;
+            var isAfk = !lastManualAction.HasValue || (DateTime.UtcNow.Subtract(lastManualAction.Value).TotalMinutes > 5);
 
-            if (!lastManualAction.HasValue || (DateTime.UtcNow.Subtract(lastManualAction.Value).TotalMinutes > 5))
-                Subject.AnimateBody(BodyAnimation.Snore);
+            if (isAfk)
+            {
+                if (Subject.IsAlive)
+                    Subject.AnimateBody(BodyAnimation.Snore);
+
+                //set player to daydreaming if they are currently set to awake
+                if (Subject.Options.SocialStatus != SocialStatus.DayDreaming)
+                {
+                    PreAfkSocialStatus = Subject.Options.SocialStatus;
+                    Subject.Options.SocialStatus = SocialStatus.DayDreaming;
+                    Subject.Client.SendSelfProfile();
+                }
+            } else if (Subject.Options.SocialStatus == SocialStatus.DayDreaming)
+            {
+                Subject.Options.SocialStatus = PreAfkSocialStatus;
+                Subject.Client.SendSelfProfile();
+            }
         }
     }
 }

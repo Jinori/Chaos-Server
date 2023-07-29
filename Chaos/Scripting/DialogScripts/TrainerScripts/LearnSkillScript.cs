@@ -103,11 +103,10 @@ public class LearnSkillScript : DialogScriptBase
                 var animation = new Animation
                 {
                     AnimationSpeed = 50,
-                    TargetAnimation = 22,
-                    TargetId = source.Id
+                    TargetAnimation = 22
                 };
 
-                source.MapInstance.ShowAnimation(animation);
+                source.Animate(animation);
 
                 if (!string.IsNullOrEmpty(skillToLearn.Template.LearningRequirements?.SkillSpellToUpgrade))
                 {
