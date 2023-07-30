@@ -34,12 +34,20 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     {
         "Mr. Hopps's Home",
         "Cain's Farm",
-        "Arena Battle Ring"
+        "Arena Battle Ring",
+        "Lava Arena",
+        "Lava Arena 2",
+        "Lava Arena 3",
+        "Lava Arena 4",
     };
 
     private readonly List<string> ArenaMaps = new()
     {
-        "Arena Battle Ring"
+        "Arena Battle Ring",
+        "Lava Arena",
+        "Lava Arena 2",
+        "Lava Arena 3",
+        "Lava Arena 4",
     };
     
     private readonly IMerchantFactory MerchantFactory;

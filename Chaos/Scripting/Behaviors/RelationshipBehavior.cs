@@ -42,7 +42,9 @@ public class RelationshipBehavior
         if (source.Equals(target))
             return true;
 
-        var inPvpMap = (source.MapInstance.InstanceId == "arena_battle_ring") && (target.MapInstance.InstanceId == "arena_battle_ring");
+        var inPvpMap = ((source.MapInstance.InstanceId == "arena_battle_ring") && (target.MapInstance.InstanceId == "arena_battle_ring")) 
+                       || ((source.MapInstance.InstanceId == "arena_lava") && (target.MapInstance.InstanceId == "arena_lava"));
+        
         var inGroup = source.Group?.Contains(target) ?? false;
         
         if (inGroup)
@@ -96,7 +98,8 @@ public class RelationshipBehavior
         if (source.Equals(target))
             return false;
 
-        var onPvpMap = (source.MapInstance.InstanceId == "arena_battle_ring") && (target.MapInstance.InstanceId == "arena_battle_ring");
+        var onPvpMap = (source.MapInstance.InstanceId == "arena_battle_ring") && (target.MapInstance.InstanceId == "arena_battle_ring") 
+                       || (source.MapInstance.InstanceId == "arena_lava") && (target.MapInstance.InstanceId == "arena_lava");
         var inGroup = source.Group?.Contains(target) ?? false;
 
         // Comment this if you want friendly fire in PvP maps

@@ -28,8 +28,8 @@ public class ArenaBattleRingScript : DialogScriptBase
     public void HideDialogOptions(Aisling source)
     {
         source.Trackers.Enums.TryGetValue(out ArenaHost stage);
-        //if ((stage != ArenaHost.Host) && (stage != ArenaHost.MasterHost))
-        //  RemoveOption(Subject, "Host Options");   
+        if ((stage != ArenaHost.Host) && (stage != ArenaHost.MasterHost))
+          RemoveOption(Subject, "Host Options");   
     }
 
     /// <inheritdoc />

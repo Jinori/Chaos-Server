@@ -40,40 +40,36 @@ public class AscendingScript : DialogScriptBase
         int beforeBaseValue
     )
     {
-        var attribute = new Attributes();
-
-        switch (attributeType)
-        {
-            case "HP":
-                var hp = new Attributes
-                {
-                    MaximumHp = gain
-                };
-
-                source.StatSheet.Add(hp);
-
-                break;
-            case "MP":
-                var mp = new Attributes
-                {
-                    MaximumMp = gain
-                };
-
-                source.StatSheet.Add(mp);
-
-                break;
-            default:
-                return;
-        }
-
         for (var i = 0; i < timesToAscend; i++)
         {
             var formula = (source.StatSheet.MaximumHp + gain * i) * 500;
 
             if (!ExperienceDistributionScript.TryTakeExp(source, formula))
                 break;
+            
+            switch (attributeType)
+            {
+                case "HP":
+                {
+                    var hp = new Attributes
+                    {
+                        MaximumHp = gain
+                    };
+                    source.StatSheet.Add(hp);
 
-            source.StatSheet.Add(attribute);
+                    break;
+                }
+                case "MP":
+                {
+                    var mp = new Attributes
+                    {
+                        MaximumMp = gain
+                    };
+                    source.StatSheet.Add(mp);
+
+                    break;
+                }
+            }
         }
 
         var newBaseValue = beforeBaseValue + timesToAscend * gain;

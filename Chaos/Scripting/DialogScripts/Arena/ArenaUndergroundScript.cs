@@ -1,10 +1,15 @@
 using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Scripting.MapScripts.Abstractions;
+using Chaos.Scripting.MapScripts.Arena.Lava_Flow;
 using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Arena;
@@ -12,13 +17,20 @@ namespace Chaos.Scripting.DialogScripts.Arena;
 public class ArenaUndergroundScript : DialogScriptBase
 {
     private readonly ISimpleCache SimpleCache;
-
+    private readonly IScriptFactory<IMapScript, MapInstance> ScriptFactory;
+    private readonly Point LavaGreenPoint = new(23, 6);
+    private readonly Point LavaRedPoint = new(8, 5);
+    private readonly Point LavaBluePoint = new(8, 23);
+    private readonly Point LavaGoldPoint = new(23, 21);
+    
+    
     /// <inheritdoc />
-    public ArenaUndergroundScript(Dialog subject, ISimpleCache simpleCache)
-        : base(subject) =>
+    public ArenaUndergroundScript(Dialog subject, ISimpleCache simpleCache, IScriptFactory<IMapScript, MapInstance> scriptFactory)
+        : base(subject)
+    {
         SimpleCache = simpleCache;
-
-    public void HideDialogOptions(Aisling source) => source.Trackers.Enums.TryGetValue(out ArenaHost stage);
+        ScriptFactory = scriptFactory;
+    }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -28,7 +40,135 @@ public class ArenaUndergroundScript : DialogScriptBase
                 HideDialogOptions(source);
 
                 break;
+            
+            case "ophie_startffalavaflowhostnotplayingstart":
+            {
+                var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
+                var script = mapInstance.Script.As<LavaFlowFFAHostNotPlayingScript>();
+                
+                if (script == null) 
+                    mapInstance.AddScript(typeof(LavaFlowFFAHostNotPlayingScript), ScriptFactory);
+                
+                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                {
+                    Point point;
+                    
+                    do 
+                        point = mapInstance.Template.Bounds.GetRandomPoint();
+                    while (mapInstance.IsWall(point) || mapInstance.IsBlockingReactor(point));
+                    
+                    aisling.TraverseMap(mapInstance, point);
+                }
+                
+                source.TraverseMap(mapInstance, new Point(14, 14));
+                Subject.Close(source);
+                break;
+            }
 
+            case "ophie_startffalavaflowhostplayingstart":
+            {
+                var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
+                var script = mapInstance.Script.As<LavaFlowFFAHostPlayingScript>();
+                
+                if (script == null) 
+                    mapInstance.AddScript(typeof(LavaFlowFFAHostPlayingScript), ScriptFactory);
+
+                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                {
+                    Point point;
+
+                    do
+                        point = mapInstance.Template.Bounds.GetRandomPoint();
+                    while (mapInstance.IsWall(point) || mapInstance.IsBlockingReactor(point));
+                    
+                    aisling.TraverseMap(mapInstance, point);
+                }
+                
+                Subject.Close(source);
+                break;
+            }
+            
+            case "ophie_startteamgamelavaflowhostplayingstart":
+            {
+                var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
+                var script = mapInstance.Script.As<LavaFlowTeamsHostPlayingScript>();
+                
+                if (script == null) 
+                    mapInstance.AddScript(typeof(LavaFlowTeamsHostPlayingScript), ScriptFactory);
+
+                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                {
+                    if (!aisling.IsAlive)
+                    {
+                        aisling.IsDead = false;
+                        aisling.StatSheet.SetHealthPct(100);
+                        aisling.StatSheet.SetManaPct(100);
+                        aisling.Client.SendAttributes(StatUpdateType.Vitality);
+                    }
+                    
+                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
+
+                    switch (team)
+                    {
+                        case ArenaTeam.Blue:
+                            aisling.TraverseMap(mapInstance, LavaBluePoint);
+                            break;
+                        case ArenaTeam.Green:
+                            aisling.TraverseMap(mapInstance, LavaGreenPoint);
+                            break;
+                        case ArenaTeam.Gold:
+                            aisling.TraverseMap(mapInstance, LavaGoldPoint);
+                            break;
+                        case ArenaTeam.Red:
+                            aisling.TraverseMap(mapInstance, LavaRedPoint);
+                            break;
+                    }
+                }
+                Subject.Close(source);
+                break;
+            }
+            
+            case "ophie_startteamgamelavaflowhostnotplayingstart":
+            {
+                var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
+                var script = mapInstance.Script.As<LavaFlowTeamsHostNotPlayingScript>();
+                
+                if (script == null) 
+                    mapInstance.AddScript(typeof(LavaFlowTeamsHostNotPlayingScript), ScriptFactory);
+
+                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                {
+                    if (!aisling.IsAlive)
+                    {
+                        aisling.IsDead = false;
+                        aisling.StatSheet.SetHealthPct(100);
+                        aisling.StatSheet.SetManaPct(100);
+                        aisling.Client.SendAttributes(StatUpdateType.Vitality);
+                    }
+                    
+                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
+
+                    switch (team)
+                    {
+                        case ArenaTeam.Blue:
+                            aisling.TraverseMap(mapInstance, LavaBluePoint);
+                            break;
+                        case ArenaTeam.Green:
+                            aisling.TraverseMap(mapInstance, LavaGreenPoint);
+                            break;
+                        case ArenaTeam.Gold:
+                            aisling.TraverseMap(mapInstance, LavaGoldPoint);
+                            break;
+                        case ArenaTeam.Red:
+                            aisling.TraverseMap(mapInstance, LavaRedPoint);
+                            break;
+                    }
+                }
+                
+                source.TraverseMap(mapInstance, new Point(14, 14));
+                Subject.Close(source);
+                break;
+            }
             case "ophie_battlering":
             {
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
@@ -45,8 +185,8 @@ public class ArenaUndergroundScript : DialogScriptBase
                 if (!source.IsAlive)
                 {
                     source.IsDead = false;
-                    source.StatSheet.SetHealthPct(25);
-                    source.StatSheet.SetManaPct(25);
+                    source.StatSheet.SetHealthPct(100);
+                    source.StatSheet.SetManaPct(100);
                     source.Client.SendAttributes(StatUpdateType.Vitality);
                     source.SendActiveMessage("Ophie has revived you.");
                     source.Refresh();
@@ -142,9 +282,15 @@ public class ArenaUndergroundScript : DialogScriptBase
             }
         }
     }
-
-    //if ((stage != ArenaHost.Host) && (stage != ArenaHost.MasterHost))
-    //  RemoveOption(Subject, "Host Options");   
+    
+    
+    public void HideDialogOptions(Aisling source)
+    {
+        source.Trackers.Enums.TryGetValue(out ArenaHost stage);   
+        if ((stage != ArenaHost.Host) && (stage != ArenaHost.MasterHost))
+            RemoveOption(Subject, "Host Options"); 
+    }
+    
     private void RemoveOption(Dialog subject, string optionName)
     {
         if (subject.GetOptionIndex(optionName).HasValue)
