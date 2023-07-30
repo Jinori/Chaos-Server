@@ -67,6 +67,9 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent
             var offenseColor = GetElementColor(mob.StatSheet.OffenseElement);
             var defenseColor = GetElementColor(mob.StatSheet.DefenseElement);
             var message = $"{mob.Name}: Hp: {mob.StatSheet.CurrentHp}  OFFENSE: {offenseColor}  DEFENSE: {defenseColor}";
+            
+            if (group == null)
+                context.SourceAisling?.SendOrangeBarMessage(message);
 
             if (group != null)
                 foreach (var entity in group)
