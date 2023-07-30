@@ -207,6 +207,7 @@ namespace Chaos.Scripting.MapScripts.Arena
 
             foreach (var player in allToPort)
             {
+                player.SendServerMessage(ServerMessageType.OrangeBar2, $"{aisling.Name} has won the round!");
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
                 player.TraverseMap(mapInstance, new Point(12, 10));
             }

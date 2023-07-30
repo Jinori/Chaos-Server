@@ -216,7 +216,19 @@ public sealed class AislingMapperProfile : IMapperProfile<Aisling, AislingSchema
             else if ((helmet != null) && (helmet.Template.IsDyeable || (helmet.Color != DisplayColor.Default)))
                 headColor = helmet.Color;
             else
-                headColor = obj.HairColor;
+            {
+                obj.Trackers.Enums.TryGetValue(out ArenaTeam value);
+
+                headColor = value switch
+                {
+                    ArenaTeam.None  => obj.HairColor,
+                    ArenaTeam.Blue  => DisplayColor.NeonBlue,
+                    ArenaTeam.Green => DisplayColor.NeonGreen,
+                    ArenaTeam.Gold  => DisplayColor.Blonde,
+                    ArenaTeam.Red   => DisplayColor.NeonRed,
+                    _               => obj.HairColor
+                };
+            }
 
             return new DisplayAislingArgs
             {

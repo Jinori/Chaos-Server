@@ -1,6 +1,7 @@
 using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
@@ -9,10 +10,8 @@ namespace Chaos.Scripting.MapScripts.Arena;
 
 public class ArenaUndergroundScript : MapScriptBase
 {
-    private readonly Point GreenPoint = new(16, 6);
-    private readonly Point RedPoint = new(6, 6);
-    private readonly Point BluePoint = new(6, 15);
-    private readonly Point GoldPoint = new(15, 15);
+    private readonly Point CenterWarp = new(11,10);
+    private Point CenterWarpPlayer;
     
     /// <inheritdoc />
     public ArenaUndergroundScript(MapInstance subject)
@@ -36,17 +35,56 @@ public class ArenaUndergroundScript : MapScriptBase
             switch (team)
             {
                 case ArenaTeam.Blue:
-                    aisling.WarpTo(BluePoint);
-                    break;
+                {
+                    var rect = new Rectangle(new Point(12, 4), 4, 3);
+                    aisling.WarpTo(rect.GetRandomPoint());
+                    break;   
+                }
                 case ArenaTeam.Green:
-                    aisling.WarpTo(GreenPoint);
-                    break;
+                {
+                    var rect = new Rectangle(new Point(18, 10), 3, 4);
+                    aisling.WarpTo(rect.GetRandomPoint());
+                    break;   
+                }
                 case ArenaTeam.Gold:
-                    aisling.WarpTo(GoldPoint);
-                    break;
+                {
+                    var rect = new Rectangle(new Point(5, 10), 4, 3);
+                    aisling.WarpTo(rect.GetRandomPoint());
+                    break;   
+                }
                 case ArenaTeam.Red:
-                    aisling.WarpTo(RedPoint);
+                {
+                    var rect = new Rectangle(new Point(11, 17), 4, 3);
+                    aisling.WarpTo(rect.GetRandomPoint());
+                    break;   
+                }
+                case ArenaTeam.None:
+                {
+                    var rect = new Rectangle(new Point(11, 10), 3, 4);
+                    
+                    do
+                    {
+                        CenterWarpPlayer = rect.GetRandomPoint();
+                    } 
+                    while (CenterWarp == CenterWarpPlayer);
+                    
+                    aisling.WarpTo(CenterWarpPlayer);
                     break;
+                }
+                default:
+                {
+                    var rect = new Rectangle(new Point(11, 10), 3, 4);
+                    
+                    do
+                    {
+                        CenterWarpPlayer = rect.GetRandomPoint();
+                    } 
+                    while (CenterWarp == CenterWarpPlayer);
+                    
+                    aisling.Trackers.Enums.Set(ArenaTeam.None);
+                    aisling.WarpTo(CenterWarpPlayer);
+                    break;
+                }
             }
         }
     }

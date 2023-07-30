@@ -22,6 +22,8 @@ public class ArenaUndergroundScript : DialogScriptBase
     private readonly Point LavaRedPoint = new(8, 5);
     private readonly Point LavaBluePoint = new(8, 23);
     private readonly Point LavaGoldPoint = new(23, 21);
+    private readonly Point CenterWarp = new(11,10);
+    private Point CenterWarpPlayer;
     
     
     /// <inheritdoc />
@@ -227,7 +229,8 @@ public class ArenaUndergroundScript : DialogScriptBase
 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
                 aisling?.Trackers.Enums.Set(ArenaTeam.Red);
-                aisling?.WarpTo(new Point(6, 6));
+                var rect = new Rectangle(new Point(11, 17), 4, 3);
+                aisling?.WarpTo(rect.GetRandomPoint());
                 aisling?.SendActiveMessage("You've been placed on the Red team!");
 
                 break;
@@ -243,7 +246,8 @@ public class ArenaUndergroundScript : DialogScriptBase
 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
                 aisling?.Trackers.Enums.Set(ArenaTeam.Green);
-                aisling?.WarpTo(new Point(15, 6));
+                var rect = new Rectangle(new Point(18, 10), 3, 4);
+                aisling?.WarpTo(rect.GetRandomPoint());
                 aisling?.SendActiveMessage("You've been placed on the Green team!");
 
                 break;
@@ -259,7 +263,8 @@ public class ArenaUndergroundScript : DialogScriptBase
 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
                 aisling?.Trackers.Enums.Set(ArenaTeam.Gold);
-                aisling?.WarpTo(new Point(15, 15));
+                var rect = new Rectangle(new Point(5, 10), 4, 3);
+                aisling?.WarpTo(rect.GetRandomPoint());
                 aisling?.SendActiveMessage("You've been placed on the Gold team!");
 
                 break;
@@ -275,9 +280,32 @@ public class ArenaUndergroundScript : DialogScriptBase
 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
                 aisling?.Trackers.Enums.Set(ArenaTeam.Blue);
-                aisling?.WarpTo(new Point(6, 15));
+                var rect = new Rectangle(new Point(12, 4), 4, 3);
+                aisling?.WarpTo(rect.GetRandomPoint());
                 aisling?.SendActiveMessage("You've been placed on the Blue team!");
 
+                break;
+            }
+            case "ophie_removeteamconfirm":
+            {
+                if (!Subject.MenuArgs.TryGet<string>(0, out var playerToPlace))
+                {
+                    Subject.ReplyToUnknownInput(source);
+
+                    return;
+                }
+                
+                var rect = new Rectangle(new Point(11, 10), 3, 4);
+                    
+                do
+                {
+                    CenterWarpPlayer = rect.GetRandomPoint();
+                } 
+                while (CenterWarp == CenterWarpPlayer);
+                
+                var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
+                aisling?.Trackers.Enums.Set(ArenaTeam.None);
+                aisling?.WarpTo(CenterWarpPlayer);
                 break;
             }
         }
