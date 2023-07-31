@@ -26,7 +26,7 @@ public static class TargetFilterExtensions
         TargetFilter.NonMerchantsOnly => target is not Merchant,
         TargetFilter.SelfOnly => source.Equals(target),
         TargetFilter.OthersOnly => !source.Equals(target),
-        TargetFilter.GroupOnly => source is Aisling { Group: not null } aisling && aisling.Group.Contains(target, WorldEntity.IdComparer),
+        TargetFilter.GroupOnly => source.Equals(target) || source is Aisling { Group: not null } aisling && aisling.Group.Contains(target, WorldEntity.IdComparer),
         _ => throw new ArgumentOutOfRangeException(nameof(filter), filter, null)
     };
 
