@@ -25,11 +25,19 @@ public class WildernessGatheringScript : MapScriptBase
             81,
             14,
             11);
+        
+        var wildernessicerectangle = new Rectangle(
+            200,
+            0,
+            53,
+            58);
 
         var cottonpoints = new HashSet<Point>();
         var wildernesscherrypoints = new HashSet<Point>();
-        var count1 = cottonrectangle.Area / 4;
-        var count2 = wildernesscherryrectangle.Area / 4;
+        var icepoints = new HashSet<Point>();
+        var count1 = cottonrectangle.Area / 6;
+        var count2 = wildernesscherryrectangle.Area / 6;
+        var count3 = wildernessicerectangle.Area / 90;
 
         for (var i = 0; i < count1; i++)
         {
@@ -41,6 +49,12 @@ public class WildernessGatheringScript : MapScriptBase
         {
             var wildernesscherrypoint = wildernesscherryrectangle.GetRandomPoint();
             wildernesscherrypoints.Add(wildernesscherrypoint);
+        }
+        
+        for (var i = 0; i < count3; i++)
+        {
+            var wildernessicepoints = wildernessicerectangle.GetRandomPoint();
+            icepoints.Add(wildernessicepoints);
         }
 
         foreach (var cottonpoint in cottonpoints)
@@ -61,6 +75,16 @@ public class WildernessGatheringScript : MapScriptBase
                 wildernesscherrypoint);
 
             Subject.SimpleAdd(wildernesscherry);
+        }
+        
+        foreach (var wildernessicepoints in icepoints)
+        {
+            var ice = ReactorTileFactory.Create(
+                "ice",
+                Subject,
+                wildernessicepoints);
+
+            Subject.SimpleAdd(ice);
         }
     }
 }

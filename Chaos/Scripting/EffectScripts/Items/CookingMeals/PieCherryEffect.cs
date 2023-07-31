@@ -4,7 +4,7 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Foods;
 
-public class SweetBunsEffect : NonOverwritableEffectBase
+public class PieCherryEffect : NonOverwritableEffectBase
 {
     protected override Animation? Animation { get; } = new()
     {
@@ -13,12 +13,26 @@ public class SweetBunsEffect : NonOverwritableEffectBase
     };
     protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
     {
-        "Sweet Buns"
+        "Dinner Plate",
+        "Sweet Buns",
+        "Fruit Basket",
+        "Lobster Dinner",
+        "Acorn Pie",
+        "Apple Pie",
+        "Cherry Pie",
+        "Grape Pie",
+        "Greengrapes Pie",
+        "Strawberry Pie",
+        "Tangerines Pie",
+        "Salad",
+        "Sandwich",
+        "Soup",
+        "Steak Meal",
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(2);
+    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(15);
     public override byte Icon => 72;
-    public override string Name => "Sweet Buns";
+    public override string Name => "Cherry Pie";
     protected override byte? Sound => 115;
 
     public override void OnApplied()
@@ -27,12 +41,15 @@ public class SweetBunsEffect : NonOverwritableEffectBase
 
         var attributes = new Attributes
         {
-            AtkSpeedPct = 40
+            MaximumMp = 200
         };
 
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed increased.");
+
+        AislingSubject?.Client.SendServerMessage(
+            ServerMessageType.OrangeBar1,
+            "Your ability to cast spells has increased.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -41,11 +58,11 @@ public class SweetBunsEffect : NonOverwritableEffectBase
     {
         var attributes = new Attributes
         {
-            AtkSpeedPct = 40
+            MaximumMp = 200
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed has returned to normal.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your ability to cast spells has returned to normal.");
     }
 }

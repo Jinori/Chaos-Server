@@ -479,7 +479,8 @@ public enum CookFoodStage
     sandwich = 6,
     soup = 7,
     steakmeal = 8,
-    sweetbuns = 9
+    sweetbuns = 9,
+    popsicle = 10
 }
 
 [Flags]
@@ -598,7 +599,9 @@ public enum ExtraIngredientsStage
     cheese = 2,
     flour = 3,
     marinade = 4,
-    salt = 5
+    salt = 5,
+    ice = 6,
+    sugar = 7
 }
 
 public enum ExtraIngredientsStage2
@@ -608,7 +611,9 @@ public enum ExtraIngredientsStage2
     cheese = 2,
     flour = 3,
     marinade = 4,
-    salt = 5
+    salt = 5,
+    ice = 6,
+    sugar = 7
 }
 
 public enum ExtraIngredientsStage3
@@ -618,7 +623,9 @@ public enum ExtraIngredientsStage3
     cheese = 2,
     flour = 3,
     marinade = 4,
-    salt = 5
+    salt = 5,
+    ice = 6,
+    sugar = 7
 }
 
 [Flags]
@@ -633,7 +640,8 @@ public enum CookingRecipes
     Sandwich = 1 << 5,
     Soup = 1 << 6,
     SteakMeal = 1 << 7,
-    SweetBuns = 1 << 8
+    SweetBuns = 1 << 8,
+    Popsicle = 1 << 9,
 }
 #endregion
 

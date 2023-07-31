@@ -5,11 +5,11 @@ namespace Chaos.Scripting.Behaviors;
 
 public class RelationshipBehavior
 {
-    protected virtual bool IsFriendlyto(Aisling source, Merchant target) => true;
+    protected virtual bool IsFriendlyTo(Aisling source, Merchant target) => true;
 
-    protected virtual bool IsFriendlyto(Merchant source, Merchant target) => source.Equals(target);
+    protected virtual bool IsFriendlyTo(Merchant source, Merchant target) => source.Equals(target);
 
-    protected virtual bool IsFriendlyto(Monster source, Merchant target) => false;
+    protected virtual bool IsFriendlyTo(Monster source, Merchant target) => false;
 
     public virtual bool IsFriendlyTo(Creature source, Creature target) => source switch
     {

@@ -102,6 +102,11 @@ public class CookingScript : ConfigurableDialogScriptBase
                     var item = ItemFactory.CreateFaux("sweetbuns");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.Popsicle))
+                {
+                    var item = ItemFactory.CreateFaux("popsicle");
+                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                }
 
                 if (Subject.Items.Count == 0)
                     Subject.Reply(
@@ -220,6 +225,18 @@ public class CookingScript : ConfigurableDialogScriptBase
 
                         return;
                     }
+                    case "popsicle":
+                    {
+                        source.Trackers.Enums.Set(CookFoodStage.popsicle);
+                        Subject.Reply(source, "Skip", "cooking_directory");
+                        
+                        return;
+                    }
+                        if (source.Trackers.Flags.HasFlag(CookingRecipes.Popsicle))
+                        {
+                            var item = ItemFactory.CreateFaux("popsicle");
+                            Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
                 }
 
                 break;
@@ -857,6 +874,66 @@ public class CookingScript : ConfigurableDialogScriptBase
                         if (!extraIngredientsStage3 && (eStage != ExtraIngredientsStage.salt) && (eStage2 != ExtraIngredientsStage2.salt))
                         {
                             source.Trackers.Enums.Set(ExtraIngredientsStage3.salt);
+                            Subject.Reply(source, "Skip", "cooking_directory");
+
+                            return;
+                        }
+
+                        Subject.Reply(source, "This ingredient is already being used in this recipe.", "cooking_directory");
+
+                        return;
+                    }
+                    case "sugar":
+                    {
+                        if (!extraIngredientsStage)
+                        {
+                            source.Trackers.Enums.Set(ExtraIngredientsStage.sugar);
+                            Subject.Reply(source, "Skip", "cooking_directory");
+
+                            return;
+                        }
+
+                        if (!extraIngredientsStage2 && (eStage != ExtraIngredientsStage.sugar))
+                        {
+                            source.Trackers.Enums.Set(ExtraIngredientsStage2.sugar);
+                            Subject.Reply(source, "Skip", "cooking_directory");
+
+                            return;
+                        }
+
+                        if (!extraIngredientsStage3 && (eStage != ExtraIngredientsStage.sugar) && (eStage2 != ExtraIngredientsStage2.sugar))
+                        {
+                            source.Trackers.Enums.Set(ExtraIngredientsStage3.sugar);
+                            Subject.Reply(source, "Skip", "cooking_directory");
+
+                            return;
+                        }
+
+                        Subject.Reply(source, "This ingredient is already being used in this recipe.", "cooking_directory");
+
+                        return;
+                    }
+                    case "ice":
+                    {
+                        if (!extraIngredientsStage)
+                        {
+                            source.Trackers.Enums.Set(ExtraIngredientsStage.ice);
+                            Subject.Reply(source, "Skip", "cooking_directory");
+
+                            return;
+                        }
+
+                        if (!extraIngredientsStage2 && (eStage != ExtraIngredientsStage.ice))
+                        {
+                            source.Trackers.Enums.Set(ExtraIngredientsStage2.ice);
+                            Subject.Reply(source, "Skip", "cooking_directory");
+
+                            return;
+                        }
+
+                        if (!extraIngredientsStage3 && (eStage != ExtraIngredientsStage.ice) && (eStage2 != ExtraIngredientsStage2.ice))
+                        {
+                            source.Trackers.Enums.Set(ExtraIngredientsStage3.ice);
                             Subject.Reply(source, "Skip", "cooking_directory");
 
                             return;

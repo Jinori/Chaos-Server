@@ -105,6 +105,7 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(CookingRecipes.Soup);
                 source.Trackers.Flags.AddFlag(CookingRecipes.SteakMeal);
                 source.Trackers.Flags.AddFlag(CookingRecipes.SweetBuns);
+                source.Trackers.Flags.AddFlag(CookingRecipes.Popsicle);
                 source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDwarvishLeather);
                 source.Trackers.Flags.AddFlag(CraftedArmors.RefinedJourneyman);
                 source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGaluchatCoat);
