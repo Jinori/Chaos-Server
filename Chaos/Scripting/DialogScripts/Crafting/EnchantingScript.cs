@@ -82,8 +82,7 @@ public class EnchantingScript : DialogScriptBase
         "Soothing",
         "Persisting",
         "Blazing",
-        "Howling"
-    };
+        "Howling" };
 
     /// <inheritdoc />
     public EnchantingScript(
@@ -249,7 +248,7 @@ public class EnchantingScript : DialogScriptBase
             return;
         }
 
-        if (Prefix.Any(item.DisplayName.Contains))
+        if (Prefix.Any(prefix => item.DisplayName.StartsWith(prefix + " ", StringComparison.OrdinalIgnoreCase)))
         {
             Subject.Close(source);
             var dialog = DialogFactory.Create("enchanting_disenchant", Subject.DialogSource);
@@ -334,7 +333,7 @@ public class EnchantingScript : DialogScriptBase
                 Subject.Reply(
                     source,
                     "You do not have any recipes to craft. Check your recipe book (F1 Menu) to see your recipes and their requirements.",
-                    "weaponsmithing_initial");
+                    "enchanting_initial");
         }
     }
 
@@ -347,7 +346,7 @@ public class EnchantingScript : DialogScriptBase
             return;
         }
 
-        var correctRecipe = Regex.Replace(selected, @"\s+|'s", "");
+        var correctRecipe = Regex.Replace(selected, @"\s+|'s|'", "");
 
         if (!Enum.TryParse<EnchantingRecipes>(correctRecipe, out var selectedRecipeEnum))
         {

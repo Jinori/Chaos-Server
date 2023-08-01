@@ -18,7 +18,7 @@ public class SkillfulPrefixScript : ItemScriptBase, IEnchantmentScript
         var attributes = new Attributes
         {
             SkillDamagePct = 3,
-            AtkSpeedPct = -15
+            AtkSpeedPct = 15
         };
 
         subject.Modifiers.Add(attributes);
