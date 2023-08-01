@@ -194,80 +194,81 @@ public sealed class AislingMapperProfile : IMapperProfile<Aisling, AislingSchema
 
     DisplayAislingArgs IMapperProfile<Aisling, DisplayAislingArgs>.Map(Aisling obj)
     {
+        var hasArenaTeam = obj.Trackers.Enums.TryGetValue(out ArenaTeam value);
+        var weapon = obj.Equipment[EquipmentSlot.Weapon];
+        var armor = obj.Equipment[EquipmentSlot.Armor];
+        var shield = obj.Equipment[EquipmentSlot.Shield];
+        var overHelm = obj.Equipment[EquipmentSlot.OverHelm];
+        var helmet = obj.Equipment[EquipmentSlot.Helmet];
+        var boots = obj.Equipment[EquipmentSlot.Boots];
+        var acc1 = obj.Equipment[EquipmentSlot.Accessory1];
+        var acc2 = obj.Equipment[EquipmentSlot.Accessory2];
+        var acc3 = obj.Equipment[EquipmentSlot.Accessory3];
+        var overcoat = obj.Equipment[EquipmentSlot.Overcoat];
+        var pantsColor = overcoat?.Template.PantsColor ?? armor?.Template.PantsColor;
+
+        DisplayColor headColor;
+
+        //use overhelm color if it is dyeable or if it is not default
+        if ((overHelm != null) && (overHelm.Template.IsDyeable || (overHelm.Color != DisplayColor.Default)))
+            headColor = overHelm.Color;
+        //use helmet color if it is dyeable or if it is not default
+        else if ((helmet != null) && (helmet.Template.IsDyeable || (helmet.Color != DisplayColor.Default)))
+            headColor = helmet.Color;
+        else
+            headColor = obj.HairColor;
+        
+        if (hasArenaTeam)
         {
-            var weapon = obj.Equipment[EquipmentSlot.Weapon];
-            var armor = obj.Equipment[EquipmentSlot.Armor];
-            var shield = obj.Equipment[EquipmentSlot.Shield];
-            var overHelm = obj.Equipment[EquipmentSlot.OverHelm];
-            var helmet = obj.Equipment[EquipmentSlot.Helmet];
-            var boots = obj.Equipment[EquipmentSlot.Boots];
-            var acc1 = obj.Equipment[EquipmentSlot.Accessory1];
-            var acc2 = obj.Equipment[EquipmentSlot.Accessory2];
-            var acc3 = obj.Equipment[EquipmentSlot.Accessory3];
-            var overcoat = obj.Equipment[EquipmentSlot.Overcoat];
-            var pantsColor = overcoat?.Template.PantsColor ?? armor?.Template.PantsColor;
-
-            DisplayColor headColor;
-
-            //use overhelm color if it is dyeable or if it is not default
-            if ((overHelm != null) && (overHelm.Template.IsDyeable || (overHelm.Color != DisplayColor.Default)))
-                headColor = overHelm.Color;
-            //use helmet color if it is dyeable or if it is not default
-            else if ((helmet != null) && (helmet.Template.IsDyeable || (helmet.Color != DisplayColor.Default)))
-                headColor = helmet.Color;
-            else
+            headColor = value switch
             {
-                obj.Trackers.Enums.TryGetValue(out ArenaTeam value);
-
-                headColor = value switch
-                {
-                    ArenaTeam.None  => obj.HairColor,
-                    ArenaTeam.Blue  => DisplayColor.NeonBlue,
-                    ArenaTeam.Green => DisplayColor.NeonGreen,
-                    ArenaTeam.Gold  => DisplayColor.Blonde,
-                    ArenaTeam.Red   => DisplayColor.NeonRed,
-                    _               => obj.HairColor
-                };
-            }
-
-            return new DisplayAislingArgs
-            {
-                AccessoryColor1 = acc1?.Color ?? DisplayColor.Default,
-                AccessoryColor2 = acc2?.Color ?? DisplayColor.Default,
-                AccessoryColor3 = acc3?.Color ?? DisplayColor.Default,
-                AccessorySprite1 = acc1?.ItemSprite.DisplaySprite ?? 0,
-                AccessorySprite2 = acc2?.ItemSprite.DisplaySprite ?? 0,
-                AccessorySprite3 = acc3?.ItemSprite.DisplaySprite ?? 0,
-                ArmorSprite1 = armor?.ItemSprite.DisplaySprite ?? 0, //TODO: figure this out again cuz i deleted it
-                ArmorSprite2 = armor?.ItemSprite.DisplaySprite ?? 0,
-                BodyColor = obj.BodyColor,
-                BodySprite = obj.BodySprite,
-                PantsColor = pantsColor,
-                BootsColor = boots?.Color ?? DisplayColor.Default,
-                BootsSprite = (byte)(boots?.ItemSprite.DisplaySprite ?? 0),
-                Direction = obj.Direction,
-                FaceSprite = (byte)obj.FaceSprite,
-                Gender = obj.Gender,
-                GroupBoxText = null,
-                HeadColor = headColor,
-                HeadSprite = overHelm?.ItemSprite.DisplaySprite
-                             ?? helmet?.ItemSprite.DisplaySprite ?? (ushort)obj.HairStyle,
-                Id = obj.Id,
-                IsDead = obj.IsDead,
-                IsTransparent = obj.Visibility is VisibilityType.Hidden or VisibilityType.TrueHidden or VisibilityType.GmHidden,
-                LanternSize = obj.LanternSize,
-                Name = obj.Name,
-                NameTagStyle = NameTagStyle.NeutralHover, //this is a default value
-                OvercoatColor = overcoat?.Color ?? DisplayColor.Default,
-                OvercoatSprite = overcoat?.ItemSprite.DisplaySprite ?? 0,
-                X = obj.X,
-                Y = obj.Y,
-                RestPosition = obj.RestPosition,
-                ShieldSprite = (byte)(shield?.ItemSprite.DisplaySprite ?? 0),
-                Sprite = obj.Sprite == 0 ? null : obj.Sprite,
-                WeaponSprite = weapon?.ItemSprite.DisplaySprite ?? 0
-            };
+                ArenaTeam.None  => obj.HairColor,
+                ArenaTeam.Blue  => DisplayColor.NeonBlue,
+                ArenaTeam.Green => DisplayColor.NeonGreen,
+                ArenaTeam.Gold  => DisplayColor.Blonde,
+                ArenaTeam.Red   => DisplayColor.NeonRed,
+                _               => obj.HairColor
+            };            
         }
+
+
+        return new DisplayAislingArgs
+        {
+            AccessoryColor1 = acc1?.Color ?? DisplayColor.Default,
+            AccessoryColor2 = acc2?.Color ?? DisplayColor.Default,
+            AccessoryColor3 = acc3?.Color ?? DisplayColor.Default,
+            AccessorySprite1 = acc1?.ItemSprite.DisplaySprite ?? 0,
+            AccessorySprite2 = acc2?.ItemSprite.DisplaySprite ?? 0,
+            AccessorySprite3 = acc3?.ItemSprite.DisplaySprite ?? 0,
+            ArmorSprite1 = armor?.ItemSprite.DisplaySprite ?? 0, //TODO: figure this out again cuz i deleted it
+            ArmorSprite2 = armor?.ItemSprite.DisplaySprite ?? 0,
+            BodyColor = obj.BodyColor,
+            BodySprite = obj.BodySprite,
+            PantsColor = pantsColor,
+            BootsColor = boots?.Color ?? DisplayColor.Default,
+            BootsSprite = (byte)(boots?.ItemSprite.DisplaySprite ?? 0),
+            Direction = obj.Direction,
+            FaceSprite = (byte)obj.FaceSprite,
+            Gender = obj.Gender,
+            GroupBoxText = null,
+            HeadColor = headColor,
+            HeadSprite = hasArenaTeam ? (ushort)obj.HairStyle : overHelm?.ItemSprite.DisplaySprite
+                         ?? helmet?.ItemSprite.DisplaySprite ?? (ushort)obj.HairStyle,
+            Id = obj.Id,
+            IsDead = obj.IsDead,
+            IsTransparent = obj.Visibility is VisibilityType.Hidden or VisibilityType.TrueHidden or VisibilityType.GmHidden,
+            LanternSize = obj.LanternSize,
+            Name = obj.Name,
+            NameTagStyle = NameTagStyle.NeutralHover, //this is a default value
+            OvercoatColor = overcoat?.Color ?? DisplayColor.Default,
+            OvercoatSprite = overcoat?.ItemSprite.DisplaySprite ?? 0,
+            X = obj.X,
+            Y = obj.Y,
+            RestPosition = obj.RestPosition,
+            ShieldSprite = (byte)(shield?.ItemSprite.DisplaySprite ?? 0),
+            Sprite = obj.Sprite == 0 ? null : obj.Sprite,
+            WeaponSprite = weapon?.ItemSprite.DisplaySprite ?? 0
+        };
     }
 
     public Aisling Map(ProfileArgs obj) => throw new NotImplementedException();

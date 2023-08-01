@@ -1,6 +1,7 @@
 using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Storage.Abstractions;
@@ -18,6 +19,7 @@ namespace Chaos.Scripting.MapScripts.Arena
         private int MorphCount;
         private bool WinnerDeclared;
         private IIntervalTimer MorphTimer { get; }
+        private IIntervalTimer ArenaUpdateTimer { get; }
         
         public abstract List<string> MorphTemplateKeys { get; set; }
         public abstract string MorphOriginalTemplateKey { get; set; }
@@ -33,10 +35,25 @@ namespace Chaos.Scripting.MapScripts.Arena
         {
             SimpleCache = simpleCache;
             MorphTimer = new IntervalTimer(TimeSpan.FromSeconds(30), false);
+            ArenaUpdateTimer = new IntervalTimer(TimeSpan.FromSeconds(2), false);
         }
 
         public override void Update(TimeSpan delta)
         {
+            ArenaUpdateTimer.Update(delta);
+            MorphTimer.Update(delta);
+
+            if (ShouldMapShrink)
+            {
+                if (MorphTimer.IntervalElapsed && (MorphCount < MorphTemplateKeys.Count))
+                {
+                    MorphMap();
+                }
+            }
+            
+            if (!ArenaUpdateTimer.IntervalElapsed)
+                return;
+            
             var allAislings = Subject.GetEntities<Aisling>().ToList();
 
             if (!allAislings.Any(x => x.IsAlive))
@@ -45,17 +62,7 @@ namespace Chaos.Scripting.MapScripts.Arena
                 WinnerDeclared = false;
                 return;   
             }
-
-            if (ShouldMapShrink)
-            {
-                MorphTimer.Update(delta);
-
-                if (MorphTimer.IntervalElapsed && (MorphCount < MorphTemplateKeys.Count))
-                {
-                    MorphMap();
-                }
-            }
-
+            
             if (TeamGame)
             {
                 if (!WinnerDeclared)
@@ -75,8 +82,10 @@ namespace Chaos.Scripting.MapScripts.Arena
                 {
                     var aliveAislings = GetAliveAislings(allAislings);
 
-                    // If there is only one alive player left, and the host is not playing, declare them as the winner.
-                    if ((aliveAislings.Count == 1) && (!IsHostPlaying || IsHost(aliveAislings.First())))
+                    if (IsHostPlaying && (aliveAislings.Count == 1))
+                        DeclareIndividualWinner(aliveAislings.First());
+                    
+                    else if ((aliveAislings.Count == 1) && (!IsHostPlaying || IsHost(aliveAislings.First())))
                     {
                         DeclareIndividualWinner(aliveAislings.First());
                     }                    
@@ -161,6 +170,7 @@ namespace Chaos.Scripting.MapScripts.Arena
             }
 
 
+            var allHosts = Subject.GetEntities<Aisling>().Where(IsHost);
             var allToPort = Subject.GetEntities<Aisling>();
 
             foreach (var player in allToPort)
@@ -189,11 +199,14 @@ namespace Chaos.Scripting.MapScripts.Arena
                 }
             }
 
-            foreach (var enabledScript in Subject.ScriptKeys)
+            foreach (var host in allHosts)
             {
-                Subject.ScriptKeys.Remove(enabledScript);
+                host.SendServerMessage(ServerMessageType.OrangeBar2, $"{winningTeam} has won the round!");
+                var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
+                host.TraverseMap(mapInstance, new Point(12, 10));
             }
-
+            
+            Subject.RemoveScript<IMapScript, ArenaScriptBase>();
             WinnerDeclared = true;
             ResetMaps();
         }
@@ -219,10 +232,7 @@ namespace Chaos.Scripting.MapScripts.Arena
                 host.TraverseMap(mapInstance, new Point(12, 10));
             }
 
-            foreach (var enabledScript in Subject.ScriptKeys)
-            {
-                Subject.ScriptKeys.Remove(enabledScript);
-            }
+            Subject.RemoveScript<IMapScript, ArenaScriptBase>();
 
             WinnerDeclared = true;
             ResetMaps();

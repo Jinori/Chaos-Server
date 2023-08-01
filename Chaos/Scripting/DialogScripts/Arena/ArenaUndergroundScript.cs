@@ -304,7 +304,7 @@ public class ArenaUndergroundScript : DialogScriptBase
                 while (CenterWarp == CenterWarpPlayer);
                 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
-                aisling?.Trackers.Enums.Set(ArenaTeam.None);
+                aisling?.Trackers.Enums.Remove<ArenaTeam>();
                 aisling?.WarpTo(CenterWarpPlayer);
                 break;
             }
