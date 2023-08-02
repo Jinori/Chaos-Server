@@ -7,6 +7,7 @@ using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
+using Humanizer;
 
 namespace Chaos.Scripting.MapScripts.Arena
 {
@@ -20,6 +21,12 @@ namespace Chaos.Scripting.MapScripts.Arena
         private bool WinnerDeclared;
         private IIntervalTimer MorphTimer { get; }
         private IIntervalTimer ArenaUpdateTimer { get; }
+        
+        private DateTime? AnnouncedStart;
+        private bool AnnouncedTwentySecondStart;
+        private bool CountdownStarted;
+        private int CountdownStep;
+        private DateTime LastCountdownTime;
         
         public abstract List<string> MorphTemplateKeys { get; set; }
         public abstract string MorphOriginalTemplateKey { get; set; }
@@ -42,6 +49,44 @@ namespace Chaos.Scripting.MapScripts.Arena
         {
             ArenaUpdateTimer.Update(delta);
             MorphTimer.Update(delta);
+
+            if (!AnnouncedTwentySecondStart)
+            {
+                AnnouncedStart = DateTime.UtcNow;
+                AnnouncedTwentySecondStart = true;
+                
+                var allPlayers = Subject.GetEntities<Aisling>().ToList();
+                foreach (var player in allPlayers)
+                {
+                    player.SendActiveMessage("Match begins in twenty seconds!");
+                }
+            }
+
+            else if (AnnouncedStart.HasValue && (DateTime.UtcNow.Subtract(AnnouncedStart.Value).TotalSeconds >= 10) && !CountdownStarted)
+            {
+                var allPlayers = Subject.GetEntities<Aisling>().ToList();
+                foreach (var player in allPlayers)
+                {
+                    player.SendActiveMessage("Match begins in ten seconds!");
+                }
+                CountdownStarted = true;
+                CountdownStep = 9;
+                LastCountdownTime = DateTime.UtcNow;
+            }
+            else if (CountdownStarted && (CountdownStep >= 0))
+                if (DateTime.UtcNow.Subtract(LastCountdownTime).TotalSeconds >= 1)
+                {
+                    var allPlayers = Subject.GetEntities<Aisling>().ToList();
+
+                    foreach (var player in allPlayers)
+                    {
+                        var message = CountdownStep > 0 ? CountdownStep.ToWords().Titleize() : "Go! Match Start!";
+                        player.SendActiveMessage(message);
+                    }
+
+                    LastCountdownTime = DateTime.UtcNow;
+                    CountdownStep--;
+                }
 
             if (ShouldMapShrink)
             {

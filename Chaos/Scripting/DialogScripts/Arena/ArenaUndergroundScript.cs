@@ -6,6 +6,7 @@ using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.Networking.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
@@ -24,12 +25,15 @@ public class ArenaUndergroundScript : DialogScriptBase
     private readonly Point LavaGoldPoint = new(23, 21);
     private readonly Point CenterWarp = new(11,10);
     private Point CenterWarpPlayer;
+    private readonly IClientRegistry<IWorldClient> ClientRegistry;
     
     
     /// <inheritdoc />
-    public ArenaUndergroundScript(Dialog subject, ISimpleCache simpleCache, IScriptFactory<IMapScript, MapInstance> scriptFactory)
+    public ArenaUndergroundScript(Dialog subject, ISimpleCache simpleCache, IScriptFactory<IMapScript, MapInstance> scriptFactory,
+        IClientRegistry<IWorldClient> clientRegistry)
         : base(subject)
     {
+        ClientRegistry = clientRegistry;
         SimpleCache = simpleCache;
         ScriptFactory = scriptFactory;
     }
@@ -42,6 +46,22 @@ public class ArenaUndergroundScript : DialogScriptBase
                 HideDialogOptions(source);
 
                 break;
+
+            case "ophie_skandaragauntlet":
+            {
+                foreach (var aisling in ClientRegistry)
+                    aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"Arena Host {source.Name} is announcing a Skandara's Gauntlet!");
+
+                break;
+            }
+            
+            case "ophie_serendaelsandbox":
+            {
+                foreach (var aisling in ClientRegistry)
+                    aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"Arena Host {source.Name} is announcing a Serendael's Sandbox!");
+
+                break;
+            }
             
             case "ophie_startffalavaflowhostnotplayingstart":
             {
