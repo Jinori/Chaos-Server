@@ -2,29 +2,26 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss;
+namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.MantisBoss.Mantis3;
 
-public class DefaultBossScript : CompositeMonsterScript
+public class MythicMantisBoss3Script : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
+        GetScriptKey(typeof(MythicMantis3MoveToTargetScript)),
         GetScriptKey(typeof(DefaultBehaviorsScript)),
-        GetScriptKey(typeof(BossRoomHazardScript)),
-        GetScriptKey(typeof(BossThrowHazardousScript)),
-        GetScriptKey(typeof(BossMoveToTargetScript)),
-        GetScriptKey(typeof(BossDefenseScript)),
-        GetScriptKey(typeof(BossEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),
+        GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(DeathScript)),
         GetScriptKey(typeof(DisplayNameScript))
     };
 
     /// <inheritdoc />
-    public DefaultBossScript(IScriptProvider scriptProvider, Monster subject)
+    public MythicMantisBoss3Script(IScriptProvider scriptProvider, Monster subject)
     {
         if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript compositeScript)
             throw new InvalidOperationException("Unable to create componentized script");

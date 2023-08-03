@@ -2,18 +2,15 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss;
+namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.Horse1;
 
-public class DefaultBossScript : CompositeMonsterScript
+public class HorseBoss1Script : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
-        GetScriptKey(typeof(BossRoomHazardScript)),
-        GetScriptKey(typeof(BossThrowHazardousScript)),
-        GetScriptKey(typeof(BossMoveToTargetScript)),
         GetScriptKey(typeof(BossDefenseScript)),
-        GetScriptKey(typeof(BossEnrageScript)),
+        GetScriptKey(typeof(HorseBoss1EnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
@@ -24,7 +21,7 @@ public class DefaultBossScript : CompositeMonsterScript
     };
 
     /// <inheritdoc />
-    public DefaultBossScript(IScriptProvider scriptProvider, Monster subject)
+    public HorseBoss1Script(IScriptProvider scriptProvider, Monster subject)
     {
         if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript compositeScript)
             throw new InvalidOperationException("Unable to create componentized script");

@@ -27,19 +27,19 @@ public class InspectItemComponent : IComponent
                           + $"\nMax Stack: {item.Template.MaxStacks}"
                           + $"\nSkill Damage: {item.Modifiers.FlatSkillDamage}"
                           + $"\nSpell Damage: {item.Modifiers.FlatSpellDamage}"
-                          + $"\nHealth: {item.Template.Modifiers?.MaximumHp}"
-                          + $"\nMana: {item.Template.Modifiers?.MaximumMp}"
-                          + $"\nAttack Speed %: {item.Template.Modifiers?.AtkSpeedPct}"
-                          + $"\nMagic Resistance: {item.Template.Modifiers?.MagicResistance}"
-                          + $"\nStrength: {item.Template.Modifiers?.Str}"
-                          + $"\nIntelligence: {item.Template.Modifiers?.Int}"
-                          + $"\nWisdom: {item.Template.Modifiers?.Wis}"
-                          + $"\nConstitution: {item.Template.Modifiers?.Con}"
-                          + $"\nDexterity: {item.Template.Modifiers?.Dex}"
-                          + $"\nDMG: {item.Template.Modifiers?.Dmg}"
-                          + $"\nHIT: {item.Template.Modifiers?.Hit}"
-                          + $"\nSkill Pct Damage: {item.Template.Modifiers?.SkillDamagePct}"
-                          + $"\nSpell Pct Damage: {item.Template.Modifiers?.SpellDamagePct}";
+                          + $"\nHealth: {item.Modifiers?.MaximumHp}"
+                          + $"\nMana: {item.Modifiers?.MaximumMp}"
+                          + $"\nAttack Speed %: {item.Modifiers?.AtkSpeedPct}"
+                          + $"\nMagic Resistance: {item.Modifiers?.MagicResistance}"
+                          + $"\nStrength: {item.Modifiers?.Str}"
+                          + $"\nIntelligence: {item.Modifiers?.Int}"
+                          + $"\nWisdom: {item.Modifiers?.Wis}"
+                          + $"\nConstitution: {item.Modifiers?.Con}"
+                          + $"\nDexterity: {item.Modifiers?.Dex}"
+                          + $"\nDMG: {item.Modifiers?.Dmg}"
+                          + $"\nHIT: {item.Modifiers?.Hit}"
+                          + $"\nSkill Pct Damage: {item.Modifiers?.SkillDamagePct}"
+                          + $"\nSpell Pct Damage: {item.Modifiers?.SpellDamagePct}";
 
             context.SourceAisling?.SendServerMessage(options.OutputType.Value, message);
         }

@@ -5,10 +5,10 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss;
 
-public sealed class MythicMantisMoveToTargetScript : MonsterScriptBase
+public sealed class MythicMantis1MoveToTargetScript : MonsterScriptBase
 {
     /// <inheritdoc />
-    public MythicMantisMoveToTargetScript(Monster subject)
+    public MythicMantis1MoveToTargetScript(Monster subject)
         : base(subject) { }
 
     /// <inheritdoc />
@@ -24,7 +24,7 @@ public sealed class MythicMantisMoveToTargetScript : MonsterScriptBase
 
         var distance = Subject.DistanceFrom(Target);
 
-        if ((distance != 1) && (distance <= 3))
+        if ((distance != 1) && (distance <= 4))
             Subject.Pathfind(Target);
         else if (distance >= 4)
         {
