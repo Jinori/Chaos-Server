@@ -4,6 +4,7 @@ using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
+using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
@@ -12,6 +13,9 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Scripting.MapScripts.Arena.Lava_Flow;
 using Chaos.Storage.Abstractions;
+using Chaos.Time;
+using Discord;
+using Discord.WebSocket;
 
 namespace Chaos.Scripting.DialogScripts.Arena;
 
@@ -26,6 +30,11 @@ public class ArenaUndergroundScript : DialogScriptBase
     private readonly Point CenterWarp = new(11,10);
     private Point CenterWarpPlayer;
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
+    
+    //Place Discord Bot Token Here When Live
+    private const string BOT_TOKEN = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.GrsY_F.Wao49S7Nyz2HLtOcpIe1uJRDcDHHjq9Vm_AA2Y";
+    private const ulong CHANNEL_ID = 1136412469762470038;
+    private const ulong ARENA_WIN_CHANNEL_ID = 1136426304300916786;
     
     
     /// <inheritdoc />
@@ -47,11 +56,421 @@ public class ArenaUndergroundScript : DialogScriptBase
 
                 break;
 
+            case "ophie_everyonewon":
+            {
+                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                {
+                    aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"You have won the arena event!");
+
+                    aisling.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Arena Underground Participant",
+                            "undrGrdPart",
+                            MarkIcon.Victory,
+                            MarkColor.Blue,
+                            1,
+                            GameTime.Now));
+
+                    aisling.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Arena Underground Win",
+                            "undrGrdWin",
+                            MarkIcon.Victory,
+                            MarkColor.Blue,
+                            1,
+                            GameTime.Now));
+
+                    var rect = new Rectangle(new Point(11, 10), 3, 4);
+
+                    do
+                    {
+                        CenterWarpPlayer = rect.GetRandomPoint();
+                    } while (CenterWarp == CenterWarpPlayer);
+
+                    aisling.Trackers.Enums.Remove<ArenaTeam>();
+                    aisling.WarpTo(CenterWarpPlayer);
+                }
+
+                var merchant = Subject.DialogSource as Merchant;
+                merchant?.Say("Win is cast! Congrats!");
+                
+                Task.Run(
+                    async () =>
+                    {
+                        var client = new DiscordSocketClient();
+                        await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
+                        await client.StartAsync();
+                        var channel = await client.GetChannelAsync(ARENA_WIN_CHANNEL_ID) as IMessageChannel;
+
+                        await channel!.SendMessageAsync($"Arena Host {source.Name} cast win for every one in attendance...");
+
+                        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                        {
+                            await channel.SendMessageAsync($"{aisling.Name} won!");
+                        }
+
+                        await client.StopAsync();
+                    });
+                
+                break;
+            }
+            
+            case "ophie_goldwon":
+            {
+                Task.Run(
+                    async () =>
+                    {
+                        var client = new DiscordSocketClient();
+                        await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
+                        await client.StartAsync();
+                        var channel = await client.GetChannelAsync(ARENA_WIN_CHANNEL_ID) as IMessageChannel;
+
+                        await channel!.SendMessageAsync($"Arena Host {source.Name} cast a win for gold...");
+
+                        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                        {
+                            aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
+
+                            if (value == ArenaTeam.Gold)
+                            {
+                                await channel.SendMessageAsync($"{aisling.Name} won!");
+                            }
+                            else
+                                await channel.SendMessageAsync($"{aisling.Name} participated!");
+                        }
+
+                        await client.StopAsync();
+                    });
+                
+                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                {
+                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
+
+                    if (value == ArenaTeam.Gold)
+                    {
+                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"Your team has won the arena event!");
+
+                        aisling.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Arena Underground Participant",
+                                "undrGrdPart",
+                                MarkIcon.Victory,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                        
+                        aisling.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Arena Underground Win",
+                                "undrGrdWin",
+                                MarkIcon.Victory,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                    }
+                    else
+                    {
+                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"Your team lost. Better luck next time!");
+                        
+                        aisling.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Arena Underground Participant",
+                                "uundrGrdPart",
+                                MarkIcon.Victory,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                    }
+                    
+                    var rect = new Rectangle(new Point(11, 10), 3, 4);
+                    do
+                    {
+                        CenterWarpPlayer = rect.GetRandomPoint();
+                    } 
+                    while (CenterWarp == CenterWarpPlayer);
+                    
+                    aisling.Trackers.Enums.Remove<ArenaTeam>();
+                    aisling.WarpTo(CenterWarpPlayer);
+                }
+
+                var merchant = Subject.DialogSource as Merchant;
+                merchant?.Say("Win is cast! Congrats!");
+                
+                break;
+            }
+            
+            case "ophie_bluewon":
+            {
+                Task.Run(
+                    async () =>
+                    {
+                        var client = new DiscordSocketClient();
+                        await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
+                        await client.StartAsync();
+                        var channel = await client.GetChannelAsync(ARENA_WIN_CHANNEL_ID) as IMessageChannel;
+
+                        await channel!.SendMessageAsync($"Arena Host {source.Name} cast a win for blue...");
+
+                        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                        {
+                            aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
+
+                            if (value == ArenaTeam.Blue)
+                            {
+                                await channel.SendMessageAsync($"{aisling.Name} won!");
+                            }
+                            else
+                                await channel.SendMessageAsync($"{aisling.Name} participated!");
+                        }
+
+                        await client.StopAsync();
+                    });
+                
+                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                {
+                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
+
+                    if (value == ArenaTeam.Blue)
+                    {
+                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"Your team has won the arena event!");
+
+                        aisling.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Arena Underground Participant",
+                                "undrGrdPart",
+                                MarkIcon.Victory,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                        
+                        aisling.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Arena Underground Win",
+                                "undrGrdWin",
+                                MarkIcon.Victory,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                    }
+                    else
+                    {
+                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"Your team lost. Better luck next time!");
+                        
+                        aisling.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Arena Underground Participant",
+                                "undrGrdWin",
+                                MarkIcon.Victory,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                    }
+                    
+                    var rect = new Rectangle(new Point(11, 10), 3, 4);
+                    do
+                    {
+                        CenterWarpPlayer = rect.GetRandomPoint();
+                    } 
+                    while (CenterWarp == CenterWarpPlayer);
+                    
+                    aisling.Trackers.Enums.Remove<ArenaTeam>();
+                    aisling.WarpTo(CenterWarpPlayer);
+                }
+
+                var merchant = Subject.DialogSource as Merchant;
+                merchant?.Say("Win is cast! Congrats!");
+                
+                break;
+            }
+            
+            case "ophie_greenwon":
+            {
+                Task.Run(
+                    async () =>
+                    {
+                        var client = new DiscordSocketClient();
+                        await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
+                        await client.StartAsync();
+                        var channel = await client.GetChannelAsync(ARENA_WIN_CHANNEL_ID) as IMessageChannel;
+
+                        await channel!.SendMessageAsync($"Arena Host {source.Name} cast a win for green...");
+
+                        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                        {
+                            aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
+
+                            if (value == ArenaTeam.Green)
+                            {
+                                await channel.SendMessageAsync($"{aisling.Name} won!");
+                            }
+                            else
+                                await channel.SendMessageAsync($"{aisling.Name} participated!");
+                        }
+
+                        await client.StopAsync();
+                    });
+                
+                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                {
+                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
+
+                    if (value == ArenaTeam.Green)
+                    {
+                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"Your team has won the arena event!");
+
+                        aisling.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Arena Underground Participant",
+                                "undrGrdPart",
+                                MarkIcon.Victory,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                        
+                        aisling.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Arena Underground Win",
+                                "undrGrdWin",
+                                MarkIcon.Victory,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                    }
+                    else
+                    {
+                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"Your team lost. Better luck next time!");
+                        
+                        aisling.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Arena Underground Participant",
+                                "undrGrdPart",
+                                MarkIcon.Victory,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                    }
+                    
+                    var rect = new Rectangle(new Point(11, 10), 3, 4);
+                    do
+                    {
+                        CenterWarpPlayer = rect.GetRandomPoint();
+                    } 
+                    while (CenterWarp == CenterWarpPlayer);
+                    
+                    aisling.Trackers.Enums.Remove<ArenaTeam>();
+                    aisling.WarpTo(CenterWarpPlayer);
+                    
+                }
+
+                var merchant = Subject.DialogSource as Merchant;
+                merchant?.Say("Win is cast! Congrats!");
+                
+                break;
+            }
+            
+            case "ophie_redwon":
+            {
+                Task.Run(
+                    async () =>
+                    {
+                        var client = new DiscordSocketClient();
+                        await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
+                        await client.StartAsync();
+                        var channel = await client.GetChannelAsync(ARENA_WIN_CHANNEL_ID) as IMessageChannel;
+
+                        await channel!.SendMessageAsync($"Arena Host {source.Name} cast a win for red...");
+
+                        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                        {
+                            aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
+
+                            if (value == ArenaTeam.Red)
+                            {
+                                await channel.SendMessageAsync($"{aisling.Name} won!");
+                            }
+                            else
+                                await channel.SendMessageAsync($"{aisling.Name} participated!");
+                        }
+
+                        await client.StopAsync();
+                    });
+                
+                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                {
+                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
+
+                    if (value == ArenaTeam.Red)
+                    {
+                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"Your team has won the arena event!");
+
+                        aisling.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Arena Underground Participant",
+                                "undrGrdPart",
+                                MarkIcon.Victory,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                        
+                        aisling.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Arena Underground Win",
+                                "undrGrdWin",
+                                MarkIcon.Victory,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                    }
+                    else
+                    {
+                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"Your team lost. Better luck next time!");
+                        
+                        aisling.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Arena Underground Participant",
+                                "undrGrdPart",
+                                MarkIcon.Victory,
+                                MarkColor.Blue,
+                                1,
+                                GameTime.Now));
+                    }
+                    
+                    var rect = new Rectangle(new Point(11, 10), 3, 4);
+                    do
+                    {
+                        CenterWarpPlayer = rect.GetRandomPoint();
+                    } 
+                    while (CenterWarp == CenterWarpPlayer);
+                    
+                    aisling.Trackers.Enums.Remove<ArenaTeam>();
+                    aisling.WarpTo(CenterWarpPlayer);
+                    
+                }
+
+                var merchant = Subject.DialogSource as Merchant;
+                merchant?.Say("Win is cast! Congrats!");
+                
+                break;
+            }
+            
             case "ophie_skandaragauntlet":
             {
                 foreach (var aisling in ClientRegistry)
                     aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"Arena Host {source.Name} is announcing a Skandara's Gauntlet!");
 
+                Task.Run(
+                    async () =>
+                    {
+                        var client = new DiscordSocketClient();
+                        await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
+                        await client.StartAsync();
+                        var channel = await client.GetChannelAsync(CHANNEL_ID) as IMessageChannel;
+
+                        await channel!.SendMessageAsync($"Arena Host {source.Name} is announcing a Skandara's Gauntlet! Please head to the Arena Underground to participate.");
+
+                            await client.StopAsync();
+                    });
+                
                 break;
             }
             
@@ -60,6 +479,19 @@ public class ArenaUndergroundScript : DialogScriptBase
                 foreach (var aisling in ClientRegistry)
                     aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"Arena Host {source.Name} is announcing a Serendael's Sandbox!");
 
+                Task.Run(
+                    async () =>
+                    {
+                        var client = new DiscordSocketClient();
+                        await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
+                        await client.StartAsync();
+                        var channel = await client.GetChannelAsync(CHANNEL_ID) as IMessageChannel;
+
+                        await channel!.SendMessageAsync($"Arena Host {source.Name} is announcing a Serendael's Sandbox! Please head to the Arena Underground to participate.");
+
+                        await client.StopAsync();
+                    });
+                
                 break;
             }
             

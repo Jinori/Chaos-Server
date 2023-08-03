@@ -2,6 +2,9 @@ using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Geometry.Abstractions;
+using Chaos.Models.Data;
+using Chaos.Models.Templates;
 using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Storage.Abstractions;
@@ -21,12 +24,28 @@ namespace Chaos.Scripting.MapScripts.Arena
         private bool WinnerDeclared;
         private IIntervalTimer MorphTimer { get; }
         private IIntervalTimer ArenaUpdateTimer { get; }
+        private readonly List<IPoint> CurrentMapPoints = new();
+        private readonly List<IPoint> NextMapPoints = new();
+        private double TimePassedSinceMainAnimationStart;
+        private double TimePassedSinceTileAnimation;
+        private Animation PreAnimation { get; } = new()
+        {
+            AnimationSpeed = 100,
+            TargetAnimation = 214 
+        };
+        
         
         private DateTime? AnnouncedStart;
         private bool AnnouncedTwentySecondStart;
         private bool CountdownStarted;
         private int CountdownStep;
         private DateTime LastCountdownTime;
+        
+        private DateTime? AnnouncedMorphStart;
+        private bool AnnounceMorph;
+        private bool CountdownMorphStarted;
+        private int CountdownMorphStep;
+        private DateTime LastCountdownMorphTime;
         
         public abstract List<string> MorphTemplateKeys { get; set; }
         public abstract string MorphOriginalTemplateKey { get; set; }
@@ -80,7 +99,7 @@ namespace Chaos.Scripting.MapScripts.Arena
 
                     foreach (var player in allPlayers)
                     {
-                        var message = CountdownStep > 0 ? CountdownStep.ToWords().Titleize() : "Go! Match Start!";
+                        var message = CountdownStep > 0 ? "Match begins in " + CountdownStep.ToWords() + " seconds!" : "Go! Match Start!";
                         player.SendActiveMessage(message);
                     }
 
@@ -90,12 +109,106 @@ namespace Chaos.Scripting.MapScripts.Arena
 
             if (ShouldMapShrink)
             {
-                if (MorphTimer.IntervalElapsed && (MorphCount < MorphTemplateKeys.Count))
+                if (!AnnounceMorph && (MorphCount < MorphTemplateKeys.Count))
+                {
+                    AnnouncedMorphStart = DateTime.UtcNow;
+                    AnnounceMorph = true;
+                }
+                else if (AnnouncedMorphStart.HasValue
+                         && (DateTime.UtcNow.Subtract(AnnouncedMorphStart.Value).TotalSeconds >= 30)
+                         && !CountdownMorphStarted && (MorphCount < MorphTemplateKeys.Count))
+                {
+                    var allPlayers = Subject.GetEntities<Aisling>().ToList();
+
+                    foreach (var player in allPlayers)
+                    {
+                        player.SendActiveMessage("Lava will claim more of the map in ten seconds!");
+                    }
+
+                    CountdownMorphStarted = true;
+                    CountdownMorphStep = 9;
+                    LastCountdownMorphTime = DateTime.UtcNow;
+                }
+                else if (CountdownMorphStarted && (CountdownMorphStep > 0) && (MorphCount < MorphTemplateKeys.Count))
+                {
+                    if (DateTime.UtcNow.Subtract(LastCountdownMorphTime).TotalSeconds >= 1)
+                    {
+                        var allPlayers = Subject.GetEntities<Aisling>().ToList();
+
+                        foreach (var player in allPlayers)
+                        {
+                            var message = CountdownMorphStep > 1 ? "Lava creeps in " + CountdownMorphStep.ToWords() + " seconds!" : "Lava has flowed inwards!";
+                            player.SendActiveMessage(message);
+                        }
+
+                        var templateKey = MorphTemplateKeys[Math.Min(MorphCount, MorphTemplateKeys.Count - 1)];
+                        var currentMapTemp = SimpleCache.Get<MapTemplate>(Subject.Template.TemplateKey);
+                        var nextMapTemp = SimpleCache.Get<MapTemplate>(templateKey);
+                        
+                        var currentSecond = (int)Math.Floor(TimePassedSinceMainAnimationStart);
+                        
+                        
+                        for (var x = 0; x < currentMapTemp.Width; x++)
+                        {
+                            for (var y = 0; y < currentMapTemp.Height; y++)
+                            {
+                                var point = new Point(x, y);
+
+                                if (currentMapTemp.IsWithinMap(point) && !currentMapTemp.IsWall(point) && !CurrentMapPoints.Contains(point))
+                                {
+                                    CurrentMapPoints.Add(point);
+                                }
+                            }
+                        }
+                        for (var x = 0; x < nextMapTemp.Width; x++)
+                        {
+                            for (var y = 0; y < nextMapTemp.Height; y++)
+                            {
+                                var point = new Point(x, y);
+
+                                if (nextMapTemp.IsWithinMap(point) && nextMapTemp.IsWall(point) && !NextMapPoints.Contains(point))
+                                {
+                                    NextMapPoints.Add(point);
+                                }
+                            }
+                        }
+
+                        foreach (var nowall in CurrentMapPoints)
+                        {
+                            if (NextMapPoints.Contains(nowall))
+                            {
+                                if ((int)Math.Floor(TimePassedSinceMainAnimationStart) == currentSecond)
+                                {
+                                    Subject.ShowAnimation(PreAnimation.GetPointAnimation(nowall));
+                                }
+                            }
+                        }
+
+                        TimePassedSinceMainAnimationStart += delta.TotalSeconds; // Increment the main animation timer
+
+                        TimePassedSinceTileAnimation += delta.TotalSeconds;
+
+                        if (TimePassedSinceTileAnimation >= 1)
+                        {
+                            TimePassedSinceTileAnimation = 0;
+                            CurrentMapPoints.Clear();
+                        }
+
+                        LastCountdownMorphTime = DateTime.UtcNow;
+                        CountdownMorphStep--;
+                    }
+                }
+                else if (CountdownMorphStarted && (CountdownMorphStep == 0) && (MorphCount < MorphTemplateKeys.Count))
                 {
                     MorphMap();
+                    CountdownMorphStep = 9;
+                    CountdownMorphStarted = false;
+                    AnnounceMorph = false;
+                    CurrentMapPoints.Clear();
+                    NextMapPoints.Clear();
                 }
             }
-            
+
             if (!ArenaUpdateTimer.IntervalElapsed)
                 return;
             
