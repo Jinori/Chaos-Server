@@ -14,11 +14,13 @@ public class SummonPetScript : ConfigurableSkillScriptBase
 {
     private readonly IMonsterFactory _monsterFactory;
     private readonly ISkillFactory _skillFactory;
+    private readonly ISpellFactory _spellFactory;
 
     /// <inheritdoc />
-    public SummonPetScript(Skill subject, IMonsterFactory monsterFactory, ISkillFactory skillFactory)
+    public SummonPetScript(Skill subject, IMonsterFactory monsterFactory, ISkillFactory skillFactory, ISpellFactory spellFactory)
         : base(subject)
     {
+        _spellFactory = spellFactory;
         _skillFactory = skillFactory;
         _monsterFactory = monsterFactory;   
     }
@@ -97,8 +99,8 @@ public class SummonPetScript : ConfigurableSkillScriptBase
                     }
                     case Level10PetSkills.Growl:
                     {
-                        var skillToAdd = _skillFactory.Create("howl");
-                        newMonster.Skills.Add(skillToAdd);
+                        var spellToAdd = _spellFactory.Create("howl");
+                        newMonster.Spells.Add(spellToAdd);
                         break;
                     }
                     case Level10PetSkills.QuickAttack:

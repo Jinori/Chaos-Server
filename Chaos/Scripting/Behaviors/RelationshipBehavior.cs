@@ -65,7 +65,16 @@ public class RelationshipBehavior
 
     protected virtual bool IsFriendlyTo(Monster source, Aisling target) => false;
 
-    protected virtual bool IsFriendlyTo(Monster source, Monster target) => source.Equals(target);
+    protected virtual bool IsFriendlyTo(Monster source, Monster target)
+    {
+        if (source.Equals(target))
+            return true;
+        
+        if (source.ScriptKeys.Contains("pet") || target.ScriptKeys.Contains("pet"))
+            return false;
+
+        return false;
+    }
 
     public virtual bool IsHostileTo(Creature source, Creature target) => source switch
     {
