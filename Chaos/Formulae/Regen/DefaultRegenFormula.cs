@@ -57,6 +57,12 @@ public sealed class DefaultRegenFormula : IRegenFormula
             _        => throw new ArgumentOutOfRangeException(nameof(creature), creature, null)
         };
 
+        if (creature.StatSheet.EffectiveMaximumMp == 0)
+        {
+            // return 0 or handle this scenario in a way that fits your requirements
+            return 0;
+        }
+        
         return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumMp, percentToRegenerate);
     }
 }

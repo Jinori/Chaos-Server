@@ -30,10 +30,7 @@ public class MilethAltarWorshipScript : ReactorTileScriptBase
 
         aisling.MapInstance.RemoveObject(groundItem);
 
-        if (groundItem.Item.Template is { BuyCost: < 1000, SellValue: < 1000 })
-            return;
-
-        ExperienceDistributionScript.GiveExp(aisling, 200);
+        ExperienceDistributionScript.GiveExp(aisling, groundItem.Item.Template is { BuyCost: < 1000, SellValue: < 1000 } ? 25 : 200);
 
         if (IntegerRandomizer.RollChance(10))
         {

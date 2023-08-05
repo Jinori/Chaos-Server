@@ -55,7 +55,9 @@ public abstract class ItemSpawnerScript : MapScriptBase
 
             var maxSpawns = Math.Min(MaxAmount - allCountOfItems, MaxPerSpawn);
 
-            if (maxSpawns >= 1)
+            if (maxSpawns < 1)
+                maxSpawns = 1;
+            else
                 maxSpawns++;
 
             var spawnAmount = Random.Shared.Next(1, maxSpawns);

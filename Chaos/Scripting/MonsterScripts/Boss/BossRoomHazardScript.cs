@@ -65,7 +65,7 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
     {
         var creaturesToDamage = Map.GetEntitiesAtPoint<Creature>(point);
 
-        foreach (var creature in creaturesToDamage)
+        foreach (var creature in creaturesToDamage.ToList())
             if (creature.Id != Subject.Id)
             {
                 var damage = (int)(creature.StatSheet.EffectiveMaximumHp * 0.30);
