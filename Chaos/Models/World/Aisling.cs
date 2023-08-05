@@ -472,8 +472,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
             LastClicked[source.Id] = DateTime.UtcNow;
             Script.OnClicked(source);
-        }
-        else if (source.CanObserve(this))
+        } else
         {
             source.Client.SendProfile(this);
 
@@ -521,14 +520,11 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
             if (nearbyAisling.Equals(this))
                 continue;
 
-            if (nearbyAisling.CanObserve(this))
-                nearbyAisling.Client.SendDisplayAisling(this);
-
-            if (CanObserve(nearbyAisling))
-                Client.SendDisplayAisling(nearbyAisling);
+            nearbyAisling.Client.SendDisplayAisling(this);
+            Client.SendDisplayAisling(nearbyAisling);
         }
 
-        Client.SendVisibleEntities(otherVisibles.ThatAreObservedBy(this));
+        Client.SendVisibleEntities(otherVisibles);
         Client.SendDoors(doors);
         Client.SendMapLoadComplete();
         Client.SendDisplayAisling(this);
@@ -551,7 +547,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
             return;
 
         Logger.WithProperty(this)
-              .LogTrace(
+              .LogInformation(
                   "Aisling {@AislingName} sent {@Type} message {@Message}",
                   Name,
                   publicMessageType,
@@ -615,7 +611,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         Logger.WithProperty(this)
               .WithProperty(money)
-              .LogDebug(
+              .LogInformation(
                   "Aisling {@AislingName} dropped {Amount} gold at {@Location}",
                   Name,
                   money.Amount,
@@ -733,7 +729,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         {
             Logger.WithProperty(this)
                   .WithProperty(groundItem)
-                  .LogDebug(
+                  .LogInformation(
                       "Aisling {@AislingName} picked up item {@ItemName} from {@Location}",
                       Name,
                       groundItem.Name,
@@ -764,7 +760,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         {
             Logger.WithProperty(this)
                   .WithProperty(money)
-                  .LogDebug(
+                  .LogInformation(
                       "Aisling {@AislingName} picked up {Amount} gold from {@Location}",
                       Name,
                       money.Amount,
@@ -1061,11 +1057,9 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         //show eachother to eachother
         foreach (var aisling in objsAfterWalk.Aislings.Except(objsBeforeWalk.Aislings))
         {
-            if (CanObserve(aisling))
-                aisling.ShowTo(this);
+            aisling.ShowTo(this);
 
-            if (aisling.CanObserve(this))
-                ShowTo(aisling);
+            ShowTo(aisling);
         }
 
         //handle approach
@@ -1085,10 +1079,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         Client.SendDoors(doors);
 
         //send any other visible objs that came into view that we're able to see
-        Client.SendVisibleEntities(
-            objsAfterWalk.OtherVisibles
-                         .Except(objsBeforeWalk.OtherVisibles)
-                         .ThatAreObservedBy(this));
+        Client.SendVisibleEntities(objsAfterWalk.OtherVisibles.Except(objsBeforeWalk.OtherVisibles));
 
         var aislingsToUpdate = objsBeforeWalk.Aislings
                                              .Intersect(objsAfterWalk.Aislings)
