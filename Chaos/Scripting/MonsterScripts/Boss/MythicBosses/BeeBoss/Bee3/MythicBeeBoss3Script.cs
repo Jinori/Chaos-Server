@@ -11,6 +11,7 @@ public class MythicBeeBoss3Script : CompositeMonsterScript
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(BeeBoss3EnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
+        GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),

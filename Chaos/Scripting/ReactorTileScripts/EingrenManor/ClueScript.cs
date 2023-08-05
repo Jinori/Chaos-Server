@@ -88,7 +88,7 @@ public class ClueScript : ReactorTileScriptBase
             }
             case "Manor Room 8":
             {
-                if (stage == ManorNecklaceStage.AcceptedQuest)
+                if (stage is ManorNecklaceStage.AcceptedQuest or ManorNecklaceStage.SawNecklace)
                 {
                     // Check if the group is null or has only one member
                     if (aisling.Group is null || aisling.Group.Any(x => !x.OnSameMapAs(aisling) || !x.WithinRange(aisling)))
@@ -110,8 +110,8 @@ public class ClueScript : ReactorTileScriptBase
                     var allMembersHaveQuestFlag = aisling.Group.All(
                         member =>
                             member.Trackers.Enums.TryGetValue(out ManorNecklaceStage value)
-                            && (value == ManorNecklaceStage.AcceptedQuest)
-                            && member.WithinLevelRange(source));
+                            && (value is ManorNecklaceStage.AcceptedQuest or ManorNecklaceStage.SawNecklace)
+                                && member.WithinLevelRange(source));
 
                     // Check if all members have all four clues
                     var allMembersHaveAllClues = aisling.Group.All(
@@ -119,8 +119,8 @@ public class ClueScript : ReactorTileScriptBase
                                   && member.Inventory.HasCount("Clue Two", 1)
                                   && member.Inventory.HasCount("Clue Three", 1)
                                   && member.Inventory.HasCount("Clue Four", 1));
-
-                    if (allMembersHaveQuestFlag && allMembersHaveAllClues)
+                    
+                    if (allMembersHaveQuestFlag && (allMembersHaveAllClues))
                     {
                         var monster = _monsterFactory.Create("airphasedGhost", aisling.MapInstance, new Point(3, 6));
                         monster.AggroRange = 10;
@@ -141,18 +141,11 @@ public class ClueScript : ReactorTileScriptBase
 
                         foreach (var member in aisling.Group)
                         {
-                            var necklace = _itemFactory.Create("zulerasCursedNecklace");
-                            member.TryGiveItem(ref necklace);
-                            member.Trackers.Enums.Set(ManorNecklaceStage.ObtainedNecklace);
+                            member.Trackers.Enums.Set(ManorNecklaceStage.SawNecklace);
 
                             member.Client.SendServerMessage(
                                 ServerMessageType.OrangeBar1,
-                                "You've found Zulera's necklace! Defeat the ghosts and take it to Zulera.");
-
-                            member.Inventory.RemoveByTemplateKey("clue1");
-                            member.Inventory.RemoveByTemplateKey("clue2");
-                            member.Inventory.RemoveByTemplateKey("clue3");
-                            member.Inventory.RemoveByTemplateKey("clue4");
+                                "You catch a glimpse of the necklace before it disappears.");
                         }
                     }
                     else
@@ -167,7 +160,6 @@ public class ClueScript : ReactorTileScriptBase
                         source.WarpTo(point);
                     }
                 }
-
                 break;
             }
         }

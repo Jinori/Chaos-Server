@@ -10,6 +10,7 @@ public class ZombieBoss1Script : CompositeMonsterScript
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(BossDefenseScript)),
+        GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(ZombieBoss1EnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),

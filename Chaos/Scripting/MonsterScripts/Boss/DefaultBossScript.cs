@@ -13,6 +13,7 @@ public class DefaultBossScript : CompositeMonsterScript
         GetScriptKey(typeof(BossThrowHazardousScript)),
         GetScriptKey(typeof(BossMoveToTargetScript)),
         GetScriptKey(typeof(BossDefenseScript)),
+        GetScriptKey(typeof(BossRegenScript)),
         GetScriptKey(typeof(BossEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
@@ -22,7 +23,7 @@ public class DefaultBossScript : CompositeMonsterScript
         GetScriptKey(typeof(DeathScript)),
         GetScriptKey(typeof(DisplayNameScript))
     };
-
+//If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
     /// <inheritdoc />
     public DefaultBossScript(IScriptProvider scriptProvider, Monster subject)
     {

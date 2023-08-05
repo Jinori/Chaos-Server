@@ -2,27 +2,27 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.BeeBoss.Bee1;
+namespace Chaos.Scripting.MonsterScripts.Boss;
 
-public class MythicBeeBoss1Script : CompositeMonsterScript
+public class BunnyBoss1Script : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
-        GetScriptKey(typeof(BeeBoss1EnrageScript)),
+        GetScriptKey(typeof(BossMoveToTargetScript)),
+        GetScriptKey(typeof(BossDefenseScript)),
+        GetScriptKey(typeof(BunnyBoss1EnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
-        GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(DeathScript)),
-        GetScriptKey(typeof(DisplayNameScript)),
-        GetScriptKey(typeof(BossDefenseScript))
+        GetScriptKey(typeof(DisplayNameScript))
     };
-
+//If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
     /// <inheritdoc />
-    public MythicBeeBoss1Script(IScriptProvider scriptProvider, Monster subject)
+    public BunnyBoss1Script(IScriptProvider scriptProvider, Monster subject)
     {
         if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript compositeScript)
             throw new InvalidOperationException("Unable to create componentized script");

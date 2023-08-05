@@ -31,7 +31,7 @@ public class ManorNecklaceScript : DialogScriptBase
         {
             case "zulera_keephernecklace":
             {
-                if (stage == ManorNecklaceStage.ObtainedNecklace)
+                if (stage == ManorNecklaceStage.ReturningNecklace)
                     source.Trackers.Enums.Set(ManorNecklaceStage.KeptNecklace);
 
                 source.Legend.AddUnique(
@@ -64,7 +64,7 @@ public class ManorNecklaceScript : DialogScriptBase
 
                 source.Inventory.RemoveQuantity("Zulera's Cursed Necklace", 1);
 
-                if (stage == ManorNecklaceStage.ObtainedNecklace)
+                if (stage == ManorNecklaceStage.ReturningNecklace)
                     source.Trackers.Enums.Set(ManorNecklaceStage.ReturnedNecklace);
 
                 ExperienceDistributionScript.GiveExp(source, 150000);
@@ -98,7 +98,7 @@ public class ManorNecklaceScript : DialogScriptBase
                         Subject.Reply(source, "I don't really want to talk to you anymore. You're mean!");
 
                         return;
-                    case ManorNecklaceStage.ObtainedNecklace:
+                    case ManorNecklaceStage.ReturningNecklace:
                     {
                         Subject.Reply(source, "Skip", "zulera_foundnecklace");
 
@@ -106,6 +106,10 @@ public class ManorNecklaceScript : DialogScriptBase
                     }
                     case ManorNecklaceStage.AcceptedQuest:
                         Subject.Reply(source, "Come back when you've found the necklace, please!");
+
+                        break;
+                    case ManorNecklaceStage.SawNecklace:
+                        Subject.Reply(source, "You saw it!? Then ghost appeared? They must of taken it! Go back to that room and find it for me!");
 
                         break;
                 }

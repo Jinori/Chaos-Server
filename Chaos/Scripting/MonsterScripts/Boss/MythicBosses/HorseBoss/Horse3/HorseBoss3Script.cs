@@ -2,14 +2,15 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.BeeBoss.Bee1;
+namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.HorseBoss.Horse3;
 
-public class MythicBeeBoss1Script : CompositeMonsterScript
+public class HorseBoss3Script : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
-        GetScriptKey(typeof(BeeBoss1EnrageScript)),
+        GetScriptKey(typeof(BossDefenseScript)),
+        GetScriptKey(typeof(HorseBoss3EnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(ContributionScript)),
@@ -17,12 +18,11 @@ public class MythicBeeBoss1Script : CompositeMonsterScript
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(DeathScript)),
-        GetScriptKey(typeof(DisplayNameScript)),
-        GetScriptKey(typeof(BossDefenseScript))
+        GetScriptKey(typeof(DisplayNameScript))
     };
 
     /// <inheritdoc />
-    public MythicBeeBoss1Script(IScriptProvider scriptProvider, Monster subject)
+    public HorseBoss3Script(IScriptProvider scriptProvider, Monster subject)
     {
         if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript compositeScript)
             throw new InvalidOperationException("Unable to create componentized script");

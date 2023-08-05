@@ -49,6 +49,12 @@ public enum GainExp
     No = 1
 }
 
+public enum GodMode
+{
+    No,
+    Yes
+}
+
 public enum MonkElementForm
 {
     Water,
@@ -159,9 +165,10 @@ public enum ManorNecklaceStage
 {
     None = 0,
     AcceptedQuest = 1,
-    ObtainedNecklace = 2,
-    ReturnedNecklace = 3,
-    KeptNecklace = 4,
+    SawNecklace = 2,
+    ReturningNecklace = 3,
+    ReturnedNecklace = 4,
+    KeptNecklace = 5,
 }
 
 public enum ManorLouegieStage

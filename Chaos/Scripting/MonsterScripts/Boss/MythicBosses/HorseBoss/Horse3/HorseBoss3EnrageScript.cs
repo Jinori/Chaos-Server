@@ -3,9 +3,9 @@ using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.HorseBoss.Horse1;
+namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.HorseBoss.Horse3;
 
-public sealed class HorseBoss1EnrageScript : MonsterScriptBase
+public sealed class HorseBoss3EnrageScript : MonsterScriptBase
 {
     private readonly IMonsterFactory MonsterFactory;
     private bool Bonus30Applied;
@@ -22,7 +22,7 @@ public sealed class HorseBoss1EnrageScript : MonsterScriptBase
     };
 
     /// <inheritdoc />
-    public HorseBoss1EnrageScript(Monster subject, IMonsterFactory monsterFactory)
+    public HorseBoss3EnrageScript(Monster subject, IMonsterFactory monsterFactory)
         : base(subject) =>
         MonsterFactory = monsterFactory;
 
@@ -53,10 +53,10 @@ public sealed class HorseBoss1EnrageScript : MonsterScriptBase
         {
             Bonus75Applied = true;
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 10 };
+            var attrib = new Attributes { AtkSpeedPct = 40 };
             Subject.StatSheet.AddBonus(attrib);
-            HPRegenInterval = 8f;
-            HPMultiplier = 0.04f;
+            HPRegenInterval = 6f;
+            HPMultiplier = 0.08f;
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
         }
@@ -67,14 +67,14 @@ public sealed class HorseBoss1EnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Dmg = 5,
+                Dmg = 10,
                 MagicResistance = 10,
-                SkillDamagePct = 5,
-                SpellDamagePct = 5
+                SkillDamagePct = 10,
+                SpellDamagePct = 10
             };
             
-            HPRegenInterval = 6f;
-            HPMultiplier = 0.06f;
+            HPRegenInterval = 4f;
+            HPMultiplier = 0.10f;
 
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
@@ -86,17 +86,18 @@ public sealed class HorseBoss1EnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Int = 3,
-                Str = 5,
-                Ac = -10,
-                AtkSpeedPct = 10,
-                Hit = 10,
-                SkillDamagePct = 5,
-                SpellDamagePct = 5
+                Int = 10,
+                Str = 15,
+                Ac = -25,
+                AtkSpeedPct = 20,
+                Hit = 30,
+                MagicResistance = 20,
+                SkillDamagePct = 20,
+                SpellDamagePct = 20
             };
 
-            HPRegenInterval = 4f;
-            HPMultiplier = 0.08f;
+            HPRegenInterval = 3f;
+            HPMultiplier = 0.15f;
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }

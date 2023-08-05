@@ -14,6 +14,7 @@ public class ZombieBoss3Script : CompositeMonsterScript
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
+        GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(DeathScript)),
