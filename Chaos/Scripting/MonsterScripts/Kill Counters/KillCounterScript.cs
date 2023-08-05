@@ -91,7 +91,7 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out BeeProblem bee) || (bee != BeeProblem.Started))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("Bee", 5))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("wilderness_Bee", 5))
         {
             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
 

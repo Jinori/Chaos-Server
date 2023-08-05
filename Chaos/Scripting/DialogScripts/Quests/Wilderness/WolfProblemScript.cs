@@ -57,7 +57,7 @@ public class WolfProblemScript : DialogScriptBase
 
             case "wolfproblem_turnin":
             {
-                if (!source.Trackers.Counters.TryGetValue("wolf", out var value) || (value < 1))
+                if (!source.Trackers.Counters.TryGetValue("wilderness_questwolf", out var value) || (value < 1))
                 {
                     Subject.Reply(source, "I can still hear the wolf! Please get rid of it.");
                     source.SendOrangeBarMessage("You hear the wolf howl in the distance.");
