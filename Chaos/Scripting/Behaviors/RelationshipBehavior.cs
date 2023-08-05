@@ -123,5 +123,11 @@ public class RelationshipBehavior
 
     protected virtual bool IsHostileTo(Monster source, Merchant target) => true;
 
-    protected virtual bool IsHostileTo(Monster source, Monster target) => false;
+    protected virtual bool IsHostileTo(Monster source, Monster target)
+    {
+        if (source.ScriptKeys.Contains("pet") || target.ScriptKeys.Contains("pet"))
+            return true;
+
+        return false;
+    }
 }

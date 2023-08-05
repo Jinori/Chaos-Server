@@ -17,6 +17,13 @@ public class ContributionScript : MonsterScriptBase
         if (!Subject.Contribution.TryGetValue(source.Id, out var currentValue))
             currentValue = 0;
 
-        Subject.Contribution[source.Id] = currentValue + damage;
+        if (source is Monster { PetOwner: not null } monster)
+        {
+            Subject.Contribution[monster.PetOwner.Id] = currentValue + damage;
+        }
+        else
+        {
+            Subject.Contribution[source.Id] = currentValue + damage;   
+        }
     }
 }

@@ -6,6 +6,8 @@ using Chaos.Geometry.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.Templates;
 using Chaos.Models.World;
+using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -26,6 +28,7 @@ namespace Chaos.Scripting.MapScripts.Arena
         private IIntervalTimer ArenaUpdateTimer { get; }
         private readonly List<IPoint> CurrentMapPoints = new();
         private readonly List<IPoint> NextMapPoints = new();
+        private bool MapWallsCaptured;
         private double TimePassedSinceMainAnimationStart;
         private double TimePassedSinceTileAnimation;
         private Animation PreAnimation { get; } = new()
@@ -33,7 +36,7 @@ namespace Chaos.Scripting.MapScripts.Arena
             AnimationSpeed = 100,
             TargetAnimation = 214 
         };
-        
+        private IApplyDamageScript ApplyDamageScript { get; }
         
         private DateTime? AnnouncedStart;
         private bool AnnouncedTwentySecondStart;
@@ -61,7 +64,9 @@ namespace Chaos.Scripting.MapScripts.Arena
         {
             SimpleCache = simpleCache;
             MorphTimer = new IntervalTimer(TimeSpan.FromSeconds(30), false);
-            ArenaUpdateTimer = new IntervalTimer(TimeSpan.FromSeconds(2), false);
+            ArenaUpdateTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
+            ApplyDamageScript = ApplyAttackDamageScript.Create();
+            ApplyDamageScript.DamageFormula = Formulae.DamageFormulae.PureDamage;
         }
 
         public override void Update(TimeSpan delta)
@@ -109,6 +114,40 @@ namespace Chaos.Scripting.MapScripts.Arena
 
             if (ShouldMapShrink)
             {
+                if (!MapWallsCaptured)
+                {
+                    var templateKey = MorphTemplateKeys[Math.Min(MorphCount, MorphTemplateKeys.Count - 1)];
+                    var currentMapTemp = SimpleCache.Get<MapTemplate>(Subject.Template.TemplateKey);
+                    var nextMapTemp = SimpleCache.Get<MapTemplate>(templateKey);
+                            
+                    for (var x = 0; x < currentMapTemp.Width; x++)
+                    {
+                        for (var y = 0; y < currentMapTemp.Height; y++)
+                        {
+                            var point = new Point(x, y);
+
+                            if (currentMapTemp.IsWithinMap(point) && !currentMapTemp.IsWall(point) && !CurrentMapPoints.Contains(point))
+                            {
+                                CurrentMapPoints.Add(point);
+                            }
+                        }
+                    }
+                    for (var x = 0; x < nextMapTemp.Width; x++)
+                    {
+                        for (var y = 0; y < nextMapTemp.Height; y++)
+                        {
+                            var point = new Point(x, y);
+
+                            if (nextMapTemp.IsWithinMap(point) && nextMapTemp.IsWall(point) && !NextMapPoints.Contains(point))
+                            {
+                                NextMapPoints.Add(point);
+                            }
+                        }
+                    }
+
+                    MapWallsCaptured = true;
+                }
+                
                 if (!AnnounceMorph && (MorphCount < MorphTemplateKeys.Count))
                 {
                     AnnouncedMorphStart = DateTime.UtcNow;
@@ -137,42 +176,12 @@ namespace Chaos.Scripting.MapScripts.Arena
 
                         foreach (var player in allPlayers)
                         {
-                            var message = CountdownMorphStep > 1 ? "Lava creeps in " + CountdownMorphStep.ToWords() + " seconds!" : "Lava has flowed inwards!";
+                            var message = CountdownMorphStep > 0 ? "Lava creeps in " + CountdownMorphStep.ToWords() + " seconds!" : "Lava has flowed inwards!";
                             player.SendActiveMessage(message);
                         }
-
-                        var templateKey = MorphTemplateKeys[Math.Min(MorphCount, MorphTemplateKeys.Count - 1)];
-                        var currentMapTemp = SimpleCache.Get<MapTemplate>(Subject.Template.TemplateKey);
-                        var nextMapTemp = SimpleCache.Get<MapTemplate>(templateKey);
                         
                         var currentSecond = (int)Math.Floor(TimePassedSinceMainAnimationStart);
                         
-                        
-                        for (var x = 0; x < currentMapTemp.Width; x++)
-                        {
-                            for (var y = 0; y < currentMapTemp.Height; y++)
-                            {
-                                var point = new Point(x, y);
-
-                                if (currentMapTemp.IsWithinMap(point) && !currentMapTemp.IsWall(point) && !CurrentMapPoints.Contains(point))
-                                {
-                                    CurrentMapPoints.Add(point);
-                                }
-                            }
-                        }
-                        for (var x = 0; x < nextMapTemp.Width; x++)
-                        {
-                            for (var y = 0; y < nextMapTemp.Height; y++)
-                            {
-                                var point = new Point(x, y);
-
-                                if (nextMapTemp.IsWithinMap(point) && nextMapTemp.IsWall(point) && !NextMapPoints.Contains(point))
-                                {
-                                    NextMapPoints.Add(point);
-                                }
-                            }
-                        }
-
                         foreach (var nowall in CurrentMapPoints)
                         {
                             if (NextMapPoints.Contains(nowall))
@@ -200,12 +209,26 @@ namespace Chaos.Scripting.MapScripts.Arena
                 }
                 else if (CountdownMorphStarted && (CountdownMorphStep == 0) && (MorphCount < MorphTemplateKeys.Count))
                 {
+                    var aislingsToKill = Subject.GetEntitiesAtPoints<Aisling>(CurrentMapPoints).Where(x => NextMapPoints.Contains(x)).ToList();
+
+                    foreach (var aisling in aislingsToKill)
+                    {
+                        var damage = (int)(aisling.StatSheet.EffectiveMaximumHp + 1000);
+
+                        ApplyDamageScript.ApplyDamage(
+                            aisling,
+                            aisling,
+                            this,
+                            damage);
+                    }
+                    
                     MorphMap();
                     CountdownMorphStep = 9;
                     CountdownMorphStarted = false;
                     AnnounceMorph = false;
                     CurrentMapPoints.Clear();
                     NextMapPoints.Clear();
+                    MapWallsCaptured = false;
                 }
             }
 
