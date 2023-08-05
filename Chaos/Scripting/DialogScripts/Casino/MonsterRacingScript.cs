@@ -50,7 +50,7 @@ public class MonsterRacingScript : DialogScriptBase
         if ((source.Gold < 25000) && !HasPaid)
         {
             Subject.Reply(source, "Looks like your luck has ran out, sweetie. Come back with more gold.");
-            var rect = new Rectangle(new Point(11, 10), 11, 3);
+            var rect = new Rectangle(new Point(11, 16), 7, 3);
             source.WarpTo(rect.GetRandomPoint());
 
             return;
