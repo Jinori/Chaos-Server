@@ -767,7 +767,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
 
             if (!localClient.Aisling.Inventory.TryGetObject(sourceSlot, out var item))
                 return default;
-
+            
             if (item.Count < count)
                 return default;
 

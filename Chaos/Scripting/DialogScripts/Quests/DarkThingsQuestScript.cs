@@ -228,7 +228,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
                     source.Trackers.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
-                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(3), true);
                 }
 
                 break;
@@ -250,7 +250,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
                     source.Trackers.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
-                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(3), true);
                 }
 
                 break;
@@ -272,7 +272,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.TryGiveGamePoints(5);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
                     Subject.Close(source);
-                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(3), true);
                 }
 
                 break;
@@ -294,7 +294,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {thirtyPercent} exp!");
                     source.Trackers.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
-                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(3), true);
                 }
 
                 break;
@@ -315,7 +315,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {thirtyPercent} exp!");
                     source.Trackers.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
-                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(3), true);
                 }
 
                 break;
@@ -337,7 +337,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {thirtyPercent} exp!");
                     source.Trackers.Enums.Set(DarkThingsStage.None);
                     Subject.Close(source);
-                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(3), true);
                 }
 
                 break;
@@ -359,7 +359,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                     source.TryGiveGamePoints(10);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive ten gamepoints and {fortyPercent} exp!");
                     Subject.Close(source);
-                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("DarkThingsCd", TimeSpan.FromHours(3), true);
                 }
 
                 break;
