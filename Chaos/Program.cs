@@ -28,6 +28,7 @@ var builder = new ConfigurationBuilder()
                     #endif
                     ;
 
+
 var initialConfiguration = builder.Build();
 
 if(initialConfiguration.GetValue<bool>(Startup.ConfigKeys.Logging.UseSeq))

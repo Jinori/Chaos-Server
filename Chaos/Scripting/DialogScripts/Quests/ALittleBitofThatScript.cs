@@ -64,28 +64,28 @@ public class ALittleBitofThatScript : DialogScriptBase
 
                 if (stage == ALittleBitofThatStage.StartedBaguette)
                 {
-                    Subject.Reply(source, "Skip", "alittlebitofthat_startbaguette");
+                    Subject.Reply(source, "Skip", "alittlebitofthat_baguettestart");
 
                     return;
                 }
 
                 if (stage == ALittleBitofThatStage.StartedCherry)
                 {
-                    Subject.Reply(source, "Skip", "alittlebitofthat_startcherry");
+                    Subject.Reply(source, "Skip", "alittlebitofthat_cherrystart");
 
                     return;
                 }
 
                 if (stage == ALittleBitofThatStage.StartedGrapes)
                 {
-                    Subject.Reply(source, "Skip", "alittlebitofthat_startgrapes");
+                    Subject.Reply(source, "Skip", "alittlebitofthat_grapesstart");
 
                     return;
                 }
 
                 if (stage == ALittleBitofThatStage.StartedMold)
                 {
-                    Subject.Reply(source, "skip", "alittlebitofthat_startMold");
+                    Subject.Reply(source, "skip", "alittlebitofthat_Moldstart");
 
                     return;
                 }
