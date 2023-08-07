@@ -65,12 +65,16 @@ public class PriestDedicateScript : DialogScriptBase
             var skill = SkillFactory.Create("assail");
             var spell = SpellFactory.Create("beagioc");
             var spell2 = SpellFactory.Create("beothaich");
+            var spell3 = SpellFactory.Create("spark");
 
             if (!source.SpellBook.Contains(spell))
                 source.SpellBook.TryAddToNextSlot(spell);
 
             if (!source.SpellBook.Contains(spell2))
                 source.SpellBook.TryAddToNextSlot(spell2);
+            
+            if (!source.SpellBook.Contains(spell3))
+                source.SpellBook.TryAddToNextSlot(spell3);
 
             if (!source.SkillBook.Contains(skill))
                 source.SkillBook.TryAddToNextSlot(skill);
