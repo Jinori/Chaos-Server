@@ -63,12 +63,9 @@ public class WarriorDedicateScript : DialogScriptBase
             source.Trackers.Flags.AddFlag(QuestFlag1.ChosenClass);
             var skill = SkillFactory.Create("strike");
             var skill2 = SkillFactory.Create("slash");
-            var spell = SpellFactory.Create("rage");
 
             source.SkillBook.Remove("assail");
-
-            if (!source.SpellBook.Contains(spell))
-                source.SpellBook.TryAddToNextSlot(spell);
+            
 
             if (!source.SkillBook.Contains(skill2))
                 source.SkillBook.TryAddToNextSlot(skill2);
