@@ -731,17 +731,16 @@ public class FiskSecretScript : DialogScriptBase
 
                     return;
                 }
-
+                
+                if (source.Inventory.HasCountByTemplateKey("specialbouquet", 1) || (source.Equipment.Contains("specialBouquet") && (stage == FiskSecretStage.CollectedBouquet)))
                 {
-                    if (source.Inventory.HasCountByTemplateKey("specialbouquet", 1) || source.Equipment.Contains("specialBouquet"))
-                    {
-                        Subject.Reply(source, "I already made you a bouquet.");
+                    Subject.Reply(source, "I already made you a bouquet.");
 
-                        return;
-                    }
-
-                    Subject.Reply(source, "Skip", "RemakeBouquet");
+                    return;
                 }
+                
+                if (stage == FiskSecretStage.CollectedBouquet)
+                    Subject.Reply(source, "Skip", "RemakeBouquet");
 
                 break;
             }
