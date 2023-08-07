@@ -1498,7 +1498,7 @@ public static class CraftingRequirements
                 TemplateKey = "basicberylearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "flawedberyl", DisplayName = "Flawed Beryl", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -1514,7 +1514,7 @@ public static class CraftingRequirements
                 TemplateKey = "basicrubyearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "flawedruby", DisplayName = "Flawed Ruby", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -1530,7 +1530,7 @@ public static class CraftingRequirements
                 TemplateKey = "basicsapphireearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "flawedsapphire", DisplayName = "Flawed Sapphire", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -1546,7 +1546,7 @@ public static class CraftingRequirements
                 TemplateKey = "basicemeraldearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "flawedemerald", DisplayName = "Flawed Emerald", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -1562,7 +1562,7 @@ public static class CraftingRequirements
                 TemplateKey = "basicheartstoneearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "flawedheartstone", DisplayName = "Flawed Heartstone", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -1578,7 +1578,7 @@ public static class CraftingRequirements
                 TemplateKey = "ironberylearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutberyl", DisplayName = "Uncut Beryl", Amount = 1 },
 
                 },
@@ -1595,7 +1595,7 @@ public static class CraftingRequirements
                 TemplateKey = "ironrubyearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutruby", DisplayName = "Uncut Ruby", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -1611,7 +1611,7 @@ public static class CraftingRequirements
                 TemplateKey = "ironsapphireearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutsapphire", DisplayName = "Uncut Sapphire", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -1627,7 +1627,7 @@ public static class CraftingRequirements
                 TemplateKey = "ironemeraldearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutemerald", DisplayName = "Uncut Emerald", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -1643,7 +1643,7 @@ public static class CraftingRequirements
                 TemplateKey = "ironheartstoneearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutheartstone", DisplayName = "Uncut Heartstone", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -1659,7 +1659,7 @@ public static class CraftingRequirements
                 TemplateKey = "mythrilberylearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -1675,7 +1675,7 @@ public static class CraftingRequirements
                 TemplateKey = "mythrilrubyearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedruby", DisplayName = "Finished Ruby", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -1691,7 +1691,7 @@ public static class CraftingRequirements
                 TemplateKey = "mythrilsapphireearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedsapphire", DisplayName = "Finished Sapphire", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -1707,7 +1707,7 @@ public static class CraftingRequirements
                 TemplateKey = "mythrilemeraldearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedemerald", DisplayName = "Finished Emerald", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -1723,7 +1723,7 @@ public static class CraftingRequirements
                 TemplateKey = "mythrilheartstoneearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedheartstone", DisplayName = "Finished Heartstone", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -1739,7 +1739,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylberylearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 3 }
                 },
                 Rank = "Adept",
@@ -1755,7 +1755,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylrubyearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedruby", DisplayName = "Finished Ruby", Amount = 3 }
                 },
                 Rank = "Adept",
@@ -1771,7 +1771,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylsapphireearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedsapphire", DisplayName = "Finished Sapphire", Amount = 3 }
                 },
                 Rank = "Adept",
@@ -1787,7 +1787,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylemeraldearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedemerald", DisplayName = "Finished Emerald", Amount = 3 }
                 },
                 Rank = "Adept",
@@ -1803,7 +1803,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylheartstoneearrings",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedheartstone", DisplayName = "Finished Heartstone", Amount = 3 }
                 },
                 Rank = "Adept",
@@ -1851,7 +1851,7 @@ public static class CraftingRequirements
                 TemplateKey = "bronzeberylring",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "flawedberyl", DisplayName = "Flawed Beryl", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -1867,7 +1867,7 @@ public static class CraftingRequirements
                 TemplateKey = "bronzerubyring",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "flawedruby", DisplayName = "Flawed Ruby", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -1883,7 +1883,7 @@ public static class CraftingRequirements
                 TemplateKey = "bronzesapphirering",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "flawedsapphire", DisplayName = "Flawed Sapphire", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -1899,7 +1899,7 @@ public static class CraftingRequirements
                 TemplateKey = "bronzeemeraldring",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "flawedemerald", DisplayName = "Flawed Emerald", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -1915,7 +1915,7 @@ public static class CraftingRequirements
                 TemplateKey = "bronzeheartstonering",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "flawedheartstone", DisplayName = "Flawed Heartstone", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -1931,7 +1931,7 @@ public static class CraftingRequirements
                 TemplateKey = "ironberylring",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutberyl", DisplayName = "Uncut Beryl", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -1947,7 +1947,7 @@ public static class CraftingRequirements
                 TemplateKey = "ironrubyring",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutruby", DisplayName = "Uncut Ruby", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -1963,7 +1963,7 @@ public static class CraftingRequirements
                 TemplateKey = "ironsapphirering",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutsapphire", DisplayName = "Uncut Sapphire", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -1979,7 +1979,7 @@ public static class CraftingRequirements
                 TemplateKey = "ironemeraldring",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutemerald", DisplayName = "Uncut Emerald", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -1995,7 +1995,7 @@ public static class CraftingRequirements
                 TemplateKey = "ironheartstonering",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutheartstone", DisplayName = "Uncut Heartstone", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -2011,7 +2011,7 @@ public static class CraftingRequirements
                 TemplateKey = "mythrilberylring",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -2027,7 +2027,7 @@ public static class CraftingRequirements
                 TemplateKey = "mythrilrubyring",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedruby", DisplayName = "Finished Ruby", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -2043,7 +2043,7 @@ public static class CraftingRequirements
                 TemplateKey = "mythrilsapphirering",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedsapphire", DisplayName = "Finished Sapphire", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -2059,7 +2059,7 @@ public static class CraftingRequirements
                 TemplateKey = "mythrilemeraldring",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedemerald", DisplayName = "Finished Emerald", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -2075,7 +2075,7 @@ public static class CraftingRequirements
                 TemplateKey = "mythrilheartstonering",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedheartstone", DisplayName = "Finished Heartstone", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -2091,7 +2091,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylberylring",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 3 }
                 },
                 Rank = "Adept",
@@ -2107,7 +2107,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylrubyring",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedruby", DisplayName = "Finished Ruby", Amount = 3 }
                 },
                 Rank = "Adept",
@@ -2123,7 +2123,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylsapphirering",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedsapphire", DisplayName = "Finished Sapphire", Amount = 3 }
                 },
                 Rank = "Adept",
@@ -2139,7 +2139,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylemeraldring",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedemerald", DisplayName = "Finished Emerald", Amount = 3 }
                 },
                 Rank = "Adept",
@@ -2155,7 +2155,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylheartstonering",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedheartstone", DisplayName = "Finished Heartstone", Amount = 3 }
                 },
                 Rank = "Adept",
@@ -2235,7 +2235,7 @@ public static class CraftingRequirements
                 TemplateKey = "boneearthnecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "flawedberyl", DisplayName = "Flawed Beryl", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -2251,7 +2251,7 @@ public static class CraftingRequirements
                 TemplateKey = "bonefirenecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "flawedruby", DisplayName = "Flawed Ruby", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -2267,7 +2267,7 @@ public static class CraftingRequirements
                 TemplateKey = "boneseanecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "flawedsapphire", DisplayName = "Flawed Sapphire", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -2283,7 +2283,7 @@ public static class CraftingRequirements
                 TemplateKey = "bonewindnecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "flawedemerald", DisplayName = "Flawed Emerald", Amount = 1}
                 },
                 Rank = "Basic",
@@ -2299,7 +2299,7 @@ public static class CraftingRequirements
                 TemplateKey = "kannaearthnecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutberyl", DisplayName = "Uncut Beryl", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -2315,7 +2315,7 @@ public static class CraftingRequirements
                 TemplateKey = "kannawindnecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutemerald", DisplayName = "Uncut Emerald", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -2331,7 +2331,7 @@ public static class CraftingRequirements
                 TemplateKey = "kannafirenecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutruby", DisplayName = "Uncut Ruby", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -2347,7 +2347,7 @@ public static class CraftingRequirements
                 TemplateKey = "kannaseanecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutsapphire", DisplayName = "Uncut Sapphire", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -2363,7 +2363,7 @@ public static class CraftingRequirements
                 TemplateKey = "polishedearthnecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -2379,7 +2379,7 @@ public static class CraftingRequirements
                 TemplateKey = "polishedwindnecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedemerald", DisplayName = "Finished Emerald", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -2395,7 +2395,7 @@ public static class CraftingRequirements
                 TemplateKey = "polishedfirenecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedruby", DisplayName = "Finished Ruby", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -2411,7 +2411,7 @@ public static class CraftingRequirements
                 TemplateKey = "polishedseanecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedsapphire", DisplayName = "Finished Sapphire", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -2427,7 +2427,7 @@ public static class CraftingRequirements
                 TemplateKey = "starseanecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedsapphire", DisplayName = "Finished Sapphire", Amount = 3 }
                 },
                 Rank = "Adept",
@@ -2443,7 +2443,7 @@ public static class CraftingRequirements
                 TemplateKey = "starfirenecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedruby", DisplayName = "Finished Ruby", Amount = 3 }
                 },
                 Rank = "Adept",
@@ -2459,7 +2459,7 @@ public static class CraftingRequirements
                 TemplateKey = "starearthnecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 3 }
                 },
                 Rank = "Adept",
@@ -2475,7 +2475,7 @@ public static class CraftingRequirements
                 TemplateKey = "starwindnecklace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedemerald", DisplayName = "Finished Emerald", Amount = 3 }
                 },
                 Rank = "Adept",
@@ -2531,7 +2531,7 @@ public static class CraftingRequirements
                 TemplateKey = "claidheamh",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -2547,7 +2547,7 @@ public static class CraftingRequirements
                 TemplateKey = "broadsword",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Basic",
@@ -2563,7 +2563,7 @@ public static class CraftingRequirements
                 TemplateKey = "battlesword",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Basic",
@@ -2579,7 +2579,7 @@ public static class CraftingRequirements
                 TemplateKey = "masquerade",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 4 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 4 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Basic",
@@ -2595,7 +2595,7 @@ public static class CraftingRequirements
                 TemplateKey = "bramble",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -2611,7 +2611,7 @@ public static class CraftingRequirements
                 TemplateKey = "longsword",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -2627,7 +2627,7 @@ public static class CraftingRequirements
                 TemplateKey = "claidhmore",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Journeyman",
@@ -2643,7 +2643,7 @@ public static class CraftingRequirements
                 TemplateKey = "emeraldsword",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Journeyman",
@@ -2659,7 +2659,7 @@ public static class CraftingRequirements
                 TemplateKey = "gladius",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 4 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 4 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
                 },
                 Rank = "Journeyman",
@@ -2675,7 +2675,7 @@ public static class CraftingRequirements
                 TemplateKey = "kindjal",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 5 }
                 },
                 Rank = "Adept",
@@ -2691,7 +2691,7 @@ public static class CraftingRequirements
                 TemplateKey = "hatchet",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -2708,7 +2708,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "club", DisplayName = "Club", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 1 }, 
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 }, 
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -2724,7 +2724,7 @@ public static class CraftingRequirements
                 TemplateKey = "chainmace",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
                 Rank = "Apprentice",
@@ -2740,7 +2740,7 @@ public static class CraftingRequirements
                 TemplateKey = "handaxe",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Journeyman",
@@ -2756,7 +2756,7 @@ public static class CraftingRequirements
                 TemplateKey = "talgoniteaxe",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 5 }
                 },
                 Rank = "Adept",
@@ -2772,7 +2772,7 @@ public static class CraftingRequirements
                 TemplateKey = "magusares",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -2788,7 +2788,7 @@ public static class CraftingRequirements
                 TemplateKey = "holyhermes",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -2804,7 +2804,7 @@ public static class CraftingRequirements
                 TemplateKey = "maguszeus",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -2820,7 +2820,7 @@ public static class CraftingRequirements
                 TemplateKey = "holykronos",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -2868,7 +2868,7 @@ public static class CraftingRequirements
                 TemplateKey = "blossomdagger",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -2884,7 +2884,7 @@ public static class CraftingRequirements
                 TemplateKey = "moondagger",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Basic",
@@ -2900,7 +2900,7 @@ public static class CraftingRequirements
                 TemplateKey = "lightdagger",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -2916,7 +2916,7 @@ public static class CraftingRequirements
                 TemplateKey = "sundagger",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -2932,7 +2932,7 @@ public static class CraftingRequirements
                 TemplateKey = "lotusdagger",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Journeyman",
@@ -2948,7 +2948,7 @@ public static class CraftingRequirements
                 TemplateKey = "blooddagger",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
                 Rank = "Journeyman",
@@ -2980,7 +2980,7 @@ public static class CraftingRequirements
                 TemplateKey = "wolfclaw",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -2996,7 +2996,7 @@ public static class CraftingRequirements
                 TemplateKey = "eagletalon",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -3012,7 +3012,7 @@ public static class CraftingRequirements
                 TemplateKey = "phoenixclaw",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -3044,7 +3044,7 @@ public static class CraftingRequirements
                 TemplateKey = "leathershield",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -3060,7 +3060,7 @@ public static class CraftingRequirements
                 TemplateKey = "bronzeshield",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Basic",
@@ -3076,7 +3076,7 @@ public static class CraftingRequirements
                 TemplateKey = "ironshield",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -3092,7 +3092,7 @@ public static class CraftingRequirements
                 TemplateKey = "mythrilshield",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -3108,7 +3108,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylshield",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -3163,7 +3163,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "claidheamh", DisplayName = "Claidheamh", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -3180,7 +3180,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "broadsword", DisplayName = "Broad Sword", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Basic",
@@ -3197,7 +3197,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "battlesword", DisplayName = "Battle Sword", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Basic",
@@ -3214,7 +3214,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "masquerade", DisplayName = "Masquerade", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Basic",
@@ -3231,7 +3231,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "bramble", DisplayName = "Bramble", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
                 Rank = "Apprentice",
@@ -3248,7 +3248,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "Longsword", DisplayName = "Longsword", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
                 Rank = "Apprentice",
@@ -3265,7 +3265,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "Claidhmore", DisplayName = "Claidhmore", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
                 Rank = "Journeyman",
@@ -3282,7 +3282,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "emeraldsword", DisplayName = "Emerald Sword", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
                 Rank = "Journeyman",
@@ -3299,7 +3299,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "Gladius", DisplayName = "Gladius", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
                 },
                 Rank = "Adept",
@@ -3316,7 +3316,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "kindjal", DisplayName = "Kindjal", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
                 },
                 Rank = "Adept",
@@ -3333,7 +3333,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "dragonslayer", DisplayName = "Dragon Slayer", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 5 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 5 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 5 }
                 },
                 Rank = "Adept",
@@ -3350,7 +3350,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "hatchet", DisplayName = "Hatchet", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -3367,7 +3367,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "harpoon", DisplayName = "Harpoon", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -3384,7 +3384,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "Scimitar", DisplayName = "Scimitar", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -3401,7 +3401,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "Club", DisplayName = "Club", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -3418,7 +3418,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "SpikedClub", DisplayName = "Spiked Club", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -3435,7 +3435,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "chainmace", DisplayName = "Chain Mace", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
                 Rank = "Apprentice",
@@ -3452,7 +3452,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "handaxe", DisplayName = "Handaxe", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Journeyman",
@@ -3469,7 +3469,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "cutlass", DisplayName = "Cutlass", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Journeyman",
@@ -3486,7 +3486,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "Talgoniteaxe", DisplayName = "Talgonite Axe", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 4 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 4 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
                 },
                 Rank = "Adept",
@@ -3503,7 +3503,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "Talgoniteaxe", DisplayName = "Talgonite Axe", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 5 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 5 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 5 }
                 },
                 Rank = "Adept",
@@ -3520,7 +3520,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "magusares", DisplayName = "Magus Ares", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -3537,7 +3537,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "holyhermes", DisplayName = "Holy Hermes", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedbronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -3554,7 +3554,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "maguszeus", DisplayName = "Magus Zeus", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -3571,7 +3571,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "holykronos", DisplayName = "Holy Kronos", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -3588,7 +3588,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "magusdiana", DisplayName = "Magus Diana", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Journeyman",
@@ -3605,7 +3605,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "holydiana", DisplayName = "Holy Diana", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Journeyman",
@@ -3622,7 +3622,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "stonecross", DisplayName = "Stone Cross", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 4 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 4 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
                 Rank = "Adept",
@@ -3639,7 +3639,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "stonecross", DisplayName = "Stone Cross", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 5 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 5 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
                 },
                 Rank = "Adept",
@@ -3656,7 +3656,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "stonecross", DisplayName = "Stone Cross", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 5 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 5 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
                 },
                 Rank = "Adept",
@@ -3707,7 +3707,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "blossomdagger", DisplayName = "Blossom Dagger", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -3724,7 +3724,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "curveddagger", DisplayName = "Curved Dagger", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -3741,7 +3741,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "moondagger", DisplayName = "Moon Dagger", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Basic",
@@ -3758,7 +3758,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "lightdagger", DisplayName = "Light Dagger", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -3775,7 +3775,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "sundagger", DisplayName = "Sun Dagger", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishediron", DisplayName = "Polished Iron", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -3792,7 +3792,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "lotusdagger", DisplayName = "Lotus Dagger", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -3809,7 +3809,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "blooddagger", DisplayName = "Blood Dagger", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Journeyman",
@@ -3826,7 +3826,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "nagetierdagger", DisplayName = "Nagetier Dagger", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 5 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 5 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
                 },
                 Rank = "Adept",
@@ -3860,7 +3860,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "wolfclaw", DisplayName = "Wolf Claw", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -3877,7 +3877,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "Eagletalon", DisplayName = "Eagle Talon", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -3894,7 +3894,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "phoenixclaw", DisplayName = "Phoenix Claw", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Journeyman",
@@ -3911,7 +3911,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "Nunchaku", DisplayName = "Nunchaku", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedHybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 5 },
+                    new Ingredient { TemplateKey = "polishedHybrasyl", DisplayName = "Polished Hy-brasyl Bar", Amount = 5 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
                 },
                 Rank = "Adept",
@@ -3945,7 +3945,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "leathershield", DisplayName = "Leather Shield", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Basic",
@@ -3962,7 +3962,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "bronzeshield", DisplayName = "Bronze Shield", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Basic",
@@ -3979,7 +3979,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "gravelshield", DisplayName = "Gravel Shield", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
                 Rank = "Apprentice",
@@ -3996,7 +3996,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "ironshield", DisplayName = "Iron Shield", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -4013,7 +4013,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "lightshield", DisplayName = "Light Shield", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -4030,7 +4030,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "mythrilshield", DisplayName = "Mythril Shield", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedmythril", DisplayName = "Polished Mythril", Amount = 3 },
+                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -4047,7 +4047,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "hybrasylshield", DisplayName = "Hy-brasyl Shield", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedhybrasyl", DisplayName = "Polished Hy-brasyl", Amount = 4 },
+                    new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 4 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
                 Rank = "Journeyman",

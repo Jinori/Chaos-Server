@@ -29,7 +29,7 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
     private const string RANK_SEVEN_TITLE = "Expert Weaponsmith";
     private const string RANK_EIGHT_TITLE = "Master Weaponsmith";
     //Set this to true if doing armorsmithing type crafting
-    private readonly bool Craftgoodgreatgrand = false;
+    private readonly bool Craftgoodgreatgrand = true;
     private readonly IDialogFactory DialogFactory;
     private readonly IItemFactory ItemFactory;
 
