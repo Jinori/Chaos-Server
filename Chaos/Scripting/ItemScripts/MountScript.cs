@@ -24,6 +24,12 @@ public class MountScript : ItemScriptBase
     {
         var effect = _effectFactory.Create("mount");
 
+        if (source.Effects.Contains("hide"))
+        {
+            source.SendOrangeBarMessage("You cannot mount while hidden.");
+            return;
+        }
+        
         if (source.Trackers.Enums.TryGetValue(out CurrentMount mount))
         {
             if (source.Sprite != 0)

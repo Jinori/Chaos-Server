@@ -1,4 +1,5 @@
 ﻿using Chaos.Models.Data;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts;
