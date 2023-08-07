@@ -116,11 +116,6 @@ public class PlaytestCommand : ICommand<Aisling>
                     };
                 }
             }
-            else
-            {
-                // Log the problematic equipment data for troubleshooting.
-                Console.WriteLine($"Invalid equipment data found in {equipmentJsonFile}.");
-            }
         }
         
         foreach (var equipmentInfo in bestInSlotEquipment.Values)

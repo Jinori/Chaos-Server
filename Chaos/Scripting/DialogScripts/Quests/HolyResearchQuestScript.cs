@@ -130,7 +130,7 @@ public class HolyResearchQuestScript : DialogScriptBase
                     source.TryGiveGamePoints(5);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive five gamepoints and 2000 exp!");
                     Subject.Close(source);
-                    source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(1), true);
+                    source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(3), true);
                 }
 
                 break;
@@ -152,7 +152,7 @@ public class HolyResearchQuestScript : DialogScriptBase
                     source.TryGiveGamePoints(5);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive five gamepoints and 2000 exp!");
                     Subject.Close(source);
-                    source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(1), true);
+                    source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(3), true);
                 }
 
                 break;
@@ -174,7 +174,7 @@ public class HolyResearchQuestScript : DialogScriptBase
                     source.TryGiveGamePoints(5);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive five gamepoints and 2000 exp!");
                     Subject.Close(source);
-                    source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(1), true);
+                    source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(3), true);
                 }
 
                 break;

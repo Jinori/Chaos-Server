@@ -62,9 +62,6 @@ public sealed partial class IntegrityCheckControl
 
         var acceptableKeys = new[] { "top", "close" };
 
-        bool ValidateDialogKey(string key) => acceptableKeys.ContainsI(key)
-                                              || JsonContext.DialogTemplates.Any(t => t.TemplateKey.EqualsI(key));
-
         foreach (var wrapper in JsonContext.DialogTemplates.Objects)
         {
             var template = wrapper.Object;
@@ -111,7 +108,20 @@ public sealed partial class IntegrityCheckControl
                     await AddViolationAsync("TextBoxPrompt should only be specified for DialogTextEntry", handler);
             } else if (!template.TextBoxLength.HasValue && string.IsNullOrEmpty(template.TextBoxPrompt))
                 await AddViolationAsync("TextBoxLength AND/OR TextBoxPrompt should be specified for DialogTextEntry", handler);
+
+            if (template.NextDialogKey is null
+                && template.Type is not ChaosDialogType.DialogMenu
+                                    and not ChaosDialogType.Menu
+                                    and not ChaosDialogType.MenuWithArgs
+                                    and not ChaosDialogType.CloseDialog
+                                    and not ChaosDialogType.Normal)
+                await AddViolationAsync("NextDialogKey should be specified for given menu type", handler);
         }
+
+        return;
+
+        bool ValidateDialogKey(string key) => acceptableKeys.ContainsI(key)
+                                              || JsonContext.DialogTemplates.Any(t => t.TemplateKey.EqualsI(key));
     }
 
     private async Task DetectIntegrityViolationsAsync()
@@ -153,6 +163,14 @@ public sealed partial class IntegrityCheckControl
     {
         await Task.Yield();
 
+        var buyableItems = JsonContext.MerchantTemplates
+                                      .SelectMany(m => m.ItemsForSale.Select(i => i.ItemTemplateKey))
+                                      .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        var sellableItems = JsonContext.MerchantTemplates
+                                       .SelectMany(m => m.ItemsToBuy)
+                                       .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
         foreach (var wrapper in JsonContext.ItemTemplates.Objects)
         {
             var template = wrapper.Object;
@@ -175,6 +193,25 @@ public sealed partial class IntegrityCheckControl
 
             if (!template.TemplateKey.EqualsI(expectedTemplateKey))
                 await AddViolationAsync($"TemplateKey mismatch: {template.TemplateKey} != {expectedTemplateKey}", handler, true);
+
+            //if the item is bought by a merchant
+            if (sellableItems.Contains(template.TemplateKey))
+            {
+                if (template.SellValue == 0)
+                    await AddViolationAsync("Sellable item has sellValue of 0", handler);
+                
+            }
+
+            //if the item is sold by a merchant
+            if (buyableItems.Contains(template.TemplateKey))
+                if (template.BuyCost == 0)
+                    await AddViolationAsync("Buyable item has buyCost of 0", handler);
+
+            if (sellableItems.Contains(template.TemplateKey) && buyableItems.Contains(template.TemplateKey))
+            {
+                if (template.SellValue > template.BuyCost)
+                    await AddViolationAsync($"Sellable item has sellValue > buyCost: {template.SellValue} > {template.BuyCost}", handler);
+            }
         }
     }
 

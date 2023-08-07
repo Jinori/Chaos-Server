@@ -17,13 +17,13 @@ public class LockPickChestScript : DialogScriptBase
     {
         if (source.UserStatSheet.BaseClass != BaseClass.Rogue)
         {
-            Subject.Reply(source, "The chest chuckles at your touch, 'Only a deft Rogue could pick my insides!'");
+            Subject.Reply(source, "The chest chuckles, 'Only a deft Rogue could pick my insides!'");
 
             return;
         }
 
         if (!source.Inventory.HasCount("Lockpicks", 1))
-            Subject.Reply(source, "The chest smirks, 'What did you hope to tickle my tumbler with, a feather?'");
+            Subject.Reply(source, "The chest smirks, 'What did you hope to tickle my tumbler with a feather?'");
     }
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
@@ -58,7 +58,7 @@ public class LockPickChestScript : DialogScriptBase
         {
             source.SendServerMessage(
                 ServerMessageType.OrangeBar1,
-                $"The chest groans as its lock gives way. Inside, you find a glittering prize of {prizeGold} gold!");
+                $"You find a prize of {prizeGold} gold!");
 
             source.TryGiveGold(prizeGold);
             source.Inventory.RemoveQuantity("Lockpicks", 1);
@@ -89,12 +89,12 @@ public class LockPickChestScript : DialogScriptBase
 
                 source.SendServerMessage(
                     ServerMessageType.OrangeBar1,
-                    "The lock defeats your clumsy efforts and claims your lockpick as a trophy. Better luck next time!");
+                    "The lock defeats your clumsy efforts and claims your lockpick as a trophy!");
             }
             else
                 source.SendServerMessage(
                     ServerMessageType.OrangeBar1,
-                    "You fail to pick the lock. The chest giggles, 'That tickled, try again!'");
+                    "You fail to pick the lock. The chest giggles!");
         }
 
         Subject.Close(source);

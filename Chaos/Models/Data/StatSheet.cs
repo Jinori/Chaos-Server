@@ -212,17 +212,7 @@ public record StatSheet : Attributes
         Interlocked.Add(ref _spellDamagePctMod, other.SpellDamagePct);
     }
 
-    public void AddHealthPct(int pct)
-    {
-        if (EffectiveMaximumHp == 0)
-        {
-            InterlockedEx.SetValue(ref _currentHp, () => 0);
-        }
-        else
-        {
-            InterlockedEx.SetValue(ref _currentHp, () => (int)Math.Clamp(EffectiveMaximumHp * (pct + HealthPercent) / 100m, 0, EffectiveMaximumHp));
-        }
-    }
+    public void AddHealthPct(int pct) => InterlockedEx.SetValue(ref _currentHp, () => (int)Math.Clamp(EffectiveMaximumHp * (pct + HealthPercent) / 100m, 0, EffectiveMaximumHp));
 
     public void AddHp(int amount) => InterlockedEx.SetValue(
         ref _currentHp,
@@ -230,17 +220,7 @@ public record StatSheet : Attributes
 
     public void AddLevel(int amount = 1) => Interlocked.Add(ref _level, amount);
 
-    public void AddManaPct(int pct)
-    {
-        if (EffectiveMaximumMp == 0)
-        {
-            InterlockedEx.SetValue(ref _currentMp, () => 0);
-        }
-        else
-        {
-            InterlockedEx.SetValue(ref _currentMp, () => (int)Math.Clamp(EffectiveMaximumMp * (pct + ManaPercent) / 100m, 0, EffectiveMaximumMp));
-        }
-    }
+    public void AddManaPct(int pct) => InterlockedEx.SetValue(ref _currentMp, () => (int)Math.Clamp(EffectiveMaximumMp * (pct + ManaPercent) / 100m, 0, EffectiveMaximumMp));
 
     public void AddMp(int amount) => InterlockedEx.SetValue(
         ref _currentMp,

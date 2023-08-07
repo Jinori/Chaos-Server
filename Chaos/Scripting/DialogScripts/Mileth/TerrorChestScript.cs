@@ -31,62 +31,69 @@ public class TerrorChestScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        var isArmorDye = Subject.Template.TemplateKey.EqualsI("terrorChest_randomArmorDye");
-        var isOvercoat = Subject.Template.TemplateKey.EqualsI("terrorChest_randomOvercoat");
-
-        if (isArmorDye || isOvercoat)
+        if (!source.Trackers.TimedEvents.HasActiveEvent("TerrorOfTheCrypt", out _))
         {
-            Item item;
+            var isArmorDye = Subject.Template.TemplateKey.EqualsI("terrorChest_randomArmorDye");
+            var isOvercoat = Subject.Template.TemplateKey.EqualsI("terrorChest_randomOvercoat");
 
-            if (isArmorDye)
+            if (isArmorDye || isOvercoat)
             {
-                var armorDye = new List<string> { "Mileth", "Rucesion", "Suomi", "Loures" };
-                var random = new Random();
-                var index = random.Next(armorDye.Count);
-                item = ItemFactory.Create("armorDyeContainer");
-                item.DisplayName = $"{armorDye[index]} Armor Dye";
+                Item item;
 
-                item.Color = armorDye[index] switch
+                if (isArmorDye)
                 {
-                    "Mileth"   => DisplayColor.Green,
-                    "Rucesion" => DisplayColor.Blue,
-                    "Suomi"    => DisplayColor.Apple,
-                    "Loures"   => DisplayColor.White,
-                    _          => item.Color
-                };
+                    var armorDye = new List<string> { "Mileth", "Rucesion", "Suomi", "Loures" };
+                    var random = new Random();
+                    var index = random.Next(armorDye.Count);
+                    item = ItemFactory.Create("armorDyeContainer");
+                    item.DisplayName = $"{armorDye[index]} Armor Dye";
+
+                    item.Color = armorDye[index] switch
+                    {
+                        "Mileth"   => DisplayColor.Green,
+                        "Rucesion" => DisplayColor.Blue,
+                        "Suomi"    => DisplayColor.Apple,
+                        "Loures"   => DisplayColor.White,
+                        _          => item.Color
+                    };
+                }
+                else // isOvercoat
+                {
+                    var templateKeyRewards = new List<string> { "dyeableTrainingOutfit" };
+                    var index = new Random().Next(templateKeyRewards.Count);
+                    item = ItemFactory.Create(templateKeyRewards[index]);
+                }
+
+                var tnl = LevelUpFormulae.Default.CalculateTnl(source);
+                var expAmount = Convert.ToInt32(0.30 * tnl);
+                ExperienceDistributionScript.GiveExp(source, expAmount);
+                source.TryGiveGold(20000);
+                source.TryGiveItem(ref item);
+                source.TryGiveGamePoints(10);
+
+                source.Client.SendServerMessage(
+                    ServerMessageType.OrangeBar1,
+                    $"You've received {item.DisplayName}, 20,000 coins and 10 game points!");
+
+                source.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        "Vanquished Terror of the Crypt",
+                        "cryptTerror",
+                        MarkIcon.Victory,
+                        MarkColor.White,
+                        1,
+                        GameTime.Now));
+
+                source.Trackers.TimedEvents.AddEvent("TerrorOfTheCrypt", TimeSpan.FromDays(1), true);
             }
-            else // isOvercoat
-            {
-                var templateKeyRewards = new List<string> { "dyeableTrainingOutfit" };
-                var index = new Random().Next(templateKeyRewards.Count);
-                item = ItemFactory.Create(templateKeyRewards[index]);
-            }
-
-            var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-            var expAmount = Convert.ToInt32(0.30 * tnl);
-            ExperienceDistributionScript.GiveExp(source, expAmount);
-            source.TryGiveGold(20000);
-            source.TryGiveItem(ref item);
-            source.TryGiveGamePoints(10);
-
-            source.Client.SendServerMessage(
-                ServerMessageType.OrangeBar1,
-                $"You've received {item.DisplayName}, 20,000 coins and 10 game points!");
-
-            source.Legend.AddOrAccumulate(
-                new LegendMark(
-                    "Vanquished Terror of the Crypt",
-                    "cryptTerror",
-                    MarkIcon.Victory,
-                    MarkColor.White,
-                    1,
-                    GameTime.Now));
-
-            source.Trackers.TimedEvents.AddEvent("TerrorOfTheCrypt", TimeSpan.FromDays(1));
-
-            var mapInstance = SimpleCache.Get<MapInstance>("mileth_tavern");
-            source.TraverseMap(mapInstance, new Point(9, 10));
-            Subject.Close(source);
         }
+        else
+        {
+            source.SendActiveMessage("You have already received today's rewards for this quest.");
+        }
+
+        var mapInstance = SimpleCache.Get<MapInstance>("mileth_tavern");
+        source.TraverseMap(mapInstance, new Point(9, 10));
+        Subject.Close(source);
     }
 }

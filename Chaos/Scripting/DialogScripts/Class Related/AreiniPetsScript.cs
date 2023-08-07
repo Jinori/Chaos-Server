@@ -55,26 +55,35 @@ public class AreiniPetsScript : DialogScriptBase
         {
             case "areini_pickrabidbite":
             {
-                RemoveExistingPets(source);
-                source.Trackers.Flags.AddFlag(PetSkillsChosen.Level10);
-                source.Trackers.Enums.Set(Level10PetSkills.RabidBite);
-                source.SendActiveMessage("Rabid Bite ability learned!");
-                break;
+                if (optionIndex != 2)
+                {
+                    RemoveExistingPets(source);
+                    source.Trackers.Flags.AddFlag(PetSkillsChosen.Level10);
+                    source.Trackers.Enums.Set(Level10PetSkills.RabidBite);
+                    source.SendActiveMessage("Rabid Bite ability learned!");
+                }
+                break; 
             }
             case "areini_pickgrowl":
             {
-                RemoveExistingPets(source);
-                source.Trackers.Flags.AddFlag(PetSkillsChosen.Level10);
-                source.Trackers.Enums.Set(Level10PetSkills.Growl);
-                source.SendActiveMessage("Growl ability learned!");
+                if (optionIndex != 2)
+                {
+                    RemoveExistingPets(source);
+                    source.Trackers.Flags.AddFlag(PetSkillsChosen.Level10);
+                    source.Trackers.Enums.Set(Level10PetSkills.Growl);
+                    source.SendActiveMessage("Growl ability learned!");
+                }
                 break;
             }
             case "areini_pickquickattack":
             {
-                RemoveExistingPets(source);
-                source.Trackers.Flags.AddFlag(PetSkillsChosen.Level10);
-                source.Trackers.Enums.Set(Level10PetSkills.QuickAttack);
-                source.SendActiveMessage("Quick Attack ability learned!");
+                if (optionIndex != 2)
+                {
+                    RemoveExistingPets(source);
+                    source.Trackers.Flags.AddFlag(PetSkillsChosen.Level10);
+                    source.Trackers.Enums.Set(Level10PetSkills.QuickAttack);
+                    source.SendActiveMessage("Quick Attack ability learned!");
+                }
                 break;
             }
         }

@@ -1,3 +1,4 @@
+using Chaos.Common.Utilities;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Models.World;
@@ -23,7 +24,7 @@ public class CastingScript : MonsterScriptBase
         Spells.ShuffleInPlace();
 
         foreach (var spell in Spells)
-            if (Subject.TryUseSpell(spell, Target.Id))
+            if (Subject.TryUseSpell(spell, Target.Id) && IntegerRandomizer.RollChance(7))
             {
                 Subject.WanderTimer.Reset();
                 Subject.MoveTimer.Reset();

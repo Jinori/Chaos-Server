@@ -1,10 +1,11 @@
 using Chaos.Collections;
+using Chaos.Common.Utilities;
 using Chaos.Extensions.Common;
+using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.Templates;
 using Chaos.Models.World;
 using Chaos.Services.Factories.Abstractions;
-using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -14,74 +15,27 @@ public abstract class MerchantSpawnerScript : MapScriptBase
 {
     private readonly IMerchantFactory MerchantFactory;
 
-    private readonly ISimpleCache SimpleCache;
-
     private IIntervalTimer? SpawnTimer;
     public abstract int MaxAmount { get; set; }
     public abstract int MaxPerSpawn { get; set; }
     public abstract string MerchantTemplateKey { get; set; }
     public abstract int SpawnIntervalMs { get; set; }
+    
+    public abstract int MinDistanceFromWall { get; set; }
 
-    protected MerchantSpawnerScript(MapInstance subject, IMerchantFactory merchantFactory, ISimpleCache simpleCache)
-        : base(subject)
-    {
+    protected MerchantSpawnerScript(MapInstance subject, IMerchantFactory merchantFactory)
+        : base(subject) =>
         MerchantFactory = merchantFactory;
-        SimpleCache = simpleCache;
-    }
 
-    private IPoint GenerateSpawnPoint(MapTemplate selectedMap)
+    private IPoint GenerateSpawnPoint(MapTemplate selectedMap) => selectedMap.Bounds.GetRandomPoint(pt => !IsNearWall(pt, selectedMap));
+    
+
+    public bool IsNearWall(IPoint point, MapTemplate selectedMap)
     {
-        var validPoints = GenerateValidSpawnPoints(selectedMap, 3);
+        var length = MinDistanceFromWall * 2 + 1;
+        var rect = new Rectangle(point, length, length);
 
-        if (validPoints.Count == 0)
-            throw new Exception("No valid spawn points!");
-
-        // Randomly pick a valid point
-        var index = new Random().Next(validPoints.Count);
-
-        return validPoints[index];
-    }
-
-    private List<IPoint> GenerateValidSpawnPoints(MapTemplate selectedMap, int minDistanceFromWall)
-    {
-        var validPoints = new List<IPoint>();
-
-        for (var x = 0; x < selectedMap.Width; x++)
-        {
-            for (var y = 0; y < selectedMap.Height; y++)
-            {
-                IPoint point = new Point(x, y);
-
-                // Exclude walls
-                if (selectedMap.IsWall(point))
-                    continue;
-
-                // Exclude points near walls
-                if (!IsNearWall(point, selectedMap, minDistanceFromWall))
-                    validPoints.Add(point);
-            }
-        }
-
-        return validPoints;
-    }
-
-    public bool IsNearWall(IPoint point, MapTemplate selectedMap, int radius)
-    {
-        for (var x = -radius; x <= radius; x++)
-        {
-            for (var y = -radius; y <= radius; y++)
-            {
-                var checkPoint = new Point(point.X + x, point.Y + y);
-
-                if (!selectedMap.IsWithinMap(checkPoint))
-                    continue;
-
-                if (selectedMap.IsWall(checkPoint))
-                    return true;
-            }
-        }
-
-        return false;
+        return rect.GetPoints().Any(pt => selectedMap.IsWall(pt));
     }
 
     public override void Update(TimeSpan delta)
@@ -97,10 +51,16 @@ public abstract class MerchantSpawnerScript : MapScriptBase
 
             var maxSpawns = Math.Min(MaxAmount - countOfAllMerchants, MaxPerSpawn);
 
-            // Generate a random number of spawns between 0 and maxSpawns (exclusive)
-            var random = new Random();
-            var spawnAmount = random.Next(0, maxSpawns);
-
+            if (maxSpawns == 0)
+                return;
+            
+            maxSpawns++;
+            
+            if (!IntegerRandomizer.RollChance(15))
+                return;
+            
+            var spawnAmount = Random.Shared.Next(1, maxSpawns);
+            
             for (var i = 0; i < spawnAmount; i++)
             {
                 var point = GenerateSpawnPoint(Subject.Template);

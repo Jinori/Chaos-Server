@@ -2283,7 +2283,7 @@ public class RecipeItemScript : ItemScriptBase
                 return;
             }
 
-            case "miraelisblessing":
+            case "recipe_miraelisblessing":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.MiraelisBlessing))
                 {
