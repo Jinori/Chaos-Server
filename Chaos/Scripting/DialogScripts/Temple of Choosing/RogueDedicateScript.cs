@@ -61,18 +61,17 @@ public class RogueDedicateScript : DialogScriptBase
                     GameTime.Now));
 
             source.Trackers.Flags.AddFlag(QuestFlag1.ChosenClass);
-            var skill = SkillFactory.Create("assail");
+            var skill = SkillFactory.Create("assault");
             var skill2 = SkillFactory.Create("stab");
-            var spell = SpellFactory.Create("needletrap");
-
-            if (!source.SpellBook.Contains(spell))
-                source.SpellBook.TryAddToNextSlot(spell);
+            
 
             if (!source.SkillBook.Contains(skill2))
                 source.SkillBook.TryAddToNextSlot(skill2);
 
             if (!source.SkillBook.Contains(skill))
                 source.SkillBook.TryAddToNextSlot(skill);
+
+            source.SkillBook.Remove("assail");
 
             var mapInstance = SimpleCache.Get<MapInstance>("toc");
             var point = new Point(8, 5);
