@@ -97,6 +97,6 @@ public class HomeScript : ConfigurableItemScriptBase, TeleportComponent.ITelepor
         }
 
         new ComponentExecutor(source, source).WithOptions(this).Execute<TeleportComponent>();
-        source.Inventory.Remove(Subject.Slot);
+        source.Inventory.RemoveQuantity(Subject.Slot, 1);
     }
 }
