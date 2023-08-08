@@ -44,8 +44,8 @@ public class MythicKillCounterScript : ConfigurableMonsterScriptBase
                 .ThatAreWithinRange(rewardTarget)
                 .ToArray();
 
-           if (rewardTargets is not null)
-                 foreach (var aisling in rewardTargets)
+        if (rewardTargets is not null)
+            foreach (var aisling in rewardTargets)
             {
                 var stageType = GetEnumType(QuestEnum);
                 if (stageType is null)
@@ -61,12 +61,12 @@ public class MythicKillCounterScript : ConfigurableMonsterScriptBase
                     aisling.Trackers.Enums.TryGetValue(stageType, out var stage);
 
                     if (!Equals(stage, currentStage))
-                        return;
+                        continue;
 
                     if (killedamt < QuantityReq)
                     {
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Counter, QuantityReq))
-                            return;
+                            continue;
                         
                         var value = aisling.Trackers.Counters.AddOrIncrement(Counter); 
                         aisling.Client.SendServerMessage(
@@ -84,7 +84,7 @@ public class MythicKillCounterScript : ConfigurableMonsterScriptBase
                         {
                             aisling.SendOrangeBarMessage(
                                 $"{Subject.Template.Name} has been defeated. Return to {Leader}.");
-                            return;
+                            continue;
                         }
                     }
                     else // Move the else statement here
@@ -92,7 +92,7 @@ public class MythicKillCounterScript : ConfigurableMonsterScriptBase
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Counter, QuantityReq))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
-                            return;
+                            continue;
                         }
                     }
                 }

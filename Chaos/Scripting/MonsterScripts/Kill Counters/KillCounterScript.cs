@@ -33,7 +33,7 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out ManorLouegieStage louegieStage) || (louegieStage != ManorLouegieStage.AcceptedQuest))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("manorghost", 100))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo($"{Subject.Template.TemplateKey}", 100))
         {
             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
             aisling.Trackers.Enums.Set(ManorLouegieStage.CompletedQuest);
@@ -184,7 +184,7 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     case "manorghost":
                         HandleManorGhostKill(aisling);
-
+                        
                         break;
                     case "tavern_rat":
                         HandleTavernRatKill(aisling);

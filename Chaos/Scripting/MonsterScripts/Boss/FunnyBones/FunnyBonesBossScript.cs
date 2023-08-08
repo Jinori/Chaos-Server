@@ -9,7 +9,7 @@ namespace Chaos.Scripting.MonsterScripts.Boss.FunnyBones
         private static readonly ICollection<string> ScriptKeys = new[]
         {
             GetScriptKey(typeof(BossMoveToTargetScript)),
-            GetScriptKey(typeof(BossEnrageScript)),
+            GetScriptKey(typeof(FunnyBonesEnrageScript)),
             GetScriptKey(typeof(AggroTargetingScript)),
             GetScriptKey(typeof(ContributionScript)),
             GetScriptKey(typeof(CastingScript)),
