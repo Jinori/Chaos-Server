@@ -32,7 +32,7 @@ public sealed class BunnyBoss1EnrageScript : MonsterScriptBase
             //Spawn Monsters
             var rectange = new Rectangle(Subject, 4, 4);
 
-            for (var i = 0; i <= 2; i++)
+            for (var i = 0; i <= 1; i++)
             {
                 var point = rectange.GetRandomPoint();
                 var mobs = MonsterFactory.Create("bunny1-2", Subject.MapInstance, point);
@@ -46,7 +46,7 @@ public sealed class BunnyBoss1EnrageScript : MonsterScriptBase
             Bonus50Applied = true;
             var rectange = new Rectangle(Subject, 4, 4);
 
-            for (var i = 0; i <= 3; i++)
+            for (var i = 0; i <= 2; i++)
             {
                 var point = rectange.GetRandomPoint();
                 var mobs = MonsterFactory.Create("bunny1-3", Subject.MapInstance, point);
@@ -61,7 +61,7 @@ public sealed class BunnyBoss1EnrageScript : MonsterScriptBase
             Bonus30Applied = true;
             var rectange = new Rectangle(Subject, 4, 4);
 
-            for (var i = 0; i <= 4; i++)
+            for (var i = 0; i <= 2; i++)
             {
                 var point = rectange.GetRandomPoint();
                 var mobs = MonsterFactory.Create("bunny1-4", Subject.MapInstance, point);
