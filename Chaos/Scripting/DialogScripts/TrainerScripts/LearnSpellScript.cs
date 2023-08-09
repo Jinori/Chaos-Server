@@ -5,6 +5,8 @@ using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Utilities;
@@ -130,7 +132,8 @@ public class LearnSpellScript : DialogScriptBase
         switch (learnSpellResult)
         {
             case ComplexActionHelper.LearnSpellResult.Success:
-                Logger.WithProperty(Subject)
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Spell, Topics.Actions.Learn)
+                      .WithProperty(Subject)
                       .WithProperty(Subject.DialogSource)
                       .WithProperty(source)
                       .WithProperty(spell)
@@ -226,7 +229,12 @@ public class LearnSpellScript : DialogScriptBase
         {
             dialog.ReplyToUnknownInput(source);
 
-            Logger.WithProperty(Subject)
+            Logger.WithTopics(
+                      Topics.Entities.Aisling,
+                      Topics.Entities.Spell,
+                      Topics.Actions.Learn,
+                      Topics.Qualifiers.Cheating)
+                  .WithProperty(Subject)
                   .WithProperty(Subject.DialogSource)
                   .WithProperty(source)
                   .WithProperty(spellToLearn)
@@ -242,7 +250,12 @@ public class LearnSpellScript : DialogScriptBase
         {
             dialog.ReplyToUnknownInput(source);
 
-            Logger.WithProperty(Subject)
+            Logger.WithTopics(
+                      Topics.Entities.Aisling,
+                      Topics.Entities.Spell,
+                      Topics.Actions.Learn,
+                      Topics.Qualifiers.Cheating)
+                  .WithProperty(Subject)
                   .WithProperty(Subject.DialogSource)
                   .WithProperty(source)
                   .WithProperty(spellToLearn)

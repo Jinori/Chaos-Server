@@ -10,6 +10,8 @@ using Chaos.Models.Data;
 using Chaos.Models.Templates;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Pathfinding.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
@@ -128,8 +130,9 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
                 HandleShardLimiters();
         } catch (Exception e)
         {
-            Logger.WithProperty(this)
-                  .LogCritical(e, "Failed to update map {@MapInstanceId}", InstanceId);
+            Logger.WithTopics(Topics.Entities.MapInstance, Topics.Actions.Update)
+                  .WithProperty(this)
+                  .LogError(e, "Failed to update map {@MapInstanceId}", InstanceId);
         }
     }
 
@@ -209,7 +212,7 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
 
     public void Click(uint id, Aisling source)
     {
-        if (TryGetObject<VisibleEntity>(id, out var obj))
+        if (TryGetEntity<VisibleEntity>(id, out var obj))
             if (obj.WithinRange(source) && source.CanObserve(obj))
                 obj.OnClicked(source);
     }
@@ -236,7 +239,8 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
 
     public void Destroy()
     {
-        Logger.WithProperty(this)
+        Logger.WithTopics(Topics.Entities.MapInstance, Topics.Actions.Delete)
+              .WithProperty(this)
               .LogInformation("Shutting down map instance {@MapInstanceId}", InstanceId);
 
         Stop();
@@ -482,7 +486,7 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
                                            .Take(amountOverLimit)
                                            .ToList();
 
-                var aislingsToRemove = groupsToRemove.SelectMany(_ => _)
+                var aislingsToRemove = groupsToRemove.SelectMany(l => l)
                                                      .ToList();
 
                 //for each timer that isnt for one of these aislings
@@ -707,7 +711,7 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
             foreach (var aisling in Objects.WithinRange<Aisling>(animation.TargetPoint))
                 aisling.Client.SendAnimation(animation);
         else if (animation.TargetId.HasValue)
-            if (TryGetObject<Creature>(animation.TargetId.Value, out var target))
+            if (TryGetEntity<Creature>(animation.TargetId.Value, out var target))
                 foreach (var aisling in Objects.WithinRange<Aisling>(target)
                                                .ThatCanObserve(target))
                     aisling.Client.SendAnimation(animation);
@@ -742,7 +746,7 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
 
     public void Stop() => MapInstanceCtx.Cancel();
 
-    public bool TryGetObject<T>(uint id, [MaybeNullWhen(false)] out T obj) => Objects.TryGetValue(id, out obj);
+    public bool TryGetEntity<T>(uint id, [MaybeNullWhen(false)] out T obj) => Objects.TryGetValue(id, out obj);
 
     public async Task UpdateMapAsync(TimeSpan delta)
     {

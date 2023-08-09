@@ -64,6 +64,12 @@ public sealed class Startup
                         null,
                         defaultChannel.ChannelName,
                         defaultChannel.MessageColor ?? MessageColor.Gainsboro,
+                        (sub, message) =>
+                        {
+                            var aisling = (Aisling)sub;
+                            aisling.SendServerMessage(ServerMessageType.ActiveMessage, message);
+                            aisling.Client.SendPublicMessage(uint.MaxValue, PublicMessageType.Shout, message);
+                        },
                         true);
             });
 
@@ -299,7 +305,23 @@ public sealed class Startup
                               {
                                   Key = obj.Key,
                                   Name = obj.Name,
-                                  Posts = obj.Count()
+                                  Posts = obj.Posts.Count
+                              });
+
+                          builder.RegisterObjectTransformation<MailBox>(
+                              obj => new
+                              {
+                                  Key = obj.Key,
+                                  Name = obj.Name,
+                                  Posts = obj.Posts.Count
+                              });
+
+                          builder.RegisterObjectTransformation<BulletinBoard>(
+                              obj => new
+                              {
+                                  Key = obj.Key,
+                                  Name = obj.Name,
+                                  Posts = obj.Posts.Count
                               });
 
                           builder.RegisterObjectTransformation<Post>(

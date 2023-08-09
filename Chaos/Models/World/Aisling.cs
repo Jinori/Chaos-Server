@@ -18,6 +18,8 @@ using Chaos.Models.Menu;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
 using Chaos.Networking.Abstractions;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Observers;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.AislingScripts;
@@ -113,7 +115,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
             if ((Sprite == 0) && WorldOptions.Instance.ProhibitSpeedWalk && !WalkCounter.TryIncrement())
             {
-                Logger.WithProperty(this)
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Qualifiers.Cheating, Topics.Actions.Walk)
+                      .WithProperty(this)
                       .LogWarning("Aisling {@AislingName} is probably speed walking", Name);
 
                 return false;
@@ -244,14 +247,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     /// <inheritdoc />
     public bool IsIgnoring(string name) => IgnoreList.Contains(name);
 
-    public void SendServerMessage(ServerMessageType serverMessageType, string message)
-    {
-        if (message.Length < CONSTANTS.MAX_SERVER_MESSAGE_LENGTH)
-            Client.SendServerMessage(serverMessageType, message);
-        else
-            foreach (var msg in message.Chunk(CONSTANTS.MAX_SERVER_MESSAGE_LENGTH))
-                Client.SendServerMessage(serverMessageType, new string(msg));
-    }
+    /// <inheritdoc />
+    public void SendMessage(string message) => SendActiveMessage(message);
 
     public void BeginObserving()
     {
@@ -546,13 +543,27 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
     public void SendPersistentMessage(string message) => SendServerMessage(ServerMessageType.PersistentMessage, message);
 
+    public void SendServerMessage(ServerMessageType serverMessageType, string message)
+    {
+        if ((message.Length < CONSTANTS.MAX_SERVER_MESSAGE_LENGTH)
+            || serverMessageType is ServerMessageType.WoodenBoard
+                                    or ServerMessageType.ScrollWindow
+                                    or ServerMessageType.NonScrollWindow
+                                    or ServerMessageType.UserOptions)
+            Client.SendServerMessage(serverMessageType, message);
+        else
+            foreach (var msg in message.Chunk(CONSTANTS.MAX_SERVER_MESSAGE_LENGTH))
+                Client.SendServerMessage(serverMessageType, new string(msg));
+    }
+
     /// <inheritdoc />
     public override void ShowPublicMessage(PublicMessageType publicMessageType, string message)
     {
         if (!Script.CanTalk())
             return;
 
-        Logger.WithProperty(this)
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Message, Topics.Actions.Send)
+              .WithProperty(this)
               .LogInformation(
                   "Aisling {@AislingName} sent {@Type} message {@Message}",
                   Name,
@@ -615,7 +626,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         money = new Money(amount, MapInstance, point);
         MapInstance.AddObject(money, point);
 
-        Logger.WithProperty(this)
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold, Topics.Actions.Drop)
+              .WithProperty(this)
               .WithProperty(money)
               .LogInformation(
                   "Aisling {@AislingName} dropped {Amount} gold at {@Location}",
@@ -733,7 +745,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         if (TryGiveItem(ref item, destinationSlot))
         {
-            Logger.WithProperty(this)
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Actions.Pickup)
+                  .WithProperty(this)
                   .WithProperty(groundItem)
                   .LogInformation(
                       "Aisling {@AislingName} picked up item {@ItemName} from {@Location}",
@@ -764,7 +777,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         if (TryGiveGold(money.Amount))
         {
-            Logger.WithProperty(this)
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold, Topics.Actions.Pickup)
+                  .WithProperty(this)
                   .WithProperty(money)
                   .LogInformation(
                       "Aisling {@AislingName} picked up {Amount} gold from {@Location}",
@@ -788,6 +802,23 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         if (!source.Options.AllowExchange)
         {
             source.SendActiveMessage("You have disabled exchanging");
+            exchange = null;
+
+            return false;
+        }
+
+        if (IsIgnoring(source.Name))
+        {
+            source.SendActiveMessage($"{Name} has disabled exchanging");
+
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Exchange, Topics.Qualifiers.Harassment)
+                  .WithProperty(this)
+                  .WithProperty(source)
+                  .LogWarning(
+                      "{@AislingName} is trying to exchange with {@TargetName}, but is ignored (potential harassment)",
+                      source.Name,
+                      Name);
+
             exchange = null;
 
             return false;
@@ -940,8 +971,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
                 return false;
 
             target = this;
-        }
-        else if (!MapInstance.TryGetObject(targetId.Value, out target))
+        } else if (!MapInstance.TryGetEntity(targetId.Value, out target))
             return false;
 
         if (!CanUse(

@@ -145,7 +145,6 @@ public sealed class AislingMapperProfile : IMapperProfile<Aisling, AislingSchema
             Titles = obj.Titles.ToList(),
             UserOptions = Mapper.Map<UserOptionsSchema>(obj.Options),
             IgnoreList = obj.IgnoreList.ToList(),
-            Effects = Array.Empty<EffectSchema>(),
             ChannelSettings = Mapper.MapMany<ChannelSettingsSchema>(obj.ChannelSettings).ToList()
         };
 
@@ -308,7 +307,6 @@ public sealed class AislingMapperProfile : IMapperProfile<Aisling, AislingSchema
         Nation = obj.Nation,
         Portrait = obj.Portrait,
         ProfileText = obj.ProfileText,
-        SocialStatus = obj.Options.SocialStatus,
         SpouseName = null, //TODO: when we implement marraige i guess
         Title = obj.Titles.FirstOrDefault()
     };

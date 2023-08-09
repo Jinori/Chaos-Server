@@ -49,7 +49,7 @@ public partial class MainWindow : Window
                                                   .Prepend(currentAssembly)
                                                   .ToList();
 
-        var namespaces = currentAssemblyStack.Where(asm => asm.FullName!.ContainsI("Chaos."))
+        var namespaces = currentAssemblyStack.Where(asm => asm.FullName!.StartsWithI("Chaos."))
                                              .SelectMany(
                                                  asm =>
                                                  {
@@ -96,6 +96,8 @@ public partial class MainWindow : Window
         await JsonContext.LoadAsync();
         ToolTipService.InitialShowDelayProperty.OverrideMetadata(typeof(Label), new FrameworkPropertyMetadata(500));
     }
+
+    private async void OnClickedReload(object sender, RoutedEventArgs e) => await JsonContext.ReloadAsync();
 
     private async void OnItemLoaded(object sender, EventArgs e)
     {
@@ -147,12 +149,12 @@ public partial class MainWindow : Window
                                          new DarkModeColors(),
                                          workingDirectory,
                                          """
-// Enter your code here
-// You can import namspaces via using statements
-// JsonContext is available as a global variable for accessing json data
-// You can return a value to see it in the output
-// Once you make changes to objects, make sure to save with "await JsonContext.SaveChangesAsync();"
-""",
+                                         // Enter your code here
+                                         // You can import namspaces via using statements
+                                         // JsonContext is available as a global variable for accessing json data
+                                         // You can return a value to see it in the output
+                                         // Once you make changes to objects, make sure to save with "await JsonContext.SaveChangesAsync();"
+                                         """,
                                          SourceCodeKind.Script)
                                      .ConfigureAwait(true);
 
@@ -163,6 +165,8 @@ public partial class MainWindow : Window
     {
         if (Editor == null)
             return;
+
+        await JsonContext.LoadingTask;
 
         var viewModel = (DocumentViewModel)Editor.DataContext;
 
