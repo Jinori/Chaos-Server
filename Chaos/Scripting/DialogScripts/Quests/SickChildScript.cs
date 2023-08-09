@@ -143,9 +143,9 @@ public class SickChildScript : DialogScriptBase
                     return;
                 }
 
-                ExperienceDistributionScript.GiveExp(source, 25000);
+                ExperienceDistributionScript.GiveExp(source, 20000);
                 source.Trackers.Enums.Set(SickChildStage.WhiteRose1Turn);
-                source.SendOrangeBarMessage("25000 Exp Rewarded!");
+                source.SendOrangeBarMessage("20000 Exp Rewarded!");
                 Subject.Reply(source, "Thank you! I need to get this to the healers right away. Please excuse me.", "whiterosewait1");
             }
 
@@ -170,9 +170,9 @@ public class SickChildScript : DialogScriptBase
                     return;
                 }
 
-                ExperienceDistributionScript.GiveExp(source, 50000);
+                ExperienceDistributionScript.GiveExp(source, 30000);
                 source.Trackers.Enums.Set(SickChildStage.WhiteRose2Turn);
-                source.SendOrangeBarMessage("50000 Exp Rewarded!");
+                source.SendOrangeBarMessage("30000 Exp Rewarded!");
                 Subject.Reply(source, "Thank you again! Please excuse me while I get this to the healers.",
                     "whiterose2wait1");
             }
@@ -207,10 +207,10 @@ public class SickChildScript : DialogScriptBase
                     return;
                 }
 
-                ExperienceDistributionScript.GiveExp(source, 100000);
+                ExperienceDistributionScript.GiveExp(source, 75000);
                 source.TryGiveGold(20000);
                 source.TryGiveGamePoints(5);
-                source.SendOrangeBarMessage("5 Gamepoints, 20000 gold, and 100000 Exp Rewarded!");
+                source.SendOrangeBarMessage("5 Gamepoints, 20000 gold, and 75000 Exp Rewarded!");
                 source.Trackers.Enums.Set(SickChildStage.SickChildComplete);
 
                 source.Legend.AddOrAccumulate(
@@ -232,7 +232,7 @@ public class SickChildScript : DialogScriptBase
             case "blackrose2":
 
             {
-                if (!source.Inventory.Remove("black rose"))
+                if (!source.Inventory.RemoveQuantity("Black Rose", 1))
                 {
                     Subject.Reply(source, "Where is it?");
                     source.SendOrangeBarMessage("You do not have a black rose.");
