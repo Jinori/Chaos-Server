@@ -42,6 +42,8 @@ public partial class MainWindow : Window
         var currentAssembly = Assembly.GetExecutingAssembly();
 
         var currentAssemblyStack = currentAssembly.GetReferencedAssemblies()
+                                                  .Concat(Assembly.Load("Chaos").GetReferencedAssemblies())
+                                                  .Distinct()
                                                   .Select(Assembly.Load)
                                                   .Where(a => !a.IsDynamic)
                                                   .Prepend(currentAssembly)
