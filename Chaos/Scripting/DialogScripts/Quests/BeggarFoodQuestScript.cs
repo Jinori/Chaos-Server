@@ -87,7 +87,7 @@ public class BeggarFoodQuestScript : DialogScriptBase
             case "beggarfood_turnin":
                 if (stage == BeggarFoodQuestStage.Started)
                 {
-                    if (!source.Inventory.Remove("dinnerplate"))
+                    if (!source.Inventory.RemoveQuantity("dinner plate", 1))
                     {
                         Subject.Reply(source, "Ah, my stomach, its grumbling...");
                         source.SendOrangeBarMessage("You don't have the dinner plate.");
