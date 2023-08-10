@@ -1,3 +1,4 @@
+using Chaos.Common.Definitions;
 using Chaos.Models.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
@@ -161,17 +162,33 @@ public class BuyShopScript : DialogScriptBase
 
         var availableStock = BuyShopSource.GetStock(item.Template.TemplateKey);
 
+        var stockDisplay = item.DisplayName;
+
+        switch (amount)
+        {
+            case < 2 when item.DisplayName.EndsWith("s", StringComparison.Ordinal) && (item.Template.EquipmentType != EquipmentType.Boots):
+                // Singular but ends in "s" (like Boots), so we'll remove the "s"
+                stockDisplay = stockDisplay.Substring(0, stockDisplay.Length - 1);
+                break;
+            case >= 2 when !item.DisplayName.EndsWith("s", StringComparison.Ordinal):
+                // Plural and doesn't end in "s", so we add the "s"
+                stockDisplay += "s";
+                break;
+        }
+
+
         if (availableStock < amount)
         {
             Subject.Reply(
                 source,
-                $"Sorry, we only have {availableStock} {item.DisplayName}s in stock",
+                $"Sorry, we only have {availableStock} {stockDisplay} in stock",
                 "generic_buyshop_initial");
 
             return;
         }
 
-        Subject.InjectTextParameters(amount, item.DisplayName, item.Template.BuyCost * amount);
+        Subject.InjectTextParameters(amount, stockDisplay, item.Template.BuyCost * amount);
+
     }
 
     protected virtual void OnDisplayingInitial(Aisling source)

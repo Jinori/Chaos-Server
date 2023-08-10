@@ -34,6 +34,9 @@ public class GreetingScript : MerchantScriptBase
             }
             case "skarn":
             {
+                if (aisling.StatSheet.Level > 71)
+                    return;
+                
                 if (aisling.Trackers.TimedEvents.HasActiveEvent("CryptSlayerCd", out var timedEvent))
                     return;
 
