@@ -134,6 +134,15 @@ public class RestrictionBehavior
     {
         switch (creature)
         {
+            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) && (spell.Template.Name == "ao suain"):
+            {
+                return true;
+            }
+            case Aisling aisling when aisling.Status.HasFlag(Status.Pramh) && (spell.Template.Name == "dinarcoli"):
+            {
+                return true;
+            }
+            
             case Aisling aisling when aisling.Status.HasFlag(Status.Suain)
                                       || aisling.Status.HasFlag(Status.Pramh)
                                       || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _):

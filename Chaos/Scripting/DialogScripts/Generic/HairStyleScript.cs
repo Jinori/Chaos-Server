@@ -27,7 +27,14 @@ public class HairstyleScript : DialogScriptBase
         "female_hairstyle_47", "female_hairstyle_48", "female_hairstyle_49", "female_hairstyle_50", "female_hairstyle_51",
         "female_hairstyle_52", "female_hairstyle_53",
         "female_hairstyle_54", "female_hairstyle_55", "female_hairstyle_56", "female_hairstyle_57", "female_hairstyle_58",
-        "female_hairstyle_59", "female_hairstyle_60"
+        "female_hairstyle_59", "female_hairstyle_60",
+        "female_hairstyle_64", "female_hairstyle_65", "female_hairstyle_66", "female_hairstyle_67", "female_hairstyle_68",
+        "female_hairstyle_69", "female_hairstyle_70", "female_hairstyle_71", "female_hairstyle_72", "female_hairstyle_73",
+        "female_hairstyle_74", "female_hairstyle_75", "female_hairstyle_76", "female_hairstyle_77", "female_hairstyle_78",
+        "female_hairstyle_79", "female_hairstyle_80", "female_hairstyle_81", "female_hairstyle_82", "female_hairstyle_83",
+        "female_hairstyle_84", "female_hairstyle_85", "female_hairstyle_86", "female_hairstyle_87", "female_hairstyle_88",
+        "female_hairstyle_89", "female_hairstyle_90", "female_hairstyle_91", "female_hairstyle_92", "female_hairstyle_93",
+        "female_hairstyle_94", "female_hairstyle_95", "female_hairstyle_97", "female_hairstyle_98"
     };
     private static readonly string[] MaleHairstyles =
     {
@@ -45,7 +52,14 @@ public class HairstyleScript : DialogScriptBase
         "male_hairstyle_47", "male_hairstyle_48", "male_hairstyle_49", "male_hairstyle_50", "male_hairstyle_51", "male_hairstyle_52",
         "male_hairstyle_53",
         "male_hairstyle_54", "male_hairstyle_55", "male_hairstyle_56", "male_hairstyle_57", "male_hairstyle_58", "male_hairstyle_59",
-        "male_hairstyle_60"
+        "male_hairstyle_60",
+        "male_hairstyle_64", "male_hairstyle_65", "male_hairstyle_66", "male_hairstyle_67", "male_hairstyle_68",
+        "male_hairstyle_69", "male_hairstyle_70", "male_hairstyle_71", "male_hairstyle_72", "male_hairstyle_73",
+        "male_hairstyle_74", "male_hairstyle_75", "male_hairstyle_76", "male_hairstyle_77", "male_hairstyle_78",
+        "male_hairstyle_79", "male_hairstyle_80", "male_hairstyle_81", "male_hairstyle_82", "male_hairstyle_83",
+        "male_hairstyle_84", "male_hairstyle_85", "male_hairstyle_86", "male_hairstyle_87", "male_hairstyle_88",
+        "male_hairstyle_89", "male_hairstyle_90", "male_hairstyle_91", "male_hairstyle_92", "male_hairstyle_93",
+        "male_hairstyle_94", "male_hairstyle_95", "male_hairstyle_97", "male_hairstyle_98"
     };
 
     private readonly IItemFactory _itemFactory;

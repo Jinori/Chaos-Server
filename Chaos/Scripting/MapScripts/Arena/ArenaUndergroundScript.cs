@@ -16,7 +16,7 @@ public class ArenaUndergroundScript : MapScriptBase
     /// <inheritdoc />
     public ArenaUndergroundScript(MapInstance subject)
         : base(subject) { }
-
+    
     /// <inheritdoc />
     public override void OnEntered(Creature creature)
     {
@@ -28,6 +28,17 @@ public class ArenaUndergroundScript : MapScriptBase
                 aisling.StatSheet.SetHealthPct(100);
                 aisling.StatSheet.SetManaPct(100);
                 aisling.Client.SendAttributes(StatUpdateType.Vitality);
+            }
+
+            if (aisling.IsAlive)
+            {
+                foreach (var effect in aisling.Effects)
+                {
+                    aisling.Effects.Dispel(effect.Name);
+                }
+                
+                aisling.StatSheet.SetHealthPct(100);
+                aisling.StatSheet.SetManaPct(100);
             }
             
             aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
