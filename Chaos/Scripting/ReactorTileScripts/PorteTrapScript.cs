@@ -134,6 +134,8 @@ If this reactor was created through a script, you must specify the owner in the 
     }
 
     #region ScriptVars
+    /// <inheritdoc />
+    public TimeSpan? EffectDurationOverride { get; init; }
     public IEffectFactory EffectFactory { get; init; }
     public IApplyDamageScript ApplyDamageScript { get; init; }
     public AoeShape Shape { get; init; }

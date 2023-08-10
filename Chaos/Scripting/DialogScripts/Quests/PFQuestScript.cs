@@ -5,12 +5,15 @@ using Chaos.Extensions.Geometry;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
+using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Quests;
 
@@ -19,13 +22,17 @@ public class PFQuestScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
     private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
+    private readonly ILogger<PFQuestScript> Logger;
 
     /// <inheritdoc />
-    public PFQuestScript(Dialog subject, IItemFactory itemFactory, ISimpleCache simpleCache)
+    public PFQuestScript(Dialog subject, IItemFactory itemFactory, ISimpleCache simpleCache,
+        ILogger<PFQuestScript> logger
+    )
         : base(subject)
     {
         ItemFactory = itemFactory;
         SimpleCache = simpleCache;
+        Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
@@ -478,6 +485,11 @@ public class PFQuestScript : DialogScriptBase
 
                 source.TraverseMap(mapInstance, point);
                 source.Trackers.Enums.Set(PFQuestStage.CompletedPFQuest);
+                
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Item, Topics.Entities.Dialog, Topics.Entities.Quest)
+                      .WithProperty(source).WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp and {@ItemName} from a quest", source.Name, 500000, tristar.DisplayName);
+                
                 ExperienceDistributionScript.GiveExp(source, 500000);
                 source.TryGiveItem(ref tristar);
 

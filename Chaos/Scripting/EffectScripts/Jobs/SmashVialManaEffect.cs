@@ -17,7 +17,7 @@ public sealed class SmashVialManaEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1));
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(7);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(7);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(100));
     /// <inheritdoc />

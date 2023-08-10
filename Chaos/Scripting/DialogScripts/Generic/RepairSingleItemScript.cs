@@ -1,15 +1,20 @@
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class RepairSingleItemScript : DialogScriptBase
 {
+    private readonly ILogger<RepairSingleItemScript> Logger;
     private int RepairCost { get; set; }
 
-    public RepairSingleItemScript(Dialog subject)
-        : base(subject) { }
+    public RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScript> logger)
+        : base(subject) =>
+        Logger = logger;
 
     public override void OnDisplaying(Aisling source)
     {
@@ -52,6 +57,10 @@ public class RepairSingleItemScript : DialogScriptBase
 
                 return;
             }
+            
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Gold)
+                  .WithProperty(source).WithProperty(Subject)
+                  .LogInformation("{@AislingName} has repaired {@ItemName} for {@AmountGold}", source.Name, item.DisplayName, RepairCost);
 
             source.Inventory.Update(
                 slot,
@@ -63,6 +72,7 @@ public class RepairSingleItemScript : DialogScriptBase
 
             source.SendOrangeBarMessage($"Your {item.DisplayName} has been repaired.");
             Subject.InjectTextParameters(item.DisplayName, RepairCost);
+            
         }
     }
 

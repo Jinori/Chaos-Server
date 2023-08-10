@@ -30,11 +30,11 @@ public sealed class BunnyBoss2EnrageScript : MonsterScriptBase
         {
             Bonus75Applied = true;
             //Spawn Monsters
-            var rectange = new Rectangle(Subject, 4, 4);
+            var rectangle = new Rectangle(Subject, 4, 4);
 
             for (var i = 0; i <= 2; i++)
             {
-                var point = rectange.GetRandomPoint();
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("bunny2-2", Subject.MapInstance, point);
                 Subject.MapInstance.AddObject(mobs, point);
             }

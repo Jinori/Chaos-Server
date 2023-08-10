@@ -47,7 +47,11 @@
         <ProjectReference Include="..\Chaos.TypeMapper\Chaos.TypeMapper.csproj"/>
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="Discord.Net" />
+        <PackageReference Include="Discord.Net.Core" />
         <PackageReference Include="Humanizer"/>
+        <PackageReference Include="Humanizer.Core" />
+        <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="NLog.Web.AspNetCore"/>
         <PackageReference Include="System.Configuration.ConfigurationManager"/>
     </ItemGroup>

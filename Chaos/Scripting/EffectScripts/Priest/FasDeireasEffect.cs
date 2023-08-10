@@ -17,7 +17,7 @@ public class FasDeireasEffect : NonOverwritableEffectBase
         "mor fas deireas"
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
     public override byte Icon => 106;
     public override string Name => "fas deireas";
     protected override byte? Sound => 124;

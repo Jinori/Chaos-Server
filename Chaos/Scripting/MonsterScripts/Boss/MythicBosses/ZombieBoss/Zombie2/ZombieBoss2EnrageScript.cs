@@ -31,11 +31,11 @@ public sealed class ZombieBoss2EnrageScript : MonsterScriptBase
             Bonus75Applied = true;
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
-            var rectange = new Rectangle(Subject, 4, 4);
+            var rectangle = new Rectangle(Subject, 4, 4);
 
             for (var i = 0; i <= 4; i++)
             {
-                var point = rectange.GetRandomPoint();
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("zombie2-4", Subject.MapInstance, point);
                 Subject.MapInstance.AddObject(mobs, point);
             }

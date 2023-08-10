@@ -4,20 +4,32 @@ using Chaos.Definitions;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class SgriosReviveScript : DialogScriptBase
 {
+    private readonly ILogger<SgriosReviveScript> Logger;
     private readonly ISimpleCache _simpleCache;
 
-    public SgriosReviveScript(Dialog subject, ISimpleCache simpleCache)
-        : base(subject) => _simpleCache = simpleCache;
+    public SgriosReviveScript(Dialog subject, ISimpleCache simpleCache, ILogger<SgriosReviveScript> logger)
+        : base(subject)
+    {
+        _simpleCache = simpleCache;
+        Logger = logger;
+    }
 
     public override void OnDisplayed(Aisling source)
     {
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Death)
+              .WithProperty(source)
+              .LogInformation("{@AislingName} has been revived by Sgrios", source.Name);
+        
         switch (source.Gender)
         {
             case Gender.Male:

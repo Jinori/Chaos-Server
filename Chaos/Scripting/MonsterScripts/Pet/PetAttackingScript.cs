@@ -17,6 +17,12 @@ public class PetAttackingScript : MonsterScriptBase
     {
         //if target is invalid or we're not close enough
         //reset attack delay and return
+        if (Subject.PetOwner?.DistanceFrom(Subject) >= 8)
+        {
+            Target = null;
+            return;   
+        }
+        
         if (Target is not { IsAlive: true } || (Subject.DistanceFrom(Target) != 1))
             return;
 

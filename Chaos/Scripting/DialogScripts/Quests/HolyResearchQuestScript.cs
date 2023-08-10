@@ -4,20 +4,27 @@ using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Quests;
 
 public class HolyResearchQuestScript : DialogScriptBase
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
-
+    private readonly ILogger<HolyResearchQuestScript> Logger;
+    
     /// <inheritdoc />
-    public HolyResearchQuestScript(Dialog subject)
-        : base(subject) =>
+    public HolyResearchQuestScript(Dialog subject, ILogger<HolyResearchQuestScript> logger)
+        : base(subject)
+    {
+        Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    }
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -123,16 +130,10 @@ public class HolyResearchQuestScript : DialogScriptBase
 
                         return;
                     }
-
-                    source.Inventory.RemoveQuantity("raw honey", 1);
-                    ExperienceDistributionScript.GiveExp(source, 2000);
-                    source.Trackers.Enums.Set(HolyResearchStage.None);
-                    source.TryGiveGamePoints(5);
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive five gamepoints and 2000 exp!");
-                    Subject.Close(source);
-                    source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(3), true);
+                    
+                    GiveRewards(source, "raw honey");
                 }
-
+                
                 break;
 
             case "holyresearch_startedrawwax":
@@ -146,13 +147,7 @@ public class HolyResearchQuestScript : DialogScriptBase
                         return;
                     }
 
-                    source.Inventory.RemoveQuantity("raw wax", 1);
-                    ExperienceDistributionScript.GiveExp(source, 2000);
-                    source.Trackers.Enums.Set(HolyResearchStage.None);
-                    source.TryGiveGamePoints(5);
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive five gamepoints and 2000 exp!");
-                    Subject.Close(source);
-                    source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(3), true);
+                    GiveRewards(source, "raw wax");
                 }
 
                 break;
@@ -168,16 +163,25 @@ public class HolyResearchQuestScript : DialogScriptBase
                         return;
                     }
 
-                    source.Inventory.RemoveQuantity("royal wax", 1);
-                    ExperienceDistributionScript.GiveExp(source, 2000);
-                    source.Trackers.Enums.Set(HolyResearchStage.None);
-                    source.TryGiveGamePoints(5);
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive five gamepoints and 2000 exp!");
-                    Subject.Close(source);
-                    source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(3), true);
+                    GiveRewards(source, "royal wax");
                 }
 
                 break;
         }
+    }
+    
+    private void GiveRewards(Aisling source, string itemToRemove)
+    {
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
+              .WithProperty(source).WithProperty(Subject)
+              .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, 2000);
+        
+        source.Inventory.RemoveQuantity(itemToRemove, 1);
+        ExperienceDistributionScript.GiveExp(source, 2000);
+        source.Trackers.Enums.Set(HolyResearchStage.None);
+        source.TryGiveGamePoints(5);
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive five gamepoints and 2000 exp!");
+        Subject.Close(source);
+        source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(3), true);
     }
 }

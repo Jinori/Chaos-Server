@@ -25,7 +25,7 @@ public class DeathScript : MonsterScriptBase
         //this code will set the reward target to the person at the top of the aggro list
         //var rewardTarget = Subject.AggroList
         //                          .OrderByDescending(kvp => kvp.Value)
-        //                          .Select(kvp => Map.TryGetObject<Aisling>(kvp.Key, out var a) ? a : null)
+        //                          .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
         //                          .FirstOrDefault(a => a is not null);
 
         //get the highest contributor

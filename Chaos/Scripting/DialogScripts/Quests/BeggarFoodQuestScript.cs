@@ -3,20 +3,27 @@ using Chaos.Extensions.Common;
 using Chaos.Formulae;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Quests;
 
 public class BeggarFoodQuestScript : DialogScriptBase
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
-
+    private readonly ILogger<BeggarFoodQuestScript> Logger;
+    
     /// <inheritdoc />
-    public BeggarFoodQuestScript(Dialog subject)
-        : base(subject) =>
+    public BeggarFoodQuestScript(Dialog subject, ILogger<BeggarFoodQuestScript> logger)
+        : base(subject)
+    {
+        Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -95,6 +102,10 @@ public class BeggarFoodQuestScript : DialogScriptBase
                         return;
                     }
 
+                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
+                          .WithProperty(source).WithProperty(Subject)
+                          .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
+                    
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, 25000);
 

@@ -33,7 +33,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
         TargetAnimation = 55
     };
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(20);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(20);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
     /// <inheritdoc />

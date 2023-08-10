@@ -82,13 +82,7 @@ public class EnchantTradeScript : DialogScriptBase
 
         source.Inventory.RemoveQuantityByTemplateKey(item.Template.TemplateKey, 1);
         
-        if (!source.CanCarry(essence))
-        {
-            source.Bank.Deposit(essence);
-            source.SendOrangeBarMessage($"{essence.DisplayName} was sent to your bank.");
-        }
-        else
-            source.Inventory.TryAddToNextSlot(essence);
+        source.GiveItemOrSendToBank(essence);
 
         Subject.InjectTextParameters(item.DisplayName, essence.DisplayName);
     }

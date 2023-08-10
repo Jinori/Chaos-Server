@@ -229,13 +229,7 @@ public class GemRefiningScript : DialogScriptBase
         var upgradeKey = GetUpgradeKey(item.Template.TemplateKey);
         var upgrade = ItemFactory.Create(upgradeKey);
 
-        if (!source.CanCarry(upgrade))
-        {
-            source.Bank.Deposit(upgrade);
-            source.SendOrangeBarMessage($"{upgrade.DisplayName} was sent to your bank.");
-        }
-        else
-            source.Inventory.TryAddToNextSlot(upgrade);
+        source.GiveItemOrSendToBank(upgrade);
 
         source.Animate(SuccessAnimation);
         Subject.InjectTextParameters(item.DisplayName, upgrade.DisplayName);

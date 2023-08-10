@@ -29,7 +29,7 @@ public class SmallHasteEffect : NonOverwritableEffectBase
         "Astral"
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
     public override byte Icon => 12;
     public override string Name => "Small Haste";
     protected override byte? Sound => 115;

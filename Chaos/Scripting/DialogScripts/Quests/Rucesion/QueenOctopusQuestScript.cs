@@ -4,12 +4,14 @@ using Chaos.Definitions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
-
+using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Rucesion;
 
@@ -17,12 +19,14 @@ public class QueenOctopusQuestScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
+    private readonly ILogger<QueenOctopusQuestScript> Logger;
 
     /// <inheritdoc />
-    public QueenOctopusQuestScript(Dialog subject, IItemFactory itemFactory)
+    public QueenOctopusQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<QueenOctopusQuestScript> logger)
         : base(subject)
     {
         ItemFactory = itemFactory;
+        Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
@@ -104,6 +108,11 @@ public class QueenOctopusQuestScript : DialogScriptBase
                 }
 
                 var redpearl = ItemFactory.Create("redpearl");
+                
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Item, Topics.Entities.Dialog, Topics.Entities.Quest)
+                      .WithProperty(source).WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp and the item {@ItemName}", source.Name, 200000, redpearl.DisplayName);
+                
                 ExperienceDistributionScript.GiveExp(source, 200000);
                 source.SendOrangeBarMessage("You received 200,000 experience!");
                 source.Trackers.Enums.Set(QueenOctopusQuest.Pendant);
@@ -133,6 +142,11 @@ public class QueenOctopusQuestScript : DialogScriptBase
             case "queenoctopus_queenkilled3":
             {
                 source.Trackers.Enums.Set(QueenOctopusQuest.Complete);
+                
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
+                      .WithProperty(source).WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 500000);
+                
                 ExperienceDistributionScript.GiveExp(source, 500000);
                 source.SendOrangeBarMessage("You received 500,000 experience!");
                 source.Legend.AddOrAccumulate(

@@ -32,14 +32,19 @@ public class TerminusTitleToggleScript : DialogScriptBase
 
                 if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Insert(0, option);
+
+                break;
             }
 
+            case "terminus_titlechange":
+            {
                 var first = source.Titles.First();
                 source.Titles.Remove(first);
                 source.Titles.Add(first);
                 source.Client.SendSelfProfile();
 
-                break;
+                break;   
+            }
         }
     }
 }

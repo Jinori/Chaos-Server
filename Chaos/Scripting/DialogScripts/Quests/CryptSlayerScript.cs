@@ -6,11 +6,14 @@ using Chaos.Formulae;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
+using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Quests;
 
@@ -18,11 +21,12 @@ public class CryptSlayerScript : DialogScriptBase
 {
     private readonly IExperienceDistributionScript ExperienceDistributionScript;
     private readonly IItemFactory ItemFactory;
-
-    public CryptSlayerScript(Dialog subject, IItemFactory itemFactory)
+    private readonly ILogger<CryptSlayerScript> Logger;
+    public CryptSlayerScript(Dialog subject, IItemFactory itemFactory, ILogger<CryptSlayerScript> logger)
         : base(subject)
     {
         ItemFactory = itemFactory;
+        Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
@@ -308,6 +312,8 @@ public class CryptSlayerScript : DialogScriptBase
 
                 if (source.Trackers.Counters.CounterLessThanOrEqualTo("CryptSlayerLegend", 1))
                 {
+                    source.SendOrangeBarMessage("Skarn hands you a weapon.");
+
                     if (source.HasClass(BaseClass.Wizard))
                     {
                         var wizardstaff = ItemFactory.Create("MagusAres");
@@ -338,9 +344,11 @@ public class CryptSlayerScript : DialogScriptBase
                         source.TryGiveItem(ref monkweapon);
                     }
                 }
-
-                source.SendOrangeBarMessage("Skarn hands you a weapon.");
-
+                
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
+                      .WithProperty(source).WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
+                
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.TryGiveGamePoints(5);
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");

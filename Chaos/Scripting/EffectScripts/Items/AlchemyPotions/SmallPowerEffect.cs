@@ -28,7 +28,7 @@ public class SmallPowerEffect : NonOverwritableEffectBase
         "Astral"
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
     public override byte Icon => 13;
     public override string Name => "Small Power";
     protected override byte? Sound => 115;

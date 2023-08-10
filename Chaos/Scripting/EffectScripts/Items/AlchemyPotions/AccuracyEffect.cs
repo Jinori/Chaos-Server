@@ -29,7 +29,7 @@ public class AccuracyEffect : NonOverwritableEffectBase
         "Astral"
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(10);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(10);
     public override byte Icon => 12;
     public override string Name => "Accuracy";
     protected override byte? Sound => 115;

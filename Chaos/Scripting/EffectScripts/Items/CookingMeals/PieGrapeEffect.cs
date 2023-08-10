@@ -30,7 +30,7 @@ public class PieGrapeEffect : NonOverwritableEffectBase
         "Steak Meal",
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(15);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     public override byte Icon => 72;
     public override string Name => "Grape Pie";
     protected override byte? Sound => 115;

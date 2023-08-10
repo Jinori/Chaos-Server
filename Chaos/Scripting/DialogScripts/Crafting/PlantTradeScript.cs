@@ -106,13 +106,7 @@ public class PlantTradeScript : DialogScriptBase
 
         source.Inventory.RemoveQuantityByTemplateKey(item.Template.TemplateKey, 1);
         
-        if (!source.CanCarry(newPlant))
-        {
-            source.Bank.Deposit(newPlant);
-            source.SendOrangeBarMessage($"{newPlant.DisplayName} was sent to your bank.");
-        }
-        else
-            source.Inventory.TryAddToNextSlot(newPlant);
+        source.GiveItemOrSendToBank(newPlant);
 
         Subject.InjectTextParameters(item.DisplayName, newPlant.DisplayName);
     }

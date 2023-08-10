@@ -24,7 +24,7 @@ public class ArdCradhEffect : NonOverwritableEffectBase
         "beag cradh"
     };
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(3);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(3);
     /// <inheritdoc />
     public override byte Icon => 63;
     /// <inheritdoc />

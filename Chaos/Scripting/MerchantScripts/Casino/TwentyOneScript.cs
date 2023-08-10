@@ -1,13 +1,17 @@
 using Chaos.Common.Definitions;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 using Humanizer;
+using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.MerchantScripts.Casino;
 
 public class TwentyOneScript : MerchantScriptBase
 {
+    private readonly ILogger<TwentyOneScript> Logger;
     private readonly List<Aisling> AislingsThatDidNotBust = new();
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
     private IEnumerable<Aisling>? AislingsAtCompletion;
@@ -19,9 +23,12 @@ public class TwentyOneScript : MerchantScriptBase
     private int CountdownStep;
     private DateTime LastCountdownTime;
 
-    public TwentyOneScript(Merchant subject, IClientRegistry<IWorldClient> clientRegistry)
-        : base(subject) =>
+    public TwentyOneScript(Merchant subject, IClientRegistry<IWorldClient> clientRegistry, ILogger<TwentyOneScript> logger)
+        : base(subject)
+    {
         ClientRegistry = clientRegistry;
+        Logger = logger;
+    }
 
     private void ProcessGameCompletion()
     {
@@ -46,6 +53,10 @@ public class TwentyOneScript : MerchantScriptBase
                 var eightPercent = (int)(winnings * 0.08m);
                 var winningsMinusEight = winnings - eightPercent;
 
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
+                      .WithProperty(winner).WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes", winner.Name, winningsMinusEight, eightPercent);
+                
                 winner.TryGiveGold(winningsMinusEight);
                 winner.SendServerMessage(ServerMessageType.Whisper, $"The casino took their cut of {eightPercent.ToWords()} gold!");
                 winner.SendServerMessage(ServerMessageType.Whisper, $"You won the game and receive {winningsMinusEight.ToWords()} gold!");
@@ -60,6 +71,11 @@ public class TwentyOneScript : MerchantScriptBase
                     var winnings = AislingsAtCompletion.Count() / enumerable.Length * 25000;
                     var eightPercent = (int)(winnings * 0.08m);
                     var winningsMinusEight = winnings - eightPercent;
+                    
+                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
+                          .WithProperty(winner).WithProperty(Subject)
+                          .LogInformation("{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes", winner.Name, winningsMinusEight, eightPercent);
+                    
                     winner.SendServerMessage(ServerMessageType.Whisper, $"The casino took their cut of {eightPercent.ToWords()} gold!");
                     winner.SendServerMessage(ServerMessageType.Whisper, $"You tied and receive {winningsMinusEight.ToWords()} gold!");
                     winner.TryGiveGold(winningsMinusEight);

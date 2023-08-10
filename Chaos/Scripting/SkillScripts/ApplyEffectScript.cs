@@ -21,6 +21,8 @@ public class ApplyEffectScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
     /// <inheritdoc />
+    public TimeSpan? EffectDurationOverride { get; init; }
+    /// <inheritdoc />
     public IEffectFactory EffectFactory { get; init; }
     /// <inheritdoc />
     public string? EffectKey { get; init; }

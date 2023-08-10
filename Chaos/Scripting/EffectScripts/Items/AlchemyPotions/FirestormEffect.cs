@@ -19,7 +19,7 @@ public class FirestormEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(12);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(12);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
     /// <inheritdoc />

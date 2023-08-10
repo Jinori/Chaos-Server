@@ -20,7 +20,7 @@ public class MorAiteEffect : NonOverwritableEffectBase
         "ard naomh aite"
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(8);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(8);
     public override byte Icon => 9;
     public override string Name => "mor naomh aite";
 

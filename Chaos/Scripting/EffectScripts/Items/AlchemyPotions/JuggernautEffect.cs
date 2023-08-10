@@ -28,7 +28,7 @@ public class JuggernautEffect : NonOverwritableEffectBase
         "Astral"
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(10);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(10);
     public override byte Icon => 13;
     public override string Name => "Juggernaut";
     protected override byte? Sound => 115;

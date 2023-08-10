@@ -17,7 +17,7 @@ public class BeannaichEffect : NonOverwritableEffectBase
         "mor beannaich"
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
     public override byte Icon => 105;
     public override string Name => "beannaich";
     protected override byte? Sound => 123;

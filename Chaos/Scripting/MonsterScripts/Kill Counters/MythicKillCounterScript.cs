@@ -34,7 +34,7 @@ public class MythicKillCounterScript : ConfigurableMonsterScriptBase
     {
         var rewardTarget = Subject.Contribution
             .OrderByDescending(kvp => kvp.Value)
-            .Select(kvp => Subject.MapInstance.TryGetObject<Aisling>(kvp.Key, out var a) ? a : null)
+            .Select(kvp => Subject.MapInstance.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
             .FirstOrDefault(a => a is not null);
 
         Aisling[]? rewardTargets = null;

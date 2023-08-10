@@ -20,7 +20,7 @@ public sealed class SmallStunEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1));
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(3);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(3);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
     /// <inheritdoc />

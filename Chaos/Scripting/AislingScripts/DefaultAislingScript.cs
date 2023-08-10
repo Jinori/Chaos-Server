@@ -10,6 +10,8 @@ using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Networking.Abstractions;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.AislingScripts.Abstractions;
 using Chaos.Scripting.Behaviors;
@@ -21,11 +23,13 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.AislingScripts;
 
 public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealComponentOptions
 {
+    private readonly ILogger<DefaultAislingScript> Logger;
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
     private readonly IEffectFactory EffectFactory;
@@ -87,12 +91,14 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         ISimpleCache simpleCache,
         IEffectFactory effectFactory,
         IStore<MailBox> mailStore,
-        IStore<BulletinBoard> boardStore
+        IStore<BulletinBoard> boardStore,
+        ILogger<DefaultAislingScript> logger
     )
         : base(subject)
     {
         MailStore = mailStore;
         BoardStore = boardStore;
+        Logger = logger;
         RestrictionBehavior = new RestrictionBehavior();
         VisibilityBehavior = new VisibilityBehavior();
         RelationshipBehavior = new RelationshipBehavior();
@@ -323,12 +329,18 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
                 ServerMessageType.OrangeBar1,
                 $"{Subject.Name} was killed at {Subject.MapInstance.Name} by {source?.Name ?? "The Guardians"}.");
 
-        //Let's break some items at 2% chance
-        var itemsToBreak = Subject.Equipment.Where(x => x.Template.AccountBound is false);
-
+        var itemsToBreak = Subject.Equipment.Where(x => !x.Template.AccountBound 
+                                                        && (x.Template.EquipmentType != EquipmentType.Accessory)
+                                                        && (x.Template.EquipmentType != EquipmentType.OverArmor)
+                                                        && (x.Template.EquipmentType != EquipmentType.OverHelmet));
+        
         foreach (var item in itemsToBreak)
             if (IntegerRandomizer.RollChance(2))
             {
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Actions.Death, Topics.Actions.Penalty)
+                      .WithProperty(Subject).WithProperty(item)
+                      .LogInformation("{@AislingName} has lost {@ItemName} to death", Subject.Name, item.DisplayName);
+                
                 Subject.Client.SendServerMessage(
                     ServerMessageType.OrangeBar1,
                     $"{item.DisplayName} has been consumed by death.");
@@ -339,7 +351,13 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         var tenPercent = MathEx.GetPercentOf<int>((int)Subject.UserStatSheet.TotalExp, 10);
 
         if (ExperienceDistributionScript.TryTakeExp(Subject, tenPercent))
+        {
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Death, Topics.Actions.Penalty, Topics.Entities.Experience)
+                  .WithProperty(Subject)
+                  .LogInformation("{@AislingName} has lost {@ExperienceAmount} experience to death", Subject.Name, tenPercent);
+            
             Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You have lost {tenPercent} experience.");
+        }
     }
 
     /// <inheritdoc />

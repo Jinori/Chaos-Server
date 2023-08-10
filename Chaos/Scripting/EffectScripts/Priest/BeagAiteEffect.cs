@@ -20,7 +20,7 @@ public class BeagAiteEffect : NonOverwritableEffectBase
         "ard naomh aite"
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(3);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(3);
     public override byte Icon => 9;
     public override string Name => "beag naomh aite";
 

@@ -5,20 +5,27 @@ using Chaos.Extensions.Common;
 using Chaos.Formulae;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Quests;
 
 public class DarkThingsQuestScript : DialogScriptBase
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
-
+    private ILogger<DarkThingsQuestScript> Logger;
+    
     /// <inheritdoc />
-    public DarkThingsQuestScript(Dialog subject)
-        : base(subject) =>
+    public DarkThingsQuestScript(Dialog subject, ILogger<DarkThingsQuestScript> logger)
+        : base(subject)
+    {
+        Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    }
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -222,6 +229,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                         return;
                     }
 
+                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
+                          .WithProperty(source).WithProperty(Subject)
+                          .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
+                    
                     source.Inventory.RemoveQuantity("Spider's Eye", 1);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.TryGiveGamePoints(5);
@@ -244,6 +255,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                         return;
                     }
 
+                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
+                          .WithProperty(source).WithProperty(Subject)
+                          .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
+                    
                     source.Inventory.RemoveQuantity("Spider's Silk", 1);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.TryGiveGamePoints(5);
@@ -266,6 +281,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                         return;
                     }
 
+                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
+                          .WithProperty(source).WithProperty(Subject)
+                          .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
+                    
                     source.Inventory.RemoveQuantity("Centipede's Gland", 1);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.Trackers.Enums.Set(DarkThingsStage.None);
@@ -288,6 +307,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                         return;
                     }
 
+                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
+                          .WithProperty(source).WithProperty(Subject)
+                          .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
+                    
                     source.Inventory.RemoveQuantity("Bat's Wing", 1);
                     ExperienceDistributionScript.GiveExp(source, thirtyPercent);
                     source.TryGiveGamePoints(5);
@@ -309,6 +332,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                         return;
                     }
 
+                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
+                          .WithProperty(source).WithProperty(Subject)
+                          .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
+                    
                     source.Inventory.RemoveQuantity("Scorpion's Sting", 1);
                     ExperienceDistributionScript.GiveExp(source, thirtyPercent);
                     source.TryGiveGamePoints(5);
@@ -331,6 +358,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                         return;
                     }
 
+                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
+                          .WithProperty(source).WithProperty(Subject)
+                          .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
+                    
                     source.Inventory.RemoveQuantity("Giant Bat's Wing", 1);
                     ExperienceDistributionScript.GiveExp(source, thirtyPercent);
                     source.TryGiveGamePoints(5);
@@ -353,6 +384,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                         return;
                     }
 
+                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
+                          .WithProperty(source).WithProperty(Subject)
+                          .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
+                    
                     source.Inventory.RemoveQuantity("White Bat's Wing", 1);
                     ExperienceDistributionScript.GiveExp(source, fortyPercent);
                     source.Trackers.Enums.Set(DarkThingsStage.None);

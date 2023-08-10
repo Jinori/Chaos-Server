@@ -3,23 +3,28 @@ using Chaos.Common.Utilities;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
+using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Mileth;
 
 public class SpareAStickRewardScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
+    private readonly ILogger<SpareAStickRewardScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public SpareAStickRewardScript(Dialog subject, IItemFactory itemFactory)
+    public SpareAStickRewardScript(Dialog subject, IItemFactory itemFactory, ILogger<SpareAStickRewardScript> logger)
         : base(subject)
     {
         ItemFactory = itemFactory;
+        Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
@@ -34,6 +39,11 @@ public class SpareAStickRewardScript : DialogScriptBase
                 Subject.Reply(source, "Excellent! You'll make a fine spark. Now, go and find your way.");
                 source.Trackers.Flags.RemoveFlag(QuestFlag1.GatheringSticks);
                 source.Trackers.Flags.AddFlag(QuestFlag1.SpareAStickComplete);
+                
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
+                      .WithProperty(source).WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest", source.Name, 1000, 2500);
+                
                 ExperienceDistributionScript.GiveExp(source, 2500);
                 source.TryGiveGold(1000);
                 source.TryGiveGamePoints(5);

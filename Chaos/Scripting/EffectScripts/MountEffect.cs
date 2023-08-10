@@ -15,7 +15,7 @@ public class MountEffect : NonOverwritableEffectBase
     {
         "MountEffect"
     };
-    protected override TimeSpan Duration { get; } = TimeSpan.FromHours(999);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(999);
     public override byte Icon => 92;
     public override string Name => "mount";
     protected override byte? Sound => 115;

@@ -32,7 +32,7 @@ public class ArenaUndergroundScript : DialogScriptBase
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
     
     //Place Discord Bot Token Here When Live
-    private const string BOT_TOKEN = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.GrsY_F.Wao49S7Nyz2HLtOcpIe1uJRDcDHHjq9Vm_AA2Y";
+    private const string BOT_TOKEN = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.GGAZzn.rZ96A36ikDVKbNvMWTdmbrN1zv5eGMLAg4ddbA";
     private const ulong CHANNEL_ID = 1136412469762470038;
     private const ulong ARENA_WIN_CHANNEL_ID = 1136426304300916786;
     

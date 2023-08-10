@@ -10,7 +10,7 @@ public class RageEffect : EffectBase
 {
     private int _damageSaved;
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(25);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(25);
     public override byte Icon => 87;
     public override string Name => "rage";
 

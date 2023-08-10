@@ -12,7 +12,6 @@ namespace Chaos.Scripting.DialogScripts.Casino;
 public class MonsterRacingScript : DialogScriptBase
 {
     private readonly IScriptFactory<IMerchantScript, Merchant> ScriptFactory;
-
     private bool HasPaid;
 
     /// <inheritdoc />

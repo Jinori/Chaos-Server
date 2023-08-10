@@ -3,24 +3,29 @@ using Chaos.Definitions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
+using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Manor;
 
 public class ManorNecklaceScript : DialogScriptBase
 {
     private readonly IItemFactory _itemFactory;
+    private readonly ILogger<ManorNecklaceScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public ManorNecklaceScript(Dialog subject, IItemFactory itemFactory)
+    public ManorNecklaceScript(Dialog subject, IItemFactory itemFactory, ILogger<ManorNecklaceScript> logger)
         : base(subject)
     {
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         _itemFactory = itemFactory;
+        Logger = logger;
     }
 
     public override void OnDisplaying(Aisling source)
@@ -48,6 +53,11 @@ public class ManorNecklaceScript : DialogScriptBase
                     "You receive a legend mark. The young one looks terribly sad.");
                 
                 var necklace = _itemFactory.Create("zulerasHeirloom");
+                
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Dialog, Topics.Entities.Quest)
+                      .WithProperty(source).WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@ItemName} from a quest", source.Name, necklace.DisplayName);
+                
                 source.TryGiveItem(ref necklace);
 
                 break;
@@ -67,6 +77,10 @@ public class ManorNecklaceScript : DialogScriptBase
                 if (stage == ManorNecklaceStage.ReturningNecklace)
                     source.Trackers.Enums.Set(ManorNecklaceStage.ReturnedNecklace);
 
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
+                      .WithProperty(source).WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, 150000);
+                
                 ExperienceDistributionScript.GiveExp(source, 150000);
                 source.TryGiveGamePoints(20);
 

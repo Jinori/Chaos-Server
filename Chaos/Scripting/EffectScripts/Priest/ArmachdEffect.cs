@@ -16,7 +16,7 @@ public class ArmachdEffect : NonOverwritableEffectBase
         "Armachd"
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(5);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
     public override byte Icon => 0;
     public override string Name => "armachd";
 

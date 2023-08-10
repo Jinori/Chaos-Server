@@ -1,16 +1,22 @@
 using Chaos.Models.Menu;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Microsoft.Extensions.Logging;
+using NLog;
 
 namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class RepairAllItemsScript : DialogScriptBase
 {
     private double RepairCost;
-
-    public RepairAllItemsScript(Dialog subject)
-        : base(subject) { }
+    private readonly ILogger<RepairAllItemsScript> Logger;
+    
+    public RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> logger)
+        : base(subject) =>
+        Logger = logger;
 
     private double CalculateRepairCostForItem(Item item)
     {
@@ -65,6 +71,10 @@ public class RepairAllItemsScript : DialogScriptBase
             return;
         }
 
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Gold)
+              .WithProperty(source).WithProperty(Subject)
+              .LogInformation("{@AislingName} has repaired all items for {@AmountGold}", source.Name, RepairCost);
+        
         foreach (var repair in source.Equipment)
             if ((repair.Template.MaxDurability > 0) && (repair.CurrentDurability != repair.Template.MaxDurability))
             {
@@ -81,7 +91,8 @@ public class RepairAllItemsScript : DialogScriptBase
                         repair.CurrentDurability = repair.Template.MaxDurability;
                         repair.LastWarningLevel = 100;
                     });
-
+        
+        
         source.SendOrangeBarMessage("Your items have been repaired.");
         Subject.InjectTextParameters((int)RepairCost);
     }

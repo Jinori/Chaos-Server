@@ -20,6 +20,8 @@ public class ItemTargetMonsterScript : ConfigurableItemScriptBase,
     public bool AnimatePoints { get; init; }
     public Animation? Animation { get; init; }
     public BodyAnimation BodyAnimation { get; init; }
+    /// <inheritdoc />
+    public TimeSpan? EffectDurationOverride { get; init; }
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
 

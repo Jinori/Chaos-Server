@@ -8,7 +8,7 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class MistEffect : EffectBase
 {
-    protected override TimeSpan Duration { get; } = TimeSpan.FromSeconds(10);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(10);
     public override byte Icon => 18;
     public override string Name => "mist";
 

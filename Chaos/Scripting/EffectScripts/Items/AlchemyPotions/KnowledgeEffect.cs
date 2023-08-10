@@ -16,7 +16,7 @@ public class KnowledgeEffect : NonOverwritableEffectBase
         "Knowledge"
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(15);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     public override byte Icon => 10;
     public override string Name => "Knowledge";
     protected override byte? Sound => 115;

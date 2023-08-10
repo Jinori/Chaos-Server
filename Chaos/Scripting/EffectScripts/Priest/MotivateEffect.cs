@@ -16,7 +16,7 @@ public class MotivateEffect : NonOverwritableEffectBase
         "Motivate"
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(2);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(2);
     public override byte Icon => 99;
     public override string Name => "Motivate";
     protected override byte? Sound => 121;

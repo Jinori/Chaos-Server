@@ -3,21 +3,28 @@ using Chaos.Definitions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Time;
+using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Quests.CthonicRemains;
 
 public class CrHorrorQuestScript : DialogScriptBase
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
-
+    private readonly ILogger<CrHorrorQuestScript> Logger;
+    
     /// <inheritdoc />
-    public CrHorrorQuestScript(Dialog subject)
-        : base(subject) =>
+    public CrHorrorQuestScript(Dialog subject, ILogger<CrHorrorQuestScript> logger)
+        : base(subject)
+    {
+        Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -72,6 +79,11 @@ public class CrHorrorQuestScript : DialogScriptBase
                 }
 
                 Subject.Reply(source, "I'm impressed.");
+                
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Gold, Topics.Entities.Dialog, Topics.Entities.Quest)
+                      .WithProperty(source).WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp and {@GoldAmount} from a quest", source.Name, 10000000, 150000);
+                
                 source.TryGiveGamePoints(5);
                 ExperienceDistributionScript.GiveExp(source, 10000000);
                 source.TryGiveGold(150000);

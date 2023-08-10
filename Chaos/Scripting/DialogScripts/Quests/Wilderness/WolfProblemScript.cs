@@ -3,21 +3,28 @@ using Chaos.Definitions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Time;
+using Microsoft.Extensions.Logging;
 
-namespace Chaos.Scripting.DialogScripts.Quests;
+namespace Chaos.Scripting.DialogScripts.Quests.Wilderness;
 
 public class WolfProblemScript : DialogScriptBase
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
-
+    private readonly ILogger<WolfProblemScript> Logger;
+    
     /// <inheritdoc />
-    public WolfProblemScript(Dialog subject)
-        : base(subject) =>
+    public WolfProblemScript(Dialog subject, ILogger<WolfProblemScript> logger)
+        : base(subject)
+    {
+        Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -65,6 +72,10 @@ public class WolfProblemScript : DialogScriptBase
                     return;
                 }
 
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Gold, Topics.Entities.Dialog, Topics.Entities.Quest)
+                      .WithProperty(source).WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest and {@GoldAmount} gold", source.Name, 5000, 2500);
+                
                 source.TryGiveGamePoints(5);
                 ExperienceDistributionScript.GiveExp(source, 5000);
                 source.TryGiveGold(2500);

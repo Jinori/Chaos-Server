@@ -8,7 +8,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Pet;
 
-public class PetAggroTargetingScript : MonsterScriptBase
+public sealed class PetAggroTargetingScript : MonsterScriptBase
 {
     private readonly IIntervalTimer TargetUpdateTimer;
     private int InitialAggro = 10;

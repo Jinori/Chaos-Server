@@ -1,5 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
@@ -29,7 +31,7 @@ public class ManaReplenishComponent : IComponent
             
             if (options.ReplenishGroup)
             {
-                var group = context.SourceAisling?.Group;
+                var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(target));
 
                 if (group != null)
                     foreach (var member in group)

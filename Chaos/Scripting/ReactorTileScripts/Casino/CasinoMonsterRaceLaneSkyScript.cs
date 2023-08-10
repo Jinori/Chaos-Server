@@ -3,15 +3,19 @@ using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 using Humanizer;
+using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.ReactorTileScripts.Casino;
 
 public class CasinoMonsterRaceLaneSkyScript : ReactorTileScriptBase
 {
+    private readonly ILogger<CasinoMonsterRaceLaneSkyScript> Logger;
     private readonly IIntervalTimer AfterWinnerDelay;
     private readonly List<Aisling> AislingsThatWon = new();
     private IEnumerable<Aisling>? AislingsAtCompletion;
@@ -24,9 +28,12 @@ public class CasinoMonsterRaceLaneSkyScript : ReactorTileScriptBase
     };
 
     /// <inheritdoc />
-    public CasinoMonsterRaceLaneSkyScript(ReactorTile subject)
-        : base(subject) =>
+    public CasinoMonsterRaceLaneSkyScript(ReactorTile subject, ILogger<CasinoMonsterRaceLaneSkyScript> logger)
+        : base(subject)
+    {
+        Logger = logger;
         AfterWinnerDelay = new IntervalTimer(TimeSpan.FromSeconds(6), false);
+    }
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
@@ -81,6 +88,10 @@ public class CasinoMonsterRaceLaneSkyScript : ReactorTileScriptBase
                 var eightPercent = (int)(winnings * 0.08m);
                 var winningsMinusEight = winnings - eightPercent;
 
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
+                      .WithProperty(winner).WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes", winner.Name, winningsMinusEight, eightPercent);
+                
                 winner.TryGiveGold(winningsMinusEight);
                 winner.SendActiveMessage($"You won the game and receive {winnings.ToWords()} gold!");
 
@@ -99,6 +110,10 @@ public class CasinoMonsterRaceLaneSkyScript : ReactorTileScriptBase
                     var eightPercent = (int)(winnings * 0.08m);
                     var winningsMinusEight = winnings - eightPercent;
 
+                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
+                          .WithProperty(winner).WithProperty(Subject)
+                          .LogInformation("{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes", winner.Name, winningsMinusEight, eightPercent);
+                    
                     winner.TryGiveGold(winningsMinusEight);
                     winner.SendActiveMessage($"You tied and receive {winnings.ToWords()} gold!");
                 }

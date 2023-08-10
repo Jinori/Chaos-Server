@@ -19,7 +19,7 @@ public class InnerFireEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMinutes(8));
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(8);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(8);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(400));
     public override byte Icon => 65;

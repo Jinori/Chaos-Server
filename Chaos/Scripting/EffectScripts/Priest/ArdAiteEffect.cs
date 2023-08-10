@@ -20,7 +20,7 @@ public class ArdAiteEffect : NonOverwritableEffectBase
         "ard naomh aite"
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(12);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(12);
     public override byte Icon => 9;
     public override string Name => "ard naomh aite";
 

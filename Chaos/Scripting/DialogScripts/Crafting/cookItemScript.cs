@@ -1718,8 +1718,8 @@ public class cookItemScript : DialogScriptBase
 
                         return;
                     }
-
-                    source.TryGiveItems(ItemFactory.Create("salad"));
+                    
+                    source.GiveItemOrSendToBank(ItemFactory.Create("salad"));
                     source.SendOrangeBarMessage("You have made a Salad!");
                     Subject.Reply(source, "Skip", "cook_itemrepeat");
                 }
@@ -1887,8 +1887,8 @@ public class cookItemScript : DialogScriptBase
 
                         return;
                     }
-
-                    source.TryGiveItems(ItemFactory.Create("lobsterdinner"));
+                    
+                    source.GiveItemOrSendToBank(ItemFactory.Create("lobsterdinner"));
                     source.SendOrangeBarMessage("You have cooked a Lobster Dinner!");
                     Subject.Reply(source, "Skip", "cook_itemrepeat");
                 }

@@ -16,6 +16,12 @@ public class PetMoveToTargetScript : MonsterScriptBase
     {
         base.Update(delta);
 
+        if (Subject.PetOwner?.DistanceFrom(Subject) >= 8)
+        {
+            Target = null;
+            return;   
+        }
+        
         if ((Target == null) || !ShouldMove)
             return;
 

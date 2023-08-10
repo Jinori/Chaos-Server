@@ -1,4 +1,7 @@
+using System.Xml;
 using Chaos.Extensions.Geometry;
+using Chaos.Geometry.Abstractions;
+using Chaos.Geometry.EqualityComparers;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
@@ -34,12 +37,12 @@ public sealed class BossEnrageScript : MonsterScriptBase
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
-            var rectange = new Rectangle(Subject, 4, 4);
-
+            var rectangle = new Rectangle(Subject, 5, 5);
+            
             for (var i = 0; i <= 3; i++)
             {
-                var point = rectange.GetRandomPoint();
-                var mobs = MonsterFactory.Create("crypt_bat", Subject.MapInstance, point);
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+                var mobs = MonsterFactory.Create("crypt_bat5", Subject.MapInstance, point);
                 Subject.MapInstance.AddObject(mobs, point);
             }
         }

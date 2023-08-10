@@ -16,7 +16,7 @@ public class StatBoostEffect : NonOverwritableEffectBase
         "Stat Boost"
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(15);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     public override byte Icon => 10;
     public override string Name => "Stat Boost";
     protected override byte? Sound => 115;

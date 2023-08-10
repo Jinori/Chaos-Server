@@ -28,7 +28,7 @@ public class StrongPowerEffect : NonOverwritableEffectBase
         "Astral"
     };
 
-    protected override TimeSpan Duration { get; } = TimeSpan.FromMinutes(15);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     public override byte Icon => 13;
     public override string Name => "Strong Power";
     protected override byte? Sound => 115;
