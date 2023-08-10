@@ -78,14 +78,14 @@ public class AreiniPetsScript : DialogScriptBase
                 break; 
             }
             
-            case "areini_pickswift":
+            case "areini_pickwindstrike":
             {
                 if (optionIndex != 2)
                 {
                     RemoveExistingPets(source);
                     source.Trackers.Flags.AddFlag(PetSkillsChosen.Level25);
-                    source.Trackers.Enums.Set(Level25PetSkills.Swift);
-                    source.SendActiveMessage("Swift ability learned!");
+                    source.Trackers.Enums.Set(Level25PetSkills.WindStrike);
+                    source.SendActiveMessage("Wind Strike ability learned!");
                 }
                 break; 
             }

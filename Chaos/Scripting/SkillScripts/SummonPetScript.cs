@@ -129,9 +129,9 @@ public class SummonPetScript : ConfigurableSkillScriptBase
                         newMonster.Skills.Add(skillToAdd);
                         break;
                     }
-                    case Level25PetSkills.Swift:
+                    case Level25PetSkills.WindStrike:
                     {
-                        var skillToAdd = _skillFactory.Create("blitz");
+                        var skillToAdd = _skillFactory.Create("windblade");
                         newMonster.Skills.Add(skillToAdd);
                         break;
                     }

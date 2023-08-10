@@ -1143,7 +1143,7 @@ public enum Level25PetSkills
     None,
     TailSweep = 1,
     Enrage = 1 << 1,
-    Swift = 1 << 2,
+    WindStrike = 1 << 2,
 }
 
 [Flags]
