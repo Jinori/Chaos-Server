@@ -4,7 +4,6 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
-using Chaos.Scripting.ItemScripts;
 using Chaos.Scripting.SkillScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
@@ -85,12 +84,14 @@ public class SummonPetScript : ConfigurableSkillScriptBase
             newMonster.StatSheet.SetHealthPct(100);
             newMonster.StatSheet.SetManaPct(100);
             
-            var hasSkill = newMonster.PetOwner.Trackers.Enums.TryGetValue(out Level10PetSkills skill);
-
-            if (hasSkill)
+            var has10Skill = newMonster.PetOwner.Trackers.Enums.TryGetValue(out Level10PetSkills level10Skill);
+            var has25Skill = newMonster.PetOwner.Trackers.Enums.TryGetValue(out Level25PetSkills level25Skill);
+            
+            if (has10Skill)
             {
-                switch (skill)
+                switch (level10Skill)
                 {
+                    
                     case Level10PetSkills.RabidBite:
                     {
                         var skillToAdd = _skillFactory.Create("poisonpunch");
@@ -106,6 +107,31 @@ public class SummonPetScript : ConfigurableSkillScriptBase
                     case Level10PetSkills.QuickAttack:
                     {
                         var skillToAdd = _skillFactory.Create("stab");
+                        newMonster.Skills.Add(skillToAdd);
+                        break;
+                    }
+                }
+            }
+            if (has25Skill)
+            {
+                switch (level25Skill)
+                {
+                    
+                    case Level25PetSkills.TailSweep:
+                    {
+                        var skillToAdd = _skillFactory.Create("dracotailkick");
+                        newMonster.Skills.Add(skillToAdd);
+                        break;
+                    }
+                    case Level25PetSkills.Enrage:
+                    {
+                        var skillToAdd = _skillFactory.Create("dracotailkick");
+                        newMonster.Skills.Add(skillToAdd);
+                        break;
+                    }
+                    case Level25PetSkills.Swift:
+                    {
+                        var skillToAdd = _skillFactory.Create("blitz");
                         newMonster.Skills.Add(skillToAdd);
                         break;
                     }

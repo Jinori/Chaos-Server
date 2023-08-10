@@ -1135,7 +1135,15 @@ public enum Level10PetSkills
     None,
     RabidBite = 1,
     Growl = 1 << 1,
-    QuickAttack = 1 << 2,
+    QuickAttack = 1 << 2
+}
+
+public enum Level25PetSkills
+{
+    None,
+    TailSweep = 1,
+    Enrage = 1 << 1,
+    Swift = 1 << 2,
 }
 
 [Flags]

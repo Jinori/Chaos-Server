@@ -43,7 +43,7 @@ public class FishConsumableScript : ItemScriptBase
 
     private void NotifyPlayer(Aisling source, int expGain) => source.Client.SendServerMessage(
         ServerMessageType.OrangeBar1,
-        $"You ate {Subject.DisplayName} and it gave you {expGain} exp.");
+        $"You ate {Subject.DisplayName} and it gave you {expGain:NO} exp.");
 
     public override void OnUse(Aisling source)
     {

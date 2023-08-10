@@ -18,6 +18,7 @@ public class AreiniPetsScript : DialogScriptBase
         {
             RemoveOption("Learn Summon Pet");
             RemoveOption("Pet Level 10 Ability");
+            RemoveOption("Pet Level 25 Ability");
             RemoveOption("Change Pet");
         }
     }
@@ -53,6 +54,42 @@ public class AreiniPetsScript : DialogScriptBase
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
+            case "areini_picktailsweep":
+            {
+                if (optionIndex != 2)
+                {
+                    RemoveExistingPets(source);
+                    source.Trackers.Flags.AddFlag(PetSkillsChosen.Level25);
+                    source.Trackers.Enums.Set(Level25PetSkills.TailSweep);
+                    source.SendActiveMessage("Tail Sweep ability learned!");
+                }
+                break; 
+            }
+            
+            case "areini_pickenrage":
+            {
+                if (optionIndex != 2)
+                {
+                    RemoveExistingPets(source);
+                    source.Trackers.Flags.AddFlag(PetSkillsChosen.Level25);
+                    source.Trackers.Enums.Set(Level25PetSkills.Enrage);
+                    source.SendActiveMessage("Enrage ability learned!");
+                }
+                break; 
+            }
+            
+            case "areini_pickswift":
+            {
+                if (optionIndex != 2)
+                {
+                    RemoveExistingPets(source);
+                    source.Trackers.Flags.AddFlag(PetSkillsChosen.Level25);
+                    source.Trackers.Enums.Set(Level25PetSkills.Swift);
+                    source.SendActiveMessage("Swift ability learned!");
+                }
+                break; 
+            }
+            
             case "areini_pickrabidbite":
             {
                 if (optionIndex != 2)
