@@ -2,7 +2,7 @@
 using Chaos.Models.Data;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
-namespace Chaos.Scripting.EffectScripts.Foods;
+namespace Chaos.Scripting.EffectScripts.Items.CookingMeals;
 
 public class PieGreenGrapeEffect : NonOverwritableEffectBase
 {

@@ -4,7 +4,7 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Items.CookingMeals;
 
-public class FruitBasketEffect : NonOverwritableEffectBase
+public class SaladEffect : NonOverwritableEffectBase
 {
     protected override Animation? Animation { get; } = new()
     {
@@ -17,13 +17,13 @@ public class FruitBasketEffect : NonOverwritableEffectBase
         "Sweet Buns",
         "Fruit Basket",
         "Lobster Dinner",
-        "Pie Acorn",
-        "Pie Apple",
-        "Pie Cherry",
-        "Pie Grape",
-        "Pie Greengrapes",
-        "Pie Strawberry",
-        "Pie Tangerines",
+        "Acorn Pie",
+        "Apple Pie",
+        "Cherry Pie",
+        "Grape Pie",
+        "Greengrapes Pie",
+        "Strawberry Pie",
+        "Tangerines Pie",
         "Salad",
         "Sandwich",
         "Soup",
@@ -32,7 +32,7 @@ public class FruitBasketEffect : NonOverwritableEffectBase
 
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     public override byte Icon => 72;
-    public override string Name => "Fruit Basket";
+    public override string Name => "Soup";
     protected override byte? Sound => 115;
 
     public override void OnApplied()
@@ -41,12 +41,16 @@ public class FruitBasketEffect : NonOverwritableEffectBase
 
         var attributes = new Attributes
         {
-            Hit = 8
+            MaximumHp = 500,
+            Ac = -5
         };
 
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your mind experiences clarity.");
+
+        AislingSubject?.Client.SendServerMessage(
+            ServerMessageType.OrangeBar1,
+            "The salad has increased your survivability.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -55,11 +59,12 @@ public class FruitBasketEffect : NonOverwritableEffectBase
     {
         var attributes = new Attributes
         {
-            Hit = 8
+            MaximumHp = 500,
+            Ac = -5
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your mind returns to normal.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your survivability has returned to normal.");
     }
 }

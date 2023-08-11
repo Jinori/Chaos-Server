@@ -270,12 +270,16 @@ public class ArmorsmithingArmorScript : DialogScriptBase
         }
         else
         {
-            var newCraft = ItemFactory.Create(recipe.TemplateKey);
+            var replacePattern = recipe.TemplateKey.Replace("pattern", "");
+            var addRefined = "refined" + replacePattern;
+
+            var newCraft = ItemFactory.Create(addRefined);
 
             source.GiveItemOrSendToBank(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);
         }
+
 
         source.Animate(SuccessAnimation);
     }

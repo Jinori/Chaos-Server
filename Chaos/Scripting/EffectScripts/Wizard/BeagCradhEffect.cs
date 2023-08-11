@@ -38,7 +38,7 @@ public class BeagCradhEffect : NonOverwritableEffectBase
 
         var attributes = new Attributes
         {
-            Ac = -20
+            Ac = -10
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
@@ -52,7 +52,7 @@ public class BeagCradhEffect : NonOverwritableEffectBase
     {
         var attributes = new Attributes
         {
-            Ac = -20
+            Ac = -10
         };
 
         Subject.StatSheet.AddBonus(attributes);

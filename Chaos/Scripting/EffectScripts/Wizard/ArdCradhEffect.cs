@@ -38,8 +38,8 @@ public class ArdCradhEffect : NonOverwritableEffectBase
 
         var attributes = new Attributes
         {
-            Ac = -65,
-            MagicResistance = 3
+            Ac = -50,
+            MagicResistance = 30
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
@@ -53,8 +53,8 @@ public class ArdCradhEffect : NonOverwritableEffectBase
     {
         var attributes = new Attributes
         {
-            Ac = -65,
-            MagicResistance = 3
+            Ac = -50,
+            MagicResistance = 30
         };
 
         Subject.StatSheet.AddBonus(attributes);

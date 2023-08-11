@@ -38,8 +38,8 @@ public class MorCradhEffect : NonOverwritableEffectBase
 
         var attributes = new Attributes
         {
-            Ac = -50,
-            MagicResistance = 2
+            Ac = -35,
+            MagicResistance = 20
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
@@ -53,8 +53,8 @@ public class MorCradhEffect : NonOverwritableEffectBase
     {
         var attributes = new Attributes
         {
-            Ac = -50,
-            MagicResistance = 2
+            Ac = -35,
+            MagicResistance = 20
         };
 
         Subject.StatSheet.AddBonus(attributes);

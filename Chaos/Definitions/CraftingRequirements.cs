@@ -88,7 +88,7 @@ public static class CraftingRequirements
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(FieryPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HastyPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -617,7 +617,7 @@ public static class CraftingRequirements
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(LightPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(AiryPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -2900,7 +2900,7 @@ public static class CraftingRequirements
                 TemplateKey = "lightdagger",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
+                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
                 Rank = "Apprentice",
@@ -4066,14 +4066,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedScoutLeather,
             new Recipe()
             {
-                Name = "Refined Scout Leather",
-                TemplateKey = "refinedscoutleather",
+                Name = "Scout Leather Pattern",
+                TemplateKey = "scoutleatherpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3},
                 },
-                Rank = "basic",
+                Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
             }
@@ -4082,14 +4081,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedDwarvishLeather,
             new Recipe()
             {
-                Name = "Refined Dwarvish Leather",
-                TemplateKey = "refineddwarvishleather",
+                Name = "Dwarvish Leather Pattern",
+                TemplateKey = "dwarvishleatherpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
                 },
-                Rank = "Apprentice",
+                Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
             }
@@ -4098,14 +4096,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedPaluten,
             new Recipe()
             {
-                Name = "Refined Paluten",
-                TemplateKey = "refinedpaluten",
+                Name = "Paluten Pattern",
+                TemplateKey = "palutenpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
                 },
-                Rank = "Journeyman",
+                Rank = "Apprentice",
                 Level = 56,
                 Difficulty = 3
             }
@@ -4114,14 +4111,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedKeaton,
             new Recipe()
             {
-                Name = "Refined Keaton",
-                TemplateKey = "refinedkeaton",
+                Name = "Keaton Pattern",
+                TemplateKey = "keatonpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
                 },
-                Rank = "Adept",
+                Rank = "Journeyman",
                 Level = 86,
                 Difficulty = 4
             }
@@ -4130,14 +4126,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedBardocle,
             new Recipe()
             {
-                Name = "Refined Bardocle",
-                TemplateKey = "refinedbardocle",
+                Name = "Bardocle Pattern",
+                TemplateKey = "bardoclepattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5},
                 },
-                Rank = "Advanced",
+                Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
             }
@@ -4146,14 +4141,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedGardcorp,
             new Recipe()
             {
-                Name = "Refined Gardcorp",
-                TemplateKey = "refinedgardcorp",
+                Name = "Gardcorp Pattern",
+                TemplateKey = "gardcorppattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3},
                 },
-                Rank = "refined",
+                Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
             }
@@ -4162,14 +4156,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedJourneyman,
             new Recipe()
             {
-                Name = "Refined Journeyman",
-                TemplateKey = "refinedjourneyman",
+                Name = "Journeyman Pattern",
+                TemplateKey = "journeymanpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
                 },
-                Rank = "Apprentice",
+                Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
             }
@@ -4178,14 +4171,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedLorum,
             new Recipe()
             {
-                Name = "Refined Lorum",
-                TemplateKey = "refinedlorum",
+                Name = "Lorum Pattern",
+                TemplateKey = "lorumpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
                 },
-                Rank = "Journeyman",
+                Rank = "Apprentice",
                 Level = 56,
                 Difficulty = 3
             }
@@ -4194,14 +4186,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedMane,
             new Recipe()
             {
-                Name = "Refined Mane",
-                TemplateKey = "refinedmane",
+                Name = "Mane Pattern",
+                TemplateKey = "manepattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
                 },
-                Rank = "Adept",
+                Rank = "Journeyman",
                 Level = 86,
                 Difficulty = 4
             }
@@ -4210,14 +4201,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedDuinUasal,
             new Recipe()
             {
-                Name = "Refined Duin-Uasal",
-                TemplateKey = "refinedduinuasal",
+                Name = "Duin-Uasal Pattern",
+                TemplateKey = "duinuasalpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5},
                 },
-                Rank = "Advanced",
+                Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
             }
@@ -4226,14 +4216,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedCowl,
             new Recipe()
             {
-                Name = "Refined Cowl",
-                TemplateKey = "refinedcowl",
+                Name = "Cowl Pattern",
+                TemplateKey = "cowlpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3},
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
             }
@@ -4242,14 +4231,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedGaluchatCoat,
             new Recipe()
             {
-                Name = "Refined Galuchat Coat",
-                TemplateKey = "refinedgaluchatcoat",
+                Name = "Galuchat Coat Pattern",
+                TemplateKey = "galuchatcoatpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
                 },
-                Rank = "Apprentice",
+                Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
             }
@@ -4258,14 +4246,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedMantle,
             new Recipe()
             {
-                Name = "Refined Mantle",
-                TemplateKey = "refinedmantle",
+                Name = "Mantle Pattern",
+                TemplateKey = "mantlepattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
                 },
-                Rank = "Journeyman",
+                Rank = "Apprentice",
                 Level = 56,
                 Difficulty = 3
             }
@@ -4274,14 +4261,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedHierophant,
             new Recipe()
             {
-                Name = "Refined Hierophant",
-                TemplateKey = "refinedhierophant",
+                Name = "Hierophant Pattern",
+                TemplateKey = "hierophantpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
                 },
-                Rank = "Adept",
+                Rank = "Journeyman",
                 Level = 86,
                 Difficulty = 4
             }
@@ -4290,14 +4276,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedDalmatica,
             new Recipe()
             {
-                Name = "Refined Dalmatica",
-                TemplateKey = "refineddalmatica",
+                Name = "Dalmatica Pattern",
+                TemplateKey = "dalmaticapattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5},
                 },
-                Rank = "Advanced",
+                Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
             }
@@ -4306,14 +4291,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedDobok,
             new Recipe()
             {
-                Name = "Refined Dobok",
-                TemplateKey = "refineddobok",
+                Name = "Dobok Pattern",
+                TemplateKey = "dobokpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3},
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
             }
@@ -4322,14 +4306,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedCulotte,
             new Recipe()
             {
-                Name = "Refined Culotte",
-                TemplateKey = "refinedculotte",
+                Name = "Culotte Pattern",
+                TemplateKey = "culottepattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
                 },
-                Rank = "Apprentice",
+                Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
             }
@@ -4338,14 +4321,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedEarthGarb,
             new Recipe()
             {
-                Name = "Refined Earth Garb",
-                TemplateKey = "refinedearthgarb",
+                Name = "Earth Garb Pattern",
+                TemplateKey = "earthgarbpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
                 },
-                Rank = "Journeyman",
+                Rank = "Apprentice",
                 Level = 56,
                 Difficulty = 3
             }
@@ -4354,14 +4336,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedWindGarb,
             new Recipe()
             {
-                Name = "Refined Wind Garb",
-                TemplateKey = "refinedwindgarb",
+                Name = "Wind Garb Pattern",
+                TemplateKey = "windgarbpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
                 },
-                Rank = "Adept",
+                Rank = "Journeyman",
                 Level = 86,
                 Difficulty = 4
             }
@@ -4370,14 +4351,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedMountainGarb,
             new Recipe()
             {
-                Name = "Refined Mountain Garb",
-                TemplateKey = "refinedmountaingarb",
+                Name = "Mountain Garb Pattern",
+                TemplateKey = "mountaingarbpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5},
                 },
-                Rank = "Advanced",
+                Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
             }
@@ -4386,14 +4366,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedLeatherTunic,
             new Recipe()
             {
-                Name = "Refined Leather Tunic",
-                TemplateKey = "refinedleathertunic",
+                Name = "Leather Tunic Pattern",
+                TemplateKey = "leathertunicpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3},
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
             }
@@ -4402,14 +4381,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedLorica,
             new Recipe()
             {
-                Name = "Refined Lorica",
-                TemplateKey = "refinedlorica",
+                Name = "Lorica Pattern",
+                TemplateKey = "loricapattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
                 },
-                Rank = "Apprentice",
+                Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
             }
@@ -4418,14 +4396,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedKasmaniumArmor,
             new Recipe()
             {
-                Name = "Refined Kasmanium Armor",
-                TemplateKey = "refinedkasmaniumarmor",
+                Name = "Kasmanium Armor Pattern",
+                TemplateKey = "kasmaniumarmorpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
                 },
-                Rank = "Journeyman",
+                Rank = "Apprentice",
                 Level = 56,
                 Difficulty = 3
             }
@@ -4434,14 +4411,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedIpletMail,
             new Recipe()
             {
-                Name = "Refined Iplet Mail",
-                TemplateKey = "refinedipletmail",
+                Name = "Iplet Mail Pattern",
+                TemplateKey = "ipletmailpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
                 },
-                Rank = "Adept",
+                Rank = "Journeyman",
                 Level = 86,
                 Difficulty = 4
             }
@@ -4450,14 +4426,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedHybrasylPlate,
             new Recipe()
             {
-                Name = "Refined Hy-brasyl Plate",
-                TemplateKey = "refinedhybrasylplate",
+                Name = "Hy-brasyl Plate Pattern",
+                TemplateKey = "hybrasylplatepattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5},
                 },
-                Rank = "Advanced",
+                Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
             }
@@ -4467,14 +4442,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedCotte,
             new Recipe()
             {
-                Name = "Refined Cotte",
-                TemplateKey = "refinedcotte",
+                Name = "Cotte Pattern",
+                TemplateKey = "cottepattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3},
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
             }
@@ -4483,14 +4457,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedBrigandine,
             new Recipe()
             {
-                Name = "Refined Brigandine",
-                TemplateKey = "refinedbrigandine",
+                Name = "Brigandine Pattern",
+                TemplateKey = "brigandinepattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
                 },
-                Rank = "Apprentice",
+                Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
             }
@@ -4499,14 +4472,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedCorsette,
             new Recipe()
             {
-                Name = "Refined Corsette",
-                TemplateKey = "refinedcorsette",
+                Name = "Corsette Pattern",
+                TemplateKey = "corsettepattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
                 },
-                Rank = "Journeyman",
+                Rank = "Apprentice",
                 Level = 56,
                 Difficulty = 3
             }
@@ -4515,14 +4487,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedPebbleRose,
             new Recipe()
             {
-                Name = "Refined Pebble Rose",
-                TemplateKey = "refinedpebblerose",
+                Name = "Pebble Rose Pattern",
+                TemplateKey = "pebblerosepattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
                 },
-                Rank = "Adept",
+                Rank = "Journeyman",
                 Level = 86,
                 Difficulty = 4
             }
@@ -4531,14 +4502,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedKagum,
             new Recipe()
             {
-                Name = "Refined Kagum",
-                TemplateKey = "refinedkagum",
+                Name = "Kagum Pattern",
+                TemplateKey = "kagumpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5},
                 },
-                Rank = "Advanced",
+                Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
             }
@@ -4547,14 +4517,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedMagiSkirt,
             new Recipe()
             {
-                Name = "Refined Magi Skirt",
-                TemplateKey = "refinedmagiskirt",
+                Name = "Magi Skirt Pattern",
+                TemplateKey = "magiskirtpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3},
                 },
-                Rank = "Basic",
+                Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
             }
@@ -4563,14 +4532,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedBenusta,
             new Recipe()
             {
-                Name = "Refined Benusta",
-                TemplateKey = "refinedbenusta",
+                Name = "Benusta Pattern",
+                TemplateKey = "benustapattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
                 },
-                Rank = "Apprentice",
+                Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
             }
@@ -4579,14 +4547,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedStoller,
             new Recipe()
             {
-                Name = "Refined Stoller",
-                TemplateKey = "refinedstoller",
+                Name = "Stoller Pattern",
+                TemplateKey = "stollerpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
                 },
-                Rank = "Journeyman",
+                Rank = "Apprentice",
                 Level = 56,
                 Difficulty = 3
             }
@@ -4595,14 +4562,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedClymouth,
             new Recipe()
             {
-                Name = "Refined Clymouth",
-                TemplateKey = "refinedclymouth",
+                Name = "Clymouth Pattern",
+                TemplateKey = "clymouthpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
                 },
-                Rank = "Adept",
+                Rank = "Journeyman",
                 Level = 86,
                 Difficulty = 4
             }
@@ -4611,14 +4577,13 @@ public static class CraftingRequirements
             CraftedArmors.RefinedClamyth,
             new Recipe()
             {
-                Name = "Refined Clamyth",
-                TemplateKey = "refinedclamyth",
+                Name = "Clamyth Pattern",
+                TemplateKey = "clamythpattern",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5},
                 },
-                Rank = "Advanced",
+                Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
             }
@@ -4627,14 +4592,13 @@ public static class CraftingRequirements
     CraftedArmors.RefinedGorgetGown,
     new Recipe()
     {
-        Name = "Refined Gorget Gown",
-        TemplateKey = "refinedgorgetgown",
+        Name = "Gorget Gown Pattern",
+        TemplateKey = "gorgetgownpattern",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3},
         },
-        Rank = "Basic",
+        Rank = "Beginner",
         Level = 8,
         Difficulty = 1
     }
@@ -4643,14 +4607,13 @@ public static class CraftingRequirements
     CraftedArmors.RefinedMysticGown,
     new Recipe()
     {
-        Name = "Refined Mystic Gown",
-        TemplateKey = "refinedmysticgown",
+        Name = "Mystic Gown Pattern",
+        TemplateKey = "mysticgownpattern",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
         },
-        Rank = "Apprentice",
+        Rank = "Basic",
         Level = 26,
         Difficulty = 2
     }
@@ -4659,14 +4622,13 @@ public static class CraftingRequirements
     CraftedArmors.RefinedElle,
     new Recipe()
     {
-        Name = "Refined Elle",
-        TemplateKey = "refinedelle",
+        Name = "Elle Pattern",
+        TemplateKey = "ellepattern",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
         },
-        Rank = "Journeyman",
+        Rank = "Apprentice",
         Level = 56,
         Difficulty = 3
     }
@@ -4675,14 +4637,13 @@ public static class CraftingRequirements
     CraftedArmors.RefinedDolman,
     new Recipe()
     {
-        Name = "Refined Dolman",
-        TemplateKey = "refineddolman",
+        Name = "Dolman Pattern",
+        TemplateKey = "dolmanpattern",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
         },
-        Rank = "Adept",
+        Rank = "Journeyman",
         Level = 86,
         Difficulty = 4
     }
@@ -4691,14 +4652,13 @@ public static class CraftingRequirements
     CraftedArmors.RefinedBansagart,
     new Recipe()
     {
-        Name = "Refined Bansagart",
-        TemplateKey = "refinedbansagart",
+        Name = "Bansagart Pattern",
+        TemplateKey = "bansagartpattern",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5},
         },
-        Rank = "Advanced",
+        Rank = "Adept",
         Level = 99,
         Difficulty = 5
     }
@@ -4707,14 +4667,13 @@ public static class CraftingRequirements
     CraftedArmors.RefinedEarthBodice,
     new Recipe()
     {
-        Name = "Refined Earth Bodice",
-        TemplateKey = "refinedearthbodice",
+        Name = "Earth Bodice Pattern",
+        TemplateKey = "earthbodicepattern",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3},
         },
-        Rank = "Basic",
+        Rank = "Beginner",
         Level = 8,
         Difficulty = 1
     }
@@ -4723,14 +4682,13 @@ public static class CraftingRequirements
     CraftedArmors.RefinedLotusBodice,
     new Recipe()
     {
-        Name = "Refined Lotus Bodice",
-        TemplateKey = "refinedlotusbodice",
+        Name = "Lotus Bodice Pattern",
+        TemplateKey = "lotusbodicepattern",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
         },
-        Rank = "Apprentice",
+        Rank = "Basic",
         Level = 26,
         Difficulty = 2
     }
@@ -4739,14 +4697,13 @@ public static class CraftingRequirements
     CraftedArmors.RefinedMoonBodice,
     new Recipe()
     {
-        Name = "Refined Moon Bodice",
-        TemplateKey = "refinedmoonbodice",
+        Name = "Moon Bodice Pattern",
+        TemplateKey = "moonbodicepattern",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
         },
-        Rank = "Journeyman",
+        Rank = "Apprentice",
         Level = 56,
         Difficulty = 3
     }
@@ -4755,14 +4712,13 @@ public static class CraftingRequirements
     CraftedArmors.RefinedLightningGarb,
     new Recipe()
     {
-        Name = "Refined Lightning Garb",
-        TemplateKey = "refinedlightninggarb",
+        Name = "Lightning Garb Pattern",
+        TemplateKey = "lightninggarbpattern",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
         },
-        Rank = "Adept",
+        Rank = "Journeyman",
         Level = 86,
         Difficulty = 4
     }
@@ -4771,14 +4727,13 @@ public static class CraftingRequirements
     CraftedArmors.RefinedSeaGarb,
     new Recipe()
     {
-        Name = "Refined Sea Garb",
-        TemplateKey = "refinedseagarb",
+        Name = "Sea Garb Pattern",
+        TemplateKey = "seagarbpattern",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5},
         },
-        Rank = "Advanced",
+        Rank = "Adept",
         Level = 99,
         Difficulty = 5
     }
@@ -4787,14 +4742,13 @@ public static class CraftingRequirements
     CraftedArmors.RefinedLeatherBliaut,
     new Recipe()
     {
-        Name = "Refined Leather Bliaut",
-        TemplateKey = "refinedleatherbliaut",
+        Name = "Leather Bliaut Pattern",
+        TemplateKey = "leatherbliautpattern",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3},
         },
-        Rank = "Basic",
+        Rank = "Beginner",
         Level = 8,
         Difficulty = 1
     }
@@ -4803,14 +4757,13 @@ public static class CraftingRequirements
     CraftedArmors.RefinedCuirass,
     new Recipe()
     {
-        Name = "Refined Cuirass",
-        TemplateKey = "refinedcuirass",
+        Name = "Cuirass Pattern",
+        TemplateKey = "cuirasspattern",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
         },
-        Rank = "Apprentice",
+        Rank = "Basic",
         Level = 26,
         Difficulty = 2
     }
@@ -4819,14 +4772,13 @@ public static class CraftingRequirements
     CraftedArmors.RefinedKasmaniumHauberk,
     new Recipe()
     {
-        Name = "Refined Kasmanium Hauberk",
-        TemplateKey = "refinedkasmaniumhauberk",
+        Name = "Kasmanium Hauberk Pattern",
+        TemplateKey = "kasmaniumhauberkpattern",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
         },
-        Rank = "Journeyman",
+        Rank = "Apprentice",
         Level = 56,
         Difficulty = 3
     }
@@ -4835,14 +4787,13 @@ public static class CraftingRequirements
     CraftedArmors.RefinedPhoenixMail,
     new Recipe()
     {
-        Name = "Refined Phoenix Mail",
-        TemplateKey = "refinedphoenixmail",
+        Name = "Phoenix Mail Pattern",
+        TemplateKey = "phoenixmailpattern",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
         },
-        Rank = "Adept",
+        Rank = "Journeyman",
         Level = 86,
         Difficulty = 4
     }
@@ -4851,14 +4802,13 @@ public static class CraftingRequirements
     CraftedArmors.RefinedHybrasylArmor,
     new Recipe()
     {
-        Name = "Refined Hybrasyl Armor",
-        TemplateKey = "refinedhybrasylarmor",
+        Name = "Hybrasyl Armor Pattern",
+        TemplateKey = "hybrasylarmorpattern",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5},
         },
-        Rank = "Advanced",
+        Rank = "Adept",
         Level = 99,
         Difficulty = 5
     }
@@ -4876,8 +4826,8 @@ public static class CraftingRequirements
                 TemplateKey = "leathersapphiregauntlet",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
+                    new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 1 }
                 },
                 Rank = "Basic",
                 Level = 11,
@@ -4892,8 +4842,8 @@ public static class CraftingRequirements
         TemplateKey = "leatherrubygauntlet",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
+            new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 1 }
         },
         Rank = "Basic",
         Level = 11,
@@ -4908,8 +4858,8 @@ public static class CraftingRequirements
         TemplateKey = "leatheremeraldgauntlet",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
+            new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 1 }
         },
         Rank = "Basic",
         Level = 11,
@@ -4924,8 +4874,8 @@ public static class CraftingRequirements
         TemplateKey = "leatherheartstonegauntlet",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
+            new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
         },
         Rank = "Basic",
         Level = 11,
@@ -4940,8 +4890,9 @@ public static class CraftingRequirements
         TemplateKey = "ironsapphiregauntlet",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
+            new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
+            new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 1 }
         },
         Rank = "Apprentice",
         Level = 41,
@@ -4956,8 +4907,9 @@ public static class CraftingRequirements
         TemplateKey = "ironrubygauntlet",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
+            new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
+            new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 1 }
         },
         Rank = "Apprentice",
         Level = 41,
@@ -4972,8 +4924,9 @@ public static class CraftingRequirements
         TemplateKey = "ironemeraldgauntlet",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
+            new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
+            new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 1 }
         },
         Rank = "Apprentice",
         Level = 41,
@@ -4988,8 +4941,9 @@ public static class CraftingRequirements
         TemplateKey = "ironheartstonegauntlet",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
+            new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
+            new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
         },
         Rank = "Apprentice",
         Level = 41,
@@ -5004,8 +4958,9 @@ public static class CraftingRequirements
         TemplateKey = "mythrilsapphiregauntlet",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
+            new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
+            new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 1 }
         },
         Rank = "Journeyman",
         Level = 71,
@@ -5020,8 +4975,9 @@ public static class CraftingRequirements
         TemplateKey = "mythrilrubygauntlet",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
+            new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
+            new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 1 }
         },
         Rank = "Journeyman",
         Level = 71,
@@ -5036,8 +4992,9 @@ public static class CraftingRequirements
         TemplateKey = "mythrilemeraldgauntlet",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
+            new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
+            new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 1 }
         },
         Rank = "Journeyman",
         Level = 71,
@@ -5052,8 +5009,9 @@ public static class CraftingRequirements
         TemplateKey = "mythrilheartstonegauntlet",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
+            new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
+            new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
         },
         Rank = "Journeyman",
         Level = 71,
@@ -5068,8 +5026,9 @@ public static class CraftingRequirements
         TemplateKey = "hybrasylsapphiregauntlet",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
+            new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
+            new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 2 }
         },
         Rank = "Adept",
         Level = 97,
@@ -5084,8 +5043,9 @@ public static class CraftingRequirements
         TemplateKey = "hybrasylrubygauntlet",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
+            new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
+            new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 2 }
         },
         Rank = "Adept",
         Level = 97,
@@ -5100,8 +5060,9 @@ public static class CraftingRequirements
         TemplateKey = "hybrasylemeraldgauntlet",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
+            new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
+            new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 2 }
         },
         Rank = "Adept",
         Level = 97,
@@ -5116,8 +5077,9 @@ public static class CraftingRequirements
         TemplateKey = "hybrasylheartstonegauntlet",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
+            new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
+            new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 2 }
         },
         Rank = "Adept",
         Level = 97,
@@ -5132,8 +5094,8 @@ public static class CraftingRequirements
                 TemplateKey = "jeweledseabelt",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 2 },
+                    new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 1 }
                 },
                 Rank = "Basic",
                 Level = 11,
@@ -5148,8 +5110,8 @@ public static class CraftingRequirements
         TemplateKey = "jeweledfirebelt",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 2 },
+            new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 1 }
         },
         Rank = "Basic",
         Level = 11,
@@ -5164,8 +5126,8 @@ public static class CraftingRequirements
         TemplateKey = "jeweledwindbelt",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 2 },
+            new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 1 }
         },
         Rank = "Basic",
         Level = 11,
@@ -5180,8 +5142,8 @@ public static class CraftingRequirements
         TemplateKey = "jeweledearthbelt",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 2 },
+            new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 1 }
         },
         Rank = "Basic",
         Level = 11,
@@ -5196,8 +5158,8 @@ public static class CraftingRequirements
         TemplateKey = "jewelednaturebelt",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "finecotton", DisplayName = "Fine Cotton", Amount = 3 },
+            new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
         },
         Rank = "Apprentice",
         Level = 41,
@@ -5212,8 +5174,8 @@ public static class CraftingRequirements
         TemplateKey = "jeweledmetalbelt",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "finecotton", DisplayName = "Fine Cotton", Amount = 3 },
+            new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
         },
         Rank = "Apprentice",
         Level = 41,
@@ -5228,8 +5190,8 @@ public static class CraftingRequirements
         TemplateKey = "jeweledlightbelt",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "finewool", DisplayName = "Fine Wool", Amount = 3 },
+            new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
         },
         Rank = "Journeyman",
         Level = 71,
@@ -5244,8 +5206,8 @@ public static class CraftingRequirements
         TemplateKey = "jeweleddarkbelt",
         Ingredients = new List<Ingredient>()
         {
-            new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 1 },
-            new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
+            new Ingredient { TemplateKey = "finewool", DisplayName = "Fine Wool", Amount = 3 },
+            new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
         },
         Rank = "Journeyman",
         Level = 71,

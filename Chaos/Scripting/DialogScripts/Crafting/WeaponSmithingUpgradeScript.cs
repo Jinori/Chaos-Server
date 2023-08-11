@@ -347,7 +347,7 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
             if (Subject.Items.Count == 0)
                 Subject.Reply(
                     source,
-                    "You do not have any recipes to craft. Check your recipe book (F1 Menu) to see your recipes and their requirements.",
+                    "You do not have any recipes to upgrade weapons. Check your recipe book (F1 Menu) to see your recipes and their requirements.",
                     "weaponsmithing_initial");
         }
     }

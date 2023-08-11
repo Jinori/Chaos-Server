@@ -6,14 +6,14 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class LightPrefixScript : ItemScriptBase, IEnchantmentScript
+public class AiryPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
-    public LightPrefixScript(Item subject)
+    public AiryPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Light"))
-            subject.DisplayName = $"Light {subject.DisplayName}";
+        if (!subject.DisplayName.StartsWithI("Airy"))
+            subject.DisplayName = $"Airy {subject.DisplayName}";
 
         var attributes = new Attributes
         {
@@ -27,7 +27,7 @@ public class LightPrefixScript : ItemScriptBase, IEnchantmentScript
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node)
     {
-        if (!node.Name.StartsWithI("Light"))
-            yield return node with { Name = $"Light {node.Name}" };
+        if (!node.Name.StartsWithI("Airy"))
+            yield return node with { Name = $"Airy {node.Name}" };
     }
 }

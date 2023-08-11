@@ -171,7 +171,11 @@ public class RecipeLibraryScript : DialogScriptBase
                     foreach (var recipe in CraftingRequirements.ArmorSmithingArmorRequirements)
                         if (armorRecipes.HasFlag(recipe.Key))
                         {
-                            var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+                            var templateKey = recipe.Value.TemplateKey;
+
+                            var item = ItemFactory.CreateFaux(
+                                templateKey.StartsWith("f", StringComparison.Ordinal) ? templateKey[1..] : templateKey);
+
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
 
@@ -191,7 +195,7 @@ public class RecipeLibraryScript : DialogScriptBase
             case "weaponsmithingbook":
             {
                 if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes recipes))
-                    foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
+                    foreach (var recipe in CraftingRequirements.WeaponSmithingUpgradeRequirements)
                         if (recipes.HasFlag(recipe.Key))
                         {
                             var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
@@ -402,7 +406,7 @@ public class RecipeLibraryScript : DialogScriptBase
                             "alchemybook");
 
                         return;
-                    
+
                     case "smallhealthpotionformula":
                         Subject.Reply(
                             source,
@@ -411,7 +415,7 @@ public class RecipeLibraryScript : DialogScriptBase
                             "alchemybook");
 
                         return;
-                    
+
                     case "smallmanapotionformula":
                         Subject.Reply(
                             source,
@@ -1090,12 +1094,32 @@ public class RecipeLibraryScript : DialogScriptBase
 
                 switch (FauxItem?.Template.TemplateKey.ToLower())
                 {
+                    case "smallrubyring":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Raw Bronze and 1 Raw Ruby to craft.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    case "berylring":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Raw Bronze and 1 Raw Beryl to craft.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
                     case "bronzeberylring":
                     {
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 polished bronze and 1 flawed beryl to craft.",
+                            } requires 1 Polished Bronze Bar and 1 Flawed Beryl to craft.",
                             "jewelcraftingbook");
 
                         return;
@@ -1104,7 +1128,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished bronze and 1 flawed ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Bronze Bar and 1 Flawed Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1113,7 +1137,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished bronze and 1 flawed sapphire.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Bronze Bar and 1 Flawed Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1122,7 +1146,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished bronze and 1 flawed heartstone.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Bronze Bar and 1 Flawed Heartstone.",
                             "jewelcraftingbook");
 
                         return;
@@ -1131,7 +1155,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished bronze and 1 flawed emerald.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Bronze Bar and 1 Flawed Emerald.",
                             "jewelcraftingbook");
 
                         return;
@@ -1140,7 +1164,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished iron and 1 uncut beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Iron Bar and 1 Uncut Beryl.",
                             "jewelcraftingbook");
 
                         return;
@@ -1149,7 +1173,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished iron and 1 uncut ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Iron Bar and 1 Uncut Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1158,7 +1182,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished iron and 1 uncut sapphire.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Iron Bar and 1 Uncut Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1167,7 +1191,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished iron and 1 uncut heartstone.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Iron Bar and 1 Uncut Heartstone.",
                             "jewelcraftingbook");
 
                         return;
@@ -1176,7 +1200,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished iron and 1 uncut emerald.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Iron Bar and 1 Uncut Emerald.",
                             "jewelcraftingbook");
 
                         return;
@@ -1185,7 +1209,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished mythril and 1 finished beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Beryl.",
                             "jewelcraftingbook");
 
                         return;
@@ -1194,7 +1218,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished mythril and 1 finished ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1204,7 +1228,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 polished mythril and 1 finished sapphire.",
+                            } requires 1 Polished Mythril Bar and 1 Finished Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1214,7 +1238,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 polished mythril and 1 finished heartstone.",
+                            } requires 1 Polished Mythril Bar and 1 Finished Heartstone.",
                             "jewelcraftingbook");
 
                         return;
@@ -1223,7 +1247,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished mythril and 1 finished emerald.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Emerald.",
                             "jewelcraftingbook");
 
                         return;
@@ -1232,7 +1256,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished hybrasyl and 3 finished beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Finished Beryl.",
                             "jewelcraftingbook");
 
                         return;
@@ -1241,7 +1265,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished hybrasyl and 3 finished ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Finished Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1251,7 +1275,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 polished hybrasyl and 3 finished sapphire.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1261,7 +1285,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 polished hybrasyl and 3 finished heartstone.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Heartstone.",
                             "jewelcraftingbook");
 
                         return;
@@ -1271,7 +1295,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 polished hybrasyl and 3 finished emerald.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Emerald.",
                             "jewelcraftingbook");
 
                         return;
@@ -1280,7 +1304,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished bronze and 1 flawed beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Bronze Bar and 1 Flawed Beryl.",
                             "jewelcraftingbook");
 
                         return;
@@ -1289,7 +1313,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished bronze and 1 flawed ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Bronze Bar and 1 Flawed Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1298,7 +1322,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished bronze and 1 flawed sapphire.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Bronze Bar and 1 Flawed Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1307,7 +1331,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished bronze and 1 flawed heartstone.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Bronze Bar and 1 Flawed Heartstone.",
                             "jewelcraftingbook");
 
                         return;
@@ -1316,7 +1340,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished bronze and 1 flawed emerald.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Bronze Bar and 1 Flawed Emerald.",
                             "jewelcraftingbook");
 
                         return;
@@ -1325,7 +1349,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished iron, and 1 uncut beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished iron, and 1 Uncut Beryl.",
                             "jewelcraftingbook");
 
                         return;
@@ -1334,7 +1358,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished iron and 1 uncut ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Iron Bar and 1 Uncut Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1343,7 +1367,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished iron and 1 uncut sapphire.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Iron Bar and 1 Uncut Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1352,7 +1376,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished iron and 1 uncut heartstone.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Iron Bar and 1 Uncut Heartstone.",
                             "jewelcraftingbook");
 
                         return;
@@ -1361,7 +1385,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished iron and 1 uncut emerald.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Iron Bar and 1 Uncut Emerald.",
                             "jewelcraftingbook");
 
                         return;
@@ -1370,7 +1394,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished mythril and 1 finished beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Beryl.",
                             "jewelcraftingbook");
 
                         return;
@@ -1379,7 +1403,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished mythril and 1 finished ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1389,7 +1413,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 polished mythril and 1 finished sapphire.",
+                            } requires 1 Polished Mythril Bar and 1 Finished Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1399,7 +1423,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 polished mythril and 1 finished heartstone.",
+                            } requires 1 Polished Mythril Bar and 1 Finished Heartstone.",
                             "jewelcraftingbook");
 
                         return;
@@ -1408,7 +1432,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished mythril and 1 finished emerald.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Emerald.",
                             "jewelcraftingbook");
 
                         return;
@@ -1417,7 +1441,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished hybrasyl and 3 finished beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Finished Beryl.",
                             "jewelcraftingbook");
 
                         return;
@@ -1426,7 +1450,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished hybrasyl and 3 finished ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Finished Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1436,7 +1460,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 polished hybrasyl and 3 finished sapphire.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1446,7 +1470,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 polished hybrasyl and 3 finished heartstone.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Heartstone.",
                             "jewelcraftingbook");
 
                         return;
@@ -1456,79 +1480,115 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 polished hybrasyl and 3 finished emerald.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Emerald.",
                             "jewelcraftingbook");
 
                         return;
                     }
-                    case "basicearthnecklace":
+                    case "seanecklace":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished bronze and 1 flawed beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Raw Bronze and 1 Raw Sapphire.",
                             "jewelcraftingbook");
 
                         return;
                     }
-                    case "basicfirenecklace":
+                    case "earthnecklace":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished bronze and 1 flawed ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Raw Bronze and 1 Raw Beryl.",
                             "jewelcraftingbook");
 
                         return;
                     }
-                    case "basicseanecklace":
+                    case "firenecklace":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished bronze and 1 flawed sapphire.",
+                            $"{FauxItem.Template.Name} requires 1 Raw Bronze and 1 Raw Ruby.",
                             "jewelcraftingbook");
 
                         return;
                     }
-                    case "basicwindnecklace":
+                    case "windnecklace":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished bronze and 1 flawed emerald.",
+                            $"{FauxItem.Template.Name} requires 1 Raw Bronze and 1 Raw Emerald.",
                             "jewelcraftingbook");
 
                         return;
                     }
-                    case "apprenticeearthnecklace":
+                    case "boneearthnecklace":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished iron and 1 uncut beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Bronze Bar and 1 Flawed Beryl.",
                             "jewelcraftingbook");
 
                         return;
                     }
-                    case "apprenticefirenecklace":
+                    case "bonefirenecklace":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished iron and 1 uncut ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Bronze Bar and 1 Flawed Ruby.",
                             "jewelcraftingbook");
 
                         return;
                     }
-                    case "apprenticeseanecklace":
+                    case "boneseanecklace":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished iron and 1 uncut sapphire.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Bronze Bar and 1 Flawed Sapphire.",
                             "jewelcraftingbook");
 
                         return;
                     }
-                    case "apprenticewindnecklace":
+                    case "bonewindnecklace":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished iron and 1 uncut emerald.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Bronze Bar and 1 Flawed Emerald.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    case "kannaearthnecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 1 Polished Iron Bar and 1 Uncut Beryl.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    case "kannafirenecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 1 Polished Iron Bar and 1 Uncut Ruby.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    case "kannaseanecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 1 Polished Iron Bar and 1 Uncut Sapphire.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    case "kannawindnecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 1 Polished Iron Bar and 1 Uncut Emerald.",
                             "jewelcraftingbook");
 
                         return;
@@ -1537,7 +1597,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished mythril and 1 finished beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Beryl.",
                             "jewelcraftingbook");
 
                         return;
@@ -1546,7 +1606,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished mythril and 1 finished ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1556,7 +1616,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 polished mythril and 1 finished sapphire.",
+                            } requires 1 Polished Mythril Bar and 1 Finished Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1565,7 +1625,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished mythril and 1 finished emerald.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Emerald.",
                             "jewelcraftingbook");
 
                         return;
@@ -1574,7 +1634,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished hybrasyl and 3 finished beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Finished Beryl.",
                             "jewelcraftingbook");
 
                         return;
@@ -1583,7 +1643,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished hybrasyl and 3 finished ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Finished Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1593,7 +1653,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 polished hybrasyl and 3 finished sapphire.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1603,7 +1663,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 polished hybrasyl and 3 finished emerald.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Emerald.",
                             "jewelcraftingbook");
 
                         return;
@@ -1640,12 +1700,623 @@ public class RecipeLibraryScript : DialogScriptBase
                 switch (FauxItem?.Template.TemplateKey.ToLower())
                 {
                     case "eppe":
+                    {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished bronze.",
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Raw Bronze.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Eppe, 1 Raw Bronze, and 1 Coal.",
                             "weaponsmithingbook");
 
                         return;
+                    }
+
+                    case "saber":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Raw Bronze and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Saber, 1 Raw Bronze, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "claidheamh":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Bronze Bar and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Claidheamn, 1 Polished Bronze Bar, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "broadsword":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Bronze Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Broad Sword, 1 Polished Bronze, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "battlesword":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Bronze Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Battle Sword, 2 Polished Bronze Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "masquerade":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Polished Bronze Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Masquerade, 2 Polished Bronze Bar, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "bramble":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Iron Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Bramble, 1 Polished Iron Bar, and 3 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "longsword":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Iron Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Long Sword, 1 Polished Iron Bar, and 3 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "claidhmore":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Mythril Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Claidhmore, 2 Polished Mythril Bar, and 3 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "emeraldsword":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Mythril Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Emerald Sword, 2 Polished Mythril Bar, and 3 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "gladius":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Polished Mythril Bar and 4 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Gladius, 3 Polished Mythril Bar, and 4 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "kindjal":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Hy-Brasyl Bar and 5 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Kindjal, 3 Polished Hy-Brasyl Bar, and 4 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "dragonslayer":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Dragon Slayer, 5 Polished Hy-Brasyl Bar, and 5 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "hatchet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Bronze Bar and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Hatchet, 1 Polished Bronze Bar, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "harpoon":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Harpoon, 1 Polished Bronze Bar, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "scimitar":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Scimitar, 2 Polished Bronze Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "club":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Club, 2 Polished Iron Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "spikedclub":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Club, 1 Polished Iron Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Spiked Club, 3 Polished Iron Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "chainmace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Iron Bar and 3 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Chain Mace, 3 Polished Iron Bar, and 3 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "handaxe":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Mythril Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Hand Axe, 2 Polished Mythril Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "cutlass":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Cutlass, 3 Polished Mythril Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "talgoniteaxe":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Hy-brasyl Bar and 5 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Talgonite Axe, 4 Polished Hy-Brasyl Bar, and 4 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "hybrasylaxe":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Hy-Brasyl Axe, 5 Polished Hy-brasyl Bar, and 5 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "magusares":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Bronze Bar and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Magus Ares, 2 Polished Bronze Bar, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "holyhermes":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Bronze Bar and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Holy Hermes, 2 Polished Bronze Bar, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "maguszeus":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Iron Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Magus Zeus, 2 Polished Iron Bar, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "holykronos":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Iron Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Holy Kronos, 2 Polished Iron Bar, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "magusdiana":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Magus Diana, 3 Polished Mythril Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "holydiana":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Holy Diana, 3 Polished Mythril Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "stonecross":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Stone Cross, 4 Polished Hy-Brasyl Bar, and 3 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "oakstaff":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Oak Staff, 5 Polished Hy-brasyl Bar, and 4 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "staffofwisdom":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Staff of Wisdom, 5 Polished Hy-brasyl Bar, and 4 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "snowdagger":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Raw Bronze and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Snow Dagger, 1 Raw Bronze, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "centerdagger":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Raw Bronze and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Center Dagger, 1 Raw Bronze, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "blossomdagger":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Bronze Bar and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Blossom Dagger, 2 Polished Bronze Bar, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "curveddagger":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.TemplateKey
+                            } requires 1 Curved Dagger, 3 Polished Bronze Bar, and 1 Coal.");
+
+                        return;
+                    }
+                    case "moondagger":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Bronze Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Moon Dagger, 3 Polished Bronze Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "lightdagger":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Iron Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Light Dagger, 2 Polished Iron Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "sundagger":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Iron Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Sun Dagger, 3 Polished Iron Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "lotusdagger":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Mythril Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Lotus Dagger, 2 Polished Mythril Bar, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "blooddagger":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Mythril Bar and 3 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Blood Dagger, 3 Polished Mythril Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "nagetierdagger":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Nagetier Dagger, 5 Polished Hy-brasyl Bar, and 4 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "dullclaw":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Raw Bronze and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Dull Claw, 1 Raw Bronze, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "wolfclaw":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Bronze Bar and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Wolf Claw, 2 Polished Bronze Bar, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "eagletalon":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Iron Bar and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Eagle Talon, 2 Polished Iron Bar, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "phoenixclaw":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Mythril Bar and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Phoenix Claw, 2 Polished Mythril Bar, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "nunchaku":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Nunchaku, 5 Polished Hy-brasyl Bar, and 4 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "woodenshield":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Raw Bronze and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Wooden Shield, 1 Raw Bronze, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "leathershield":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Bronze Bar and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Leather Shield, 2 Polished Bronze Bar, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "bronzeshield":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Bronze Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Bronze Shield, 3 Polished Bronze Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "gravelshield":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Gravel Shield, 2 Polished Iron Bar, and 1 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "ironshield":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Iron Bar and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Iron Shield, 3 Polished Iron Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "lightshield":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Light Shield, 3 Polished Iron Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "mythrilshield":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Mythril Bar and 2 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Mythril Shield, 3 Polished Mythril Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "hybrasylshield":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Hy-brasyl Bar and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Hy-Brasyl Shield, 4 Polished Hy-brasyl Bar, and 3 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    default:
+                    {
+                        // Handle cases where the provided recipe key doesn't match any known recipe
+                        Subject.Reply(
+                            source,
+                            "Recipe not found, please notify a gm.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+
+
+
                 }
 
                 break;
@@ -1678,13 +2349,814 @@ public class RecipeLibraryScript : DialogScriptBase
 
                 switch (FauxItem?.Template.TemplateKey.ToLower())
                 {
-                    case "gardcorp":
+                    case "scoutleatherpattern":
+                    {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 polished bronze.",
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Fine Linen.",
                             "armorsmithingbook");
 
                         return;
+                    }
+                    case "dwarvishleatherpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    case "palutenpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Cotton.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "keatonpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Wool.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "bardoclepattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 5 Exquisite Silk.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    case "gardcorppattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Fine Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "journeymanpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "lorumpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Cotton.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "manepattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Wool.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "duinuasalpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 5 Exquisite Silk.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "cowlpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Fine Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "galuchatcoatpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "mantlepattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Cotton.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "hierophantpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Wool.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "dalmaticapattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 5 Exquisite Silk.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "dobokpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Fine Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "culottepattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "earthgarbpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Cotton.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "windgarbpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Wool.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "mountaingarbpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 5 Exquisite Silk.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "leathertunicpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Fine Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "loricapattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "kasmaniumarmorpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Cotton.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "ipletmailpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Wool.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "hybrasylplatepattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 5 Exquisite Silk.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "cottepattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Fine Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "brigandinepattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "corsettepattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Cotton.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "pebblerosepattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Wool.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "kagumpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 5 Exquisite Silk.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "magiskirtpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Fine Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "benustapattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "stollerpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Cotton.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "clymouthpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Wool.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "clamythpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 5 Exquisite Silk.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "gorgetgownpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Fine Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "mysticgownpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "ellepattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Cotton.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "dolmanpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Wool.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "bansagartpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 5 Exquisite Silk.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "earthbodicepattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Fine Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "lotusbodicepattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "moonbodicepattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Cotton.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "lightninggarbpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Wool.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "seagarbpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 5 Exquisite Silk.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "leatherbliautpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Fine Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "cuirasspattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "kasmaniumhauberkpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Cotton.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "phoenixmailpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Wool.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "hybrasylarmorpattern":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 5 Exquisite Silk.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    case "leathersapphiregauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen and 1 Pristine Sapphire.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "leatherrubygauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen and 1 Pristine Ruby.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "leatheremeraldgauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen and 1 Pristine Emerald.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "leatherheartstonegauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen and 1 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "ironsapphiregauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Polished Iron Bar, 2 Exquisite Cotton, and 1 Pristine Sapphire.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "ironrubygauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Polished Iron Bar, 2 Exquisite Cotton, and 1 Pristine Ruby.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "ironemeraldgauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Polished Iron Bar, 2 Exquisite Cotton, and 1 Pristine Emerald.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "ironheartstonegauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Polished Iron Bar, 2 Exquisite Cotton, and 1 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "mythrilsapphiregauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Polished Mythril Bar, 2 Exquisite Wool, and 1 Pristine Sapphire.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "mythrilrubygauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Polished Mythril Bar, 2 Exquisite Wool, and 1 Pristine Ruby.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "mythrilemeraldgauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Polished Mythril Bar, 2 Exquisite Wool, and 1 Pristine Emerald.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "mythrilheartstonegauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Polished Mythril Bar, 2 Exquisite Wool, and 1 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "hybrasylsapphiregauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Hy-brasyl Bars, 3 Exquisite Silk, and 2 Pristine Sapphire.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "hybrasylrubygauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Hy-brasyl Bars, 3 Exquisite Silk, and 2 Pristine Ruby.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "hybrasylemeraldgauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Hy-brasyl Bars, 3 Exquisite Silk, and 2 Pristine Emerald.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "hybrasylheartstonegauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Hy-brasyl Bars, 3 Exquisite Silk, and 2 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    case "jeweledseabelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Fine Linen and 1 Pristine Sapphire.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "jeweledfirebelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Fine Linen and 1 Pristine Ruby.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "jeweledwindbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Fine Linen and 1 Pristine Emerald.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "jeweledearthbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Fine Linen and 1 Pristine Beryl.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "jewelednaturebelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Fine Cotton and 1 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "jeweledmetalbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Fine Cotton and 1 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "jeweledlightbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Fine Wool and 1 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "jeweleddarkbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Fine Wool and 1 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
                 }
 
                 break;

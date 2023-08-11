@@ -58,6 +58,43 @@ public sealed class OptionsConfigurer : IPostConfigureOptions<IConnectionInfo>,
         options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(MagicPrefixScript.Mutate));
         //add more mutators here
         options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(SwiftPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(AiryPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(AncientPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(BlazingPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(BreezyPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(BrightPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(BrilliantPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(CripplingPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(CursedPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(DarkPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(EternalPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(HastyPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(HazyPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(HowlingPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(LuckyPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(MeagerPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(MightyPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(MinorPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(ModestPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(MysticalPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(NimblePrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(PersistingPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(PotentPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(PowerfulPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(PrecisionPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(RuthlessPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(SavagePrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(SerenePrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(ShroudedPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(SkillfulPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(SoftPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(SoothingPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(TightPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(TinyPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(ToughPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(ValiantPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(WhirlingPrefixScript.Mutate));
+        options.PrefixMutators.Add(MetaNodeMutator<ItemMetaNode>.Create(WisePrefixScript.Mutate));
     }
     
 

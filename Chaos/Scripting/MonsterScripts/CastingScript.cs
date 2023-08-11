@@ -24,7 +24,7 @@ public class CastingScript : MonsterScriptBase
         Spells.ShuffleInPlace();
 
         foreach (var spell in Spells)
-            if (Subject.TryUseSpell(spell, Target.Id) && IntegerRandomizer.RollChance(7))
+            if (IntegerRandomizer.RollChance(7) && Subject.TryUseSpell(spell, Target.Id))
             {
                 Subject.WanderTimer.Reset();
                 Subject.MoveTimer.Reset();
