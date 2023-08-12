@@ -59,7 +59,7 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent
         {
             context.SourceAisling?.Client.SendServerMessage(
                 ServerMessageType.ScrollWindow,
-                $"Name: {mob.Name}\nLevel: {mob.StatSheet.Level}\nCurrent Health: {mob.StatSheet.CurrentHp}\nArmor Class: {
+                $"Name: {mob.Name}\nLevel: {mob.StatSheet.Level}\nHealth %: {mob.StatSheet.HealthPercent}\nArmor Class: {
                     mob.StatSheet.EffectiveAc}\nCurrent Mana: {mob.StatSheet.CurrentMp}\nOffensive Element: {mob.StatSheet.OffenseElement
                     }\nDefensive Element: {mob.StatSheet.DefenseElement}");
 
