@@ -5,8 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="NLog"/>
-        <PackageReference Include="Seq.Api"/>
+        <PackageReference Include="NLog" />
+        <PackageReference Include="Seq.Api" />
     </ItemGroup>
 
     <ItemGroup>

@@ -26,6 +26,7 @@
     <PackageVersion Include="JetBrains.Annotations" Version="2022.3.1" />
     <PackageVersion Include="Namotion.Reflection" Version="2.1.2" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageVersion Include="NLog" Version="5.2.0" />
     <PackageVersion Include="PropertyChanged.Fody" Version="4.1.0" />
     <PackageVersion Include="ReportGenerator" Version="5.1.22" />
     <PackageVersion Include="RoslynPad.Editor.Avalonia" Version="4.4.0" />
