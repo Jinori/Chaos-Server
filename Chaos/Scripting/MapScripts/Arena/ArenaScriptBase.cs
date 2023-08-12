@@ -317,20 +317,7 @@ namespace Chaos.Scripting.MapScripts.Arena
             !aisling.Trackers.Enums.TryGetValue(out ArenaHost value) ||
             ((value != ArenaHost.Host) && (value != ArenaHost.MasterHost));
 
-        private void ResetMaps()
-        {
-            if (MorphOriginalTemplateKey == "26006")
-            {
-                var arenalava = SimpleCache.Get<MapInstance>("arena_lava");
-                arenalava.Morph("26006");
-                var arenalava2 = SimpleCache.Get<MapInstance>("arena_lava_2");
-                arenalava2.Morph("26007");
-                var arenalava3 = SimpleCache.Get<MapInstance>("arena_lava_3");
-                arenalava3.Morph("26008");
-                var arenalava4 = SimpleCache.Get<MapInstance>("arena_lava_4");
-                arenalava4.Morph("26009");   
-            }
-        }
+        private void ResetMaps() => Subject.Morph(MorphOriginalTemplateKey);
 
         private void DeclareTeamWinner(ArenaTeam winningTeam)
         {

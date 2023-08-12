@@ -2,6 +2,7 @@ using Chaos.Collections;
 using Chaos.Models.Templates;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
+using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.MapScripts.Abstractions;
 

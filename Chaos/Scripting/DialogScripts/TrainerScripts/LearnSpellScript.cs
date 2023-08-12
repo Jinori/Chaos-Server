@@ -186,13 +186,23 @@ public class LearnSpellScript : DialogScriptBase
             if (source.SpellBook.Contains(spell))
                 continue;
 
+            
+            if (source.HasClass(BaseClass.Wizard) && (spell.Template.WizardElement != WizardElement.None))
+            {
+                if (source.Trackers.Flags.TryGetFlag(out WizardElement currentElements))
+                {
+                    if ((currentElements & spell.Template.WizardElement) == 0) // If the Wizard does not have the element of the spell
+                        continue;
+                }
+            }
+            
             // Check if the source has the Wizard class and the spell also has a Wizard element, then check if the source has a matching
             // Wizard Element flag. If not, skip the spell.
             if (source.HasClass(BaseClass.Wizard) && (spell.Template.WizardElement != null))
                 if (source.Trackers.Flags.TryGetFlag(out WizardElement ele))
                     if (spell.Template.WizardElement != ele)
                         continue;
-
+            
             // Check if the player's spellbook contains any spells that are upgrades of the spell they're trying to learn.
             var knowsUpgrade = source.SpellBook.Any(
                 s => SpellUpgrades.ContainsKey(spell.Template.Name) && SpellUpgrades[spell.Template.Name].Contains(s.Template.Name));

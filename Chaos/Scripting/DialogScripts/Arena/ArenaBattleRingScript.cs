@@ -8,6 +8,7 @@ using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.MapScripts;
 using Chaos.Scripting.MapScripts.Abstractions;
+using Chaos.Scripting.MapScripts.Arena;
 using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Arena;

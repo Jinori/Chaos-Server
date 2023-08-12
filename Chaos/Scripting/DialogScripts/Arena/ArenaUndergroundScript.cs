@@ -11,6 +11,7 @@ using Chaos.Networking.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
+using Chaos.Scripting.MapScripts.Arena.HiddenHavoc;
 using Chaos.Scripting.MapScripts.Arena.Lava_Flow;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -32,7 +33,7 @@ public class ArenaUndergroundScript : DialogScriptBase
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
     
     //Place Discord Bot Token Here When Live
-    private const string BOT_TOKEN = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.G92nYL.ZJiurGa8rxn58zJUcNc6wgcR-L64uisXXuaJKk";
+    private const string BOT_TOKEN = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.GrfE3r.t98AtZG88ANsz1w0_wHtmQiy97ejyIJs36kX0M";
     private const ulong CHANNEL_ID = 1136412469762470038;
     private const ulong ARENA_WIN_CHANNEL_ID = 1136426304300916786;
     
@@ -494,6 +495,53 @@ public class ArenaUndergroundScript : DialogScriptBase
                 break;
             }
             
+            case "ophie_starthiddenhavochostnotplayingstart":
+            {
+                var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
+                var script = mapInstance.Script.As<HiddenHavocHostNotPlayingScript>();
+                
+                if (script == null) 
+                    mapInstance.AddScript(typeof(HiddenHavocHostNotPlayingScript), ScriptFactory);
+                
+                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                {
+                    Point point;
+                    
+                    do 
+                        point = mapInstance.Template.Bounds.GetRandomPoint();
+                    while (mapInstance.IsWall(point) || mapInstance.IsBlockingReactor(point));
+                    
+                    aisling.TraverseMap(mapInstance, point);
+                }
+                
+                source.TraverseMap(mapInstance, new Point(14, 14));
+                Subject.Close(source);
+                break;
+            }
+            
+            case "ophie_starthiddenhavochostplayingstart":
+            {
+                var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
+                var script = mapInstance.Script.As<HiddenHavocHostPlayingScript>();
+                
+                if (script == null) 
+                    mapInstance.AddScript(typeof(HiddenHavocHostPlayingScript), ScriptFactory);
+
+                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                {
+                    Point point;
+
+                    do
+                        point = mapInstance.Template.Bounds.GetRandomPoint();
+                    while (mapInstance.IsWall(point) || mapInstance.IsBlockingReactor(point));
+                    
+                    aisling.TraverseMap(mapInstance, point);
+                }
+                
+                Subject.Close(source);
+                break;
+            }
+            
             case "ophie_startffalavaflowhostnotplayingstart":
             {
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
@@ -517,7 +565,7 @@ public class ArenaUndergroundScript : DialogScriptBase
                 Subject.Close(source);
                 break;
             }
-
+            
             case "ophie_startffalavaflowhostplayingstart":
             {
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
