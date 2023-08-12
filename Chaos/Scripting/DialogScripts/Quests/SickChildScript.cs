@@ -230,7 +230,7 @@ public class SickChildScript : DialogScriptBase
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
-                        "Cured the Sick Child of Loures.",
+                        "Cured the Sick Child of Loures",
                         "SickChild",
                         MarkIcon.Heart,
                         MarkColor.Blue,
@@ -277,7 +277,7 @@ public class SickChildScript : DialogScriptBase
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
-                        "Killed the Sick Child of Loures.",
+                        "Killed the Sick Child of Loures",
                         "SickChild",
                         MarkIcon.Warrior,
                         MarkColor.Orange,
