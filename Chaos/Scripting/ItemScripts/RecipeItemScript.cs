@@ -364,6 +364,7 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongAccuracyPotion);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.StatBoostElixir);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.KnowledgeElixir);
+                source.Trackers.Flags.AddFlag(CookingRecipes.Popsicle);
 
                 source.Animate(ani);
                 source.SendOrangeBarMessage("You've learned all recipes.");
@@ -527,6 +528,24 @@ public class RecipeItemScript : ItemScriptBase
                         ani,
                         CookingRecipes.SteakMeal,
                         "Steak Meal",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_popsicle":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.Popsicle))
+                {
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.Popsicle,
+                        "Popsicle",
                         $"{Subject.Template.TemplateKey}");
 
                     return;

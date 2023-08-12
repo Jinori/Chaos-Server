@@ -14,7 +14,8 @@ public class PetScript : CompositeMonsterScript
         GetScriptKey(typeof(PetMoveToTargetScript)),
         GetScriptKey(typeof(PetAttackingScript)),
         GetScriptKey(typeof(CastingScript)),
-        GetScriptKey(typeof(PetDeathScript))
+        GetScriptKey(typeof(PetDeathScript)),
+        GetScriptKey(typeof(DisplayNameScript))
     };
 
     /// <inheritdoc />
