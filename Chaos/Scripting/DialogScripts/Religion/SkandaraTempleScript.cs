@@ -61,7 +61,7 @@ public class SkandaraTempleScript : ReligionScriptBase
                     true);
 
                 break;
-            case "skandara_temple_holdmassmiraelis":
+            case "skandara_temple_holdmassskandara":
                 GoddessHoldMass(source, GODNAME, Subject.DialogSource as Merchant);
 
                 break;

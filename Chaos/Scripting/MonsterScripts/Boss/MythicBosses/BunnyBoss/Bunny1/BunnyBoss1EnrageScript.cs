@@ -30,7 +30,7 @@ public sealed class BunnyBoss1EnrageScript : MonsterScriptBase
         {
             Bonus75Applied = true;
             //Spawn Monsters
-            var rectangle = new Rectangle(Subject, 4, 4);
+            var rectangle = new Rectangle(Subject, 5, 5);
 
             for (var i = 0; i <= 1; i++)
             {
@@ -44,11 +44,11 @@ public sealed class BunnyBoss1EnrageScript : MonsterScriptBase
         if (!Bonus50Applied && (Subject.StatSheet.HealthPercent <= 50))
         {
             Bonus50Applied = true;
-            var rectange = new Rectangle(Subject, 4, 4);
+            var rectangle = new Rectangle(Subject, 5, 5);
 
             for (var i = 0; i <= 2; i++)
             {
-                var point = rectange.GetRandomPoint();
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("bunny1-3", Subject.MapInstance, point);
                 Subject.MapInstance.AddObject(mobs, point);
             }
@@ -59,11 +59,11 @@ public sealed class BunnyBoss1EnrageScript : MonsterScriptBase
         if (!Bonus30Applied && (Subject.StatSheet.HealthPercent <= 30))
         {
             Bonus30Applied = true;
-            var rectange = new Rectangle(Subject, 4, 4);
+            var rectangle = new Rectangle(Subject, 5, 5);
 
             for (var i = 0; i <= 2; i++)
             {
-                var point = rectange.GetRandomPoint();
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("bunny1-4", Subject.MapInstance, point);
                 Subject.MapInstance.AddObject(mobs, point);
             }

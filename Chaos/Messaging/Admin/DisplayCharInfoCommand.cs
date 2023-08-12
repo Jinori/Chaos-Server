@@ -14,10 +14,7 @@ public class displayCharInfoCommand : ICommand<Aisling>
 
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
 
-    public displayCharInfoCommand(IClientRegistry<IWorldClient> clientRegistry)
-    {
-        ClientRegistry = clientRegistry;
-    }
+    public displayCharInfoCommand(IClientRegistry<IWorldClient> clientRegistry) => ClientRegistry = clientRegistry;
 
     public ValueTask ExecuteAsync(Aisling source, ArgumentCollection args)
     {

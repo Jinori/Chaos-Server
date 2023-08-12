@@ -8,7 +8,6 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
-using Discord.Rest;
 
 namespace Chaos.Scripting.MapScripts.Abstractions;
 

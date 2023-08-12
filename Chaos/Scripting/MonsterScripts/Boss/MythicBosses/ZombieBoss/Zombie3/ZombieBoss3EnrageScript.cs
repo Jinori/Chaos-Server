@@ -31,7 +31,7 @@ public sealed class ZombieBoss3EnrageScript : MonsterScriptBase
             Bonus75Applied = true;
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
-            var rectangle = new Rectangle(Subject, 4, 4);
+            var rectangle = new Rectangle(Subject, 5, 5);
 
             for (var i = 0; i <= 4; i++)
             {
@@ -45,11 +45,11 @@ public sealed class ZombieBoss3EnrageScript : MonsterScriptBase
         {
             Bonus50Applied = true;
             Subject.Animate(UpgradeAnimation);
-            var rectange = new Rectangle(Subject, 4, 4);
+            var rectangle = new Rectangle(Subject, 5, 5);
 
             for (var i = 0; i <= 6; i++)
             {
-                var point = rectange.GetRandomPoint();
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("zombie3-4", Subject.MapInstance, point);
                 Subject.MapInstance.AddObject(mobs, point);
             }
@@ -60,11 +60,11 @@ public sealed class ZombieBoss3EnrageScript : MonsterScriptBase
             Bonus30Applied = true;
             Subject.Animate(UpgradeAnimation);
             Subject.Animate(UpgradeAnimation);
-            var rectange = new Rectangle(Subject, 4, 4);
+            var rectangle = new Rectangle(Subject, 5, 5);
 
             for (var i = 0; i <= 8; i++)
             {
-                var point = rectange.GetRandomPoint();
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("zombie3-4", Subject.MapInstance, point);
                 Subject.MapInstance.AddObject(mobs, point);
             }

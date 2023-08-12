@@ -34,11 +34,11 @@ public sealed class KarloposBossEnrageScript : MonsterScriptBase
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
-            var rectange = new Rectangle(Subject, 4, 4);
+            var rectangle = new Rectangle(Subject, 5, 5);
 
             for (var i = 0; i <= 3; i++)
             {
-                var point = rectange.GetRandomPoint();
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("karlopos_octopus", Subject.MapInstance, point);
                 Subject.MapInstance.AddObject(mobs, point);
             }
@@ -65,11 +65,11 @@ public sealed class KarloposBossEnrageScript : MonsterScriptBase
             Bonus30Applied = true;
             
             //Spawn Monsters
-            var rectange = new Rectangle(Subject, 4, 4);
+            var rectangle = new Rectangle(Subject, 5, 5);
 
             for (var i = 0; i <= 3; i++)
             {
-                var point = rectange.GetRandomPoint();
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("karlopos_octopus", Subject.MapInstance, point);
                 Subject.MapInstance.AddObject(mobs, point);
             }

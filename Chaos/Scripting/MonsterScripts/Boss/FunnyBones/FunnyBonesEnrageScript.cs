@@ -34,7 +34,7 @@ public sealed class FunnyBonesEnrageScript : MonsterScriptBase
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
-            var rectangle = new Rectangle(Subject, 4, 4);
+            var rectangle = new Rectangle(Subject, 5, 5);
 
             for (var i = 0; i <= 3; i++)
             {

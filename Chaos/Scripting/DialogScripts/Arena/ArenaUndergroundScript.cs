@@ -14,8 +14,8 @@ using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Scripting.MapScripts.Arena.Lava_Flow;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
-using Discord;
 using Discord.WebSocket;
+using Discord;
 
 namespace Chaos.Scripting.DialogScripts.Arena;
 
@@ -32,7 +32,7 @@ public class ArenaUndergroundScript : DialogScriptBase
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
     
     //Place Discord Bot Token Here When Live
-    private const string BOT_TOKEN = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.GGAZzn.rZ96A36ikDVKbNvMWTdmbrN1zv5eGMLAg4ddbA";
+    private const string BOT_TOKEN = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.G92nYL.ZJiurGa8rxn58zJUcNc6wgcR-L64uisXXuaJKk";
     private const ulong CHANNEL_ID = 1136412469762470038;
     private const ulong ARENA_WIN_CHANNEL_ID = 1136426304300916786;
     
@@ -94,23 +94,22 @@ public class ArenaUndergroundScript : DialogScriptBase
                 var merchant = Subject.DialogSource as Merchant;
                 merchant?.Say("Win is cast! Congrats!");
                 
-                Task.Run(
-                    async () =>
+                Task.Run(async () =>
+                {
+                    var client = new DiscordSocketClient();
+                    await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
+                    await client.StartAsync();
+                    var channel = await client.GetChannelAsync(ARENA_WIN_CHANNEL_ID) as IMessageChannel;
+
+                    await channel!.SendMessageAsync($"Arena Host {source.Name} cast win for every one in attendance...");
+
+                    foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                     {
-                        var client = new DiscordSocketClient();
-                        await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
-                        await client.StartAsync();
-                        var channel = await client.GetChannelAsync(ARENA_WIN_CHANNEL_ID) as IMessageChannel;
+                        await channel.SendMessageAsync($"{aisling.Name} won!");
+                    }
 
-                        await channel!.SendMessageAsync($"Arena Host {source.Name} cast win for every one in attendance...");
-
-                        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                        {
-                            await channel.SendMessageAsync($"{aisling.Name} won!");
-                        }
-
-                        await client.StopAsync();
-                    });
+                    await client.StopAsync();
+                });
                 
                 break;
             }

@@ -48,7 +48,6 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Discord.Net" />
-        <PackageReference Include="Discord.Net.Core" />
         <PackageReference Include="Humanizer" />
         <PackageReference Include="Humanizer.Core" />
         <PackageReference Include="Newtonsoft.Json" />
