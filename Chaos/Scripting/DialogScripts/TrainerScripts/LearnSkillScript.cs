@@ -112,14 +112,14 @@ public class LearnSkillScript : DialogScriptBase
 
                 if (!string.IsNullOrEmpty(skillToLearn.Template.LearningRequirements?.SkillSpellToUpgrade))
                 {
-                    var oldSkill = source.SpellBook.FirstOrDefault(
+                    var oldSkill = source.SkillBook.FirstOrDefault(
                         s => s.Template.Name.Equals(
                             skillToLearn.Template.LearningRequirements?.SkillSpellToUpgrade,
                             StringComparison.OrdinalIgnoreCase));
 
                     if (oldSkill != null)
                     {
-                        source.SpellBook.Remove(oldSkill.Template.Name);
+                        source.SkillBook.Remove(oldSkill.Template.Name);
                         source.SendOrangeBarMessage($"{oldSkill.Template.Name} has been upgraded to {skillToLearn.Template.Name}.");
                     }
                 }

@@ -66,15 +66,15 @@ public class SummonPetScript : ConfigurableSkillScriptBase
         {
             var attrib = new Attributes
             {
-                Ac = newMonster.PetOwner.StatSheet.Ac,
-                Con = (newMonster.PetOwner.StatSheet.EffectiveCon + newMonster.PetOwner.StatSheet.Level) / 2,
-                Dex = (newMonster.PetOwner.StatSheet.EffectiveDex + newMonster.PetOwner.StatSheet.Level) / 2,
-                Int = (newMonster.PetOwner.StatSheet.EffectiveInt + newMonster.PetOwner.StatSheet.Level) / 2,
-                Str = (newMonster.PetOwner.StatSheet.EffectiveStr + newMonster.PetOwner.StatSheet.Level) / 2,
-                Wis = (newMonster.PetOwner.StatSheet.EffectiveWis + newMonster.PetOwner.StatSheet.Level) / 2,
+                Ac = (100 - newMonster.PetOwner.StatSheet.Level),
+                Con = (newMonster.PetOwner.StatSheet.EffectiveCon + newMonster.PetOwner.StatSheet.Level),
+                Dex = (newMonster.PetOwner.StatSheet.EffectiveDex + newMonster.PetOwner.StatSheet.Level),
+                Int = (newMonster.PetOwner.StatSheet.EffectiveInt + newMonster.PetOwner.StatSheet.Level),
+                Str = (newMonster.PetOwner.StatSheet.EffectiveStr + newMonster.PetOwner.StatSheet.Level),
+                Wis = (newMonster.PetOwner.StatSheet.EffectiveWis + newMonster.PetOwner.StatSheet.Level),
                 AtkSpeedPct = newMonster.PetOwner.StatSheet.Level,
-                MaximumHp = newMonster.PetOwner.StatSheet.Level * 1000 / 9,
-                MaximumMp = newMonster.PetOwner.StatSheet.Level * 500 / 9
+                MaximumHp = (newMonster.PetOwner.StatSheet.Level * 1000 / 7) + 1000,
+                MaximumMp = (newMonster.PetOwner.StatSheet.Level * 500 / 7) + 1000,
             };
             
             newMonster.StatSheet.SetOffenseElement(Elements.PickRandom());
@@ -125,7 +125,7 @@ public class SummonPetScript : ConfigurableSkillScriptBase
                     }
                     case Level25PetSkills.Enrage:
                     {
-                        var skillToAdd = _skillFactory.Create("dracotailkick");
+                        var skillToAdd = _skillFactory.Create("clawfist");
                         newMonster.Skills.Add(skillToAdd);
                         break;
                     }
