@@ -22,8 +22,8 @@ public class AlchemyScript : DialogScriptBase
     //Ranks from lowest to highest
     private const string RANK_ONE_TITLE = "Beginner Alchemist";
     private const string RANK_TWO_TITLE = "Novice Alchemist";
-    private const string RANK_THREE_TITLE = "Apprentice Alchemist";
-    private const string RANK_FOUR_TITLE = "Journeyman Alchemist";
+    private const string RANK_THREE_TITLE = "Initiate Alchemist";
+    private const string RANK_FOUR_TITLE = "Artisan Alchemist";
     private const string RANK_FIVE_TITLE = "Adept Alchemist";
     private const string RANK_SIX_TITLE = "Advanced Alchemist";
     private const string RANK_SEVEN_TITLE = "Expert Alchemist";
@@ -126,8 +126,8 @@ public class AlchemyScript : DialogScriptBase
         {
             { "Beginner", 1 },
             { "Basic", 2 },
-            { "Apprentice", 3 },
-            { "Journeyman", 4 },
+            { "Initiate", 3 },
+            { "Artisan", 4 },
             { "Adept", 5 },
             { "Advanced", 6 },
             { "Expert", 7 },

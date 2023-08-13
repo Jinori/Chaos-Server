@@ -27,6 +27,7 @@ public class LearnSkillScript : DialogScriptBase
         { "Strike", new List<string> { "Clobber" } },
         { "Clobber", new List<string> { "Wallop" } },
         { "Wallop", new List<string> { "Pulverize" } },
+        { "Slash", new List<string> { "Sunder" } },
         { "Windblade", new List<string> { "Tempestblade" } }
     };
     private readonly ISpellFactory SpellFactory;

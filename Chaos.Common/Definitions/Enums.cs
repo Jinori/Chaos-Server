@@ -12,6 +12,13 @@ public enum WizardElement : byte
     Wind = 1 << 3,
     Water = 1 << 4
 }
+public enum WizardElementCounter : byte
+{
+    None = 0,
+    Has2ndElement = 1 << 1,
+    Has3rdElement = 1 << 2,
+    Has4thElement = 1 << 3,
+}
 
 public enum RandomizationType
 {

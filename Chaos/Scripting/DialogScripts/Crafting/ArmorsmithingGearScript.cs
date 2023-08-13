@@ -22,8 +22,8 @@ public class ArmorsmithingGearScript : DialogScriptBase
     //Ranks from lowest to highest
     private const string RANK_ONE_TITLE = "Beginner Armorsmith";
     private const string RANK_TWO_TITLE = "Novice Armorsmith";
-    private const string RANK_THREE_TITLE = "Apprentice Armorsmith";
-    private const string RANK_FOUR_TITLE = "Journeyman Armorsmith";
+    private const string RANK_THREE_TITLE = "Initiate Armorsmith";
+    private const string RANK_FOUR_TITLE = "Artisan Armorsmith";
     private const string RANK_FIVE_TITLE = "Adept Armorsmith";
     private const string RANK_SIX_TITLE = "Advanced Armorsmith";
     private const string RANK_SEVEN_TITLE = "Expert Armorsmith";
@@ -126,8 +126,8 @@ public class ArmorsmithingGearScript : DialogScriptBase
         {
             { "Beginner", 1 },
             { "Basic", 2 },
-            { "Apprentice", 3 },
-            { "Journeyman", 4 },
+            { "Initiate", 3 },
+            { "Artisan", 4 },
             { "Adept", 5 },
             { "Advanced", 6 },
             { "Expert", 7 },

@@ -595,9 +595,9 @@ public class RecipeItemScript : ItemScriptBase
                 return;
             }
 
-            case "recipe_apprenticearmors":
+            case "recipe_initiatearmors":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.ApprenticeArmors))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.InitiateArmors))
                 {
                     if (craft != Crafts.Armorsmithing)
                     {
@@ -609,8 +609,8 @@ public class RecipeItemScript : ItemScriptBase
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
-                        ArmorSmithCategories.ApprenticeArmors,
-                        "Apprentice Armors",
+                        ArmorSmithCategories.InitiateArmors,
+                        "Initiate Armors",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDwarvishLeather);
@@ -631,9 +631,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_journeymanarmors":
+            case "recipe_artisanarmors":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.JourneymanArmors))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.ArtisanArmors))
                 {
                     if (craft != Crafts.Armorsmithing)
                     {
@@ -645,8 +645,8 @@ public class RecipeItemScript : ItemScriptBase
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
-                        ArmorSmithCategories.JourneymanArmors,
-                        "Journeyman Armors",
+                        ArmorSmithCategories.ArtisanArmors,
+                        "Artisan Armors",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedPaluten);
@@ -769,9 +769,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_apprenticegauntlets":
+            case "recipe_initiategauntlets":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.ApprenticeGauntlets))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.InitiateGauntlets))
                 {
                     if (craft != Crafts.Armorsmithing)
                     {
@@ -783,8 +783,8 @@ public class RecipeItemScript : ItemScriptBase
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
-                        ArmorSmithCategories.ApprenticeGauntlets,
-                        "Apprentice Gauntlets",
+                        ArmorSmithCategories.InitiateGauntlets,
+                        "Initiate Gauntlets",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronEmeraldGauntlet);
@@ -799,9 +799,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_journeymangauntlets":
+            case "recipe_artisangauntlets":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.JourneymanGauntlets))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.ArtisanGauntlets))
                 {
                     if (craft != Crafts.Armorsmithing)
                     {
@@ -813,8 +813,8 @@ public class RecipeItemScript : ItemScriptBase
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
-                        ArmorSmithCategories.JourneymanGauntlets,
-                        "Journeyman Gauntlets",
+                        ArmorSmithCategories.ArtisanGauntlets,
+                        "Artisan Gauntlets",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilEmeraldGauntlet);
@@ -889,9 +889,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_apprenticebelts":
+            case "recipe_initiatebelts":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.ApprenticeBelts))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.InitiateBelts))
                 {
                     if (craft != Crafts.Armorsmithing)
                     {
@@ -903,8 +903,8 @@ public class RecipeItemScript : ItemScriptBase
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
-                        ArmorSmithCategories.ApprenticeBelts,
-                        "Apprentice Belts",
+                        ArmorSmithCategories.InitiateBelts,
+                        "Initiate Belts",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledMetalBelt);
@@ -917,9 +917,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_journeymanbelts":
+            case "recipe_artisanbelts":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.JourneymanBelts))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.ArtisanBelts))
                 {
                     if (craft != Crafts.Armorsmithing)
                     {
@@ -931,8 +931,8 @@ public class RecipeItemScript : ItemScriptBase
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
-                        ArmorSmithCategories.JourneymanBelts,
-                        "Journeyman Belts",
+                        ArmorSmithCategories.ArtisanBelts,
+                        "Artisan Belts",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledDarkBelt);
@@ -978,9 +978,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_apprenticeswords":
+            case "recipe_initiateswords":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeSwords))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.InitiateSwords))
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
@@ -992,8 +992,8 @@ public class RecipeItemScript : ItemScriptBase
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithingCategories.ApprenticeSwords,
-                        "Apprentice Swords",
+                        WeaponSmithingCategories.InitiateSwords,
+                        "Initiate Swords",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Bramble);
@@ -1006,9 +1006,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_journeymanswords":
+            case "recipe_artisanswords":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanSwords))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ArtisanSwords))
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
@@ -1020,8 +1020,8 @@ public class RecipeItemScript : ItemScriptBase
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithingCategories.JourneymanSwords,
-                        "Journeyman Swords",
+                        WeaponSmithingCategories.ArtisanSwords,
+                        "Artisan Swords",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Claidhmore);
@@ -1092,9 +1092,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_apprenticeweapons":
+            case "recipe_initiateweapons":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeWeapons))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.InitiateWeapons))
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
@@ -1106,8 +1106,8 @@ public class RecipeItemScript : ItemScriptBase
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithingCategories.ApprenticeWeapons,
-                        "Apprentice Weapons",
+                        WeaponSmithingCategories.InitiateWeapons,
+                        "Initiate Weapons",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Club);
@@ -1121,9 +1121,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_journeymanweapons":
+            case "recipe_artisanweapons":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanWeapons))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ArtisanWeapons))
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
@@ -1135,8 +1135,8 @@ public class RecipeItemScript : ItemScriptBase
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithingCategories.JourneymanWeapons,
-                        "Journeyman Weapons",
+                        WeaponSmithingCategories.ArtisanWeapons,
+                        "Artisan Weapons",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.HandAxe);
@@ -1205,9 +1205,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_apprenticestaves":
+            case "recipe_initiatestaves":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeStaves))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.InitiateStaves))
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
@@ -1219,8 +1219,8 @@ public class RecipeItemScript : ItemScriptBase
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithingCategories.ApprenticeStaves,
-                        "Apprentice Staves",
+                        WeaponSmithingCategories.InitiateStaves,
+                        "Initiate Staves",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.MagusZeus);
@@ -1233,9 +1233,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_journeymanstaves":
+            case "recipe_artisanstaves":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanStaves))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ArtisanStaves))
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
@@ -1247,8 +1247,8 @@ public class RecipeItemScript : ItemScriptBase
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithingCategories.JourneymanStaves,
-                        "Journeyman Staves",
+                        WeaponSmithingCategories.ArtisanStaves,
+                        "Artisan Staves",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.MagusDiana);
@@ -1319,9 +1319,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_apprenticedaggers":
+            case "recipe_initiatedaggers":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeDaggers))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.InitiateDaggers))
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
@@ -1333,8 +1333,8 @@ public class RecipeItemScript : ItemScriptBase
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithingCategories.ApprenticeDaggers,
-                        "Apprentice Daggers",
+                        WeaponSmithingCategories.InitiateDaggers,
+                        "Initiate Daggers",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.LightDagger);
@@ -1347,9 +1347,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_journeymandaggers":
+            case "recipe_artisandaggers":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanDaggers))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ArtisanDaggers))
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
@@ -1361,8 +1361,8 @@ public class RecipeItemScript : ItemScriptBase
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithingCategories.JourneymanDaggers,
-                        "Journeyman Daggers",
+                        WeaponSmithingCategories.ArtisanDaggers,
+                        "Artisan Daggers",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.LotusDagger);
@@ -1429,9 +1429,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_apprenticeclaws":
+            case "recipe_initiateclaws":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeClaws))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.InitiateClaws))
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
@@ -1443,8 +1443,8 @@ public class RecipeItemScript : ItemScriptBase
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithingCategories.ApprenticeClaws,
-                        "Apprentice Claws",
+                        WeaponSmithingCategories.InitiateClaws,
+                        "Initiate Claws",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.EagleTalon);
@@ -1456,9 +1456,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_journeymanclaws":
+            case "recipe_artisanclaws":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanClaws))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ArtisanClaws))
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
@@ -1470,8 +1470,8 @@ public class RecipeItemScript : ItemScriptBase
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithingCategories.JourneymanClaws,
-                        "Journeyman Claws",
+                        WeaponSmithingCategories.ArtisanClaws,
+                        "Artisan Claws",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.PhoenixClaw);
@@ -1539,9 +1539,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_apprenticeshields":
+            case "recipe_initiateshields":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ApprenticeShields))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.InitiateShields))
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
@@ -1553,8 +1553,8 @@ public class RecipeItemScript : ItemScriptBase
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithingCategories.ApprenticeShields,
-                        "Apprentice Shields",
+                        WeaponSmithingCategories.InitiateShields,
+                        "Initiate Shields",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.IronShield);
@@ -1569,9 +1569,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_journeymanshields":
+            case "recipe_artisanshields":
             {
-                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.JourneymanShields))
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ArtisanShields))
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
@@ -1583,8 +1583,8 @@ public class RecipeItemScript : ItemScriptBase
                     WeaponSmithRecipeLearn(
                         source,
                         ani,
-                        WeaponSmithingCategories.JourneymanShields,
-                        "Journeyman Shields",
+                        WeaponSmithingCategories.ArtisanShields,
+                        "Artisan Shields",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.HybrasylShield);
@@ -1675,9 +1675,9 @@ public class RecipeItemScript : ItemScriptBase
                 return;
             }
 
-            case "recipe_apprenticealchemybook":
+            case "recipe_initiatealchemybook":
             {
-                if (!source.Trackers.Flags.HasFlag(AlchemyCategories.ApprenticeAlchemyBook))
+                if (!source.Trackers.Flags.HasFlag(AlchemyCategories.InitiateAlchemyBook))
                 {
                     if (craft != Crafts.Alchemy)
                     {
@@ -1687,14 +1687,14 @@ public class RecipeItemScript : ItemScriptBase
                     }
 
                     source.Inventory.RemoveQuantityByTemplateKey(Subject.Template.TemplateKey, 1);
-                    source.Trackers.Flags.AddFlag(AlchemyCategories.ApprenticeAlchemyBook);
+                    source.Trackers.Flags.AddFlag(AlchemyCategories.InitiateAlchemyBook);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.HealthPotion);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.ManaPotion);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.RejuvenationPotion);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.HasteBrew);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.PowerBrew);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.AccuracyPotion);
-                    source.SendOrangeBarMessage("You have learned the Apprentice Alchemy Book.");
+                    source.SendOrangeBarMessage("You have learned the Initiate Alchemy Book.");
 
                     return;
                 }
@@ -3092,9 +3092,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            case "recipe_apprenticerings":
+            case "recipe_initiaterings":
             {
-                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ApprenticeRings))
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.InitiateRings))
                 {
                     if (craft != Crafts.Jewelcrafting)
                     {
@@ -3106,8 +3106,8 @@ public class RecipeItemScript : ItemScriptBase
                     JewelcraftingRecipeLearn(
                         source,
                         ani,
-                        JewelcraftingCategories.ApprenticeRings,
-                        "Apprentice Rings",
+                        JewelcraftingCategories.InitiateRings,
+                        "Initiate Rings",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronRubyRing);
@@ -3119,9 +3119,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            case "recipe_journeymanrings":
+            case "recipe_artisanrings":
             {
-                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.JourneymanRings))
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ArtisanRings))
                 {
                     if (craft != Crafts.Jewelcrafting)
                     {
@@ -3133,8 +3133,8 @@ public class RecipeItemScript : ItemScriptBase
                     JewelcraftingRecipeLearn(
                         source,
                         ani,
-                        JewelcraftingCategories.JourneymanRings,
-                        "Journeyman Rings",
+                        JewelcraftingCategories.ArtisanRings,
+                        "Artisan Rings",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilRubyRing);
@@ -3202,9 +3202,9 @@ public class RecipeItemScript : ItemScriptBase
                 break;
             }
 
-            case "recipe_apprenticeearrings":
+            case "recipe_initiateearrings":
             {
-                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ApprenticeEarrings))
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.InitiateEarrings))
                 {
                     if (craft != Crafts.Jewelcrafting)
                     {
@@ -3216,8 +3216,8 @@ public class RecipeItemScript : ItemScriptBase
                     JewelcraftingRecipeLearn(
                         source,
                         ani,
-                        JewelcraftingCategories.ApprenticeEarrings,
-                        "Apprentice Earrings",
+                        JewelcraftingCategories.InitiateEarrings,
+                        "Initiate Earrings",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronBerylEarrings);
@@ -3229,9 +3229,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            case "recipe_journeymanearrings":
+            case "recipe_artisanearrings":
             {
-                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.JourneymanEarrings))
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ArtisanEarrings))
                 {
                     if (craft != Crafts.Jewelcrafting)
                     {
@@ -3243,8 +3243,8 @@ public class RecipeItemScript : ItemScriptBase
                     JewelcraftingRecipeLearn(
                         source,
                         ani,
-                        JewelcraftingCategories.JourneymanEarrings,
-                        "Journeyman Earrings",
+                        JewelcraftingCategories.ArtisanEarrings,
+                        "Artisan Earrings",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilBerylEarrings);
@@ -3311,9 +3311,9 @@ public class RecipeItemScript : ItemScriptBase
                 break;
             }
 
-            case "recipe_apprenticenecklaces":
+            case "recipe_initiatenecklaces":
             {
-                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ApprenticeNecklaces))
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.InitiateNecklaces))
                 {
                     if (craft != Crafts.Jewelcrafting)
                     {
@@ -3325,8 +3325,8 @@ public class RecipeItemScript : ItemScriptBase
                     JewelcraftingRecipeLearn(
                         source,
                         ani,
-                        JewelcraftingCategories.ApprenticeNecklaces,
-                        "Apprentice Necklaces",
+                        JewelcraftingCategories.InitiateNecklaces,
+                        "Initiate Necklaces",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.KannaEarthNecklace);
@@ -3337,9 +3337,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            case "recipe_journeymannecklaces":
+            case "recipe_artisannecklaces":
             {
-                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.JourneymanNecklaces))
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ArtisanNecklaces))
                 {
                     if (craft != Crafts.Jewelcrafting)
                     {
@@ -3351,8 +3351,8 @@ public class RecipeItemScript : ItemScriptBase
                     JewelcraftingRecipeLearn(
                         source,
                         ani,
-                        JewelcraftingCategories.JourneymanNecklaces,
-                        "Journeyman Necklaces",
+                        JewelcraftingCategories.ArtisanNecklaces,
+                        "Artisan Necklaces",
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedWindNecklace);

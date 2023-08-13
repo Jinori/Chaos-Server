@@ -83,7 +83,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 3 },
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 48,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -105,7 +105,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 5 },
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 60,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -127,7 +127,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 7 },
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 80,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -194,7 +194,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 5},
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 50,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -216,7 +216,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 5 },
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 65,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -238,7 +238,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 7 },
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 83,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -304,7 +304,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 5 },
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 50,
                 Difficulty = 2,
                 Modification = ((mapper, item) =>
@@ -326,7 +326,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 5 },
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 69,
                 Difficulty = 2,
                 Modification = ((mapper, item) =>
@@ -348,7 +348,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 7 },
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 88,
                 Difficulty = 2,
                 Modification = ((mapper, item) =>
@@ -414,7 +414,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 5 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 50,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -436,7 +436,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 7 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -524,7 +524,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 5 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 50,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -546,7 +546,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 7 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -612,7 +612,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 3 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -634,7 +634,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 5 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 55,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -656,7 +656,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 7 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -722,7 +722,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 3 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 44,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -744,7 +744,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 5 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 50,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -766,7 +766,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 7 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 75,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -832,7 +832,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 3 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 45,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -854,7 +854,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 5 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 58,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -876,7 +876,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 7 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 78,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
@@ -928,7 +928,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 5 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1
             }
@@ -1125,7 +1125,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
                     new Ingredient { TemplateKey = "passionflower", DisplayName = "Passion Flower", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1
             }
@@ -1142,7 +1142,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
                     new Ingredient { TemplateKey = "lilypad", DisplayName = "Lily Pad", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1
             }
@@ -1159,7 +1159,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
                     new Ingredient { TemplateKey = "baguette", DisplayName = "Baguette", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1
             }
@@ -1175,7 +1175,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "sparkflower", DisplayName = "Spark Flower", Amount = 2 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1
             }
@@ -1191,7 +1191,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "cactusflower", DisplayName = "CactusFlower", Amount = 2 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1
             }
@@ -1207,7 +1207,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "kabineblossom", DisplayName = "Kabine Blossom", Amount = 2 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1
             }
@@ -1224,7 +1224,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "sparkflower", DisplayName = "Spark Flower", Amount = 1 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1
             }
@@ -1241,7 +1241,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "koboldtail", DisplayName = "Kobold Tail", Amount = 2 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1
             }
@@ -1258,7 +1258,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "koboldtail", DisplayName = "Kobold Tail", Amount = 2 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1
             }
@@ -1274,7 +1274,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "waterlily", DisplayName = "Water Lily", Amount = 1 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1
             }
@@ -1291,7 +1291,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "wolffur", DisplayName = "Wolf's Fur", Amount = 5 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1
             }
@@ -1308,7 +1308,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
                     new Ingredient { TemplateKey = "vipergland", DisplayName = "Viper's Gland", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1
             }
@@ -1324,7 +1324,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "bocanbough", DisplayName = "Bocan Bough", Amount = 2 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1
             }
@@ -1340,7 +1340,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "blossomofbetrayal", DisplayName = "Blossom of Betrayal", Amount = 1 },
                     new Ingredient { TemplateKey = "Empty Bottle", DisplayName = "Empty Bottle", Amount = 1 },
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1
             }
@@ -1582,7 +1582,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "uncutberyl", DisplayName = "Uncut Beryl", Amount = 1 },
 
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
             }
@@ -1598,7 +1598,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutruby", DisplayName = "Uncut Ruby", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
             }
@@ -1614,7 +1614,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutsapphire", DisplayName = "Uncut Sapphire", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
             }
@@ -1630,7 +1630,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutemerald", DisplayName = "Uncut Emerald", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
             }
@@ -1646,7 +1646,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutheartstone", DisplayName = "Uncut Heartstone", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
             }
@@ -1662,7 +1662,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
             }
@@ -1678,7 +1678,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedruby", DisplayName = "Finished Ruby", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
             }
@@ -1694,7 +1694,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedsapphire", DisplayName = "Finished Sapphire", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
             }
@@ -1710,7 +1710,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedemerald", DisplayName = "Finished Emerald", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
             }
@@ -1726,7 +1726,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedheartstone", DisplayName = "Finished Heartstone", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
             }
@@ -1934,7 +1934,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutberyl", DisplayName = "Uncut Beryl", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
             }
@@ -1950,7 +1950,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutruby", DisplayName = "Uncut Ruby", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
             }
@@ -1966,7 +1966,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutsapphire", DisplayName = "Uncut Sapphire", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
             }
@@ -1982,7 +1982,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutemerald", DisplayName = "Uncut Emerald", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
             }
@@ -1998,7 +1998,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutheartstone", DisplayName = "Uncut Heartstone", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
             }
@@ -2014,7 +2014,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
             }
@@ -2030,7 +2030,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedruby", DisplayName = "Finished Ruby", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
             }
@@ -2046,7 +2046,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedsapphire", DisplayName = "Finished Sapphire", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
             }
@@ -2062,7 +2062,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedemerald", DisplayName = "Finished Emerald", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
             }
@@ -2078,7 +2078,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedheartstone", DisplayName = "Finished Heartstone", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
             }
@@ -2302,7 +2302,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutberyl", DisplayName = "Uncut Beryl", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
             }
@@ -2318,7 +2318,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutemerald", DisplayName = "Uncut Emerald", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
             }
@@ -2334,7 +2334,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutruby", DisplayName = "Uncut Ruby", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
             }
@@ -2350,7 +2350,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "uncutsapphire", DisplayName = "Uncut Sapphire", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
             }
@@ -2366,7 +2366,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedberyl", DisplayName = "Finished Beryl", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
             }
@@ -2382,7 +2382,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedemerald", DisplayName = "Finished Emerald", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
             }
@@ -2398,7 +2398,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedruby", DisplayName = "Finished Ruby", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
             }
@@ -2414,7 +2414,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "finishedsapphire", DisplayName = "Finished Sapphire", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
             }
@@ -2598,7 +2598,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1
             }
@@ -2614,7 +2614,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 56,
                 Difficulty = 1
             }
@@ -2630,7 +2630,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1
             }
@@ -2646,7 +2646,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 77,
                 Difficulty = 1
             }
@@ -2662,7 +2662,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 4 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 86,
                 Difficulty = 1
             }
@@ -2711,7 +2711,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 }, 
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 50,
                 Difficulty = 1
             }
@@ -2727,7 +2727,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 60,
                 Difficulty = 1
             }
@@ -2743,7 +2743,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1
             }
@@ -2807,7 +2807,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 2
             }
@@ -2823,7 +2823,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 2
             }
@@ -2903,7 +2903,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 2
             }
@@ -2919,7 +2919,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 62,
                 Difficulty = 2
             }
@@ -2935,7 +2935,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 75,
                 Difficulty = 3
             }
@@ -2951,7 +2951,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 89,
                 Difficulty = 3
             }
@@ -2999,7 +2999,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 2
             }
@@ -3015,7 +3015,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 3
             }
@@ -3079,7 +3079,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 45,
                 Difficulty = 2
             }
@@ -3095,7 +3095,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 61,
                 Difficulty = 2
             }
@@ -3111,7 +3111,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 77,
                 Difficulty = 3
             }
@@ -3234,7 +3234,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1
             }
@@ -3251,7 +3251,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 1 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 56,
                 Difficulty = 1
             }
@@ -3268,7 +3268,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1
             }
@@ -3285,7 +3285,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 77,
                 Difficulty = 1
             }
@@ -3387,7 +3387,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 31,
                 Difficulty = 1
             }
@@ -3404,7 +3404,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1
             }
@@ -3421,7 +3421,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 50,
                 Difficulty = 1
             }
@@ -3438,7 +3438,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 60,
                 Difficulty = 1
             }
@@ -3455,7 +3455,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1
             }
@@ -3472,7 +3472,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 80,
                 Difficulty = 1
             }
@@ -3557,7 +3557,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 2
             }
@@ -3574,7 +3574,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 2
             }
@@ -3591,7 +3591,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 3
             }
@@ -3608,7 +3608,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 3
             }
@@ -3761,7 +3761,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 2
             }
@@ -3778,7 +3778,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 62,
                 Difficulty = 2
             }
@@ -3795,7 +3795,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 75,
                 Difficulty = 3
             }
@@ -3812,7 +3812,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 89,
                 Difficulty = 3
             }
@@ -3880,7 +3880,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 2
             }
@@ -3897,7 +3897,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 71,
                 Difficulty = 3
             }
@@ -3982,7 +3982,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 2 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 41,
                 Difficulty = 2
             }
@@ -3999,7 +3999,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 45,
                 Difficulty = 2
             }
@@ -4016,7 +4016,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 50,
                 Difficulty = 2
             }
@@ -4033,7 +4033,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 61,
                 Difficulty = 2
             }
@@ -4050,7 +4050,7 @@ public static class CraftingRequirements
                     new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 4 },
                     new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 77,
                 Difficulty = 3
             }
@@ -4102,7 +4102,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
             }
@@ -4117,7 +4117,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
             }
@@ -4177,7 +4177,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
             }
@@ -4192,7 +4192,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
             }
@@ -4252,7 +4252,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
             }
@@ -4267,7 +4267,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
             }
@@ -4327,7 +4327,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
             }
@@ -4342,7 +4342,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
             }
@@ -4402,7 +4402,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
             }
@@ -4417,7 +4417,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
             }
@@ -4478,7 +4478,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
             }
@@ -4493,7 +4493,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
             }
@@ -4553,7 +4553,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
                 },
-                Rank = "Apprentice",
+                Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
             }
@@ -4568,7 +4568,7 @@ public static class CraftingRequirements
                 {
                     new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
                 },
-                Rank = "Journeyman",
+                Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
             }
@@ -4628,7 +4628,7 @@ public static class CraftingRequirements
         {
             new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
         },
-        Rank = "Apprentice",
+        Rank = "Initiate",
         Level = 56,
         Difficulty = 3
     }
@@ -4643,7 +4643,7 @@ public static class CraftingRequirements
         {
             new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
         },
-        Rank = "Journeyman",
+        Rank = "Artisan",
         Level = 86,
         Difficulty = 4
     }
@@ -4703,7 +4703,7 @@ public static class CraftingRequirements
         {
             new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
         },
-        Rank = "Apprentice",
+        Rank = "Initiate",
         Level = 56,
         Difficulty = 3
     }
@@ -4718,7 +4718,7 @@ public static class CraftingRequirements
         {
             new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
         },
-        Rank = "Journeyman",
+        Rank = "Artisan",
         Level = 86,
         Difficulty = 4
     }
@@ -4778,7 +4778,7 @@ public static class CraftingRequirements
         {
             new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3},
         },
-        Rank = "Apprentice",
+        Rank = "Initiate",
         Level = 56,
         Difficulty = 3
     }
@@ -4793,7 +4793,7 @@ public static class CraftingRequirements
         {
             new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4},
         },
-        Rank = "Journeyman",
+        Rank = "Artisan",
         Level = 86,
         Difficulty = 4
     }
@@ -4894,7 +4894,7 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
             new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 1 }
         },
-        Rank = "Apprentice",
+        Rank = "Initiate",
         Level = 41,
         Difficulty = 2
     }
@@ -4911,7 +4911,7 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
             new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 1 }
         },
-        Rank = "Apprentice",
+        Rank = "Initiate",
         Level = 41,
         Difficulty = 2
     }
@@ -4928,7 +4928,7 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
             new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 1 }
         },
-        Rank = "Apprentice",
+        Rank = "Initiate",
         Level = 41,
         Difficulty = 2
     }
@@ -4945,7 +4945,7 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
             new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
         },
-        Rank = "Apprentice",
+        Rank = "Initiate",
         Level = 41,
         Difficulty = 2
     }
@@ -4962,7 +4962,7 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
             new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 1 }
         },
-        Rank = "Journeyman",
+        Rank = "Artisan",
         Level = 71,
         Difficulty = 3
     }
@@ -4979,7 +4979,7 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
             new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 1 }
         },
-        Rank = "Journeyman",
+        Rank = "Artisan",
         Level = 71,
         Difficulty = 3
     }
@@ -4996,7 +4996,7 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
             new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 1 }
         },
-        Rank = "Journeyman",
+        Rank = "Artisan",
         Level = 71,
         Difficulty = 3
     }
@@ -5013,7 +5013,7 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
             new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
         },
-        Rank = "Journeyman",
+        Rank = "Artisan",
         Level = 71,
         Difficulty = 3
     }
@@ -5161,7 +5161,7 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "finecotton", DisplayName = "Fine Cotton", Amount = 3 },
             new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
         },
-        Rank = "Apprentice",
+        Rank = "Initiate",
         Level = 41,
         Difficulty = 2
     }
@@ -5177,7 +5177,7 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "finecotton", DisplayName = "Fine Cotton", Amount = 3 },
             new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
         },
-        Rank = "Apprentice",
+        Rank = "Initiate",
         Level = 41,
         Difficulty = 2
     }
@@ -5193,7 +5193,7 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "finewool", DisplayName = "Fine Wool", Amount = 3 },
             new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
         },
-        Rank = "Journeyman",
+        Rank = "Artisan",
         Level = 71,
         Difficulty = 3
     }
@@ -5209,7 +5209,7 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "finewool", DisplayName = "Fine Wool", Amount = 3 },
             new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
         },
-        Rank = "Journeyman",
+        Rank = "Artisan",
         Level = 71,
         Difficulty = 3
     }

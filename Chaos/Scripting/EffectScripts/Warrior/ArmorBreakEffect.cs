@@ -12,7 +12,7 @@ public class ArmorBreakEffect : NonOverwritableEffectBase
     /// <inheritdoc />
     protected override Animation? Animation { get; } = new()
     {
-        TargetAnimation = 107,
+        TargetAnimation = 383,
         AnimationSpeed = 100
     };
     /// <inheritdoc />

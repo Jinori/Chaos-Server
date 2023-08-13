@@ -23,16 +23,16 @@ public class EnchantingScript : DialogScriptBase
     //Ranks from lowest to highest
     private const string RANK_ONE_TITLE = "Beginner Enchanter";
     private const string RANK_TWO_TITLE = "Novice Enchanter";
-    private const string RANK_THREE_TITLE = "Apprentice Enchanter";
-    private const string RANK_FOUR_TITLE = "Journeyman Enchanter";
+    private const string RANK_THREE_TITLE = "Initiate Enchanter";
+    private const string RANK_FOUR_TITLE = "Artisan Enchanter";
     private const string RANK_FIVE_TITLE = "Adept Enchanter";
     private const string RANK_SIX_TITLE = "Advanced Enchanter";
     private const string RANK_SEVEN_TITLE = "Expert Enchanter";
     private const string RANK_EIGHT_TITLE = "Master Enchanter";
     private const string RECIPE_ONE_RANK = "Beginner";
     private const string RECIPE_TWO_RANK = "Basic";
-    private const string RECIPE_THREE_RANK = "Apprentice";
-    private const string RECIPE_FOUR_RANK = "Journeyman";
+    private const string RECIPE_THREE_RANK = "Initiate";
+    private const string RECIPE_FOUR_RANK = "Artisan";
     private const string RECIPE_FIVE_RANK = "Adept";
     private const string RECIPE_SIX_RANK = "Advanced";
     private const string RECIPE_SEVEN_RANK = "Expert";

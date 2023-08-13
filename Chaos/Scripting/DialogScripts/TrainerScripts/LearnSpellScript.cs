@@ -198,211 +198,212 @@ public class LearnSpellScript : DialogScriptBase
             
             // Check if the source has the Wizard class and the spell also has a Wizard element, then check if the source has a matching
             // Wizard Element flag. If not, skip the spell.
-            if (source.HasClass(BaseClass.Wizard) && (spell.Template.WizardElement != null))
-                if (source.Trackers.Flags.TryGetFlag(out WizardElement ele))
-                    if (spell.Template.WizardElement != ele)
-                        continue;
-            
+            if (source.HasClass(BaseClass.Wizard) && (spell.Template.WizardElement != WizardElement.None)) 
+                if (source.HasClass(BaseClass.Wizard) && (spell.Template.WizardElement != WizardElement.None))
+                    if (source.Trackers.Flags.TryGetFlag(out WizardElement currentElements))
+                        if ((currentElements & spell.Template.WizardElement) == 0) // If the Wizard does not have the element of the spell
+                            continue;
+
             // Check if the player's spellbook contains any spells that are upgrades of the spell they're trying to learn.
-            var knowsUpgrade = source.SpellBook.Any(
-                s => SpellUpgrades.ContainsKey(spell.Template.Name) && SpellUpgrades[spell.Template.Name].Contains(s.Template.Name));
+var knowsUpgrade = source.SpellBook.Any(
+    s => SpellUpgrades.ContainsKey(spell.Template.Name) && SpellUpgrades[spell.Template.Name].Contains(s.Template.Name));
 
-            // If the player knows an upgrade of the spell they're trying to learn, skip it.
-            if (knowsUpgrade)
-                continue;
+// If the player knows an upgrade of the spell they're trying to learn, skip it.
+if (knowsUpgrade)
+    continue;
 
-            Subject.Spells.Add(spell);
-        }
-    }
+Subject.Spells.Add(spell);
+}
+}
 
-    private void OnDisplayingRequirements(Aisling source)
-    {
-        if (!TryFetchArgs<string>(out var spellName)
-            || !SpellTeacherSource.TryGetSpell(spellName, out var spell)
-            || source.SpellBook.Contains(spellName))
-        {
-            Subject.ReplyToUnknownInput(source);
+private void OnDisplayingRequirements(Aisling source)
+{
+if (!TryFetchArgs<string>(out var spellName)
+|| !SpellTeacherSource.TryGetSpell(spellName, out var spell)
+|| source.SpellBook.Contains(spellName))
+{
+Subject.ReplyToUnknownInput(source);
 
-            return;
-        }
+return;
+}
 
-        var learningRequirementsStr = spell.Template.LearningRequirements?.BuildRequirementsString(ItemFactory, SkillFactory, SpellFactory)
-                                           .ToString();
+var learningRequirementsStr = spell.Template.LearningRequirements?.BuildRequirementsString(ItemFactory, SkillFactory, SpellFactory)
+                               .ToString();
 
-        Subject.InjectTextParameters(spell.Template.Description ?? string.Empty, learningRequirementsStr ?? string.Empty);
-    }
+Subject.InjectTextParameters(spell.Template.Description ?? string.Empty, learningRequirementsStr ?? string.Empty);
+}
 
-    public bool ValidateAndTakeRequirements(Aisling source, Dialog dialog, Spell spellToLearn)
-    {
-        var template = spellToLearn.Template;
-        var requirements = template.LearningRequirements;
+public bool ValidateAndTakeRequirements(Aisling source, Dialog dialog, Spell spellToLearn)
+{
+var template = spellToLearn.Template;
+var requirements = template.LearningRequirements;
 
-        if (requirements == null)
-            return true;
+if (requirements == null)
+return true;
 
-        if (template.Class.HasValue && !source.HasClass(template.Class.Value))
-        {
-            dialog.ReplyToUnknownInput(source);
+if (template.Class.HasValue && !source.HasClass(template.Class.Value))
+{
+dialog.ReplyToUnknownInput(source);
 
-            Logger.WithTopics(
-                      Topics.Entities.Aisling,
-                      Topics.Entities.Spell,
-                      Topics.Actions.Learn,
-                      Topics.Qualifiers.Cheating)
-                  .WithProperty(Subject)
-                  .WithProperty(Subject.DialogSource)
-                  .WithProperty(source)
-                  .WithProperty(spellToLearn)
-                  .LogWarning(
-                      "Aisling {@AislingName} tried to learn spell {@SpellName} but is not the correct class (possibly packeting)",
-                      source.Name,
-                      template.Name);
+Logger.WithTopics(
+          Topics.Entities.Aisling,
+          Topics.Entities.Spell,
+          Topics.Actions.Learn,
+          Topics.Qualifiers.Cheating)
+      .WithProperty(Subject)
+      .WithProperty(Subject.DialogSource)
+      .WithProperty(source)
+      .WithProperty(spellToLearn)
+      .LogWarning(
+          "Aisling {@AislingName} tried to learn spell {@SpellName} but is not the correct class (possibly packeting)",
+          source.Name,
+          template.Name);
 
-            return false;
-        }
+return false;
+}
 
-        if (template.AdvClass.HasValue && (template.AdvClass.Value != source.UserStatSheet.AdvClass))
-        {
-            dialog.ReplyToUnknownInput(source);
+if (template.AdvClass.HasValue && (template.AdvClass.Value != source.UserStatSheet.AdvClass))
+{
+dialog.ReplyToUnknownInput(source);
 
-            Logger.WithTopics(
-                      Topics.Entities.Aisling,
-                      Topics.Entities.Spell,
-                      Topics.Actions.Learn,
-                      Topics.Qualifiers.Cheating)
-                  .WithProperty(Subject)
-                  .WithProperty(Subject.DialogSource)
-                  .WithProperty(source)
-                  .WithProperty(spellToLearn)
-                  .LogWarning(
-                      "Aisling {@AislingName} tried to learn spell {@SpellName} but is not the correct adv class (possibly packeting)",
-                      source.Name,
-                      template.Name);
+Logger.WithTopics(
+          Topics.Entities.Aisling,
+          Topics.Entities.Spell,
+          Topics.Actions.Learn,
+          Topics.Qualifiers.Cheating)
+      .WithProperty(Subject)
+      .WithProperty(Subject.DialogSource)
+      .WithProperty(source)
+      .WithProperty(spellToLearn)
+      .LogWarning(
+          "Aisling {@AislingName} tried to learn spell {@SpellName} but is not the correct adv class (possibly packeting)",
+          source.Name,
+          template.Name);
 
-            return false;
-        }
+return false;
+}
 
-        if (source.StatSheet.Level < template.Level)
-        {
-            dialog.Reply(source, "Come back when you are more experienced.", "generic_learnspell_initial");
+if (source.StatSheet.Level < template.Level)
+{
+dialog.Reply(source, "Come back when you are more experienced.", "generic_learnspell_initial");
 
-            return false;
-        }
+return false;
+}
 
-        if (template.RequiresMaster && !source.UserStatSheet.Master)
-        {
-            dialog.Reply(source, "Come back when you have mastered your art.", "generic_learnspell_initial");
+if (template.RequiresMaster && !source.UserStatSheet.Master)
+{
+dialog.Reply(source, "Come back when you have mastered your art.", "generic_learnspell_initial");
 
-            return false;
-        }
+return false;
+}
 
-        if (requirements.RequiredStats != null)
-        {
-            var requiredStats = requirements.RequiredStats;
+if (requirements.RequiredStats != null)
+{
+var requiredStats = requirements.RequiredStats;
 
-            if (requiredStats.Str > source.StatSheet.EffectiveStr)
-            {
-                dialog.Reply(source, "Come back when you are stronger.", "generic_learnspell_initial");
+if (requiredStats.Str > source.StatSheet.EffectiveStr)
+{
+    dialog.Reply(source, "Come back when you are stronger.", "generic_learnspell_initial");
 
-                return false;
-            }
+    return false;
+}
 
-            if (requiredStats.Int > source.StatSheet.EffectiveInt)
-            {
-                dialog.Reply(source, "Come back when you are smarter.", "generic_learnspell_initial");
+if (requiredStats.Int > source.StatSheet.EffectiveInt)
+{
+    dialog.Reply(source, "Come back when you are smarter.", "generic_learnspell_initial");
 
-                return false;
-            }
+    return false;
+}
 
-            if (requiredStats.Wis > source.StatSheet.EffectiveWis)
-            {
-                dialog.Reply(source, "Come back when you are wiser.", "generic_learnspell_initial");
+if (requiredStats.Wis > source.StatSheet.EffectiveWis)
+{
+    dialog.Reply(source, "Come back when you are wiser.", "generic_learnspell_initial");
 
-                return false;
-            }
+    return false;
+}
 
-            if (requiredStats.Con > source.StatSheet.EffectiveCon)
-            {
-                dialog.Reply(source, "Come back when you are tougher.", "generic_learnspell_initial");
+if (requiredStats.Con > source.StatSheet.EffectiveCon)
+{
+    dialog.Reply(source, "Come back when you are tougher.", "generic_learnspell_initial");
 
-                return false;
-            }
+    return false;
+}
 
-            if (requiredStats.Dex > source.StatSheet.EffectiveDex)
-            {
-                dialog.Reply(source, "Come back when you are more dexterous.", "generic_learnspell_initial");
+if (requiredStats.Dex > source.StatSheet.EffectiveDex)
+{
+    dialog.Reply(source, "Come back when you are more dexterous.", "generic_learnspell_initial");
 
-                return false;
-            }
-        }
+    return false;
+}
+}
 
-        foreach (var skillTemplateKey in requirements.PrerequisiteSkillTemplateKeys)
-        {
-            var requiredSkill = SkillFactory.CreateFaux(skillTemplateKey);
+foreach (var skillTemplateKey in requirements.PrerequisiteSkillTemplateKeys)
+{
+var requiredSkill = SkillFactory.CreateFaux(skillTemplateKey);
 
-            if (!source.SkillBook.Contains(requiredSkill))
-            {
-                dialog.Reply(source, "Come back when you are more skillful.", "generic_learnspell_initial");
+if (!source.SkillBook.Contains(requiredSkill))
+{
+    dialog.Reply(source, "Come back when you are more skillful.", "generic_learnspell_initial");
 
-                return false;
-            }
-        }
+    return false;
+}
+}
 
-        foreach (var spellTemplateKey in requirements.PrerequisiteSpellTemplateKeys)
-        {
-            var requiredSpell = SpellFactory.CreateFaux(spellTemplateKey);
+foreach (var spellTemplateKey in requirements.PrerequisiteSpellTemplateKeys)
+{
+var requiredSpell = SpellFactory.CreateFaux(spellTemplateKey);
 
-            if (!source.SpellBook.Contains(requiredSpell))
-            {
-                dialog.Reply(source, "Come back when you are more knowledgeable.", "generic_learnspell_initial");
+if (!source.SpellBook.Contains(requiredSpell))
+{
+    dialog.Reply(source, "Come back when you are more knowledgeable.", "generic_learnspell_initial");
 
-                return false;
-            }
-        }
+    return false;
+}
+}
 
-        foreach (var itemRequirement in requirements.ItemRequirements)
-        {
-            var requiredItem = ItemFactory.CreateFaux(itemRequirement.ItemTemplateKey);
+foreach (var itemRequirement in requirements.ItemRequirements)
+{
+var requiredItem = ItemFactory.CreateFaux(itemRequirement.ItemTemplateKey);
 
-            if (!source.Inventory.HasCount(requiredItem.DisplayName, itemRequirement.AmountRequired))
-            {
-                dialog.Reply(source, "Come back when you have what is required.", "generic_learnspell_initial");
+if (!source.Inventory.HasCount(requiredItem.DisplayName, itemRequirement.AmountRequired))
+{
+    dialog.Reply(source, "Come back when you have what is required.", "generic_learnspell_initial");
 
-                return false;
-            }
-        }
+    return false;
+}
+}
 
-        if (requirements.RequiredGold.HasValue && (source.Gold < requirements.RequiredGold.Value))
-        {
-            dialog.Reply(source, "Come back when you are more wealthy.", "generic_learnspell_initial");
+if (requirements.RequiredGold.HasValue && (source.Gold < requirements.RequiredGold.Value))
+{
+dialog.Reply(source, "Come back when you are more wealthy.", "generic_learnspell_initial");
 
-            return false;
-        }
+return false;
+}
 
-        foreach (var itemRequirement in requirements.ItemRequirements)
-        {
-            var requiredItem = ItemFactory.CreateFaux(itemRequirement.ItemTemplateKey);
+foreach (var itemRequirement in requirements.ItemRequirements)
+{
+var requiredItem = ItemFactory.CreateFaux(itemRequirement.ItemTemplateKey);
 
-            source.Inventory.RemoveQuantity(requiredItem.DisplayName, itemRequirement.AmountRequired);
-        }
+source.Inventory.RemoveQuantity(requiredItem.DisplayName, itemRequirement.AmountRequired);
+}
 
-        if (requirements.RequiredGold.HasValue)
-            source.TryTakeGold(requirements.RequiredGold.Value);
+if (requirements.RequiredGold.HasValue)
+source.TryTakeGold(requirements.RequiredGold.Value);
 
-        return true;
-    }
+return true;
+}
 
-    public sealed class TieredSpell
-    {
-        public string Name { get; }
-        public string TemplateKey { get; }
-        public int Tier { get; }
+public sealed class TieredSpell
+{
+public string Name { get; }
+public string TemplateKey { get; }
+public int Tier { get; }
 
-        public TieredSpell(string templateKey, string name, int tier)
-        {
-            TemplateKey = templateKey;
-            Name = name;
-            Tier = tier;
-        }
-    }
+public TieredSpell(string templateKey, string name, int tier)
+{
+TemplateKey = templateKey;
+Name = name;
+Tier = tier;
+}
+}
 }

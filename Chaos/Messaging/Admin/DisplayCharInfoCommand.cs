@@ -46,6 +46,12 @@ public class displayCharInfoCommand : ICommand<Aisling>
                 + target.UserStatSheet.MaximumHp
                 + "\nBase Mp: "
                 + target.UserStatSheet.MaximumMp
+                + "\nAC: "
+                + target.UserStatSheet.Ac
+                + "\nGold: "
+                + target.Gold
+                + "\nGold Banked: "
+                + target.Bank.Gold
                 + "\nGeared Stats: "
                 + target.UserStatSheet.EffectiveStr
                 + "/"

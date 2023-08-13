@@ -1,3 +1,4 @@
+using System.Configuration;
 using Chaos.Common.Definitions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
@@ -15,6 +16,7 @@ public class WizardElementScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         var hasElement = source.Trackers.Flags.TryGetFlag(out WizardElement stage);
+        var elementCounter = source.Trackers.Enums.TryGetValue(out WizardElementCounter stage2);
 
         if (source.UserStatSheet.BaseClass is not BaseClass.Wizard)
             return;
@@ -115,6 +117,132 @@ public class WizardElementScript : DialogScriptBase
                 case "dar_chosewind":
                 {
                     source.Trackers.Flags.AddFlag(WizardElement.Wind);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Understand restraint, be the leaf.");
+
+                    source.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Studies the Wind Element",
+                            "windWizard",
+                            MarkIcon.Wizard,
+                            MarkColor.Blue,
+                            1,
+                            GameTime.Now));
+                }
+
+                    break;
+            }
+        
+        if (hasElement && !elementCounter)
+            switch (Subject.Template.TemplateKey.ToLower())
+            {
+                case "dar_initial":
+                {
+                    if (source.UserStatSheet.BaseClass is BaseClass.Wizard && (source.UserStatSheet.Level >= 50))
+                    {
+                        var option = new DialogOption
+                        {
+                            DialogKey = "wizardElement_initial2",
+                            OptionText = "Second Wizard Element"
+                        };
+
+                        if (!Subject.HasOption(option.OptionText))
+                            Subject.Options.Insert(0, option);
+                    }
+                }
+
+                    break;
+
+                case "wizardelement_initial2":
+                {
+                    if (hasElement && (stage != WizardElement.Fire))
+                        Subject.Options.Add(new DialogOption
+                        {
+                            DialogKey = "dar_firedescription",
+                            OptionText = "Fire Element"
+                        });
+                    
+                    if (hasElement && (stage != WizardElement.Water))
+                        Subject.Options.Add(new DialogOption
+                        {
+                            DialogKey = "dar_waterdescription",
+                            OptionText = "Water Element"
+                        });
+                    
+                    if (hasElement && (stage != WizardElement.Earth))
+                        Subject.Options.Add(new DialogOption
+                        {
+                            DialogKey = "dar_earthdescription",
+                            OptionText = "Earth Element"
+                        });
+                    
+                    if (hasElement && (stage != WizardElement.Wind))
+                        Subject.Options.Add(new DialogOption
+                        {
+                            DialogKey = "dar_winddescription",
+                            OptionText = "Wind Element"
+                        });
+
+                    break;
+                }
+
+                case "dar_chosefire":
+                {
+                    source.Trackers.Flags.AddFlag(WizardElement.Fire);
+                    source.Trackers.Enums.Set(WizardElementCounter.Has2ndElement);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "May the fire ignite your soul.");
+
+                    source.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Studies the Fire Element",
+                            "fireWizard",
+                            MarkIcon.Wizard,
+                            MarkColor.Blue,
+                            1,
+                            GameTime.Now));
+                }
+
+                    break;
+
+                case "dar_chosewater":
+                {
+                    source.Trackers.Flags.AddFlag(WizardElement.Water);
+                    source.Trackers.Enums.Set(WizardElementCounter.Has2ndElement);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Let the water flow within you.");
+
+                    source.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Studies the Water Element",
+                            "waterWizard",
+                            MarkIcon.Wizard,
+                            MarkColor.Blue,
+                            1,
+                            GameTime.Now));
+                }
+
+                    break;
+
+                case "dar_choseearth":
+                {
+                    source.Trackers.Flags.AddFlag(WizardElement.Earth);
+                    source.Trackers.Enums.Set(WizardElementCounter.Has2ndElement);
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Sturdy like a rock, be strong.");
+
+                    source.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Studies the Earth Element",
+                            "earthWizard",
+                            MarkIcon.Wizard,
+                            MarkColor.Blue,
+                            1,
+                            GameTime.Now));
+                }
+
+                    break;
+
+                case "dar_chosewind":
+                {
+                    source.Trackers.Flags.AddFlag(WizardElement.Wind);
+                    source.Trackers.Enums.Set(WizardElementCounter.Has2ndElement);
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Understand restraint, be the leaf.");
 
                     source.Legend.AddOrAccumulate(

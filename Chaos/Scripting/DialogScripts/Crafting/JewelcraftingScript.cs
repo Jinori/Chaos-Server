@@ -22,8 +22,8 @@ public class JewelcraftingScript : DialogScriptBase
     //Ranks from lowest to highest
     private const string RANK_ONE_TITLE = "Beginner Jewelcrafter";
     private const string RANK_TWO_TITLE = "Novice Jewelcrafter";
-    private const string RANK_THREE_TITLE = "Apprentice Jewelcrafter";
-    private const string RANK_FOUR_TITLE = "Journeyman Jewelcrafter";
+    private const string RANK_THREE_TITLE = "Initiate Jewelcrafter";
+    private const string RANK_FOUR_TITLE = "Artisan Jewelcrafter";
     private const string RANK_FIVE_TITLE = "Adept Jewelcrafter";
     private const string RANK_SIX_TITLE = "Advanced Jewelcrafter";
     private const string RANK_SEVEN_TITLE = "Expert Jewelcrafter";
@@ -126,8 +126,8 @@ public class JewelcraftingScript : DialogScriptBase
         {
             { "Beginner", 1 },
             { "Basic", 2 },
-            { "Apprentice", 3 },
-            { "Journeyman", 4 },
+            { "Initiate", 3 },
+            { "Artisan", 4 },
             { "Adept", 5 },
             { "Advanced", 6 },
             { "Expert", 7 },

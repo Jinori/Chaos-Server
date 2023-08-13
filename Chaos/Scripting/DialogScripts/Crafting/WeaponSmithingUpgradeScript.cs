@@ -22,8 +22,8 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
     //Ranks from lowest to highest
     private const string RANK_ONE_TITLE = "Beginner Weaponsmith";
     private const string RANK_TWO_TITLE = "Novice Weaponsmith";
-    private const string RANK_THREE_TITLE = "Apprentice Weaponsmith";
-    private const string RANK_FOUR_TITLE = "Journeyman Weaponsmith";
+    private const string RANK_THREE_TITLE = "Initiate Weaponsmith";
+    private const string RANK_FOUR_TITLE = "Artisan Weaponsmith";
     private const string RANK_FIVE_TITLE = "Adept Weaponsmith";
     private const string RANK_SIX_TITLE = "Advanced Weaponsmith";
     private const string RANK_SEVEN_TITLE = "Expert Weaponsmith";
@@ -126,8 +126,8 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
         {
             { "Beginner", 1 },
             { "Basic", 2 },
-            { "Apprentice", 3 },
-            { "Journeyman", 4 },
+            { "Initiate", 3 },
+            { "Artisan", 4 },
             { "Adept", 5 },
             { "Advanced", 6 },
             { "Expert", 7 },
