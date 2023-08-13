@@ -4,7 +4,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss;
+namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.BunnyBoss.Bunny1;
 
 public sealed class BunnyBoss1EnrageScript : MonsterScriptBase
 {
@@ -38,6 +38,7 @@ public sealed class BunnyBoss1EnrageScript : MonsterScriptBase
                 var mobs = MonsterFactory.Create("bunny1-2", Subject.MapInstance, point);
                 Subject.MapInstance.AddObject(mobs, point);
             }
+
             Subject.Animate(UpgradeAnimation);
         }
 
@@ -52,7 +53,7 @@ public sealed class BunnyBoss1EnrageScript : MonsterScriptBase
                 var mobs = MonsterFactory.Create("bunny1-3", Subject.MapInstance, point);
                 Subject.MapInstance.AddObject(mobs, point);
             }
-            
+
             Subject.Animate(UpgradeAnimation);
         }
 
@@ -67,7 +68,7 @@ public sealed class BunnyBoss1EnrageScript : MonsterScriptBase
                 var mobs = MonsterFactory.Create("bunny1-4", Subject.MapInstance, point);
                 Subject.MapInstance.AddObject(mobs, point);
             }
-            
+
             Subject.Animate(UpgradeAnimation);
         }
     }

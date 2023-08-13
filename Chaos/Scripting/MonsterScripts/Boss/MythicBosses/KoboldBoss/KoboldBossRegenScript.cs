@@ -6,9 +6,9 @@ namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.KoboldBoss;
 
 public sealed class KoboldBossRegenScript : MonsterScriptBase
 {
-    private const float HP_REGEN_INTERVAL = 6f;
+    private const float HP_REGEN_INTERVAL = 1f;
+    private const float HP_MULTIPLIER = 0.01f;
     private float HPRegenTimer;
-    private const float HP_MULTIPLIER = 0.02f;
 
     private Animation UpgradeAnimation { get; } = new()
     {
@@ -18,8 +18,7 @@ public sealed class KoboldBossRegenScript : MonsterScriptBase
 
     /// <inheritdoc />
     public KoboldBossRegenScript(Monster subject)
-        : base(subject)
-    { }
+        : base(subject) { }
 
     public override void Update(TimeSpan delta)
     {
@@ -33,7 +32,7 @@ public sealed class KoboldBossRegenScript : MonsterScriptBase
 
                 var newHP = (int)MathF.Min(Subject.StatSheet.CurrentHp + hpToRegen, Subject.StatSheet.MaximumHp);
 
-                 Subject.StatSheet.SetHp(newHP);
+                Subject.StatSheet.SetHp(newHP);
                 Subject.ShowHealth();
 
                 HPRegenTimer = 0f;

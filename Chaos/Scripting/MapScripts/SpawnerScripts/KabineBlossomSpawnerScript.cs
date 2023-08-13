@@ -10,9 +10,9 @@ public class KabineBlossomSpawnerScript : ItemSpawnerScript
     public override string ItemTemplateKey { get; set; } = "KabineBlossom";
     public override int MaxAmount { get; set; } = 4;
     public override int MaxPerSpawn { get; set; } = 1;
-    public override int SpawnIntervalMs { get; set; } = 2100000;
-    
+
     public override int SpawnChance { get; set; } = 8;
+    public override int SpawnIntervalMs { get; set; } = 2100000;
 
     /// <inheritdoc />
     public KabineBlossomSpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)

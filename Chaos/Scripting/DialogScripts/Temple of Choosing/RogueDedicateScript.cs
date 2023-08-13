@@ -63,7 +63,6 @@ public class RogueDedicateScript : DialogScriptBase
             source.Trackers.Flags.AddFlag(QuestFlag1.ChosenClass);
             var skill = SkillFactory.Create("assault");
             var skill2 = SkillFactory.Create("stab");
-            
 
             if (!source.SkillBook.Contains(skill2))
                 source.SkillBook.TryAddToNextSlot(skill2);

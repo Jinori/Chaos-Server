@@ -46,7 +46,6 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
         aisling.Client.SendAttributes(StatUpdateType.Full);
 
         if (aisling.UserStatSheet.BaseClass is BaseClass.Priest)
-        {
             switch (aisling.StatSheet.Level)
             {
                 case 10:
@@ -78,7 +77,6 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
 
                     break;
             }
-        }
     }
 
     private void SetPetEnumAndMessage(Aisling aisling, PetSkillsAvailable tag)

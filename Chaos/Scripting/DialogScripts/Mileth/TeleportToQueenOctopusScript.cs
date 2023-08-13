@@ -1,8 +1,6 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Extensions;
-using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -46,8 +44,6 @@ public class TeleportToQueenOctopusScript : DialogScriptBase
             foreach (var member in enumerable)
                 if (member.WithinRange(point, 10))
                     ++groupCount;
-
-            
 
             if (groupCount.Equals(enumerable.Count()))
             {

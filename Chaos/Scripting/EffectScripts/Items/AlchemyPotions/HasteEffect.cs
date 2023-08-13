@@ -6,6 +6,7 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class HasteEffect : NonOverwritableEffectBase
 {
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(10);
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
@@ -27,8 +28,6 @@ public class HasteEffect : NonOverwritableEffectBase
         "Strong Astral",
         "Astral"
     };
-
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(10);
     public override byte Icon => 13;
     public override string Name => "Haste";
     protected override byte? Sound => 115;

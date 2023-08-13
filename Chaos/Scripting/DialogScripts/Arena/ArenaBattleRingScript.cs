@@ -6,7 +6,6 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.MapScripts;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Scripting.MapScripts.Arena;
 using Chaos.Storage.Abstractions;
@@ -29,8 +28,9 @@ public class ArenaBattleRingScript : DialogScriptBase
     public void HideDialogOptions(Aisling source)
     {
         source.Trackers.Enums.TryGetValue(out ArenaHost stage);
+
         if ((stage != ArenaHost.Host) && (stage != ArenaHost.MasterHost))
-          RemoveOption(Subject, "Host Options");   
+            RemoveOption(Subject, "Host Options");
     }
 
     /// <inheritdoc />
@@ -103,9 +103,7 @@ public class ArenaBattleRingScript : DialogScriptBase
                 var aislings = source.MapInstance.GetEntities<Aisling>().ToList();
 
                 foreach (var aisling in aislings)
-                {
                     aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"Hidden Havoc mode has enabled by {source.Name}!");
-                }
 
                 Subject.Close(source);
 

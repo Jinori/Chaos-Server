@@ -9,6 +9,8 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 public class AmnesiaEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(15);
+    /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -21,8 +23,6 @@ public class AmnesiaEffect : ContinuousAnimationEffectBase
     {
         "Amnesia"
     };
-    /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(15);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(700));
     /// <inheritdoc />

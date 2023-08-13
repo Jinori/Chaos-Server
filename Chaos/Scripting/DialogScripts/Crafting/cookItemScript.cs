@@ -1718,7 +1718,7 @@ public class cookItemScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     source.GiveItemOrSendToBank(ItemFactory.Create("salad"));
                     source.SendOrangeBarMessage("You have made a Salad!");
                     Subject.Reply(source, "Skip", "cook_itemrepeat");
@@ -1887,7 +1887,7 @@ public class cookItemScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     source.GiveItemOrSendToBank(ItemFactory.Create("lobsterdinner"));
                     source.SendOrangeBarMessage("You have cooked a Lobster Dinner!");
                     Subject.Reply(source, "Skip", "cook_itemrepeat");
@@ -2826,6 +2826,7 @@ public class cookItemScript : DialogScriptBase
                     break;
                 #endregion
             }
+
         if (foodSelected && (foodStage == CookFoodStage.popsicle))
             switch (Subject.Template.TemplateKey.ToLower())
             {
@@ -2851,14 +2852,12 @@ public class cookItemScript : DialogScriptBase
                     }
 
                     if (Subject.Items.Count == 0)
-                    {
                         Subject.Reply(source, "You do not have the required fruits.", "cooking_initial");
-                    }
                 }
 
                     break;
                 #endregion
-                
+
                 #region addextraingredients
                 case "extraingredients_initial":
                 {
@@ -2885,15 +2884,14 @@ public class cookItemScript : DialogScriptBase
                 case "cook_item":
                 {
                     #region CheckItem
-                    
                     if (fruitsStage && (fstage == FruitsStage.greengrapes))
                         if (!source.Inventory.HasCountByTemplateKey("greengrapes", 100))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (fruitsStage && (fstage == FruitsStage.strawberry))
                         if (!source.Inventory.HasCountByTemplateKey("strawberry", 100))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
-                    
+
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
                         if (!source.Inventory.HasCountByTemplateKey("tangerines", 100))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
@@ -2924,16 +2922,15 @@ public class cookItemScript : DialogScriptBase
                     #endregion
 
                     #region RemoveItems
-                    
                     if (fruitsStage && (fstage == FruitsStage.greengrapes))
                         source.Inventory.RemoveQuantityByTemplateKey("greengrapes", 100);
-                    
+
                     if (fruitsStage && (fstage == FruitsStage.strawberry))
-                        source.Inventory.RemoveQuantityByTemplateKey(("strawberry"), 100);
-                    
+                        source.Inventory.RemoveQuantityByTemplateKey("strawberry", 100);
+
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
-                        source.Inventory.RemoveQuantityByTemplateKey(("tangerines"), 100);
-                    
+                        source.Inventory.RemoveQuantityByTemplateKey("tangerines", 100);
+
                     if (extraIngredients && (eStage == ExtraIngredientsStage.ice))
                         source.Inventory.RemoveQuantityByTemplateKey("ice", 10);
 
@@ -2955,14 +2952,13 @@ public class cookItemScript : DialogScriptBase
 
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
                         source.TryGiveItems(ItemFactory.Create("orangepopsicle"));
-                    
-                    source.SendOrangeBarMessage($"You have made a Popsicle!");
+
+                    source.SendOrangeBarMessage("You have made a Popsicle!");
                     Subject.Reply(source, "Skip", "cook_itemrepeat");
                 }
 
                     break;
                 #endregion
             }
-
     }
 }

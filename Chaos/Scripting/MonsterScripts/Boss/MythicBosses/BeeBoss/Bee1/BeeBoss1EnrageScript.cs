@@ -69,7 +69,7 @@ public sealed class BeeBoss1EnrageScript : MonsterScriptBase
             var attrib = new Attributes
             {
                 Ac = 5,
-                AtkSpeedPct = 25,
+                AtkSpeedPct = 25
             };
 
             Subject.StatSheet.SetHealthPct(40);

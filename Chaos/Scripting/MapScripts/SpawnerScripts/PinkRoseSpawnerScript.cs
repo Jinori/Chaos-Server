@@ -10,9 +10,9 @@ public class PinkRoseSpawnerScript : ItemSpawnerScript
     public override string ItemTemplateKey { get; set; } = "pinkrose";
     public override int MaxAmount { get; set; } = 15;
     public override int MaxPerSpawn { get; set; } = 3;
-    public override int SpawnIntervalMs { get; set; } = 400000;
-    
+
     public override int SpawnChance { get; set; } = 15;
+    public override int SpawnIntervalMs { get; set; } = 400000;
 
     /// <inheritdoc />
     public PinkRoseSpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)

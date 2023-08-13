@@ -57,22 +57,22 @@ public class GuildMemberRosterScript : GuildScriptBase
         /*
         Guild: ChaosBros
         Members: 3
-        
+
         Rank: Leader
         ---------------
         Sichi
-        
+
         Rank: Officer
         ---------------
         Sichii
         Sichiii
-        
+
         Rank: Member
         ---------------
-        
+
         Rank: Applicant
         ---------------
-        
+
          */
         var builder = new StringBuilder();
         var separator = new string('-', 15);

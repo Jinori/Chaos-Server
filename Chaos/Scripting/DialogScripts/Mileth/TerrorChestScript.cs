@@ -21,11 +21,14 @@ namespace Chaos.Scripting.DialogScripts.Mileth;
 public class TerrorChestScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    private readonly ISimpleCache SimpleCache;
     private readonly ILogger<TerrorChestScript> Logger;
+    private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public TerrorChestScript(Dialog subject, IItemFactory itemFactory, ISimpleCache simpleCache,
+    public TerrorChestScript(
+        Dialog subject,
+        IItemFactory itemFactory,
+        ISimpleCache simpleCache,
         ILogger<TerrorChestScript> logger
     )
         : base(subject)
@@ -71,15 +74,25 @@ public class TerrorChestScript : DialogScriptBase
                     item = ItemFactory.Create(templateKeyRewards[index]);
                 }
 
-                
                 var tnl = LevelUpFormulae.Default.CalculateTnl(source);
                 var expAmount = Convert.ToInt32(0.30 * tnl);
-                
-                
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest, Topics.Entities.Item)
-                      .WithProperty(source).WithProperty(Subject)
-                      .LogInformation("{@AislingName} has received {@GoldAmount} gold, {@ExpAmount} exp and {@ItemName} from a quest", source.Name, 20000, expAmount, item.DisplayName);
-                
+
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Gold,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest,
+                          Topics.Entities.Item)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
+                      .LogInformation(
+                          "{@AislingName} has received {@GoldAmount} gold, {@ExpAmount} exp and {@ItemName} from a quest",
+                          source.Name,
+                          20000,
+                          expAmount,
+                          item.DisplayName);
+
                 ExperienceDistributionScript.GiveExp(source, expAmount);
                 source.TryGiveGold(20000);
                 source.TryGiveItem(ref item);
@@ -102,9 +115,7 @@ public class TerrorChestScript : DialogScriptBase
             }
         }
         else
-        {
             source.SendActiveMessage("You have already received today's rewards for this quest.");
-        }
 
         var mapInstance = SimpleCache.Get<MapInstance>("mileth_tavern");
         source.TraverseMap(mapInstance, new Point(9, 10));

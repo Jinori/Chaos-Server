@@ -38,6 +38,7 @@ public sealed class BunnyBoss2EnrageScript : MonsterScriptBase
                 var mobs = MonsterFactory.Create("bunny2-2", Subject.MapInstance, point);
                 Subject.MapInstance.AddObject(mobs, point);
             }
+
             Subject.Animate(UpgradeAnimation);
         }
 
@@ -52,7 +53,7 @@ public sealed class BunnyBoss2EnrageScript : MonsterScriptBase
                 var mobs = MonsterFactory.Create("bunny2-3", Subject.MapInstance, point);
                 Subject.MapInstance.AddObject(mobs, point);
             }
-            
+
             Subject.Animate(UpgradeAnimation);
         }
 
@@ -67,7 +68,7 @@ public sealed class BunnyBoss2EnrageScript : MonsterScriptBase
                 var mobs = MonsterFactory.Create("bunny2-4", Subject.MapInstance, point);
                 Subject.MapInstance.AddObject(mobs, point);
             }
-            
+
             Subject.Animate(UpgradeAnimation);
         }
     }

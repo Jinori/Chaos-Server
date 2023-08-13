@@ -1,5 +1,6 @@
 using Chaos.Common.Definitions;
 using Chaos.Extensions.Geometry;
+using Chaos.Formulae;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
@@ -34,7 +35,7 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
     private Animation PreAnimation { get; } = new()
     {
         AnimationSpeed = 100,
-        TargetAnimation = 214 
+        TargetAnimation = 214
     };
     private IIntervalTimer PreAnimationTimer { get; }
 
@@ -50,7 +51,7 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
             false);
 
         ApplyDamageScript = ApplyAttackDamageScript.Create();
-        ApplyDamageScript.DamageFormula = Formulae.DamageFormulae.PureDamage;
+        ApplyDamageScript.DamageFormula = DamageFormulae.PureDamage;
         AnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(9));
         PreAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(7));
 
@@ -59,6 +60,15 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
         TimePassedSinceMainAnimationStart = 0;
 
         GenerateSafeRectangle();
+    }
+
+    private bool ContainsWallorReactor(IRectangle rectangle)
+    {
+        foreach (var point in rectangle.GetPoints())
+            if (Map.IsWall(point) || Map.IsBlockingReactor(point))
+                return true;
+
+        return false;
     }
 
     private void DealDamageToCreaturesAtPoint(IPoint point)
@@ -77,32 +87,7 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
                     damage);
             }
     }
-    
-    public Point GetRandomWalkablePoint(IRectangle rect)
-    {
-        const int MAX_ATTEMPTS = 100; // Set a maximum number of attempts to avoid infinite loops
-        var attemptCount = 0;
 
-        while (attemptCount < MAX_ATTEMPTS)
-        {
-            var randomX = rect.Left + Random.Shared.Next(rect.Width);
-            var randomY = rect.Top + Random.Shared.Next(rect.Height);
-            var randomPoint = new Point(randomX, randomY);
-
-            if (!Map.IsWall(randomPoint) && !Map.IsBlockingReactor(randomPoint))
-            {
-                return randomPoint; // Found a walkable point
-            }
-
-            attemptCount++;
-        }
-
-        // If no walkable point is found after the maximum attempts, return a default point.
-        // You can handle this case based on your specific needs, such as throwing an exception or returning null.
-        // For example:
-        throw new Exception("Could not find a walkable point within the given bounds.");
-    }
-    
     private void GenerateSafeRectangle()
     {
         const int MAX_ATTEMPTS = 100;
@@ -120,25 +105,34 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
 
             if (attempts >= MAX_ATTEMPTS)
                 break;
-        }
-        while (ContainsWallorReactor(SafeRectangle));
+        } while (ContainsWallorReactor(SafeRectangle));
 
         // Add individual points within the SafeRectangle to SafePoints
         foreach (var point in SafeRectangle.GetPoints())
             SafePoints.Add(point);
     }
 
-    private bool ContainsWallorReactor(IRectangle rectangle)
+    public Point GetRandomWalkablePoint(IRectangle rect)
     {
-        foreach (var point in rectangle.GetPoints())
+        const int MAX_ATTEMPTS = 100; // Set a maximum number of attempts to avoid infinite loops
+        var attemptCount = 0;
+
+        while (attemptCount < MAX_ATTEMPTS)
         {
-            if (Map.IsWall(point) || Map.IsBlockingReactor(point))
-            {
-                return true;
-            }
+            var randomX = rect.Left + Random.Shared.Next(rect.Width);
+            var randomY = rect.Top + Random.Shared.Next(rect.Height);
+            var randomPoint = new Point(randomX, randomY);
+
+            if (!Map.IsWall(randomPoint) && !Map.IsBlockingReactor(randomPoint))
+                return randomPoint; // Found a walkable point
+
+            attemptCount++;
         }
 
-        return false;
+        // If no walkable point is found after the maximum attempts, return a default point.
+        // You can handle this case based on your specific needs, such as throwing an exception or returning null.
+        // For example:
+        throw new Exception("Could not find a walkable point within the given bounds.");
     }
 
     private void ResetTimersAndPoints()

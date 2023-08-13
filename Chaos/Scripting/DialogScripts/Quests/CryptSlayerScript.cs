@@ -22,6 +22,7 @@ public class CryptSlayerScript : DialogScriptBase
     private readonly IExperienceDistributionScript ExperienceDistributionScript;
     private readonly IItemFactory ItemFactory;
     private readonly ILogger<CryptSlayerScript> Logger;
+
     public CryptSlayerScript(Dialog subject, IItemFactory itemFactory, ILogger<CryptSlayerScript> logger)
         : base(subject)
     {
@@ -344,11 +345,16 @@ public class CryptSlayerScript : DialogScriptBase
                         source.TryGiveItem(ref monkweapon);
                     }
                 }
-                
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                      .WithProperty(source).WithProperty(Subject)
+
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
-                
+
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.TryGiveGamePoints(5);
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");

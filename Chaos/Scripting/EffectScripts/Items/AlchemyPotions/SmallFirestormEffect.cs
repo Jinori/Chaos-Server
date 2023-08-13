@@ -11,6 +11,8 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 public class SmallFirestormEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(8);
+    /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -18,8 +20,6 @@ public class SmallFirestormEffect : ContinuousAnimationEffectBase
     };
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
-    /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(8);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(700));
     /// <inheritdoc />

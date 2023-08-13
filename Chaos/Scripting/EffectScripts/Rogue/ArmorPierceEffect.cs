@@ -1,14 +1,13 @@
 using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.Data;
-using Chaos.Models.World;
-using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Rogue;
 
 public class ArmorPierceEffect : NonOverwritableEffectBase
 {
+    /// <inheritdoc />
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(6);
     /// <inheritdoc />
     protected override Animation? Animation { get; } = new()
     {
@@ -20,8 +19,6 @@ public class ArmorPierceEffect : NonOverwritableEffectBase
     {
         "Armor Pierce"
     };
-    /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(6);
     /// <inheritdoc />
     public override byte Icon => 65;
     /// <inheritdoc />

@@ -253,10 +253,10 @@ public class MythicMantisScript : DialogScriptBase
             {
                 if (hasBee
                     && (hasBee == bee is MythicBee.AlliedBee or MythicBee.BossBeeStarted or MythicBee.BossBeeDefeated))
-                { 
+                {
                     Subject.Reply(
                         source,
-                        $"I knew something smelled weak about you. Begone traitor, you will be a fun one to kill.");
+                        "I knew something smelled weak about you. Begone traitor, you will be a fun one to kill.");
 
                     source.Trackers.Enums.Set(MythicMantis.EnemyAllied);
 
@@ -266,6 +266,7 @@ public class MythicMantisScript : DialogScriptBase
                 source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Trackers.Enums.Set(MythicMantis.MantisAllied);
                 source.SendOrangeBarMessage("You are now allied with the Mantis!");
+
                 Subject.Reply(
                     source,
                     $"Welcome to the Colony {source.Name

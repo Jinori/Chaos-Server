@@ -67,7 +67,7 @@ public sealed class BeeBoss3EnrageScript : MonsterScriptBase
             var attrib = new Attributes
             {
                 Ac = -10,
-                AtkSpeedPct = 25,
+                AtkSpeedPct = 25
             };
 
             Subject.StatSheet.AddBonus(attrib);

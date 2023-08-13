@@ -6,6 +6,7 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class StrongJuggernautEffect : NonOverwritableEffectBase
 {
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
@@ -27,8 +28,6 @@ public class StrongJuggernautEffect : NonOverwritableEffectBase
         "Strong Astral",
         "Astral"
     };
-
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     public override byte Icon => 13;
     public override string Name => "Strong Juggernaut";
     protected override byte? Sound => 115;

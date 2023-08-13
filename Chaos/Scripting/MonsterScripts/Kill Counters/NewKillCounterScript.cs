@@ -1,27 +1,30 @@
+using System.Reflection;
 using Chaos.Common.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using System.Reflection;
 using Humanizer;
 
 namespace Chaos.Scripting.MonsterScripts.Kill_Counters;
 
 public class NewKillCounterScript : ConfigurableMonsterScriptBase
 {
-    #region ScriptVars
-    public string? QuestEnum { get; init; }
-    public string? Leader { get; init; }
-
-    public string Counter { get; init; } = null!;
-
-    public int QuantityReq { get; set; }
-
-    public bool IsMythicBoss { get; set; }
-    #endregion
-
     public NewKillCounterScript(Monster subject)
         : base(subject) { }
+
+    private static Type? GetEnumType(string? enumValue)
+    {
+        if (enumValue is null)
+            return null;
+
+        var enumTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsEnum);
+
+        foreach (var enumType in enumTypes)
+            if (Enum.IsDefined(enumType, enumValue))
+                return enumType;
+
+        return null;
+    }
 
     public override void OnDeath()
     {
@@ -46,11 +49,9 @@ public class NewKillCounterScript : ConfigurableMonsterScriptBase
                 var stageType = GetEnumType(QuestEnum);
 
                 if (stageType is null)
-                {
                     // Handle the case where Quest value is not a valid enum value
                     // You can decide what action to take or skip the iteration
                     continue;
-                }
 
                 if (Enum.TryParse(stageType, QuestEnum, out var currentStage)
                     && (currentStage.ToString() == QuestEnum))
@@ -68,7 +69,8 @@ public class NewKillCounterScript : ConfigurableMonsterScriptBase
                             ServerMessageType.PersistentMessage,
                             $"{value.ToWords().Titleize()} - {Subject.Template.Name}");
                     }
-                } else // Move the else statement here
+                }
+                else // Move the else statement here
                 {
                     if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Counter, QuantityReq))
                     {
@@ -80,19 +82,14 @@ public class NewKillCounterScript : ConfigurableMonsterScriptBase
             }
     }
 
-    private static Type? GetEnumType(string? enumValue)
-    {
-        if (enumValue is null)
-            return null;
+    #region ScriptVars
+    public string? QuestEnum { get; init; }
+    public string? Leader { get; init; }
 
-        var enumTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsEnum);
+    public string Counter { get; init; } = null!;
 
-        foreach (var enumType in enumTypes)
-        {
-            if (Enum.IsDefined(enumType, enumValue))
-                return enumType;
-        }
+    public int QuantityReq { get; set; }
 
-        return null;
-    }
+    public bool IsMythicBoss { get; set; }
+    #endregion
 }

@@ -63,9 +63,10 @@ public class AreiniPetsScript : DialogScriptBase
                     source.Trackers.Enums.Set(Level25PetSkills.TailSweep);
                     source.SendActiveMessage("Tail Sweep ability learned!");
                 }
-                break; 
+
+                break;
             }
-            
+
             case "areini_pickenrage":
             {
                 if (optionIndex != 2)
@@ -75,9 +76,10 @@ public class AreiniPetsScript : DialogScriptBase
                     source.Trackers.Enums.Set(Level25PetSkills.Enrage);
                     source.SendActiveMessage("Enrage ability learned!");
                 }
-                break; 
+
+                break;
             }
-            
+
             case "areini_pickwindstrike":
             {
                 if (optionIndex != 2)
@@ -87,9 +89,10 @@ public class AreiniPetsScript : DialogScriptBase
                     source.Trackers.Enums.Set(Level25PetSkills.WindStrike);
                     source.SendActiveMessage("Wind Strike ability learned!");
                 }
-                break; 
+
+                break;
             }
-            
+
             case "areini_pickrabidbite":
             {
                 if (optionIndex != 2)
@@ -99,7 +102,8 @@ public class AreiniPetsScript : DialogScriptBase
                     source.Trackers.Enums.Set(Level10PetSkills.RabidBite);
                     source.SendActiveMessage("Rabid Bite ability learned!");
                 }
-                break; 
+
+                break;
             }
             case "areini_pickgrowl":
             {
@@ -110,6 +114,7 @@ public class AreiniPetsScript : DialogScriptBase
                     source.Trackers.Enums.Set(Level10PetSkills.Growl);
                     source.SendActiveMessage("Growl ability learned!");
                 }
+
                 break;
             }
             case "areini_pickquickattack":
@@ -121,12 +126,12 @@ public class AreiniPetsScript : DialogScriptBase
                     source.Trackers.Enums.Set(Level10PetSkills.QuickAttack);
                     source.SendActiveMessage("Quick Attack ability learned!");
                 }
+
                 break;
             }
         }
     }
 
-    
     private void RemoveExistingPets(Aisling source)
     {
         var monsters = source.MapInstance.GetEntities<Monster>();
@@ -135,7 +140,7 @@ public class AreiniPetsScript : DialogScriptBase
             if (monster.Name.Contains(source.Name))
                 monster.MapInstance.RemoveObject(monster);
     }
-    
+
     private void RemoveOption(string optionName)
     {
         var optionIndex = Subject.GetOptionIndex(optionName);

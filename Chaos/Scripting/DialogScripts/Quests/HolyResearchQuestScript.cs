@@ -15,15 +15,35 @@ namespace Chaos.Scripting.DialogScripts.Quests;
 
 public class HolyResearchQuestScript : DialogScriptBase
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
     private readonly ILogger<HolyResearchQuestScript> Logger;
-    
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
+
     /// <inheritdoc />
     public HolyResearchQuestScript(Dialog subject, ILogger<HolyResearchQuestScript> logger)
         : base(subject)
     {
         Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    }
+
+    private void GiveRewards(Aisling source, string itemToRemove)
+    {
+        Logger.WithTopics(
+                  Topics.Entities.Aisling,
+                  Topics.Entities.Experience,
+                  Topics.Entities.Dialog,
+                  Topics.Entities.Quest)
+              .WithProperty(source)
+              .WithProperty(Subject)
+              .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, 2000);
+
+        source.Inventory.RemoveQuantity(itemToRemove, 1);
+        ExperienceDistributionScript.GiveExp(source, 2000);
+        source.Trackers.Enums.Set(HolyResearchStage.None);
+        source.TryGiveGamePoints(5);
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive five gamepoints and 2000 exp!");
+        Subject.Close(source);
+        source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(3), true);
     }
 
     /// <inheritdoc />
@@ -130,10 +150,10 @@ public class HolyResearchQuestScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     GiveRewards(source, "raw honey");
                 }
-                
+
                 break;
 
             case "holyresearch_startedrawwax":
@@ -168,20 +188,5 @@ public class HolyResearchQuestScript : DialogScriptBase
 
                 break;
         }
-    }
-    
-    private void GiveRewards(Aisling source, string itemToRemove)
-    {
-        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-              .WithProperty(source).WithProperty(Subject)
-              .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, 2000);
-        
-        source.Inventory.RemoveQuantity(itemToRemove, 1);
-        ExperienceDistributionScript.GiveExp(source, 2000);
-        source.Trackers.Enums.Set(HolyResearchStage.None);
-        source.TryGiveGamePoints(5);
-        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive five gamepoints and 2000 exp!");
-        Subject.Close(source);
-        source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(3), true);
     }
 }

@@ -9,7 +9,7 @@ namespace Chaos.Scripting.MonsterScripts;
 public class GhostDeathScript : MonsterScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    
+
     /// <inheritdoc />
     public GhostDeathScript(Monster subject, IItemFactory itemFactory)
         : base(subject) =>
@@ -36,7 +36,7 @@ public class GhostDeathScript : MonsterScriptBase
             aisling.Inventory.RemoveByTemplateKey("clue2");
             aisling.Inventory.RemoveByTemplateKey("clue3");
             aisling.Inventory.RemoveByTemplateKey("clue4");
-            
+
             if (aisling.Trackers.Enums.TryGetValue(out ManorNecklaceStage stage) && (stage != ManorNecklaceStage.SawNecklace))
                 return;
 
@@ -46,8 +46,9 @@ public class GhostDeathScript : MonsterScriptBase
                 aisling.SendActiveMessage("You received Zulera's Cursed Necklace! It was sent to your bank.");
                 aisling.Bank.Deposit(item);
             }
+
             aisling.Trackers.Enums.Set(ManorNecklaceStage.ReturningNecklace);
-            
+
             aisling.SendActiveMessage("You received Zulera's Cursed Necklace! Take it back to her.");
         }
     }

@@ -21,7 +21,7 @@ public sealed class HideEffect : EffectBase
 
     /// <inheritdoc />
     public override bool ShouldApply(Creature source, Creature target)
-    { 
+    {
         if (target.Visibility is not VisibilityType.Normal)
         {
             AislingSubject?.SendOrangeBarMessage("You are already hidden.");

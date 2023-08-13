@@ -65,7 +65,6 @@ public class WarriorDedicateScript : DialogScriptBase
             var skill2 = SkillFactory.Create("slash");
 
             source.SkillBook.Remove("assail");
-            
 
             if (!source.SkillBook.Contains(skill2))
                 source.SkillBook.TryAddToNextSlot(skill2);

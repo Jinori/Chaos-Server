@@ -14,8 +14,8 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class SgriosReviveScript : DialogScriptBase
 {
-    private readonly ILogger<SgriosReviveScript> Logger;
     private readonly ISimpleCache _simpleCache;
+    private readonly ILogger<SgriosReviveScript> Logger;
 
     public SgriosReviveScript(Dialog subject, ISimpleCache simpleCache, ILogger<SgriosReviveScript> logger)
         : base(subject)
@@ -29,7 +29,7 @@ public class SgriosReviveScript : DialogScriptBase
         Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Death)
               .WithProperty(source)
               .LogInformation("{@AislingName} has been revived by Sgrios", source.Name);
-        
+
         switch (source.Gender)
         {
             case Gender.Male:

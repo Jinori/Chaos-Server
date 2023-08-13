@@ -11,9 +11,9 @@ namespace Chaos.Scripting.MerchantScripts.Casino;
 
 public class TwentyOneScript : MerchantScriptBase
 {
-    private readonly ILogger<TwentyOneScript> Logger;
     private readonly List<Aisling> AislingsThatDidNotBust = new();
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
+    private readonly ILogger<TwentyOneScript> Logger;
     private IEnumerable<Aisling>? AislingsAtCompletion;
     private IEnumerable<Aisling>? AislingsAtStart;
     private bool AnnouncedOneMinuteTimer;
@@ -54,9 +54,14 @@ public class TwentyOneScript : MerchantScriptBase
                 var winningsMinusEight = winnings - eightPercent;
 
                 Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
-                      .WithProperty(winner).WithProperty(Subject)
-                      .LogInformation("{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes", winner.Name, winningsMinusEight, eightPercent);
-                
+                      .WithProperty(winner)
+                      .WithProperty(Subject)
+                      .LogInformation(
+                          "{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes",
+                          winner.Name,
+                          winningsMinusEight,
+                          eightPercent);
+
                 winner.TryGiveGold(winningsMinusEight);
                 winner.SendServerMessage(ServerMessageType.Whisper, $"The casino took their cut of {eightPercent.ToWords()} gold!");
                 winner.SendServerMessage(ServerMessageType.Whisper, $"You won the game and receive {winningsMinusEight.ToWords()} gold!");
@@ -71,11 +76,16 @@ public class TwentyOneScript : MerchantScriptBase
                     var winnings = AislingsAtCompletion.Count() / enumerable.Length * 25000;
                     var eightPercent = (int)(winnings * 0.08m);
                     var winningsMinusEight = winnings - eightPercent;
-                    
+
                     Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
-                          .WithProperty(winner).WithProperty(Subject)
-                          .LogInformation("{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes", winner.Name, winningsMinusEight, eightPercent);
-                    
+                          .WithProperty(winner)
+                          .WithProperty(Subject)
+                          .LogInformation(
+                              "{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes",
+                              winner.Name,
+                              winningsMinusEight,
+                              eightPercent);
+
                     winner.SendServerMessage(ServerMessageType.Whisper, $"The casino took their cut of {eightPercent.ToWords()} gold!");
                     winner.SendServerMessage(ServerMessageType.Whisper, $"You tied and receive {winningsMinusEight.ToWords()} gold!");
                     winner.TryGiveGold(winningsMinusEight);

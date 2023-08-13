@@ -110,8 +110,8 @@ public class ClueScript : ReactorTileScriptBase
                     var allMembersHaveQuestFlag = aisling.Group.All(
                         member =>
                             member.Trackers.Enums.TryGetValue(out ManorNecklaceStage value)
-                            && (value is ManorNecklaceStage.AcceptedQuest or ManorNecklaceStage.SawNecklace)
-                                && member.WithinLevelRange(source));
+                            && value is ManorNecklaceStage.AcceptedQuest or ManorNecklaceStage.SawNecklace
+                            && member.WithinLevelRange(source));
 
                     // Check if all members have all four clues
                     var allMembersHaveAllClues = aisling.Group.All(
@@ -119,8 +119,8 @@ public class ClueScript : ReactorTileScriptBase
                                   && member.Inventory.HasCount("Clue Two", 1)
                                   && member.Inventory.HasCount("Clue Three", 1)
                                   && member.Inventory.HasCount("Clue Four", 1));
-                    
-                    if (allMembersHaveQuestFlag && (allMembersHaveAllClues))
+
+                    if (allMembersHaveQuestFlag && allMembersHaveAllClues)
                     {
                         var monster = _monsterFactory.Create("airphasedGhost", aisling.MapInstance, new Point(3, 6));
                         monster.AggroRange = 10;
@@ -160,6 +160,7 @@ public class ClueScript : ReactorTileScriptBase
                         source.WarpTo(point);
                     }
                 }
+
                 break;
             }
         }

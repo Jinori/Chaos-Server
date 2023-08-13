@@ -14,8 +14,8 @@ namespace Chaos.Scripting.DialogScripts.Quests.Wilderness;
 public class BeeProblemScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
     private readonly ILogger<BeeProblemScript> Logger;
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     public BeeProblemScript(Dialog subject, IItemFactory itemFactory, ILogger<BeeProblemScript> logger)
         : base(subject)
@@ -76,10 +76,20 @@ public class BeeProblemScript : DialogScriptBase
                     return;
                 }
 
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Item, Topics.Entities.Dialog, Topics.Entities.Quest)
-                      .WithProperty(source).WithProperty(Subject)
-                      .LogInformation("{@AislingName} has received {@ExpAmount} exp and the item {@ItemName}", source.Name, 5000, "Wind Belt");
-                
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Item,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
+                      .LogInformation(
+                          "{@AislingName} has received {@ExpAmount} exp and the item {@ItemName}",
+                          source.Name,
+                          5000,
+                          "Wind Belt");
+
                 source.TryGiveGamePoints(5);
                 ExperienceDistributionScript.GiveExp(source, 5000);
                 source.TryGiveItems(ItemFactory.Create("windbelt"));

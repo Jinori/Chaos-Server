@@ -15,31 +15,29 @@ namespace Chaos.Scripting.MapScripts.Arena.ArenaOptions;
 
 public sealed class MapShrinkScript : MapScriptBase
 {
-    private IApplyDamageScript ApplyDamageScript { get; }
-    private readonly ISimpleCache SimpleCache;
     private readonly List<IPoint> CurrentMapPoints = new();
     private readonly List<IPoint> NextMapPoints = new();
-    private bool MapWallsCaptured;
-    private int MorphCount;
+    private readonly ISimpleCache SimpleCache;
     private DateTime? AnnouncedMorphStart;
     private bool AnnounceMorph;
     private bool CountdownMorphStarted;
     private int CountdownMorphStep;
     private DateTime LastCountdownMorphTime;
+    private bool MapWallsCaptured;
+    private int MorphCount;
     private double TimePassedSinceMainAnimationStart;
     private double TimePassedSinceTileAnimation;
+    private IApplyDamageScript ApplyDamageScript { get; }
+
+    private List<string> MorphTemplateKeys { get; } = new()
+        { "26007", "26008", "26009", "26010", "26011" };
     private IIntervalTimer MorphTimer { get; }
-    
-    
+
     private Animation PreAnimation { get; } = new()
     {
         AnimationSpeed = 100,
-        TargetAnimation = 214 
+        TargetAnimation = 214
     };
-    
-    private List<string> MorphTemplateKeys { get; } = new()
-        { "26007", "26008", "26009", "26010", "26011" };
-
 
     /// <inheritdoc />
     public MapShrinkScript(MapInstance subject, ISimpleCache simpleCache)
@@ -50,14 +48,21 @@ public sealed class MapShrinkScript : MapScriptBase
         SimpleCache = simpleCache;
     }
 
+    private void MorphMap()
+    {
+        var templateKey = MorphTemplateKeys[Math.Min(MorphCount, MorphTemplateKeys.Count - 1)];
+        Subject.Morph(templateKey);
+        MorphCount++;
+    }
+
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         MorphTimer.Update(delta);
-        
+
         if (!MorphTimer.IntervalElapsed)
             return;
-        
+
         if (!MapWallsCaptured)
         {
             var templateKey = MorphTemplateKeys[Math.Min(MorphCount, MorphTemplateKeys.Count - 1)];
@@ -71,9 +76,7 @@ public sealed class MapShrinkScript : MapScriptBase
                     var point = new Point(x, y);
 
                     if (currentMapTemp.IsWithinMap(point) && !currentMapTemp.IsWall(point) && !CurrentMapPoints.Contains(point))
-                    {
                         CurrentMapPoints.Add(point);
-                    }
                 }
             }
 
@@ -84,9 +87,7 @@ public sealed class MapShrinkScript : MapScriptBase
                     var point = new Point(x, y);
 
                     if (nextMapTemp.IsWithinMap(point) && nextMapTemp.IsWall(point) && !NextMapPoints.Contains(point))
-                    {
                         NextMapPoints.Add(point);
-                    }
                 }
             }
 
@@ -106,9 +107,7 @@ public sealed class MapShrinkScript : MapScriptBase
             var allPlayers = Subject.GetEntities<Aisling>().ToList();
 
             foreach (var player in allPlayers)
-            {
                 player.SendActiveMessage("Lava will claim more of the map in ten seconds!");
-            }
 
             CountdownMorphStarted = true;
             CountdownMorphStep = 9;
@@ -132,15 +131,9 @@ public sealed class MapShrinkScript : MapScriptBase
                 var currentSecond = (int)Math.Floor(TimePassedSinceMainAnimationStart);
 
                 foreach (var nowall in CurrentMapPoints)
-                {
                     if (NextMapPoints.Contains(nowall))
-                    {
                         if ((int)Math.Floor(TimePassedSinceMainAnimationStart) == currentSecond)
-                        {
                             Subject.ShowAnimation(PreAnimation.GetPointAnimation(nowall));
-                        }
-                    }
-                }
 
                 TimePassedSinceMainAnimationStart += delta.TotalSeconds; // Increment the main animation timer
 
@@ -179,12 +172,5 @@ public sealed class MapShrinkScript : MapScriptBase
             NextMapPoints.Clear();
             MapWallsCaptured = false;
         }
-    }
-
-    private void MorphMap()
-    {
-        var templateKey = MorphTemplateKeys[Math.Min(MorphCount, MorphTemplateKeys.Count - 1)];
-        Subject.Morph(templateKey);
-        MorphCount++;
     }
 }

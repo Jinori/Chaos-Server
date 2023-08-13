@@ -109,6 +109,7 @@ public class KillCounterScript : MonsterScriptBase
         IncrementCounter(aisling);
         aisling.SendOrangeBarMessage("You defeated the Wolf.");
     }
+
     private void HandleZombieKill(Aisling aisling)
     {
         if (!aisling.Trackers.Enums.TryGetValue(out MythicGargoyle gargoyle) || (gargoyle != MythicGargoyle.LowerGargoyle))
@@ -129,13 +130,7 @@ public class KillCounterScript : MonsterScriptBase
         var value = aisling.Trackers.Counters.AddOrIncrement(Subject.Template.TemplateKey);
         aisling.Client.SendServerMessage(ServerMessageType.PersistentMessage, $"{value.ToWords().Titleize()} - {Subject.Template.Name}");
     }
-    
-    private void SnowWolfIncrementCounter(Aisling aisling)
-    {
-        var value = aisling.Trackers.Counters.AddOrIncrement("wolf");
-        aisling.Client.SendServerMessage(ServerMessageType.PersistentMessage, $"{value.ToWords().Titleize()} - Snow Wolf");
-    }
-    
+
     /// <inheritdoc />
     public override void OnDeath() => ProcessKillCount();
 
@@ -184,12 +179,18 @@ public class KillCounterScript : MonsterScriptBase
                         break;
                     case "manorghost":
                         HandleManorGhostKill(aisling);
-                        
+
                         break;
                     case "tavern_rat":
                         HandleTavernRatKill(aisling);
 
                         break;
                 }
+    }
+
+    private void SnowWolfIncrementCounter(Aisling aisling)
+    {
+        var value = aisling.Trackers.Counters.AddOrIncrement("wolf");
+        aisling.Client.SendServerMessage(ServerMessageType.PersistentMessage, $"{value.ToWords().Titleize()} - Snow Wolf");
     }
 }

@@ -8,8 +8,8 @@ public class LockpickChestSpawnerScript : MerchantSpawnerScript
 {
     public override int MaxAmount { get; set; } = 2;
     public override int MaxPerSpawn { get; set; } = 1;
-    public override int MinDistanceFromWall { get; set; } = 2;
     public override string MerchantTemplateKey { get; set; } = "lockpickChest";
+    public override int MinDistanceFromWall { get; set; } = 2;
     public override int SpawnIntervalMs { get; set; } = 600;
 
     /// <inheritdoc />

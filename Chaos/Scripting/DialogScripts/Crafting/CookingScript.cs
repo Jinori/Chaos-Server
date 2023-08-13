@@ -102,6 +102,7 @@ public class CookingScript : ConfigurableDialogScriptBase
                     var item = ItemFactory.CreateFaux("sweetbuns");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
+
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.Popsicle))
                 {
                     var item = ItemFactory.CreateFaux("popsicle");
@@ -229,9 +230,10 @@ public class CookingScript : ConfigurableDialogScriptBase
                     {
                         source.Trackers.Enums.Set(CookFoodStage.popsicle);
                         Subject.Reply(source, "Skip", "cooking_directory");
-                        
+
                         return;
                     }
+
                         if (source.Trackers.Flags.HasFlag(CookingRecipes.Popsicle))
                         {
                             var item = ItemFactory.CreateFaux("popsicle");

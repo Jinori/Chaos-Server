@@ -63,7 +63,7 @@ public sealed class KarloposBossEnrageScript : MonsterScriptBase
         if (!Bonus30Applied && (Subject.StatSheet.HealthPercent <= 30))
         {
             Bonus30Applied = true;
-            
+
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 

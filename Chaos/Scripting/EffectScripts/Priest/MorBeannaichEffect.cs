@@ -6,6 +6,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class MorBeannaichEffect : NonOverwritableEffectBase
 {
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 125,
@@ -16,8 +17,6 @@ public class MorBeannaichEffect : NonOverwritableEffectBase
         "beannaich",
         "mor beannaich"
     };
-
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
     public override byte Icon => 105;
     public override string Name => "mor beannaich";
     protected override byte? Sound => 123;

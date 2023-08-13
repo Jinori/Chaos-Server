@@ -250,8 +250,8 @@ public class MythicGrimlockScript : DialogScriptBase
 
             case "grimlock_item2":
             {
-                if (!source.Inventory.RemoveQuantity("Brown Kobold Tail", 10) 
-                    && !source.Inventory.RemoveQuantity("Black Kobold Tail", 10) 
+                if (!source.Inventory.RemoveQuantity("Brown Kobold Tail", 10)
+                    && !source.Inventory.RemoveQuantity("Black Kobold Tail", 10)
                     && !source.Inventory.RemoveQuantity("Silver Kobold Tail", 10))
                 {
                     Subject.Reply(
@@ -287,7 +287,8 @@ public class MythicGrimlockScript : DialogScriptBase
             case "grimlock_ally":
             {
                 if (hasKobold
-                    && (hasKobold == kobold is MythicKobold.AlliedKobold or MythicKobold.BossKoboldStarted or MythicKobold.BossKoboldDefeated))
+                    && (hasKobold
+                        == kobold is MythicKobold.AlliedKobold or MythicKobold.BossKoboldStarted or MythicKobold.BossKoboldDefeated))
                 {
                     Subject.Reply(
                         source,

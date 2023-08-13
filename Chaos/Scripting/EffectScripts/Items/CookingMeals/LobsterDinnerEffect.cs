@@ -6,6 +6,7 @@ namespace Chaos.Scripting.EffectScripts.Items.CookingMeals;
 
 public class LobsterDinnerEffect : NonOverwritableEffectBase
 {
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
@@ -27,10 +28,8 @@ public class LobsterDinnerEffect : NonOverwritableEffectBase
         "Salad",
         "Sandwich",
         "Soup",
-        "Steak Meal",
+        "Steak Meal"
     };
-
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     public override byte Icon => 72;
     public override string Name => "Lobster Dinner";
     protected override byte? Sound => 115;

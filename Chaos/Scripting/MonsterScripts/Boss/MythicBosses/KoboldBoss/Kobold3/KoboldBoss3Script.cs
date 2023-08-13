@@ -22,7 +22,8 @@ public class KoboldBoss3Script : CompositeMonsterScript
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(KoboldBossRegenScript))
     };
-//If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
+
+    //If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
     /// <inheritdoc />
     public KoboldBoss3Script(IScriptProvider scriptProvider, Monster subject)
     {

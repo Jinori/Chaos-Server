@@ -20,9 +20,10 @@ public class PetAttackingScript : MonsterScriptBase
         if (Subject.PetOwner?.DistanceFrom(Subject) >= 8)
         {
             Target = null;
-            return;   
+
+            return;
         }
-        
+
         if (Target is not { IsAlive: true } || (Subject.DistanceFrom(Target) != 1))
             return;
 

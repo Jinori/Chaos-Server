@@ -1,6 +1,7 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Boss.MythicBosses.BunnyBoss.Bunny1;
 
 namespace Chaos.Scripting.MonsterScripts.Boss;
 
@@ -20,7 +21,8 @@ public class BunnyBoss1Script : CompositeMonsterScript
         GetScriptKey(typeof(DeathScript)),
         GetScriptKey(typeof(DisplayNameScript))
     };
-//If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
+
+    //If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
     /// <inheritdoc />
     public BunnyBoss1Script(IScriptProvider scriptProvider, Monster subject)
     {

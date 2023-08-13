@@ -2314,9 +2314,6 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-
-
-
                 }
 
                 break;

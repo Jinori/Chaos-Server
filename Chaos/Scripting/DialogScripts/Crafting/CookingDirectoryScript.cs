@@ -252,6 +252,7 @@ public class CookingDirectoryScript : DialogScriptBase
 
                             return;
                     }
+
                 if (foodSelected && (foodStage == CookFoodStage.popsicle))
                     switch (foodSelected)
                     {

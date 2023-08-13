@@ -12,6 +12,7 @@ namespace Chaos.Scripting.EffectScripts.Wizard;
 
 public class RuminationEffect : ContinuousAnimationEffectBase
 {
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(15);
     protected Point Point { get; set; }
 
     protected override Animation Animation { get; } = new()
@@ -22,8 +23,6 @@ public class RuminationEffect : ContinuousAnimationEffectBase
 
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1));
-
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(15);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1));
     public override byte Icon => 19;

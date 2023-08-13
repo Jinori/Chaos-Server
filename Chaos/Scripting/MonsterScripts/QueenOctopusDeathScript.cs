@@ -27,25 +27,21 @@ public class QueenOctopusDeathScript : MonsterScriptBase
 
         foreach (var member in Subject.MapInstance.GetEntities<Aisling>().ToList())
         {
-
             var mapInstance = SimpleCache.Get<MapInstance>("karloposn");
             Point point;
 
             do
                 point = rectangle.GetRandomPoint();
             while (!mapInstance.IsWalkable(point, member.Type));
-            
+
             member.Trackers.TimedEvents.AddEvent("QueenOctopusCD", TimeSpan.FromHours(24), true);
-            
+
             var hasStage = member.Trackers.Enums.TryGetValue(out QueenOctopusQuest stage);
 
             if (stage == QueenOctopusQuest.Pendant3)
-            {
                 member.Trackers.Enums.Set(QueenOctopusQuest.Queen);
-            }
-            
+
             member.TraverseMap(mapInstance, point);
-            
         }
     }
 }

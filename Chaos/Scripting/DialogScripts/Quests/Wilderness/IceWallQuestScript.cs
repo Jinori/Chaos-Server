@@ -113,11 +113,16 @@ public class IceWallQuestScript : DialogScriptBase
                     source.Inventory.RemoveQuantity("Ice Sample 1", 1);
                     source.Inventory.RemoveQuantity("Ice Sample 2", 1);
                     source.Inventory.RemoveQuantity("Ice Sample 3", 1);
-                    
-                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                          .WithProperty(source).WithProperty(Subject)
+
+                    Logger.WithTopics(
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
+                          .WithProperty(source)
+                          .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 75000);
-                    
+
                     ExperienceDistributionScript.GiveExp(source, 75000);
                     source.Trackers.Enums.Set(IceWallQuest.SampleComplete);
                     source.TryGiveGamePoints(5);
@@ -143,10 +148,15 @@ public class IceWallQuestScript : DialogScriptBase
                     return;
                 }
 
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                      .WithProperty(source).WithProperty(Subject)
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 150000);
-                
+
                 source.TryGiveGamePoints(5);
                 ExperienceDistributionScript.GiveExp(source, 150000);
                 source.SendOrangeBarMessage("You receive five gamepoints and 150000 exp!");
@@ -173,10 +183,15 @@ public class IceWallQuestScript : DialogScriptBase
                     return;
                 }
 
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                      .WithProperty(source).WithProperty(Subject)
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 50000);
-                
+
                 source.Inventory.RemoveQuantity("Pristine Ruby", 1);
                 source.Inventory.RemoveQuantity("Polished Bronze Bar", 1);
                 source.TryGiveItems(ItemFactory.Create("charm"));
@@ -197,10 +212,15 @@ public class IceWallQuestScript : DialogScriptBase
                     return;
                 }
 
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                      .WithProperty(source).WithProperty(Subject)
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 500000);
-                
+
                 source.TryGiveGamePoints(5);
                 ExperienceDistributionScript.GiveExp(source, 500000);
                 source.SendOrangeBarMessage("You receive five gamepoints and 500000 exp!");

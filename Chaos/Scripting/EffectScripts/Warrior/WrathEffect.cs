@@ -15,6 +15,8 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 public class WrathEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(1);
+    /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -23,8 +25,6 @@ public class WrathEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
     protected IApplyDamageScript ApplyDamageScript { get; }
-    /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(1);
     /// <inheritdoc />
     public override byte Icon { get; } = 98;
     /// <inheritdoc />

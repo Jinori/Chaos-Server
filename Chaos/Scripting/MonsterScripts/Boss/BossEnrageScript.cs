@@ -1,7 +1,4 @@
-using System.Xml;
 using Chaos.Extensions.Geometry;
-using Chaos.Geometry.Abstractions;
-using Chaos.Geometry.EqualityComparers;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
@@ -38,7 +35,7 @@ public sealed class BossEnrageScript : MonsterScriptBase
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
-            
+
             for (var i = 0; i <= 3; i++)
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));

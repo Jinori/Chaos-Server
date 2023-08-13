@@ -10,9 +10,9 @@ public class PetuniaSpawnerScript : ItemSpawnerScript
     public override string ItemTemplateKey { get; set; } = "petunia";
     public override int MaxAmount { get; set; } = 15;
     public override int MaxPerSpawn { get; set; } = 3;
-    public override int SpawnIntervalMs { get; set; } = 400000;
-    
+
     public override int SpawnChance { get; set; } = 15;
+    public override int SpawnIntervalMs { get; set; } = 400000;
 
     /// <inheritdoc />
     public PetuniaSpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)

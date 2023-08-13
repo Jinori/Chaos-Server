@@ -8,10 +8,10 @@ namespace Chaos.Scripting.MonsterScripts.Boss.PFMantis;
 public sealed class PFMantisBossEnrageScript : MonsterScriptBase
 {
     private readonly IMonsterFactory MonsterFactory;
+    private bool Bonus20Applied;
     private bool Bonus40Applied;
     private bool Bonus60Applied;
     private bool Bonus90Applied;
-    private bool Bonus20Applied;
 
     private Animation UpgradeAnimation { get; } = new()
     {
@@ -29,6 +29,7 @@ public sealed class PFMantisBossEnrageScript : MonsterScriptBase
         if (!Bonus90Applied && (Subject.StatSheet.HealthPercent <= 90))
         {
             Bonus90Applied = true;
+
             //Give Bonuses
             var attrib = new Attributes
             {
@@ -37,6 +38,7 @@ public sealed class PFMantisBossEnrageScript : MonsterScriptBase
                 Int = 2,
                 MagicResistance = 10
             };
+
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }
@@ -77,7 +79,7 @@ public sealed class PFMantisBossEnrageScript : MonsterScriptBase
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }
-        
+
         if (!Bonus20Applied && (Subject.StatSheet.HealthPercent <= 20))
         {
             Bonus20Applied = true;
@@ -92,12 +94,11 @@ public sealed class PFMantisBossEnrageScript : MonsterScriptBase
                 Hit = 6,
                 MagicResistance = 10,
                 SkillDamagePct = 5,
-                SpellDamagePct = 5,
+                SpellDamagePct = 5
             };
 
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }
-        
     }
 }

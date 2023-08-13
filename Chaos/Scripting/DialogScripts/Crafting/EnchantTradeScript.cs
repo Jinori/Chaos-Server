@@ -9,13 +9,14 @@ namespace Chaos.Scripting.DialogScripts.Crafting;
 
 public class EnchantTradeScript : DialogScriptBase
 {
-    private readonly IItemFactory ItemFactory;
     private readonly IDialogFactory DialogFactory;
 
     private readonly List<string> EssenceTemplateKeys = new()
-    { 
-        "essenceofignatar", "essenceofgeolith", "essenceofzephyra", "essenceofaquaedon", "essenceofskandara", "essenceofmiraelis", "essenceoftheselene", "essenceofserendael"
+    {
+        "essenceofignatar", "essenceofgeolith", "essenceofzephyra", "essenceofaquaedon", "essenceofskandara", "essenceofmiraelis",
+        "essenceoftheselene", "essenceofserendael"
     };
+    private readonly IItemFactory ItemFactory;
 
     /// <inheritdoc />
     public EnchantTradeScript(
@@ -28,7 +29,7 @@ public class EnchantTradeScript : DialogScriptBase
         ItemFactory = itemFactory;
         DialogFactory = dialogFactory;
     }
-    
+
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
@@ -70,18 +71,17 @@ public class EnchantTradeScript : DialogScriptBase
             return;
         }
 
-        
         var essence = ItemFactory.Create(previous.ToLowerInvariant().Replace(" ", string.Empty));
-        
+
         if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
         {
-            Subject.Reply(source, $"You ran out of those essences to trade.", "enchant_trade_initial");
+            Subject.Reply(source, "You ran out of those essences to trade.", "enchant_trade_initial");
 
             return;
         }
 
         source.Inventory.RemoveQuantityByTemplateKey(item.Template.TemplateKey, 1);
-        
+
         source.GiveItemOrSendToBank(essence);
 
         Subject.InjectTextParameters(item.DisplayName, essence.DisplayName);
@@ -100,11 +100,6 @@ public class EnchantTradeScript : DialogScriptBase
             Subject.Reply(source, "Essence cannot be traded", "enchant_trade_initial");
     }
 
-    public void OnDisplayingShowPlayerItems(Aisling source) => Subject.Slots =
-        source.Inventory.Where(x => EssenceTemplateKeys.Contains(x.Template.TemplateKey.ToLower()))
-              .Select(x => x.Slot)
-              .ToList();
-
     public void OnDisplayingEssences(Aisling source)
     {
         if (!Subject.MenuArgs.TryGet<int>(0, out var slot))
@@ -116,15 +111,17 @@ public class EnchantTradeScript : DialogScriptBase
             return;
 
         foreach (var essenceTemplateKey in EssenceTemplateKeys)
-        {
             if (!string.Equals(selectedItem.Template.TemplateKey, essenceTemplateKey, StringComparison.CurrentCultureIgnoreCase))
             {
                 var fauxEssenceItem = ItemFactory.CreateFaux(essenceTemplateKey);
-                Subject.Items.Add(ItemDetails.DisplayRecipe(fauxEssenceItem));   
+                Subject.Items.Add(ItemDetails.DisplayRecipe(fauxEssenceItem));
             }
-        }
     }
 
+    public void OnDisplayingShowPlayerItems(Aisling source) => Subject.Slots =
+        source.Inventory.Where(x => EssenceTemplateKeys.Contains(x.Template.TemplateKey.ToLower()))
+              .Select(x => x.Slot)
+              .ToList();
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
@@ -150,7 +147,7 @@ public class EnchantTradeScript : DialogScriptBase
             // Find the slot of the essence item the player wants to trade.
             if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
             {
-                Subject.Reply(source, $"You ran out of those essences to trade.", "enchant_trade_initial");
+                Subject.Reply(source, "You ran out of those essences to trade.", "enchant_trade_initial");
 
                 return;
             }
@@ -163,7 +160,7 @@ public class EnchantTradeScript : DialogScriptBase
             var dialog = DialogFactory.Create("enchant_trade_confirmation", Subject.DialogSource);
             dialog.MenuArgs = Subject.MenuArgs;
             dialog.Context = Subject.Context;
-            dialog.InjectTextParameters(essence.DisplayName,item.DisplayName);
+            dialog.InjectTextParameters(essence.DisplayName, item.DisplayName);
             dialog.Display(source);
         }
     }

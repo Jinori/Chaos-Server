@@ -43,7 +43,7 @@ public class TerminusTitleToggleScript : DialogScriptBase
                 source.Titles.Add(first);
                 source.Client.SendSelfProfile();
 
-                break;   
+                break;
             }
         }
     }

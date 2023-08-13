@@ -16,12 +16,10 @@ public sealed class HiddenHavocHideEffect : EffectBase
     public override void OnApplied()
     {
         foreach (var effect in Subject.Effects)
-        {
             if (effect != this)
                 Subject.Effects.Dispel(effect.Name);
-        }
-        
-        Subject.SetVisibility(VisibilityType.Hidden);   
+
+        Subject.SetVisibility(VisibilityType.Hidden);
     }
 
     /// <inheritdoc />

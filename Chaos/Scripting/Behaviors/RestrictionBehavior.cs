@@ -13,7 +13,7 @@ public class RestrictionBehavior
         "Arena Battle Ring",
         "The Afterlife"
     };
-    
+
     public virtual bool CanMove(Creature creature)
     {
         switch (creature)
@@ -142,7 +142,7 @@ public class RestrictionBehavior
             {
                 return true;
             }
-            
+
             case Aisling aisling when aisling.Status.HasFlag(Status.Suain)
                                       || aisling.Status.HasFlag(Status.Pramh)
                                       || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _):

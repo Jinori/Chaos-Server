@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using Chaos.Collections;
 using Chaos.Common.Utilities;
 using Chaos.Extensions.Common;
@@ -21,8 +20,8 @@ public abstract class ItemSpawnerScript : MapScriptBase
     public abstract string ItemTemplateKey { get; set; }
     public abstract int MaxAmount { get; set; }
     public abstract int MaxPerSpawn { get; set; }
-    public abstract int SpawnIntervalMs { get; set; }
     public abstract int SpawnChance { get; set; }
+    public abstract int SpawnIntervalMs { get; set; }
 
     protected ItemSpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)
         : base(subject)
@@ -56,7 +55,7 @@ public abstract class ItemSpawnerScript : MapScriptBase
 
             if (maxSpawns == 0)
                 return;
-            
+
             maxSpawns++;
 
             var spawnAmount = Random.Shared.Next(1, maxSpawns);

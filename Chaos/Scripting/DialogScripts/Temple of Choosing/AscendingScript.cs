@@ -46,7 +46,7 @@ public class AscendingScript : DialogScriptBase
 
             if (!ExperienceDistributionScript.TryTakeExp(source, formula))
                 break;
-            
+
             switch (attributeType)
             {
                 case "HP":
@@ -55,6 +55,7 @@ public class AscendingScript : DialogScriptBase
                     {
                         MaximumHp = gain
                     };
+
                     source.StatSheet.Add(hp);
 
                     break;
@@ -65,6 +66,7 @@ public class AscendingScript : DialogScriptBase
                     {
                         MaximumMp = gain
                     };
+
                     source.StatSheet.Add(mp);
 
                     break;

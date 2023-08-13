@@ -19,16 +19,15 @@ public abstract class MerchantSpawnerScript : MapScriptBase
     public abstract int MaxAmount { get; set; }
     public abstract int MaxPerSpawn { get; set; }
     public abstract string MerchantTemplateKey { get; set; }
-    public abstract int SpawnIntervalMs { get; set; }
-    
+
     public abstract int MinDistanceFromWall { get; set; }
+    public abstract int SpawnIntervalMs { get; set; }
 
     protected MerchantSpawnerScript(MapInstance subject, IMerchantFactory merchantFactory)
         : base(subject) =>
         MerchantFactory = merchantFactory;
 
     private IPoint GenerateSpawnPoint(MapTemplate selectedMap) => selectedMap.Bounds.GetRandomPoint(pt => !IsNearWall(pt, selectedMap));
-    
 
     public bool IsNearWall(IPoint point, MapTemplate selectedMap)
     {
@@ -53,14 +52,14 @@ public abstract class MerchantSpawnerScript : MapScriptBase
 
             if (maxSpawns == 0)
                 return;
-            
+
             maxSpawns++;
-            
+
             if (!IntegerRandomizer.RollChance(15))
                 return;
-            
+
             var spawnAmount = Random.Shared.Next(1, maxSpawns);
-            
+
             for (var i = 0; i < spawnAmount; i++)
             {
                 var point = GenerateSpawnPoint(Subject.Template);

@@ -21,45 +21,44 @@ namespace Chaos.Scripting.MapScripts.Arena;
 
 public abstract class HiddenHavocGameScript : MapScriptBase
 {
-    private bool AislingsTouching;
-    private IApplyDamageScript ApplyDamageScript { get; }
-    private Aisling? TouchOne;
-    private Aisling? TouchTwo;
-    private readonly ISimpleCache SimpleCache;
-    private readonly IEffectFactory EffectFactory;
-    
     //Shrinking
     private readonly List<IPoint> CurrentMapPoints = new();
+    private readonly IEffectFactory EffectFactory;
     private readonly List<IPoint> NextMapPoints = new();
-    private bool MapWallsCaptured;
-    private int MorphCount;
+    private readonly ISimpleCache SimpleCache;
+    private bool AislingsTouching;
     private DateTime? AnnouncedMorphStart;
     private bool AnnounceMorph;
     private bool CountdownMorphStarted;
     private int CountdownMorphStep;
     private DateTime LastCountdownMorphTime;
+    private bool MapWallsCaptured;
+    private int MorphCount;
     private double TimePassedSinceMainAnimationStart;
     private double TimePassedSinceTileAnimation;
-    private Animation PreAnimation { get; } = new()
-    {
-        AnimationSpeed = 100,
-        TargetAnimation = 214 
-    };
-    
-    private IIntervalTimer ArenaUpdateTimer { get; }
+    private Aisling? TouchOne;
+    private Aisling? TouchTwo;
     private bool WinnerDeclared;
-    
-    public abstract bool ShouldMapShrink { get; set; }
-    public abstract List<string> MorphTemplateKeys { get; set; }
-    public abstract string MorphOriginalTemplateKey { get; set; }
     public abstract bool IsHostPlaying { get; set; }
-    
+    public abstract string MorphOriginalTemplateKey { get; set; }
+    public abstract List<string> MorphTemplateKeys { get; set; }
+
+    public abstract bool ShouldMapShrink { get; set; }
+    private IApplyDamageScript ApplyDamageScript { get; }
+
+    private IIntervalTimer ArenaUpdateTimer { get; }
+
     private Animation BlowupAnimation { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 49
     };
-    
+    private Animation PreAnimation { get; } = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 214
+    };
+
     protected HiddenHavocGameScript(MapInstance subject, ISimpleCache simpleCache, IEffectFactory effectFactory)
         : base(subject)
     {
@@ -69,6 +68,92 @@ public abstract class HiddenHavocGameScript : MapScriptBase
         EffectFactory = effectFactory;
     }
 
+    private void DeclareNoWinners()
+    {
+        WinnerDeclared = true;
+        var allToPort = Subject.GetEntities<Aisling>().ToList();
+        var allHosts = Subject.GetEntities<Aisling>().Where(IsHost);
+
+        foreach (var player in allToPort)
+        {
+            player.SendServerMessage(ServerMessageType.OrangeBar2, "The round ended in a draw. Everyone died!");
+            var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
+            player.TraverseMap(mapInstance, new Point(12, 10));
+        }
+
+        foreach (var host in allHosts)
+        {
+            host.SendServerMessage(ServerMessageType.OrangeBar2, "The round ended in a draw. Everyone died!");
+            var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
+            host.TraverseMap(mapInstance, new Point(12, 10));
+        }
+
+        Subject.RemoveScript<IMapScript, HiddenHavocGameScript>();
+        ResetMaps();
+    }
+
+    private void DeclareWinners(IReadOnlyList<Aisling> winners)
+    {
+        var allToPort = Subject.GetEntities<Aisling>().ToList();
+        var allHosts = Subject.GetEntities<Aisling>().Where(IsHost);
+
+        var winningMessage = winners.Count switch
+        {
+            1 => $"{winners[0].Name} has won the round!",
+            2 => $"{winners[0].Name} and {winners[1].Name} have won the round!",
+            _ => "The round is over!"
+        };
+
+        foreach (var player in allToPort)
+        {
+            player.SendServerMessage(ServerMessageType.OrangeBar2, winningMessage);
+            var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
+            player.TraverseMap(mapInstance, new Point(12, 10));
+        }
+
+        foreach (var host in allHosts)
+        {
+            host.SendServerMessage(ServerMessageType.OrangeBar2, winningMessage);
+            var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
+            host.TraverseMap(mapInstance, new Point(12, 10));
+        }
+
+        Subject.RemoveScript<IMapScript, HiddenHavocGameScript>();
+
+        WinnerDeclared = true;
+        ResetMaps();
+    }
+
+    private List<Aisling> GetAliveAislings(IEnumerable<Aisling> allAislings)
+    {
+        List<Aisling> aliveAislings;
+
+        if (IsHostPlaying)
+        {
+            aliveAislings = allAislings
+                            .Where(x => x.IsAlive)
+                            .ToList();
+
+            return aliveAislings;
+        }
+
+        aliveAislings = allAislings
+                        .Where(x => x.IsAlive && (!x.Trackers.Enums.TryGetValue(out ArenaHost value) || (value == ArenaHost.None)))
+                        .ToList();
+
+        return aliveAislings;
+    }
+
+    private bool IsHost(Aisling aisling) =>
+        !aisling.Trackers.Enums.TryGetValue(out ArenaHost value) || ((value != ArenaHost.Host) && (value != ArenaHost.MasterHost));
+
+    private void MorphMap()
+    {
+        var templateKey = MorphTemplateKeys[Math.Min(MorphCount, MorphTemplateKeys.Count - 1)];
+        Subject.Morph(templateKey);
+        MorphCount++;
+    }
+
     /// <inheritdoc />
     public override void OnEntered(Creature creature)
     {
@@ -76,12 +161,13 @@ public abstract class HiddenHavocGameScript : MapScriptBase
         creature.Effects.Apply(creature, hide);
     }
 
+    private void ResetMaps() => Subject.Morph(MorphOriginalTemplateKey);
+
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         ArenaUpdateTimer.Update(delta);
-        
-        
+
         if (ShouldMapShrink)
         {
             if (!MapWallsCaptured)
@@ -97,9 +183,7 @@ public abstract class HiddenHavocGameScript : MapScriptBase
                         var point = new Point(x, y);
 
                         if (currentMapTemp.IsWithinMap(point) && !currentMapTemp.IsWall(point) && !CurrentMapPoints.Contains(point))
-                        {
                             CurrentMapPoints.Add(point);
-                        }
                     }
                 }
 
@@ -110,9 +194,7 @@ public abstract class HiddenHavocGameScript : MapScriptBase
                         var point = new Point(x, y);
 
                         if (nextMapTemp.IsWithinMap(point) && nextMapTemp.IsWall(point) && !NextMapPoints.Contains(point))
-                        {
                             NextMapPoints.Add(point);
-                        }
                     }
                 }
 
@@ -132,9 +214,7 @@ public abstract class HiddenHavocGameScript : MapScriptBase
                 var allPlayers = Subject.GetEntities<Aisling>().ToList();
 
                 foreach (var player in allPlayers)
-                {
                     player.SendActiveMessage("Lava will claim more of the map in ten seconds!");
-                }
 
                 CountdownMorphStarted = true;
                 CountdownMorphStep = 9;
@@ -158,15 +238,9 @@ public abstract class HiddenHavocGameScript : MapScriptBase
                     var currentSecond = (int)Math.Floor(TimePassedSinceMainAnimationStart);
 
                     foreach (var nowall in CurrentMapPoints)
-                    {
                         if (NextMapPoints.Contains(nowall))
-                        {
                             if ((int)Math.Floor(TimePassedSinceMainAnimationStart) == currentSecond)
-                            {
                                 Subject.ShowAnimation(PreAnimation.GetPointAnimation(nowall));
-                            }
-                        }
-                    }
 
                     TimePassedSinceMainAnimationStart += delta.TotalSeconds; // Increment the main animation timer
 
@@ -213,7 +287,7 @@ public abstract class HiddenHavocGameScript : MapScriptBase
 
             foreach (var aisling in aislings)
             {
-                var otherAisling = aislings.FirstOrDefault(other => (!other.Equals(aisling)) && (aisling.DistanceFrom(other) <= 1));
+                var otherAisling = aislings.FirstOrDefault(other => !other.Equals(aisling) && (aisling.DistanceFrom(other) <= 1));
 
                 if (otherAisling != null)
                 {
@@ -253,112 +327,23 @@ public abstract class HiddenHavocGameScript : MapScriptBase
 
         if (!ArenaUpdateTimer.IntervalElapsed)
             return;
-        
-        
+
         if (!WinnerDeclared)
         {
             var allAislings = Subject.GetEntities<Aisling>().ToList();
             var aliveAislings = GetAliveAislings(allAislings);
-            
+
             switch (aliveAislings.Count)
             {
                 case 0:
                     DeclareNoWinners();
+
                     break;
                 case <= 2:
                     DeclareWinners(aliveAislings);
+
                     break;
             }
         }
-    }
-
-    private void DeclareNoWinners()
-    {
-        WinnerDeclared = true;
-        var allToPort = Subject.GetEntities<Aisling>().ToList();
-        var allHosts = Subject.GetEntities<Aisling>().Where(IsHost);
-        
-        foreach (var player in allToPort)
-        {
-            player.SendServerMessage(ServerMessageType.OrangeBar2, "The round ended in a draw. Everyone died!");
-            var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
-            player.TraverseMap(mapInstance, new Point(12, 10));
-        }
-
-        foreach (var host in allHosts)
-        {
-            host.SendServerMessage(ServerMessageType.OrangeBar2, "The round ended in a draw. Everyone died!");
-            var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
-            host.TraverseMap(mapInstance, new Point(12, 10));
-        }
-        
-        Subject.RemoveScript<IMapScript, HiddenHavocGameScript>();
-        ResetMaps();
-    }
-    
-    private void DeclareWinners(IReadOnlyList<Aisling> winners)
-    {
-        var allToPort = Subject.GetEntities<Aisling>().ToList();
-        var allHosts = Subject.GetEntities<Aisling>().Where(IsHost);
-
-        var winningMessage = winners.Count switch
-        {
-            1 => $"{winners[0].Name} has won the round!",
-            2 => $"{winners[0].Name} and {winners[1].Name} have won the round!",
-            _ => "The round is over!"
-        };
-
-        foreach (var player in allToPort)
-        {
-            player.SendServerMessage(ServerMessageType.OrangeBar2, winningMessage);
-            var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
-            player.TraverseMap(mapInstance, new Point(12, 10));
-        }
-
-        foreach (var host in allHosts)
-        {
-            host.SendServerMessage(ServerMessageType.OrangeBar2, winningMessage);
-            var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
-            host.TraverseMap(mapInstance, new Point(12, 10));
-        }
-        
-        Subject.RemoveScript<IMapScript, HiddenHavocGameScript>();
-
-        WinnerDeclared = true;
-        ResetMaps();
-    }
-    
-    private List<Aisling> GetAliveAislings(IEnumerable<Aisling> allAislings)
-    {
-        List<Aisling> aliveAislings;
-            
-        if (IsHostPlaying)
-        {
-            aliveAislings = allAislings
-                            .Where(x => x.IsAlive)
-                            .ToList();
-
-            return aliveAislings;
-        }
-            
-        aliveAislings = allAislings
-                        .Where(x => x.IsAlive && (!x.Trackers.Enums.TryGetValue(out ArenaHost value) || value == ArenaHost.None))
-                        .ToList();
-
-
-        return aliveAislings;
-    }
-    
-    private void ResetMaps() => Subject.Morph(MorphOriginalTemplateKey);
-
-    private bool IsHost(Aisling aisling) =>
-        !aisling.Trackers.Enums.TryGetValue(out ArenaHost value) ||
-        ((value != ArenaHost.Host) && (value != ArenaHost.MasterHost));
-    
-    private void MorphMap()
-    {
-        var templateKey = MorphTemplateKeys[Math.Min(MorphCount, MorphTemplateKeys.Count - 1)];
-        Subject.Morph(templateKey);
-        MorphCount++;
     }
 }

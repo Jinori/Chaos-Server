@@ -10,9 +10,9 @@ public class DochasBloomSpawnerScript : ItemSpawnerScript
     public override string ItemTemplateKey { get; set; } = "dochasbloom";
     public override int MaxAmount { get; set; } = 3;
     public override int MaxPerSpawn { get; set; } = 1;
-    public override int SpawnIntervalMs { get; set; } = 1800000;
-    
+
     public override int SpawnChance { get; set; } = 10;
+    public override int SpawnIntervalMs { get; set; } = 1800000;
 
     /// <inheritdoc />
     public DochasBloomSpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)

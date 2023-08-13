@@ -6,6 +6,7 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class KnowledgeEffect : NonOverwritableEffectBase
 {
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
@@ -15,8 +16,6 @@ public class KnowledgeEffect : NonOverwritableEffectBase
     {
         "Knowledge"
     };
-
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     public override byte Icon => 10;
     public override string Name => "Knowledge";
     protected override byte? Sound => 115;

@@ -6,6 +6,7 @@ namespace Chaos.Scripting.EffectScripts.Items.CookingMeals;
 
 public class PieStrawberryEffect : NonOverwritableEffectBase
 {
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
@@ -27,10 +28,8 @@ public class PieStrawberryEffect : NonOverwritableEffectBase
         "Salad",
         "Sandwich",
         "Soup",
-        "Steak Meal",
+        "Steak Meal"
     };
-
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     public override byte Icon => 72;
     public override string Name => "Strawberry Pie";
     protected override byte? Sound => 115;

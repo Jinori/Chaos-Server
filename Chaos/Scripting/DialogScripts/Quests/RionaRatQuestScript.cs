@@ -16,8 +16,8 @@ namespace Chaos.Scripting.DialogScripts.Quests;
 public class RionaRatQuestScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
     private readonly ILogger<RionaRatQuestScript> Logger;
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
     public RionaRatQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<RionaRatQuestScript> logger)
@@ -110,11 +110,21 @@ public class RionaRatQuestScript : DialogScriptBase
                     }
 
                     var mount = ItemFactory.Create("Mount");
-                    
-                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Item, Topics.Entities.Dialog, Topics.Entities.Quest)
-                          .WithProperty(source).WithProperty(Subject)
-                          .LogInformation("{@AislingName} has received {@ExpAmount} exp and {@ItemName} from a quest", source.Name, 1000, mount.DisplayName);
-                    
+
+                    Logger.WithTopics(
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Item,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
+                          .WithProperty(source)
+                          .WithProperty(Subject)
+                          .LogInformation(
+                              "{@AislingName} has received {@ExpAmount} exp and {@ItemName} from a quest",
+                              source.Name,
+                              1000,
+                              mount.DisplayName);
+
                     source.TryGiveItem(ref mount);
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, 1000);

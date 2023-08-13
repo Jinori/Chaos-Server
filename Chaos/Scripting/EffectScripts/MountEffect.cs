@@ -1,11 +1,11 @@
 ﻿using Chaos.Models.Data;
-using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts;
 
 public class MountEffect : NonOverwritableEffectBase
 {
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(999);
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 6,
@@ -15,7 +15,6 @@ public class MountEffect : NonOverwritableEffectBase
     {
         "MountEffect"
     };
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(999);
     public override byte Icon => 92;
     public override string Name => "mount";
     protected override byte? Sound => 115;

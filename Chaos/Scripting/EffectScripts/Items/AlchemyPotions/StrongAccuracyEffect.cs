@@ -6,6 +6,7 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class StrongAccuracyEffect : NonOverwritableEffectBase
 {
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
@@ -28,8 +29,6 @@ public class StrongAccuracyEffect : NonOverwritableEffectBase
         "Strong Astral",
         "Astral"
     };
-
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     public override byte Icon => 12;
     public override string Name => "Strong Accuracy";
     protected override byte? Sound => 115;

@@ -280,7 +280,6 @@ public class ArmorsmithingArmorScript : DialogScriptBase
             Subject.InjectTextParameters(newCraft.DisplayName);
         }
 
-
         source.Animate(SuccessAnimation);
     }
 

@@ -222,7 +222,8 @@ public class MythicBeeScript : DialogScriptBase
             case "bee_ally":
             {
                 if (hasMantis
-                    && (hasMantis == mantis is MythicMantis.MantisAllied or MythicMantis.BossMantisStarted or MythicMantis.BossMantisDefeated))
+                    && (hasMantis
+                        == mantis is MythicMantis.MantisAllied or MythicMantis.BossMantisStarted or MythicMantis.BossMantisDefeated))
                 {
                     Subject.Reply(source, "No way! You have been allied to the Mantis Colony this entire time traitor! Buzz off!");
                     source.Trackers.Enums.Set(MythicBee.EnemyBeeAllied);

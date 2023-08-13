@@ -1,14 +1,13 @@
 using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.Data;
-using Chaos.Models.World;
-using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Warrior;
 
 public class ArmorBreakEffect : NonOverwritableEffectBase
 {
+    /// <inheritdoc />
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(10);
     /// <inheritdoc />
     protected override Animation? Animation { get; } = new()
     {
@@ -20,8 +19,6 @@ public class ArmorBreakEffect : NonOverwritableEffectBase
     {
         "Armor Break"
     };
-    /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(10);
     /// <inheritdoc />
     public override byte Icon => 65;
     /// <inheritdoc />

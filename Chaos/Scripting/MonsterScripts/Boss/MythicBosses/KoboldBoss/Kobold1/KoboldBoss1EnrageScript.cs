@@ -1,4 +1,3 @@
-using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
@@ -29,12 +28,14 @@ public sealed class KoboldBoss1EnrageScript : MonsterScriptBase
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
             var attrib = new Attributes
             {
                 AtkSpeedPct = 10,
-                Ac = -5,
+                Ac = -15
             };
+
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }
@@ -61,12 +62,12 @@ public sealed class KoboldBoss1EnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Int = 5,
-                Str = 10,
-                Ac = -10,
-                AtkSpeedPct = 30,
-                Hit = 10,
-                MagicResistance = 10,
+                Int = 10,
+                Str = 15,
+                Ac = -15,
+                AtkSpeedPct = 40,
+                Hit = 20,
+                MagicResistance = 10
             };
 
             Subject.StatSheet.AddBonus(attrib);

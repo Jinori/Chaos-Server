@@ -6,12 +6,12 @@ namespace Chaos.Scripting.MonsterScripts.Boss;
 
 public sealed class BossRegenScript : MonsterScriptBase
 {
+    private static float HPRegenInterval = 8f;
+    private static float HPMultiplier = 0.03f;
     private bool Bonus30Applied;
     private bool Bonus50Applied;
     private bool Bonus75Applied;
-    private static float HPRegenInterval = 8f;
     private float HPRegenTimer;
-    private static float HPMultiplier = 0.03f;
 
     private Animation UpgradeAnimation { get; } = new()
     {
@@ -21,8 +21,7 @@ public sealed class BossRegenScript : MonsterScriptBase
 
     /// <inheritdoc />
     public BossRegenScript(Monster subject)
-        : base(subject)
-    { }
+        : base(subject) { }
 
     public override void Update(TimeSpan delta)
     {
@@ -36,17 +35,16 @@ public sealed class BossRegenScript : MonsterScriptBase
 
                 var newHP = (int)MathF.Min(Subject.StatSheet.CurrentHp + hpToRegen, Subject.StatSheet.MaximumHp);
 
-                 Subject.StatSheet.SetHp(newHP);
+                Subject.StatSheet.SetHp(newHP);
                 Subject.ShowHealth();
 
                 HPRegenTimer = 0f;
-                
+
                 Subject.Animate(UpgradeAnimation);
                 Subject.ShowHealth();
             }
         }
-        
-        
+
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
@@ -67,10 +65,10 @@ public sealed class BossRegenScript : MonsterScriptBase
         if (!Bonus30Applied && (Subject.StatSheet.HealthPercent <= 30))
         {
             Bonus30Applied = true;
-            
+
             HPRegenInterval = 3f;
             HPMultiplier = 0.10f;
-            
+
             Subject.Animate(UpgradeAnimation);
         }
     }

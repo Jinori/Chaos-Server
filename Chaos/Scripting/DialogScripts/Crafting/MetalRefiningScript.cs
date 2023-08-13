@@ -12,8 +12,8 @@ public class MetalRefiningScript : DialogScriptBase
     private const string ITEM_COUNTER_PREFIX = "[Refine]";
     private const double BASE_SUCCESS_RATE = 60;
     private const double SUCCESSRATEMAX = 90;
-    private readonly IItemFactory ItemFactory;
     private readonly IDialogFactory DialogFactory;
+    private readonly IItemFactory ItemFactory;
 
     private readonly List<string> MetalTemplateKeys = new()
     {
@@ -128,7 +128,7 @@ public class MetalRefiningScript : DialogScriptBase
     {
         if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
         {
-            Subject.Reply(source, $"You ran out of that metal to refine.", "metal_refining_initial");
+            Subject.Reply(source, "You ran out of that metal to refine.", "metal_refining_initial");
 
             return;
         }

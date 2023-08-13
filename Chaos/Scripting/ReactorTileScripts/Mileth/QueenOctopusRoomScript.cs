@@ -42,29 +42,34 @@ public class QueenOctopusRoomScript : ReactorTileScriptBase
         // Check if all members of the group have the quest flag and are within level range
         var missingRequirements = string.Empty;
 
-        var allMembersHaveQuestEnum = aisling.Group.All(member =>
-        {
-            if (!member.Trackers.Enums.TryGetValue(out QueenOctopusQuest stage) ||
-                (stage != QueenOctopusQuest.Complete && stage != QueenOctopusQuest.Pendant3) ||
-                !member.Inventory.Contains("Red Pearl") ||
-                !member.Inventory.Contains("Coral Pendant") ||
-                member.Trackers.TimedEvents.HasActiveEvent("QueenOctopusCD", out _))
+        var allMembersHaveQuestEnum = aisling.Group.All(
+            member =>
             {
-                missingRequirements += member.Name + ": ";
-                if (stage != QueenOctopusQuest.Complete && stage != QueenOctopusQuest.Pendant3)
-                    missingRequirements += "missing quest stage, ";
-                if (!member.Inventory.Contains("Red Pearl"))
-                    missingRequirements += "missing Red Pearl, ";
-                if (!member.Inventory.Contains("Coral Pendant"))
-                    missingRequirements += "missing Coral Pendant, ";
-                if (member.Trackers.TimedEvents.HasActiveEvent("QueenOctopusCD", out _))
-                    missingRequirements += "QueenOctopusCD active, ";
+                if (!member.Trackers.Enums.TryGetValue(out QueenOctopusQuest stage)
+                    || ((stage != QueenOctopusQuest.Complete) && (stage != QueenOctopusQuest.Pendant3))
+                    || !member.Inventory.Contains("Red Pearl")
+                    || !member.Inventory.Contains("Coral Pendant")
+                    || member.Trackers.TimedEvents.HasActiveEvent("QueenOctopusCD", out _))
+                {
+                    missingRequirements += member.Name + ": ";
 
-                return false;
-            }
+                    if ((stage != QueenOctopusQuest.Complete) && (stage != QueenOctopusQuest.Pendant3))
+                        missingRequirements += "missing quest stage, ";
 
-            return true;
-        });
+                    if (!member.Inventory.Contains("Red Pearl"))
+                        missingRequirements += "missing Red Pearl, ";
+
+                    if (!member.Inventory.Contains("Coral Pendant"))
+                        missingRequirements += "missing Coral Pendant, ";
+
+                    if (member.Trackers.TimedEvents.HasActiveEvent("QueenOctopusCD", out _))
+                        missingRequirements += "QueenOctopusCD active, ";
+
+                    return false;
+                }
+
+                return true;
+            });
 
         if (allMembersHaveQuestEnum)
         {
@@ -87,6 +92,5 @@ public class QueenOctopusRoomScript : ReactorTileScriptBase
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);
         }
-
     }
 }
