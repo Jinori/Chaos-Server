@@ -18,9 +18,9 @@ public class KillCounterScript : MonsterScriptBase
         if (!aisling.Trackers.Enums.TryGetValue(out IceWallQuest abomination) || (abomination != IceWallQuest.KillBoss))
             return;
 
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("abomination", 1))
+        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("wilderness_abomination", 1))
         {
-            aisling.SendOrangeBarMessage("You didn't defeat the Abomination yet.");
+            aisling.SendOrangeBarMessage("You defeated the Abomination!.");
 
             return;
         }

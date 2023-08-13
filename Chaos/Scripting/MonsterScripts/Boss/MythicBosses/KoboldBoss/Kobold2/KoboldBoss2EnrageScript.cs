@@ -33,7 +33,7 @@ public sealed class KoboldBoss2EnrageScript : MonsterScriptBase
             var attrib = new Attributes
             {
                 AtkSpeedPct = 15,
-                Ac = -20,
+                Ac = -10,
             };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
@@ -61,11 +61,11 @@ public sealed class KoboldBoss2EnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Int = 15,
-                Str = 30,
-                Ac = -20,
-                AtkSpeedPct = 50,
-                Hit = 30,
+                Int = 10,
+                Str = 20,
+                Ac = -15,
+                AtkSpeedPct = 40,
+                Hit = 20,
                 MagicResistance = 10,
             };
 

@@ -22,13 +22,20 @@ public class LearnSkillScript : DialogScriptBase
     private readonly Dictionary<string, List<string>> SkillUpgrades = new()
     {
         //Warrior
-        { "Slash", new List<string> { "Scathe" } },
         { "Scathe", new List<string> { "Cleave" } },
-        { "Strike", new List<string> { "Clobber" } },
-        { "Clobber", new List<string> { "Wallop" } },
-        { "Wallop", new List<string> { "Pulverize" } },
+        { "Strike", new List<string> { "Clobber", "Wallop", "Pulverize", "Thrash" } },
+        { "Clobber", new List<string> { "Wallop", "Pulverize", "Thrash" } },
+        { "Wallop", new List<string> { "Pulverize", "Thrash" } },
         { "Slash", new List<string> { "Sunder" } },
-        { "Windblade", new List<string> { "Tempestblade" } }
+        { "Windblade", new List<string> { "Tempestblade" } },
+        //Monk
+        { "Punch", new List<string> { "DoublePunch", "RapidPunch" } },
+        { "DoublePunch", new List<string> { "RapidPunch" } },
+        //Rogue
+        { "Assault", new List<string> { "Blitz", "Barrage" } },
+        { "Blitz", new List<string> { "Barrage" } },
+        { "Stab", new List<string> { "Gut" } },
+        { "Pierce", new List<string> { "Skewer", } },
     };
     private readonly ISpellFactory SpellFactory;
 

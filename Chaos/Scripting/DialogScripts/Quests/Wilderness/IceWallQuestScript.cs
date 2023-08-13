@@ -189,7 +189,7 @@ public class IceWallQuestScript : DialogScriptBase
 
             case "lilia_quest10":
 
-                if (!source.Trackers.Counters.TryGetValue("abomination", out var val) || (val < 1))
+                if (!source.Trackers.Counters.TryGetValue("wilderness_abomination", out var val) || (val < 1))
                 {
                     Subject.Reply(source, "You haven't defeated the Abomination yet.");
                     source.SendOrangeBarMessage("You haven't defeated the Abomination yet.");

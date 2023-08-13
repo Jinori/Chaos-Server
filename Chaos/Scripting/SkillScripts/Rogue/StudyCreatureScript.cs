@@ -59,14 +59,14 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent
         {
             context.SourceAisling?.Client.SendServerMessage(
                 ServerMessageType.ScrollWindow,
-                $"Name: {mob.Name}\nLevel: {mob.StatSheet.Level}\nHealth %: {mob.StatSheet.HealthPercent}\nArmor Class: {
+                $"Name: {mob.Name}\nLevel: {mob.StatSheet.Level}\nHealth: {mob.StatSheet.CurrentHp}\nArmor Class: {
                     mob.StatSheet.EffectiveAc}\nCurrent Mana: {mob.StatSheet.CurrentMp}\nOffensive Element: {mob.StatSheet.OffenseElement
                     }\nDefensive Element: {mob.StatSheet.DefenseElement}");
 
             var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint));
             var offenseColor = GetElementColor(mob.StatSheet.OffenseElement);
             var defenseColor = GetElementColor(mob.StatSheet.DefenseElement);
-            var message = $"{mob.Name}: Hp: {mob.StatSheet.CurrentHp}  OFFENSE: {offenseColor}  DEFENSE: {defenseColor}";
+            var message = $"{mob.Name}: Hp %: {mob.StatSheet.HealthPercent:F1}%  OFFENSE: {offenseColor}  DEFENSE: {defenseColor}";
             
             if (group == null)
                 context.SourceAisling?.SendOrangeBarMessage(message);

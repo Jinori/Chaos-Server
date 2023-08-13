@@ -54,6 +54,7 @@ public class LearnSpellScript : DialogScriptBase
         { "Bolt Trap", new List<string> { "Coiled Bolt Trap", "Spring Trap", "Maiden Trap" } },
         { "Coiled Bolt Trap", new List<string> { "Spring Trap", "Maiden Trap" } },
         { "Spring Trap", new List<string> { "Maiden Trap" } },
+        { "ThrowSmokeBomb", new List<string> { "Smokescreen" } },
         //Monk
         { "Goad", new List<string> { "Howl" } }
     };

@@ -32,7 +32,7 @@ public sealed class KoboldBoss3EnrageScript : MonsterScriptBase
             //Give Bonuses
             var attrib = new Attributes
             {
-                AtkSpeedPct = 10,
+                AtkSpeedPct = 20,
                 Ac = -15,
             };
             Subject.StatSheet.AddBonus(attrib);
@@ -45,10 +45,10 @@ public sealed class KoboldBoss3EnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Dmg = 5,
-                MagicResistance = 10,
-                SkillDamagePct = 10,
-                SpellDamagePct = 10
+                Dmg = 12,
+                MagicResistance = 20,
+                SkillDamagePct = 20,
+                SpellDamagePct = 20
             };
 
             Subject.StatSheet.AddBonus(attrib);
@@ -61,12 +61,12 @@ public sealed class KoboldBoss3EnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Int = 10,
-                Str = 15,
-                Ac = -15,
-                AtkSpeedPct = 40,
-                Hit = 20,
-                MagicResistance = 10,
+                Int = 15,
+                Str = 30,
+                Ac = -20,
+                AtkSpeedPct = 50,
+                Hit = 30,
+                MagicResistance = 20,
             };
 
             Subject.StatSheet.AddBonus(attrib);
