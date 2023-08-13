@@ -2,12 +2,15 @@ using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
+using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
@@ -242,6 +245,8 @@ public class ReligionScriptBase : DialogScriptBase
         AnimationSpeed = 60,
         TargetAnimation = 5
     };
+    
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
     public ReligionScriptBase(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IItemFactory itemFactory)
@@ -249,6 +254,7 @@ public class ReligionScriptBase : DialogScriptBase
     {
         ClientRegistry = clientRegistry;
         ItemFactory = itemFactory;
+        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
     private void AddOption(Dialog subject, string optionName, string templateKey)
@@ -354,8 +360,13 @@ public class ReligionScriptBase : DialogScriptBase
                             player.SendActiveMessage("You receive faith!");
 
                         TryAddFaith(player, FAITH_REWARD);
+                        
+                        var tnl = LevelUpFormulae.Default.CalculateTnl(source);
+                        var twentyFivePercent = Convert.ToInt32(.25 * tnl);
+                
+                        ExperienceDistributionScript.GiveExp(source, twentyFivePercent);
                     }
-
+                
                 goddess?.Say($"Thank you, {source.Name}. You honor me.");
                 AnnounceMassEnd(deity);
 
@@ -380,6 +391,10 @@ public class ReligionScriptBase : DialogScriptBase
                         player.SendActiveMessage("You receive faith!");
 
                     TryAddFaith(player, FAITH_REWARD);
+                    var tnl = LevelUpFormulae.Default.CalculateTnl(source);
+                    var twentyFivePercent = Convert.ToInt32(.25 * tnl);
+                
+                    ExperienceDistributionScript.GiveExp(source, twentyFivePercent);
                 }
 
                 foreach (var latePlayers in aislingsAtEnd!.Except(aislingsStillHere))
@@ -642,9 +657,13 @@ public class ReligionScriptBase : DialogScriptBase
             count++;
             source.Trackers.Enums.Set(typeof(ReligionPrayer), count);
             UpdateReligionRank(source);
+            var tnl = LevelUpFormulae.Default.CalculateTnl(source);
+            var sixPercent = Convert.ToInt32(.06 * tnl);
+                
+            ExperienceDistributionScript.GiveExp(source, sixPercent);
             source.Animate(PrayerSuccess);
 
-            if (IntegerRandomizer.RollChance(5))
+            if (IntegerRandomizer.RollChance(10))
             {
                 var essence = ItemFactory.Create($"essenceof{deity}");
                 source.Inventory.TryAddToNextSlot(essence);
