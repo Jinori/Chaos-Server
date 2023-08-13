@@ -1,4 +1,5 @@
 using Chaos.Extensions.Geometry;
+using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
@@ -15,6 +16,16 @@ public sealed class PetFollowScript : MonsterScriptBase
         ClientRegistry = clientRegistry;
 
     /// <inheritdoc />
+    public override void OnItemDroppedOn(Aisling source, Item item)
+    {
+        if ((Subject.PetOwner != null) && (Subject.PetOwner.Equals(source)))
+        {
+            source.SendMessage("You dropped an item on your pet but they returned it.");
+            source.Inventory.TryAddToNextSlot(item);
+        }
+    }
+    
+    /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         base.Update(delta);
@@ -22,6 +33,7 @@ public sealed class PetFollowScript : MonsterScriptBase
         if (Subject.PetOwner is null)
             return;
 
+        
         if (ClientRegistry.GetClient(Subject.PetOwner.Client.Id) is null)
         {
             Subject.MapInstance.RemoveObject(Subject);

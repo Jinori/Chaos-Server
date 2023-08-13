@@ -255,7 +255,7 @@ public class EnchantingScript : DialogScriptBase
             var dialog = DialogFactory.Create("enchanting_disenchant", Subject.DialogSource);
             dialog.MenuArgs = Subject.MenuArgs;
             dialog.Context = Subject.Context;
-            dialog.InjectTextParameters(recipe.Name, item.DisplayName);
+            dialog.InjectTextParameters(item.DisplayName);
             dialog.Display(source);
 
             return;
@@ -287,16 +287,15 @@ public class EnchantingScript : DialogScriptBase
 
             return;
         }
+        
+        //Create new item based on the old one
+        var newItem = ItemFactory.Create(item.Template.TemplateKey);
+        //Remove Old Item
+        source.Inventory.Remove(item.DisplayName);
 
-        item.DisplayName = Prefix
-                           .Where(prefix => item.DisplayName.StartsWith(prefix + " ", StringComparison.Ordinal))
-                           .Select(prefix => item.DisplayName.Replace(prefix + " ", ""))
-                           .FirstOrDefault()
-                           ?? item.DisplayName;
-
-        item.Modifiers = new Attributes();
-        source.Inventory.Update(item.Slot);
-        Subject.InjectTextParameters(recipe.Name, item.DisplayName);
+        source.Inventory.TryAddDirect(slot, newItem);
+        
+        Subject.InjectTextParameters(item.DisplayName);
     }
 
     //ShowItems in a Shop Window to the player
