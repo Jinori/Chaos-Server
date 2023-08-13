@@ -3,7 +3,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss;
+namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.KoboldBoss.Kobold1;
 
 public sealed class KoboldBoss1EnrageScript : MonsterScriptBase
 {
@@ -33,7 +33,7 @@ public sealed class KoboldBoss1EnrageScript : MonsterScriptBase
             var attrib = new Attributes
             {
                 AtkSpeedPct = 10,
-                Ac = -15
+                Ac = -10
             };
 
             Subject.StatSheet.AddBonus(attrib);
@@ -62,11 +62,11 @@ public sealed class KoboldBoss1EnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Int = 10,
-                Str = 15,
+                Int = 5,
+                Str = 10,
                 Ac = -15,
-                AtkSpeedPct = 40,
-                Hit = 20,
+                AtkSpeedPct = 30,
+                Hit = 10,
                 MagicResistance = 10
             };
 

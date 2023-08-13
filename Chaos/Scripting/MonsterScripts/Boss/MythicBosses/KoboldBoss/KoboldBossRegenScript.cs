@@ -6,8 +6,8 @@ namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.KoboldBoss;
 
 public sealed class KoboldBossRegenScript : MonsterScriptBase
 {
-    private const float HP_REGEN_INTERVAL = 1f;
-    private const float HP_MULTIPLIER = 0.01f;
+    private const float HP_REGEN_INTERVAL = 6f;
+    private const float HP_MULTIPLIER = 0.02f;
     private float HPRegenTimer;
 
     private Animation UpgradeAnimation { get; } = new()
