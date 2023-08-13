@@ -1,4 +1,3 @@
-using System.Configuration;
 using Chaos.Common.Definitions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
@@ -131,7 +130,7 @@ public class WizardElementScript : DialogScriptBase
 
                     break;
             }
-        
+
         if (hasElement && !elementCounter)
             switch (Subject.Template.TemplateKey.ToLower())
             {
@@ -155,32 +154,36 @@ public class WizardElementScript : DialogScriptBase
                 case "wizardelement_initial2":
                 {
                     if (hasElement && (stage != WizardElement.Fire))
-                        Subject.Options.Add(new DialogOption
-                        {
-                            DialogKey = "dar_firedescription",
-                            OptionText = "Fire Element"
-                        });
-                    
+                        Subject.Options.Add(
+                            new DialogOption
+                            {
+                                DialogKey = "dar_firedescription",
+                                OptionText = "Fire Element"
+                            });
+
                     if (hasElement && (stage != WizardElement.Water))
-                        Subject.Options.Add(new DialogOption
-                        {
-                            DialogKey = "dar_waterdescription",
-                            OptionText = "Water Element"
-                        });
-                    
+                        Subject.Options.Add(
+                            new DialogOption
+                            {
+                                DialogKey = "dar_waterdescription",
+                                OptionText = "Water Element"
+                            });
+
                     if (hasElement && (stage != WizardElement.Earth))
-                        Subject.Options.Add(new DialogOption
-                        {
-                            DialogKey = "dar_earthdescription",
-                            OptionText = "Earth Element"
-                        });
-                    
+                        Subject.Options.Add(
+                            new DialogOption
+                            {
+                                DialogKey = "dar_earthdescription",
+                                OptionText = "Earth Element"
+                            });
+
                     if (hasElement && (stage != WizardElement.Wind))
-                        Subject.Options.Add(new DialogOption
-                        {
-                            DialogKey = "dar_winddescription",
-                            OptionText = "Wind Element"
-                        });
+                        Subject.Options.Add(
+                            new DialogOption
+                            {
+                                DialogKey = "dar_winddescription",
+                                OptionText = "Wind Element"
+                            });
 
                     break;
                 }

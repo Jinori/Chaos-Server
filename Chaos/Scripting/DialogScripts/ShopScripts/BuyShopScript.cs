@@ -169,13 +169,14 @@ public class BuyShopScript : DialogScriptBase
             case < 2 when item.DisplayName.EndsWith("s", StringComparison.Ordinal) && (item.Template.EquipmentType != EquipmentType.Boots):
                 // Singular but ends in "s" (like Boots), so we'll remove the "s"
                 stockDisplay = stockDisplay.Substring(0, stockDisplay.Length - 1);
+
                 break;
             case >= 2 when !item.DisplayName.EndsWith("s", StringComparison.Ordinal):
                 // Plural and doesn't end in "s", so we add the "s"
                 stockDisplay += "s";
+
                 break;
         }
-
 
         if (availableStock < amount)
         {
@@ -188,7 +189,6 @@ public class BuyShopScript : DialogScriptBase
         }
 
         Subject.InjectTextParameters(amount, stockDisplay, item.Template.BuyCost * amount);
-
     }
 
     protected virtual void OnDisplayingInitial(Aisling source)

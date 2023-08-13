@@ -1,6 +1,5 @@
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
-using Chaos.Models.World.Abstractions;
 using Chaos.Networking.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
@@ -9,6 +8,7 @@ namespace Chaos.Scripting.MonsterScripts.Pet;
 public sealed class PetFollowScript : MonsterScriptBase
 {
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
+
     /// <inheritdoc />
     public PetFollowScript(Monster subject, IClientRegistry<IWorldClient> clientRegistry)
         : base(subject) =>
@@ -25,19 +25,20 @@ public sealed class PetFollowScript : MonsterScriptBase
         if (ClientRegistry.GetClient(Subject.PetOwner.Client.Id) is null)
         {
             Subject.MapInstance.RemoveObject(Subject);
+
             return;
         }
-        
+
         if (Subject.MapInstance != Subject.PetOwner.MapInstance)
         {
             Subject.TraverseMap(Subject.PetOwner.MapInstance, Subject.PetOwner);
 
             return;
         }
-        
+
         if (!ShouldMove || (Target != null))
             return;
-        
+
         var playerDistance = Subject.PetOwner.DistanceFrom(Subject);
 
         switch (playerDistance)
@@ -69,7 +70,7 @@ public sealed class PetFollowScript : MonsterScriptBase
                               .FirstOrDefault(x => now - x.Creation > TimeSpan.FromSeconds(TIME_SPAN_SECONDS));
 
             if (item is not null)
-                return;   
+                return;
         }
 */
 }

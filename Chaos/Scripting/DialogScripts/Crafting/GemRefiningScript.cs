@@ -12,15 +12,15 @@ public class GemRefiningScript : DialogScriptBase
     private const string ITEM_COUNTER_PREFIX = "[Refine]";
     private const double BASE_SUCCESS_RATE = 60;
     private const double SUCCESSRATEMAX = 90;
-    private readonly IItemFactory ItemFactory;
     private readonly IDialogFactory DialogFactory;
+    private readonly IItemFactory ItemFactory;
 
     private readonly List<string> MiningTemplateKeys = new()
     {
-        "rawberyl", "flawedberyl", "uncutberyl", 
-       "rawsapphire", "flawedsapphire", "uncutsapphire", 
-        "rawruby", "flawedruby", "uncutruby", 
-        "rawemerald", "flawedemerald", "uncutemerald", 
+        "rawberyl", "flawedberyl", "uncutberyl",
+        "rawsapphire", "flawedsapphire", "uncutsapphire",
+        "rawruby", "flawedruby", "uncutruby",
+        "rawemerald", "flawedemerald", "uncutemerald",
         "rawheartstone", "flawedheartstone", "uncutheartstone"
     };
 
@@ -78,91 +78,95 @@ public class GemRefiningScript : DialogScriptBase
         switch (rawItemKey.ToLower())
         {
             case "rawberyl":
-                if (randomNumber <= 10) 
+                if (randomNumber <= 10)
                     return "pristineberyl";
-                if (randomNumber <= 35) 
+
+                if (randomNumber <= 35)
                     return "uncutberyl";
 
                 return "flawedberyl";
-            
+
             case "flawedberyl":
                 if (randomNumber <= 15)
-                    return "pristineberyl"; 
-                
+                    return "pristineberyl";
+
                 return "uncutberyl";
-                
+
             case "uncutberyl":
                 return "pristineberyl";
-            
+
             case "rawsapphire":
-                if (randomNumber <= 10) 
+                if (randomNumber <= 10)
                     return "pristinesapphire";
-                if (randomNumber <= 35) 
+
+                if (randomNumber <= 35)
                     return "uncutsapphire";
 
                 return "flawedsapphire";
-            
 
             case "flawedsapphire":
                 if (randomNumber <= 15)
-                    return "pristinesapphire"; 
-                
+                    return "pristinesapphire";
+
                 return "uncutsapphire";
-                
+
             case "uncutsapphire":
                 return "pristinesapphire";
-            
+
             case "rawruby":
-                if (randomNumber <= 10) 
+                if (randomNumber <= 10)
                     return "pristineruby";
-                if (randomNumber <= 35) 
+
+                if (randomNumber <= 35)
                     return "uncutruby";
 
                 return "flawedruby";
-            
+
             case "flawedruby":
                 if (randomNumber <= 15)
                     return "pristineruby";
- 
+
                 return "uncutruby";
-            
+
             case "uncutruby":
                 return "pristineruby";
-            
+
             case "rawemerald":
-                if (randomNumber <= 10) 
+                if (randomNumber <= 10)
                     return "pristineemerald";
-                if (randomNumber <= 35) 
+
+                if (randomNumber <= 35)
                     return "uncutemerald";
 
                 return "flawedemerald";
-            
+
             case "flawedemerald":
                 if (randomNumber <= 15)
                     return "pristineemerald";
 
                 return "uncutemerald";
-            
+
             case "uncutemerald":
                 return "pristineemerald";
-            
+
             case "rawheartstone":
-                if (randomNumber <= 10) 
+                if (randomNumber <= 10)
                     return "pristineheartstone";
-                if (randomNumber <= 35) 
+
+                if (randomNumber <= 35)
                     return "uncutheartstone";
 
                 return "flawedheartstone";
-            
+
             case "flawedheartstone":
                 if (randomNumber <= 15)
                     return "pristineemerald";
 
                 return "uncutheartstone";
-            
+
             case "uncutheartstone":
                 return "pristineheartstone";
-            
+
             default:
                 return rawItemKey;
         }
@@ -198,7 +202,7 @@ public class GemRefiningScript : DialogScriptBase
     {
         if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
         {
-            Subject.Reply(source, $"You ran out of those gems to refine.", "gem_refining_initial");
+            Subject.Reply(source, "You ran out of those gems to refine.", "gem_refining_initial");
 
             return;
         }

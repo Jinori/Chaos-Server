@@ -18,12 +18,8 @@ public class ContributionScript : MonsterScriptBase
             currentValue = 0;
 
         if (source is Monster { PetOwner: not null } monster)
-        {
             Subject.Contribution[monster.PetOwner.Id] = currentValue + damage;
-        }
         else
-        {
-            Subject.Contribution[source.Id] = currentValue + damage;   
-        }
+            Subject.Contribution[source.Id] = currentValue + damage;
     }
 }

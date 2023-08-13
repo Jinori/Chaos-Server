@@ -285,7 +285,8 @@ public class MythicGargoyleScript : DialogScriptBase
             case "gargoyle_ally":
             {
                 if (hasZombie
-                    && (hasZombie == zombie is MythicZombie.AlliedZombie or MythicZombie.BossZombieStarted or MythicZombie.BossZombieDefeated))
+                    && (hasZombie
+                        == zombie is MythicZombie.AlliedZombie or MythicZombie.BossZombieStarted or MythicZombie.BossZombieDefeated))
                 {
                     Subject.Reply(
                         source,

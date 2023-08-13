@@ -11,6 +11,7 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class LastStandEffect : ContinuousAnimationEffectBase
 {
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(9);
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -18,8 +19,6 @@ public class LastStandEffect : ContinuousAnimationEffectBase
     };
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(700));
-
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(9);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
     public override byte Icon => 74;

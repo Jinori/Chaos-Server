@@ -11,6 +11,7 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class ClawFistEffect : ContinuousAnimationEffectBase
 {
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(10);
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 300,
@@ -18,8 +19,6 @@ public class ClawFistEffect : ContinuousAnimationEffectBase
     };
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
-
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(10);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(400));
     public override byte Icon => 71;

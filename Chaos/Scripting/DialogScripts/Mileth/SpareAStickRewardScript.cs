@@ -39,11 +39,21 @@ public class SpareAStickRewardScript : DialogScriptBase
                 Subject.Reply(source, "Excellent! You'll make a fine spark. Now, go and find your way.");
                 source.Trackers.Flags.RemoveFlag(QuestFlag1.GatheringSticks);
                 source.Trackers.Flags.AddFlag(QuestFlag1.SpareAStickComplete);
-                
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                      .WithProperty(source).WithProperty(Subject)
-                      .LogInformation("{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest", source.Name, 1000, 2500);
-                
+
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Gold,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
+                      .LogInformation(
+                          "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
+                          source.Name,
+                          1000,
+                          2500);
+
                 ExperienceDistributionScript.GiveExp(source, 2500);
                 source.TryGiveGold(1000);
                 source.TryGiveGamePoints(5);

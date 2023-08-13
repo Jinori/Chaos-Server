@@ -15,9 +15,9 @@ namespace Chaos.Scripting.DialogScripts.Quests.CthonicRemains;
 
 public class CrHorrorQuestScript : DialogScriptBase
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
     private readonly ILogger<CrHorrorQuestScript> Logger;
-    
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
+
     /// <inheritdoc />
     public CrHorrorQuestScript(Dialog subject, ILogger<CrHorrorQuestScript> logger)
         : base(subject)
@@ -79,11 +79,21 @@ public class CrHorrorQuestScript : DialogScriptBase
                 }
 
                 Subject.Reply(source, "I'm impressed.");
-                
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Gold, Topics.Entities.Dialog, Topics.Entities.Quest)
-                      .WithProperty(source).WithProperty(Subject)
-                      .LogInformation("{@AislingName} has received {@ExpAmount} exp and {@GoldAmount} from a quest", source.Name, 10000000, 150000);
-                
+
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Gold,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
+                      .LogInformation(
+                          "{@AislingName} has received {@ExpAmount} exp and {@GoldAmount} from a quest",
+                          source.Name,
+                          10000000,
+                          150000);
+
                 source.TryGiveGamePoints(5);
                 ExperienceDistributionScript.GiveExp(source, 10000000);
                 source.TryGiveGold(150000);

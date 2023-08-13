@@ -10,6 +10,8 @@ namespace Chaos.Scripting.EffectScripts.Wizard;
 public class MorCradhEffect : NonOverwritableEffectBase
 {
     /// <inheritdoc />
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
+    /// <inheritdoc />
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 18,
@@ -23,8 +25,6 @@ public class MorCradhEffect : NonOverwritableEffectBase
         "cradh",
         "beag cradh"
     };
-    /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
     /// <inheritdoc />
     public override byte Icon => 62;
     /// <inheritdoc />

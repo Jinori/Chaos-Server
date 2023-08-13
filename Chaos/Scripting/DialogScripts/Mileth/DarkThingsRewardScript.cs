@@ -38,10 +38,20 @@ public class DarkThingsRewardScript : DialogScriptBase
 
         var amountToReward = spidersEyeCount * 1000;
 
-        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-              .WithProperty(source).WithProperty(Subject)
-              .LogInformation("{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest", source.Name, amountToReward, amountToReward);
-        
+        Logger.WithTopics(
+                  Topics.Entities.Aisling,
+                  Topics.Entities.Gold,
+                  Topics.Entities.Experience,
+                  Topics.Entities.Dialog,
+                  Topics.Entities.Quest)
+              .WithProperty(source)
+              .WithProperty(Subject)
+              .LogInformation(
+                  "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
+                  source.Name,
+                  amountToReward,
+                  amountToReward);
+
         source.TryGiveGold(amountToReward);
         ExperienceDistributionScript.GiveExp(source, amountToReward);
         source.Inventory.RemoveQuantity("Spider's Eye", spidersEyeCount, out _);

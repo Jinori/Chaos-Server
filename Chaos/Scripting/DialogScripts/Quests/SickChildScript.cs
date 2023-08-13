@@ -16,10 +16,10 @@ namespace Chaos.Scripting.DialogScripts.Quests;
 
 public class SickChildScript : DialogScriptBase
 {
+    private readonly ILogger<SickChildScript> Logger;
     private readonly IMerchantFactory MerchantFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
-    private readonly ILogger<SickChildScript> Logger;
-    
+
     /// <inheritdoc />
     public SickChildScript(Dialog subject, IMerchantFactory merchantFactory, ILogger<SickChildScript> logger)
         : base(subject)
@@ -146,10 +146,15 @@ public class SickChildScript : DialogScriptBase
                     return;
                 }
 
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                      .WithProperty(source).WithProperty(Subject)
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 20000);
-                
+
                 ExperienceDistributionScript.GiveExp(source, 20000);
                 source.Trackers.Enums.Set(SickChildStage.WhiteRose1Turn);
                 source.SendOrangeBarMessage("20000 Exp Rewarded!");
@@ -177,16 +182,25 @@ public class SickChildScript : DialogScriptBase
                     return;
                 }
 
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                      .WithProperty(source).WithProperty(Subject)
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 30000);
-                
+
                 ExperienceDistributionScript.GiveExp(source, 30000);
                 source.Trackers.Enums.Set(SickChildStage.WhiteRose2Turn);
                 source.SendOrangeBarMessage("30000 Exp Rewarded!");
-                Subject.Reply(source, "Thank you again! Please excuse me while I get this to the healers.",
+
+                Subject.Reply(
+                    source,
+                    "Thank you again! Please excuse me while I get this to the healers.",
                     "whiterose2wait1");
             }
+
                 return;
 
             case "goldrose1-2":
@@ -218,10 +232,20 @@ public class SickChildScript : DialogScriptBase
                     return;
                 }
 
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Gold, Topics.Entities.Dialog, Topics.Entities.Quest)
-                      .WithProperty(source).WithProperty(Subject)
-                      .LogInformation("{@AislingName} has received {@ExpAmount} exp and {@GoldAmount}", source.Name, 75000, 20000);
-                
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Gold,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
+                      .LogInformation(
+                          "{@AislingName} has received {@ExpAmount} exp and {@GoldAmount}",
+                          source.Name,
+                          75000,
+                          20000);
+
                 ExperienceDistributionScript.GiveExp(source, 75000);
                 source.TryGiveGold(20000);
                 source.TryGiveGamePoints(5);
@@ -265,11 +289,16 @@ public class SickChildScript : DialogScriptBase
             {
                 Subject.Reply(source, "Please leave.");
                 source.Trackers.Enums.Set(SickChildStage.SickChildKilled);
-                
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                      .WithProperty(source).WithProperty(Subject)
+
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 125000);
-                
+
                 ExperienceDistributionScript.GiveExp(source, 125000);
                 source.TryGiveGamePoints(5);
                 source.SendOrangeBarMessage("5 Gamepoints and 125000 Exp Rewarded!");

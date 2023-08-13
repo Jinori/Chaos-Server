@@ -7,6 +7,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class AiteEffect : NonOverwritableEffectBase
 {
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 125,
@@ -19,8 +20,6 @@ public class AiteEffect : NonOverwritableEffectBase
         "mor naomh aite",
         "ard naomh aite"
     };
-
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
     public override byte Icon => 9;
     public override string Name => "naomh aite";
 

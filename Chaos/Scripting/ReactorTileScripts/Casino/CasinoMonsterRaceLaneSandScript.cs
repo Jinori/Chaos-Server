@@ -15,9 +15,9 @@ namespace Chaos.Scripting.ReactorTileScripts.Casino;
 
 public class CasinoMonsterRaceLaneSandScript : ReactorTileScriptBase
 {
-    private readonly ILogger<CasinoMonsterRaceLaneSandScript> Logger;
     private readonly IIntervalTimer AfterWinnerDelay;
     private readonly List<Aisling> AislingsThatWon = new();
+    private readonly ILogger<CasinoMonsterRaceLaneSandScript> Logger;
     private IEnumerable<Aisling>? AislingsAtCompletion;
     private bool MonsterHasWon;
     public bool GameOver { get; set; }
@@ -89,12 +89,16 @@ public class CasinoMonsterRaceLaneSandScript : ReactorTileScriptBase
                 var winningsMinusEight = winnings - eightPercent;
 
                 Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
-                      .WithProperty(winner).WithProperty(Subject)
-                      .LogInformation("{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes", winner.Name, winningsMinusEight, eightPercent);
-                
+                      .WithProperty(winner)
+                      .WithProperty(Subject)
+                      .LogInformation(
+                          "{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes",
+                          winner.Name,
+                          winningsMinusEight,
+                          eightPercent);
+
                 winner.TryGiveGold(winningsMinusEight);
                 winner.SendActiveMessage($"You won the game and receive {winnings.ToWords()} gold!");
-
 
                 break;
             }
@@ -112,9 +116,14 @@ public class CasinoMonsterRaceLaneSandScript : ReactorTileScriptBase
                     var winningsMinusEight = winnings - eightPercent;
 
                     Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
-                          .WithProperty(winner).WithProperty(Subject)
-                          .LogInformation("{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes", winner.Name, winningsMinusEight, eightPercent);
-                    
+                          .WithProperty(winner)
+                          .WithProperty(Subject)
+                          .LogInformation(
+                              "{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes",
+                              winner.Name,
+                              winningsMinusEight,
+                              eightPercent);
+
                     winner.TryGiveGold(winningsMinusEight);
                     winner.SendActiveMessage($"You tied and receive {winnings.ToWords()} gold!");
                 }

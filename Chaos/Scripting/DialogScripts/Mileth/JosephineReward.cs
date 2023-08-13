@@ -29,11 +29,21 @@ public class JosephineRewardScript : DialogScriptBase
             Subject.Reply(source, "Riona sent you? I do have her dye, I'll let her know! Are you interested in a hair style?");
             source.Trackers.Flags.RemoveFlag(QuestFlag1.HeadedToBeautyShop);
             source.Trackers.Flags.AddFlag(QuestFlag1.TalkedToJosephine);
-            
-            Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                  .WithProperty(source).WithProperty(Subject)
-                  .LogInformation("{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest", source.Name, 1000, 1000);
-            
+
+            Logger.WithTopics(
+                      Topics.Entities.Aisling,
+                      Topics.Entities.Gold,
+                      Topics.Entities.Experience,
+                      Topics.Entities.Dialog,
+                      Topics.Entities.Quest)
+                  .WithProperty(source)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
+                      source.Name,
+                      1000,
+                      1000);
+
             ExperienceDistributionScript.GiveExp(source, 1000);
             source.TryGiveGold(1000);
             source.TryGiveGamePoints(5);

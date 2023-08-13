@@ -1,6 +1,4 @@
-using Chaos.Extensions;
 using Chaos.Models.Data;
-using Chaos.Models.Map;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
@@ -11,8 +9,8 @@ namespace Chaos.Scripting.ReactorTileScripts.GatheringScripts;
 
 public class GatherIceScript : ReactorTileScriptBase
 {
-    private readonly IItemFactory _itemFactory;
     private readonly TimeSpan _cooldownDuration = TimeSpan.FromMinutes(30);
+    private readonly IItemFactory _itemFactory;
     private DateTime _lastActivationTime = DateTime.MinValue;
 
     /// <inheritdoc />
@@ -25,14 +23,14 @@ public class GatherIceScript : ReactorTileScriptBase
     {
         if (source is not Aisling aisling)
             return;
-        
+
         if (DateTime.Now - _lastActivationTime < _cooldownDuration)
             return;
 
         var ice = _itemFactory.Create("ice");
         const int ICE_COUNT = 1;
         ice.Count = ICE_COUNT;
-        
+
         var animation = new Animation
         {
             AnimationSpeed = 100,

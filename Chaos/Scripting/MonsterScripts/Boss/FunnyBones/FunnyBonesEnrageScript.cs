@@ -73,7 +73,7 @@ public sealed class FunnyBonesEnrageScript : MonsterScriptBase
                 FlatSkillDamage = 5,
                 FlatSpellDamage = 5,
                 Hit = 20,
-                MagicResistance = 10,
+                MagicResistance = 10
             };
 
             Subject.StatSheet.AddBonus(attrib);

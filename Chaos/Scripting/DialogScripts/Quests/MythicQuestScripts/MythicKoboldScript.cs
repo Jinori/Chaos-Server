@@ -275,7 +275,9 @@ public class MythicKoboldScript : DialogScriptBase
             case "kobold_ally":
             {
                 if (hasGrimlock
-                    && (hasGrimlock == grimlock is MythicGrimlock.AlliedGrimlock or MythicGrimlock.BossGrimlockStarted or MythicGrimlock.BossGrimlockDefeated))
+                    && (hasGrimlock
+                        == grimlock is MythicGrimlock.AlliedGrimlock or MythicGrimlock.BossGrimlockStarted
+                                                                     or MythicGrimlock.BossGrimlockDefeated))
                 {
                     Subject.Reply(
                         source,

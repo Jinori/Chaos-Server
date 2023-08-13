@@ -27,9 +27,10 @@ public class MountScript : ItemScriptBase
         if (source.Effects.Contains("hide"))
         {
             source.SendOrangeBarMessage("You cannot mount while hidden.");
+
             return;
         }
-        
+
         if (source.Trackers.Enums.TryGetValue(out CurrentMount mount))
         {
             if (source.Sprite != 0)

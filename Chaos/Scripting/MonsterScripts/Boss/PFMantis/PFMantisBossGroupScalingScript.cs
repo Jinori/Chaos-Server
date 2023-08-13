@@ -21,7 +21,7 @@ public sealed class PFMantisBossGroupScalingScript : MonsterScriptBase
         switch (averageLevel)
         {
             case > 11 and < 30:
-                AddSpellsToBoss("beagsallamh","beagatharlamh", "beagcradh");
+                AddSpellsToBoss("beagsallamh", "beagatharlamh", "beagcradh");
 
                 break;
             case > 31:

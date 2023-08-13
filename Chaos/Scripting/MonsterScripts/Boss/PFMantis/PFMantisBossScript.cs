@@ -16,7 +16,7 @@ public class PFMantisBossScript : CompositeMonsterScript
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),
-        GetScriptKey(typeof(WanderingScript)),
+        GetScriptKey(typeof(WanderingScript))
     };
 
     /// <inheritdoc />

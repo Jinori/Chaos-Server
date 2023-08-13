@@ -15,15 +15,6 @@ public class SummonPetScript : ConfigurableSkillScriptBase
     private readonly ISkillFactory _skillFactory;
     private readonly ISpellFactory _spellFactory;
 
-    /// <inheritdoc />
-    public SummonPetScript(Skill subject, IMonsterFactory monsterFactory, ISkillFactory skillFactory, ISpellFactory spellFactory)
-        : base(subject)
-    {
-        _spellFactory = spellFactory;
-        _skillFactory = skillFactory;
-        _monsterFactory = monsterFactory;   
-    }
-
     private Element[] Elements { get; } =
     {
         Element.Fire,
@@ -31,7 +22,21 @@ public class SummonPetScript : ConfigurableSkillScriptBase
         Element.Wind,
         Element.Earth
     };
-    
+
+    /// <inheritdoc />
+    public SummonPetScript(
+        Skill subject,
+        IMonsterFactory monsterFactory,
+        ISkillFactory skillFactory,
+        ISpellFactory spellFactory
+    )
+        : base(subject)
+    {
+        _spellFactory = spellFactory;
+        _skillFactory = skillFactory;
+        _monsterFactory = monsterFactory;
+    }
+
     public override void OnUse(ActivationContext context)
     {
         RemoveExistingPets(context);
@@ -66,77 +71,78 @@ public class SummonPetScript : ConfigurableSkillScriptBase
         {
             var attrib = new Attributes
             {
-                Ac = (100 - newMonster.PetOwner.StatSheet.Level),
-                Con = (newMonster.PetOwner.StatSheet.EffectiveCon + newMonster.PetOwner.StatSheet.Level),
-                Dex = (newMonster.PetOwner.StatSheet.EffectiveDex + newMonster.PetOwner.StatSheet.Level),
-                Int = (newMonster.PetOwner.StatSheet.EffectiveInt + newMonster.PetOwner.StatSheet.Level),
-                Str = (newMonster.PetOwner.StatSheet.EffectiveStr + newMonster.PetOwner.StatSheet.Level),
-                Wis = (newMonster.PetOwner.StatSheet.EffectiveWis + newMonster.PetOwner.StatSheet.Level),
+                Ac = 100 - newMonster.PetOwner.StatSheet.Level,
+                Con = newMonster.PetOwner.StatSheet.EffectiveCon + newMonster.PetOwner.StatSheet.Level,
+                Dex = newMonster.PetOwner.StatSheet.EffectiveDex + newMonster.PetOwner.StatSheet.Level,
+                Int = newMonster.PetOwner.StatSheet.EffectiveInt + newMonster.PetOwner.StatSheet.Level,
+                Str = newMonster.PetOwner.StatSheet.EffectiveStr + newMonster.PetOwner.StatSheet.Level,
+                Wis = newMonster.PetOwner.StatSheet.EffectiveWis + newMonster.PetOwner.StatSheet.Level,
                 AtkSpeedPct = newMonster.PetOwner.StatSheet.Level,
-                MaximumHp = (newMonster.PetOwner.StatSheet.Level * 1000 / 7) + 1000,
-                MaximumMp = (newMonster.PetOwner.StatSheet.Level * 500 / 7) + 1000,
+                MaximumHp = newMonster.PetOwner.StatSheet.Level * 1000 / 7 + 1000,
+                MaximumMp = newMonster.PetOwner.StatSheet.Level * 500 / 7 + 1000
             };
-            
+
             newMonster.StatSheet.SetOffenseElement(Elements.PickRandom());
             newMonster.StatSheet.SetDefenseElement(Elements.PickRandom());
             newMonster.StatSheet.SetLevel(newMonster.PetOwner.StatSheet.Level);
             newMonster.StatSheet.AddBonus(attrib);
             newMonster.StatSheet.SetHealthPct(100);
             newMonster.StatSheet.SetManaPct(100);
-            
+
             var has10Skill = newMonster.PetOwner.Trackers.Enums.TryGetValue(out Level10PetSkills level10Skill);
             var has25Skill = newMonster.PetOwner.Trackers.Enums.TryGetValue(out Level25PetSkills level25Skill);
-            
+
             if (has10Skill)
-            {
                 switch (level10Skill)
                 {
-                    
                     case Level10PetSkills.RabidBite:
                     {
                         var skillToAdd = _skillFactory.Create("poisonpunch");
                         newMonster.Skills.Add(skillToAdd);
+
                         break;
                     }
                     case Level10PetSkills.Growl:
                     {
                         var spellToAdd = _spellFactory.Create("howl");
                         newMonster.Spells.Add(spellToAdd);
+
                         break;
                     }
                     case Level10PetSkills.QuickAttack:
                     {
                         var skillToAdd = _skillFactory.Create("stab");
                         newMonster.Skills.Add(skillToAdd);
+
                         break;
                     }
                 }
-            }
+
             if (has25Skill)
-            {
                 switch (level25Skill)
                 {
-                    
                     case Level25PetSkills.TailSweep:
                     {
                         var skillToAdd = _skillFactory.Create("dracotailkick");
                         newMonster.Skills.Add(skillToAdd);
+
                         break;
                     }
                     case Level25PetSkills.Enrage:
                     {
                         var skillToAdd = _skillFactory.Create("clawfist");
                         newMonster.Skills.Add(skillToAdd);
+
                         break;
                     }
                     case Level25PetSkills.WindStrike:
                     {
                         var skillToAdd = _skillFactory.Create("windblade");
                         newMonster.Skills.Add(skillToAdd);
+
                         break;
                     }
                 }
-            }
         }
 
         context.Source.MapInstance.AddObject(newMonster, new Point(context.Source.X, context.Source.Y));

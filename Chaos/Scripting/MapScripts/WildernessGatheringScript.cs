@@ -25,7 +25,7 @@ public class WildernessGatheringScript : MapScriptBase
             81,
             14,
             11);
-        
+
         var wildernessicerectangle = new Rectangle(
             200,
             0,
@@ -50,7 +50,7 @@ public class WildernessGatheringScript : MapScriptBase
             var wildernesscherrypoint = wildernesscherryrectangle.GetRandomPoint();
             wildernesscherrypoints.Add(wildernesscherrypoint);
         }
-        
+
         for (var i = 0; i < count3; i++)
         {
             var wildernessicepoints = wildernessicerectangle.GetRandomPoint();
@@ -76,7 +76,7 @@ public class WildernessGatheringScript : MapScriptBase
 
             Subject.SimpleAdd(wildernesscherry);
         }
-        
+
         foreach (var wildernessicepoints in icepoints)
         {
             var ice = ReactorTileFactory.Create(

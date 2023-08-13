@@ -82,7 +82,8 @@ public class EnchantingScript : DialogScriptBase
         "Soothing",
         "Persisting",
         "Blazing",
-        "Howling" };
+        "Howling"
+    };
 
     /// <inheritdoc />
     public EnchantingScript(

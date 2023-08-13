@@ -29,10 +29,18 @@ namespace Chaos.Scripting.AislingScripts;
 
 public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealComponentOptions
 {
-    private readonly ILogger<DefaultAislingScript> Logger;
+    private readonly List<string> ArenaMaps = new()
+    {
+        "Arena Battle Ring",
+        "Lava Arena",
+        "Lava Arena 2",
+        "Lava Arena 3",
+        "Lava Arena 4"
+    };
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
     private readonly IEffectFactory EffectFactory;
+    private readonly ILogger<DefaultAislingScript> Logger;
     private readonly IStore<MailBox> MailStore;
     private readonly List<string> MapsToNotPunishDeathOn = new()
     {
@@ -42,24 +50,12 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         "Lava Arena",
         "Lava Arena 2",
         "Lava Arena 3",
-        "Lava Arena 4",
+        "Lava Arena 4"
     };
 
-    private readonly List<string> ArenaMaps = new()
-    {
-        "Arena Battle Ring",
-        "Lava Arena",
-        "Lava Arena 2",
-        "Lava Arena 3",
-        "Lava Arena 4",
-    };
-    
     private readonly IMerchantFactory MerchantFactory;
     private readonly ISimpleCache SimpleCache;
     private readonly IIntervalTimer SleepAnimationTimer;
-    private SocialStatus PreAfkSocialStatus { get; set; }
-    protected virtual BlindBehavior BlindBehavior { get; }
-    protected virtual RelationshipBehavior RelationshipBehavior { get; }
 
     /// <inheritdoc />
     public IApplyHealScript ApplyHealScript { get; init; }
@@ -71,8 +67,10 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     public decimal? HealStatMultiplier { get; init; }
     /// <inheritdoc />
     public decimal? PctHpHeal { get; init; }
+    private SocialStatus PreAfkSocialStatus { get; set; }
     /// <inheritdoc />
     public IScript SourceScript { get; init; }
+    protected virtual BlindBehavior BlindBehavior { get; }
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     private Animation MistHeal { get; } = new()
@@ -80,6 +78,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         AnimationSpeed = 100,
         TargetAnimation = 9
     };
+    protected virtual RelationshipBehavior RelationshipBehavior { get; }
     protected virtual RestrictionBehavior RestrictionBehavior { get; }
     protected virtual VisibilityBehavior VisibilityBehavior { get; }
 
@@ -314,13 +313,11 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             var aislings = Subject.MapInstance.GetEntities<Aisling>();
 
             foreach (var aisling in aislings)
-            {
                 aisling.SendServerMessage(
                     ServerMessageType.OrangeBar1,
                     $"{Subject.Name} was killed by {source?.Name}.");
-            }
         }
-        
+
         if (MapsToNotPunishDeathOn.Contains(Subject.MapInstance.Name))
             return;
 
@@ -329,18 +326,24 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
                 ServerMessageType.OrangeBar1,
                 $"{Subject.Name} was killed at {Subject.MapInstance.Name} by {source?.Name ?? "The Guardians"}.");
 
-        var itemsToBreak = Subject.Equipment.Where(x => !x.Template.AccountBound 
-                                                        && (x.Template.EquipmentType != EquipmentType.Accessory)
-                                                        && (x.Template.EquipmentType != EquipmentType.OverArmor)
-                                                        && (x.Template.EquipmentType != EquipmentType.OverHelmet));
-        
+        var itemsToBreak = Subject.Equipment.Where(
+            x => !x.Template.AccountBound
+                 && (x.Template.EquipmentType != EquipmentType.Accessory)
+                 && (x.Template.EquipmentType != EquipmentType.OverArmor)
+                 && (x.Template.EquipmentType != EquipmentType.OverHelmet));
+
         foreach (var item in itemsToBreak)
             if (IntegerRandomizer.RollChance(2))
             {
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Actions.Death, Topics.Actions.Penalty)
-                      .WithProperty(Subject).WithProperty(item)
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Item,
+                          Topics.Actions.Death,
+                          Topics.Actions.Penalty)
+                      .WithProperty(Subject)
+                      .WithProperty(item)
                       .LogInformation("{@AislingName} has lost {@ItemName} to death", Subject.Name, item.DisplayName);
-                
+
                 Subject.Client.SendServerMessage(
                     ServerMessageType.OrangeBar1,
                     $"{item.DisplayName} has been consumed by death.");
@@ -352,10 +355,14 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
 
         if (ExperienceDistributionScript.TryTakeExp(Subject, tenPercent))
         {
-            Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Death, Topics.Actions.Penalty, Topics.Entities.Experience)
+            Logger.WithTopics(
+                      Topics.Entities.Aisling,
+                      Topics.Actions.Death,
+                      Topics.Actions.Penalty,
+                      Topics.Entities.Experience)
                   .WithProperty(Subject)
                   .LogInformation("{@AislingName} has lost {@ExperienceAmount} experience to death", Subject.Name, tenPercent);
-            
+
             Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You have lost {tenPercent} experience.");
         }
     }
@@ -381,7 +388,8 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
                     PreAfkSocialStatus = Subject.Options.SocialStatus;
                     Subject.Options.SocialStatus = SocialStatus.DayDreaming;
                 }
-            } else if (Subject.Options.SocialStatus == SocialStatus.DayDreaming)
+            }
+            else if (Subject.Options.SocialStatus == SocialStatus.DayDreaming)
                 Subject.Options.SocialStatus = PreAfkSocialStatus;
         }
     }

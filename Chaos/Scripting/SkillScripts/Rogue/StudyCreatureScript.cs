@@ -1,8 +1,6 @@
-using System.Text;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
-using Chaos.Extensions.Common;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
@@ -44,6 +42,22 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent
     public StudyCreatureScript(Skill subject)
         : base(subject) { }
 
+    private string GetElementColor(Element element) =>
+        element switch
+        {
+            Element.Fire     => "{=bFIRE{=s",
+            Element.Water    => "{=eWATER{=s",
+            Element.Earth    => "{=qEARTH{=s",
+            Element.Wind     => "{=cWIND{=s",
+            Element.None     => "{=gNONE{=s",
+            Element.Holy     => "{=aHOLY{=s",
+            Element.Darkness => "{=nDARK{=s",
+            Element.Wood     => "{=tWOOD{=s",
+            Element.Metal    => "{=iMETAL{=s",
+            Element.Undead   => "{=dUNDEAD{=s",
+            _                => throw new ArgumentOutOfRangeException(nameof(element), element, null)
+        };
+
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
     {
@@ -67,7 +81,7 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent
             var offenseColor = GetElementColor(mob.StatSheet.OffenseElement);
             var defenseColor = GetElementColor(mob.StatSheet.DefenseElement);
             var message = $"{mob.Name}: Hp: {mob.StatSheet.CurrentHp}  OFFENSE: {offenseColor}  DEFENSE: {defenseColor}";
-            
+
             if (group == null)
                 context.SourceAisling?.SendOrangeBarMessage(message);
 
@@ -83,20 +97,4 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent
         if (mob == null)
             context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your attempt to examine failed.");
     }
-
-    private string GetElementColor(Element element) =>
-        element switch
-        {
-            Element.Fire     => "{=bFIRE{=s",
-            Element.Water    => "{=eWATER{=s",
-            Element.Earth    => "{=qEARTH{=s",
-            Element.Wind     => "{=cWIND{=s",
-            Element.None     => "{=gNONE{=s",
-            Element.Holy     => "{=aHOLY{=s",
-            Element.Darkness => "{=nDARK{=s",
-            Element.Wood     => "{=tWOOD{=s",
-            Element.Metal    => "{=iMETAL{=s",
-            Element.Undead   => "{=dUNDEAD{=s",
-            _                => throw new ArgumentOutOfRangeException(nameof(element), element, null)
-        };
 }

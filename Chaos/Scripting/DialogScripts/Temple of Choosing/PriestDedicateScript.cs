@@ -72,7 +72,7 @@ public class PriestDedicateScript : DialogScriptBase
 
             if (!source.SpellBook.Contains(spell2))
                 source.SpellBook.TryAddToNextSlot(spell2);
-            
+
             if (!source.SpellBook.Contains(spell3))
                 source.SpellBook.TryAddToNextSlot(spell3);
 

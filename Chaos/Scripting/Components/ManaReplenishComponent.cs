@@ -1,7 +1,6 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Extensions;
-using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
@@ -16,19 +15,19 @@ public class ManaReplenishComponent : IComponent
         AnimationSpeed = 100,
         TargetAnimation = 61
     };
-    
+
     /// <inheritdoc />
     public virtual void Execute(ActivationContext context, ComponentVars vars)
     {
         var options = vars.GetOptions<IManaReplenishComponentOptions>();
         var targets = vars.GetTargets<Creature>();
-        
+
         var replenish = options.ManaReplenish ?? 0;
 
         foreach (var target in targets)
         {
             var finalReplenish = replenish + MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumMp, options.PctManaReplenish);
-            
+
             if (options.ReplenishGroup)
             {
                 var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(target));
@@ -43,7 +42,7 @@ public class ManaReplenishComponent : IComponent
 
                 return;
             }
-            
+
             context.Source.StatSheet.AddMp(finalReplenish);
             context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
         }

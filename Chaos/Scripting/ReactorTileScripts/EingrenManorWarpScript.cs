@@ -32,9 +32,10 @@ public class EingrenManorWarpScript : ConfigurableReactorTileScriptBase
                 && (manorStage == ManorNecklaceStage.SawNecklace))
             {
                 aisling?.SendOrangeBarMessage("You must defeat all ghost to escape!");
+
                 return;
             }
-        
+
         if (source.StatSheet.Level < (targetMap.MinimumLevel ?? 0))
         {
             aisling?.SendOrangeBarMessage($"You must be at least level {targetMap.MinimumLevel} to enter this area.");

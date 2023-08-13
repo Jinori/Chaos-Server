@@ -24,7 +24,7 @@ public class PFPendantScript : ReactorTileScriptBase
     {
         if (source is not Aisling aisling)
             return;
-        
+
         if (aisling.Inventory.Contains("Turuc Pendant"))
             return;
 

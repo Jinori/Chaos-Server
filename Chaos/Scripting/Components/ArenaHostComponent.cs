@@ -9,13 +9,8 @@ namespace Chaos.Scripting.Components;
 
 public sealed class ArenaHostComponent : IComponent
 {
-    private readonly Point CenterWarp = new(11,10);
+    private readonly Point CenterWarp = new(11, 10);
     private Point CenterWarpPlayer;
-    
-    public interface IArenaHostComponentOptions
-    {
-        ArenaTeam ArenaTeamColor { get; init; }
-    }
 
     /// <inheritdoc />
     public void Execute(ActivationContext context, ComponentVars vars)
@@ -24,7 +19,6 @@ public sealed class ArenaHostComponent : IComponent
         var options = vars.GetOptions<IArenaHostComponentOptions>();
 
         foreach (var target in targets.ToList())
-        {
             switch (options.ArenaTeamColor)
             {
                 case ArenaTeam.Blue:
@@ -59,16 +53,18 @@ public sealed class ArenaHostComponent : IComponent
                     var rect = new Rectangle(new Point(11, 10), 3, 4);
 
                     do
-                    {
                         CenterWarpPlayer = rect.GetRandomPoint();
-                    } while (CenterWarp == CenterWarpPlayer);
+                    while (CenterWarp == CenterWarpPlayer);
 
                     target.Trackers.Enums.Remove<ArenaTeam>();
                     target.WarpTo(CenterWarpPlayer);
 
                     break;
-
             }
-        }
+    }
+
+    public interface IArenaHostComponentOptions
+    {
+        ArenaTeam ArenaTeamColor { get; init; }
     }
 }

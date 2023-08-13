@@ -15,6 +15,8 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class QuakeEffect : ContinuousAnimationEffectBase
 {
+    /// <inheritdoc />
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(20);
     private Creature SourceOfEffect { get; set; } = null!;
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
@@ -32,8 +34,6 @@ public class QuakeEffect : ContinuousAnimationEffectBase
         AnimationSpeed = 100,
         TargetAnimation = 55
     };
-    /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(20);
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
     /// <inheritdoc />
@@ -62,7 +62,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
                 Subject,
                 target,
                 this,
-                (SourceOfEffect.StatSheet.Level * 2) + SourceOfEffect.StatSheet.EffectiveInt,
+                SourceOfEffect.StatSheet.Level * 2 + SourceOfEffect.StatSheet.EffectiveInt,
                 Element.None);
 
             target.ShowHealth();

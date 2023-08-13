@@ -6,6 +6,7 @@ namespace Chaos.Scripting.EffectScripts.Rogue;
 
 public class FocusEffect : NonOverwritableEffectBase
 {
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(25);
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 88,
@@ -15,8 +16,6 @@ public class FocusEffect : NonOverwritableEffectBase
     {
         "Focus"
     };
-
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(25);
     public override byte Icon => 100;
     public override string Name => "focus";
 

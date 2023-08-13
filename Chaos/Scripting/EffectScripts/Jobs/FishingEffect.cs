@@ -26,6 +26,7 @@ public class FishingEffect : ContinuousAnimationEffectBase
     };
     private readonly IItemFactory _itemFactory;
     private List<Point> _fishingSpots = new();
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(1);
 
     protected override Animation Animation { get; } = new()
     {
@@ -33,7 +34,6 @@ public class FishingEffect : ContinuousAnimationEffectBase
         TargetAnimation = 169
     };
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(1);
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(5));
 
     public override byte Icon => FISHING_ICON;

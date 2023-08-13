@@ -14,7 +14,11 @@ public class HolyResearchRewardScript : DialogScriptBase
     private readonly IExperienceDistributionScript ExperienceDistributionScript;
     private readonly ILogger<HolyResearchRewardScript> Logger;
 
-    public HolyResearchRewardScript(Dialog subject, IExperienceDistributionScript experienceDistributionScript, ILogger<HolyResearchRewardScript> logger)
+    public HolyResearchRewardScript(
+        Dialog subject,
+        IExperienceDistributionScript experienceDistributionScript,
+        ILogger<HolyResearchRewardScript> logger
+    )
         : base(subject)
     {
         ExperienceDistributionScript = experienceDistributionScript;
@@ -33,11 +37,21 @@ public class HolyResearchRewardScript : DialogScriptBase
         }
 
         var amountToReward = rawWaxCount * 1000;
-        
-        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-              .WithProperty(source).WithProperty(Subject)
-              .LogInformation("{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest", source.Name, amountToReward, amountToReward);
-        
+
+        Logger.WithTopics(
+                  Topics.Entities.Aisling,
+                  Topics.Entities.Gold,
+                  Topics.Entities.Experience,
+                  Topics.Entities.Dialog,
+                  Topics.Entities.Quest)
+              .WithProperty(source)
+              .WithProperty(Subject)
+              .LogInformation(
+                  "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
+                  source.Name,
+                  amountToReward,
+                  amountToReward);
+
         source.TryGiveGold(amountToReward);
         ExperienceDistributionScript.GiveExp(source, amountToReward);
         source.Inventory.RemoveQuantity("Raw Wax", rawWaxCount);

@@ -1,4 +1,3 @@
-
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
@@ -18,8 +17,8 @@ namespace Chaos.Scripting.DialogScripts.Quests.Rucesion;
 public class QueenOctopusQuestScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
     private readonly ILogger<QueenOctopusQuestScript> Logger;
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
     public QueenOctopusQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<QueenOctopusQuestScript> logger)
@@ -60,12 +59,12 @@ public class QueenOctopusQuestScript : DialogScriptBase
                         Subject.Reply(source, "skip", "queenoctopus_Queen");
 
                         return;
-                    
+
                     case QueenOctopusQuest.Queen:
                         Subject.Reply(source, "skip", "queenoctopus_Queenkilled");
-                        
+
                         return;
-                    
+
                     case QueenOctopusQuest.Complete:
                         Subject.Reply(source, "Welcome Back. Please make yourself comfortable.");
 
@@ -108,11 +107,21 @@ public class QueenOctopusQuestScript : DialogScriptBase
                 }
 
                 var redpearl = ItemFactory.Create("redpearl");
-                
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Item, Topics.Entities.Dialog, Topics.Entities.Quest)
-                      .WithProperty(source).WithProperty(Subject)
-                      .LogInformation("{@AislingName} has received {@ExpAmount} exp and the item {@ItemName}", source.Name, 200000, redpearl.DisplayName);
-                
+
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Item,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
+                      .LogInformation(
+                          "{@AislingName} has received {@ExpAmount} exp and the item {@ItemName}",
+                          source.Name,
+                          200000,
+                          redpearl.DisplayName);
+
                 ExperienceDistributionScript.GiveExp(source, 200000);
                 source.SendOrangeBarMessage("You received 200,000 experience!");
                 source.Trackers.Enums.Set(QueenOctopusQuest.Pendant);
@@ -138,17 +147,23 @@ public class QueenOctopusQuestScript : DialogScriptBase
             }
 
                 break;
-            
+
             case "queenoctopus_queenkilled3":
             {
                 source.Trackers.Enums.Set(QueenOctopusQuest.Complete);
-                
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                      .WithProperty(source).WithProperty(Subject)
+
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 500000);
-                
+
                 ExperienceDistributionScript.GiveExp(source, 500000);
                 source.SendOrangeBarMessage("You received 500,000 experience!");
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Killed the Queen Octopus of Karlopos Island",
@@ -158,6 +173,7 @@ public class QueenOctopusQuestScript : DialogScriptBase
                         1,
                         GameTime.Now));
             }
+
                 break;
         }
     }

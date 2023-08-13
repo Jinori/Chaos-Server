@@ -15,9 +15,9 @@ namespace Chaos.Scripting.DialogScripts.Quests;
 
 public class ALittleBitofThatScript : DialogScriptBase
 {
+    private readonly ILogger<ALittleBitofThatScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
-    private ILogger<ALittleBitofThatScript> Logger;
-    
+
     /// <inheritdoc />
     public ALittleBitofThatScript(Dialog subject, ILogger<ALittleBitofThatScript> logger)
         : base(subject)
@@ -175,10 +175,15 @@ public class ALittleBitofThatScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                          .WithProperty(source).WithProperty(Subject)
+                    Logger.WithTopics(
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
+                          .WithProperty(source)
+                          .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
-                    
+
                     source.Inventory.RemoveQuantity("Apple", 5);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.Trackers.Enums.Set(ALittleBitofThatStage.None);
@@ -199,10 +204,15 @@ public class ALittleBitofThatScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                          .WithProperty(source).WithProperty(Subject)
+                    Logger.WithTopics(
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
+                          .WithProperty(source)
+                          .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
-                    
+
                     source.Inventory.RemoveQuantity("baguette", 3);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.Trackers.Enums.Set(ALittleBitofThatStage.None);
@@ -223,10 +233,15 @@ public class ALittleBitofThatScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                          .WithProperty(source).WithProperty(Subject)
+                    Logger.WithTopics(
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
+                          .WithProperty(source)
+                          .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
-                    
+
                     source.Inventory.RemoveQuantity("Cherry", 10);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.Trackers.Enums.Set(ALittleBitofThatStage.None);
@@ -247,10 +262,15 @@ public class ALittleBitofThatScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                          .WithProperty(source).WithProperty(Subject)
+                    Logger.WithTopics(
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
+                          .WithProperty(source)
+                          .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
-                    
+
                     source.Inventory.RemoveQuantity("Grape", 10);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.Trackers.Enums.Set(ALittleBitofThatStage.None);
@@ -271,10 +291,15 @@ public class ALittleBitofThatScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                          .WithProperty(source).WithProperty(Subject)
+                    Logger.WithTopics(
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
+                          .WithProperty(source)
+                          .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
-                    
+
                     source.Inventory.RemoveQuantity("Mold", 3);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.Trackers.Enums.Set(ALittleBitofThatStage.None);
@@ -295,10 +320,15 @@ public class ALittleBitofThatScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                          .WithProperty(source).WithProperty(Subject)
+                    Logger.WithTopics(
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
+                          .WithProperty(source)
+                          .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
-                    
+
                     source.Inventory.RemoveQuantity("Tomato", 1);
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.Trackers.Enums.Set(ALittleBitofThatStage.None);

@@ -6,6 +6,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class ArmachdEffect : NonOverwritableEffectBase
 {
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
     protected override Animation? Animation { get; } = new()
     {
         TargetAnimation = 20,
@@ -15,8 +16,6 @@ public class ArmachdEffect : NonOverwritableEffectBase
     {
         "Armachd"
     };
-
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
     public override byte Icon => 0;
     public override string Name => "armachd";
 

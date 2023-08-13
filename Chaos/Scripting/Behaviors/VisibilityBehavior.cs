@@ -21,24 +21,21 @@ public class VisibilityBehavior
         {
             case VisibilityType.Normal:
                 return true;
-            
+
             case VisibilityType.Hidden:
             {
                 if (creature is Aisling aisling && entity is Aisling)
-                {
                     if ((aisling.Group != null) && aisling.Group.Contains(entity))
                         return true;
-                }
-                
-                return SeeHiddenEffects.Any(key => creature.Effects.Contains(key));   
+
+                return SeeHiddenEffects.Any(key => creature.Effects.Contains(key));
             }
             case VisibilityType.TrueHidden:
             {
                 if (creature is Aisling aisling && entity is Aisling)
-                {
                     if ((aisling.Group != null) && aisling.Group.Contains(entity))
                         return true;
-                }
+
                 return SeeTrueHiddenEffects.Any(key => creature.Effects.Contains(key));
             }
             default:

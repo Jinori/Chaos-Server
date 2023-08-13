@@ -30,7 +30,7 @@ public class PFPendantScript : ItemScriptBase
         mapInstance = _simpleCache.Get<MapInstance>("PF_peak");
         source.Trackers.Enums.TryGetValue(out PFQuestStage stage);
 
-        if (!source.IsAlive || (!source.Inventory.Contains("Turuc Pendant")) || !source.MapInstance.Name.EqualsI(mapInstance.Name))
+        if (!source.IsAlive || !source.Inventory.Contains("Turuc Pendant") || !source.MapInstance.Name.EqualsI(mapInstance.Name))
             return false;
 
         var mantisIsSpawned = mapInstance.GetEntities<Monster>().Any(x => x.Template.TemplateKey.EqualsI("PF_giant_mantis"));

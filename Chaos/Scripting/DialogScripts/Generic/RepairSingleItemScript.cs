@@ -57,10 +57,15 @@ public class RepairSingleItemScript : DialogScriptBase
 
                 return;
             }
-            
+
             Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Gold)
-                  .WithProperty(source).WithProperty(Subject)
-                  .LogInformation("{@AislingName} has repaired {@ItemName} for {@AmountGold}", source.Name, item.DisplayName, RepairCost);
+                  .WithProperty(source)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "{@AislingName} has repaired {@ItemName} for {@AmountGold}",
+                      source.Name,
+                      item.DisplayName,
+                      RepairCost);
 
             source.Inventory.Update(
                 slot,
@@ -72,7 +77,6 @@ public class RepairSingleItemScript : DialogScriptBase
 
             source.SendOrangeBarMessage($"Your {item.DisplayName} has been repaired.");
             Subject.InjectTextParameters(item.DisplayName, RepairCost);
-            
         }
     }
 

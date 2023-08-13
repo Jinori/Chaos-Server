@@ -17,7 +17,6 @@ public class QueenOctopusScript : MapScriptBase
     private readonly Animation Animation;
     private readonly IIntervalTimer AnimationInterval;
     private readonly IRectangle AnimationShape;
-    
 
     private readonly IMonsterFactory MonsterFactory;
     private readonly List<Point> ReverseOutline;
@@ -50,6 +49,7 @@ public class QueenOctopusScript : MapScriptBase
     {
         if (creature is not Aisling aisling)
             return;
+
         State = ScriptState.DelayedStart;
     }
 

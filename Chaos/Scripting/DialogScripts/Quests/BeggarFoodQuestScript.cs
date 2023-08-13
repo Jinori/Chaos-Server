@@ -14,9 +14,9 @@ namespace Chaos.Scripting.DialogScripts.Quests;
 
 public class BeggarFoodQuestScript : DialogScriptBase
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
     private readonly ILogger<BeggarFoodQuestScript> Logger;
-    
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
+
     /// <inheritdoc />
     public BeggarFoodQuestScript(Dialog subject, ILogger<BeggarFoodQuestScript> logger)
         : base(subject)
@@ -102,10 +102,15 @@ public class BeggarFoodQuestScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                          .WithProperty(source).WithProperty(Subject)
+                    Logger.WithTopics(
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
+                          .WithProperty(source)
+                          .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
-                    
+
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, 25000);
 

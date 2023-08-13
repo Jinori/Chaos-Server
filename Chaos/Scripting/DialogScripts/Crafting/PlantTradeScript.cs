@@ -9,12 +9,13 @@ namespace Chaos.Scripting.DialogScripts.Crafting;
 
 public class PlantTradeScript : DialogScriptBase
 {
-    private readonly IItemFactory ItemFactory;
     private readonly IDialogFactory DialogFactory;
+    private readonly IItemFactory ItemFactory;
 
     private readonly List<string> PlantTemplateKeys = new()
-    { 
-        "blossomofbetrayal", "bocanbough", "cactusflower", "dochasbloom", "kabineblossom", "koboldtail", "lilypad", "passionflower", "raineach", "sparkflower"
+    {
+        "blossomofbetrayal", "bocanbough", "cactusflower", "dochasbloom", "kabineblossom", "koboldtail", "lilypad", "passionflower",
+        "raineach", "sparkflower"
     };
 
     /// <inheritdoc />
@@ -28,7 +29,7 @@ public class PlantTradeScript : DialogScriptBase
         ItemFactory = itemFactory;
         DialogFactory = dialogFactory;
     }
-    
+
     private int GetTradeCost(string itemKey) =>
         itemKey.ToLower() switch
         {
@@ -44,7 +45,6 @@ public class PlantTradeScript : DialogScriptBase
             "sparkflower"       => 50000,
             _                   => 1000 // You can choose the default value here.
         };
-
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -87,12 +87,11 @@ public class PlantTradeScript : DialogScriptBase
             return;
         }
 
-        
         var newPlant = ItemFactory.Create(previous.ToLowerInvariant().Replace(" ", string.Empty));
-        
+
         if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
         {
-            Subject.Reply(source, $"You ran out of those plants to trade.", "plant_trade_initial");
+            Subject.Reply(source, "You ran out of those plants to trade.", "plant_trade_initial");
 
             return;
         }
@@ -105,7 +104,7 @@ public class PlantTradeScript : DialogScriptBase
         }
 
         source.Inventory.RemoveQuantityByTemplateKey(item.Template.TemplateKey, 1);
-        
+
         source.GiveItemOrSendToBank(newPlant);
 
         Subject.InjectTextParameters(item.DisplayName, newPlant.DisplayName);
@@ -124,11 +123,6 @@ public class PlantTradeScript : DialogScriptBase
             Subject.Reply(source, "Plant cannot be traded", "plant_trade_initial");
     }
 
-    public void OnDisplayingShowPlayerItems(Aisling source) => Subject.Slots =
-        source.Inventory.Where(x => PlantTemplateKeys.Contains(x.Template.TemplateKey.ToLower()))
-              .Select(x => x.Slot)
-              .ToList();
-
     public void OnDisplayingPlants(Aisling source)
     {
         if (!Subject.MenuArgs.TryGet<int>(0, out var slot))
@@ -140,15 +134,17 @@ public class PlantTradeScript : DialogScriptBase
             return;
 
         foreach (var plantTemplateKey in PlantTemplateKeys)
-        {
             if (!string.Equals(selectedItem.Template.TemplateKey, plantTemplateKey, StringComparison.CurrentCultureIgnoreCase))
             {
                 var fauxPlantItem = ItemFactory.CreateFaux(plantTemplateKey);
-                Subject.Items.Add(ItemDetails.DisplayRecipe(fauxPlantItem));   
+                Subject.Items.Add(ItemDetails.DisplayRecipe(fauxPlantItem));
             }
-        }
     }
 
+    public void OnDisplayingShowPlayerItems(Aisling source) => Subject.Slots =
+        source.Inventory.Where(x => PlantTemplateKeys.Contains(x.Template.TemplateKey.ToLower()))
+              .Select(x => x.Slot)
+              .ToList();
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
@@ -174,7 +170,7 @@ public class PlantTradeScript : DialogScriptBase
             // Find the slot of the plant item the player wants to trade.
             if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
             {
-                Subject.Reply(source, $"You ran out of those plants to trade.", "plant_trade_initial");
+                Subject.Reply(source, "You ran out of those plants to trade.", "plant_trade_initial");
 
                 return;
             }
@@ -188,7 +184,7 @@ public class PlantTradeScript : DialogScriptBase
             dialog.MenuArgs = Subject.MenuArgs;
             dialog.Context = Subject.Context;
             var tradeCost = GetTradeCost(items.Template.TemplateKey);
-            dialog.InjectTextParameters(plant.DisplayName,item.DisplayName, tradeCost);
+            dialog.InjectTextParameters(plant.DisplayName, item.DisplayName, tradeCost);
             dialog.Display(source);
         }
     }

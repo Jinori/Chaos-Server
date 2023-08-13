@@ -51,13 +51,18 @@ public class ManorNecklaceScript : DialogScriptBase
                 source.Client.SendServerMessage(
                     ServerMessageType.OrangeBar1,
                     "You receive a legend mark. The young one looks terribly sad.");
-                
+
                 var necklace = _itemFactory.Create("zulerasHeirloom");
-                
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Dialog, Topics.Entities.Quest)
-                      .WithProperty(source).WithProperty(Subject)
+
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Item,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ItemName} from a quest", source.Name, necklace.DisplayName);
-                
+
                 source.TryGiveItem(ref necklace);
 
                 break;
@@ -77,10 +82,15 @@ public class ManorNecklaceScript : DialogScriptBase
                 if (stage == ManorNecklaceStage.ReturningNecklace)
                     source.Trackers.Enums.Set(ManorNecklaceStage.ReturnedNecklace);
 
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Experience, Topics.Entities.Dialog, Topics.Entities.Quest)
-                      .WithProperty(source).WithProperty(Subject)
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, 150000);
-                
+
                 ExperienceDistributionScript.GiveExp(source, 150000);
                 source.TryGiveGamePoints(20);
 
@@ -123,7 +133,9 @@ public class ManorNecklaceScript : DialogScriptBase
 
                         break;
                     case ManorNecklaceStage.SawNecklace:
-                        Subject.Reply(source, "You saw it!? Then ghost appeared? They must of taken it! Go back to that room and find it for me!");
+                        Subject.Reply(
+                            source,
+                            "You saw it!? Then ghost appeared? They must of taken it! Go back to that room and find it for me!");
 
                         break;
                 }
