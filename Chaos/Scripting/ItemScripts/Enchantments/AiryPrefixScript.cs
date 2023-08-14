@@ -7,7 +7,7 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class AiryPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class AiryPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public AiryPrefixScript(Item subject)
