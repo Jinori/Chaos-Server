@@ -15,11 +15,11 @@ public class ClassDedicationScript : DialogScriptBase
 
     private readonly Dictionary<BaseClass, (int requiredHealth, int requiredMana)> BaseClassRequirements = new()
     {
-        { BaseClass.Monk, (8400, 3600) },
-        { BaseClass.Warrior, (8400, 2000) },
-        { BaseClass.Rogue, (6600, 3600) },
-        { BaseClass.Wizard, (6000, 6600) },
-        { BaseClass.Priest, (6600, 7250) }
+        { BaseClass.Monk, (8400, 3400) },
+        { BaseClass.Warrior, (8400, 2500) },
+        { BaseClass.Rogue, (6600, 3300) },
+        { BaseClass.Wizard, (6000, 6000) },
+        { BaseClass.Priest, (6600, 6250) }
     };
 
     private readonly Dictionary<string, BaseClass> ClassNameMappings = new()
