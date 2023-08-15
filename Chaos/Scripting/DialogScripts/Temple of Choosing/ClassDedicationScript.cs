@@ -157,11 +157,11 @@ public class ClassDedicationScript : DialogScriptBase
             source.UserStatSheet.SubtractTnl(source.UserStatSheet.ToNextLevel);
 
         source.UserStatSheet.AddTnl(599);
-        source.UserStatSheet.Str = 1;
-        source.UserStatSheet.Int = 1;
-        source.UserStatSheet.Wis = 1;
-        source.UserStatSheet.Con = 1;
-        source.UserStatSheet.Dex = 1;
+        source.UserStatSheet.Str = 3;
+        source.UserStatSheet.Int = 3;
+        source.UserStatSheet.Wis = 3;
+        source.UserStatSheet.Con = 3;
+        source.UserStatSheet.Dex = 3;
         source.UserStatSheet.SetMaxWeight(51);
         source.UserStatSheet.SetBaseClass(baseClass);
 

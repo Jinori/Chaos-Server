@@ -11,6 +11,12 @@ namespace Chaos.Scripting.Components;
 
 public class ExecuteComponent : IComponent
 {
+    
+    private Animation animate { get; } = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 97
+    };
     /// <inheritdoc />
     public void Execute(ActivationContext context, ComponentVars vars)
     {
@@ -36,6 +42,8 @@ public class ExecuteComponent : IComponent
                     healAmount);
 
                 context.SourceAisling?.SendActiveMessage($"You've been healed by {healAmount} from Execute!");
+                
+                context.SourceAisling?.Animate(animate);
 
                 if (!target.IsAlive)
                     hasKilled = true;

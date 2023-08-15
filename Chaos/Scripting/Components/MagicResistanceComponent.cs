@@ -20,7 +20,7 @@ public sealed class MagicResistanceComponent : IComponent
         var targets = vars.GetTargets<Creature>().ToList();
         var options = vars.GetOptions<IMagicResistanceComponentOptions>();
 
-        //Immediately cast spell
+        // Immediately cast spell
         if (options.IgnoreMagicResistance)
             return;
 
@@ -29,11 +29,17 @@ public sealed class MagicResistanceComponent : IComponent
 
         foreach (var target in targets.ToList())
         {
-            // Calculate chance to hit, ensuring it's between 0% and 100%
-            var rawChanceToHit = 100 - target.StatSheet.EffectiveMagicResistance + additionalHitChance;
-            var chanceToHit = Math.Clamp(rawChanceToHit, 0, 100);
+            // Calculate effective magic resistance, capped at 70%
+            var effectiveMagicResistance = Math.Min((int)target.StatSheet.EffectiveMagicResistance, 70);
 
-            if (!IntegerRandomizer.RollChance(chanceToHit))
+            // Calculate chance to hit based on magic resistance and additional hit chance
+            var rawChanceToHit = 100 - effectiveMagicResistance + additionalHitChance;
+
+            // Calculate final chance to hit, taking into account the user's hit chance
+            var finalChanceToHit = (rawChanceToHit * userHit) / 100;
+            finalChanceToHit = Math.Clamp(finalChanceToHit, 0, 100);
+
+            if (!IntegerRandomizer.RollChance(finalChanceToHit))
             {
                 targets.Remove(target);
                 target.Animate(MissAnimation);
@@ -42,6 +48,7 @@ public sealed class MagicResistanceComponent : IComponent
 
         vars.SetTargets(targets);
     }
+
 
     public interface IMagicResistanceComponentOptions
     {

@@ -13,8 +13,8 @@ public sealed class DarkPrefixScript : ItemScriptBase, IEnchantmentScript
     public DarkPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Dark"))
-            subject.DisplayName = $"Dark {subject.DisplayName}";
+        if (!subject.DisplayName.StartsWithI("Darkened"))
+            subject.DisplayName = $"Darkened {subject.DisplayName}";
 
         var attributes = new Attributes
         {
@@ -28,7 +28,7 @@ public sealed class DarkPrefixScript : ItemScriptBase, IEnchantmentScript
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
     {
-        if (!node.Name.StartsWithI("Dark"))
-            yield return node with { Name = $"Dark {node.Name}" };
+        if (!node.Name.StartsWithI("Darkened"))
+            yield return node with { Name = $"Darkened {node.Name}" };
     }
 }

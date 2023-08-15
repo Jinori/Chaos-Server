@@ -93,7 +93,7 @@ public class AscendingScript : DialogScriptBase
         var beforeBaseMana = source.StatSheet.MaximumMp;
         int timesToAscend;
 
-        if (!ExperienceDistributionScript.TryTakeExp(source, source.StatSheet.MaximumHp * 500))
+        if (!ExperienceDistributionScript.TryTakeExp(source, source.StatSheet.MaximumHp * 500) || (!ExperienceDistributionScript.TryTakeExp(source, source.StatSheet.MaximumMp * 250)))
         {
             Subject.Reply(source, "You do not have enough experience to buy vitality. Go increase your knowledge.");
 

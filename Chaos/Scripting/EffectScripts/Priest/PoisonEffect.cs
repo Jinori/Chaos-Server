@@ -19,7 +19,7 @@ public class PoisonEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
     /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(100));
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(500));
     /// <inheritdoc />
     public override byte Icon => 27;
     /// <inheritdoc />
@@ -28,12 +28,16 @@ public class PoisonEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
-        const int DAMAGE_PER_TICK = 5;
+        double maxHp = Subject.StatSheet.MaximumHp;
+        const double DAMAGE_PERCENTAGE = 0.005;
+        const int DAMAGE_CAP = 500;
 
-        if (Subject.StatSheet.CurrentHp <= DAMAGE_PER_TICK)
-            return;
+        var damage = (int)Math.Min(maxHp * DAMAGE_PERCENTAGE, DAMAGE_CAP);
 
-        if (Subject.StatSheet.TrySubtractHp(DAMAGE_PER_TICK))
+        if (Subject.StatSheet.TrySubtractHp(damage))
+        {
             AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        }
     }
+
 }

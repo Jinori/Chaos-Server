@@ -54,7 +54,7 @@ public class EnchantingScript : DialogScriptBase
         "Minor",
         "Modest",
         "Tiny",
-        "Dark",
+        "Darkened",
         "Serene",
         "Airy",
         "Valiant",

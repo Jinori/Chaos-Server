@@ -69,7 +69,7 @@ public class CryptSlayerScript : DialogScriptBase
 
                     source.Legend.AddOrAccumulate(
                         new LegendMark(
-                            "Controlled the Mileth Crypt population.",
+                            "Controlled the Mileth Crypt population",
                             "CryptSlayerCompleted",
                             MarkIcon.Victory,
                             MarkColor.Blue,
