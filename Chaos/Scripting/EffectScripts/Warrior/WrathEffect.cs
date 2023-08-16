@@ -28,7 +28,7 @@ public class WrathEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     public override byte Icon { get; } = 98;
     /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(400));
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
     /// <inheritdoc />
     public override string Name { get; } = "Wrath";
 
@@ -37,7 +37,7 @@ public class WrathEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
-        if (Subject.StatSheet.ManaPercent < 1)
+        if ((Subject.StatSheet.ManaPercent < 1) || (Subject.StatSheet.CurrentMp == 1))
         {
             Subject.Effects.Terminate(Name);
 
