@@ -7,124 +7,50 @@ using Chaos.Scripting.MerchantScripts.Abstractions;
 using Humanizer;
 using Microsoft.Extensions.Logging;
 
-namespace Chaos.Scripting.MerchantScripts.Casino;
-
-public class TwentyOneScript : MerchantScriptBase
+namespace Chaos.Scripting.MerchantScripts.Casino
 {
-    private readonly List<Aisling> AislingsThatDidNotBust = new();
-    private readonly IClientRegistry<IWorldClient> ClientRegistry;
-    private readonly ILogger<TwentyOneScript> Logger;
-    private IEnumerable<Aisling>? AislingsAtCompletion;
-    private IEnumerable<Aisling>? AislingsAtStart;
-    private bool AnnouncedOneMinuteTimer;
-    private DateTime? AnnouncedStart;
-    private bool AnnouncedThirtySecondTimer;
-    private bool CountdownStarted;
-    private int CountdownStep;
-    private DateTime LastCountdownTime;
-
-    public TwentyOneScript(Merchant subject, IClientRegistry<IWorldClient> clientRegistry, ILogger<TwentyOneScript> logger)
-        : base(subject)
+    public class TwentyOneScript : MerchantScriptBase
     {
-        ClientRegistry = clientRegistry;
-        Logger = logger;
-    }
+        private readonly List<Aisling> AislingsThatDidNotBust = new();
+        private readonly IClientRegistry<IWorldClient> ClientRegistry;
+        private readonly ILogger<TwentyOneScript> Logger;
 
-    private void ProcessGameCompletion()
-    {
-        AislingsAtCompletion = Subject.MapInstance.GetEntities<Aisling>().Where(x => x.BetGoldOnTwentyOne).ToList();
+        private IEnumerable<Aisling>? AislingsAtCompletion;
+        private IEnumerable<Aisling>? AislingsAtStart;
 
-        foreach (var aisling in AislingsAtCompletion)
-            if (aisling is { CurrentDiceScore: <= 21 })
-                AislingsThatDidNotBust.Add(aisling);
+        private bool AnnouncedOneMinuteTimer;
+        private DateTime? AnnouncedStart;
+        private bool AnnouncedThirtySecondTimer;
+        private bool CountdownStarted;
+        private int CountdownStep;
+        private DateTime LastCountdownTime;
 
-        if (AislingsThatDidNotBust.Any())
+        public TwentyOneScript(Merchant subject, IClientRegistry<IWorldClient> clientRegistry, ILogger<TwentyOneScript> logger)
+            : base(subject)
         {
-            var highestScore = AislingsThatDidNotBust.Max(a => a.CurrentDiceScore);
-            var winners = AislingsThatDidNotBust.Where(a => a.CurrentDiceScore == highestScore);
+            ClientRegistry = clientRegistry;
+            Logger = logger;
+        }
 
-            var enumerable = winners as Aisling[] ?? winners.ToArray();
-
-            if (enumerable.Length == 1)
+        public override void Update(TimeSpan delta)
+        {
+            if (Subject.CurrentlyHosting21Game)
             {
-                var winner = enumerable.First();
-                Subject.Say($"{winner.Name} wins with a score of {highestScore}!");
-                var winnings = AislingsAtCompletion.Count() * 25000;
-                var eightPercent = (int)(winnings * 0.08m);
-                var winningsMinusEight = winnings - eightPercent;
+                StartGameCountdown();
 
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
-                      .WithProperty(winner)
-                      .WithProperty(Subject)
-                      .LogInformation(
-                          "{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes",
-                          winner.Name,
-                          winningsMinusEight,
-                          eightPercent);
-
-                winner.TryGiveGold(winningsMinusEight);
-                winner.SendServerMessage(ServerMessageType.Whisper, $"The casino took their cut of {eightPercent.ToWords()} gold!");
-                winner.SendServerMessage(ServerMessageType.Whisper, $"You won the game and receive {winningsMinusEight.ToWords()} gold!");
-            }
-            else
-            {
-                var winnerNames = string.Join(", ", enumerable.Select(w => w.Name));
-                Subject.Say($"It's a tie between {winnerNames} with a score of {highestScore}!");
-
-                foreach (var winner in enumerable)
+                if (GameShouldComplete())
                 {
-                    var winnings = AislingsAtCompletion.Count() / enumerable.Length * 25000;
-                    var eightPercent = (int)(winnings * 0.08m);
-                    var winningsMinusEight = winnings - eightPercent;
-
-                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
-                          .WithProperty(winner)
-                          .WithProperty(Subject)
-                          .LogInformation(
-                              "{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes",
-                              winner.Name,
-                              winningsMinusEight,
-                              eightPercent);
-
-                    winner.SendServerMessage(ServerMessageType.Whisper, $"The casino took their cut of {eightPercent.ToWords()} gold!");
-                    winner.SendServerMessage(ServerMessageType.Whisper, $"You tied and receive {winningsMinusEight.ToWords()} gold!");
-                    winner.TryGiveGold(winningsMinusEight);
+                    ProcessGameCompletion();
+                    ResetGame();
                 }
+
+                HandleThirtySecondAnnouncement();
+
+                HandleFinalCountdown();
             }
         }
-        else
-            Subject.Say("Everyone bust! There are no winners.");
-    }
 
-    private void ResetGame()
-    {
-        Subject.CurrentlyHosting21Game = false;
-        AislingsThatDidNotBust.Clear();
-        AnnouncedOneMinuteTimer = false;
-        AnnouncedStart = null;
-        CountdownStarted = false;
-
-        var clearPlayers = ClientRegistry.Where(
-            x => (AislingsAtCompletion != null)
-                 && (AislingsAtStart != null)
-                 && (AislingsAtStart.Contains(x.Aisling) || AislingsAtCompletion.Contains(x.Aisling)));
-
-        foreach (var player in clearPlayers)
-        {
-            player.Aisling.CurrentDiceScore = 0;
-            player.Aisling.TwentyOneBust = false;
-            player.Aisling.BetGoldOnTwentyOne = false;
-            player.Aisling.TwentyOneStayOption = false;
-            player.Aisling.OnTwentyOneTile = false;
-        }
-
-        AislingsAtStart = null;
-        AislingsAtCompletion = null;
-    }
-
-    public override void Update(TimeSpan delta)
-    {
-        if (Subject.CurrentlyHosting21Game)
+        private void StartGameCountdown()
         {
             if (!AnnouncedOneMinuteTimer)
             {
@@ -137,21 +63,22 @@ public class TwentyOneScript : MerchantScriptBase
 
                 Subject.Say("Let's begin!");
             }
-            else if (AnnouncedStart.HasValue
-                     && (DateTime.UtcNow.Subtract(AnnouncedStart.Value).TotalMinutes >= 1)
-                     && AnnouncedOneMinuteTimer)
-            {
-                ProcessGameCompletion();
-                ResetGame();
-            }
-            else if (AnnouncedStart.HasValue
-                     && (DateTime.UtcNow.Subtract(AnnouncedStart.Value).TotalSeconds >= 30)
-                     && !AnnouncedThirtySecondTimer)
+        }
+
+        private bool GameShouldComplete() => AnnouncedStart.HasValue && (DateTime.UtcNow.Subtract(AnnouncedStart.Value).TotalMinutes >= 1) && AnnouncedOneMinuteTimer;
+
+        private void HandleThirtySecondAnnouncement()
+        {
+            if (AnnouncedStart.HasValue && (DateTime.UtcNow.Subtract(AnnouncedStart.Value).TotalSeconds >= 30) && !AnnouncedThirtySecondTimer)
             {
                 Subject.Say("Game starting in thirty seconds!");
                 AnnouncedThirtySecondTimer = true;
             }
-            else if (AnnouncedStart.HasValue && (DateTime.UtcNow.Subtract(AnnouncedStart.Value).TotalSeconds >= 50) && !CountdownStarted)
+        }
+
+        private void HandleFinalCountdown()
+        {
+            if (AnnouncedStart.HasValue && (DateTime.UtcNow.Subtract(AnnouncedStart.Value).TotalSeconds >= 50) && !CountdownStarted)
             {
                 Subject.Say("Game starting in ten seconds!");
                 CountdownStarted = true;
@@ -166,5 +93,112 @@ public class TwentyOneScript : MerchantScriptBase
                     CountdownStep--;
                 }
         }
+
+        private void ProcessGameCompletion()
+        {
+            GatherAislingsAtCompletion();
+            FindAislingsThatDidNotBust();
+
+            if (AislingsThatDidNotBust.Any())
+                ProcessWinners();
+            else
+                Subject.Say("Everyone bust! There are no winners.");
+        }
+
+        private void GatherAislingsAtCompletion() => AislingsAtCompletion = Subject.MapInstance.GetEntities<Aisling>().Where(x => x.BetGoldOnTwentyOne).ToList();
+
+        private void FindAislingsThatDidNotBust()
+        {
+            if (AislingsAtCompletion != null)
+                foreach (var aisling in AislingsAtCompletion)
+                    if (aisling is { CurrentDiceScore: <= 21 })
+                        AislingsThatDidNotBust.Add(aisling);
+        }
+
+        private void ProcessWinners()
+        {
+            var highestScore = AislingsThatDidNotBust.Max(a => a.CurrentDiceScore);
+            var winners = AislingsThatDidNotBust.Where(a => a.CurrentDiceScore == highestScore).ToArray();
+
+            if (winners.Length == 1)
+                ProcessSingleWinner(winners[0], highestScore);
+            else
+                ProcessMultipleWinners(winners, highestScore);
+        }
+
+        private void ProcessSingleWinner(Aisling winner, int highestScore)
+        {
+            Subject.Say($"{winner.Name} wins with a score of {highestScore}!");
+            DistributeWinnings(new[] { winner });
+        }
+
+        private void ProcessMultipleWinners(IReadOnlyCollection<Aisling> winners, int highestScore)
+        {
+            var winnerNames = string.Join(", ", winners.Select(w => w.Name));
+            Subject.Say($"It's a tie between {winnerNames} with a score of {highestScore}!");
+            DistributeWinnings(winners);
+        }
+
+        private void DistributeWinnings(IReadOnlyCollection<Aisling> winners)
+        {
+            foreach (var winner in winners)
+            {
+                if (AislingsAtCompletion != null)
+                {
+                    var winnings = (AislingsAtCompletion.Count() / winners.Count) * 25000;
+                    var eightPercent = (int)(winnings * 0.08m);
+                    var winningsMinusEight = winnings - eightPercent;
+
+                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
+                          .WithProperty(winner)
+                          .WithProperty(Subject)
+                          .LogInformation(
+                              "{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes",
+                              winner.Name,
+                              winningsMinusEight,
+                              eightPercent);
+
+                    winner.SendServerMessage(ServerMessageType.Whisper, $"The casino took their cut of {eightPercent.ToWords()} gold!");
+
+                    winner.SendServerMessage(
+                        ServerMessageType.Whisper,
+                        $"You {(winners.Count > 1 ? "tied and receive" : "won the game and receive")} {winningsMinusEight.ToWords()} gold!");
+
+                    winner.TryGiveGold(winningsMinusEight);
+                }
+            }
+        }
+        
+        private void ResetGame()
+        {
+            Subject.CurrentlyHosting21Game = false;
+            AislingsThatDidNotBust.Clear();
+            AnnouncedOneMinuteTimer = false;
+            AnnouncedStart = null;
+            CountdownStarted = false;
+            
+            ClearPlayersState();
+
+            AislingsAtStart = null;
+            AislingsAtCompletion = null;
+        }
+
+        private void ClearPlayersState()
+        {
+            var clearPlayers = ClientRegistry.Where(
+                x => (AislingsAtCompletion != null)
+                     && (AislingsAtStart != null)
+                     && (AislingsAtStart.Contains(x.Aisling) || AislingsAtCompletion.Contains(x.Aisling)));
+
+            foreach (var player in clearPlayers)
+            {
+                player.Aisling.CurrentDiceScore = 0;
+                player.Aisling.TwentyOneBust = false;
+                player.Aisling.BetGoldOnTwentyOne = false;
+                player.Aisling.TwentyOneStayOption = false;
+                player.Aisling.OnTwentyOneTile = false;
+            }
+        }
+
     }
 }

@@ -118,8 +118,8 @@ public class TerrorOfTheCryptScript : MapScriptBase
                         AtkSpeedPct = groupLevel.Count * 3,
                         MaximumHp = (int)groupLevel.Average() * groupLevel.Count * 500,
                         MaximumMp = (int)groupLevel.Average() * groupLevel.Count * 500,
-                        SkillDamagePct = groupLevel.Count * 2,
-                        SpellDamagePct = groupLevel.Count * 2
+                        SkillDamagePct = groupLevel.Count,
+                        SpellDamagePct = groupLevel.Count
                     };
 
                     // Check the group level and add spells accordingly

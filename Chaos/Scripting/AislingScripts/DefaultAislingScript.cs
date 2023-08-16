@@ -33,9 +33,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     {
         "Arena Battle Ring",
         "Lava Arena",
-        "Lava Arena 2",
-        "Lava Arena 3",
-        "Lava Arena 4"
+        "Lava Arena - Teams",
     };
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
@@ -48,9 +46,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         "Cain's Farm",
         "Arena Battle Ring",
         "Lava Arena",
-        "Lava Arena 2",
-        "Lava Arena 3",
-        "Lava Arena 4"
+        "Lava Arena - Teams",
     };
 
     private readonly IMerchantFactory MerchantFactory;

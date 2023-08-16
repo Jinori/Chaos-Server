@@ -14,8 +14,7 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MapScripts.Abstractions;
-using Chaos.Scripting.MapScripts.Arena.HiddenHavoc;
-using Chaos.Scripting.MapScripts.Arena.Lava_Flow;
+using Chaos.Scripting.MapScripts.Arena.Arena_Modes;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Discord;
@@ -542,11 +541,13 @@ public class ArenaUndergroundScript : DialogScriptBase
 
             case "ophie_starthiddenhavochostnotplayingstart":
             {
+                source.Trackers.Enums.Set(ArenaHostPlaying.No);
+
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
-                var script = mapInstance.Script.As<HiddenHavocHostNotPlayingScript>();
+                var script = mapInstance.Script.As<HiddenHavocShrinkScript>();
 
                 if (script == null)
-                    mapInstance.AddScript(typeof(HiddenHavocHostNotPlayingScript), ScriptFactory);
+                    mapInstance.AddScript(typeof(HiddenHavocShrinkScript), ScriptFactory);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
@@ -567,11 +568,13 @@ public class ArenaUndergroundScript : DialogScriptBase
 
             case "ophie_starthiddenhavochostplayingstart":
             {
+                source.Trackers.Enums.Set(ArenaHostPlaying.Yes);
+
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
-                var script = mapInstance.Script.As<HiddenHavocHostPlayingScript>();
+                var script = mapInstance.Script.As<HiddenHavocShrinkScript>();
 
                 if (script == null)
-                    mapInstance.AddScript(typeof(HiddenHavocHostPlayingScript), ScriptFactory);
+                    mapInstance.AddScript(typeof(HiddenHavocShrinkScript), ScriptFactory);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
@@ -591,11 +594,13 @@ public class ArenaUndergroundScript : DialogScriptBase
 
             case "ophie_startffalavaflowhostnotplayingstart":
             {
+                source.Trackers.Enums.Set(ArenaHostPlaying.No);
+                
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
-                var script = mapInstance.Script.As<LavaFlowFFAHostNotPlayingScript>();
+                var script = mapInstance.Script.As<LavaFlowShrinkScript>();
 
                 if (script == null)
-                    mapInstance.AddScript(typeof(LavaFlowFFAHostNotPlayingScript), ScriptFactory);
+                    mapInstance.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
@@ -616,11 +621,14 @@ public class ArenaUndergroundScript : DialogScriptBase
 
             case "ophie_startffalavaflowhostplayingstart":
             {
+                source.Trackers.Enums.Set(ArenaHostPlaying.Yes);
+
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
-                var script = mapInstance.Script.As<LavaFlowFFAHostPlayingScript>();
+                
+                var script = mapInstance.Script.As<LavaFlowShrinkScript>();
 
                 if (script == null)
-                    mapInstance.AddScript(typeof(LavaFlowFFAHostPlayingScript), ScriptFactory);
+                    mapInstance.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
@@ -640,11 +648,13 @@ public class ArenaUndergroundScript : DialogScriptBase
 
             case "ophie_startteamgamelavaflowhostplayingstart":
             {
-                var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
-                var script = mapInstance.Script.As<LavaFlowTeamsHostPlayingScript>();
-
+                source.Trackers.Enums.Set(ArenaHostPlaying.Yes);
+                
+                var mapInstance = SimpleCache.Get<MapInstance>("arena_lavateams");
+                var script = mapInstance.Script.As<LavaFlowShrinkScript>();
+                
                 if (script == null)
-                    mapInstance.AddScript(typeof(LavaFlowTeamsHostPlayingScript), ScriptFactory);
+                    mapInstance.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
@@ -686,11 +696,13 @@ public class ArenaUndergroundScript : DialogScriptBase
 
             case "ophie_startteamgamelavaflowhostnotplayingstart":
             {
-                var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
-                var script = mapInstance.Script.As<LavaFlowTeamsHostNotPlayingScript>();
-
+                source.Trackers.Enums.Set(ArenaHostPlaying.No);
+                
+                var mapInstance = SimpleCache.Get<MapInstance>("arena_lavateams");
+                var script = mapInstance.Script.As<LavaFlowShrinkScript>();
+                
                 if (script == null)
-                    mapInstance.AddScript(typeof(LavaFlowTeamsHostNotPlayingScript), ScriptFactory);
+                    mapInstance.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {

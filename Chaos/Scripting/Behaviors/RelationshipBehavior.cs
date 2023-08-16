@@ -43,7 +43,8 @@ public class RelationshipBehavior
             return true;
 
         var inPvpMap = ((source.MapInstance.InstanceId == "arena_battle_ring") && (target.MapInstance.InstanceId == "arena_battle_ring"))
-                       || ((source.MapInstance.InstanceId == "arena_lava") && (target.MapInstance.InstanceId == "arena_lava"));
+                       || ((source.MapInstance.InstanceId == "arena_lava") && (target.MapInstance.InstanceId == "arena_lava"))
+                       || ((source.MapInstance.InstanceId == "arena_lavateams") && (target.MapInstance.InstanceId == "arena_lavateams"));
 
         var inGroup = source.Group?.Contains(target) ?? false;
 
@@ -107,7 +108,8 @@ public class RelationshipBehavior
             return false;
 
         var onPvpMap = ((source.MapInstance.InstanceId == "arena_battle_ring") && (target.MapInstance.InstanceId == "arena_battle_ring"))
-                       || ((source.MapInstance.InstanceId == "arena_lava") && (target.MapInstance.InstanceId == "arena_lava"));
+                       || ((source.MapInstance.InstanceId == "arena_lava") && (target.MapInstance.InstanceId == "arena_lava"))
+                       || ((source.MapInstance.InstanceId == "arena_lavateams") && (target.MapInstance.InstanceId == "arena_lavateams"));
 
         var inGroup = source.Group?.Contains(target) ?? false;
 

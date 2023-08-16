@@ -87,29 +87,7 @@ public class ArenaBattleRingScript : DialogScriptBase
 
                 break;
             }
-            case "alex_hiddenhavoc":
-            {
-                foreach (var enabledScript in source.MapInstance.ScriptKeys)
-                {
-                    source.MapInstance.ScriptKeys.Remove(enabledScript);
-                    source.SendActiveMessage($"{enabledScript} has been removed from the Arena Battle Ring.");
-                }
-
-                var script = source.MapInstance.Script.As<HiddenHavocGameScript>();
-
-                if (script == null)
-                    source.MapInstance.AddScript(typeof(HiddenHavocGameScript), ScriptFactory);
-
-                var aislings = source.MapInstance.GetEntities<Aisling>().ToList();
-
-                foreach (var aisling in aislings)
-                    aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"Hidden Havoc mode has enabled by {source.Name}!");
-
-                Subject.Close(source);
-
-                break;
-            }
-
+            
             case "alex_leave":
             {
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");

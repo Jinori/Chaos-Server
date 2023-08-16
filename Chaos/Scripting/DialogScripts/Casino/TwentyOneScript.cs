@@ -48,15 +48,15 @@ public class TwentyOneScript : DialogScriptBase
 
     private void OnDisplayingDiceRoll(Aisling source)
     {
-        if (!HasPaid)
-        {
-            source.TryTakeGold(25000);
-            source.BetGoldOnTwentyOne = true;
-            HasPaid = true;
-        }
-
         if (Subject.DialogSource is Merchant merchant)
         {
+            if ((source.Gold >= 25000) && !HasPaid && (source.CurrentDiceScore == 0))
+            {
+                source.TryTakeGold(25000);
+                source.BetGoldOnTwentyOne = true;
+                HasPaid = true;
+            }
+            
             merchant.CurrentlyHosting21Game = true;
             var roll = IntegerRandomizer.RollDouble(6);
             source.CurrentDiceScore += roll;
@@ -90,7 +90,7 @@ public class TwentyOneScript : DialogScriptBase
 
             return;
         }
-
+        
         if (source.TwentyOneStayOption || source.TwentyOneBust)
             Subject.Reply(source, $"Please wait while everyone has finished. Your score was {source.CurrentDiceScore}.");
     }

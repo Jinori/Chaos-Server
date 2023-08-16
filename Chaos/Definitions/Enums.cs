@@ -1166,6 +1166,13 @@ public enum ArenaHost
     MasterHost = 2
 }
 
+public enum ArenaHostPlaying
+{
+    None,
+    Yes = 1,
+    No = 2
+}
+
 public enum ArenaTeam
 {
     None,
