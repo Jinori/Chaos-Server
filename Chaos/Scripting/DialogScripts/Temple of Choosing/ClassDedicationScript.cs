@@ -15,11 +15,11 @@ public class ClassDedicationScript : DialogScriptBase
 
     private readonly Dictionary<BaseClass, (int requiredHealth, int requiredMana)> BaseClassRequirements = new()
     {
-        { BaseClass.Monk, (8400, 3600) },
-        { BaseClass.Warrior, (8400, 2000) },
-        { BaseClass.Rogue, (6600, 3600) },
-        { BaseClass.Wizard, (6000, 6600) },
-        { BaseClass.Priest, (6600, 7250) }
+        { BaseClass.Monk, (8400, 3400) },
+        { BaseClass.Warrior, (8400, 2500) },
+        { BaseClass.Rogue, (6600, 3300) },
+        { BaseClass.Wizard, (6000, 6000) },
+        { BaseClass.Priest, (6600, 6250) }
     };
 
     private readonly Dictionary<string, BaseClass> ClassNameMappings = new()
@@ -157,11 +157,11 @@ public class ClassDedicationScript : DialogScriptBase
             source.UserStatSheet.SubtractTnl(source.UserStatSheet.ToNextLevel);
 
         source.UserStatSheet.AddTnl(599);
-        source.UserStatSheet.Str = 1;
-        source.UserStatSheet.Int = 1;
-        source.UserStatSheet.Wis = 1;
-        source.UserStatSheet.Con = 1;
-        source.UserStatSheet.Dex = 1;
+        source.UserStatSheet.Str = 3;
+        source.UserStatSheet.Int = 3;
+        source.UserStatSheet.Wis = 3;
+        source.UserStatSheet.Con = 3;
+        source.UserStatSheet.Dex = 3;
         source.UserStatSheet.SetMaxWeight(51);
         source.UserStatSheet.SetBaseClass(baseClass);
 

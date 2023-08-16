@@ -1,7 +1,9 @@
+using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Utilities;
+using NLog.Targets;
 
 namespace Chaos.Scripting.Components;
 
@@ -16,9 +18,14 @@ public class DurabilityComponent : IComponent
         if (options.ShouldDamageItems is false)
             return;
 
+
         foreach (var target in targets)
         {
             foreach (var item in target.Equipment)
+            {
+                if (target.Trackers.Enums.TryGetValue(out GodMode godmode) && (godmode == GodMode.Yes))
+                    continue;
+
                 if (item.Slot is > 1 and < 14)
                 {
                     if (item.CurrentDurability >= 1)
@@ -59,6 +66,7 @@ public class DurabilityComponent : IComponent
                             }
                         }
                 }
+            }
         }
     }
 

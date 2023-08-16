@@ -61,12 +61,12 @@ public class KillCounterScript : MonsterScriptBase
 
     private void HandleTavernRatKill(Aisling aisling)
     {
-        if (!aisling.Trackers.Enums.TryGetValue(out RionaRatQuestStage ratquest) || (ratquest != RionaRatQuestStage.StartedRatQuest))
+        if (!aisling.Trackers.Enums.TryGetValue(out RionaTutorialQuestStage ratquest) || (ratquest != RionaTutorialQuestStage.StartedRatQuest))
             return;
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("tavern_rat", 5))
         {
-            aisling.SendOrangeBarMessage($"You've killed {Subject.Template.Name}.");
+            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}s.");
 
             if (!aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("tavern_rat", 5))
                 aisling.Trackers.Counters.AddOrIncrement("tavern_rat");

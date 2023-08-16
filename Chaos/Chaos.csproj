@@ -61,8 +61,4 @@
     <ItemGroup>
         <InternalsVisibleTo Include="Chaos.Testing.Infrastructure" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Scripting\MonsterScripts\Boss\MythicBosses\GargoyleBoss\Gargoyle2\" />
-      <Folder Include="Scripting\MonsterScripts\Boss\MythicBosses\GargoyleBoss\Gargoyle3\" />
-    </ItemGroup>
 </Project>

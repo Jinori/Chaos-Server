@@ -12,7 +12,7 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 public sealed class BeagSuainEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(15);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(8);
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {

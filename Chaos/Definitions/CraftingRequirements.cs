@@ -1071,7 +1071,7 @@ public static class CraftingRequirements
                 TemplateKey = "antidotepotionformula",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "frogleg", DisplayName = "Frog's Leg", Amount = 1 },
+                    new Ingredient { TemplateKey = "scorpionsting", DisplayName = "Scorpion's Sting", Amount = 1 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
                 Rank = "Basic",

@@ -69,7 +69,7 @@ public class CryptSlayerScript : DialogScriptBase
 
                     source.Legend.AddOrAccumulate(
                         new LegendMark(
-                            "Controlled the Mileth Crypt population.",
+                            "Controlled the Mileth Crypt population",
                             "CryptSlayerCompleted",
                             MarkIcon.Victory,
                             MarkColor.Blue,
@@ -313,6 +313,7 @@ public class CryptSlayerScript : DialogScriptBase
 
                 if (source.Trackers.Counters.CounterLessThanOrEqualTo("CryptSlayerLegend", 1))
                 {
+                    source.Trackers.Flags.AddFlag(RionaTutorialQuestFlags.Skarn);
                     source.SendOrangeBarMessage("Skarn hands you a weapon.");
 
                     if (source.HasClass(BaseClass.Wizard))

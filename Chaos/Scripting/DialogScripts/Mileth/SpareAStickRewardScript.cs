@@ -1,5 +1,6 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Definitions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -77,6 +78,7 @@ public class SpareAStickRewardScript : DialogScriptBase
                 var stick = ItemFactory.Create("Stick");
                 var shield = ItemFactory.Create("woodenshield");
                 source.TryGiveItems(stick, shield);
+                source.Trackers.Flags.AddFlag(RionaTutorialQuestFlags.SpareAStick);
             }
             else
                 Subject.Reply(
