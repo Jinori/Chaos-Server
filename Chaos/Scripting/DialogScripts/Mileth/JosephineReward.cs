@@ -1,4 +1,5 @@
 ﻿using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
@@ -24,12 +25,9 @@ public class JosephineRewardScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        if (source.Trackers.Flags.HasFlag(QuestFlag1.HeadedToBeautyShop))
+        if (source.Trackers.Enums.TryGetValue(out RionaTutorialQuestStage stage) && (stage == RionaTutorialQuestStage.StartedBeautyShop))
         {
-            Subject.Reply(source, "Riona sent you? I do have her dye, I'll let her know! Are you interested in a hair style?");
-            source.Trackers.Flags.RemoveFlag(QuestFlag1.HeadedToBeautyShop);
-            source.Trackers.Flags.AddFlag(QuestFlag1.TalkedToJosephine);
-
+            source.Trackers.Enums.Set(RionaTutorialQuestStage.CompletedBeautyShop);
             Logger.WithTopics(
                       Topics.Entities.Aisling,
                       Topics.Entities.Gold,
@@ -48,6 +46,7 @@ public class JosephineRewardScript : DialogScriptBase
             source.TryGiveGold(1000);
             source.TryGiveGamePoints(5);
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've received 1000g, 1000exp and 5 game points!");
+            Subject.Reply(source, "Riona sent you? I do have her dye, Let her know for me please. Hey, Are you interested in a hair style?", "josephine_initial");
         }
     }
 }

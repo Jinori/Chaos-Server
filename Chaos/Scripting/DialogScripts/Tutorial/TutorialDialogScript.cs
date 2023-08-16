@@ -74,9 +74,9 @@ public class TutorialDialogScript : DialogScriptBase
                         Subject.Options.Insert(0, option);
                 }
 
-                if (stage == TutorialQuestStage.GaveStickAndArmor)
+                if (stage == TutorialQuestStage.GaveArmor)
                 {
-                    source.SendOrangeBarMessage("Equip your stick and armor, then say hello to get Leia's attention.");
+                    source.SendOrangeBarMessage("Equip your armor, then say hello to get Leia's attention.");
 
                     return;
                 }
@@ -112,27 +112,24 @@ public class TutorialDialogScript : DialogScriptBase
             case "leia_1":
                 if (!hasStage)
                 {
-                    source.Trackers.Enums.Set(TutorialQuestStage.GaveStickAndArmor);
-
-                    var stick = ItemFactory.Create("stick");
+                    source.Trackers.Enums.Set(TutorialQuestStage.GaveArmor);
+                    
                     var armor = source.Gender == Gender.Female ? ItemFactory.Create("blouse") : ItemFactory.Create("shirt");
 
-                    source.TryGiveItems(stick, armor);
+                    source.TryGiveItems(armor);
                 }
 
                 break;
             case "leia_2":
-                if (stage == TutorialQuestStage.GaveStickAndArmor)
+                if (stage == TutorialQuestStage.GaveArmor)
                 {
                     var weapon = source.Equipment[EquipmentSlot.Weapon];
                     var armor = source.Equipment[EquipmentSlot.Armor];
 
-                    if ((weapon == null)
-                        || (armor == null)
-                        || !weapon.DisplayName.EqualsI("stick")
+                    if ((armor == null)
                         || (!armor.DisplayName.EqualsI("shirt") && !armor.DisplayName.EqualsI("blouse")))
                     {
-                        source.SendOrangeBarMessage("Equip armor and weapon then say Hello.");
+                        source.SendOrangeBarMessage("Equip armor then say Hello.");
                         Subject.Close(source);
 
                         return;
@@ -340,7 +337,6 @@ public class TutorialDialogScript : DialogScriptBase
             case "leia_exit2":
             {
                 SpellFactory.Create("sradtut");
-                var stick = ItemFactory.Create("stick");
                 var armor = source.Gender == Gender.Female ? ItemFactory.Create("blouse") : ItemFactory.Create("shirt");
                 var ring = ItemFactory.Create("smallrubyring");
                 var boots = ItemFactory.Create("boots");
@@ -350,7 +346,7 @@ public class TutorialDialogScript : DialogScriptBase
 
                 if (hasStage)
                 {
-                    if (stage == TutorialQuestStage.GaveStickAndArmor)
+                    if (stage == TutorialQuestStage.GaveArmor)
                     {
                         source.TryGiveItems(ring, ring, boots);
                         assail = SkillFactory.Create("assail");
@@ -481,7 +477,6 @@ public class TutorialDialogScript : DialogScriptBase
                         GameTime.Now));
 
                 source.TryGiveItems(
-                    stick,
                     armor,
                     ring,
                     ring,

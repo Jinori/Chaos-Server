@@ -119,6 +119,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.DullClaw);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.SnowDagger);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.CenterDagger);
+                source.Trackers.Flags.AddFlag(RionaTutorialQuestFlags.Crafting);
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
@@ -180,6 +181,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.FireBelt);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.SeaBelt);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherGauntlet);
+                source.Trackers.Flags.AddFlag(RionaTutorialQuestFlags.Crafting);
                 var book = ItemFactory.Create("recipe_basicarmors");
                 source.TryGiveItem(ref book);
 
@@ -242,6 +244,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallHasteBrew);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallPowerBrew);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallAccuracyPotion);
+                source.Trackers.Flags.AddFlag(RionaTutorialQuestFlags.Crafting);
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
@@ -302,6 +305,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 source.Trackers.Flags.AddFlag(EnchantingRecipes.MiraelisSerenity);
                 source.Trackers.Flags.AddFlag(EnchantingRecipes.TheseleneElusion);
                 source.Trackers.Flags.AddFlag(EnchantingRecipes.AquaedonClarity);
+                source.Trackers.Flags.AddFlag(RionaTutorialQuestFlags.Crafting);
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
@@ -365,6 +369,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.SeaNecklace);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.FireNecklace);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.WindNecklace);
+                source.Trackers.Flags.AddFlag(RionaTutorialQuestFlags.Crafting);
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(

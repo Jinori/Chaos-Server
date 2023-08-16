@@ -151,7 +151,7 @@ public enum ReligionRanks
 public enum TutorialQuestStage
 {
     None = 0,
-    GaveStickAndArmor = 1,
+    GaveArmor = 1,
     GaveAssailAndSpell = 2,
     LearnedWorld = 3,
     GotEquipment = 4,
@@ -209,11 +209,33 @@ public enum ALittleBitofThatStage
     StartedBaguette = 6,
 }
 
-public enum RionaRatQuestStage
+public enum RionaTutorialQuestStage
 {
     None = 0,
     StartedRatQuest = 1,
-    CompletedRatQuest = 2
+    CompletedRatQuest = 2,
+    StartedSpareAStick = 3,
+    CompletedSpareAStick = 4,
+    StartedGetGuided = 5,
+    CompletedGetGuided = 6,
+    StartedSkarn = 7,
+    CompletedSkarn = 8,
+    StartedBeautyShop = 9,
+    CompletedBeautyShop = 10,
+    StartedCrafting = 11,
+    CompletedCrafting = 12,
+    StartedLeveling = 13,
+    CompletedLeveling = 14,
+    CompletedTutorialQuest = 15
+}
+
+[Flags]
+public enum RionaTutorialQuestFlags
+{
+    None = 0,
+    SpareAStick = 1,
+    Skarn = 1 << 1,
+    Crafting = 1 << 2,
 }
 
 public enum PFQuestStage
