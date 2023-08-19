@@ -16,7 +16,7 @@ public sealed class HiddenHavocShrinkScript : CompositeMapScript
         GetScriptKey(typeof(AnnounceMatchScript)),
         GetScriptKey(typeof(AislingDeathTouchScript)),
         GetScriptKey(typeof(MapShrinkScript)),
-        GetScriptKey(typeof(DeclareWinnerScript))
+        GetScriptKey(typeof(DeclareWinnerScript)),
     };
 
     /// <inheritdoc />

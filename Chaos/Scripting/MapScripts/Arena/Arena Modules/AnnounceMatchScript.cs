@@ -41,6 +41,9 @@ public sealed class AnnounceMatchScript : MapScriptBase
             {
                 if (Subject.Name == "Lava Arena - Teams")
                     Subject.Morph("26006");
+                
+                if (Subject.Name == "Color Clash - Teams")
+                    Subject.Morph("26013");
             
                 SendMessage("Let's go! Match start!");
                 AnnounceStart = true;
