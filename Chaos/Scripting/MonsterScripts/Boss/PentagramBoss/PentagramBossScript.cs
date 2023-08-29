@@ -2,27 +2,29 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.PFMantis;
+namespace Chaos.Scripting.MonsterScripts.Boss.PentagramBoss;
 
-public class PFMantisBossScript : CompositeMonsterScript
+public class PentagramBossScript : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
-        GetScriptKey(typeof(PFMantisBossMoveToTargetScript)),
-        GetScriptKey(typeof(PFMantisBossDefenseScript)),
-        GetScriptKey(typeof(PFMantisBossEnrageScript)),
-        GetScriptKey(typeof(PFMantisBossGroupScalingScript)),
+        GetScriptKey(typeof(DefaultBehaviorsScript)),
+        GetScriptKey(typeof(MoveToTargetScript)),
+        GetScriptKey(typeof(PentaDefenseScript)),
+        GetScriptKey(typeof(PentagramBossRegenScript)),
+        GetScriptKey(typeof(PentagramBossEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
-        GetScriptKey(typeof(PFMantisDeathScript)),
-        GetScriptKey(typeof(DeathScript))
+        GetScriptKey(typeof(PentagramDeathScript)),
+        GetScriptKey(typeof(DisplayNameScript))
     };
 
+    //If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
     /// <inheritdoc />
-    public PFMantisBossScript(IScriptProvider scriptProvider, Monster subject)
+    public PentagramBossScript(IScriptProvider scriptProvider, Monster subject)
     {
         if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript compositeScript)
             throw new InvalidOperationException("Unable to create componentized script");

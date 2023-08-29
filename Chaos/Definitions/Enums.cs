@@ -1203,3 +1203,18 @@ public enum ArenaTeam
     Gold = 3,
     Red = 4
 }
+
+public enum PentagramQuestStage
+{
+    None,
+    SignedPact = 1,
+    StartedRitual = 2,
+    ReceivedClue = 3,
+    FoundPentagramPiece = 4,
+    EmpoweringPentagramPiece = 5,
+    EmpoweredPentagramPiece = 6,
+    CreatedPentagram = 7,
+    BossSpawning = 8,
+    BossSpawned = 9,
+    DefeatedBoss = 10,
+}

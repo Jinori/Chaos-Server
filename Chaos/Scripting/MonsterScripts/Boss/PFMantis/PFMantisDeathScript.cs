@@ -8,7 +8,7 @@ using Chaos.Storage.Abstractions;
 namespace Chaos.Scripting.MonsterScripts;
 
 [SuppressMessage("ReSharper", "UnusedVariable")]
-public class PFMantisDeathScript : MonsterScriptBase
+public sealed class PFMantisDeathScript : MonsterScriptBase
 {
     private readonly ISimpleCache SimpleCache;
 

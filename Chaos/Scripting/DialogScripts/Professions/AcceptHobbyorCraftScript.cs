@@ -21,6 +21,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
     {
         source.Trackers.Flags.TryGetFlag(out Hobbies _);
         var hasCraft = source.Trackers.Enums.TryGetValue(out Crafts craft);
+        var hasPenta = source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -73,7 +74,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             }
             case "thorin_initial":
             {
-                if (hasCraft && (craft != Crafts.Weaponsmithing))
+                if ((hasCraft && (craft != Crafts.Jewelcrafting)) && (stage != PentagramQuestStage.FoundPentagramPiece) && (stage != PentagramQuestStage.EmpoweringPentagramPiece))
                 {
                     Subject.Reply(
                         source,
@@ -322,7 +323,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             }
             case "celestia_initial":
             {
-                if (hasCraft && (craft != Crafts.Jewelcrafting))
+                if ((hasCraft && (craft != Crafts.Jewelcrafting)) && (stage != PentagramQuestStage.FoundPentagramPiece) && (stage != PentagramQuestStage.EmpoweringPentagramPiece))
                 {
                     Subject.Reply(
                         source,

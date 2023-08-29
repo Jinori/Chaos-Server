@@ -44,7 +44,6 @@ public class TerrorOfTheCryptScript : MapScriptBase
             TargetAnimation = 13
         };
     }
-
     public override void OnEntered(Creature creature)
     {
         if (creature is not Aisling aisling)

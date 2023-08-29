@@ -31,7 +31,7 @@ public class ExecuteComponent : IComponent
                     context.Source,
                     target,
                     options.SourceScript,
-                    9999);
+                    99999999);
 
                 var healAmount = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, options.HealAmountIfExecuted);
 
@@ -50,7 +50,7 @@ public class ExecuteComponent : IComponent
             }
             else
             {
-                var tenPercent = MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, options.DmgHealthPct);
+                var tenPercent = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, options.DmgHealthPct);
 
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,

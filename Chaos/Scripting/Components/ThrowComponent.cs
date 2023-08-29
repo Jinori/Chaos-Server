@@ -1,3 +1,4 @@
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
@@ -25,6 +26,9 @@ public class ThrowComponent : IComponent
 
         if (entity != null)
         {
+            if (entity.Trackers.Enums.TryGetValue(out GodMode god) && (god == GodMode.Yes))
+                return;
+            
             var throwDirection = context.TargetDirection;
             var throwPoint = entity.DirectionalOffset(throwDirection);
 

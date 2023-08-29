@@ -4,6 +4,7 @@ using Chaos.Extensions;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components;
 using Chaos.Scripting.SkillScripts.Abstractions;
@@ -69,7 +70,7 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent
 
         var mob = context.SourceMap.GetEntitiesAtPoints<Creature>(points.OfType<IPoint>()).FirstOrDefault();
 
-        if (mob is not null)
+        if ((mob is not null) && mob is not Aisling)
         {
             context.SourceAisling?.Client.SendServerMessage(
                 ServerMessageType.ScrollWindow,
