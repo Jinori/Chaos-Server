@@ -34,6 +34,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         "Arena Battle Ring",
         "Lava Arena",
         "Lava Arena - Teams",
+        "Color Clash - Teams"
     };
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
@@ -47,6 +48,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         "Arena Battle Ring",
         "Lava Arena",
         "Lava Arena - Teams",
+        "Color Clash - Teams"
     };
 
     private readonly IMerchantFactory MerchantFactory;

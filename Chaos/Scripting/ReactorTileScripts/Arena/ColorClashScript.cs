@@ -12,10 +12,10 @@ public class ColorClashScript : ReactorTileScriptBase
 {
     public ArenaTeam? CurrentTeam { get; set; }
     
-    private Animation BlueAnimation { get; } = new() { AnimationSpeed = 100, TargetAnimation = 214 };
-    private Animation GoldAnimation { get; } = new() { AnimationSpeed = 100, TargetAnimation = 214 };
-    private Animation GreenAnimation { get; } = new() { AnimationSpeed = 100, TargetAnimation = 214 };
-    private Animation RedAnimation { get; } = new() { AnimationSpeed = 100, TargetAnimation = 214 };
+    private Animation BlueAnimation { get; } = new() { AnimationSpeed = 250, TargetAnimation = 406 };
+    private Animation GoldAnimation { get; } = new() { AnimationSpeed = 250, TargetAnimation = 409 };
+    private Animation GreenAnimation { get; } = new() { AnimationSpeed = 250, TargetAnimation = 407 };
+    private Animation RedAnimation { get; } = new() { AnimationSpeed = 250, TargetAnimation = 408 };
     
     private IIntervalTimer UpdateColorTimer { get; }
 

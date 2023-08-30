@@ -44,7 +44,8 @@ public class RelationshipBehavior
 
         var inPvpMap = ((source.MapInstance.InstanceId == "arena_battle_ring") && (target.MapInstance.InstanceId == "arena_battle_ring"))
                        || ((source.MapInstance.InstanceId == "arena_lava") && (target.MapInstance.InstanceId == "arena_lava"))
-                       || ((source.MapInstance.InstanceId == "arena_lavateams") && (target.MapInstance.InstanceId == "arena_lavateams"));
+                       || ((source.MapInstance.InstanceId == "arena_lavateams") && (target.MapInstance.InstanceId == "arena_lavateams"))
+                       || ((source.MapInstance.InstanceId == "arena_colorClash") && (target.MapInstance.InstanceId == "arena_colorClash"));
 
         var inGroup = source.Group?.Contains(target) ?? false;
 
@@ -109,7 +110,8 @@ public class RelationshipBehavior
 
         var onPvpMap = ((source.MapInstance.InstanceId == "arena_battle_ring") && (target.MapInstance.InstanceId == "arena_battle_ring"))
                        || ((source.MapInstance.InstanceId == "arena_lava") && (target.MapInstance.InstanceId == "arena_lava"))
-                       || ((source.MapInstance.InstanceId == "arena_lavateams") && (target.MapInstance.InstanceId == "arena_lavateams"));
+                       || ((source.MapInstance.InstanceId == "arena_lavateams") && (target.MapInstance.InstanceId == "arena_lavateams"))
+                       || ((source.MapInstance.InstanceId == "arena_colorClash") && (target.MapInstance.InstanceId == "arena_colorClash"));
 
         var inGroup = source.Group?.Contains(target) ?? false;
 
