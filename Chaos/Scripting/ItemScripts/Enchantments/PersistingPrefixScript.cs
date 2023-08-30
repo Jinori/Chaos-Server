@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class PersistingPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class PersistingPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public PersistingPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Persisting"))
-            subject.DisplayName = $"Persisting {subject.DisplayName}";
+        Subject.Prefix = "Persisting";
 
         var attributes = new Attributes
         {

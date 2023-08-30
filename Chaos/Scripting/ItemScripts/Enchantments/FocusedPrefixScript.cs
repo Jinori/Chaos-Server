@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class FocusedPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class FocusedPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public FocusedPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Focused"))
-            subject.DisplayName = $"Focused {subject.DisplayName}";
+        Subject.Prefix = "Focused";
 
         var attributes = new Attributes
         {

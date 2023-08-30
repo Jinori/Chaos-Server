@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class TinyPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class TinyPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public TinyPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Tiny"))
-            subject.DisplayName = $"Tiny {subject.DisplayName}";
+        Subject.Prefix = "Tiny";
 
         var attributes = new Attributes
         {

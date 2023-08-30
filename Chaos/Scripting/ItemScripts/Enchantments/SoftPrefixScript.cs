@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class SoftPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class SoftPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public SoftPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Soft"))
-            subject.DisplayName = $"Soft {subject.DisplayName}";
+        Subject.Prefix = "Soft";
 
         var attributes = new Attributes
         {

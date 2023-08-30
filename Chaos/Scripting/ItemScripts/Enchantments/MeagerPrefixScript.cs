@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class MeagerPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class MeagerPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public MeagerPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Meager"))
-            subject.DisplayName = $"Meager {subject.DisplayName}";
+        Subject.Prefix = "Meager";
 
         var attributes = new Attributes
         {

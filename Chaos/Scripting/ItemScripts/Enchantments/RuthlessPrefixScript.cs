@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class RuthlessPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class RuthlessPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public RuthlessPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Ruthless"))
-            subject.DisplayName = $"Ruthless {subject.DisplayName}";
+        Subject.Prefix = "Ruthless";
 
         var attributes = new Attributes
         {

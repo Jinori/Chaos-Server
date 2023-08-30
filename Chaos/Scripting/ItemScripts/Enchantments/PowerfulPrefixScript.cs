@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class PowerfulPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class PowerfulPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public PowerfulPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Powerful"))
-            subject.DisplayName = $"Powerful {subject.DisplayName}";
+        Subject.Prefix = "Powerful";
 
         var attributes = new Attributes
         {

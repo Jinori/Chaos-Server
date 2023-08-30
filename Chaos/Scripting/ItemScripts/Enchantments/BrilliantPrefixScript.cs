@@ -13,8 +13,7 @@ public class BrilliantPrefixScript : ItemScriptBase, IEnchantmentScript
     public BrilliantPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Brilliant"))
-            subject.DisplayName = $"Brilliant {subject.DisplayName}";
+        Subject.Prefix = "Brilliant";
 
         var attributes = new Attributes
         {

@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class ShroudedPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class ShroudedPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public ShroudedPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Shrouded"))
-            subject.DisplayName = $"Shrouded {subject.DisplayName}";
+        Subject.Prefix = "Shrouded";
 
         var attributes = new Attributes
         {

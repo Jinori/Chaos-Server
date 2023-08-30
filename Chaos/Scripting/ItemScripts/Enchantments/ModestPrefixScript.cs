@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class ModestPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class ModestPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public ModestPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Modest"))
-            subject.DisplayName = $"Modest {subject.DisplayName}";
+        Subject.Prefix = "Modest";
 
         var attributes = new Attributes
         {

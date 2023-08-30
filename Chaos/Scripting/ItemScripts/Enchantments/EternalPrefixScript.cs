@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class EternalPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class EternalPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public EternalPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Eternal"))
-            subject.DisplayName = $"Eternal {subject.DisplayName}";
+        Subject.Prefix = "Eternal";
 
         var attributes = new Attributes
         {

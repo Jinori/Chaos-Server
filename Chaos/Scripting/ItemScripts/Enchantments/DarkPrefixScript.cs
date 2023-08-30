@@ -13,8 +13,7 @@ public sealed class DarkPrefixScript : ItemScriptBase, IEnchantmentScript
     public DarkPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Darkened"))
-            subject.DisplayName = $"Darkened {subject.DisplayName}";
+        Subject.Prefix = "Darkened";
 
         var attributes = new Attributes
         {

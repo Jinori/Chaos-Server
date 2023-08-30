@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class BreezyPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class BreezyPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public BreezyPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Breezy"))
-            subject.DisplayName = $"Breezy {subject.DisplayName}";
+        Subject.Prefix = "Breezy";
 
         var attributes = new Attributes
         {

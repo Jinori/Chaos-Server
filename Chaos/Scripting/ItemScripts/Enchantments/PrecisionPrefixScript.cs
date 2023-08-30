@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class PrecisionPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class PrecisionPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public PrecisionPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Precision"))
-            subject.DisplayName = $"Precision {subject.DisplayName}";
+        Subject.Prefix = "Precision";
 
         var attributes = new Attributes
         {

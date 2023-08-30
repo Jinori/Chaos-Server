@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class BrightPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class BrightPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public BrightPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Bright"))
-            subject.DisplayName = $"Bright {subject.DisplayName}";
+        Subject.Prefix = "Bright";
 
         var attributes = new Attributes
         {

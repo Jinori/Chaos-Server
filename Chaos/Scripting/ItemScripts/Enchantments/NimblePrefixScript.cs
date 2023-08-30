@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class NimblePrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class NimblePrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public NimblePrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Nimble"))
-            subject.DisplayName = $"Nimble {subject.DisplayName}";
+        Subject.Prefix = "Nimble";
 
         var attributes = new Attributes
         {

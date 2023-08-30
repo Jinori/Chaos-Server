@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class HalePrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class HalePrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public HalePrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Hale"))
-            subject.DisplayName = $"Hale {subject.DisplayName}";
+        Subject.Prefix = "Hale";
 
         var attributes = new Attributes
         {

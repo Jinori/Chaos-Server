@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class AncientPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class AncientPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public AncientPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Ancient"))
-            subject.DisplayName = $"Ancient {subject.DisplayName}";
+        Subject.Prefix = "Ancient";
 
         var attributes = new Attributes
         {

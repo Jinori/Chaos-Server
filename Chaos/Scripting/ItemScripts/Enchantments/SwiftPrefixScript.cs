@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class SwiftPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class SwiftPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public SwiftPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Swift"))
-            subject.DisplayName = $"Swift {subject.DisplayName}";
+        Subject.Prefix = "Swift";
 
         var attributes = new Attributes
         {

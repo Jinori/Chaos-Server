@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class ToughPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class ToughPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public ToughPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Tough"))
-            subject.DisplayName = $"Tough {subject.DisplayName}";
+        Subject.Prefix = "Tough";
 
         var attributes = new Attributes
         {

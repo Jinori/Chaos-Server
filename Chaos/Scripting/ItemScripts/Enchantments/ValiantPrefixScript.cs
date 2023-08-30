@@ -7,14 +7,13 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public class ValiantPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class ValiantPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
     public ValiantPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Valiant"))
-            subject.DisplayName = $"Valiant {subject.DisplayName}";
+        Subject.Prefix = "Valiant";
 
         var attributes = new Attributes
         {

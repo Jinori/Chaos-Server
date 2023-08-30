@@ -13,8 +13,7 @@ public sealed class AiryPrefixScript : ItemScriptBase, IEnchantmentScript
     public AiryPrefixScript(Item subject)
         : base(subject)
     {
-        if (!subject.DisplayName.StartsWithI("Airy"))
-            subject.DisplayName = $"Airy {subject.DisplayName}";
+        Subject.Prefix = "Airy";
 
         var attributes = new Attributes
         {
