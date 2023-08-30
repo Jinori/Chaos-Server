@@ -9,11 +9,39 @@ namespace Chaos.Scripting.ItemScripts;
 
 public class MountScript : ItemScriptBase
 {
-    private static readonly Dictionary<CurrentMount, int> MountSprites = new()
+    private static readonly Dictionary<(CurrentMount, CurrentCloak), int> MountAndCloakSprites = new()
     {
-        { CurrentMount.WhiteHorse, 1296 },
-        { CurrentMount.WhiteWolf, 1297 }
-        // Add more mount types here as needed
+        { (CurrentMount.Horse, CurrentCloak.Red), 1334 },
+        { (CurrentMount.Horse, CurrentCloak.Blue), 1332 },
+        { (CurrentMount.Horse, CurrentCloak.Black), 1331 },
+        { (CurrentMount.Horse, CurrentCloak.Green), 1296 },
+        { (CurrentMount.Horse, CurrentCloak.Purple), 1333},
+        { (CurrentMount.Wolf, CurrentCloak.Red), 1326 },
+        { (CurrentMount.Wolf, CurrentCloak.Blue), 1324 },
+        { (CurrentMount.Wolf, CurrentCloak.Black), 1323 },
+        { (CurrentMount.Wolf, CurrentCloak.Green), 1297 },
+        { (CurrentMount.Wolf, CurrentCloak.Purple), 1325},
+        { (CurrentMount.Kelberoth, CurrentCloak.Red), 1330 },
+        { (CurrentMount.Kelberoth, CurrentCloak.Blue), 1328 },
+        { (CurrentMount.Kelberoth, CurrentCloak.Black), 1327 },
+        { (CurrentMount.Kelberoth, CurrentCloak.Green), 1312 },
+        { (CurrentMount.Kelberoth, CurrentCloak.Purple), 1329},
+        { (CurrentMount.Ant, CurrentCloak.Red), 1339 },
+        { (CurrentMount.Ant, CurrentCloak.Blue), 1337 },
+        { (CurrentMount.Ant, CurrentCloak.Black), 1336 },
+        { (CurrentMount.Ant, CurrentCloak.Green), 1335 },
+        { (CurrentMount.Ant, CurrentCloak.Purple), 1338},
+        { (CurrentMount.Dunan, CurrentCloak.Red), 1322 },
+        { (CurrentMount.Dunan, CurrentCloak.Blue), 1320 },
+        { (CurrentMount.Dunan, CurrentCloak.Black), 1319 },
+        { (CurrentMount.Dunan, CurrentCloak.Green), 1318 },
+        { (CurrentMount.Dunan, CurrentCloak.Purple), 1321 },
+        { (CurrentMount.Bee, CurrentCloak.Red), 1316 },
+        { (CurrentMount.Bee, CurrentCloak.Blue), 1313 },
+        { (CurrentMount.Bee, CurrentCloak.Black), 1317 },
+        { (CurrentMount.Bee, CurrentCloak.Green), 1314 },
+        { (CurrentMount.Bee, CurrentCloak.Purple), 1315 },
+        // Add more mount and cloak combinations here as needed
     };
     private readonly IEffectFactory _effectFactory;
 
@@ -31,7 +59,7 @@ public class MountScript : ItemScriptBase
             return;
         }
 
-        if (source.Trackers.Enums.TryGetValue(out CurrentMount mount))
+        if (source.Trackers.Enums.TryGetValue(out CurrentMount mount) && source.Trackers.Enums.TryGetValue(out CurrentCloak cloak))
         {
             if (source.Sprite != 0)
             {
@@ -48,7 +76,7 @@ public class MountScript : ItemScriptBase
                 return;
             }
 
-            if (MountSprites.TryGetValue(mount, out var sprite))
+            if (MountAndCloakSprites.TryGetValue((mount, cloak), out var sprite))
             {
                 source.Sprite = (ushort)sprite;
                 source.Refresh(true);

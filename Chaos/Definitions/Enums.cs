@@ -721,16 +721,45 @@ public enum SwampMazeQuest
 [Flags]
 public enum AvailableMounts
 {
-    None,
-    WhiteHorse = 1,
-    WhiteWolf = 2
+    None = 0,
+    Horse = 1,
+    Wolf = 1 << 2,
+    Dunan = 1 << 3,
+    Kelberoth = 1 << 4,
+    Bee = 1 << 5,
+    Ant = 1 << 6,
+}
+
+[Flags]
+public enum AvailableCloaks
+{
+    None = 0,
+    Green = 1,
+    Red = 1 << 2,
+    Blue = 1 << 3,
+    Black = 1 << 4,
+    Purple = 1 << 5,
 }
 
 public enum CurrentMount
 {
     None,
-    WhiteHorse = 1,
-    WhiteWolf = 2,
+    Horse = 1,
+    Wolf = 2,
+    Dunan = 3,
+    Kelberoth = 4,
+    Bee = 5,
+    Ant = 6,
+}
+
+public enum CurrentCloak
+{
+    None,
+    Green = 1,
+    Red = 2,
+    Blue = 3,
+    Black = 4,
+    Purple = 5,
 }
 
 #region Armor Smithing

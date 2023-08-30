@@ -456,8 +456,10 @@ public class RionaTutorialQuestScript : DialogScriptBase
                 source.Trackers.Enums.Set(RionaTutorialQuestStage.StartedBeautyShop);
                 var mount = ItemFactory.Create("mount");
 
-                source.Trackers.Enums.Set(CurrentMount.WhiteHorse);
-                source.Trackers.Flags.AddFlag(AvailableMounts.WhiteHorse);
+                source.Trackers.Enums.Set(CurrentMount.Horse);
+                source.Trackers.Flags.AddFlag(AvailableMounts.Horse);
+                source.Trackers.Enums.Set(CurrentCloak.Green);
+                source.Trackers.Flags.AddFlag(AvailableCloaks.Green);
 
                 source.TryGiveItem(ref mount);
                 source.SendOrangeBarMessage("Congrats on your first mount! Now go check on Riona's Dye!");

@@ -8,18 +8,15 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class MountDialogScript : DialogScriptBase
 {
-    private readonly IEffectFactory _effectFactory;
-
     /// <inheritdoc />
     public MountDialogScript(Dialog subject, IEffectFactory effectFactory)
-        : base(subject) =>
-        _effectFactory = effectFactory;
+        : base(subject)
+    { }
 
     public override void OnDisplaying(Aisling source)
     {
-        var effect = _effectFactory.Create("mount");
-        var hasFlag = source.Trackers.Flags.TryGetFlag(out AvailableMounts mount);
-        var hasMount = source.Trackers.Enums.TryGetValue(out CurrentMount currentMount);
+        var hasFlag = source.Trackers.Flags.TryGetFlag(out AvailableMounts _);
+        source.Trackers.Enums.TryGetValue(out CurrentMount _);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -42,24 +39,79 @@ public class MountDialogScript : DialogScriptBase
 
             case "mount_initial":
             {
-                if (source.Trackers.Flags.HasFlag(AvailableMounts.WhiteHorse))
+                if (source.Effects.TryGetEffect("mount", out var effect) && source.Effects.Contains(effect))
+                {
+                    Subject.Reply(source, "Please get off your mount first.");
+
+                    return;
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableMounts.Horse))
                 {
                     var option = new DialogOption
                     {
-                        DialogKey = "mount_whitehorse",
-                        OptionText = "White Horse"
+                        DialogKey = "mount_horse",
+                        OptionText = "Horse"
                     };
 
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
 
-                if (source.Trackers.Flags.HasFlag(AvailableMounts.WhiteWolf))
+                if (source.Trackers.Flags.HasFlag(AvailableMounts.Wolf))
                 {
                     var option = new DialogOption
                     {
-                        DialogKey = "mount_whitewolf",
-                        OptionText = "White Wolf"
+                        DialogKey = "mount_wolf",
+                        OptionText = "Wolf"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableMounts.Dunan))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "mount_dunan",
+                        OptionText = "Dunan"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableMounts.Kelberoth))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "mount_kelberoth",
+                        OptionText = "Kelberoth"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableMounts.Ant))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "mount_ant",
+                        OptionText = "Ant"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableMounts.Bee))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "mount_bee",
+                        OptionText = "Bee"
                     };
 
                     if (!Subject.HasOption(option.OptionText))
@@ -69,32 +121,432 @@ public class MountDialogScript : DialogScriptBase
 
                 break;
 
-            case "mount_whitehorse":
+            case "mount_horse":
             {
-                if (currentMount != CurrentMount.WhiteHorse)
+                source.Trackers.Enums.Set(CurrentMount.Horse);
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Blue))
                 {
-                    source.Trackers.Enums.Set(CurrentMount.WhiteHorse);
-                    Subject.Reply(source, "Skip", "Close");
-                    source.SendOrangeBarMessage("You've equipped your White Horse.");
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_blue",
+                        OptionText = "Blue Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
                 }
 
-                Subject.Reply(source, "Skip", "Close");
-                source.SendOrangeBarMessage("You've already equipped your White Horse.");
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Red))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_red",
+                        OptionText = "Red Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Black))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_black",
+                        OptionText = "Black Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Green))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_green",
+                        OptionText = "Green Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Purple))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_purple",
+                        OptionText = "Purple Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
 
                 return;
             }
 
-            case "mount_whitewolf":
+            case "mount_wolf":
             {
-                if (currentMount != CurrentMount.WhiteWolf)
+                source.Trackers.Enums.Set(CurrentMount.Wolf);
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Blue))
                 {
-                    source.Trackers.Enums.Set(CurrentMount.WhiteWolf);
-                    Subject.Reply(source, "Skip", "Close");
-                    source.SendOrangeBarMessage("You've equipped your White Wolf.");
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_blue",
+                        OptionText = "Blue Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
                 }
 
-                Subject.Reply(source, "Skip", "Close");
-                source.SendOrangeBarMessage("You've already equipped your White Wolf.");
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Red))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_red",
+                        OptionText = "Red Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Black))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_black",
+                        OptionText = "Black Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Green))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_green",
+                        OptionText = "Green Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Purple))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_purple",
+                        OptionText = "Purple Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                return;
+            }
+
+            case "mount_kelberoth":
+            {
+                source.Trackers.Enums.Set(CurrentMount.Kelberoth);
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Blue))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_blue",
+                        OptionText = "Blue Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Red))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_red",
+                        OptionText = "Red Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Black))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_black",
+                        OptionText = "Black Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Green))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_green",
+                        OptionText = "Green Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Purple))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_purple",
+                        OptionText = "Purple Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                return;
+            }
+            case "mount_bee":
+            {
+                source.Trackers.Enums.Set(CurrentMount.Bee);
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Blue))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_blue",
+                        OptionText = "Blue Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Red))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_red",
+                        OptionText = "Red Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Black))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_black",
+                        OptionText = "Black Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Green))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_green",
+                        OptionText = "Green Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Purple))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_purple",
+                        OptionText = "Purple Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                return;
+            }
+
+            case "mount_ant":
+            {
+                source.Trackers.Enums.Set(CurrentMount.Ant);
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Blue))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_blue",
+                        OptionText = "Blue Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Red))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_red",
+                        OptionText = "Red Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Black))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_black",
+                        OptionText = "Black Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Green))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_green",
+                        OptionText = "Green Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Purple))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_purple",
+                        OptionText = "Purple Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                return;
+            }
+            case "mount_dunan":
+            {
+                source.Trackers.Enums.Set(CurrentMount.Dunan);
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Blue))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_blue",
+                        OptionText = "Blue Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Red))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_red",
+                        OptionText = "Red Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Black))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_black",
+                        OptionText = "Black Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Green))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_green",
+                        OptionText = "Green Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Purple))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "cloak_purple",
+                        OptionText = "Purple Cloak"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                return;
+            }
+            case "cloak_blue":
+            {
+                source.Trackers.Enums.Set(CurrentCloak.Blue);
+
+                break;
+            }
+            case "cloak_red":
+            {
+                source.Trackers.Enums.Set(CurrentCloak.Red);
+
+                break;
+            }
+            case "cloak_purple":
+            {
+                source.Trackers.Enums.Set(CurrentCloak.Purple);
+
+                break;
+            }
+            case "cloak_black":
+            {
+                source.Trackers.Enums.Set(CurrentCloak.Black);
+
+                break;
+            }
+            case "cloak_green":
+            {
+                source.Trackers.Enums.Set(CurrentCloak.Green);
             }
 
                 break;

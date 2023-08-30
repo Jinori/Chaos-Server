@@ -186,16 +186,6 @@ public class LearnSpellScript : DialogScriptBase
             if (source.SpellBook.Contains(spell))
                 continue;
 
-            //Try this Nate
-            /*if (source.HasClass(BaseClass.Wizard) && (spell.Template.WizardElement != WizardElement.None))
-            {
-                if (source.Trackers.Flags.TryGetFlag(out WizardElement currentElements))
-                {
-                    if ((currentElements & spell.Template.WizardElement) == 0) // If the Wizard does not have the element of the spell
-                        continue;
-                }
-            }*/
-
             // Check if the source has the Wizard class and the spell also has a Wizard element, then check if the source has a matching
             // Wizard Element flag. If not, skip the spell.
             if (source.HasClass(BaseClass.Wizard) && (spell.Template.WizardElement != WizardElement.None))
