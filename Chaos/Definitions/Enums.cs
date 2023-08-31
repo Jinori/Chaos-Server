@@ -721,7 +721,6 @@ public enum SwampMazeQuest
 [Flags]
 public enum AvailableMounts
 {
-    None = 0,
     Horse = 1,
     Wolf = 1 << 2,
     Dunan = 1 << 3,
@@ -733,7 +732,6 @@ public enum AvailableMounts
 [Flags]
 public enum AvailableCloaks
 {
-    None = 0,
     Green = 1,
     Red = 1 << 2,
     Blue = 1 << 3,
@@ -743,7 +741,6 @@ public enum AvailableCloaks
 
 public enum CurrentMount
 {
-    None,
     Horse = 1,
     Wolf = 2,
     Dunan = 3,
@@ -754,7 +751,6 @@ public enum CurrentMount
 
 public enum CurrentCloak
 {
-    None,
     Green = 1,
     Red = 2,
     Blue = 3,

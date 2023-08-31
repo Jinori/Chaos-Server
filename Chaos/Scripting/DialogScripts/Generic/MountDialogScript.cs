@@ -4,552 +4,188 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Generic;
-
-public class MountDialogScript : DialogScriptBase
+namespace Chaos.Scripting.DialogScripts.Generic
 {
-    /// <inheritdoc />
-    public MountDialogScript(Dialog subject, IEffectFactory effectFactory)
-        : base(subject)
-    { }
-
-    public override void OnDisplaying(Aisling source)
+    public class MountDialogScript : DialogScriptBase
     {
-        var hasFlag = source.Trackers.Flags.TryGetFlag(out AvailableMounts _);
-        source.Trackers.Enums.TryGetValue(out CurrentMount _);
+        private readonly IEffectFactory _effectFactory;
 
-        switch (Subject.Template.TemplateKey.ToLower())
+        public MountDialogScript(Dialog subject, IEffectFactory effectFactory)
+            : base(subject)
         {
-            case "terminus_initial":
-            {
-                if (hasFlag)
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "mount_initial",
-                        OptionText = "Mounts"
-                    };
+            _effectFactory = effectFactory;
+        }
 
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+        private void SetMount(Dialog dialog, Aisling source, CurrentMount mount)
+        {
+            source.Trackers.Enums.Set(mount);
+            AddCloakOptions(dialog, source);
+        }
+
+        private void AddMountOptionIfFlag(
+            Dialog dialog,
+            Aisling source,
+            AvailableMounts mountFlag,
+            string optionKey
+        )
+        {
+            if (source.Trackers.Flags.HasFlag(mountFlag))
+            {
+                var option = new DialogOption
+                {
+                    DialogKey = optionKey,
+                    OptionText = mountFlag.ToString()
+                };
+
+                if (!dialog.HasOption(option.OptionText))
+                {
+                    dialog.Options.Insert(0, option);
                 }
             }
+        }
 
-                break;
-
-            case "mount_initial":
+        private void AddCloakOptions(Dialog dialog, Aisling source)
+        {
+            foreach (AvailableCloaks cloakFlag in Enum.GetValues(typeof(AvailableCloaks)))
             {
-                if (source.Effects.TryGetEffect("mount", out var effect) && source.Effects.Contains(effect))
-                {
-                    Subject.Reply(source, "Please get off your mount first.");
-
-                    return;
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableMounts.Horse))
+                if (source.Trackers.Flags.HasFlag(cloakFlag))
                 {
                     var option = new DialogOption
                     {
-                        DialogKey = "mount_horse",
-                        OptionText = "Horse"
+                        DialogKey = $"cloak_{cloakFlag.ToString().ToLower()}",
+                        OptionText = $"{cloakFlag} Cloak"
                     };
 
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableMounts.Wolf))
-                {
-                    var option = new DialogOption
+                    if (!dialog.HasOption(option.OptionText))
                     {
-                        DialogKey = "mount_wolf",
-                        OptionText = "Wolf"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableMounts.Dunan))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "mount_dunan",
-                        OptionText = "Dunan"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableMounts.Kelberoth))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "mount_kelberoth",
-                        OptionText = "Kelberoth"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableMounts.Ant))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "mount_ant",
-                        OptionText = "Ant"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableMounts.Bee))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "mount_bee",
-                        OptionText = "Bee"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+                        dialog.Options.Insert(0, option);
+                    }
                 }
             }
+        }
 
-                break;
+        public override void OnDisplaying(Aisling source)
+        {
+            var templateKey = Subject.Template.TemplateKey.ToLower();
+            var flags = source.Trackers.Flags;
 
-            case "mount_horse":
+            switch (templateKey)
             {
-                source.Trackers.Enums.Set(CurrentMount.Horse);
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Blue))
-                {
-                    var option = new DialogOption
+                case "terminus_initial":
+                    if (flags.TryGetFlag(out AvailableMounts _))
                     {
-                        DialogKey = "cloak_blue",
-                        OptionText = "Blue Cloak"
-                    };
+                        Subject.Options.Insert(
+                            0,
+                            new DialogOption
+                            {
+                                DialogKey = "mount_initial",
+                                OptionText = "Mounts"
+                            });
+                    }
 
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
+                    break;
 
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Red))
-                {
-                    var option = new DialogOption
+                case "mount_initial":
+                    if (source.Effects.TryGetEffect("mount", out var effect) && source.Effects.Contains(effect))
                     {
-                        DialogKey = "cloak_red",
-                        OptionText = "Red Cloak"
-                    };
+                        Subject.Reply(source, "Please get off your mount first.");
 
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
+                        return;
+                    }
 
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Black))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_black",
-                        OptionText = "Black Cloak"
-                    };
+                    AddMountOptionIfFlag(
+                        Subject,
+                        source,
+                        AvailableMounts.Horse,
+                        "mount_horse");
 
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
+                    AddMountOptionIfFlag(
+                        Subject,
+                        source,
+                        AvailableMounts.Wolf,
+                        "mount_wolf");
 
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Green))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_green",
-                        OptionText = "Green Cloak"
-                    };
+                    AddMountOptionIfFlag(
+                        Subject,
+                        source,
+                        AvailableMounts.Dunan,
+                        "mount_dunan");
 
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
+                    AddMountOptionIfFlag(
+                        Subject,
+                        source,
+                        AvailableMounts.Kelberoth,
+                        "mount_kelberoth");
 
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Purple))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_purple",
-                        OptionText = "Purple Cloak"
-                    };
+                    AddMountOptionIfFlag(
+                        Subject,
+                        source,
+                        AvailableMounts.Ant,
+                        "mount_ant");
 
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
+                    AddMountOptionIfFlag(
+                        Subject,
+                        source,
+                        AvailableMounts.Bee,
+                        "mount_bee");
 
-                return;
+                    break;
+
+                case "mount_horse":
+                    SetMount(Subject, source, CurrentMount.Horse);
+
+                    break;
+
+                case "mount_wolf":
+                    SetMount(Subject, source, CurrentMount.Wolf);
+
+                    break;
+
+                case "mount_kelberoth":
+                    SetMount(Subject, source, CurrentMount.Kelberoth);
+
+                    break;
+
+                case "mount_bee":
+                    SetMount(Subject, source, CurrentMount.Bee);
+
+                    break;
+
+                case "mount_ant":
+                    SetMount(Subject, source, CurrentMount.Ant);
+
+                    break;
+
+                case "mount_dunan":
+                    SetMount(Subject, source, CurrentMount.Dunan);
+
+                    break;
+
+                case "cloak_blue":
+                    source.Trackers.Enums.Set(CurrentCloak.Blue);
+
+                    break;
+
+                case "cloak_red":
+                    source.Trackers.Enums.Set(CurrentCloak.Red);
+
+                    break;
+
+                case "cloak_purple":
+                    source.Trackers.Enums.Set(CurrentCloak.Purple);
+
+                    break;
+
+                case "cloak_black":
+                    source.Trackers.Enums.Set(CurrentCloak.Black);
+
+                    break;
+
+                case "cloak_green":
+                    source.Trackers.Enums.Set(CurrentCloak.Green);
+
+                    break;
             }
-
-            case "mount_wolf":
-            {
-                source.Trackers.Enums.Set(CurrentMount.Wolf);
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Blue))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_blue",
-                        OptionText = "Blue Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Red))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_red",
-                        OptionText = "Red Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Black))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_black",
-                        OptionText = "Black Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Green))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_green",
-                        OptionText = "Green Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Purple))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_purple",
-                        OptionText = "Purple Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                return;
-            }
-
-            case "mount_kelberoth":
-            {
-                source.Trackers.Enums.Set(CurrentMount.Kelberoth);
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Blue))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_blue",
-                        OptionText = "Blue Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Red))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_red",
-                        OptionText = "Red Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Black))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_black",
-                        OptionText = "Black Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Green))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_green",
-                        OptionText = "Green Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Purple))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_purple",
-                        OptionText = "Purple Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                return;
-            }
-            case "mount_bee":
-            {
-                source.Trackers.Enums.Set(CurrentMount.Bee);
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Blue))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_blue",
-                        OptionText = "Blue Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Red))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_red",
-                        OptionText = "Red Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Black))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_black",
-                        OptionText = "Black Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Green))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_green",
-                        OptionText = "Green Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Purple))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_purple",
-                        OptionText = "Purple Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                return;
-            }
-
-            case "mount_ant":
-            {
-                source.Trackers.Enums.Set(CurrentMount.Ant);
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Blue))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_blue",
-                        OptionText = "Blue Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Red))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_red",
-                        OptionText = "Red Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Black))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_black",
-                        OptionText = "Black Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Green))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_green",
-                        OptionText = "Green Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Purple))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_purple",
-                        OptionText = "Purple Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                return;
-            }
-            case "mount_dunan":
-            {
-                source.Trackers.Enums.Set(CurrentMount.Dunan);
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Blue))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_blue",
-                        OptionText = "Blue Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Red))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_red",
-                        OptionText = "Red Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Black))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_black",
-                        OptionText = "Black Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Green))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_green",
-                        OptionText = "Green Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (source.Trackers.Flags.HasFlag(AvailableCloaks.Purple))
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "cloak_purple",
-                        OptionText = "Purple Cloak"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                return;
-            }
-            case "cloak_blue":
-            {
-                source.Trackers.Enums.Set(CurrentCloak.Blue);
-
-                break;
-            }
-            case "cloak_red":
-            {
-                source.Trackers.Enums.Set(CurrentCloak.Red);
-
-                break;
-            }
-            case "cloak_purple":
-            {
-                source.Trackers.Enums.Set(CurrentCloak.Purple);
-
-                break;
-            }
-            case "cloak_black":
-            {
-                source.Trackers.Enums.Set(CurrentCloak.Black);
-
-                break;
-            }
-            case "cloak_green":
-            {
-                source.Trackers.Enums.Set(CurrentCloak.Green);
-            }
-
-                break;
         }
     }
 }
