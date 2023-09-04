@@ -6,6 +6,7 @@ using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Models.Data;
+using Chaos.Models.Legend;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -44,6 +45,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     private readonly List<string> MapsToNotPunishDeathOn = new()
     {
         "Mr. Hopps's Home",
+        "Nightmare",
         "Cain's Farm",
         "Arena Battle Ring",
         "Lava Arena",
@@ -179,17 +181,22 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
 
     public override void OnAttacked(Creature source, int damage)
     {
-        if (Subject.Status.HasFlag(Status.Pramh))
+
+        if (Subject.Effects.Contains("pramh"))
         {
             Subject.Status &= ~Status.Pramh;
             Subject.Effects.Dispel("pramh");
-            Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You awake from your slumber.");
+        }
+
+        if (Subject.Effects.Contains("beagpramh"))
+        {
+            Subject.Status &= ~Status.Pramh;
+            Subject.Effects.Dispel("beagpramh");
         }
 
         if (Subject.Effects.Contains("wolfFangFist"))
         {
             Subject.Effects.Dispel("wolfFangFist");
-            Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You awake from your slumber.");
         }
 
         if (Subject.Status.HasFlag(Status.ThunderStance))
@@ -256,8 +263,6 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
 
             return;
         }
-
-        base.OnAttacked(source, damage);
     }
 
     /// <inheritdoc />
@@ -304,6 +309,28 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             while (!source.MapInstance.IsWalkable(point, terminus.Type));
 
             source.MapInstance.AddObject(terminus, point);
+        }
+        
+        if (source?.MapInstance.Name.Equals("Nightmare") == true)
+        {
+            var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
+            var pointS = new Point(5, 7);
+
+            Subject.StatSheet.AddHp(1);
+            Subject.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareLoss);
+            Subject.Client.SendAttributes(StatUpdateType.Vitality);
+            Subject.SendOrangeBarMessage("You have been defeated by your Nightmares.");
+            Subject.TraverseMap(mapInstance, pointS);
+            Subject.Legend.AddOrAccumulate(
+                new LegendMark(
+                    "Defeated by their Nightmares.",
+                    "Nightmare",
+                    MarkIcon.Victory,
+                    MarkColor.White,
+                    1,
+                    GameTime.Now));
+
+            return;
         }
 
         if (ArenaMaps.Contains(Subject.MapInstance.Name))

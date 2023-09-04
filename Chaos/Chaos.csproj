@@ -61,4 +61,10 @@
     <ItemGroup>
         <InternalsVisibleTo Include="Chaos.Testing.Infrastructure" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Scripting\MonsterScripts\Boss\NightmareBoss\NightmareMonk\" />
+      <Folder Include="Scripting\MonsterScripts\Boss\NightmareBoss\NightmarePriest\" />
+      <Folder Include="Scripting\MonsterScripts\Boss\NightmareBoss\NightmareRogue\" />
+      <Folder Include="Scripting\MonsterScripts\Boss\NightmareBoss\NightmareWizard\" />
+    </ItemGroup>
 </Project>

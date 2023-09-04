@@ -1243,3 +1243,19 @@ public enum PentagramQuestStage
     BossSpawned = 9,
     DefeatedBoss = 10,
 }
+
+public enum NightmareQuestStage
+{
+    None,
+    Started = 1,
+    MetRequirementsToEnter1 = 2,
+    MetRequirementsToEnter2 = 3,
+    MetRequirementsToEnter3 = 4,
+    EnteredDream = 5,
+    SpawningNightmare = 6,
+    SpawnedNightmare = 7,
+    DefeatedorLossNightmare = 8,
+    CompletedNightmareWin1 = 9,
+    CompletedNightmareWin2 = 10,
+    CompletedNightmareLoss = 11
+}

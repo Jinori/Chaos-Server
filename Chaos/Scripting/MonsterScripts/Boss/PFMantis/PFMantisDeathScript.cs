@@ -5,7 +5,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts;
+namespace Chaos.Scripting.MonsterScripts.Boss.PFMantis;
 
 [SuppressMessage("ReSharper", "UnusedVariable")]
 public sealed class PFMantisDeathScript : MonsterScriptBase

@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices.ComTypes;
 using Chaos.Collections.Common;
+using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Messaging.Abstractions;
 using Chaos.Models.World;
@@ -12,13 +13,19 @@ public class GodModeCommand : ICommand<Aisling>
 {
     public ValueTask ExecuteAsync(Aisling source, ArgumentCollection args)
     {
-        source.StatSheet.SetHealthPct(100);
-        source.ShowHealth();
-        
+
         if (source.Trackers.Enums.TryGetValue(out GodMode godMode) && (godMode != GodMode.Yes))
+        {
+            source.StatSheet.SetHealthPct(100);
+            source.Client.SendAttributes(StatUpdateType.Vitality);
+            source.SendOrangeBarMessage("Godmode enabled.");
             source.Trackers.Enums.Set(GodMode.Yes);
-        else
-            source.Trackers.Enums.Set(GodMode.No);
+
+            return default;
+        }
+        
+        source.SendOrangeBarMessage("Godmode disabled.");
+        source.Trackers.Enums.Set(GodMode.No);
 
         return default;
     }

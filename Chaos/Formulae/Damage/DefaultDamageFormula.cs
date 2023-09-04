@@ -69,6 +69,7 @@ public class DefaultDamageFormula : IDamageFormula
         HandleAite(ref damage, target);
         HandleWeaponDamage(ref damage, source);
         HandleDmgStat(ref damage, script, source);
+        HandleEffectDmg(ref damage, target);
         return damage;
     }
 
@@ -174,5 +175,29 @@ public class DefaultDamageFormula : IDamageFormula
 
         var damageMultiplier = 1 + (attacker.StatSheet.EffectiveDmg / 6.0) * 0.04;
         damage = (int)(damage * damageMultiplier);
+    }
+
+    protected virtual void HandleEffectDmg(ref int damage, Creature defender)
+    {
+        var damageMultiplier = 1.0;
+        
+        if (defender.Effects.Contains("pramh"))
+        {
+            damageMultiplier *= 2.0;
+        }
+
+        if (defender.Effects.Contains("beagpramh"))
+        {
+            damageMultiplier *= 1.25;
+        }
+
+        if (defender.Effects.Contains("wolfFangFist"))
+        {
+            damageMultiplier *= 2.0;
+        }
+        var modifiedDamage = damage * damageMultiplier;
+
+        // Round the modified damage to the nearest whole number.
+        damage = (int)Math.Round(modifiedDamage);
     }
 }

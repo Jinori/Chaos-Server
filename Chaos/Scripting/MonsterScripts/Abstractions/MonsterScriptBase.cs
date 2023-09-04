@@ -62,36 +62,27 @@ public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonste
     /// <inheritdoc />
     public virtual void OnAttacked(Creature source, int damage, int? aggroOverride) { }
 
-    public virtual void OnAttacked(Creature source, int damage)
+    public virtual void OnAttacked(Creature attacker, int damage)
     {
         if (Subject.Effects.Contains("pramh"))
         {
-            damage *= 2;
             Subject.Status &= ~Status.Pramh;
             Subject.Effects.Dispel("pramh");
         }
 
         if (Subject.Effects.Contains("beagpramh"))
         {
-            damage *= 2;
             Subject.Status &= ~Status.Pramh;
             Subject.Effects.Dispel("beagpramh");
         }
 
         if (Subject.Effects.Contains("wolfFangFist"))
         {
-            damage *= 2;
-            Subject.Status &= ~Status.WolfFangFist;
             Subject.Effects.Dispel("wolfFangFist");
         }
 
         if (Subject.Effects.Contains("Amnesia"))
-        {
-            Subject.Status &= ~Status.Amnesia;
-            Subject.Effects.Dispel("Amnesia");
-        }
-
-        OnAttacked(source, damage, null);
+            Subject.Effects.Dispel("Amensia");
     }
 
     /// <inheritdoc />

@@ -7,7 +7,7 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.EffectScripts.Wizard;
+namespace Chaos.Scripting.EffectScripts.Priest;
 
 public sealed class BeagPramhEffect : ContinuousAnimationEffectBase
 {

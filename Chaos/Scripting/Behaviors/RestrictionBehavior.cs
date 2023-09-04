@@ -77,19 +77,25 @@ public class RestrictionBehavior
         {
             if (aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _))
             {
-                aisling.SendOrangeBarMessage("You can't do that");
+                aisling.SendOrangeBarMessage("You can't do that now.");
 
                 return false;
             }
 
-            if (!aisling.Status.HasFlag(Status.Suain) || !aisling.Status.HasFlag(Status.Pramh))
-                return aisling.IsAlive;
+            if (aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh))
+            {
+                aisling.SendOrangeBarMessage("You can't do that now.");
+
+                return false;
+            }
+
+            return true;
         }
 
         if (aisling.IsDead && item.Template.TemplateKey.EqualsI("revivePotion"))
             return true;
 
-        aisling.SendOrangeBarMessage("You can't do that");
+        aisling.SendOrangeBarMessage("You can't do that now.");
 
         return false;
     }
