@@ -13,7 +13,7 @@ namespace Chaos.Scripting.ReactorTileScripts.EingrenManor;
 public class ManorFloorWarpScript : ConfigurableReactorTileScriptBase
 {
     private readonly ISimpleCache SimpleCache;
-
+    private readonly Random Random = new();
     #region ScriptVars
     protected Location Destination { get; init; } = null!;
     #endregion
@@ -26,7 +26,26 @@ public class ManorFloorWarpScript : ConfigurableReactorTileScriptBase
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
     {
-        var targetMap = SimpleCache.Get<MapInstance>(Destination.Map);
+        // List of map template keys
+        string[] mapKeys = {
+            "manor_library",
+            "manor_study",
+            "manor_study_2",
+            "manor_kitchen",
+            "manor_kitchen_2",
+            "manor_commons",
+            "manor_storage",
+            "manor_depot",
+            "manor_bedroom",
+            "manor_bedroom_2",
+            "manor_bedroom_3",
+            "manor_bunks",
+            "manor_master_suite"
+        };
+
+        // Randomly select a map key
+        var selectedMapKey = mapKeys[Random.Next(mapKeys.Length)];
+        var targetMap = SimpleCache.Get<MapInstance>(selectedMapKey);
         var aisling = source as Aisling;
 
         if (source.StatSheet.Level < (targetMap.MinimumLevel ?? 0))
@@ -73,8 +92,13 @@ public class ManorFloorWarpScript : ConfigurableReactorTileScriptBase
                 && (member.StatSheet.Level >= 41));
 
         if (allMembersHaveQuestFlag)
+        {
+            var point = targetMap.GetRandomWalkablePoint();
             foreach (var member in aisling.Group)
-                member.TraverseMap(targetMap, Destination);
+            {
+                member.TraverseMap(targetMap, point);
+            }
+        }
         else
         {
             // Send a message to the Aisling

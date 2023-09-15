@@ -12,7 +12,6 @@ public sealed class PetDeathScript : MonsterScriptBase
     public override void OnDeath()
     {
         Subject.PetOwner = null;
-        Subject.Say("*slosh*");
         Map.RemoveObject(Subject);
 
         if (Subject.TryDropGold(Subject, Subject.Gold, out var money))

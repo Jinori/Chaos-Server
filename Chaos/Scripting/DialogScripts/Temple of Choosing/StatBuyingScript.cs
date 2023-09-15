@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -24,6 +25,19 @@ public class StatBuyingScript : DialogScriptBase
         { BaseClass.Priest, 3500 },
         { BaseClass.Monk, 6000 },
         { BaseClass.Rogue, 4250 }
+    };
+
+    private readonly Dictionary<BaseClass, Dictionary<ClassStatBracket, Attributes>> ClassStatCaps = new()
+    {
+        {
+            BaseClass.Warrior, new Dictionary<ClassStatBracket, Attributes>
+            {
+                { ClassStatBracket.PreMaster, new Attributes { Str = 150, Int = 60, Wis = 60, Con = 100, Dex = 115 } },
+                { ClassStatBracket.Master, new Attributes { Str = 215, Int = 100, Wis = 100, Con = 150, Dex = 180 } },
+                { ClassStatBracket.Grandmaster, new Attributes { Str = 255, Int = 150, Wis = 150, Con = 180, Dex = 215 } }
+            }
+        },
+        // Add other classes here
     };
 
     private readonly Dictionary<byte, Action<Aisling, Attributes>> OptionActionMappings = new()
@@ -115,11 +129,50 @@ public class StatBuyingScript : DialogScriptBase
         }
 
         var statBuyCost = new Attributes { MaximumHp = 150 };
-        source.StatSheet.Subtract(statBuyCost);
 
-        if (OptionActionMappings.TryGetValue(optionIndex.Value, out var action))
-            action(source, statBuyCost);
+        // Get the appropriate stat caps based on class and ClassStatBracket
+        if (ClassStatCaps.TryGetValue(source.UserStatSheet.BaseClass, out var statCapsByBracket))
+        {
+            var currentBracket = GetCurrentStatBracket(source); // Implement this method to determine the current ClassStatBracket
+            
+            if (statCapsByBracket.TryGetValue(currentBracket, out var currentCaps))
+            {
+                if (OptionActionMappings.TryGetValue(optionIndex.Value, out var action))
+                {
+                    // Check if the stat is already at or above the cap
+                    if (IsStatCapped(source, currentCaps, optionIndex.Value))
+                    {
+                        source.SendOrangeBarMessage("You've reached the stat cap for this attribute.");
+                        return;
+                    }
 
-        source.Client.SendAttributes(StatUpdateType.Primary);
+                    // Perform the stat increase
+                    action(source, statBuyCost);
+                    source.Client.SendAttributes(StatUpdateType.Primary);
+                }
+            }
+        }
     }
+   
+    private ClassStatBracket GetCurrentStatBracket(Aisling source)
+    {
+        if (source.UserStatSheet.Master)
+            return ClassStatBracket.Master;
+
+        if (source.UserStatSheet.Master)  //Change this to check for Grandmaster when implemented
+            return ClassStatBracket.Grandmaster;
+
+        return ClassStatBracket.PreMaster;
+    }
+    
+    private bool IsStatCapped(Aisling source, Stats caps, byte optionIndex) =>
+        optionIndex switch
+        {
+            1 => source.UserStatSheet.Str >= caps.Str,
+            2 => source.UserStatSheet.Int >= caps.Int,
+            3 => source.UserStatSheet.Wis >= caps.Wis,
+            4 => source.UserStatSheet.Con >= caps.Con,
+            5 => source.UserStatSheet.Dex >= caps.Dex,
+            _ => false
+        };
 }

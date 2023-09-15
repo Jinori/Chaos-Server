@@ -1259,3 +1259,12 @@ public enum NightmareQuestStage
     CompletedNightmareWin2 = 10,
     CompletedNightmareLoss = 11
 }
+
+
+public enum ClassStatBracket
+{
+    None,
+    PreMaster = 1,
+    Master = 2,
+    Grandmaster = 3
+}

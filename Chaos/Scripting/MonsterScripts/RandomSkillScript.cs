@@ -5,7 +5,7 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts;
 
-public class RandomSkillScript : MonsterScriptBase
+public sealed class RandomSkillScript : MonsterScriptBase
 {
     private readonly ISkillFactory SkillFactory;
 
