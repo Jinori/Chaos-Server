@@ -64,7 +64,20 @@ public class RelationshipBehavior
 
     protected virtual bool IsFriendlyTo(Merchant source, Monster target) => false;
 
-    protected virtual bool IsFriendlyTo(Monster source, Aisling target) => false;
+    protected virtual bool IsFriendlyTo(Monster source, Aisling target)
+    {
+        var isSourceOrTargetPet = source.ScriptKeys.Contains("pet") || target.ScriptKeys.Contains("pet");
+
+        if (isSourceOrTargetPet)
+        {
+            var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
+            var isOwner = target.Equals(source.PetOwner);
+            return (isSourceOrTargetPet && isGroupMember) || isOwner;
+        }
+
+        return false;
+    }
+
 
     protected virtual bool IsFriendlyTo(Monster source, Monster target)
     {
@@ -132,7 +145,18 @@ public class RelationshipBehavior
 
     protected virtual bool IsHostileTo(Merchant source, Monster target) => true;
 
-    protected virtual bool IsHostileTo(Monster source, Aisling target) => true;
+    protected virtual bool IsHostileTo(Monster source, Aisling target)
+    {
+        if (source.ScriptKeys.Contains("pet") || target.ScriptKeys.Contains("pet"))
+        {
+            var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
+            var isOwner = target.Equals(source.PetOwner);
+
+            return !(isGroupMember || isOwner);            
+        }
+
+        return true;
+    }
 
     protected virtual bool IsHostileTo(Monster source, Merchant target) => true;
 

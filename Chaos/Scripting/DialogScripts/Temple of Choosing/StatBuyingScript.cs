@@ -159,7 +159,7 @@ public class StatBuyingScript : DialogScriptBase
         if (source.UserStatSheet.Master)
             return ClassStatBracket.Master;
 
-        if (source.UserStatSheet.Master)  //Change this to check for Grandmaster when implemented
+        if (source.UserStatSheet.Master && (source.UserStatSheet.MaximumHp +  (source.UserStatSheet.MaximumMp * 2) >= 80000))
             return ClassStatBracket.Grandmaster;
 
         return ClassStatBracket.PreMaster;

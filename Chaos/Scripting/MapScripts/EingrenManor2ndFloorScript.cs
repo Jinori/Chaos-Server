@@ -48,7 +48,7 @@ public class EingrenManor2ndFloorScript : MapScriptBase
         if (creature is not Aisling)
             return;
 
-        var hasSpawns = Subject.GetEntities<Monster>().ToList().Any();
+        var hasSpawns = Subject.GetEntities<Monster>().Any(x => x.PetOwner is null);
         if (hasSpawns)
             return;
 
@@ -70,7 +70,7 @@ public class EingrenManor2ndFloorScript : MapScriptBase
         
         if (UpdateTimer.IntervalElapsed)
         {
-            var hasMonsters = Subject.GetEntities<Monster>().ToList().Any();
+            var hasMonsters = Subject.GetEntities<Monster>().Any(x => x.PetOwner is null);
             var hasPlayers = Subject.GetEntities<Aisling>().ToList().Any();
 
             if (!hasMonsters && hasPlayers)
