@@ -74,6 +74,15 @@ public class RelationshipBehavior
             var isOwner = target.Equals(source.PetOwner);
             return (isSourceOrTargetPet && isGroupMember) || isOwner;
         }
+        
+        var isTotem = source.ScriptKeys.Contains("nightmaretotem") || target.ScriptKeys.Contains("nightmaretotem");
+
+        if (isTotem)
+        {
+            var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
+            var isOwner = target.Equals(source.PetOwner);
+            return (isSourceOrTargetPet && isGroupMember) || isOwner;
+        }
 
         return false;
     }
@@ -81,12 +90,16 @@ public class RelationshipBehavior
 
     protected virtual bool IsFriendlyTo(Monster source, Monster target)
     {
+
         if (source.Equals(target))
             return true;
 
         if (source.ScriptKeys.Contains("pet") || target.ScriptKeys.Contains("pet"))
             return false;
 
+        if (source.ScriptKeys.Contains("nightmaretotem") || target.ScriptKeys.Contains("nightmaretotem"))
+            return false;
+        
         return false;
     }
 
@@ -137,7 +150,15 @@ public class RelationshipBehavior
 
     protected virtual bool IsHostileTo(Aisling source, Merchant target) => false;
 
-    protected virtual bool IsHostileTo(Aisling source, Monster target) => true;
+    protected virtual bool IsHostileTo(Aisling source, Monster target)
+    {
+        var isTotem = target.ScriptKeys.Contains("nightmaretotem") || source.ScriptKeys.Contains("nightmaretotem");
+        
+        if (isTotem)
+            return false;
+
+        return true;
+    }
 
     protected virtual bool IsHostileTo(Merchant source, Aisling target) => false;
 
@@ -154,6 +175,14 @@ public class RelationshipBehavior
 
             return !(isGroupMember || isOwner);            
         }
+        
+        if (source.ScriptKeys.Contains("nightmaretotem") || target.ScriptKeys.Contains("nightmaretotem"))
+        {
+            var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
+            var isOwner = target.Equals(source.PetOwner);
+
+            return !(isGroupMember || isOwner);            
+        }
 
         return true;
     }
@@ -163,6 +192,9 @@ public class RelationshipBehavior
     protected virtual bool IsHostileTo(Monster source, Monster target)
     {
         if (source.ScriptKeys.Contains("pet") || target.ScriptKeys.Contains("pet"))
+            return true;
+        
+        if (source.ScriptKeys.Contains("nightmaretotem") || target.ScriptKeys.Contains("nightmaretotem"))
             return true;
 
         return false;

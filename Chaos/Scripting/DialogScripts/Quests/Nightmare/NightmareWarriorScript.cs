@@ -52,7 +52,7 @@ public class NightmareWarriorScript : DialogScriptBase
                     return;
                 }
                 
-                if (hasStage && (stage == NightmareQuestStage.CompletedNightmareLoss))
+                if (hasStage && (stage == NightmareQuestStage.CompletedNightmareLoss1))
                 {
                     Subject.Reply(source, "I knew you couldn't handle it, atleast you are still alive. Get out of my hut.");
 

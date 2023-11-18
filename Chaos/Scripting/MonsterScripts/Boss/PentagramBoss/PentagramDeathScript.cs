@@ -86,6 +86,20 @@ public class PentagramDeathScript : MonsterScriptBase
                 { (BaseClass.Wizard, Gender.Male), new string[] { "malelichrobe", "lichhood" } },
                 { (BaseClass.Wizard, Gender.Female), new string[] { "femalelichrobe", "lichhood" } }
             };
+            
+            var pentagearnameDictionary = new Dictionary<(BaseClass, Gender), string[]>
+            {
+                { (BaseClass.Warrior, Gender.Male), new string[] { "Male Scarlet Carapace", "Scarlet Chitin Helmet" } },
+                { (BaseClass.Warrior, Gender.Female), new string[] { "Female Scarlet Carapace", "Scarlet Chitin Helmet" } },
+                { (BaseClass.Monk, Gender.Male), new string[] { "Male Nagatier Cloak" } },
+                { (BaseClass.Monk, Gender.Female), new string[] { "Female Nagatier Cloak" } },
+                { (BaseClass.Rogue, Gender.Male), new string[] { "Male Reitermail", "Kopfloserhood" } },
+                { (BaseClass.Rogue, Gender.Female), new string[] { "Female Reitermail", "Kopfloserhood" } },
+                { (BaseClass.Priest, Gender.Male), new string[] { "Male Dark Cleric Robes", "Dark Cleric Brim" } },
+                { (BaseClass.Priest, Gender.Female), new string[] { "Female Dark Cleric Robes", "Dark Cleric Brim" } },
+                { (BaseClass.Wizard, Gender.Male), new string[] { "Male Lich Robe", "Lich Hood" } },
+                { (BaseClass.Wizard, Gender.Female), new string[] { "Female Lich Robe", "Lich Hood" } }
+            };
 
             foreach (var target in rewardTargets)
             {
@@ -93,13 +107,17 @@ public class PentagramDeathScript : MonsterScriptBase
                 target.SendOrangeBarMessage("The house calms down and the darkness fades.");
                 target.Trackers.Counters.AddOrIncrement("pentabosskills");
 
-                var gearKey = (target.UserStatSheet.BaseClass, target.Gender); 
-                if (pentagearDictionary.TryGetValue(gearKey, out var pentagear))
+                var gearKey = (target.UserStatSheet.BaseClass, target.Gender);
+                var gearNameKey = (target.UserStatSheet.BaseClass, target.Gender);
+                if (pentagearDictionary.TryGetValue(gearKey, out var pentagear) && pentagearnameDictionary.TryGetValue(gearNameKey, out var pentagearname))
                 { 
                     var hasGear = pentagear.All(gearItemName =>
-                        target.Inventory.Contains(gearItemName) || target.Bank.Contains(gearItemName) || target.Equipment.Contains(gearItemName));
+                        target.Inventory.Contains(gearItemName) || target.Equipment.Contains(gearItemName));
+                    
+                    var hasGear2 = pentagearname.All(gearItemName2 =>
+                        target.Bank.Contains(gearItemName2));
 
-                    if (hasGear)
+                    if (!hasGear || !hasGear2)
                     {
                         foreach (var gearItemName in pentagear)
                         {

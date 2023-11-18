@@ -275,10 +275,13 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             var mapInstance = SimpleCache.Get<MapInstance>("tutorial_hut");
             var pointS = new Point(2, 9);
 
+            Subject.IsDead = false;
             Subject.StatSheet.AddHp(1);
             Subject.Client.SendAttributes(StatUpdateType.Vitality);
             Subject.SendOrangeBarMessage("You are knocked out. Be more careful.");
             Subject.TraverseMap(mapInstance, pointS);
+            
+            Subject.Refresh(true);
 
             return;
         }
@@ -316,8 +319,9 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
             var pointS = new Point(5, 7);
 
+            Subject.IsDead = false;
             Subject.StatSheet.AddHp(1);
-            Subject.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareLoss);
+            Subject.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareLoss1);
             Subject.Client.SendAttributes(StatUpdateType.Vitality);
             Subject.SendOrangeBarMessage("You have been defeated by your Nightmares.");
             Subject.TraverseMap(mapInstance, pointS);
@@ -329,6 +333,8 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
                     MarkColor.White,
                     1,
                     GameTime.Now));
+            
+            Subject.Refresh(true);
 
             return;
         }

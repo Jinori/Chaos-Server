@@ -62,7 +62,7 @@ public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonste
     /// <inheritdoc />
     public virtual void OnAttacked(Creature source, int damage, int? aggroOverride) { }
 
-    public virtual void OnAttacked(Creature attacker, int damage)
+    public virtual void OnAttacked(Creature source, int damage)
     {
         if (Subject.Effects.Contains("pramh"))
         {
@@ -83,6 +83,8 @@ public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonste
 
         if (Subject.Effects.Contains("Amnesia"))
             Subject.Effects.Dispel("Amensia");
+            
+        OnAttacked(source, damage, null);
     }
 
     /// <inheritdoc />

@@ -1257,7 +1257,8 @@ public enum NightmareQuestStage
     DefeatedorLossNightmare = 8,
     CompletedNightmareWin1 = 9,
     CompletedNightmareWin2 = 10,
-    CompletedNightmareLoss = 11
+    CompletedNightmareLoss1 = 11,
+    CompletedNightmareLoss2 = 12,
 }
 
 

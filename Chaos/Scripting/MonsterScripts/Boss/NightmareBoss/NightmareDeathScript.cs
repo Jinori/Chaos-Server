@@ -98,7 +98,7 @@ public class NightmareDeathScript : MonsterScriptBase
                 target.SendOrangeBarMessage("You have conquered your Nightmares!");
                 target.Legend.AddOrAccumulate(
                     new LegendMark(
-                        "Conquered their Nightmares.",
+                        "Successfully ended their Nightmares",
                         "Nightmare",
                         MarkIcon.Victory,
                         MarkColor.White,
@@ -113,9 +113,9 @@ public class NightmareDeathScript : MonsterScriptBase
                 if (nightmaregearDictionary.TryGetValue(gearKey, out var nightmaregear))
                 { 
                     var hasGear = nightmaregear.All(gearItemName =>
-                        target.Inventory.Contains(gearItemName) || target.Bank.Contains(gearItemName) || target.Equipment.Contains(gearItemName));
+                        target.Inventory.ContainsByTemplateKey(gearItemName) || target.Bank.Contains(gearItemName) || target.Equipment.ContainsByTemplateKey(gearItemName));
 
-                    if (hasGear)
+                    if (!hasGear)
                     {
                         foreach (var gearItemName in nightmaregear)
                         {
