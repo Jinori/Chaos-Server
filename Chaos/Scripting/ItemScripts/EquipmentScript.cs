@@ -17,6 +17,16 @@ public class EquipmentScript : ConfigurableItemScriptBase
         if (template.EquipmentType is not null)
             source.Equip(template.EquipmentType.Value, Subject);
     }
+    
+    private bool CanWieldStaff(Aisling source, string skillName)
+    {
+        if (!source.SkillBook.Contains(skillName))
+        {
+            source.SendOrangeBarMessage($"You do not have the skill to wield it.");
+            return false;
+        }
+        return true;
+    }
 
     public override void OnUse(Aisling source)
     {
@@ -24,21 +34,67 @@ public class EquipmentScript : ConfigurableItemScriptBase
 
         if (template.Category.Contains("Staff"))
         {
-            if (template.TemplateKey.ContainsI("magus") && source.SkillBook.Contains("wieldmagusstaff"))
+            // Check specific conditions for equipping a staff
+            if (template.TemplateKey.ContainsI("magus") && CanWieldStaff(source, "Wield Magus Staff"))
             {
-                EquipStaff(source, template);
+                if (source.Equipment.Contains((byte)EquipmentSlot.Shield)
+                    && source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var shield))
+                {
+                    source.SendOrangeBarMessage($"You cannot equip a staff while using {shield.DisplayName}.");
+                    return;
+                }
 
+                EquipStaff(source, template);
                 return;
             }
 
-            if (template.TemplateKey.ContainsI("holy") && source.SkillBook.Contains("wieldholystaff"))
+            if (template.TemplateKey.ContainsI("holy") && CanWieldStaff(source, "Wield Holy Staff"))
             {
-                EquipStaff(source, template);
+                if (source.Equipment.Contains((byte)EquipmentSlot.Shield)
+                    && source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var shield))
+                {
+                    source.SendOrangeBarMessage($"You cannot equip a staff while using {shield.DisplayName}.");
+                    return;
+                }
 
+                EquipStaff(source, template);
                 return;
             }
         }
 
+        if (template.Category.ContainsI("2H"))
+        {
+            // Ensure the character is not already equipped with a staff
+            if (source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var item))
+            {
+                if (item.Template.Category.ContainsI("Shield"))
+                {
+                    source.SendOrangeBarMessage("You cannot equip a two hand with a shield eqiupped."); 
+                    return;   
+                }
+            }
+        }
+        
+        // Check if the item is a shield
+        if (template.Category.Contains("Shield"))
+        {
+            // Ensure the character is not already equipped with a staff
+            if (source.Equipment.TryGetObject((byte)EquipmentSlot.Weapon, out var item))
+            {
+                if (item.Template.Category.ContainsI("Staff"))
+                {
+                    source.SendOrangeBarMessage("You cannot equip a shield while having a staff equipped."); 
+                    return;   
+                }
+
+                if (item.Template.Category.ContainsI("2H"))
+                {
+                    source.SendOrangeBarMessage("You cannot equip a shield while wielding two handed."); 
+                    return;
+                }
+            }
+        }
+        
         if (template.EquipmentType is null or EquipmentType.NotEquipment)
         {
             source.SendOrangeBarMessage("You can't equip that");
