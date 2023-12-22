@@ -46,14 +46,14 @@ public class QueenOctopusRoomScript : ReactorTileScriptBase
             member =>
             {
                 if (!member.Trackers.Enums.TryGetValue(out QueenOctopusQuest stage)
-                    || ((stage != QueenOctopusQuest.Complete) && (stage != QueenOctopusQuest.Pendant3))
+                    || ((stage != QueenOctopusQuest.Complete) && (stage != QueenOctopusQuest.Queen))
                     || !member.Inventory.Contains("Red Pearl")
                     || !member.Inventory.Contains("Coral Pendant")
                     || member.Trackers.TimedEvents.HasActiveEvent("QueenOctopusCD", out _))
                 {
                     missingRequirements += member.Name + ": ";
 
-                    if ((stage != QueenOctopusQuest.Complete) && (stage != QueenOctopusQuest.Pendant3))
+                    if ((stage != QueenOctopusQuest.Complete) && (stage != QueenOctopusQuest.Queen))
                         missingRequirements += "missing quest stage, ";
 
                     if (!member.Inventory.Contains("Red Pearl"))

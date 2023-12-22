@@ -47,19 +47,26 @@ public class KarloposIslandSecretEntranceScript : ConfigurableReactorTileScriptB
             return;
         }
 
-        if ((aisling != null) && !aisling.Inventory.HasCount("red pearl", 1))
+        if (aisling != null && !aisling.Inventory.HasCount("red pearl", 1))
         {
             aisling.SendOrangeBarMessage("You are missing the Red Pearl.");
 
             return;
         }
 
-        if ((aisling != null)
-            && aisling.Trackers.Enums.TryGetValue<QueenOctopusQuest>(out var stage)
-            && (stage == QueenOctopusQuest.Pendant))
-
+        if (aisling != null
+            && !aisling.Inventory.Contains("Coral Pendant"))
+        {
             source.TraverseMap(targetMap, Destination);
-        else
-            aisling?.SendOrangeBarMessage("You see something frightening ahead, best not to disturb it.");
+            return;
+        }
+
+        if (aisling.Inventory.Contains("Coral Pendant") && aisling.Inventory.Contains("red pearl"))
+        {
+            aisling?.SendOrangeBarMessage("You peak into the familiar room and do not see Bret anymore.");
+            return;
+        }
+
+        aisling?.SendOrangeBarMessage("You see something frightening ahead, best not to disturb it.");
     }
 }

@@ -119,6 +119,7 @@ public class BeggarFoodQuestScript : DialogScriptBase
                         "That's exactly what I needed, delicious! I wonder where I'll get my next meal. Thank you kind Aisling.");
 
                     source.Trackers.Enums.Set(BeggarFoodQuestStage.Completed);
+                    source.Trackers.Flags.AddFlag(AvailableMounts.Kelberoth);
                     source.Trackers.TimedEvents.AddEvent("BeggarFood", TimeSpan.FromHours(24), true);
                 }
 
