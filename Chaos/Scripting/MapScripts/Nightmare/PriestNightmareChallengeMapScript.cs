@@ -249,10 +249,7 @@ public class PriestNightmareChallengeMapScript : MapScriptBase
                         { (BaseClass.Monk, Gender.Female), new[] { "femaleaosdicpatternwalker" } },
                         { (BaseClass.Rogue, Gender.Male), new[] { "malemarauderhide", "maraudermask" } },
                         { (BaseClass.Rogue, Gender.Female), new[] { "femalemarauderhide", "maraudermask" } },
-                        {
-                            (BaseClass.Priest, Gender.Male),
-                            new[] { "malecthonicdisciplerobes", "cthonicdisciplecaputium" }
-                        },
+                        { (BaseClass.Priest, Gender.Male), new[] { "malecthonicdisciplerobes", "cthonicdisciplecaputium" } },
                         { (BaseClass.Priest, Gender.Female), new[] { "morrigudisciplepellison", "holyhairband" } },
                         { (BaseClass.Wizard, Gender.Male), new[] { "malecthonicmagusrobes", "cthonicmaguscaputium" } },
                         { (BaseClass.Wizard, Gender.Female), new[] { "morrigumaguspellison", "magushairband" } }

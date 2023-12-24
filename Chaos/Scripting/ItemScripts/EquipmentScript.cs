@@ -69,7 +69,7 @@ public class EquipmentScript : ConfigurableItemScriptBase
             {
                 if (item.Template.Category.ContainsI("Shield"))
                 {
-                    source.SendOrangeBarMessage("You cannot equip a two hand with a shield eqiupped."); 
+                    source.SendOrangeBarMessage("You cannot equip a two handed weapon with a shield equipped."); 
                     return;   
                 }
             }
@@ -89,7 +89,7 @@ public class EquipmentScript : ConfigurableItemScriptBase
 
                 if (item.Template.Category.ContainsI("2H"))
                 {
-                    source.SendOrangeBarMessage("You cannot equip a shield while wielding two handed."); 
+                    source.SendOrangeBarMessage("You cannot equip a shield while wielding a two handed weapon."); 
                     return;
                 }
             }
