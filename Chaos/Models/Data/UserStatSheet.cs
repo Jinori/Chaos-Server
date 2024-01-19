@@ -8,6 +8,7 @@ public sealed record UserStatSheet : StatSheet
 {
     private AdvClass _advClass;
     private BaseClass _baseClass;
+
     // ReSharper disable once UnassignedField.Global
     private int _currentWeight;
     private bool _master;
@@ -78,25 +79,26 @@ public sealed record UserStatSheet : StatSheet
         set => _unspentPoints = value;
     }
 
-    public static UserStatSheet NewCharacter => new()
-    {
-        _ac = 100,
-        _maxWeight = 51,
-        _toNextLevel = 599,
-        _str = 3,
-        _int = 3,
-        _wis = 3,
-        _con = 3,
-        _dex = 3,
-        _currentHp = 49,
-        _maximumHp = 49,
-        _currentMp = 33,
-        _maximumMp = 33,
-        _level = 1,
-        _master = false,
-        _baseClass = BaseClass.Peasant,
-        _advClass = AdvClass.None
-    };
+    public static UserStatSheet NewCharacter
+        => new()
+        {
+            _ac = 100,
+            _maxWeight = 51,
+            _toNextLevel = 599,
+            _str = 3,
+            _int = 3,
+            _wis = 3,
+            _con = 3,
+            _dex = 3,
+            _currentHp = 49,
+            _maximumHp = 49,
+            _currentMp = 33,
+            _maximumMp = 33,
+            _level = 1,
+            _master = false,
+            _baseClass = BaseClass.Peasant,
+            _advClass = AdvClass.None
+        };
 
     public long AddTna(long amount)
     {

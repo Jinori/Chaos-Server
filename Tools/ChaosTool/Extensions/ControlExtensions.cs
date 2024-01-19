@@ -7,11 +7,14 @@ namespace ChaosTool.Extensions;
 
 internal static class ControlExtensions
 {
-    internal static T? FindVisualChild<T>(this DependencyObject obj) where T: DependencyObject
+    internal static T? FindVisualChild<T>(this DependencyObject parent) where T: DependencyObject
     {
-        for (var i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+        if (parent is T result)
+            return result;
+
+        for (var i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
         {
-            var child = VisualTreeHelper.GetChild(obj, i);
+            var child = VisualTreeHelper.GetChild(parent, i);
 
             if (child is T dependencyObject)
                 return dependencyObject;
@@ -26,8 +29,24 @@ internal static class ControlExtensions
         return null;
     }
 
+    internal static T? FindVisualElementAtPoint<T>(this Visual parent, Point point) where T: DependencyObject
+    {
+        var hitTestResult = VisualTreeHelper.HitTest(parent, point);
+
+        if (hitTestResult == null)
+            return null;
+
+        if (hitTestResult.VisualHit is T result)
+            return result;
+
+        return FindVisualParent<T>(hitTestResult.VisualHit) ?? FindVisualChild<T>(hitTestResult.VisualHit);
+    }
+
     internal static T? FindVisualParent<T>(this DependencyObject child) where T: DependencyObject
     {
+        if (child is T result)
+            return result;
+
         while (true)
         {
             var parentObject = VisualTreeHelper.GetParent(child);
@@ -82,21 +101,21 @@ internal static class ControlExtensions
         this DataGrid dataGrid,
         int rowIndex,
         int columnIndex,
-        bool focus = true
-    )
+        bool focus = true)
     {
         if (!dataGrid.SelectionUnit.Equals(DataGridSelectionUnit.Cell))
             throw new ArgumentException("The SelectionUnit of the DataGrid must be set to Cell.");
 
-        if ((rowIndex < 0) || (rowIndex > dataGrid.Items.Count - 1))
+        if ((rowIndex < 0) || (rowIndex > (dataGrid.Items.Count - 1)))
             throw new ArgumentException($"{rowIndex} is an invalid row index.");
 
-        if ((columnIndex < 0) || (columnIndex > dataGrid.Columns.Count - 1))
+        if ((columnIndex < 0) || (columnIndex > (dataGrid.Columns.Count - 1)))
             throw new ArgumentException($"{columnIndex} is an invalid column index.");
 
         dataGrid.SelectedCells.Clear();
 
         var item = dataGrid.Items[rowIndex]!;
+
         // ReSharper disable once UseNegatedPatternMatching
         var row = dataGrid.ItemContainerGenerator.ContainerFromIndex(rowIndex) as DataGridRow;
 

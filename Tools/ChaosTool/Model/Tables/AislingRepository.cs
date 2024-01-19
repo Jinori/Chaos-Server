@@ -18,19 +18,18 @@ public sealed class AislingRepository : RepositoryBase<AislingRepository.Aisling
 
     /// <inheritdoc />
     public AislingRepository(IEntityRepository entityRepository, IOptions<AislingStoreOptions> options)
-        : base(entityRepository, null) => Options = options.Value;
-
-    public override void Add(string path, AislingComposite obj)
-    {
-        var wrapper = new TraceWrapper<AislingComposite>(path, obj);
-        Objects.Add(wrapper);
-    }
+        : base(entityRepository, null)
+        => Options = options.Value;
 
     /// <inheritdoc />
-    /// <remarks>Must override here because AislingStoreOptions is not an IExpiringFileCacheOptions implementation</remarks>
-    protected override IEnumerable<string> GetPaths() =>
-        Directory.EnumerateDirectories(Options.Directory, "*", SearchOption.AllDirectories)
-                 .Where(src => Directory.EnumerateFiles(src).Any());
+    /// <remarks>
+    ///     Must override here because AislingStoreOptions is not an IExpiringFileCacheOptions implementation
+    /// </remarks>
+    protected override IEnumerable<string> GetPaths()
+        => Directory.EnumerateDirectories(Options.Directory, "*", SearchOption.AllDirectories)
+                    .Where(
+                        src => Directory.EnumerateFiles(src)
+                                        .Any());
 
     /// <inheritdoc />
     protected override async Task<AislingComposite?> LoadFromFileAsync(string path)
@@ -95,15 +94,15 @@ public sealed class AislingRepository : RepositoryBase<AislingRepository.Aisling
         }
     }
 
-    public override void Remove(string name)
+    public override void Remove(string originalPath)
     {
-        var wrapper = Objects.FirstOrDefault(wp => wp.Object.Aisling.Name.EqualsI(name));
+        var wrapped = Objects.FirstOrDefault(wp => wp.Path.EqualsI(originalPath));
 
-        if (wrapper is null)
+        if (wrapped is null)
             return;
 
-        Directory.Delete(wrapper.Path, true);
-        Objects.Remove(wrapper);
+        Directory.Delete(wrapped.Path, true);
+        Objects.Remove(wrapped);
     }
 
     public override async Task SaveItemAsync(TraceWrapper<AislingComposite> wrapped)

@@ -13,27 +13,31 @@ namespace Chaos.Models.Panel;
 public sealed class Spell : PanelEntityBase, IScripted<ISpellScript>
 {
     public byte CastLines { get; set; }
-    public string PanelDisplayName { get; }
+    public byte Level { get; set; }
+    public byte MaxLevel { get; set; }
     public ISpellScript Script { get; }
     public override SpellTemplate Template { get; }
+    public string PanelDisplayName => $"{Template.Name} (Lev:{Level}/{MaxLevel})";
 
     public Spell(
         SpellTemplate template,
         IScriptProvider scriptProvider,
         ICollection<string>? extraScriptKeys = null,
         ulong? uniqueId = null,
-        int? elapsedMs = null
-    )
+        int? elapsedMs = null)
         : base(template, uniqueId, elapsedMs)
     {
         Template = template;
         CastLines = template.CastLines;
+        MaxLevel = template.MaxLevel;
+
+        if (!template.LevelsUp)
+            Level = MaxLevel;
 
         if (extraScriptKeys != null)
             ScriptKeys.AddRange(extraScriptKeys);
 
         Script = scriptProvider.CreateScript<ISpellScript, Spell>(ScriptKeys, this);
-        PanelDisplayName = $"{Template.Name} (Lev:100/100)";
     }
 
     /// <inheritdoc />

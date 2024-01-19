@@ -10,16 +10,10 @@ using Chaos.Storage.Abstractions;
 
 namespace Chaos.Services.Factories;
 
-public sealed class ReactorTileFactory : IReactorTileFactory
+public sealed class ReactorTileFactory(IScriptProvider scriptProvider, ISimpleCache cache) : IReactorTileFactory
 {
-    private readonly ISimpleCache Cache;
-    private readonly IScriptProvider ScriptProvider;
-
-    public ReactorTileFactory(IScriptProvider scriptProvider, ISimpleCache cache)
-    {
-        ScriptProvider = scriptProvider;
-        Cache = cache;
-    }
+    private readonly ISimpleCache Cache = cache;
+    private readonly IScriptProvider ScriptProvider = scriptProvider;
 
     /// <inheritdoc />
     public ReactorTile Create(
@@ -28,9 +22,8 @@ public sealed class ReactorTileFactory : IReactorTileFactory
         bool shouldBlockPathfinding,
         ICollection<string> scriptKeys,
         IDictionary<string, IScriptVars> scriptVars,
-        Creature? owner = null
-    ) =>
-        new(
+        Creature? owner = null)
+        => new(
             mapInstance,
             point,
             shouldBlockPathfinding,
@@ -45,8 +38,7 @@ public sealed class ReactorTileFactory : IReactorTileFactory
         MapInstance mapInstance,
         IPoint point,
         ICollection<string>? extraScriptKeys = null,
-        Creature? owner = null
-    )
+        Creature? owner = null)
     {
         extraScriptKeys ??= Array.Empty<string>();
         var template = Cache.Get<ReactorTileTemplate>(templateKey);

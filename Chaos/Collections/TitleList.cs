@@ -1,13 +1,11 @@
-using Chaos.Common.Collections.Synchronized;
+using Chaos.Collections.Synchronized;
 using Chaos.Extensions.Common;
 
 namespace Chaos.Collections;
 
-public sealed class TitleList : SynchronizedList<string>
+public sealed class TitleList(IEnumerable<string>? items = null)
+    : SynchronizedList<string>(items?.Distinct(StringComparer.OrdinalIgnoreCase) ?? Enumerable.Empty<string>())
 {
-    public TitleList(IEnumerable<string>? items = null)
-        : base(items?.Distinct(StringComparer.OrdinalIgnoreCase) ?? Enumerable.Empty<string>()) { }
-
     /// <inheritdoc />
     public override void Add(string item)
     {

@@ -8,7 +8,9 @@ namespace Chaos.Common.Identity;
 ///     Represents a generic class for generating unique sequential numeric identifiers that persist through application
 ///     restarts.
 /// </summary>
-/// <typeparam name="T">The numeric type to generate</typeparam>
+/// <typeparam name="T">
+///     The numeric type to generate
+/// </typeparam>
 public sealed class PersistentIdGenerator<T> : IIdGenerator<T> where T: INumber<T>
 {
     private static readonly string FilePath = $"PersistentId{typeof(T).Name}.json";
@@ -16,6 +18,7 @@ public sealed class PersistentIdGenerator<T> : IIdGenerator<T> where T: INumber<
 
     /// <inheritdoc />
     public static IIdGenerator<T> Shared { get; }
+
     /// <inheritdoc />
     public T NextId => IdGenerator.NextId;
 

@@ -8,16 +8,10 @@ using Chaos.Storage.Abstractions;
 namespace Chaos.Messaging.Admin;
 
 [Command("spawnMonster", helpText: "<templateKey> <lootTableKey?null> <expAmount?0> <goldAmount?0> <aggroRange?0>")]
-public class SpawnMonsterCommand : ICommand<Aisling>
+public class SpawnMonsterCommand(IMonsterFactory monsterFactory, ISimpleCache simpleCache) : ICommand<Aisling>
 {
-    private readonly IMonsterFactory MonsterFactory;
-    private readonly ISimpleCache SimpleCache;
-
-    public SpawnMonsterCommand(IMonsterFactory monsterFactory, ISimpleCache simpleCache)
-    {
-        MonsterFactory = monsterFactory;
-        SimpleCache = simpleCache;
-    }
+    private readonly IMonsterFactory MonsterFactory = monsterFactory;
+    private readonly ISimpleCache SimpleCache = simpleCache;
 
     /// <inheritdoc />
     public ValueTask ExecuteAsync(Aisling source, ArgumentCollection args)
@@ -43,7 +37,7 @@ public class SpawnMonsterCommand : ICommand<Aisling>
         if (args.TryGetNext<int>(out var aggroRange))
             monster.AggroRange = aggroRange;
 
-        source.MapInstance.AddObject(monster, source);
+        source.MapInstance.AddEntity(monster, source);
 
         return default;
     }

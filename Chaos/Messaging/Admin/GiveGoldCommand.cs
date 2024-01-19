@@ -7,11 +7,9 @@ using Chaos.Networking.Abstractions;
 namespace Chaos.Messaging.Admin;
 
 [Command("giveGold", helpText: "<amount|targetName>")]
-public class GiveGoldCommand : ICommand<Aisling>
+public class GiveGoldCommand(IClientRegistry<IWorldClient> clientRegistry) : ICommand<Aisling>
 {
-    private readonly IClientRegistry<IWorldClient> ClientRegistry;
-
-    public GiveGoldCommand(IClientRegistry<IWorldClient> clientRegistry) => ClientRegistry = clientRegistry;
+    private readonly IClientRegistry<IWorldClient> ClientRegistry = clientRegistry;
 
     /// <inheritdoc />
     public ValueTask ExecuteAsync(Aisling source, ArgumentCollection args)
@@ -26,7 +24,8 @@ public class GiveGoldCommand : ICommand<Aisling>
 
         if (args.TryGetNext<string>(out var targetName) && args.TryGetNext(out amount))
         {
-            var target = ClientRegistry.Select(client => client.Aisling).FirstOrDefault(aisling => aisling.Name.EqualsI(targetName));
+            var target = ClientRegistry.Select(client => client.Aisling)
+                                       .FirstOrDefault(aisling => aisling.Name.EqualsI(targetName));
 
             if (target == null)
             {

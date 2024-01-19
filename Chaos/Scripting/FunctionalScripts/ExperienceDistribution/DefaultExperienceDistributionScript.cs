@@ -14,20 +14,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 
-public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistributionScript
+public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistributionScript> logger)
+    : ScriptBase, IExperienceDistributionScript
 {
-    public IExperienceFormula ExperienceFormula { get; set; }
-    public ILevelUpScript LevelUpScript { get; set; }
-    public ILogger<DefaultExperienceDistributionScript> Logger { get; set; }
+    public IExperienceFormula ExperienceFormula { get; set; } = ExperienceFormulae.Default;
+    public ILevelUpScript LevelUpScript { get; set; } = DefaultLevelUpScript.Create();
+    public ILogger<DefaultExperienceDistributionScript> Logger { get; set; } = logger;
+
     /// <inheritdoc />
     public static string Key { get; } = GetScriptKey(typeof(DefaultExperienceDistributionScript));
-
-    public DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistributionScript> logger)
-    {
-        ExperienceFormula = ExperienceFormulae.Default;
-        LevelUpScript = DefaultLevelUpScript.Create();
-        Logger = logger;
-    }
 
     /// <inheritdoc />
     public static IExperienceDistributionScript Create() => FunctionalScriptRegistry.Instance.Get<IExperienceDistributionScript>(Key);
@@ -55,7 +50,7 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
             return;
         }
 
-        if (amount + aisling.UserStatSheet.TotalExp > uint.MaxValue)
+        if ((amount + aisling.UserStatSheet.TotalExp) > uint.MaxValue)
             amount = uint.MaxValue - aisling.UserStatSheet.TotalExp;
 
         if (amount <= 0)

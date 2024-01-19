@@ -7,11 +7,8 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts;
 
-public class EquipmentScript : ConfigurableItemScriptBase
+public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
 {
-    public EquipmentScript(Item subject)
-        : base(subject) { }
-
     private void EquipStaff(Aisling source, ItemTemplate template)
     {
         if (template.EquipmentType is not null)

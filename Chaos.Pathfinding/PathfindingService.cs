@@ -18,34 +18,23 @@ public sealed class PathfindingService : IPathfindingService
     /// <summary>
     ///     Creates a new instance of <see cref="PathfindingService" />
     /// </summary>
-    /// <param name="memoryCache">A cache to store pathfinding grids in</param>
+    /// <param name="memoryCache">
+    ///     A cache to store pathfinding grids in
+    /// </param>
     public PathfindingService(IMemoryCache memoryCache)
     {
         GridDetails = new ConcurrentDictionary<string, IGridDetails>(StringComparer.OrdinalIgnoreCase);
         MemoryCache = memoryCache;
     }
 
-    /// <summary>
-    ///     Finds a path between two points
-    /// </summary>
-    /// <param name="gridKey">The key of the grid to find a path on</param>
-    /// <param name="start">The starting point</param>
-    /// <param name="end">The ending point</param>
-    /// <param name="ignoreWalls">Whether or not to ignore walls</param>
-    /// <param name="blocked">A collection of extra unwalkable points such as creatures</param>
-    /// <param name="limitRadius">
-    ///     Specify a max radius to use for path calculation, this can help with performance by limiting
-    ///     node discovery
-    /// </param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Direction Pathfind(
         string gridKey,
         IPoint start,
         IPoint end,
         bool ignoreWalls,
         IReadOnlyCollection<IPoint> blocked,
-        int? limitRadius = null
-    )
+        int? limitRadius = null)
     {
         var lookupKey = ConstructKey(gridKey);
 
@@ -59,20 +48,34 @@ public sealed class PathfindingService : IPathfindingService
             limitRadius);
     }
 
-    /// <summary>
-    ///     Registers a grid to be used for pathfinding
-    /// </summary>
-    /// <param name="key">The key used to look up the grid</param>
-    /// <param name="gridDetails">Details used to pathfind on the grid</param>
+    /// <inheritdoc />
     public void RegisterGrid(string key, IGridDetails gridDetails) => GridDetails[key] = gridDetails;
+
+    /// <inheritdoc />
+    public Direction SimpleWalk(
+        string gridKey,
+        IPoint start,
+        IPoint end,
+        bool ignoreWalls,
+        IReadOnlyCollection<IPoint> blocked)
+    {
+        var lookupKey = ConstructKey(gridKey);
+
+        var pathFinder = MemoryCache.GetOrCreate(lookupKey, CreatePathfinder);
+
+        return pathFinder!.SimpleWalk(
+            start,
+            end,
+            ignoreWalls,
+            blocked);
+    }
 
     /// <inheritdoc />
     public Direction Wander(
         string key,
         IPoint start,
         bool ignoreWalls,
-        IReadOnlyCollection<IPoint> blocked
-    )
+        IReadOnlyCollection<IPoint> blocked)
     {
         var lookupKey = ConstructKey(key);
 

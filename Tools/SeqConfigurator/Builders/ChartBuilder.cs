@@ -57,10 +57,10 @@ public sealed class ChartBuilder
         return this;
     }
 
-    public ChartBuilder WithSignalExpression(string signalId) => WithSignalExpression(
-        builder =>
-            builder.WithKind(SignalExpressionKind.Signal)
-                   .WithSignal(signalId));
+    public ChartBuilder WithSignalExpression(string signalId)
+        => WithSignalExpression(
+            builder => builder.WithKind(SignalExpressionKind.Signal)
+                              .WithSignal(signalId));
 
     public ChartBuilder WithSignalExpression(Action<SignalExpressionBuilder> builderAction)
     {

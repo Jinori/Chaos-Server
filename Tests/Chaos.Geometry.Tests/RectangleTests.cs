@@ -7,6 +7,80 @@ namespace Chaos.Geometry.Tests;
 public sealed class RectangleTests
 {
     [Fact]
+    public void Constructor_AdjustsWidthAndHeightForOddNumbers()
+    {
+        // Arrange
+        var center = new Point(5, 10);
+        const int WIDTH = 4;
+        const int HEIGHT = 6;
+
+        // Act
+        var rectangle = new Rectangle(center, WIDTH, HEIGHT);
+
+        // Assert
+        rectangle.Width
+                 .Should()
+                 .Be(4);
+
+        rectangle.Height
+                 .Should()
+                 .Be(6);
+
+        rectangle.Top
+                 .Should()
+                 .Be(8);
+
+        rectangle.Left
+                 .Should()
+                 .Be(4);
+
+        rectangle.Right
+                 .Should()
+                 .Be(7);
+
+        rectangle.Bottom
+                 .Should()
+                 .Be(13);
+    }
+
+    [Fact]
+    public void Constructor_CreatesRectangleWithCorrectCenterAndDimensions()
+    {
+        // Arrange
+        var center = new Point(5, 10);
+        const int WIDTH = 3;
+        const int HEIGHT = 5;
+
+        // Act
+        var rectangle = new Rectangle(center, WIDTH, HEIGHT);
+
+        // Assert
+        rectangle.Width
+                 .Should()
+                 .Be(WIDTH);
+
+        rectangle.Height
+                 .Should()
+                 .Be(HEIGHT);
+
+        rectangle.Top
+                 .Should()
+                 .Be(8);
+
+        rectangle.Left
+                 .Should()
+                 .Be(4);
+
+        rectangle.Right
+                 .Should()
+                 .Be(6);
+
+        rectangle.Bottom
+                 .Should()
+                 .Be(12);
+    }
+
+    [Fact]
     public void Rectangle_Constructor_CreatesRectangleWithGivenValues()
     {
         // Arrange
@@ -23,16 +97,40 @@ public sealed class RectangleTests
             HEIGHT);
 
         // Assert
-        rectangle.Left.Should().Be(LEFT);
-        rectangle.Top.Should().Be(TOP);
-        rectangle.Width.Should().Be(WIDTH);
-        rectangle.Height.Should().Be(HEIGHT);
-        rectangle.Right.Should().Be(LEFT + WIDTH - 1);
-        rectangle.Bottom.Should().Be(TOP + HEIGHT - 1);
-        rectangle.Area.Should().Be(WIDTH * HEIGHT);
-        rectangle.Vertices.Should().HaveCount(4);
+        rectangle.Left
+                 .Should()
+                 .Be(LEFT);
 
-        rectangle.Vertices.Should()
+        rectangle.Top
+                 .Should()
+                 .Be(TOP);
+
+        rectangle.Width
+                 .Should()
+                 .Be(WIDTH);
+
+        rectangle.Height
+                 .Should()
+                 .Be(HEIGHT);
+
+        rectangle.Right
+                 .Should()
+                 .Be(LEFT + WIDTH - 1);
+
+        rectangle.Bottom
+                 .Should()
+                 .Be(TOP + HEIGHT - 1);
+
+        rectangle.Area
+                 .Should()
+                 .Be(WIDTH * HEIGHT);
+
+        rectangle.Vertices
+                 .Should()
+                 .HaveCount(4);
+
+        rectangle.Vertices
+                 .Should()
                  .ContainInOrder(
                      new List<IPoint>
                      {
@@ -59,7 +157,8 @@ public sealed class RectangleTests
         var result = rectangle.Equals(otherObject);
 
         // Assert
-        result.Should().BeFalse();
+        result.Should()
+              .BeFalse();
     }
 
     [Fact]
@@ -82,7 +181,8 @@ public sealed class RectangleTests
         var result = rectangle1.Equals(rectangle2);
 
         // Assert
-        result.Should().BeFalse();
+        result.Should()
+              .BeFalse();
     }
 
     [Fact]
@@ -105,7 +205,8 @@ public sealed class RectangleTests
         var result = rectangle1.Equals(rectangle2);
 
         // Assert
-        result.Should().BeTrue();
+        result.Should()
+              .BeTrue();
     }
 
     [Fact]
@@ -130,7 +231,8 @@ public sealed class RectangleTests
         var actualVertices = rectangle.ToList();
 
         // Assert
-        actualVertices.Should().ContainInOrder(expectedVertices);
+        actualVertices.Should()
+                      .ContainInOrder(expectedVertices);
     }
 
     [Fact]
@@ -154,7 +256,10 @@ public sealed class RectangleTests
         var hashCode2 = rectangle.GetHashCode();
 
         // Assert
-        hashCode1.Should().Be(expectedHashCode);
-        hashCode2.Should().Be(expectedHashCode);
+        hashCode1.Should()
+                 .Be(expectedHashCode);
+
+        hashCode2.Should()
+                 .Be(expectedHashCode);
     }
 }

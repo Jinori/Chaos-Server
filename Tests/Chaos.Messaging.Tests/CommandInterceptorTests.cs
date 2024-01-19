@@ -32,7 +32,9 @@ public sealed class CommandInterceptorTests
     }
 
     [Fact]
-    public void ConstructsSuccessfully() => CommandInterceptor.Should().NotBeNull();
+    public void ConstructsSuccessfully()
+        => CommandInterceptor.Should()
+                             .NotBeNull();
 
     [Fact]
     public async Task HandleCommandAsync_AdminCommandWithIsAdmin_ShouldSucceed()
@@ -41,8 +43,9 @@ public sealed class CommandInterceptorTests
 
         await CommandInterceptor.HandleCommandAsync(commandSubjectMock.Object, "/adminCommand");
 
-        LoggerMock.VerifySimpleLog(LogLevel.Trace, "Successfully created command adminCommand");
-        LoggerMock.VerifySimpleLog(LogLevel.Information, "ICommandSubjectProxy Test executed /adminCommand");
+        LoggerMock.VerifyLogEvent(LogLevel.Debug, "Handling command /adminCommand");
+        LoggerMock.VerifyLogEvent(LogLevel.Trace, "Successfully created command adminCommand");
+        LoggerMock.VerifyLogEvent(LogLevel.Information, "ICommandSubjectProxy Test executed /adminCommand");
     }
 
     [Fact]
@@ -52,7 +55,8 @@ public sealed class CommandInterceptorTests
 
         await CommandInterceptor.HandleCommandAsync(commandSubjectMock.Object, "/adminCommand");
 
-        LoggerMock.VerifySimpleLog(LogLevel.Warning, "Non-Admin ICommandSubjectProxy Test tried to execute admin command /adminCommand");
+        LoggerMock.VerifyLogEvent(LogLevel.Debug, "Handling command /adminCommand");
+        LoggerMock.VerifyLogEvent(LogLevel.Warning, "Non-Admin ICommandSubjectProxy Test tried to execute admin command /adminCommand");
     }
 
     [Fact]
@@ -62,8 +66,9 @@ public sealed class CommandInterceptorTests
 
         await CommandInterceptor.HandleCommandAsync(commandSubjectMock.Object, "/exception");
 
-        LoggerMock.VerifySimpleLog(LogLevel.Trace, "Successfully created command exception");
-        LoggerMock.VerifySimpleLog(LogLevel.Error, "ICommandSubjectProxy Test failed to execute /exception", "wathapn");
+        LoggerMock.VerifyLogEvent(LogLevel.Debug, "Handling command /exception");
+        LoggerMock.VerifyLogEvent(LogLevel.Trace, "Successfully created command exception");
+        LoggerMock.VerifyLogEvent(LogLevel.Error, "ICommandSubjectProxy Test failed to execute /exception", "wathapn");
     }
 
     [Fact]
@@ -73,8 +78,9 @@ public sealed class CommandInterceptorTests
 
         await CommandInterceptor.HandleCommandAsync(commandSubjectMock.Object, "/help");
 
-        LoggerMock.VerifySimpleLog(LogLevel.Trace, "Successfully created command help");
-        LoggerMock.VerifySimpleLog(LogLevel.Information, "ICommandSubjectProxy Test executed /help");
+        LoggerMock.VerifyLogEvent(LogLevel.Debug, "Handling command /help");
+        LoggerMock.VerifyLogEvent(LogLevel.Trace, "Successfully created command help");
+        LoggerMock.VerifyLogEvent(LogLevel.Information, "ICommandSubjectProxy Test executed /help");
     }
 
     [Fact]
@@ -104,7 +110,8 @@ public sealed class CommandInterceptorTests
     {
         var result = CommandInterceptor.IsCommand(commandStr);
 
-        result.Should().Be(expectedResult);
+        result.Should()
+              .Be(expectedResult);
     }
 
     [Command("adminCommand", helpText: "Admin command")]
@@ -127,7 +134,8 @@ public sealed class CommandInterceptorTests
         /// <inheritdoc />
         public ValueTask ExecuteAsync(ICommandSubject source, ArgumentCollection args)
         {
-            args.Should().HaveCount(1);
+            args.Should()
+                .HaveCount(1);
             var helpText = args.First();
 
             helpText.Should()

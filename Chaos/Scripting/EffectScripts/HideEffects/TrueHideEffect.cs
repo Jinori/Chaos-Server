@@ -8,6 +8,7 @@ public sealed class TrueHideEffect : EffectBase
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(2);
+
     /// <inheritdoc />
     public override byte Icon => 8;
     /// <inheritdoc />

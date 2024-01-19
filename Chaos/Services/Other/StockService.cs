@@ -12,18 +12,11 @@ namespace Chaos.Services.Other;
 /// <summary>
 ///     Manages the item stock of merchants
 /// </summary>
-public sealed class StockService : BackgroundService, IStockService
+public sealed class StockService(ILogger<StockService> logger) : BackgroundService, IStockService
 {
-    private readonly DeltaTime DeltaTime;
-    private readonly ILogger<StockService> Logger;
-    private readonly ConcurrentDictionary<string, MerchantStock> Stock;
-
-    public StockService(ILogger<StockService> logger)
-    {
-        Logger = logger;
-        Stock = new ConcurrentDictionary<string, MerchantStock>(StringComparer.OrdinalIgnoreCase);
-        DeltaTime = new DeltaTime();
-    }
+    private readonly DeltaTime DeltaTime = new();
+    private readonly ILogger<StockService> Logger = logger;
+    private readonly ConcurrentDictionary<string, MerchantStock> Stock = new(StringComparer.OrdinalIgnoreCase);
 
     /// <inheritdoc />
     public int GetStock(string key, string itemTemplateKey)
@@ -48,8 +41,7 @@ public sealed class StockService : BackgroundService, IStockService
         string key,
         IEnumerable<(string ItemTemplateKey, int MaxStock)> stock,
         TimeSpan restockInterval,
-        int restockPercent
-    )
+        int restockPercent)
     {
         var merchantStock = new MerchantStock(
             key,
@@ -84,10 +76,7 @@ public sealed class StockService : BackgroundService, IStockService
 
         merchantStock.Restock(percent);
 
-        Logger.WithTopics(
-                  Topics.Entities.Merchant,
-                  Topics.Qualifiers.Forced,
-                  Topics.Actions.Update)
+        Logger.WithTopics(Topics.Entities.Merchant, Topics.Qualifiers.Forced, Topics.Actions.Update)
               .LogDebug("Manually restocked {@Key}", key);
     }
 
@@ -152,8 +141,8 @@ public sealed class StockService : BackgroundService, IStockService
             MaxStock = maxStock;
         }
 
-        internal void Restock(int percent) =>
-            InterlockedEx.SetValue(
+        internal void Restock(int percent)
+            => InterlockedEx.SetValue(
                 ref _currentStock,
                 () =>
                 {
@@ -203,8 +192,7 @@ public sealed class StockService : BackgroundService, IStockService
             IEnumerable<(string ItemTemplateKey, int MaxStock)> stock,
             TimeSpan restockInterval,
             int restockPct,
-            ILogger logger
-        )
+            ILogger logger)
         {
             Key = key;
             Logger = logger;

@@ -13,20 +13,25 @@ namespace Chaos.Models.Panel;
 /// </summary>
 public sealed class Skill : PanelEntityBase, IScripted<ISkillScript>
 {
-    public string PanelDisplayName { get; }
+    public byte Level { get; set; }
+    public byte MaxLevel { get; set; }
     public ISkillScript Script { get; }
     public override SkillTemplate Template { get; }
+    public string PanelDisplayName => $"{Template.Name} (Lev:{Level}/{MaxLevel})";
 
     public Skill(
         SkillTemplate template,
         IScriptProvider scriptProvider,
         ICollection<string>? extraScriptKeys = null,
         ulong? uniqueId = null,
-        int? elapsedMs = null
-    )
+        int? elapsedMs = null)
         : base(template, uniqueId, elapsedMs)
     {
         Template = template;
+        MaxLevel = template.MaxLevel;
+
+        if (!template.LevelsUp)
+            Level = MaxLevel;
 
         if (extraScriptKeys != null)
             ScriptKeys.AddRange(extraScriptKeys);
@@ -35,7 +40,6 @@ public sealed class Skill : PanelEntityBase, IScripted<ISkillScript>
             Cooldown = TimeSpan.Zero;
 
         Script = scriptProvider.CreateScript<ISkillScript, Skill>(ScriptKeys, this);
-        PanelDisplayName = $"{Template.Name} (Lev:100/100)";
     }
 
     /// <inheritdoc />

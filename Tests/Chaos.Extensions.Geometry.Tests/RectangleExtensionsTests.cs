@@ -1,8 +1,8 @@
+// ReSharper disable ArrangeAttributes
+
 using Chaos.Geometry;
 using FluentAssertions;
 using Xunit;
-
-// ReSharper disable ArrangeAttributes
 
 namespace Chaos.Extensions.Geometry.Tests;
 
@@ -24,8 +24,7 @@ public sealed class RectangleExtensionsTests
         int rectHeight,
         int pointX,
         int pointY,
-        bool expectedResult
-    )
+        bool expectedResult)
     {
         // Arrange
         var rect = new Rectangle(
@@ -40,7 +39,8 @@ public sealed class RectangleExtensionsTests
         var result = rect.Contains(point);
 
         // Assert
-        result.Should().Be(expectedResult);
+        result.Should()
+              .Be(expectedResult);
     }
 
     [Fact]
@@ -63,7 +63,8 @@ public sealed class RectangleExtensionsTests
         var result = rect.Contains(otherRect);
 
         // Assert
-        result.Should().BeFalse();
+        result.Should()
+              .BeFalse();
     }
 
     [Fact]
@@ -86,7 +87,8 @@ public sealed class RectangleExtensionsTests
         var result = rect.Contains(intersectingRect);
 
         // Assert
-        result.Should().BeFalse();
+        result.Should()
+              .BeFalse();
     }
 
     [Fact]
@@ -109,7 +111,8 @@ public sealed class RectangleExtensionsTests
         var result = rect.Contains(otherRect);
 
         // Assert
-        result.Should().BeTrue();
+        result.Should()
+              .BeTrue();
     }
 
     [Fact]
@@ -132,7 +135,8 @@ public sealed class RectangleExtensionsTests
         var result = rect.Contains(sameRect);
 
         // Assert
-        result.Should().BeTrue();
+        result.Should()
+              .BeTrue();
     }
 
     [Fact]
@@ -146,10 +150,12 @@ public sealed class RectangleExtensionsTests
             3);
 
         // Act
-        var outline = rect.GetOutline().ToList();
+        var outline = rect.GetOutline()
+                          .ToList();
 
         // Assert
-        outline.Should().HaveCount(12);
+        outline.Should()
+               .HaveCount(12);
 
         outline.Should()
                .BeEquivalentTo(
@@ -181,10 +187,12 @@ public sealed class RectangleExtensionsTests
             4);
 
         // Act
-        var outline = rect.GetOutline().ToList();
+        var outline = rect.GetOutline()
+                          .ToList();
 
         // Assert
-        outline.Should().HaveCount(16);
+        outline.Should()
+               .HaveCount(16);
 
         outline.Should()
                .BeEquivalentTo(
@@ -220,10 +228,12 @@ public sealed class RectangleExtensionsTests
             4);
 
         // Act
-        var outline = square.GetOutline().ToList();
+        var outline = square.GetOutline()
+                            .ToList();
 
         // Assert
-        outline.Should().HaveCount(12);
+        outline.Should()
+               .HaveCount(12);
 
         outline.Should()
                .BeEquivalentTo(
@@ -255,10 +265,12 @@ public sealed class RectangleExtensionsTests
             2);
 
         // Act
-        var points = rect.GetPoints().ToList();
+        var points = rect.GetPoints()
+                         .ToList();
 
         // Assert
-        points.Should().HaveCount(6);
+        points.Should()
+              .HaveCount(6);
 
         points.Should()
               .BeEquivalentTo(
@@ -284,10 +296,12 @@ public sealed class RectangleExtensionsTests
             2);
 
         // Act
-        var points = rect.GetPoints().ToList();
+        var points = rect.GetPoints()
+                         .ToList();
 
         // Assert
-        points.Should().HaveCount(6);
+        points.Should()
+              .HaveCount(6);
 
         points.Should()
               .BeEquivalentTo(
@@ -313,10 +327,12 @@ public sealed class RectangleExtensionsTests
             3);
 
         // Act
-        var points = square.GetPoints().ToList();
+        var points = square.GetPoints()
+                           .ToList();
 
         // Assert
-        points.Should().HaveCount(9);
+        points.Should()
+              .HaveCount(9);
 
         points.Should()
               .BeEquivalentTo(
@@ -352,13 +368,53 @@ public sealed class RectangleExtensionsTests
         // Assert
         foreach (var point in points)
         {
-            point.X.Should().BeGreaterOrEqualTo(rect.Left);
-            point.X.Should().BeLessOrEqualTo(rect.Right);
-            point.X.Should().BeLessThan(rect.Left + rect.Width);
-            point.Y.Should().BeGreaterOrEqualTo(rect.Top);
-            point.Y.Should().BeLessOrEqualTo(rect.Bottom);
-            point.Y.Should().BeLessThan(rect.Top + rect.Height);
+            point.X
+                 .Should()
+                 .BeGreaterOrEqualTo(rect.Left);
+
+            point.X
+                 .Should()
+                 .BeLessOrEqualTo(rect.Right);
+
+            point.X
+                 .Should()
+                 .BeLessThan(rect.Left + rect.Width);
+
+            point.Y
+                 .Should()
+                 .BeGreaterOrEqualTo(rect.Top);
+
+            point.Y
+                 .Should()
+                 .BeLessOrEqualTo(rect.Bottom);
+
+            point.Y
+                 .Should()
+                 .BeLessThan(rect.Top + rect.Height);
         }
+    }
+
+    [Fact]
+    public void GetRandomPoint_WithPredicate_ReturnsPointMatchingPredicate()
+    {
+        // Arrange
+        var rect = new Rectangle(
+            0,
+            0,
+            10,
+            10);
+
+        // Act
+        var point = rect.GetRandomPoint(p => p is (> 5, > 5));
+
+        // Assert
+        point.X
+             .Should()
+             .BeGreaterThan(5);
+
+        point.Y
+             .Should()
+             .BeGreaterThan(5);
     }
 
     [Fact]
@@ -381,7 +437,8 @@ public sealed class RectangleExtensionsTests
         var intersects = rect1.Intersects(rect2);
 
         // Assert
-        intersects.Should().BeFalse();
+        intersects.Should()
+                  .BeFalse();
     }
 
     [Fact]
@@ -404,7 +461,8 @@ public sealed class RectangleExtensionsTests
         var intersects = rect1.Intersects(rect2);
 
         // Assert
-        intersects.Should().BeTrue();
+        intersects.Should()
+                  .BeTrue();
     }
 
     [Fact]
@@ -427,6 +485,7 @@ public sealed class RectangleExtensionsTests
         var intersects = rect1.Intersects(rect2);
 
         // Assert
-        intersects.Should().BeTrue();
+        intersects.Should()
+                  .BeTrue();
     }
 }

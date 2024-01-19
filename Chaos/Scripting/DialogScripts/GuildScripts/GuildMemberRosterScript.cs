@@ -19,8 +19,7 @@ public class GuildMemberRosterScript : GuildScriptBase
         IClientRegistry<IWorldClient> clientRegistry,
         IStore<Guild> guildStore,
         IFactory<Guild> guildFactory,
-        ILogger<GuildMemberRosterScript> logger
-    )
+        ILogger<GuildMemberRosterScript> logger)
         : base(
             subject,
             clientRegistry,

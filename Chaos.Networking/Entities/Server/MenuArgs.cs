@@ -6,20 +6,23 @@ namespace Chaos.Networking.Entities.Server;
 /// <summary>
 ///     Represents the serialization of the <see cref="Chaos.Packets.Abstractions.Definitions.ServerOpCode.Menu" /> packet
 /// </summary>
-public sealed record MenuArgs : ISendArgs
+public sealed record MenuArgs : IPacketSerializable
 {
     /// <summary>
     ///     If this is a "WithArgs" menu type, this is the argument passed to the client with this dialog
     /// </summary>
     public string? Args { get; set; }
+
     /// <summary>
     ///     The color associated with the source of the menu. (for items and aislings)
     /// </summary>
     public required DisplayColor Color { get; set; }
+
     /// <summary>
     ///     The entity type of the source of the menu. (item, creature, aisling, etc)
     /// </summary>
     public required EntityType EntityType { get; set; }
+
     /// <summary>
     ///     If this menu type shows a shop, this is the collection of items that are available for purchase
     /// </summary>
@@ -29,6 +32,7 @@ public sealed record MenuArgs : ISendArgs
     ///     The type of menu
     /// </summary>
     public required MenuType MenuType { get; set; }
+
     /// <summary>
     ///     The name of the source entity associated with the menu
     /// </summary>
@@ -43,6 +47,11 @@ public sealed record MenuArgs : ISendArgs
     ///     If the menu is part of a pursuit chain, this is the id of that pursuit
     /// </summary>
     public ushort PursuitId { get; set; }
+
+    /// <summary>
+    ///     Whether or not the menu should show an illustration of the source entity
+    /// </summary>
+    public bool ShouldIllustrate { get; set; }
 
     /// <summary>
     ///     If this menu type shows a list of skills to learn, this is the collection of skills that are available for learning

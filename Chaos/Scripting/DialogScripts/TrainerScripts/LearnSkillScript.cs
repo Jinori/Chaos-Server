@@ -45,8 +45,7 @@ public class LearnSkillScript : DialogScriptBase
         IItemFactory itemFactory,
         ISkillFactory skillFactory,
         ISpellFactory spellFactory,
-        ILogger<LearnSkillScript> logger
-    )
+        ILogger<LearnSkillScript> logger)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -189,7 +188,9 @@ public class LearnSkillScript : DialogScriptBase
             return;
         }
 
-        var learningRequirementsStr = skill.Template.LearningRequirements?.BuildRequirementsString(ItemFactory, SkillFactory, SpellFactory)
+        var learningRequirementsStr = skill.Template
+                                           .LearningRequirements
+                                           ?.BuildRequirementsString(ItemFactory, SkillFactory, SpellFactory)
                                            .ToString();
 
         Subject.InjectTextParameters(skill.Template.Description ?? string.Empty, learningRequirementsStr ?? string.Empty);
@@ -299,11 +300,16 @@ public class LearnSkillScript : DialogScriptBase
             }
         }
 
-        foreach (var skillTemplateKey in requirements.PrerequisiteSkillTemplateKeys)
+        foreach (var requiredSkill in requirements.PrerequisiteSkills)
         {
-            var requiredSkill = SkillFactory.CreateFaux(skillTemplateKey);
+            if (!source.SkillBook.TryGetObjectByTemplateKey(requiredSkill.TemplateKey, out var existingSkill))
+            {
+                dialog.Reply(source, "Come back when you are more skillful.", "generic_learnskill_initial");
 
-            if (!source.SkillBook.Contains(requiredSkill))
+                return false;
+            }
+
+            if (existingSkill.Level < requiredSkill.Level)
             {
                 dialog.Reply(source, "Come back when you are more skillful.", "generic_learnskill_initial");
 
@@ -311,11 +317,16 @@ public class LearnSkillScript : DialogScriptBase
             }
         }
 
-        foreach (var spellTemplateKey in requirements.PrerequisiteSpellTemplateKeys)
+        foreach (var requiredSpell in requirements.PrerequisiteSpells)
         {
-            var requiredSpell = SpellFactory.CreateFaux(spellTemplateKey);
+            if (!source.SpellBook.TryGetObjectByTemplateKey(requiredSpell.TemplateKey, out var existingSpell))
+            {
+                dialog.Reply(source, "Come back when you are more knowledgeable.", "generic_learnskill_initial");
 
-            if (!source.SpellBook.Contains(requiredSpell))
+                return false;
+            }
+
+            if (existingSpell.Level < requiredSpell.Level)
             {
                 dialog.Reply(source, "Come back when you are more knowledgeable.", "generic_learnskill_initial");
 

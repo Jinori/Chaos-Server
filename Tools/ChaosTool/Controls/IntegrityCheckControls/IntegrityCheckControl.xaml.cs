@@ -1,4 +1,4 @@
-using System.Collections.Immutable;
+using System.Collections.Frozen;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -11,6 +11,7 @@ using Chaos.Schemas.Content;
 using Chaos.Schemas.Templates;
 using ChaosTool.Model;
 using ChaosTool.Model.Tables;
+using ChaosTool.ViewModel;
 
 namespace ChaosTool.Controls.IntegrityCheckControls;
 
@@ -44,7 +45,11 @@ public sealed partial class IntegrityCheckControl
     {
         await Task.Yield();
 
-        var acceptableKeys = new[] { "top", "close" };
+        var acceptableKeys = new[]
+        {
+            "top",
+            "close"
+        };
 
         foreach (var wrapper in JsonContext.DialogTemplates.Objects)
         {
@@ -54,16 +59,18 @@ public sealed partial class IntegrityCheckControl
             var handler = new RoutedEventHandler(
                 (_, _) =>
                 {
-                    var dialogEditor = MainWindow.DialogTemplateEditor;
+                    var dialogListView = MainWindow.DialogTemplateListView;
                     MainWindow.DialogsTab.IsSelected = true;
 
-                    var selected = dialogEditor.ListViewItems.FirstOrDefault(obs => obs.Object == template);
+                    var selected = dialogListView.Items
+                                                 .OfType<DialogTemplateViewModel>()
+                                                 .FirstOrDefault(obs => obs.TemplateKey.EqualsI(template.TemplateKey));
 
                     if (selected is null)
                         throw new UnreachableException("We derived the selected item from the template, so it should exist.");
 
-                    dialogEditor.TemplatesView.SelectedItem = selected;
-                    dialogEditor.TemplatesView.ScrollIntoView(selected);
+                    dialogListView.ItemsView.SelectedItem = selected;
+                    dialogListView.ItemsView.ScrollIntoView(selected);
                 });
 
             if (!template.TemplateKey.EqualsI(expectedTemplateKey))
@@ -155,16 +162,18 @@ public sealed partial class IntegrityCheckControl
             var handler = new RoutedEventHandler(
                 (_, _) =>
                 {
-                    var itemEditor = MainWindow.ItemTemplateEditor;
+                    var itemListView = MainWindow.ItemTemplateListView;
                     MainWindow.ItemsTab.IsSelected = true;
 
-                    var selected = itemEditor.ListViewItems.FirstOrDefault(obs => obs.Object == template);
+                    var selected = itemListView.Items
+                                               .OfType<ItemTemplateViewModel>()
+                                               .FirstOrDefault(obs => obs.TemplateKey.EqualsI(template.TemplateKey));
 
                     if (selected is null)
                         throw new UnreachableException("We derived the selected item from the template, so it should exist.");
 
-                    itemEditor.TemplatesView.SelectedItem = selected;
-                    itemEditor.TemplatesView.ScrollIntoView(selected);
+                    itemListView.ItemsView.SelectedItem = selected;
+                    itemListView.ItemsView.ScrollIntoView(selected);
                 });
 
             if (!template.TemplateKey.EqualsI(expectedTemplateKey))
@@ -198,16 +207,18 @@ public sealed partial class IntegrityCheckControl
             var handler = new RoutedEventHandler(
                 (_, _) =>
                 {
-                    var lootTableEditor = MainWindow.LootTableEditor;
+                    var lootTableListView = MainWindow.LootTableListView;
                     MainWindow.LootTablesTab.IsSelected = true;
 
-                    var selected = lootTableEditor.ListViewItems.FirstOrDefault(obs => obs.Object == template);
+                    var selected = lootTableListView.Items
+                                                    .OfType<LootTableViewModel>()
+                                                    .FirstOrDefault(obs => obs.Key.EqualsI(template.Key));
 
                     if (selected is null)
                         throw new UnreachableException("We derived the selected item from the template, so it should exist.");
 
-                    lootTableEditor.TemplatesView.SelectedItem = selected;
-                    lootTableEditor.TemplatesView.ScrollIntoView(selected);
+                    lootTableListView.ItemsView.SelectedItem = selected;
+                    lootTableListView.ItemsView.ScrollIntoView(selected);
                 });
 
             if (!template.Key.EqualsI(expectedKey))
@@ -231,16 +242,18 @@ public sealed partial class IntegrityCheckControl
             var handler = new RoutedEventHandler(
                 (_, _) =>
                 {
-                    var mapEditor = MainWindow.MapTemplateEditor;
+                    var mapListView = MainWindow.MapTemplateListView;
                     MainWindow.MapTemplatesTab.IsSelected = true;
 
-                    var selected = mapEditor.ListViewItems.FirstOrDefault(obs => obs.Object == template);
+                    var selected = mapListView.Items
+                                              .OfType<MapTemplateViewModel>()
+                                              .FirstOrDefault(obs => obs.TemplateKey.EqualsI(template.TemplateKey));
 
                     if (selected is null)
                         throw new UnreachableException("We derived the selected item from the template, so it should exist.");
 
-                    mapEditor.TemplatesView.SelectedItem = selected;
-                    mapEditor.TemplatesView.ScrollIntoView(selected);
+                    mapListView.ItemsView.SelectedItem = selected;
+                    mapListView.ItemsView.ScrollIntoView(selected);
                 });
 
             if (!template.TemplateKey.EqualsI(expectedTemplateKey))
@@ -263,16 +276,18 @@ public sealed partial class IntegrityCheckControl
             var handler = new RoutedEventHandler(
                 (_, _) =>
                 {
-                    var merchantEditor = MainWindow.MerchantTemplateEditor;
+                    var merchantListView = MainWindow.MerchantTemplateListView;
                     MainWindow.MerchantTemplatesTab.IsSelected = true;
 
-                    var selected = merchantEditor.ListViewItems.FirstOrDefault(obs => obs.Object == template);
+                    var selected = merchantListView.Items
+                                                   .OfType<MerchantTemplateViewModel>()
+                                                   .FirstOrDefault(obs => obs.TemplateKey.EqualsI(template.TemplateKey));
 
                     if (selected is null)
                         throw new UnreachableException("We derived the selected item from the template, so it should exist.");
 
-                    merchantEditor.TemplatesView.SelectedItem = selected;
-                    merchantEditor.TemplatesView.ScrollIntoView(selected);
+                    merchantListView.ItemsView.SelectedItem = selected;
+                    merchantListView.ItemsView.ScrollIntoView(selected);
                 });
 
             if (!template.TemplateKey.EqualsI(expectedTemplateKey))
@@ -313,16 +328,18 @@ public sealed partial class IntegrityCheckControl
             var handler = new RoutedEventHandler(
                 (_, _) =>
                 {
-                    var monsterEditor = MainWindow.MonsterTemplateEditor;
+                    var monsterListView = MainWindow.MonsterTemplateListView;
                     MainWindow.MonsterTemplatesTab.IsSelected = true;
 
-                    var selected = monsterEditor.ListViewItems.FirstOrDefault(obs => obs.Object == template);
+                    var selected = monsterListView.Items
+                                                  .OfType<MonsterTemplateViewModel>()
+                                                  .FirstOrDefault(obs => obs.TemplateKey.EqualsI(template.TemplateKey));
 
                     if (selected is null)
                         throw new UnreachableException("We derived the selected item from the template, so it should exist.");
 
-                    monsterEditor.TemplatesView.SelectedItem = selected;
-                    monsterEditor.TemplatesView.ScrollIntoView(selected);
+                    monsterListView.ItemsView.SelectedItem = selected;
+                    monsterListView.ItemsView.ScrollIntoView(selected);
                 });
 
             if (!template.TemplateKey.EqualsI(expectedTemplateKey))
@@ -354,16 +371,18 @@ public sealed partial class IntegrityCheckControl
             var handler = new RoutedEventHandler(
                 (_, _) =>
                 {
-                    var reactorTileEditor = MainWindow.ReactorTileTemplateEditor;
+                    var reactorTileListView = MainWindow.ReactorTileTemplateListView;
                     MainWindow.ReactorTileTemplatesTab.IsSelected = true;
 
-                    var selected = reactorTileEditor.ListViewItems.FirstOrDefault(obs => obs.Object == template);
+                    var selected = reactorTileListView.Items
+                                                      .OfType<ReactorTileTemplateViewModel>()
+                                                      .FirstOrDefault(obs => obs.TemplateKey.EqualsI(template.TemplateKey));
 
                     if (selected is null)
                         throw new UnreachableException("We derived the selected item from the template, so it should exist.");
 
-                    reactorTileEditor.TemplatesView.SelectedItem = selected;
-                    reactorTileEditor.TemplatesView.ScrollIntoView(selected);
+                    reactorTileListView.ItemsView.SelectedItem = selected;
+                    reactorTileListView.ItemsView.ScrollIntoView(selected);
                 });
 
             if (!template.TemplateKey.EqualsI(expectedTemplateKey))
@@ -384,16 +403,18 @@ public sealed partial class IntegrityCheckControl
             var handler = new RoutedEventHandler(
                 (_, _) =>
                 {
-                    var skillEditor = MainWindow.SkillTemplateEditor;
+                    var skillListView = MainWindow.SkillTemplateListView;
                     MainWindow.SkillsTab.IsSelected = true;
 
-                    var selected = skillEditor.ListViewItems.FirstOrDefault(obs => obs.Object == template);
+                    var selected = skillListView.Items
+                                                .OfType<SkillTemplateViewModel>()
+                                                .FirstOrDefault(obs => obs.TemplateKey.EqualsI(template.TemplateKey));
 
                     if (selected is null)
                         throw new UnreachableException("We derived the selected item from the template, so it should exist.");
 
-                    skillEditor.TemplatesView.SelectedItem = selected;
-                    skillEditor.TemplatesView.ScrollIntoView(selected);
+                    skillListView.ItemsView.SelectedItem = selected;
+                    skillListView.ItemsView.ScrollIntoView(selected);
                 });
 
             if (!template.TemplateKey.EqualsI(expectedTemplateKey))
@@ -407,15 +428,35 @@ public sealed partial class IntegrityCheckControl
                     if (!ItemTemplateIndex.ContainsKey(itemRequirement.ItemTemplateKey))
                         await AddViolationAsync($"ItemRequirement.ItemTemplateKey not found: {itemRequirement.ItemTemplateKey}", handler);
 
-            if (!learningRequirements.PrerequisiteSpellTemplateKeys.IsNullOrEmpty())
-                foreach (var prerequisiteSpellTemplateKey in learningRequirements.PrerequisiteSpellTemplateKeys)
-                    if (!SpellTemplateIndex.ContainsKey(prerequisiteSpellTemplateKey))
-                        await AddViolationAsync($"PrerequisiteSpellTemplateKey not found: {prerequisiteSpellTemplateKey}", handler);
+            if (!learningRequirements.PrerequisiteSpells.IsNullOrEmpty())
+                foreach (var prerequisiteSpell in learningRequirements.PrerequisiteSpells)
+                    if (!SpellTemplateIndex.TryGetValue(prerequisiteSpell.TemplateKey, out var spellTemplate))
+                        await AddViolationAsync($"PrerequisiteSpell not found: {prerequisiteSpell.TemplateKey}", handler);
+                    else if (prerequisiteSpell.Level.HasValue)
+                    {
+                        if (!spellTemplate.LevelsUp)
+                            await AddViolationAsync(
+                                $"Required level specified for non-leveling spell: {prerequisiteSpell.TemplateKey}",
+                                handler);
 
-            if (!learningRequirements.PrerequisiteSkillTemplateKeys.IsNullOrEmpty())
-                foreach (var prerequisiteSkillTemplateKey in learningRequirements.PrerequisiteSkillTemplateKeys)
-                    if (!SkillTemplateIndex.ContainsKey(prerequisiteSkillTemplateKey))
-                        await AddViolationAsync($"PrerequisiteSkillTemplateKey not found: {prerequisiteSkillTemplateKey}", handler);
+                        if (prerequisiteSpell.Level > spellTemplate.MaxLevel)
+                            await AddViolationAsync($"Required level > max level: {prerequisiteSpell.TemplateKey}", handler);
+                    }
+
+            if (!learningRequirements.PrerequisiteSkills.IsNullOrEmpty())
+                foreach (var prerequisiteSkill in learningRequirements.PrerequisiteSkills)
+                    if (!SkillTemplateIndex.TryGetValue(prerequisiteSkill.TemplateKey, out var skillTemplate))
+                        await AddViolationAsync($"PrerequisiteSkill not found: {prerequisiteSkill.TemplateKey}", handler);
+                    else if (prerequisiteSkill.Level.HasValue)
+                    {
+                        if (!skillTemplate.LevelsUp)
+                            await AddViolationAsync(
+                                $"Required level specified for non-leveling skill: {prerequisiteSkill.TemplateKey}",
+                                handler);
+
+                        if (prerequisiteSkill.Level > skillTemplate.MaxLevel)
+                            await AddViolationAsync($"Required level > max level: {prerequisiteSkill.TemplateKey}", handler);
+                    }
         }
     }
 
@@ -432,16 +473,18 @@ public sealed partial class IntegrityCheckControl
             var handler = new RoutedEventHandler(
                 (_, _) =>
                 {
-                    var spellEditor = MainWindow.SpellTemplateEditor;
+                    var spellListView = MainWindow.SpellTemplateListView;
                     MainWindow.SpellsTab.IsSelected = true;
 
-                    var selected = spellEditor.ListViewItems.FirstOrDefault(obs => obs.Object == template);
+                    var selected = spellListView.Items
+                                                .OfType<SpellTemplateViewModel>()
+                                                .FirstOrDefault(obs => obs.TemplateKey.EqualsI(template.TemplateKey));
 
                     if (selected is null)
                         throw new UnreachableException("We derived the selected item from the template, so it should exist.");
 
-                    spellEditor.TemplatesView.SelectedItem = selected;
-                    spellEditor.TemplatesView.ScrollIntoView(selected);
+                    spellListView.ItemsView.SelectedItem = selected;
+                    spellListView.ItemsView.ScrollIntoView(selected);
                 });
 
             if (!template.TemplateKey.EqualsI(expectedTemplateKey))
@@ -455,21 +498,21 @@ public sealed partial class IntegrityCheckControl
                     if (!ItemTemplateIndex.ContainsKey(itemRequirement.ItemTemplateKey))
                         await AddViolationAsync($"ItemRequirement.ItemTemplateKey not found: {itemRequirement.ItemTemplateKey}", handler);
 
-            if (!learningRequirements.PrerequisiteSpellTemplateKeys.IsNullOrEmpty())
-                foreach (var prerequisiteSpellTemplateKey in learningRequirements.PrerequisiteSpellTemplateKeys)
-                    if (!SpellTemplateIndex.ContainsKey(prerequisiteSpellTemplateKey))
-                        await AddViolationAsync($"PrerequisiteSpellTemplateKey not found: {prerequisiteSpellTemplateKey}", handler);
+            if (!learningRequirements.PrerequisiteSpells.IsNullOrEmpty())
+                foreach (var prerequisiteSpell in learningRequirements.PrerequisiteSpells)
+                    if (!SpellTemplateIndex.ContainsKey(prerequisiteSpell.TemplateKey))
+                        await AddViolationAsync($"PrerequisiteSpellTemplateKey not found: {prerequisiteSpell.TemplateKey}", handler);
 
-            if (!learningRequirements.PrerequisiteSkillTemplateKeys.IsNullOrEmpty())
-                foreach (var prerequisiteSkillTemplateKey in learningRequirements.PrerequisiteSkillTemplateKeys)
-                    if (!SkillTemplateIndex.ContainsKey(prerequisiteSkillTemplateKey))
-                        await AddViolationAsync($"PrerequisiteSkillTemplateKey not found: {prerequisiteSkillTemplateKey}", handler);
+            if (!learningRequirements.PrerequisiteSkills.IsNullOrEmpty())
+                foreach (var prerequisiteSkill in learningRequirements.PrerequisiteSkills)
+                    if (!SkillTemplateIndex.ContainsKey(prerequisiteSkill.TemplateKey))
+                        await AddViolationAsync($"PrerequisiteSkillTemplateKey not found: {prerequisiteSkill.TemplateKey}", handler);
         }
     }
 
     #region Utility
-    private async Task AddViolationAsync(string violation, RoutedEventHandler handler, bool insertToHead = false) =>
-        await Dispatcher.InvokeAsync(
+    private async Task AddViolationAsync(string violation, RoutedEventHandler handler, bool insertToHead = false)
+        => await Dispatcher.InvokeAsync(
             () =>
             {
                 var button = new Button
@@ -501,38 +544,45 @@ public sealed partial class IntegrityCheckControl
 
         ReBuildIndexes();
 
-        await DetectIntegrityViolationsAsync().ConfigureAwait(false);
+        await DetectIntegrityViolationsAsync()
+            .ConfigureAwait(false);
     }
 
     private void ReBuildIndexes()
     {
-        MapInstanceIndex = JsonContext.MapInstances.ToImmutableDictionary(mi => mi.Instance.InstanceId, StringComparer.OrdinalIgnoreCase);
-        MapTemplateIndex = JsonContext.MapTemplates.ToImmutableDictionary(mt => mt.TemplateKey, StringComparer.OrdinalIgnoreCase);
-        MerchantTemplateIndex = JsonContext.MerchantTemplates.ToImmutableDictionary(mt => mt.TemplateKey, StringComparer.OrdinalIgnoreCase);
-        MonsterTemplateIndex = JsonContext.MonsterTemplates.ToImmutableDictionary(mt => mt.TemplateKey, StringComparer.OrdinalIgnoreCase);
-        ItemTemplateIndex = JsonContext.ItemTemplates.ToImmutableDictionary(it => it.TemplateKey, StringComparer.OrdinalIgnoreCase);
-        SkillTemplateIndex = JsonContext.SkillTemplates.ToImmutableDictionary(st => st.TemplateKey, StringComparer.OrdinalIgnoreCase);
-        SpellTemplateIndex = JsonContext.SpellTemplates.ToImmutableDictionary(st => st.TemplateKey, StringComparer.OrdinalIgnoreCase);
-        DialogTemplateIndex = JsonContext.DialogTemplates.ToImmutableDictionary(dt => dt.TemplateKey, StringComparer.OrdinalIgnoreCase);
-        LootTableIndex = JsonContext.LootTables.ToImmutableDictionary(lt => lt.Key, StringComparer.OrdinalIgnoreCase);
+        MapInstanceIndex = JsonContext.MapInstances.ToFrozenDictionary(mi => mi.Instance.InstanceId, StringComparer.OrdinalIgnoreCase);
+        MapTemplateIndex = JsonContext.MapTemplates.ToFrozenDictionary(mt => mt.TemplateKey, StringComparer.OrdinalIgnoreCase);
+        MerchantTemplateIndex = JsonContext.MerchantTemplates.ToFrozenDictionary(mt => mt.TemplateKey, StringComparer.OrdinalIgnoreCase);
+        MonsterTemplateIndex = JsonContext.MonsterTemplates.ToFrozenDictionary(mt => mt.TemplateKey, StringComparer.OrdinalIgnoreCase);
+        ItemTemplateIndex = JsonContext.ItemTemplates.ToFrozenDictionary(it => it.TemplateKey, StringComparer.OrdinalIgnoreCase);
+        SkillTemplateIndex = JsonContext.SkillTemplates.ToFrozenDictionary(st => st.TemplateKey, StringComparer.OrdinalIgnoreCase);
+        SpellTemplateIndex = JsonContext.SpellTemplates.ToFrozenDictionary(st => st.TemplateKey, StringComparer.OrdinalIgnoreCase);
+        DialogTemplateIndex = JsonContext.DialogTemplates.ToFrozenDictionary(dt => dt.TemplateKey, StringComparer.OrdinalIgnoreCase);
+        LootTableIndex = JsonContext.LootTables.ToFrozenDictionary(lt => lt.Key, StringComparer.OrdinalIgnoreCase);
 
-        ReactorTileTemplateIndex =
-            JsonContext.ReactorTileTemplates.ToImmutableDictionary(rt => rt.TemplateKey, StringComparer.OrdinalIgnoreCase);
+        ReactorTileTemplateIndex = JsonContext.ReactorTileTemplates.ToFrozenDictionary(
+            rt => rt.TemplateKey,
+            StringComparer.OrdinalIgnoreCase);
 
-        BuyableItemsIndex = JsonContext.MerchantTemplates.SelectMany(mt => mt.ItemsForSale.Select(i => i.ItemTemplateKey))
-                                       .ToImmutableHashSet(StringComparer.OrdinalIgnoreCase);
+        BuyableItemsIndex = JsonContext.MerchantTemplates
+                                       .SelectMany(mt => mt.ItemsForSale.Select(i => i.ItemTemplateKey))
+                                       .ToFrozenSet(StringComparer.OrdinalIgnoreCase);
 
-        SellableItemsIndex = JsonContext.MerchantTemplates.SelectMany(mt => mt.ItemsToBuy)
-                                        .ToImmutableHashSet(StringComparer.OrdinalIgnoreCase);
+        SellableItemsIndex = JsonContext.MerchantTemplates
+                                        .SelectMany(mt => mt.ItemsToBuy)
+                                        .ToFrozenSet(StringComparer.OrdinalIgnoreCase);
 
-        LearnableSkillsIndex = JsonContext.MerchantTemplates.SelectMany(mt => mt.SkillsToTeach)
-                                          .ToImmutableHashSet(StringComparer.OrdinalIgnoreCase);
+        LearnableSkillsIndex = JsonContext.MerchantTemplates
+                                          .SelectMany(mt => mt.SkillsToTeach)
+                                          .ToFrozenSet(StringComparer.OrdinalIgnoreCase);
 
-        LearnableSpellsIndex = JsonContext.MerchantTemplates.SelectMany(mt => mt.SpellsToTeach)
-                                          .ToImmutableHashSet(StringComparer.OrdinalIgnoreCase);
+        LearnableSpellsIndex = JsonContext.MerchantTemplates
+                                          .SelectMany(mt => mt.SpellsToTeach)
+                                          .ToFrozenSet(StringComparer.OrdinalIgnoreCase);
 
-        InUseMapTemplateIndex = JsonContext.MapInstances.Select(mi => mi.Instance.TemplateKey)
-                                           .ToImmutableHashSet(StringComparer.OrdinalIgnoreCase);
+        InUseMapTemplateIndex = JsonContext.MapInstances
+                                           .Select(mi => mi.Instance.TemplateKey)
+                                           .ToFrozenSet(StringComparer.OrdinalIgnoreCase);
     }
     #endregion
 
@@ -579,8 +629,7 @@ public sealed partial class IntegrityCheckControl
     private async Task DetectMapInstance_ReactorViolationsAsync(
         string path,
         MapInstanceRepository.MapInstanceComposite composite,
-        List<ReactorTileSchema> reactors
-    )
+        List<ReactorTileSchema> reactors)
     {
         var handler = new RoutedEventHandler(
             (_, _) =>
@@ -628,8 +677,7 @@ public sealed partial class IntegrityCheckControl
         if (!MapTemplateIndex.ContainsKey(mapInstance.TemplateKey))
             await AddViolationAsync($"TemplateKey not found: {mapInstance.TemplateKey}", handler, true);
 
-        if (mapInstance is { MinimumLevel: not null, MaximumLevel: not null }
-            && (mapInstance.MinimumLevel > mapInstance.MaximumLevel))
+        if (mapInstance is { MinimumLevel: not null, MaximumLevel: not null } && (mapInstance.MinimumLevel > mapInstance.MaximumLevel))
             await AddViolationAsync("MinimumLevel > MaximumLevel", handler);
 
         var shardingOptions = mapInstance.ShardingOptions;
@@ -652,6 +700,7 @@ public sealed partial class IntegrityCheckControl
                 if (!MapInstanceIndex.TryGetValue(shardingOptions.ExitLocation.Map, out var mi))
                     await AddViolationAsync($"Exit location mapInstance not found: {shardingOptions.ExitLocation.Map}", handler);
                 else if (!MapTemplateIndex.TryGetValue(mi.Instance.TemplateKey, out var mt))
+
                     // ReSharper disable once RedundantJumpStatement
                     return;
                 else if (!new Rectangle(
@@ -667,8 +716,7 @@ public sealed partial class IntegrityCheckControl
     private async Task DetectMapInstance_MerchantSpawnViolationsAsync(
         string path,
         MapInstanceRepository.MapInstanceComposite composite,
-        IEnumerable<MerchantSpawnSchema> merchantSpawns
-    )
+        IEnumerable<MerchantSpawnSchema> merchantSpawns)
     {
         var handler = new RoutedEventHandler(
             (_, _) =>
@@ -709,8 +757,7 @@ public sealed partial class IntegrityCheckControl
     private async Task DetectMapInstance_MonsterSpawnViolationsAsync(
         string path,
         MapInstanceRepository.MapInstanceComposite composite,
-        IEnumerable<MonsterSpawnSchema> monsterSpawns
-    )
+        IEnumerable<MonsterSpawnSchema> monsterSpawns)
     {
         var handler = new RoutedEventHandler(
             (_, _) =>

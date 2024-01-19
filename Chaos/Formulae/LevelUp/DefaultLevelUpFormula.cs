@@ -7,15 +7,15 @@ namespace Chaos.Formulae.LevelUp;
 public class DefaultLevelUpFormula : ILevelUpFormula
 {
     /// <inheritdoc />
-    public virtual Attributes CalculateAttributesIncrease(Aisling aisling) =>
-        new()
+    public virtual Attributes CalculateAttributesIncrease(Aisling aisling)
+        => new()
         {
             //each level, add (Level * 0.3) + 10 hp
             MaximumHp = Convert.ToInt32(50),
             //each level, add (Level * 0.15) + 5 mp
             MaximumMp = Convert.ToInt32(25),
             //every 3 levels, subtract 1 ac
-            Ac = aisling.StatSheet.Level % 3 == 0 ? -1 : 0
+            Ac = (aisling.StatSheet.Level % 3) == 0 ? -1 : 0
         };
 
     /// <inheritdoc />

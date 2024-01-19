@@ -40,8 +40,7 @@ public class DefaultDamageFormula : IDamageFormula
         Creature target,
         IScript script,
         int damage,
-        Element? elementOverride = null
-    )
+        Element? elementOverride = null)
     {
         // Check if the source (attacker) has godmode enabled.
         var isGodModeEnabled = target is Aisling aisling && aisling.Trackers.Enums.TryGetValue(out GodMode godMode) && (godMode == GodMode.Yes);
@@ -141,17 +140,18 @@ public class DefaultDamageFormula : IDamageFormula
         damage += obj.Modifiers.Dmg;
     }
 
-    protected virtual int GetDefenderAc(Creature defender) => defender switch
-    {
-        Aisling aisling => Math.Clamp(
-            aisling.UserStatSheet.EffectiveAc,
-            WorldOptions.Instance.MinimumAislingAc,
-            WorldOptions.Instance.MaximumAislingAc),
-        _ => Math.Clamp(
+    protected virtual int GetDefenderAc(Creature defender)
+        => defender switch
+        {
+            Aisling aisling => Math.Clamp(
+                aisling.UserStatSheet.EffectiveAc,
+                WorldOptions.Instance.MinimumAislingAc,
+                WorldOptions.Instance.MaximumAislingAc),
+            _ => Math.Clamp(
             defender.StatSheet.EffectiveAc,
             WorldOptions.Instance.MinimumMonsterAc,
             WorldOptions.Instance.MaximumMonsterAc)
-    };
+        };
 
     protected virtual void HandleClawFist(ref int damage, IScript source, Creature attacker)
     {

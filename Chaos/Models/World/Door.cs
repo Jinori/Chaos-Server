@@ -6,22 +6,14 @@ using Chaos.Models.World.Abstractions;
 
 namespace Chaos.Models.World;
 
-public sealed class Door : VisibleEntity
+public sealed class Door(
+    bool openRight,
+    ushort sprite,
+    MapInstance mapInstance,
+    IPoint point) : VisibleEntity(sprite, mapInstance, point)
 {
-    public bool Closed { get; set; }
-    public bool OpenRight { get; }
-
-    public Door(
-        bool openRight,
-        ushort sprite,
-        MapInstance mapInstance,
-        IPoint point
-    )
-        : base(sprite, mapInstance, point)
-    {
-        Closed = true;
-        OpenRight = openRight;
-    }
+    public bool Closed { get; set; } = true;
+    public bool OpenRight { get; } = openRight;
 
     public Door(DoorTemplate doorTemplate, MapInstance mapInstance)
         : this(
@@ -30,8 +22,9 @@ public sealed class Door : VisibleEntity
             mapInstance,
             doorTemplate.Point) { }
 
-    public IEnumerable<Door> GetCluster() => MapInstance.GetEntitiesWithinRange<Door>(this)
-                                                        .FloodFill(this);
+    public IEnumerable<Door> GetCluster()
+        => MapInstance.GetEntitiesWithinRange<Door>(this)
+                      .FloodFill(this);
 
     public override void HideFrom(Aisling aisling) { }
 
@@ -40,7 +33,8 @@ public sealed class Door : VisibleEntity
         if (!ShouldRegisterClick(source.Id))
             return;
 
-        var doorCluster = GetCluster().ToList();
+        var doorCluster = GetCluster()
+            .ToList();
 
         foreach (var door in doorCluster)
         {
@@ -52,8 +46,11 @@ public sealed class Door : VisibleEntity
             aisling.Client.SendDoors(doorCluster);
     }
 
-    public override bool ShouldRegisterClick(uint fromId) =>
-        !LastClicked.Any() || (DateTime.UtcNow.Subtract(LastClicked.Values.Max()).TotalMilliseconds > 1500);
+    public override bool ShouldRegisterClick(uint fromId)
+        => !LastClicked.Any()
+           || (DateTime.UtcNow.Subtract(LastClicked.Values.Max())
+                       .TotalMilliseconds
+               > 1500);
 
     public override void ShowTo(Aisling aisling) => aisling.Client.SendDoors(GetCluster());
 }

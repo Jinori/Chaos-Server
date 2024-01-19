@@ -20,12 +20,14 @@ public sealed record BulletinBoardTemplateSchema
     public ICollection<string> ScriptKeys { get; set; } = Array.Empty<string>();
 
     /// <summary>
-    ///     A collection of key-value pairs of key-value pairs<br />Each script that has variables needs a scriptName-Value
-    ///     pair, and the value of
-    ///     that entry is a dictionary of propertyName-Value pairs
+    ///     A collection of key-value pairs of key-value pairs
+    ///     <br />
+    ///     Each script that has variables needs a scriptName-Value pair, and the value of that entry is a dictionary of
+    ///     propertyName-Value pairs
     /// </summary>
-    public IDictionary<string, DynamicVars> ScriptVars { get; set; } =
-        new Dictionary<string, DynamicVars>(StringComparer.OrdinalIgnoreCase);
+    public IDictionary<string, DynamicVars> ScriptVars { get; set; }
+        = new Dictionary<string, DynamicVars>(StringComparer.OrdinalIgnoreCase);
+
     /// <summary>
     ///     A unique id specific to this template. This must match the file name
     /// </summary>

@@ -5,11 +5,9 @@ using Chaos.TypeMapper.Abstractions;
 
 namespace Chaos.Services.MapperProfiles;
 
-public class EffectMapperProfile : IMapperProfile<IEffect, EffectSchema>
+public class EffectMapperProfile(IEffectFactory effectFactory) : IMapperProfile<IEffect, EffectSchema>
 {
-    private readonly IEffectFactory EffectFactory;
-
-    public EffectMapperProfile(IEffectFactory effectFactory) => EffectFactory = effectFactory;
+    private readonly IEffectFactory EffectFactory = effectFactory;
 
     /// <inheritdoc />
     public IEffect Map(EffectSchema obj)
@@ -21,9 +19,10 @@ public class EffectMapperProfile : IMapperProfile<IEffect, EffectSchema>
     }
 
     /// <inheritdoc />
-    public EffectSchema Map(IEffect obj) => new()
-    {
-        EffectKey = EffectBase.GetEffectKey(obj.GetType()),
-        RemainingSecs = Convert.ToInt32(Math.Ceiling(obj.Remaining.TotalSeconds))
-    };
+    public EffectSchema Map(IEffect obj)
+        => new()
+        {
+            EffectKey = EffectBase.GetEffectKey(obj.GetType()),
+            RemainingSecs = Convert.ToInt32(Math.Ceiling(obj.Remaining.TotalSeconds))
+        };
 }

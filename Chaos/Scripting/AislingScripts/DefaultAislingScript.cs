@@ -406,7 +406,11 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         if (SleepAnimationTimer.IntervalElapsed)
         {
             var lastManualAction = Subject.Trackers.LastManualAction;
-            var isAfk = !lastManualAction.HasValue || (DateTime.UtcNow.Subtract(lastManualAction.Value).TotalMinutes > 5);
+
+            var isAfk = !lastManualAction.HasValue
+                        || (DateTime.UtcNow.Subtract(lastManualAction.Value)
+                                    .TotalMinutes
+                            > 5);
 
             if (isAfk)
             {

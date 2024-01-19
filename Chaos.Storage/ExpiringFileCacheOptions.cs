@@ -8,12 +8,19 @@ public class ExpiringFileCacheOptions : IExpiringFileCacheOptions
 {
     /// <inheritdoc />
     public string Directory { get; set; } = null!;
+
     /// <inheritdoc />
-    public int ExpirationMins { get; init; }
+    public int? ExpirationMins { get; set; }
+
+    /// <inheritdoc />
+    public bool Expires { get; set; }
+
     /// <inheritdoc />
     public string? FilePattern { get; init; }
+
     /// <inheritdoc />
     public bool Recursive { get; init; }
+
     /// <inheritdoc />
     public SearchType SearchType { get; init; }
 

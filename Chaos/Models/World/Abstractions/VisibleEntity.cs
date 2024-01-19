@@ -8,18 +8,11 @@ namespace Chaos.Models.World.Abstractions;
 /// <summary>
 ///     Represents an object that is visible.
 /// </summary>
-public abstract class VisibleEntity : InteractableEntity
+public abstract class VisibleEntity(ushort sprite, MapInstance mapInstance, IPoint point) : InteractableEntity(mapInstance, point)
 {
-    protected ConcurrentDictionary<uint, DateTime> LastClicked { get; init; }
-    public ushort Sprite { get; set; }
+    protected ConcurrentDictionary<uint, DateTime> LastClicked { get; init; } = new();
+    public ushort Sprite { get; set; } = sprite;
     public VisibilityType Visibility { get; set; }
-
-    protected VisibleEntity(ushort sprite, MapInstance mapInstance, IPoint point)
-        : base(mapInstance, point)
-    {
-        Sprite = sprite;
-        LastClicked = new ConcurrentDictionary<uint, DateTime>();
-    }
 
     public void Display()
     {
@@ -34,7 +27,7 @@ public abstract class VisibleEntity : InteractableEntity
                 HideFrom(aisling);
     }
 
-    public virtual void HideFrom(Aisling aisling) => aisling.Client.SendRemoveObject(Id);
+    public virtual void HideFrom(Aisling aisling) => aisling.Client.SendRemoveEntity(Id);
 
     public virtual void SetVisibility(VisibilityType newVisibilityType)
     {
@@ -48,8 +41,11 @@ public abstract class VisibleEntity : InteractableEntity
         }
     }
 
-    public virtual bool ShouldRegisterClick(uint fromId) =>
-        !LastClicked.TryGetValue(fromId, out var lastClick) || (DateTime.UtcNow.Subtract(lastClick).TotalMilliseconds > 500);
+    public virtual bool ShouldRegisterClick(uint fromId)
+        => !LastClicked.TryGetValue(fromId, out var lastClick)
+           || (DateTime.UtcNow.Subtract(lastClick)
+                       .TotalMilliseconds
+               > 500);
 
     public virtual void ShowTo(Aisling aisling) => aisling.Client.SendVisibleEntities(this);
 

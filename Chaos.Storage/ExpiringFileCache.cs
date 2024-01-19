@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Concurrent;
-using Chaos.Common.Collections.Synchronized;
 using Chaos.Common.Synchronization;
 using Chaos.Extensions.Common;
 using Chaos.NLog.Logging.Definitions;
@@ -15,18 +14,24 @@ namespace Chaos.Storage;
 
 /// <summary>
 ///     An <see cref="Chaos.Storage.Abstractions.ISimpleCache{TResult}" /> that loads data from a file and caches it. The
-///     data has a
-///     configurable expiration.
+///     data has a configurable expiration.
 /// </summary>
-/// <typeparam name="T">The type of object stored in the cache</typeparam>
-/// <typeparam name="TSchema">The type of object the files is initially deserialized into</typeparam>
-/// <typeparam name="TOptions"></typeparam>
-public class ExpiringFileCache<T, TSchema, TOptions> : ISimpleCache<T> where TSchema: class where TOptions: class, IExpiringFileCacheOptions
+/// <typeparam name="T">
+///     The type of object stored in the cache
+/// </typeparam>
+/// <typeparam name="TSchema">
+///     The type of object the files is initially deserialized into
+/// </typeparam>
+/// <typeparam name="TOptions">
+/// </typeparam>
+public class ExpiringFileCache<T, TSchema, TOptions> : ISimpleCache<T> where TSchema: class
+                                                                       where TOptions: class, IExpiringFileCacheOptions
 {
     /// <summary>
     ///     The set of paths that are used for loading data.
     /// </summary>
-    protected SynchronizedHashSet<string> Paths { get; set; }
+    protected List<string> Paths { get; set; }
+
     /// <summary>
     ///     The memory cache used to store the data.
     /// </summary>
@@ -36,15 +41,18 @@ public class ExpiringFileCache<T, TSchema, TOptions> : ISimpleCache<T> where TSc
     ///     The store used to load and save objects that map to a different type when serialized
     /// </summary>
     protected IEntityRepository EntityRepository { get; }
+
     /// <summary>
     ///     The prefix used for cache keys.
     /// </summary>
     protected string KeyPrefix { get; }
+
     /// <summary>
     ///     Many different types of objects are stored in the memory cache, this lookup is used to store the data for this
     ///     specific type
     /// </summary>
     protected ConcurrentDictionary<string, T> LocalLookup { get; }
+
     /// <summary>
     ///     The logger instance for logging events in this cache.
     /// </summary>
@@ -67,8 +75,7 @@ public class ExpiringFileCache<T, TSchema, TOptions> : ISimpleCache<T> where TSc
         IMemoryCache cache,
         IEntityRepository entityRepository,
         IOptions<TOptions> options,
-        ILogger<ExpiringFileCache<T, TSchema, TOptions>> logger
-    )
+        ILogger<ExpiringFileCache<T, TSchema, TOptions>> logger)
     {
         Options = options.Value;
         Cache = cache;
@@ -95,6 +102,7 @@ public class ExpiringFileCache<T, TSchema, TOptions> : ISimpleCache<T> where TSc
         var pathEndings = Paths.Select(Path.GetFileNameWithoutExtension);
 
         foreach (var pathEnding in pathEndings)
+        {
             try
             {
                 Get(pathEnding!);
@@ -102,6 +110,7 @@ public class ExpiringFileCache<T, TSchema, TOptions> : ISimpleCache<T> where TSc
             {
                 //ignored
             }
+        }
     }
 
     /// <inheritdoc />
@@ -151,6 +160,7 @@ public class ExpiringFileCache<T, TSchema, TOptions> : ISimpleCache<T> where TSc
                           "Failed to reload {@TypeName} with key {@Key}",
                           typeof(T).Name,
                           key);
+
                 //otherwise ignored
             }
 
@@ -160,19 +170,29 @@ public class ExpiringFileCache<T, TSchema, TOptions> : ISimpleCache<T> where TSc
     /// <summary>
     ///     Constructs a cache key for the specified object type.
     /// </summary>
-    /// <param name="key">The key to be used for the cache entry.</param>
-    /// <returns>A constructed cache key.</returns>
+    /// <param name="key">
+    ///     The key to be used for the cache entry.
+    /// </param>
+    /// <returns>
+    ///     A constructed cache key.
+    /// </returns>
     protected virtual string ConstructKeyForType(string key) => KeyPrefix + key.ToLowerInvariant();
 
     /// <summary>
     ///     Searches the configured directory for an object matching the configured parameters that correlates to the provided
     ///     key
     /// </summary>
-    /// <param name="entry">The cache entry object</param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
-    /// <exception cref="FileNotFoundException"></exception>
-    /// <exception cref="DirectoryNotFoundException"></exception>
+    /// <param name="entry">
+    ///     The cache entry object
+    /// </param>
+    /// <returns>
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// </exception>
+    /// <exception cref="FileNotFoundException">
+    /// </exception>
+    /// <exception cref="DirectoryNotFoundException">
+    /// </exception>
     protected virtual T CreateFromEntry(ICacheEntry entry)
     {
         var key = entry.Key.ToString();
@@ -184,7 +204,9 @@ public class ExpiringFileCache<T, TSchema, TOptions> : ISimpleCache<T> where TSc
         var metricsLogger = Logger.WithTopics(Topics.Actions.Load)
                                   .WithMetrics();
 
-        entry.SetSlidingExpiration(TimeSpan.FromMinutes(Options.ExpirationMins));
+        if (Options.Expires)
+            entry.SetSlidingExpiration(TimeSpan.FromMinutes(Options.ExpirationMins!.Value));
+
         entry.RegisterPostEvictionCallback(RemoveValueCallback);
 
         var path = GetPathForKey(keyActual);
@@ -193,10 +215,7 @@ public class ExpiringFileCache<T, TSchema, TOptions> : ISimpleCache<T> where TSc
 
         LocalLookup[key!] = entity;
 
-        metricsLogger.LogDebug(
-            "Created new {@TypeName} entry with key {@Key}",
-            typeof(T).Name,
-            key);
+        metricsLogger.LogDebug("Created new {@TypeName} entry with key {@Key}", typeof(T).Name, key);
 
         return entity;
     }
@@ -204,18 +223,25 @@ public class ExpiringFileCache<T, TSchema, TOptions> : ISimpleCache<T> where TSc
     /// <summary>
     ///     Deconstructs a cache key for the specified object type.
     /// </summary>
-    /// <param name="key">The key to deconstruct</param>
+    /// <param name="key">
+    ///     The key to deconstruct
+    /// </param>
     protected virtual string DeconstructKeyForType(string key) => key.Replace(KeyPrefix, string.Empty, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     ///     Loads the paths for the configured directory and returns it
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
+    /// <param name="key">
+    /// </param>
+    /// <returns>
+    /// </returns>
+    /// <exception cref="Exception">
+    /// </exception>
     protected virtual string GetPathForKey(string key)
     {
-        var loadPath = Paths.FirstOrDefault(path => Path.GetFileNameWithoutExtension(path).EqualsI(key));
+        var loadPath = Paths.FirstOrDefault(
+            path => Path.GetFileNameWithoutExtension(path)
+                        .EqualsI(key));
 
         if (string.IsNullOrEmpty(loadPath))
             throw Options.SearchType switch
@@ -231,9 +257,11 @@ public class ExpiringFileCache<T, TSchema, TOptions> : ISimpleCache<T> where TSc
     /// <summary>
     ///     Loads all potential paths from the configured directory
     /// </summary>
-    /// <returns></returns>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
-    protected SynchronizedHashSet<string> LoadPaths()
+    /// <returns>
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// </exception>
+    protected List<string> LoadPaths()
     {
         var searchPattern = Options.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
@@ -241,26 +269,32 @@ public class ExpiringFileCache<T, TSchema, TOptions> : ISimpleCache<T> where TSc
         {
             SearchType.Files => Directory.EnumerateFiles(Options.Directory, Options.FilePattern ?? string.Empty, searchPattern),
             SearchType.Directories => Directory.EnumerateDirectories(Options.Directory, Options.FilePattern ?? string.Empty, searchPattern)
-                                               .Where(src => Directory.EnumerateFiles(src).Any()),
+                                               .Where(
+                                                   src => Directory.EnumerateFiles(src)
+                                                                   .Any()),
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        return new SynchronizedHashSet<string>(paths, StringComparer.OrdinalIgnoreCase);
+        return paths.Distinct(StringComparer.OrdinalIgnoreCase)
+                    .ToList();
     }
 
     /// <summary>
     ///     Callback for when an entry is removed from the cache
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <param name="reason"></param>
-    /// <param name="state"></param>
+    /// <param name="key">
+    /// </param>
+    /// <param name="value">
+    /// </param>
+    /// <param name="reason">
+    /// </param>
+    /// <param name="state">
+    /// </param>
     protected virtual void RemoveValueCallback(
         object key,
         object? value,
         EvictionReason reason,
-        object? state
-    )
+        object? state)
     {
         //if we reload the cache, the localLookup values will automatically be replaced
         //but we dont want them to be remove by this callback

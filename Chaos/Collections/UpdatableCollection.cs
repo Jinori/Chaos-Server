@@ -6,20 +6,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Chaos.Collections;
 
-public sealed class UpdatableCollection : IDeltaUpdatable
+public sealed class UpdatableCollection(ILogger logger) : IDeltaUpdatable
 {
-    private readonly ILogger Logger;
+    private readonly ILogger Logger = logger;
 
-    private readonly List<IDeltaUpdatable> Objs;
-    private readonly ConcurrentQueue<PendingAction> PendingActions;
+    private readonly List<IDeltaUpdatable> Objs = new();
+    private readonly ConcurrentQueue<PendingAction> PendingActions = new();
     private bool IsUpdating;
-
-    public UpdatableCollection(ILogger logger)
-    {
-        Logger = logger;
-        Objs = new List<IDeltaUpdatable>();
-        PendingActions = new ConcurrentQueue<PendingAction>();
-    }
 
     /// <inheritdoc />
     public void Update(TimeSpan delta)
@@ -94,10 +87,25 @@ public sealed class UpdatableCollection : IDeltaUpdatable
         internal IDeltaUpdatable? Obj { get; init; }
         internal required ActionType Type { get; init; }
 
-        internal static PendingAction Add(IDeltaUpdatable obj) => new() { Obj = obj, Type = ActionType.Add };
+        internal static PendingAction Add(IDeltaUpdatable obj)
+            => new()
+            {
+                Obj = obj,
+                Type = ActionType.Add
+            };
 
-        internal static PendingAction Clear() => new() { Type = ActionType.Clear };
-        internal static PendingAction Remove(IDeltaUpdatable obj) => new() { Obj = obj, Type = ActionType.Remove };
+        internal static PendingAction Clear()
+            => new()
+            {
+                Type = ActionType.Clear
+            };
+
+        internal static PendingAction Remove(IDeltaUpdatable obj)
+            => new()
+            {
+                Obj = obj,
+                Type = ActionType.Remove
+            };
 
         internal enum ActionType
         {

@@ -26,8 +26,7 @@ public class BuyShopScript : DialogScriptBase
         Dialog subject,
         IItemFactory itemFactory,
         ICloningService<Item> itemCloner,
-        ILogger<BuyShopScript> logger
-    )
+        ILogger<BuyShopScript> logger)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -122,10 +121,7 @@ public class BuyShopScript : DialogScriptBase
             case ComplexActionHelper.BuyItemResult.NotEnoughStock:
                 var availableStock = BuyShopSource.GetStock(item.Template.TemplateKey);
 
-                Subject.Reply(
-                    source,
-                    $"Sorry, we only have {availableStock} {item.DisplayName}s in stock",
-                    "generic_buyshop_initial");
+                Subject.Reply(source, $"Sorry, we only have {availableStock} {item.DisplayName}s in stock", "generic_buyshop_initial");
 
                 break;
             case ComplexActionHelper.BuyItemResult.BadInput:
@@ -180,10 +176,7 @@ public class BuyShopScript : DialogScriptBase
 
         if (availableStock < amount)
         {
-            Subject.Reply(
-                source,
-                $"Sorry, we only have {availableStock} {stockDisplay} in stock",
-                "generic_buyshop_initial");
+            Subject.Reply(source, $"Sorry, we only have {availableStock} {stockDisplay} in stock", "generic_buyshop_initial");
 
             return;
         }

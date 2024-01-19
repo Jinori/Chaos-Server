@@ -16,8 +16,8 @@ public class ShowWorldMapScript : ConfigurableReactorTileScriptBase
 
     /// <inheritdoc />
     public ShowWorldMapScript(ReactorTile subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
@@ -31,7 +31,7 @@ public class ShowWorldMapScript : ConfigurableReactorTileScriptBase
         if (!aisling.ActiveObject.SetIfNull(worldMap))
             return;
 
-        aisling.MapInstance.RemoveObject(source);
+        aisling.MapInstance.RemoveEntity(source);
         aisling.Client.SendWorldMap(worldMap);
     }
 }

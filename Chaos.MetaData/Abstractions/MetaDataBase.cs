@@ -9,13 +9,17 @@ namespace Chaos.MetaData.Abstractions;
 /// <summary>
 ///     Represents a compressible collection of nodes
 /// </summary>
-/// <typeparam name="TNode">The type of node stored in the collection</typeparam>
+/// <typeparam name="TNode">
+///     The type of node stored in the collection
+/// </typeparam>
 public abstract class MetaDataBase<TNode> : MetaNodeCollection<TNode>, IMetaDataDescriptor where TNode: IMetaNode
 {
     /// <inheritdoc />
     public uint CheckSum { get; set; }
+
     /// <inheritdoc />
     public byte[] Data { get; set; }
+
     /// <inheritdoc />
     public string Name { get; set; }
 
@@ -41,7 +45,7 @@ public abstract class MetaDataBase<TNode> : MetaNodeCollection<TNode>, IMetaData
         var buffer = writer.ToSpan();
 
         CheckSum = Crc.Generate32(buffer);
-        ZLIB.Compress(ref buffer);
+        Zlib.Compress(ref buffer);
         Data = buffer.ToArray();
     }
 }

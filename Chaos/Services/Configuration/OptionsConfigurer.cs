@@ -14,22 +14,22 @@ using Microsoft.Extensions.Options;
 
 namespace Chaos.Services.Configuration;
 
-public sealed class OptionsConfigurer : IPostConfigureOptions<IConnectionInfo>,
-                                        IPostConfigureOptions<LobbyOptions>,
-                                        IPostConfigureOptions<LoginOptions>,
-                                        IPostConfigureOptions<WorldOptions>,
-                                        IPostConfigureOptions<MetaDataStoreOptions>,
+public sealed class OptionsConfigurer(IStagingDirectory stagingDirectory) : IPostConfigureOptions<IConnectionInfo>,
+                                                                            IPostConfigureOptions<LobbyOptions>,
+                                                                            IPostConfigureOptions<LoginOptions>,
+                                                                            IPostConfigureOptions<WorldOptions>,
+                                                                            IPostConfigureOptions<MetaDataStoreOptions>,
                                         IPostConfigureOptions<ItemTemplate>
 
 {
-    private readonly IStagingDirectory StagingDirectory;
-    public OptionsConfigurer(IStagingDirectory stagingDirectory) => StagingDirectory = stagingDirectory;
+    private readonly IStagingDirectory StagingDirectory = stagingDirectory;
 
     /// <inheritdoc />
     public void PostConfigure(string? name, IConnectionInfo options)
     {
         if (!string.IsNullOrEmpty(options.HostName))
-            options.Address = Dns.GetHostAddresses(options.HostName).FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)!;
+            options.Address = Dns.GetHostAddresses(options.HostName)
+                                 .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)!;
     }
 
     /// <inheritdoc />
@@ -57,6 +57,7 @@ public sealed class OptionsConfigurer : IPostConfigureOptions<IConnectionInfo>,
     public void PostConfigure(string? name, MetaDataStoreOptions options)
     {
         options.UseBaseDirectory(StagingDirectory.StagingDirectory);
+
         // ReSharper disable once ArrangeMethodOrOperatorBody
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(MagicPrefixScript.Mutate));
 
@@ -68,8 +69,14 @@ public sealed class OptionsConfigurer : IPostConfigureOptions<IConnectionInfo>,
                     if (!template.IsDyeable)
                         return Enumerable.Empty<ItemMetaNode>();
 
-                    return Enum.GetNames<DisplayColor>().Select(colorName => node with { Name = $"{colorName} {node.Name}" });
+                    return Enum.GetNames<DisplayColor>()
+                               .Select(
+                                   colorName => node with
+                                   {
+                                       Name = $"{colorName} {node.Name}"
+                                   });
                 }));
+
         //add more mutators here
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(SwiftPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(AiryPrefixScript.Mutate));

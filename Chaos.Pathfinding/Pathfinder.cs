@@ -24,14 +24,19 @@ public sealed class Pathfinder : IPathfinder
     /// <summary>
     ///     Creates a new instance of <see cref="Pathfinder" />
     /// </summary>
-    /// <param name="gridDetails">Details of a pathfinding grid</param>
+    /// <param name="gridDetails">
+    ///     Details of a pathfinding grid
+    /// </param>
     public Pathfinder(IGridDetails gridDetails)
     {
         Width = gridDetails.Width;
         Height = gridDetails.Height;
         PathNodes = new PathNode[Width, Height];
         PriortyQueue = new PriorityQueue<PathNode, int>(byte.MaxValue);
-        NeighborIndexes = Enumerable.Range(0, 4).Shuffle().ToArray();
+
+        NeighborIndexes = Enumerable.Range(0, 4)
+                                    .Shuffle()
+                                    .ToArray();
         Sync = new AutoReleasingMonitor();
 
         //create nodes, assign walls
@@ -58,21 +63,27 @@ public sealed class Pathfinder : IPathfinder
     /// <summary>
     ///     Finds a path from start to end, returning the next direction to walk to get there
     /// </summary>
-    /// <param name="start">The starting point</param>
-    /// <param name="end">Where to find a path to</param>
-    /// <param name="ignoreWalls">Whether or not to ignore walls</param>
-    /// <param name="blocked">A collection of extra unwalkable points such as creatures</param>
+    /// <param name="start">
+    ///     The starting point
+    /// </param>
+    /// <param name="end">
+    ///     Where to find a path to
+    /// </param>
+    /// <param name="ignoreWalls">
+    ///     Whether or not to ignore walls
+    /// </param>
+    /// <param name="blocked">
+    ///     A collection of extra unwalkable points such as creatures
+    /// </param>
     /// <param name="limitRadius">
-    ///     Specify a max radius to use for path calculation, this can help with performance by limiting
-    ///     node discovery
+    ///     Specify a max radius to use for path calculation, this can help with performance by limiting node discovery
     /// </param>
     public Direction Pathfind(
         IPoint start,
         IPoint end,
         bool ignoreWalls,
         IReadOnlyCollection<IPoint> blocked,
-        int? limitRadius = null
-    )
+        int? limitRadius = null)
     {
         //if we're standing on the end already
         //try to walk out from under it
@@ -92,7 +103,7 @@ public sealed class Pathfinder : IPathfinder
         //failed to find path
         //find a direction to walk(if any) via simple logic
         if (nextPoint == null)
-            return FindSimpleDirectionOrInvalid(
+            return SimpleWalk(
                 start,
                 end,
                 ignoreWalls,
@@ -102,9 +113,34 @@ public sealed class Pathfinder : IPathfinder
     }
 
     /// <inheritdoc />
+    public Direction SimpleWalk(
+        IPoint start,
+        IPoint end,
+        bool ignoreWalls,
+        IReadOnlyCollection<IPoint> blocked)
+    {
+        var directionBias = end.DirectionalRelationTo(start);
+
+        var points = start.GenerateCardinalPoints()
+                          .Shuffle()
+                          .WithConsistentDirectionBias(directionBias);
+
+        var optimalPoint = GetFirstWalkablePoint(points, ignoreWalls, blocked);
+
+        if (!optimalPoint.HasValue)
+            return Direction.Invalid;
+
+        return optimalPoint.Value.DirectionalRelationTo(start);
+    }
+
+    /// <inheritdoc />
     public Direction Wander(IPoint start, bool ignoreWalls, IReadOnlyCollection<IPoint> blocked)
     {
-        var optimalPoint = GetFirstWalkablePoint(start.GenerateCardinalPoints().Shuffle(), ignoreWalls, blocked);
+        var optimalPoint = GetFirstWalkablePoint(
+            start.GenerateCardinalPoints()
+                 .Shuffle(),
+            ignoreWalls,
+            blocked);
 
         if (!optimalPoint.HasValue)
             return Direction.Invalid;
@@ -117,8 +153,7 @@ public sealed class Pathfinder : IPathfinder
         IPoint end,
         bool ignoreWalls,
         IEnumerable<IPoint> blocked,
-        int? limitRadius = null
-    )
+        int? limitRadius = null)
     {
         using var @lock = Sync.Enter();
 
@@ -192,31 +227,11 @@ public sealed class Pathfinder : IPathfinder
         return TracePath(endNode);
     }
 
-    private Direction FindSimpleDirectionOrInvalid(
-        IPoint start,
-        IPoint end,
-        bool ignoreWalls,
-        IReadOnlyCollection<IPoint> blocked
-    )
-    {
-        var directionBias = end.DirectionalRelationTo(start);
-
-        var points = start.GenerateCardinalPoints()
-                          .Shuffle()
-                          .WithDirectionBias(directionBias);
-
-        var optimalPoint = GetFirstWalkablePoint(points, ignoreWalls, blocked);
-
-        if (!optimalPoint.HasValue)
-            return Direction.Invalid;
-
-        return optimalPoint.Value.DirectionalRelationTo(start);
-    }
-
-    private Point? GetFirstWalkablePoint(IEnumerable<Point> points, bool ignoreWalls, IReadOnlyCollection<IPoint> blocked) =>
-        points.FirstOrDefault(
+    private Point? GetFirstWalkablePoint(IEnumerable<Point> points, bool ignoreWalls, IReadOnlyCollection<IPoint> blocked)
+        => points.FirstOrDefault(
             point => WithinGrid(point)
-                     && PathNodes[point.X, point.Y].IsWalkable(ignoreWalls)
+                     && PathNodes[point.X, point.Y]
+                         .IsWalkable(ignoreWalls)
                      && !blocked.Contains(point, PointEqualityComparer.Instance));
 
     private IEnumerable<IPoint> GetParentChain(PathNode pathNode)
@@ -266,11 +281,13 @@ public sealed class Pathfinder : IPathfinder
         {
             foreach (var point in subGrid)
                 if (WithinGrid(point))
-                    PathNodes[point.X, point.Y].Reset();
+                    PathNodes[point.X, point.Y]
+                        .Reset();
         } else
             foreach (var point in PathNodes.Flatten())
                 if (WithinGrid(point))
-                    PathNodes[point.X, point.Y].Reset();
+                    PathNodes[point.X, point.Y]
+                        .Reset();
 
         //necessary incase a blocked point was specified outside the sub grid
         foreach (var point in blocked)
@@ -278,8 +295,10 @@ public sealed class Pathfinder : IPathfinder
                 PathNodes[point.X, point.Y].IsBlocked = false;
     }
 
-    private IEnumerable<IPoint> TracePath(PathNode pathNode) => GetParentChain(pathNode).Reverse();
+    private IEnumerable<IPoint> TracePath(PathNode pathNode)
+        => GetParentChain(pathNode)
+            .Reverse();
 
-    private bool WithinGrid<TPoint>(TPoint point) where TPoint: IPoint =>
-        (point.X >= 0) && (point.X < Width) && (point.Y >= 0) && (point.Y < Height);
+    private bool WithinGrid<TPoint>(TPoint point) where TPoint: IPoint
+        => (point.X >= 0) && (point.X < Width) && (point.Y >= 0) && (point.Y < Height);
 }

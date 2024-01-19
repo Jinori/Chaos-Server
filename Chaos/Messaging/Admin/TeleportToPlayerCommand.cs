@@ -7,10 +7,9 @@ using Chaos.Networking.Abstractions;
 namespace Chaos.Messaging.Admin;
 
 [Command("tpto", helpText: "<targetName>")]
-public class TeleportToPlayerCommand : ICommand<Aisling>
+public class TeleportToPlayerCommand(IClientRegistry<IWorldClient> clientRegistry) : ICommand<Aisling>
 {
-    private readonly IClientRegistry<IWorldClient> ClientRegistry;
-    public TeleportToPlayerCommand(IClientRegistry<IWorldClient> clientRegistry) => ClientRegistry = clientRegistry;
+    private readonly IClientRegistry<IWorldClient> ClientRegistry = clientRegistry;
 
     /// <inheritdoc />
     public ValueTask ExecuteAsync(Aisling source, ArgumentCollection args)
@@ -19,9 +18,8 @@ public class TeleportToPlayerCommand : ICommand<Aisling>
             return default;
 
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-        var player = ClientRegistry
-                     .Select(c => c.Aisling)
-                     .FirstOrDefault(a => a.Name.EqualsI(playerName));
+        var player = ClientRegistry.Select(c => c.Aisling)
+                                   .FirstOrDefault(a => a.Name.EqualsI(playerName));
 
         if (player == null)
         {

@@ -58,8 +58,10 @@ public sealed class Item : PanelEntityBase, IScripted<IItemScript>, IDialogSourc
 
     public override ItemTemplate Template { get; }
     public string DisplayName => NameComposer.ComposedName;
+
     /// <inheritdoc />
     EntityType IDialogSourceEntity.EntityType => EntityType.Item;
+
     /// <inheritdoc />
     string IDialogSourceEntity.Name => DisplayName;
 
@@ -70,8 +72,7 @@ public sealed class Item : PanelEntityBase, IScripted<IItemScript>, IDialogSourc
         IScriptProvider scriptProvider,
         ICollection<string>? extraScriptKeys = null,
         ulong? uniqueId = null,
-        int? elapsedMs = null
-    )
+        int? elapsedMs = null)
         : base(template, uniqueId, elapsedMs)
     {
         Template = template;

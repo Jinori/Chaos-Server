@@ -49,8 +49,7 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
         IMetaDataStore metaDataStore,
         IAccessManager accessManager,
         IStore<MailBox> mailStore,
-        IFactory<MailBox> mailBoxFactory
-    )
+        IFactory<MailBox> mailBoxFactory)
         : base(
             redirectManager,
             packetSerializer,
@@ -73,7 +72,7 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
     }
 
     #region OnHandlers
-    public ValueTask OnClientRedirected(ILoginClient client, in ClientPacket packet)
+    public ValueTask OnClientRedirected(ILoginClient client, in Packet packet)
     {
         var args = PacketSerializer.Deserialize<ClientRedirectedArgs>(in packet);
 
@@ -81,8 +80,8 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
 
         ValueTask InnerOnclientRedirect(ILoginClient localClient, ClientRedirectedArgs localArgs)
         {
-            var reservedRedirect = Options.ReservedRedirects
-                                          .FirstOrDefault(rr => (rr.Id == localArgs.Id) && rr.Name.EqualsI(localArgs.Name));
+            var reservedRedirect
+                = Options.ReservedRedirects.FirstOrDefault(rr => (rr.Id == localArgs.Id) && rr.Name.EqualsI(localArgs.Name));
 
             if (reservedRedirect != null)
             {
@@ -120,7 +119,7 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
         }
     }
 
-    public ValueTask OnCreateCharFinalize(ILoginClient client, in ClientPacket packet)
+    public ValueTask OnCreateCharFinalize(ILoginClient client, in Packet packet)
     {
         var args = PacketSerializer.Deserialize<CreateCharFinalizeArgs>(in packet);
 
@@ -130,16 +129,14 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
         {
             if (CreateCharRequests.TryGetValue(localClient.Id, out var requestArgs))
             {
-                (var hairStyle, var gender, var hairColor) = localArgs;
-
                 var mapInstanceCache = CacheProvider.GetCache<MapInstance>();
                 var startingMap = mapInstanceCache.Get(Options.StartingMapInstanceId);
 
                 var aisling = new Aisling(
                     requestArgs.Name,
-                    gender,
-                    hairStyle,
-                    hairColor,
+                    localArgs.Gender,
+                    localArgs.HairStyle,
+                    localArgs.HairColor,
                     startingMap,
                     Options.StartingPoint);
 
@@ -158,7 +155,7 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
         }
     }
 
-    public ValueTask OnCreateCharRequest(ILoginClient client, in ClientPacket packet)
+    public ValueTask OnCreateCharRequest(ILoginClient client, in Packet packet)
     {
         var args = PacketSerializer.Deserialize<CreateCharRequestArgs>(in packet);
 
@@ -176,17 +173,14 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
             {
                 Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Create)
                       .WithProperty(localClient)
-                      .LogDebug(
-                          "Failed to create character with name {@Name} for reason {@Reason}",
-                          localArgs.Name,
-                          result.FailureMessage);
+                      .LogDebug("Failed to create character with name {@Name} for reason {@Reason}", localArgs.Name, result.FailureMessage);
 
                 localClient.SendLoginMessage(GetLoginMessageType(result.Code), result.FailureMessage);
             }
         }
     }
 
-    public ValueTask OnHomepageRequest(ILoginClient client, in ClientPacket packet)
+    public ValueTask OnHomepageRequest(ILoginClient client, in Packet packet)
     {
         return ExecuteHandler(client, InnerOnHomepageRequest);
 
@@ -198,7 +192,7 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
         }
     }
 
-    public ValueTask OnLogin(ILoginClient client, in ClientPacket packet)
+    public ValueTask OnLogin(ILoginClient client, in Packet packet)
     {
         var args = PacketSerializer.Deserialize<LoginArgs>(in packet);
 
@@ -206,16 +200,14 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
 
         async ValueTask InnerOnLogin(ILoginClient localClient, LoginArgs localArgs)
         {
-            (var name, var password) = localArgs;
-
-            var result = await AccessManager.ValidateCredentialsAsync(localClient.RemoteIp, name, password);
+            var result = await AccessManager.ValidateCredentialsAsync(localClient.RemoteIp, localArgs.Name, localArgs.Password);
 
             if (!result.Success)
             {
                 Logger.WithTopics(Topics.Entities.Client, Topics.Actions.Login, Topics.Actions.Validation)
                       .WithProperty(localClient)
-                      .WithProperty(password)
-                      .LogDebug("Failed to validate credentials for {@Name} for reason {@Reason}", name, result.FailureMessage);
+                      .WithProperty(localArgs.Password)
+                      .LogDebug("Failed to validate credentials for {@Name} for reason {@Reason}", localArgs.Name, result.FailureMessage);
 
                 localClient.SendLoginMessage(LoginMessageType.WrongPassword, result.FailureMessage);
 
@@ -224,7 +216,7 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
 
             Logger.WithTopics(Topics.Entities.Client, Topics.Actions.Login, Topics.Actions.Validation)
                   .WithProperty(client)
-                  .LogDebug("Validated credentials for {@Name}", name);
+                  .LogDebug("Validated credentials for {@Name}", localArgs.Name);
 
             var redirect = new Redirect(
                 EphemeralRandomIdGenerator<uint>.Shared.NextId,
@@ -232,17 +224,14 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
                 ServerType.World,
                 localClient.Crypto.Key,
                 localClient.Crypto.Seed,
-                name);
+                localArgs.Name);
 
             Logger.WithTopics(
                       Topics.Servers.LoginServer,
                       Topics.Entities.Client,
                       Topics.Actions.Login,
                       Topics.Actions.Redirect)
-                  .LogDebug(
-                      "Redirecting {@ClientIp} to {@ServerIp}",
-                      localClient.RemoteIp,
-                      Options.WorldRedirect.Address.ToString());
+                  .LogDebug("Redirecting {@ClientIp} to {@ServerIp}", localClient.RemoteIp, Options.WorldRedirect.Address.ToString());
 
             RedirectManager.Add(redirect);
             localClient.SendLoginMessage(LoginMessageType.Confirm);
@@ -250,7 +239,7 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
         }
     }
 
-    public ValueTask OnMetaDataRequest(ILoginClient client, in ClientPacket packet)
+    public ValueTask OnMetaDataRequest(ILoginClient client, in Packet packet)
     {
         var args = PacketSerializer.Deserialize<MetaDataRequestArgs>(in packet);
 
@@ -258,15 +247,13 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
 
         ValueTask InnerOnMetaDataRequest(ILoginClient localClient, MetaDataRequestArgs localArgs)
         {
-            (var metadataRequestType, var name) = localArgs;
-
-            localClient.SendMetaData(metadataRequestType, MetaDataStore, name);
+            localClient.SendMetaData(localArgs.MetaDataRequestType, MetaDataStore, localArgs.Name);
 
             return default;
         }
     }
 
-    public ValueTask OnNoticeRequest(ILoginClient client, in ClientPacket packet)
+    public ValueTask OnNoticeRequest(ILoginClient client, in Packet packet)
     {
         return ExecuteHandler(client, InnerOnNoticeRequest);
 
@@ -278,7 +265,7 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
         }
     }
 
-    public ValueTask OnPasswordChange(ILoginClient client, in ClientPacket packet)
+    public ValueTask OnPasswordChange(ILoginClient client, in Packet packet)
     {
         var args = PacketSerializer.Deserialize<PasswordChangeArgs>(in packet);
 
@@ -286,13 +273,11 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
 
         async ValueTask InnerOnPasswordChange(ILoginClient localClient, PasswordChangeArgs localArgs)
         {
-            (var name, var currentPassword, var newPassword) = localArgs;
-
             var result = await AccessManager.ChangePasswordAsync(
                 localClient.RemoteIp,
-                name,
-                currentPassword,
-                newPassword);
+                localArgs.Name,
+                localArgs.CurrentPassword,
+                localArgs.NewPassword);
 
             if (!result.Success)
             {
@@ -304,7 +289,7 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
                       .WithProperty(client)
                       .LogInformation(
                           "Failed to change password for aisling {@AislingName} for reason {@Reason}",
-                          name,
+                          localArgs.Name,
                           result.FailureMessage);
 
                 localClient.SendLoginMessage(GetLoginMessageType(result.Code), result.FailureMessage);
@@ -318,29 +303,30 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
                       Topics.Actions.Update,
                       Topics.Actions.Validation)
                   .WithProperty(client)
-                  .LogInformation("Changed password for aisling {@AislingName}", name);
+                  .LogInformation("Changed password for aisling {@AislingName}", localArgs.Name);
+
+            localClient.SendLoginMessage(LoginMessageType.Confirm);
         }
     }
     #endregion
 
     #region Connection / Handler
-    public override ValueTask HandlePacketAsync(ILoginClient client, in ClientPacket packet)
+    public override ValueTask HandlePacketAsync(ILoginClient client, in Packet packet)
     {
         var opCode = packet.OpCode;
-        var handler = ClientHandlers[(byte)opCode];
+        var handler = ClientHandlers[opCode];
 
         if (handler is not null)
             Logger.WithTopics(Topics.Servers.LoginServer, Topics.Entities.Packet, Topics.Actions.Processing)
                   .WithProperty(client)
                   .LogTrace("Processing message with code {@OpCode} from {@ClientIp}", opCode, client.RemoteIp);
-        else if (opCode is ClientOpCode.ExitRequest or ClientOpCode.RequestProfile)
+        else if (opCode is (byte)ClientOpCode.ExitRequest or (byte)ClientOpCode.RequestProfile)
         {
             //ignored
             //these occasionally happen in the LoginServer for some unknown reason
             //ExitRequest might be from a double click from exiting
             //RequestProfile I have no idea tho
         } else
-
             Logger.WithTopics(
                       Topics.Servers.LoginServer,
                       Topics.Entities.Packet,
@@ -370,13 +356,8 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
         ClientHandlers[(byte)ClientOpCode.PasswordChange] = OnPasswordChange;
     }
 
-    protected override async void OnConnection(IAsyncResult ar)
+    protected override async void OnConnected(Socket clientSocket)
     {
-        var serverSocket = (Socket)ar.AsyncState!;
-        var clientSocket = serverSocket.EndAccept(ar);
-
-        serverSocket.BeginAccept(OnConnection, serverSocket);
-
         var ip = clientSocket.RemoteEndPoint as IPEndPoint;
 
         Logger.WithTopics(Topics.Servers.LoginServer, Topics.Entities.Client, Topics.Actions.Connect)
@@ -430,7 +411,7 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
         client.OnDisconnected += OnDisconnect;
 
         client.BeginReceive();
-        client.SendAcceptConnection();
+        client.SendAcceptConnection("CONNECTED SERVER");
     }
 
     private void OnDisconnect(object? sender, EventArgs e)
@@ -439,17 +420,18 @@ public sealed class LoginServer : ServerBase<ILoginClient>, ILoginServer<ILoginC
         ClientRegistry.TryRemove(client.Id, out _);
     }
 
-    private LoginMessageType GetLoginMessageType(CredentialValidationResult.FailureCode code) => code switch
-    {
-        CredentialValidationResult.FailureCode.InvalidUsername    => LoginMessageType.ClearNameMessage,
-        CredentialValidationResult.FailureCode.InvalidPassword    => LoginMessageType.ClearPswdMessage,
-        CredentialValidationResult.FailureCode.PasswordTooLong    => LoginMessageType.ClearPswdMessage,
-        CredentialValidationResult.FailureCode.PasswordTooShort   => LoginMessageType.ClearPswdMessage,
-        CredentialValidationResult.FailureCode.UsernameTooLong    => LoginMessageType.ClearNameMessage,
-        CredentialValidationResult.FailureCode.UsernameTooShort   => LoginMessageType.ClearNameMessage,
-        CredentialValidationResult.FailureCode.UsernameNotAllowed => LoginMessageType.ClearNameMessage,
-        CredentialValidationResult.FailureCode.TooManyAttempts    => LoginMessageType.ClearPswdMessage,
-        _                                                         => throw new ArgumentOutOfRangeException()
-    };
+    private LoginMessageType GetLoginMessageType(CredentialValidationResult.FailureCode code)
+        => code switch
+        {
+            CredentialValidationResult.FailureCode.InvalidUsername    => LoginMessageType.ClearNameMessage,
+            CredentialValidationResult.FailureCode.InvalidPassword    => LoginMessageType.ClearPswdMessage,
+            CredentialValidationResult.FailureCode.PasswordTooLong    => LoginMessageType.ClearPswdMessage,
+            CredentialValidationResult.FailureCode.PasswordTooShort   => LoginMessageType.ClearPswdMessage,
+            CredentialValidationResult.FailureCode.UsernameTooLong    => LoginMessageType.ClearNameMessage,
+            CredentialValidationResult.FailureCode.UsernameTooShort   => LoginMessageType.ClearNameMessage,
+            CredentialValidationResult.FailureCode.UsernameNotAllowed => LoginMessageType.ClearNameMessage,
+            CredentialValidationResult.FailureCode.TooManyAttempts    => LoginMessageType.ClearPswdMessage,
+            _                                                         => throw new ArgumentOutOfRangeException()
+        };
     #endregion
 }

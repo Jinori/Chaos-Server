@@ -27,10 +27,12 @@ using Chaos.TypeMapper.Abstractions;
 using Chaos.Utilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using ProfileArgs = Chaos.Networking.Entities.Client.ProfileArgs;
+using UnequipArgs = Chaos.Networking.Entities.Client.UnequipArgs;
 
 namespace Chaos.Networking;
 
-public sealed class WorldClient : SocketClientBase, IWorldClient
+public sealed class WorldClient : ConnectedClientBase, IWorldClient
 {
     private readonly ITypeMapper Mapper;
     private readonly IWorldServer<IWorldClient> Server;
@@ -43,8 +45,7 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
         ICrypto crypto,
         IWorldServer<IWorldClient> server,
         IPacketSerializer packetSerializer,
-        ILogger<WorldClient> logger
-    )
+        ILogger<WorldClient> logger)
         : base(
             socket,
             crypto,
@@ -119,7 +120,8 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
         var args = new BoardArgs
         {
             Type = BoardOrResponseType.BoardList,
-            Boards = Mapper.MapMany<BoardBase, BoardInfo>(boards).ToList()
+            Boards = Mapper.MapMany<BoardBase, BoardInfo>(boards)
+                           .ToList()
         };
 
         Send(args);
@@ -141,8 +143,7 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
         uint id,
         BodyAnimation bodyAnimation,
         ushort speed,
-        byte? sound = null
-    )
+        byte? sound = null)
     {
         if (bodyAnimation is BodyAnimation.None)
             return;
@@ -289,7 +290,8 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
 
         var args = new DoorArgs
         {
-            Doors = Mapper.MapMany<DoorInfo>(doors).ToList()
+            Doors = Mapper.MapMany<DoorInfo>(doors)
+                          .ToList()
         };
 
         if (args.Doors.Any())
@@ -320,10 +322,11 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
 
     public void SendExchangeAccepted(bool persistExchange)
     {
-        var args = new ExchangeArgs
+        var args = new ServerExchangeArgs
         {
             ExchangeResponseType = ExchangeResponseType.Accept,
-            PersistExchange = persistExchange
+            PersistExchange = persistExchange,
+            Message = "Exchange Accepted."
         };
 
         Send(args);
@@ -331,7 +334,7 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
 
     public void SendExchangeAddItem(bool rightSide, byte index, Item item)
     {
-        var args = new ExchangeArgs
+        var args = new ServerExchangeArgs
         {
             ExchangeResponseType = ExchangeResponseType.AddItem,
             RightSide = rightSide,
@@ -349,10 +352,11 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
 
     public void SendExchangeCancel(bool rightSide)
     {
-        var args = new ExchangeArgs
+        var args = new ServerExchangeArgs
         {
             ExchangeResponseType = ExchangeResponseType.Cancel,
-            RightSide = rightSide
+            RightSide = rightSide,
+            Message = "Exchange Canceled."
         };
 
         Send(args);
@@ -360,7 +364,7 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
 
     public void SendExchangeRequestAmount(byte slot)
     {
-        var args = new ExchangeArgs
+        var args = new ServerExchangeArgs
         {
             ExchangeResponseType = ExchangeResponseType.RequestAmount,
             FromSlot = slot
@@ -371,7 +375,7 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
 
     public void SendExchangeSetGold(bool rightSide, int amount)
     {
-        var args = new ExchangeArgs
+        var args = new ServerExchangeArgs
         {
             ExchangeResponseType = ExchangeResponseType.SetGold,
             RightSide = rightSide,
@@ -383,7 +387,7 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
 
     public void SendExchangeStart(Aisling fromAisling)
     {
-        var args = new ExchangeArgs
+        var args = new ServerExchangeArgs
         {
             ExchangeResponseType = ExchangeResponseType.StartExchange,
             OtherUserId = fromAisling.Id,
@@ -393,12 +397,12 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
         Send(args);
     }
 
-    public void SendForcedClientPacket(ref ClientPacket clientPacket)
+    public void SendForcedClientPacket(ref Packet packet)
     {
         var args = new ForceClientPacketArgs
         {
-            ClientOpCode = clientPacket.OpCode,
-            Data = clientPacket.Buffer.ToArray()
+            ClientOpCode = (ClientOpCode)packet.OpCode,
+            Data = packet.Buffer.ToArray()
         };
 
         Send(args);
@@ -480,7 +484,8 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
             {
                 CurrentYIndex = y,
                 Width = mapTemplate.Width,
-                MapData = mapTemplate.GetRowData(y).ToArray()
+                MapData = mapTemplate.GetRowData(y)
+                                     .ToArray()
             };
 
             Send(args);
@@ -539,8 +544,7 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
         NotepadType type,
         byte height,
         byte width,
-        string? message
-    )
+        string? message)
     {
         var args = new NotepadArgs
         {
@@ -599,21 +603,21 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
         Send(ref packet);
     }
 
-    public void SendRemoveItemFromPane(byte slot)
+    public void SendRemoveEntity(uint id)
     {
-        var args = new RemoveItemFromPaneArgs
+        var args = new RemoveEntityArgs
         {
-            Slot = slot
+            SourceId = id
         };
 
         Send(args);
     }
 
-    public void SendRemoveObject(uint id)
+    public void SendRemoveItemFromPane(byte slot)
     {
-        var args = new RemoveObjectArgs
+        var args = new RemoveItemFromPaneArgs
         {
-            SourceId = id
+            Slot = slot
         };
 
         Send(args);
@@ -694,7 +698,8 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
             objects = objects.ThatAreObservedBy(Aisling);
 
         //split this into chunks so as not to crash the client
-        foreach (var chunk in objects.OrderBy(o => o.Creation).Chunk(5000))
+        foreach (var chunk in objects.OrderBy(o => o.Creation)
+                                     .Chunk(5000))
         {
             var args = new DisplayVisibleEntitiesArgs();
             var visibleArgs = new List<VisibleEntityInfo>();
@@ -749,7 +754,7 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
 
         var args = new WorldListArgs
         {
-            WorldList = worldList
+            CountryList = worldList
         };
 
         foreach (var aisling in orderedAislings)
@@ -760,8 +765,11 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
                 arg.Color = WorldListColor.WithinLevelRange;
 
             worldList.Add(arg);
+
             //TODO: check guild for color
         }
+
+        args.WorldMemberCount = (ushort)worldList.Count;
 
         Send(args);
     }
@@ -777,10 +785,9 @@ public sealed class WorldClient : SocketClientBase, IWorldClient
     protected override ValueTask HandlePacketAsync(Span<byte> span)
     {
         var opCode = span[3];
-        var isEncrypted = Crypto.ShouldBeEncrypted(opCode);
-        var packet = new ClientPacket(ref span, isEncrypted);
+        var packet = new Packet(ref span, Crypto.IsClientEncrypted(opCode));
 
-        if (isEncrypted)
+        if (packet.IsEncrypted)
             Crypto.Decrypt(ref packet);
 
         if (LogRawPackets)

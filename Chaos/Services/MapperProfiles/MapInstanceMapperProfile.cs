@@ -14,50 +14,39 @@ using Microsoft.Extensions.Logging;
 
 namespace Chaos.Services.MapperProfiles;
 
-public sealed class MapInstanceMapperProfile : IMapperProfile<MapInstance, MapInstanceSchema>,
-                                               IMapperProfile<MapTemplate, MapTemplateSchema>,
-                                               IMapperProfile<MapInstance, MapInfoArgs>
+public sealed class MapInstanceMapperProfile(
+    ISimpleCache simpleCache,
+    IScriptProvider scriptProvider,
+    ITypeMapper mapper,
+    IShardGenerator shardGenerator,
+    IAsyncStore<Aisling> aislingStore,
+    CancellationTokenSource serverCtx,
+    ILoggerFactory loggerFactory) : IMapperProfile<MapInstance, MapInstanceSchema>,
+                                    IMapperProfile<MapTemplate, MapTemplateSchema>,
+                                    IMapperProfile<MapInstance, MapInfoArgs>
 {
-    private readonly IAsyncStore<Aisling> AislingStore;
-    private readonly ILoggerFactory LoggerFactory;
-    private readonly ITypeMapper Mapper;
-    private readonly IScriptProvider ScriptProvider;
-    private readonly CancellationTokenSource ServerCtx;
-    private readonly IShardGenerator ShardGenerator;
-    private readonly ISimpleCache SimpleCache;
-
-    public MapInstanceMapperProfile(
-        ISimpleCache simpleCache,
-        IScriptProvider scriptProvider,
-        ITypeMapper mapper,
-        IShardGenerator shardGenerator,
-        IAsyncStore<Aisling> aislingStore,
-        CancellationTokenSource serverCtx,
-        ILoggerFactory loggerFactory
-    )
-    {
-        SimpleCache = simpleCache;
-        ScriptProvider = scriptProvider;
-        Mapper = mapper;
-        ShardGenerator = shardGenerator;
-        AislingStore = aislingStore;
-        ServerCtx = serverCtx;
-        LoggerFactory = loggerFactory;
-    }
+    private readonly IAsyncStore<Aisling> AislingStore = aislingStore;
+    private readonly ILoggerFactory LoggerFactory = loggerFactory;
+    private readonly ITypeMapper Mapper = mapper;
+    private readonly IScriptProvider ScriptProvider = scriptProvider;
+    private readonly CancellationTokenSource ServerCtx = serverCtx;
+    private readonly IShardGenerator ShardGenerator = shardGenerator;
+    private readonly ISimpleCache SimpleCache = simpleCache;
 
     /// <inheritdoc />
     public MapInstance Map(MapInfoArgs obj) => throw new NotImplementedException();
 
     /// <inheritdoc />
-    MapInfoArgs IMapperProfile<MapInstance, MapInfoArgs>.Map(MapInstance obj) => new()
-    {
-        Name = obj.Name,
-        MapId = obj.Template.MapId,
-        Width = obj.Template.Width,
-        Height = obj.Template.Height,
-        CheckSum = obj.Template.CheckSum,
-        Flags = (byte)obj.Flags
-    };
+    MapInfoArgs IMapperProfile<MapInstance, MapInfoArgs>.Map(MapInstance obj)
+        => new()
+        {
+            Name = obj.Name,
+            MapId = obj.Template.MapId,
+            Width = obj.Template.Width,
+            Height = obj.Template.Height,
+            CheckSum = obj.Template.CheckSum,
+            Flags = (byte)obj.Flags
+        };
 
     public MapInstance Map(MapInstanceSchema obj)
     {
@@ -93,19 +82,20 @@ public sealed class MapInstanceMapperProfile : IMapperProfile<MapInstance, MapIn
 
     public MapInstanceSchema Map(MapInstance obj) => throw new NotImplementedException();
 
-    public MapTemplate Map(MapTemplateSchema obj) => new()
-    {
-        Width = obj.Width,
-        Height = obj.Height,
-        Bounds = new Rectangle(
-            0,
-            0,
-            obj.Width,
-            obj.Height),
-        TemplateKey = obj.TemplateKey,
-        ScriptKeys = new HashSet<string>(obj.ScriptKeys, StringComparer.OrdinalIgnoreCase),
-        Tiles = new Tile[obj.Width, obj.Height]
-    };
+    public MapTemplate Map(MapTemplateSchema obj)
+        => new()
+        {
+            Width = obj.Width,
+            Height = obj.Height,
+            Bounds = new Rectangle(
+                0,
+                0,
+                obj.Width,
+                obj.Height),
+            TemplateKey = obj.TemplateKey,
+            ScriptKeys = new HashSet<string>(obj.ScriptKeys, StringComparer.OrdinalIgnoreCase),
+            Tiles = new Tile[obj.Width, obj.Height]
+        };
 
     public MapTemplateSchema Map(MapTemplate obj) => throw new NotImplementedException();
 }

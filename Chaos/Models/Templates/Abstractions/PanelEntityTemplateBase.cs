@@ -6,6 +6,7 @@ namespace Chaos.Models.Templates.Abstractions;
 
 public abstract record PanelEntityTemplateBase : ITemplate, IScripted
 {
+    public required int AbilityLevel { get; init; }
     public required AdvClass? AdvClass { get; init; }
     public required BaseClass? Class { get; init; }
     public required TimeSpan? Cooldown { get; init; }
@@ -15,7 +16,9 @@ public abstract record PanelEntityTemplateBase : ITemplate, IScripted
     public virtual required ushort PanelSprite { get; init; }
     public required bool RequiresMaster { get; init; }
     public required ISet<string> ScriptKeys { get; init; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-    public required IDictionary<string, IScriptVars> ScriptVars { get; init; } =
-        new Dictionary<string, IScriptVars>(StringComparer.OrdinalIgnoreCase);
+
+    public required IDictionary<string, IScriptVars> ScriptVars { get; init; }
+        = new Dictionary<string, IScriptVars>(StringComparer.OrdinalIgnoreCase);
+
     public required string TemplateKey { get; init; }
 }

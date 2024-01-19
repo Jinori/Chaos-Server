@@ -10,10 +10,18 @@ public static class StringExtensions
     /// <summary>
     ///     Calculates the Levenshtein Distance between 2 strings
     /// </summary>
-    /// <param name="str1">The first string</param>
-    /// <param name="str2">The second string</param>
-    /// <param name="caseSensitive">Whether or not the comparison is case sensitive</param>
-    /// <returns>A value indicating the number of changes that would be required to make the 2 strings equal</returns>
+    /// <param name="str1">
+    ///     The first string
+    /// </param>
+    /// <param name="str2">
+    ///     The second string
+    /// </param>
+    /// <param name="caseSensitive">
+    ///     Whether or not the comparison is case sensitive
+    /// </param>
+    /// <returns>
+    ///     A value indicating the number of changes that would be required to make the 2 strings equal
+    /// </returns>
     public static int CalculateLevenshteinDistance(this string str1, string str2, bool caseSensitive = false)
     {
         var span1 = str1.AsSpan();
@@ -69,10 +77,18 @@ public static class StringExtensions
     /// <summary>
     ///     Calculates the Sørensen–Dice coefficient for 2 strings
     /// </summary>
-    /// <param name="string1">The string to check</param>
-    /// <param name="string2">The string to check against</param>
-    /// <param name="caseSensitive">Whether or not the calculation is case sensitive</param>
-    /// <returns>A value quantifying the same-ness of the 2 strings. Higher is better.</returns>
+    /// <param name="string1">
+    ///     The string to check
+    /// </param>
+    /// <param name="string2">
+    ///     The string to check against
+    /// </param>
+    /// <param name="caseSensitive">
+    ///     Whether or not the calculation is case sensitive
+    /// </param>
+    /// <returns>
+    ///     A value quantifying the same-ness of the 2 strings. Higher is better.
+    /// </returns>
     public static decimal CalculateSorensenCoefficient(this string string1, string string2, bool caseSensitive = false)
     {
         var span1 = string1.AsSpan();
@@ -82,7 +98,7 @@ public static class StringExtensions
         Span<int> targetBigrams = stackalloc int[span2.Length * 2];
 
         //encode all target bigrams as single values
-        for (var i = 0; i < span2.Length - 1; i++)
+        for (var i = 0; i < (span2.Length - 1); i++)
         {
             var bigram = span2.Slice(i, 2);
             var encodedBigram = EncodeBigram(bigram, caseSensitive);
@@ -90,7 +106,7 @@ public static class StringExtensions
         }
 
         //for each bigram in the source, see if it exists in the target
-        for (var i = 0; i < span1.Length - 1; i++)
+        for (var i = 0; i < (span1.Length - 1); i++)
         {
             var bigram = span1.Slice(i, 2);
             var encodedBigram = EncodeBigram(bigram, caseSensitive);
@@ -120,8 +136,12 @@ public static class StringExtensions
     /// <summary>
     ///     Center aligns a string in a field of a specified width.
     /// </summary>
-    /// <param name="str1">The string to center-align</param>
-    /// <param name="width">The width of the field</param>
+    /// <param name="str1">
+    ///     The string to center-align
+    /// </param>
+    /// <param name="width">
+    ///     The width of the field
+    /// </param>
     public static string CenterAlign(this string str1, int width)
     {
         if (str1.Length > width)
@@ -136,35 +156,69 @@ public static class StringExtensions
     /// <summary>
     ///     Returns a value indicating whether a specified string occurs within this string when compared case insensitively.
     /// </summary>
-    /// <param name="str1"></param>
-    /// <param name="str2">The string to seek</param>
+    /// <param name="str1">
+    /// </param>
+    /// <param name="str2">
+    ///     The string to seek
+    /// </param>
     /// <returns>
-    ///     <c>true</c> if the value parameter occurs within this string, or if value is the empty string (""); otherwise,
-    ///     <c>false</c>
+    ///     <c>
+    ///         true
+    ///     </c>
+    ///     if the value parameter occurs within this string, or if value is the empty string (""); otherwise,
+    ///     <c>
+    ///         false
+    ///     </c>
     /// </returns>
     public static bool ContainsI(this string str1, string str2) => str1.Contains(str2, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     ///     Determines whether the end of this string instance matches the specified string when compared case insensitively.
     /// </summary>
-    /// <param name="str1"></param>
-    /// <param name="str2">The string to compare to the substring at the end of this instance</param>
-    /// <returns><c>true</c> if the value parameter matches the end of this string; otherwise, <c>false</c></returns>
+    /// <param name="str1">
+    /// </param>
+    /// <param name="str2">
+    ///     The string to compare to the substring at the end of this instance
+    /// </param>
+    /// <returns>
+    ///     <c>
+    ///         true
+    ///     </c>
+    ///     if the value parameter matches the end of this string; otherwise,
+    ///     <c>
+    ///         false
+    ///     </c>
+    /// </returns>
     public static bool EndsWithI(this string str1, string str2) => str1.EndsWith(str2, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     ///     Determines whether this string and a specified String object have the same value when compared case insensitively.
     /// </summary>
-    /// <param name="str1"></param>
-    /// <param name="str2">The string to compare to this instance</param>
-    /// <returns><c>true</c> if the value of the value parameter is the same as this string; otherwise, <c>false</c></returns>
+    /// <param name="str1">
+    /// </param>
+    /// <param name="str2">
+    ///     The string to compare to this instance
+    /// </param>
+    /// <returns>
+    ///     <c>
+    ///         true
+    ///     </c>
+    ///     if the value of the value parameter is the same as this string; otherwise,
+    ///     <c>
+    ///         false
+    ///     </c>
+    /// </returns>
     public static bool EqualsI(this string str1, string str2) => str1.Equals(str2, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     ///     Capitalizes the first letter in a string
     /// </summary>
-    /// <exception cref="ArgumentNullException">input is null</exception>
-    /// <exception cref="ArgumentException">input is empty</exception>
+    /// <exception cref="ArgumentNullException">
+    ///     input is null
+    /// </exception>
+    /// <exception cref="ArgumentException">
+    ///     input is empty
+    /// </exception>
     public static string FirstUpper(this string input)
     {
         ArgumentNullException.ThrowIfNull(input);
@@ -172,69 +226,96 @@ public static class StringExtensions
         return input switch
         {
             "" => throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input)),
-            _  => string.Concat(new ReadOnlySpan<char>(char.ToUpper(input[0])), input.AsSpan(1))
+            _  => string.Concat(char.ToUpper(input[0]), input[1..])
         };
     }
 
     /// <summary>
     ///     Fixes line endings so that they match the line endings in DarkAges
     /// </summary>
-    /// <param name="str">The string whose line endings to fix</param>
-    public static string FixLineEndings(this string str) => str.ReplaceLineEndings("\n").TrimEnd('\n');
+    /// <param name="str">
+    ///     The string whose line endings to fix
+    /// </param>
+    public static string FixLineEndings(this string str)
+        => str.ReplaceLineEndings("\n")
+              .TrimEnd('\n');
 
     /// <summary>
     ///     Determines if any of the strings approximately match the specified string
     /// </summary>
-    /// <param name="strings">The strings to search</param>
-    /// <param name="str">The string being looked for</param>
-    /// <param name="minCoefficient">The lowest acceptable dice coefficient. Higher values mean the strings are more similar</param>
-    /// <param name="maxDistancePct">
-    ///     This value is used to calculate a maxDistance based on the length of the best matching
-    ///     string
+    /// <param name="strings">
+    ///     The strings to search
     /// </param>
-    /// <param name="maxDistance">The max levenshtein distance between strings. Lower values mean the strings are more similar</param>
-    /// <param name="caseSensitive">Whether or not the search is case sensitive</param>
+    /// <param name="str">
+    ///     The string being looked for
+    /// </param>
+    /// <param name="minCoefficient">
+    ///     The lowest acceptable dice coefficient. Higher values mean the strings are more similar
+    /// </param>
+    /// <param name="maxDistancePct">
+    ///     This value is used to calculate a maxDistance based on the length of the best matching string
+    /// </param>
+    /// <param name="maxDistance">
+    ///     The max levenshtein distance between strings. Lower values mean the strings are more similar
+    /// </param>
+    /// <param name="caseSensitive">
+    ///     Whether or not the search is case sensitive
+    /// </param>
     /// <returns>
-    ///     <c>true</c> if any of the given strings approximately match the specified string, otherwise <c>false</c>
+    ///     <c>
+    ///         true
+    ///     </c>
+    ///     if any of the given strings approximately match the specified string, otherwise
+    ///     <c>
+    ///         false
+    ///     </c>
     /// </returns>
     public static bool FuzzyContains(
         this IEnumerable<string> strings,
         string str,
         decimal minCoefficient = 0.666m,
-        decimal maxDistancePct
-            = 0.333m,
+        decimal maxDistancePct = 0.333m,
         int? maxDistance = null,
-        bool caseSensitive = false
-    ) => FuzzySearch(
-        strings,
-        str,
-        minCoefficient,
-        maxDistancePct,
-        maxDistance,
-        caseSensitive) is not null;
+        bool caseSensitive = false)
+        => FuzzySearch(
+            strings,
+            str,
+            minCoefficient,
+            maxDistancePct,
+            maxDistance,
+            caseSensitive) is not null;
 
     /// <summary>
     ///     Performs a fuzzy search on a sequence of strings and returns the best match
     /// </summary>
-    /// <param name="strings">The strings to search</param>
-    /// <param name="str">The string being looked for</param>
-    /// <param name="minCoefficient">The lowest acceptable dice coefficient. Higher values mean the strings are more similar</param>
-    /// <param name="maxDistancePct">
-    ///     This value is used to calculate a maxDistance based on the length of the best matching
-    ///     string
+    /// <param name="strings">
+    ///     The strings to search
     /// </param>
-    /// <param name="maxDistance">The max levenshtein distance between strings. Lower values mean the strings are more similar</param>
-    /// <param name="caseSensitive">Whether or not the search is case sensitive</param>
-    /// <returns>If the constraints are passed, the best matched string, otherwise null</returns>
+    /// <param name="str">
+    ///     The string being looked for
+    /// </param>
+    /// <param name="minCoefficient">
+    ///     The lowest acceptable dice coefficient. Higher values mean the strings are more similar
+    /// </param>
+    /// <param name="maxDistancePct">
+    ///     This value is used to calculate a maxDistance based on the length of the best matching string
+    /// </param>
+    /// <param name="maxDistance">
+    ///     The max levenshtein distance between strings. Lower values mean the strings are more similar
+    /// </param>
+    /// <param name="caseSensitive">
+    ///     Whether or not the search is case sensitive
+    /// </param>
+    /// <returns>
+    ///     If the constraints are passed, the best matched string, otherwise null
+    /// </returns>
     public static string? FuzzySearch(
         this IEnumerable<string> strings,
         string str,
         decimal minCoefficient = 0.666m,
-        decimal maxDistancePct
-            = 0.333m,
+        decimal maxDistancePct = 0.333m,
         int? maxDistance = null,
-        bool caseSensitive = false
-    )
+        bool caseSensitive = false)
     {
         try
         {
@@ -244,23 +325,24 @@ public static class StringExtensions
             //filter out strings with coefficients below the minCoefficient
             //then calculate levenshtein distance for each string
             //filter out strings with distances above the maxDistance
-            var possibleMatches =
-                strings.Select(s => (String: s, Coefficient: s.CalculateSorensenCoefficient(str, caseSensitive)))
-                       .Where(x => x.Coefficient > minCoefficient)
-                       .Select(
-                           x => (x.String, x.Coefficient,
-                               Distance: x.String.CalculateLevenshteinDistance(str, caseSensitive)))
-                       .Where(
-                           x =>
-                           {
-                               //calculate the max acceptable levenshtein distance
-                               var length = Math.Max(x.String.Length, str.Length);
+            var possibleMatches = strings.Select(s => (String: s, Coefficient: s.CalculateSorensenCoefficient(str, caseSensitive)))
+                                         .Where(x => x.Coefficient > minCoefficient)
+                                         .Select(
+                                             x => (x.String, x.Coefficient,
+                                                 Distance: x.String.CalculateLevenshteinDistance(str, caseSensitive)))
+                                         .Where(
+                                             x =>
+                                             {
+                                                 //calculate the max acceptable levenshtein distance
+                                                 var length = Math.Max(x.String.Length, str.Length);
 
-                               var localMaxDistance = maxDistance ??= Math.Max(1, Convert.ToInt32(length * maxDistancePct));
+                                                 var localMaxDistance = maxDistance ??= Math.Max(
+                                                     1,
+                                                     Convert.ToInt32(length * maxDistancePct));
 
-                               return x.Distance <= localMaxDistance;
-                           })
-                       .ToList();
+                                                 return x.Distance <= localMaxDistance;
+                                             })
+                                         .ToList();
 
             //if no good match was found, return null
             if (!possibleMatches.Any())
@@ -270,13 +352,15 @@ public static class StringExtensions
             if (possibleMatches.Count == 1)
                 return possibleMatches[0].String;
 
-            return possibleMatches.MaxBy(CalculateHeuristic).String;
+            return possibleMatches.MaxBy(CalculateHeuristic)
+                                  .String;
 
             //based on the 2 values, calculate a heuristic to determine the best match
             decimal CalculateHeuristic((string String, decimal Coefficient, int Distance) x)
             {
                 //get the length of the longer string
                 var length = Math.Max(x.String.Length, str.Length);
+
                 //1 - the levenshtein distance as a percentage of the length of the longer string
                 //aka, lower levenshtein distances generate a higher heuristic
                 var distanceHeuristic = 1 - (decimal)x.Distance / length;
@@ -295,27 +379,38 @@ public static class StringExtensions
     /// <summary>
     ///     Performs a fuzzy search on a sequence of strings and returns the best match
     /// </summary>
-    /// <param name="items">A sequence of items convertable to string to fuzzy search</param>
-    /// <param name="selector">A selector function to convert an item to a string</param>
-    /// <param name="str">The string being looked for</param>
-    /// <param name="minCoefficient">The lowest acceptable dice coefficient. Higher values mean the strings are more similar</param>
-    /// <param name="maxDistancePct">
-    ///     This value is used to calculate a maxDistance based on the length of the best matching
-    ///     string
+    /// <param name="items">
+    ///     A sequence of items convertable to string to fuzzy search
     /// </param>
-    /// <param name="maxDistance">The max levenshtein distance between strings. Lower values mean the strings are more similar</param>
-    /// <param name="caseSensitive">Whether or not the search is case sensitive</param>
-    /// <returns>If the constraints are passed, the item with the best matched string, otherwise null</returns>
+    /// <param name="selector">
+    ///     A selector function to convert an item to a string
+    /// </param>
+    /// <param name="str">
+    ///     The string being looked for
+    /// </param>
+    /// <param name="minCoefficient">
+    ///     The lowest acceptable dice coefficient. Higher values mean the strings are more similar
+    /// </param>
+    /// <param name="maxDistancePct">
+    ///     This value is used to calculate a maxDistance based on the length of the best matching string
+    /// </param>
+    /// <param name="maxDistance">
+    ///     The max levenshtein distance between strings. Lower values mean the strings are more similar
+    /// </param>
+    /// <param name="caseSensitive">
+    ///     Whether or not the search is case sensitive
+    /// </param>
+    /// <returns>
+    ///     If the constraints are passed, the item with the best matched string, otherwise null
+    /// </returns>
     public static T? FuzzySearchBy<T>(
         this IEnumerable<T> items,
         Func<T, string> selector,
         string str,
         decimal minCoefficient = 0.666m,
-        decimal maxDistancePct
-            = 0.333m,
+        decimal maxDistancePct = 0.333m,
         int? maxDistance = null,
-        bool caseSensitive = false
-    )
+        bool caseSensitive = false)
     {
         items = caseSensitive ? items.DistinctBy(selector) : items.DistinctBy(selector, StringComparer.OrdinalIgnoreCase);
 
@@ -340,9 +435,15 @@ public static class StringExtensions
     /// <summary>
     ///     Injects the parameters into the string, replacing the placeholders with the parameters
     /// </summary>
-    /// <param name="str1">The string in which to replace placeholders with parameters</param>
-    /// <param name="parameters">The parameters to inject into the string</param>
-    /// <returns>A string where the placeholders are replaced with the given parameters</returns>
+    /// <param name="str1">
+    ///     The string in which to replace placeholders with parameters
+    /// </param>
+    /// <param name="parameters">
+    ///     The parameters to inject into the string
+    /// </param>
+    /// <returns>
+    ///     A string where the placeholders are replaced with the given parameters
+    /// </returns>
     public static string Inject([StructuredMessageTemplate] this string str1, params object[] parameters)
     {
         var paramStrs = new string[parameters.Length];
@@ -351,7 +452,9 @@ public static class StringExtensions
         //convert all parameters to strings and aggregate the length of the parameters
         for (var i = 0; i < parameters.Length; i++)
         {
-            var paramStr = parameters[i].ToString() ?? string.Empty;
+            var paramStr = parameters[i]
+                               .ToString()
+                           ?? string.Empty;
             paramsTotalLength += paramStr.Length;
             paramStrs[i] = paramStr;
         }
@@ -376,18 +479,21 @@ public static class StringExtensions
                     strIndex += 2;
 
                     break;
+
                 //handle start of placeholder
                 case '{':
                     startPhIndex = strIndex;
                     strIndex += 1;
 
                     break;
+
                 //handle double curly braces
                 case '}' when (nextIndex < strSpan.Length) && (strSpan[nextIndex] == '}'):
                     result[resIndex++] = '}';
                     strIndex += 2;
 
                     break;
+
                 //handle end of placeholder
                 case '}' when startPhIndex >= 0:
                     if (paramIndex >= paramStrs.Length)
@@ -396,12 +502,15 @@ public static class StringExtensions
                             nameof(parameters));
 
                     var parameterValue = paramStrs[paramIndex++];
-                    parameterValue.AsSpan().CopyTo(result[resIndex..]);
+
+                    parameterValue.AsSpan()
+                                  .CopyTo(result[resIndex..]);
                     resIndex += parameterValue.Length;
                     strIndex += 1;
                     startPhIndex = -1;
 
                     break;
+
                 //handle normal character
                 default:
                     if (startPhIndex < 0)
@@ -413,33 +522,47 @@ public static class StringExtensions
             }
         }
 
-        return result[..resIndex].ToString();
+        return result[..resIndex]
+            .ToString();
     }
 
     /// <summary>
     ///     Returns a new string in which all occurrences of a specified string in the current instance are replaced with
-    ///     another specified string
-    ///     when compared case insensitively
+    ///     another specified string when compared case insensitively
     /// </summary>
-    /// <param name="str1"></param>
-    /// <param name="oldValue">The string to be replaced</param>
-    /// <param name="newValue">The string to replace all occurrences of oldValue</param>
+    /// <param name="str1">
+    /// </param>
+    /// <param name="oldValue">
+    ///     The string to be replaced
+    /// </param>
+    /// <param name="newValue">
+    ///     The string to replace all occurrences of oldValue
+    /// </param>
     /// <returns>
     ///     A string that is equivalent to the current string except that all instances of <paramref name="oldValue" /> are
-    ///     replaced with
-    ///     <paramref name="newValue" />. If <paramref name="oldValue" /> is not found in the current instance, the method
-    ///     returns the current
-    ///     instance unchanged
+    ///     replaced with <paramref name="newValue" />. If <paramref name="oldValue" /> is not found in the current instance,
+    ///     the method returns the current instance unchanged
     /// </returns>
-    public static string ReplaceI(this string str1, string oldValue, string newValue) =>
-        str1.Replace(oldValue, newValue, StringComparison.OrdinalIgnoreCase);
+    public static string ReplaceI(this string str1, string oldValue, string newValue)
+        => str1.Replace(oldValue, newValue, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     ///     Determines whether the beginning of this string instance matches the specified string when compared case
     ///     insensitively.
     /// </summary>
-    /// <param name="str1"></param>
-    /// <param name="str2">The string to compare</param>
-    /// <returns><c>true</c> if this instance begins with value; otherwise, <c>false</c></returns>
+    /// <param name="str1">
+    /// </param>
+    /// <param name="str2">
+    ///     The string to compare
+    /// </param>
+    /// <returns>
+    ///     <c>
+    ///         true
+    ///     </c>
+    ///     if this instance begins with value; otherwise,
+    ///     <c>
+    ///         false
+    ///     </c>
+    /// </returns>
     public static bool StartsWithI(this string str1, string str2) => str1.StartsWith(str2, StringComparison.OrdinalIgnoreCase);
 }

@@ -18,25 +18,16 @@ namespace Chaos.Services.Storage;
 /// <summary>
 ///     Manages save files for Aislings
 /// </summary>
-public sealed class AislingStore : IAsyncStore<Aisling>
+public sealed class AislingStore(
+    IEntityRepository entityRepository,
+    IOptions<AislingStoreOptions> options,
+    ILogger<AislingStore> logger,
+    ICloningService<Item> itemCloningService) : IAsyncStore<Aisling>
 {
-    private readonly IEntityRepository EntityRepository;
-    private readonly ICloningService<Item> ItemCloningService;
-    private readonly ILogger<AislingStore> Logger;
-    private readonly AislingStoreOptions Options;
-
-    public AislingStore(
-        IEntityRepository entityRepository,
-        IOptions<AislingStoreOptions> options,
-        ILogger<AislingStore> logger,
-        ICloningService<Item> itemCloningService
-    )
-    {
-        Logger = logger;
-        Options = options.Value;
-        ItemCloningService = itemCloningService;
-        EntityRepository = entityRepository;
-    }
+    private readonly IEntityRepository EntityRepository = entityRepository;
+    private readonly ICloningService<Item> ItemCloningService = itemCloningService;
+    private readonly ILogger<AislingStore> Logger = logger;
+    private readonly AislingStoreOptions Options = options.Value;
 
     /// <inheritdoc />
     public Task<bool> ExistsAsync(string key)
@@ -65,8 +56,8 @@ public sealed class AislingStore : IAsyncStore<Aisling>
     }
 
     /// <inheritdoc />
-    public Task RemoveAsync(string key) =>
-        throw new NotImplementedException("This would effectively delete the character. This is reserved for manual operations");
+    public Task RemoveAsync(string key)
+        => throw new NotImplementedException("This would effectively delete the character. This is reserved for manual operations");
 
     public async Task SaveAsync(Aisling aisling)
     {
@@ -117,12 +108,24 @@ public sealed class AislingStore : IAsyncStore<Aisling>
         var aislingTask = EntityRepository.LoadAndMapAsync<Aisling, AislingSchema>(aislingPath);
         var bankTask = EntityRepository.LoadAndMapAsync<Bank, BankSchema>(bankPath);
         var trackersTask = EntityRepository.LoadAndMapAsync<AislingTrackers, TrackersSchema>(trackersPath);
-        var effectsTask = EntityRepository.LoadAndMapManyAsync<IEffect, EffectSchema>(effectsPath).ToListAsync();
-        var equipmentTask = EntityRepository.LoadAndMapManyAsync<Item, ItemSchema>(equipmentPath).ToListAsync();
-        var inventoryTask = EntityRepository.LoadAndMapManyAsync<Item, ItemSchema>(inventoryPath).ToListAsync();
-        var skillsTask = EntityRepository.LoadAndMapManyAsync<Skill, SkillSchema>(skillsPath).ToListAsync();
-        var spellsTask = EntityRepository.LoadAndMapManyAsync<Spell, SpellSchema>(spellsPath).ToListAsync();
-        var legendTask = EntityRepository.LoadAndMapManyAsync<LegendMark, LegendMarkSchema>(legendPath).ToListAsync();
+
+        var effectsTask = EntityRepository.LoadAndMapManyAsync<IEffect, EffectSchema>(effectsPath)
+                                          .ToListAsync();
+
+        var equipmentTask = EntityRepository.LoadAndMapManyAsync<Item, ItemSchema>(equipmentPath)
+                                            .ToListAsync();
+
+        var inventoryTask = EntityRepository.LoadAndMapManyAsync<Item, ItemSchema>(inventoryPath)
+                                            .ToListAsync();
+
+        var skillsTask = EntityRepository.LoadAndMapManyAsync<Skill, SkillSchema>(skillsPath)
+                                         .ToListAsync();
+
+        var spellsTask = EntityRepository.LoadAndMapManyAsync<Spell, SpellSchema>(spellsPath)
+                                         .ToListAsync();
+
+        var legendTask = EntityRepository.LoadAndMapManyAsync<LegendMark, LegendMarkSchema>(legendPath)
+                                         .ToListAsync();
 
         var aisling = await aislingTask;
         var bank = await bankTask;

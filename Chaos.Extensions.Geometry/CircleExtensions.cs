@@ -11,12 +11,21 @@ public static class CircleExtensions
     /// <summary>
     ///     Calculates the first point at which a line intersects a circle.
     /// </summary>
-    /// <param name="circle">The circle.</param>
-    /// <param name="lineStart">The start point of the line.</param>
-    /// <param name="lineEnd">The end point of the line.</param>
-    /// <returns>The first point of intersection between the line and the circle, or null if they do not intersect.</returns>
+    /// <param name="circle">
+    ///     The circle.
+    /// </param>
+    /// <param name="lineStart">
+    ///     The start point of the line.
+    /// </param>
+    /// <param name="lineEnd">
+    ///     The end point of the line.
+    /// </param>
+    /// <returns>
+    ///     The first point of intersection between the line and the circle, or null if they do not intersect.
+    /// </returns>
     public static Point? CalculateIntersectionEntryPoint<TCircle, TPoint>(this TCircle circle, TPoint lineStart, TPoint lineEnd)
-        where TCircle: ICircle where TPoint: IPoint
+        where TCircle: ICircle
+        where TPoint: IPoint
     {
         ArgumentNullException.ThrowIfNull(circle);
         ArgumentNullException.ThrowIfNull(lineStart);
@@ -64,29 +73,64 @@ public static class CircleExtensions
     /// <summary>
     ///     Determines whether this circle fully encompasses another circle.
     /// </summary>
-    /// <param name="circle">This circle.</param>
-    /// <param name="other">Another circle.</param>
-    /// <returns><c>true</c> if this circle fully encompasses the other (or edges touch); otherwise, <c>false</c>.</returns>
-    /// <exception cref="System.ArgumentNullException">circle</exception>
-    /// <exception cref="System.ArgumentNullException">other</exception>
+    /// <param name="circle">
+    ///     This circle.
+    /// </param>
+    /// <param name="other">
+    ///     Another circle.
+    /// </param>
+    /// <returns>
+    ///     <c>
+    ///         true
+    ///     </c>
+    ///     if this circle fully encompasses the other (or edges touch); otherwise,
+    ///     <c>
+    ///         false
+    ///     </c>
+    ///     .
+    /// </returns>
+    /// <exception cref="System.ArgumentNullException">
+    ///     circle
+    /// </exception>
+    /// <exception cref="System.ArgumentNullException">
+    ///     other
+    /// </exception>
     public static bool Contains<TCircle>(this TCircle circle, TCircle other) where TCircle: ICircle
     {
         ArgumentNullException.ThrowIfNull(circle);
 
         ArgumentNullException.ThrowIfNull(other);
 
-        return circle.Radius >= circle.Center.DistanceFrom(other.Center) + other.Radius;
+        return circle.Radius >= (circle.Center.DistanceFrom(other.Center) + other.Radius);
     }
 
     /// <summary>
     ///     Determines whether this circle contains the given point.
     /// </summary>
-    /// <param name="circle">This circle.</param>
-    /// <param name="point">A point.</param>
-    /// <returns><c>true</c> if this circle contains the point, otherwise <c>false</c>.</returns>
-    /// <exception cref="System.ArgumentNullException">circle</exception>
-    /// <exception cref="System.ArgumentNullException">point</exception>
-    public static bool Contains<TCircle, TPoint>(this TCircle circle, TPoint point) where TCircle: ICircle where TPoint: IPoint
+    /// <param name="circle">
+    ///     This circle.
+    /// </param>
+    /// <param name="point">
+    ///     A point.
+    /// </param>
+    /// <returns>
+    ///     <c>
+    ///         true
+    ///     </c>
+    ///     if this circle contains the point, otherwise
+    ///     <c>
+    ///         false
+    ///     </c>
+    ///     .
+    /// </returns>
+    /// <exception cref="System.ArgumentNullException">
+    ///     circle
+    /// </exception>
+    /// <exception cref="System.ArgumentNullException">
+    ///     point
+    /// </exception>
+    public static bool Contains<TCircle, TPoint>(this TCircle circle, TPoint point) where TCircle: ICircle
+                                                                                    where TPoint: IPoint
     {
         ArgumentNullException.ThrowIfNull(circle);
 
@@ -98,15 +142,24 @@ public static class CircleExtensions
     /// <summary>
     ///     Calculates the edge-to-center euclidean distance to some center-point.
     /// </summary>
-    /// <param name="circle">This circle.</param>
-    /// <param name="other">A center-point of some entity.</param>
+    /// <param name="circle">
+    ///     This circle.
+    /// </param>
+    /// <param name="other">
+    ///     A center-point of some entity.
+    /// </param>
     /// <returns>
     ///     The euclidean distance between the center-point of this circle and the some other point, minus this circle's
     ///     radius. Value can not be negative.
     /// </returns>
-    /// <exception cref="System.ArgumentNullException">circle</exception>
-    /// <exception cref="System.ArgumentNullException">other</exception>
-    public static float EdgeDistanceFrom<TCircle, TPoint>(this TCircle circle, TPoint other) where TCircle: ICircle where TPoint: IPoint
+    /// <exception cref="System.ArgumentNullException">
+    ///     circle
+    /// </exception>
+    /// <exception cref="System.ArgumentNullException">
+    ///     other
+    /// </exception>
+    public static float EdgeDistanceFrom<TCircle, TPoint>(this TCircle circle, TPoint other) where TCircle: ICircle
+        where TPoint: IPoint
     {
         ArgumentNullException.ThrowIfNull(circle);
 
@@ -118,14 +171,22 @@ public static class CircleExtensions
     /// <summary>
     ///     Calculates the edge-to-edge euclidean distance to another circle.
     /// </summary>
-    /// <param name="circle">This circle.</param>
-    /// <param name="other">Another circle.</param>
+    /// <param name="circle">
+    ///     This circle.
+    /// </param>
+    /// <param name="other">
+    ///     Another circle.
+    /// </param>
     /// <returns>
     ///     The euclidean distance between the centerpoints of two circles, minus the sum of their radi. Value can not be
     ///     negative.
     /// </returns>
-    /// <exception cref="System.ArgumentNullException">circle</exception>
-    /// <exception cref="System.ArgumentNullException">other</exception>
+    /// <exception cref="System.ArgumentNullException">
+    ///     circle
+    /// </exception>
+    /// <exception cref="System.ArgumentNullException">
+    ///     other
+    /// </exception>
     public static float EdgeToEdgeDistanceFrom<TCircle>(this TCircle circle, TCircle other) where TCircle: ICircle
     {
         ArgumentNullException.ThrowIfNull(circle);
@@ -138,9 +199,15 @@ public static class CircleExtensions
     /// <summary>
     ///     Generates a sequence of point along the circumference of this circle
     /// </summary>
-    /// <param name="circle">This circle.</param>
-    /// <returns>A sequence of point along the circumfnerence of the circle</returns>
-    /// <exception cref="System.ArgumentNullException">circle</exception>
+    /// <param name="circle">
+    ///     This circle.
+    /// </param>
+    /// <returns>
+    ///     A sequence of point along the circumfnerence of the circle
+    /// </returns>
+    /// <exception cref="System.ArgumentNullException">
+    ///     circle
+    /// </exception>
     public static IEnumerable<Point> GetOutline<TCircle>(this TCircle circle) where TCircle: ICircle
     {
         ArgumentNullException.ThrowIfNull(circle);
@@ -202,9 +269,14 @@ public static class CircleExtensions
     /// <summary>
     ///     Lazily generates all points within this circle.
     /// </summary>
-    /// <param name="circle"></param>
-    /// <returns><see cref="IEnumerable{T}" /> of <see cref="Point" /></returns>
-    /// <exception cref="System.ArgumentNullException">circle</exception>
+    /// <param name="circle">
+    /// </param>
+    /// <returns>
+    ///     <see cref="IEnumerable{T}" /> of <see cref="Point" />
+    /// </returns>
+    /// <exception cref="System.ArgumentNullException">
+    ///     circle
+    /// </exception>
     public static IEnumerable<Point> GetPoints<TCircle>(this TCircle circle) where TCircle: ICircle
     {
         ArgumentNullException.ThrowIfNull(circle);
@@ -220,7 +292,7 @@ public static class CircleExtensions
                 var xdc = x - centerX;
                 var ydc = y - centerY;
 
-                if (xdc * xdc + ydc * ydc <= radiusSqrd)
+                if ((xdc * xdc + ydc * ydc) <= radiusSqrd)
                 {
                     var xS = centerX - xdc;
                     var yS = centerY - ydc;
@@ -248,8 +320,11 @@ public static class CircleExtensions
     /// <summary>
     ///     Gets a random point within this circle.
     /// </summary>
-    /// <param name="circle">The circle</param>
-    /// <returns></returns>
+    /// <param name="circle">
+    ///     The circle
+    /// </param>
+    /// <returns>
+    /// </returns>
     public static Point GetRandomPoint<TCircle>(this TCircle circle) where TCircle: ICircle
     {
         var rngA = Random.Shared.NextDouble();
@@ -265,17 +340,34 @@ public static class CircleExtensions
     /// <summary>
     ///     Determines whether this circle intersects with another circle.
     /// </summary>
-    /// <param name="circle">This circle.</param>
-    /// <param name="other">Another circle.</param>
-    /// <returns><c>true</c> if this circle intersects the <paramref name="other" />, <c>false</c> otherwise.</returns>
-    /// <exception cref="System.ArgumentNullException">circle</exception>
-    /// <exception cref="System.ArgumentNullException">other</exception>
+    /// <param name="circle">
+    ///     This circle.
+    /// </param>
+    /// <param name="other">
+    ///     Another circle.
+    /// </param>
+    /// <returns>
+    ///     <c>
+    ///         true
+    ///     </c>
+    ///     if this circle intersects the <paramref name="other" />,
+    ///     <c>
+    ///         false
+    ///     </c>
+    ///     otherwise.
+    /// </returns>
+    /// <exception cref="System.ArgumentNullException">
+    ///     circle
+    /// </exception>
+    /// <exception cref="System.ArgumentNullException">
+    ///     other
+    /// </exception>
     public static bool Intersects<TCircle>(this TCircle circle, TCircle other) where TCircle: ICircle
     {
         ArgumentNullException.ThrowIfNull(circle);
 
         ArgumentNullException.ThrowIfNull(other);
 
-        return circle.Center.EuclideanDistanceFrom(other.Center) <= circle.Radius + other.Radius;
+        return circle.Center.EuclideanDistanceFrom(other.Center) <= (circle.Radius + other.Radius);
     }
 }

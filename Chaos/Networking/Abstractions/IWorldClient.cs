@@ -14,7 +14,7 @@ using Chaos.Services.Storage.Abstractions;
 
 namespace Chaos.Networking.Abstractions;
 
-public interface IWorldClient : ISocketClient
+public interface IWorldClient : IConnectedClient
 {
     Aisling Aisling { get; set; }
     void SendAddItemToPane(Item item);
@@ -30,8 +30,7 @@ public interface IWorldClient : ISocketClient
         uint id,
         BodyAnimation bodyAnimation,
         ushort speed,
-        byte? sound = null
-    );
+        byte? sound = null);
 
     void SendCancelCasting();
     void SendConfirmClientWalk(Point oldPoint, Direction direction);
@@ -50,7 +49,7 @@ public interface IWorldClient : ISocketClient
     void SendExchangeRequestAmount(byte slot);
     void SendExchangeSetGold(bool rightSide, int amount);
     void SendExchangeStart(Aisling fromAisling);
-    void SendForcedClientPacket(ref ClientPacket clientPacket);
+    void SendForcedClientPacket(ref Packet packet);
     void SendGroupRequest(GroupRequestType groupRequestType, string fromName);
     void SendHealthBar(Creature creature, byte? sound = null);
     void SendLightLevel(LightLevel lightLevel);
@@ -67,8 +66,7 @@ public interface IWorldClient : ISocketClient
         NotepadType type,
         byte height,
         byte width,
-        string message
-    );
+        string message);
 
     void SendPost(Post post, bool isMail, bool enablePrevBtn = true);
 
@@ -76,8 +74,8 @@ public interface IWorldClient : ISocketClient
     void SendProfileRequest();
     void SendPublicMessage(uint id, PublicMessageType publicMessageType, string message);
     void SendRefreshResponse();
+    void SendRemoveEntity(uint id);
     void SendRemoveItemFromPane(byte slot);
-    void SendRemoveObject(uint id);
     void SendRemoveSkillFromPane(byte slot);
     void SendRemoveSpellFromPane(byte slot);
     void SendSelfProfile();

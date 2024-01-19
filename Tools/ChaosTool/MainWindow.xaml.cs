@@ -9,7 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Chaos.Extensions.Common;
 using ChaosTool.Definitions;
-using ChaosTool.Model;
+using ChaosTool.ViewModel;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -21,6 +21,7 @@ namespace ChaosTool;
 /// <summary>
 ///     Interaction logic for MainWindow.xaml
 /// </summary>
+
 // ReSharper disable once RedundantExtendsListEntry
 // ReSharper disable once ClassCanBeSealed.Global
 public partial class MainWindow : Window
@@ -28,7 +29,11 @@ public partial class MainWindow : Window
     private readonly ObservableCollection<DocumentViewModel> DocViewModel;
     private readonly RoslynHost RoslynHost;
     private RoslynCodeEditor? Editor;
-    public string ScriptOutput => DocViewModel.FirstOrDefault()?.Result ?? string.Empty;
+
+    public string ScriptOutput
+        => DocViewModel.FirstOrDefault()
+                       ?.Result
+           ?? string.Empty;
 
     public MainWindow()
     {
@@ -42,7 +47,9 @@ public partial class MainWindow : Window
         var currentAssembly = Assembly.GetExecutingAssembly();
 
         var currentAssemblyStack = currentAssembly.GetReferencedAssemblies()
-                                                  .Concat(Assembly.Load("Chaos").GetReferencedAssemblies())
+                                                  .Concat(
+                                                      Assembly.Load("Chaos")
+                                                              .GetReferencedAssemblies())
                                                   .Distinct()
                                                   .Select(Assembly.Load)
                                                   .Where(a => !a.IsDynamic)
@@ -74,6 +81,7 @@ public partial class MainWindow : Window
                 Assembly.Load("RoslynPad.Roslyn.Windows"),
                 Assembly.Load("RoslynPad.Editor.Windows"),
                 Assembly.Load("ChaosTool")
+
                 //Assembly.LoadProjection("Chaos")
             },
             RoslynHostReferences.NamespaceDefault.With(
@@ -172,7 +180,8 @@ public partial class MainWindow : Window
 
         viewModel.Text = Editor.Text;
 
-        await viewModel.TrySubmitAsync().ConfigureAwait(true);
+        await viewModel.TrySubmitAsync()
+                       .ConfigureAwait(true);
         Output.Text = viewModel.Result;
     }
 
@@ -184,24 +193,24 @@ public partial class MainWindow : Window
     }
 
     // TODO: workaround for GetSolutionAnalyzerReferences bug (should be added once per Solution)
-    private sealed class CustomRoslynHost : RoslynHost
+    private sealed class CustomRoslynHost(
+        IEnumerable<Assembly>? additionalAssemblies = null,
+        RoslynHostReferences? references = null,
+        ImmutableArray<string>? disabledDiagnostics = null) : RoslynHost(additionalAssemblies, references, disabledDiagnostics)
     {
         private bool _addedAnalyzers;
 
-        public CustomRoslynHost(
-            IEnumerable<Assembly>? additionalAssemblies = null,
-            RoslynHostReferences? references = null,
-            ImmutableArray<string>? disabledDiagnostics = null
-        )
-            : base(additionalAssemblies, references, disabledDiagnostics) { }
-
         /// <inheritdoc />
-        protected override ParseOptions CreateDefaultParseOptions() =>
-            new CSharpParseOptions(
+        protected override ParseOptions CreateDefaultParseOptions()
+            => new CSharpParseOptions(
                 LanguageVersion.Preview,
                 DocumentationMode.Parse,
                 SourceCodeKind.Script,
-                new[] { "TRACE", "DEBUG" });
+                new[]
+                {
+                    "TRACE",
+                    "DEBUG"
+                });
 
         protected override IEnumerable<AnalyzerReference> GetSolutionAnalyzerReferences()
         {

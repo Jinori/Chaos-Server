@@ -45,7 +45,7 @@ public class SpanBenchmarks
     public void Int16Marshal()
     {
         var span = Memory.Span;
-        MemoryMarshal.Write(span, ref Int16);
+        MemoryMarshal.Write(span, in Int16);
     }
 
     [Benchmark, BenchmarkCategory("Int16", "Marshal", "Fill")]
@@ -54,7 +54,7 @@ public class SpanBenchmarks
         var buffer = Memory.Span;
 
         for (var index = 0; index < 16; index += 2)
-            MemoryMarshal.Write(buffer[index..], ref Int16);
+            MemoryMarshal.Write(buffer[index..], in Int16);
     }
 
     [Benchmark, BenchmarkCategory("Int32", "Assignment")]
@@ -88,7 +88,7 @@ public class SpanBenchmarks
     public void Int32Marshal()
     {
         var span = Memory.Span;
-        MemoryMarshal.Write(span, ref Int32);
+        MemoryMarshal.Write(span, in Int32);
     }
 
     [Benchmark, BenchmarkCategory("Int32", "Marshal", "Fill")]
@@ -97,6 +97,6 @@ public class SpanBenchmarks
         var buffer = Memory.Span;
 
         for (var index = 0; index < 16; index += 4)
-            MemoryMarshal.Write(buffer[index..], ref Int32);
+            MemoryMarshal.Write(buffer[index..], in Int32);
     }
 }

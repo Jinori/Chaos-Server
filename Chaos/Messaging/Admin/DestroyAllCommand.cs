@@ -20,24 +20,28 @@ public class DestroyAllCommand : ICommand<Aisling>
             case "gold":
             case "coins":
             case "money":
-                foreach (var money in map.GetEntities<Money>().ToList())
-                    map.RemoveObject(money);
+                foreach (var money in map.GetEntities<Money>()
+                                         .ToList())
+                    map.RemoveEntity(money);
 
                 break;
             case "grounditems":
             case "items":
-                foreach (var groundItem in map.GetEntities<GroundItem>().ToList())
-                    map.RemoveObject(groundItem);
+                foreach (var groundItem in map.GetEntities<GroundItem>()
+                                              .ToList())
+                    map.RemoveEntity(groundItem);
 
                 break;
             case "monsters":
-                foreach (var monster in map.GetEntities<Monster>().ToList())
-                    map.RemoveObject(monster);
+                foreach (var monster in map.GetEntities<Monster>()
+                                           .ToList())
+                    map.RemoveEntity(monster);
 
                 break;
             case "merchants":
-                foreach (var merchant in map.GetEntities<Merchant>().ToList())
-                    map.RemoveObject(merchant);
+                foreach (var merchant in map.GetEntities<Merchant>()
+                                            .ToList())
+                    map.RemoveEntity(merchant);
 
                 break;
         }

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Chaos.Common.Definitions;
 
 namespace Chaos.Common.Utilities;
@@ -8,14 +9,21 @@ namespace Chaos.Common.Utilities;
 public static class IntegerRandomizer
 {
     /// <summary>
-    ///     Picks a random choice based on the weights.
-    ///     The higher the weight, the more likely it is to be picked.
-    ///     Chances are NOT exhaustive.
-    ///     Only picks at most 1 item.
+    ///     Picks a random choice based on the weights. The higher the weight, the more likely it is to be picked. Chances are
+    ///     NOT exhaustive. Only picks at most 1 item.
     /// </summary>
-    /// <param name="weightedChoices">A collection of choices with their corresponding weights</param>
-    /// <typeparam name="T">The type of object to return</typeparam>
-    /// <returns>A random element from the specified collection if a choice is taken, otherwise <c>default</c></returns>
+    /// <param name="weightedChoices">
+    ///     A collection of choices with their corresponding weights
+    /// </param>
+    /// <typeparam name="T">
+    ///     The type of object to return
+    /// </typeparam>
+    /// <returns>
+    ///     A random element from the specified collection if a choice is taken, otherwise
+    ///     <c>
+    ///         default
+    ///     </c>
+    /// </returns>
     public static T? PickRandomWeightedSingleOrDefault<T>(this ICollection<KeyValuePair<T, int>> weightedChoices)
     {
         // Calculate the chance that any choice is taken
@@ -30,19 +38,29 @@ public static class IntegerRandomizer
     }
 
     /// <summary>
-    ///     Picks a random choice based on the weights.
-    ///     The higher the weight, the more likely it is to be picked.
-    ///     Chances are NOT exhaustive.
-    ///     Only picks at most 1 item.
+    ///     Picks a random choice based on the weights. The higher the weight, the more likely it is to be picked. Chances are
+    ///     NOT exhaustive. Only picks at most 1 item.
     /// </summary>
-    /// <param name="choices">The choices to choose from</param>
-    /// <param name="weights">The weights of those choices</param>
-    /// <typeparam name="T">The type of object to return</typeparam>
-    /// <returns>A random element from the specified collection if a choice is taken, otherwise <c>default</c></returns>
-    public static T? PickRandomWeightedSingleOrDefault<T>(this IEnumerable<T> choices, IEnumerable<int> weights) =>
-        choices.Zip(weights, (choice, weight) => new KeyValuePair<T, int>(choice, weight))
-               .ToList()
-               .PickRandomWeightedSingleOrDefault();
+    /// <param name="choices">
+    ///     The choices to choose from
+    /// </param>
+    /// <param name="weights">
+    ///     The weights of those choices
+    /// </param>
+    /// <typeparam name="T">
+    ///     The type of object to return
+    /// </typeparam>
+    /// <returns>
+    ///     A random element from the specified collection if a choice is taken, otherwise
+    ///     <c>
+    ///         default
+    ///     </c>
+    /// </returns>
+    [ExcludeFromCodeCoverage(Justification = "Tested by PickRandomWeightedSingleOrDefault<T>(ICollection<KeyValuePair<T, int>>)")]
+    public static T? PickRandomWeightedSingleOrDefault<T>(this IEnumerable<T> choices, IEnumerable<int> weights)
+        => choices.Zip(weights, (choice, weight) => new KeyValuePair<T, int>(choice, weight))
+                  .ToList()
+                  .PickRandomWeightedSingleOrDefault();
 
     /// <summary>
     ///     Randomly determins if a roll is successful or not.
@@ -57,10 +75,18 @@ public static class IntegerRandomizer
     /// <summary>
     ///     Generates a random number within the specified range, applying the given randomization type.
     /// </summary>
-    /// <param name="baseValue">The base value of the range.</param>
-    /// <param name="variancePct">The percentage of variance allowed.</param>
-    /// <param name="randomizationType">The type of randomization to apply.</param>
-    /// <returns>A random number within the specified range, according to the randomization type.</returns>
+    /// <param name="baseValue">
+    ///     The base value of the range.
+    /// </param>
+    /// <param name="variancePct">
+    ///     The percentage of variance allowed.
+    /// </param>
+    /// <param name="randomizationType">
+    ///     The type of randomization to apply.
+    /// </param>
+    /// <returns>
+    ///     A random number within the specified range, according to the randomization type.
+    /// </returns>
     public static int RollRange(int baseValue, int variancePct, RandomizationType randomizationType)
     {
         var randomPct = Random.Shared.Next(0, variancePct);
@@ -100,10 +126,18 @@ public static class IntegerRandomizer
     /// <summary>
     ///     Generates a random number within the specified range, applying the given randomization type.
     /// </summary>
-    /// <param name="baseValue">The base value of the range.</param>
-    /// <param name="variancePct">The percentage of variance allowed.</param>
-    /// <param name="randomizationType">The type of randomization to apply.</param>
-    /// <returns>A random number within the specified range, according to the randomization type.</returns>
+    /// <param name="baseValue">
+    ///     The base value of the range.
+    /// </param>
+    /// <param name="variancePct">
+    ///     The percentage of variance allowed.
+    /// </param>
+    /// <param name="randomizationType">
+    ///     The type of randomization to apply.
+    /// </param>
+    /// <returns>
+    ///     A random number within the specified range, according to the randomization type.
+    /// </returns>
     public static long RollRange(long baseValue, int variancePct, RandomizationType randomizationType)
     {
         var randomPct = Random.Shared.Next(0, variancePct);

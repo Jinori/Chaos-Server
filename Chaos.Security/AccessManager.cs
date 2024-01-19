@@ -3,7 +3,9 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using Chaos.Common.Synchronization;
+using Chaos.Common.Utilities;
 using Chaos.Extensions.Common;
+using Chaos.IO.FileSystem;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Security.Abstractions;
@@ -32,8 +34,10 @@ public sealed class AccessManager : BackgroundService, IAccessManager
     /// <summary>
     ///     Creates a new instance of <see cref="AccessManager" />
     /// </summary>
-    /// <param name="options"></param>
-    /// <param name="logger"></param>
+    /// <param name="options">
+    /// </param>
+    /// <param name="logger">
+    /// </param>
     public AccessManager(IOptionsSnapshot<AccessManagerOptions> options, ILogger<AccessManager> logger)
     {
         Logger = logger;
@@ -49,10 +53,12 @@ public sealed class AccessManager : BackgroundService, IAccessManager
             Directory.CreateDirectory(Options.Directory);
 
         if (!File.Exists(BlacklistPath))
-            File.Create(BlacklistPath).Dispose();
+            File.Create(BlacklistPath)
+                .Dispose();
 
         if (!File.Exists(WhitelistPath))
-            File.Create(WhitelistPath).Dispose();
+            File.Create(WhitelistPath)
+                .Dispose();
     }
 
     /// <inheritdoc />
@@ -62,7 +68,12 @@ public sealed class AccessManager : BackgroundService, IAccessManager
 
         var ipStr = ipAddress.ToString();
 
-        await File.AppendAllLinesAsync(BlacklistPath, new[] { ipStr });
+        await File.AppendAllLinesAsync(
+            BlacklistPath,
+            new[]
+            {
+                ipStr
+            });
 
         var whiteList = (await File.ReadAllLinesAsync(WhitelistPath)).ToList();
         whiteList.RemoveAll(str => str.EqualsI(ipStr));
@@ -75,8 +86,7 @@ public sealed class AccessManager : BackgroundService, IAccessManager
         IPAddress ipAddress,
         string name,
         string oldPassword,
-        string newPassword
-    )
+        string newPassword)
     {
         await using var sync = await CredentialSync.WaitAsync();
 
@@ -109,7 +119,7 @@ public sealed class AccessManager : BackgroundService, IAccessManager
         var newHash = ComputeHash(newPassword);
         var passwordPath = Path.Combine(Options.Directory, name, "password.txt");
 
-        await File.WriteAllTextAsync(passwordPath, newHash);
+        await passwordPath.SafeExecuteAsync(dir => FileEx.SafeWriteAllTextAsync(dir, newHash));
 
         return result;
     }
@@ -142,7 +152,8 @@ public sealed class AccessManager : BackgroundService, IAccessManager
         var hash = ComputeHash(password);
 
         var passwordPath = Path.Combine(characterDir, "password.txt");
-        await File.WriteAllTextAsync(passwordPath, hash);
+
+        await passwordPath.SafeExecuteAsync(dir => FileEx.SafeWriteAllTextAsync(dir, hash));
 
         return CredentialValidationResult.SuccessResult;
     }
@@ -179,7 +190,9 @@ public sealed class AccessManager : BackgroundService, IAccessManager
     /// <summary>
     ///     Computes a hash for the given password
     /// </summary>
-    /// <param name="password">The password to hash</param>
+    /// <param name="password">
+    ///     The password to hash
+    /// </param>
     private string ComputeHash(string password)
     {
         #pragma warning disable SYSLIB0045
@@ -208,7 +221,9 @@ public sealed class AccessManager : BackgroundService, IAccessManager
             var now = DateTime.UtcNow;
 
             foreach ((var ip, var details) in FailureDetails.ToList())
-                if (now.Subtract(details.MostRecentFailureTime).TotalMinutes > Options.LockoutMins)
+                if (now.Subtract(details.MostRecentFailureTime)
+                       .TotalMinutes
+                    > Options.LockoutMins)
                     FailureDetails.TryRemove(ip, out _);
         }
     }
@@ -216,11 +231,23 @@ public sealed class AccessManager : BackgroundService, IAccessManager
     /// <summary>
     ///     Validates a username and password combination
     /// </summary>
-    /// <param name="ipAddress">The ip address of the client</param>
-    /// <param name="name">The name to validate</param>
-    /// <param name="password">The password to validate</param>
+    /// <param name="ipAddress">
+    ///     The ip address of the client
+    /// </param>
+    /// <param name="name">
+    ///     The name to validate
+    /// </param>
+    /// <param name="password">
+    ///     The password to validate
+    /// </param>
     /// <returns>
-    ///     <c>true</c> if the username exists, and the password specified matches the record, otherwise <c>false</c>
+    ///     <c>
+    ///         true
+    ///     </c>
+    ///     if the username exists, and the password specified matches the record, otherwise
+    ///     <c>
+    ///         false
+    ///     </c>
     /// </returns>
     private async Task<CredentialValidationResult> InnerValidateCredentialsAsync(IPAddress ipAddress, string name, string password)
     {
@@ -274,22 +301,24 @@ public sealed class AccessManager : BackgroundService, IAccessManager
         };
     }
 
-    private async Task<bool> IsBlacklisted(IPAddress ipAddress) =>
-        await File.ReadLinesAsync(BlacklistPath)
-                  .Select(line => IPAddress.TryParse(line, out var ip) ? ip : null)
-                  .Where(obj => obj is not null)
-                  .ContainsAsync(ipAddress);
+    private async Task<bool> IsBlacklisted(IPAddress ipAddress)
+        => await File.ReadLinesAsync(BlacklistPath)
+                     .Select(line => IPAddress.TryParse(line, out var ip) ? ip : null)
+                     .Where(obj => obj is not null)
+                     .ContainsAsync(ipAddress);
 
-    private async Task<bool> IsWhitelisted(IPAddress ipAddress) =>
-        await File.ReadLinesAsync(WhitelistPath)
-                  .Select(line => IPAddress.TryParse(line, out var ip) ? ip : null)
-                  .Where(obj => obj is not null)
-                  .ContainsAsync(ipAddress);
+    private async Task<bool> IsWhitelisted(IPAddress ipAddress)
+        => await File.ReadLinesAsync(WhitelistPath)
+                     .Select(line => IPAddress.TryParse(line, out var ip) ? ip : null)
+                     .Where(obj => obj is not null)
+                     .ContainsAsync(ipAddress);
 
     /// <summary>
     ///     Validates a password against the rules specified in the configuration
     /// </summary>
-    /// <param name="password">The password to validate</param>
+    /// <param name="password">
+    ///     The password to validate
+    /// </param>
     private CredentialValidationResult ValidatePasswordRules(string password)
     {
         if (password.Length < Options.MinPasswordLength)
@@ -312,17 +341,23 @@ public sealed class AccessManager : BackgroundService, IAccessManager
     /// <summary>
     ///     Validates a username against the rules specified in the configuration
     /// </summary>
-    /// <param name="name">The name to validate</param>
+    /// <param name="name">
+    ///     The name to validate
+    /// </param>
     private CredentialValidationResult ValidateUserNameRules(string name)
     {
-        if (Options.ValidCharactersRegex.Matches(name).Count != 1)
+        if (Options.ValidCharactersRegex.Matches(name)
+                   .Count
+            != 1)
             return new CredentialValidationResult
             {
                 Code = CredentialValidationResult.FailureCode.InvalidUsername,
                 FailureMessage = "Invalid characters detected in username"
             };
 
-        if (Options.ValidFormatRegex.Matches(name).Count != 1)
+        if (Options.ValidFormatRegex.Matches(name)
+                   .Count
+            != 1)
             return new CredentialValidationResult
             {
                 Code = CredentialValidationResult.FailureCode.InvalidUsername,
@@ -364,6 +399,7 @@ public sealed class AccessManager : BackgroundService, IAccessManager
     private sealed class CredentialFailureDetails
     {
         internal required int FailureCount { get; set; }
+
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         internal required string IpAddress { get; init; }
         internal required DateTime MostRecentFailureTime { get; set; }
