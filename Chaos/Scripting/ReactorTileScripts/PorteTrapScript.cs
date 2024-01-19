@@ -106,7 +106,7 @@ If this reactor was created through a script, you must specify the owner in the 
             TriggerCount++;
 
             if (TriggerCount >= MaxTriggers)
-                Map.RemoveObject(Subject);
+                Map.RemoveEntity(Subject);
         }
     }
 
@@ -129,7 +129,7 @@ If this reactor was created through a script, you must specify the owner in the 
             Timer.Update(delta);
 
             if (Timer.IntervalElapsed)
-                Map.RemoveObject(Subject);
+                Map.RemoveEntity(Subject);
         }
     }
 

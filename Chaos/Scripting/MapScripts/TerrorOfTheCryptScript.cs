@@ -152,7 +152,7 @@ public class TerrorOfTheCryptScript : MapScriptBase
                     monster.StatSheet.SetHealthPct(100);
                     monster.StatSheet.SetManaPct(100);
                     // Add the monster to the subject
-                    Subject.AddObject(monster, monster);
+                    Subject.AddEntity(monster, monster);
                     // Set the state to spawned
                     State = ScriptState.Spawned;
                     // Reset the animation index
@@ -170,7 +170,7 @@ public class TerrorOfTheCryptScript : MapScriptBase
 
                     // Remove all monsters from the subject
                     foreach (var monster in monsters)
-                        Subject.RemoveObject(monster);
+                        Subject.RemoveEntity(monster);
 
                     // Set the state to dormant
                     State = ScriptState.Dormant;

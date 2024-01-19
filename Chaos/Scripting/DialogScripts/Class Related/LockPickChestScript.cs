@@ -67,7 +67,7 @@ public class LockPickChestScript : DialogScriptBase
             {
                 case MapEntity mapEntity:
                 {
-                    mapEntity.MapInstance.RemoveObject(mapEntity);
+                    mapEntity.MapInstance.RemoveEntity(mapEntity);
 
                     break;
                 }

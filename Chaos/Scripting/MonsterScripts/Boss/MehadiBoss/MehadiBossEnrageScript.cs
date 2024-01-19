@@ -40,7 +40,7 @@ public sealed class MehadiBossEnrageScript : MonsterScriptBase
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("anala_viper", Subject.MapInstance, point);
-                Subject.MapInstance.AddObject(mobs, point);
+                Subject.MapInstance.AddEntity(mobs, point);
             }
         }
 
@@ -63,7 +63,7 @@ public sealed class MehadiBossEnrageScript : MonsterScriptBase
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("mehadi_frog", Subject.MapInstance, point);
-                Subject.MapInstance.AddObject(mobs, point);
+                Subject.MapInstance.AddEntity(mobs, point);
             }
 
             Subject.StatSheet.AddBonus(attrib);
@@ -98,7 +98,7 @@ public sealed class MehadiBossEnrageScript : MonsterScriptBase
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("mehadi_shrieker", Subject.MapInstance, point);
-                Subject.MapInstance.AddObject(mobs, point);
+                Subject.MapInstance.AddEntity(mobs, point);
             }
 
             Subject.StatSheet.AddBonus(attrib);

@@ -36,7 +36,7 @@ public sealed class BunnyBoss3EnrageScript : MonsterScriptBase
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("bunny3-2", Subject.MapInstance, point);
-                Subject.MapInstance.AddObject(mobs, point);
+                Subject.MapInstance.AddEntity(mobs, point);
             }
 
             Subject.Animate(UpgradeAnimation);
@@ -51,7 +51,7 @@ public sealed class BunnyBoss3EnrageScript : MonsterScriptBase
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("bunny3-3", Subject.MapInstance, point);
-                Subject.MapInstance.AddObject(mobs, point);
+                Subject.MapInstance.AddEntity(mobs, point);
             }
 
             Subject.Animate(UpgradeAnimation);
@@ -66,7 +66,7 @@ public sealed class BunnyBoss3EnrageScript : MonsterScriptBase
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("bunny3-4", Subject.MapInstance, point);
-                Subject.MapInstance.AddObject(mobs, point);
+                Subject.MapInstance.AddEntity(mobs, point);
             }
 
             Subject.Animate(UpgradeAnimation);

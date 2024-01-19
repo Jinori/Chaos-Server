@@ -5,6 +5,6 @@ namespace Chaos.Servers.Abstractions;
 
 public interface ILobbyServer : IServer<ILobbyClient>
 {
-    ValueTask OnConnectionInfoRequest(ILobbyClient client, in ClientPacket packet);
-    ValueTask OnServerTableRequest(ILobbyClient client, in ClientPacket packet);
+    ValueTask OnConnectionInfoRequest(ILobbyClient client, in Packet packet);
+    ValueTask OnServerTableRequest(ILobbyClient client, in Packet packet);
 }

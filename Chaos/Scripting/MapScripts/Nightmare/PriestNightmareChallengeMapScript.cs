@@ -230,7 +230,7 @@ public class PriestNightmareChallengeMapScript : MapScriptBase
 
                         // Remove all monsters from the subject
                         foreach (var monster in monsters)
-                            Subject.RemoveObject(monster);
+                            Subject.RemoveEntity(monster);
 
                         // Set the state to dormant
                         State = ScriptState.Dormant;

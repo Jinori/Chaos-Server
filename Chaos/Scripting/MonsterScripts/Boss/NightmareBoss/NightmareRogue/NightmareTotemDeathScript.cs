@@ -30,7 +30,7 @@ public sealed class NightmareTotemDeathScript : MonsterScriptBase
     /// <inheritdoc />
     public override void OnDeath()
     {
-        if (!Map.RemoveObject(Subject))
+        if (!Map.RemoveEntity(Subject))
             return;
 
         var nightmaregearDictionary = new Dictionary<(BaseClass, Gender), string[]>

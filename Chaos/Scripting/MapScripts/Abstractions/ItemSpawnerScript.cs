@@ -69,7 +69,7 @@ public abstract class ItemSpawnerScript : MapScriptBase
                 var item = ItemFactory.Create(ItemTemplateKey);
                 var groundItem = new GroundItem(item, Subject, point);
 
-                Subject.AddObject(groundItem, point);
+                Subject.AddEntity(groundItem, point);
             }
         }
     }

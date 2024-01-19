@@ -125,7 +125,7 @@ public class NightmareBossMapScript : MapScriptBase
                             };
 
                             var monster = MonsterFactory.Create(monsterName, Subject, new Point(5, 5));
-                            Subject.AddObject(monster, monster);
+                            Subject.AddEntity(monster, monster);
                         }
                         // Set the state to spawned
                         State = ScriptState.Spawned;
@@ -144,7 +144,7 @@ public class NightmareBossMapScript : MapScriptBase
 
                         // Remove all monsters from the subject
                         foreach (var monster in monsters)
-                            Subject.RemoveObject(monster);
+                            Subject.RemoveEntity(monster);
 
                         // Set the state to dormant
                         State = ScriptState.Dormant;

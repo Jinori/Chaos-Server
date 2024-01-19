@@ -138,7 +138,7 @@ public class AreiniPetsScript : DialogScriptBase
 
         foreach (var monster in monsters)
             if (monster.Name.Contains(source.Name))
-                monster.MapInstance.RemoveObject(monster);
+                monster.MapInstance.RemoveEntity(monster);
     }
 
     private void RemoveOption(string optionName)

@@ -68,12 +68,12 @@ public sealed class MonsterRacingScript : MerchantScriptBase
         monsterSix.Direction = Direction.Right;
         monsterSix.Sprite = (ushort)IntegerRandomizer.RollSingle(965);
 
-        Subject.MapInstance.AddObject(monsterOne, racingStallMilk);
-        Subject.MapInstance.AddObject(monsterTwo, racingStallSky);
-        Subject.MapInstance.AddObject(monsterThree, racingStallSand);
-        Subject.MapInstance.AddObject(monsterFour, racingStallWater);
-        Subject.MapInstance.AddObject(monsterFive, racingStallGrass);
-        Subject.MapInstance.AddObject(monsterSix, racingStallLava);
+        Subject.MapInstance.AddEntity(monsterOne, racingStallMilk);
+        Subject.MapInstance.AddEntity(monsterTwo, racingStallSky);
+        Subject.MapInstance.AddEntity(monsterThree, racingStallSand);
+        Subject.MapInstance.AddEntity(monsterFour, racingStallWater);
+        Subject.MapInstance.AddEntity(monsterFive, racingStallGrass);
+        Subject.MapInstance.AddEntity(monsterSix, racingStallLava);
 
         CreatedMonsters = true;
     }

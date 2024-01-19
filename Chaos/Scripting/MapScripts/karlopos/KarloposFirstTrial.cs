@@ -75,11 +75,11 @@ public class KarloposFirstTrial : MapScriptBase
                     var monster4 = MonsterFactory.Create("karlopos_spore", Subject, new Point(6, 2));
                     var monster5 = MonsterFactory.Create("karlopos_spore", Subject, new Point(7, 2));
                     
-                    Subject.AddObject(monster1, monster1);
-                    Subject.AddObject(monster2, monster2);
-                    Subject.AddObject(monster3, monster3);
-                    Subject.AddObject(monster4, monster4);
-                    Subject.AddObject(monster5, monster5);
+                    Subject.AddEntity(monster1, monster1);
+                    Subject.AddEntity(monster2, monster2);
+                    Subject.AddEntity(monster3, monster3);
+                    Subject.AddEntity(monster4, monster4);
+                    Subject.AddEntity(monster5, monster5);
                     
                         // Set the state to spawned
                         State = ScriptState.Spawned;
@@ -95,7 +95,7 @@ public class KarloposFirstTrial : MapScriptBase
 
                         // Remove all monsters from the subject
                         foreach (var monster in monsters)
-                            Subject.RemoveObject(monster);
+                            Subject.RemoveEntity(monster);
 
                         // Set the state to dormant
                         State = ScriptState.Dormant;

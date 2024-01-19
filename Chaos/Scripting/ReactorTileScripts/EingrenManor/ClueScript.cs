@@ -134,10 +134,10 @@ public class ClueScript : ReactorTileScriptBase
                         var monster4 = _monsterFactory.Create("firephasedGhost", aisling.MapInstance, new Point(5, 5));
                         monster4.AggroRange = 10;
                         monster4.Experience = 2000;
-                        aisling.MapInstance.AddObject(monster, monster);
-                        aisling.MapInstance.AddObject(monster2, monster2);
-                        aisling.MapInstance.AddObject(monster3, monster3);
-                        aisling.MapInstance.AddObject(monster4, monster4);
+                        aisling.MapInstance.AddEntity(monster, monster);
+                        aisling.MapInstance.AddEntity(monster2, monster2);
+                        aisling.MapInstance.AddEntity(monster3, monster3);
+                        aisling.MapInstance.AddEntity(monster4, monster4);
 
                         foreach (var member in aisling.Group)
                         {

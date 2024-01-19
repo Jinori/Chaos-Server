@@ -36,7 +36,7 @@ public sealed class PetFollowScript : MonsterScriptBase
         
         if (ClientRegistry.GetClient(Subject.PetOwner.Client.Id) is null)
         {
-            Subject.MapInstance.RemoveObject(Subject);
+            Subject.MapInstance.RemoveEntity(Subject);
 
             return;
         }

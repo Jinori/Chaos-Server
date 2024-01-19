@@ -28,7 +28,7 @@ public class MilethAltarWorshipScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        aisling.MapInstance.RemoveObject(groundItem);
+        aisling.MapInstance.RemoveEntity(groundItem);
 
         ExperienceDistributionScript.GiveExp(aisling, groundItem.Item.Template is { BuyCost: < 1000, SellValue: < 1000 } ? 25 : 200);
 

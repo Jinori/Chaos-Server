@@ -55,7 +55,7 @@ public class PetLootScript : MonsterScriptBase
                 break;
             case <= 1:
             {
-                Map.RemoveObject(item);
+                Map.RemoveEntity(item);
                 var amount = item.Item.Template.SellValue / 75;
                 Subject.Gold += amount;
                 player.SendActiveMessage($"Gloop munched {amount} gold. Total gold so far is {Subject.Gold} gold.");

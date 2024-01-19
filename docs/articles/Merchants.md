@@ -49,7 +49,7 @@ public void Bar()
     var merchant = MerchantFactory.Create("myMerchantTemplateKey", mapInstance, point, extraScriptKeys);
     
     //the merchant is not automatically added to the map when created, so you must do so yourself
-    mapInstance.AddObject(merchant, point);
+    mapInstance.AddEntity(merchant, point);
 }
 ```
 

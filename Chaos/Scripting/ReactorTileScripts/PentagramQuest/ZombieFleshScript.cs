@@ -144,7 +144,7 @@ public class ZombieFleshScript : ReactorTileScriptBase
             }
         }
 
-        aisling.MapInstance.RemoveObject(groundItem);
+        aisling.MapInstance.RemoveEntity(groundItem);
     }
 
     private bool CheckPosition(Aisling player) =>

@@ -65,7 +65,7 @@ public class CasinoMonsterRaceLaneWaterScript : ReactorTileScriptBase
         var monsters = source.MapInstance.GetEntities<Monster>().Where(x => x.Template.TemplateKey == "amusementMonster");
 
         foreach (var monster in monsters)
-            monster.MapInstance.RemoveObject(monster);
+            monster.MapInstance.RemoveEntity(monster);
 
         MonsterHasWon = true;
 

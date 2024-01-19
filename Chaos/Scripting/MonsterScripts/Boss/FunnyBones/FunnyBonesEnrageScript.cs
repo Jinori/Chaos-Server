@@ -40,7 +40,7 @@ public sealed class FunnyBonesEnrageScript : MonsterScriptBase
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("crypt_bat5", Subject.MapInstance, point);
-                Subject.MapInstance.AddObject(mobs, point);
+                Subject.MapInstance.AddEntity(mobs, point);
             }
         }
 

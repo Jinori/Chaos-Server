@@ -311,7 +311,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
                 point = outline.PickRandom();
             while (!source.MapInstance.IsWalkable(point, terminus.Type));
 
-            source.MapInstance.AddObject(terminus, point);
+            source.MapInstance.AddEntity(terminus, point);
         }
         
         if (source?.MapInstance.Name.Equals("Nightmare") == true)

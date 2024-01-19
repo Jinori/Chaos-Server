@@ -64,7 +64,7 @@ public abstract class MerchantSpawnerScript : MapScriptBase
             {
                 var point = GenerateSpawnPoint(Subject.Template);
                 var merchant = MerchantFactory.Create(MerchantTemplateKey, Subject, point);
-                Subject.AddObject(merchant, point);
+                Subject.AddEntity(merchant, point);
             }
         }
     }

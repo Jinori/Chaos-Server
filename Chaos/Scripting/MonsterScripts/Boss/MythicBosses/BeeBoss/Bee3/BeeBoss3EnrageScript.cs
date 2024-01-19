@@ -40,7 +40,7 @@ public sealed class BeeBoss3EnrageScript : MonsterScriptBase
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("bee3-2", Subject.MapInstance, point);
-                Subject.MapInstance.AddObject(mobs, point);
+                Subject.MapInstance.AddEntity(mobs, point);
             }
         }
 

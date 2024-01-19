@@ -836,7 +836,7 @@ public class ArenaUndergroundScript : DialogScriptBase
                 if (!source.ActiveObject.SetIfNull(worldMap))
                     return;
 
-                source.MapInstance.RemoveObject(source);
+                source.MapInstance.RemoveEntity(source);
                 source.Client.SendWorldMap(worldMap);
 
                 break;

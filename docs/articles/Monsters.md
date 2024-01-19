@@ -48,7 +48,7 @@ public void Bar()
     var monster = MonsterFactory.Create("myMonsterTemplateKey", mapInstance, point, extraScriptKeys);
     
     //the monster is not automatically added to the map when created, so you must do so yourself
-    mapInstance.AddObject(monster, point);
+    mapInstance.AddEntity(monster, point);
 }
 ```
 

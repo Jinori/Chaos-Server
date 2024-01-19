@@ -12,7 +12,7 @@ public sealed class PetDeathScript : MonsterScriptBase
     public override void OnDeath()
     {
         Subject.PetOwner = null;
-        Map.RemoveObject(Subject);
+        Map.RemoveEntity(Subject);
 
         if (Subject.TryDropGold(Subject, Subject.Gold, out var money))
             Subject.PetOwner?.SendActiveMessage($"Your pet died and dropped {money?.Amount} gold!");

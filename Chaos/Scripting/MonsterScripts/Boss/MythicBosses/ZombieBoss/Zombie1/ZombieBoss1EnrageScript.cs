@@ -37,7 +37,7 @@ public sealed class ZombieBoss1EnrageScript : MonsterScriptBase
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("zombie1-4", Subject.MapInstance, point);
-                Subject.MapInstance.AddObject(mobs, point);
+                Subject.MapInstance.AddEntity(mobs, point);
             }
         }
 
@@ -51,7 +51,7 @@ public sealed class ZombieBoss1EnrageScript : MonsterScriptBase
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("zombie1-4", Subject.MapInstance, point);
-                Subject.MapInstance.AddObject(mobs, point);
+                Subject.MapInstance.AddEntity(mobs, point);
             }
         }
 
@@ -66,7 +66,7 @@ public sealed class ZombieBoss1EnrageScript : MonsterScriptBase
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("zombie1-4", Subject.MapInstance, point);
-                Subject.MapInstance.AddObject(mobs, point);
+                Subject.MapInstance.AddEntity(mobs, point);
             }
         }
     }

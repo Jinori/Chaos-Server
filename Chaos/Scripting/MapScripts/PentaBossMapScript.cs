@@ -113,7 +113,7 @@ public class PentaBossMapScript : MapScriptBase
                         // Create a monster
                         var monster = MonsterFactory.Create("souleater", Subject, new Point(8, 8));
 
-                        Subject.AddObject(monster, monster);
+                        Subject.AddEntity(monster, monster);
                         // Set the state to spawned
                         State = ScriptState.Spawned;
                         // Reset the animation index
@@ -131,7 +131,7 @@ public class PentaBossMapScript : MapScriptBase
 
                         // Remove all monsters from the subject
                         foreach (var monster in monsters)
-                            Subject.RemoveObject(monster);
+                            Subject.RemoveEntity(monster);
 
                         // Set the state to dormant
                         State = ScriptState.Dormant;

@@ -49,7 +49,7 @@ public class SummonPetScript : ConfigurableSkillScriptBase
 
         foreach (var monster in monsters)
             if (monster.Name.Contains(context.Source.Name))
-                monster.MapInstance.RemoveObject(monster);
+                monster.MapInstance.RemoveEntity(monster);
     }
 
     private void SpawnNewPet(ActivationContext context)
@@ -145,6 +145,6 @@ public class SummonPetScript : ConfigurableSkillScriptBase
                 }
         }
 
-        context.Source.MapInstance.AddObject(newMonster, new Point(context.Source.X, context.Source.Y));
+        context.Source.MapInstance.AddEntity(newMonster, new Point(context.Source.X, context.Source.Y));
     }
 }

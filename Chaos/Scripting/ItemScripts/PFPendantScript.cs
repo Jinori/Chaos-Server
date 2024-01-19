@@ -84,7 +84,7 @@ public class PFPendantScript : ItemScriptBase
         mantis.Experience = 1000;
         mantis.SetLocation(point);
 
-        source.MapInstance.AddObject(mantis, point);
+        source.MapInstance.AddEntity(mantis, point);
         mantis.Animate(GetMonsterAnimation());
 
         foreach (var player in mapInstance.GetEntities<Aisling>())

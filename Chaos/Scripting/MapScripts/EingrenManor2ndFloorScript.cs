@@ -59,7 +59,7 @@ public class EingrenManor2ndFloorScript : MapScriptBase
             var randomMonsterType = monsterTypes[Random.Next(0, monsterTypes.Length)];
             var point = Subject.GetRandomWalkablePoint();
             var monster = MonsterFactory.Create(randomMonsterType, Subject, point);
-            Subject.AddObject(monster, point);
+            Subject.AddEntity(monster, point);
         }
     }
 

@@ -10,7 +10,7 @@ public abstract class NamedEntity(
     MapInstance mapInstance,
     IPoint point) : VisibleEntity(sprite, mapInstance, point), IDeltaUpdatable
 {
-    public string Name { get; protected set; } = name;
+    public string Name { get; set; } = name;
 
     /// <inheritdoc />
     public abstract void Update(TimeSpan delta);

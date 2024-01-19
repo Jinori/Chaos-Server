@@ -46,7 +46,7 @@ public void Bar()
     var reactorTile = ReactorTileFactory.Create("myReactorTileTemplateKey", mapInstance, point, extraScriptKeys, creatureOwner);
     
     //the reactor tile is not automatically added to the map when created, so you must do so yourself
-    mapInstance.AddObject(reactorTile, point);
+    mapInstance.AddEntity(reactorTile, point);
 }
 ```
 
