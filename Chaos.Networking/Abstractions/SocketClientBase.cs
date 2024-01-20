@@ -62,7 +62,7 @@ public abstract class SocketClientBase : ISocketClient, IDisposable
     private Memory<byte> Memory => MemoryOwner.Memory;
 
     /// <inheritdoc />
-    public IPAddress RemoteIp => (Socket.RemoteEndPoint as IPEndPoint)?.Address!;
+    public IPAddress RemoteIp => (Socket?.RemoteEndPoint as IPEndPoint)?.Address!;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="SocketClientBase" /> class.

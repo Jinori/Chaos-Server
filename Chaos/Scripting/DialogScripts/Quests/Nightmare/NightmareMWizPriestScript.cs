@@ -48,10 +48,14 @@ public class NightmareMWizPriestScript : DialogScriptBase
                         source.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareWin2);
                         source.TryGiveGamePoints(20);
                         source.SendOrangeBarMessage("You received 20 Game Points.");
-
                         return;
+                        
+                        case true when (stage == NightmareQuestStage.CompletedNightmareWin2):
+                            Subject.Reply(source, "I'll always remember you Aisling.");
+                        return;
+                        
                     case true when (stage == NightmareQuestStage.CompletedNightmareLoss1):
-                        Subject.Reply(source, "You may have lost the battle, but you haven't lost the war. Press on and try to forget about it.", "gregory_initial");
+                        Subject.Reply(source, "You may have lost the battle, but you haven't lost the war. Press on and try to forget about it.");
 
                         return;
                 }
@@ -75,10 +79,10 @@ public class NightmareMWizPriestScript : DialogScriptBase
                     var mapInstance2 = _simpleCache.Get<MapInstance>("cryptpriestchallenge");
                     source.TraverseMap(mapInstance2, point2, false);
                     source.Trackers.Enums.Set(NightmareQuestStage.EnteredDream);
-                    source.Inventory.Remove("Essence of Theselene");
-                    source.Inventory.Remove("Essence of Miraelis");
-                    source.Inventory.Remove("Essence of Skandara");
-                    source.Inventory.Remove("Essence of Serendael");
+                    source.Inventory.RemoveQuantity("Essence of Theselene", 1);
+                    source.Inventory.RemoveQuantity("Essence of Miraelis", 1);
+                    source.Inventory.RemoveQuantity("Essence of Skandara", 1);
+                    source.Inventory.RemoveQuantity("Essence of Serendael", 1);
                     source.UserStatSheet.SetHealthPct(100);
                     source.Client.SendAttributes(StatUpdateType.Vitality);
                 }

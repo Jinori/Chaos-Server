@@ -38,7 +38,7 @@ public class MonkFormDedicationScript : DialogScriptBase
                         source.Trackers.Enums.Set(MonkElementForm.Fire);
                         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Fire!");
 
-                        source.Legend.AddOrAccumulate(
+                        source.Legend.AddUnique(
                             new LegendMark(
                                 "Fire Elemental Dedication",
                                 "fireMonk",
@@ -55,7 +55,7 @@ public class MonkFormDedicationScript : DialogScriptBase
                         source.Trackers.Enums.Set(MonkElementForm.Water);
                         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Water!");
 
-                        source.Legend.AddOrAccumulate(
+                        source.Legend.AddUnique(
                             new LegendMark(
                                 "Water Elemental Dedication",
                                 "waterMonk",
@@ -72,7 +72,7 @@ public class MonkFormDedicationScript : DialogScriptBase
                         source.Trackers.Enums.Set(MonkElementForm.Earth);
                         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Earth!");
 
-                        source.Legend.AddOrAccumulate(
+                        source.Legend.AddUnique(
                             new LegendMark(
                                 "Earth Elemental Dedication",
                                 "earthMonk",
@@ -89,7 +89,7 @@ public class MonkFormDedicationScript : DialogScriptBase
                         source.Trackers.Enums.Set(MonkElementForm.Air);
                         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've dedicated your spark to Air!");
 
-                        source.Legend.AddOrAccumulate(
+                        source.Legend.AddUnique(
                             new LegendMark(
                                 "Air Elemental Dedication",
                                 "airMonk",

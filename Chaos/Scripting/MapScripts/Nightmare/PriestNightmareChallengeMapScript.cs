@@ -65,10 +65,8 @@ public class PriestNightmareChallengeMapScript : MapScriptBase
         };
     }
 
-    private IPoint GenerateSpawnPoint() => Subject.Template.Bounds.GetRandomPoint(PointValidator);
-
-    private bool PointValidator(Point point) => SpawnArea is null || SpawnArea.Contains(point);
-
+    private IPoint GenerateSpawnPoint() => (SpawnArea ?? Subject.Template.Bounds).GetRandomPoint();
+    
     private void SpawnMonsters()
     {
         var monsters = new List<Monster>();
@@ -78,7 +76,7 @@ public class PriestNightmareChallengeMapScript : MapScriptBase
             var point = GenerateSpawnPoint();
 
             var monster = MonsterFactory.Create(
-                "nightmare_murauder",
+                "nightmare_cthonic",
                 Subject,
                 point);
 
@@ -86,6 +84,74 @@ public class PriestNightmareChallengeMapScript : MapScriptBase
         }
 
         Subject.AddObjects(monsters);
+    }
+    
+    private void SpawnTeam()
+    {
+        var teammates = new List<Monster>();
+
+        var target = Subject.GetEntities<Aisling>().Single();
+        
+        var teammatespawnRectangle = new Rectangle(target, 5, 5);
+
+        var point = teammatespawnRectangle.GetRandomPoint(point1 => point1 != target);
+            
+            if (Subject.GetEntities<Aisling>().Any(a => a.Gender == Gender.Male))
+            {
+                var monster1 = MonsterFactory.Create(
+                    "nightmare_malewarrior",
+                    Subject,
+                    point);
+                
+                var monster2 = MonsterFactory.Create(
+                    "nightmare_malemonk",
+                    Subject,
+                    point);
+                
+                var monster3 = MonsterFactory.Create(
+                    "nightmare_malerogue",
+                    Subject,
+                    point);
+                
+                var monster4 = MonsterFactory.Create(
+                    "nightmare_malewizard",
+                    Subject,
+                    point);
+                
+                teammates.Add(monster1);
+                teammates.Add(monster2);
+                teammates.Add(monster3);
+                teammates.Add(monster4);
+            }
+            else
+            {
+                var monster1 = MonsterFactory.Create(
+                    "nightmare_femalewarrior",
+                    Subject,
+                    point);
+                
+                var monster2 = MonsterFactory.Create(
+                    "nightmare_femalemonk",
+                    Subject,
+                    point);
+                
+                var monster3 = MonsterFactory.Create(
+                    "nightmare_femalerogue",
+                    Subject,
+                    point);
+                
+                var monster4 = MonsterFactory.Create(
+                    "nightmare_femalewizard",
+                    Subject,
+                    point);
+                
+                teammates.Add(monster1);
+                teammates.Add(monster2);
+                teammates.Add(monster3);
+                teammates.Add(monster4);
+            }
+
+        Subject.AddObjects(teammates);
     }
 
     private void SpawnWalls()
@@ -159,13 +225,15 @@ public class PriestNightmareChallengeMapScript : MapScriptBase
                         StartTime = null;
                         // Set the state to spawning
                         State = ScriptState.Spawning;
+                        
+                        SpawnTeam();
 
                         // Get all Aislings in the subject
                         foreach (var aisling in Subject.GetEntities<Aisling>())
                             // Send an orange bar message to the Aisling
                             aisling.Client.SendServerMessage(
                                 ServerMessageType.OrangeBar1,
-                                "Clouds of smoke begin to surround you from all directions...");
+                                "Your group has arrived. Keep them alive!");
                     }
 
                     break;
@@ -193,7 +261,7 @@ public class PriestNightmareChallengeMapScript : MapScriptBase
                         foreach (var aisling in Subject.GetEntities<Aisling>())
                         {
                             aisling.Trackers.Enums.Set(NightmareQuestStage.SpawnedNightmare);
-                            aisling.SendOrangeBarMessage("The smoke clears... you are not alone. Defend the Totem!");
+                            aisling.SendOrangeBarMessage("Enemies incoming! Protect your group.");
                         }
 
                         SpawnMonsters();
