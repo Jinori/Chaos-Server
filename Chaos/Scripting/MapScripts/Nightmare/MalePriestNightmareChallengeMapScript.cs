@@ -16,7 +16,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MapScripts.Nightmare;
 
-public class PriestNightmareChallengeMapScript : MapScriptBase
+public class MalePriestNightmareChallengeMapScript : MapScriptBase
 {
     public const int UPDATE_INTERVAL_MS = 1;
     private readonly Animation Animation;
@@ -37,7 +37,7 @@ public class PriestNightmareChallengeMapScript : MapScriptBase
     private ScriptState State;
     public required Rectangle? SpawnArea { get; set; }
 
-    public PriestNightmareChallengeMapScript(
+    public MalePriestNightmareChallengeMapScript(
         MapInstance subject,
         IMonsterFactory monsterFactory,
         IItemFactory itemFactory,
@@ -56,7 +56,7 @@ public class PriestNightmareChallengeMapScript : MapScriptBase
         ReverseOutline1 = ShapeOutline1.AsEnumerable().Reverse().ToList();
         UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(200));
         MonsterDelay = new IntervalTimer(TimeSpan.FromSeconds(30));
-        NightmareComplete = new IntervalTimer(TimeSpan.FromMinutes(6));
+        NightmareComplete = new IntervalTimer(TimeSpan.FromMinutes(30));
 
         Animation = new Animation
         {
@@ -93,30 +93,33 @@ public class PriestNightmareChallengeMapScript : MapScriptBase
         var target = Subject.GetEntities<Aisling>().Single();
         
         var teammatespawnRectangle = new Rectangle(target, 5, 5);
-
-        var point = teammatespawnRectangle.GetRandomPoint(point1 => point1 != target);
-            
+        
+        var point1 = teammatespawnRectangle.GetRandomPoint(point1 => point1 != target);
+        var point2 = teammatespawnRectangle.GetRandomPoint(point2 => point2 != target);
+        var point3 = teammatespawnRectangle.GetRandomPoint(point3 => point3 != target);
+        var point4 = teammatespawnRectangle.GetRandomPoint(point4 => point4 != target);
+        
             if (Subject.GetEntities<Aisling>().Any(a => a.Gender == Gender.Male))
             {
                 var monster1 = MonsterFactory.Create(
                     "nightmare_malewarrior",
                     Subject,
-                    point);
+                    point1);
                 
                 var monster2 = MonsterFactory.Create(
                     "nightmare_malemonk",
                     Subject,
-                    point);
+                    point2);
                 
                 var monster3 = MonsterFactory.Create(
                     "nightmare_malerogue",
                     Subject,
-                    point);
+                    point3);
                 
                 var monster4 = MonsterFactory.Create(
                     "nightmare_malewizard",
                     Subject,
-                    point);
+                    point4);
                 
                 teammates.Add(monster1);
                 teammates.Add(monster2);
@@ -128,22 +131,22 @@ public class PriestNightmareChallengeMapScript : MapScriptBase
                 var monster1 = MonsterFactory.Create(
                     "nightmare_femalewarrior",
                     Subject,
-                    point);
+                    point1);
                 
                 var monster2 = MonsterFactory.Create(
                     "nightmare_femalemonk",
                     Subject,
-                    point);
+                    point2);
                 
                 var monster3 = MonsterFactory.Create(
                     "nightmare_femalerogue",
                     Subject,
-                    point);
+                    point3);
                 
                 var monster4 = MonsterFactory.Create(
                     "nightmare_femalewizard",
                     Subject,
-                    point);
+                    point4);
                 
                 teammates.Add(monster1);
                 teammates.Add(monster2);
@@ -233,7 +236,7 @@ public class PriestNightmareChallengeMapScript : MapScriptBase
                             // Send an orange bar message to the Aisling
                             aisling.Client.SendServerMessage(
                                 ServerMessageType.OrangeBar1,
-                                "Your group has arrived. Keep them alive!");
+                                "Your group has arrived. Keep them alive for 6 minutes!");
                     }
 
                     break;

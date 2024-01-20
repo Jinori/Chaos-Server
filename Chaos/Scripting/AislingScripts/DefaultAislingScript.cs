@@ -318,13 +318,13 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         {
             var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
             var pointS = new Point(5, 7);
-
+            
+            Subject.TraverseMap(mapInstance, pointS);
             Subject.IsDead = false;
             Subject.StatSheet.AddHp(1);
             Subject.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareLoss1);
             Subject.Client.SendAttributes(StatUpdateType.Vitality);
             Subject.SendOrangeBarMessage("You have been defeated by your Nightmares.");
-            Subject.TraverseMap(mapInstance, pointS);
             Subject.Legend.AddOrAccumulate(
                 new LegendMark(
                     "Defeated by their Nightmares.",

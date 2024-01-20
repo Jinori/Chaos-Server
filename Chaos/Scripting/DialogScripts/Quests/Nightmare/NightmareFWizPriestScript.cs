@@ -107,8 +107,8 @@ public class NightmareFWizPriestScript : DialogScriptBase
                 {
                     Subject.Close(source);
                     Point point2;
-                    point2 = new Point(5, 5);
-                    var mapInstance2 = _simpleCache.Get<MapInstance>("nightmareboss");
+                    point2 = new Point(14, 12);
+                    var mapInstance2 = _simpleCache.Get<MapInstance>("femalepriestnightmarechallenge");
                     source.TraverseMap(mapInstance2, point2, false);
                     source.Trackers.Enums.Set(NightmareQuestStage.EnteredDream);
                     source.UserStatSheet.SetHealthPct(100);

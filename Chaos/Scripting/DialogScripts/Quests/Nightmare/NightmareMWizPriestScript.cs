@@ -75,8 +75,8 @@ public class NightmareMWizPriestScript : DialogScriptBase
                 if ((hasStage && (stage == NightmareQuestStage.MetRequirementsToEnter1)) || (stage == NightmareQuestStage.EnteredDream) || (stage == NightmareQuestStage.SpawnedNightmare))
                 {
                     Point point2;
-                    point2 = new Point(3, 19);
-                    var mapInstance2 = _simpleCache.Get<MapInstance>("cryptpriestchallenge");
+                    point2 = new Point(13, 10);
+                    var mapInstance2 = _simpleCache.Get<MapInstance>("malecryptchallenge");
                     source.TraverseMap(mapInstance2, point2, false);
                     source.Trackers.Enums.Set(NightmareQuestStage.EnteredDream);
                     source.Inventory.RemoveQuantity("Essence of Theselene", 1);
