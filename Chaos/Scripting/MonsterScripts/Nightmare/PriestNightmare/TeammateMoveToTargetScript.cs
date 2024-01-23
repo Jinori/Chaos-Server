@@ -31,12 +31,25 @@ public class TeammateMoveToTargetScript : MonsterScriptBase
 
         var distance = Subject.DistanceFrom(Target);
 
-        if (distance != 1)
-            Subject.Pathfind(Target);
+        if (Subject.Template.TemplateKey.Contains("wizard"))
+        {
+            if (distance <= 2)
+            {
+                var pathtopoint = Subject.SpiralSearch(3).OrderByDescending(point => point.DistanceFrom(Target))
+                    .FirstOrDefault(point => Subject.MapInstance.IsWalkable(point, Subject.Type));
+            
+                Subject.Pathfind(pathtopoint);
+            }
+        }
         else
         {
-            var direction = Target.DirectionalRelationTo(Subject);
-            Subject.Turn(direction);
+            if (distance != 1)
+                Subject.Pathfind(Target);
+            else
+            {
+                var direction = Target.DirectionalRelationTo(Subject);
+                Subject.Turn(direction);
+            } 
         }
 
         Subject.SkillTimer.Reset();

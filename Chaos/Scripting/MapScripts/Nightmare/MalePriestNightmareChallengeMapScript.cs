@@ -149,13 +149,9 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
                     point4);
                 
                 teammates.Add(monster1);
-                monster1.PetOwner = target;
                 teammates.Add(monster2);
-                monster2.PetOwner = target;
                 teammates.Add(monster3);
-                monster3.PetOwner = target;
                 teammates.Add(monster4);
-                monster4.PetOwner = target;
             }
 
         Subject.AddObjects(teammates);
