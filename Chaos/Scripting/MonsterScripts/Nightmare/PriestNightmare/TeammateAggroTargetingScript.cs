@@ -25,7 +25,7 @@ public sealed class TeammateAggroTargetingScript : MonsterScriptBase
             return null;
 
         return Map.GetEntitiesWithinRange<Monster>(owner)
-                  .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id));
+                  .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id) != x.Script.Is<NightmareTeammateScript>());
     }
 
     private Monster? FindClosestMonster() =>
@@ -34,6 +34,8 @@ public sealed class TeammateAggroTargetingScript : MonsterScriptBase
            .Where(
                obj => !obj.Equals(Subject)
                       && obj.IsAlive
+                      && !obj.Script.Is<NightmareTeammateScript>()
+                      && !obj.Name.Contains("Wind Wall")
                       && Subject.ApproachTime.TryGetValue(obj.Id, out var time)
                       && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
            .ClosestOrDefault(Subject);
