@@ -1,8 +1,10 @@
+using Chaos.Collections;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -35,6 +37,7 @@ public sealed class TeammateAggroTargetingScript : MonsterScriptBase
                obj => !obj.Equals(Subject)
                       && obj.IsAlive
                       && !obj.Script.Is<NightmareTeammateScript>()
+                      && !obj.Script.Is<PetScript>()
                       && !obj.Name.Contains("Wind Wall")
                       && Subject.ApproachTime.TryGetValue(obj.Id, out var time)
                       && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
@@ -73,7 +76,7 @@ public sealed class TeammateAggroTargetingScript : MonsterScriptBase
             return;
 
         var owner = Subject.PetOwner;
-
+        
         Target = FindAggroedMonster(owner) ?? FindClosestMonster() ?? Target;
 
         //since we grabbed a new target, give them some initial aggro so we stick to them

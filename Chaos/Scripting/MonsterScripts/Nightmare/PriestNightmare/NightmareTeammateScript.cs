@@ -9,6 +9,7 @@ public class NightmareTeammateScript : CompositeMonsterScript
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
+        GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(TeammateAggroTargetingScript)),
         GetScriptKey(typeof(TeammateMoveToTargetScript)),
         GetScriptKey(typeof(TeammateAttackingScript)),

@@ -76,7 +76,7 @@ public class NightmareMWizPriestScript : DialogScriptBase
                 {
                     Point point2;
                     point2 = new Point(13, 10);
-                    var mapInstance2 = _simpleCache.Get<MapInstance>("malecryptchallenge");
+                    var mapInstance2 = _simpleCache.Get<MapInstance>("malepriestnightmarechallenge");
                     source.TraverseMap(mapInstance2, point2, false);
                     source.Trackers.Enums.Set(NightmareQuestStage.EnteredDream);
                     source.Inventory.RemoveQuantity("Essence of Theselene", 1);

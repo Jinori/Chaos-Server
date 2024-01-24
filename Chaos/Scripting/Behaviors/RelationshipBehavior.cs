@@ -225,7 +225,7 @@ public class RelationshipBehavior
         if (source.Script.Is<PetScript>() ^ target.Script.Is<PetScript>())
             return true;
         
-        if (source.Script.Is<NightmareTotemScript>()|| target.Script.Is<NightmareTotemScript>())
+        if (source.Script.Is<NightmareTotemScript>() ^ target.Script.Is<NightmareTotemScript>())
             return true;
 
         if (source.Script.Is<NightmareTeammateScript>() ^ target.Script.Is<NightmareTeammateScript>())
