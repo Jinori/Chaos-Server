@@ -84,7 +84,12 @@ public class NewKillCounterScript : ConfigurableMonsterScriptBase
 
     #region ScriptVars
     public string? QuestEnum { get; init; }
+    public string? Leader { get; init; }
+
     public string Counter { get; init; } = null!;
+
     public int QuantityReq { get; set; }
+
+    public bool IsMythicBoss { get; set; }
     #endregion
 }

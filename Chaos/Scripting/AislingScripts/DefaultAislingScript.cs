@@ -327,7 +327,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             Subject.SendOrangeBarMessage("You have been defeated by your Nightmares.");
             Subject.Legend.AddOrAccumulate(
                 new LegendMark(
-                    "Succumbed to their Nightmares",
+                    "Defeated by their Nightmares.",
                     "Nightmare",
                     MarkIcon.Victory,
                     MarkColor.White,

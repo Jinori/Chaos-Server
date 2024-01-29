@@ -105,20 +105,11 @@ public class NightmareFWizPriestScript : DialogScriptBase
             {
                 if ((hasStage && (stage == NightmareQuestStage.MetRequirementsToEnter1)) || (stage == NightmareQuestStage.EnteredDream) || (stage == NightmareQuestStage.SpawnedNightmare))
                 {
+                    Subject.Close(source);
                     Point point2;
                     point2 = new Point(14, 12);
-                    
-                    if (source.UserStatSheet.BaseClass == BaseClass.Wizard)
-                    {
-                        var mapInstance2 = _simpleCache.Get<MapInstance>("femalewizardnightmarechallenge");
-                        source.TraverseMap(mapInstance2, point2, false);
-                    }
-
-                    if (source.UserStatSheet.BaseClass == BaseClass.Priest)
-                    {
-                        var mapInstance2 = _simpleCache.Get<MapInstance>("femalepriestnightmarechallenge");  
-                        source.TraverseMap(mapInstance2, point2, false);
-                    }
+                    var mapInstance2 = _simpleCache.Get<MapInstance>("femalepriestnightmarechallenge");
+                    source.TraverseMap(mapInstance2, point2, false);
                     source.Trackers.Enums.Set(NightmareQuestStage.EnteredDream);
                     source.UserStatSheet.SetHealthPct(100);
                     source.Client.SendAttributes(StatUpdateType.Vitality);

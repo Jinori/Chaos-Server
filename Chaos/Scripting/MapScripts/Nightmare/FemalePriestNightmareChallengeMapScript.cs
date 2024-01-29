@@ -21,7 +21,7 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
     public const int UPDATE_INTERVAL_MS = 1;
     private readonly Animation Animation;
     private readonly IIntervalTimer AnimationInterval;
-    private readonly ICircle AnimationShape1;
+    private readonly IRectangle AnimationShape1;
     protected readonly IExperienceDistributionScript ExperienceDistributionScript;
     private readonly IItemFactory ItemFactory;
     private readonly IIntervalTimer? MonsterDelay;
@@ -49,14 +49,14 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
         SimpleCache = simpleCache;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         MonsterFactory = monsterFactory;
-        StartDelay = TimeSpan.FromSeconds(7);
+        StartDelay = TimeSpan.FromSeconds(2);
         AnimationInterval = new IntervalTimer(TimeSpan.FromMilliseconds(100));
-        AnimationShape1 = new Circle(new Point(13, 10), 6);
+        AnimationShape1 = new Rectangle(new Point(12, 11), 5, 5);
         ShapeOutline1 = AnimationShape1.GetOutline().ToList();
         ReverseOutline1 = ShapeOutline1.AsEnumerable().Reverse().ToList();
         UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(200));
-        MonsterDelay = new IntervalTimer(TimeSpan.FromSeconds(20));
-        NightmareComplete = new IntervalTimer(TimeSpan.FromMinutes(6));
+        MonsterDelay = new IntervalTimer(TimeSpan.FromSeconds(30));
+        NightmareComplete = new IntervalTimer(TimeSpan.FromMinutes(30));
 
         Animation = new Animation
         {
@@ -71,12 +71,12 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
     {
         var monsters = new List<Monster>();
 
-        for (var i = 0; i < 5; i++)
+        for (var i = 0; i < 4; i++)
         {
             var point = GenerateSpawnPoint();
 
             var monster = MonsterFactory.Create(
-                "nightmare_morrigu",
+                "nightmare_cthonic",
                 Subject,
                 point);
 
@@ -251,7 +251,7 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
                     if (MonsterDelay!.IntervalElapsed)
                     {
                         foreach (var aisling in Subject.GetEntities<Aisling>())
-                            aisling.SendOrangeBarMessage("There are more enemies approaching!");
+                            aisling.SendOrangeBarMessage("There's more enemies approaching!");
 
                         SpawnMonsters();
                     }
@@ -306,7 +306,6 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
                         var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
                         var pointS = new Point(5, 7);
                         aisling.TraverseMap(mapInstance, pointS);
-                        aisling.SendOrangeBarMessage("You wake up from the nightmare feeling refreshed.");
 
                         var gearKey = (aisling.UserStatSheet.BaseClass, aisling.Gender);
 
@@ -325,6 +324,8 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
                                     aisling.GiveItemOrSendToBank(gearItem);
                                 }
                         }
+
+                        aisling.SendOrangeBarMessage("You wake up from the nightmare feeling refreshed.");
                     }
 
                     break;

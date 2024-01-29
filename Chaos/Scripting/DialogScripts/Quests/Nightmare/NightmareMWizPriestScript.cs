@@ -76,18 +76,8 @@ public class NightmareMWizPriestScript : DialogScriptBase
                 {
                     Point point2;
                     point2 = new Point(13, 10);
-                    
-                    if (source.UserStatSheet.BaseClass == BaseClass.Wizard)
-                    {
-                        var mapInstance2 = _simpleCache.Get<MapInstance>("malewizardnightmarechallenge");
-                        source.TraverseMap(mapInstance2, point2, false);
-                    }
-
-                    if (source.UserStatSheet.BaseClass == BaseClass.Priest)
-                    {
-                        var mapInstance2 = _simpleCache.Get<MapInstance>("malepriestnightmarechallenge");  
-                        source.TraverseMap(mapInstance2, point2, false);
-                    }
+                    var mapInstance2 = _simpleCache.Get<MapInstance>("malepriestnightmarechallenge");
+                    source.TraverseMap(mapInstance2, point2, false);
                     source.Trackers.Enums.Set(NightmareQuestStage.EnteredDream);
                     source.Inventory.RemoveQuantity("Essence of Theselene", 1);
                     source.Inventory.RemoveQuantity("Essence of Miraelis", 1);
