@@ -16,7 +16,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MapScripts.Nightmare;
 
-public class MalePriestNightmareChallengeMapScript : MapScriptBase
+public class MaleWizardNightmareChallengeMapScript : MapScriptBase
 {
     public const int UPDATE_INTERVAL_MS = 1;
     private readonly Animation Animation;
@@ -37,7 +37,7 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
     private ScriptState State;
     public required Rectangle? SpawnArea { get; set; }
 
-    public MalePriestNightmareChallengeMapScript(
+    public MaleWizardNightmareChallengeMapScript(
         MapInstance subject,
         IMonsterFactory monsterFactory,
         IItemFactory itemFactory,
@@ -71,12 +71,12 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
     {
         var monsters = new List<Monster>();
 
-        for (var i = 0; i < 5; i++)
+        for (var i = 0; i < 15; i++)
         {
             var point = GenerateSpawnPoint();
 
             var monster = MonsterFactory.Create(
-                "nightmare_cthonic",
+                "nightmare_cthonic1",
                 Subject,
                 point);
 
@@ -85,78 +85,6 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
 
         Subject.AddObjects(monsters);
     }
-    
-    private void SpawnTeam()
-    {
-        var teammates = new List<Monster>();
-
-        var target = Subject.GetEntities<Aisling>().Single();
-        
-        var teammatespawnRectangle = new Rectangle(target, 5, 5);
-        
-        var point1 = teammatespawnRectangle.GetRandomPoint(point1 => point1 != target);
-        var point2 = teammatespawnRectangle.GetRandomPoint(point2 => point2 != target);
-        var point3 = teammatespawnRectangle.GetRandomPoint(point3 => point3 != target);
-        var point4 = teammatespawnRectangle.GetRandomPoint(point4 => point4 != target);
-        
-            if (Subject.GetEntities<Aisling>().Any(a => a.Gender == Gender.Male))
-            {
-                var monster1 = MonsterFactory.Create(
-                    "nightmare_malewarrior",
-                    Subject,
-                    point1);
-                
-                var monster2 = MonsterFactory.Create(
-                    "nightmare_malemonk",
-                    Subject,
-                    point2);
-                
-                var monster3 = MonsterFactory.Create(
-                    "nightmare_malerogue",
-                    Subject,
-                    point3);
-                
-                var monster4 = MonsterFactory.Create(
-                    "nightmare_malewizard",
-                    Subject,
-                    point4);
-                
-                teammates.Add(monster1);
-                teammates.Add(monster2);
-                teammates.Add(monster3);
-                teammates.Add(monster4);
-            }
-            else
-            {
-                var monster1 = MonsterFactory.Create(
-                    "nightmare_femalewarrior",
-                    Subject,
-                    point1);
-                
-                var monster2 = MonsterFactory.Create(
-                    "nightmare_femalemonk",
-                    Subject,
-                    point2);
-                
-                var monster3 = MonsterFactory.Create(
-                    "nightmare_femalerogue",
-                    Subject,
-                    point3);
-                
-                var monster4 = MonsterFactory.Create(
-                    "nightmare_femalewizard",
-                    Subject,
-                    point4);
-                
-                teammates.Add(monster1);
-                teammates.Add(monster2);
-                teammates.Add(monster3);
-                teammates.Add(monster4);
-            }
-
-        Subject.AddObjects(teammates);
-    }
-
     private void SpawnWalls()
     {
         var wallPoints = new Point[]
@@ -228,15 +156,13 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
                         StartTime = null;
                         // Set the state to spawning
                         State = ScriptState.Spawning;
-                        
-                        SpawnTeam();
 
                         // Get all Aislings in the subject
                         foreach (var aisling in Subject.GetEntities<Aisling>())
                             // Send an orange bar message to the Aisling
                             aisling.Client.SendServerMessage(
                                 ServerMessageType.OrangeBar1,
-                                "Your group has arrived. Keep them alive for 6 minutes!");
+                                "Kill 25 Enemies to defeat your nightmare.");
                     }
 
                     break;
@@ -264,7 +190,7 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
                         foreach (var aisling in Subject.GetEntities<Aisling>())
                         {
                             aisling.Trackers.Enums.Set(NightmareQuestStage.SpawnedNightmare);
-                            aisling.SendOrangeBarMessage("Enemies incoming! Protect your group.");
+                            aisling.SendOrangeBarMessage("Enemies incoming! Keep fighting!.");
                         }
 
                         SpawnMonsters();
@@ -278,8 +204,13 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
                 // Spawned state
                 case ScriptState.Spawned:
                 {
-                    if (NightmareComplete!.IntervalElapsed)
+                    var players = Subject.GetEntities<Aisling>();
+                    
+                    foreach (var player in players)
                     {
+                        if (!player.Trackers.Counters.TryGetValue("nightmarekills", out var value) || (value < 25))
+                            continue;
+                        
                         State = ScriptState.Complete;
 
                         return;
@@ -328,6 +259,7 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
 
                     foreach (var aisling in Subject.GetEntities<Aisling>())
                     {
+                        aisling.Trackers.Counters.Remove("nightmarekills", out _);
                         ExperienceDistributionScript.GiveExp(aisling, 500000);
                         aisling.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareWin1);
 
