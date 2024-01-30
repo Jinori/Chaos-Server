@@ -10,7 +10,6 @@ public class NightmareWindWallScript : CompositeMonsterScript
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
-        GetScriptKey(typeof(TotemDefenseScript)),
         GetScriptKey(typeof(DisplayNameScript))
     };
 

@@ -71,7 +71,7 @@ public class FemaleWizardNightmareChallengeMapScript : MapScriptBase
     {
         var monsters = new List<Monster>();
 
-        for (var i = 0; i < 15; i++)
+        for (var i = 0; i < 3; i++)
         {
             var point = GenerateSpawnPoint();
 
@@ -224,6 +224,10 @@ public class FemaleWizardNightmareChallengeMapScript : MapScriptBase
 
                     foreach (var aisling in Subject.GetEntities<Aisling>())
                     {
+                        var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
+                        var pointS = new Point(5, 7);
+                        aisling.TraverseMap(mapInstance, pointS);
+                        aisling.SendOrangeBarMessage("You wake up from the nightmare feeling refreshed.");
                         aisling.Trackers.Counters.Remove("nightmarekills", out _);
                         ExperienceDistributionScript.GiveExp(aisling, 500000);
                         aisling.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareWin1);
@@ -236,11 +240,6 @@ public class FemaleWizardNightmareChallengeMapScript : MapScriptBase
                                 MarkColor.White,
                                 1,
                                 GameTime.Now));
-
-                        var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
-                        var pointS = new Point(5, 7);
-                        aisling.TraverseMap(mapInstance, pointS);
-                        aisling.SendOrangeBarMessage("You wake up from the nightmare feeling refreshed.");
 
                         var gearKey = (aisling.UserStatSheet.BaseClass, aisling.Gender);
 

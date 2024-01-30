@@ -11,8 +11,7 @@ namespace Chaos.Scripting.MonsterScripts.Nightmare;
 public class NightmareMonsterAggroTargetingScript : MonsterScriptBase
 {
     private readonly IIntervalTimer TargetUpdateTimer;
-    private readonly IIntervalTimer LastHitTimer;
-    private int InitialAggro = 10;
+    private int InitialAggro = 1;
 
     /// <inheritdoc />
     public NightmareMonsterAggroTargetingScript(Monster subject)
@@ -20,9 +19,6 @@ public class NightmareMonsterAggroTargetingScript : MonsterScriptBase
     {
         TargetUpdateTimer =
             new IntervalTimer(TimeSpan.FromMilliseconds(Math.Min(250, Subject.Template.SkillIntervalMs)));
-        
-        LastHitTimer =
-            new IntervalTimer(TimeSpan.FromSeconds(5));
     }
 
 

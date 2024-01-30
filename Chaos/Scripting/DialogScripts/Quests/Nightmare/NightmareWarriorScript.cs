@@ -1,9 +1,11 @@
 using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Services.Factories;
 using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Nightmare;
@@ -86,8 +88,8 @@ public class NightmareWarriorScript : DialogScriptBase
                 if ((hasStage && (stage == NightmareQuestStage.MetRequirementsToEnter1)) || (stage == NightmareQuestStage.EnteredDream) || (stage == NightmareQuestStage.SpawnedNightmare))
                 {
                     Point point2;
-                    point2 = new Point(5, 5);
-                    var mapInstance2 = _simpleCache.Get<MapInstance>("nightmareboss");
+                    point2 = new Point(18, 5);
+                    var mapInstance2 = _simpleCache.Get<MapInstance>("warriornightmarechallenge");
                     source.TraverseMap(mapInstance2, point2, false);
                     source.Trackers.Enums.Set(NightmareQuestStage.EnteredDream);
                     Subject.Close(source);
@@ -95,6 +97,21 @@ public class NightmareWarriorScript : DialogScriptBase
                     source.Client.SendAttributes(StatUpdateType.Vitality);
                 }
 
+                break;
+            }
+
+            case "nightmare_priestsupport_heal":
+            {
+                var ani = new Animation()
+                {
+                    AnimationSpeed = 100,
+                    TargetAnimation = 4
+                };
+                source.Animate(ani);
+                source.UserStatSheet.SetHealthPct(100);
+                source.Client.SendAttributes(StatUpdateType.Vitality);
+                var priest = source.MapInstance.GetEntities<Merchant>().FirstOrDefault(x => x.Name == "Priest");
+                priest!.MapInstance.RemoveEntity(priest);
                 break;
             }
             
