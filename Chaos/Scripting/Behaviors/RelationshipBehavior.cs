@@ -253,7 +253,7 @@ public class RelationshipBehavior
         if (source.Script.Is<NightmareTotemScript>() ^ target.Script.Is<NightmareTotemScript>())
             return true;
         
-        if (source.Script.Is<NightmareSlaveScript>() ^ target.Script.Is<NightmareTotemScript>())
+        if (source.Script.Is<NightmareSlaveScript>() ^ target.Script.Is<NightmareSlaveScript>())
             return true;
 
         if (source.Script.Is<NightmareTeammateScript>() ^ target.Script.Is<NightmareTeammateScript>())

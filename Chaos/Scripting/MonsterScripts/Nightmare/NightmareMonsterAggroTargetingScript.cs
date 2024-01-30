@@ -6,16 +6,16 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Nightmare.MonkNightmare;
+namespace Chaos.Scripting.MonsterScripts.Nightmare;
 
-public class NightmareMonkAggroTargetingScript : MonsterScriptBase
+public class NightmareMonsterAggroTargetingScript : MonsterScriptBase
 {
     private readonly IIntervalTimer TargetUpdateTimer;
     private readonly IIntervalTimer LastHitTimer;
     private int InitialAggro = 10;
 
     /// <inheritdoc />
-    public NightmareMonkAggroTargetingScript(Monster subject)
+    public NightmareMonsterAggroTargetingScript(Monster subject)
         : base(subject)
     {
         TargetUpdateTimer =
@@ -78,7 +78,8 @@ public class NightmareMonkAggroTargetingScript : MonsterScriptBase
         Target ??= Map.GetEntitiesWithinRange<Creature>(Subject, range)
                       .ThatAreVisibleTo(Subject)
                       .Where(
-                          obj => !obj.Equals(Subject) && !obj.Name.Equals("Nightmare")
+                          obj => !obj.Equals(Subject) 
+                                 && !obj.Name.Equals("Nightmare")
                                  && obj.IsAlive
                                  && Subject.ApproachTime.TryGetValue(obj.Id, out var time)
                                  && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
