@@ -29,27 +29,10 @@ public class NightmareMonkAggroTargetingScript : MonsterScriptBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
-        var totemaggro = 1000; // Set a fixed aggro value for the Totem
-        var totem = Map.GetEntitiesWithinRange<Monster>(Subject, 20)
-                       .ThatAreVisibleTo(Subject)
-                       .Where(obj => obj.Template.Name == "Slave")
-                       .ClosestOrDefault(Subject);
-        
         base.Update(delta);
 
         TargetUpdateTimer.Update(delta);
-        LastHitTimer.Update(delta);
         
-        if (LastHitTimer.IntervalElapsed)
-        {
-            AggroList.Clear();
-            LastHitTimer.Reset();
-            if (totem != null)
-            {
-                AggroList.AddOrUpdate(totem.Id, _ => totemaggro, (_, currentAggro) => currentAggro + totemaggro);
-            }
-        }
-
         if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject)))
         {
             AggroList.Remove(Target.Id, out _);
@@ -92,10 +75,10 @@ public class NightmareMonkAggroTargetingScript : MonsterScriptBase
         var range = isBlind ? 1 : AggroRange;
 
         //if we failed to get a target via aggroList, grab the closest aisling within aggro range
-        Target ??= Map.GetEntitiesWithinRange<Aisling>(Subject, range)
+        Target ??= Map.GetEntitiesWithinRange<Creature>(Subject, range)
                       .ThatAreVisibleTo(Subject)
                       .Where(
-                          obj => !obj.Equals(Subject)
+                          obj => !obj.Equals(Subject) && !obj.Name.Equals("Nightmare")
                                  && obj.IsAlive
                                  && Subject.ApproachTime.TryGetValue(obj.Id, out var time)
                                  && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
