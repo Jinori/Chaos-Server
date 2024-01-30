@@ -95,8 +95,8 @@ public class NightmareMonkScript : DialogScriptBase
                 {
                     Subject.Close(source);
                     Point point2;
-                    point2 = new Point(5, 5);
-                    var mapInstance2 = _simpleCache.Get<MapInstance>("nightmareboss");
+                    point2 = new Point(12, 12);
+                    var mapInstance2 = _simpleCache.Get<MapInstance>("monknightmarechallenge");
                     source.TraverseMap(mapInstance2, point2, false);
                     source.Trackers.Enums.Set(NightmareQuestStage.EnteredDream);
                     source.UserStatSheet.SetHealthPct(100);

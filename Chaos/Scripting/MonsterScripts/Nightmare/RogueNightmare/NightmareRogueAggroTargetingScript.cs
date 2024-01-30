@@ -6,7 +6,7 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.NightmareBoss.NightmareRogue;
+namespace Chaos.Scripting.MonsterScripts.Nightmare.RogueNightmare;
 
 public class NightmareRogueAggroTargetingScript : MonsterScriptBase
 {

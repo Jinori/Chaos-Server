@@ -1,8 +1,8 @@
 using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.NightmareBoss.NightmareRogue;
 using Chaos.Scripting.MonsterScripts.Nightmare.PriestNightmare;
+using Chaos.Scripting.MonsterScripts.Nightmare.RogueNightmare;
 using Chaos.Scripting.MonsterScripts.Pet;
 
 namespace Chaos.Scripting.Behaviors;
@@ -89,6 +89,15 @@ public class RelationshipBehavior
             return (isSourceOrTargetPet && isGroupMember) || isOwner;
         }
         
+        var isSlave = source.Script.Is<NightmareSlaveScript>() || target.Script.Is<NightmareSlaveScript>();
+
+        if (isSlave)
+        {
+            var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
+            var isOwner = target.Equals(source.PetOwner);
+            return (isSourceOrTargetPet && isGroupMember) || isOwner;
+        }
+        
         var isTeammate = source.Script.Is<NightmareTeammateScript>() || target.Script.Is<NightmareTeammateScript>();
 
         if (isTeammate)
@@ -115,6 +124,9 @@ public class RelationshipBehavior
             return false;
 
         if (source.Script.Is<NightmareTotemScript>() || target.Script.Is<NightmareTotemScript>())
+            return false;
+        
+        if (source.Script.Is<NightmareSlaveScript>() || target.Script.Is<NightmareSlaveScript>())
             return false;
         
         return false;
@@ -175,6 +187,11 @@ public class RelationshipBehavior
         if (isTotem)
             return false;
         
+        var isSlave = target.Script.Is<NightmareSlaveScript>() || source.Script.Is<NightmareSlaveScript>();
+        
+        if (isSlave)
+            return false;
+        
         var isTeammate = target.Script.Is<NightmareTeammateScript>() || source.Script.Is<NightmareTeammateScript>();
         
         if (isTeammate)
@@ -207,6 +224,14 @@ public class RelationshipBehavior
             return !(isGroupMember || isOwner);            
         }
         
+        if (source.Script.Is<NightmareSlaveScript>() || target.Script.Is<NightmareSlaveScript>())
+        {
+            var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
+            var isOwner = target.Equals(source.PetOwner);
+
+            return !(isGroupMember || isOwner);            
+        }
+        
         if (source.Script.Is<NightmareTeammateScript>() || target.Script.Is<NightmareTeammateScript>())
         {
             var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
@@ -226,6 +251,9 @@ public class RelationshipBehavior
             return true;
         
         if (source.Script.Is<NightmareTotemScript>() ^ target.Script.Is<NightmareTotemScript>())
+            return true;
+        
+        if (source.Script.Is<NightmareSlaveScript>() ^ target.Script.Is<NightmareTotemScript>())
             return true;
 
         if (source.Script.Is<NightmareTeammateScript>() ^ target.Script.Is<NightmareTeammateScript>())

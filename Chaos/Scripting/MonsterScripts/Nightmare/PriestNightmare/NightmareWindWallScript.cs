@@ -1,9 +1,9 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.NightmareBoss.NightmareRogue;
+using Chaos.Scripting.MonsterScripts.Nightmare.RogueNightmare;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.NightmareBoss.NightmarePriest;
+namespace Chaos.Scripting.MonsterScripts.Nightmare.PriestNightmare;
 
 public class NightmareWindWallScript : CompositeMonsterScript
 {

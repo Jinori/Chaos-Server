@@ -10,7 +10,7 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.NightmareBoss.NightmareRogue;
+namespace Chaos.Scripting.MonsterScripts.Nightmare.RogueNightmare;
 
 public sealed class NightmareTotemDeathScript : MonsterScriptBase
 {
