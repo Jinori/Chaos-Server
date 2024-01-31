@@ -68,6 +68,12 @@ public class GreetingScript : MerchantScriptBase
 
                 return;
             }
+            case "nightmare_priestsupport":
+            {
+                Subject.Say("Do you need help warrior? Speak to me and I will heal you!");
+
+                return;
+            }
         }
     }
 }

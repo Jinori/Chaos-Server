@@ -9,6 +9,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MapScripts.Abstractions;
+using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -16,7 +17,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MapScripts.Nightmare;
 
-public class MaleWizardNightmareChallengeMapScript : MapScriptBase
+public class WarriorNightmareChallengeMapScript : MapScriptBase
 {
     public const int UPDATE_INTERVAL_MS = 1;
     private readonly Animation Animation;
@@ -24,9 +25,9 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
     private readonly ICircle AnimationShape1;
     protected readonly IExperienceDistributionScript ExperienceDistributionScript;
     private readonly IItemFactory ItemFactory;
-    private readonly IIntervalTimer? MonsterDelay;
+    private readonly IIntervalTimer? PriestDelay;
     private readonly IMonsterFactory MonsterFactory;
-    private readonly IIntervalTimer? NightmareComplete;
+    private readonly IMerchantFactory MerchantFactory;
     private readonly List<Point> ReverseOutline1;
     private readonly List<Point> ShapeOutline1;
     private readonly ISimpleCache SimpleCache;
@@ -37,11 +38,12 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
     private ScriptState State;
     public required Rectangle? SpawnArea { get; set; }
 
-    public MaleWizardNightmareChallengeMapScript(
+    public WarriorNightmareChallengeMapScript(
         MapInstance subject,
         IMonsterFactory monsterFactory,
         IItemFactory itemFactory,
-        ISimpleCache simpleCache
+        ISimpleCache simpleCache,
+        IMerchantFactory merchantFactory
     )
         : base(subject)
     {
@@ -49,14 +51,14 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
         SimpleCache = simpleCache;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         MonsterFactory = monsterFactory;
-        StartDelay = TimeSpan.FromSeconds(7);
+        MerchantFactory = merchantFactory;
+        StartDelay = TimeSpan.FromSeconds(3);
         AnimationInterval = new IntervalTimer(TimeSpan.FromMilliseconds(100));
-        AnimationShape1 = new Circle(new Point(13, 10), 6);
+        AnimationShape1 = new Circle(new Point(9, 9), 3);
         ShapeOutline1 = AnimationShape1.GetOutline().ToList();
         ReverseOutline1 = ShapeOutline1.AsEnumerable().Reverse().ToList();
         UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(200));
-        MonsterDelay = new IntervalTimer(TimeSpan.FromSeconds(20));
-        NightmareComplete = new IntervalTimer(TimeSpan.FromMinutes(6));
+        PriestDelay = new IntervalTimer(TimeSpan.FromSeconds(35));
 
         Animation = new Animation
         {
@@ -64,68 +66,26 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
             TargetAnimation = 63
         };
     }
-
+    
     private IPoint GenerateSpawnPoint() => (SpawnArea ?? Subject.Template.Bounds).GetRandomPoint();
     
     private void SpawnMonsters()
     {
-        var monsters = new List<Monster>();
 
-        for (var i = 0; i < 3; i++)
-        {
-            var point = GenerateSpawnPoint();
-
+        var point = new Point(9, 9);
+        
             var monster = MonsterFactory.Create(
-                "nightmare_cthonic1",
-                Subject,
-                point);
+                "nightmare_carnun",
+                Subject, point);
 
-            monsters.Add(monster);
-        }
-
-        Subject.AddObjects(monsters);
-    }
-    private void SpawnWalls()
-    {
-        var wallPoints = new Point[]
-        {
-            new Point(0, 9),
-            new Point(0, 10),
-            new Point(0, 11),
-            new Point(0, 12),
-            new Point(13, 24),
-            new Point(14, 24),
-            new Point(15, 24),
-            new Point(16, 24),
-            new Point(17, 24),
-            new Point(29, 12),
-            new Point(29, 11),
-            new Point(29, 10),
-            new Point(29, 9),
-            new Point(29, 8),
-            new Point(16, 0),
-            new Point(15, 0),
-            new Point(14, 0),
-            new Point(13, 0)
-        };
-
-        var windwalls = new List<Monster>();
-
-        foreach (var wallPoint in wallPoints)
-        {
-            var windwall = MonsterFactory.Create("nightmare_windwall", Subject, wallPoint);
-            windwalls.Add(windwall);
-        }
-
-        Subject.AddObjects(windwalls);
+        Subject.AddEntity(monster, point);
     }
 
 
     public override void Update(TimeSpan delta)
     {
         UpdateTimer?.Update(delta);
-        MonsterDelay?.Update(delta);
-        NightmareComplete?.Update(delta);
+        PriestDelay?.Update(delta);
 
         if (UpdateTimer!.IntervalElapsed)
             // Switch statement to determine the current state of the script
@@ -138,7 +98,6 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
                                    a => a.Trackers.Enums.TryGetValue(out NightmareQuestStage stage)
                                         && (stage == NightmareQuestStage.EnteredDream)))
                     {
-                        SpawnWalls();
                         State = ScriptState.DelayedStart;
                     }
                 }
@@ -162,7 +121,7 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
                             // Send an orange bar message to the Aisling
                             aisling.Client.SendServerMessage(
                                 ServerMessageType.OrangeBar1,
-                                "Kill 25 Enemies to defeat your nightmare.");
+                                "Fight the Carnun to the death.");
                     }
 
                     break;
@@ -190,7 +149,7 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
                         foreach (var aisling in Subject.GetEntities<Aisling>())
                         {
                             aisling.Trackers.Enums.Set(NightmareQuestStage.SpawnedNightmare);
-                            aisling.SendOrangeBarMessage("Enemies incoming! Keep fighting!.");
+                            aisling.SendOrangeBarMessage("You can feel the great Carnun's presence.");
                         }
 
                         SpawnMonsters();
@@ -204,25 +163,9 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
                 // Spawned state
                 case ScriptState.Spawned:
                 {
-                    var players = Subject.GetEntities<Aisling>();
-                    
-                    foreach (var player in players)
-                    {
-                        if (!player.Trackers.Counters.TryGetValue("nightmarekills", out var value) || (value < 25))
-                            continue;
-                        
+                    if (!Subject.GetEntities<Monster>().Any())
                         State = ScriptState.Complete;
 
-                        return;
-                    }
-
-                    if (MonsterDelay!.IntervalElapsed)
-                    {
-                        foreach (var aisling in Subject.GetEntities<Aisling>())
-                            aisling.SendOrangeBarMessage("There are more enemies approaching!");
-
-                        SpawnMonsters();
-                    }
 
                     // Check if there are any Aislings in the subject
                     if (!Subject.GetEntities<Aisling>().Any())
@@ -236,6 +179,16 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
 
                         // Set the state to dormant
                         State = ScriptState.Dormant;
+                    }
+
+                    if (PriestDelay!.IntervalElapsed)
+                    {
+                        var point = GenerateSpawnPoint();
+                        var priest = MerchantFactory.Create(
+                            "nightmare_priestsupport",
+                            Subject, point);
+                        
+                        Subject.AddEntity(priest, point);
                     }
                 }
 
@@ -263,7 +216,6 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
                         var pointS = new Point(5, 7);
                         aisling.TraverseMap(mapInstance, pointS);
                         aisling.SendOrangeBarMessage("You wake up from the nightmare feeling refreshed.");
-                        aisling.Trackers.Counters.Remove("nightmarekills", out _);
                         ExperienceDistributionScript.GiveExp(aisling, 500000);
                         aisling.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareWin1);
 
