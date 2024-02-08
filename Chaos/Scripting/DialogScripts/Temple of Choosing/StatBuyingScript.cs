@@ -91,7 +91,7 @@ public class StatBuyingScript : DialogScriptBase
     {
         update(cost);
         source.UserStatSheet.Add(cost);
-        source.SendOrangeBarMessage($"{attribute} increased by one to {cost}. 150 Health taken.");
+        source.SendOrangeBarMessage($"{attribute} increased by one. 150 Health taken.");
     }
 
     public override void OnDisplaying(Aisling source)
@@ -128,7 +128,7 @@ public class StatBuyingScript : DialogScriptBase
             return;
         }
 
-        var statBuyCost = new Attributes { MaximumHp = 150 };
+        var statBuyCost = new Attributes { MaximumHp = -150 };
 
         // Get the appropriate stat caps based on class and ClassStatBracket
         if (ClassStatCaps.TryGetValue(source.UserStatSheet.BaseClass, out var statCapsByBracket))
