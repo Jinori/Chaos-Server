@@ -681,7 +681,7 @@ public class ArenaUndergroundScript : DialogScriptBase
             case "ophie_startffalavaflowhostplayingstart":
             {
                 source.Trackers.Enums.Set(ArenaHostPlaying.Yes);
-
+                
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
                 
                 var script = mapInstance.Script.As<LavaFlowShrinkScript>();
