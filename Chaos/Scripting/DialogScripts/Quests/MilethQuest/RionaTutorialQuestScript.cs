@@ -405,6 +405,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
                 if ((flag & RionaTutorialQuestFlags.Skarn) == RionaTutorialQuestFlags.Skarn)
                 {
                     source.Trackers.Enums.Set(RionaTutorialQuestStage.CompletedSkarn);
+                    source.Trackers.Flags.RemoveFlag(RionaTutorialQuestFlags.Skarn);
 
                     Subject.Reply(
                         source,
@@ -435,6 +436,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
                 if ((flag & RionaTutorialQuestFlags.Skarn) == RionaTutorialQuestFlags.Skarn)
                 {
                     source.Trackers.Enums.Set(RionaTutorialQuestStage.CompletedSkarn);
+                    source.Trackers.Flags.RemoveFlag(RionaTutorialQuestFlags.Skarn);
                     Subject.Reply(source, "Skip", "riona_beautyshop");
                 }
             }

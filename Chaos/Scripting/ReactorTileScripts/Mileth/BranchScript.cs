@@ -1,5 +1,6 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
@@ -20,7 +21,7 @@ public class BranchScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if (aisling.Trackers.Flags.HasFlag(QuestFlag1.GatheringSticks) && IntegerRandomizer.RollChance(18))
+        if (aisling.Trackers.Enums.TryGetValue(out RionaTutorialQuestStage stage) && stage == RionaTutorialQuestStage.StartedSpareAStick && IntegerRandomizer.RollChance(18))
         {
             var branch = ItemFactory.Create("branch");
             aisling.TryGiveItem(ref branch);

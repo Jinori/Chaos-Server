@@ -66,7 +66,7 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
     }
 
     private IPoint GenerateSpawnPoint() => (SpawnArea ?? Subject.Template.Bounds).GetRandomPoint();
-    
+
     private void SpawnMonsters()
     {
         var monsters = new List<Monster>();
@@ -85,74 +85,74 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
 
         Subject.AddObjects(monsters);
     }
-    
+
     private void SpawnTeam()
     {
         var teammates = new List<Monster>();
 
         var target = Subject.GetEntities<Aisling>().Single();
-        
+
         var teammatespawnRectangle = new Rectangle(target, 5, 5);
-        
+
         var point1 = teammatespawnRectangle.GetRandomPoint(point1 => point1 != target);
         var point2 = teammatespawnRectangle.GetRandomPoint(point2 => point2 != target);
         var point3 = teammatespawnRectangle.GetRandomPoint(point3 => point3 != target);
         var point4 = teammatespawnRectangle.GetRandomPoint(point4 => point4 != target);
-        
-            if (Subject.GetEntities<Aisling>().Any(a => a.Gender == Gender.Male))
-            {
-                var monster1 = MonsterFactory.Create(
-                    "nightmare_malewarrior",
-                    Subject,
-                    point1);
-                
-                var monster2 = MonsterFactory.Create(
-                    "nightmare_malemonk",
-                    Subject,
-                    point2);
-                
-                var monster3 = MonsterFactory.Create(
-                    "nightmare_malerogue",
-                    Subject,
-                    point3);
-                
-                var monster4 = MonsterFactory.Create(
-                    "nightmare_malewizard",
-                    Subject,
-                    point4);
-                
-                teammates.Add(monster1);
-                teammates.Add(monster2);
-                teammates.Add(monster3);
-                teammates.Add(monster4);
-            }
-            else
-            {
-                var monster1 = MonsterFactory.Create(
-                    "nightmare_femalewarrior",
-                    Subject,
-                    point1);
-                
-                var monster2 = MonsterFactory.Create(
-                    "nightmare_femalemonk",
-                    Subject,
-                    point2);
-                
-                var monster3 = MonsterFactory.Create(
-                    "nightmare_femalerogue",
-                    Subject,
-                    point3);
-                
-                var monster4 = MonsterFactory.Create(
-                    "nightmare_femalewizard",
-                    Subject,
-                    point4);
-                
-                teammates.Add(monster1);
-                teammates.Add(monster2);
-                teammates.Add(monster3);
-                teammates.Add(monster4);
-            }
+
+        if (Subject.GetEntities<Aisling>().Any(a => a.Gender == Gender.Male))
+        {
+            var monster1 = MonsterFactory.Create(
+                "nightmare_malewarrior",
+                Subject,
+                point1);
+
+            var monster2 = MonsterFactory.Create(
+                "nightmare_malemonk",
+                Subject,
+                point2);
+
+            var monster3 = MonsterFactory.Create(
+                "nightmare_malerogue",
+                Subject,
+                point3);
+
+            var monster4 = MonsterFactory.Create(
+                "nightmare_malewizard",
+                Subject,
+                point4);
+
+            teammates.Add(monster1);
+            teammates.Add(monster2);
+            teammates.Add(monster3);
+            teammates.Add(monster4);
+        }
+        else
+        {
+            var monster1 = MonsterFactory.Create(
+                "nightmare_femalewarrior",
+                Subject,
+                point1);
+
+            var monster2 = MonsterFactory.Create(
+                "nightmare_femalemonk",
+                Subject,
+                point2);
+
+            var monster3 = MonsterFactory.Create(
+                "nightmare_femalerogue",
+                Subject,
+                point3);
+
+            var monster4 = MonsterFactory.Create(
+                "nightmare_femalewizard",
+                Subject,
+                point4);
+
+            teammates.Add(monster1);
+            teammates.Add(monster2);
+            teammates.Add(monster3);
+            teammates.Add(monster4);
+        }
 
         Subject.AddObjects(teammates);
     }
@@ -206,9 +206,9 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
                 case ScriptState.Dormant:
                 {
                     if (Subject.GetEntities<Aisling>()
-                               .Any(
-                                   a => a.Trackers.Enums.TryGetValue(out NightmareQuestStage stage)
-                                        && (stage == NightmareQuestStage.EnteredDream)))
+                        .Any(
+                            a => a.Trackers.Enums.TryGetValue(out NightmareQuestStage stage)
+                                 && (stage == NightmareQuestStage.EnteredDream)))
                     {
                         SpawnWalls();
                         State = ScriptState.DelayedStart;
@@ -228,7 +228,7 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
                         StartTime = null;
                         // Set the state to spawning
                         State = ScriptState.Spawning;
-                        
+
                         SpawnTeam();
 
                         // Get all Aislings in the subject
@@ -314,55 +314,56 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
                 {
                     var nightmaregearDictionary = new Dictionary<(BaseClass, Gender), string[]>
                     {
-                        { (BaseClass.Warrior, Gender.Male), new[] { "malecarnunplate", "carnunhelmet" } },
-                        { (BaseClass.Warrior, Gender.Female), new[] { "femalecarnunplate", "carnunhelmet" } },
-                        { (BaseClass.Monk, Gender.Male), new[] { "maleaosdicpatternwalker" } },
-                        { (BaseClass.Monk, Gender.Female), new[] { "femaleaosdicpatternwalker" } },
-                        { (BaseClass.Rogue, Gender.Male), new[] { "malemarauderhide", "maraudermask" } },
-                        { (BaseClass.Rogue, Gender.Female), new[] { "femalemarauderhide", "maraudermask" } },
-                        { (BaseClass.Priest, Gender.Male), new[] { "malecthonicdisciplerobes", "cthonicdisciplecaputium" } },
-                        { (BaseClass.Priest, Gender.Female), new[] { "morrigudisciplepellison", "holyhairband" } },
-                        { (BaseClass.Wizard, Gender.Male), new[] { "malecthonicmagusrobes", "cthonicmaguscaputium" } },
-                        { (BaseClass.Wizard, Gender.Female), new[] { "morrigumaguspellison", "magushairband" } }
+                        { (BaseClass.Warrior, Gender.Male), ["malecarnunplate", "carnunhelmet"] },
+                        { (BaseClass.Warrior, Gender.Female), ["femalecarnunplate", "carnunhelmet"] },
+                        { (BaseClass.Monk, Gender.Male), ["maleaosdicpatternwalker"] },
+                        { (BaseClass.Monk, Gender.Female), ["femaleaosdicpatternwalker"] },
+                        { (BaseClass.Rogue, Gender.Male), ["malemarauderhide", "maraudermask"] },
+                        { (BaseClass.Rogue, Gender.Female), ["femalemarauderhide", "maraudermask"] },
+                        { (BaseClass.Priest, Gender.Male), ["malecthonicdisciplerobes", "cthonicdisciplecaputium"] },
+                        { (BaseClass.Priest, Gender.Female), ["morrigudisciplepellison", "holyhairband"] },
+                        { (BaseClass.Wizard, Gender.Male), ["cthonicmagusrobes", "cthonicmaguscaputium"] },
+                        { (BaseClass.Wizard, Gender.Female), ["morrigumaguspellison", "magushairband"] }
                     };
 
-                    foreach (var aisling in Subject.GetEntities<Aisling>())
+                    var player = Subject.GetEntities<Aisling>().FirstOrDefault(x =>
+                        x.Trackers.Enums.TryGetValue(out NightmareQuestStage hasNightmare) &&
+                        hasNightmare == NightmareQuestStage.SpawnedNightmare);
+                    player.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareWin1);
+                    player.Trackers.Counters.Remove("nightmarekills", out _);
+                    ExperienceDistributionScript.GiveExp(player, 500000);
+
+                    player.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Successfully conquered their Nightmares",
+                            "Nightmare",
+                            MarkIcon.Victory,
+                            MarkColor.White,
+                            1,
+                            GameTime.Now));
+
+                    var gearKey = (player.UserStatSheet.BaseClass, player.Gender);
+
+                    if (nightmaregearDictionary.TryGetValue(gearKey, out var nightmaregear))
                     {
-                        ExperienceDistributionScript.GiveExp(aisling, 500000);
-                        aisling.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareWin1);
+                        var hasGear = nightmaregear.All(
+                            gearItemName =>
+                                player.Inventory.ContainsByTemplateKey(gearItemName)
+                                || player.Bank.Contains(gearItemName)
+                                || player.Equipment.ContainsByTemplateKey(gearItemName));
 
-                        aisling.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Successfully conquered their Nightmares",
-                                "Nightmare",
-                                MarkIcon.Victory,
-                                MarkColor.White,
-                                1,
-                                GameTime.Now));
-
-                        var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
-                        var pointS = new Point(5, 7);
-                        aisling.TraverseMap(mapInstance, pointS);
-                        aisling.SendOrangeBarMessage("You wake up from the nightmare feeling refreshed.");
-
-                        var gearKey = (aisling.UserStatSheet.BaseClass, aisling.Gender);
-
-                        if (nightmaregearDictionary.TryGetValue(gearKey, out var nightmaregear))
-                        {
-                            var hasGear = nightmaregear.All(
-                                gearItemName =>
-                                    aisling.Inventory.ContainsByTemplateKey(gearItemName)
-                                    || aisling.Bank.Contains(gearItemName)
-                                    || aisling.Equipment.ContainsByTemplateKey(gearItemName));
-
-                            if (!hasGear)
-                                foreach (var gearItemName in nightmaregear)
-                                {
-                                    var gearItem = ItemFactory.Create(gearItemName);
-                                    aisling.GiveItemOrSendToBank(gearItem);
-                                }
-                        }
+                        if (!hasGear)
+                            foreach (var gearItemName in nightmaregear)
+                            {
+                                var gearItem = ItemFactory.Create(gearItemName);
+                                player.GiveItemOrSendToBank(gearItem);
+                            }
                     }
+
+                    var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
+                    var pointS = new Point(5, 7);
+                    player.TraverseMap(mapInstance, pointS);
+                    player.SendOrangeBarMessage("You wake up from the nightmare feeling refreshed.");
 
                     break;
                 }

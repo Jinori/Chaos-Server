@@ -1269,3 +1269,11 @@ public enum ClassStatBracket
     Master = 2,
     Grandmaster = 3
 }
+
+public enum TheSacrificeQuestStage
+{
+    None,
+    Reconaissance = 1,
+    AttackCaptors = 2,
+    RescueChildren = 3
+}
