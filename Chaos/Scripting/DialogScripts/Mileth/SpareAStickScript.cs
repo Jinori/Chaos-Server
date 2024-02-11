@@ -37,7 +37,7 @@ public class SpareAStickScript : DialogScriptBase
         {
             case "callo_initial":
             {
-                if (stage != RionaTutorialQuestStage.StartedRatQuest && stage != RionaTutorialQuestStage.CompletedRatQuest)
+                if (stage != RionaTutorialQuestStage.StartedSpareAStick && stage != RionaTutorialQuestStage.CompletedRatQuest)
                     return;
 
                 var option = new DialogOption

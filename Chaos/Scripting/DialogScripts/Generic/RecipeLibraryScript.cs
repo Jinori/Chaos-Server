@@ -282,7 +282,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 meat of any type, 10 fruit of any type, and 5 vegetables of any type. To cook this, go to the Mileth Kitchen and go to the stove.",
+                            } requires 1 meat of any type, 10 fruit of any type, and 5 vegetables of any type.",
                             "cookbook");
 
                         return;
