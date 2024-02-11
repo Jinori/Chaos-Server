@@ -1,28 +1,36 @@
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
+using Chaos.Formulae;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Humanizer;
 
 
 namespace Chaos.Scripting.DialogScripts.Quests.Astrid;
 
-public class TheSacrificeQuestScript : DialogScriptBase
+public class theSacrificeQuestScript : DialogScriptBase
 {
-    private readonly ILogger<ALittleBitofThatScript> Logger;
+    private readonly ILogger<theSacrificeQuestScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public TheSacrificeQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> logger) 
+    public theSacrificeQuestScript(Dialog subject, ILogger<theSacrificeQuestScript> logger) 
         : base(subject)
     {
+        Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
     public override void OnDisplaying(Aisling source)
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out TheSacrificeQuestStage stage);
+        var tnl = LevelUpFormulae.Default.CalculateTnl(source);
+        var tenPercent = Convert.ToInt32(.10 * tnl);
+        var seventyfivePercent = Convert.ToInt32(.75 * tnl);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -53,14 +61,37 @@ public class TheSacrificeQuestScript : DialogScriptBase
 
                 if (hasStage && stage == TheSacrificeQuestStage.Reconaissance)
                 {
-                    if (source.Trackers.Counters.TryGetValue("reconpoints", out int reconpoints) && reconpoints > 3)
+                    var numFlags = 0;
+
+                    foreach (var value in Enum.GetValues<ReconPoints>())
+                        if (source.Trackers.Flags.HasFlag(value))
+                            numFlags++;
+
+                    
+                    if (numFlags >= 3)
                     {
-                        var experience = (reconpoints * 5000);
+                        var experience = (numFlags * tenPercent);
                         
-                        Subject.Reply(source, $"Wow! You scouted out {reconpoints} spots! That's impressive you were able to avoid the goblins and kobolds. Here's 5,000 experience for every spot you scouted. Thank you! This will help us find the children.", "chloe_initial");
+                        Logger.WithTopics(
+                                Topics.Entities.Aisling,
+                                Topics.Entities.Experience,
+                                Topics.Entities.Dialog,
+                                Topics.Entities.Quest)
+                            .WithProperty(source)
+                            .WithProperty(Subject)
+                            .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, experience);
+
+                        
+                        Subject.Reply(source, $"Wow! You scouted out {numFlags.ToWords()} spots! That's impressive you were able to avoid the goblins and kobolds. Thank you! This will help us find the children.", "chloe_initial");
                         source.TryGiveGamePoints(5);
                         ExperienceDistributionScript.GiveExp(source, experience);
-                        source.Trackers.Counters.Set("reconpoints", 0);
+                        source.Trackers.Flags.RemoveFlag(ReconPoints.reconpoint1);
+                        source.Trackers.Flags.RemoveFlag(ReconPoints.reconpoint2);
+                        source.Trackers.Flags.RemoveFlag(ReconPoints.reconpoint3);
+                        source.Trackers.Flags.RemoveFlag(ReconPoints.reconpoint4);
+                        source.Trackers.Flags.RemoveFlag(ReconPoints.reconpoint5);
+                        source.Trackers.Flags.RemoveFlag(ReconPoints.reconpoint6);
+                        source.Trackers.Flags.RemoveFlag(ReconPoints.reconpoint7);
                         source.Trackers.Enums.Set(TheSacrificeQuestStage.None);
                         source.Trackers.TimedEvents.AddEvent("thesacrificecd", TimeSpan.FromHours(8), true);
                         return;
@@ -72,8 +103,8 @@ public class TheSacrificeQuestScript : DialogScriptBase
 
                 if (hasStage && stage == TheSacrificeQuestStage.AttackCaptors)
                 {
-                    var kills1 = source.Trackers.Counters.TryGetValue("captorkills1", out int captorkills1);
-                    var kills2 = source.Trackers.Counters.TryGetValue("captorkills2", out int captorkills2);
+                    source.Trackers.Counters.TryGetValue("captorkills1", out int captorkills1);
+                    source.Trackers.Counters.TryGetValue("captorkills2", out int captorkills2);
 
                     var killamount = captorkills1 + captorkills2;
 
@@ -82,9 +113,18 @@ public class TheSacrificeQuestScript : DialogScriptBase
                         captorkills1 = Math.Min(captorkills1, 25);
                         captorkills2 = Math.Min(captorkills2, 25);
 
-                        var experience = captorkills1 * 1000 + captorkills2 * 2000;
+                        var experience = captorkills1 * 1000 + captorkills2 * 2000 + tenPercent;
 
-                        Subject.Reply(source, $"You killed {killamount} captors! That'll hurt them for sure! They will think twice about taking our kids again! Thank you for your heroic actions.", "chloe_initial");
+                        Subject.Reply(source, $"You killed {killamount.ToWords()} captors! That'll hurt them for sure! They will think twice about taking our kids again! Thank you for your heroic actions.", "chloe_initial");
+
+                        Logger.WithTopics(
+                                Topics.Entities.Aisling,
+                                Topics.Entities.Experience,
+                                Topics.Entities.Dialog,
+                                Topics.Entities.Quest)
+                            .WithProperty(source)
+                            .WithProperty(Subject)
+                            .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, experience);
 
                         source.TryGiveGamePoints(5);
                         ExperienceDistributionScript.GiveExp(source, experience);
@@ -103,22 +143,27 @@ public class TheSacrificeQuestScript : DialogScriptBase
 
                 if (hasStage && stage == TheSacrificeQuestStage.RescueChildren)
                 {
-                    if (source.Trackers.Counters.TryGetValue("childrensaved", out int childrensaved) && childrensaved > 0)
+                    if (source.Trackers.Flags.HasFlag(SavedChild.savedchild))
                     {
-                        var experience = (childrensaved * 15000);
-                        
+                        Logger.WithTopics(
+                                Topics.Entities.Aisling,
+                                Topics.Entities.Experience,
+                                Topics.Entities.Dialog,
+                                Topics.Entities.Quest)
+                            .WithProperty(source)
+                            .WithProperty(Subject)
+                            .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, seventyfivePercent);
+
                         Subject.Reply(source, $"Wow! You saved a child! Thank you so much Aisling!", "chloe_initial");
                         source.TryGiveGamePoints(5);
-                        ExperienceDistributionScript.GiveExp(source, experience);
-                        source.Trackers.Counters.Set("childrensaved", 0);
+                        ExperienceDistributionScript.GiveExp(source, seventyfivePercent);
+                        source.Trackers.Flags.RemoveFlag(SavedChild.savedchild);
                         source.Trackers.Enums.Set(TheSacrificeQuestStage.None);
                         source.Trackers.TimedEvents.AddEvent("thesacrificecd", TimeSpan.FromHours(8), true);
                         return;
                     }
                     
                     Subject.Reply(source, "Where are the children?! You returned without a child? I thought you were going to find them. Go! Search for the children in Astrid!", "chloe_initial");
-                    return;
-                    return;
                 }
                 break;
             }

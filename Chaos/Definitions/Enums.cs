@@ -1277,3 +1277,22 @@ public enum TheSacrificeQuestStage
     AttackCaptors = 2,
     RescueChildren = 3
 }
+[Flags]
+public enum ReconPoints
+{
+    None,
+    reconpoint1 = 1,
+    reconpoint2 = 1 << 1,
+    reconpoint3 = 1 << 2,
+    reconpoint4 = 1 << 3, 
+    reconpoint5 = 1 << 4,
+    reconpoint6 = 1 << 5,
+    reconpoint7 = 1 << 6
+}
+
+[Flags]
+public enum SavedChild
+{
+    None,
+    savedchild = 1
+}

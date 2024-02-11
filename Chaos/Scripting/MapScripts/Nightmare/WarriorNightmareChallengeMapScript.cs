@@ -230,13 +230,6 @@ public class WarriorNightmareChallengeMapScript : MapScriptBase
 
                     if (nightmaregearDictionary.TryGetValue(gearKey, out var nightmaregear))
                     {
-                        var hasGear = nightmaregear.All(
-                            gearItemName =>
-                                player.Inventory.ContainsByTemplateKey(gearItemName)
-                                || player.Bank.Contains(gearItemName)
-                                || player.Equipment.ContainsByTemplateKey(gearItemName));
-
-                        if (!hasGear)
                             foreach (var gearItemName in nightmaregear)
                             {
                                 var gearItem = ItemFactory.Create(gearItemName);

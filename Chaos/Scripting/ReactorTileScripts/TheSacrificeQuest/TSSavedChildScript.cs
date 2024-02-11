@@ -31,7 +31,7 @@ public class TSSavedChildScript : ReactorTileScriptBase
         if (hasStage && stage is not TheSacrificeQuestStage.RescueChildren)
             return;
 
-        if (aisling.Trackers.Counters.TryGetValue("childrensaved", out var count) && count >= 1)
+        if (aisling.Trackers.Flags.HasFlag(SavedChild.savedchild))
             return;
         
         var randomNumber = new Random().Next(1, 101);
@@ -47,7 +47,7 @@ public class TSSavedChildScript : ReactorTileScriptBase
             var child = MerchantFactory.Create("tschild", source.MapInstance, npcpoint);
             var dialog = DialogFactory.Create("tschild_initial", child);
             dialog.Display(aisling);
-            aisling.Trackers.Counters.AddOrIncrement("childrensaved");
+            aisling.Trackers.Flags.AddFlag(SavedChild.savedchild);
             aisling.SendOrangeBarMessage("You stumbled across a child hiding, bring the child back to Chloe.");
     }
 }
