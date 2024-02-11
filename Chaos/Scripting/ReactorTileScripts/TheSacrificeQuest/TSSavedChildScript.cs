@@ -36,7 +36,7 @@ public class TSSavedChildScript : ReactorTileScriptBase
         
         var randomNumber = new Random().Next(1, 101);
 
-        if (randomNumber <= 85)
+        if (randomNumber < 75)
         {
             Map.RemoveEntity(Subject);
             return;

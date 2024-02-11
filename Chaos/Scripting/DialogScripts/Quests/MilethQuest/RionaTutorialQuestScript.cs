@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Formulae;
+using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
@@ -10,6 +11,7 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Time;
 using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Quests;
@@ -553,6 +555,15 @@ public class RionaTutorialQuestScript : DialogScriptBase
                 source.Trackers.Flags.RemoveFlag(RionaTutorialQuestFlags.Skarn);
                 source.Trackers.Flags.RemoveFlag(RionaTutorialQuestFlags.None);
                 source.Trackers.Enums.Set(RionaTutorialQuestStage.CompletedTutorialQuest);
+                source.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        "Completed Tutorial",
+                        "CompletedTutorial",
+                        MarkIcon.Heart,
+                        MarkColor.White,
+                        1,
+                        GameTime.Now));
+
 
                 if (source.HasClass(BaseClass.Wizard))
                 {
