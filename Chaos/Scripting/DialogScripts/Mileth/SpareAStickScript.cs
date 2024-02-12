@@ -70,7 +70,7 @@ public class SpareAStickScript : DialogScriptBase
         {
             if (branchCount)
             {
-                Subject.Reply(source, "Excellent! You'll make a fine spark. Now, go and find your way.");
+                Subject.Reply(source, "Excellent! You'll make a fine spark. Now, go find your way.");
                 source.Trackers.Enums.Set(RionaTutorialQuestStage.CompletedSpareAStick);
 
                 Logger.WithTopics(

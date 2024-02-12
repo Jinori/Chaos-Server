@@ -1277,17 +1277,27 @@ public enum TheSacrificeQuestStage
     AttackCaptors = 2,
     RescueChildren = 3
 }
+
+public enum AstridKillQuestStage
+{
+    None,
+    AstridWolf = 1,
+    AstridKobold = 2,
+    AstridGoblinWarrior = 3,
+    AstridGoblinGuard = 4,
+    AstridGoblinSoldier = 5
+}
 [Flags]
 public enum ReconPoints
 {
     None,
-    reconpoint1 = 1,
-    reconpoint2 = 1 << 1,
-    reconpoint3 = 1 << 2,
-    reconpoint4 = 1 << 3, 
-    reconpoint5 = 1 << 4,
-    reconpoint6 = 1 << 5,
-    reconpoint7 = 1 << 6
+    Reconpoint1 = 1,
+    Reconpoint2 = 1 << 1,
+    Reconpoint3 = 1 << 2,
+    Reconpoint4 = 1 << 3, 
+    Reconpoint5 = 1 << 4,
+    Reconpoint6 = 1 << 5,
+    Reconpoint7 = 1 << 6
 }
 
 [Flags]

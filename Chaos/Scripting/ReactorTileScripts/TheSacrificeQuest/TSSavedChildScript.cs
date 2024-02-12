@@ -28,7 +28,7 @@ public class TSSavedChildScript : ReactorTileScriptBase
 
         var hasStage = aisling.Trackers.Enums.TryGetValue(out TheSacrificeQuestStage stage);
 
-        if (hasStage && stage is not TheSacrificeQuestStage.RescueChildren)
+        if (hasStage || stage is not TheSacrificeQuestStage.RescueChildren)
             return;
 
         if (aisling.Trackers.Flags.HasFlag(SavedChild.savedchild))
