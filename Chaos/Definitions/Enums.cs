@@ -1306,3 +1306,9 @@ public enum SavedChild
     None,
     savedchild = 1
 }
+
+public enum CrudeLeather
+{
+    None,
+    StartedQuest = 1,
+}
