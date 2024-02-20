@@ -1312,3 +1312,14 @@ public enum CrudeLeather
     None,
     StartedQuest = 1,
 }
+
+public enum DecoratingInn
+{
+    None,
+    StartedPetunia = 1,
+    CompletedPetunia = 2,
+    StartedGoldRose = 3,
+    CompletedGoldRose = 4,
+    StartedPinkRose = 5,
+    CompletedQuest = 6
+}
