@@ -99,21 +99,28 @@ public class decoratingInnQuestScript : DialogScriptBase
                 {
                     Subject.Reply(source, "That's what I like to hear. See you soon!");
                     source.Trackers.Enums.Set(DecoratingInn.StartedPetunia);
-                    source.SendOrangeBarMessage("Retrieve 3 Petunia for Maria.");
+                    source.SendOrangeBarMessage("Retrieve three Petunia for Runa.");
                     return;
                 }
                 if (hasStage && stage == DecoratingInn.CompletedPetunia)
                 {
                     Subject.Reply(source, "Perfect. That gold rose will make a beautiful center piece.");
                     source.Trackers.Enums.Set(DecoratingInn.StartedGoldRose);
-                    source.SendOrangeBarMessage("Retrieve 1 Gold Rose for Maria.");
+                    source.SendOrangeBarMessage("Retrieve one Gold Rose for Runa.");
                     return;
                 }
                 if (hasStage && stage == DecoratingInn.CompletedGoldRose)
                 {
                     Subject.Reply(source, "Those Pink Roses will be the finishing touch to the baskets. Please hurry.");
                     source.Trackers.Enums.Set(DecoratingInn.StartedPinkRose);
-                    source.SendOrangeBarMessage("Retrieve 3 Pink Rose for Maria.");
+                    source.SendOrangeBarMessage("Retrieve three Pink Rose for Runa.");
+                    return;
+                }
+
+                if (hasStage && stage == DecoratingInn.CompletedQuest)
+                {
+                    Subject.Reply(source, "Thank you. I will see you soon. Remember, I need three petunias, one gold rose as my center piece, and three pink flowers.");
+                    source.SendOrangeBarMessage("Bring Runa three petunias, one gold rose, and three pink roses.");
                     return;
                 }
                 
@@ -168,7 +175,7 @@ public class decoratingInnQuestScript : DialogScriptBase
                 
                 if (hasStage && stage == DecoratingInn.StartedGoldRose)
                 {
-                    if (hasRequiredPetunia)
+                    if (hasRequiredGoldRose)
                     {
                         source.Inventory.RemoveQuantity("Gold Rose", 1, out _);
                         source.Trackers.Enums.Set(DecoratingInn.CompletedGoldRose);
@@ -232,8 +239,8 @@ public class decoratingInnQuestScript : DialogScriptBase
                         {
                             source.Legend.AddOrAccumulate(
                                 new LegendMark(
-                                    "Loved by Rucesion Mundanes",
-                                    "rucesionLoved",
+                                    "Loved by Abel Mundanes",
+                                    "AbelLoved",
                                     MarkIcon.Heart,
                                     MarkColor.Blue,
                                     1,
@@ -294,8 +301,8 @@ public class decoratingInnQuestScript : DialogScriptBase
                         {
                             source.Legend.AddOrAccumulate(
                                 new LegendMark(
-                                    "Loved by Rucesion Mundanes",
-                                    "rucesionLoved",
+                                    "Loved by Abel Mundanes",
+                                    "AbelLoved",
                                     MarkIcon.Heart,
                                     MarkColor.Blue,
                                     1,

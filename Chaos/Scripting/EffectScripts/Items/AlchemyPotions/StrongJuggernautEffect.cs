@@ -38,7 +38,7 @@ public class StrongJuggernautEffect : NonOverwritableEffectBase
 
         var attributes = new Attributes
         {
-            MaximumHp = 200
+            MaximumHp = 1000
         };
 
         Subject.StatSheet.AddBonus(attributes);
@@ -52,7 +52,7 @@ public class StrongJuggernautEffect : NonOverwritableEffectBase
     {
         var attributes = new Attributes
         {
-            MaximumHp = 200
+            MaximumHp = 1000
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
