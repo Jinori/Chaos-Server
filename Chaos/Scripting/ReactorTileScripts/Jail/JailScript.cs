@@ -1,3 +1,4 @@
+using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -16,7 +17,13 @@ public class JailScript : ReactorTileScriptBase
         if (source is not Aisling aisling || !aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out var timedEvent))
             return;
 
-        aisling.SendOrangeBarMessage("You must serve your current jail sentence before leaving.");
+        var timeLeft = timedEvent.Remaining.ToReadableString(
+            false,
+            true,
+            true,
+            true);
+        
+        aisling.SendPersistentMessage($"{timeLeft} until you finish your sentence.");
         var point = source.DirectionalOffset(source.Direction.Reverse());
         source.WarpTo(point);
     }

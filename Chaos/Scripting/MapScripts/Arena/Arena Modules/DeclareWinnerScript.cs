@@ -36,6 +36,12 @@ public sealed class DeclareWinnerScript : MapScriptBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
+        if (!Subject.GetEntities<Aisling>().Any() && WinnerDeclared)
+        {
+            Subject.Destroy();
+            return;
+        }
+
         DeclareWinnerTimer.Update(delta);
         
         if (!DeclareWinnerTimer.IntervalElapsed)
@@ -138,28 +144,13 @@ public sealed class DeclareWinnerScript : MapScriptBase
 
         return activeTeams;
     }
-
-    private void ResetMaps()
-    {
-        switch (Subject.Name)
-        {
-            case "Lava Arena":
-                Subject.Morph("26006");
-
-                break;
-            case "Lava Arena - Teams":
-                Subject.Morph("26012");
-
-                break;
-        }
-    }
+   
     
     private List<Aisling> GetAliveAislings(IEnumerable<Aisling> allAislings) => allAislings.Where(x => x.IsAlive && (IsHostPlaying || !IsHost(x))).ToList();
 
     private void DeclareWinners(IReadOnlyList<Aisling> winners)
     {
         var allToPort = Subject.GetEntities<Aisling>().ToList();
-        var allHosts = Subject.GetEntities<Aisling>().Where(IsHost);
 
         var winningMessage = winners.Count switch
         {
@@ -173,23 +164,15 @@ public sealed class DeclareWinnerScript : MapScriptBase
             player.SendServerMessage(ServerMessageType.OrangeBar2, winningMessage);
             var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
             player.TraverseMap(mapInstance, new Point(12, 10));
+            
         }
 
-        foreach (var host in allHosts)
-        {
-            host.SendServerMessage(ServerMessageType.OrangeBar2, winningMessage);
-            var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
-            host.TraverseMap(mapInstance, new Point(12, 10));
-        }
-
-        ResetMaps();
         WinnerDeclared = true;
     }
     
     private void DeclareNoWinners()
     {
         var allToPort = Subject.GetEntities<Aisling>().ToList();
-        var allHosts = Subject.GetEntities<Aisling>().Where(IsHost);
 
         foreach (var player in allToPort)
         {
@@ -197,15 +180,7 @@ public sealed class DeclareWinnerScript : MapScriptBase
             var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
             player.TraverseMap(mapInstance, new Point(12, 10));
         }
-
-        foreach (var host in allHosts)
-        {
-            host.SendServerMessage(ServerMessageType.OrangeBar2, "The round ended in a draw. Everyone died!");
-            var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
-            host.TraverseMap(mapInstance, new Point(12, 10));
-        }
-
-        ResetMaps();
+        
         WinnerDeclared = true;
     }
     
@@ -222,8 +197,7 @@ public sealed class DeclareWinnerScript : MapScriptBase
 
         foreach (var loser in playersThatLost)
             loser.SendActiveMessage($"{winningTeam} has won the round. Better luck next time.");
-
-        var allHosts = Subject.GetEntities<Aisling>().Where(IsHost);
+        
         var allToPort = Subject.GetEntities<Aisling>();
 
         foreach (var player in allToPort)
@@ -249,18 +223,16 @@ public sealed class DeclareWinnerScript : MapScriptBase
                     player.TraverseMap(mapInstance, RedPoint);
 
                     break;
+                case ArenaTeam.None:
+                    player.TraverseMap(mapInstance, new Point(12, 13));
+                    break;
+                
+                default:
+                    player.TraverseMap(mapInstance, new Point(12, 13));
+                    break;
             }
         }
-
-        foreach (var host in allHosts)
-        {
-            host.SendServerMessage(ServerMessageType.OrangeBar2, $"{winningTeam} has won the round!");
-            var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
-            host.Trackers.Enums.Set(ArenaHostPlaying.None);
-            host.TraverseMap(mapInstance, new Point(12, 10));
-        }
         
-        ResetMaps();
         WinnerDeclared = true;
     }
     

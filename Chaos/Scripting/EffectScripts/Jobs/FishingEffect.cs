@@ -13,8 +13,8 @@ public class FishingEffect : ContinuousAnimationEffectBase
     private const int FISH_CATCH_CHANCE = 2;
     private const byte FISHING_ICON = 203;
 
-    private static readonly List<KeyValuePair<string, decimal>> FishData = new()
-    {
+    private static readonly List<KeyValuePair<string, decimal>> FishData =
+    [
         new KeyValuePair<string, decimal>("uselessboot", 20),
         new KeyValuePair<string, decimal>("trout", 30),
         new KeyValuePair<string, decimal>("bass", 25),
@@ -23,7 +23,7 @@ public class FishingEffect : ContinuousAnimationEffectBase
         new KeyValuePair<string, decimal>("rockfish", 10),
         new KeyValuePair<string, decimal>("lionfish", 8),
         new KeyValuePair<string, decimal>("purplewhopper", 5)
-    };
+    ];
     private readonly IItemFactory _itemFactory;
     private List<Point> _fishingSpots = new();
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(1);
@@ -55,7 +55,6 @@ public class FishingEffect : ContinuousAnimationEffectBase
         if ((_fishingSpots.Count == 0) || !_fishingSpots.Contains(playerLocation) || !aisling.Inventory.HasCount("Fishing Bait", 1))
         {
             Subject.Effects.Terminate("Fishing");
-
             return;
         }
 

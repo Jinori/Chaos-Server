@@ -22,12 +22,18 @@ public class FishingSpotScript : ReactorTileScriptBase
             return;
 
         if (!aisling.Inventory.HasCount("Fishing Bait", 1))
-            return;
+        {
+            aisling.SendOrangeBarMessage("You mumble and regret leaving your bait behind.");
+            return;   
+        }
 
         var templateTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
 
         if (templateTemplateKey?.EndsWith("FishingPole", StringComparison.Ordinal) is not true)
-            return;
+        {
+            aisling.SendOrangeBarMessage("If you plan on fishing, a rod is needed.");
+            return;    
+        }
 
         if (source.Effects.Contains("Fishing"))
             return;

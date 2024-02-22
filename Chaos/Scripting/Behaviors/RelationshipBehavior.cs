@@ -47,10 +47,10 @@ public class RelationshipBehavior
         if (source.Equals(target))
             return true;
 
-        var inPvpMap = ((source.MapInstance.InstanceId == "arena_battle_ring") && (target.MapInstance.InstanceId == "arena_battle_ring"))
-                       || ((source.MapInstance.InstanceId == "arena_lava") && (target.MapInstance.InstanceId == "arena_lava"))
-                       || ((source.MapInstance.InstanceId == "arena_lavateams") && (target.MapInstance.InstanceId == "arena_lavateams"))
-                       || ((source.MapInstance.InstanceId == "arena_colorClash") && (target.MapInstance.InstanceId == "arena_colorClash"));
+        var inPvpMap = ((source.MapInstance.BaseInstanceId  == "arena_battle_ring") && (target.MapInstance.BaseInstanceId  == "arena_battle_ring"))
+                       || ((source.MapInstance.BaseInstanceId  == "arena_lava") && (target.MapInstance.BaseInstanceId  == "arena_lava"))
+                       || ((source.MapInstance.BaseInstanceId  == "arena_lavateams") && (target.MapInstance.BaseInstanceId  == "arena_lavateams"))
+                       || ((source.MapInstance.BaseInstanceId  == "arena_colorClash") && (target.MapInstance.BaseInstanceId  == "arena_colorClash"));
 
         var inGroup = source.Group?.Contains(target) ?? false;
 
@@ -164,10 +164,10 @@ public class RelationshipBehavior
         if (source.Equals(target))
             return false;
 
-        var onPvpMap = ((source.MapInstance.InstanceId == "arena_battle_ring") && (target.MapInstance.InstanceId == "arena_battle_ring"))
-                       || ((source.MapInstance.InstanceId == "arena_lava") && (target.MapInstance.InstanceId == "arena_lava"))
-                       || ((source.MapInstance.InstanceId == "arena_lavateams") && (target.MapInstance.InstanceId == "arena_lavateams"))
-                       || ((source.MapInstance.InstanceId == "arena_colorClash") && (target.MapInstance.InstanceId == "arena_colorClash"));
+        var onPvpMap = ((source.MapInstance.BaseInstanceId == "arena_battle_ring") && (target.MapInstance.BaseInstanceId  == "arena_battle_ring"))
+                       || ((source.MapInstance.BaseInstanceId  == "arena_lava") && (target.MapInstance.BaseInstanceId  == "arena_lava"))
+                       || ((source.MapInstance.BaseInstanceId  == "arena_lavateams") && (target.MapInstance.BaseInstanceId  == "arena_lavateams"))
+                       || ((source.MapInstance.BaseInstanceId  == "arena_colorClash") && (target.MapInstance.BaseInstanceId  == "arena_colorClash"));
 
         var inGroup = source.Group?.Contains(target) ?? false;
 

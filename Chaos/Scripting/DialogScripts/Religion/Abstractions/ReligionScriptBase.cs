@@ -658,9 +658,9 @@ public class ReligionScriptBase : DialogScriptBase
             source.Trackers.Enums.Set(typeof(ReligionPrayer), count);
             UpdateReligionRank(source);
             var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-            var sixPercent = Convert.ToInt32(.06 * tnl);
+            var threePercent = Convert.ToInt32(.03 * tnl);
                 
-            ExperienceDistributionScript.GiveExp(source, sixPercent);
+            ExperienceDistributionScript.GiveExp(source, threePercent);
             source.Animate(PrayerSuccess);
 
             if (IntegerRandomizer.RollChance(10))

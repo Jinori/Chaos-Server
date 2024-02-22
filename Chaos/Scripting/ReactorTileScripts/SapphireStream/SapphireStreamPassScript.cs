@@ -20,8 +20,6 @@ public class SapphireStreamPassScript : ReactorTileScriptBase
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
     {
-        var targetMap = SimpleCache.Get<MapInstance>("sapphire_stream");
-
         if (source is Aisling aisling && !aisling.UserStatSheet.BaseClass.Equals(BaseClass.Monk))
         {
             aisling.SendOrangeBarMessage("You must be of the Monk class to access this area.");
@@ -31,7 +29,8 @@ public class SapphireStreamPassScript : ReactorTileScriptBase
 
             return;
         }
-
+        
+        var targetMap = SimpleCache.Get<MapInstance>("sapphire_stream");
         source.TraverseMap(targetMap, new Point(13, 11));
     }
 }

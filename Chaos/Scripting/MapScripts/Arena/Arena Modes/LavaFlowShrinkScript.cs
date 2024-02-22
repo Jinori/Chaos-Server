@@ -12,7 +12,7 @@ public sealed class LavaFlowShrinkScript : CompositeMapScript
         GetScriptKey(typeof(AnnounceMatchScript)),
         GetScriptKey(typeof(DeclareWinnerScript)),
         GetScriptKey(typeof(MapShrinkScript)),
-        GetScriptKey(typeof(TeleportScript))
+        GetScriptKey(typeof(MeteorChaosScript))
     };
 
     /// <inheritdoc />

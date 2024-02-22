@@ -15,7 +15,7 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Scripting.MapScripts.Arena.Arena_Modes;
-using Chaos.Scripting.MapScripts.Arena.Arena_Modules;
+using Chaos.Services.Storage.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Discord;
@@ -41,12 +41,15 @@ public class ArenaUndergroundScript : DialogScriptBase
     private readonly Point ColorClashRedPoint = new(4, 27);
     private readonly IScriptFactory<IMapScript, MapInstance> ScriptFactory;
     private readonly ISimpleCache SimpleCache;
+    private readonly IShardGenerator ShardGenerator;
+
     private Point CenterWarpPlayer;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
     
     /// <inheritdoc />
     public ArenaUndergroundScript(
         Dialog subject,
+        IShardGenerator shardGenerator,
         ISimpleCache simpleCache,
         IScriptFactory<IMapScript, MapInstance> scriptFactory,
         IClientRegistry<IWorldClient> clientRegistry
@@ -57,6 +60,7 @@ public class ArenaUndergroundScript : DialogScriptBase
         ClientRegistry = clientRegistry;
         SimpleCache = simpleCache;
         ScriptFactory = scriptFactory;
+        ShardGenerator = shardGenerator;
     }
 
     public void HideDialogOptions(Aisling source)
@@ -594,29 +598,27 @@ public class ArenaUndergroundScript : DialogScriptBase
             {
                 source.Trackers.Enums.Set(ArenaHostPlaying.No);
 
-                
-                
-                var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
-                var script = mapInstance.Script.As<HiddenHavocShrinkScript>();
-                mapInstance.RemoveScript<IMapScript, HiddenHavocShrinkScript>();
+                var shard = ShardGenerator.CreateShardOfInstance("arena_lava");
+                shard.Shards.TryAdd(shard.InstanceId, shard);
+
+                   
+                var script = shard.Script.As<HiddenHavocShrinkScript>();
                 
                 if (script == null)
-                    mapInstance.AddScript(typeof(HiddenHavocShrinkScript), ScriptFactory);
+                   shard.AddScript(typeof(HiddenHavocShrinkScript), ScriptFactory);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
                     Point point;
 
                     do
-                        point = mapInstance.Template.Bounds.GetRandomPoint();
-                    while (mapInstance.IsWall(point) || mapInstance.IsBlockingReactor(point));
+                        point = shard.Template.Bounds.GetRandomPoint();
+                    while (shard.IsWall(point) || shard.IsBlockingReactor(point));
 
-                    aisling.TraverseMap(mapInstance, point);
+                    aisling.TraverseMap(shard, point);
                 }
 
-                source.TraverseMap(mapInstance, new Point(14, 14));
                 Subject.Close(source);
-
                 break;
             }
 
@@ -624,26 +626,22 @@ public class ArenaUndergroundScript : DialogScriptBase
             {
                 source.Trackers.Enums.Set(ArenaHostPlaying.Yes);
 
-                var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
-                var script = mapInstance.Script.As<HiddenHavocShrinkScript>();
-                mapInstance.RemoveScript<IMapScript, AnnounceMatchScript>();
-                mapInstance.RemoveScript<IMapScript, AislingDeathTouchScript>();
-                mapInstance.RemoveScript<IMapScript, MapShrinkScript>();
-                mapInstance.RemoveScript<IMapScript, DeclareWinnerScript>();
-                mapInstance.RemoveScript<IMapScript, HiddenHavocShrinkScript>();
+                var shard = ShardGenerator.CreateShardOfInstance("arena_lava");
+                shard.Shards.TryAdd(shard.InstanceId, shard);
+                var script = shard.Script.As<HiddenHavocShrinkScript>();
                 
                 if (script == null)
-                    mapInstance.AddScript(typeof(HiddenHavocShrinkScript), ScriptFactory);
+                    shard.AddScript(typeof(HiddenHavocShrinkScript), ScriptFactory);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
                     Point point;
 
                     do
-                        point = mapInstance.Template.Bounds.GetRandomPoint();
-                    while (mapInstance.IsWall(point) || mapInstance.IsBlockingReactor(point));
+                        point = shard.Template.Bounds.GetRandomPoint();
+                    while (shard.IsWall(point) || shard.IsBlockingReactor(point));
 
-                    aisling.TraverseMap(mapInstance, point);
+                    aisling.TraverseMap(shard, point);
                 }
 
                 Subject.Close(source);
@@ -654,25 +652,25 @@ public class ArenaUndergroundScript : DialogScriptBase
             case "ophie_startffalavaflowhostnotplayingstart":
             {
                 source.Trackers.Enums.Set(ArenaHostPlaying.No);
-                
-                var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
-                var script = mapInstance.Script.As<LavaFlowShrinkScript>();
+
+                var shard = ShardGenerator.CreateShardOfInstance("arena_lava");
+                shard.Shards.TryAdd(shard.InstanceId, shard);
+                var script = shard.Script.As<LavaFlowShrinkScript>();
 
                 if (script == null)
-                    mapInstance.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
+                    shard.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
                     Point point;
 
                     do
-                        point = mapInstance.Template.Bounds.GetRandomPoint();
-                    while (mapInstance.IsWall(point) || mapInstance.IsBlockingReactor(point));
+                        point = shard.Template.Bounds.GetRandomPoint();
+                    while (shard.IsWall(point) || shard.IsBlockingReactor(point));
 
-                    aisling.TraverseMap(mapInstance, point);
+                    aisling.TraverseMap(shard, point);
                 }
 
-                source.TraverseMap(mapInstance, new Point(14, 14));
                 Subject.Close(source);
 
                 break;
@@ -681,23 +679,23 @@ public class ArenaUndergroundScript : DialogScriptBase
             case "ophie_startffalavaflowhostplayingstart":
             {
                 source.Trackers.Enums.Set(ArenaHostPlaying.Yes);
-                
-                var mapInstance = SimpleCache.Get<MapInstance>("arena_lava");
-                
-                var script = mapInstance.Script.As<LavaFlowShrinkScript>();
+
+                var shard = ShardGenerator.CreateShardOfInstance("arena_lava");
+                shard.Shards.TryAdd(shard.InstanceId, shard);
+                var script = shard.Script.As<LavaFlowShrinkScript>();
 
                 if (script == null)
-                    mapInstance.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
+                    shard.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
                     Point point;
 
                     do
-                        point = mapInstance.Template.Bounds.GetRandomPoint();
-                    while (mapInstance.IsWall(point) || mapInstance.IsBlockingReactor(point));
+                        point = shard.Template.Bounds.GetRandomPoint();
+                    while (shard.IsWall(point) || shard.IsBlockingReactor(point));
 
-                    aisling.TraverseMap(mapInstance, point);
+                    aisling.TraverseMap(shard, point);
                 }
 
                 Subject.Close(source);
@@ -708,12 +706,13 @@ public class ArenaUndergroundScript : DialogScriptBase
             case "ophie_startteamgamelavaflowhostplayingstart":
             {
                 source.Trackers.Enums.Set(ArenaHostPlaying.Yes);
-                
-                var mapInstance = SimpleCache.Get<MapInstance>("arena_lavateams");
-                var script = mapInstance.Script.As<LavaFlowShrinkScript>();
+
+                var shard = ShardGenerator.CreateShardOfInstance("arena_lavateams");
+                shard.Shards.TryAdd(shard.InstanceId, shard);
+                var script = shard.Script.As<LavaFlowShrinkScript>();
                 
                 if (script == null)
-                    mapInstance.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
+                    shard.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
@@ -730,20 +729,16 @@ public class ArenaUndergroundScript : DialogScriptBase
                     switch (team)
                     {
                         case ArenaTeam.Blue:
-                            aisling.TraverseMap(mapInstance, LavaBluePoint);
-
+                            aisling.TraverseMap(shard, LavaBluePoint);
                             break;
                         case ArenaTeam.Green:
-                            aisling.TraverseMap(mapInstance, LavaGreenPoint);
-
+                            aisling.TraverseMap(shard, LavaGreenPoint);
                             break;
                         case ArenaTeam.Gold:
-                            aisling.TraverseMap(mapInstance, LavaGoldPoint);
-
+                            aisling.TraverseMap(shard, LavaGoldPoint);
                             break;
                         case ArenaTeam.Red:
-                            aisling.TraverseMap(mapInstance, LavaRedPoint);
-
+                            aisling.TraverseMap(shard, LavaRedPoint);
                             break;
                     }
                 }
@@ -755,51 +750,47 @@ public class ArenaUndergroundScript : DialogScriptBase
 
             case "ophie_startteamgamelavaflowhostnotplayingstart":
             {
-                source.Trackers.Enums.Set(ArenaHostPlaying.No);
-                
-                var mapInstance = SimpleCache.Get<MapInstance>("arena_lavateams");
-                var script = mapInstance.Script.As<LavaFlowShrinkScript>();
-                
-                if (script == null)
-                    mapInstance.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
+                    source.Trackers.Enums.Set(ArenaHostPlaying.No);
 
-                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                {
-                    if (!aisling.IsAlive)
+                    var shard = ShardGenerator.CreateShardOfInstance("arena_lavateams");
+                    shard.Shards.TryAdd(shard.InstanceId, shard);
+                    var script = shard.Script.As<LavaFlowShrinkScript>();
+
+                    if (script == null)
+                        shard.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
+
+                    foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                     {
-                        aisling.IsDead = false;
-                        aisling.StatSheet.SetHealthPct(100);
-                        aisling.StatSheet.SetManaPct(100);
-                        aisling.Client.SendAttributes(StatUpdateType.Vitality);
+                        if (!aisling.IsAlive)
+                        {
+                            aisling.IsDead = false;
+                            aisling.StatSheet.SetHealthPct(100);
+                            aisling.StatSheet.SetManaPct(100);
+                            aisling.Client.SendAttributes(StatUpdateType.Vitality);
+                        }
+
+                        aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
+
+                        switch (team)
+                        {
+                            case ArenaTeam.Blue:
+                                aisling.TraverseMap(shard, LavaBluePoint);
+                                break;
+                            case ArenaTeam.Green:
+                                aisling.TraverseMap(shard, LavaGreenPoint);
+                                break;
+                            case ArenaTeam.Gold:
+                                aisling.TraverseMap(shard, LavaGoldPoint);
+                                break;
+                            case ArenaTeam.Red:
+                                aisling.TraverseMap(shard, LavaRedPoint);
+                                break;
+                        }
                     }
 
-                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
+                    Subject.Close(source);
 
-                    switch (team)
-                    {
-                        case ArenaTeam.Blue:
-                            aisling.TraverseMap(mapInstance, LavaBluePoint);
-
-                            break;
-                        case ArenaTeam.Green:
-                            aisling.TraverseMap(mapInstance, LavaGreenPoint);
-
-                            break;
-                        case ArenaTeam.Gold:
-                            aisling.TraverseMap(mapInstance, LavaGoldPoint);
-
-                            break;
-                        case ArenaTeam.Red:
-                            aisling.TraverseMap(mapInstance, LavaRedPoint);
-
-                            break;
-                    }
-                }
-
-                source.TraverseMap(mapInstance, new Point(14, 14));
-                Subject.Close(source);
-
-                break;
+                    break;
             }
             case "ophie_battlering":
             {
