@@ -70,4 +70,7 @@
     <ItemGroup>
         <AdditionalFiles Include="Site\Pages\Index.cshtml"/>
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Scripting\DialogScripts\Quests\Rucesion\" />
+    </ItemGroup>
 </Project>

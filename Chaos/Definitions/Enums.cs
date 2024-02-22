@@ -1323,3 +1323,10 @@ public enum DecoratingInn
     StartedPinkRose = 5,
     CompletedQuest = 6
 }
+
+public enum HungryViveka
+{
+    None,
+    StartedCherryPie = 1,
+    CompletedCherryPie = 2
+}

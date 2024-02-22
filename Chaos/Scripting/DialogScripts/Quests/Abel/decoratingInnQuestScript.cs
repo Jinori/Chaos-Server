@@ -11,21 +11,18 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.DialogScripts.Mileth;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
-using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
-namespace Chaos.Scripting.DialogScripts.Quests.Rucesion;
+namespace Chaos.Scripting.DialogScripts.Quests.Abel;
 
 public class decoratingInnQuestScript : DialogScriptBase
 {
-    private readonly IItemFactory ItemFactory;
     private readonly ILogger<SpareAStickScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public decoratingInnQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<SpareAStickScript> logger)
+    public decoratingInnQuestScript(Dialog subject, ILogger<SpareAStickScript> logger)
         : base(subject)
     {
-        ItemFactory = itemFactory;
         Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
@@ -88,7 +85,6 @@ public class decoratingInnQuestScript : DialogScriptBase
                 if (hasStage && stage == DecoratingInn.StartedPinkRose)
                 {
                     Subject.Reply(source, "Skip", "decoratinginn_return1");
-                    return;
                 }
                 break;
             }
@@ -121,7 +117,6 @@ public class decoratingInnQuestScript : DialogScriptBase
                 {
                     Subject.Reply(source, "Thank you. I will see you soon. Remember, I need three petunias, one gold rose as my center piece, and three pink flowers.");
                     source.SendOrangeBarMessage("Bring Runa three petunias, one gold rose, and three pink roses.");
-                    return;
                 }
                 
                 break;
