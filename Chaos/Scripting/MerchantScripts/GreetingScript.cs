@@ -1,4 +1,5 @@
 using Chaos.Common.Utilities;
+using Chaos.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MerchantScripts.Abstractions;
@@ -38,6 +39,10 @@ public class GreetingScript : MerchantScriptBase
                     return;
 
                 if (aisling.Trackers.TimedEvents.HasActiveEvent("CryptSlayerCd", out var timedEvent))
+                    return;
+
+                if (aisling.Trackers.Enums.TryGetValue(out RionaTutorialQuestStage stage) &&
+                    stage == RionaTutorialQuestStage.StartedSkarn)
                     return;
 
                 Subject.Say($"{source.Name}, I have a job for you.");

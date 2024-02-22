@@ -41,16 +41,16 @@ public class PentagramDeathScript : MonsterScriptBase
         //get the highest contributor
         //if there are no contributor, try getting the highest aggro
         var rewardTarget = Subject.Contribution
-                                  .OrderByDescending(kvp => kvp.Value)
-                                  .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
-                                  .FirstOrDefault(a => a is not null);
+            .OrderByDescending(kvp => kvp.Value)
+            .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
+            .FirstOrDefault(a => a is not null);
 
         Aisling[]? rewardTargets = null;
 
         if (rewardTarget != null)
             rewardTargets = (rewardTarget.Group ?? (IEnumerable<Aisling>)new[] { rewardTarget })
-                            .ThatAreWithinRange(rewardTarget)
-                            .ToArray();
+                .ThatAreWithinRange(rewardTarget)
+                .ToArray();
 
         Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
 
@@ -72,60 +72,37 @@ public class PentagramDeathScript : MonsterScriptBase
             }
 
             ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
-            
+
             var pentagearDictionary = new Dictionary<(BaseClass, Gender), string[]>
             {
-                { (BaseClass.Warrior, Gender.Male), new string[] { "malescarletcarapace", "scarletchitinhelmet" } },
-                { (BaseClass.Warrior, Gender.Female), new string[] { "femalescarletcarapace", "scarletchitinhelmet" } },
-                { (BaseClass.Monk, Gender.Male), new string[] { "malenagatiercloak" } },
-                { (BaseClass.Monk, Gender.Female), new string[] { "femalenagatiercloak" } },
-                { (BaseClass.Rogue, Gender.Male), new string[] { "malereitermail", "kopfloserhood" } },
-                { (BaseClass.Rogue, Gender.Female), new string[] { "femalereitermail", "kopfloserhood" } },
-                { (BaseClass.Priest, Gender.Male), new string[] { "maledarkclericrobes", "darkclericbrim" } },
-                { (BaseClass.Priest, Gender.Female), new string[] { "femaledarkclericrobes", "darkclericbrim" } },
-                { (BaseClass.Wizard, Gender.Male), new string[] { "malelichrobe", "lichhood" } },
-                { (BaseClass.Wizard, Gender.Female), new string[] { "femalelichrobe", "lichhood" } }
-            };
-            
-            var pentagearnameDictionary = new Dictionary<(BaseClass, Gender), string[]>
-            {
-                { (BaseClass.Warrior, Gender.Male), new string[] { "Male Scarlet Carapace", "Scarlet Chitin Helmet" } },
-                { (BaseClass.Warrior, Gender.Female), new string[] { "Female Scarlet Carapace", "Scarlet Chitin Helmet" } },
-                { (BaseClass.Monk, Gender.Male), new string[] { "Male Nagatier Cloak" } },
-                { (BaseClass.Monk, Gender.Female), new string[] { "Female Nagatier Cloak" } },
-                { (BaseClass.Rogue, Gender.Male), new string[] { "Male Reitermail", "Kopfloserhood" } },
-                { (BaseClass.Rogue, Gender.Female), new string[] { "Female Reitermail", "Kopfloserhood" } },
-                { (BaseClass.Priest, Gender.Male), new string[] { "Male Dark Cleric Robes", "Dark Cleric Brim" } },
-                { (BaseClass.Priest, Gender.Female), new string[] { "Female Dark Cleric Robes", "Dark Cleric Brim" } },
-                { (BaseClass.Wizard, Gender.Male), new string[] { "Male Lich Robe", "Lich Hood" } },
-                { (BaseClass.Wizard, Gender.Female), new string[] { "Female Lich Robe", "Lich Hood" } }
+                { (BaseClass.Warrior, Gender.Male), ["malescarletcarapace", "scarletchitinhelmet"] },
+                { (BaseClass.Warrior, Gender.Female), ["femalescarletcarapace", "scarletchitinhelmet"] },
+                { (BaseClass.Monk, Gender.Male), ["malenagatiercloak"] },
+                { (BaseClass.Monk, Gender.Female), ["femalenagatiercloak"] },
+                { (BaseClass.Rogue, Gender.Male), ["malereitermail", "kopfloserhood"] },
+                { (BaseClass.Rogue, Gender.Female), ["femalereitermail", "kopfloserhood"] },
+                { (BaseClass.Priest, Gender.Male), ["maledarkclericrobes", "darkclericbrim"] },
+                { (BaseClass.Priest, Gender.Female), ["femaledarkclericrobes", "darkclericbrim"] },
+                { (BaseClass.Wizard, Gender.Male), ["malelichrobe", "lichhood"] },
+                { (BaseClass.Wizard, Gender.Female), ["femalelichrobe", "lichhood"] }
             };
 
             foreach (var target in rewardTargets)
             {
                 target.Trackers.Enums.Set(PentagramQuestStage.DefeatedBoss);
-                target.SendOrangeBarMessage("The house calms down and the darkness fades.");
+                target.SendOrangeBarMessage("The house calms down, and the darkness fades.");
                 target.Trackers.Counters.AddOrIncrement("pentabosskills");
 
                 var gearKey = (target.UserStatSheet.BaseClass, target.Gender);
-                var gearNameKey = (target.UserStatSheet.BaseClass, target.Gender);
-                if (pentagearDictionary.TryGetValue(gearKey, out var pentagear) && pentagearnameDictionary.TryGetValue(gearNameKey, out var pentagearname))
-                { 
-                    var hasGear = pentagear.All(gearItemName =>
-                        target.Inventory.Contains(gearItemName) || target.Equipment.Contains(gearItemName));
-                    
-                    var hasGear2 = pentagearname.All(gearItemName2 =>
-                        target.Bank.Contains(gearItemName2));
-
-                    if (!hasGear || !hasGear2)
-                    {
+                if (pentagearDictionary.TryGetValue(gearKey, out var pentagear))
+                {
                         foreach (var gearItemName in pentagear)
                         {
                             var gearItem = ItemFactory.Create(gearItemName);
                             target.GiveItemOrSendToBank(gearItem);
                         }
-                    }
                 }
+
 
                 if (target.Trackers.Counters.TryGetValue("pentabosskills", out var kills) && (kills == 10))
                 {

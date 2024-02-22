@@ -37,6 +37,38 @@ public class StatBuyingScript : DialogScriptBase
                 { ClassStatBracket.Grandmaster, new Attributes { Str = 255, Int = 150, Wis = 150, Con = 180, Dex = 215 } }
             }
         },
+        {
+            BaseClass.Monk, new Dictionary<ClassStatBracket, Attributes>
+            {
+                { ClassStatBracket.PreMaster, new Attributes { Str = 115, Int = 60, Wis = 60, Con = 150, Dex = 100 } },
+                { ClassStatBracket.Master, new Attributes { Str = 180, Int = 100, Wis = 100, Con = 215, Dex = 150 } },
+                { ClassStatBracket.Grandmaster, new Attributes { Str = 215, Int = 150, Wis = 150, Con = 255, Dex = 180 } }
+            }
+        },
+        {
+            BaseClass.Rogue, new Dictionary<ClassStatBracket, Attributes>
+            {
+                { ClassStatBracket.PreMaster, new Attributes { Str = 115, Int = 60, Wis = 60, Con = 100, Dex = 150 } },
+                { ClassStatBracket.Master, new Attributes { Str = 180, Int = 100, Wis = 100, Con = 150, Dex = 215 } },
+                { ClassStatBracket.Grandmaster, new Attributes { Str = 215, Int = 150, Wis = 150, Con = 180, Dex = 255 } }
+            }
+        },
+        {
+            BaseClass.Wizard, new Dictionary<ClassStatBracket, Attributes>
+            {
+                { ClassStatBracket.PreMaster, new Attributes { Str = 60, Int = 150, Wis = 115, Con = 60, Dex = 100 } },
+                { ClassStatBracket.Master, new Attributes { Str = 100, Int = 215, Wis = 180, Con = 100, Dex = 150 } },
+                { ClassStatBracket.Grandmaster, new Attributes { Str = 150, Int = 255, Wis = 215, Con = 150, Dex = 180 } }
+            }
+        },
+        {
+            BaseClass.Priest, new Dictionary<ClassStatBracket, Attributes>
+            {
+                { ClassStatBracket.PreMaster, new Attributes { Str = 60, Int = 115, Wis = 150, Con = 100, Dex = 60 } },
+                { ClassStatBracket.Master, new Attributes { Str = 100, Int = 180, Wis = 215, Con = 150, Dex = 100 } },
+                { ClassStatBracket.Grandmaster, new Attributes { Str = 150, Int = 215, Wis = 255, Con = 180, Dex = 150 } }
+            }
+        },
         // Add other classes here
     };
 

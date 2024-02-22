@@ -922,7 +922,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         if (@new < 0)
         {
-            SendOrangeBarMessage($"You do not have enough, you need a {amount} gold.");
+            SendOrangeBarMessage($"You do not have enough, you need {amount} gold.");
 
             return false;
         }

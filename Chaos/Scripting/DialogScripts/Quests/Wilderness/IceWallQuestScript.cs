@@ -121,12 +121,11 @@ public class IceWallQuestScript : DialogScriptBase
                               Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
-                          .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 75000);
+                          .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 25000);
 
-                    ExperienceDistributionScript.GiveExp(source, 75000);
+                    ExperienceDistributionScript.GiveExp(source, 25000);
                     source.Trackers.Enums.Set(IceWallQuest.SampleComplete);
                     source.TryGiveGamePoints(5);
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive five gamepoints and 75000 exp!");
                 }
 
                 break;
@@ -155,11 +154,10 @@ public class IceWallQuestScript : DialogScriptBase
                           Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
-                      .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 150000);
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 25000);
 
                 source.TryGiveGamePoints(5);
-                ExperienceDistributionScript.GiveExp(source, 150000);
-                source.SendOrangeBarMessage("You receive five gamepoints and 150000 exp!");
+                ExperienceDistributionScript.GiveExp(source, 25000);
                 source.Trackers.Counters.Remove("wolf", out _);
                 source.Trackers.Enums.Set(IceWallQuest.WolfComplete);
 
@@ -197,7 +195,6 @@ public class IceWallQuestScript : DialogScriptBase
                 source.TryGiveItems(ItemFactory.Create("charm"));
                 ExperienceDistributionScript.GiveExp(source, 50000);
                 source.Trackers.Enums.Set(IceWallQuest.KillBoss);
-                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive a Charm and 50000 exp!");
             }
 
                 break;
@@ -219,11 +216,10 @@ public class IceWallQuestScript : DialogScriptBase
                           Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
-                      .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 500000);
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 100000);
 
                 source.TryGiveGamePoints(5);
-                ExperienceDistributionScript.GiveExp(source, 500000);
-                source.SendOrangeBarMessage("You receive five gamepoints and 500000 exp!");
+                ExperienceDistributionScript.GiveExp(source, 100000);
                 source.Trackers.Counters.Remove("abomination", out _);
                 source.Trackers.Enums.Set(IceWallQuest.Complete);
 

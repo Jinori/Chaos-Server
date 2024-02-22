@@ -19,7 +19,7 @@ public class TeagueCoinsScript : DialogScriptBase
         }
         else
         {
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You reach into your coin purse but it's not that full..");
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You reach into your coin purse but it's not that full...");
             Subject.Reply(source, "You almost had me excited there.. don't promise what you can't make true.");
         }
     }

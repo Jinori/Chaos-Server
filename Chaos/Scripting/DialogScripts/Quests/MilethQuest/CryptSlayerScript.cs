@@ -362,7 +362,6 @@ public class CryptSlayerScript : DialogScriptBase
                 source.Trackers.Enums.Remove(typeof(CryptSlayerStage));
                 Subject.Reply(source, "Thank you so much for killing those. That's enough for today, come back soon.");
                 source.Trackers.Counters.Remove("CryptSlayer", out _);
-                source.Trackers.Counters.AddOrIncrement("CryptSlayerLegend", 1);
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(

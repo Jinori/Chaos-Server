@@ -6,6 +6,7 @@ namespace Chaos.Scripting.EffectScripts.Items.CookingMeals;
 
 public class PieCherryEffect : NonOverwritableEffectBase
 {
+    protected int MaxManaSaved;
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     protected override Animation? Animation { get; } = new()
     {
@@ -38,11 +39,14 @@ public class PieCherryEffect : NonOverwritableEffectBase
     {
         base.OnApplied();
 
+        var maxMana = Subject.StatSheet.MaximumMp;
+        
         var attributes = new Attributes
         {
-            MaximumMp = 200
+            MaximumMp = Subject.StatSheet.MaximumMp * 20/100
         };
 
+        MaxManaSaved = maxMana;
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
 
@@ -57,7 +61,7 @@ public class PieCherryEffect : NonOverwritableEffectBase
     {
         var attributes = new Attributes
         {
-            MaximumMp = 200
+            MaximumMp = MaxManaSaved * 20 / 100
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

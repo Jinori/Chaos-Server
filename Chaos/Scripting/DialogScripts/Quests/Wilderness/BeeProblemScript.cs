@@ -32,32 +32,30 @@ public class BeeProblemScript : DialogScriptBase
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "talula_initial":
-                if (!hasStage || (stage == BeeProblem.None))
+            {
+                if (source.UserStatSheet.Level >= 16)
+                    Subject.Reply(source, "Skip", "talula_initial3");
+                
+                if (!hasStage || stage == BeeProblem.None)
                 {
-                    if (source.UserStatSheet.Level is <= 1 or >= 16)
+                    var option = new DialogOption
                     {
-                        Subject.Close(source);
+                        DialogKey = "talula_bee1",
+                        OptionText = "Having a bee problem?"
+                    };
 
-                        return;
-                    }
-
-                    return;
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
                 }
 
-                if (stage == BeeProblem.Started)
-                {
-                    Subject.Reply(source, "skip", "talula_initial2");
-
-                    return;
-                }
-
-                if (stage == BeeProblem.Completed)
-                    Subject.Reply(source, "skip", "talula_initial3");
-
-                if (source.UserStatSheet.Level is < 16)
-                    Subject.Reply(source, "skip", "talula_initial3");
+                if (hasStage && stage == BeeProblem.Started)
+                    Subject.Reply(source, "Skip", "talula_initial2");
+                
+                if (hasStage && stage == BeeProblem.Completed)
+                    Subject.Reply(source, "Skip", "talula_initial3");
 
                 break;
+            }
 
             case "talula_bee2":
             {

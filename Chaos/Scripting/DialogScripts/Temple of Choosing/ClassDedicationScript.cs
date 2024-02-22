@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
@@ -108,11 +109,11 @@ public class ClassDedicationScript : DialogScriptBase
                     return;
                 }
 
-                if (source.Inventory.CountOf("ard ioc deum") >= 10)
-                    builtReply += " Looks like you've also brought enough ard ioc deum";
+                if (source.Inventory.CountOf("strong health potion") >= 10)
+                    builtReply += " Looks like you've also brought enough strong health potions";
                 else
                 {
-                    builtReply += " but you do not have the required ard ioc deum. Come back with what you need.";
+                    builtReply += " but you do not have the required strong health potion. Come back with what you need.";
                     Subject.Reply(source, builtReply);
 
                     return;
@@ -149,7 +150,7 @@ public class ClassDedicationScript : DialogScriptBase
 
     private void SetUserToLevel1Stats(Aisling source, BaseClass baseClass)
     {
-        source.Inventory.RemoveQuantity("ard ioc deum", 10);
+        source.Inventory.RemoveQuantity("strong health potion", 10);
         source.UserStatSheet.SetLevel(1);
         source.UserStatSheet.SubtractTotalExp(source.UserStatSheet.TotalExp);
 
@@ -164,6 +165,14 @@ public class ClassDedicationScript : DialogScriptBase
         source.UserStatSheet.Dex = 3;
         source.UserStatSheet.SetMaxWeight(51);
         source.UserStatSheet.SetBaseClass(baseClass);
+
+        var unspentpoints = source.UserStatSheet.UnspentPoints;
+        if (unspentpoints > 19)
+        {
+            var equals = source.UserStatSheet.UnspentPoints.Equals(19);
+        }
+        source.Trackers.Enums.Remove<PentagramQuestStage>();
+        source.Trackers.Enums.Remove<NightmareQuestStage>();
 
         var statBuyCost = new Attributes
         {

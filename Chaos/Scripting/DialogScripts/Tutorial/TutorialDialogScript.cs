@@ -2,7 +2,6 @@ using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
-using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
@@ -354,15 +353,6 @@ public class TutorialDialogScript : DialogScriptBase
                         source.TryGiveGold(2000);
                         ExperienceDistributionScript.GiveExp(source, 2000);
 
-                        source.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Completed Tutorial",
-                                "CompletedTutorial",
-                                MarkIcon.Heart,
-                                MarkColor.White,
-                                1,
-                                GameTime.Now));
-
                         source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
                         point = new Point(5, 8);
                         mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
@@ -378,16 +368,7 @@ public class TutorialDialogScript : DialogScriptBase
                         source.TryGiveGold(2000);
                         ExperienceDistributionScript.GiveExp(source, 2000);
                         source.SpellBook.Remove("srad tut");
-
-                        source.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Completed Tutorial",
-                                "CompletedTutorial",
-                                MarkIcon.Heart,
-                                MarkColor.White,
-                                1,
-                                GameTime.Now));
-
+                        
                         source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
                         point = new Point(5, 8);
                         mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
@@ -403,15 +384,6 @@ public class TutorialDialogScript : DialogScriptBase
                         ExperienceDistributionScript.GiveExp(source, 1400);
                         source.SpellBook.Remove("srad tut");
 
-                        source.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Completed Tutorial",
-                                "CompletedTutorial",
-                                MarkIcon.Heart,
-                                MarkColor.White,
-                                1,
-                                GameTime.Now));
-
                         source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
                         point = new Point(5, 8);
                         mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
@@ -425,15 +397,6 @@ public class TutorialDialogScript : DialogScriptBase
                         source.TryGiveGold(1000);
                         ExperienceDistributionScript.GiveExp(source, 1400);
                         source.SpellBook.Remove("srad tut");
-
-                        source.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Completed Tutorial",
-                                "CompletedTutorial",
-                                MarkIcon.Heart,
-                                MarkColor.White,
-                                1,
-                                GameTime.Now));
 
                         source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
                         point = new Point(5, 8);
@@ -449,15 +412,6 @@ public class TutorialDialogScript : DialogScriptBase
                         ExperienceDistributionScript.GiveExp(source, 1000);
                         source.SpellBook.Remove("srad tut");
 
-                        source.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Completed Tutorial",
-                                "CompletedTutorial",
-                                MarkIcon.Heart,
-                                MarkColor.White,
-                                1,
-                                GameTime.Now));
-
                         source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
                         point = new Point(5, 8);
                         mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
@@ -466,15 +420,6 @@ public class TutorialDialogScript : DialogScriptBase
                         return;
                     }
                 }
-
-                source.Legend.AddOrAccumulate(
-                    new LegendMark(
-                        "Completed Tutorial",
-                        "CompletedTutorial",
-                        MarkIcon.Heart,
-                        MarkColor.White,
-                        1,
-                        GameTime.Now));
 
                 source.TryGiveItems(
                     armor,

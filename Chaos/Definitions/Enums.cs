@@ -1269,3 +1269,64 @@ public enum ClassStatBracket
     Master = 2,
     Grandmaster = 3
 }
+
+public enum TheSacrificeQuestStage
+{
+    None,
+    Reconaissance = 1,
+    AttackCaptors = 2,
+    RescueChildren = 3
+}
+
+public enum AstridKillQuestStage
+{
+    None,
+    AstridWolf = 1,
+    AstridKobold = 2,
+    AstridGoblinWarrior = 3,
+    AstridGoblinGuard = 4,
+    AstridGoblinSoldier = 5
+}
+[Flags]
+public enum ReconPoints
+{
+    None,
+    Reconpoint1 = 1,
+    Reconpoint2 = 1 << 1,
+    Reconpoint3 = 1 << 2,
+    Reconpoint4 = 1 << 3, 
+    Reconpoint5 = 1 << 4,
+    Reconpoint6 = 1 << 5,
+    Reconpoint7 = 1 << 6
+}
+
+[Flags]
+public enum SavedChild
+{
+    None,
+    savedchild = 1
+}
+
+public enum CrudeLeather
+{
+    None,
+    StartedQuest = 1,
+}
+
+public enum DecoratingInn
+{
+    None,
+    StartedPetunia = 1,
+    CompletedPetunia = 2,
+    StartedGoldRose = 3,
+    CompletedGoldRose = 4,
+    StartedPinkRose = 5,
+    CompletedQuest = 6
+}
+
+public enum HungryViveka
+{
+    None,
+    StartedCherryPie = 1,
+    CompletedCherryPie = 2
+}
