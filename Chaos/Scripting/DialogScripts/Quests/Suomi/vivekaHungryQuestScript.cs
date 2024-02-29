@@ -203,10 +203,9 @@ public class vivekaHungryQuestScript : DialogScriptBase
                             .WithProperty(source)
                             .WithProperty(Subject)
                             .LogInformation(
-                                "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
+                                "{@AislingName} has received {@ExpAmount} exp from a quest",
                                 source.Name,
-                                5000,
-                                15000);
+                                5000);
 
                         ExperienceDistributionScript.GiveExp(source, 5000);
                     }

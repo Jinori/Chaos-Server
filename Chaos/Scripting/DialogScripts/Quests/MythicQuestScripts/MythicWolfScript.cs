@@ -123,7 +123,7 @@ public class MythicWolfScript : DialogScriptBase
             case "wolf_lower":
             {
                 Subject.Reply(source, "Stay safe, friend.");
-                source.SendOrangeBarMessage("Kill 15 Green Frogs for the Wolf Pack Leader");
+                source.SendOrangeBarMessage("Kill 15 Slimy Frogs for the Wolf Pack Leader");
                 source.Trackers.Enums.Set(MythicWolf.LowerWolf);
 
                 return;
@@ -133,7 +133,7 @@ public class MythicWolfScript : DialogScriptBase
             {
                 if (!source.Trackers.Counters.TryGetValue("MythicWolf1", out var wolflower) || (wolflower < 15))
                 {
-                    Subject.Reply(source, "You haven't killed enough Green Frogs");
+                    Subject.Reply(source, "You haven't killed enough Slimy Frogs");
 
                     return;
                 }
@@ -164,7 +164,7 @@ public class MythicWolfScript : DialogScriptBase
                     source,
                     "You seem to have no fear. You are either very brave or just plain out stupid. Either way you have earned my respect. Please come back to me once the task is complete.");
 
-                source.SendOrangeBarMessage("Kill 10 Blue and 10 Red Frogs for Wolf Pack Leader.");
+                source.SendOrangeBarMessage("Kill 10 Poisonous and 10 Fierce Frogs for Wolf Pack Leader.");
                 source.Trackers.Enums.Set(MythicWolf.HigherWolf);
 
                 return;
@@ -177,7 +177,7 @@ public class MythicWolfScript : DialogScriptBase
 
                 if ((bluefrog < 10) || (redfrog < 10))
                 {
-                    Subject.Reply(source, "You haven't killed enough Blue and Red Frogs.");
+                    Subject.Reply(source, "You haven't killed enough Poisonous and Fierce Frogs.");
 
                     return;
                 }

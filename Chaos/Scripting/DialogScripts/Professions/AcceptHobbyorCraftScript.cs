@@ -74,7 +74,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             }
             case "thorin_initial":
             {
-                if ((hasCraft && (craft != Crafts.Jewelcrafting)) && (stage != PentagramQuestStage.FoundPentagramPiece) && (stage != PentagramQuestStage.EmpoweringPentagramPiece))
+                if ((hasCraft && (craft != Crafts.Weaponsmithing)) && (stage != PentagramQuestStage.FoundPentagramPiece) && (stage != PentagramQuestStage.EmpoweringPentagramPiece))
                 {
                     Subject.Reply(
                         source,

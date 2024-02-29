@@ -135,7 +135,7 @@ public class MythicHorseScript : DialogScriptBase
             case "horse_lower":
             {
                 Subject.Reply(source, "I knew i could count on you, I'll see you soon traveler.");
-                source.SendOrangeBarMessage("Kill 15 White Bunnies for the Horse Leader");
+                source.SendOrangeBarMessage("Kill 15 Slick Bunnies for the Horse Leader");
                 source.Trackers.Enums.Set(MythicHorse.LowerHorse);
 
                 return;
@@ -145,7 +145,7 @@ public class MythicHorseScript : DialogScriptBase
             {
                 if (!source.Trackers.Counters.TryGetValue("MythicHorse1", out var whitebunny) || (whitebunny < 15))
                 {
-                    Subject.Reply(source, "You haven't killed enough White Bunnies.");
+                    Subject.Reply(source, "You haven't killed enough Slick Bunnies.");
 
                     return;
                 }
@@ -177,9 +177,9 @@ public class MythicHorseScript : DialogScriptBase
             {
                 Subject.Reply(
                     source,
-                    "We knew we could count on you, partner. Good luck out there, and remember, don't let those brown and purple bunnies get the best of you! (The horse leader lets out a hearty neigh)");
+                    "We knew we could count on you, partner. Good luck out there, and remember, don't let those angry and clever bunnies get the best of you! (The horse leader lets out a hearty neigh)");
 
-                source.SendOrangeBarMessage("Kill 10 Brown and 10 Purple Bunnies for the Horse Leader");
+                source.SendOrangeBarMessage("Kill 10 Angry and 10 Clever Bunnies for the Horse Leader");
                 source.Trackers.Enums.Set(MythicHorse.HigherHorse);
 
                 return;
@@ -187,12 +187,12 @@ public class MythicHorseScript : DialogScriptBase
 
             case "horse_higher2":
             {
-                source.Trackers.Counters.TryGetValue("MythicHorse2", out var brownbunny);
-                source.Trackers.Counters.TryGetValue("MythicHorse3", out var purplebunny);
+                source.Trackers.Counters.TryGetValue("MythicHorse2", out var angrybunny);
+                source.Trackers.Counters.TryGetValue("MythicHorse3", out var cleverbunny);
 
-                if ((brownbunny < 10) || (purplebunny < 10))
+                if ((angrybunny < 10) || (cleverbunny < 10))
                 {
-                    Subject.Reply(source, "You haven't killed enough brown and purple bunnies");
+                    Subject.Reply(source, "You haven't killed enough angry and clever bunnies");
 
                     return;
                 }

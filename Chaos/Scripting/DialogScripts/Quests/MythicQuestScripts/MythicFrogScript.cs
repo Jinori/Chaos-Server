@@ -131,7 +131,7 @@ public class MythicFrogScript : DialogScriptBase
             case "frog_lower":
             {
                 Subject.Reply(source, "Thank you, adventurer. We appreciate your assistance. Good luck on your quest.");
-                source.SendOrangeBarMessage("Kill 15 Mythic Wolves for the Frog King.");
+                source.SendOrangeBarMessage("Kill 15 Peculiar Wolves for the Frog King.");
                 source.Trackers.Enums.Set(MythicFrog.LowerFrog);
 
                 return;
@@ -141,7 +141,7 @@ public class MythicFrogScript : DialogScriptBase
             {
                 if (!source.Trackers.Counters.TryGetValue("MythicFrog1", out var mythicwolf) || (mythicwolf < 15))
                 {
-                    Subject.Reply(source, "You haven't killed enough Mythic Wolves.");
+                    Subject.Reply(source, "You haven't killed enough Peculiar Wolves.");
 
                     return;
                 }
@@ -174,9 +174,9 @@ public class MythicFrogScript : DialogScriptBase
             {
                 Subject.Reply(
                     source,
-                    "Remember to slay 10 of each of the stronger wolves, the White Wolf and the Bearded Wolf. They are more powerful and cunning than the ones you faced before, so be careful.");
+                    "Remember to slay 10 of each of the stronger wolves, the Menacing Wolf and the Ominous Wolf. They are more powerful and cunning than the ones you faced before, so be careful.");
 
-                source.SendOrangeBarMessage("Kill 10 White Wolves and 10 Bearded Wolves.");
+                source.SendOrangeBarMessage("Kill 10 Menacing Wolves and 10 Ominous Wolves.");
                 source.Trackers.Enums.Set(MythicFrog.HigherFrog);
 
                 return;
@@ -189,7 +189,7 @@ public class MythicFrogScript : DialogScriptBase
 
                 if ((whitewolf < 10) || (beardedwolf < 10))
                 {
-                    Subject.Reply(source, "You haven't killed enough White Wolves and Bearded Wolves.");
+                    Subject.Reply(source, "You haven't killed enough Menacing Wolves and Ominous Wolves.");
 
                     return;
                 }

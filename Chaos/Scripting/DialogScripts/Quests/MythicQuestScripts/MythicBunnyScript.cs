@@ -141,7 +141,7 @@ public class MythicBunnyScript : DialogScriptBase
             {
                 if (!source.Trackers.Counters.TryGetValue("MythicBunny1", out var purplehorse) || (purplehorse < 15))
                 {
-                    Subject.Reply(source, "You haven't killed enough Purple Horses.");
+                    Subject.Reply(source, "You haven't killed enough Eerie Horses.");
 
                     return;
                 }
@@ -174,9 +174,9 @@ public class MythicBunnyScript : DialogScriptBase
             {
                 Subject.Reply(
                     source,
-                    "I need you to travel deep into the fields and thin out the horse herd. Specifically, I need you to thin out 10 Gray Horses and 10 Red Horses.");
+                    "I need you to travel deep into the fields and thin out the horse herd. Specifically, I need you to thin out 10 Sinister Horses and 10 Tense Horses.");
 
-                source.SendOrangeBarMessage("Kill 10 Gray and 10 Red Horses for Big Bunny");
+                source.SendOrangeBarMessage("Kill 10 Sinister and 10 Tense Horses for Big Bunny");
                 source.Trackers.Enums.Set(MythicBunny.HigherBunny);
 
                 return;
@@ -189,7 +189,7 @@ public class MythicBunnyScript : DialogScriptBase
 
                 if ((grayhorse < 10) || (redhorse < 10))
                 {
-                    Subject.Reply(source, "You haven't killed enough gray or red horses.");
+                    Subject.Reply(source, "You haven't killed enough Sinister or Tense horses.");
 
                     return;
                 }

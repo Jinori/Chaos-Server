@@ -90,7 +90,7 @@ public class MythicBeeScript : DialogScriptBase
                     source,
                     "I wish you the best of luck on your mission. May your stinger be swift and true, and may you return to our hive victorious. Buzz on, my friend!");
 
-                source.SendOrangeBarMessage("Kill 15 Mythic Mantis for Queen Bee");
+                source.SendOrangeBarMessage("Kill 15 Droll Mantis for Queen Bee");
                 source.Trackers.Enums.Set(MythicBee.LowerBee);
 
                 return;
@@ -100,7 +100,7 @@ public class MythicBeeScript : DialogScriptBase
             {
                 if (!source.Trackers.Counters.TryGetValue("MythicBee1", out var mythicMantis) || (mythicMantis < 15))
                 {
-                    Subject.Reply(source, "You haven't killed enough Mythic Mantis.");
+                    Subject.Reply(source, "You haven't killed enough Droll Mantis.");
 
                     return;
                 }
@@ -123,7 +123,7 @@ public class MythicBeeScript : DialogScriptBase
 
                 Subject.Reply(
                     source,
-                    "Your bravery and dedication have not gone unnoticed. By eliminating some of the mythic mantis, we can now send our workers to gather pollen and nectar without fear of attack.",
+                    "Your bravery and dedication have not gone unnoticed. By eliminating some of the Droll Mantis, we can now send our workers to gather pollen and nectar without fear of attack.",
                     "bee_initial");
 
                 Subject.NextDialogKey = "bee_initial";
@@ -135,9 +135,9 @@ public class MythicBeeScript : DialogScriptBase
             {
                 Subject.Reply(
                     source,
-                    "Please eliminate 20 Brown Mantis. The nectar from the flowers that they are guarding is among the sweetest we have ever tasted.");
+                    "Please eliminate 20 Assertive Mantis. The nectar from the flowers that they are guarding is among the sweetest we have ever tasted.");
 
-                source.SendOrangeBarMessage("Kill 20 Brown Mantis for the Bee Queen.");
+                source.SendOrangeBarMessage("Kill 20 Assertive Mantis for the Bee Queen.");
                 source.Trackers.Enums.Set(MythicBee.HigherBee);
 
                 return;
@@ -147,7 +147,7 @@ public class MythicBeeScript : DialogScriptBase
             {
                 if (!source.Trackers.Counters.TryGetValue("MythicBee2", out var brownmantis) || (brownmantis < 20))
                 {
-                    Subject.Reply(source, "You haven't killed enough Brown Mantis.");
+                    Subject.Reply(source, "You haven't killed enough Assertive Mantis.");
 
                     return;
                 }

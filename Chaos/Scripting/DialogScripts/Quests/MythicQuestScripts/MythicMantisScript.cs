@@ -126,9 +126,9 @@ public class MythicMantisScript : DialogScriptBase
             {
                 Subject.Reply(
                     source,
-                    "Good, good. I will see you when you return. Remember, go kill 15 Mythic Bees. Don't leave any alive.");
+                    "Good, good. I will see you when you return. Remember, go kill 15 Feisty Bees. Don't leave any alive.");
 
-                source.SendOrangeBarMessage("Kill 15 Mythic Bees for King Mantis");
+                source.SendOrangeBarMessage("Kill 15 Feisty Bees for King Mantis");
                 source.Trackers.Enums.Set(MythicMantis.LowerMantis);
 
                 return;
@@ -158,7 +158,7 @@ public class MythicMantisScript : DialogScriptBase
                 }
 
                 source.Trackers.Counters.Remove("MythicMantis1", out _);
-                Subject.Reply(source, "Impressive. 15 Mythic bees without blinking an eye. I admire your loyalty.", "mantis_initial");
+                Subject.Reply(source, "Impressive. 15 Feisty bees without blinking an eye. I admire your loyalty.", "mantis_initial");
 
                 break;
             }
@@ -167,9 +167,9 @@ public class MythicMantisScript : DialogScriptBase
             {
                 Subject.Reply(
                     source,
-                    "Show me how you do it. Good luck Aisling, they can be awefully tricky to kill. Make sure you slay 20 of the Green Bees.");
+                    "Show me how you do it. Good luck Aisling, they can be awefully tricky to kill. Make sure you slay 20 of the Violent Bees.");
 
-                source.SendOrangeBarMessage("Kill 20 Green Bees for King Mantis");
+                source.SendOrangeBarMessage("Kill 20 Violent Bees for King Mantis");
                 source.Trackers.Enums.Set(MythicMantis.HigherMantis);
 
                 return;
