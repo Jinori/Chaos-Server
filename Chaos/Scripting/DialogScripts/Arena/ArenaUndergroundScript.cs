@@ -5,6 +5,7 @@ using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
+using Chaos.Geometry.Abstractions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -15,6 +16,7 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Scripting.MapScripts.Arena.Arena_Modes;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Storage.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -37,11 +39,12 @@ public class ArenaUndergroundScript : DialogScriptBase
     private readonly Point LavaRedPoint = new(8, 5);
     private readonly Point ColorClashBluePoint = new(27, 27);
     private readonly Point ColorClashGoldPoint = new(4, 4);
-    private readonly Point ColorClashGreenPoint = new(27, 4);
+    private readonly Point ColorClashGreenPoint = new(39, 6);
     private readonly Point ColorClashRedPoint = new(4, 27);
     private readonly IScriptFactory<IMapScript, MapInstance> ScriptFactory;
     private readonly ISimpleCache SimpleCache;
     private readonly IShardGenerator ShardGenerator;
+    private readonly IMerchantFactory MerchantFactory;
 
     private Point CenterWarpPlayer;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
@@ -52,12 +55,14 @@ public class ArenaUndergroundScript : DialogScriptBase
         IShardGenerator shardGenerator,
         ISimpleCache simpleCache,
         IScriptFactory<IMapScript, MapInstance> scriptFactory,
-        IClientRegistry<IWorldClient> clientRegistry
+        IClientRegistry<IWorldClient> clientRegistry,
+        IMerchantFactory merchantFactory
     )
         : base(subject)
     {
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         ClientRegistry = clientRegistry;
+        MerchantFactory = merchantFactory;
         SimpleCache = simpleCache;
         ScriptFactory = scriptFactory;
         ShardGenerator = shardGenerator;
@@ -70,7 +75,16 @@ public class ArenaUndergroundScript : DialogScriptBase
         if ((stage != ArenaHost.Host) && (stage != ArenaHost.MasterHost))
             RemoveOption(Subject, "Host Options");
     }
+    
+    private Point GetValidRandomPoint(IRectangle rect)
+    {
+        Point randomPoint;
+        
+        randomPoint = rect.GetRandomPoint();
 
+        return randomPoint;
+    }
+    
     public override void OnDisplaying(Aisling source)
     {
         switch (Subject.Template.TemplateKey.ToLower())
@@ -80,6 +94,50 @@ public class ArenaUndergroundScript : DialogScriptBase
 
                 break;
 
+            case "ophie_startescort":
+            {
+                var shard = ShardGenerator.CreateShardOfInstance("arena_escort");
+                shard.Shards.TryAdd(shard.InstanceId, shard);
+                var script = shard.Script.As<EscortScript>();
+
+                
+                if (script == null)
+                   shard.AddScript(typeof(EscortScript), ScriptFactory);
+                
+                var nathra = MerchantFactory.Create("nathra", shard, new Point(5, 37));
+                shard.AddEntity(nathra, nathra);
+                
+                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                {
+                    if (!aisling.IsAlive)
+                    {
+                        aisling.IsDead = false;
+                        aisling.StatSheet.SetHealthPct(100);
+                        aisling.StatSheet.SetManaPct(100);
+                        aisling.Client.SendAttributes(StatUpdateType.Vitality);
+                    }
+
+                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
+
+                    Rectangle targetRectangle;
+
+                    if (team != ArenaTeam.Gold)
+                    {
+                        targetRectangle = new Rectangle(new Point(35, 6), 2, 2);
+                        aisling.TraverseMap(shard, GetValidRandomPoint(targetRectangle));
+                    }
+                    if (team == ArenaTeam.Gold)
+                    {
+                        targetRectangle = new Rectangle(new Point(6, 30), 3, 3);
+                        aisling.TraverseMap(shard, GetValidRandomPoint(targetRectangle));
+                        break;
+                    }
+                }
+
+                Subject.Close(source);
+                break;
+                
+            }
             
             case "ophie_startcolorclash":
             {

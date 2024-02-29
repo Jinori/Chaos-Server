@@ -2,6 +2,7 @@ using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -16,7 +17,7 @@ public sealed class AnnounceMatchScript : MapScriptBase
     public AnnounceMatchScript(MapInstance subject)
         : base(subject) =>
         MessageTimer = new PeriodicMessageTimer(
-            TimeSpan.FromSeconds(25),
+            TimeSpan.FromSeconds(35),
             TimeSpan.FromSeconds(5),
             TimeSpan.FromSeconds(10),
             TimeSpan.FromSeconds(1),
@@ -39,6 +40,9 @@ public sealed class AnnounceMatchScript : MapScriptBase
         {
             if (!AnnounceStart)
             {
+                if (Subject.Name == "Escort - Teams")
+                    Subject.Morph("26017");
+
                 if (Subject.Name == "Lava Arena - Teams")
                     Subject.Morph("26006");
                 

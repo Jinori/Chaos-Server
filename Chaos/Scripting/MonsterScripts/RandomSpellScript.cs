@@ -5,7 +5,7 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts;
 
-public class RandomSpellScript : MonsterScriptBase
+public sealed class RandomSpellScript : MonsterScriptBase
 {
     private static readonly string[] AllSpells =
     {

@@ -26,9 +26,8 @@ public class PendantRoomScript : ConfigurableReactorTileScriptBase
     public override void OnWalkedOn(Creature source)
     {
         var targetMap = SimpleCache.Get<MapInstance>(Destination.Map);
-        var aisling = source as Aisling;
-        
-        if (!aisling.Inventory.Contains("Coral Pendant"))
+
+        if ((source is Aisling aisling) && !aisling.Inventory.Contains("Coral Pendant"))
         {
             aisling?.SendOrangeBarMessage("Are you forgetting something?");
             var point = source.DirectionalOffset(source.Direction.Reverse());

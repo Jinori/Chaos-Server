@@ -36,17 +36,17 @@ public sealed class DeclareWinnerScript : MapScriptBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
-        if (!Subject.GetEntities<Aisling>().Any() && WinnerDeclared)
-        {
-            Subject.Destroy();
-            return;
-        }
-
         DeclareWinnerTimer.Update(delta);
         
         if (!DeclareWinnerTimer.IntervalElapsed)
             return;
 
+        if (!Subject.GetEntities<Aisling>().Any() && WinnerDeclared)
+        {
+            Subject.Destroy();
+            return;
+        }
+        
         if (!DetermineIfTeamGameOrFfa)
             DetermineMatchMode();
 
@@ -61,13 +61,9 @@ public sealed class DeclareWinnerScript : MapScriptBase
         var allAislings = Subject.GetEntities<Aisling>().ToList();
         
         if (TeamGame)
-        {
             CheckForTeamWinners(allAislings);
-        }
         else
-        {
             CheckForFreeForAllWinners(allAislings);
-        }
     }
     
     private void CheckForFreeForAllWinners(IReadOnlyList<Aisling> allAislings)
