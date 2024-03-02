@@ -30,6 +30,138 @@ public static class CraftingRequirements
     public static Dictionary<EnchantingRecipes, Recipe> EnchantingRequirements { get; } = new()
     {
         {
+            EnchantingRecipes.AquaedonCalming,
+            new Recipe()
+            {
+                Name = "Aquaedon's Calming",
+                TemplateKey = "aquaedoncalming",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 3 }
+                },
+                Rank = "Basic",
+                Level = 40,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SerenePrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+                {
+            EnchantingRecipes.AquaedonClarity,
+            new Recipe()
+            {
+                Name = "Aquaedon's Clarity",
+                TemplateKey = "aquaedonclarity",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 1 }
+                },
+                Rank = "Beginner",
+                Level = 5,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MeagerPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.AquaedonResolve,
+            new Recipe()
+            {
+                Name = "Aquaedon's Resolve",
+                TemplateKey = "aquaedonresolve",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 10 }
+                },
+                Rank = "Adept",
+                Level = 90,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SoothingPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.AquaedonWill,
+            new Recipe()
+            {
+                Name = "Aquaedon's Will",
+                TemplateKey = "aquaedonwill",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 7 }
+                },
+                Rank = "Artisan",
+                Level = 71,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(PotentPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+        {
+            EnchantingRecipes.AquaedonWisdom,
+            new Recipe()
+            {
+                Name = "Aquaedon's Wisdom",
+                TemplateKey = "aquaedonwisdom",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 5 }
+                },
+                Rank = "Initiate",
+                Level = 50,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(WisePrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+        {
+            EnchantingRecipes.IgnatarDestruction,
+            new Recipe()
+            {
+                Name = "Ignatar's Destruction",
+                TemplateKey = "ignatardestruction",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 7 },
+                },
+                Rank = "Artisan",
+                Level = 80,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(RuthlessPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+        {
             EnchantingRecipes.IgnatarEnvy,
             new Recipe()
             {
@@ -74,28 +206,6 @@ public static class CraftingRequirements
             }
         },
         {
-            EnchantingRecipes.IgnatarRegret,
-            new Recipe()
-            {
-                Name = "Ignatar's Regret",
-                TemplateKey = "ignatarregret",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 3 },
-                },
-                Rank = "Initiate",
-                Level = 48,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HastyPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-        },
-        {
             EnchantingRecipes.IgnatarJealousy,
             new Recipe()
             {
@@ -118,28 +228,71 @@ public static class CraftingRequirements
             }
         },
         {
-            EnchantingRecipes.IgnatarDestruction,
+            EnchantingRecipes.IgnatarRegret,
             new Recipe()
             {
-                Name = "Ignatar's Destruction",
-                TemplateKey = "ignatardestruction",
+                Name = "Ignatar's Regret",
+                TemplateKey = "ignatarregret",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 7 },
+                    new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 3 },
                 },
-                Rank = "Artisan",
-                Level = 80,
+                Rank = "Initiate",
+                Level = 48,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(RuthlessPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HastyPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
                 })
             }
-            },
-        
+        },
+        {
+            EnchantingRecipes.GeolithConstitution,
+            new Recipe()
+            {
+                Name = "Geolith's Constitution",
+                TemplateKey = "geolithconstitution",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 5},
+                },
+                Rank = "Initiate",
+                Level = 50,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HalePrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+        {
+            EnchantingRecipes.GeolithFortitude,
+            new Recipe()
+            {
+                Name = "Geolith's Fortitude",
+                TemplateKey = "geolithfortitude",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 7 },
+                },
+                Rank = "Artisan",
+                Level = 83,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(EternalPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
         {
             EnchantingRecipes.GeolithGratitude,
             new Recipe()
@@ -185,28 +338,6 @@ public static class CraftingRequirements
             }
             },
         {
-            EnchantingRecipes.GeolithConstitution,
-            new Recipe()
-            {
-                Name = "Geolith's Constitution",
-                TemplateKey = "geolithconstitution",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 5},
-                },
-                Rank = "Initiate",
-                Level = 50,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HalePrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
-        {
             EnchantingRecipes.GeolithObsession,
             new Recipe()
             {
@@ -222,50 +353,6 @@ public static class CraftingRequirements
                 Modification = ((mapper, item) =>
                 {
                     item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(PowerfulPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
-        {
-            EnchantingRecipes.GeolithFortitude,
-            new Recipe()
-            {
-                Name = "Geolith's Fortitude",
-                TemplateKey = "geolithfortitude",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 7 },
-                },
-                Rank = "Artisan",
-                Level = 83,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(EternalPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
-        {
-            EnchantingRecipes.MiraelisSerenity,
-            new Recipe()
-            {
-                Name = "Miraelis' Serenity",
-                TemplateKey = "miraelisserenity",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 1 },
-                },
-                Rank = "Beginner",
-                Level = 5,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MysticalPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -295,28 +382,6 @@ public static class CraftingRequirements
             }
             },
         {
-            EnchantingRecipes.MiraelisIntellect,
-            new Recipe()
-            {
-                Name = "Miraelis' Intellect",
-                TemplateKey = "miraelisintellect",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 5 },
-                },
-                Rank = "Initiate",
-                Level = 50,
-                Difficulty = 2,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(BrilliantPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
-        {
             EnchantingRecipes.MiraelisHarmony,
             new Recipe()
             {
@@ -332,6 +397,28 @@ public static class CraftingRequirements
                 Modification = ((mapper, item) =>
                 {
                     item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(BrightPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+        {
+            EnchantingRecipes.MiraelisIntellect,
+            new Recipe()
+            {
+                Name = "Miraelis' Intellect",
+                TemplateKey = "miraelisintellect",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 5 },
+                },
+                Rank = "Initiate",
+                Level = 50,
+                Difficulty = 2,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(BrilliantPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -361,225 +448,71 @@ public static class CraftingRequirements
             }
             },
         {
-            EnchantingRecipes.TheseleneElusion,
+            EnchantingRecipes.MiraelisSerenity,
             new Recipe()
             {
-                Name = "Theselene's Elusion",
-                TemplateKey = "theseleneelusion",
+                Name = "Miraelis' Serenity",
+                TemplateKey = "miraelisserenity",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 1 },
+                    new Ingredient { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 1 },
                 },
                 Rank = "Beginner",
                 Level = 5,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(ShroudedPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MysticalPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
                 })
             }
-            },
+        },
         {
-            EnchantingRecipes.TheseleneShadow,
+            EnchantingRecipes.SerendaelAddiction,
             new Recipe()
             {
-                Name = "Theselene's Shadow",
-                TemplateKey = "theseleneshadow",
+                Name = "Serendael's Addiction",
+                TemplateKey = "serendaeladdiction",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 3 }
-                },
-                Rank = "Basic",
-                Level = 37,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(DarkPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
-        {
-            EnchantingRecipes.TheseleneDexterity,
-            new Recipe()
-            {
-                Name = "Theselene's Dexterity",
-                TemplateKey = "theselenedexterity",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 5 }
-                },
-                Rank = "Initiate",
-                Level = 50,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(NimblePrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
-        {
-            EnchantingRecipes.TheseleneBalance,
-            new Recipe()
-            {
-                Name = "Theselene's Balance",
-                TemplateKey = "theselenebalance",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 7 }
-                },
-                Rank = "Artisan",
-                Level = 71,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(TightPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
-        {
-            EnchantingRecipes.TheseleneRisk,
-            new Recipe()
-            {
-                Name = "Theselene's Risk",
-                TemplateKey = "theselenerisk",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 10 }
+                    new Ingredient { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 10 }
                 },
                 Rank = "Adept",
                 Level = 90,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(CursedPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(PersistingPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
                 })
             }
-            },
+        },
         {
-            EnchantingRecipes.AquaedonClarity,
+            EnchantingRecipes.SerendaelChance,
             new Recipe()
             {
-                Name = "Aquaedon's Clarity",
-                TemplateKey = "aquaedonclarity",
+                Name = "Serendael's Chance",
+                TemplateKey = "serendaelchance",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 1 }
-                },
-                Rank = "Beginner",
-                Level = 5,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MeagerPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
-        {
-            EnchantingRecipes.AquaedonCalming,
-            new Recipe()
-            {
-                Name = "Aquaedon's Calming",
-                TemplateKey = "aquaedoncalming",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 3 }
-                },
-                Rank = "Basic",
-                Level = 40,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SerenePrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
-        {
-            EnchantingRecipes.AquaedonWisdom,
-            new Recipe()
-            {
-                Name = "Aquaedon's Wisdom",
-                TemplateKey = "aquaedonwisdom",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 5 }
+                    new Ingredient { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 5 }
                 },
                 Rank = "Initiate",
-                Level = 50,
+                Level = 55,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(WisePrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(FocusedPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
                 })
             }
-            },
-        {
-            EnchantingRecipes.AquaedonWill,
-            new Recipe()
-            {
-                Name = "Aquaedon's Will",
-                TemplateKey = "aquaedonwill",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 7 }
-                },
-                Rank = "Artisan",
-                Level = 71,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(PotentPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
-        {
-            EnchantingRecipes.AquaedonResolve,
-            new Recipe()
-            {
-                Name = "Aquaedon's Resolve",
-                TemplateKey = "aquaedonresolve",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 10 }
-                },
-                Rank = "Adept",
-                Level = 90,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SoothingPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
+        },
         {
             EnchantingRecipes.SerendaelLuck,
             new Recipe()
@@ -625,28 +558,6 @@ public static class CraftingRequirements
             }
             },
         {
-            EnchantingRecipes.SerendaelChance,
-            new Recipe()
-            {
-                Name = "Serendael's Chance",
-                TemplateKey = "serendaelchance",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 5 }
-                },
-                Rank = "Initiate",
-                Level = 55,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(FocusedPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
-        {
             EnchantingRecipes.SerendaelRoll,
             new Recipe()
             {
@@ -662,94 +573,6 @@ public static class CraftingRequirements
                 Modification = ((mapper, item) =>
                 {
                     item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(PrecisionPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
-        {
-            EnchantingRecipes.SerendaelAddiction,
-            new Recipe()
-            {
-                Name = "Serendael's Addiction",
-                TemplateKey = "serendaeladdiction",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 10 }
-                },
-                Rank = "Adept",
-                Level = 90,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(PersistingPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
-        {
-            EnchantingRecipes.SkandaraMight,
-            new Recipe()
-            {
-                Name = "Skandara's Might",
-                TemplateKey = "skandaramight",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 1 }
-                },
-                Rank = "Basic",
-                Level = 16,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MightyPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
-        {
-            EnchantingRecipes.SkandaraTriumph,
-            new Recipe()
-            {
-                Name = "Skandara's Triumph",
-                TemplateKey = "skandaratriumph",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 3 }
-                },
-                Rank = "Initiate",
-                Level = 44,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(ValiantPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
-            }
-            },
-        {
-            EnchantingRecipes.SkandaraStrength,
-            new Recipe()
-            {
-                Name = "Skandara's Strength",
-                TemplateKey = "skandarastrength",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 5 }
-                },
-                Rank = "Initiate",
-                Level = 50,
-                Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(ToughPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -777,6 +600,28 @@ public static class CraftingRequirements
                     return mapper.Map<Item>(schema);
                 })
             }
+        },
+        {
+            EnchantingRecipes.SkandaraMight,
+            new Recipe()
+            {
+                Name = "Skandara's Might",
+                TemplateKey = "skandaramight",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 1 }
+                },
+                Rank = "Basic",
+                Level = 16,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MightyPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
             },
         {
             EnchantingRecipes.SkandaraPierce,
@@ -799,29 +644,183 @@ public static class CraftingRequirements
                     return mapper.Map<Item>(schema);
                 })
             }
-            },
+        },
         {
-            EnchantingRecipes.ZephyraSpirit,
+            EnchantingRecipes.SkandaraStrength,
             new Recipe()
             {
-                Name = "Zephyra's Spirit",
-                TemplateKey = "zephyraspirit",
+                Name = "Skandara's Strength",
+                TemplateKey = "skandarastrength",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 1 }
+                    new Ingredient { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 5 }
                 },
-                Rank = "Basic",
-                Level = 20,
+                Rank = "Initiate",
+                Level = 50,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(BreezyPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(ToughPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+        {
+            EnchantingRecipes.SkandaraTriumph,
+            new Recipe()
+            {
+                Name = "Skandara's Triumph",
+                TemplateKey = "skandaratriumph",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 3 }
+                },
+                Rank = "Initiate",
+                Level = 44,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(ValiantPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
                 })
             }
             },
+                {
+            EnchantingRecipes.TheseleneBalance,
+            new Recipe()
+            {
+                Name = "Theselene's Balance",
+                TemplateKey = "theselenebalance",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 7 }
+                },
+                Rank = "Artisan",
+                Level = 71,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(TightPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+        {
+            EnchantingRecipes.TheseleneDexterity,
+            new Recipe()
+            {
+                Name = "Theselene's Dexterity",
+                TemplateKey = "theselenedexterity",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 5 }
+                },
+                Rank = "Initiate",
+                Level = 50,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(NimblePrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+        {
+            EnchantingRecipes.TheseleneElusion,
+            new Recipe()
+            {
+                Name = "Theselene's Elusion",
+                TemplateKey = "theseleneelusion",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 1 },
+                },
+                Rank = "Beginner",
+                Level = 5,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(ShroudedPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.TheseleneRisk,
+            new Recipe()
+            {
+                Name = "Theselene's Risk",
+                TemplateKey = "theselenerisk",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 10 }
+                },
+                Rank = "Adept",
+                Level = 90,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(CursedPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
+        {
+            EnchantingRecipes.TheseleneShadow,
+            new Recipe()
+            {
+                Name = "Theselene's Shadow",
+                TemplateKey = "theseleneshadow",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 3 }
+                },
+                Rank = "Basic",
+                Level = 37,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(DarkPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+            },
+        {
+            EnchantingRecipes.ZephyraGust,
+            new Recipe()
+            {
+                Name = "Zephyra's Gust",
+                TemplateKey = "zephyragust",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 10 }
+                },
+                Rank = "Adept",
+                Level = 97,
+                Difficulty = 1,
+                Modification = ((mapper, item) =>
+                {
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HowlingPrefixScript)));
+                    var schema = mapper.Map<ItemSchema>(item);
+
+                    return mapper.Map<Item>(schema);
+                })
+            }
+        },
         {
             EnchantingRecipes.ZephyraMist,
             new Recipe()
@@ -845,21 +844,21 @@ public static class CraftingRequirements
             }
             },
         {
-            EnchantingRecipes.ZephyraWind,
+            EnchantingRecipes.ZephyraSpirit,
             new Recipe()
             {
-                Name = "Zephyra's Wind",
-                TemplateKey = "zephyrawind",
+                Name = "Zephyra's Spirit",
+                TemplateKey = "zephyraspirit",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 5 }
+                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 1 }
                 },
-                Rank = "Initiate",
-                Level = 58,
+                Rank = "Basic",
+                Level = 20,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HazyPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(BreezyPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);
@@ -889,21 +888,21 @@ public static class CraftingRequirements
             }
         },
         {
-            EnchantingRecipes.ZephyraGust,
+            EnchantingRecipes.ZephyraWind,
             new Recipe()
             {
-                Name = "Zephyra's Gust",
-                TemplateKey = "zephyragust",
+                Name = "Zephyra's Wind",
+                TemplateKey = "zephyrawind",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 10 }
+                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 5 }
                 },
-                Rank = "Adept",
-                Level = 97,
+                Rank = "Initiate",
+                Level = 58,
                 Difficulty = 1,
                 Modification = ((mapper, item) =>
                 {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HowlingPrefixScript)));
+                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HazyPrefixScript)));
                     var schema = mapper.Map<ItemSchema>(item);
 
                     return mapper.Map<Item>(schema);

@@ -43,13 +43,6 @@ public class suomiFarmerScript : DialogScriptBase
                     return;
                 }
 
-                if (source.UserStatSheet.Level < 11)
-                {
-                    Subject.Reply(source, "You are too young to harvest my fields. I cannot watch you from here incase you get hurt.");
-
-                    return;
-                }
-
                 if (!source.TryTakeGold(5000))
                 {
                     Subject.Reply(
