@@ -5,11 +5,8 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 
 namespace Chaos.Scripting.MerchantScripts;
 
-public class AoifeDialogShowScript : DialogScriptBase
+public class AoifeDialogShowScript(Dialog subject) : DialogScriptBase(subject)
 {
-    public AoifeDialogShowScript(Dialog subject)
-        : base(subject) { }
-
     public override void OnDisplaying(Aisling source)
     {
         switch (Subject.Template.TemplateKey.ToLower())
@@ -56,6 +53,15 @@ public class AoifeDialogShowScript : DialogScriptBase
 
                     if (!Subject.HasOption(option2.OptionText))
                         Subject.Options.Add(option2);
+                    
+                    var option3 = new DialogOption()
+                    {
+                        DialogKey = "aoife_mastering",
+                        OptionText = "Master Of Your Path"
+                    };
+                    
+                    if (!source.UserStatSheet.Master && !Subject.HasOption(option3.OptionText))
+                        Subject.Options.Add(option3);
                 }
             }
 
