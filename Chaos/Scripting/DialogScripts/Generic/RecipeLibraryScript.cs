@@ -703,38 +703,11 @@ public class RecipeLibraryScript : DialogScriptBase
 
                 switch (FauxItem?.Template.TemplateKey.ToLower())
                 {
-                    case "ignatarenvy":
+                    case "aquaedoncalming":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Ignatar.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "geolithgratitude":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Geolith.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "miraelisserenity":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Miraelis.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "theseleneelusion":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Theselene.",
+                            $"{FauxItem.Template.Name} requires 3 Essence of Aquaedon.",
                             "enchantingbook");
 
                         return;
@@ -748,29 +721,47 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    case "serendaelluck":
+                    case "aquaedonresolve":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Serendael.",
+                            $"{FauxItem.Template.Name} requires 10 Essence of Aquaedon.",
                             "enchantingbook");
 
                         return;
                     }
-                    case "skandaramight":
+                    case "aquaedonwill":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Skandara.",
+                            $"{FauxItem.Template.Name} requires 7 Essence of Aquaedon.",
                             "enchantingbook");
 
                         return;
                     }
-                    case "zephyraspirit":
+                    case "aquaedonwisdom":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Zephyra.",
+                            $"{FauxItem.Template.Name} requires 5 Essence of Aquaedon.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "ignatardestruction":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 7 Essence of Ignatar.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "ignatarenvy":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 1 Essence of Ignatar.",
                             "enchantingbook");
 
                         return;
@@ -784,65 +775,11 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    case "geolithpride":
+                    case "ignatarjealousy":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 3 Essence of Geolith.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "miraelisblessing":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 3 Essence of Miraelis.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "theseleneshadow":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 3 Essence of Theselene.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "aquaedoncalming":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 3 Essence of Aquaedon.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "serendaelmagic":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 3 Essence of Serendael.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "skandaratriumph":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 3 Essence of Skandara.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "zephyramist":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 3 Essence of Zephyra.",
+                            $"{FauxItem.Template.Name} requires 5 Essence of Ignatar.",
                             "enchantingbook");
 
                         return;
@@ -865,65 +802,20 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    case "miraelisintellect":
+                    case "geolithfortitude":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Miraelis.",
+                            $"{FauxItem.Template.Name} requires 7 Essence of Geolith.",
                             "enchantingbook");
 
                         return;
                     }
-                    case "theselenedexterity":
+                    case "geolithgratitude":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Theselene.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "aquaedonwisdom":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Aquaedon.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "serendaelchance":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Serendael.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "skandarastrength":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Skandara.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "zephyrawind":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Zephyra.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "ignatarjealousy":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Ignatar.",
+                            $"{FauxItem.Template.Name} requires 1 Essence of Geolith.",
                             "enchantingbook");
 
                         return;
@@ -937,6 +829,24 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
+                    case "geolithpride":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 3 Essence of Geolith.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "miraelisblessing":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 3 Essence of Miraelis.",
+                            "enchantingbook");
+
+                        return;
+                    }
                     case "miraelisharmony":
                     {
                         Subject.Reply(
@@ -946,20 +856,65 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    case "theselenebalance":
+                    case "miraelisintellect":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 7 Essence of Theselene.",
+                            $"{FauxItem.Template.Name} requires 5 Essence of Miraelis.",
                             "enchantingbook");
 
                         return;
                     }
-                    case "aquaedonwill":
+                    case "miraelisnurturing":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 7 Essence of Aquaedon.",
+                            $"{FauxItem.Template.Name} requires 7 Essence of Miraelis.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "miraelisserenity":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 1 Essence of Miraelis.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "serendaeladdiction":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 10 Essence of Serendael.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "serendaelchance":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 5 Essence of Serendael.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "serendaelluck":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 1 Essence of Serendael.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "serendaelmagic":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 3 Essence of Serendael.",
                             "enchantingbook");
 
                         return;
@@ -982,65 +937,11 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    case "zephyravortex":
+                    case "skandaramight":
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 7 Essence of Zephyra.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "ignatardestruction":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 7 Essence of Ignatar.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "geolithfortitude":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 7 Essence of Geolith.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "miraelisnurturing":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 7 Essence of Miraelis.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "theselenerisk":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 10 Essence of Theselene.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "aquaedonresolve":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 10 Essence of Aquaedon.",
-                            "enchantingbook");
-
-                        return;
-                    }
-                    case "serendaeladdiction":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 10 Essence of Serendael.",
+                            $"{FauxItem.Template.Name} requires 1 Essence of Skandara.",
                             "enchantingbook");
 
                         return;
@@ -1054,11 +955,110 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
+                    case "skandarastrength":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 5 Essence of Skandara.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "skandaratriumph":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 3 Essence of Skandara.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "theselenebalance":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 7 Essence of Theselene.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "theselenedexterity":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 5 Essence of Theselene.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "theseleneelusion":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 1 Essence of Theselene.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "theselenerisk":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 10 Essence of Theselene.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "theseleneshadow":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 3 Essence of Theselene.",
+                            "enchantingbook");
+
+                        return;
+                    }
                     case "zephyragust":
                     {
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name} requires 10 Essence of Zephyra.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "zephyramist":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 3 Essence of Zephyra.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "zephyraspirit":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 1 Essence of Zephyra.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "zephyrawind":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 5 Essence of Zephyra.",
+                            "enchantingbook");
+
+                        return;
+                    }
+                    case "zephyravortex":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name} requires 7 Essence of Zephyra.",
                             "enchantingbook");
 
                         return;

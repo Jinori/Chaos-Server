@@ -1287,6 +1287,23 @@ public enum AstridKillQuestStage
     AstridGoblinGuard = 4,
     AstridGoblinSoldier = 5
 }
+
+public enum EastWoodlandsKillQuestStage
+{
+    None,
+    EWViper = 1,
+    EWBee1 = 2,
+    EWBee2 = 3,
+    EWMantis1 = 4,
+    EWMantis2 = 5,
+    EWWolf = 6,
+    EWKobold = 7,
+    EWKoboldMage = 8,
+    EWGoblinGuard = 9,
+    EWGoblinSoldier = 10,
+    EWGoblinWarrior = 11,
+    EWHobgoblin = 12
+}
 [Flags]
 public enum ReconPoints
 {
@@ -1310,6 +1327,12 @@ public enum SavedChild
 public enum CrudeLeather
 {
     None,
+    StartedQuest = 1,
+}
+
+public enum FishOil
+{
+    None = 0,
     StartedQuest = 1,
 }
 
