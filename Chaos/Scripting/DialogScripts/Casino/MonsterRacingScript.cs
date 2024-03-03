@@ -11,13 +11,13 @@ namespace Chaos.Scripting.DialogScripts.Casino;
 
 public class MonsterRacingScript : DialogScriptBase
 {
-    private readonly IScriptFactory<IMerchantScript, Merchant> ScriptFactory;
+    private readonly IScriptProvider ScriptProvider;
     private bool HasPaid;
 
     /// <inheritdoc />
-    public MonsterRacingScript(Dialog subject, IScriptFactory<IMerchantScript, Merchant> scriptFactory)
+    public MonsterRacingScript(Dialog subject, IScriptProvider scriptProvider)
         : base(subject) =>
-        ScriptFactory = scriptFactory;
+        ScriptProvider = scriptProvider;
 
     public override void OnDisplaying(Aisling source)
     {
@@ -91,7 +91,7 @@ public class MonsterRacingScript : DialogScriptBase
             var script = merchant.Script.As<MerchantScripts.Casino.MonsterRacingScript>();
 
             if (script == null)
-                merchant.AddScript(typeof(MerchantScripts.Casino.MonsterRacingScript), ScriptFactory);
+                merchant.AddScript<Merchant, IMerchantScript>(typeof(MerchantScripts.Casino.MonsterRacingScript), ScriptProvider);
 
             merchant.Say($"{source.Name} has bet on lane {source.MonsterRacingLane}!");
             Subject.InjectTextParameters(source.MonsterRacingLane);

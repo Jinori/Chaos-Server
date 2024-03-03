@@ -9,12 +9,12 @@ namespace Chaos.Scripting.DialogScripts.Casino;
 
 public class ZertaScript : DialogScriptBase
 {
-    private readonly IScriptFactory<IMerchantScript, Merchant> ScriptFactory;
+    private readonly IScriptProvider ScriptProvider;
 
     /// <inheritdoc />
-    public ZertaScript(Dialog subject, IScriptFactory<IMerchantScript, Merchant> scriptFactory)
+    public ZertaScript(Dialog subject, IScriptProvider scriptProvider)
         : base(subject) =>
-        ScriptFactory = scriptFactory;
+        ScriptProvider = scriptProvider;
 
     public override void OnDisplaying(Aisling source)
     {
@@ -38,7 +38,7 @@ public class ZertaScript : DialogScriptBase
 
                 if (script == null)
                 {
-                    merchant.AddScript(typeof(MerchantScripts.Casino.ZertaScript), ScriptFactory);
+                    merchant.AddScript<Merchant, IMerchantScript>(typeof(MerchantScripts.Casino.ZertaScript), ScriptProvider);
                     script = merchant.Script.As<MerchantScripts.Casino.ZertaScript>();
                     script!.Source = source;
                     merchant.Say($"Thanks {source.Name}!");

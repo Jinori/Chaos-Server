@@ -41,7 +41,7 @@ public class ArenaUndergroundScript : DialogScriptBase
     private readonly Point ColorClashGoldPoint = new(4, 4);
     private readonly Point ColorClashGreenPoint = new(39, 6);
     private readonly Point ColorClashRedPoint = new(4, 27);
-    private readonly IScriptFactory<IMapScript, MapInstance> ScriptFactory;
+    private readonly IScriptProvider ScriptProvider;
     private readonly ISimpleCache SimpleCache;
     private readonly IShardGenerator ShardGenerator;
     private readonly IMerchantFactory MerchantFactory;
@@ -54,7 +54,7 @@ public class ArenaUndergroundScript : DialogScriptBase
         Dialog subject,
         IShardGenerator shardGenerator,
         ISimpleCache simpleCache,
-        IScriptFactory<IMapScript, MapInstance> scriptFactory,
+        IScriptProvider scriptProvider,
         IClientRegistry<IWorldClient> clientRegistry,
         IMerchantFactory merchantFactory
     )
@@ -64,7 +64,7 @@ public class ArenaUndergroundScript : DialogScriptBase
         ClientRegistry = clientRegistry;
         MerchantFactory = merchantFactory;
         SimpleCache = simpleCache;
-        ScriptFactory = scriptFactory;
+        ScriptProvider = scriptProvider;
         ShardGenerator = shardGenerator;
     }
 
@@ -102,7 +102,7 @@ public class ArenaUndergroundScript : DialogScriptBase
 
                 
                 if (script == null)
-                   shard.AddScript(typeof(EscortScript), ScriptFactory);
+                   shard.AddScript<MapInstance, IMapScript>(typeof(EscortScript), ScriptProvider);
                 
                 var nathra = MerchantFactory.Create("nathra", shard, new Point(5, 37));
                 shard.AddEntity(nathra, nathra);
@@ -145,7 +145,7 @@ public class ArenaUndergroundScript : DialogScriptBase
                 var script = mapInstance.Script.As<ColorClashScript>();
 
                 if (script == null)
-                    mapInstance.AddScript(typeof(ColorClashScript), ScriptFactory);
+                    mapInstance.AddScript<MapInstance, IMapScript>(typeof(ColorClashScript), ScriptProvider);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
@@ -663,7 +663,7 @@ public class ArenaUndergroundScript : DialogScriptBase
                 var script = shard.Script.As<HiddenHavocShrinkScript>();
                 
                 if (script == null)
-                   shard.AddScript(typeof(HiddenHavocShrinkScript), ScriptFactory);
+                   shard.AddScript<MapInstance, IMapScript>(typeof(HiddenHavocShrinkScript), ScriptProvider);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
@@ -689,7 +689,7 @@ public class ArenaUndergroundScript : DialogScriptBase
                 var script = shard.Script.As<HiddenHavocShrinkScript>();
                 
                 if (script == null)
-                    shard.AddScript(typeof(HiddenHavocShrinkScript), ScriptFactory);
+                    shard.AddScript<MapInstance, IMapScript>(typeof(HiddenHavocShrinkScript), ScriptProvider);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
@@ -716,7 +716,7 @@ public class ArenaUndergroundScript : DialogScriptBase
                 var script = shard.Script.As<LavaFlowShrinkScript>();
 
                 if (script == null)
-                    shard.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
+                    shard.AddScript<MapInstance, IMapScript>(typeof(LavaFlowShrinkScript), ScriptProvider);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
@@ -743,7 +743,7 @@ public class ArenaUndergroundScript : DialogScriptBase
                 var script = shard.Script.As<LavaFlowShrinkScript>();
 
                 if (script == null)
-                    shard.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
+                    shard.AddScript<MapInstance, IMapScript>(typeof(LavaFlowShrinkScript), ScriptProvider);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
@@ -770,7 +770,7 @@ public class ArenaUndergroundScript : DialogScriptBase
                 var script = shard.Script.As<LavaFlowShrinkScript>();
                 
                 if (script == null)
-                    shard.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
+                    shard.AddScript<MapInstance, IMapScript>(typeof(LavaFlowShrinkScript), ScriptProvider);
 
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
@@ -815,7 +815,7 @@ public class ArenaUndergroundScript : DialogScriptBase
                     var script = shard.Script.As<LavaFlowShrinkScript>();
 
                     if (script == null)
-                        shard.AddScript(typeof(LavaFlowShrinkScript), ScriptFactory);
+                        shard.AddScript<MapInstance, IMapScript>(typeof(LavaFlowShrinkScript), ScriptProvider);
 
                     foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                     {

@@ -8,17 +8,13 @@ using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 
 namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 
-public class AscendingScript : DialogScriptBase
+public class AscendingScript(Dialog subject) : DialogScriptBase(subject)
 {
     private const int HEALTH_GAIN = 50;
     private const int MANA_GAIN = 25;
     private const int ASCEND_LEVEL_REQUIREMENT = 99;
 
-    private readonly IExperienceDistributionScript ExperienceDistributionScript;
-
-    public AscendingScript(Dialog subject)
-        : base(subject) =>
-        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    private readonly IExperienceDistributionScript ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
 
     private int CalculateAscensionsCount(Aisling source, string hPorMP)
     {
@@ -36,13 +32,14 @@ public class AscendingScript : DialogScriptBase
         Aisling source,
         string attributeType,
         int timesToAscend,
-        int gain,
-        int beforeBaseValue
+        int gain
     )
     {
+        var statBeforeStarting = attributeType == "HP" ? source.StatSheet.MaximumHp : source.StatSheet.MaximumMp;
+        
         for (var i = 0; i < timesToAscend; i++)
         {
-            var formula = (source.StatSheet.MaximumHp + gain * i) * 500;
+            var formula = (statBeforeStarting + gain * i) * 500;
 
             if (!ExperienceDistributionScript.TryTakeExp(source, formula))
                 break;
@@ -74,9 +71,9 @@ public class AscendingScript : DialogScriptBase
             }
         }
 
-        var newBaseValue = beforeBaseValue + timesToAscend * gain;
+        var newBaseValue = statBeforeStarting + timesToAscend * gain;
         source.Client.SendAttributes(StatUpdateType.Full);
-        source.SendOrangeBarMessage($"You've increased to {newBaseValue} base {attributeType.ToLower()} from {beforeBaseValue}.");
+        source.SendOrangeBarMessage($"You've increased to {newBaseValue} base {attributeType.ToLower()} from {statBeforeStarting}.");
     }
 
     public override void OnDisplaying(Aisling source)
@@ -88,9 +85,7 @@ public class AscendingScript : DialogScriptBase
 
             return;
         }
-
-        var beforeBaseHealth = source.StatSheet.MaximumHp;
-        var beforeBaseMana = source.StatSheet.MaximumMp;
+        
         int timesToAscend;
 
         if (!ExperienceDistributionScript.TryTakeExp(source, source.StatSheet.MaximumHp * 500) || (!ExperienceDistributionScript.TryTakeExp(source, source.StatSheet.MaximumMp * 250)))
@@ -109,8 +104,7 @@ public class AscendingScript : DialogScriptBase
                     source,
                     "HP",
                     timesToAscend,
-                    HEALTH_GAIN,
-                    beforeBaseHealth);
+                    HEALTH_GAIN);
 
                 break;
 
@@ -121,8 +115,7 @@ public class AscendingScript : DialogScriptBase
                     source,
                     "MP",
                     timesToAscend,
-                    MANA_GAIN,
-                    beforeBaseMana);
+                    MANA_GAIN);
 
                 break;
 
@@ -131,8 +124,7 @@ public class AscendingScript : DialogScriptBase
                     source,
                     "HP",
                     1,
-                    HEALTH_GAIN,
-                    beforeBaseHealth);
+                    HEALTH_GAIN);
 
                 break;
 
@@ -141,8 +133,7 @@ public class AscendingScript : DialogScriptBase
                     source,
                     "MP",
                     1,
-                    MANA_GAIN,
-                    beforeBaseMana);
+                    MANA_GAIN);
 
                 break;
         }
