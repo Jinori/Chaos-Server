@@ -91,7 +91,9 @@ public class SummonPetScript : ConfigurableSkillScriptBase
 
             var has10Skill = newMonster.PetOwner.Trackers.Enums.TryGetValue(out Level10PetSkills level10Skill);
             var has25Skill = newMonster.PetOwner.Trackers.Enums.TryGetValue(out Level25PetSkills level25Skill);
-
+            var has40Skill = newMonster.PetOwner.Trackers.Enums.TryGetValue(out Level40PetSkills level40Skill);
+            var has55Skill = newMonster.PetOwner.Trackers.Enums.TryGetValue(out Level55PetSkills level55Skill);
+            
             if (has10Skill)
                 switch (level10Skill)
                 {
@@ -121,9 +123,9 @@ public class SummonPetScript : ConfigurableSkillScriptBase
             if (has25Skill)
                 switch (level25Skill)
                 {
-                    case Level25PetSkills.TailSweep:
+                    case Level25PetSkills.PawStrike:
                     {
-                        var skillToAdd = _skillFactory.Create("dracotailkick");
+                        var skillToAdd = _skillFactory.Create("mantiskick");
                         newMonster.Skills.Add(skillToAdd);
 
                         break;
@@ -139,6 +141,58 @@ public class SummonPetScript : ConfigurableSkillScriptBase
                     {
                         var skillToAdd = _skillFactory.Create("windblade");
                         newMonster.Skills.Add(skillToAdd);
+
+                        break;
+                    }
+                }
+            
+            if (has40Skill)
+                switch (level40Skill)
+                {
+                    case Level40PetSkills.Blitz:
+                    {
+                        var skillToAdd = _skillFactory.Create("blitz");
+                        newMonster.Skills.Add(skillToAdd);
+
+                        break;
+                    }
+                    case Level40PetSkills.Slobber:
+                    {
+                        var skillToAdd = _skillFactory.Create("clobber");
+                        newMonster.Skills.Add(skillToAdd);
+
+                        break;
+                    }
+                    case Level40PetSkills.DoubleLick:
+                    {
+                        var skillToAdd = _skillFactory.Create("doublepunch");
+                        newMonster.Skills.Add(skillToAdd);
+
+                        break;
+                    }
+                }
+            
+            if (has55Skill)
+                switch (level55Skill)
+                {
+                    case Level55PetSkills.Frenzy:
+                    {
+                        var skillToAdd = _spellFactory.Create("focus");
+                        newMonster.Spells.Add(skillToAdd);
+
+                        break;
+                    }
+                    case Level55PetSkills.Spit:
+                    {
+                        var skillToAdd = _spellFactory.Create("arcanebolt");
+                        newMonster.Spells.Add(skillToAdd);
+
+                        break;
+                    }
+                    case Level55PetSkills.Evade:
+                    {
+                        var skillToAdd = _spellFactory.Create("dodge");
+                        newMonster.Spells.Add(skillToAdd);
 
                         break;
                     }

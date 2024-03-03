@@ -1188,7 +1188,39 @@ public enum Level10PetSkills
 public enum Level25PetSkills
 {
     None,
-    TailSweep = 1,
+    PawStrike = 1,
+    Enrage = 1 << 1,
+    WindStrike = 1 << 2,
+}
+
+public enum Level40PetSkills
+{
+    None,
+    Blitz = 1,
+    Slobber = 1 << 1,
+    DoubleLick = 1 << 2,
+}
+
+public enum Level55PetSkills
+{
+    None,
+    Frenzy = 1,
+    Spit = 1 << 1,
+    Evade = 1 << 2,
+}
+
+public enum Level70PetSkills
+{
+    None,
+    PawStrike = 1,
+    Enrage = 1 << 1,
+    WindStrike = 1 << 2,
+}
+
+public enum Level85PetSkills
+{
+    None,
+    PawStrike = 1,
     Enrage = 1 << 1,
     WindStrike = 1 << 2,
 }

@@ -288,29 +288,77 @@ public class MasteringScript : DialogScriptBase
                 AwardWarriorItems(source);
                 break;
             case BaseClass.Rogue:
-                // Logic for Rogue items
+                AwardRogueItems(source);
                 break;
             case BaseClass.Wizard:
-                // Logic for Wizard items
+                AwardWizardItems(source);
                 break;
             case BaseClass.Priest:
-                // Logic for Priest items
+                AwardPriestItems(source);
                 break;
             case BaseClass.Monk:
-                // Logic for Monk items
+                AwardMonkItems(source);
                 break;
         }
     }
 
     private void AwardWarriorItems(Aisling source)
     {
-        var armor = ItemFactory.Create("mgmwararmor");
-        var helm = ItemFactory.Create("carnunhelmet");
+        var armor = source.Gender == Gender.Male ? ItemFactory.Create("warriormastermantle") : ItemFactory.Create("warriormasterdress");
+        var helm = source.Gender == Gender.Male ? ItemFactory.Create("malewarriormasterhelm") : ItemFactory.Create("femalewarriormasterhelm");
         var weapon = ItemFactory.Create("greathybrasylbattleaxe");
-
-        source.GiveItemOrSendToBank(armor);
-        source.GiveItemOrSendToBank(helm);
-        source.GiveItemOrSendToBank(weapon);
+        
+        var itemsToGive = new[] { armor, helm, weapon };
+        
+        foreach (var item in itemsToGive)
+            source.GiveItemOrSendToBank(item);
     }
     
+    private void AwardMonkItems(Aisling source)
+    {
+        var armor = source.Gender == Gender.Male ? ItemFactory.Create("monkmastermantle") : ItemFactory.Create("monkmasterdress");
+        var helm = source.Gender == Gender.Male ? ItemFactory.Create("NeedsToBeCreated") : ItemFactory.Create("NeedsToBeCreatedFemale");
+        var weapon = ItemFactory.Create("NeedsToBeCreated");
+        
+        var itemsToGive = new[] { armor, helm, weapon };
+        
+        foreach (var item in itemsToGive)
+            source.GiveItemOrSendToBank(item);
+    }
+    
+    private void AwardPriestItems(Aisling source)
+    {
+        var armor = source.Gender == Gender.Male ? ItemFactory.Create("sacredmantle") : ItemFactory.Create("sacreddress");
+        var helm = source.Gender == Gender.Male ? ItemFactory.Create("NeedsToBeCreated") : ItemFactory.Create("NeedsToBeCreatedFemale");
+        var weapon = ItemFactory.Create("NeedsToBeCreated");
+        
+        var itemsToGive = new[] { armor, helm, weapon };
+        
+        foreach (var item in itemsToGive)
+            source.GiveItemOrSendToBank(item);
+    }
+    
+    private void AwardWizardItems(Aisling source)
+    {
+        var armor = source.Gender == Gender.Male ? ItemFactory.Create("wizardMasterMantle") : ItemFactory.Create("wizardMasterdress");
+        var helm = source.Gender == Gender.Male ? ItemFactory.Create("NeedsToBeCreated") : ItemFactory.Create("NeedsToBeCreatedFemale");
+        var weapon = ItemFactory.Create("NeedsToBeCreated");
+        
+        var itemsToGive = new[] { armor, helm, weapon };
+        
+        foreach (var item in itemsToGive)
+            source.GiveItemOrSendToBank(item);
+    }
+    
+    private void AwardRogueItems(Aisling source)
+    {
+        var armor = source.Gender == Gender.Male ? ItemFactory.Create("rogueMasterMantle") : ItemFactory.Create("rogueMasterdress");
+        var helm = source.Gender == Gender.Male ? ItemFactory.Create("NeedsToBeCreated") : ItemFactory.Create("NeedsToBeCreatedFemale");
+        var weapon = ItemFactory.Create("NeedsToBeCreated");
+        
+        var itemsToGive = new[] { armor, helm, weapon };
+        
+        foreach (var item in itemsToGive)
+            source.GiveItemOrSendToBank(item);
+    }
 }

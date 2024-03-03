@@ -19,8 +19,33 @@ public class AreiniPetsScript : DialogScriptBase
             RemoveOption("Learn Summon Pet");
             RemoveOption("Pet Level 10 Ability");
             RemoveOption("Pet Level 25 Ability");
+            RemoveOption("Pet Level 40 Ability");
+            RemoveOption("Pet Level 55 Ability");
             RemoveOption("Change Pet");
         }
+        if (string.Equals(Subject.Template.TemplateKey, "areini_initial", StringComparison.OrdinalIgnoreCase)
+            && (source.UserStatSheet.BaseClass == BaseClass.Priest))
+        {
+            // Check and remove dialog options based on pet skill level
+            if (!source.Trackers.Flags.HasFlag(PetSkillsAvailable.Level10))
+            {
+                RemoveOption("Pet Level 10 Ability");
+            }
+            if (!source.Trackers.Flags.HasFlag(PetSkillsAvailable.Level25))
+            {
+                RemoveOption("Pet Level 25 Ability");
+            }
+            if (!source.Trackers.Flags.HasFlag(PetSkillsAvailable.Level40))
+            {
+                RemoveOption("Pet Level 40 Ability");
+            }
+            if (!source.Trackers.Flags.HasFlag(PetSkillsAvailable.Level55))
+            {
+                RemoveOption("Pet Level 55 Ability");
+            }
+            // Add similar checks for other levels if necessary
+        }
+
     }
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
@@ -54,14 +79,53 @@ public class AreiniPetsScript : DialogScriptBase
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "areini_picktailsweep":
+            case "areini_pickdoublelick":
+            {
+                if (optionIndex != 2)
+                {
+                    RemoveExistingPets(source);
+                    source.Trackers.Flags.AddFlag(PetSkillsChosen.Level40);
+                    source.Trackers.Enums.Set(Level40PetSkills.DoubleLick);
+                    source.SendActiveMessage("Double Lick ability learned!");
+                }
+
+                break;
+            }
+
+            case "areini_pickslobber":
+            {
+                if (optionIndex != 2)
+                {
+                    RemoveExistingPets(source);
+                    source.Trackers.Flags.AddFlag(PetSkillsChosen.Level40);
+                    source.Trackers.Enums.Set(Level40PetSkills.Slobber);
+                    source.SendActiveMessage("Slobber ability learned!");
+                }
+
+                break;
+            }
+
+            case "areini_pickblitz":
+            {
+                if (optionIndex != 2)
+                {
+                    RemoveExistingPets(source);
+                    source.Trackers.Flags.AddFlag(PetSkillsChosen.Level40);
+                    source.Trackers.Enums.Set(Level40PetSkills.Blitz);
+                    source.SendActiveMessage("Blitz ability learned!");
+                }
+
+                break;
+            }
+            
+            case "areini_pickpawstrike":
             {
                 if (optionIndex != 2)
                 {
                     RemoveExistingPets(source);
                     source.Trackers.Flags.AddFlag(PetSkillsChosen.Level25);
-                    source.Trackers.Enums.Set(Level25PetSkills.TailSweep);
-                    source.SendActiveMessage("Tail Sweep ability learned!");
+                    source.Trackers.Enums.Set(Level25PetSkills.PawStrike);
+                    source.SendActiveMessage("Paw Strike ability learned!");
                 }
 
                 break;
