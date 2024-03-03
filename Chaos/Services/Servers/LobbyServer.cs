@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using Chaos.Common.Abstractions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Identity;
@@ -79,7 +80,7 @@ public sealed class LobbyServer : ServerBase<ILobbyClient>, ILobbyServer<ILobbyC
                             EphemeralRandomIdGenerator<uint>.Shared.NextId,
                             serverInfo,
                             ServerType.Login,
-                            client.Crypto.Key,
+                            Encoding.ASCII.GetString(client.Crypto.Key),
                             client.Crypto.Seed);
 
                         RedirectManager.Add(redirect);
@@ -93,7 +94,7 @@ public sealed class LobbyServer : ServerBase<ILobbyClient>, ILobbyServer<ILobbyC
 
                     break;
                 case ServerTableRequestType.RequestTable:
-                    client.SendServerTable(ServerTable);
+                    client.SendServerTableResponse(ServerTable);
 
                     break;
                 default:

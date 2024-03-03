@@ -7,7 +7,7 @@ using Chaos.Packets.Abstractions.Definitions;
 namespace Chaos.Networking.Converters.Server;
 
 /// <summary>
-///     Serializes a <see cref="AttributesArgs" /> into a buffer
+///     Provides serialization and deserialization logic for <see cref="AttributesArgs" />
 /// </summary>
 public sealed class AttributesConverter : PacketConverterBase<AttributesArgs>
 {
@@ -82,6 +82,9 @@ public sealed class AttributesConverter : PacketConverterBase<AttributesArgs>
 
         if (args.IsAdmin)
             updateType |= StatUpdateType.GameMasterA;
+
+        if (args.IsSwimming)
+            updateType |= StatUpdateType.Swimming;
 
         if (args.HasUnreadMail)
             updateType |= StatUpdateType.UnreadMail;

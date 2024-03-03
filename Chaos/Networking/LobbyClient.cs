@@ -1,4 +1,5 @@
 using System.Net.Sockets;
+using System.Text;
 using Chaos.Cryptography.Abstractions;
 using Chaos.Extensions.Networking;
 using Chaos.Networking.Abstractions;
@@ -36,7 +37,7 @@ public sealed class LobbyClient : ConnectedClientBase, ILobbyClient
     {
         var args = new ConnectionInfoArgs
         {
-            Key = Crypto.Key,
+            Key = Encoding.ASCII.GetString(Crypto.Key),
             Seed = Crypto.Seed,
             TableCheckSum = serverTableCheckSum
         };
@@ -44,9 +45,9 @@ public sealed class LobbyClient : ConnectedClientBase, ILobbyClient
         Send(args);
     }
 
-    public void SendServerTable(IServerTable serverTable)
+    public void SendServerTableResponse(IServerTable serverTable)
     {
-        var args = new ServerTableArgs
+        var args = new ServerTableResponseArgs
         {
             ServerTable = serverTable.Data
         };

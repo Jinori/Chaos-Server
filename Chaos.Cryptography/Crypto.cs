@@ -24,7 +24,7 @@ public sealed class Crypto : ICrypto
     ///     Creates a new instance of the Crypto class
     /// </summary>
     public Crypto()
-        : this(0, "UrkcnItnI"u8.ToArray(), string.Empty) { }
+        : this(0, "UrkcnItnI", string.Empty) { }
 
     /// <summary>
     ///     Creates a new instance of the Crypto class
@@ -38,11 +38,11 @@ public sealed class Crypto : ICrypto
     /// <param name="keySaltSeed">
     ///     The seed used to generate key salts
     /// </param>
-    public Crypto(byte seed, byte[] key, string? keySaltSeed = null)
+    public Crypto(byte seed, string key, string? keySaltSeed = null)
     {
         Seed = seed;
-        Key = key;
-        KeySalts = string.IsNullOrEmpty(keySaltSeed) ? new byte[1024] : GenerateKeySalts(keySaltSeed);
+        Key = Encoding.ASCII.GetBytes(key);
+        KeySalts = string.IsNullOrEmpty(keySaltSeed) ? Array.Empty<byte>() : GenerateKeySalts(keySaltSeed);
     }
 
     /// <summary>
@@ -318,7 +318,8 @@ public sealed class Crypto : ICrypto
     public void EncryptDialog(ref Span<byte> buffer)
     {
         var newBuffer = new Span<byte>(new byte[buffer.Length + 6]);
-        buffer.CopyTo(buffer[6..]);
+        buffer.CopyTo(newBuffer);
+        buffer.CopyTo(newBuffer[6..]);
 
         var checksum = Crc.Generate16(newBuffer[6..]);
         newBuffer[0] = (byte)Random.Shared.Next();

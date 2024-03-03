@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Chaos.Wpf\Chaos.Wpf.csproj"/>
         <ProjectReference Include="..\..\Chaos\Chaos.csproj"/>
     </ItemGroup>
 
@@ -105,6 +106,16 @@
             <SubType>Designer</SubType>
         </Page>
         <Page Update="Controls\Abstractions\ViewModelListView.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Controls\WorldMapNodeControls\WorldMapNodePropertyEditor.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Controls\WorldMapControls\WorldMapPropertyEditor.xaml">
             <Generator>MSBuild:Compile</Generator>
             <XamlRuntime>Wpf</XamlRuntime>
             <SubType>Designer</SubType>

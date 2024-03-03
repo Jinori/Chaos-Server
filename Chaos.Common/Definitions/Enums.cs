@@ -2,6 +2,14 @@
 namespace Chaos.Common.Definitions;
 
 #region Custom Stuff
+public enum ShardingType : byte
+{
+    None,
+    AbsolutePlayerLimit,
+    PlayerLimit,
+    AbsoluteGroupLimit
+}
+
 
 [Flags]
 public enum WizardElement : byte
@@ -1209,11 +1217,11 @@ public enum MapFlags : ulong
     SnowTileset = 128
 }
 
-public enum ShardingType : byte
+[Flags]
+public enum TileFlags : byte
 {
-    None,
-    AbsolutePlayerLimit,
-    PlayerLimit,
-    AbsoluteGroupLimit
+    None = 0,
+    Wall = 15,
+    Unknown = 128
 }
 #endregion

@@ -2,6 +2,7 @@ using System.Collections.Frozen;
 using System.Text;
 using Chaos.IO.Memory;
 using Chaos.Packets.Abstractions;
+using Chaos.Packets.Abstractions.Definitions;
 
 namespace Chaos.Packets;
 
@@ -11,6 +12,7 @@ namespace Chaos.Packets;
 public sealed class PacketSerializer : IPacketSerializer
 {
     private readonly FrozenDictionary<Type, IPacketConverter> Converters;
+    private readonly byte SequenceOpCode = (byte)ClientOpCode.SequenceChange;
 
     /// <inheritdoc />
     public Encoding Encoding { get; }
@@ -39,23 +41,27 @@ public sealed class PacketSerializer : IPacketSerializer
         if (!Converters.TryGetValue(type, out var converter) || converter is not IPacketConverter<T> typedConverter)
             throw new InvalidOperationException($"No converter exists for type \"{type.FullName}\"");
 
-        return typedConverter.Deserialize(ref reader);
+        var ret = typedConverter.Deserialize(ref reader);
+
+        if ((typedConverter.OpCode == SequenceOpCode) && ret is ISequencerPacket sequencer)
+            sequencer.Sequence = packet.Sequence;
+
+        return ret;
     }
 
     /// <inheritdoc />
-    public Packet Serialize<T>(T obj) where T: IPacketSerializable
+    public Packet Serialize(IPacketSerializable obj)
     {
-        if (obj is null)
-            throw new ArgumentNullException(nameof(obj));
+        ArgumentNullException.ThrowIfNull(obj);
 
-        var type = typeof(T);
+        var type = obj.GetType();
 
-        if (!Converters.TryGetValue(type, out var converter) || converter is not IPacketConverter<T> typedConverter)
+        if (!Converters.TryGetValue(type, out var converter))
             throw new InvalidOperationException($"No converter exists for type \"{type.FullName}\"");
 
         var packet = new Packet(converter.OpCode);
         var writer = new SpanWriter(Encoding);
-        typedConverter.Serialize(ref writer, obj);
+        converter.Serialize(ref writer, obj);
 
         packet.Buffer = writer.ToSpan();
 

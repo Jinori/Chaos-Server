@@ -60,7 +60,7 @@ public abstract class SocketClientBase : ISocketClient, IDisposable
     /// <inheritdoc />
     public Socket Socket { get; }
 
-    private unsafe Span<byte> Buffer => new(MemoryHandle.Pointer, ushort.MaxValue);
+    private unsafe Span<byte> Buffer => new(MemoryHandle.Pointer, ushort.MaxValue * 4);
 
     private Memory<byte> Memory => MemoryOwner.Memory;
 
@@ -87,7 +87,7 @@ public abstract class SocketClientBase : ISocketClient, IDisposable
         Crypto = crypto;
 
         //var buffer = new byte[ushort.MaxValue];
-        MemoryOwner = MemoryPool<byte>.Shared.Rent(ushort.MaxValue);
+        MemoryOwner = MemoryPool<byte>.Shared.Rent(ushort.MaxValue * 4);
         MemoryHandle = Memory.Pin();
         Logger = logger;
         PacketSerializer = packetSerializer;
@@ -277,18 +277,28 @@ public abstract class SocketClientBase : ISocketClient, IDisposable
                   .WithProperty(this)
                   .LogTrace("[Snd] {Packet}", packet.ToString());
 
-        packet.IsEncrypted = Crypto.IsServerEncrypted(packet.OpCode);
+        packet.IsEncrypted = IsEncrypted(packet.OpCode);
 
         if (packet.IsEncrypted)
         {
-            packet.Sequence = (byte)Interlocked.Increment(ref Sequence);
+            packet.Sequence = (byte)(Interlocked.Increment(ref Sequence) - 1);
 
-            Crypto.Encrypt(ref packet);
+            Encrypt(ref packet);
         }
 
         var args = DequeueArgs(packet.ToMemory());
         Socket.SendAndForget(args, ReuseSocketAsyncEventArgs);
     }
+
+    /// <summary>
+    ///     Whether or not the packet with the specified opcode should be encrypted
+    /// </summary>
+    public abstract bool IsEncrypted(byte opCode);
+
+    /// <summary>
+    ///     Encrypts the packet
+    /// </summary>
+    public abstract void Encrypt(ref Packet packet);
 
     /// <inheritdoc />
     public virtual void Disconnect()

@@ -6,7 +6,7 @@ using Chaos.Packets.Abstractions.Definitions;
 namespace Chaos.Networking.Converters.Server;
 
 /// <summary>
-///     Serializes a <see cref="SoundArgs" /> into a buffer
+///     Provides serialization and deserialization logic for <see cref="SoundArgs" />
 /// </summary>
 public sealed class SoundConverter : PacketConverterBase<SoundArgs>
 {
@@ -16,16 +16,23 @@ public sealed class SoundConverter : PacketConverterBase<SoundArgs>
     /// <inheritdoc />
     public override SoundArgs Deserialize(ref SpanReader reader)
     {
-        var isMusic = reader.ReadByte() == byte.MaxValue;
-        var sound = reader.ReadByte();
+        var indicatorOrIndex = reader.ReadByte();
 
-        if (isMusic)
-            _ = reader.ReadBytes(2); //LI: what is this for?
+        if (indicatorOrIndex == byte.MaxValue)
+        {
+            var musicIndex = reader.ReadByte();
+
+            return new SoundArgs
+            {
+                IsMusic = true,
+                Sound = musicIndex
+            };
+        }
 
         return new SoundArgs
         {
-            IsMusic = isMusic,
-            Sound = sound
+            IsMusic = false,
+            Sound = indicatorOrIndex
         };
     }
 

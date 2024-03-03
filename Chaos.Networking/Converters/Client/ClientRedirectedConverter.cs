@@ -1,4 +1,3 @@
-using System.Text;
 using Chaos.IO.Memory;
 using Chaos.Networking.Entities.Client;
 using Chaos.Packets.Abstractions;
@@ -7,7 +6,7 @@ using Chaos.Packets.Abstractions.Definitions;
 namespace Chaos.Networking.Converters.Client;
 
 /// <summary>
-///     Deserializes a buffer into <see cref="ClientRedirectedArgs" />
+///     Provides packet serialization and deserialization logic for <see cref="ClientRedirectedArgs" />
 /// </summary>
 public sealed class ClientRedirectedConverter : PacketConverterBase<ClientRedirectedArgs>
 {
@@ -25,7 +24,7 @@ public sealed class ClientRedirectedConverter : PacketConverterBase<ClientRedire
         return new ClientRedirectedArgs
         {
             Seed = seed,
-            Key = Encoding.ASCII.GetBytes(key),
+            Key = key,
             Name = name,
             Id = id
         };
@@ -35,7 +34,7 @@ public sealed class ClientRedirectedConverter : PacketConverterBase<ClientRedire
     public override void Serialize(ref SpanWriter writer, ClientRedirectedArgs args)
     {
         writer.WriteByte(args.Seed);
-        writer.WriteString8(Encoding.ASCII.GetString(args.Key));
+        writer.WriteString8(args.Key);
         writer.WriteString8(args.Name);
         writer.WriteUInt32(args.Id);
     }

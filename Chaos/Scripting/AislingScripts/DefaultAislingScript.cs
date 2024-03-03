@@ -7,6 +7,7 @@ using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
+using Chaos.Formulae;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -16,6 +17,7 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.AislingScripts.Abstractions;
 using Chaos.Scripting.Behaviors;
+using Chaos.Services.Servers.Options;
 using Chaos.Scripting.Components;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyHealing;
@@ -38,6 +40,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         "Color Clash - Teams"
     };
     private readonly IStore<BulletinBoard> BoardStore;
+    private readonly IIntervalTimer ClearOrangeBarTimer;
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
     private readonly IEffectFactory EffectFactory;
     private readonly ILogger<DefaultAislingScript> Logger;
@@ -104,6 +107,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         BlindBehavior = new BlindBehavior();
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
+        ClearOrangeBarTimer = new IntervalTimer(TimeSpan.FromSeconds(WorldOptions.Instance.ClearOrangeBarTimerSecs), false);
         ClientRegistry = clientRegistry;
         EffectFactory = effectFactory;
         MerchantFactory = merchantFactory;
@@ -399,9 +403,17 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     }
 
     /// <inheritdoc />
+    public override void OnStatIncrease(Stat stat)
+    {
+        if (stat == Stat.STR)
+            Subject.UserStatSheet.SetMaxWeight(LevelUpFormulae.Default.CalculateMaxWeight(Subject));
+    }
+
+    /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         SleepAnimationTimer.Update(delta);
+        ClearOrangeBarTimer.Update(delta);
 
         if (SleepAnimationTimer.IntervalElapsed)
         {
@@ -410,7 +422,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             var isAfk = !lastManualAction.HasValue
                         || (DateTime.UtcNow.Subtract(lastManualAction.Value)
                                     .TotalMinutes
-                            > 5);
+                            > WorldOptions.Instance.SleepAnimationTimerMins);
 
             if (isAfk)
             {
@@ -426,6 +438,29 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             }
             else if (Subject.Options.SocialStatus == SocialStatus.DayDreaming)
                 Subject.Options.SocialStatus = PreAfkSocialStatus;
+        }
+
+        if (ClearOrangeBarTimer.IntervalElapsed)
+        {
+            var lastOrangeBarMessage = Subject.Trackers.LastOrangeBarMessage;
+            var now = DateTime.UtcNow;
+
+            //clear if
+            //an orange bar message has ever been sent
+            //and the last message was sent after the last clear
+            //and the time since the last message is greater than the clear timer
+            var shouldClear = lastOrangeBarMessage.HasValue
+                              && (lastOrangeBarMessage > Subject.Trackers.LastOrangeBarMessageClear)
+                              && (now.Subtract(lastOrangeBarMessage.Value)
+                                     .TotalSeconds
+                                  > WorldOptions.Instance.ClearOrangeBarTimerSecs);
+
+            if (shouldClear)
+            {
+                Subject.SendServerMessage(ServerMessageType.OrangeBar1, string.Empty);
+                Subject.Trackers.LastOrangeBarMessage = lastOrangeBarMessage;
+                Subject.Trackers.LastOrangeBarMessageClear = now;
+            }
         }
     }
 }

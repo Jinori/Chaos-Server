@@ -15,6 +15,9 @@
              xmlns:reactorTileTemplateControls="clr-namespace:ChaosTool.Controls.ReactorTileTemplateControls"
              xmlns:skillTemplateControls="clr-namespace:ChaosTool.Controls.SkillTemplateControls"
              xmlns:spellTemplateControls="clr-namespace:ChaosTool.Controls.SpellTemplateControls"
+             xmlns:wpfConverters="clr-namespace:Chaos.Wpf.Converters;assembly=Chaos.Wpf"
+             xmlns:worldMapNodeControls="clr-namespace:ChaosTool.Controls.WorldMapNodeControls"
+             xmlns:worldMapControls="clr-namespace:ChaosTool.Controls.WorldMapControls"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -24,10 +27,8 @@
                                              SecondaryColor="DeepPurple" />
                 <ResourceDictionary
                     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/Generic.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/MaterialDesignDarkTheme.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/MaterialDesignDarkTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <DrawingImage x:Key="Bulb">
@@ -43,7 +44,7 @@
 
             <!--#region CONVERTERS-->
 
-            <converters:NullablePrimitiveToStringConverter x:Key="NullablePrimitiveToStringConverter" />
+            <wpfConverters:NullablePrimitiveToStringConverter x:Key="NullablePrimitiveToStringConverter" />
 
             <!--#region DATA TEMPLATES-->
 
@@ -81,6 +82,14 @@
 
             <DataTemplate DataType="{x:Type viewModel:SpellTemplateViewModel}">
                 <spellTemplateControls:SpellTemplatePropertyEditor />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:WorldMapNodeViewModel}">
+                <worldMapNodeControls:WorldMapNodePropertyEditor />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:WorldMapViewModel}">
+                <worldMapControls:WorldMapPropertyEditor />
             </DataTemplate>
 
             <HierarchicalDataTemplate DataType="{x:Type codeFixes:CodeFixCollection}"
