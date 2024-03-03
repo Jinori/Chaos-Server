@@ -317,8 +317,8 @@ public class MasteringScript : DialogScriptBase
     private void AwardMonkItems(Aisling source)
     {
         var armor = source.Gender == Gender.Male ? ItemFactory.Create("monkmastermantle") : ItemFactory.Create("monkmasterdress");
-        var helm = source.Gender == Gender.Male ? ItemFactory.Create("NeedsToBeCreated") : ItemFactory.Create("NeedsToBeCreatedFemale");
-        var weapon = ItemFactory.Create("NeedsToBeCreated");
+        var helm = source.Gender == Gender.Male ? ItemFactory.Create("maleSunBaeNimBand") : ItemFactory.Create("femaleSunBaeNimBand");
+        var weapon = ItemFactory.Create("kalkuri");
         
         var itemsToGive = new[] { armor, helm, weapon };
         
@@ -329,8 +329,8 @@ public class MasteringScript : DialogScriptBase
     private void AwardPriestItems(Aisling source)
     {
         var armor = source.Gender == Gender.Male ? ItemFactory.Create("sacredmantle") : ItemFactory.Create("sacreddress");
-        var helm = source.Gender == Gender.Male ? ItemFactory.Create("NeedsToBeCreated") : ItemFactory.Create("NeedsToBeCreatedFemale");
-        var weapon = ItemFactory.Create("NeedsToBeCreated");
+        var helm = source.Gender == Gender.Male ? ItemFactory.Create("sacredchief") : ItemFactory.Create("sacredwimple");
+        var weapon = ItemFactory.Create("holyhybrasylgnarl");
         
         var itemsToGive = new[] { armor, helm, weapon };
         
@@ -341,8 +341,8 @@ public class MasteringScript : DialogScriptBase
     private void AwardWizardItems(Aisling source)
     {
         var armor = source.Gender == Gender.Male ? ItemFactory.Create("wizardMasterMantle") : ItemFactory.Create("wizardMasterdress");
-        var helm = source.Gender == Gender.Male ? ItemFactory.Create("NeedsToBeCreated") : ItemFactory.Create("NeedsToBeCreatedFemale");
-        var weapon = ItemFactory.Create("NeedsToBeCreated");
+        var helm = source.Gender == Gender.Male ? ItemFactory.Create("gnostichat") : ItemFactory.Create("gnosticumber");
+        var weapon = ItemFactory.Create("magusorb");
         
         var itemsToGive = new[] { armor, helm, weapon };
         
@@ -353,8 +353,8 @@ public class MasteringScript : DialogScriptBase
     private void AwardRogueItems(Aisling source)
     {
         var armor = source.Gender == Gender.Male ? ItemFactory.Create("rogueMasterMantle") : ItemFactory.Create("rogueMasterdress");
-        var helm = source.Gender == Gender.Male ? ItemFactory.Create("NeedsToBeCreated") : ItemFactory.Create("NeedsToBeCreatedFemale");
-        var weapon = ItemFactory.Create("NeedsToBeCreated");
+        var helm = ItemFactory.Create("shadowMask");
+        var weapon = ItemFactory.Create("hybrasylazoth");
         
         var itemsToGive = new[] { armor, helm, weapon };
         
