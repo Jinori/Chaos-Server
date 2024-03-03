@@ -21,6 +21,7 @@ using Chaos.Scripting.Components;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyHealing;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -57,6 +58,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     private readonly IMerchantFactory MerchantFactory;
     private readonly ISimpleCache SimpleCache;
     private readonly IIntervalTimer SleepAnimationTimer;
+    private readonly IItemFactory ItemFactory;
 
     /// <inheritdoc />
     public IApplyHealScript ApplyHealScript { get; init; }
@@ -92,7 +94,8 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         IEffectFactory effectFactory,
         IStore<MailBox> mailStore,
         IStore<BulletinBoard> boardStore,
-        ILogger<DefaultAislingScript> logger
+        ILogger<DefaultAislingScript> logger,
+        IItemFactory itemFactory
     )
         : base(subject)
     {
@@ -318,6 +321,19 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         {
             var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
             var pointS = new Point(5, 7);
+            var nightmaregearDictionary = new Dictionary<(BaseClass, Gender), string[]>
+            {
+                { (BaseClass.Warrior, Gender.Male), ["malecarnunplate", "carnunhelmet"] },
+                { (BaseClass.Warrior, Gender.Female), ["femalecarnunplate", "carnunhelmet"] },
+                { (BaseClass.Monk, Gender.Male), ["maleaosdicpatternwalker"] },
+                { (BaseClass.Monk, Gender.Female), ["femaleaosdicpatternwalker"] },
+                { (BaseClass.Rogue, Gender.Male), ["malemarauderhide", "maraudermask"] },
+                { (BaseClass.Rogue, Gender.Female), ["femalemarauderhide", "maraudermask"] },
+                { (BaseClass.Priest, Gender.Male), ["malecthonicdisciplerobes", "cthonicdisciplecaputium"] },
+                { (BaseClass.Priest, Gender.Female), ["morrigudisciplepellison", "holyhairband"] },
+                { (BaseClass.Wizard, Gender.Male), ["cthonicmagusrobes", "cthonicmaguscaputium"] },
+                { (BaseClass.Wizard, Gender.Female), ["morrigumaguspellison", "magushairband"] }
+            };
             
             Subject.TraverseMap(mapInstance, pointS);
             Subject.IsDead = false;
@@ -333,6 +349,24 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
                     MarkColor.White,
                     1,
                     GameTime.Now));
+            
+            var gearKey = (Subject.UserStatSheet.BaseClass, Subject.Gender);
+
+            if (nightmaregearDictionary.TryGetValue(gearKey, out var nightmaregear))
+            {
+                var hasGear = nightmaregear.All(
+                    gearItemName =>
+                        Subject.Inventory.ContainsByTemplateKey(gearItemName)
+                        || Subject.Bank.Contains(gearItemName)
+                        || Subject.Equipment.ContainsByTemplateKey(gearItemName));
+
+                if (!hasGear)
+                    foreach (var gearItemName in nightmaregear)
+                    {
+                        var gearItem = ItemFactory.Create(gearItemName);
+                        Subject.GiveItemOrSendToBank(gearItem);
+                    }
+            }
             
             Subject.Refresh(true);
 

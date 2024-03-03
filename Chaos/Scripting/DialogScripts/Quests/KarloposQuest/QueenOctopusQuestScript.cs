@@ -40,10 +40,39 @@ public class QueenOctopusQuestScript : DialogScriptBase
                 {
                     if (source.UserStatSheet.Level is <= 41 or >= 72)
                         return;
+                    
+                    var option = new DialogOption
+                    {
+                        DialogKey = "QueenOctopus_start",
+                        OptionText = "Queen Octopus?"
+                    };
 
-                    Subject.Reply(source, "skip", "maria_initial_quest");
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+
                 }
 
+                if (hasStage)
+                {
+                    if (source.UserStatSheet.Level is <= 41 or >= 72)
+                        return;
+                    
+                    var option = new DialogOption
+                    {
+                        DialogKey = "QueenOctopus_start",
+                        OptionText = "Queen Octopus?"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+
+                }
+            }
+
+                break;
+
+            case "queenoctopus_start":
+            {
                 switch (stage)
                 {
                     case QueenOctopusQuest.Liver:
@@ -66,12 +95,11 @@ public class QueenOctopusQuestScript : DialogScriptBase
 
                     case QueenOctopusQuest.Complete:
                         Subject.Reply(source, "Welcome Back. Please make yourself comfortable.");
-
-                        break;
+                        return;
                 }
-            }
 
                 break;
+            }
 
             case "bret_initial":
             {
