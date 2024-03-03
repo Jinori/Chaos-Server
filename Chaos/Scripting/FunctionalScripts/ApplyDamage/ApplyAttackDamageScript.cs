@@ -12,17 +12,11 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.FunctionalScripts.ApplyDamage;
 
-public class ApplyAttackDamageScript : ScriptBase, IApplyDamageScript
+public class ApplyAttackDamageScript(IEffectFactory effectFactory) : ScriptBase, IApplyDamageScript
 {
-    protected readonly IEffectFactory EffectFactory;
-    public IDamageFormula DamageFormula { get; set; }
+    protected readonly IEffectFactory EffectFactory = effectFactory;
+    public IDamageFormula DamageFormula { get; set; } = DamageFormulae.Default;
     public static string Key { get; } = GetScriptKey(typeof(ApplyAttackDamageScript));
-
-    public ApplyAttackDamageScript(IEffectFactory effectFactory)
-    {
-        DamageFormula = DamageFormulae.Default;
-        EffectFactory = effectFactory;
-    }
 
     public virtual void ApplyDamage(
         Creature source,

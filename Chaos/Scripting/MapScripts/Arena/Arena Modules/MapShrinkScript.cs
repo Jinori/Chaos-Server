@@ -28,11 +28,9 @@ public sealed class MapShrinkScript : MapScriptBase
     private bool CountdownComplete;
     private IApplyDamageScript ApplyDamageScript { get; }
 
-    private List<string> MorphTemplateKeys { get; } = new()
-        { "26007", "26008", "26009", "26010", "26011" };
+    private List<string> MorphTemplateKeys { get; } = ["26007", "26008", "26009", "26010", "26011"];
     
-    private List<string> OriginalMapKeys { get; } = new()
-        { "26006", "26012" };
+    private List<string> OriginalMapKeys { get; } = ["26006", "26012"];
     private Animation PreAnimation { get; } = new()
     {
         AnimationSpeed = 100,

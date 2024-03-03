@@ -8,7 +8,12 @@ using Humanizer;
 
 namespace Chaos.Scripting.MerchantScripts;
 
-public class MiraelisMassScript : MerchantScriptBase
+public class MiraelisMassScript(
+    Merchant subject,
+    IClientRegistry<IWorldClient> clientRegistry,
+    IItemFactory itemFactory
+)
+    : MerchantScriptBase(subject)
 {
     private const int FAITH_REWARD = 25;
     private const int ESSENCE_CHANCE = 10;
@@ -17,8 +22,8 @@ public class MiraelisMassScript : MerchantScriptBase
     private const int MASS_SERMON_COUNT = 10;
 
     #region MassMessages
-    private readonly List<string> MiraelisMassMessages = new()
-    {
+    private readonly List<string> MiraelisMassMessages =
+    [
         "Compassion unites hearts, fosters understanding.",
         "Embrace nature, wisdom; inspire love and harmony.",
         "Let the light of compassion guide our actions.",
@@ -98,7 +103,7 @@ public class MiraelisMassScript : MerchantScriptBase
         "Wisdom's current carries to shores of enlightenment.",
         "Kindness, love's manifestation, radiant brilliance.",
         "The embrace offers solace, renewal."
-    };
+    ];
     #endregion MassMessages
 
     private IEnumerable<Aisling>? AislingsAtStart { get; set; }
@@ -111,9 +116,9 @@ public class MiraelisMassScript : MerchantScriptBase
     private DateTime? MassAnnouncementTime { get; set; }
     private bool MassCompleted { get; set; }
     private int SermonCount { get; set; }
-    protected IClientRegistry<IWorldClient> ClientRegistry { get; }
+    protected IClientRegistry<IWorldClient> ClientRegistry { get; } = clientRegistry;
 
-    protected IItemFactory ItemFactory { get; }
+    protected IItemFactory ItemFactory { get; } = itemFactory;
 
     protected Animation PrayerSuccess { get; } = new()
     {
@@ -121,17 +126,6 @@ public class MiraelisMassScript : MerchantScriptBase
         TargetAnimation = 5
     };
     private HashSet<string> SpokenMessages { get; } = new();
-
-    public MiraelisMassScript(
-        Merchant subject,
-        IClientRegistry<IWorldClient> clientRegistry,
-        IItemFactory itemFactory
-    )
-        : base(subject)
-    {
-        ItemFactory = itemFactory;
-        ClientRegistry = clientRegistry;
-    }
 
     private void AnnounceMassBeginning()
     {

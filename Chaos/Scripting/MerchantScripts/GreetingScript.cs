@@ -6,11 +6,8 @@ using Chaos.Scripting.MerchantScripts.Abstractions;
 
 namespace Chaos.Scripting.MerchantScripts;
 
-public class GreetingScript : MerchantScriptBase
+public class GreetingScript(Merchant subject) : MerchantScriptBase(subject)
 {
-    public GreetingScript(Merchant subject)
-        : base(subject) { }
-
     public override void OnApproached(Creature source)
     {
         if (source is not Aisling aisling)
@@ -38,11 +35,11 @@ public class GreetingScript : MerchantScriptBase
                 if (aisling.StatSheet.Level > 71)
                     return;
 
-                if (aisling.Trackers.TimedEvents.HasActiveEvent("CryptSlayerCd", out var timedEvent))
+                if (aisling.Trackers.TimedEvents.HasActiveEvent("CryptSlayerCd", out _))
                     return;
 
                 if (aisling.Trackers.Enums.TryGetValue(out RionaTutorialQuestStage stage) &&
-                    stage == RionaTutorialQuestStage.StartedSkarn)
+                    (stage == RionaTutorialQuestStage.StartedSkarn))
                     return;
 
                 Subject.Say($"{source.Name}, I have a job for you.");

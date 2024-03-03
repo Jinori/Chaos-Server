@@ -5,15 +5,13 @@ using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 using Humanizer;
-using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.MerchantScripts.Casino
 {
-    public class TwentyOneScript : MerchantScriptBase
+    public class TwentyOneScript(Merchant subject, IClientRegistry<IWorldClient> clientRegistry, ILogger<TwentyOneScript> logger)
+        : MerchantScriptBase(subject)
     {
-        private readonly List<Aisling> AislingsThatDidNotBust = new();
-        private readonly IClientRegistry<IWorldClient> ClientRegistry;
-        private readonly ILogger<TwentyOneScript> Logger;
+        private readonly List<Aisling> AislingsThatDidNotBust = [];
 
         private IEnumerable<Aisling>? AislingsAtCompletion;
         private IEnumerable<Aisling>? AislingsAtStart;
@@ -24,13 +22,6 @@ namespace Chaos.Scripting.MerchantScripts.Casino
         private bool CountdownStarted;
         private int CountdownStep;
         private DateTime LastCountdownTime;
-
-        public TwentyOneScript(Merchant subject, IClientRegistry<IWorldClient> clientRegistry, ILogger<TwentyOneScript> logger)
-            : base(subject)
-        {
-            ClientRegistry = clientRegistry;
-            Logger = logger;
-        }
 
         public override void Update(TimeSpan delta)
         {
@@ -149,7 +140,7 @@ namespace Chaos.Scripting.MerchantScripts.Casino
                     var eightPercent = (int)(winnings * 0.08m);
                     var winningsMinusEight = winnings - eightPercent;
 
-                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
+                    logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
                           .WithProperty(winner)
                           .WithProperty(Subject)
                           .LogInformation(
@@ -185,7 +176,7 @@ namespace Chaos.Scripting.MerchantScripts.Casino
 
         private void ClearPlayersState()
         {
-            var clearPlayers = ClientRegistry.Where(
+            var clearPlayers = clientRegistry.Where(
                 x => (AislingsAtCompletion != null)
                      && (AislingsAtStart != null)
                      && (AislingsAtStart.Contains(x.Aisling) || AislingsAtCompletion.Contains(x.Aisling)));

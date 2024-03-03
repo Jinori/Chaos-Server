@@ -14,14 +14,15 @@ public sealed class MeteorChaosScript : MapScriptBase
     private readonly IApplyDamageScript ApplyDamageScript;
     private IIntervalTimer MeteorChaosTimer { get; }
     private int CurrentAnimationIndex { get; set; }
-    private readonly Animation[] Animations = {
-        new()
+    private readonly Animation[] Animations =
+    [
+        new Animation
             { AnimationSpeed = 100, TargetAnimation = 147 },
-        new()
+        new Animation
             { AnimationSpeed = 100, TargetAnimation = 148 },
-        new()
+        new Animation
             { AnimationSpeed = 100, TargetAnimation = 149 }
-    };
+    ];
 
     /// <inheritdoc />
     public MeteorChaosScript(MapInstance subject)

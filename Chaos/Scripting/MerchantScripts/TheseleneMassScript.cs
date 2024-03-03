@@ -8,7 +8,12 @@ using Humanizer;
 
 namespace Chaos.Scripting.MerchantScripts;
 
-public class TheseleneMassScript : MerchantScriptBase
+public class TheseleneMassScript(
+    Merchant subject,
+    IClientRegistry<IWorldClient> clientRegistry,
+    IItemFactory itemFactory
+)
+    : MerchantScriptBase(subject)
 {
     private const int FAITH_REWARD = 25;
     private const int ESSENCE_CHANCE = 10;
@@ -17,8 +22,8 @@ public class TheseleneMassScript : MerchantScriptBase
     private const int MASS_SERMON_COUNT = 10;
 
     #region MassMessages
-    private readonly List<string> TheseleneMassMessages = new()
-    {
+    private readonly List<string> TheseleneMassMessages =
+    [
         "In shadows' embrace, mysteries find solace.",
         "Whispers of secrets reveal hidden truths.",
         "Nature of secrets, behold the dance of shadows.",
@@ -67,7 +72,7 @@ public class TheseleneMassScript : MerchantScriptBase
         "Secrets unravel within shadows' depths, revealing the mysteries they hold.",
         "Whispers guide seekers of the unknown, unveiling profound revelations.",
         "In the realm of shadows, wisdom beckons, calling forth those who seek enlightenment."
-    };
+    ];
     #endregion MassMessages
 
     private IEnumerable<Aisling>? AislingsAtStart { get; set; }
@@ -80,9 +85,9 @@ public class TheseleneMassScript : MerchantScriptBase
     private DateTime? MassAnnouncementTime { get; set; }
     private bool MassCompleted { get; set; }
     private int SermonCount { get; set; }
-    protected IClientRegistry<IWorldClient> ClientRegistry { get; }
+    protected IClientRegistry<IWorldClient> ClientRegistry { get; } = clientRegistry;
 
-    protected IItemFactory ItemFactory { get; }
+    protected IItemFactory ItemFactory { get; } = itemFactory;
 
     protected Animation PrayerSuccess { get; } = new()
     {
@@ -90,17 +95,6 @@ public class TheseleneMassScript : MerchantScriptBase
         TargetAnimation = 5
     };
     private HashSet<string> SpokenMessages { get; } = new();
-
-    public TheseleneMassScript(
-        Merchant subject,
-        IClientRegistry<IWorldClient> clientRegistry,
-        IItemFactory itemFactory
-    )
-        : base(subject)
-    {
-        ItemFactory = itemFactory;
-        ClientRegistry = clientRegistry;
-    }
 
     private void AnnounceMassBeginning()
     {

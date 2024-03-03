@@ -8,7 +8,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Jobs;
 
-public class FishingEffect : ContinuousAnimationEffectBase
+public class FishingEffect(IItemFactory itemFactory) : ContinuousAnimationEffectBase
 {
     private const int FISH_CATCH_CHANCE = 2;
     private const byte FISHING_ICON = 203;
@@ -24,7 +24,6 @@ public class FishingEffect : ContinuousAnimationEffectBase
         new KeyValuePair<string, decimal>("lionfish", 8),
         new KeyValuePair<string, decimal>("purplewhopper", 5)
     ];
-    private readonly IItemFactory _itemFactory;
     private List<Point> _fishingSpots = new();
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(1);
 
@@ -38,8 +37,6 @@ public class FishingEffect : ContinuousAnimationEffectBase
 
     public override byte Icon => FISHING_ICON;
     public override string Name => "Fishing";
-
-    public FishingEffect(IItemFactory itemFactory) => _itemFactory = itemFactory;
 
     public override void OnApplied() =>
         _fishingSpots = Subject.MapInstance.GetEntities<ReactorTile>()
@@ -62,7 +59,7 @@ public class FishingEffect : ContinuousAnimationEffectBase
             return;
 
         var templateKey = FishData.PickRandomWeighted();
-        var fish = _itemFactory.Create(templateKey);
+        var fish = itemFactory.Create(templateKey);
 
         if (!aisling.TryGiveItem(ref fish))
             return;

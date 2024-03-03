@@ -8,7 +8,12 @@ using Humanizer;
 
 namespace Chaos.Scripting.MerchantScripts;
 
-public class SkandaraMassScript : MerchantScriptBase
+public class SkandaraMassScript(
+    Merchant subject,
+    IClientRegistry<IWorldClient> clientRegistry,
+    IItemFactory itemFactory
+)
+    : MerchantScriptBase(subject)
 {
     private const int FAITH_REWARD = 25;
     private const int LATE_FAITH_REWARD = 15;
@@ -17,8 +22,8 @@ public class SkandaraMassScript : MerchantScriptBase
     private const int MASS_SERMON_COUNT = 10;
 
     #region MassMessages
-    private readonly List<string> SkandaraMassMessages = new()
-    {
+    private readonly List<string> SkandaraMassMessages =
+    [
         "Gather as warriors, united in strength.",
         "Ignite the fire of courage within your hearts.",
         "Embrace the fury of battle, let it fuel your spirit.",
@@ -87,7 +92,7 @@ public class SkandaraMassScript : MerchantScriptBase
         "May the fires of Skandara light our path to glory.",
         "Rise as warriors, ready to conquer any challenge.",
         "Embrace the courage within, for you are warriors."
-    };
+    ];
     #endregion MassMessages
 
     private IEnumerable<Aisling>? AislingsAtStart { get; set; }
@@ -100,9 +105,9 @@ public class SkandaraMassScript : MerchantScriptBase
     private DateTime? MassAnnouncementTime { get; set; }
     private bool MassCompleted { get; set; }
     private int SermonCount { get; set; }
-    protected IClientRegistry<IWorldClient> ClientRegistry { get; }
+    protected IClientRegistry<IWorldClient> ClientRegistry { get; } = clientRegistry;
 
-    protected IItemFactory ItemFactory { get; }
+    protected IItemFactory ItemFactory { get; } = itemFactory;
 
     protected Animation PrayerSuccess { get; } = new()
     {
@@ -110,17 +115,6 @@ public class SkandaraMassScript : MerchantScriptBase
         TargetAnimation = 5
     };
     private HashSet<string> SpokenMessages { get; } = new();
-
-    public SkandaraMassScript(
-        Merchant subject,
-        IClientRegistry<IWorldClient> clientRegistry,
-        IItemFactory itemFactory
-    )
-        : base(subject)
-    {
-        ItemFactory = itemFactory;
-        ClientRegistry = clientRegistry;
-    }
 
     private void AnnounceMassBeginning()
     {

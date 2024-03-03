@@ -9,7 +9,6 @@ using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MapScripts.Abstractions;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -212,35 +211,39 @@ public class WarriorNightmareChallengeMapScript : MapScriptBase
 
                     var player = Subject.GetEntities<Aisling>().FirstOrDefault(x =>
                         x.Trackers.Enums.TryGetValue(out NightmareQuestStage hasNightmare) &&
-                        hasNightmare == NightmareQuestStage.SpawnedNightmare);
-                    player.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareWin1);
-                    player.Trackers.Counters.Remove("nightmarekills", out _);
-                    ExperienceDistributionScript.GiveExp(player, 500000);
+                        (hasNightmare == NightmareQuestStage.SpawnedNightmare));
 
-                    player.Legend.AddOrAccumulate(
-                        new LegendMark(
-                            "Successfully conquered their Nightmares",
-                            "Nightmare",
-                            MarkIcon.Victory,
-                            MarkColor.White,
-                            1,
-                            GameTime.Now));
-
-                    var gearKey = (player.UserStatSheet.BaseClass, player.Gender);
-
-                    if (nightmaregearDictionary.TryGetValue(gearKey, out var nightmaregear))
+                    if (player != null)
                     {
+                        player.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareWin1);
+                        player.Trackers.Counters.Remove("nightmarekills", out _);
+                        ExperienceDistributionScript.GiveExp(player, 500000);
+
+                        player.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Successfully conquered their Nightmares",
+                                "Nightmare",
+                                MarkIcon.Victory,
+                                MarkColor.White,
+                                1,
+                                GameTime.Now));
+
+                        var gearKey = (player.UserStatSheet.BaseClass, player.Gender);
+
+                        if (nightmaregearDictionary.TryGetValue(gearKey, out var nightmaregear))
+                        {
                             foreach (var gearItemName in nightmaregear)
                             {
                                 var gearItem = ItemFactory.Create(gearItemName);
                                 player.GiveItemOrSendToBank(gearItem);
                             }
-                    }
+                        }
 
-                    var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
-                    var pointS = new Point(5, 7);
-                    player.TraverseMap(mapInstance, pointS);
-                    player.SendOrangeBarMessage("You wake up from the nightmare feeling refreshed.");
+                        var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
+                        var pointS = new Point(5, 7);
+                        player.TraverseMap(mapInstance, pointS);
+                        player.SendOrangeBarMessage("You wake up from the nightmare feeling refreshed.");   
+                    }
 
                     break;
                 }

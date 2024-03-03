@@ -9,11 +9,9 @@ using Chaos.Scripting.MapScripts.Abstractions;
 
 namespace Chaos.Scripting.MapScripts.Arena.Non_Combat
 {
-    public class ArenaUndergroundScript : MapScriptBase
+    public class ArenaUndergroundScript(MapInstance subject) : MapScriptBase(subject)
     {
         private readonly Point CenterWarp = new(11, 10);
-        public ArenaUndergroundScript(MapInstance subject)
-            : base(subject) { }
 
         public override void OnEntered(Creature creature)
         {

@@ -9,22 +9,14 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MapScripts.karlopos;
 
-public class KarloposThirdTrial : MapScriptBase
+public class KarloposThirdTrial(MapInstance subject, IMonsterFactory monsterFactory) : MapScriptBase(subject)
 {
-    private readonly IMonsterFactory MonsterFactory;
-    private readonly TimeSpan StartDelay;
+    private readonly TimeSpan StartDelay = TimeSpan.FromSeconds(1);
     private DateTime? StartTime;
     private ScriptState State;
-    private readonly IIntervalTimer? UpdateTimer;
-    public const int UPDATE_INTERVAL_MS = 1; 
+    private readonly IIntervalTimer? UpdateTimer = new IntervalTimer(TimeSpan.FromSeconds(UPDATE_INTERVAL_MS));
+    public const int UPDATE_INTERVAL_MS = 1;
 
-    public KarloposThirdTrial(MapInstance subject, IMonsterFactory monsterFactory)
-        : base(subject)
-    {
-        MonsterFactory = monsterFactory;
-        StartDelay = TimeSpan.FromSeconds(1);
-        UpdateTimer = new IntervalTimer(TimeSpan.FromSeconds(UPDATE_INTERVAL_MS));
-    }
     public override void Update(TimeSpan delta)
     {
         UpdateTimer?.Update(delta);
@@ -69,12 +61,12 @@ public class KarloposThirdTrial : MapScriptBase
                 // Spawning state
                 case ScriptState.Spawning:
                     
-                    var monster1 = MonsterFactory.Create("karlopos_kraken", Subject, new Point(7, 3));
-                    var monster2 = MonsterFactory.Create("karlopos_kraken", Subject, new Point(9, 3));
-                    var monster3 = MonsterFactory.Create("karlopos_kraken", Subject, new Point(11, 3));
-                    var monster4 = MonsterFactory.Create("karlopos_kraken", Subject, new Point(8, 4));
-                    var monster5 = MonsterFactory.Create("karlopos_kraken", Subject, new Point(10, 4));
-                    var monster6 = MonsterFactory.Create("karlopos_kraken", Subject, new Point(12, 4));
+                    var monster1 = monsterFactory.Create("karlopos_kraken", Subject, new Point(7, 3));
+                    var monster2 = monsterFactory.Create("karlopos_kraken", Subject, new Point(9, 3));
+                    var monster3 = monsterFactory.Create("karlopos_kraken", Subject, new Point(11, 3));
+                    var monster4 = monsterFactory.Create("karlopos_kraken", Subject, new Point(8, 4));
+                    var monster5 = monsterFactory.Create("karlopos_kraken", Subject, new Point(10, 4));
+                    var monster6 = monsterFactory.Create("karlopos_kraken", Subject, new Point(12, 4));
                     
                     Subject.AddEntity(monster1, monster1);
                     Subject.AddEntity(monster2, monster2);

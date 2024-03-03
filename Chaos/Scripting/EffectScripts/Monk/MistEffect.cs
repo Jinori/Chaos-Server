@@ -26,8 +26,8 @@ public class MistEffect : EffectBase
             MagicResistance = -20
         };
 
-        Subject?.StatSheet.SubtractBonus(attributesToSubtract);
-        Subject?.StatSheet.AddBonus(attributesToAdd);
+        Subject.StatSheet.SubtractBonus(attributesToSubtract);
+        Subject.StatSheet.AddBonus(attributesToAdd);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor increased while magic resist decreased.");
     }
@@ -46,9 +46,9 @@ public class MistEffect : EffectBase
             Ac = 20
         };
 
-        Subject?.StatSheet.SubtractMp(100);
-        Subject?.StatSheet.SubtractBonus(attributesToSubtract);
-        Subject?.StatSheet.AddBonus(attributesToAdd);
+        Subject.StatSheet.SubtractMp(100);
+        Subject.StatSheet.SubtractBonus(attributesToSubtract);
+        Subject.StatSheet.AddBonus(attributesToAdd);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor and MR has returned to normal.");
     }

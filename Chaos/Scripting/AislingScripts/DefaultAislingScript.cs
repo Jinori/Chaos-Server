@@ -7,7 +7,6 @@ using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
-using Chaos.Formulae;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -26,27 +25,26 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
-using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.AislingScripts;
 
 public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealComponentOptions
 {
-    private readonly List<string> ArenaMaps = new()
-    {
+    private readonly List<string> ArenaMaps =
+    [
         "Arena Battle Ring",
         "Lava Arena",
         "Lava Arena - Teams",
         "Color Clash - Teams"
-    };
+    ];
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IIntervalTimer ClearOrangeBarTimer;
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
     private readonly IEffectFactory EffectFactory;
     private readonly ILogger<DefaultAislingScript> Logger;
     private readonly IStore<MailBox> MailStore;
-    private readonly List<string> MapsToNotPunishDeathOn = new()
-    {
+    private readonly List<string> MapsToNotPunishDeathOn =
+    [
         "Mr. Hopps's Home",
         "Nightmare",
         "Cain's Farm",
@@ -54,7 +52,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         "Lava Arena",
         "Lava Arena - Teams",
         "Color Clash - Teams"
-    };
+    ];
 
     private readonly IMerchantFactory MerchantFactory;
     private readonly ISimpleCache SimpleCache;
@@ -264,8 +262,6 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         {
             Subject.Effects.Terminate("rumination");
             Subject.SendOrangeBarMessage("Taking damage ended your rumination.");
-
-            return;
         }
     }
 

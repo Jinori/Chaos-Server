@@ -21,17 +21,15 @@ public class QueenOctopusScript : MapScriptBase
     private readonly IMonsterFactory MonsterFactory;
     private readonly List<Point> ReverseOutline;
     private readonly List<Point> ShapeOutline;
-    private readonly ISpellFactory SpellFactory;
     private readonly TimeSpan StartDelay;
     private int AnimationIndex;
     private DateTime? StartTime;
     private ScriptState State;
 
-    public QueenOctopusScript(MapInstance subject, IMonsterFactory monsterFactory, ISpellFactory spellFactory)
+    public QueenOctopusScript(MapInstance subject, IMonsterFactory monsterFactory)
         : base(subject)
     {
         MonsterFactory = monsterFactory;
-        SpellFactory = spellFactory;
         StartDelay = TimeSpan.FromSeconds(5);
         AnimationInterval = new IntervalTimer(TimeSpan.FromMilliseconds(200));
         AnimationShape = new Rectangle(new Point(4, 8), 3, 3);
@@ -47,7 +45,7 @@ public class QueenOctopusScript : MapScriptBase
 
     public override void OnEntered(Creature creature)
     {
-        if (creature is not Aisling aisling)
+        if (creature is not Aisling)
             return;
 
         State = ScriptState.DelayedStart;

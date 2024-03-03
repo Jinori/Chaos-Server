@@ -17,7 +17,8 @@ public class EingrenManor2ndFloorScript : MapScriptBase
     private readonly ISimpleCache _simpleCache;
     
     // List of map template keys
-    private readonly string[] MapKeys = {
+    private readonly string[] MapKeys =
+    [
         "manor_library",
         "manor_study",
         "manor_study_2",
@@ -31,7 +32,7 @@ public class EingrenManor2ndFloorScript : MapScriptBase
         "manor_bedroom_3",
         "manor_bunks",
         "manor_master_suite"
-    };
+    ];
     
     /// <inheritdoc />
     public EingrenManor2ndFloorScript(MapInstance subject, ISimpleCache simpleCache,IMonsterFactory monsterFactory)
