@@ -1362,6 +1362,18 @@ public enum CrudeLeather
     StartedQuest = 1,
 }
 
+public enum PrettyFlower
+{
+    None,
+    StartedQuest = 1,
+}
+
+public enum SharpestBlade
+{
+    None,
+    StartedQuest = 1,
+}
+
 public enum FishOil
 {
     None = 0,
