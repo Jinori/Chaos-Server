@@ -1350,6 +1350,13 @@ public enum ReconPoints
 }
 
 [Flags]
+
+public enum EasterEggs
+{
+    None,
+    LeakyBarrel = 1,
+}
+[Flags]
 public enum SavedChild
 {
     None,
@@ -1368,6 +1375,11 @@ public enum PrettyFlower
     StartedQuest = 1,
 }
 
+public enum BertilPotion
+{
+    None,
+    StartedQuest = 1,
+}
 public enum SharpestBlade
 {
     None,
