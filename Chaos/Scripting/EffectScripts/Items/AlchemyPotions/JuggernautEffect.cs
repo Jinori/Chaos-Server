@@ -43,7 +43,7 @@ public class JuggernautEffect : NonOverwritableEffectBase
 
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Meximum Health has increased.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Maximum Health has increased.");
     }
 
     public override void OnDispelled() => OnTerminated();

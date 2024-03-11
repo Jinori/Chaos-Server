@@ -1403,6 +1403,33 @@ public enum DecoratingInn
     CompletedQuest = 6
 }
 
+public enum DragonScale
+{
+    None,
+    StartedDragonScale = 1,
+    FoundAllClues = 2,
+    SpawnedDragon = 3,
+    KilledDragon = 4,
+    TurnedInScaleSword = 5,
+    TurnedInScaleRing = 6,
+    TurnedInScaleClaws = 7,
+    TurnedInScaleGauntlet = 8,
+    TurnedInScaleDagger = 9,
+    CompletedDragonScale = 10
+}
+
+[Flags]
+public enum DragonScaleFlags
+{
+    None,
+    Callo = 1,
+    Vidar = 1 << 1,
+    Marcelo = 1 << 2,
+    Avel = 1 << 3,
+    Torbjorn = 1 << 4,
+    Gunnar = 1 << 5
+}
+
 public enum HungryViveka
 {
     None,
