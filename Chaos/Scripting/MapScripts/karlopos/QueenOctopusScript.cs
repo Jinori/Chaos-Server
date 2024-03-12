@@ -10,7 +10,7 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MapScripts;
+namespace Chaos.Scripting.MapScripts.karlopos;
 
 public class QueenOctopusScript : MapScriptBase
 {
