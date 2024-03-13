@@ -3,6 +3,7 @@ using Chaos.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
+using Chaos.Services.Servers.Options;
 using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.ReactorTileScripts.DragonScaleQuest;
@@ -33,8 +34,7 @@ public class DragonScaleTileScript(
         // Check if player has effect
         if (!aisling.Effects.Contains("Sweet Buns"))
             return;
-
-        aisling.MapInstance.RemoveEntity(groundItem);
+        
         aisling.Trackers.Enums.Set(DragonScale.DroppedScale);
     }
     

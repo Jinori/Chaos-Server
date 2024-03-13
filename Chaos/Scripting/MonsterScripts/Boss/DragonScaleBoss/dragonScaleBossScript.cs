@@ -10,7 +10,7 @@ public class dragonScaleBossScript : CompositeMonsterScript
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
-        GetScriptKey(typeof(MoveToTargetScript)),
+        GetScriptKey(typeof(dragonScaleMoveToTargetScript)),
         GetScriptKey(typeof(dragonScaleBossDefenseScript)),
         GetScriptKey(typeof(dragonScaleBossEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),

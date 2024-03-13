@@ -48,17 +48,17 @@ public sealed class PentagramBossEnrageScript : MonsterScriptBase
             
             switch (roll)
             {
-                case <= 40:
+                case < 30:
                     Subject.Say("You've made a mistake coming here!");
                     Subject.TryUseSpell(SpellToCast);
 
                     break;
-                case >= 41 and <= 80:
+                case < 65:
                     Subject.Say("Demonic Despair!");
                     Subject.TryUseSpell(SpellToCast1);
 
                     break;
-                case >= 81:
+                case < 101:
                     Subject.Say("You're not going to win this fight!");
 
                     foreach (var target in Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 10))
