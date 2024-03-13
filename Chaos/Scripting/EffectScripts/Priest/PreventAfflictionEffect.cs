@@ -8,7 +8,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class PreventAfflictionEffect : EffectBase
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(18);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(9);
     public override byte Icon => 109;
     public override string Name => "preventaffliction";
 

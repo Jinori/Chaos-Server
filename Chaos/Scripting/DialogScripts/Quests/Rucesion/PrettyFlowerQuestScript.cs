@@ -86,7 +86,7 @@ public class PrettyFlowerQuestScript : DialogScriptBase
                     {
                         source.Inventory.RemoveQuantity("Kobold Tail", 1, out _);
                         source.Trackers.Enums.Set(PrettyFlower.None);
-                        source.Trackers.TimedEvents.AddEvent("prettyflowercd", TimeSpan.FromHours(24));
+                        source.Trackers.TimedEvents.AddEvent("prettyflowercd", TimeSpan.FromHours(24), true);
 
                         Logger.WithTopics(
                                 Topics.Entities.Aisling,

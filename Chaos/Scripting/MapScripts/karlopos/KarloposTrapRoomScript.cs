@@ -3,7 +3,7 @@ using Chaos.Extensions.Geometry;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MapScripts;
+namespace Chaos.Scripting.MapScripts.karlopos;
 
 public class KarloposTrapRoomScript : MapScriptBase
 {

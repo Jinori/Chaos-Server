@@ -1408,14 +1408,15 @@ public enum DragonScale
     None,
     StartedDragonScale = 1,
     FoundAllClues = 2,
-    SpawnedDragon = 3,
-    KilledDragon = 4,
-    TurnedInScaleSword = 5,
-    TurnedInScaleRing = 6,
-    TurnedInScaleClaws = 7,
-    TurnedInScaleGauntlet = 8,
-    TurnedInScaleDagger = 9,
-    CompletedDragonScale = 10
+    DroppedScale = 3,
+    SpawnedDragon = 4,
+    KilledDragon = 5,
+    TurnedInScaleSword = 6,
+    TurnedInScaleRing = 7,
+    TurnedInScaleClaws = 8,
+    TurnedInScaleGauntlet = 9,
+    TurnedInScaleDagger = 10,
+    CompletedDragonScale = 11
 }
 
 [Flags]
