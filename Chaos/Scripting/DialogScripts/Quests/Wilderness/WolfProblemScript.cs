@@ -87,9 +87,9 @@ public class WolfProblemScript : DialogScriptBase
                           2500);
 
                 source.TryGiveGamePoints(5);
-                ExperienceDistributionScript.GiveExp(source, 5000);
+                ExperienceDistributionScript.GiveExp(source, 1000);
                 source.TryGiveGold(2500);
-                source.SendOrangeBarMessage("5000 Exp and 2500 Gold Rewarded!");
+                source.SendOrangeBarMessage("1000 Exp and 2500 Gold Rewarded!");
                 source.Trackers.Enums.Set(WolfProblemStage.Complete);
                 source.Trackers.Counters.Remove("wolf", out _);
 

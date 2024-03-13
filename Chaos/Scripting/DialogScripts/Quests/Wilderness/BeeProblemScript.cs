@@ -85,13 +85,13 @@ public class BeeProblemScript : DialogScriptBase
                       .LogInformation(
                           "{@AislingName} has received {@ExpAmount} exp and the item {@ItemName}",
                           source.Name,
-                          5000,
+                          1500,
                           "Wind Belt");
 
                 source.TryGiveGamePoints(5);
-                ExperienceDistributionScript.GiveExp(source, 5000);
+                ExperienceDistributionScript.GiveExp(source, 1500);
                 source.TryGiveItems(ItemFactory.Create("windbelt"));
-                source.SendOrangeBarMessage("5000 Exp and Wind Belt Rewarded!");
+                source.SendOrangeBarMessage("1500 Exp and Wind Belt Rewarded!");
                 source.Trackers.Counters.Remove("wilderness_bee", out _);
                 source.Trackers.Enums.Set(BeeProblem.Completed);
             }
