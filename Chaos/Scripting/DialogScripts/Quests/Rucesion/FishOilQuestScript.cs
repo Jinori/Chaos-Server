@@ -124,7 +124,7 @@ public class FishOilQuestScript : DialogScriptBase
                     {
                         source.Inventory.RemoveQuantity("Oil", 1, out _);
                         source.Trackers.Enums.Set(FishOil.None);
-                        source.Trackers.TimedEvents.AddEvent("fishoilcd", TimeSpan.FromHours(24));
+                        source.Trackers.TimedEvents.AddEvent("fishoilcd", TimeSpan.FromHours(24), true);
 
                         Logger.WithTopics(
                                 Topics.Entities.Aisling,
