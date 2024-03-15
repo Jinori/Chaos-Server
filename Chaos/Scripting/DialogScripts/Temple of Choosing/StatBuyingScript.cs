@@ -162,23 +162,20 @@ public class StatBuyingScript : DialogScriptBase
 
         var statBuyCost = new Attributes { MaximumHp = -150 };
 
-        // Get the appropriate stat caps based on class and ClassStatBracket
         if (ClassStatCaps.TryGetValue(source.UserStatSheet.BaseClass, out var statCapsByBracket))
         {
-            var currentBracket = GetCurrentStatBracket(source); // Implement this method to determine the current ClassStatBracket
+            var currentBracket = GetCurrentStatBracket(source);
             
             if (statCapsByBracket.TryGetValue(currentBracket, out var currentCaps))
             {
                 if (OptionActionMappings.TryGetValue(optionIndex.Value, out var action))
                 {
-                    // Check if the stat is already at or above the cap
                     if (IsStatCapped(source, currentCaps, optionIndex.Value))
                     {
                         source.SendOrangeBarMessage("You've reached the stat cap for this attribute.");
                         return;
                     }
-
-                    // Perform the stat increase
+                    
                     action(source, statBuyCost);
                     source.Client.SendAttributes(StatUpdateType.Primary);
                 }

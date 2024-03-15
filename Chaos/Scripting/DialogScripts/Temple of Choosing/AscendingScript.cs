@@ -87,17 +87,17 @@ public class AscendingScript(Dialog subject) : DialogScriptBase(subject)
         }
         
         int timesToAscend;
-
-        if (!ExperienceDistributionScript.TryTakeExp(source, source.StatSheet.MaximumHp * 500) || (!ExperienceDistributionScript.TryTakeExp(source, source.StatSheet.MaximumMp * 250)))
-        {
-            Subject.Reply(source, "You do not have enough experience to buy vitality. Go increase your knowledge.");
-
-            return;
-        }
-
+        
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "aoife_buyhealthforallexp":
+            case "skandaragod_buyhealthforallexp":
+                if (!ExperienceDistributionScript.TryTakeExp(source, source.StatSheet.MaximumHp * 500))
+                {
+                    source.SendOrangeBarMessage("You do not have enough experience to buy health.");
+                    Subject.Reply(source, "You do not have enough experience to buy vitality. Go increase your knowledge.");
+
+                    return;
+                }
                 timesToAscend = CalculateAscensionsCount(source, "HP");
 
                 IncreaseAttribute(
@@ -108,7 +108,15 @@ public class AscendingScript(Dialog subject) : DialogScriptBase(subject)
 
                 break;
 
-            case "aoife_buymanaforallexp":
+            case "theselenegod_buymanaforallexp":
+                if (!ExperienceDistributionScript.TryTakeExp(source, source.StatSheet.MaximumMp * 250))
+                {
+                    source.SendOrangeBarMessage("You do not have enough experience to buy mana.");
+                    Subject.Reply(source, "Your journey through the veiled paths of experience is yet incomplete, seeker. Wander further into the realm of shadows, gather your tales and trials, then return when you are ready to trade them for the whispers of power.");
+
+                    return;
+                }
+                
                 timesToAscend = CalculateAscensionsCount(source, "MP");
 
                 IncreaseAttribute(
@@ -119,7 +127,14 @@ public class AscendingScript(Dialog subject) : DialogScriptBase(subject)
 
                 break;
 
-            case "aoife_buyhealthonce":
+            case "skandaragod_buyhealthonce":
+                if (!ExperienceDistributionScript.TryTakeExp(source, source.StatSheet.MaximumHp * 500))
+                {
+                    source.SendOrangeBarMessage("You do not have enough experience to buy health.");
+                    Subject.Reply(source, "You do not have enough experience to buy vitality. Go increase your knowledge.");
+
+                    return;
+                }
                 IncreaseAttribute(
                     source,
                     "HP",
@@ -128,7 +143,14 @@ public class AscendingScript(Dialog subject) : DialogScriptBase(subject)
 
                 break;
 
-            case "aoife_buymanaonce":
+            case "theselenegod_buymanaonce":
+                if (!ExperienceDistributionScript.TryTakeExp(source, source.StatSheet.MaximumMp * 250))
+                {
+                    source.SendOrangeBarMessage("You do not have enough experience to buy mana.");
+                    Subject.Reply(source, "Your journey through the veiled paths of experience is yet incomplete, seeker. Wander further into the realm of shadows, gather your tales and trials, then return when you are ready to trade them for the whispers of power.");
+
+                    return;
+                }
                 IncreaseAttribute(
                     source,
                     "MP",
