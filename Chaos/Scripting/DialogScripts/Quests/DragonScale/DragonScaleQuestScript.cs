@@ -56,7 +56,7 @@ public class DragonScaleQuestScript : DialogScriptBase
 
             case "dragonscalecallo_initial":
             {
-                if (source.Trackers.TimedEvents.HasActiveEvent("dragonscalewait", out var cdtime))
+                if (source.Trackers.TimedEvents.HasActiveEvent("dragonscalewait", out var cdtime) && hasStage && stage == DragonScale.TurnedInScaleSword)
                 {
                     Subject.Reply(source,
                         $"I am not done yet with your Dragon Scale Sword. Please return to me in {cdtime.Remaining.ToReadableString()}");
@@ -68,6 +68,19 @@ public class DragonScaleQuestScript : DialogScriptBase
                     Subject.Reply(source, "Skip", "dragonscale_pickup");
                     return;
                 }
+                
+                if (hasStage && stage == DragonScale.DroppedScale)
+                {
+                    Subject.Reply(source, "Did you get scared? Go back and wait for it to summon.");
+                    return;
+                }
+
+                if (hasStage && stage == DragonScale.TurnedInScaleClaws || stage == DragonScale.TurnedInScaleGauntlet ||
+                    stage == DragonScale.TurnedInScaleRing || stage == DragonScale.TurnedInScaleDagger)
+                {
+                    Subject.Reply(source, "I see you already gave someone else the Dragon Scale. Well, I hope you made the right decision.");
+                    return;
+                }
 
                 if (hasStage && stage == DragonScale.CompletedDragonScale)
                 {
@@ -75,7 +88,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     return;
                 }
 
-                if (source.Trackers.Flags.HasFlag(DragonScaleFlags.Callo))
+                if (source.Trackers.Flags.HasFlag(DragonScaleFlags.Callo) || hasStage && stage == DragonScale.FoundAllClues || stage == DragonScale.SpawnedDragon)
                 {
                     Subject.Reply(source, "Skip", "dragonscalecallo_return");
                     return;
@@ -109,7 +122,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Gunnar);
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Vidar);
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Marcelo);
-                    source.SendOrangeBarMessage("That was the last piece of advice from Weaponsmiths.");
+                    source.SendOrangeBarMessage("That was the last piece of advice from the weaponsmiths.");
                 }
                 else
                 {
@@ -251,7 +264,7 @@ public class DragonScaleQuestScript : DialogScriptBase
             }
             case "dragonscalevidar_initial":
             {
-                if (source.Trackers.TimedEvents.HasActiveEvent("dragonscalewait", out var cdtime))
+                if (source.Trackers.TimedEvents.HasActiveEvent("dragonscalewait", out var cdtime) && hasStage && stage == DragonScale.TurnedInScaleRing)
                 {
                     Subject.Reply(source,
                         $"I am not done yet with your Dragon Scale Ring. Please return to me in {cdtime.Remaining.ToReadableString()}");
@@ -263,6 +276,19 @@ public class DragonScaleQuestScript : DialogScriptBase
                     Subject.Reply(source, "Skip", "dragonscale_pickup");
                     return;
                 }
+                
+                if (hasStage && stage == DragonScale.DroppedScale)
+                {
+                    Subject.Reply(source, "Did you get scared? Go back and wait for it to summon.");
+                    return;
+                }
+
+                if (hasStage && stage == DragonScale.TurnedInScaleClaws || stage == DragonScale.TurnedInScaleGauntlet ||
+                    stage == DragonScale.TurnedInScaleDagger || stage == DragonScale.TurnedInScaleSword)
+                {
+                    Subject.Reply(source, "I see you already gave someone else the Dragon Scale. Well, I hope you made the right decision.");
+                    return;
+                }
 
                 if (hasStage && stage == DragonScale.CompletedDragonScale)
                 {
@@ -270,7 +296,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     return;
                 }
 
-                if (source.Trackers.Flags.HasFlag(DragonScaleFlags.Vidar))
+                if (source.Trackers.Flags.HasFlag(DragonScaleFlags.Vidar) || hasStage && stage == DragonScale.FoundAllClues || stage == DragonScale.SpawnedDragon)
                 {
                     Subject.Reply(source, "Skip", "dragonscalevidar_return");
                     return;
@@ -304,7 +330,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Gunnar);
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Vidar);
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Marcelo);
-                    source.SendOrangeBarMessage("That was the last piece of advice from Weaponsmiths.");
+                    source.SendOrangeBarMessage("That was the last piece of advice from the weaponsmiths.");
                 }
                 else
                 {
@@ -389,7 +415,7 @@ public class DragonScaleQuestScript : DialogScriptBase
             }
             case "dragonscalemarcelo_initial":
             {
-                if (source.Trackers.TimedEvents.HasActiveEvent("dragonscalewait", out var cdtime))
+                if (source.Trackers.TimedEvents.HasActiveEvent("dragonscalewait", out var cdtime) && hasStage && stage == DragonScale.TurnedInScaleClaws)
                 {
                     Subject.Reply(source,
                         $"I am not done yet with your Dragon Scale Claws. Please return to me in {cdtime.Remaining.ToReadableString()}");
@@ -401,6 +427,19 @@ public class DragonScaleQuestScript : DialogScriptBase
                     Subject.Reply(source, "Skip", "dragonscale_pickup");
                     return;
                 }
+                
+                if (hasStage && stage == DragonScale.DroppedScale)
+                {
+                    Subject.Reply(source, "Did you get scared? Go back and wait for it to summon.");
+                    return;
+                }
+
+                if (hasStage && stage == DragonScale.TurnedInScaleDagger || stage == DragonScale.TurnedInScaleGauntlet ||
+                    stage == DragonScale.TurnedInScaleRing || stage == DragonScale.TurnedInScaleSword)
+                {
+                    Subject.Reply(source, "I see you already gave someone else the Dragon Scale. Well, I hope you made the right decision.");
+                    return;
+                }
 
                 if (hasStage && stage == DragonScale.CompletedDragonScale)
                 {
@@ -408,7 +447,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     return;
                 }
 
-                if (source.Trackers.Flags.HasFlag(DragonScaleFlags.Marcelo))
+                if (source.Trackers.Flags.HasFlag(DragonScaleFlags.Marcelo) || hasStage && stage == DragonScale.FoundAllClues || stage == DragonScale.SpawnedDragon)
                 {
                     Subject.Reply(source, "Skip", "dragonscalemarcelo_return");
                     return;
@@ -442,7 +481,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Gunnar);
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Vidar);
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Marcelo);
-                    source.SendOrangeBarMessage("That was the last piece of advice from Weaponsmiths.");
+                    source.SendOrangeBarMessage("That was the last piece of advice from the weaponsmiths.");
                 }
                 else
                 {
@@ -528,7 +567,7 @@ public class DragonScaleQuestScript : DialogScriptBase
 
             case "dragonscaleavel_initial":
             {
-                if (source.Trackers.TimedEvents.HasActiveEvent("dragonscalewait", out var cdtime))
+                if (source.Trackers.TimedEvents.HasActiveEvent("dragonscalewait", out var cdtime) && hasStage && stage == DragonScale.TurnedInScaleGauntlet)
                 {
                     Subject.Reply(source,
                         $"I am not done yet with your Dragon Scale Gauntlet. Please return to me in {cdtime.Remaining.ToReadableString()}");
@@ -540,6 +579,19 @@ public class DragonScaleQuestScript : DialogScriptBase
                     Subject.Reply(source, "Skip", "dragonscale_pickup");
                     return;
                 }
+                
+                if (hasStage && stage == DragonScale.DroppedScale)
+                {
+                    Subject.Reply(source, "Did you get scared? Go back and wait for it to summon.");
+                    return;
+                }
+
+                if (hasStage && stage == DragonScale.TurnedInScaleClaws || stage == DragonScale.TurnedInScaleDagger ||
+                    stage == DragonScale.TurnedInScaleRing || stage == DragonScale.TurnedInScaleSword)
+                {
+                    Subject.Reply(source, "I see you already gave someone else the Dragon Scale. Well, I hope you made the right decision.");
+                    return;
+                }
 
                 if (hasStage && stage == DragonScale.CompletedDragonScale)
                 {
@@ -547,7 +599,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     return;
                 }
 
-                if (source.Trackers.Flags.HasFlag(DragonScaleFlags.Avel))
+                if (source.Trackers.Flags.HasFlag(DragonScaleFlags.Avel) || hasStage && stage == DragonScale.FoundAllClues || stage == DragonScale.SpawnedDragon)
                 {
                     Subject.Reply(source, "Skip", "dragonscaleavel_return");
                     return;
@@ -581,7 +633,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Gunnar);
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Vidar);
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Marcelo);
-                    source.SendOrangeBarMessage("That was the last piece of advice from Weaponsmiths.");
+                    source.SendOrangeBarMessage("That was the last piece of advice from the weaponsmiths.");
                 }
                 else
                 {
@@ -667,7 +719,7 @@ public class DragonScaleQuestScript : DialogScriptBase
 
             case "dragonscaletorbjorn_initial":
             {
-                if (source.Trackers.TimedEvents.HasActiveEvent("dragonscalewait", out var cdtime))
+                if (source.Trackers.TimedEvents.HasActiveEvent("dragonscalewait", out var cdtime) && hasStage && stage == DragonScale.TurnedInScaleDagger)
                 {
                     Subject.Reply(source,
                         $"I am not done yet with your Dragon Scale Dagger. Please return to me in {cdtime.Remaining.ToReadableString()}");
@@ -680,13 +732,26 @@ public class DragonScaleQuestScript : DialogScriptBase
                     return;
                 }
 
+                if (hasStage && stage == DragonScale.DroppedScale)
+                {
+                    Subject.Reply(source, "Did you get scared? Go back and wait for it to summon.");
+                    return;
+                }
+
+                if (hasStage && stage == DragonScale.TurnedInScaleClaws || stage == DragonScale.TurnedInScaleGauntlet ||
+                    stage == DragonScale.TurnedInScaleRing || stage == DragonScale.TurnedInScaleSword)
+                {
+                    Subject.Reply(source, "I see you already gave someone else the Dragon Scale. Well, I hope you made the right decision.");
+                    return;
+                }
+
                 if (hasStage && stage == DragonScale.CompletedDragonScale)
                 {
                     Subject.Reply(source, $"You have conquered the power of the Dragon Scale. Use it wisely.");
                     return;
                 }
 
-                if (source.Trackers.Flags.HasFlag(DragonScaleFlags.Torbjorn))
+                if (source.Trackers.Flags.HasFlag(DragonScaleFlags.Torbjorn) || hasStage && stage == DragonScale.FoundAllClues || stage == DragonScale.SpawnedDragon)
                 {
                     Subject.Reply(source, "Skip", "dragonscaletorbjorn_return");
                     return;
@@ -719,7 +784,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Gunnar);
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Vidar);
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Marcelo);
-                    source.SendOrangeBarMessage("That was the last piece of advice from Weaponsmiths.");
+                    source.SendOrangeBarMessage("That was the last piece of advice from the weaponsmiths.");
                 }
                 else
                 {
@@ -810,8 +875,21 @@ public class DragonScaleQuestScript : DialogScriptBase
                     Subject.Reply(source, $"You have conquered the power of the Dragon Scale. Use it wisely.");
                     return;
                 }
+                
+                if (hasStage && stage == DragonScale.DroppedScale)
+                {
+                    Subject.Reply(source, "Did you get scared? Go back and wait for it to summon.");
+                    return;
+                }
 
-                if (source.Trackers.Flags.HasFlag(DragonScaleFlags.Gunnar))
+                if (hasStage && stage == DragonScale.TurnedInScaleClaws || stage == DragonScale.TurnedInScaleGauntlet ||
+                    stage == DragonScale.TurnedInScaleRing || stage == DragonScale.TurnedInScaleSword)
+                {
+                    Subject.Reply(source, "I'm glad someone could help you with that Dragon Scale. I don't know what I'd do with it...");
+                    return;
+                }
+
+                if (source.Trackers.Flags.HasFlag(DragonScaleFlags.Gunnar) || hasStage && stage == DragonScale.FoundAllClues || stage == DragonScale.SpawnedDragon)
                 {
                     Subject.Reply(source, "Skip", "dragonscalegunnar_return");
                     return;
@@ -846,7 +924,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Gunnar);
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Vidar);
                     source.Trackers.Flags.RemoveFlag(DragonScaleFlags.Marcelo);
-                    source.SendOrangeBarMessage("That was the last piece of advice from Weaponsmiths.");
+                    source.SendOrangeBarMessage("That was the last piece of advice from the weaponsmiths.");
                 }
                 else
                 {
