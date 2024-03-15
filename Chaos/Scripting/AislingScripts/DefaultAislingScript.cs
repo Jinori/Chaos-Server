@@ -102,6 +102,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         MailStore = mailStore;
         BoardStore = boardStore;
         Logger = logger;
+        ItemFactory = itemFactory;
         RestrictionBehavior = new RestrictionBehavior();
         VisibilityBehavior = new VisibilityBehavior();
         RelationshipBehavior = new RelationshipBehavior();
@@ -430,6 +431,15 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
 
             Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You have lost {tenPercent} experience.");
         }
+        
+        Subject.Trackers.Counters.AddOrIncrement("deathcounter", 1);
+        Subject.Legend.AddOrAccumulate(new LegendMark(
+            "Fell in battle",
+            "deathkey",
+            MarkIcon.Victory,
+            MarkColor.White,
+            1,
+            GameTime.Now));
     }
 
     /// <inheritdoc />

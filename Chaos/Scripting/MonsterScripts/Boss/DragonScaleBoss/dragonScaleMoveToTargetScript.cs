@@ -2,6 +2,8 @@ using Chaos.Extensions.Geometry;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using Chaos.Services.Factories;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -14,12 +16,15 @@ public class dragonScaleMoveToTargetScript : MonsterScriptBase
     public readonly Location FightSpot = new("wilderness", 18, 16);
     private readonly IIntervalTimer TimeToGetToSpot;
     private readonly IIntervalTimer WalkTimer;
+    private readonly ISpellFactory SpellFactory;
+    private readonly Spell SpellToCast;
 
     /// <inheritdoc />
-    public dragonScaleMoveToTargetScript(Monster subject)
+    public dragonScaleMoveToTargetScript(Monster subject, SpellFactory spellFactory)
         : base(subject)
     {
-        
+        SpellFactory = spellFactory;
+        SpellToCast = SpellFactory.Create("fireblast");
         TimeToGetToSpot = new IntervalTimer(TimeSpan.FromSeconds(15), false);
         WalkTimer = new IntervalTimer(TimeSpan.FromMilliseconds(300), false);
 
@@ -48,6 +53,8 @@ public class dragonScaleMoveToTargetScript : MonsterScriptBase
 
                 if (rockFish != null)
                 {
+                    Subject.Say("DEATH TO ALL WHO DISTURB MY MEAL.");
+                    Subject.TryUseSpell(SpellToCast);
                     Map.RemoveEntity(rockFish);
                     ReachedPoint = true;   
                 }

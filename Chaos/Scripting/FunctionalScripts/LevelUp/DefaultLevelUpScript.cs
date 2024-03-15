@@ -3,10 +3,13 @@ using Chaos.Definitions;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
 using Chaos.Models.Data;
+using Chaos.Models.Legend;
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Servers.Options;
+using Chaos.Time;
 
 namespace Chaos.Scripting.FunctionalScripts.LevelUp;
 
@@ -16,6 +19,12 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
 
     /// <inheritdoc />
     public static string Key { get; } = GetScriptKey(typeof(DefaultLevelUpScript));
+    private readonly IItemFactory ItemFactory;
+
+    public DefaultLevelUpScript(IItemFactory itemFactory)
+    {
+        ItemFactory = itemFactory;
+    }
 
     /// <inheritdoc />
     public static ILevelUpScript Create() => FunctionalScriptRegistry.Instance.Get<ILevelUpScript>(Key);
@@ -31,6 +40,26 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
         {
             var newTnl = LevelUpFormula.CalculateTnl(aisling);
             aisling.UserStatSheet.AddTnl(newTnl);
+        }
+
+        if (aisling.UserStatSheet.Level == WorldOptions.Instance.MaxLevel)
+        {
+            if (aisling.Trackers.Counters.TryGetValue("deathcounter", out var deathcount) && deathcount < 1)
+            {
+                aisling.Legend.AddOrAccumulate(new LegendMark(
+                    "Denied death to the 99th Insight",
+                    "notdying",
+                    MarkIcon.Victory,
+                    MarkColor.Green,
+                    1,
+                    GameTime.Now));
+
+                var halo = ItemFactory.Create("halo");
+
+                aisling.TryGiveItem(ref halo);
+                
+                aisling.SendOrangeBarMessage("You've received a unique Legend Mark and accessory");
+            }
         }
 
         var levelUpAttribs = LevelUpFormula.CalculateAttributesIncrease(aisling);
