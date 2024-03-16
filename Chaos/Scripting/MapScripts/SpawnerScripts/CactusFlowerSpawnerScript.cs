@@ -8,10 +8,10 @@ namespace Chaos.Scripting.MapScripts.SpawnerScripts;
 public class CactusFlowerSpawnerScript : ItemSpawnerScript
 {
     public override string ItemTemplateKey { get; set; } = "cactusflower";
-    public override int MaxAmount { get; set; } = 4;
+    public override int MaxAmount { get; set; } = 3;
     public override int MaxPerSpawn { get; set; } = 1;
 
-    public override int SpawnChance { get; set; } = 12;
+    public override int SpawnChance { get; set; } = 8;
     public override int SpawnIntervalMs { get; set; } = 400000;
 
     /// <inheritdoc />

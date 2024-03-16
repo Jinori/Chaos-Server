@@ -55,7 +55,7 @@ public abstract class MerchantSpawnerScript : MapScriptBase
 
             maxSpawns++;
 
-            if (!IntegerRandomizer.RollChance(15))
+            if (!IntegerRandomizer.RollChance(10))
                 return;
 
             var spawnAmount = Random.Shared.Next(1, maxSpawns);
