@@ -34,7 +34,7 @@ public class EWKillQuestScript : DialogScriptBase
         {
             case "ghislain_initial":
             {
-                if (source.UserStatSheet.Level is >= 11 and < 41)
+                if (source.UserStatSheet.Level < 41)
                 {
                     var option = new DialogOption
                     {
@@ -56,6 +56,12 @@ public class EWKillQuestScript : DialogScriptBase
                     Subject.Reply(source,
                         $"You've done exceptionally well Aisling. Please come back to me soon. (({cdtime.Remaining.ToReadableString()}))",
                         "ghislain_initial");
+                    return;
+                }
+
+                if (source.UserStatSheet.Level >= 41)
+                {
+                    Subject.Reply(source, "You are too strong to be worried about these pest.");
                     return;
                 }
 

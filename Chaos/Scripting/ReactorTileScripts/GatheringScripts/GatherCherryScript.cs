@@ -10,15 +10,15 @@ namespace Chaos.Scripting.ReactorTileScripts.GatheringScripts;
 
 public class GatherCherryScript : ReactorTileScriptBase
 {
-    private readonly IItemFactory _itemFactory;
-    private readonly ISimpleCache _simpleCache;
+    private readonly IItemFactory ItemFactory;
+    private readonly ISimpleCache SimpleCache;
 
     /// <inheritdoc />
     public GatherCherryScript(ReactorTile subject, IItemFactory itemFactory, ISimpleCache simpleCache)
         : base(subject)
     {
-        _itemFactory = itemFactory;
-        _simpleCache = simpleCache;
+        ItemFactory = itemFactory;
+        SimpleCache = simpleCache;
     }
 
     /// <inheritdoc />
@@ -29,20 +29,20 @@ public class GatherCherryScript : ReactorTileScriptBase
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("cherry", 23))
         {
-            var mapInstance = _simpleCache.Get<MapInstance>("suomi_cherry_farmer");
+            var mapInstance = SimpleCache.Get<MapInstance>("suomi_cherry_farmer");
             var point = new Point(7, 5);
             aisling.SendOrangeBarMessage("The farmer waves, you head inside.");
             aisling.TraverseMap(mapInstance, point);
             aisling.Trackers.Counters.Remove("cherry", out _);
         }
 
-        var cherry = _itemFactory.Create("Cherry");
+        var cherry = ItemFactory.Create("Cherry");
         var cherryCount = Random.Shared.Next(1, 4);
         cherry.Count = cherryCount;
 
         if (!aisling.TryGiveItem(ref cherry))
         {
-            var mapInstance = _simpleCache.Get<MapInstance>("suomi_cherry_farmer");
+            var mapInstance = SimpleCache.Get<MapInstance>("suomi_cherry_farmer");
             var point = new Point(7, 5);
             aisling.SendOrangeBarMessage("The farmer waves, you head inside.");
             aisling.TraverseMap(mapInstance, point);
