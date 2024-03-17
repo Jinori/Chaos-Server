@@ -21,6 +21,9 @@ public class TSReconTileScript : ReactorTileScriptBase
 
         var hasStage = aisling.Trackers.Enums.TryGetValue(out TheSacrificeQuestStage stage);
 
+        if (!hasStage)
+            return;
+
         if (hasStage && stage is not TheSacrificeQuestStage.Reconaissance)
             return;
 

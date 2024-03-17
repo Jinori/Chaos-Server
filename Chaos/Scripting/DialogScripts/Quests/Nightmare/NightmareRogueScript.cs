@@ -11,11 +11,11 @@ namespace Chaos.Scripting.DialogScripts.Quests.Nightmare;
 
 public class NightmareRogueScript : DialogScriptBase
 {
-    private readonly ISimpleCache _simpleCache; 
+    private readonly ISimpleCache SimpleCache; 
     
     public NightmareRogueScript(Dialog subject, ISimpleCache simpleCache)
         : base(subject) =>
-        _simpleCache = simpleCache;
+        SimpleCache = simpleCache;
 
     public override void OnDisplaying(Aisling source)
     {
@@ -89,7 +89,7 @@ public class NightmareRogueScript : DialogScriptBase
                 Subject.Close(source);
                 Point point2;
                 point2 = new Point(12, 13);
-                var mapInstance2 = _simpleCache.Get<MapInstance>("wildernessold");
+                var mapInstance2 = SimpleCache.Get<MapInstance>("wildernessold");
                 source.TraverseMap(mapInstance2, point2, false);
                 source.UserStatSheet.SetHealthPct(100);
                 source.Client.SendAttributes(StatUpdateType.Vitality);
@@ -115,7 +115,7 @@ public class NightmareRogueScript : DialogScriptBase
                     Subject.Close(source);
                     Point point2;
                     point2 = new Point(source.X, source.Y);
-                    var mapInstance2 = _simpleCache.Get<MapInstance>("wildernessroguechallenge");
+                    var mapInstance2 = SimpleCache.Get<MapInstance>("wildernessroguechallenge");
                     source.TraverseMap(mapInstance2, point2, false);
                     source.Trackers.Enums.Set(NightmareQuestStage.EnteredDream);
                     source.UserStatSheet.SetHealthPct(100);

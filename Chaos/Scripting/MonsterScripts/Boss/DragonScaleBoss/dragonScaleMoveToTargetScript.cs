@@ -16,15 +16,13 @@ public class dragonScaleMoveToTargetScript : MonsterScriptBase
     public readonly Location FightSpot = new("wilderness", 18, 16);
     private readonly IIntervalTimer TimeToGetToSpot;
     private readonly IIntervalTimer WalkTimer;
-    private readonly ISpellFactory SpellFactory;
     private readonly Spell SpellToCast;
 
     /// <inheritdoc />
-    public dragonScaleMoveToTargetScript(Monster subject, SpellFactory spellFactory)
+    public dragonScaleMoveToTargetScript(Monster subject, ISpellFactory spellFactory)
         : base(subject)
     {
-        SpellFactory = spellFactory;
-        SpellToCast = SpellFactory.Create("fireblast");
+        SpellToCast = spellFactory.Create("fireblast");
         TimeToGetToSpot = new IntervalTimer(TimeSpan.FromSeconds(15), false);
         WalkTimer = new IntervalTimer(TimeSpan.FromMilliseconds(300), false);
 

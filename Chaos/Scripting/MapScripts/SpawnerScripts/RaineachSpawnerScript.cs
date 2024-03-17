@@ -8,10 +8,10 @@ namespace Chaos.Scripting.MapScripts.SpawnerScripts;
 public class RaineachSpawnerScript : ItemSpawnerScript
 {
     public override string ItemTemplateKey { get; set; } = "Raineach";
-    public override int MaxAmount { get; set; } = 6;
-    public override int MaxPerSpawn { get; set; } = 2;
+    public override int MaxAmount { get; set; } = 4;
+    public override int MaxPerSpawn { get; set; } = 1;
 
-    public override int SpawnChance { get; set; } = 15;
+    public override int SpawnChance { get; set; } = 10;
     public override int SpawnIntervalMs { get; set; } = 400000;
 
     /// <inheritdoc />

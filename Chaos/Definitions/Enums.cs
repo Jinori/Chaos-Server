@@ -1355,6 +1355,8 @@ public enum EasterEggs
 {
     None,
     LeakyBarrel = 1,
+    UnlockedChest = 2,
+    CrackInWall = 3,
 }
 [Flags]
 public enum SavedChild

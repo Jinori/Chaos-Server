@@ -109,7 +109,7 @@ public class FishOilQuestScript : DialogScriptBase
             case "fishoil_start2":
             {
                 source.Trackers.Enums.Set(FishOil.StartedQuest);
-                source.SendOrangeBarMessage("Bring Antonio some oil.");
+                source.SendOrangeBarMessage("Speak to Kamel about getting some oil for Antonio.");
                 break;
             }
 
