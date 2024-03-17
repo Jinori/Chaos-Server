@@ -21,7 +21,7 @@ public class BodyDyeScript : DialogScriptBase
         foreach (var color in Enum.GetValues<BodyColor>())
         {
             var item = ItemFactory.CreateFaux("hairDyeContainer");
-            item.CustomDisplayName = $"{color} Body Dye";
+            item.CustomNameOverride = $"{color} Body Dye";
             item.Color = color.ConvertToDisplayColor();
             Subject.Items.Add(ItemDetails.BuyWithGold(item));
         }

@@ -2,13 +2,15 @@ using Chaos.Common.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 
 namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 
-public class AscendingScript(Dialog subject) : DialogScriptBase(subject)
+public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : DialogScriptBase(subject)
 {
     private const int HEALTH_GAIN = 50;
     private const int MANA_GAIN = 25;
@@ -54,6 +56,11 @@ public class AscendingScript(Dialog subject) : DialogScriptBase(subject)
                     };
 
                     source.StatSheet.Add(hp);
+                    
+                    logger.WithTopics(
+                              Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward)
+                          .WithProperty(Subject)
+                          .LogInformation("{@AislingName} has bought {@Attribute} health", source.Name, hp);
 
                     break;
                 }
@@ -65,7 +72,12 @@ public class AscendingScript(Dialog subject) : DialogScriptBase(subject)
                     };
 
                     source.StatSheet.Add(mp);
-
+                           
+                    logger.WithTopics(
+                              Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward)
+                          .WithProperty(Subject)
+                          .LogInformation("{@AislingName} has bought {@Attribute} mana", source.Name, mp);
+                    
                     break;
                 }
             }

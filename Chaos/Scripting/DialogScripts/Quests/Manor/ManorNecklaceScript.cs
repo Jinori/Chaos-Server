@@ -39,6 +39,9 @@ public class ManorNecklaceScript : DialogScriptBase
                 if (stage == ManorNecklaceStage.ReturningNecklace)
                     source.Trackers.Enums.Set(ManorNecklaceStage.KeptNecklace);
 
+                
+                source.Inventory.RemoveQuantity("Zulera's Cursed Necklace", 1);
+                
                 source.Legend.AddUnique(
                     new LegendMark(
                         "Stolen Zulera's Heirloom",
@@ -63,7 +66,7 @@ public class ManorNecklaceScript : DialogScriptBase
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ItemName} from a quest", source.Name, necklace.DisplayName);
 
-                source.TryGiveItem(ref necklace);
+                source.GiveItemOrSendToBank(necklace);
 
                 break;
             }

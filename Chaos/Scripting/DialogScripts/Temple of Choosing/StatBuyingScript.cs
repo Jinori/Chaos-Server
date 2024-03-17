@@ -3,12 +3,17 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 
 public class StatBuyingScript : DialogScriptBase
 {
+    
+    private readonly ILogger<StatBuyingScript> Logger;
+    
     private readonly Dictionary<BaseClass, int> BaseClassHealthLimits = new()
     {
         { BaseClass.Warrior, 4149 },
@@ -72,49 +77,54 @@ public class StatBuyingScript : DialogScriptBase
         // Add other classes here
     };
 
-    private readonly Dictionary<byte, Action<Aisling, Attributes>> OptionActionMappings = new()
+    public readonly Dictionary<byte, Action<Aisling, Attributes>> OptionActionMappings;
+
+    public StatBuyingScript(Dialog subject, ILogger<StatBuyingScript> logger)
+        : base(subject)
     {
+        OptionActionMappings = new Dictionary<byte, Action<Aisling, Attributes>>
         {
-            1, (source, cost) => IncreaseAttribute(
-                source,
-                "Strength",
-                cost,
-                attribute => attribute.Str++)
-        },
-        {
-            2, (source, cost) => IncreaseAttribute(
-                source,
-                "Intelligence",
-                cost,
-                attribute => attribute.Int++)
-        },
-        {
-            3, (source, cost) => IncreaseAttribute(
-                source,
-                "Wisdom",
-                cost,
-                attribute => attribute.Wis++)
-        },
-        {
-            4, (source, cost) => IncreaseAttribute(
-                source,
-                "Constitution",
-                cost,
-                attribute => attribute.Con++)
-        },
-        {
-            5, (source, cost) => IncreaseAttribute(
-                source,
-                "Dexterity",
-                cost,
-                attribute => attribute.Dex++)
-        }
-    };
+            {
+                1, (source, cost) => IncreaseAttribute(
+                    source,
+                    "Strength",
+                    cost,
+                    attribute => attribute.Str++)
+            },
+            {
+                2, (source, cost) => IncreaseAttribute(
+                    source,
+                    "Intelligence",
+                    cost,
+                    attribute => attribute.Int++)
+            },
+            {
+                3, (source, cost) => IncreaseAttribute(
+                    source,
+                    "Wisdom",
+                    cost,
+                    attribute => attribute.Wis++)
+            },
+            {
+                4, (source, cost) => IncreaseAttribute(
+                    source,
+                    "Constitution",
+                    cost,
+                    attribute => attribute.Con++)
+            },
+            {
+                5, (source, cost) => IncreaseAttribute(
+                    source,
+                    "Dexterity",
+                    cost,
+                    attribute => attribute.Dex++)
+            }
+        };
 
-    public StatBuyingScript(Dialog subject)
-        : base(subject) { }
+        Logger = logger;
+    }
 
-    private static void IncreaseAttribute(
+    private void IncreaseAttribute(
         Aisling source,
         string attribute,
         Attributes cost,
@@ -124,6 +134,11 @@ public class StatBuyingScript : DialogScriptBase
         update(cost);
         source.UserStatSheet.Add(cost);
         source.SendOrangeBarMessage($"{attribute} increased by one. 150 Health taken.");
+        
+        Logger.WithTopics(
+                  Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward)
+              .WithProperty(Subject)
+              .LogInformation("{@AislingName} has bought a {@Attribute} stat", source.Name, attribute);
     }
 
     public override void OnDisplaying(Aisling source)
