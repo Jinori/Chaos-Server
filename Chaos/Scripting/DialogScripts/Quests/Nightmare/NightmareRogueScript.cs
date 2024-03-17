@@ -32,16 +32,16 @@ public class NightmareRogueScript : DialogScriptBase
             TargetAnimation = 54
         };
 
-        if (source.UserStatSheet.BaseClass != BaseClass.Rogue)
-            return;
-
-        if (source.UserStatSheet.Level < 80)
-            return;
-
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "varuna_initial":
             {
+                if (source.UserStatSheet.BaseClass != BaseClass.Rogue)
+                    return;
+
+                if (source.UserStatSheet.Level < 80)
+                    return;
+                
                 switch (hasStage)
                 {
                     case false:

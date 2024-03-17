@@ -140,7 +140,7 @@ public class CryptSlayerScript : DialogScriptBase
                     {
                         randomCryptSlayerStage = new[]
                         {
-                            CryptSlayerStage.Scorpion, CryptSlayerStage.Bat, CryptSlayerStage.GiantBat, CryptSlayerStage.WhiteBat
+                            CryptSlayerStage.Scorpion, CryptSlayerStage.Bat, CryptSlayerStage.GiantBat
                         }.PickRandom();
 
                         source.Trackers.Enums.Set(randomCryptSlayerStage);
@@ -150,7 +150,7 @@ public class CryptSlayerScript : DialogScriptBase
                     {
                         randomCryptSlayerStage = new[]
                         {
-                            CryptSlayerStage.WhiteBat, CryptSlayerStage.Mimic, CryptSlayerStage.GiantBat, CryptSlayerStage.Marauder
+                            CryptSlayerStage.WhiteBat, CryptSlayerStage.Mimic, CryptSlayerStage.GiantBat, CryptSlayerStage.Marauder, CryptSlayerStage.WhiteBat
                         }.PickRandom();
 
                         source.Trackers.Enums.Set(randomCryptSlayerStage);
