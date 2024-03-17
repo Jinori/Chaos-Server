@@ -4,6 +4,8 @@ using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
@@ -17,13 +19,16 @@ public class PriestDedicateScript : DialogScriptBase
     private readonly ISimpleCache SimpleCache;
     private readonly ISkillFactory SkillFactory;
     private readonly ISpellFactory SpellFactory;
+    private readonly ILogger<PriestDedicateScript> Logger;
 
     public PriestDedicateScript(
         Dialog subject,
         IItemFactory itemFactory,
         ISimpleCache simpleCache,
         ISkillFactory skillFactory,
-        ISpellFactory spellFactory
+        ISpellFactory spellFactory,
+        ILogger<PriestDedicateScript> logger
+        
     )
         : base(subject)
     {
@@ -32,6 +37,7 @@ public class PriestDedicateScript : DialogScriptBase
         SkillFactory = skillFactory;
         SpellFactory = spellFactory;
         SkillFactory = skillFactory;
+        Logger = logger;
     }
 
     public override void OnDisplayed(Aisling source)
@@ -83,6 +89,11 @@ public class PriestDedicateScript : DialogScriptBase
             var point = new Point(8, 5);
             source.TraverseMap(mapInstance, point);
             source.Animate(ani, source.Id);
+            
+            Logger.WithTopics(
+                      Topics.Entities.Aisling, Topics.Actions.Promote)
+                  .WithProperty(Subject)
+                  .LogInformation("{@AislingName} has become priest", source.Name);
         }
     }
 }

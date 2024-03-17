@@ -56,7 +56,7 @@ public class TerrorChestScript : DialogScriptBase
                     var random = new Random();
                     var index = random.Next(armorDye.Count);
                     item = ItemFactory.Create("armorDyeContainer");
-                    item.CustomDisplayName = $"{armorDye[index]} Armor Dye";
+                    item.CustomNameOverride = $"{armorDye[index]} Armor Dye";
 
                     item.Color = armorDye[index] switch
                     {

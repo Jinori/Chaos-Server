@@ -2,6 +2,8 @@ using Chaos.Common.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
@@ -11,13 +13,17 @@ public class MasteringScript : DialogScriptBase
 {
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
     private readonly IItemFactory ItemFactory;
-
+    private readonly ILogger<MasteringScript> Logger;
+    
     /// <inheritdoc />
-    public MasteringScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IItemFactory itemFactory)
+    public MasteringScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IItemFactory itemFactory,
+        ILogger<MasteringScript> logger
+    )
         : base(subject)
     {
         ClientRegistry = clientRegistry;
         ItemFactory = itemFactory;
+        Logger = logger;
     }
 
     private readonly Dictionary<BaseClass, (int requiredHealth, int requiredMana)> MasteringRequirements = new()
@@ -266,7 +272,12 @@ public class MasteringScript : DialogScriptBase
 
                 source.SendOrangeBarMessage("You have been awarded a title, weapon, armor and helmet!");
                 source.Client.SendAttributes(StatUpdateType.Full);
-
+                
+                Logger.WithTopics(
+                          Topics.Entities.Aisling, Topics.Actions.Promote, Topics.Entities.Quest)
+                      .WithProperty(Subject)
+                      .LogInformation("{@AislingName} has become a master aisling", source.Name);
+                
                 break;
             }
         }
@@ -312,6 +323,14 @@ public class MasteringScript : DialogScriptBase
         
         foreach (var item in itemsToGive)
             source.GiveItemOrSendToBank(item);
+        
+        Logger.WithTopics(
+                  Topics.Entities.Aisling,
+                  Topics.Entities.Item,
+                  Topics.Actions.Create)
+              .WithProperty(Subject)
+              .WithProperty(itemsToGive)
+              .LogInformation("{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering", source.Name, armor.DisplayName, helm.DisplayName, weapon.DisplayName);
     }
     
     private void AwardMonkItems(Aisling source)
@@ -324,6 +343,14 @@ public class MasteringScript : DialogScriptBase
         
         foreach (var item in itemsToGive)
             source.GiveItemOrSendToBank(item);
+        
+        Logger.WithTopics(
+                  Topics.Entities.Aisling,
+                  Topics.Entities.Item,
+                  Topics.Actions.Create)
+              .WithProperty(Subject)
+              .WithProperty(itemsToGive)
+              .LogInformation("{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering", source.Name, armor.DisplayName, helm.DisplayName, weapon.DisplayName);
     }
     
     private void AwardPriestItems(Aisling source)
@@ -336,6 +363,14 @@ public class MasteringScript : DialogScriptBase
         
         foreach (var item in itemsToGive)
             source.GiveItemOrSendToBank(item);
+        
+        Logger.WithTopics(
+                  Topics.Entities.Aisling,
+                  Topics.Entities.Item,
+                  Topics.Actions.Create)
+              .WithProperty(Subject)
+              .WithProperty(itemsToGive)
+              .LogInformation("{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering", source.Name, armor.DisplayName, helm.DisplayName, weapon.DisplayName);
     }
     
     private void AwardWizardItems(Aisling source)
@@ -348,6 +383,14 @@ public class MasteringScript : DialogScriptBase
         
         foreach (var item in itemsToGive)
             source.GiveItemOrSendToBank(item);
+        
+        Logger.WithTopics(
+                  Topics.Entities.Aisling,
+                  Topics.Entities.Item,
+                  Topics.Actions.Create)
+              .WithProperty(Subject)
+              .WithProperty(itemsToGive)
+              .LogInformation("{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering", source.Name, armor.DisplayName, helm.DisplayName, weapon.DisplayName);
     }
     
     private void AwardRogueItems(Aisling source)
@@ -360,5 +403,13 @@ public class MasteringScript : DialogScriptBase
         
         foreach (var item in itemsToGive)
             source.GiveItemOrSendToBank(item);
+        
+        Logger.WithTopics(
+                  Topics.Entities.Aisling,
+                  Topics.Entities.Item,
+                  Topics.Actions.Create)
+              .WithProperty(Subject)
+              .WithProperty(itemsToGive)
+              .LogInformation("{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering", source.Name, armor.DisplayName, helm.DisplayName, weapon.DisplayName);
     }
 }

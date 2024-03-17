@@ -4,6 +4,8 @@ using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
@@ -17,13 +19,15 @@ public class MonkDedicateScript : DialogScriptBase
     private readonly ISimpleCache SimpleCache;
     private readonly ISkillFactory SkillFactory;
     private readonly ISpellFactory SpellFactory;
+    private readonly ILogger<MonkDedicateScript> Logger;
 
     public MonkDedicateScript(
         Dialog subject,
         IItemFactory itemFactory,
         ISimpleCache simpleCache,
         ISkillFactory skillFactory,
-        ISpellFactory spellFactory
+        ISpellFactory spellFactory,
+        ILogger<MonkDedicateScript> logger
     )
         : base(subject)
     {
@@ -31,6 +35,7 @@ public class MonkDedicateScript : DialogScriptBase
         SimpleCache = simpleCache;
         SkillFactory = skillFactory;
         SpellFactory = spellFactory;
+        Logger = logger;
     }
 
     public override void OnDisplayed(Aisling source)
@@ -78,6 +83,12 @@ public class MonkDedicateScript : DialogScriptBase
             var point = new Point(8, 5);
             source.TraverseMap(mapInstance, point);
             source.Animate(ani, source.Id);
+            
+            Logger.WithTopics(
+                      Topics.Entities.Aisling, Topics.Actions.Promote)
+                  .WithProperty(Subject)
+                  .LogInformation("{@AislingName} has become monk", source.Name);
+            
         }
     }
 }

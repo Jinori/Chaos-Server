@@ -22,7 +22,7 @@ public class HairDyeScript : DialogScriptBase
         foreach (var color in colors)
         {
             var item = ItemFactory.CreateFaux("hairDyeContainer");
-            item.CustomDisplayName = $"{color} Hair Dye";
+            item.CustomNameOverride = $"{color} Hair Dye";
             item.Color = color;
             Subject.Items.Add(ItemDetails.BuyWithGold(item));
         }

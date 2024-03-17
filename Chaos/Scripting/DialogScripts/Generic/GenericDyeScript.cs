@@ -79,7 +79,7 @@ public class GenericDyeScript : DialogScriptBase
             slot,
             item1 =>
             {
-                item.CustomDisplayName = dyedItemName;
+                item.CustomNameOverride = dyedItemName;
                 item.Color = color;
             });
 
@@ -100,7 +100,7 @@ public class GenericDyeScript : DialogScriptBase
         foreach (var color in colors)
         {
             var fauxItem = ItemFactory.CreateFaux(item.Template.TemplateKey);
-            fauxItem.CustomDisplayName = $"{color} {item.Template.Name}";
+            fauxItem.CustomNameOverride = $"{color} {item.Template.Name}";
             fauxItem.Color = color;
 
             Subject.Items.Add(
