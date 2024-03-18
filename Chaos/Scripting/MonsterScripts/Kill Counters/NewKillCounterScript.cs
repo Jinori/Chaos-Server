@@ -78,8 +78,6 @@ public class NewKillCounterScript : ConfigurableMonsterScriptBase
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Counter, QuantityReq))
                         {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
-
-                            return;
                         }
                     }
                 }

@@ -11,14 +11,14 @@ namespace Chaos.Scripting.ReactorTileScripts.Mileth;
 
 public class PorteForestBossRoomScript : ReactorTileScriptBase
 {
-    private readonly IDialogFactory _dialogFactory;
-    private readonly IMerchantFactory _merchantFactory;
+    private readonly IDialogFactory DialogFactory;
+    private readonly IMerchantFactory MerchantFactory;
 
     public PorteForestBossRoomScript(ReactorTile subject, IMerchantFactory merchantFactory, IDialogFactory dialogFactory)
         : base(subject)
     {
-        _merchantFactory = merchantFactory;
-        _dialogFactory = dialogFactory;
+        MerchantFactory = merchantFactory;
+        DialogFactory = dialogFactory;
     }
 
     public override void OnWalkedOn(Creature source)
@@ -49,9 +49,9 @@ public class PorteForestBossRoomScript : ReactorTileScriptBase
         {
             // Create a merchant at the Aisling's current point
             var npcpoint = new Point(aisling.X, aisling.Y);
-            var merchant = _merchantFactory.Create("pf_bossroomentrance_merchant", aisling.MapInstance, npcpoint);
+            var merchant = MerchantFactory.Create("pf_bossroomentrance_merchant", aisling.MapInstance, npcpoint);
             // Create a dialog for the merchant
-            var dialog = _dialogFactory.Create("pf_bossroomentrance", merchant);
+            var dialog = DialogFactory.Create("pf_bossroomentrance", merchant);
             dialog.Display(aisling);
         }
         else

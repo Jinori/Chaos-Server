@@ -1439,3 +1439,10 @@ public enum HungryViveka
     StartedCherryPie = 1,
     CompletedCherryPie = 2
 }
+public enum UndineFieldDungeon
+{
+    None,
+    StartedDungeon = 1,
+    KilledCarnun = 2,
+    CompletedUF = 3,
+}
