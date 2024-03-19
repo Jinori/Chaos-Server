@@ -167,4 +167,17 @@ public static class TypeExtensions
 
         return assemblyTypes.Where(asmType => asmType.IsAssignableTo(type));
     }
+    
+    /// <summary>
+    ///     Gets a generic method from a type
+    /// </summary>
+    public static MethodInfo? GetGenericMethod(this Type type, string methodName, Type[] genericTypes)
+    {
+        var method = type.GetMethod(methodName);
+
+        if (method == null)
+            return null;
+
+        return method.MakeGenericMethod(genericTypes);
+    }
 }

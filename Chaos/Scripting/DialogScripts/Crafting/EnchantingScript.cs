@@ -222,9 +222,8 @@ public class EnchantingScript : DialogScriptBase
 
         if (recipe.Modification is not null)
         {
-            source.Inventory.Remove(item.Slot);
-            var enchanted = recipe.Modification(Mapper, item);
-            source.Inventory.TryAddDirect(item.Slot, enchanted);
+            recipe.Modification(item);
+            source.Inventory.Update(item.Slot);
         }
 
         Subject.InjectTextParameters(recipe.Name);

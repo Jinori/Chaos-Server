@@ -1,3 +1,4 @@
+using Chaos.Extensions;
 using Chaos.Models.Panel;
 using Chaos.Schemas.Aisling;
 using Chaos.Scripting.Abstractions;
@@ -16,7 +17,7 @@ public static class CraftingRequirements
         public string Rank { get; set; } = null!;
         public int Level { get; set; }
         public int Difficulty { get; set; }
-        public Func<ITypeMapper, Item, Item>? Modification { get; set; }
+        public Action<Item>? Modification { get; set; }
     }
 
     public sealed class Ingredient
@@ -42,13 +43,7 @@ public static class CraftingRequirements
                 Rank = "Basic",
                 Level = 40,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SerenePrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<SerenePrefixScript>()
             }
         },
                 {
@@ -64,13 +59,7 @@ public static class CraftingRequirements
                 Rank = "Beginner",
                 Level = 5,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MeagerPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<MeagerPrefixScript>()
             }
             },
         {
@@ -86,13 +75,7 @@ public static class CraftingRequirements
                 Rank = "Adept",
                 Level = 90,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SoothingPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<SoothingPrefixScript>()
             }
             },
         {
@@ -108,13 +91,7 @@ public static class CraftingRequirements
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(PotentPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<PotentPrefixScript>()
             }
         },
         {
@@ -130,13 +107,7 @@ public static class CraftingRequirements
                 Rank = "Initiate",
                 Level = 50,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(WisePrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<WisePrefixScript>()
             }
         },
         {
@@ -152,13 +123,7 @@ public static class CraftingRequirements
                 Rank = "Artisan",
                 Level = 80,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(RuthlessPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<RuthlessPrefixScript>()
             }
         },
         {
@@ -174,13 +139,7 @@ public static class CraftingRequirements
                 Rank = "Beginner",
                 Level = 3,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SwiftPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<SwiftPrefixScript>()
             }
         },
         {
@@ -196,13 +155,7 @@ public static class CraftingRequirements
                 Rank = "Basic",
                 Level = 24,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MinorPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<MinorPrefixScript>()
             }
         },
         {
@@ -218,13 +171,7 @@ public static class CraftingRequirements
                 Rank = "Initiate",
                 Level = 60,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(CripplingPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<CripplingPrefixScript>()
             }
         },
         {
@@ -240,13 +187,7 @@ public static class CraftingRequirements
                 Rank = "Initiate",
                 Level = 48,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HastyPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<HastyPrefixScript>()
             }
         },
         {
@@ -262,13 +203,7 @@ public static class CraftingRequirements
                 Rank = "Initiate",
                 Level = 50,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HalePrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<HalePrefixScript>()
             }
         },
         {
@@ -284,13 +219,7 @@ public static class CraftingRequirements
                 Rank = "Artisan",
                 Level = 83,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(EternalPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<EternalPrefixScript>()
             }
         },
         {
@@ -306,13 +235,7 @@ public static class CraftingRequirements
                 Rank = "Beginner",
                 Level = 3,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SkillfulPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<SkillfulPrefixScript>()
             }
             },
         {
@@ -328,13 +251,7 @@ public static class CraftingRequirements
                 Rank = "Basic",
                 Level = 28,
                 Difficulty = 2,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(ModestPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<ModestPrefixScript>()
             }
             },
         {
@@ -350,13 +267,7 @@ public static class CraftingRequirements
                 Rank = "Initiate",
                 Level = 65,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(PowerfulPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<PowerfulPrefixScript>()
             }
             },
         {
@@ -372,13 +283,7 @@ public static class CraftingRequirements
                 Rank = "Basic",
                 Level = 34,
                 Difficulty = 2,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(TinyPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<TinyPrefixScript>()
             }
             },
         {
@@ -394,13 +299,7 @@ public static class CraftingRequirements
                 Rank = "Initiate",
                 Level = 69,
                 Difficulty = 2,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(BrightPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<BrightPrefixScript>()
             }
         },
         {
@@ -416,13 +315,7 @@ public static class CraftingRequirements
                 Rank = "Initiate",
                 Level = 50,
                 Difficulty = 2,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(BrilliantPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<BrilliantPrefixScript>()
             }
             },
         {
@@ -438,13 +331,7 @@ public static class CraftingRequirements
                 Rank = "Artisan",
                 Level = 88,
                 Difficulty = 2,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(AncientPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<AncientPrefixScript>()
             }
             },
         {
@@ -460,13 +347,7 @@ public static class CraftingRequirements
                 Rank = "Beginner",
                 Level = 5,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MysticalPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<MysticalPrefixScript>()
             }
         },
         {
@@ -482,13 +363,7 @@ public static class CraftingRequirements
                 Rank = "Adept",
                 Level = 90,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(PersistingPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<PersistingPrefixScript>()
             }
         },
         {
@@ -504,13 +379,7 @@ public static class CraftingRequirements
                 Rank = "Initiate",
                 Level = 55,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(FocusedPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<FocusedPrefixScript>()
             }
         },
         {
@@ -526,13 +395,7 @@ public static class CraftingRequirements
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(LuckyPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<LuckyPrefixScript>()
             }
             },
         {
@@ -548,13 +411,7 @@ public static class CraftingRequirements
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(AiryPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<AiryPrefixScript>()
             }
             },
         {
@@ -570,13 +427,7 @@ public static class CraftingRequirements
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(PrecisionPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<PrecisionPrefixScript>()
             }
             },
         {
@@ -592,13 +443,7 @@ public static class CraftingRequirements
                 Rank = "Artisan",
                 Level = 75,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SavagePrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<SavagePrefixScript>()
             }
         },
         {
@@ -614,13 +459,7 @@ public static class CraftingRequirements
                 Rank = "Basic",
                 Level = 16,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(MightyPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<MightyPrefixScript>()
             }
             },
         {
@@ -636,13 +475,7 @@ public static class CraftingRequirements
                 Rank = "Adept",
                 Level = 95,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(BlazingPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<BlazingPrefixScript>()
             }
         },
         {
@@ -658,13 +491,7 @@ public static class CraftingRequirements
                 Rank = "Initiate",
                 Level = 50,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(ToughPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<ToughPrefixScript>()
             }
         },
         {
@@ -680,13 +507,7 @@ public static class CraftingRequirements
                 Rank = "Initiate",
                 Level = 44,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(ValiantPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<ValiantPrefixScript>()
             }
             },
                 {
@@ -702,13 +523,7 @@ public static class CraftingRequirements
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(TightPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<TightPrefixScript>()
             }
         },
         {
@@ -724,13 +539,7 @@ public static class CraftingRequirements
                 Rank = "Initiate",
                 Level = 50,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(NimblePrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<NimblePrefixScript>()
             }
         },
         {
@@ -746,13 +555,7 @@ public static class CraftingRequirements
                 Rank = "Beginner",
                 Level = 5,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(ShroudedPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<ShroudedPrefixScript>()
             }
             },
         {
@@ -768,13 +571,7 @@ public static class CraftingRequirements
                 Rank = "Adept",
                 Level = 90,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(CursedPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<CursedPrefixScript>()
             }
         },
         {
@@ -790,13 +587,7 @@ public static class CraftingRequirements
                 Rank = "Basic",
                 Level = 37,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(DarkPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<DarkPrefixScript>()
             }
             },
         {
@@ -812,13 +603,7 @@ public static class CraftingRequirements
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HowlingPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<HowlingPrefixScript>()
             }
         },
         {
@@ -834,13 +619,7 @@ public static class CraftingRequirements
                 Rank = "Initiate",
                 Level = 45,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(SoftPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<SoftPrefixScript>()
             }
             },
         {
@@ -856,13 +635,7 @@ public static class CraftingRequirements
                 Rank = "Basic",
                 Level = 20,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(BreezyPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<BreezyPrefixScript>()
             }
         },
         {
@@ -878,13 +651,7 @@ public static class CraftingRequirements
                 Rank = "Artisan",
                 Level = 78,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(WhirlingPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<WhirlingPrefixScript>()
             }
         },
         {
@@ -900,13 +667,7 @@ public static class CraftingRequirements
                 Rank = "Initiate",
                 Level = 58,
                 Difficulty = 1,
-                Modification = ((mapper, item) =>
-                {
-                    item.ScriptKeys.Add(ScriptBase.GetScriptKey(typeof(HazyPrefixScript)));
-                    var schema = mapper.Map<ItemSchema>(item);
-
-                    return mapper.Map<Item>(schema);
-                })
+                Modification = item => item.AddScript<HazyPrefixScript>()
             }
         },
     };
