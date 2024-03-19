@@ -3,18 +3,17 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.MerchantScripts.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Casino;
 
 public class ZertaScript : DialogScriptBase
 {
-    private readonly IScriptProvider ScriptProvider;
 
     /// <inheritdoc />
     public ZertaScript(Dialog subject, IScriptProvider scriptProvider)
-        : base(subject) =>
-        ScriptProvider = scriptProvider;
+        : base(subject)
+    {
+    }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -38,7 +37,7 @@ public class ZertaScript : DialogScriptBase
 
                 if (script == null)
                 {
-                    merchant.AddScript<Merchant, IMerchantScript>(typeof(MerchantScripts.Casino.ZertaScript), ScriptProvider);
+                    merchant.AddScript<MerchantScripts.Casino.ZertaScript>();
                     script = merchant.Script.As<MerchantScripts.Casino.ZertaScript>();
                     script!.Source = source;
                     merchant.Say($"Thanks {source.Name}!");

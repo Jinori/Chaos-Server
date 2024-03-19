@@ -18,6 +18,8 @@ public class RemoveEffectScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public Animation? Animation { get; init; }
     /// <inheritdoc />
+    public ushort? AnimationSpeed { get; init; }
+    /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
     /// <inheritdoc />
     public string? EffectKey { get; init; }

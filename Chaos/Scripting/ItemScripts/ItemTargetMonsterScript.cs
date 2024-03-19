@@ -19,6 +19,8 @@ public class ItemTargetMonsterScript : ConfigurableItemScriptBase,
     public bool AllAggro { get; set; }
     public bool AnimatePoints { get; init; }
     public Animation? Animation { get; init; }
+    /// <inheritdoc />
+    public ushort? AnimationSpeed { get; init; }
     public BodyAnimation BodyAnimation { get; init; }
     /// <inheritdoc />
     public TimeSpan? EffectDurationOverride { get; init; }

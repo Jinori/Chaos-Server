@@ -23,6 +23,8 @@ public class HealthBasedDamageScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public IApplyDamageScript ApplyDamageScript { get; init; }
     /// <inheritdoc />
+    public ushort? AnimationSpeed { get; init; }
+    /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
     /// <inheritdoc />
     public Element? Element { get; init; }

@@ -48,6 +48,8 @@ public class ManaBasedDamageScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public byte? Sound { get; init; }
     /// <inheritdoc />
+    public ushort? AnimationSpeed { get; init; }
+    /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }

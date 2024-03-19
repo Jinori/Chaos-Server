@@ -56,6 +56,8 @@ public class DamageWithSplashScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public byte? Sound { get; init; }
     /// <inheritdoc />
+    public ushort? AnimationSpeed { get; init; }
+    /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
     /// <inheritdoc />
     public Animation? Animation { get; init; }

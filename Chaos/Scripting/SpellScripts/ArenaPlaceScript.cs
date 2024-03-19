@@ -20,6 +20,8 @@ public class ArenaPlaceScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public ArenaTeam ArenaTeamColor { get; init; }
     /// <inheritdoc />
+    public ushort? AnimationSpeed { get; init; }
+    /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
 
     /// <inheritdoc />

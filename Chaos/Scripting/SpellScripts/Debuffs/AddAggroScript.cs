@@ -22,6 +22,8 @@ public class AddAggroScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public Animation? Animation { get; init; }
     /// <inheritdoc />
+    public ushort? AnimationSpeed { get; init; }
+    /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
 
     /// <inheritdoc />

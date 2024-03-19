@@ -2,6 +2,9 @@ using Chaos.Storage.Abstractions.Definitions;
 
 namespace Chaos.Storage.Abstractions;
 
+/// <summary>
+/// 
+/// </summary>
 public abstract class FileCacheOptionsBase : ISimpleFileCacheOptions
 {
     /// <inheritdoc />

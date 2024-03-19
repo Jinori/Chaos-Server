@@ -7,7 +7,6 @@ using Chaos.Time.Abstractions;
 using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Extensions;
-using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
@@ -162,7 +161,7 @@ public sealed class ColorClashDetermineWinnerScript : MapScriptBase
                 {
                     var script = tile.Script.As<ColorClashScript>();
                     if (script != null)
-                        tile.RemoveScript<IReactorTileScript, ColorClashScript>();
+                        tile.RemoveScript<ColorClashScript>();
                 }
                 Subject.Morph("26014");
                 LayAllColorClashReactors = false;

@@ -27,6 +27,8 @@ public class ExecuteScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public IApplyHealScript ApplyHealScript { get; init; }
     /// <inheritdoc />
+    public ushort? AnimationSpeed { get; init; }
+    /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
     /// <inheritdoc />
     public int? CooldownReduction { get; init; }

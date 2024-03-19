@@ -3,21 +3,19 @@ using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.MerchantScripts.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Casino;
 
 public class MonsterRacingScript : DialogScriptBase
 {
-    private readonly IScriptProvider ScriptProvider;
     private bool HasPaid;
 
     /// <inheritdoc />
-    public MonsterRacingScript(Dialog subject, IScriptProvider scriptProvider)
-        : base(subject) =>
-        ScriptProvider = scriptProvider;
+    public MonsterRacingScript(Dialog subject)
+        : base(subject)
+    {
+    }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -91,7 +89,7 @@ public class MonsterRacingScript : DialogScriptBase
             var script = merchant.Script.As<MerchantScripts.Casino.MonsterRacingScript>();
 
             if (script == null)
-                merchant.AddScript<Merchant, IMerchantScript>(typeof(MerchantScripts.Casino.MonsterRacingScript), ScriptProvider);
+                merchant.AddScript<MerchantScripts.Casino.MonsterRacingScript>();
 
             merchant.Say($"{source.Name} has bet on lane {source.MonsterRacingLane}!");
             Subject.InjectTextParameters(source.MonsterRacingLane);

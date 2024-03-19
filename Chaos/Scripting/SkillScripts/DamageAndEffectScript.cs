@@ -27,6 +27,8 @@ public class DamageAndEffectScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public int? BaseDamage { get; init; }
     /// <inheritdoc />
+    public ushort? AnimationSpeed { get; init; }
+    /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
     /// <inheritdoc />
     public Stat? DamageStat { get; init; }

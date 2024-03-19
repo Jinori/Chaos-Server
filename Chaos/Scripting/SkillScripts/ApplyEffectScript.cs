@@ -19,6 +19,8 @@ public class ApplyEffectScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public Animation? Animation { get; init; }
     /// <inheritdoc />
+    public ushort? AnimationSpeed { get; init; }
+    /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
     /// <inheritdoc />
     public TimeSpan? EffectDurationOverride { get; init; }

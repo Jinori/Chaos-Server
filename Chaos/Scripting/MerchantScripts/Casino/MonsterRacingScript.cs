@@ -88,7 +88,7 @@ public sealed class MonsterRacingScript : MerchantScriptBase
             if (!CreatedMonsters)
                 CreateMonsters();
 
-            Subject.RemoveScript<IMerchantScript, MonsterRacingScript>();
+            Subject.RemoveScript<MonsterRacingScript>();
         }
     }
 }
