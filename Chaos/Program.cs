@@ -31,6 +31,7 @@ using Chaos.Storage.Abstractions;
 using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Extensions.Logging;
+using AppContext = Chaos.AppContext;
 
 var encodingProvider = CodePagesEncodingProvider.Instance;
 Encoding.RegisterProvider(encodingProvider);
@@ -94,6 +95,8 @@ var useSeq = builder.Configuration.GetValue<bool>(ConfigKeys.Logging.UseSeq);
 
 static async Task RunApp(WebApplication app)
 {
+    AppContext.Provider = app.Services;
+
     var serverCtx = app.Services.GetRequiredService<CancellationTokenSource>();
     var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
@@ -389,7 +392,8 @@ static void RegisterStructuredLoggingTransformations()
                                  ItemTemplateKey = obj.Item.Template.TemplateKey,
                                  ItemCount = obj.Item.Count,
                                  Creation = obj.Creation,
-                                 Location = ILocation.ToString(obj)
+                                 Location = ILocation.ToString(obj),
+                                 NoTrade = obj.Item.Template.NoTrade
                              });
 
                          builder.RegisterObjectTransformation<Dialog>(
