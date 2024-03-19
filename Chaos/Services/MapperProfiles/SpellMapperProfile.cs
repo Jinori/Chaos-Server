@@ -96,7 +96,8 @@ public sealed class SpellMapperProfile(ISimpleCache simpleCache, IScriptProvider
             RequiresMaster = obj.RequiresMaster,
             LevelsUp = obj.LevelsUp,
             MaxLevel = obj.MaxLevel ?? 100,
-            WizardElement = obj.WizardElement
+            WizardElement = obj.WizardElement,
+            SpellSchools = obj.SpellSchools
         };
 
     public SpellTemplateSchema Map(SpellTemplate obj) => throw new NotImplementedException();

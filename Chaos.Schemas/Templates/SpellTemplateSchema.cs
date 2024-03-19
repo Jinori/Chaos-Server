@@ -16,6 +16,11 @@ public sealed record SpellTemplateSchema : PanelEntityTemplateSchema
     public WizardElement? WizardElement { get; set; }
     
     /// <summary>
+    /// A spell is lumped in with other schools of magic
+    /// </summary>
+    public SpellSchools? SpellSchools { get; set; }
+    
+    /// <summary>
     ///     The number of chant lines this spell requires by default
     /// </summary>
     public byte CastLines { get; set; }

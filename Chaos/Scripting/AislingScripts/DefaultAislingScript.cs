@@ -21,7 +21,6 @@ using Chaos.Scripting.Components;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyHealing;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -316,6 +315,15 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             while (!source.MapInstance.IsWalkable(point, terminus.Type));
 
             source.MapInstance.AddEntity(terminus, point);
+        }
+
+        if (Subject.UserStatSheet.BaseClass is BaseClass.Priest)
+        {
+            var monsters = Subject.MapInstance.GetEntities<Monster>();
+
+            foreach (var monster in monsters)
+                if (monster.Name.Contains(Subject.Name))
+                    monster.MapInstance.RemoveEntity(monster);
         }
         
         if (source?.MapInstance.Name.Equals("Nightmare") == true)

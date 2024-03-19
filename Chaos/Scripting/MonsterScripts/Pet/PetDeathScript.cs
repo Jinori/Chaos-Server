@@ -11,10 +11,15 @@ public sealed class PetDeathScript : MonsterScriptBase
 
     public override void OnDeath()
     {
+        if (Subject.PetOwner != null)
+        {
+            Subject.PetOwner.SkillBook.TryGetObjectByTemplateKey("summonPet", out var obj);
+
+            if (obj != null)
+                obj.Elapsed = TimeSpan.FromMinutes(5);
+        }
+        
         Subject.PetOwner = null;
         Map.RemoveEntity(Subject);
-
-        if (Subject.TryDropGold(Subject, Subject.Gold, out var money))
-            Subject.PetOwner?.SendActiveMessage($"Your pet died and dropped {money?.Amount} gold!");
     }
 }
