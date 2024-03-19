@@ -17,8 +17,7 @@ public sealed class MysticalPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            SpellDamagePct = 3,
-            MaximumMp = -50
+            SpellDamagePct = 3
         };
 
         subject.Modifiers.Add(attributes);

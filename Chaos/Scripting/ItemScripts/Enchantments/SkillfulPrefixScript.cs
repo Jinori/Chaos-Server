@@ -17,8 +17,7 @@ public sealed class SkillfulPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            SkillDamagePct = 3,
-            AtkSpeedPct = 15
+            AtkSpeedPct = 2
         };
 
         subject.Modifiers.Add(attributes);

@@ -78,15 +78,6 @@ public class TerminusTutorialScript : DialogScriptBase
                     if (source.IsAlive)
                         return;
 
-                    source.Legend.AddOrAccumulate(
-                        new LegendMark(
-                            "Completed Tutorial",
-                            "CompletedTutorial",
-                            MarkIcon.Heart,
-                            MarkColor.White,
-                            1,
-                            GameTime.Now));
-
                     source.SpellBook.Remove("srad tut");
                     ExperienceDistributionScript.GiveExp(source, 5000);
                     Point point;

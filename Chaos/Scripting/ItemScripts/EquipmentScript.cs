@@ -17,6 +17,9 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
     
     private bool CanWieldStaff(Aisling source, string skillName)
     {
+        if (source.UserStatSheet.BaseClass == BaseClass.Priest)
+            return true;
+        
         if (!source.SkillBook.Contains(skillName))
         {
             source.SendOrangeBarMessage($"You do not have the skill to wield it.");

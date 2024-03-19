@@ -90,7 +90,7 @@ public class MythicBeeScript : DialogScriptBase
                     source,
                     "I wish you the best of luck on your mission. May your stinger be swift and true, and may you return to our hive victorious. Buzz on, my friend!");
 
-                source.SendOrangeBarMessage("Kill 15 Droll Mantis for Queen Bee");
+                source.SendOrangeBarMessage("Kill 15 Droll Mantis for Bee Queen");
                 source.Trackers.Enums.Set(MythicBee.LowerBee);
 
                 return;

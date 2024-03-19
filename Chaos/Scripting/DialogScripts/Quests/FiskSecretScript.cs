@@ -1,6 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
+using Chaos.Formulae;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -30,6 +31,9 @@ public class FiskSecretScript : DialogScriptBase
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out FiskSecretStage stage);
         var hasStage2 = source.Trackers.Enums.TryGetValue(out FiskRemakeBouquet stage2);
+        var tnl = LevelUpFormulae.Default.CalculateTnl(source);
+        var seventyFivePercent = Convert.ToInt32(.75 * tnl);
+        var fiftyPercent = Convert.ToInt32(.50 * tnl);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -299,9 +303,9 @@ public class FiskSecretScript : DialogScriptBase
             case "fisksecret_fiskcheckin2":
             {
                 source.Trackers.Enums.Set(FiskSecretStage.CompletedFiskSecret);
-                source.TryGiveGold(125000);
+                source.TryGiveGold(75000);
                 source.TryGiveGamePoints(10);
-                ExperienceDistributionScript.GiveExp(source, 300000);
+                ExperienceDistributionScript.GiveExp(source, seventyFivePercent);
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
@@ -331,9 +335,9 @@ public class FiskSecretScript : DialogScriptBase
             case "deliveredbouquet4":
             {
                 source.Trackers.Enums.Set(FiskSecretStage.CompletedFiskSecret);
-                source.TryGiveGold(75000);
+                source.TryGiveGold(40000);
                 source.TryGiveGamePoints(10);
-                ExperienceDistributionScript.GiveExp(source, 250000);
+                ExperienceDistributionScript.GiveExp(source, fiftyPercent);
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
@@ -555,6 +559,12 @@ public class FiskSecretScript : DialogScriptBase
 
                 break;
             }
+
+            case "pinkrose_start3":
+            {
+                source.SendOrangeBarMessage("Speak to Vivianne to get a Pink Rose from her garden.");
+                break;
+            }
             case "pinkrose_end":
             {
                 source.Trackers.Enums.Set(FiskSecretStage.WontTell);
@@ -653,7 +663,12 @@ public class FiskSecretScript : DialogScriptBase
             #region VivekaBouquet
             case "viveka_initial":
             {
-                if (hasStage)
+                if (hasStage && stage == FiskSecretStage.Started4 || 
+                    stage == FiskSecretStage.StartedBouquet || 
+                    stage == FiskSecretStage.StartedBouquet1 || 
+                    stage == FiskSecretStage.CollectedBouquet || 
+                    hasStage2 && stage2 == FiskRemakeBouquet.BouquetWait || 
+                    stage2 == FiskRemakeBouquet.RemadeBouquet)
                 {
                     var option = new DialogOption
                     {
