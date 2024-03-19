@@ -8,6 +8,7 @@ public class PFMantisBossScript : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
+        GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(PFMantisBossMoveToTargetScript)),
         GetScriptKey(typeof(PFMantisBossDefenseScript)),
         GetScriptKey(typeof(PFMantisBossEnrageScript)),
@@ -18,7 +19,8 @@ public class PFMantisBossScript : CompositeMonsterScript
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(PFMantisDeathScript)),
-        GetScriptKey(typeof(DeathScript))
+        GetScriptKey(typeof(DeathScript)),
+        GetScriptKey(typeof(DisplayNameScript))
     };
 
     /// <inheritdoc />
