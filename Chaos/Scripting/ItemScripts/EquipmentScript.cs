@@ -133,7 +133,7 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
 
         if (template.RequiresMaster && !source.UserStatSheet.Master)
         {
-            source.SendOrangeBarMessage($"{Subject.DisplayName} does not seem to fit you, but you could grow into it");
+            source.SendOrangeBarMessage($"{Subject.DisplayName} requires Master to wear.");
 
             return;
         }

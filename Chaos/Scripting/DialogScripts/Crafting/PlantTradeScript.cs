@@ -89,7 +89,7 @@ public class PlantTradeScript : DialogScriptBase
 
         var newPlant = ItemFactory.Create(previous.ToLowerInvariant().Replace(" ", string.Empty));
 
-        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
+        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || item.Count < 1)
         {
             Subject.Reply(source, "You ran out of those plants to trade.", "plant_trade_initial");
 
@@ -112,7 +112,7 @@ public class PlantTradeScript : DialogScriptBase
 
     public void OnDisplayingConfirmation(Aisling source)
     {
-        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
+        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || item.Count < 1)
         {
             Subject.Reply(source, "Skip", "plant_trade_initial");
 
@@ -168,7 +168,7 @@ public class PlantTradeScript : DialogScriptBase
             }
 
             // Find the slot of the plant item the player wants to trade.
-            if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
+            if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || item.Count < 1)
             {
                 Subject.Reply(source, "You ran out of those plants to trade.", "plant_trade_initial");
 

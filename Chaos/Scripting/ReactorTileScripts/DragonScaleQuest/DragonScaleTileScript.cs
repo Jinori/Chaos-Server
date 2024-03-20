@@ -20,11 +20,11 @@ public class DragonScaleTileScript(
             return;
 
         var hasStage = source.Trackers.Enums.TryGetValue(out DragonScale stage);
-        
-        if (hasStage && stage != DragonScale.FoundAllClues && stage != DragonScale.SpawnedDragon)
+
+        if (!hasStage)
             return;
         
-        if (!CanStartBoss(aisling))
+        if (!CanStartBoss(aisling, stage))
             return;
         
         // Check if dropped item is Lion Fish
@@ -38,8 +38,11 @@ public class DragonScaleTileScript(
         aisling.Trackers.Enums.Set(DragonScale.DroppedScale);
     }
     
-    private bool CanStartBoss(Aisling source)
+    private bool CanStartBoss(Aisling source, DragonScale stage)
     {
+        if (stage != DragonScale.FoundAllClues && stage != DragonScale.SpawnedDragon)
+            return false;
+        
         var mapInstance = simpleCache.Get<MapInstance>("wilderness");
 
         if (!MapHasMonsters(mapInstance)) return true;

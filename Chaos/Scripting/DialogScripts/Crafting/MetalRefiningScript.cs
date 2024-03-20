@@ -126,7 +126,7 @@ public class MetalRefiningScript : DialogScriptBase
 
     public void OnDisplayingAccepted(Aisling source)
     {
-        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
+        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || item.Count < 2)
         {
             Subject.Reply(source, "You ran out of that metal to refine.", "metal_refining_initial");
 
@@ -167,7 +167,7 @@ public class MetalRefiningScript : DialogScriptBase
 
     public void OnDisplayingConfirmation(Aisling source)
     {
-        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
+        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || item.Count < 2)
         {
             Subject.Reply(source, "Skip", "metal_refining_initial");
 

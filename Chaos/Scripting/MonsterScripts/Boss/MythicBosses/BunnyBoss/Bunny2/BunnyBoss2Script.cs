@@ -12,7 +12,7 @@ public class BunnyBoss2Script : CompositeMonsterScript
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(BossMoveToTargetScript)),
         GetScriptKey(typeof(BossDefenseScript)),
-        GetScriptKey(typeof(BunnyBoss1EnrageScript)),
+        GetScriptKey(typeof(BunnyBoss2EnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),

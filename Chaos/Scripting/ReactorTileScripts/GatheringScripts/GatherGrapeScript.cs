@@ -10,15 +10,15 @@ namespace Chaos.Scripting.ReactorTileScripts.GatheringScripts;
 
 public class GatherGrapeScript : ReactorTileScriptBase
 {
-    private readonly IItemFactory _itemFactory;
-    private readonly ISimpleCache _simpleCache;
+    private readonly IItemFactory ItemFactory;
+    private readonly ISimpleCache SimpleCache;
 
     /// <inheritdoc />
     public GatherGrapeScript(ReactorTile subject, IItemFactory itemFactory, ISimpleCache simpleCache)
         : base(subject)
     {
-        _itemFactory = itemFactory;
-        _simpleCache = simpleCache;
+        ItemFactory = itemFactory;
+        SimpleCache = simpleCache;
     }
 
     /// <inheritdoc />
@@ -29,7 +29,7 @@ public class GatherGrapeScript : ReactorTileScriptBase
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("grape", 23))
         {
-            var mapInstance = _simpleCache.Get<MapInstance>("suomi_grape_farmer");
+            var mapInstance = SimpleCache.Get<MapInstance>("suomi_grape_farmer");
             var point = new Point(8, 5);
             aisling.SendOrangeBarMessage("The farmer is staring, you head inside.");
             aisling.TraverseMap(mapInstance, point);
@@ -37,13 +37,13 @@ public class GatherGrapeScript : ReactorTileScriptBase
         }
         else
         {
-            var grape = _itemFactory.Create("Grape");
+            var grape = ItemFactory.Create("Grape");
             var grapeCount = Random.Shared.Next(1, 4);
             grape.Count = grapeCount;
 
             if (!aisling.TryGiveItem(ref grape))
             {
-                var mapInstance = _simpleCache.Get<MapInstance>("suomi_grape_farmer");
+                var mapInstance = SimpleCache.Get<MapInstance>("suomi_grape_farmer");
                 var point = new Point(8, 5);
                 aisling.SendOrangeBarMessage("The farmer is staring, you head inside.");
                 aisling.TraverseMap(mapInstance, point);

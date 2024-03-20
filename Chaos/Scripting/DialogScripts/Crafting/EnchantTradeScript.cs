@@ -73,7 +73,7 @@ public class EnchantTradeScript : DialogScriptBase
 
         var essence = ItemFactory.Create(previous.ToLowerInvariant().Replace(" ", string.Empty));
 
-        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
+        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || item.Count < 1)
         {
             Subject.Reply(source, "You ran out of those essences to trade.", "enchant_trade_initial");
 
@@ -89,7 +89,7 @@ public class EnchantTradeScript : DialogScriptBase
 
     public void OnDisplayingConfirmation(Aisling source)
     {
-        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
+        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || item.Count < 1)
         {
             Subject.Reply(source, "Skip", "enchant_trade_initial");
 

@@ -81,9 +81,12 @@ public class dragonScaleDeathScript : MonsterScriptBase
                 
                 foreach (var target in rewardTargets)
                 {
-                    target.Trackers.Enums.Set(DragonScale.KilledDragon);
-                    target.SendOrangeBarMessage("The dragon collapses, you scour the body for a scale.");
-                    target.TryGiveItem(ref dragonscale);
+                    if (target.Trackers.Enums.TryGetValue(out DragonScale stage) && stage == DragonScale.SpawnedDragon)
+                    {
+                        target.Trackers.Enums.Set(DragonScale.KilledDragon);
+                        target.SendOrangeBarMessage("The dragon collapses, you scour the body for a scale.");
+                        target.TryGiveItem(ref dragonscale);   
+                    }
                 }
             }
         }

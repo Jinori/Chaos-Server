@@ -11,7 +11,7 @@ public sealed class UnlockedChestScript : ReactorTileScriptBase
     private readonly IItemFactory ItemFactory;
 
     /// <inheritdoc />
-    public UnlockedChestScript(ReactorTile subject, ItemFactory itemFactory)
+    public UnlockedChestScript(ReactorTile subject, IItemFactory itemFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;

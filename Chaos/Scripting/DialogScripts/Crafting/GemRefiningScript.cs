@@ -200,7 +200,7 @@ public class GemRefiningScript : DialogScriptBase
 
     public void OnDisplayingAccepted(Aisling source)
     {
-        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
+        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || item.Count < 1)
         {
             Subject.Reply(source, "You ran out of those gems to refine.", "gem_refining_initial");
 
@@ -241,7 +241,7 @@ public class GemRefiningScript : DialogScriptBase
 
     public void OnDisplayingConfirmation(Aisling source)
     {
-        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
+        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || item.Count < 1)
         {
             Subject.Reply(source, "Skip", "gem_refining_initial");
 

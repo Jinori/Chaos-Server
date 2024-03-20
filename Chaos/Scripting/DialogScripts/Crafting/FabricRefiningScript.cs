@@ -102,7 +102,7 @@ public class FabricRefiningScript : DialogScriptBase
 
     public void OnDisplayingAccepted(Aisling source)
     {
-        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
+        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || item.Count < 1)
         {
             Subject.Reply(source, "You ran out of those fabrics to refine.", "fabric_refining_initial");
 
@@ -143,7 +143,7 @@ public class FabricRefiningScript : DialogScriptBase
 
     public void OnDisplayingConfirmation(Aisling source)
     {
-        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
+        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || item.Count < 1)
         {
             Subject.Reply(source, "Skip", "fabric_refining_initial");
 

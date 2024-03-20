@@ -481,7 +481,7 @@ public class ReligionScriptBase : DialogScriptBase
             return;
         }
 
-        source.SendActiveMessage($"In gratitude for your loyalty, {deity} hands you a passport to return home.");
+        source.SendActiveMessage($"In gratitude for your loyalty, {deity} hands you a passport.");
 
         var scroll = ItemFactory.Create("passport");
         source.Inventory.TryAddToNextSlot(scroll);

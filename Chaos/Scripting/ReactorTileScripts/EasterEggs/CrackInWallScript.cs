@@ -11,7 +11,7 @@ public sealed class CrackInWallScript : ReactorTileScriptBase
     private readonly IItemFactory ItemFactory;
 
     /// <inheritdoc />
-    public CrackInWallScript(ReactorTile subject, ItemFactory itemFactory)
+    public CrackInWallScript(ReactorTile subject, IItemFactory itemFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;
