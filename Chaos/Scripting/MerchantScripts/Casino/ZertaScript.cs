@@ -13,7 +13,7 @@ namespace Chaos.Scripting.MerchantScripts.Casino;
 public class ZertaScript : MerchantScriptBase
 {
     public readonly Location CasinoDoorPoint = new("rucesion", 8, 21);
-    public readonly Location CasinoPoint = new("rucesion_casino", 6, 15);
+    public readonly Location CasinoPoint = new("rucesion_casino", 9, 15);
     private readonly IIntervalTimer DelayTimer;
     public readonly Location HomePoint = new("rucesion", 12, 22);
     public readonly Location InsideCasinoDoorPoint = new("rucesion_casino", 19, 14);

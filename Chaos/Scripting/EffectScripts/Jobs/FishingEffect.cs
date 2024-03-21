@@ -25,6 +25,26 @@ public class FishingEffect(IItemFactory itemFactory) : ContinuousAnimationEffect
         new KeyValuePair<string, decimal>("lionfish", 6),
         new KeyValuePair<string, decimal>("purplewhopper", 2)
     ];
+
+    private List<string> BaitLossMessages =
+    [
+        "Bait lost to a sly swimmer!",
+        "Empty hook, clever fish.",
+        "The bait's gone, fish wins!",
+        "Swift bite, no catch though.",
+        "Fish tricked you this time.",
+        "Bait stolen by the depths.",
+        "Your bait's a fish's feast.",
+        "Snatched! The bait's gone.",
+        "A tug, but no prize.",
+        "Fish outsmarted you today.",
+        "Bait gone, better luck next.",
+        "Sneaky fish, bait's gone!",
+        "Bait lost, nothing caught.",
+        "Unseen fish steals the bait.",
+        "The water claims your bait."
+    ];
+    
     private List<Point> FishingSpots = new();
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(1);
 
@@ -56,15 +76,16 @@ public class FishingEffect(IItemFactory itemFactory) : ContinuousAnimationEffect
             return;
         }
 
-        if (!IntegerRandomizer.RollChance(FISH_CATCH_CHANCE))
+        if (IntegerRandomizer.RollChance(FISH_STEAL_BAIT))
         {
-            if (!IntegerRandomizer.RollChance(FISH_STEAL_BAIT))
-            {
-                aisling.SendOrangeBarMessage($"You feel a tug and lose your bait.");
-                aisling.Inventory.RemoveQuantity("Fishing Bait", 1);
-                return;
-            }
+            var randomMessage = BaitLossMessages[Random.Shared.Next(BaitLossMessages.Count)];
+            
+            aisling.SendOrangeBarMessage(randomMessage);
+            aisling.Inventory.RemoveQuantity("Fishing Bait", 1);
         }
+        
+        if (!IntegerRandomizer.RollChance(FISH_CATCH_CHANCE))
+            return;
 
         var templateKey = FishData.PickRandomWeighted();
         var fish = itemFactory.Create(templateKey);

@@ -16,7 +16,10 @@ public sealed class PetDeathScript : MonsterScriptBase
             Subject.PetOwner.SkillBook.TryGetObjectByTemplateKey("summonPet", out var obj);
 
             if (obj != null)
-                obj.Elapsed = TimeSpan.FromMinutes(5);
+            {
+                obj.Cooldown = TimeSpan.FromMinutes(5);
+                obj.BeginCooldown(Subject.PetOwner);
+            }
         }
         
         Subject.PetOwner = null;
