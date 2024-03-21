@@ -12,6 +12,7 @@ public class FishingEffect(IItemFactory itemFactory) : ContinuousAnimationEffect
 {
     private const int FISH_CATCH_CHANCE = 2;
     private const byte FISHING_ICON = 203;
+    private const int FISH_STEAL_BAIT = 5;
 
     private static readonly List<KeyValuePair<string, decimal>> FishData =
     [
@@ -57,9 +58,12 @@ public class FishingEffect(IItemFactory itemFactory) : ContinuousAnimationEffect
 
         if (!IntegerRandomizer.RollChance(FISH_CATCH_CHANCE))
         {
-            aisling.SendOrangeBarMessage($"You feel a tug and lose your bait.");
-            aisling.Inventory.RemoveQuantity("Fishing Bait", 1);
-            return;
+            if (!IntegerRandomizer.RollChance(FISH_STEAL_BAIT))
+            {
+                aisling.SendOrangeBarMessage($"You feel a tug and lose your bait.");
+                aisling.Inventory.RemoveQuantity("Fishing Bait", 1);
+                return;
+            }
         }
 
         var templateKey = FishData.PickRandomWeighted();
