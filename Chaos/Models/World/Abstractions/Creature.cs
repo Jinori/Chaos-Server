@@ -275,10 +275,6 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
 
         var path = FindPath(target, unwalkablePoints);
 
-        //if there is no path, return
-        if (path.Count == 0)
-            return;
-
         var nextPoint = path.Pop();
         var direction = nextPoint.DirectionalRelationTo(this);
 

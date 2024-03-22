@@ -9,12 +9,16 @@ public static class ScriptExtensions
     {
         var scriptType = typeof(TScript);
         var scriptKey = ScriptBase.GetScriptKey(scriptType);
+
         var scriptedType = scripted.GetType();
 
         var baseScriptType = scriptedType.ExtractGenericInterfaces(typeof(IScripted<>))
-            .Single()
-            .GetGenericArguments()
-            .Single();
+                                         .First(
+                                             t => t.GetGenericArguments()
+                                                   .Length
+                                                  == 1)
+                                         .GetGenericArguments()
+                                         .Single();
 
         var scriptProvider = AppContext.ScriptProvider;
 
