@@ -125,6 +125,11 @@ public class VillagerScript : MerchantScriptBase
 
     private void HandleIdleState()
     {
+        //Inspect players legend for unique legend marks and call them out
+        
+        //Inspect players gear for unique gear and talk about it
+        
+        
         if (IntegerRandomizer.RollChance(10)) 
             SayRandomMessage();
         
@@ -159,6 +164,7 @@ public class VillagerScript : MerchantScriptBase
                 Subject.TryUseSpell(spell, player.Id);     
             }
         }
+        Subject.Say("That should help a bit.");
     }
     
     private string GetRandomMessage()

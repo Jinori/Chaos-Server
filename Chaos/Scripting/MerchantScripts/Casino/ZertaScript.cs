@@ -13,7 +13,7 @@ namespace Chaos.Scripting.MerchantScripts.Casino;
 public class ZertaScript : MerchantScriptBase
 {
     public readonly Location CasinoDoorPoint = new("rucesion", 8, 21);
-    public readonly Location CasinoPoint = new("rucesion_casino", 9, 15);
+    public readonly Location CasinoPoint = new("rucesion_casino", 7, 15);
     private readonly IIntervalTimer DelayTimer;
     public readonly Location HomePoint = new("rucesion", 12, 22);
     public readonly Location InsideCasinoDoorPoint = new("rucesion_casino", 19, 14);
@@ -50,7 +50,7 @@ public class ZertaScript : MerchantScriptBase
                 if ((Source != null) && door.Closed)
                     door.OnClicked(Source);
 
-                Subject.Pathfind(CasinoDoorPoint);
+                Subject.Pathfind(CasinoDoorPoint, 0);
             }
         }
         else if ((Subject.DistanceFrom(CasinoPoint) > 0) && Subject.OnSameMapAs(CasinoPoint) && !AnnouncedPutItOnRed)
@@ -58,7 +58,7 @@ public class ZertaScript : MerchantScriptBase
             WalkTimer.Update(delta);
 
             if (WalkTimer.IntervalElapsed)
-                Subject.Pathfind(CasinoPoint);
+                Subject.Pathfind(CasinoPoint, 0);
         }
         else if ((Subject.DistanceFrom(CasinoPoint) <= 2) && !AnnouncedPutItOnRed)
         {
@@ -82,14 +82,14 @@ public class ZertaScript : MerchantScriptBase
                 WalkTimer.Update(delta);
 
                 if (WalkTimer.IntervalElapsed)
-                    Subject.Pathfind(InsideCasinoDoorPoint);
+                    Subject.Pathfind(InsideCasinoDoorPoint, 0);
             }
             else if ((Subject.DistanceFrom(HomePoint) > 0) && Subject.OnSameMapAs(HomePoint))
             {
                 WalkTimer.Update(delta);
 
                 if (WalkTimer.IntervalElapsed)
-                    Subject.Pathfind(HomePoint);
+                    Subject.Pathfind(HomePoint, 0);
             }
             else if ((Subject.DistanceFrom(HomePoint) == 0) && Subject.OnSameMapAs(HomePoint))
             {

@@ -97,7 +97,7 @@ public sealed class Pathfinder : IPathfinder
             return new Stack<IPoint>();
         }
 
-        if (start.DistanceFrom(end) == 1)
+        if (start.DistanceFrom(end) == 0)
             return new Stack<IPoint>();
 
         using var @lock = Sync.Enter();
