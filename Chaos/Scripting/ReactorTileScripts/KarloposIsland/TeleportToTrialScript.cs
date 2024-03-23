@@ -5,6 +5,7 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Chaos.Scripting.ReactorTileScripts.KarloposIsland;
 
@@ -32,8 +33,9 @@ public class TeleportToTrialScript : ReactorTileScriptBase
     {
         var currentMap = SimpleCache.Get<MapInstance>(source.MapInstance.InstanceId);
         var aisling = source as Aisling;
+        var monstersOnMap = currentMap.GetEntities<Monster>().Where(entity => !entity.Template.TemplateKey.Contains("Pet"));
         
-        if (currentMap.GetEntities<Monster>().Any())
+        if (monstersOnMap.Any())
         {
             aisling?.SendOrangeBarMessage("There are still monsters lurking.");
             var point = source.DirectionalOffset(source.Direction.Reverse());
@@ -41,9 +43,28 @@ public class TeleportToTrialScript : ReactorTileScriptBase
             return;
         }
         
+        if (currentMap.Name != "Karlopos Island Long Beach")
+        {
+            if (aisling is { Group: not null })
+            {
+                if (!aisling.Trackers.Counters.TryGetValue("karlopostrialkills", out var killcount) || killcount < 1)
+                {
+                    // If any player has less than 5 kills, send a message and warp them back
+                    aisling?.SendOrangeBarMessage("You haven't defeated the trial.");
+                    var point = source.DirectionalOffset(source.Direction.Reverse());
+                    source.WarpTo(point);
+                    return;
+                }
+            }
+            else
+            {
+                aisling?.SendOrangeBarMessage("Your group is not near.");
+            }
+        }
+
         var item = ItemFactory.Create("redpearl");
         var classDialog = DialogFactory.Create("queenoctopus_trial", item);
-
+        
         if (aisling != null) classDialog.Display(aisling);
     }
 }

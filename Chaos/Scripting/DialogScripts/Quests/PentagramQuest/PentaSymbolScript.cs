@@ -369,9 +369,6 @@ public class PentaSymbolScript : DialogScriptBase
                     if (source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage)
                         && (stage == PentagramQuestStage.EmpoweredPentagramPiece))
                     {
-                        Subject.Options.RemoveAll(optionToRemove => optionToRemove.DialogKey == "generic_buyShop_initial");
-                        Subject.Options.RemoveAll(optionToRemove => optionToRemove.DialogKey == "generic_sellShop_initial");
-                        
                         var option = new DialogOption
                         {
                             DialogKey = "craftpentagram1",
@@ -459,7 +456,10 @@ public class PentaSymbolScript : DialogScriptBase
                             return;
                         }
                     }
-
+                }
+                
+                foreach (var groupmember in source.Group!)
+                { 
                     groupmember.Inventory.RemoveQuantity("Beryl Pentagram Piece", 1);
                     groupmember.Inventory.RemoveQuantity("Heartstone Pentagram Piece", 1);
                     groupmember.Inventory.RemoveQuantity("Emerald Pentagram Piece", 1);

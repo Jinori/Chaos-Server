@@ -18,7 +18,7 @@ public class KarloposBossScript : CompositeMonsterScript
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
-        GetScriptKey(typeof(DeathScript)),
+        GetScriptKey(typeof(QueenOctopusDeathScript)),
         GetScriptKey(typeof(DisplayNameScript))
     };
 

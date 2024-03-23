@@ -466,8 +466,10 @@ public enum QueenOctopusQuest
     Pendant = 2,
     Pendant2 = 3,
     Pendant3 = 4,
-    Queen = 5,
-    Complete = 6
+    QueenSpawning = 5,
+    QueenSpawned = 6,
+    QueenKilled = 7,
+    Complete = 8
 }
 
 public enum BeggarFoodQuestStage

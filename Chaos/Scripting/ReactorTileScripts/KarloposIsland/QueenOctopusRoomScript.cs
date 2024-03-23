@@ -7,18 +7,18 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.ReactorTileScripts.Mileth;
+namespace Chaos.Scripting.ReactorTileScripts.KarloposIsland;
 
 public class QueenOctopusRoomScript : ReactorTileScriptBase
 {
-    private readonly IDialogFactory _dialogFactory;
-    private readonly IMerchantFactory _merchantFactory;
+    private readonly IDialogFactory DialogFactory;
+    private readonly IMerchantFactory MerchantFactory;
 
     public QueenOctopusRoomScript(ReactorTile subject, IMerchantFactory merchantFactory, IDialogFactory dialogFactory)
         : base(subject)
     {
-        _merchantFactory = merchantFactory;
-        _dialogFactory = dialogFactory;
+        MerchantFactory = merchantFactory;
+        DialogFactory = dialogFactory;
     }
 
     public override void OnWalkedOn(Creature source)
@@ -39,54 +39,67 @@ public class QueenOctopusRoomScript : ReactorTileScriptBase
             return;
         }
 
+        if (aisling.Trackers.Enums.TryGetValue(out QueenOctopusQuest stage) && stage == QueenOctopusQuest.QueenKilled ||
+            stage == QueenOctopusQuest.Complete)
+        {
+            aisling.SendOrangeBarMessage("You've already killed the queen for yourself.");
+            return;
+        }
+
+        if (stage != QueenOctopusQuest.Pendant3 && stage != QueenOctopusQuest.QueenSpawned)
+        {
+            aisling.SendOrangeBarMessage("You are not on this part of the quest.");
+            return;
+        }
+        
         // Check if all members of the group have the quest flag and are within level range
         var missingRequirements = string.Empty;
 
-        var allMembersHaveQuestEnum = aisling.Group.All(
-            member =>
+        var allMembersHaveQuestEnum = aisling.Group.All(member =>
+        {
+            
+            if (member.Trackers.Enums.TryGetValue(out QueenOctopusQuest stage) &&
+                stage == QueenOctopusQuest.QueenSpawned || stage == QueenOctopusQuest.Complete)
+                return true;
+            
+            
+            if (stage != QueenOctopusQuest.Pendant3 || !member.Inventory.Contains("Red Pearl") 
+                && !member.Inventory.Contains("Coral Pendant"))
             {
-                if (!member.Trackers.Enums.TryGetValue(out QueenOctopusQuest stage)
-                    || ((stage != QueenOctopusQuest.Complete) && (stage != QueenOctopusQuest.Queen))
-                    || !member.Inventory.Contains("Red Pearl")
-                    || !member.Inventory.Contains("Coral Pendant")
-                    || member.Trackers.TimedEvents.HasActiveEvent("QueenOctopusCD", out _))
+                missingRequirements += $"{member.Name}: ";
+
+                if (stage != QueenOctopusQuest.Pendant3 && stage != QueenOctopusQuest.QueenSpawned)
                 {
-                    missingRequirements += member.Name + ": ";
-
-                    if ((stage != QueenOctopusQuest.Complete) && (stage != QueenOctopusQuest.Queen))
-                        missingRequirements += "missing quest stage, ";
-
+                    missingRequirements += "not on this part of quest, ";
                     if (!member.Inventory.Contains("Red Pearl"))
                         missingRequirements += "missing Red Pearl, ";
-
                     if (!member.Inventory.Contains("Coral Pendant"))
                         missingRequirements += "missing Coral Pendant, ";
-
-                    if (member.Trackers.TimedEvents.HasActiveEvent("QueenOctopusCD", out _))
-                        missingRequirements += "QueenOctopusCD active, ";
-
-                    return false;
                 }
+                return false;
+            }
 
-                return true;
-            });
+            return true;
+        });
+
+
 
         if (allMembersHaveQuestEnum)
         {
             // Create a merchant at the Aisling's current point
             var npcpoint = new Point(aisling.X, aisling.Y);
-            var merchant = _merchantFactory.Create("QueenOctopusEntrance_merchant", aisling.MapInstance, npcpoint);
+            var merchant = MerchantFactory.Create("QueenOctopusEntrance_merchant", aisling.MapInstance, npcpoint);
             // Create a dialog for the merchant
-            var dialog = _dialogFactory.Create("QueenOctopusEntrance", merchant);
+            var dialog = DialogFactory.Create("QueenOctopusEntrance", merchant);
             dialog.Display(aisling);
         }
         else
         {
             // Send a message to the Aisling with the missing requirements
             var npcpoint = new Point(aisling.X, aisling.Y);
-            var merchant = _merchantFactory.Create("QueenOctopusEntrance_merchant", aisling.MapInstance, npcpoint);
+            var merchant = MerchantFactory.Create("QueenOctopusEntrance_merchant", aisling.MapInstance, npcpoint);
             // Create a dialog for the merchant
-            var dialog = _dialogFactory.Create("QueenOctopusEntrance", merchant);
+            var dialog = DialogFactory.Create("QueenOctopusEntrance", merchant);
             dialog.Reply(aisling, $"{missingRequirements}");
             // Warp the source back
             var point = source.DirectionalOffset(source.Direction.Reverse());

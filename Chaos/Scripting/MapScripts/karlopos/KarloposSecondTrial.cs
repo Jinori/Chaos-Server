@@ -61,11 +61,11 @@ public class KarloposSecondTrial(MapInstance subject, IMonsterFactory monsterFac
                 // Spawning state
                 case ScriptState.Spawning:
                     
-                    var monster1 = monsterFactory.Create("karlopos_gog", Subject, new Point(6, 3));
-                    var monster2 = monsterFactory.Create("karlopos_gog", Subject, new Point(9, 3));
-                    var monster3 = monsterFactory.Create("karlopos_gog", Subject, new Point(11, 3));
-                    var monster4 = monsterFactory.Create("karlopos_gog", Subject, new Point(7, 4));
-                    var monster5 = monsterFactory.Create("karlopos_gog", Subject, new Point(10, 4));
+                    var monster1 = monsterFactory.Create("karlopos_gogt", Subject, new Point(6, 3));
+                    var monster2 = monsterFactory.Create("karlopos_gogt", Subject, new Point(9, 3));
+                    var monster3 = monsterFactory.Create("karlopos_gogt", Subject, new Point(11, 3));
+                    var monster4 = monsterFactory.Create("karlopos_gogt", Subject, new Point(7, 4));
+                    var monster5 = monsterFactory.Create("karlopos_gogt", Subject, new Point(10, 4));
                     
                     Subject.AddEntity(monster1, monster1);
                     Subject.AddEntity(monster2, monster2);

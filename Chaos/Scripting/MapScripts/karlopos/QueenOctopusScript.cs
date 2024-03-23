@@ -1,5 +1,6 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.Data;
@@ -48,7 +49,7 @@ public class QueenOctopusScript : MapScriptBase
         if (creature is not Aisling)
             return;
 
-        State = ScriptState.DelayedStart;
+        State = ScriptState.Dormant;
     }
 
     public override void Update(TimeSpan delta)
@@ -56,6 +57,17 @@ public class QueenOctopusScript : MapScriptBase
         // Switch statement to determine the current state of the script
         switch (State)
         {
+            
+            case ScriptState.Dormant:
+            {
+                if (Subject.GetEntities<Aisling>()
+                    .Any(
+                        a => a.Trackers.Enums.TryGetValue(out QueenOctopusQuest stage)
+                             && (stage == QueenOctopusQuest.QueenSpawning)))
+                    State = ScriptState.DelayedStart;
+            }
+                break;
+            
             // Delayed start state
             case ScriptState.DelayedStart:
                 // Set the start time if it is not already set
@@ -74,7 +86,7 @@ public class QueenOctopusScript : MapScriptBase
                         // Send an orange bar message to the Aisling
                         aisling.Client.SendServerMessage(
                             ServerMessageType.OrangeBar1,
-                            "You hear waves crash against the beach as the Queen appears.");
+                            "You hear waves crash against the beach...");
                 }
 
                 break;
@@ -99,6 +111,9 @@ public class QueenOctopusScript : MapScriptBase
                 // Check if the animation index has exceeded the shape outline count
                 if (AnimationIndex >= ShapeOutline.Count)
                 {
+                    foreach (var aisling in Subject.GetEntities<Aisling>())
+                        aisling.Trackers.Enums.Set(QueenOctopusQuest.QueenSpawned);
+                    
                     // Create a monster
                     var monster = MonsterFactory.Create("karlopos_queen_octopus", Subject, new Point(4, 8));
                     // Get the group level from the Aislings in the subject
@@ -107,7 +122,7 @@ public class QueenOctopusScript : MapScriptBase
                     // Create attributes based on the group level
                     var attrib = new Attributes
                     {
-                        MaximumHp = groupLevel.Count * 40000,
+                        MaximumHp = groupLevel.Count * 20000,
                         MaximumMp = groupLevel.Count * 10000,
                         SkillDamagePct = groupLevel.Count * 2,
                         SpellDamagePct = groupLevel.Count * 2
@@ -118,6 +133,7 @@ public class QueenOctopusScript : MapScriptBase
                     // Add HP and MP to the monster
                     monster.StatSheet.SetHealthPct(100);
                     monster.StatSheet.SetManaPct(100);
+                    
                     // Add the monster to the subject
                     Subject.AddEntity(monster, monster);
                     // Set the state to spawned

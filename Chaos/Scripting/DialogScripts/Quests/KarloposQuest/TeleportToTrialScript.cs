@@ -71,7 +71,7 @@ public class TeleportToTrialScript : DialogScriptBase
                 if (member.WithinRange(point, 7))
                     ++groupCount;
 
-            if (groupCount.Equals(enumerable.Count()))
+            if (groupCount.Equals(enumerable.Length))
             {
                 Subject.Close(source);
 
@@ -82,6 +82,7 @@ public class TeleportToTrialScript : DialogScriptBase
                         point = currentTrial.GetRandomPoint();
                     while (!destinationMapInstance.IsWalkable(point, member.Type));
 
+                    member.Trackers.Counters.Remove("karlopostrialkills", out _);
                     member.TraverseMap(destinationMapInstance, point);
                 }
             }

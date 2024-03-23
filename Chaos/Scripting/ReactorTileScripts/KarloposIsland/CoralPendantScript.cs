@@ -29,7 +29,7 @@ public class CoralPendantScript : ReactorTileScriptBase
 
             aisling.Client.SendServerMessage(
                 ServerMessageType.OrangeBar1,
-                "You've Found The Coral Pendant!");
+                "You've found the Coral Pendant!");
         }
     }
 }

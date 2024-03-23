@@ -88,7 +88,7 @@ public class QueenOctopusQuestScript : DialogScriptBase
 
                         return;
 
-                    case QueenOctopusQuest.Queen:
+                    case QueenOctopusQuest.QueenKilled:
                         Subject.Reply(source, "skip", "queenoctopus_Queenkilled");
 
                         return;
@@ -170,7 +170,7 @@ public class QueenOctopusQuestScript : DialogScriptBase
                 break;
             case "queenoctopus_queen2":
             {
-                source.Trackers.Enums.Set(QueenOctopusQuest.Queen);
+                source.Trackers.Enums.Set(QueenOctopusQuest.QueenKilled);
             }
 
                 break;

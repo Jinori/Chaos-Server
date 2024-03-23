@@ -1,5 +1,6 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Menu;
@@ -45,7 +46,7 @@ public class TeleportToQueenOctopusScript : DialogScriptBase
                 if (member.WithinRange(point, 10))
                     ++groupCount;
 
-            if (groupCount.Equals(enumerable.Count()))
+            if (groupCount.Equals(enumerable.Length))
             {
                 Subject.Close(source);
 
@@ -58,6 +59,7 @@ public class TeleportToQueenOctopusScript : DialogScriptBase
                     while (!mapInstance.IsWalkable(point, member.Type));
 
                     member.TraverseMap(mapInstance, point);
+                    member.Trackers.Enums.Set(QueenOctopusQuest.QueenSpawning);
                     member.Inventory.Remove("Red Pearl");
                     member.Inventory.Remove("Coral Pendant");
                 }

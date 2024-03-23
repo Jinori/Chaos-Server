@@ -88,7 +88,7 @@ public class PentagramItemScript : ItemScriptBase
         foreach (var groupmember in source.Group!)
         {
 
-            groupmember.Trackers.Enums.Set(PentagramQuestStage.BossSpawned);
+            groupmember.Trackers.Enums.Set(PentagramQuestStage.BossSpawning);
             groupmember.SendOrangeBarMessage("The ritual has begun.");
         }
     }
