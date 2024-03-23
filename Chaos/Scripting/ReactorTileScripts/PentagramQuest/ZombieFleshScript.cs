@@ -9,6 +9,7 @@ using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Storage;
 using Chaos.Storage.Abstractions;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Chaos.Scripting.ReactorTileScripts.PentagramQuest;
 
@@ -52,6 +53,9 @@ public class ZombieFleshScript : ReactorTileScriptBase
 
             return;
         }
+
+        if (!CanStartRitual(aisling))
+            return;
 
         var requiredClasses = new HashSet<BaseClass>
         {
@@ -157,7 +161,29 @@ public class ZombieFleshScript : ReactorTileScriptBase
             BaseClass.Monk    => MonkSpot.Equals(new Point(player.X, player.Y)),
             _                 => false
         };
-    
+
+    private bool CanStartRitual(Aisling source)
+    {
+        source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage);
+        
+        if (source.Group == null)
+        {
+            source.SendOrangeBarMessage("You must be grouped to perform the ritual.");
+            return false; 
+        }
+
+        foreach (var groupmember in source.Group!)
+        {
+            if (stage is not PentagramQuestStage.SignedPact and PentagramQuestStage.DefeatedBoss)
+            {
+                groupmember.SendOrangeBarMessage("You have not signed the pact to start the ritual.");
+                return false;
+            }
+            
+        }
+        
+        return true;
+    }
      private bool CanStartBoss(Aisling source, out MapInstance mapInstance)
     {
         mapInstance = SimpleCache.Get<MapInstance>("hm_macabre_pentagram");
@@ -191,13 +217,10 @@ public class ZombieFleshScript : ReactorTileScriptBase
     
     private bool MapHasMonsters(MapInstance mapInstance)
     {
-        foreach (var entity in mapInstance.GetEntities<Creature>())
-        {
-            if (entity is Monster)
-            {
-                return true;
-            }
-        }
+        var monstersOnMap = mapInstance.GetEntities<Monster>().Where(entity => !entity.Template.TemplateKey.Contains("Pet"));
+
+        if (monstersOnMap.Any())
+            return true;
 
         return false;
     }

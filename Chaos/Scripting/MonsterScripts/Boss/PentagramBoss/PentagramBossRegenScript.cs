@@ -61,7 +61,7 @@ public sealed class PentagramBossRegenScript : MonsterScriptBase
             Bonus30Applied = true;
 
             HPRegenInterval = 5f;
-            HPMultiplier = 0.04f;
+            HPMultiplier = 0.03f;
         }
     }
 }

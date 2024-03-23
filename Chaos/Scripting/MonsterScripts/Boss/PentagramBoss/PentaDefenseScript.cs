@@ -19,7 +19,7 @@ public sealed class PentaDefenseScript : MonsterScriptBase
     public PentaDefenseScript(Monster subject)
         : base(subject) =>
         AvoidBashers = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(14),
+            TimeSpan.FromSeconds(25),
             25,
             RandomizationType.Positive,
             false);
@@ -47,7 +47,7 @@ public sealed class PentaDefenseScript : MonsterScriptBase
     private void RemoveEffectAndHeal(IEffect effect)
     {
         Subject.Effects.Dispel(effect.Name);
-        Subject.StatSheet.AddHealthPct(35);
+        Subject.StatSheet.AddHealthPct(15);
         Subject.ShowHealth();
     }
 

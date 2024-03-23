@@ -50,7 +50,7 @@ public class LearnAllCommand : ICommand<Aisling>
             {
                 BaseClass.Wizard,
                 (
-                    new[] { "wieldmagusstaff", "rumination" },
+                    new[] { "wieldmagusstaff", "rumination", "assail" },
                     new[]
                     {
                         "arcaneBlast", "arcaneBolt", "ardathar", "athar", "atharlamh", "atharmeall", "beagathar", "beagatharlamh",
@@ -64,7 +64,7 @@ public class LearnAllCommand : ICommand<Aisling>
             {
                 BaseClass.Priest,
                 (
-                    new[] { "wieldholystaff", "summonpet" },
+                    new[] { "wieldholystaff", "summonpet", "assail" },
                     new[]
                     {
                         "aoardcradh", "aobeagcradh", "aocradh", "aomorcradh", "aopoison", "aosith", "dinarcoli", "ardnaomhaite", "armachd",

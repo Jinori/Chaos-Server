@@ -1,6 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Models.Legend;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -9,6 +10,7 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Servers.Options;
+using Chaos.Time;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.PentagramBoss;
 
@@ -92,6 +94,15 @@ public class PentagramDeathScript : MonsterScriptBase
                 target.Trackers.Enums.Set(PentagramQuestStage.DefeatedBoss);
                 target.SendOrangeBarMessage("The house calms down, and the darkness fades.");
                 target.Trackers.Counters.AddOrIncrement("pentabosskills");
+                
+                target.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        "Completed the Pentagram Quest",
+                        "pentagram",
+                        MarkIcon.Victory,
+                        MarkColor.Blue,
+                        1,
+                        GameTime.Now));
 
                 var gearKey = (target.UserStatSheet.BaseClass, target.Gender);
                 if (pentagearDictionary.TryGetValue(gearKey, out var pentagear))
