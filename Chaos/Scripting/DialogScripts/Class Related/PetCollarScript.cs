@@ -53,13 +53,18 @@ public class PetCollarScript : DialogScriptBase
                         case PetMode.Defensive:
                             source.Trackers.Enums.Set(chosenMode);
                             source.SendActiveMessage($"You've chosen {chosenMode} pet behaviors.");
+                            Subject.Reply(source, "Your pet will watch your back for anything aggressive to you.");
                             break;
                         case PetMode.Offensive:
                             source.Trackers.Enums.Set(chosenMode);
                             source.SendActiveMessage($"You've chosen {chosenMode} pet behavior.");
+                            Subject.Reply(source, "Your pet will attack anything that comes within range.");
                             break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                        case PetMode.Assist:
+                            source.Trackers.Enums.Set(chosenMode);
+                            source.SendActiveMessage($"You've chosen {chosenMode} pet behavior.");
+                            Subject.Reply(source, "Your pet will attack the most aggressive monster in group range.");
+                            break;
                     }
                 else
                     source.SendActiveMessage("Something went wrong!");

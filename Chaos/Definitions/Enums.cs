@@ -1159,6 +1159,7 @@ public enum PetMode
 {
     Defensive = 0,
     Offensive = 1,
+    Assist = 2
 }
 
 public enum SummonChosenPet

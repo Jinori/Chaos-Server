@@ -25,7 +25,7 @@ public sealed class PetAggroTargetingScript : MonsterScriptBase
     {
         if (owner == null)
             return null;
-
+        
         return Map.GetEntitiesWithinRange<Monster>(owner)
                   .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id));
     }
@@ -41,6 +41,29 @@ public sealed class PetAggroTargetingScript : MonsterScriptBase
 
         // Find the closest monster by using the DistanceFrom extension method
         return monstersInRange.MinBy(x => x.DistanceFrom(owner));
+    }
+
+    private Monster? FindGroupAggroTarget(Aisling owner)
+    {
+        if (owner.Group == null)
+            return null;
+
+        var groupMembers = owner.MapInstance.GetEntitiesWithinRange<Aisling>(owner)
+                                .Where(x => x.Group == owner.Group)
+                                .Select(x => x.Id)
+                                .ToList();
+
+        // Find monsters aggro'd by any group member
+        var aggroedMonsters = owner.MapInstance.GetEntitiesWithinRange<Monster>(owner, 12)
+                                   .Where(monster => monster.IsAlive && monster.AggroList.Keys.Any(aggroId => groupMembers.Contains(aggroId)))
+                                   .ToList();
+
+        if (aggroedMonsters.Count == 0)
+            return null;
+        
+        return aggroedMonsters.MaxBy(monster => 
+            monster.AggroList.Where(kvp => groupMembers.Contains(kvp.Key))
+                   .Sum(kvp => kvp.Value));
     }
 
 
@@ -75,16 +98,19 @@ public sealed class PetAggroTargetingScript : MonsterScriptBase
 
         if (!TargetUpdateTimer.IntervalElapsed)
             return;
-        
-        var value = PetMode.Defensive;
-        Subject.PetOwner?.Trackers.Enums.TryGetValue(out value);
 
-        Target = value switch
+        if (Subject.PetOwner != null)
         {
-            PetMode.Offensive => FindClosestMonster(Subject.PetOwner) ?? Target,
-            PetMode.Defensive => FindAggroedMonster(Subject.PetOwner) ?? FindClosestMonster(Subject.PetOwner) ?? Target,
-            _                 => Target
-        };
+            Subject.PetOwner.Trackers.Enums.TryGetValue(out PetMode value);
+
+            Target = value switch
+            {
+                PetMode.Offensive => FindClosestMonster(Subject.PetOwner) ?? Target,
+                PetMode.Defensive => FindAggroedMonster(Subject.PetOwner) ?? FindClosestMonster(Subject.PetOwner) ?? Target,
+                PetMode.Assist    => FindGroupAggroTarget(Subject.PetOwner) ?? Target,
+                _                 => Target
+            };
+        }
 
         if (Target != null)
             AggroList[Target.Id] = InitialAggro++; 

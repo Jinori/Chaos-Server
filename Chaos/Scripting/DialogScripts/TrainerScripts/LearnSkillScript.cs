@@ -21,20 +21,20 @@ public class LearnSkillScript : DialogScriptBase
     private readonly Dictionary<string, List<string>> SkillUpgrades = new()
     {
         //Warrior
-        { "Scathe", new List<string> { "Cleave" } },
-        { "Strike", new List<string> { "Clobber", "Wallop", "Pulverize", "Thrash" } },
-        { "Clobber", new List<string> { "Wallop", "Pulverize", "Thrash" } },
-        { "Wallop", new List<string> { "Pulverize", "Thrash" } },
-        { "Slash", new List<string> { "Sunder" } },
-        { "Windblade", new List<string> { "Tempestblade" } },
+        { "Scathe", ["Cleave"] },
+        { "Strike", ["Clobber", "Wallop", "Pulverize", "Thrash"] },
+        { "Clobber", ["Wallop", "Pulverize", "Thrash"] },
+        { "Wallop", ["Pulverize", "Thrash"] },
+        { "Slash", ["Sunder"] },
+        { "Windblade", ["Tempestblade"] },
         //Monk
-        { "Punch", new List<string> { "DoublePunch", "RapidPunch" } },
-        { "DoublePunch", new List<string> { "RapidPunch" } },
+        { "Punch", ["DoublePunch", "RapidPunch"] },
+        { "DoublePunch", ["RapidPunch"] },
         //Rogue
-        { "Assault", new List<string> { "Blitz", "Barrage" } },
-        { "Blitz", new List<string> { "Barrage" } },
-        { "Stab", new List<string> { "Gut" } },
-        { "Pierce", new List<string> { "Skewer", } },
+        { "Assault", ["Blitz", "Barrage"] },
+        { "Blitz", ["Barrage"] },
+        { "Stab", ["Gut"] },
+        { "Pierce", ["Skewer"] },
     };
     private readonly ISpellFactory SpellFactory;
 
@@ -116,6 +116,12 @@ public class LearnSkillScript : DialogScriptBase
 
                 source.Animate(animation);
 
+                if (skillToLearn.Template.TemplateKey.Equals("summonpet", StringComparison.CurrentCultureIgnoreCase) && !source.Inventory.ContainsByTemplateKey("petcollar") && !source.Bank.Contains("Pet Collar"))
+                {
+                    var collar = ItemFactory.Create("petcollar");
+                    source.GiveItemOrSendToBank(collar);
+                }
+                
                 if (!string.IsNullOrEmpty(skillToLearn.Template.LearningRequirements?.SkillSpellToUpgrade))
                 {
                     var oldSkill = source.SkillBook.FirstOrDefault(
