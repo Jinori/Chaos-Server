@@ -1155,6 +1155,12 @@ public enum JoinReligionQuest
     JoinReligionComplete = 5
 }
 
+public enum PetMode
+{
+    Defensive = 0,
+    Offensive = 1,
+}
+
 public enum SummonChosenPet
 {
     None = 0,
@@ -1163,7 +1169,9 @@ public enum SummonChosenPet
     Faerie = 3,
     Dog = 4,
     Ducklings = 5,
-    Cat = 6
+    Cat = 6,
+    Smoldy = 7,
+    Penguin = 8,
 }
 
 [Flags]

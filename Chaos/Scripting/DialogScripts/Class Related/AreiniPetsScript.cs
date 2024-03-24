@@ -66,6 +66,8 @@ public class AreiniPetsScript : DialogScriptBase
                         case SummonChosenPet.Dog:
                         case SummonChosenPet.Ducklings:
                         case SummonChosenPet.Cat:
+                        case SummonChosenPet.Smoldy:
+                        case SummonChosenPet.Penguin:
                             source.Trackers.Enums.Set(chosenPet);
                             source.SendActiveMessage($"You've chosen {chosenPet}!");
 

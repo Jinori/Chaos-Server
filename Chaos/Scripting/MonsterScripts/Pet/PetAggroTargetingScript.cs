@@ -1,4 +1,4 @@
-using Chaos.Extensions;
+using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -12,6 +12,8 @@ public sealed class PetAggroTargetingScript : MonsterScriptBase
 {
     private readonly IIntervalTimer TargetUpdateTimer;
     private int InitialAggro = 10;
+    public PetMode CurrentMode { get; set; } = PetMode.Defensive;
+
 
     /// <inheritdoc />
     public PetAggroTargetingScript(Monster subject)
@@ -28,15 +30,19 @@ public sealed class PetAggroTargetingScript : MonsterScriptBase
                   .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id));
     }
 
-    private Monster? FindClosestMonster() =>
-        Map.GetEntitiesWithinRange<Monster>(Subject, AggroRange)
-           .ThatAreObservedBy(Subject)
-           .Where(
-               obj => !obj.Equals(Subject)
-                      && obj.IsAlive
-                      && Subject.ApproachTime.TryGetValue(obj.Id, out var time)
-                      && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
-           .ClosestOrDefault(Subject);
+    private Monster? FindClosestMonster(Aisling? owner)
+    {
+        if (owner == null)
+            return null;
+
+        // Get all alive monsters within the specified range
+        var monstersInRange = Map.GetEntitiesWithinRange<Monster>(owner, 12)
+                                 .Where(x => x.IsAlive && !x.Equals(Subject));
+
+        // Find the closest monster by using the DistanceFrom extension method
+        return monstersInRange.MinBy(x => x.DistanceFrom(owner));
+    }
+
 
     private bool IsCurrentTargetValid() => Target is { IsAlive: true } && Target.OnSameMapAs(Subject);
 
@@ -69,13 +75,18 @@ public sealed class PetAggroTargetingScript : MonsterScriptBase
 
         if (!TargetUpdateTimer.IntervalElapsed)
             return;
+        
+        var value = PetMode.Defensive;
+        Subject.PetOwner?.Trackers.Enums.TryGetValue(out value);
 
-        var owner = Subject.PetOwner;
+        Target = value switch
+        {
+            PetMode.Offensive => FindClosestMonster(Subject.PetOwner) ?? Target,
+            PetMode.Defensive => FindAggroedMonster(Subject.PetOwner) ?? FindClosestMonster(Subject.PetOwner) ?? Target,
+            _                 => Target
+        };
 
-        Target = FindAggroedMonster(owner) ?? FindClosestMonster() ?? Target;
-
-        //since we grabbed a new target, give them some initial aggro so we stick to them
         if (Target != null)
-            AggroList[Target.Id] = InitialAggro++;
+            AggroList[Target.Id] = InitialAggro++; 
     }
 }
