@@ -12,8 +12,22 @@ public class PetCollarScript : DialogScriptBase
         : base(subject)
     { }
 
+    /// <inheritdoc />
+    public override void OnDisplaying(Aisling source)
+    {
+        if (string.Equals(Subject.Template.TemplateKey, "petcollar_home", StringComparison.OrdinalIgnoreCase))
+        {
+            var monsters = source.MapInstance.GetEntities<Monster>();
+
+            foreach (var monster in monsters)
+                if (monster.Name.Contains(source.Name))
+                    monster.MapInstance.RemoveEntity(monster);
+        }        
+    }
+
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
+
         if (string.Equals(Subject.Template.TemplateKey, "petcollar_changeappearance", StringComparison.OrdinalIgnoreCase))
             if (optionIndex.HasValue)
             {
@@ -41,6 +55,8 @@ public class PetCollarScript : DialogScriptBase
                     }
                 else
                     source.SendActiveMessage("Something went wrong!");
+
+                return;
             }
 
         if (string.Equals(Subject.Template.TemplateKey, "petcollar_combatstance", StringComparison.OrdinalIgnoreCase))
@@ -66,8 +82,6 @@ public class PetCollarScript : DialogScriptBase
                             Subject.Reply(source, "Your pet will attack the most aggressive monster in group range.");
                             break;
                     }
-                else
-                    source.SendActiveMessage("Something went wrong!");
             }
     }
 }
