@@ -1,3 +1,4 @@
+using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
@@ -30,21 +31,15 @@ public sealed class PetFollowScript : MonsterScriptBase
     {
         base.Update(delta);
 
-        if (Subject.PetOwner is null)
-            return;
-
-        
-        if (ClientRegistry.GetClient(Subject.PetOwner.Client.Id) is null)
+        if (Subject.PetOwner == null || ClientRegistry.GetClient(Subject.PetOwner.Client.Id) == null)
         {
             Subject.MapInstance.RemoveEntity(Subject);
-
             return;
         }
 
         if (Subject.MapInstance != Subject.PetOwner.MapInstance)
         {
             Subject.TraverseMap(Subject.PetOwner.MapInstance, Subject.PetOwner);
-
             return;
         }
 
@@ -52,37 +47,31 @@ public sealed class PetFollowScript : MonsterScriptBase
             return;
 
         var playerDistance = Subject.PetOwner.DistanceFrom(Subject);
-
-        switch (playerDistance)
+        Subject.PetOwner.Trackers.Enums.TryGetValue(out PetFollowMode value);
+        
+        switch (value)
         {
-            case <= 4:
-                Subject.Wander();
-
+            case PetFollowMode.AtFeet:
+                if (playerDistance > 2)
+                    Subject.Pathfind(new Point(Subject.PetOwner.X, Subject.PetOwner.Y));
                 break;
-            case > 4 and < 13:
-                Subject.Pathfind(new Point(Subject.PetOwner.X, Subject.PetOwner.Y));
 
+            case PetFollowMode.Wander:
+                if (playerDistance <= 4)
+                    Subject.Wander();
+                else
+                    Subject.Pathfind(new Point(Subject.PetOwner.X, Subject.PetOwner.Y));
                 break;
-            case >= 13:
-                Subject.WarpTo(Subject.PetOwner);
 
+            case PetFollowMode.DontMove:
+                break;
+
+            case PetFollowMode.FollowAtDistance:
+                if (playerDistance > 6)
+                    Subject.Pathfind(new Point(Subject.PetOwner.X, Subject.PetOwner.Y), 6);
                 break;
         }
 
         Subject.MoveTimer.Reset();
     }
-
-    /*
-        DateTime now;
-        private const bool PET_LOOT = false;
-        const double TIME_SPAN_SECONDS = 3;
-        if (PET_LOOT)
-        {
-            var item = Subject.MapInstance.GetEntitiesWithinRange<GroundItem>(Subject.PetOwner)
-                              .FirstOrDefault(x => now - x.Creation > TimeSpan.FromSeconds(TIME_SPAN_SECONDS));
-
-            if (item is not null)
-                return;
-        }
-*/
 }

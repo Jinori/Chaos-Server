@@ -1162,6 +1162,14 @@ public enum PetMode
     Assist = 2
 }
 
+public enum PetFollowMode
+{
+    AtFeet,
+    Wander,
+    DontMove,
+    FollowAtDistance
+}
+
 public enum SummonChosenPet
 {
     None = 0,
