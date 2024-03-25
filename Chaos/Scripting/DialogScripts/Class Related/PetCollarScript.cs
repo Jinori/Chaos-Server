@@ -83,7 +83,12 @@ public class PetCollarScript : DialogScriptBase
                             source.Trackers.Enums.Set(chosenMode);
                             source.SendActiveMessage($"You've chosen {chosenMode} pet behavior.");
                             Subject.Reply(source, "Your pet will attack the most aggressive monster in group range.");
-
+                            break;
+                        
+                        case PetMode.Passive:
+                            source.Trackers.Enums.Set(chosenMode);
+                            source.SendActiveMessage($"You've chosen {chosenMode} pet behavior.");
+                            Subject.Reply(source, "Your pet will not move to attack anything.");
                             break;
                     }
             }

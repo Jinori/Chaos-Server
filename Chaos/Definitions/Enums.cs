@@ -1159,7 +1159,8 @@ public enum PetMode
 {
     Defensive = 0,
     Offensive = 1,
-    Assist = 2
+    Assist = 2,
+    Passive = 3
 }
 
 public enum PetFollowMode

@@ -67,6 +67,10 @@ namespace Chaos.Scripting.MonsterScripts.Pet
                 return;
 
             Subject.PetOwner.Trackers.Enums.TryGetValue(out PetMode value);
+
+            if (value == PetMode.Passive)
+                return;
+            
             Target = value switch
             {
                 PetMode.Offensive => FindClosestMonster(Subject.PetOwner),

@@ -11,6 +11,7 @@ public sealed class EscortScript : CompositeMapScript
     {
         GetScriptKey(typeof(AnnounceMatchScript)),
         GetScriptKey(typeof(DeclareEscortWinnerScript)),
+        GetScriptKey(typeof(RespawnHandlerScript))
     };
 
     /// <inheritdoc />
