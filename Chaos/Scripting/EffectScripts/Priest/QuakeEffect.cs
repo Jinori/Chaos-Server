@@ -62,7 +62,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
                 Subject,
                 target,
                 this,
-                SourceOfEffect.StatSheet.Level * 2 + SourceOfEffect.StatSheet.EffectiveInt,
+                (SourceOfEffect.StatSheet.Level + SourceOfEffect.StatSheet.EffectiveInt) * 6 + 200,
                 Element.None);
 
             target.ShowHealth();
