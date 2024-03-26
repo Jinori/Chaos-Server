@@ -16,7 +16,7 @@ namespace Chaos.Scripting.MonsterScripts.Pet
 
         private Monster? FindAggroedMonster(Aisling owner) =>
             owner.MapInstance.GetEntitiesWithinRange<Monster>(owner)
-                 .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id));
+                 .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id) && !x.Name.Contains("Teammate") && !x.Name.Contains("Wind Wall"));
 
         private Monster? FindClosestMonster(Aisling owner) =>
             owner.MapInstance.GetEntitiesWithinRange<Monster>(owner, 12)
