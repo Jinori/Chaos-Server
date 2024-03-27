@@ -28,6 +28,24 @@ public sealed class Door(
 
     public override void HideFrom(Aisling aisling) { }
 
+    public void OnClicked(Merchant source)
+    {
+        if (!ShouldRegisterClick(source.Id))
+            return;
+
+        var doorCluster = GetCluster()
+            .ToList();
+
+        foreach (var door in doorCluster)
+        {
+            door.Closed = !door.Closed;
+            door.LastClicked[source.Id] = DateTime.UtcNow;
+        }
+
+        foreach (var aisling in MapInstance.GetEntitiesWithinRange<Aisling>(this))
+            aisling.Client.SendDoors(doorCluster);
+    }
+    
     public override void OnClicked(Aisling source)
     {
         if (!ShouldRegisterClick(source.Id))
