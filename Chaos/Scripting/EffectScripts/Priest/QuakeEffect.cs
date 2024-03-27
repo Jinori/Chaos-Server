@@ -78,9 +78,12 @@ public class QuakeEffect : ContinuousAnimationEffectBase
     public override bool ShouldApply(Creature source, Creature target)
     {
         SourceOfEffect = source;
-
+        
         if (!target.IsFriendlyTo(source))
         {
+            if (target.Name.Contains("Teammate"))
+                return true;
+            
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is not an ally.");
 
             return false;

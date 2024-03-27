@@ -26,20 +26,25 @@ public class AreiniPetsScript : DialogScriptBase
         if (string.Equals(Subject.Template.TemplateKey, "areini_initial", StringComparison.OrdinalIgnoreCase)
             && (source.UserStatSheet.BaseClass == BaseClass.Priest))
         {
+            if (source.SkillBook.Contains("Summon Pet"))
+            {
+                RemoveOption("Learn Summon Pet");
+            }
             // Check and remove dialog options based on pet skill level
-            if (!source.Trackers.Flags.HasFlag(PetSkillsAvailable.Level10))
+            if (source.Trackers.Flags.TryGetFlag(out PetSkillsAvailable flag) && flag != PetSkillsAvailable.Level10)
             {
                 RemoveOption("Pet Level 10 Ability");
             }
-            if (!source.Trackers.Flags.HasFlag(PetSkillsAvailable.Level25))
+
+            if (flag != PetSkillsAvailable.Level25)
             {
                 RemoveOption("Pet Level 25 Ability");
             }
-            if (!source.Trackers.Flags.HasFlag(PetSkillsAvailable.Level40))
+            if (flag != PetSkillsAvailable.Level40)
             {
                 RemoveOption("Pet Level 40 Ability");
             }
-            if (!source.Trackers.Flags.HasFlag(PetSkillsAvailable.Level55))
+            if (flag != PetSkillsAvailable.Level55)
             {
                 RemoveOption("Pet Level 55 Ability");
             }
@@ -69,6 +74,7 @@ public class AreiniPetsScript : DialogScriptBase
                         case SummonChosenPet.Smoldy:
                         case SummonChosenPet.Penguin:
                             source.Trackers.Enums.Set(chosenPet);
+                            RemoveExistingPets(source);
                             source.SendActiveMessage($"You've chosen {chosenPet}!");
 
                             break;
