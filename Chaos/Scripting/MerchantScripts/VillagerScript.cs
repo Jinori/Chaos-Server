@@ -17,11 +17,506 @@ public class VillagerScript : MerchantScriptBase
         Idle,
         Wandering,
         WalkingToArmory,
+        WalkingToTailor,
         TalkingToAnotherMerchant,
-        TalkingToPlayer
+        TalkingToPlayer,
+        FollowingPlayer
     }
-    
+
+    private readonly IIntervalTimer ActionTimer;
+    private readonly IIntervalTimer DialogueTimer;
+    private readonly TimeSpan MaxFollowDuration = TimeSpan.FromSeconds(50);
+    public readonly Location MilethArmoryDoorInsidePoint = new("mileth_armor_shop", 11, 8);
+    public readonly Location MilethArmoryDoorPoint = new("mileth", 10, 31);
+    public readonly Location MilethArmoryPoint = new("mileth_armor_shop", 4, 8);
+
+    public readonly Location MilethTailorDoorInsidePoint = new("mileth_tailor", 6, 14);
+    public readonly Location MilethTailorDoorPoint = new("mileth", 34, 27);
+    public readonly Location MilethTailorPoint = new("mileth_tailor", 6, 10);
+
+    private readonly Location Spawnpoint;
+    private readonly ISpellFactory SpellFactory;
+    private readonly IIntervalTimer WalkTimer;
+    public VillagerState CurrentState;
+    private DateTime FollowUntil;
+    public bool HasAskedForItem;
+    public bool HasHadConversation;
+    public bool HasMerchantResponded;
+    public bool HasPickedAnAisling;
+    public bool HasReceivedItem;
+    public bool HasSaidGreeting;
+    private string? ItemRequested;
+    private Aisling? RandomAisling;
+
+    /// <inheritdoc />
+    public VillagerScript(Merchant subject, ISpellFactory spellFactory)
+        : base(subject)
+    {
+        SpellFactory = spellFactory;
+        WalkTimer = new IntervalTimer(TimeSpan.FromMilliseconds(600), false);
+        ActionTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
+        CurrentState = VillagerState.Idle;
+
+        DialogueTimer = new RandomizedIntervalTimer(
+            TimeSpan.FromSeconds(1.5),
+            50,
+            RandomizationType.Positive,
+            false);
+
+        Spawnpoint = new Location(Subject.MapInstance.InstanceId, Subject.X, Subject.Y);
+    }
+
+    private void AttemptToOpenDoor(IPoint doorPoint)
+    {
+        var door = Subject.MapInstance.GetEntitiesAtPoint<Door>(doorPoint).FirstOrDefault();
+
+        if (door is { Closed: true })
+            door.OnClicked(Subject);
+    }
+
+    private void CastBuff()
+    {
+        var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 8).Where(x => x.Effects.Contains("ardaite")).ToList();
+
+        if (aislings.Count > 0)
+        {
+            var spell = SpellFactory.Create("ardnaomhaite");
+
+            foreach (var player in aislings)
+                Subject.TryUseSpell(spell, player.Id);
+        }
+
+        Subject.Say("That should help a bit.");
+    }
+
+    private void ConductDialogueWithMerchant(string merchant)
+    {
+        switch (merchant)
+        {
+            case "tailor":
+            {
+                var npc = Subject.MapInstance.GetEntitiesWithinRange<Merchant>(Subject)
+                                 .FirstOrDefault(x => x.Id != Subject.Id);
+
+                if (!HasSaidGreeting)
+                {
+                    var greeting = string.Format(PickRandom(Greetings), npc?.Name);
+                    Subject.Say(greeting);
+                    HasSaidGreeting = true;
+                    DialogueTimer.Reset();
+                }
+                else if (!HasAskedForItem)
+                {
+                    var color = GetRandomDisplayColor();
+                    var purchaseRequest = string.Format(PickRandom(AskAboutDye), color);
+                    ItemRequested = color.ToString();
+                    Subject.Say(purchaseRequest);
+                    HasAskedForItem = true;
+                    DialogueTimer.Reset();
+                }
+                else if (!HasMerchantResponded)
+                {
+                    var purchaseRequest = string.Format(PickRandom(TailorResponses), ItemRequested);
+                    npc?.Say(purchaseRequest);
+                    HasMerchantResponded = true;
+                    DialogueTimer.Reset();
+                }
+                else if (!HasReceivedItem)
+                {
+                    var response = PickRandom(ItemReceivedResponses);
+                    Subject.Say(response);
+                    HasReceivedItem = true;
+                    HasHadConversation = true;
+                }
+
+                break;
+            }
+            case "armorer":
+            {
+                var npc = Subject.MapInstance.GetEntitiesWithinRange<Merchant>(Subject)
+                                 .FirstOrDefault(x => x.Id != Subject.Id);
+
+                if (!HasSaidGreeting)
+                {
+                    var greeting = string.Format(PickRandom(Greetings), npc?.Name);
+                    Subject.Say(greeting);
+                    HasSaidGreeting = true;
+                    DialogueTimer.Reset();
+                }
+                else if (!HasAskedForItem)
+                {
+                    var randomItem = npc?.ItemsForSale.PickRandom();
+                    var purchaseRequest = string.Format(PickRandom(PurchaseRequests), randomItem?.DisplayName);
+                    ItemRequested = randomItem?.DisplayName;
+                    Subject.Say(purchaseRequest);
+                    HasAskedForItem = true;
+                    DialogueTimer.Reset();
+                }
+                else if (!HasMerchantResponded)
+                {
+                    var purchaseRequest = string.Format(PickRandom(MerchantResponses), ItemRequested);
+                    npc?.Say(purchaseRequest);
+                    HasMerchantResponded = true;
+                    DialogueTimer.Reset();
+                }
+                else if (!HasReceivedItem)
+                {
+                    var response = PickRandom(ItemReceivedResponses);
+                    Subject.Say(response);
+                    HasReceivedItem = true;
+                    HasHadConversation = true;
+                }
+
+                break;
+            }
+        }
+    }
+
+    public static DisplayColor GetRandomDisplayColor()
+    {
+        var values = Enum.GetValues(typeof(DisplayColor));
+        var randomIndex = IntegerRandomizer.RollSingle(values.Length);
+
+        if (values.GetValue(randomIndex) is DisplayColor color)
+            return color;
+
+        throw new InvalidOperationException("Failed to generate a random DisplayColor.");
+    }
+
+
+    private string GetRandomMessage()
+    {
+        var randomIndex = IntegerRandomizer.RollSingle(VillagerMessages.Count);
+
+        return VillagerMessages[randomIndex];
+    }
+
+    private void HandleApproachToArmory(TimeSpan delta)
+    {
+        if (ShouldWalkTo(MilethArmoryDoorPoint))
+            WalkTowards(MilethArmoryDoorPoint, delta);
+        else if (ShouldWalkTo(MilethArmoryPoint))
+            WalkTowards(MilethArmoryPoint, delta);
+    }
+
+    private void HandleApproachToTailor(TimeSpan delta)
+    {
+        if (ShouldWalkTo(MilethTailorDoorPoint))
+            WalkTowards(MilethTailorDoorPoint, delta);
+        else if (ShouldWalkTo(MilethTailorPoint))
+            WalkTowards(MilethTailorPoint, delta);
+    }
+
+    private void HandleConversationWithMerchant(TimeSpan delta)
+    {
+        if (IsCloseTo(MilethArmoryPoint, 2))
+            UpdateDialogue(delta, "armorer");
+
+        if (IsCloseTo(MilethTailorPoint, 2))
+            UpdateDialogue(delta, "tailor");
+    }
+
+    private void HandleFollowingPlayer(TimeSpan delta)
+    {
+        if (!HasPickedAnAisling)
+        {
+            var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject).ToList();
+
+            if (aislings.Count > 0)
+            {
+                // Pick the only aisling if there's only one, otherwise pick randomly
+                RandomAisling = aislings.Count == 1 ? aislings[0] : aislings[IntegerRandomizer.RollSingle(aislings.Count)];
+                FollowUntil = DateTime.Now.AddSeconds(IntegerRandomizer.RollSingle((int)MaxFollowDuration.TotalSeconds));
+                HasPickedAnAisling = true;
+            }
+        }
+
+        if (HasPickedAnAisling && (DateTime.Now < FollowUntil))
+        {
+            if (RandomAisling != null)
+            {
+                var point = new Point(RandomAisling.X, RandomAisling.Y);
+
+                if (ShouldWalkTo(point))
+                    WalkTowards(new Location(Subject.MapInstance.InstanceId, point), delta);
+            }
+        }
+        else
+        {
+            if (ShouldWalkToSpawnPoint())
+                WalkTowards(Spawnpoint, delta);
+            else
+                ResetConversationState();
+        }
+    }
+
+    private void HandleIdleState()
+    {
+        var actionRoll = IntegerRandomizer.RollSingle(100);
+
+        switch (actionRoll)
+        {
+            case < 10:
+                CurrentState = VillagerState.FollowingPlayer;
+
+                break;
+            case < 15:
+                CurrentState = VillagerState.WalkingToTailor;
+
+                break;
+            case < 20:
+                CurrentState = VillagerState.WalkingToArmory;
+
+                break;
+            case < 30:
+                SayRandomMessage();
+
+                break;
+            case < 33:
+                CastBuff();
+
+                break;
+            case < 68:
+                CurrentState = VillagerState.Wandering;
+
+                break;
+        }
+
+        ActionTimer.Reset();
+    }
+
+    private void HandlePostConversationActions(TimeSpan delta, string merchant)
+    {
+        switch (merchant)
+        {
+            case "armorer":
+            {
+                if (ShouldWalkTo(MilethArmoryDoorInsidePoint))
+                    WalkTowards(MilethArmoryDoorInsidePoint, delta);
+                else if (ShouldWalkToSpawnPoint())
+                    WalkTowards(Spawnpoint, delta);
+                else
+                    ResetConversationState();
+
+                break;
+            }
+            case "tailor":
+            {
+                if (ShouldWalkTo(MilethTailorDoorInsidePoint))
+                    WalkTowards(MilethTailorDoorInsidePoint, delta);
+                else if (ShouldWalkToSpawnPoint())
+                    WalkTowards(Spawnpoint, delta);
+                else
+                    ResetConversationState();
+
+                break;
+            }
+        }
+    }
+
+    private void HandleWalkingToArmory(TimeSpan delta)
+    {
+        if (!HasHadConversation)
+        {
+            HandleApproachToArmory(delta);
+            HandleConversationWithMerchant(delta);
+        }
+        else
+            HandlePostConversationActions(delta, "armorer");
+    }
+
+    private void HandleWalkingToTailor(TimeSpan delta)
+    {
+        if (!HasHadConversation)
+        {
+            HandleApproachToTailor(delta);
+            HandleConversationWithMerchant(delta);
+        }
+        else
+            HandlePostConversationActions(delta, "tailor");
+    }
+
+    private void HandleWanderingState()
+    {
+        Subject.Wander();
+
+        if (Subject.WanderTimer.IntervalElapsed && IntegerRandomizer.RollChance(10))
+        {
+            CurrentState = VillagerState.Idle;
+            ActionTimer.Reset();
+        }
+
+        Subject.WanderTimer.Reset();
+    }
+
+    private bool IsCloseTo(Location point, int distance) => Subject.DistanceFrom(point) <= distance;
+
+    private static string PickRandom(IReadOnlyList<string> phrases)
+    {
+        var index = IntegerRandomizer.RollSingle(phrases.Count);
+
+        return phrases[index];
+    }
+
+    private void ResetConversationState()
+    {
+        HasHadConversation = false;
+        HasReceivedItem = false;
+        HasSaidGreeting = false;
+        HasAskedForItem = false;
+        HasMerchantResponded = false;
+        ItemRequested = null;
+        RandomAisling = null;
+        FollowUntil = DateTime.MinValue;
+        CurrentState = VillagerState.Wandering;
+    }
+
+    private void SayRandomMessage()
+    {
+        var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 8);
+
+        if (aislings.Any())
+            Subject.Say(GetRandomMessage());
+    }
+
+    private bool ShouldWalkTo(Location destination) => (Subject.DistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
+    private bool ShouldWalkTo(Point destination) => Subject.DistanceFrom(destination) > 0;
+    private bool ShouldWalkToSpawnPoint() => Subject.DistanceFrom(Spawnpoint) > 0;
+
+    /// <inheritdoc />
+    public override void Update(TimeSpan delta)
+    {
+        ActionTimer.Update(delta);
+
+        switch (CurrentState)
+        {
+            case VillagerState.Idle:
+                if (ActionTimer.IntervalElapsed)
+                    HandleIdleState();
+
+                break;
+            case VillagerState.Wandering:
+                if (Subject.WanderTimer.IntervalElapsed)
+                    HandleWanderingState();
+
+                break;
+
+            case VillagerState.WalkingToArmory:
+                HandleWalkingToArmory(delta);
+
+                break;
+            case VillagerState.WalkingToTailor:
+                HandleWalkingToTailor(delta);
+
+                break;
+
+            case VillagerState.TalkingToAnotherMerchant:
+                break;
+            case VillagerState.TalkingToPlayer:
+                break;
+
+            case VillagerState.FollowingPlayer:
+                HandleFollowingPlayer(delta);
+
+                break;
+        }
+    }
+
+    private void UpdateDialogue(TimeSpan delta, string merchant)
+    {
+        DialogueTimer.Update(delta);
+
+        if (DialogueTimer.IntervalElapsed)
+            ConductDialogueWithMerchant(merchant);
+    }
+
+    private void UpdateWalkTimer(TimeSpan delta) => WalkTimer.Update(delta);
+
+    private void WalkTowards(Location destination, TimeSpan delta)
+    {
+        UpdateWalkTimer(delta);
+
+        if (WalkTimer.IntervalElapsed)
+        {
+            if (destination == MilethArmoryDoorPoint)
+                AttemptToOpenDoor(MilethArmoryDoorPoint);
+
+            if (destination == MilethTailorDoorPoint)
+                AttemptToOpenDoor(MilethTailorDoorPoint);
+
+            Subject.Pathfind(destination, 0);
+        }
+    }
+
     #region Messages
+    private static readonly List<string> TailorResponses =
+    [
+        "Ah, {0} dye? We have that in stock.",
+        "{0} dye is a popular choice, here you go.",
+        "We do have {0} dye. How much do you need?",
+        "Yes, I can get you some {0} dye.",
+        "Of course, {0} dye is right this way.",
+        "{0} dye? A fine choice, I have it here.",
+        "Absolutely, we've got plenty of {0} dye.",
+        "{0} dye, a classic. I have some available.",
+        "I can certainly provide {0} dye for you.",
+        "Looking for {0} dye? I have just the thing.",
+        "Yes, {0} dye is available. How many?",
+        "I have excellent {0} dye, very high quality.",
+        "{0} dye? You're in luck, I have it.",
+        "Certainly, {0} dye is one of our specialties.",
+        "Got a good stock of {0} dye right now.",
+        "You want {0} dye? I can help with that.",
+        "{0} dye? Yes, I can provide that.",
+        "Indeed, we have {0} dye. Great for garments.",
+        "{0} dye? Just got a new shipment in.",
+        "Sure, {0} dye is on hand. How much?",
+        "I have the perfect shade of {0} dye.",
+        "{0} dye, coming right up!",
+        "We're well-stocked in {0} dye today.",
+        "{0} dye? Of course, let me show you.",
+        "Good timing, I have plenty of {0} dye.",
+        "{0} dye is here. It's very sought after.",
+        "Certainly, {0} dye is one of our best.",
+        "You've chosen well with {0} dye, here it is.",
+        "I can absolutely help you with {0} dye.",
+        "{0} dye is ready for you. How much?"
+    ];
+
+    private static readonly List<string> AskAboutDye =
+    [
+        "Do you have {0} dye in stock?",
+        "Is {0} dye available here?",
+        "Can I find {0} dye at your shop?",
+        "I'm looking for {0} dye. Got any?",
+        "Any chance you've got {0} dye?",
+        "I need some {0} dye, do you have it?",
+        "I'm in need of {0} dye, can you help?",
+        "I'd like to buy {0} dye, do you sell it?",
+        "Looking for {0} dye, do you carry it?",
+        "Is there any {0} dye on your shelves?",
+        "Hoping to find {0} dye, have you got some?",
+        "Could I get my hands on some {0} dye here?",
+        "Do you stock {0} dye by any chance?",
+        "How about {0} dye, is that available?",
+        "In search of {0} dye, do you have that?",
+        "I'm after {0} dye, is it in stock?",
+        "I was wondering if you sell {0} dye?",
+        "Do you offer {0} dye in your collection?",
+        "Got any {0} dye for sale?",
+        "Would you happen to have {0} dye?",
+        "I'm on the lookout for {0} dye, got it?",
+        "Do you carry {0} dye in this shop?",
+        "Any {0} dye to purchase here?",
+        "Can I purchase {0} dye from you?",
+        "Looking to buy some {0} dye, available?",
+        "Is it possible to get {0} dye here?",
+        "Could you help me with {0} dye?",
+        "I’d like some {0} dye, please.",
+        "In need of {0} dye, do you supply it?",
+        "Any luck finding {0} dye in your store?"
+    ];
+
     private static readonly List<string> ItemReceivedResponses =
     [
         "Thanks a lot!",
@@ -157,7 +652,7 @@ public class VillagerScript : MerchantScriptBase
         "Let's get you that {0}.",
         "You'll be pleased with the {0}."
     ];
-      private readonly List<string> VillagerMessages =
+    private readonly List<string> VillagerMessages =
     [
         "Lovely weather we're having!",
         "Have you visited the blacksmith?",
@@ -209,255 +704,4 @@ public class VillagerScript : MerchantScriptBase
         "The stars have been bright lately."
     ];
     #endregion Messages
-    private readonly IIntervalTimer ActionTimer;
-    private readonly IIntervalTimer DialogueTimer;
-    private readonly IIntervalTimer WalkTimer;
-    public readonly Location MilethArmoryDoorInsidePoint = new("mileth_armor_shop", 11, 8);
-    public readonly Location MilethArmoryDoorPoint = new("mileth", 10, 31);
-    public readonly Location MilethArmoryPoint = new("mileth_armor_shop", 4, 8);
-    private readonly Location Spawnpoint;
-    private readonly ISpellFactory SpellFactory;
-    public VillagerState CurrentState;
-    public bool HasAskedForItem;
-    public bool HasHadConversation;
-    public bool HasMerchantResponded;
-    public bool HasReceivedItem;
-    public bool HasSaidGreeting;
-    private string? ItemRequested;
-
-    /// <inheritdoc />
-    public VillagerScript(Merchant subject, ISpellFactory spellFactory)
-        : base(subject)
-    {
-        SpellFactory = spellFactory;
-        WalkTimer = new IntervalTimer(TimeSpan.FromMilliseconds(600), false);
-        ActionTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
-        CurrentState = VillagerState.Idle;
-
-        DialogueTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(1.5),
-            50,
-            RandomizationType.Positive,
-            false);
-
-        Spawnpoint = new Location(Subject.MapInstance.InstanceId, Subject.X, Subject.Y);
-    }
-
-    private void AttemptToOpenDoor(IPoint doorPoint)
-    {
-        var door = Subject.MapInstance.GetEntitiesAtPoint<Door>(doorPoint).FirstOrDefault();
-
-        if (door is { Closed: true })
-            door.OnClicked(Subject);
-    }
-
-    private void CastBuff()
-    {
-        var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 8).Where(x => x.Effects.Contains("ardaite")).ToList();
-
-        if (aislings.Count > 0)
-        {
-            var spell = SpellFactory.Create("ardnaomhaite");
-
-            foreach (var player in aislings)
-                Subject.TryUseSpell(spell, player.Id);
-        }
-
-        Subject.Say("That should help a bit.");
-    }
-
-    private void ConductDialogueWithMerchant()
-    {
-        var merchant = Subject.MapInstance.GetEntitiesWithinRange<Merchant>(Subject)
-                              .FirstOrDefault(x => x.Id != Subject.Id);
-
-        if (!HasSaidGreeting)
-        {
-            var greeting = string.Format(PickRandom(Greetings), merchant?.Name);
-            Subject.Say(greeting);
-            HasSaidGreeting = true;
-            DialogueTimer.Reset();
-        }
-        else if (!HasAskedForItem)
-        {
-            var randomItem = merchant?.ItemsForSale.PickRandom();
-            var purchaseRequest = string.Format(PickRandom(PurchaseRequests), randomItem?.DisplayName);
-            ItemRequested = randomItem?.DisplayName;
-            Subject.Say(purchaseRequest);
-            HasAskedForItem = true;
-            DialogueTimer.Reset();
-        }
-        else if (!HasMerchantResponded)
-        {
-            var purchaseRequest = string.Format(PickRandom(MerchantResponses), ItemRequested);
-            merchant?.Say(purchaseRequest);
-            HasMerchantResponded = true;
-            DialogueTimer.Reset();
-        }
-        else if (!HasReceivedItem)
-        {
-            var response = PickRandom(ItemReceivedResponses);
-            Subject.Say(response);
-            HasReceivedItem = true;
-            HasHadConversation = true;
-        }
-    }
-
-    private string GetRandomMessage()
-    {
-        var randomIndex = IntegerRandomizer.RollSingle(VillagerMessages.Count);
-
-        return VillagerMessages[randomIndex];
-    }
-
-    private void HandleApproachToArmory(TimeSpan delta)
-    {
-        if (ShouldWalkTo(MilethArmoryDoorPoint))
-            WalkTowards(MilethArmoryDoorPoint, delta);
-        else if (ShouldWalkTo(MilethArmoryPoint))
-            WalkTowards(MilethArmoryPoint, delta);
-    }
-
-    private void HandleConversationWithMerchant(TimeSpan delta)
-    {
-        if (IsCloseTo(MilethArmoryPoint, 2))
-            UpdateDialogue(delta);
-    }
-
-    private void HandleIdleState()
-    {
-        //Inspect players legend for unique legend marks and call them out
-
-        //Inspect players gear for unique gear and talk about it
-
-        if (IntegerRandomizer.RollChance(80))
-            CurrentState = VillagerState.WalkingToArmory;
-
-        if (IntegerRandomizer.RollChance(10))
-            SayRandomMessage();
-
-        if (IntegerRandomizer.RollChance(3))
-            CastBuff();
-
-        if (IntegerRandomizer.RollChance(35))
-            CurrentState = VillagerState.Wandering;
-
-        ActionTimer.Reset();
-    }
-
-    private void HandlePostConversationActions(TimeSpan delta)
-    {
-        if (ShouldWalkTo(MilethArmoryDoorInsidePoint))
-            WalkTowards(MilethArmoryDoorInsidePoint, delta);
-        else if (ShouldWalkToSpawnPoint())
-            WalkTowards(Spawnpoint, delta);
-        else
-            ResetConversationState();
-    }
-
-    private void HandleWalkingToArmory(TimeSpan delta)
-    {
-        if (!HasHadConversation)
-        {
-            HandleApproachToArmory(delta);
-            HandleConversationWithMerchant(delta);
-        }
-        else
-            HandlePostConversationActions(delta);
-    }
-
-    private void HandleWanderingState()
-    {
-        Subject.Wander();
-
-        if (Subject.WanderTimer.IntervalElapsed && IntegerRandomizer.RollChance(10))
-        {
-            CurrentState = VillagerState.Idle;
-            ActionTimer.Reset();
-        }
-
-        Subject.WanderTimer.Reset();
-    }
-
-    private bool IsCloseTo(Location point, int distance) => Subject.DistanceFrom(point) <= distance;
-
-    private static string PickRandom(IReadOnlyList<string> phrases)
-    {
-        var index = IntegerRandomizer.RollSingle(phrases.Count);
-        return phrases[index];
-    }
-
-    private void ResetConversationState()
-    {
-        HasHadConversation = false;
-        HasReceivedItem = false;
-        HasSaidGreeting = false;
-        HasAskedForItem = false;
-        HasMerchantResponded = false;
-        ItemRequested = null;
-        CurrentState = VillagerState.Wandering;
-    }
-
-    private void SayRandomMessage()
-    {
-        var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 8);
-
-        if (aislings.Any())
-            Subject.Say(GetRandomMessage());
-    }
-
-    private bool ShouldWalkTo(Location destination) => (Subject.DistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
-
-    private bool ShouldWalkToSpawnPoint() => Subject.OnSameMapAs(MilethArmoryDoorPoint) && (Subject.DistanceFrom(Spawnpoint) > 0);
-
-    /// <inheritdoc />
-    public override void Update(TimeSpan delta)
-    {
-        ActionTimer.Update(delta);
-
-        switch (CurrentState)
-        {
-            case VillagerState.Idle:
-                if (ActionTimer.IntervalElapsed)
-                    HandleIdleState();
-
-                break;
-            case VillagerState.Wandering:
-                if (Subject.WanderTimer.IntervalElapsed)
-                    HandleWanderingState();
-
-                break;
-            case VillagerState.WalkingToArmory:
-                HandleWalkingToArmory(delta);
-
-                break;
-            case VillagerState.TalkingToAnotherMerchant:
-                break;
-            case VillagerState.TalkingToPlayer:
-                break;
-        }
-    }
-
-    private void UpdateDialogue(TimeSpan delta)
-    {
-        DialogueTimer.Update(delta);
-
-        if (DialogueTimer.IntervalElapsed)
-            ConductDialogueWithMerchant();
-    }
-
-    private void UpdateWalkTimer(TimeSpan delta) => WalkTimer.Update(delta);
-
-    private void WalkTowards(Location destination, TimeSpan delta)
-    {
-        UpdateWalkTimer(delta);
-
-        if (WalkTimer.IntervalElapsed)
-        {
-            if (destination == MilethArmoryDoorPoint)
-                AttemptToOpenDoor(MilethArmoryDoorPoint);
-
-            Subject.Pathfind(destination, 0);
-        }
-    }
 }
