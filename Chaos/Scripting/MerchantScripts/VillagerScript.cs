@@ -310,51 +310,39 @@ public class VillagerScript : MerchantScriptBase
                 ResetConversationState();
         }
     }
-
-    private const bool IS_TESTING_MODE = true;
-    private const VillagerState TESTING_STATE = VillagerState.WalkingToRestaurant;
-
+    
     private void HandleIdleState()
     {
-        if (IS_TESTING_MODE)
+        var actionRoll = IntegerRandomizer.RollSingle(100);
+
+        switch (actionRoll)
         {
-            CurrentState = TESTING_STATE;
+            case < 10:
+                CurrentState = VillagerState.FollowingPlayer;
+                break;
+            case < 15:
+                CurrentState = VillagerState.WalkingToTailor;
+                break;
+            case < 20:
+                CurrentState = VillagerState.WalkingToArmory;
+                break;
+            case < 25:
+                CurrentState = VillagerState.WalkingToRestaurant;
+                break;
+            case < 30:
+                SayRandomMessage();
+                break;
+            case < 33:
+                CastBuff();
+                break;
+            case < 68:
+                CurrentState = VillagerState.Wandering;
+                break;
         }
-        else
-        {
-            var actionRoll = IntegerRandomizer.RollSingle(100);
 
-            switch (actionRoll)
-            {
-                case < 10:
-                    CurrentState = VillagerState.FollowingPlayer;
-
-                    break;
-                case < 15:
-                    CurrentState = VillagerState.WalkingToTailor;
-
-                    break;
-                case < 20:
-                    CurrentState = VillagerState.WalkingToArmory;
-
-                    break;
-                case < 30:
-                    SayRandomMessage();
-
-                    break;
-                case < 33:
-                    CastBuff();
-
-                    break;
-                case < 68:
-                    CurrentState = VillagerState.Wandering;
-
-                    break;
-            }
-
-            ActionTimer.Reset();
-        }
+        ActionTimer.Reset();
     }
+
 
     private void HandlePostConversationActions(TimeSpan delta, string merchant)
     {
