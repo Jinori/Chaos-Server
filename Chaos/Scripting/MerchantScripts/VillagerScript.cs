@@ -44,7 +44,6 @@ public class VillagerScript : MerchantScriptBase
     private readonly Location Spawnpoint;
     private readonly ISpellFactory SpellFactory;
     private readonly IIntervalTimer WalkTimer;
-    public VillagerState CurrentState;
     private DateTime FollowUntil;
     public bool HasAskedForItem;
     public bool HasHadConversation;
@@ -62,7 +61,7 @@ public class VillagerScript : MerchantScriptBase
         SpellFactory = spellFactory;
         WalkTimer = new IntervalTimer(TimeSpan.FromMilliseconds(600), false);
         ActionTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
-        CurrentState = VillagerState.Idle;
+        Subject.VillagerState = VillagerState.Idle;
 
         DialogueTimer = new RandomizedIntervalTimer(
             TimeSpan.FromSeconds(1.5),
@@ -71,8 +70,8 @@ public class VillagerScript : MerchantScriptBase
             false);
 
         EatingTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(45),
-            40,
+            TimeSpan.FromSeconds(20),
+            10,
             RandomizationType.Positive,
             false);
         
@@ -225,13 +224,18 @@ public class VillagerScript : MerchantScriptBase
     public static DisplayColor GetRandomDisplayColor()
     {
         var values = Enum.GetValues(typeof(DisplayColor));
-        var randomIndex = IntegerRandomizer.RollSingle(values.Length);
+
+        if (values.Length == 0)
+            return DisplayColor.Blue;
+        
+        var randomIndex = IntegerRandomizer.RollSingle(values.Length) - 1; 
 
         if (values.GetValue(randomIndex) is DisplayColor color)
             return color;
 
-        throw new InvalidOperationException("Failed to generate a random DisplayColor.");
+        return DisplayColor.Blue;
     }
+
 
 
     private string GetRandomMessage()
@@ -285,7 +289,6 @@ public class VillagerScript : MerchantScriptBase
 
             if (aislings.Count > 0)
             {
-                // Pick the only aisling if there's only one, otherwise pick randomly
                 RandomAisling = aislings.Count == 1 ? aislings[0] : aislings[IntegerRandomizer.RollSingle(aislings.Count)];
                 FollowUntil = DateTime.Now.AddSeconds(IntegerRandomizer.RollSingle((int)MaxFollowDuration.TotalSeconds));
                 HasPickedAnAisling = true;
@@ -314,20 +317,20 @@ public class VillagerScript : MerchantScriptBase
     private void HandleIdleState()
     {
         var actionRoll = IntegerRandomizer.RollSingle(100);
-
+        
         switch (actionRoll)
         {
             case < 10:
-                CurrentState = VillagerState.FollowingPlayer;
+                Subject.VillagerState = VillagerState.FollowingPlayer;
                 break;
             case < 15:
-                CurrentState = VillagerState.WalkingToTailor;
+                Subject.VillagerState = VillagerState.WalkingToTailor;
                 break;
             case < 20:
-                CurrentState = VillagerState.WalkingToArmory;
+                Subject.VillagerState = VillagerState.WalkingToTailor;
                 break;
             case < 25:
-                CurrentState = VillagerState.WalkingToRestaurant;
+                Subject.VillagerState = VillagerState.WalkingToRestaurant;
                 break;
             case < 30:
                 SayRandomMessage();
@@ -336,7 +339,7 @@ public class VillagerScript : MerchantScriptBase
                 CastBuff();
                 break;
             case < 68:
-                CurrentState = VillagerState.Wandering;
+                Subject.VillagerState = VillagerState.Wandering;
                 break;
         }
 
@@ -423,7 +426,7 @@ public class VillagerScript : MerchantScriptBase
 
         if (Subject.WanderTimer.IntervalElapsed && IntegerRandomizer.RollChance(10))
         {
-            CurrentState = VillagerState.Idle;
+            Subject.VillagerState = VillagerState.Idle;
             ActionTimer.Reset();
         }
 
@@ -449,7 +452,7 @@ public class VillagerScript : MerchantScriptBase
         ItemRequested = null;
         RandomAisling = null;
         FollowUntil = DateTime.MinValue;
-        CurrentState = VillagerState.Wandering;
+        Subject.VillagerState = VillagerState.Wandering;
     }
 
     private void SayRandomMessage()
@@ -470,7 +473,7 @@ public class VillagerScript : MerchantScriptBase
         ActionTimer.Update(delta);
         EatingTimer.Update(delta);
         
-        switch (CurrentState)
+        switch (Subject.VillagerState)
         {
             case VillagerState.Idle:
                 if (ActionTimer.IntervalElapsed)

@@ -9,6 +9,7 @@ using Chaos.Models.Panel;
 using Chaos.Models.Templates;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
+using Chaos.Scripting.MerchantScripts;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Other.Abstractions;
@@ -28,6 +29,8 @@ public sealed class Merchant : Creature,
     public bool CurrentlyHosting21Game { get; set; }
 
     public bool CurrentlyHostingMass { get; set; }
+
+    public VillagerScript.VillagerState VillagerState { get; set; }
 
     /// <inheritdoc />
     public ICollection<Item> ItemsForSale { get; }
