@@ -82,7 +82,7 @@ public sealed class WolfBoss1EnrageScript : MonsterScriptBase
             {
                 AtkSpeedPct = 10,
                 Dmg = 15,
-                Ac = -40
+                Ac = -20
             };
             Subject.StatSheet.AddBonus(attrib);
         }

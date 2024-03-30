@@ -33,7 +33,7 @@ public sealed class ZombieBoss3EnrageScript : MonsterScriptBase
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 
-            for (var i = 0; i <= 4; i++)
+            for (var i = 0; i <= 2; i++)
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("zombie3-4", Subject.MapInstance, point);
@@ -47,7 +47,7 @@ public sealed class ZombieBoss3EnrageScript : MonsterScriptBase
             Subject.Animate(UpgradeAnimation);
             var rectangle = new Rectangle(Subject, 5, 5);
 
-            for (var i = 0; i <= 6; i++)
+            for (var i = 0; i <= 3; i++)
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("zombie3-4", Subject.MapInstance, point);
@@ -62,7 +62,7 @@ public sealed class ZombieBoss3EnrageScript : MonsterScriptBase
             Subject.Animate(UpgradeAnimation);
             var rectangle = new Rectangle(Subject, 5, 5);
 
-            for (var i = 0; i <= 8; i++)
+            for (var i = 0; i <= 3; i++)
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("zombie3-4", Subject.MapInstance, point);
