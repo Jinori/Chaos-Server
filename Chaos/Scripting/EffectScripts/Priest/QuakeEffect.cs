@@ -55,7 +55,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
 
         var targets =
             Subject.MapInstance.GetEntitiesAtPoints<Creature>(points.Cast<IPoint>()).WithFilter(Subject, TargetFilter.HostileOnly).ToList();
-
+        
         foreach (var target in targets)
         {
             ApplyDamageScript.ApplyDamage(

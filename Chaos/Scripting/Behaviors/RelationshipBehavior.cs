@@ -213,8 +213,9 @@ public class RelationshipBehavior
         {
             var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
             var isOwner = target.Equals(source.PetOwner);
+            var isAisling = source.MapInstance.GetEntities<Aisling>().Any();
 
-            return !(isGroupMember || isOwner);            
+            return !(isGroupMember || isOwner || isAisling);            
         }
         
         if (source.Script.Is<NightmareTotemScript>() || target.Script.Is<NightmareTotemScript>())

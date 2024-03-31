@@ -93,6 +93,29 @@ public class RecipeItemScript : ItemScriptBase
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
+            #region All Mounts
+            case "recipe_allmounts":
+            {
+                source.Trackers.Flags.AddFlag(AvailableMounts.Ant);
+                source.Trackers.Flags.AddFlag(AvailableMounts.Bee);
+                source.Trackers.Flags.AddFlag(AvailableMounts.Dunan);
+                source.Trackers.Flags.AddFlag(AvailableMounts.Wolf);
+                source.Trackers.Flags.AddFlag(AvailableMounts.Horse);
+                source.Trackers.Flags.AddFlag(AvailableMounts.Kelberoth);
+                source.Trackers.Flags.AddFlag(AvailableCloaks.Blue);
+                source.Trackers.Flags.AddFlag(AvailableCloaks.Black);
+                source.Trackers.Flags.AddFlag(AvailableCloaks.Red);
+                source.Trackers.Flags.AddFlag(AvailableCloaks.Green);
+                source.Trackers.Flags.AddFlag(AvailableCloaks.Purple);
+
+                source.Animate(ani);
+                source.SendOrangeBarMessage("You now have all mounts and cloaks.");
+                source.Inventory.RemoveQuantityByTemplateKey("recipe_allmounts", 1);
+
+                return;
+            }
+            #endregion
+            
             #region All Recipes
             case "recipe_allcrafts":
             {
