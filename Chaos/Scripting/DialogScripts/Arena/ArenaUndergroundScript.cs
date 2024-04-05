@@ -93,9 +93,16 @@ public class ArenaUndergroundScript : DialogScriptBase
             {
                 foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
                 {
+                    
                     aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
                     aisling.Trackers.Enums.TryGetValue(out ArenaSide side);
 
+                    if (team is ArenaTeam.Blue or ArenaTeam.Red)
+                    {
+                        Subject.Close(source);
+                        source.SendOrangeBarMessage("All players should be on Green or Gold team.");
+                        return;
+                    }
                     if (team == ArenaTeam.Gold)
                     {
                         aisling.Trackers.Enums.Set(ArenaSide.Defender);
@@ -117,6 +124,13 @@ public class ArenaUndergroundScript : DialogScriptBase
                     aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
                     aisling.Trackers.Enums.TryGetValue(out ArenaSide side);
 
+                    if (team is ArenaTeam.Blue or ArenaTeam.Red)
+                    {
+                        Subject.Close(source);
+                        source.SendOrangeBarMessage("All players should be on Green or Gold team.");
+                        return;
+                    }
+                    
                     if (team == ArenaTeam.Gold)
                     {
                         aisling.Trackers.Enums.Set(ArenaSide.Offensive);

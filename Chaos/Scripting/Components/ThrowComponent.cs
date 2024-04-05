@@ -20,22 +20,26 @@ public class ThrowComponent : IComponent
     public void Execute(ActivationContext context, ComponentVars vars)
     {
         var targetPoint = context.Source.DirectionalOffset(context.TargetDirection);
+        var targets = vars.GetTargets<Creature>();
 
         var entity = context.TargetMap.GetEntitiesAtPoint<Creature>(targetPoint)
                             .TopOrDefault();
 
-        if (entity != null)
+        foreach (var target in targets)
         {
-            if (entity.Trackers.Enums.TryGetValue(out GodMode god) && (god == GodMode.Yes))
-                return;
-            
-            var throwDirection = context.TargetDirection;
-            var throwPoint = entity.DirectionalOffset(throwDirection);
+            if (entity != null)
+            {
+                if (entity.Trackers.Enums.TryGetValue(out GodMode god) && (god == GodMode.Yes))
+                    return;
 
-            if (!entity.MapInstance.IsWall(throwPoint) && !entity.MapInstance.IsBlockingReactor(throwPoint))
-                entity.WarpTo(throwPoint);
+                var throwDirection = context.TargetDirection;
+                var throwPoint = entity.DirectionalOffset(throwDirection);
 
-            entity.MapInstance.ShowAnimation(ThrowAnimation.GetPointAnimation(entity));
+                if (!entity.MapInstance.IsWall(throwPoint) && !entity.MapInstance.IsBlockingReactor(throwPoint))
+                    entity.WarpTo(throwPoint);
+
+                entity.MapInstance.ShowAnimation(ThrowAnimation.GetPointAnimation(entity));
+            }
         }
     }
 
