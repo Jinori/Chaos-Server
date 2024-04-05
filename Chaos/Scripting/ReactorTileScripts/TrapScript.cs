@@ -63,6 +63,9 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
         if (!Filter.IsValidTarget(Owner, source))
             return;
 
+        if (source.Trackers.Enums.TryGetValue(out GodMode godmode) && godmode == GodMode.Yes)
+            return;
+
         var executed = new ComponentExecutor(Owner, source).WithOptions(this)
                                                            .ExecuteAndCheck<GetTargetsComponent<Creature>>()
                                                            ?.Execute<SoundComponent>()

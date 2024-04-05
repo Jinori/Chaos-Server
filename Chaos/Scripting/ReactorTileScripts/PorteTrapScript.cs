@@ -68,6 +68,9 @@ If this reactor was created through a script, you must specify the owner in the 
         if (!Filter.IsValidTarget(Owner, source))
             return;
 
+        if (source.Trackers.Enums.TryGetValue(out GodMode godMode) && (godMode == GodMode.Yes))
+            return;
+
         var aisling = source as Aisling;
 
         if ((aisling?.MapInstance.InstanceId == "pf_path") && aisling.Inventory.HasCount("Giant Ant Wing", 1))

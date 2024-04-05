@@ -183,6 +183,11 @@ public class RelationshipBehavior
 
     protected virtual bool IsHostileTo(Aisling source, Monster target)
     {
+        var isPet = target.Script.Is<PetScript>() || source.Script.Is<PetScript>();
+
+        if (isPet)
+            return false;
+        
         var isTotem = target.Script.Is<NightmareTotemScript>() || source.Script.Is<NightmareTotemScript>();
         
         if (isTotem)

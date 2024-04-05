@@ -1199,7 +1199,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "kabineblossom", DisplayName = "Kabine Blossom", Amount = 2 },
-                    new Ingredient { TemplateKey = "krakententacle", DisplayName = "Kraken Tentacle", Amount = 1 },
+                    new Ingredient { TemplateKey = "redtentacle", DisplayName = "Red Tentacle", Amount = 1 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
                 Rank = "Adept",
@@ -1216,7 +1216,7 @@ public static class CraftingRequirements
                 Ingredients = new List<Ingredient>()
                 {
                     new Ingredient { TemplateKey = "vipervenom", DisplayName = "Viper's Venom", Amount = 1 }, 
-                    new Ingredient { TemplateKey = "murauderspine", DisplayName = "Murauder's Spine", Amount = 1 },
+                    new Ingredient { TemplateKey = "marauderspine", DisplayName = "Marauder's Spine", Amount = 1 },
                     new Ingredient { TemplateKey = "satyrhoof", DisplayName = "Satyr's Hoof", Amount = 1 },
                     new Ingredient { TemplateKey = "polypsac", DisplayName = "Polyp Sac", Amount = 1 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },

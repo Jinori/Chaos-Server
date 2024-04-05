@@ -12,7 +12,7 @@ public class SpawnSilkWormScript : MapScriptBase
     {
         var merchant = merchantFactory.Create("wormspawner", Subject, new Point());
         var points = new HashSet<Point>();
-        const int COUNT = 50;
+        const int COUNT = 100;
 
         for (var i = 0; i < COUNT; i++)
         {
