@@ -175,8 +175,8 @@ public sealed class NathraScript : MerchantScriptBase
             var playersInAoe = points.SelectMany(point => Subject.MapInstance.GetEntitiesAtPoint<Aisling>(point)).ToList();
 
             var shouldMove = (playersInAoe.Count != 0) &&
-                             playersInAoe.All(x => x.Trackers.Enums.TryGetValue(out ArenaTeam value) && (value == ArenaTeam.Gold)) &&
-                             playersInAoe.Any(x => x.Trackers.Enums.TryGetValue(out ArenaTeam value) && (value == ArenaTeam.Gold));
+                             playersInAoe.All(x => x.Trackers.Enums.TryGetValue(out ArenaSide side) && (side == ArenaSide.Defender)) &&
+                             playersInAoe.Any(x => x.Trackers.Enums.TryGetValue(out ArenaSide side) && (side == ArenaSide.Defender));
 
             if (shouldMove && StateTransitionMap.TryGetValue(NathraState, out var transition))
             {

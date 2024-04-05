@@ -89,6 +89,48 @@ public class ArenaUndergroundScript : DialogScriptBase
 
                 break;
 
+            case "ophie_golddefending":
+            {
+                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                {
+                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
+                    aisling.Trackers.Enums.TryGetValue(out ArenaSide side);
+
+                    if (team == ArenaTeam.Gold)
+                    {
+                        aisling.Trackers.Enums.Set(ArenaSide.Defender);
+                    }
+
+                    if (team == ArenaTeam.Green)
+                    {
+                        aisling.Trackers.Enums.Set(ArenaSide.Offensive);
+                    }
+                }
+
+                break;
+            }
+            
+            case "ophie_greendefending":
+            {
+                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+                {
+                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
+                    aisling.Trackers.Enums.TryGetValue(out ArenaSide side);
+
+                    if (team == ArenaTeam.Gold)
+                    {
+                        aisling.Trackers.Enums.Set(ArenaSide.Offensive);
+                    }
+
+                    if (team == ArenaTeam.Green)
+                    {
+                        aisling.Trackers.Enums.Set(ArenaSide.Defender);
+                    }
+                }
+
+                break;
+            }
+            
             case "ophie_startescort":
             {
                 var shard = ShardGenerator.CreateShardOfInstance("arena_escort");
@@ -113,15 +155,17 @@ public class ArenaUndergroundScript : DialogScriptBase
                     }
 
                     aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
-
+                    aisling.Trackers.Enums.TryGetValue(out ArenaSide side);
+                    
+                    
                     Rectangle targetRectangle;
 
-                    if (team != ArenaTeam.Gold)
+                    if (side == ArenaSide.Offensive)
                     {
                         targetRectangle = new Rectangle(new Point(35, 6), 2, 2);
                         aisling.TraverseMap(shard, GetValidRandomPoint(targetRectangle));
                     }
-                    if (team == ArenaTeam.Gold)
+                    if (side == ArenaSide.Defender)
                     {
                         targetRectangle = new Rectangle(new Point(6, 30), 3, 3);
                         aisling.TraverseMap(shard, GetValidRandomPoint(targetRectangle));
@@ -215,6 +259,7 @@ public class ArenaUndergroundScript : DialogScriptBase
                     while (CenterWarp == CenterWarpPlayer);
 
                     aisling.Trackers.Enums.Remove<ArenaTeam>();
+                    aisling.Trackers.Enums.Remove<ArenaSide>();
                     aisling.WarpTo(CenterWarpPlayer);
                 }
 
@@ -977,6 +1022,7 @@ public class ArenaUndergroundScript : DialogScriptBase
 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
                 aisling?.Trackers.Enums.Remove<ArenaTeam>();
+                aisling?.Trackers.Enums.Remove<ArenaSide>();
                 aisling?.WarpTo(CenterWarpPlayer);
 
                 break;

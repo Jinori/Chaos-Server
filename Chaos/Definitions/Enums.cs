@@ -1281,6 +1281,13 @@ public enum ArenaTeam
     Red = 4
 }
 
+public enum ArenaSide
+{
+    None,
+    Defender = 1,
+    Offensive = 2
+}
+
 public enum PentagramQuestStage
 {
     None,
