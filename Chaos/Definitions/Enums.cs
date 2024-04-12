@@ -105,6 +105,13 @@ public enum VisibilityType
     GmHidden
 }
 
+public enum VisionType
+{
+    Normal,
+    Blind,
+    TrueBlind
+}
+
 public enum Crafts
 {
     None = 0,
