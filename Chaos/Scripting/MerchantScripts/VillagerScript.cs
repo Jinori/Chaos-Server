@@ -3,6 +3,8 @@ using Chaos.Common.Utilities;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.World;
+using Chaos.Pathfinding;
+using Chaos.Pathfinding.Abstractions;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
@@ -21,12 +23,20 @@ public class VillagerScript : MerchantScriptBase
         WalkingToRestaurant,
         TalkingToAnotherMerchant,
         TalkingToPlayer,
-        FollowingPlayer
+        FollowingPlayer,
+        Eating
     }
 
+    private IPathOptions Options => PathOptions.Default with
+    {
+        LimitRadius = null,
+        IgnoreBlockingReactors = true
+    };
+    
     private readonly IIntervalTimer ActionTimer;
     private readonly IIntervalTimer DialogueTimer;
     private readonly IIntervalTimer EatingTimer;
+    private DateTime LastChant; 
     private readonly TimeSpan MaxFollowDuration = TimeSpan.FromSeconds(50);
     public readonly Location MilethArmoryDoorInsidePoint = new("mileth_armor_shop", 11, 8);
     public readonly Location MilethArmoryDoorPoint = new("mileth", 10, 31);
@@ -69,11 +79,7 @@ public class VillagerScript : MerchantScriptBase
             RandomizationType.Positive,
             false);
 
-        EatingTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(20),
-            10,
-            RandomizationType.Positive,
-            false);
+        EatingTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
         
         Spawnpoint = new Location(Subject.MapInstance.InstanceId, Subject.X, Subject.Y);
     }
@@ -101,6 +107,36 @@ public class VillagerScript : MerchantScriptBase
         Subject.Say("That should help a bit.");
     }
 
+    private void HandleEatingState()
+    {
+        if ((DateTime.Now - LastChant).TotalSeconds >= 2)
+        {
+            DisplayEatingMessage();
+            LastChant = DateTime.Now;
+        }
+
+        if (EatingTimer.IntervalElapsed)
+        {
+            var npc = Subject.MapInstance.GetEntitiesWithinRange<Merchant>(Subject)
+                             .FirstOrDefault(x => x.Id != Subject.Id);
+
+            var thanks = string.Format(PickRandom(CustomerThanksCook), npc?.Name);
+            Subject.Say(thanks);
+
+            HasReceivedItem = true;
+            HasHadConversation = true;
+            DialogueTimer.Reset();
+            
+            EatingTimer.Reset();
+            Subject.VillagerState = VillagerState.WalkingToRestaurant;
+        }
+    }
+    private void DisplayEatingMessage()
+    {
+        var index = IntegerRandomizer.RollSingle(EatingActions.Count);
+        Subject.Chant($"*{EatingActions[index]}*");
+    }
+    
     private void ConductDialogueWithMerchant(string merchant)
     {
         switch (merchant)
@@ -129,16 +165,11 @@ public class VillagerScript : MerchantScriptBase
                     var response = PickRandom(ServingFoodResponses);
                     npc?.Say(response);
                     HasMerchantResponded = true;
+                    Subject.VillagerState = VillagerState.Eating;
                     EatingTimer.Reset();
+                    LastChant = DateTime.Now;
                 }
-                else if (EatingTimer.IntervalElapsed && !HasReceivedItem)
-                {
-                    var thanks = string.Format(PickRandom(CustomerThanksCook), npc?.Name);
-                    Subject.Say(thanks);
-                    HasReceivedItem = true;
-                    HasHadConversation = true;
-                }
-
+                
                 break;
             }
             
@@ -409,7 +440,7 @@ public class VillagerScript : MerchantScriptBase
             HandlePostConversationActions(delta, "tailor");
     }
     
-    private void HandleWalkingToResturant(TimeSpan delta)
+    private void HandleWalkingToRestaurant(TimeSpan delta)
     {
         if (!HasHadConversation)
         {
@@ -495,8 +526,9 @@ public class VillagerScript : MerchantScriptBase
 
                 break;
 
+            
             case VillagerState.WalkingToRestaurant:
-                HandleWalkingToResturant(delta);
+                HandleWalkingToRestaurant(delta);
 
                 break;
             
@@ -508,6 +540,10 @@ public class VillagerScript : MerchantScriptBase
             case VillagerState.FollowingPlayer:
                 HandleFollowingPlayer(delta);
 
+                break;
+
+            case VillagerState.Eating:
+                HandleEatingState();
                 break;
         }
     }
@@ -537,11 +573,44 @@ public class VillagerScript : MerchantScriptBase
             if (destination == MilethRestaurantDoorPoint)
                 AttemptToOpenDoor(MilethRestaurantDoorPoint);
             
-            Subject.Pathfind(destination, 0);
+            Subject.Pathfind(destination, 0, Options);
         }
     }
 
     #region Messages
+    
+    private static readonly List<string> EatingActions =
+    [
+        "big bite",
+        "gobbles",
+        "quiet eat",
+        "chews",
+        "savors",
+        "feasts",
+        "devours",
+        "nibbles",
+        "munches",
+        "tastes",
+        "relishes",
+        "partakes",
+        "hearty",
+        "fills up",
+        "indulges",
+        "snacks",
+        "quick bite",
+        "eats",
+        "fast eat",
+        "snack",
+        "small bite",
+        "king feast",
+        "relish",
+        "tucks in",
+        "continues",
+        "bite",
+        "focuses",
+        "dines"
+    ];
+    
     private static readonly List<string> TailorResponses =
     [
         "Ah, {0} dye? We have that in stock.",
@@ -605,7 +674,7 @@ public class VillagerScript : MerchantScriptBase
         "Looking to buy some {0} dye, available?",
         "Is it possible to get {0} dye here?",
         "Could you help me with {0} dye?",
-        "I’d like some {0} dye, please.",
+        "I'd like some {0} dye, please.",
         "In need of {0} dye, do you supply it?",
         "Any luck finding {0} dye in your store?"
     ];
@@ -815,42 +884,41 @@ public class VillagerScript : MerchantScriptBase
         "Anything warm and filling would be great.",
         "What's the soup of the day?",
         "Feeling like a steak sandwich today.",
-        "I’ll have your best hot dog and fries.",
-        "What’s fresh and quick to eat?",
-        "I’d like something with chips, please.",
+        "I'll have your best hot dog and fries.",
+        "What's fresh and quick to eat?",
+        "I'd like something with chips, please.",
         "Got any specials on the grill?",
-        "What's the chef’s choice for today?",
+        "What's the chef's choice for today?",
         "Any hearty meals for a hungry traveller?",
         "Something warm and cheesy, please!"
     ];
     private static readonly List<string> ServingFoodResponses =
     [
-        "Here's your order, enjoy the meal!",
+        "Here is your order, enjoy the meal!",
         "Fresh out of the kitchen, one hot plate!",
         "Got your food right here. Bon appétit!",
-        "Hope you're hungry! Here's your dish.",
+        "Hope you are hungry! Here's your dish.",
         "Your order is ready. Looks delicious!",
         "Enjoy your meal.",
-        "Here's the special of the day, just for you.",
+        "Here is the special of the day, just for you.",
         "Serving up your request. Eat up and enjoy!",
         "One tasty meal, coming right up!",
-        "Your food's ready. Careful, it's hot!",
+        "Your food's ready. Careful, its hot!",
         "Here you go, cooked to perfection!",
         "Just in time, your meal is ready.",
-        "Here’s what you asked for. It's a popular choice!",
+        "Here is what you asked for. Its a popular choice!",
         "Piping hot and delicious – just for you.",
         "And here's your order. That smells great!",
         "Fresh from the kitchen! Hope it hits the spot.",
         "That's one of our best dishes. Enjoy your meal!",
-        "Here’s your food, made with care.",
+        "Here's your food, made with care.",
         "Served up and ready to go! Enjoy.",
         "Hope this meal makes your day better!",
-        "Here’s the hearty meal you asked for.",
+        "Here is the hearty meal you asked for.",
         "Fresh off the grill, just for you.",
         "Your delicious order is all set!",
         "Ready to dig in? Here's your food.",
         "A perfect meal for a perfect guest!",
-        "Brought to you with our pub’s charm.",
         "Enjoy the flavors of our house special.",
         "There you go! Enjoy every bite."
     ];
@@ -879,10 +947,10 @@ public class VillagerScript : MerchantScriptBase
         "{0}, you deserve all the praise – thank you!",
         "A heartfelt thanks to {0} for a great meal!",
         "Thank you, {0}! That was truly a treat.",
-        "{0}, you’ve outdone yourself! It was great.",
+        "{0}, you've outdone yourself! It was great.",
         "Amazing meal, {0}! You're incredibly talented.",
         "{0}, your culinary skills are fantastic. Thanks!",
-        "I’m impressed, {0}! Wonderful flavors.",
+        "I'm impressed, {0}! Wonderful flavors.",
         "Thanks to {0} for an unforgettable meal!",
         "{0}, you nailed it! The food was excellent.",
         "Huge thanks, {0}! Every bite was a delight."

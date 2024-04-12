@@ -4,6 +4,8 @@ using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.World;
+using Chaos.Pathfinding;
+using Chaos.Pathfinding.Abstractions;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -20,7 +22,13 @@ public class ZertaScript : MerchantScriptBase
     private readonly IIntervalTimer WalkTimer;
     public bool AnnouncedPutItOnRed;
     public bool AnnouncedWinOrLoss;
+    private IPathOptions Options => PathOptions.Default with
+    {
+        LimitRadius = null,
+        IgnoreBlockingReactors = true
+    };
 
+        
     public Aisling? Source;
 
     /// <inheritdoc />
@@ -50,7 +58,7 @@ public class ZertaScript : MerchantScriptBase
                 if ((Source != null) && door.Closed)
                     door.OnClicked(Source);
 
-                Subject.Pathfind(CasinoDoorPoint, 0);
+                Subject.Pathfind(CasinoDoorPoint, 0, Options);
             }
         }
         else if ((Subject.DistanceFrom(CasinoPoint) > 0) && Subject.OnSameMapAs(CasinoPoint) && !AnnouncedPutItOnRed)
@@ -58,7 +66,9 @@ public class ZertaScript : MerchantScriptBase
             WalkTimer.Update(delta);
 
             if (WalkTimer.IntervalElapsed)
-                Subject.Pathfind(CasinoPoint, 0);
+            {
+                Subject.Pathfind(CasinoPoint, 0, Options);
+            }
         }
         else if ((Subject.DistanceFrom(CasinoPoint) <= 2) && !AnnouncedPutItOnRed)
         {
@@ -82,14 +92,14 @@ public class ZertaScript : MerchantScriptBase
                 WalkTimer.Update(delta);
 
                 if (WalkTimer.IntervalElapsed)
-                    Subject.Pathfind(InsideCasinoDoorPoint, 0);
+                    Subject.Pathfind(InsideCasinoDoorPoint, 0, Options);
             }
             else if ((Subject.DistanceFrom(HomePoint) > 0) && Subject.OnSameMapAs(HomePoint))
             {
                 WalkTimer.Update(delta);
 
                 if (WalkTimer.IntervalElapsed)
-                    Subject.Pathfind(HomePoint, 0);
+                    Subject.Pathfind(HomePoint, 0, Options);
             }
             else if ((Subject.DistanceFrom(HomePoint) == 0) && Subject.OnSameMapAs(HomePoint))
             {

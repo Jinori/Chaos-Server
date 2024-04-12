@@ -1,7 +1,5 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
-using Chaos.Extensions;
-using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
@@ -21,8 +19,7 @@ public sealed class dragonScaleBossEnrageScript : MonsterScriptBase
     private readonly ISpellFactory SpellFactory;
     private readonly Spell SpellToCast;
     private readonly Spell SpellToCast1;
-    private readonly Spell SpellToCast2;
-    
+
     private Animation UpgradeAnimation { get; } = new()
     {
         AnimationSpeed = 100,
