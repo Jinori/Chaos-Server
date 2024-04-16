@@ -498,7 +498,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             //and the last message was sent after the last clear
             //and the time since the last message is greater than the clear timer
             var shouldClear = lastOrangeBarMessage.HasValue
-                              && (lastOrangeBarMessage > Subject.Trackers.LastOrangeBarMessageClear)
+                              && (lastOrangeBarMessage > (Subject.Trackers.LastOrangeBarMessageClear ?? DateTime.MinValue))
                               && (now.Subtract(lastOrangeBarMessage.Value)
                                      .TotalSeconds
                                   > WorldOptions.Instance.ClearOrangeBarTimerSecs);
