@@ -233,12 +233,6 @@ public class CookingScript : ConfigurableDialogScriptBase
 
                         return;
                     }
-
-                        if (source.Trackers.Flags.HasFlag(CookingRecipes.Popsicle))
-                        {
-                            var item = ItemFactory.CreateFaux("popsicle");
-                            Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                        }
                 }
 
                 break;

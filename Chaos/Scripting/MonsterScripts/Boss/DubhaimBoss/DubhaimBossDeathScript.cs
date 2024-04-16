@@ -71,11 +71,12 @@ public class DubhaimBossDeathScript : MonsterScriptBase
 
             ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
             
-            var bossReward = rewardTargets.Where(a => a.Trackers.Flags.TryGetFlag(out AvailableMounts _) && !a.Trackers.Flags.HasFlag(AvailableMounts.Dunan)) // Assuming HasRequiredEnumValue() checks for the presence of the required enum
+            var bossReward = rewardTargets.Where(a => a.Trackers.Flags.TryGetFlag(out AvailableMounts _) && !a.Trackers.Flags.HasFlag(AvailableMounts.Dunan))
                 .ToList();
+            
+            if (bossReward.Count <= 0) 
+                return;
 
-            if (false) return;
-            if (bossReward.Count <= 0) return;
             bossReward.PickRandom();
 
             var randomIndex = new Random().Next(bossReward.Count);

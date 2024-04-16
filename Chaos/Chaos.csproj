@@ -52,12 +52,9 @@
         <PackageReference Include="Humanizer.Core" />
         <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="NLog.Web.AspNetCore" />
-        <PackageReference Include="System.Configuration.ConfigurationManager" />
         <PackageReference Include="AutoMapper.Collection"/>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection"/>
-        <PackageReference Include="Humanizer"/>
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"/>
-        <PackageReference Include="NLog.Web.AspNetCore"/>
         <PackageReference Include="System.Configuration.ConfigurationManager"/>
     </ItemGroup>
     <ItemGroup>
