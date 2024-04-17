@@ -1477,6 +1477,32 @@ public enum UndineFieldDungeon
 {
     None,
     StartedDungeon = 1,
-    KilledCarnun = 2,
-    CompletedUF = 3,
+    EnteredArena = 2,
+    StartedCarnun = 3,
+    KilledCarnun = 4,
+}
+
+[Flags]
+public enum UndineFieldDungeonFlag
+{
+    None,
+    CompletedUF = 1,
+}
+
+public enum MainStoryEnums
+{
+    None, 
+    MysteriousArtifactFound = 1,
+    ReceivedMA = 2,
+    SpokeToZephyr = 3,
+    StartedArtifactsHunt = 4,
+    CompletedArtifactsHunt = 5,
+    StartedCircuitTrial = 6,
+    CompletedCircuitTrial = 7,
+    SearchForSummoner = 8,
+    FoundSummoner = 9,
+    DefeatedServant = 10,
+    FoundSummoner2 = 11,
+    KilledSummoner = 12,
+    CompletedPreMasterMainStory = 13,
 }

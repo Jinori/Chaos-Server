@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Geometry.Abstractions;
@@ -19,7 +20,7 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
     private readonly List<IPoint> SafePoints = new();
     private bool IsAnimating;
     private bool IsPreAnimating;
-    private Rectangle SafeRectangle = null!; // Store the safeRectangle here
+    private Rectangle SafeRectangle = null!;// Store the safeRectangle here
     private double TimePassedSinceMainAnimationStart;
     private double TimePassedSincePreAnimationStart;
     private double TimePassedSinceTileAnimation;
@@ -66,6 +67,7 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
     {
         foreach (var point in rectangle.GetPoints())
             if (Map.IsWall(point) || Map.IsBlockingReactor(point))
+                
                 return true;
 
         return false;
@@ -78,6 +80,9 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
         foreach (var creature in creaturesToDamage.ToList())
             if (creature.Id != Subject.Id)
             {
+                if (creature.Trackers.Enums.TryGetValue(out GodMode godMode) && godMode == GodMode.Yes)
+                    return;
+                
                 var damage = (int)(creature.StatSheet.EffectiveMaximumHp * 0.30);
 
                 ApplyDamageScript.ApplyDamage(
@@ -90,6 +95,7 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
 
     private void GenerateSafeRectangle()
     {
+        
         const int MAX_ATTEMPTS = 100;
         var attempts = 0;
         const int WIDTH = 3; // Set the width of the rectangle

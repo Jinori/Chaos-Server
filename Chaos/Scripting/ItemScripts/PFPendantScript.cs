@@ -15,19 +15,19 @@ namespace Chaos.Scripting.ItemScripts;
 
 public class PFPendantScript : ItemScriptBase
 {
-    private readonly IMonsterFactory _monsterFactory;
-    private readonly ISimpleCache _simpleCache;
+    private readonly IMonsterFactory MonsterFactory;
+    private readonly ISimpleCache SimpleCache;
 
     public PFPendantScript(Item subject, ISimpleCache simpleCache, IMonsterFactory monsterFactory)
         : base(subject)
     {
-        _simpleCache = simpleCache;
-        _monsterFactory = monsterFactory;
+        SimpleCache = simpleCache;
+        MonsterFactory = monsterFactory;
     }
 
     private bool CanSpawnMantis(Aisling source, out MapInstance mapInstance)
     {
-        mapInstance = _simpleCache.Get<MapInstance>("PF_peak");
+        mapInstance = SimpleCache.Get<MapInstance>("PF_peak");
         source.Trackers.Enums.TryGetValue(out PFQuestStage stage);
 
         if (!source.IsAlive || !source.Inventory.Contains("Turuc Pendant") || !source.MapInstance.Name.EqualsI(mapInstance.Name))
@@ -46,7 +46,7 @@ public class PFPendantScript : ItemScriptBase
     }
 
     private Monster CreateMantis(MapInstance mapInstance, Aisling source) =>
-        _monsterFactory.Create("pf_giant_mantis", mapInstance, Point.From(source));
+        MonsterFactory.Create("pf_giant_mantis", mapInstance, Point.From(source));
 
     private Animation GetMonsterAnimation() => new()
         { AnimationSpeed = 100, TargetAnimation = 97 };

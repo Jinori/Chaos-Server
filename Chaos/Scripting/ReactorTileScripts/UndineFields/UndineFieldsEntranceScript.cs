@@ -40,7 +40,7 @@ public class UndineFieldsEntranceScript : ReactorTileScriptBase
             return;
 
         if (source.Trackers.Enums.TryGetValue(out UndineFieldDungeon stage) &&
-            stage != UndineFieldDungeon.StartedDungeon && stage != UndineFieldDungeon.CompletedUF)
+            stage != UndineFieldDungeon.StartedDungeon && source.Trackers.Flags.TryGetFlag(out UndineFieldDungeonFlag flag) && flag != UndineFieldDungeonFlag.CompletedUF)
         {
             aisling.SendOrangeBarMessage("You must start the quest to enter the fields.");
             var point = source.DirectionalOffset(source.Direction.Reverse());
@@ -61,7 +61,7 @@ public class UndineFieldsEntranceScript : ReactorTileScriptBase
         
         var allMembersHaveQuestEnum = aisling.Group.All(member =>
             member.Trackers.Enums.TryGetValue(out UndineFieldDungeon stage) &&
-            stage == UndineFieldDungeon.StartedDungeon || stage == UndineFieldDungeon.CompletedUF);
+            stage == UndineFieldDungeon.StartedDungeon || member.Trackers.Flags.TryGetFlag(out UndineFieldDungeonFlag flag) && flag == UndineFieldDungeonFlag.CompletedUF);
         
         if (allMembersHaveQuestEnum)
         {

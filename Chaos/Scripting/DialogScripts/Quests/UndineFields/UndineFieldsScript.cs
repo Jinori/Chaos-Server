@@ -40,13 +40,14 @@ public class UndineFieldsScript : DialogScriptBase
             return;
         
         var hasStage = source.Trackers.Enums.TryGetValue(out UndineFieldDungeon stage);
+        var hasFlag = source.Trackers.Flags.TryGetFlag(out UndineFieldDungeonFlag flag);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "alexios_initial":
             {
 
-                if (stage == UndineFieldDungeon.CompletedUF)
+                if (flag == UndineFieldDungeonFlag.CompletedUF)
                     return;
                 
                 var option = new DialogOption
@@ -69,6 +70,20 @@ public class UndineFieldsScript : DialogScriptBase
                     return;
                 }
 
+                if (stage == UndineFieldDungeon.EnteredArena)
+                {
+                    Subject.Reply(source, "I see you tried. That's okay. I know you'll get it, go back and try again.");
+                    source.Trackers.Enums.Set(UndineFieldDungeon.StartedDungeon);
+                    return;
+                }
+
+                if (stage == UndineFieldDungeon.StartedCarnun)
+                {
+                    Subject.Reply(source, "I see you tried. That's okay. I know you'll get it, go back and try again.");
+                    source.Trackers.Enums.Set(UndineFieldDungeon.StartedDungeon);
+                    return;
+                }
+
                 if (stage == UndineFieldDungeon.KilledCarnun)
                 {
                     Subject.Reply(source, "Skip", "uf_turnin");
@@ -88,7 +103,7 @@ public class UndineFieldsScript : DialogScriptBase
             case "uf_turnin":
                 if (stage == UndineFieldDungeon.KilledCarnun)
                 {
-                    source.Trackers.Enums.Set(UndineFieldDungeon.CompletedUF);
+                    source.Trackers.Flags.AddFlag(UndineFieldDungeonFlag.CompletedUF);
                     ExperienceDistributionScript.GiveExp(source, 200000);
                     source.Trackers.Flags.AddFlag(AvailableCloaks.Red);
                     source.SendOrangeBarMessage("You unlocked the Red Cloak for mounts!");

@@ -36,6 +36,7 @@ public class ApplyNonAttackDamageScript : ScriptBase, IApplyDamageScript
         {
             case Aisling aisling:
                 aisling.StatSheet.SubtractHp(damage);
+                aisling.ShowHealth();
                 aisling.Client.SendAttributes(StatUpdateType.Vitality);
 
                 if (!aisling.IsAlive)
@@ -44,6 +45,7 @@ public class ApplyNonAttackDamageScript : ScriptBase, IApplyDamageScript
                 break;
             case Monster monster:
                 monster.StatSheet.SubtractHp(damage);
+                monster.ShowHealth();
 
                 if (!monster.IsAlive)
                     monster.Script.OnDeath();

@@ -52,8 +52,8 @@ public class UndineFieldsEastRoomScript : ReactorTileScriptBase
 
         var allMembersHaveQuestEnum = aisling.Group.All(member =>
             member.Trackers.Enums.TryGetValue(out UndineFieldDungeon stage) &&
-            stage == UndineFieldDungeon.StartedDungeon || stage == UndineFieldDungeon.CompletedUF) && aisling.Group.All(member =>
-            member.Trackers.Counters.TryGetValue("orckills", out var count) && count <= 10);
+            stage == UndineFieldDungeon.StartedDungeon || member.Trackers.Flags.TryGetFlag(out UndineFieldDungeonFlag flag) && flag == UndineFieldDungeonFlag.CompletedUF) && aisling.Group.All(member =>
+            member.Trackers.Counters.TryGetValue("orckills", out var count) && count >= 10);
 
         if (allMembersHaveQuestEnum)
         {

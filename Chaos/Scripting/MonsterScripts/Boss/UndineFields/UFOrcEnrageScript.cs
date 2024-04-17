@@ -15,9 +15,7 @@ public sealed class UFOrcEnrageScript : MonsterScriptBase
     private bool Bonus30Applied;
     private bool Bonus50Applied;
     private bool Bonus75Applied;
-    private readonly ISpellFactory SpellFactory;
-    private readonly IIntervalTimer SpellCastTimer;
-    private readonly Spell SpellToCast;
+    private readonly IIntervalTimer SkillUseTimer;
    
 
     private Animation UpgradeAnimation { get; } = new()
@@ -27,27 +25,24 @@ public sealed class UFOrcEnrageScript : MonsterScriptBase
     };
 
     /// <inheritdoc />
-    public UFOrcEnrageScript(Monster subject, ISpellFactory spellFactory)
+    public UFOrcEnrageScript(Monster subject)
         : base(subject)
     {
-        SpellFactory = spellFactory;
-        SpellToCast = SpellFactory.Create("rocksmash");
-        SpellCastTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(20), 20, RandomizationType.Balanced, false);
+        SkillUseTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(20), 20, RandomizationType.Balanced, false);
     }
 
     public override void Update(TimeSpan delta)
     {
-        SpellCastTimer.Update(delta);
+        SkillUseTimer.Update(delta);
 
-        if (SpellCastTimer.IntervalElapsed)
+        if (SkillUseTimer.IntervalElapsed)
         {
             var roll = IntegerRandomizer.RollSingle(100);
             
             switch (roll)
             {
                 case < 40:
-                    Subject.Say("SMASH!");
-                    Subject.TryUseSpell(SpellToCast);
+                    Subject.Say("GIT OUT OF MY FIELDS!");
                     break;
 
                 case < 80:

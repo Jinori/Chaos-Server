@@ -43,7 +43,7 @@ public class DefaultDamageFormula : IDamageFormula
         Element? elementOverride = null)
     {
         // Check if the source (attacker) has godmode enabled.
-        var isGodModeEnabled = target is Aisling aisling && aisling.Trackers.Enums.TryGetValue(out GodMode godMode) && (godMode == GodMode.Yes);
+        var isGodModeEnabled = target is Aisling aisling && aisling.Trackers.Enums.HasValue(GodMode.Yes);
 
         // If godmode is enabled, set the damage to 0.
         if (isGodModeEnabled)

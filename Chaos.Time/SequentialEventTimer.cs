@@ -10,6 +10,10 @@ public class SequentialEventTimer : IIntervalTimer
 {
     private readonly List<IIntervalTimer> OrderedTimers;
     private int CurrentTimerIndex;
+    /// <summary>
+    ///     Gets the current elapsing timer
+    /// </summary>
+    public IIntervalTimer CurrentTimer => OrderedTimers[CurrentTimerIndex];
 
     /// <inheritdoc />
     public bool IntervalElapsed => OrderedTimers[CurrentTimerIndex].IntervalElapsed;
@@ -22,7 +26,9 @@ public class SequentialEventTimer : IIntervalTimer
     /// <inheritdoc />
     public void Reset()
     {
-        OrderedTimers.ForEach(timer => timer.Reset());
+        foreach (var timer in OrderedTimers)
+            timer.Reset();
+        
         CurrentTimerIndex = 0;
     }
 
@@ -34,12 +40,15 @@ public class SequentialEventTimer : IIntervalTimer
     public void Update(TimeSpan delta)
     {
         var timer = OrderedTimers[CurrentTimerIndex];
-        timer.Update(delta);
-
+        
         if (timer.IntervalElapsed)
             CurrentTimerIndex++;
 
-        if (CurrentTimerIndex >= OrderedTimers.Count)
-            CurrentTimerIndex = 0;
+        if (CurrentTimerIndex >= OrderedTimers.Count) 
+            Reset();
+
+        timer = OrderedTimers[CurrentTimerIndex];
+        
+        timer.Update(delta);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Menu;
@@ -57,6 +58,7 @@ namespace Chaos.Scripting.DialogScripts.Quests.UndineFields
                         newPoint = rectangle.GetRandomPoint();
                     } while (!mapInstance.IsWalkable(newPoint, member.Type));
 
+                    member.Trackers.Enums.Set(UndineFieldDungeon.StartedDungeon);
                     member.TraverseMap(mapInstance, newPoint);
                 }
             }

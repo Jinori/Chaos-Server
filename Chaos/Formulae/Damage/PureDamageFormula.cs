@@ -1,5 +1,7 @@
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Formulae.Abstractions;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 
@@ -14,5 +16,16 @@ public class PureDamageFormula : IDamageFormula
         IScript script,
         int damage,
         Element? elementOverride = null)
-        => damage;
+    {
+        // Check if the source (attacker) has godmode enabled.
+        var isGodModeEnabled = target is Aisling aisling && aisling.Trackers.Enums.HasValue(GodMode.Yes);
+
+        // If godmode is enabled, set the damage to 0.
+        if (!isGodModeEnabled) 
+            return damage;
+        
+        damage = 0;
+        return damage;
+
+    }
 }

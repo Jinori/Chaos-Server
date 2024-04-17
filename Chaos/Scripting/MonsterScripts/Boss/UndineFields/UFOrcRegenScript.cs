@@ -6,8 +6,8 @@ namespace Chaos.Scripting.MonsterScripts.Boss.UndineFields;
 
 public sealed class UFOrcRegenScript : MonsterScriptBase
 {
-    private static float HPRegenInterval = 9f;
-    private static float HPMultiplier = 0.02f;
+    private static float HPRegenInterval = 12f;
+    private static float HPMultiplier = 0.01f;
     private bool Bonus30Applied;
     private bool Bonus50Applied;
     private bool Bonus75Applied;
@@ -44,7 +44,7 @@ public sealed class UFOrcRegenScript : MonsterScriptBase
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
-            HPRegenInterval = 7f;
+            HPRegenInterval = 12f;
             HPMultiplier = 0.01f;
         }
 
@@ -52,7 +52,7 @@ public sealed class UFOrcRegenScript : MonsterScriptBase
         {
             Bonus50Applied = true;
 
-            HPRegenInterval = 6f;
+            HPRegenInterval = 8f;
             HPMultiplier = 0.02f;
         }
 
@@ -60,7 +60,7 @@ public sealed class UFOrcRegenScript : MonsterScriptBase
         {
             Bonus30Applied = true;
 
-            HPRegenInterval = 5f;
+            HPRegenInterval = 6f;
             HPMultiplier = 0.04f;
         }
     }
