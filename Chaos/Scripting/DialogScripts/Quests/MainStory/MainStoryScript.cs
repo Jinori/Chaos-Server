@@ -1,4 +1,5 @@
-﻿using Chaos.Common.Definitions;
+﻿using Chaos.Collections;
+using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
@@ -13,6 +14,8 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Services.Storage;
+using Chaos.Storage.Abstractions;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.MainStory;
@@ -22,27 +25,37 @@ public class MainStoryScript(
     IItemFactory itemFactory,
     ILogger<SpareAStickScript> logger,
     IMerchantFactory merchantFactory,
+    ISimpleCache simpleCache,
     IDialogFactory dialogFactory)
     : DialogScriptBase(subject)
 {
     private readonly ILogger<SpareAStickScript> Logger = logger;
-    private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
+
+    private readonly ISimpleCache SimpleCache = simpleCache;
+    private IExperienceDistributionScript ExperienceDistributionScript { get; } =
+        DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplaying(Aisling source)
     {
+        if (source.MapInstance.Name.Contains("The God's Realm"))
+        {
+            Subject.Reply(source, "You are in the presence of the Gods, do not be rude.");
+            return;
+        }
         var hasStage = source.Trackers.Enums.TryGetValue(out MainStoryEnums stage);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "mysteriousartifact_yes":
             {
-                
+
                 if (hasStage && stage == MainStoryEnums.MysteriousArtifactFound)
                 {
                     var mysteriousartifact = itemFactory.Create("mysteriousartifact");
                     source.TryGiveItems(mysteriousartifact);
                     source.Trackers.Enums.Set(MainStoryEnums.ReceivedMA);
                 }
+
                 break;
             }
 
@@ -56,7 +69,7 @@ public class MainStoryScript(
                         source.SendOrangeBarMessage("You are too inexperienced to interact with this object.");
                         return;
                     }
-                    
+
                     var option = new DialogOption
                     {
                         DialogKey = "mysteriousartifact_start1",
@@ -76,22 +89,34 @@ public class MainStoryScript(
                         return;
                     }
                     
-                    var option = new DialogOption
-                    {
-                        DialogKey = "mysteriousartifact_start6",
-                        OptionText = "Speak the words of Zephyr"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+                    Subject.Reply(source, "Skip", "mysteriousartifact_initial2");
+                    return;
                 }
             }
                 break;
-
             case "zephyr_start1":
             {
                 var point = new Point(source.X, source.Y);
                 var zephyr = merchantFactory.Create("zephyr", source.MapInstance, point);
+                var zephyrDialog = dialogFactory.Create("zephyr_initial", zephyr);
+                zephyrDialog.Display(source);
+            }
+                break;
+
+            case "zephyr_initial5":
+            {
+                source.Trackers.Enums.Set(MainStoryEnums.SpokeToZephyr);
+                return;
+            }
+                break;
+            
+            case "mysteriousartifact_start3":
+            {
+                Subject.Close(source);
+                var godsrealm = SimpleCache.Get<MapInstance>("godsrealm");
+                var newPoint = new Point(16, 16);
+                
+                source.TraverseMap(godsrealm, newPoint);
             }
                 break;
         }

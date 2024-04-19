@@ -466,11 +466,9 @@ public class VillagerScript : MerchantScriptBase
 
     private bool IsCloseTo(Location point, int distance) => Subject.DistanceFrom(point) <= distance;
 
-    private static string PickRandom(IReadOnlyList<string> phrases)
+    private static string PickRandom(ICollection<string> phrases)
     {
-        var index = IntegerRandomizer.RollSingle(phrases.Count);
-
-        return phrases[index];
+        return phrases.PickRandom();
     }
 
     private void ResetConversationState()

@@ -1384,13 +1384,13 @@ public enum ReconPoints
 }
 
 [Flags]
-
 public enum EasterEggs
 {
     None,
-    LeakyBarrel = 1,
-    UnlockedChest = 2,
-    CrackInWall = 3,
+    LeakyBarrel = 1 << 1,
+    UnlockedChest = 1 << 2,
+    CrackInWall = 1 << 3,
+    DepressedStatue = 1 << 4,
 }
 [Flags]
 public enum SavedChild

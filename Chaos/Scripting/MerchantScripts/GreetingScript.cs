@@ -76,6 +76,11 @@ public class GreetingScript(Merchant subject) : MerchantScriptBase(subject)
 
                 return;
             }
+            case "miraelisgod":
+            {
+                Subject.Say("Welcome Aisling, what news have you to share?");
+                return;
+            }
         }
     }
 }
