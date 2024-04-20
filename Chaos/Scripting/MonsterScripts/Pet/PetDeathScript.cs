@@ -11,17 +11,7 @@ public sealed class PetDeathScript : MonsterScriptBase
 
     public override void OnDeath()
     {
-        if (Subject.PetOwner != null)
-        {
-            Subject.PetOwner.SkillBook.TryGetObjectByTemplateKey("summonPet", out var obj);
-
-            if (obj != null)
-            {
-                obj.Cooldown = TimeSpan.FromMinutes(5);
-                obj.BeginCooldown(Subject.PetOwner);
-            }
-        }
-        
+        Subject.PetOwner?.Trackers.TimedEvents.AddEvent("PetDeath", TimeSpan.FromMinutes(5), true);
         Subject.PetOwner = null;
         Map.RemoveEntity(Subject);
     }
