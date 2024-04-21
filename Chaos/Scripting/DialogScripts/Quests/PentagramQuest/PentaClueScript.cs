@@ -5,11 +5,8 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Quests.PentagramQuest;
 
-public class PentaClueScript : DialogScriptBase
+public class PentaClueScript(Dialog subject) : DialogScriptBase(subject)
 {
-    public PentaClueScript(Dialog subject)
-        : base(subject) { }
-
     public override void OnDisplaying(Aisling source)
     {
         switch (source.UserStatSheet.BaseClass)

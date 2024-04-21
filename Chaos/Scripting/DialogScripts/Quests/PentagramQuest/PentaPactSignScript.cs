@@ -7,14 +7,12 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Quests.PentagramQuest;
 
-public class PentaPactSignScript : DialogScriptBase
+public class PentaPactSignScript(Dialog subject) : DialogScriptBase(subject)
 {
-    public PentaPactSignScript(Dialog subject)
-        : base(subject) { }
-
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
-        var hasStage = source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage);
+        //You never used hasStage or stage below?
+        //var hasStage = source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage);
         
         var ani = new Animation
         {
@@ -42,6 +40,5 @@ public class PentaPactSignScript : DialogScriptBase
         source.Client.SendAttributes(StatUpdateType.Vitality);
         source.Animate(ani);
         Subject.Close(source);
-        
     }
 }

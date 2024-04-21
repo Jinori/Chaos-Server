@@ -11,24 +11,14 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.DialogScripts.Mileth;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
-using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Rucesion;
 
-public class PrettyFlowerQuestScript : DialogScriptBase
+public class PrettyFlowerQuestScript(Dialog subject, ILogger<SpareAStickScript> logger)
+    : DialogScriptBase(subject)
 {
-    private readonly IItemFactory ItemFactory;
-    private readonly ILogger<SpareAStickScript> Logger;
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
-
-    public PrettyFlowerQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<SpareAStickScript> logger)
-        : base(subject)
-    {
-        ItemFactory = itemFactory;
-        Logger = logger;
-        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
-    }
+    private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplaying(Aisling source)
     {
@@ -61,7 +51,7 @@ public class PrettyFlowerQuestScript : DialogScriptBase
                     return;
                 }
                 
-                if (hasStage && stage == PrettyFlower.StartedQuest)
+                if (hasStage && (stage == PrettyFlower.StartedQuest))
                 {
                     Subject.Reply(source, "Skip", "prettyflower_return");
                 }
@@ -78,55 +68,55 @@ public class PrettyFlowerQuestScript : DialogScriptBase
             case "prettyflower_turnin":
             {
                 var hasRequiredFlower = source.Inventory.HasCount("Kobold Tail", 1);
-
-
-                if (hasStage && stage == PrettyFlower.StartedQuest)
-                {
-                    if (hasRequiredFlower)
+                
+                if (hasStage && (stage == PrettyFlower.StartedQuest))
+                    switch (hasRequiredFlower)
                     {
-                        source.Inventory.RemoveQuantity("Kobold Tail", 1, out _);
-                        source.Trackers.Enums.Set(PrettyFlower.None);
-                        source.Trackers.TimedEvents.AddEvent("prettyflowercd", TimeSpan.FromHours(24), true);
-
-                        Logger.WithTopics(
-                                Topics.Entities.Aisling,
-                                Topics.Entities.Gold,
-                                Topics.Entities.Experience,
-                                Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
-                            .WithProperty(source)
-                            .WithProperty(Subject)
-                            .LogInformation(
-                                "{@AislingName} has received {@ExpAmount} exp from a quest",
-                                source.Name,
-                                20000);
-
-                        ExperienceDistributionScript.GiveExp(source, 20000);
-                        source.TryGiveGamePoints(5);
-
-                        if (IntegerRandomizer.RollChance(8))
+                        case true:
                         {
-                            source.Legend.AddOrAccumulate(
-                                new LegendMark(
-                                    "Loved by Rucesion Mundanes",
-                                    "rucesionLoved",
-                                    MarkIcon.Heart,
-                                    MarkColor.Blue,
-                                    1,
-                                    GameTime.Now));
+                            source.Inventory.RemoveQuantity("Kobold Tail", 1, out _);
+                            source.Trackers.Enums.Set(PrettyFlower.None);
+                            source.Trackers.TimedEvents.AddEvent("prettyflowercd", TimeSpan.FromHours(24), true);
 
-                            source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
-                                "You received a unique legend mark!");
+                            logger.WithTopics(
+                                      Topics.Entities.Aisling,
+                                      Topics.Entities.Gold,
+                                      Topics.Entities.Experience,
+                                      Topics.Entities.Dialog,
+                                      Topics.Entities.Quest)
+                                  .WithProperty(source)
+                                  .WithProperty(Subject)
+                                  .LogInformation(
+                                      "{@AislingName} has received {@ExpAmount} exp from a quest",
+                                      source.Name,
+                                      20000);
+
+                            ExperienceDistributionScript.GiveExp(source, 20000);
+                            source.TryGiveGamePoints(5);
+
+                            if (IntegerRandomizer.RollChance(8))
+                            {
+                                source.Legend.AddOrAccumulate(
+                                    new LegendMark(
+                                        "Loved by Rucesion Mundanes",
+                                        "rucesionLoved",
+                                        MarkIcon.Heart,
+                                        MarkColor.Blue,
+                                        1,
+                                        GameTime.Now));
+
+                                source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
+                                    "You received a unique legend mark!");
+                            }
+
+                            break;
                         }
-                    }
+                        case false:
+                            Subject.Reply(source,
+                                $"Awe, you don't have the Kobold Tail, it's such a pretty flower. When you find one, please bring it back to me.");
 
-                    if (!hasRequiredFlower)
-                    {
-                        
-                        Subject.Reply(source,
-                            $"Awe, you don't have the Kobold Tail, it's such a pretty flower. When you find one, please bring it back to me.");
+                            break;
                     }
-                }
 
                 break;
             }

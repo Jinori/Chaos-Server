@@ -5,51 +5,22 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Quests.PentagramQuest;
 
-public class PentaPactScript : DialogScriptBase
+public class PentaPactScript(Dialog subject) : DialogScriptBase(subject)
 {
-    public PentaPactScript(Dialog subject)
-        : base(subject) { }
+    private readonly Dictionary<BaseClass, string> ClassToOptionMap = new()
+    {
+        { BaseClass.Warrior, "pentawarriorpact1" },
+        { BaseClass.Rogue, "pentaroguepact1" },
+        { BaseClass.Wizard, "pentawizardpact1" },
+        { BaseClass.Priest, "pentapriestpact1" },
+        { BaseClass.Monk, "pentamonkpact1" }
+    };
 
     public override void OnDisplaying(Aisling source)
     {
-        switch (source.UserStatSheet.BaseClass)
-        {
-            case BaseClass.Warrior:
-            {
-                Subject.AddOption($"Open the book", "pentawarriorpact1");
-            }
-
-                break;
-
-            case BaseClass.Rogue:
-            {
-                Subject.AddOption($"Open the book", "pentaroguepact1");
-            }
-
-                break;
-
-            case BaseClass.Wizard:
-            {
-                Subject.AddOption($"Open the book", "pentawizardpact1");
-            }
-
-                break;
-
-            case BaseClass.Priest:
-            {
-                Subject.AddOption($"Open the book", "pentapriestpact1");
-            }
-
-                break;
-
-            case BaseClass.Monk:
-            {
-                Subject.AddOption($"Open the book", "pentamonkpact1");
-            }
-
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+        if (!ClassToOptionMap.TryGetValue(source.UserStatSheet.BaseClass, out var option))
+            return;
+        
+        Subject.AddOption("Open the book", option);
     }
 }

@@ -63,887 +63,97 @@ public class ArenaUndergroundScript : DialogScriptBase
         ShardGenerator = shardGenerator;
     }
 
-    public void HideDialogOptions(Aisling source)
+    private void HandleSpecialEvents(Aisling source, string key)
     {
-        source.Trackers.Enums.TryGetValue(out ArenaHost stage);
-
-        if ((stage != ArenaHost.Host) && (stage != ArenaHost.MasterHost))
-            RemoveOption(Subject, "Host Options");
+        switch (key)
+        {
+            case "ophie_battlering":
+                EnterBattleRing(source);
+                break;
+            case "ophie_revive":
+                ReviveAisling(source);
+                break;
+            case "ophie_leave":
+                LeaveArena(source);
+                break;
+            case "ophie_skandaragauntlet":
+                AnnouceToWorld($"Host {source.Name} is announcing a Skandara's Gauntlet event!");
+                break;
+            case "ophie_serendaelsandbox":
+                AnnouceToWorld($"Host {source.Name} is announcing a Serendael Sandbox event!");
+                break;
+            default:
+                source.SendServerMessage(ServerMessageType.OrangeBar2, "Unrecognized event command.");
+                break;
+        }
     }
-    
-    private Point GetValidRandomPoint(IRectangle rect)
-    {
-        Point randomPoint;
-        
-        randomPoint = rect.GetRandomPoint();
 
-        return randomPoint;
-    }
-    
     public override void OnDisplaying(Aisling source)
     {
-        switch (Subject.Template.TemplateKey.ToLower())
+        var key = Subject.Template.TemplateKey.ToLower();
+
+        switch (key)
         {
             case "ophie_initial":
                 HideDialogOptions(source);
 
                 break;
-
             case "ophie_golddefending":
-            {
-                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                {
-                    
-                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
-                    aisling.Trackers.Enums.TryGetValue(out ArenaSide side);
-
-                    if (team is ArenaTeam.Blue or ArenaTeam.Red)
-                    {
-                        Subject.Close(source);
-                        source.SendOrangeBarMessage("All players should be on Green or Gold team.");
-                        return;
-                    }
-                    if (team == ArenaTeam.Gold)
-                    {
-                        aisling.Trackers.Enums.Set(ArenaSide.Defender);
-                    }
-
-                    if (team == ArenaTeam.Green)
-                    {
-                        aisling.Trackers.Enums.Set(ArenaSide.Offensive);
-                    }
-                }
-
-                break;
-            }
-            
             case "ophie_greendefending":
-            {
-                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                {
-                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
-                    aisling.Trackers.Enums.TryGetValue(out ArenaSide side);
-
-                    if (team is ArenaTeam.Blue or ArenaTeam.Red)
-                    {
-                        Subject.Close(source);
-                        source.SendOrangeBarMessage("All players should be on Green or Gold team.");
-                        return;
-                    }
-                    
-                    if (team == ArenaTeam.Gold)
-                    {
-                        aisling.Trackers.Enums.Set(ArenaSide.Offensive);
-                    }
-
-                    if (team == ArenaTeam.Green)
-                    {
-                        aisling.Trackers.Enums.Set(ArenaSide.Defender);
-                    }
-                }
+                SetDefendingTeams(source, key.Contains("gold") ? ArenaTeam.Gold : ArenaTeam.Green);
 
                 break;
-            }
-            
             case "ophie_startescort":
-            {
-                var shard = ShardGenerator.CreateShardOfInstance("arena_escort");
-                shard.Shards.TryAdd(shard.InstanceId, shard);
-                var script = shard.Script.As<EscortScript>();
+                StartEscortMission(source);
 
-
-                if (script == null)
-                    shard.AddScript<EscortScript>();
-                
-                var nathra = MerchantFactory.Create("nathra", shard, new Point(5, 37));
-                shard.AddEntity(nathra, nathra);
-                
-                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                {
-                    if (!aisling.IsAlive)
-                    {
-                        aisling.IsDead = false;
-                        aisling.StatSheet.SetHealthPct(100);
-                        aisling.StatSheet.SetManaPct(100);
-                        aisling.Client.SendAttributes(StatUpdateType.Vitality);
-                    }
-
-                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
-                    aisling.Trackers.Enums.TryGetValue(out ArenaSide side);
-                    
-                    
-                    Rectangle targetRectangle;
-
-                    if (side == ArenaSide.Offensive)
-                    {
-                        targetRectangle = new Rectangle(new Point(35, 6), 2, 2);
-                        aisling.TraverseMap(shard, GetValidRandomPoint(targetRectangle));
-                    }
-                    if (side == ArenaSide.Defender)
-                    {
-                        targetRectangle = new Rectangle(new Point(6, 30), 3, 3);
-                        aisling.TraverseMap(shard, GetValidRandomPoint(targetRectangle));
-                        break;
-                    }
-                }
-
-                Subject.Close(source);
                 break;
-                
-            }
-            
             case "ophie_startcolorclash":
-            {
-                var mapInstance = SimpleCache.Get<MapInstance>("arena_colorclash");
-                var script = mapInstance.Script.As<ColorClashScript>();
-
-                if (script == null)
-                    mapInstance.AddScript<ColorClashScript>();
-
-                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                {
-                    if (!aisling.IsAlive)
-                    {
-                        aisling.IsDead = false;
-                        aisling.StatSheet.SetHealthPct(100);
-                        aisling.StatSheet.SetManaPct(100);
-                        aisling.Client.SendAttributes(StatUpdateType.Vitality);
-                    }
-
-                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
-
-                    switch (team)
-                    {
-                        case ArenaTeam.Blue:
-                            aisling.TraverseMap(mapInstance, ColorClashBluePoint);
-
-                            break;
-                        case ArenaTeam.Green:
-                            aisling.TraverseMap(mapInstance, ColorClashGreenPoint);
-
-                            break;
-                        case ArenaTeam.Gold:
-                            aisling.TraverseMap(mapInstance, ColorClashGoldPoint);
-
-                            break;
-                        case ArenaTeam.Red:
-                            aisling.TraverseMap(mapInstance, ColorClashRedPoint);
-
-                            break;
-                    }
-                }
-
-                Subject.Close(source);
-                break;
-            }
-            
-            case "ophie_everyonewon":
-            {
-                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                {
-                    aisling.SendServerMessage(ServerMessageType.OrangeBar2, "You have won the arena event!");
-
-                    aisling.Legend.AddOrAccumulate(
-                        new LegendMark(
-                            "Arena Underground Participant",
-                            "undrGrdPart",
-                            MarkIcon.Victory,
-                            MarkColor.Blue,
-                            1,
-                            GameTime.Now));
-
-                    aisling.Legend.AddOrAccumulate(
-                        new LegendMark(
-                            "Arena Underground Win",
-                            "undrGrdWin",
-                            MarkIcon.Victory,
-                            MarkColor.Blue,
-                            1,
-                            GameTime.Now));
-
-                    var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-                    var thirtyPercent = Convert.ToInt32(.30 * tnl);
-                
-                    ExperienceDistributionScript.GiveExp(source, thirtyPercent);
-                    
-                    var rect = new Rectangle(new Point(11, 10), 3, 4);
-
-                    do
-                        CenterWarpPlayer = rect.GetRandomPoint();
-                    while (CenterWarp == CenterWarpPlayer);
-
-                    aisling.Trackers.Enums.Remove<ArenaTeam>();
-                    aisling.Trackers.Enums.Remove<ArenaSide>();
-                    aisling.WarpTo(CenterWarpPlayer);
-                }
-
-                var merchant = Subject.DialogSource as Merchant;
-                merchant?.Say("Win is cast! Congrats!");
-
-                Task.Run(
-                    async () =>
-                    {
-                        var client = new DiscordSocketClient();
-                        await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
-                        await client.StartAsync();
-                        var channel = await client.GetChannelAsync(ARENA_WIN_CHANNEL_ID) as IMessageChannel;
-
-                        await channel!.SendMessageAsync($"Arena Host {source.Name} cast win for every one in attendance...");
-
-                        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                            await channel.SendMessageAsync($"{aisling.Name} won!");
-
-                        await client.StopAsync();
-                    });
+                StartColorClash(source);
 
                 break;
-            }
-
-            case "ophie_goldwon":
-            {
-                Task.Run(
-                    async () =>
-                    {
-                        var client = new DiscordSocketClient();
-                        await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
-                        await client.StartAsync();
-                        var channel = await client.GetChannelAsync(ARENA_WIN_CHANNEL_ID) as IMessageChannel;
-
-                        await channel!.SendMessageAsync($"Arena Host {source.Name} cast a win for gold...");
-
-                        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                        {
-                            aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
-
-                            if (value == ArenaTeam.Gold)
-                                await channel.SendMessageAsync($"{aisling.Name} won!");
-                            else
-                                await channel.SendMessageAsync($"{aisling.Name} participated!");
-                        }
-
-                        await client.StopAsync();
-                    });
-
-                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                {
-                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
-
-                    if (value == ArenaTeam.Gold)
-                    {
-                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, "Your team has won the arena event!");
-
-                        aisling.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Arena Underground Participant",
-                                "undrGrdPart",
-                                MarkIcon.Victory,
-                                MarkColor.Blue,
-                                1,
-                                GameTime.Now));
-
-                        aisling.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Arena Underground Win",
-                                "undrGrdWin",
-                                MarkIcon.Victory,
-                                MarkColor.Blue,
-                                1,
-                                GameTime.Now));
-                        
-                        
-                        var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-                        var thirtyPercent = Convert.ToInt32(.30 * tnl);
-                        ExperienceDistributionScript.GiveExp(source, thirtyPercent);
-                    }
-                    else
-                    {
-                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, "Your team lost. Better luck next time!");
-
-                        aisling.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Arena Underground Participant",
-                                "uundrGrdPart",
-                                MarkIcon.Victory,
-                                MarkColor.Blue,
-                                1,
-                                GameTime.Now));
-                        
-                        var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-                        var tenPercent = Convert.ToInt32(.10 * tnl);
-                        ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    }
-                    
-                    var rect = new Rectangle(new Point(11, 10), 3, 4);
-
-                    do
-                        CenterWarpPlayer = rect.GetRandomPoint();
-                    while (CenterWarp == CenterWarpPlayer);
-
-                    aisling.Trackers.Enums.Remove<ArenaTeam>();
-                    aisling.WarpTo(CenterWarpPlayer);
-                }
-
-                var merchant = Subject.DialogSource as Merchant;
-                merchant?.Say("Win is cast! Congrats!");
-
-                break;
-            }
-
-            case "ophie_bluewon":
-            {
-                Task.Run(
-                    async () =>
-                    {
-                        var client = new DiscordSocketClient();
-                        await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
-                        await client.StartAsync();
-                        var channel = await client.GetChannelAsync(ARENA_WIN_CHANNEL_ID) as IMessageChannel;
-
-                        await channel!.SendMessageAsync($"Arena Host {source.Name} cast a win for blue...");
-
-                        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                        {
-                            aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
-
-                            if (value == ArenaTeam.Blue)
-                                await channel.SendMessageAsync($"{aisling.Name} won!");
-                            else
-                                await channel.SendMessageAsync($"{aisling.Name} participated!");
-                        }
-
-                        await client.StopAsync();
-                    });
-
-                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                {
-                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
-
-                    if (value == ArenaTeam.Blue)
-                    {
-                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, "Your team has won the arena event!");
-
-                        aisling.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Arena Underground Participant",
-                                "undrGrdPart",
-                                MarkIcon.Victory,
-                                MarkColor.Blue,
-                                1,
-                                GameTime.Now));
-
-                        aisling.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Arena Underground Win",
-                                "undrGrdWin",
-                                MarkIcon.Victory,
-                                MarkColor.Blue,
-                                1,
-                                GameTime.Now));
-                        
-                        var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-                        var thirtyPercent = Convert.ToInt32(.30 * tnl);
-                        ExperienceDistributionScript.GiveExp(source, thirtyPercent);
-                    }
-                    else
-                    {
-                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, "Your team lost. Better luck next time!");
-
-                        aisling.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Arena Underground Participant",
-                                "undrGrdWin",
-                                MarkIcon.Victory,
-                                MarkColor.Blue,
-                                1,
-                                GameTime.Now));
-                        
-                        var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-                        var tenPercent = Convert.ToInt32(.10 * tnl);
-                        ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    }
-
-                    var rect = new Rectangle(new Point(11, 10), 3, 4);
-
-                    do
-                        CenterWarpPlayer = rect.GetRandomPoint();
-                    while (CenterWarp == CenterWarpPlayer);
-
-                    aisling.Trackers.Enums.Remove<ArenaTeam>();
-                    aisling.WarpTo(CenterWarpPlayer);
-                }
-
-                var merchant = Subject.DialogSource as Merchant;
-                merchant?.Say("Win is cast! Congrats!");
-
-                break;
-            }
-
-            case "ophie_greenwon":
-            {
-                Task.Run(
-                    async () =>
-                    {
-                        var client = new DiscordSocketClient();
-                        await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
-                        await client.StartAsync();
-                        var channel = await client.GetChannelAsync(ARENA_WIN_CHANNEL_ID) as IMessageChannel;
-
-                        await channel!.SendMessageAsync($"Arena Host {source.Name} cast a win for green...");
-
-                        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                        {
-                            aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
-
-                            if (value == ArenaTeam.Green)
-                                await channel.SendMessageAsync($"{aisling.Name} won!");
-                            else
-                                await channel.SendMessageAsync($"{aisling.Name} participated!");
-                        }
-
-                        await client.StopAsync();
-                    });
-
-                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                {
-                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
-
-                    if (value == ArenaTeam.Green)
-                    {
-                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, "Your team has won the arena event!");
-
-                        aisling.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Arena Underground Participant",
-                                "undrGrdPart",
-                                MarkIcon.Victory,
-                                MarkColor.Blue,
-                                1,
-                                GameTime.Now));
-
-                        aisling.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Arena Underground Win",
-                                "undrGrdWin",
-                                MarkIcon.Victory,
-                                MarkColor.Blue,
-                                1,
-                                GameTime.Now));
-                        
-                        var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-                        var thirtyPercent = Convert.ToInt32(.30 * tnl);
-                        ExperienceDistributionScript.GiveExp(source, thirtyPercent);
-                    }
-                    else
-                    {
-                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, "Your team lost. Better luck next time!");
-
-                        aisling.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Arena Underground Participant",
-                                "undrGrdPart",
-                                MarkIcon.Victory,
-                                MarkColor.Blue,
-                                1,
-                                GameTime.Now));
-                        
-                        var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-                        var tenPercent = Convert.ToInt32(.30 * tnl);
-                        ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    }
-
-                    var rect = new Rectangle(new Point(11, 10), 3, 4);
-
-                    do
-                        CenterWarpPlayer = rect.GetRandomPoint();
-                    while (CenterWarp == CenterWarpPlayer);
-
-                    aisling.Trackers.Enums.Remove<ArenaTeam>();
-                    aisling.WarpTo(CenterWarpPlayer);
-                }
-
-                var merchant = Subject.DialogSource as Merchant;
-                merchant?.Say("Win is cast! Congrats!");
-
-                break;
-            }
-
-            case "ophie_redwon":
-            {
-                Task.Run(
-                    async () =>
-                    {
-                        var client = new DiscordSocketClient();
-                        await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
-                        await client.StartAsync();
-                        var channel = await client.GetChannelAsync(ARENA_WIN_CHANNEL_ID) as IMessageChannel;
-
-                        await channel!.SendMessageAsync($"Arena Host {source.Name} cast a win for red...");
-
-                        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                        {
-                            aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
-
-                            if (value == ArenaTeam.Red)
-                                await channel.SendMessageAsync($"{aisling.Name} won!");
-                            else
-                                await channel.SendMessageAsync($"{aisling.Name} participated!");
-                        }
-
-                        await client.StopAsync();
-                    });
-
-                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                {
-                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam value);
-
-                    if (value == ArenaTeam.Red)
-                    {
-                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, "Your team has won the arena event!");
-
-                        aisling.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Arena Underground Participant",
-                                "undrGrdPart",
-                                MarkIcon.Victory,
-                                MarkColor.Blue,
-                                1,
-                                GameTime.Now));
-
-                        aisling.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Arena Underground Win",
-                                "undrGrdWin",
-                                MarkIcon.Victory,
-                                MarkColor.Blue,
-                                1,
-                                GameTime.Now));
-                        
-                        var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-                        var thirtyPercent = Convert.ToInt32(.30 * tnl);
-                        ExperienceDistributionScript.GiveExp(source, thirtyPercent);
-                    }
-                    else
-                    {
-                        aisling.SendServerMessage(ServerMessageType.OrangeBar2, "Your team lost. Better luck next time!");
-
-                        aisling.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Arena Underground Participant",
-                                "undrGrdPart",
-                                MarkIcon.Victory,
-                                MarkColor.Blue,
-                                1,
-                                GameTime.Now));
-                        
-                        var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-                        var tenPercent = Convert.ToInt32(.30 * tnl);
-                        ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    }
-
-                    var rect = new Rectangle(new Point(11, 10), 3, 4);
-
-                    do
-                        CenterWarpPlayer = rect.GetRandomPoint();
-                    while (CenterWarp == CenterWarpPlayer);
-
-                    aisling.Trackers.Enums.Remove<ArenaTeam>();
-                    aisling.WarpTo(CenterWarpPlayer);
-                }
-
-                var merchant = Subject.DialogSource as Merchant;
-                merchant?.Say("Win is cast! Congrats!");
-
-                break;
-            }
-
-            case "ophie_skandaragauntlet":
-            {
-                foreach (var aisling in ClientRegistry)
-                    aisling.SendServerMessage(
-                        ServerMessageType.OrangeBar2,
-                        $"Arena Host {source.Name} is announcing a Skandara's Gauntlet!");
-
-                Task.Run(
-                    async () =>
-                    {
-                        var client = new DiscordSocketClient();
-                        await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
-                        await client.StartAsync();
-                        var channel = await client.GetChannelAsync(CHANNEL_ID) as IMessageChannel;
-
-                        await channel!.SendMessageAsync(
-                            $"Arena Host {source.Name
-                            } is announcing a Skandara's Gauntlet! Please head to the Arena Underground to participate.");
-
-                        await client.StopAsync();
-                    });
-
-                break;
-            }
-
-            case "ophie_serendaelsandbox":
-            {
-                foreach (var aisling in ClientRegistry)
-                    aisling.SendServerMessage(
-                        ServerMessageType.OrangeBar2,
-                        $"Arena Host {source.Name} is announcing a Serendael's Sandbox!");
-
-                Task.Run(
-                    async () =>
-                    {
-                        var client = new DiscordSocketClient();
-                        await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
-                        await client.StartAsync();
-                        var channel = await client.GetChannelAsync(CHANNEL_ID) as IMessageChannel;
-
-                        await channel!.SendMessageAsync(
-                            $"Arena Host {source.Name
-                            } is announcing a Serendael's Sandbox! Please head to the Arena Underground to participate.");
-
-                        await client.StopAsync();
-                    });
-
-                break;
-            }
-            
             case "ophie_starthiddenhavochostnotplayingstart":
-            {
-                source.Trackers.Enums.Set(ArenaHostPlaying.No);
+                StartHiddenHavoc(source, false);
 
-                var shard = ShardGenerator.CreateShardOfInstance("arena_lava");
-                shard.Shards.TryAdd(shard.InstanceId, shard);
-
-                   
-                var script = shard.Script.As<HiddenHavocShrinkScript>();
-                
-                if (script == null)
-                   shard.AddScript<HiddenHavocShrinkScript>();
-
-                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                {
-                    Point point;
-
-                    do
-                        point = shard.Template.Bounds.GetRandomPoint();
-                    while (shard.IsWall(point) || shard.IsBlockingReactor(point));
-
-                    aisling.TraverseMap(shard, point);
-                }
-
-                Subject.Close(source);
                 break;
-            }
-
             case "ophie_starthiddenhavochostplayingstart":
-            {
-                source.Trackers.Enums.Set(ArenaHostPlaying.Yes);
-
-                var shard = ShardGenerator.CreateShardOfInstance("arena_lava");
-                shard.Shards.TryAdd(shard.InstanceId, shard);
-                var script = shard.Script.As<HiddenHavocShrinkScript>();
-                
-                if (script == null)
-                    shard.AddScript<HiddenHavocShrinkScript>();
-
-                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                {
-                    Point point;
-
-                    do
-                        point = shard.Template.Bounds.GetRandomPoint();
-                    while (shard.IsWall(point) || shard.IsBlockingReactor(point));
-
-                    aisling.TraverseMap(shard, point);
-                }
-
-                Subject.Close(source);
+                StartHiddenHavoc(source, true);
 
                 break;
-            }
-
             case "ophie_startffalavaflowhostnotplayingstart":
-            {
-                source.Trackers.Enums.Set(ArenaHostPlaying.No);
-
-                var shard = ShardGenerator.CreateShardOfInstance("arena_lava");
-                shard.Shards.TryAdd(shard.InstanceId, shard);
-                var script = shard.Script.As<LavaFlowShrinkScript>();
-
-                if (script == null)
-                    shard.AddScript<LavaFlowShrinkScript>();
-
-                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                {
-                    Point point;
-
-                    do
-                        point = shard.Template.Bounds.GetRandomPoint();
-                    while (shard.IsWall(point) || shard.IsBlockingReactor(point));
-
-                    aisling.TraverseMap(shard, point);
-                }
-
-                Subject.Close(source);
+                StartLavaFlow(source, false);
 
                 break;
-            }
-
             case "ophie_startffalavaflowhostplayingstart":
-            {
-                source.Trackers.Enums.Set(ArenaHostPlaying.Yes);
-
-                var shard = ShardGenerator.CreateShardOfInstance("arena_lava");
-                shard.Shards.TryAdd(shard.InstanceId, shard);
-                var script = shard.Script.As<LavaFlowShrinkScript>();
-
-                if (script == null)
-                    shard.AddScript<LavaFlowShrinkScript>();
-
-                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                {
-                    Point point;
-
-                    do
-                        point = shard.Template.Bounds.GetRandomPoint();
-                    while (shard.IsWall(point) || shard.IsBlockingReactor(point));
-
-                    aisling.TraverseMap(shard, point);
-                }
-
-                Subject.Close(source);
+                StartLavaFlow(source, true);
 
                 break;
-            }
-
-            case "ophie_startteamgamelavaflowhostplayingstart":
-            {
-                source.Trackers.Enums.Set(ArenaHostPlaying.Yes);
-
-                var shard = ShardGenerator.CreateShardOfInstance("arena_lavateams");
-                shard.Shards.TryAdd(shard.InstanceId, shard);
-                var script = shard.Script.As<LavaFlowShrinkScript>();
-
-                if (script == null)
-                    shard.AddScript<LavaFlowShrinkScript>();
-
-                foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                {
-                    if (!aisling.IsAlive)
-                    {
-                        aisling.IsDead = false;
-                        aisling.StatSheet.SetHealthPct(100);
-                        aisling.StatSheet.SetManaPct(100);
-                        aisling.Client.SendAttributes(StatUpdateType.Vitality);
-                    }
-
-                    aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
-
-                    switch (team)
-                    {
-                        case ArenaTeam.Blue:
-                            aisling.TraverseMap(shard, LavaBluePoint);
-                            break;
-                        case ArenaTeam.Green:
-                            aisling.TraverseMap(shard, LavaGreenPoint);
-                            break;
-                        case ArenaTeam.Gold:
-                            aisling.TraverseMap(shard, LavaGoldPoint);
-                            break;
-                        case ArenaTeam.Red:
-                            aisling.TraverseMap(shard, LavaRedPoint);
-                            break;
-                    }
-                }
-
-                Subject.Close(source);
-
-                break;
-            }
-
             case "ophie_startteamgamelavaflowhostnotplayingstart":
-            {
-                    source.Trackers.Enums.Set(ArenaHostPlaying.No);
+                StartTeamGameLavaFlow(source, false);
 
-                    var shard = ShardGenerator.CreateShardOfInstance("arena_lavateams");
-                    shard.Shards.TryAdd(shard.InstanceId, shard);
-                    var script = shard.Script.As<LavaFlowShrinkScript>();
+                break;
+            case "ophie_startteamgamelavaflowhostplayingstart":
+                StartTeamGameLavaFlow(source, true);
 
-                if (script == null)
-                    shard.AddScript<LavaFlowShrinkScript>();
+                break;
+            case "ophie_everyonewon":
+                AwardEveryone(source);
 
-                    foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-                    {
-                        if (!aisling.IsAlive)
-                        {
-                            aisling.IsDead = false;
-                            aisling.StatSheet.SetHealthPct(100);
-                            aisling.StatSheet.SetManaPct(100);
-                            aisling.Client.SendAttributes(StatUpdateType.Vitality);
-                        }
+                break;
+            case "ophie_goldwon":
+            case "ophie_bluewon":
+            case "ophie_greenwon":
+            case "ophie_redwon":
+                AwardTeamWin(source, key);
 
-                        aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
-
-                        switch (team)
-                        {
-                            case ArenaTeam.Blue:
-                                aisling.TraverseMap(shard, LavaBluePoint);
-                                break;
-                            case ArenaTeam.Green:
-                                aisling.TraverseMap(shard, LavaGreenPoint);
-                                break;
-                            case ArenaTeam.Gold:
-                                aisling.TraverseMap(shard, LavaGoldPoint);
-                                break;
-                            case ArenaTeam.Red:
-                                aisling.TraverseMap(shard, LavaRedPoint);
-                                break;
-                        }
-                    }
-
-                    Subject.Close(source);
-
-                    break;
-            }
+                break;
             case "ophie_battlering":
-            {
-                var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
-                source.TraverseMap(mapInstance, new Point(13, 13));
-                Subject.Close(source);
-
-                break;
-            }
-
             case "ophie_revive":
-            {
-                Subject.Close(source);
-
-                if (!source.IsAlive)
-                {
-                    source.IsDead = false;
-                    source.StatSheet.SetHealthPct(100);
-                    source.StatSheet.SetManaPct(100);
-                    source.Client.SendAttributes(StatUpdateType.Vitality);
-                    source.SendActiveMessage("Ophie has revived you.");
-                    source.Refresh();
-                }
-
-                break;
-            }
-
             case "ophie_leave":
-            {
-                Subject.Close(source);
-                var worldMap = SimpleCache.Get<WorldMap>("field001");
-
-                //if we cant set the active object, return
-                if (!source.ActiveObject.SetIfNull(worldMap))
-                    return;
-
-                source.MapInstance.RemoveEntity(source);
-                source.Client.SendWorldMap(worldMap);
+            case "ophie_skandaragauntlet":
+            case "ophie_serendaelsandbox":
+                HandleSpecialEvents(source, key);
 
                 break;
-            }
         }
     }
 
@@ -1042,6 +252,366 @@ public class ArenaUndergroundScript : DialogScriptBase
                 break;
             }
         }
+    }
+    
+    public void HideDialogOptions(Aisling source)
+    {
+        source.Trackers.Enums.TryGetValue(out ArenaHost stage);
+
+        if ((stage != ArenaHost.Host) && (stage != ArenaHost.MasterHost))
+            RemoveOption(Subject, "Host Options");
+    }
+    
+    private void SetDefendingTeams(Aisling source, ArenaTeam defendingTeam)
+    {
+        var opposingTeam = defendingTeam == ArenaTeam.Gold ? ArenaTeam.Green : ArenaTeam.Gold;
+        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+        {
+            aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
+            if (team == opposingTeam)
+                aisling.Trackers.Enums.Set(ArenaSide.Offensive);
+            else if (team == defendingTeam)
+                aisling.Trackers.Enums.Set(ArenaSide.Defender);
+        }
+    }
+    
+    private void StartEscortMission(Aisling source)
+    {
+        var shard = ShardGenerator.CreateShardOfInstance("arena_escort");
+        shard.Shards.TryAdd(shard.InstanceId, shard);
+        var script = shard.Script.As<EscortScript>();
+
+
+        if (script == null)
+            shard.AddScript<EscortScript>();
+                
+        var nathra = MerchantFactory.Create("nathra", shard, new Point(5, 37));
+        shard.AddEntity(nathra, nathra);
+                
+        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+        {
+            if (!aisling.IsAlive)
+            {
+                aisling.IsDead = false;
+                aisling.StatSheet.SetHealthPct(100);
+                aisling.StatSheet.SetManaPct(100);
+                aisling.Client.SendAttributes(StatUpdateType.Vitality);
+            }
+                    
+            aisling.Trackers.Enums.TryGetValue(out ArenaSide side);
+                    
+                    
+            Rectangle targetRectangle;
+
+            if (side == ArenaSide.Offensive)
+            {
+                targetRectangle = new Rectangle(new Point(35, 6), 2, 2);
+                aisling.TraverseMap(shard, GetValidRandomPoint(targetRectangle));
+            }
+            if (side == ArenaSide.Defender)
+            {
+                targetRectangle = new Rectangle(new Point(6, 30), 3, 3);
+                aisling.TraverseMap(shard, GetValidRandomPoint(targetRectangle));
+                break;
+            }
+        }
+
+        Subject.Close(source);
+    }
+    
+    private void StartColorClash(Aisling source)
+    {
+        var mapInstance = SimpleCache.Get<MapInstance>("arena_colorclash");
+        var script = mapInstance.Script.As<ColorClashScript>();
+
+        if (script == null)
+            mapInstance.AddScript<ColorClashScript>();
+
+        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+        {
+            if (!aisling.IsAlive)
+            {
+                aisling.IsDead = false;
+                aisling.StatSheet.SetHealthPct(100);
+                aisling.StatSheet.SetManaPct(100);
+                aisling.Client.SendAttributes(StatUpdateType.Vitality);
+            }
+
+            aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
+
+            switch (team)
+            {
+                case ArenaTeam.Blue:
+                    aisling.TraverseMap(mapInstance, ColorClashBluePoint);
+
+                    break;
+                case ArenaTeam.Green:
+                    aisling.TraverseMap(mapInstance, ColorClashGreenPoint);
+
+                    break;
+                case ArenaTeam.Gold:
+                    aisling.TraverseMap(mapInstance, ColorClashGoldPoint);
+
+                    break;
+                case ArenaTeam.Red:
+                    aisling.TraverseMap(mapInstance, ColorClashRedPoint);
+
+                    break;
+                case ArenaTeam.None:
+                    aisling.SendActiveMessage("The host didn't give you a team!");
+                    break;
+                
+                default:
+                    aisling.SendActiveMessage("The host didn't give you a team!");
+                    break;
+            }
+        }
+    }
+
+    private void SendMessageToDiscord(string message) =>
+        Task.Run(async () =>
+        {
+            await using var client = new DiscordSocketClient();
+            await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
+            await client.StartAsync();
+            var channel = await client.GetChannelAsync(ARENA_WIN_CHANNEL_ID) as IMessageChannel;
+            await channel!.SendMessageAsync(message);
+            await client.StopAsync();
+        });
+
+    private void AwardEveryone(Aisling source)
+    {
+        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+        {
+            aisling.SendServerMessage(ServerMessageType.OrangeBar2, "You have won the arena event!");
+
+            GiveRewards(aisling, 1.0);
+
+            var rect = new Rectangle(new Point(11, 10), 3, 4);
+
+            do
+                CenterWarpPlayer = rect.GetRandomPoint();
+            while (CenterWarp == CenterWarpPlayer);
+
+            aisling.Trackers.Enums.Remove<ArenaTeam>();
+            aisling.Trackers.Enums.Remove<ArenaSide>();
+            aisling.WarpTo(CenterWarpPlayer);
+        }
+
+        var merchant = Subject.DialogSource as Merchant;
+        merchant?.Say("Win is cast! Congrats everyone!");
+        
+        SendMessageToDiscord($"Arena Host {source.Name} cast win for all in attendance!");
+        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+            SendMessageToDiscord($"{aisling.Name} won!");
+    }
+
+    private void AwardTeamWin(Aisling source, string teamKey)
+    {
+        var teamName = teamKey.Replace("ophie_", "").Replace("won", "");
+        var winningTeam = Enum.Parse<ArenaTeam>(teamName, true);
+        
+        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+        {
+            aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
+        
+            if (team == winningTeam)
+            {
+                aisling.SendServerMessage(ServerMessageType.OrangeBar2, "Your team has won the arena event!");
+                GiveRewards(aisling, 1.0);
+            }
+            else
+            {
+                aisling.SendServerMessage(ServerMessageType.OrangeBar2, "Your team did not win. Better luck next time!");
+                GiveRewards(aisling, 0.5);
+            }
+            
+            var rect = new Rectangle(new Point(11, 10), 3, 4);
+
+            do
+                CenterWarpPlayer = rect.GetRandomPoint();
+            while (CenterWarp == CenterWarpPlayer);
+
+            aisling.Trackers.Enums.Remove<ArenaTeam>();
+            aisling.Trackers.Enums.Remove<ArenaSide>();
+            aisling.WarpTo(CenterWarpPlayer);
+        }
+        
+        var merchant = Subject.DialogSource as Merchant;
+        merchant?.Say($"Win is cast! Congrats {winningTeam}!");
+        SendMessageToDiscord($"{winningTeam} team has won the event!");
+    }
+    
+    private void GiveRewards(Aisling aisling, double rewardMultiplier)
+    {
+        var baseExperience = CalculateBaseExperience(aisling);
+        var experienceAward = (int)(baseExperience * rewardMultiplier);
+        ExperienceDistributionScript.GiveExp(aisling, experienceAward);
+        
+        aisling.TryGiveGold((int)(1000 * rewardMultiplier));
+        
+        aisling.Legend.AddOrAccumulate(
+            new LegendMark(
+                "Arena Participant",
+                "arenaParticipation",
+                MarkIcon.Victory,
+                MarkColor.White,
+                1,
+                GameTime.Now
+            )
+        );
+
+        if (rewardMultiplier is 1.0)
+            aisling.Legend.AddOrAccumulate(
+                new LegendMark(
+                    "Arena Winner",
+                    "arenaWinner",
+                    MarkIcon.Victory,
+                    MarkColor.Blue,
+                    1,
+                    GameTime.Now
+                )
+            );
+    }
+
+    private int CalculateBaseExperience(Aisling aisling)
+    {
+        var tnl = LevelUpFormulae.Default.CalculateTnl(aisling);
+        var thirtyPercent = Convert.ToInt32(.30 * tnl);
+        return thirtyPercent;
+    }
+    
+    private Point GetValidRandomPoint(IRectangle rect)
+    {
+        var randomPoint = rect.GetRandomPoint();
+
+        return randomPoint;
+    }
+    
+    private void AnnouceToWorld(string message)
+    {
+        foreach (var aisling in ClientRegistry)
+            aisling.SendServerMessage(
+                ServerMessageType.OrangeBar2,
+                message);
+    }
+    private void EnterBattleRing(Aisling source)
+    {
+        var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
+        source.TraverseMap(mapInstance, new Point(13, 13));
+        source.SendServerMessage(ServerMessageType.OrangeBar2, "You have entered the battle ring!");
+        Subject.Close(source);
+    }
+
+    private void ReviveAisling(Aisling source)
+    {
+        if (!source.IsAlive)
+        {
+            source.IsDead = false;
+            source.StatSheet.SetHealthPct(100);
+            source.StatSheet.SetManaPct(100);
+            source.Client.SendAttributes(StatUpdateType.Vitality);
+            source.SendActiveMessage("Ophie has revived you.");
+            source.Refresh();
+
+            source.SendServerMessage(ServerMessageType.OrangeBar2, "You have been revived by Ophie.");
+        }
+        else
+            source.SendServerMessage(ServerMessageType.OrangeBar2, "No need for revival, you are already alive.");
+
+        Subject.Close(source);
+    }
+
+    private void StartHiddenHavoc(Aisling source, bool hostPlaying)
+    {
+        source.Trackers.Enums.Set(hostPlaying ? ArenaHostPlaying.Yes : ArenaHostPlaying.No);
+        var shard = ShardGenerator.CreateShardOfInstance("arena_lava");
+        shard.Shards.TryAdd(shard.InstanceId, shard);
+        var script = shard.Script.As<HiddenHavocShrinkScript>();
+                
+        if (script == null)
+            shard.AddScript<HiddenHavocShrinkScript>();
+
+        TeleportParticipants(source, shard, shard.Template.Bounds);
+        Subject.Close(source);
+    }
+
+    private void StartLavaFlow(Aisling source, bool hostPlaying)
+    {
+        source.Trackers.Enums.Set(hostPlaying ? ArenaHostPlaying.Yes : ArenaHostPlaying.No);
+        var shard = ShardGenerator.CreateShardOfInstance("arena_lava");
+        shard.Shards.TryAdd(shard.InstanceId, shard);
+        var script = shard.Script.As<LavaFlowShrinkScript>();
+                
+        if (script == null)
+            shard.AddScript<LavaFlowShrinkScript>();
+
+        TeleportParticipants(source, shard, shard.Template.Bounds);
+        Subject.Close(source);
+    }
+
+    private void StartTeamGameLavaFlow(Aisling source, bool hostPlaying)
+    {
+        source.Trackers.Enums.Set(hostPlaying ? ArenaHostPlaying.Yes : ArenaHostPlaying.No);
+        var shard = ShardGenerator.CreateShardOfInstance("arena_lavateams");
+        shard.Shards.TryAdd(shard.InstanceId, shard);
+        var script = shard.Script.As<LavaFlowShrinkScript>();
+
+        if (script == null)
+            shard.AddScript<LavaFlowShrinkScript>();
+        
+        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+        {
+            if (!aisling.IsAlive)
+            {
+                aisling.IsDead = false;
+                aisling.StatSheet.SetHealthPct(100);
+                aisling.StatSheet.SetManaPct(100);
+                aisling.Client.SendAttributes(StatUpdateType.Vitality);
+                aisling.Refresh();
+            }
+
+            aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
+            TeleportToTeamStartingPoint(aisling, shard, team);
+        }
+
+        Subject.Close(source);
+    }
+
+    private void TeleportParticipants(Aisling source, MapInstance shard, IRectangle bounds)
+    {
+        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+        {
+            Point point;
+
+            do
+                point = bounds.GetRandomPoint();
+            while (shard.IsWall(point) || shard.IsBlockingReactor(point));
+
+            aisling.TraverseMap(shard, point);
+        }
+    }
+
+    private void TeleportToTeamStartingPoint(Aisling aisling, MapInstance shard, ArenaTeam team)
+    {
+        var startingPoint = team switch
+        {
+            ArenaTeam.Blue  => LavaBluePoint,
+            ArenaTeam.Green => LavaGreenPoint,
+            ArenaTeam.Gold  => LavaGoldPoint,
+            ArenaTeam.Red   => LavaRedPoint,
+            _               => shard.Template.Bounds.GetRandomPoint()
+        };
+
+        aisling.TraverseMap(shard, startingPoint);
+    }
+
+    private void LeaveArena(Aisling source)
+    {
+        var exitMap = SimpleCache.Get<MapInstance>("field001");
+        source.TraverseMap(exitMap, new Point(5, 5)); 
+        source.SendServerMessage(ServerMessageType.OrangeBar2, "You have left the arena.");
+        Subject.Close(source);
     }
 
     private void RemoveOption(Dialog subject, string optionName)

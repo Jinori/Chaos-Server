@@ -11,25 +11,15 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.DialogScripts.Mileth;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
-namespace Chaos.Scripting.DialogScripts.Quests.MilethQuest;
+namespace Chaos.Scripting.DialogScripts.Quests.Rucesion;
 
-public class FishOilQuestScript : DialogScriptBase
+public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<SpareAStickScript> logger)
+    : DialogScriptBase(subject)
 {
-    private readonly IItemFactory ItemFactory;
-    private readonly ILogger<SpareAStickScript> Logger;
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
-
-    public FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<SpareAStickScript> logger)
-        : base(subject)
-    {
-        ItemFactory = itemFactory;
-        Logger = logger;
-        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
-    }
+    private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplaying(Aisling source)
     {
@@ -54,7 +44,7 @@ public class FishOilQuestScript : DialogScriptBase
             
             case "kamel_initial":
             {
-                if (hasStage && stage == FishOil.StartedQuest)
+                if (hasStage && (stage == FishOil.StartedQuest))
                 {
                     var option = new DialogOption
                     {
@@ -77,32 +67,31 @@ public class FishOilQuestScript : DialogScriptBase
                     return;
                 }
                 
-                if (hasStage && stage == FishOil.StartedQuest)
-                {
+                if (hasStage && (stage == FishOil.StartedQuest))
                     Subject.Reply(source, "Skip", "fishoil_return");
-                }
+
                 break;
             }
 
             case "fishoil_extract2":
             {
                 var hasRequiredFish = source.Inventory.HasCount("Lion Fish", 5);
-
-                var oil = ItemFactory.Create("fishoil");
                 
-                if (hasRequiredFish)
+                switch (hasRequiredFish)
                 {
-                    source.Inventory.RemoveQuantity("Lion Fish", 5);
-                    source.TryGiveItems(oil);
-                    Subject.Reply(source, "Thanks for the fish, here's some oil I had lying around from some previous fish. I'll make more later.", "Close");
-                    source.SendOrangeBarMessage("You received oil.");
-                    return;
+                    case true:
+                        source.Inventory.RemoveQuantity("Lion Fish", 5);
+                        var oil = itemFactory.Create("fishoil");
+                        source.GiveItemOrSendToBank(oil);
+                        Subject.Reply(source, "Thanks for the fish, here's some oil I had lying around from some previous fish. I'll make more later.", "Close");
+                        source.SendOrangeBarMessage("You received oil.");
+                        return;
+                    
+                    case false:
+                        Subject.Reply(source, "This won't be enough fish to make enough oil for a jar. Come back when you have some more fish.");
+                        break;
                 }
 
-                if (!hasRequiredFish)
-                {
-                    Subject.Reply(source, "This won't be enough fish to make enough oil for a jar. Come back when you have some more fish.");
-                }
                 break;
             }
 
@@ -116,55 +105,57 @@ public class FishOilQuestScript : DialogScriptBase
             case "fishoil_turnin":
             {
                 var hasRequiredOil = source.Inventory.HasCount("Oil", 1);
-
-
-                if (hasStage && stage == FishOil.StartedQuest)
-                {
-                    if (hasRequiredOil)
+                
+                if (hasStage && (stage == FishOil.StartedQuest))
+                    switch (hasRequiredOil)
                     {
-                        source.Inventory.RemoveQuantity("Oil", 1, out _);
-                        source.Trackers.Enums.Set(FishOil.None);
-                        source.Trackers.TimedEvents.AddEvent("fishoilcd", TimeSpan.FromHours(24), true);
-
-                        Logger.WithTopics(
-                                Topics.Entities.Aisling,
-                                Topics.Entities.Gold,
-                                Topics.Entities.Experience,
-                                Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
-                            .WithProperty(source)
-                            .WithProperty(Subject)
-                            .LogInformation(
-                                "{@AislingName} has received {@ExpAmount} exp from a quest",
-                                source.Name,
-                                50000);
-
-                        ExperienceDistributionScript.GiveExp(source, 50000);
-                        source.TryGiveGamePoints(5);
-
-                        if (IntegerRandomizer.RollChance(8))
+                        case true:
                         {
-                            source.Legend.AddOrAccumulate(
-                                new LegendMark(
-                                    "Loved by Rucesion Mundanes",
-                                    "rucesionLoved",
-                                    MarkIcon.Heart,
-                                    MarkColor.Blue,
-                                    1,
-                                    GameTime.Now));
+                            source.Inventory.RemoveQuantity("Oil", 1, out _);
+                            source.Trackers.Enums.Set(FishOil.None);
+                            source.Trackers.TimedEvents.AddEvent("fishoilcd", TimeSpan.FromHours(24), true);
 
-                            source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
-                                "You received a unique legend mark!");
+                            logger.WithTopics(
+                                      Topics.Entities.Aisling,
+                                      Topics.Entities.Gold,
+                                      Topics.Entities.Experience,
+                                      Topics.Entities.Dialog,
+                                      Topics.Entities.Quest)
+                                  .WithProperty(source)
+                                  .WithProperty(Subject)
+                                  .LogInformation(
+                                      "{@AislingName} has received {@ExpAmount} exp from a quest",
+                                      source.Name,
+                                      50000);
+
+                            ExperienceDistributionScript.GiveExp(source, 50000);
+                            source.TryGiveGamePoints(5);
+
+                            if (IntegerRandomizer.RollChance(8))
+                            {
+                                source.Legend.AddOrAccumulate(
+                                    new LegendMark(
+                                        "Loved by Rucesion Mundanes",
+                                        "rucesionLoved",
+                                        MarkIcon.Heart,
+                                        MarkColor.Blue,
+                                        1,
+                                        GameTime.Now));
+
+                                source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
+                                    "You received a unique legend mark!");
+                            }
+
+                            break;
                         }
-                    }
+                        
+                        case false:
+                            Subject.Reply(source,
+                                "You have come back empty handed? I guess it's okay for now. It's been creeking this long, I can live without.");
+                            source.SendOrangeBarMessage("You think about the fish market.");
 
-                    if (!hasRequiredOil)
-                    {
-                        Subject.Reply(source,
-                            "You have come back empty handed? I guess it's okay for now. It's been creeking this long, I can live without.");
-                        source.SendOrangeBarMessage("You think about the fish market.");
+                            break;
                     }
-                }
 
                 break;
             }
