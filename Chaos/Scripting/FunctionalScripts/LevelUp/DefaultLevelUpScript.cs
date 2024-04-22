@@ -92,18 +92,10 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
                     break;
                 case 55:
                     SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level55);
-
+                    
                     break;
-                case 70:
-                    SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level70);
-
-                    break;
-                case 85:
+                case 80:
                     SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level85);
-
-                    break;
-                case 99:
-                    SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level99);
 
                     break;
             }

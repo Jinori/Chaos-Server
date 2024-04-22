@@ -1,4 +1,5 @@
 using Chaos.Common.Utilities;
+using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
@@ -12,6 +13,31 @@ public class PetAttackingScript : MonsterScriptBase
     public PetAttackingScript(Monster subject)
         : base(subject) { }
 
+    public readonly Dictionary<SummonChosenPet, List<string>?> PetMessages = new()
+    {
+        { SummonChosenPet.Bunny, ["Hop!", "Nibble", "Sniff!", "Thump!", "Bounce", "Twitch", "Flop!", "Nuzzle", "Squeak", "Leap!"] },
+        { SummonChosenPet.Faerie, ["Twirl!", "Giggle", "Spark!", "Glint", "Flutter", "Shine!", "Whirl", "Tinkle", "Glow!", "Dance!"] },
+        { SummonChosenPet.Dog, ["Woof!", "Growl!", "Bark!", "Sniff", "Pant!", "Fetch!", "Chase", "Wag!", "Howl!", "Lick!"] },
+        { SummonChosenPet.Ducklings, ["Quack!", "Peep!", "Splash", "Waddle", "Paddle", "Dabble", "Flap!", "Shake", "Preen", "Nestle"] },
+        { SummonChosenPet.Cat, ["Purr!", "Meow!", "Hiss!", "Prowl", "Swipe", "Slink", "Mew!", "Groom", "Nap!", "Flick!"] },
+        { SummonChosenPet.Penguin, ["Waddle", "Squawk", "Flap!", "Slide", "Dive!", "Peck!", "Huddle", "Preen", "Nuzzle", "Chirp!"] },
+        { SummonChosenPet.Gloop, ["Gloop!", "Bubble", "Slosh", "Blurp", "Glurp", "Squelch", "Glop!", "Drip", "Slime!", "Ooze!"] },
+        { SummonChosenPet.Smoldy, ["Smolder", "Flicker", "Flame!", "Burn", "Glow!", "Ashen", "Sear", "Blaze!", "Char", "Ignite!"] }
+    };
+    
+    public string GetRandomChant(SummonChosenPet petType)
+    {
+        if (PetMessages.TryGetValue(petType, out var messages))
+            if (messages != null)
+            {
+                var index = IntegerRandomizer.RollSingle(messages.Count);
+                return messages[index];
+            }
+
+        return "";
+    }
+    
+    
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
@@ -24,9 +50,18 @@ public class PetAttackingScript : MonsterScriptBase
             return;
         }
 
-        if (Target is not { IsAlive: true } || (Subject.DistanceFrom(Target) != 1))
+        if (Target is not { IsAlive: true })
             return;
 
+        if (Subject.DistanceFrom(Target) >= 1)
+            if (ShouldUseSpell)
+                foreach (var spell in Spells)
+                    if (IntegerRandomizer.RollChance(10))
+                        Subject.TryUseSpell(spell, Target.Id);
+        
+        if (Subject.DistanceFrom(Target) != 1) 
+            return;
+        
         var direction = Target.DirectionalRelationTo(Subject);
 
         if (Subject.Direction != direction)
@@ -42,14 +77,27 @@ public class PetAttackingScript : MonsterScriptBase
 
         if (ShouldUseSkill)
             foreach (var skill in Skills.Where(skill => !skill.Template.IsAssail))
-                if (IntegerRandomizer.RollChance(25) && Subject.TryUseSkill(skill))
+                if (IntegerRandomizer.RollChance(18))
                 {
-                    attacked = true;
+                    if (Subject.TryUseSkill(skill))
+                    {
+                        var petKey = SummonChosenPet.None;
+                        var found = Subject.PetOwner?.Trackers.Enums.TryGetValue(out petKey) ?? false;
 
-                    break;
+                        if (found)
+                        {
+                            var chant = GetRandomChant(petKey);
+                            Subject.Chant(chant);
+                        }
+                        attacked = true;
+
+                        break;   
+                    }
                 }
 
         if (attacked)
             Subject.MoveTimer.Reset();
     }
+    
+    
 }

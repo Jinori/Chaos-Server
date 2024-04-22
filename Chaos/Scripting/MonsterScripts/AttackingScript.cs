@@ -15,8 +15,7 @@ public class AttackingScript : MonsterScriptBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
-        //if target is invalid or we're not close enough
-        //reset attack delay and return
+        
         if (Target is not { IsAlive: true } || (Subject.DistanceFrom(Target) != 1))
             return;
 

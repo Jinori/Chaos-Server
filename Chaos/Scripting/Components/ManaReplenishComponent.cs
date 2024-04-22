@@ -2,9 +2,11 @@ using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Extensions;
 using Chaos.Models.Data;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.MonsterScripts.Pet;
 
 namespace Chaos.Scripting.Components;
 
@@ -30,15 +32,35 @@ public class ManaReplenishComponent : IComponent
 
             if (options.ReplenishGroup)
             {
-                var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(target));
-
-                if (group != null)
-                    foreach (var member in group)
+                if (context.Source is Monster monster && context.Source.Script.Is<PetScript>())
+                {
+                    var petGroup = monster.PetOwner?.Group?.Where(x => x.WithinRange(target));
+                    if (petGroup != null)
+                        foreach (var member in petGroup)
+                        {
+                            member.StatSheet.AddMp(finalReplenish);
+                            member.Client.SendAttributes(StatUpdateType.Vitality);
+                            member.Animate(Sap);
+                        }
+                    else
                     {
-                        member.StatSheet.AddMp(finalReplenish);
-                        member.Client.SendAttributes(StatUpdateType.Vitality);
-                        member.Animate(Sap);
+                        monster.PetOwner?.StatSheet.AddMp(finalReplenish);
+                        monster.PetOwner?.Client.SendAttributes(StatUpdateType.Vitality);
+                        monster.PetOwner?.Animate(Sap);
                     }
+                }
+                else
+                {
+                    var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(target));
+
+                    if (group != null)
+                        foreach (var member in group)
+                        {
+                            member.StatSheet.AddMp(finalReplenish);
+                            member.Client.SendAttributes(StatUpdateType.Vitality);
+                            member.Animate(Sap);
+                        }
+                }
 
                 return;
             }

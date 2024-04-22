@@ -21,6 +21,7 @@ public class AreiniPetsScript : DialogScriptBase
             RemoveOption("Pet Level 25 Ability");
             RemoveOption("Pet Level 40 Ability");
             RemoveOption("Pet Level 55 Ability");
+            RemoveOption("Pet Level 80 Ability");
             RemoveOption("Change Pet");
         }
         if (string.Equals(Subject.Template.TemplateKey, "areini_initial", StringComparison.OrdinalIgnoreCase)
@@ -30,25 +31,6 @@ public class AreiniPetsScript : DialogScriptBase
             {
                 RemoveOption("Learn Summon Pet");
             }
-            // Check and remove dialog options based on pet skill level
-            if (source.Trackers.Flags.TryGetFlag(out PetSkillsAvailable flag) && flag != PetSkillsAvailable.Level10)
-            {
-                RemoveOption("Pet Level 10 Ability");
-            }
-
-            if (flag != PetSkillsAvailable.Level25)
-            {
-                RemoveOption("Pet Level 25 Ability");
-            }
-            if (flag != PetSkillsAvailable.Level40)
-            {
-                RemoveOption("Pet Level 40 Ability");
-            }
-            if (flag != PetSkillsAvailable.Level55)
-            {
-                RemoveOption("Pet Level 55 Ability");
-            }
-            // Add similar checks for other levels if necessary
         }
 
     }
@@ -87,6 +69,78 @@ public class AreiniPetsScript : DialogScriptBase
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
+            case "areini_pickchitinchew":
+            {
+                if (optionIndex != 2)
+                {
+                    RemoveExistingPets(source);
+                    source.Trackers.Flags.AddFlag(PetSkillsChosen.Level80);
+                    source.Trackers.Enums.Set(Level80PetSkills.ChitinChew);
+                    source.SendActiveMessage("Chitin Chew ability learned!");
+                }
+
+                break;
+            } 
+            case "areini_picksnoutstun":
+            {
+                if (optionIndex != 2)
+                {
+                    RemoveExistingPets(source);
+                    source.Trackers.Flags.AddFlag(PetSkillsChosen.Level80);
+                    source.Trackers.Enums.Set(Level80PetSkills.SnoutStun);
+                    source.SendActiveMessage("Snout Stun ability learned!");
+                }
+
+                break;
+            }
+            case "areini_pickessenceleechlick":
+            {
+                if (optionIndex != 2)
+                {
+                    RemoveExistingPets(source);
+                    source.Trackers.Flags.AddFlag(PetSkillsChosen.Level80);
+                    source.Trackers.Enums.Set(Level80PetSkills.EssenceLeechLick);
+                    source.SendActiveMessage("Essence Leech Lick ability learned!");
+                }
+
+                break;
+            }
+            case "areini_pickfrenzy":
+            {
+                if (optionIndex != 2)
+                {
+                    RemoveExistingPets(source);
+                    source.Trackers.Flags.AddFlag(PetSkillsChosen.Level55);
+                    source.Trackers.Enums.Set(Level55PetSkills.Frenzy);
+                    source.SendActiveMessage("Frenzy spell learned!");
+                }
+
+                break;
+            }
+            case "areini_pickspit":
+            {
+                if (optionIndex != 2)
+                {
+                    RemoveExistingPets(source);
+                    source.Trackers.Flags.AddFlag(PetSkillsChosen.Level55);
+                    source.Trackers.Enums.Set(Level55PetSkills.Spit);
+                    source.SendActiveMessage("Spit spell learned!");
+                }
+
+                break;
+            }
+            case "areini_pickevade":
+            {
+                if (optionIndex != 2)
+                {
+                    RemoveExistingPets(source);
+                    source.Trackers.Flags.AddFlag(PetSkillsChosen.Level55);
+                    source.Trackers.Enums.Set(Level55PetSkills.Evade);
+                    source.SendActiveMessage("Evade spell learned!");
+                }
+
+                break;
+            }
             case "areini_pickdoublelick":
             {
                 if (optionIndex != 2)

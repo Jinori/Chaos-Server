@@ -1236,20 +1236,13 @@ public enum Level55PetSkills
     Evade = 1 << 2,
 }
 
-public enum Level70PetSkills
-{
-    None,
-    PawStrike = 1,
-    Enrage = 1 << 1,
-    WindStrike = 1 << 2,
-}
 
-public enum Level85PetSkills
+public enum Level80PetSkills
 {
     None,
-    PawStrike = 1,
-    Enrage = 1 << 1,
-    WindStrike = 1 << 2,
+    ChitinChew = 1,
+    SnoutStun = 1 << 1,
+    EssenceLeechLick = 1 << 2,
 }
 
 [Flags]
@@ -1260,9 +1253,8 @@ public enum PetSkillsChosen
     Level25 = 1 << 1,
     Level40 = 1 << 2,
     Level55 = 1 << 3,
-    Level70 = 1 << 4,
-    Level85 = 1 << 5,
-    Level99 = 1 << 6,
+    Level80 = 1 << 4,
+    Level99 = 1 << 5,
 }
 
 public enum ArenaHost

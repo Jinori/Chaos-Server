@@ -38,7 +38,7 @@ public class ClassDedicationScript : DialogScriptBase
 
     private void DedicateUserToClass(Aisling source, BaseClass baseClass, string templateKey)
     {
-        if (templateKey.ToLower() == Subject.Template.TemplateKey.ToLower())
+        if (templateKey.Equals(Subject.Template.TemplateKey, StringComparison.CurrentCultureIgnoreCase))
         {
             SetUserToLevel1Stats(source, baseClass);
 
@@ -150,6 +150,12 @@ public class ClassDedicationScript : DialogScriptBase
 
     private void SetUserToLevel1Stats(Aisling source, BaseClass baseClass)
     {
+        if (source.Bank.Contains("Pet Collar"))
+            source.Bank.TryWithdraw("Pet Collar", 1, out _);
+        
+        if (source.Inventory.Contains("Pet Collar")) 
+            source.Inventory.RemoveQuantity("Pet Collar", 1);
+        
         source.Inventory.RemoveQuantity("strong health potion", 10);
         source.UserStatSheet.SetLevel(1);
         source.UserStatSheet.SubtractTotalExp(source.UserStatSheet.TotalExp);

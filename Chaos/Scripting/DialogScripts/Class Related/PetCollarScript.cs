@@ -22,6 +22,14 @@ public class PetCollarScript(
 {
     public override void OnDisplaying(Aisling source)
     {
+        if (source.UserStatSheet.BaseClass is not BaseClass.Priest)
+        {
+            Subject.Reply(source, "You attempt to use the collar but it burns your hands, forcing you to drop it.");
+            RemoveExistingPets(source);
+            source.Inventory.RemoveQuantity("Pet Collar", 1);
+            return;
+        }
+        
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "petcollar_home":
@@ -37,9 +45,7 @@ public class PetCollarScript(
     {
         var pets = source.MapInstance.GetEntities<Monster>().Where(x => x.Script.Is<PetScript>() && x.Name.Contains(source.Name));
         foreach (var pet in pets)
-        {
             pet.MapInstance.RemoveEntity(pet);
-        }
     }
 
     private void HandleSummonPet(Aisling source)
@@ -162,6 +168,23 @@ public class PetCollarScript(
                     break;
                 case Level55PetSkills.Evade:
                     newMonster.Spells.Add(spellFactory.Create("dodge"));
+
+                    break;
+            }
+        
+        if (source.Trackers.Enums.TryGetValue(out Level80PetSkills level80Skills))
+            switch (level80Skills)
+            {
+                case Level80PetSkills.ChitinChew:
+                    newMonster.Skills.Add(skillFactory.Create("armorbreak"));
+
+                    break;
+                case Level80PetSkills.SnoutStun:
+                    newMonster.Skills.Add(skillFactory.Create("groundstomp"));
+
+                    break;
+                case Level80PetSkills.EssenceLeechLick:
+                    newMonster.Skills.Add(skillFactory.Create("sapneedle"));
 
                     break;
             }
