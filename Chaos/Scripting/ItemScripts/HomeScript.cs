@@ -88,9 +88,9 @@ public class HomeScript : ConfigurableItemScriptBase, TeleportComponent.ITelepor
                 DestinationMapKey = "undine_tavern";
 
                 break;
-            case Nation.Purgatory:
-                OriginPoint = new Point(9, 15);
-
+            case Nation.Void:
+                OriginPoint = new Point(12, 16);
+                DestinationMapKey = "arena_entrance";
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

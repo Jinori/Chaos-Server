@@ -737,7 +737,7 @@ public enum Nation : byte
     Atlantis,
     Abel,
     Undine,
-    Purgatory
+    Void
 }
 
 /// <summary>

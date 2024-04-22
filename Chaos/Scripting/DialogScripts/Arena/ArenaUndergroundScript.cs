@@ -96,63 +96,62 @@ public class ArenaUndergroundScript : DialogScriptBase
         {
             case "ophie_initial":
                 HideDialogOptions(source);
-
                 break;
+            
             case "ophie_golddefending":
             case "ophie_greendefending":
                 SetDefendingTeams(source, key.Contains("gold") ? ArenaTeam.Gold : ArenaTeam.Green);
-
                 break;
+            
             case "ophie_startescort":
                 StartEscortMission(source);
-
                 break;
+            
             case "ophie_startcolorclash":
                 StartColorClash(source);
-
                 break;
+            
             case "ophie_starthiddenhavochostnotplayingstart":
                 StartHiddenHavoc(source, false);
-
                 break;
+            
             case "ophie_starthiddenhavochostplayingstart":
                 StartHiddenHavoc(source, true);
-
                 break;
+            
             case "ophie_startffalavaflowhostnotplayingstart":
                 StartLavaFlow(source, false);
-
                 break;
+            
             case "ophie_startffalavaflowhostplayingstart":
                 StartLavaFlow(source, true);
-
                 break;
+            
             case "ophie_startteamgamelavaflowhostnotplayingstart":
                 StartTeamGameLavaFlow(source, false);
-
                 break;
+            
             case "ophie_startteamgamelavaflowhostplayingstart":
                 StartTeamGameLavaFlow(source, true);
-
                 break;
+            
             case "ophie_everyonewon":
                 AwardEveryone(source);
-
                 break;
+            
             case "ophie_goldwon":
             case "ophie_bluewon":
             case "ophie_greenwon":
             case "ophie_redwon":
                 AwardTeamWin(source, key);
-
                 break;
+            
             case "ophie_battlering":
             case "ophie_revive":
             case "ophie_leave":
             case "ophie_skandaragauntlet":
             case "ophie_serendaelsandbox":
                 HandleSpecialEvents(source, key);
-
                 break;
         }
     }
@@ -268,6 +267,13 @@ public class ArenaUndergroundScript : DialogScriptBase
         foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
         {
             aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
+
+            if (team is ArenaTeam.Blue or ArenaTeam.Red)
+            {
+                Subject.Reply(source, $"You must only use Gold or Green teams for Escort. {aisling.Name} is currently on the {team} team.");
+                return;
+            }
+
             if (team == opposingTeam)
                 aisling.Trackers.Enums.Set(ArenaSide.Offensive);
             else if (team == defendingTeam)

@@ -8,9 +8,9 @@ using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.SpellScripts;
 
-public class HomeScript : ConfigurableSpellScriptBase,
-                          TeleportComponent.ITeleportComponentOptions,
-                          ManaCostComponent.IManaCostComponentOptions
+public class HomeScript(Spell subject, ISimpleCache simpleCache) : ConfigurableSpellScriptBase(subject),
+                                                                   TeleportComponent.ITeleportComponentOptions,
+                                                                   ManaCostComponent.IManaCostComponentOptions
 {
     /// <inheritdoc />
     public string DestinationMapKey { get; set; } = null!;
@@ -22,10 +22,7 @@ public class HomeScript : ConfigurableSpellScriptBase,
     public decimal PctManaCost { get; init; }
 
     /// <inheritdoc />
-    public ISimpleCache SimpleCache { get; init; }
-
-    public HomeScript(Spell subject, ISimpleCache simpleCache)
-        : base(subject) => SimpleCache = simpleCache;
+    public ISimpleCache SimpleCache { get; init; } = simpleCache;
 
     public override void OnUse(SpellContext context)
     {
@@ -95,9 +92,9 @@ public class HomeScript : ConfigurableSpellScriptBase,
                 DestinationMapKey = "undine_tavern";
 
                 break;
-            case Nation.Purgatory:
-                OriginPoint = new Point(9, 15);
-
+            case Nation.Void:
+                OriginPoint = new Point(12, 16);
+                DestinationMapKey = "arena_entrance";
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
