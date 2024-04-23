@@ -107,6 +107,10 @@ public class ArenaUndergroundScript : DialogScriptBase
                 StartEscortMission(source);
                 break;
             
+            case "ophie_starthuntinggroundsstart":
+                StartHuntingGrounds(source);
+                break;
+            
             case "ophie_startcolorclash":
                 StartColorClash(source);
                 break;
@@ -279,6 +283,19 @@ public class ArenaUndergroundScript : DialogScriptBase
             else if (team == defendingTeam)
                 aisling.Trackers.Enums.Set(ArenaSide.Defender);
         }
+    }
+
+    private void StartHuntingGrounds(Aisling source)
+    {
+        var shard = ShardGenerator.CreateShardOfInstance("arena_lava");
+        shard.Shards.TryAdd(shard.InstanceId, shard);
+        var script = shard.Script.As<HuntingGroundsScript>();
+                
+        if (script == null)
+            shard.AddScript<HuntingGroundsScript>();
+
+        TeleportParticipants(source, shard, shard.Template.Bounds);
+        Subject.Close(source);
     }
     
     private void StartEscortMission(Aisling source)
