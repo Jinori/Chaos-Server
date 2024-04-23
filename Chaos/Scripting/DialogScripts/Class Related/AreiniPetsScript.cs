@@ -6,11 +6,8 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Class_Related;
 
-public class AreiniPetsScript : DialogScriptBase
+public class AreiniPetsScript(Dialog subject) : DialogScriptBase(subject)
 {
-    public AreiniPetsScript(Dialog subject)
-        : base(subject) { }
-
     public override void OnDisplaying(Aisling source)
     {
         if (string.Equals(Subject.Template.TemplateKey, "areini_initial", StringComparison.OrdinalIgnoreCase)

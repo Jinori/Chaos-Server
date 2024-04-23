@@ -24,6 +24,7 @@ public class VillagerScript : MerchantScriptBase
         TalkingToAnotherMerchant,
         TalkingToPlayer,
         FollowingPlayer,
+        CalloutPasserby,
         Eating
     }
 
@@ -351,6 +352,9 @@ public class VillagerScript : MerchantScriptBase
         
         switch (actionRoll)
         {
+            case < 9:
+                Subject.VillagerState = VillagerState.CalloutPasserby;
+                break;
             case < 10:
                 Subject.VillagerState = VillagerState.FollowingPlayer;
                 break;
@@ -464,15 +468,42 @@ public class VillagerScript : MerchantScriptBase
         Subject.WanderTimer.Reset();
     }
 
+    private void HandleCalloutPasserby(TimeSpan delta)
+    {
+        if (!HasPickedAnAisling)
+        {
+            var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject).ToList();
+
+            if (aislings.Count > 0)
+            {
+                RandomAisling = aislings.Count == 1 ? aislings[0] : aislings[IntegerRandomizer.RollSingle(aislings.Count)];
+                HasPickedAnAisling = true;
+            }
+        }
+
+        if (HasPickedAnAisling)
+        {
+            var legendmark = RandomAisling?.Legend.GetRandomMark();
+            if (legendmark != null)
+                if (LegendMarkResponses.TryGetValue(legendmark, out var response))
+                    Subject.Say(response);
+        }
+        else
+        {
+            if (ShouldWalkToSpawnPoint())
+                WalkTowards(Spawnpoint, delta);
+            else
+                ResetConversationState();
+        }
+    }
+
     private bool IsCloseTo(Location point, int distance) => Subject.DistanceFrom(point) <= distance;
 
-    private static string PickRandom(ICollection<string> phrases)
-    {
-        return phrases.PickRandom();
-    }
+    private static string PickRandom(ICollection<string> phrases) => phrases.PickRandom();
 
     private void ResetConversationState()
     {
+        HasPickedAnAisling = false;
         HasHadConversation = false;
         HasReceivedItem = false;
         HasSaidGreeting = false;
@@ -530,6 +561,11 @@ public class VillagerScript : MerchantScriptBase
 
                 break;
             
+            case VillagerState.CalloutPasserby:
+                HandleCalloutPasserby(delta);
+
+                break;
+            
             case VillagerState.TalkingToAnotherMerchant:
                 break;
             case VillagerState.TalkingToPlayer:
@@ -575,6 +611,20 @@ public class VillagerScript : MerchantScriptBase
         }
     }
 
+    #region TrackedLegendMarks
+    private readonly Dictionary<string, string> LegendMarkResponses = new()
+    {
+        {"Arena Winner", "I hear the arena is a scary place"},
+        {"Arena Participant", "I hear the arena is a scary place"},
+        {"Loved by Mileth Mundanes", "Wow, you're popular around Mileth"},
+        {"Loved by Abel Mundanes", "Pretty helpful around Abel I see."},
+        {"Inspired Fisk to Reach for the Stars", "Thanks for helping Fisk!"},
+        {"Helped the Eingren Manor's Plumber", "You've dispatched a lot of ghosts!"},
+        {"Cured the Sick Child of Loures", "Thanks for helping that girl in Loures."},
+        {"Successfully conquered their Nightmares", "I had a bad nightmare once too."}
+    };
+    #endregion TrackedLegendMarks
+    
     #region Messages
     
     private static readonly List<string> EatingActions =

@@ -614,10 +614,15 @@ public class ArenaUndergroundScript : DialogScriptBase
 
     private void LeaveArena(Aisling source)
     {
-        var exitMap = SimpleCache.Get<MapInstance>("field001");
-        source.TraverseMap(exitMap, new Point(5, 5)); 
-        source.SendServerMessage(ServerMessageType.OrangeBar2, "You have left the arena.");
         Subject.Close(source);
+        var worldMap = SimpleCache.Get<WorldMap>("field001");
+
+        //if we cant set the active object, return
+        if (!source.ActiveObject.SetIfNull(worldMap))
+            return;
+
+        source.MapInstance.RemoveEntity(source);
+        source.Client.SendWorldMap(worldMap);
     }
 
     private void RemoveOption(Dialog subject, string optionName)

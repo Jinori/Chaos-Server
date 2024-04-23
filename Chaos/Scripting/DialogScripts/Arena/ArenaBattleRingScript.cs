@@ -7,7 +7,6 @@ using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Storage.Abstractions;
-using Humanizer;
 
 namespace Chaos.Scripting.DialogScripts.Arena;
 
@@ -24,13 +23,7 @@ public class ArenaBattleRingScript : DialogScriptBase
         SimpleCache = simpleCache;
     }
 
-    public void HideDialogOptions(Aisling source)
-    {
-        source.Trackers.Enums.TryGetValue(out ArenaHost stage);
-        
-        if ((stage != ArenaHost.Host) && (stage != ArenaHost.MasterHost))
-            RemoveOption(Subject, "Host Options");
-    }
+    public void HideDialogOptions(Aisling source) => source.Trackers.Enums.TryGetValue(out ArenaHost stage);
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -87,11 +80,26 @@ public class ArenaBattleRingScript : DialogScriptBase
                 break;
             }
             
-            case "alex_leave":
+            case "alex_hostedstaging":
             {
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
                 source.TraverseMap(mapInstance, new Point(12, 10));
                 Subject.Close(source);
+
+                break;
+            }
+            
+            case "alex_leave":
+            {
+                Subject.Close(source);
+                var worldMap = SimpleCache.Get<WorldMap>("field001");
+
+                //if we cant set the active object, return
+                if (!source.ActiveObject.SetIfNull(worldMap))
+                    return;
+
+                source.MapInstance.RemoveEntity(source);
+                source.Client.SendWorldMap(worldMap);
 
                 break;
             }

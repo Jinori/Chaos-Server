@@ -1,3 +1,4 @@
+using Chaos.Common.Utilities;
 using Chaos.Models.Legend;
 using Chaos.Time;
 
@@ -47,6 +48,15 @@ public sealed class Legend : IEnumerable<LegendMark>
             return existingMark.Count;
 
         return 0;
+    }
+
+    public string? GetRandomMark()
+    {
+        var markList = Marks.Values.ToList();
+        if (markList.Count == 0)
+            return null;
+        
+        return markList[IntegerRandomizer.RollSingle(markList.Count)].Text;
     }
 
     public bool Remove(string key, [MaybeNullWhen(false)] out LegendMark mark) => Marks.Remove(key, out mark);

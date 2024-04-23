@@ -43,6 +43,15 @@ public class ArenaEntranceScript : DialogScriptBase
                 break;
             }
             
+            case "rlyeh_hostedstaging":
+            {
+                var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
+                source.TraverseMap(mapInstance, new Point(12, 10));
+                Subject.Close(source);
+
+                break;
+            }
+            
             case "rlyeh_battlering":
             {
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
