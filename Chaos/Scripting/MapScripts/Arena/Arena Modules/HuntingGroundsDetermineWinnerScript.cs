@@ -44,6 +44,12 @@ public sealed class HuntingGroundsDetermineWinnerScript : MapScriptBase
     {
         GameDurationTimer.Update(delta);
 
+        if (!Subject.GetEntities<Aisling>().Any() && HandleWin)
+        {
+            Subject.Destroy();
+            return;
+        }
+        
         if (Subject.GetEntities<Aisling>().Count() < 2)
             return;
 
