@@ -65,7 +65,7 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
 
         if (source.Trackers.Enums.TryGetValue(out GodMode godmode) && godmode == GodMode.Yes)
             return;
-
+        
         var executed = new ComponentExecutor(Owner, source).WithOptions(this)
                                                            .ExecuteAndCheck<GetTargetsComponent<Creature>>()
                                                            ?.Execute<SoundComponent>()
@@ -75,6 +75,10 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
                                                            .Execute<ApplyEffectComponent>()
                        != null;
 
+        
+        if (Owner is Aisling && source is Aisling aisling)
+            aisling.SendOrangeBarMessage($"You stumble upon a trap, set by {Owner.Name}!");
+            
         if (executed && MaxTriggers.HasValue)
         {
             TriggerCount++;
@@ -95,8 +99,8 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
             && Subject.Owner.Status.HasFlag(Status.DetectTraps)
             && AnimationTimer.IntervalElapsed
             && Subject.MapInstance.Equals(Subject.Owner.MapInstance))
-            Subject.Owner.MapInstance.ShowAnimation(
-                DetectTrapAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y), Subject.Owner.Id));
+            Subject.Owner.MapInstance.ShowAnimationToFriendly(
+                DetectTrapAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y), Subject.Owner.Id), Subject.Owner);
 
         if (Timer != null)
         {

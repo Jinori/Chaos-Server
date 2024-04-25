@@ -64,11 +64,11 @@ public sealed class HuntingGroundsDetermineWinnerScript : MapScriptBase
         
         UpdateDeathListAndScores();
         
-        if (!HandleWin && (GameDurationTimer.IntervalElapsed || (Subject.GetEntities<Aisling>().Count(x => x.IsAlive) == 1)))
+        if (!HandleWin && (GameDurationTimer.IntervalElapsed || IndividualScores.Values.Any(score => score >= 40)))
         {
             HandleWin = true;
-            
-            var winner = CalculateScores() ?? HandleLastPlayerStanding();
+
+            var winner = CalculateScores();
         
             if (winner != null)
                 HandleWinner(winner.Value.Key, winner.Value.Value);
@@ -133,18 +133,6 @@ public sealed class HuntingGroundsDetermineWinnerScript : MapScriptBase
                         ReassignTarget(player.Key);
                 }
             }
-    }
-
-    
-    private KeyValuePair<Aisling, int>? HandleLastPlayerStanding()
-    {
-        if (ActivePlayers.Count == 1)
-        {
-            var lastPlayer = ActivePlayers[0];
-            var score = IndividualScores.GetValueOrDefault(lastPlayer, 0);
-            return new KeyValuePair<Aisling, int>(lastPlayer, score);
-        }
-        return null;
     }
     
     private void NotifyNoWinner()

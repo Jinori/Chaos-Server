@@ -11,6 +11,7 @@ public sealed class HuntingGroundsScript : CompositeMapScript
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(HuntingGroundsDetermineWinnerScript)),
+        GetScriptKey(typeof(RespawnHandlerScript))
     };
 
     /// <inheritdoc />

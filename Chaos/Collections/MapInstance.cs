@@ -734,6 +734,28 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
                                                .ThatCanObserve(target))
                     aisling.Client.SendAnimation(animation);
     }
+    
+    public void ShowAnimationToFriendly(Animation animation, Creature owner)
+    {
+        //if both target point and target id are set, prefer the point animation.
+        if (animation is { TargetPoint: not null, TargetId: not null })
+            animation = animation.GetPointAnimation(animation.TargetPoint);
+
+        if (animation.TargetPoint.HasValue)
+            foreach (var aisling in Objects.WithinRange<Aisling>(animation.TargetPoint))
+            {
+                if (aisling.IsFriendlyTo(owner)) 
+                    aisling.Client.SendAnimation(animation);   
+            }
+        else if (animation.TargetId.HasValue)
+            if (TryGetEntity<Creature>(animation.TargetId.Value, out var target))
+                foreach (var aisling in Objects.WithinRange<Aisling>(target)
+                                               .ThatCanObserve(target))
+                {
+                    if (aisling.IsFriendlyTo(owner)) 
+                        aisling.Client.SendAnimation(animation);   
+                }
+    }
 
     public void SimpleAdd(MapEntity mapEntity)
     {

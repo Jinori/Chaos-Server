@@ -344,11 +344,13 @@ public class ArenaUndergroundScript : DialogScriptBase
     
     private void StartColorClash(Aisling source)
     {
-        var mapInstance = SimpleCache.Get<MapInstance>("arena_colorclash");
-        var script = mapInstance.Script.As<ColorClashScript>();
-
+        var shard = ShardGenerator.CreateShardOfInstance("arena_colorclash");
+        shard.Shards.TryAdd(shard.InstanceId, shard);
+        var script = shard.Script.As<ColorClashScript>();
+        
         if (script == null)
-            mapInstance.AddScript<ColorClashScript>();
+            shard.AddScript<ColorClashScript>();
+        
 
         foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
         {
@@ -365,19 +367,19 @@ public class ArenaUndergroundScript : DialogScriptBase
             switch (team)
             {
                 case ArenaTeam.Blue:
-                    aisling.TraverseMap(mapInstance, ColorClashBluePoint);
+                    aisling.TraverseMap(shard, ColorClashBluePoint);
 
                     break;
                 case ArenaTeam.Green:
-                    aisling.TraverseMap(mapInstance, ColorClashGreenPoint);
+                    aisling.TraverseMap(shard, ColorClashGreenPoint);
 
                     break;
                 case ArenaTeam.Gold:
-                    aisling.TraverseMap(mapInstance, ColorClashGoldPoint);
+                    aisling.TraverseMap(shard, ColorClashGoldPoint);
 
                     break;
                 case ArenaTeam.Red:
-                    aisling.TraverseMap(mapInstance, ColorClashRedPoint);
+                    aisling.TraverseMap(shard, ColorClashRedPoint);
 
                     break;
                 case ArenaTeam.None:

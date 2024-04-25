@@ -12,6 +12,7 @@ public sealed class ColorClashScript : CompositeMapScript
     {
         GetScriptKey(typeof(AnnounceMatchScript)),
         GetScriptKey(typeof(ColorClashDetermineWinnerScript)),
+        GetScriptKey(typeof(RespawnHandlerScript))
     };
 
     /// <inheritdoc />

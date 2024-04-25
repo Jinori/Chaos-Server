@@ -34,6 +34,8 @@ public sealed class BlindEffect : ContinuousAnimationEffectBase
 
         if (!Subject.Status.HasFlag(Status.Blind))
             Subject.Status = Status.Blind;
+        
+        AislingSubject?.SetVision(VisionType.TrueBlind);
     }
 
     /// <inheritdoc />
@@ -45,6 +47,7 @@ public sealed class BlindEffect : ContinuousAnimationEffectBase
             Subject.Status &= ~Status.Blind;
 
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You can see again.");
+        AislingSubject?.SetVision(VisionType.Normal);
     }
 
     public override bool ShouldApply(Creature source, Creature target)

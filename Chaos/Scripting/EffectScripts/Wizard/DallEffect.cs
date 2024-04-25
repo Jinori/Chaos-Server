@@ -34,6 +34,8 @@ public sealed class DallEffect : ContinuousAnimationEffectBase
 
         if (!Subject.Status.HasFlag(Status.Blind))
             Subject.Status = Status.Blind;
+        
+        AislingSubject?.SetVision(VisionType.TrueBlind);
     }
 
     /// <inheritdoc />
@@ -44,6 +46,7 @@ public sealed class DallEffect : ContinuousAnimationEffectBase
         if (Subject.Status.HasFlag(Status.Blind))
             Subject.Status &= ~Status.Blind;
 
+        AislingSubject?.SetVision(VisionType.Normal);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You can see again.");
     }
 

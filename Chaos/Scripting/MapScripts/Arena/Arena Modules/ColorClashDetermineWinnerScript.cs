@@ -7,6 +7,7 @@ using Chaos.Time.Abstractions;
 using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
@@ -55,6 +56,12 @@ public sealed class ColorClashDetermineWinnerScript : MapScriptBase
     {
         GameDurationTimer.Update(delta);
 
+        if (!Subject.GetEntities<Aisling>().Any() && HandleWin)
+        {
+            Subject.Destroy();
+            return;
+        }
+        
         if (!LayAllColorClashReactors)
             PlaceColorClashReactors();
         
@@ -76,19 +83,21 @@ public sealed class ColorClashDetermineWinnerScript : MapScriptBase
 
     private void PlaceColorClashReactors()
     {
-        for (var x = 0; x < Subject.Template.Width; x++)
+        var rect = new Rectangle(new Point(16, 16), 15, 15);
+        var points = rect.GetPoints();
+        
+        var excludedPoints = new HashSet<Point>
         {
-            for (var y = 0; y < Subject.Template.Height; y++)
+            new(23, 17), new(23, 16), new(23, 15), new(23, 14),
+            new(17, 23), new(16, 23), new(15, 23), new(14, 23)
+        };
+
+        foreach (var point in points)
+        {
+            if (!Subject.IsWall(point) && !excludedPoints.Contains(point))
             {
-                var location = new Point(x, y);
-            
-                // Check if the tile at the current location is a wall
-                if (!Subject.IsWall(location))
-                {
-                    // Create a reactor tile at the current location if it's not a wall
-                    var reactorTile = ReactorTileFactory.Create("ColorClash", Subject, location);
-                    Subject.SimpleAdd(reactorTile);
-                }
+                var reactorTile = ReactorTileFactory.Create("ColorClash", Subject, point);
+                Subject.SimpleAdd(reactorTile);
             }
         }
 
