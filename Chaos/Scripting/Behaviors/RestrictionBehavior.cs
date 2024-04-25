@@ -33,7 +33,7 @@ public class RestrictionBehavior
                 return false;
             }
             case Monster monster when monster.Status.HasFlag(Status.Suain)
-                                      || monster.Status.HasFlag(Status.Blind)
+                                      || monster.Vision is not VisionType.Normal
                                       || monster.Status.HasFlag(Status.Pramh)
                                       || monster.Status.HasFlag(Status.BeagSuain):
             {

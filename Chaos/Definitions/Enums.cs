@@ -26,20 +26,19 @@ public enum Status : ulong
     ChiBlocker = 1 << 10,
     Pramh = 1 << 11,
     DetectTraps = 1 << 12,
-    Blind = 1 << 13,
-    EarthenStance = 1 << 14,
-    MistStance = 1 << 15,
-    ThunderStance = 1 << 16,
-    SmokeStance = 1 << 17,
-    BeagAite = 1 << 18,
-    Aite = 1 << 19,
-    MorAite = 1 << 20,
-    ArdAite = 1 << 21,
-    Hide = 1 << 22,
-    LastStand = 1 << 23,
-    Amnesia = 1 << 24,
-    PreventRecradh = 1 << 25,
-    WolfFangFist = 1 << 26
+    EarthenStance = 1 << 13,
+    MistStance = 1 << 14,
+    ThunderStance = 1 << 15,
+    SmokeStance = 1 << 16,
+    BeagAite = 1 << 17,
+    Aite = 1 << 18,
+    MorAite = 1 << 19,
+    ArdAite = 1 << 20,
+    Hide = 1 << 21,
+    LastStand = 1 << 22,
+    Amnesia = 1 << 23,
+    PreventRecradh = 1 << 24,
+    WolfFangFist = 1 << 25
     //add more statuses here
 }
 
