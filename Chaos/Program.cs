@@ -115,7 +115,7 @@ static void ConfigureApp(WebApplication app)
 
     //app configuration
     //initialize objects with a lot of cross-cutting concerns
-    //this object is needed in a lot of places, some of which it doesnt make a lot of sense to have a service injected into
+    //this object is needed in a lot of places, some of which it doesn't make a lot of sense to have a service injected into
     _ = app.Services.GetRequiredService<IOptions<WorldOptions>>()
            .Value;
     _ = app.Services.GetRequiredService<IScriptRegistry>();
@@ -136,7 +136,7 @@ static void ConfigureApp(WebApplication app)
     };
 }
 
-static void ConfigureHost(WebApplicationBuilder builder) => builder.WebHost.UseKestrel();
+static void ConfigureHost(WebApplicationBuilder builder) => builder.WebHost.UseKestrel(opts => opts.ListenAnyIP(5000));
 
 static void ConfigureServices(WebApplicationBuilder builder)
 {

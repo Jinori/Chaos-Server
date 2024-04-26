@@ -9,7 +9,6 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.DialogScripts.Mileth;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
@@ -122,6 +121,7 @@ public class MainStoryScript(
                     || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact3)
                     || source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact4)
                     || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact4)
+                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedAssemble)
                     || source.Trackers.Enums.HasValue(MainStoryEnums.CompletedArtifactsHunt)
                     || source.Trackers.Enums.HasValue(MainStoryEnums.StartedCircuitTrial)
                     || source.Trackers.Enums.HasValue(MainStoryEnums.CompletedCircuitTrial)
@@ -217,7 +217,6 @@ public class MainStoryScript(
                 {
                     Subject.Reply(source,
                         "Skip", "mainstory_miraelis_finisheda1");
-                    return;
                 }
                 break;
             }
@@ -276,10 +275,9 @@ public class MainStoryScript(
                     AnimationSpeed = 200,
                     TargetAnimation = 14
                 };
-                var miraelispoint = new Point(12, 15);
-                var miraelis = merchantFactory.Create("miraelisgod", source.MapInstance, miraelispoint);
                 
-                miraelis.Animate(animate);
+                var miraelis = Subject.DialogSource as Merchant;
+                miraelis!.Animate(animate);
                 
                 source.Trackers.Enums.Set(MainStoryEnums.CompletedArtifactsHunt);
                 source.Inventory.RemoveQuantity("coal", 50);
@@ -317,7 +315,6 @@ public class MainStoryScript(
                 {
                     Subject.Reply(source,
                         "Skip", "mainstory_serendael_finisheda1");
-                    return;
                 }
 
                 break;
@@ -355,7 +352,6 @@ public class MainStoryScript(
             case "mainstory_serendael_return4":
             {
                 source.SendOrangeBarMessage("Speak to Goddess Skandara about the Sea Artifact");
-                return;
             }
                 break;
             #endregion
@@ -388,7 +384,6 @@ public class MainStoryScript(
                 {
                     Subject.Reply(source,
                         "Skip", "mainstory_theselene_finisheda1");
-                    return;
                 }
                 break;
             }
@@ -454,7 +449,6 @@ public class MainStoryScript(
                 {
                     Subject.Reply(source,
                         "Skip", "mainstory_skandara_finisheda1");
-                    return;
                 }
                 break;
             }
@@ -490,7 +484,6 @@ public class MainStoryScript(
             case "mainstory_skandara_return4":
             {
                 source.SendOrangeBarMessage("Speak to Goddess Miraelis about the True Elemental Artifact.");
-                return;
             }
                 break;
             #endregion
