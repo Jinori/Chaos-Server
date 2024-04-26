@@ -7,7 +7,7 @@ namespace Chaos.Time;
 ///     timer is periodic, meaning it will always update the first timer in the sequence, even if other timers are
 ///     elapsing.
 /// </summary>
-public class PeriodicSequentialEventTimer : IIntervalTimer
+public class PeriodicSequentialEventTimer : ISequentialTimer
 {
     private readonly List<IIntervalTimer> OrderedTimers;
     private int CurrentTimerIndex;
@@ -15,6 +15,9 @@ public class PeriodicSequentialEventTimer : IIntervalTimer
     /// <summary>
     ///     Gets the current elapsing timer
     /// </summary>
+    public IIntervalTimer CurrentTimer => OrderedTimers[CurrentTimerIndex];
+
+    /// <inheritdoc />
     public IIntervalTimer CurrentTimer => OrderedTimers[CurrentTimerIndex];
 
     /// <inheritdoc />
@@ -40,15 +43,15 @@ public class PeriodicSequentialEventTimer : IIntervalTimer
     public void Update(TimeSpan delta)
     {
         var timer = OrderedTimers[CurrentTimerIndex];
-        
+
         if (timer.IntervalElapsed)
             CurrentTimerIndex++;
 
         if (CurrentTimerIndex >= OrderedTimers.Count)
             Reset();
-        
+
         timer = OrderedTimers[CurrentTimerIndex];
-        
+
         timer.Update(delta);
 
         // first timer always updates (periodic)
