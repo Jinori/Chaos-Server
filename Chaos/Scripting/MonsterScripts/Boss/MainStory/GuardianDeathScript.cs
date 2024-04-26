@@ -85,7 +85,6 @@ public class GuardianDeathScript : MonsterScriptBase
                         var artifact = ItemFactory.Create("earthartifact");
                         member.TryGiveItems(artifact);
                         member.SendOrangeBarMessage("You pull the Earth Artifact from the mud.");
-                        return;
                     }
                 }
                 if (member.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact2))
@@ -95,7 +94,6 @@ public class GuardianDeathScript : MonsterScriptBase
                         var artifact = ItemFactory.Create("fireartifact");
                         member.TryGiveItems(artifact);
                         member.SendOrangeBarMessage("You pull the Fire Artifact from its ashes.");
-                        return;
                     }
                 }
                 if (member.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact3))
@@ -105,7 +103,6 @@ public class GuardianDeathScript : MonsterScriptBase
                         var artifact = ItemFactory.Create("windartifact");
                         member.TryGiveItems(artifact);
                         member.SendOrangeBarMessage("You pull the Wind Artifact from the ground.");
-                        return;
                     }
                 }
                 if (member.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact4))
@@ -115,7 +112,6 @@ public class GuardianDeathScript : MonsterScriptBase
                         var artifact = ItemFactory.Create("seaartifact");
                         member.TryGiveItems(artifact);
                         member.SendOrangeBarMessage("You pull the Sea Artifact from the puddle.");
-                        return;
                     }
                 }
             }
