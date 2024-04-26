@@ -27,7 +27,7 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
     {
         var targetMap = SimpleCache.Get<MapInstance>(Destination.Map);
 
-        if (!source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifactsHunt))
+        if (!source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact1))
         {
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(source.Trackers.LastPosition as IPoint ?? point);

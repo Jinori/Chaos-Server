@@ -50,8 +50,8 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent
         {
             Element.Fire     => "{=bFIRE{=s",
             Element.Water    => "{=eWATER{=s",
-            Element.Earth    => "{=qEARTH{=s",
-            Element.Wind     => "{=cWIND{=s",
+            Element.Earth    => "{=tEARTH{=s",
+            Element.Wind     => "{=qWIND{=s",
             Element.None     => "{=gNONE{=s",
             Element.Holy     => "{=aHOLY{=s",
             Element.Darkness => "{=nDARK{=s",
@@ -83,7 +83,7 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent
             var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint));
             var offenseColor = GetElementColor(mob.StatSheet.OffenseElement);
             var defenseColor = GetElementColor(mob.StatSheet.DefenseElement);
-            var message = $"{mob.Name}: Hp:{mob.StatSheet.HealthPercent:F0}% OFFENSE: {offenseColor} DEFENSE: {defenseColor}";
+            var message = $"{mob.Name}: Hp:{mob.StatSheet.HealthPercent:F0}% OFF: {offenseColor} DEF: {defenseColor}";
 
             if (group == null)
                 context.SourceAisling?.SendOrangeBarMessage(message);
