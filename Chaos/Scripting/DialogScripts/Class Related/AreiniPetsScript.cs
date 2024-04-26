@@ -37,7 +37,7 @@ public class AreiniPetsScript(Dialog subject) : DialogScriptBase(subject)
         if (string.Equals(Subject.Template.TemplateKey, "areini_changepet", StringComparison.OrdinalIgnoreCase))
             if (optionIndex.HasValue)
             {
-                var optionText = Subject.GetOptionText((int)optionIndex - 1);
+                var optionText = Subject.GetOptionText((int)optionIndex);
 
                 if (Enum.TryParse<SummonChosenPet>(optionText, true, out var chosenPet))
                     switch (chosenPet)

@@ -41,21 +41,20 @@ public class ReligionScriptBase : DialogScriptBase
 
     private static readonly Dictionary<Rank, List<string>> RoleOptions = new()
     {
-        { Rank.None, new List<string> { "Join the Temple", "The Gods" } },
-        { Rank.Worshipper, new List<string> { "Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith" } },
-        { Rank.Acolyte, new List<string> { "Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith" } },
-        { Rank.Emissary, new List<string> { "Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith" } },
-        { Rank.Seer, new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith" } },
-        { Rank.Favor, new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith" } },
-        { Rank.Champion, new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith" } }
+        { Rank.None, ["Join the Temple", "The Gods"] },
+        { Rank.Worshipper, ["Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith"] },
+        { Rank.Acolyte, ["Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith"] },
+        { Rank.Emissary, ["Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith"] },
+        { Rank.Seer, ["Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith"] },
+        { Rank.Favor, ["Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith"] },
+        { Rank.Champion, ["Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith"] }
     };
 
     #region Prayers
     public readonly Dictionary<string, List<string>> DeityPrayers = new()
     {
         {
-            "Serendael", new List<string>
-            {
+            "Serendael", [
                 "Oh Serendael, Lady of Fortune, bless us with your favorable hand.",
                 "Serendael, the weaver of destiny, guide us through the twists and turns of fate.",
                 "Grant us your wisdom, Serendael, to navigate the capricious paths of chance.",
@@ -96,11 +95,10 @@ public class ReligionScriptBase : DialogScriptBase
                 "Bless our journey with the warmth of your radiant colors, Serendael.",
                 "May we navigate the maze of destiny under your watchful gaze, Serendael.",
                 "Serendael, bless us with the courage to take a chance."
-            }
+            ]
         },
         {
-            "Skandara", new List<string>
-            {
+            "Skandara", [
                 "Mighty Skandara, grant us strength and courage to triumph in battle.",
                 "Skandara, goddess of war, may your fury drive us to victory.",
                 "Skandara, in the heart of the conflict, may we find the resolve to endure.",
@@ -139,11 +137,10 @@ public class ReligionScriptBase : DialogScriptBase
                 "Guide us through the storm of battle, Skandara, to find our calm.",
                 "May we stand strong in the face of the storm, guided by your strength, Skandara.",
                 "Skandara, lend us your warrior spirit to face our struggles with bravery."
-            }
+            ]
         },
         {
-            "Theselene", new List<string>
-            {
+            "Theselene", [
                 "Theselene, Keeper of Secrets, reveal to us the hidden truths that lie in the shadows.",
                 "In your silent realm we seek clarity, guide us, Theselene, through the mysteries of life.",
                 "We walk in darkness, Theselene. Illuminate our path with the gleam of unveiled secrets.",
@@ -174,11 +171,10 @@ public class ReligionScriptBase : DialogScriptBase
                 "In your realm, Theselene, secrets bloom like night flowers. Let us understand their language.",
                 "Theselene, in the obscurity of shadows, your wisdom gleams. Guide us to its source.",
                 "We seek the concealed wisdom of your shadowy realm, Theselene. Guide us on this quest."
-            }
+            ]
         },
         {
-            "Miraelis", new List<string>
-            {
+            "Miraelis", [
                 "Benevolent Miraelis, Goddess of Compassion, guide us in nurturing and understanding.",
                 "May your light shine upon us, filling our hearts with empathy and love.",
                 "Miraelis, grant us the wisdom to heal the wounds of the world with compassion.",
@@ -232,7 +228,7 @@ public class ReligionScriptBase : DialogScriptBase
                 "Miraelis, in your name, may we be catalysts for positive change, igniting a world driven by empathy and compassion.",
                 "Grant us the strength to protect and restore the natural world, guided by your divine wisdom, Miraelis.",
                 "May the love and compassion we receive from you, Miraelis, overflow into the lives of those around us."
-            }
+            ]
         }
     };
     #endregion Prayers
@@ -408,7 +404,7 @@ public class ReligionScriptBase : DialogScriptBase
         }
     }
 
-    public int CheckCurrentFaith(Aisling source)
+    public static int CheckCurrentFaith(Aisling source)
     {
         var key = CheckDeity(source);
 
@@ -443,7 +439,7 @@ public class ReligionScriptBase : DialogScriptBase
 
             Subject.Reply(
                 source,
-                "Though the essence of Miraelis eludes you, seeker, remember that the journey itself holds wisdom. Reflect on your quest, learn from its challenges, and embrace compassion, nature, and intellect in your future endeavors. The path to enlightenment awaits your renewed efforts.");
+                $"Though the essence of {deity} eludes you, seeker, remember that the journey itself holds wisdom. Reflect on your quest, learn from its challenges, and embrace compassion, nature, and intellect in your future endeavors. The path to enlightenment awaits your renewed efforts.");
 
             return;
         }

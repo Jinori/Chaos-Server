@@ -27,7 +27,7 @@ public sealed class CarnunBossRoomHazardScript : MonsterScriptBase
     private IIntervalTimer HazardExpirationTimer { get; }
     private IIntervalTimer SafeTimer { get; }
     private IIntervalTimer HazardTimer { get; }
-    private SequentialEventTimer SequenceTimer { get; }
+    private ISequentialTimer SequenceTimer { get; }
     private IIntervalTimer SafeAnimationTimer { get; }
     private IIntervalTimer HazardAnimationTimer { get; }
     private bool GetToSafety => SequenceTimer.CurrentTimer == SafeTimer;

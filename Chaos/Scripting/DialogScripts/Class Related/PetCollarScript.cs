@@ -195,7 +195,7 @@ public class PetCollarScript(
             return;
 
         var templateKey = Subject.Template.TemplateKey.ToLower();
-        var optionText = Subject.GetOptionText((int)optionIndex - 1);
+        var optionText = Subject.GetOptionText((int)optionIndex);
 
         switch (templateKey)
         {

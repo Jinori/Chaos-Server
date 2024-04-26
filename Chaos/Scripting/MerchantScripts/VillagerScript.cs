@@ -18,6 +18,7 @@ public class VillagerScript : MerchantScriptBase
     {
         Idle,
         Wandering,
+        SayRandomMessage,
         WalkingToArmory,
         WalkingToTailor,
         WalkingToRestaurant,
@@ -346,38 +347,22 @@ public class VillagerScript : MerchantScriptBase
         }
     }
     
+    private static readonly List<KeyValuePair<VillagerState, decimal>> StateData =
+    [
+        new KeyValuePair<VillagerState, decimal>(VillagerState.Wandering, 40),
+        new KeyValuePair<VillagerState, decimal>(VillagerState.SayRandomMessage, 20),
+        new KeyValuePair<VillagerState, decimal>(VillagerState.WalkingToRestaurant, 10),
+        new KeyValuePair<VillagerState, decimal>(VillagerState.WalkingToTailor, 10),
+        new KeyValuePair<VillagerState, decimal>(VillagerState.WalkingToArmory, 10),
+        new KeyValuePair<VillagerState, decimal>(VillagerState.FollowingPlayer, 5),
+        new KeyValuePair<VillagerState, decimal>(VillagerState.CalloutPasserby, 5),
+    ];
+    
     private void HandleIdleState()
     {
-        var actionRoll = IntegerRandomizer.RollSingle(100);
+        var state = StateData.PickRandomWeightedSingleOrDefault();
+        Subject.VillagerState = state;
         
-        switch (actionRoll)
-        {
-            case < 9:
-                Subject.VillagerState = VillagerState.CalloutPasserby;
-                break;
-            case < 10:
-                Subject.VillagerState = VillagerState.FollowingPlayer;
-                break;
-            case < 15:
-                Subject.VillagerState = VillagerState.WalkingToTailor;
-                break;
-            case < 20:
-                Subject.VillagerState = VillagerState.WalkingToTailor;
-                break;
-            case < 25:
-                Subject.VillagerState = VillagerState.WalkingToRestaurant;
-                break;
-            case < 30:
-                SayRandomMessage();
-                break;
-            case < 33:
-                CastBuff();
-                break;
-            case < 68:
-                Subject.VillagerState = VillagerState.Wandering;
-                break;
-        }
-
         ActionTimer.Reset();
     }
 
@@ -481,12 +466,22 @@ public class VillagerScript : MerchantScriptBase
             }
         }
 
-        if (HasPickedAnAisling)
+        if (HasPickedAnAisling && !HasHadConversation)
         {
             var legendmark = RandomAisling?.Legend.GetRandomMark();
+
             if (legendmark != null)
-                if (LegendMarkResponses.TryGetValue(legendmark, out var response))
+            {
+                if (!LegendMarkResponses.TryGetValue(legendmark, out var response))
+                {
+                    HasHadConversation = true;
+                }
+
+                if (response != null)
                     Subject.Say(response);
+
+                HasHadConversation = true;
+            }
         }
         else
         {
@@ -515,12 +510,14 @@ public class VillagerScript : MerchantScriptBase
         Subject.VillagerState = VillagerState.Wandering;
     }
 
-    private void SayRandomMessage()
+    private void HandleSayRandomMessageState()
     {
         var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 8);
 
         if (aislings.Any())
             Subject.Say(GetRandomMessage());
+
+        Subject.VillagerState = VillagerState.Idle;
     }
 
     private bool ShouldWalkTo(Location destination) => (Subject.DistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
@@ -540,6 +537,11 @@ public class VillagerScript : MerchantScriptBase
                     HandleIdleState();
 
                 break;
+            
+            case VillagerState.SayRandomMessage:
+                HandleSayRandomMessageState();
+                break;
+            
             case VillagerState.Wandering:
                 if (Subject.WanderTimer.IntervalElapsed)
                     HandleWanderingState();

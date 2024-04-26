@@ -88,25 +88,17 @@ public class CraftingTileScript : ReactorTileScriptBase
         dialog.Display(aisling);
     }
 
-    private sealed class CraftingDetails
+    private sealed class CraftingDetails(
+        string merchant,
+        string dialogKey,
+        Hobbies? requiredHobby,
+        Crafts requiredCraft
+    )
     {
-        public string DialogKey { get; }
+        public string DialogKey { get; } = dialogKey;
 
-        public string Merchant { get; }
-        public Crafts RequiredCraft { get; }
-        public Hobbies? RequiredHobby { get; }
-
-        public CraftingDetails(
-            string merchant,
-            string dialogKey,
-            Hobbies? requiredHobby,
-            Crafts requiredCraft
-        )
-        {
-            Merchant = merchant;
-            DialogKey = dialogKey;
-            RequiredHobby = requiredHobby;
-            RequiredCraft = requiredCraft;
-        }
+        public string Merchant { get; } = merchant;
+        public Crafts RequiredCraft { get; } = requiredCraft;
+        public Hobbies? RequiredHobby { get; } = requiredHobby;
     }
 }

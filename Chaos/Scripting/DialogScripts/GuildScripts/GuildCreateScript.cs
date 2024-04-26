@@ -12,7 +12,7 @@ namespace Chaos.Scripting.DialogScripts.GuildScripts;
 
 public class GuildCreateScript : GuildScriptBase
 {
-    private const int GUILD_CREATION_COST = 1_000_000;
+    private const int GUILD_CREATION_COST = 15_000_000;
 
     /// <inheritdoc />
     public GuildCreateScript(

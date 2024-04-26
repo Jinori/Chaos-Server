@@ -38,7 +38,10 @@ public sealed class GuildRank
         Name = newName;
 
         foreach (var member in GetOnlineMembers(clientRegistry))
-            member.Client.SendSelfProfile();
+        {
+            member.GuildRank = Name;
+            member.Client.SendSelfProfile();   
+        }
     }
 
     public IEnumerable<string> GetMemberNames() => MemberNames;

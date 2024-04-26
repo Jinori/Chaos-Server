@@ -11,7 +11,7 @@ namespace Chaos.Scripting.EffectScripts.Jobs;
 public class FishingEffect(IItemFactory itemFactory) : ContinuousAnimationEffectBase
 {
     private const int FISH_CATCH_CHANCE = 2;
-    private const byte FISHING_ICON = 203;
+    private const byte FISHING_ICON = 95;
     private const int FISH_STEAL_BAIT = 5;
 
     private static readonly List<KeyValuePair<string, decimal>> FishData =
