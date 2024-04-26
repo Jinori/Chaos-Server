@@ -30,15 +30,21 @@ public class MysteriousArtifactScript : ItemScriptBase
     }
 
     private Animation GetPlayerAnimation() => new()
-        { AnimationSpeed = 100, TargetAnimation = 160 };
+        { AnimationSpeed = 100, TargetAnimation = 22 };
     
 
     public override void OnUse(Aisling source)
     {
-        source.SendOrangeBarMessage("You hold the artifact tight.");
-        source.Animate(GetPlayerAnimation());
         var mysteriousartifact = ItemFactory.Create("mysteriousartifact");
         var mysteriousartifactdialog = DialogFactory.Create("mysteriousartifact_initial1", mysteriousartifact);
         mysteriousartifactdialog.Display(source);
+
+
+        if (source.MapInstance.Name != "The God's Realm")
+        {
+            source.Animate(GetPlayerAnimation());
+            source.SendOrangeBarMessage("You hold the artifact tight.");
+            source.Animate(GetPlayerAnimation());
+        }
     }
 }

@@ -13,9 +13,6 @@ public class GreetingScript(Merchant subject) : MerchantScriptBase(subject)
         if (source is not Aisling aisling)
             return;
 
-        if (IntegerRandomizer.RollChance(60))
-            return;
-
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "thibault":
@@ -78,7 +75,12 @@ public class GreetingScript(Merchant subject) : MerchantScriptBase(subject)
             }
             case "miraelisgod":
             {
-                Subject.Say("Welcome Aisling, what news have you to share?");
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.SpokeToZephyr))
+                {
+                    Subject.Say($"Welcome {source.Name}, what news have you to share?");
+                    return;
+                }
+                Subject.Say($"Welcome back {source.Name}.");
                 return;
             }
         }

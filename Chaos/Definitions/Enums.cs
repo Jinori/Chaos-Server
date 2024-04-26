@@ -1486,14 +1486,29 @@ public enum MainStoryEnums
     MysteriousArtifactFound = 1,
     ReceivedMA = 2,
     SpokeToZephyr = 3,
-    StartedArtifactsHunt = 4,
-    CompletedArtifactsHunt = 5,
-    StartedCircuitTrial = 6,
-    CompletedCircuitTrial = 7,
-    SearchForSummoner = 8,
-    FoundSummoner = 9,
-    DefeatedServant = 10,
-    FoundSummoner2 = 11,
-    KilledSummoner = 12,
-    CompletedPreMasterMainStory = 13,
+    StartedArtifact1 = 4,
+    FinishedArtifact1 = 5,
+    StartedArtifact2 = 6,
+    FinishedArtifact2 = 7,
+    StartedArtifact3 = 8,
+    FinishedArtifact3 = 9,
+    StartedArtifact4 = 10,
+    FinishedArtifact4 = 11,
+    StartedAssemble = 12,
+    CompletedArtifactsHunt = 13,
+    StartedCircuitTrial = 14,
+    CompletedCircuitTrial = 15,
+    SearchForSummoner = 16,
+    FoundSummoner = 17,
+    DefeatedServant = 18,
+    FoundSummoner2 = 19,
+    KilledSummoner = 20,
+    CompletedPreMasterMainStory = 21,
+}
+
+[Flags]
+public enum MainstoryFlags
+{
+    None,
+    FoundMysteriousArtifact = 1
 }
