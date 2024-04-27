@@ -1,5 +1,6 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.Data;
@@ -47,6 +48,15 @@ public class TerrorOfTheCryptScript : MapScriptBase
             TargetAnimation = 13
         };
     }
+    
+    private Element[] Elements { get; } =
+    [
+        Element.Fire,
+        Element.Water,
+        Element.Wind,
+        Element.Earth
+    ];
+    
     public override void OnEntered(Creature creature)
     {
         if (creature is not Aisling aisling)
@@ -123,7 +133,7 @@ public class TerrorOfTheCryptScript : MapScriptBase
                         MaximumHp = (int)groupLevel.Average() * groupLevel.Count * 700,
                         MaximumMp = (int)groupLevel.Average() * groupLevel.Count * 700,
                         SkillDamagePct = groupLevel.Count,
-                        SpellDamagePct = groupLevel.Count
+                        SpellDamagePct = groupLevel.Count,
                     };
 
                     // Check the group level and add spells accordingly
@@ -133,6 +143,8 @@ public class TerrorOfTheCryptScript : MapScriptBase
                         var cradh = SpellFactory.Create("beagcradh");
                         monster.Spells.Add(spell);
                         monster.Spells.Add(cradh);
+                        monster.StatSheet.SetOffenseElement(Elements.PickRandom());
+                        monster.StatSheet.SetDefenseElement(Elements.PickRandom());
                     }
 
                     if ((groupLevel.Average() > 10) && (groupLevel.Average() < 24))
@@ -143,6 +155,8 @@ public class TerrorOfTheCryptScript : MapScriptBase
                         monster.Skills.Add(wallop);
                         monster.Spells.Add(spell);
                         monster.Spells.Add(cradh);
+                        monster.StatSheet.SetOffenseElement(Element.Darkness);
+                        monster.StatSheet.SetDefenseElement(Elements.PickRandom());
                     }
 
                     if (groupLevel.Average() > 25)
@@ -155,6 +169,8 @@ public class TerrorOfTheCryptScript : MapScriptBase
                         monster.Skills.Add(wallop);
                         var groundStomp = SkillFactory.Create("groundStomp");
                         monster.Skills.Add(groundStomp);
+                        monster.StatSheet.SetOffenseElement(Element.Darkness);
+                        monster.StatSheet.SetDefenseElement(Element.Darkness);
                     }
 
                     // Add the attributes to the monster
