@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
 using Chaos.Models.World;
@@ -39,6 +40,9 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
 
     public virtual void GiveExp(Aisling aisling, long amount)
     {
+        if (aisling.Trackers.Enums.TryGetValue(out GainExp gainExpOption) && (gainExpOption == GainExp.No))
+            return;
+
         if (amount < 0)
         {
             var stackTrace = new StackTrace(true).ToString();
