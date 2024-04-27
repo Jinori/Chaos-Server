@@ -74,10 +74,10 @@ public readonly struct GameTime : IComparable, IComparable<GameTime>, IEquatable
     ///     Starting date of the server.
     /// </summary>
     private static DateTime Origin { get; } = new(
-        2022,
-        11,
-        1,
-        0,
+        2024,
+        4,
+        26,
+        23,
         0,
         0,
         DateTimeKind.Utc);

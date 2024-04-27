@@ -55,8 +55,8 @@ public sealed class Legend : IEnumerable<LegendMark>
         var markList = Marks.Values.ToList();
         if (markList.Count == 0)
             return null;
-        
-        return markList[IntegerRandomizer.RollSingle(markList.Count)].Text;
+
+        return markList.PickRandom().Text;
     }
 
     public bool Remove(string key, [MaybeNullWhen(false)] out LegendMark mark) => Marks.Remove(key, out mark);

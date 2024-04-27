@@ -29,10 +29,7 @@ public class PetAttackingScript : MonsterScriptBase
     {
         if (PetMessages.TryGetValue(petType, out var messages))
             if (messages != null)
-            {
-                var index = IntegerRandomizer.RollSingle(messages.Count);
-                return messages[index];
-            }
+                return messages.PickRandom();
 
         return "";
     }

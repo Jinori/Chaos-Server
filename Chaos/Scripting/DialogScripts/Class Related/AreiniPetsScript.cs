@@ -10,22 +10,13 @@ public class AreiniPetsScript(Dialog subject) : DialogScriptBase(subject)
 {
     public override void OnDisplaying(Aisling source)
     {
-        // Check if the subject template is the initial state for Areini
         if (!string.Equals(Subject.Template.TemplateKey, "areini_initial", StringComparison.OrdinalIgnoreCase))
-        {
             return;
-        }
 
-        // Handle non-priest classes
         if (source.UserStatSheet.BaseClass != BaseClass.Priest)
-        {
             RemoveAllPetOptions();
-        }
         else
-        {
-            // Handle priest class
             HandlePriestClassOptions(source);
-        }
     }
 
     private void RemoveAllPetOptions()
@@ -42,9 +33,8 @@ public class AreiniPetsScript(Dialog subject) : DialogScriptBase(subject)
     private void HandlePriestClassOptions(Aisling source)
     {
         if (source.SkillBook.Contains("Summon Pet"))
-        {
             RemoveOption("Learn Summon Pet");
-        }
+
         RemoveOptionIfNotEligible(source.UserStatSheet.Level, 10, "Pet Level 10 Ability");
         RemoveOptionIfNotEligible(source.UserStatSheet.Level, 25, "Pet Level 25 Ability");
         RemoveOptionIfNotEligible(source.UserStatSheet.Level, 40, "Pet Level 40 Ability");
@@ -55,9 +45,7 @@ public class AreiniPetsScript(Dialog subject) : DialogScriptBase(subject)
     private void RemoveOptionIfNotEligible(int characterLevel, int requiredLevel, string optionName)
     {
         if (characterLevel < requiredLevel)
-        {
             RemoveOption(optionName);
-        }
     }
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
