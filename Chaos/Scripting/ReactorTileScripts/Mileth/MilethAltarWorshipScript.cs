@@ -45,7 +45,7 @@ public class MilethAltarWorshipScript : ReactorTileScriptBase
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, randomMessages[index]);
         }
 
-        if (!IntegerRandomizer.RollChance(2))
+        if (!IntegerRandomizer.RollChance(1))
             return;
 
         if (aisling.UserStatSheet.BaseClass.Equals(BaseClass.Priest))
@@ -60,12 +60,12 @@ public class MilethAltarWorshipScript : ReactorTileScriptBase
                     GameTime.Now));
 
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
-            ExperienceDistributionScript.GiveExp(aisling, 100000);
+            ExperienceDistributionScript.GiveExp(aisling, 20000);
             aisling.TryGiveItems(_itemFactory.Create("amethystring"));
         }
         else
         {
-            ExperienceDistributionScript.GiveExp(aisling, 40000);
+            ExperienceDistributionScript.GiveExp(aisling, 5000);
             aisling.TryGiveItems(_itemFactory.Create("emeraldring"));
         }
     }

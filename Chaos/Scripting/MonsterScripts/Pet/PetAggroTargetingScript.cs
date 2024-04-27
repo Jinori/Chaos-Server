@@ -1,8 +1,10 @@
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Nightmare.PriestNightmare;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -16,11 +18,11 @@ namespace Chaos.Scripting.MonsterScripts.Pet
 
         private Monster? FindAggroedMonster(Aisling owner) =>
             owner.MapInstance.GetEntitiesWithinRange<Monster>(owner)
-                 .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id) && !x.Name.Contains("Teammate") && !x.Name.Contains("Wind Wall"));
+                 .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id) && !x.Name.Contains("Teammate") && !x.Name.Contains("Wind Wall") && !x.Script.Is<PetScript>());
 
         private Monster? FindClosestMonster(Aisling owner) =>
             owner.MapInstance.GetEntitiesWithinRange<Monster>(owner, 12)
-                 .Where(x => x.IsAlive && !x.Equals(Subject))
+                 .Where(x => x.IsAlive && !x.Equals(Subject) && !x.Script.Is<PetScript>() && !x.Script.Is<NightmareTeammateScript>() && !x.Script.Is<NightmareWindWallScript>())
                  .MinBy(x => x.DistanceFrom(owner));
 
         private Monster? FindGroupAggroTarget(Aisling owner)
