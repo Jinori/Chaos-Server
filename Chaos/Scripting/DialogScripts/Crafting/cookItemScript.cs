@@ -1258,43 +1258,43 @@ public class cookItemScript : DialogScriptBase
                 #region fruitadd
                 case "fruit_initial":
                 {
-                    if (source.Inventory.HasCountByTemplateKey("cherry", 10))
+                    if (source.Inventory.HasCountByTemplateKey("cherry", 5))
                     {
                         var item = ItemFactory.CreateFaux("cherry");
                         Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                     }
 
-                    if (source.Inventory.HasCountByTemplateKey("acorn", 10))
+                    if (source.Inventory.HasCountByTemplateKey("acorn", 5))
                     {
                         var item = ItemFactory.CreateFaux("acorn");
                         Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                     }
 
-                    if (source.Inventory.HasCountByTemplateKey("apple", 10))
+                    if (source.Inventory.HasCountByTemplateKey("apple", 5))
                     {
                         var item = ItemFactory.CreateFaux("apple");
                         Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                     }
 
-                    if (source.Inventory.HasCountByTemplateKey("greengrapes", 10))
+                    if (source.Inventory.HasCountByTemplateKey("greengrapes", 5))
                     {
                         var item = ItemFactory.CreateFaux("greengrapes");
                         Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                     }
 
-                    if (source.Inventory.HasCountByTemplateKey("grape", 10))
+                    if (source.Inventory.HasCountByTemplateKey("grape", 5))
                     {
                         var item = ItemFactory.CreateFaux("grape");
                         Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                     }
 
-                    if (source.Inventory.HasCountByTemplateKey("strawberry", 10))
+                    if (source.Inventory.HasCountByTemplateKey("strawberry", 5))
                     {
                         var item = ItemFactory.CreateFaux("strawberry");
                         Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                     }
 
-                    if (source.Inventory.HasCountByTemplateKey("tangerines", 10))
+                    if (source.Inventory.HasCountByTemplateKey("tangerines", 5))
                     {
                         var item = ItemFactory.CreateFaux("tangerines");
                         Subject.Items.Add(ItemDetails.DisplayRecipe(item));
@@ -1406,33 +1406,31 @@ public class cookItemScript : DialogScriptBase
 
                     #region RemoveItems
                     if (fruitsStage && (fstage == FruitsStage.cherry))
-                        source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("cherry", 15);
 
                     if (fruitsStage && (fstage == FruitsStage.grape))
-                        if (!source.Inventory.HasCountByTemplateKey("grape", 10))
-                            source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
+                        source.Inventory.RemoveQuantityByTemplateKey("grape", 15);
 
                     if (fruitsStage && (fstage == FruitsStage.acorn))
-                        source.Inventory.RemoveQuantityByTemplateKey("acorn", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("acorn", 15);
 
                     if (fruitsStage && (fstage == FruitsStage.apple))
-                        source.Inventory.RemoveQuantityByTemplateKey("apple", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("apple", 15);
 
                     if (fruitsStage && (fstage == FruitsStage.greengrapes))
-                        source.Inventory.RemoveQuantityByTemplateKey("greengrapes", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("greengrapes", 15);
 
                     if (fruitsStage && (fstage == FruitsStage.strawberry))
-                        source.Inventory.RemoveQuantityByTemplateKey("strawberry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("strawberry", 15);
 
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
-                        source.Inventory.RemoveQuantityByTemplateKey("tangerines", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("tangerines", 15);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.cherry))
                         source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.grape))
-                        if (!source.Inventory.HasCountByTemplateKey("grape", 10))
-                            source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
+                        source.Inventory.RemoveQuantityByTemplateKey("grape", 10);
 
                     if (fruitsStage2 && (fstage2 == FruitsStage2.acorn))
                         source.Inventory.RemoveQuantityByTemplateKey("acorn", 10);
@@ -1450,26 +1448,25 @@ public class cookItemScript : DialogScriptBase
                         source.Inventory.RemoveQuantityByTemplateKey("tangerines", 10);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.cherry))
-                        source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("cherry", 5);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.grape))
-                        if (!source.Inventory.HasCountByTemplateKey("grape", 10))
-                            source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
+                        source.Inventory.RemoveQuantityByTemplateKey("grape", 5);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.acorn))
-                        source.Inventory.RemoveQuantityByTemplateKey("acorn", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("acorn", 5);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.apple))
-                        source.Inventory.RemoveQuantityByTemplateKey("apple", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("apple", 5);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.greengrapes))
-                        source.Inventory.RemoveQuantityByTemplateKey("greengrapes", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("greengrapes", 5);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.strawberry))
-                        source.Inventory.RemoveQuantityByTemplateKey("strawberry", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("strawberry", 5);
 
                     if (fruitsStage3 && (fstage3 == FruitsStage3.tangerines))
-                        source.Inventory.RemoveQuantityByTemplateKey("tangerines", 10);
+                        source.Inventory.RemoveQuantityByTemplateKey("tangerines", 5);
                     #endregion
 
                     source.TryGiveItems(ItemFactory.Create("fruitbasket"));

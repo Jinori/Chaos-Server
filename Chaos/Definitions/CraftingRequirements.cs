@@ -4579,6 +4579,85 @@ public static class CraftingRequirements
     public static Dictionary<ArmorsmithingRecipes, Recipe> ArmorSmithingGearRequirements { get; } = new()
     {
         {
+            ArmorsmithingRecipes.EarthBelt,
+            new Recipe()
+            {
+                Name = "Earth Belt",
+                TemplateKey = "earthbelt",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "linen", DisplayName = "Linen", Amount = 5 },
+                    new Ingredient { TemplateKey = "rawberyl", DisplayName = "Raw Beryl", Amount = 1 }
+                },
+                Rank = "Beginner",
+                Level = 5,
+                Difficulty = 1
+            }
+        },
+        {
+            ArmorsmithingRecipes.WindBelt,
+            new Recipe()
+            {
+                Name = "Wind Belt",
+                TemplateKey = "windbelt",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "linen", DisplayName = "Linen", Amount = 5 },
+                    new Ingredient { TemplateKey = "rawemerald", DisplayName = "Raw Emerald", Amount = 1 }
+                },
+                Rank = "Beginner",
+                Level = 5,
+                Difficulty = 1
+            }
+        },
+        {
+            ArmorsmithingRecipes.SeaBelt,
+            new Recipe()
+            {
+                Name = "Sea Belt",
+                TemplateKey = "seabelt",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "linen", DisplayName = "Linen", Amount = 5 },
+                    new Ingredient { TemplateKey = "rawsapphire", DisplayName = "Raw Sapphire", Amount = 1 }
+                },
+                Rank = "Beginner",
+                Level = 5,
+                Difficulty = 1
+            }
+        },
+        {
+            ArmorsmithingRecipes.FireBelt,
+            new Recipe()
+            {
+                Name = "Fire Belt",
+                TemplateKey = "firebelt",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "linen", DisplayName = "Linen", Amount = 5 },
+                    new Ingredient { TemplateKey = "rawruby", DisplayName = "Raw Ruby", Amount = 1 }
+                },
+                Rank = "Beginner",
+                Level = 5,
+                Difficulty = 1
+            }
+        },
+        {
+            ArmorsmithingRecipes.LeatherGauntlet,
+            new Recipe()
+            {
+                Name = "Leather Gauntlet",
+                TemplateKey = "leathergauntlet",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "linen", DisplayName = "Linen", Amount = 8 }
+                },
+                Rank = "Beginner",
+                Level = 5,
+                Difficulty = 1
+            }
+        },
+        {
             ArmorsmithingRecipes.LeatherSapphireGauntlet,
             new Recipe()
             {
