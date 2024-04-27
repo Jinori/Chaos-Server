@@ -10,26 +10,54 @@ public class AreiniPetsScript(Dialog subject) : DialogScriptBase(subject)
 {
     public override void OnDisplaying(Aisling source)
     {
-        if (string.Equals(Subject.Template.TemplateKey, "areini_initial", StringComparison.OrdinalIgnoreCase)
-            && (source.UserStatSheet.BaseClass != BaseClass.Priest))
+        // Check if the subject template is the initial state for Areini
+        if (!string.Equals(Subject.Template.TemplateKey, "areini_initial", StringComparison.OrdinalIgnoreCase))
         {
-            RemoveOption("Learn Summon Pet");
-            RemoveOption("Pet Level 10 Ability");
-            RemoveOption("Pet Level 25 Ability");
-            RemoveOption("Pet Level 40 Ability");
-            RemoveOption("Pet Level 55 Ability");
-            RemoveOption("Pet Level 80 Ability");
-            RemoveOption("Change Pet");
-        }
-        if (string.Equals(Subject.Template.TemplateKey, "areini_initial", StringComparison.OrdinalIgnoreCase)
-            && (source.UserStatSheet.BaseClass == BaseClass.Priest))
-        {
-            if (source.SkillBook.Contains("Summon Pet"))
-            {
-                RemoveOption("Learn Summon Pet");
-            }
+            return;
         }
 
+        // Handle non-priest classes
+        if (source.UserStatSheet.BaseClass != BaseClass.Priest)
+        {
+            RemoveAllPetOptions();
+        }
+        else
+        {
+            // Handle priest class
+            HandlePriestClassOptions(source);
+        }
+    }
+
+    private void RemoveAllPetOptions()
+    {
+        RemoveOption("Learn Summon Pet");
+        RemoveOption("Pet Level 10 Ability");
+        RemoveOption("Pet Level 25 Ability");
+        RemoveOption("Pet Level 40 Ability");
+        RemoveOption("Pet Level 55 Ability");
+        RemoveOption("Pet Level 80 Ability");
+        RemoveOption("Change Pet");
+    }
+
+    private void HandlePriestClassOptions(Aisling source)
+    {
+        if (source.SkillBook.Contains("Summon Pet"))
+        {
+            RemoveOption("Learn Summon Pet");
+        }
+        RemoveOptionIfNotEligible(source.UserStatSheet.Level, 10, "Pet Level 10 Ability");
+        RemoveOptionIfNotEligible(source.UserStatSheet.Level, 25, "Pet Level 25 Ability");
+        RemoveOptionIfNotEligible(source.UserStatSheet.Level, 40, "Pet Level 40 Ability");
+        RemoveOptionIfNotEligible(source.UserStatSheet.Level, 55, "Pet Level 55 Ability");
+        RemoveOptionIfNotEligible(source.UserStatSheet.Level, 80, "Pet Level 80 Ability");
+    }
+
+    private void RemoveOptionIfNotEligible(int characterLevel, int requiredLevel, string optionName)
+    {
+        if (characterLevel < requiredLevel)
+        {
+            RemoveOption(optionName);
+        }
     }
 
     public override void OnNext(Aisling source, byte? optionIndex = null)

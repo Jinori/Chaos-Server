@@ -461,7 +461,7 @@ public class VillagerScript : MerchantScriptBase
 
             if (aislings.Count > 0)
             {
-                RandomAisling = aislings.Count == 1 ? aislings[0] : aislings[IntegerRandomizer.RollSingle(aislings.Count)];
+                RandomAisling = aislings.PickRandom();
                 HasPickedAnAisling = true;
             }
         }
