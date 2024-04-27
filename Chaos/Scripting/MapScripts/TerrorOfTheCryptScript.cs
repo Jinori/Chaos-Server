@@ -6,7 +6,9 @@ using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
+using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Site.Pages;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -17,7 +19,7 @@ public class TerrorOfTheCryptScript : MapScriptBase
     private readonly Animation Animation;
     private readonly IIntervalTimer AnimationInterval;
     private readonly IRectangle AnimationShape;
-
+    private readonly ISkillFactory SkillFactory;
     private readonly IMonsterFactory MonsterFactory;
     private readonly List<Point> ReverseOutline;
     private readonly List<Point> ShapeOutline;
@@ -27,9 +29,10 @@ public class TerrorOfTheCryptScript : MapScriptBase
     private DateTime? StartTime;
     private ScriptState State;
 
-    public TerrorOfTheCryptScript(MapInstance subject, IMonsterFactory monsterFactory, ISpellFactory spellFactory)
+    public TerrorOfTheCryptScript(MapInstance subject, IMonsterFactory monsterFactory, ISpellFactory spellFactory, ISkillFactory skillFactory)
         : base(subject)
     {
+        SkillFactory = skillFactory;
         MonsterFactory = monsterFactory;
         SpellFactory = spellFactory;
         StartDelay = TimeSpan.FromSeconds(5);
@@ -105,18 +108,20 @@ public class TerrorOfTheCryptScript : MapScriptBase
                     var monster = MonsterFactory.Create("terrorLowInsight", Subject, new Point(8, 8));
                     // Get the group level from the Aislings in the subject
                     var groupLevel = Subject.GetEntities<Aisling>().Select(aisling => aisling.StatSheet.Level).ToList();
+                    var groupArmorClass = Subject.GetEntities<Aisling>().Select(aisling => aisling.StatSheet.Ac).ToList();
 
                     // Create attributes based on the group level
                     var attrib = new Attributes
                     {
+                        Ac = (int)groupArmorClass.Average(),
                         Con = (int)groupLevel.Average(),
                         Dex = (int)groupLevel.Average(),
                         Int = (int)groupLevel.Average(),
                         Str = (int)groupLevel.Average(),
                         Wis = (int)groupLevel.Average(),
-                        AtkSpeedPct = groupLevel.Count * 3,
-                        MaximumHp = (int)groupLevel.Average() * groupLevel.Count * 500,
-                        MaximumMp = (int)groupLevel.Average() * groupLevel.Count * 500,
+                        AtkSpeedPct = groupLevel.Count * 5,
+                        MaximumHp = (int)groupLevel.Average() * groupLevel.Count * 700,
+                        MaximumMp = (int)groupLevel.Average() * groupLevel.Count * 700,
                         SkillDamagePct = groupLevel.Count,
                         SpellDamagePct = groupLevel.Count
                     };
@@ -134,6 +139,8 @@ public class TerrorOfTheCryptScript : MapScriptBase
                     {
                         var spell = SpellFactory.Create("beagsradlamh");
                         var cradh = SpellFactory.Create("beagcradh");
+                        var wallop = SkillFactory.Create("wallop");
+                        monster.Skills.Add(wallop);
                         monster.Spells.Add(spell);
                         monster.Spells.Add(cradh);
                     }
@@ -141,9 +148,13 @@ public class TerrorOfTheCryptScript : MapScriptBase
                     if (groupLevel.Average() > 25)
                     {
                         var spell = SpellFactory.Create("srad");
-                        var cradh = SpellFactory.Create("beagcradh");
+                        var cradh = SpellFactory.Create("cradh");
                         monster.Spells.Add(spell);
                         monster.Spells.Add(cradh);
+                        var wallop = SkillFactory.Create("wallop");
+                        monster.Skills.Add(wallop);
+                        var groundStomp = SkillFactory.Create("groundStomp");
+                        monster.Skills.Add(groundStomp);
                     }
 
                     // Add the attributes to the monster
