@@ -189,7 +189,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Beginner Armorsmith",
-                        "armsmth",
+                        "armsmith",
                         MarkIcon.Yay,
                         MarkColor.White,
                         1,
@@ -390,7 +390,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 if (hasCraft && (craft == Crafts.Armorsmithing))
                 {
                     source.SendOrangeBarMessage("You are no longer an Armorsmith.");
-                    source.Legend.Remove("armsmth", out _);
+                    source.Legend.Remove("armsmith", out _);
                 }
 
                 if (hasCraft && (craft == Crafts.Weaponsmithing))
