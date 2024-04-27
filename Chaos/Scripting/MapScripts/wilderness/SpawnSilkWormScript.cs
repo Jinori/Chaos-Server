@@ -21,7 +21,7 @@ public class SpawnSilkWormScript : MapScriptBase
         }
 
         foreach (var wormspawn in points.Select(point => reactorTileFactory.Create(
-                     "silkworm",
+                     "spawnsilkworm",
                      Subject,
                      point,
                      owner: merchant)))
