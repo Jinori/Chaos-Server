@@ -94,7 +94,7 @@ public class SwampMazeQuestScript : DialogScriptBase
                               50000,
                               "Mushroom Hat");
 
-                    source.TryGiveItems(ItemFactory.Create("mushroomhat"));
+                    source.GiveItemOrSendToBank(ItemFactory.Create("mushroomhat"));
                     ExperienceDistributionScript.GiveExp(source, 50000);
                     source.SendOrangeBarMessage("You receive 50000 exp and a Mushroom Hat!");
                 }

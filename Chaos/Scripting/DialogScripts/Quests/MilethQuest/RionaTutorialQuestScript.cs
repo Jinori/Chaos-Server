@@ -465,7 +465,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
                 source.Trackers.Enums.Set(CurrentCloak.Green);
                 source.Trackers.Flags.AddFlag(AvailableCloaks.Green);
 
-                source.TryGiveItem(ref mount);
+                source.GiveItemOrSendToBank(mount);
                 source.SendOrangeBarMessage("Congrats on your first mount! Now go check on Riona's Dye!");
             }
 
@@ -571,7 +571,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
                         ? ItemFactory.Create("milethbenusta")
                         : ItemFactory.Create("milethjourneyman");
 
-                    source.TryGiveItem(ref armor);
+                    source.GiveItemOrSendToBank(armor);
                 }
 
                 if (source.HasClass(BaseClass.Warrior))
@@ -580,7 +580,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
                         ? ItemFactory.Create("milethcuirass")
                         : ItemFactory.Create("milethjupe");
 
-                    source.TryGiveItem(ref armor);
+                    source.GiveItemOrSendToBank(armor);
                 }
 
                 if (source.HasClass(BaseClass.Priest))
@@ -589,7 +589,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
                         ? ItemFactory.Create("milethmysticgown")
                         : ItemFactory.Create("milethgaluchatcoat");
 
-                    source.TryGiveItem(ref armor);
+                    source.GiveItemOrSendToBank(armor);
                 }
 
                 if (source.HasClass(BaseClass.Rogue))
@@ -598,7 +598,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
                         ? ItemFactory.Create("milethbrigandine")
                         : ItemFactory.Create("milethdwarvishleather");
 
-                    source.TryGiveItem(ref armor);
+                    source.GiveItemOrSendToBank(armor);
                 }
 
                 if (source.HasClass(BaseClass.Monk))
@@ -607,7 +607,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
                         ? ItemFactory.Create("milethlotusbodice")
                         : ItemFactory.Create("milethculotte");
 
-                    source.TryGiveItem(ref armor);
+                    source.GiveItemOrSendToBank(armor);
                 }
 
                 ExperienceDistributionScript.GiveExp(source, fiftypercent);

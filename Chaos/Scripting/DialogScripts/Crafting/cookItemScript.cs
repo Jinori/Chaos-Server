@@ -712,7 +712,7 @@ public class cookItemScript : DialogScriptBase
                         return;
                     }
 
-                    source.TryGiveItems(ItemFactory.Create("dinnerplate"));
+                    source.GiveItemOrSendToBank(ItemFactory.Create("dinnerplate"));
                     source.SendOrangeBarMessage("You have cooked a Dinner Plate!");
                     Subject.Reply(source, "Skip", "cook_itemrepeat");
                 }
@@ -1243,7 +1243,7 @@ public class cookItemScript : DialogScriptBase
                         source.Inventory.RemoveQuantityByTemplateKey("salt", 1);
                     #endregion
 
-                    source.TryGiveItems(ItemFactory.Create("sweetbuns"));
+                    source.GiveItemOrSendToBank(ItemFactory.Create("sweetbuns"));
                     source.SendOrangeBarMessage("You have cooked Sweet Buns!");
                     Subject.Reply(source, "Skip", "cook_itemrepeat");
                 }
@@ -1469,7 +1469,7 @@ public class cookItemScript : DialogScriptBase
                         source.Inventory.RemoveQuantityByTemplateKey("tangerines", 5);
                     #endregion
 
-                    source.TryGiveItems(ItemFactory.Create("fruitbasket"));
+                    source.GiveItemOrSendToBank(ItemFactory.Create("fruitbasket"));
                     source.SendOrangeBarMessage("You have made a Fruit Basket!");
                     Subject.Reply(source, "Skip", "cook_itemrepeat");
                 }
@@ -2052,25 +2052,25 @@ public class cookItemScript : DialogScriptBase
                     }
 
                     if (fruitsStage && (fstage == FruitsStage.cherry))
-                        source.TryGiveItems(ItemFactory.Create("pie_cherry"));
+                        source.GiveItemOrSendToBank(ItemFactory.Create("pie_cherry"));
 
                     if (fruitsStage && (fstage == FruitsStage.grape))
-                        source.TryGiveItems(ItemFactory.Create("pie_grape"));
+                        source.GiveItemOrSendToBank(ItemFactory.Create("pie_grape"));
 
                     if (fruitsStage && (fstage == FruitsStage.acorn))
-                        source.TryGiveItems(ItemFactory.Create("pie_acorn"));
+                        source.GiveItemOrSendToBank(ItemFactory.Create("pie_acorn"));
 
                     if (fruitsStage && (fstage == FruitsStage.apple))
-                        source.TryGiveItems(ItemFactory.Create("pie_apple"));
+                        source.GiveItemOrSendToBank(ItemFactory.Create("pie_apple"));
 
                     if (fruitsStage && (fstage == FruitsStage.greengrapes))
-                        source.TryGiveItems(ItemFactory.Create("pie_greengrapes"));
+                        source.GiveItemOrSendToBank(ItemFactory.Create("pie_greengrapes"));
 
                     if (fruitsStage && (fstage == FruitsStage.strawberry))
-                        source.TryGiveItems(ItemFactory.Create("pie_strawberry"));
+                        source.GiveItemOrSendToBank(ItemFactory.Create("pie_strawberry"));
 
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
-                        source.TryGiveItems(ItemFactory.Create("pie_tangerines"));
+                        source.GiveItemOrSendToBank(ItemFactory.Create("pie_tangerines"));
 
                     source.SendOrangeBarMessage("You have cooked a Pie!");
                     Subject.Reply(source, "Skip", "cook_itemrepeat");
@@ -2311,7 +2311,7 @@ public class cookItemScript : DialogScriptBase
                         return;
                     }
 
-                    source.TryGiveItems(ItemFactory.Create("sandwich"));
+                    source.GiveItemOrSendToBank(ItemFactory.Create("sandwich"));
                     source.SendOrangeBarMessage("You made a Sandwich!");
                     Subject.Reply(source, "Skip", "cook_itemrepeat");
                 }
@@ -2593,7 +2593,7 @@ public class cookItemScript : DialogScriptBase
                         return;
                     }
 
-                    source.TryGiveItems(ItemFactory.Create("soup"));
+                    source.GiveItemOrSendToBank(ItemFactory.Create("soup"));
                     source.SendOrangeBarMessage("You have prepared some Soup!");
                     Subject.Reply(source, "Skip", "cook_itemrepeat");
                 }
@@ -2815,7 +2815,7 @@ public class cookItemScript : DialogScriptBase
                         return;
                     }
 
-                    source.TryGiveItems(ItemFactory.Create("steakmeal"));
+                    source.GiveItemOrSendToBank(ItemFactory.Create("steakmeal"));
                     source.SendOrangeBarMessage("You have cooked a Steak Meal!");
                     Subject.Reply(source, "Skip", "cook_itemrepeat");
                 }
@@ -2942,13 +2942,13 @@ public class cookItemScript : DialogScriptBase
                     #endregion
 
                     if (fruitsStage && (fstage == FruitsStage.greengrapes))
-                        source.TryGiveItems(ItemFactory.Create("limepopsicle"));
+                        source.GiveItemOrSendToBank(ItemFactory.Create("limepopsicle"));
 
                     if (fruitsStage && (fstage == FruitsStage.strawberry))
-                        source.TryGiveItems(ItemFactory.Create("watermelonpopsicle"));
+                        source.GiveItemOrSendToBank(ItemFactory.Create("watermelonpopsicle"));
 
                     if (fruitsStage && (fstage == FruitsStage.tangerines))
-                        source.TryGiveItems(ItemFactory.Create("orangepopsicle"));
+                        source.GiveItemOrSendToBank(ItemFactory.Create("orangepopsicle"));
 
                     source.SendOrangeBarMessage("You have made a Popsicle!");
                     Subject.Reply(source, "Skip", "cook_itemrepeat");

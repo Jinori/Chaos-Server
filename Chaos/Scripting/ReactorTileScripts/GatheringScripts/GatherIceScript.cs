@@ -38,7 +38,7 @@ public class GatherIceScript : ReactorTileScriptBase
         };
 
         aisling.Animate(animation);
-        aisling.TryGiveItem(ref ice);
+        aisling.GiveItemOrSendToBank(ice);
         aisling.SendOrangeBarMessage("You shuffle around and notice a solid block of Ice!");
         _lastActivationTime = DateTime.Now;
     }

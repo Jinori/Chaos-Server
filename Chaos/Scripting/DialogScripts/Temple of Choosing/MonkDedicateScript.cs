@@ -51,10 +51,10 @@ public class MonkDedicateScript : DialogScriptBase
             source.UserStatSheet.SetBaseClass(BaseClass.Monk);
 
             if (source.Gender is Gender.Female)
-                source.TryGiveItems(ItemFactory.Create("earthbodice"));
+                source.GiveItemOrSendToBank(ItemFactory.Create("earthbodice"));
 
             if (source.Gender is Gender.Male)
-                source.TryGiveItems(ItemFactory.Create("dobok"));
+                source.GiveItemOrSendToBank(ItemFactory.Create("dobok"));
 
             source.Legend.AddOrAccumulate(
                 new LegendMark(

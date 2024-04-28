@@ -59,7 +59,7 @@ public class LockPickChestScript(Dialog subject) : DialogScriptBase(subject)
         source.Inventory.RemoveQuantity("Lockpicks", 1);
     }
 
-    private int CalculatePrize(int level) => IntegerRandomizer.RollSingle(level / 10 * 10000 + 10000);
+    private int CalculatePrize(int level) => IntegerRandomizer.RollSingle(level / 10 * 3000 + 3000);
 
     private void HandleFailedAttempt(Aisling source)
     {

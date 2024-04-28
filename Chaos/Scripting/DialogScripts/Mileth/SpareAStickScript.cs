@@ -109,7 +109,8 @@ public class SpareAStickScript : DialogScriptBase
                 source.Inventory.RemoveQuantity("branch", 6, out _);
                 var stick = ItemFactory.Create("Stick");
                 var shield = ItemFactory.Create("woodenshield");
-                source.TryGiveItems(stick, shield);
+                source.GiveItemOrSendToBank(stick);
+                source.GiveItemOrSendToBank(shield);
                 source.Trackers.Flags.AddFlag(RionaTutorialQuestFlags.SpareAStick);
             }
             else

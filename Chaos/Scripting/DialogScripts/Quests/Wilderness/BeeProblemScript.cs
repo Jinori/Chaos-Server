@@ -90,7 +90,7 @@ public class BeeProblemScript : DialogScriptBase
 
                 source.TryGiveGamePoints(5);
                 ExperienceDistributionScript.GiveExp(source, 1500);
-                source.TryGiveItems(ItemFactory.Create("windbelt"));
+                source.GiveItemOrSendToBank(ItemFactory.Create("windbelt"));
                 source.SendOrangeBarMessage("1500 Exp and Wind Belt Rewarded!");
                 source.Trackers.Counters.Remove("wilderness_bee", out _);
                 source.Trackers.Enums.Set(BeeProblem.Completed);

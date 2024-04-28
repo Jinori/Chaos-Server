@@ -192,7 +192,7 @@ public class IceWallQuestScript : DialogScriptBase
 
                 source.Inventory.RemoveQuantity("Pristine Ruby", 1);
                 source.Inventory.RemoveQuantity("Polished Bronze Bar", 1);
-                source.TryGiveItems(ItemFactory.Create("charm"));
+                source.GiveItemOrSendToBank(ItemFactory.Create("charm"));
                 ExperienceDistributionScript.GiveExp(source, 50000);
                 source.Trackers.Enums.Set(IceWallQuest.KillBoss);
             }

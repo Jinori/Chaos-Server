@@ -9,9 +9,8 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
-using Microsoft.Extensions.Logging;
 
-namespace Chaos.Scripting.DialogScripts.Quests;
+namespace Chaos.Scripting.DialogScripts.Quests.MilethQuest;
 
 public class HolyResearchQuestScript : DialogScriptBase
 {

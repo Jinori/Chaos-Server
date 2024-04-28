@@ -221,7 +221,7 @@ public class FiskSecretScript : DialogScriptBase
 
                 var petunia = ItemFactory.Create("petunia");
                 petunia.Count = 5;
-                source.TryGiveItems(petunia);
+                source.GiveItemOrSendToBank(petunia);
 
                 Subject.Reply(
                     source,
@@ -438,7 +438,7 @@ public class FiskSecretScript : DialogScriptBase
 
                 var waterlily = ItemFactory.Create("waterlily");
                 waterlily.Count = 5;
-                source.TryGiveItems(waterlily);
+                source.GiveItemOrSendToBank(waterlily);
                 Subject.Reply(source, "I knew I can count on you. I wish I knew the secret, but this will do. Thank you and Good luck!");
 
                 return;
@@ -591,7 +591,7 @@ public class FiskSecretScript : DialogScriptBase
 
                 var pinkrose = ItemFactory.Create("pinkrose");
                 pinkrose.Count = 1;
-                source.TryGiveItems(pinkrose);
+                source.GiveItemOrSendToBank(pinkrose);
 
                 Subject.Reply(
                     source,
@@ -605,7 +605,7 @@ public class FiskSecretScript : DialogScriptBase
 
                 var pinkrose = ItemFactory.Create("pinkrose");
                 pinkrose.Count = 1;
-                source.TryGiveItems(pinkrose);
+                source.GiveItemOrSendToBank(pinkrose);
 
                 return;
             }
@@ -622,7 +622,7 @@ public class FiskSecretScript : DialogScriptBase
 
                 var pinkrose = ItemFactory.Create("pinkrose");
                 pinkrose.Count = 1;
-                source.TryGiveItems(pinkrose);
+                source.GiveItemOrSendToBank(pinkrose);
 
                 Subject.Reply(
                     source,
@@ -650,7 +650,7 @@ public class FiskSecretScript : DialogScriptBase
 
                 var pinkrose = ItemFactory.Create("pinkrose");
                 pinkrose.Count = 1;
-                source.TryGiveItems(pinkrose);
+                source.GiveItemOrSendToBank(pinkrose);
 
                 Subject.Reply(
                     source,
@@ -891,7 +891,7 @@ public class FiskSecretScript : DialogScriptBase
 
                 var bouquet = ItemFactory.Create("specialbouquet");
                 bouquet.Count = 1;
-                source.TryGiveItems(bouquet);
+                source.GiveItemOrSendToBank(bouquet);
 
                 return;
             }
@@ -901,7 +901,7 @@ public class FiskSecretScript : DialogScriptBase
 
                 var bouquet = ItemFactory.Create("specialbouquet");
                 bouquet.Count = 1;
-                source.TryGiveItems(bouquet);
+                source.GiveItemOrSendToBank(bouquet);
 
                 return;
             }
@@ -912,7 +912,7 @@ public class FiskSecretScript : DialogScriptBase
             {
                 var waterlily = ItemFactory.Create("waterlily");
                 waterlily.Count = 10;
-                source.TryGiveItems(waterlily);
+                source.GiveItemOrSendToBank(waterlily);
                 source.Trackers.Enums.Set(FiskSecretStage.ExposedFisk);
 
                 source.Legend.AddOrAccumulate(
@@ -945,7 +945,7 @@ public class FiskSecretScript : DialogScriptBase
             {
                 var pinkrose = ItemFactory.Create("pinkrose");
                 pinkrose.Count = 5;
-                source.TryGiveItems(pinkrose);
+                source.GiveItemOrSendToBank(pinkrose);
                 source.Trackers.Enums.Set(FiskSecretStage.ExposedFisk);
 
                 source.Legend.AddOrAccumulate(

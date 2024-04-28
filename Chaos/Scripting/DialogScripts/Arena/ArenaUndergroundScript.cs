@@ -640,6 +640,7 @@ public class ArenaUndergroundScript : DialogScriptBase
         if (!source.ActiveObject.SetIfNull(worldMap))
             return;
 
+        source.Trackers.Enums.Remove<ArenaTeam>();
         source.MapInstance.RemoveEntity(source);
         source.Client.SendWorldMap(worldMap);
     }

@@ -83,7 +83,7 @@ public class GuardianDeathScript : MonsterScriptBase
                     if (!member.Inventory.Contains("Earth Artifact"))
                     {
                         var artifact = ItemFactory.Create("earthartifact");
-                        member.TryGiveItems(artifact);
+                        member.GiveItemOrSendToBank(artifact);
                         member.SendOrangeBarMessage("You pull the Earth Artifact from the mud.");
                     }
                 }
@@ -92,7 +92,7 @@ public class GuardianDeathScript : MonsterScriptBase
                     if (!member.Inventory.Contains("Fire Artifact"))
                     {
                         var artifact = ItemFactory.Create("fireartifact");
-                        member.TryGiveItems(artifact);
+                        member.GiveItemOrSendToBank(artifact);
                         member.SendOrangeBarMessage("You pull the Fire Artifact from its ashes.");
                     }
                 }
@@ -101,7 +101,7 @@ public class GuardianDeathScript : MonsterScriptBase
                     if (!member.Inventory.Contains("Wind Artifact"))
                     {
                         var artifact = ItemFactory.Create("windartifact");
-                        member.TryGiveItems(artifact);
+                        member.GiveItemOrSendToBank(artifact);
                         member.SendOrangeBarMessage("You pull the Wind Artifact from the ground.");
                     }
                 }
@@ -110,7 +110,7 @@ public class GuardianDeathScript : MonsterScriptBase
                     if (!member.Inventory.Contains("Sea Artifact"))
                     {
                         var artifact = ItemFactory.Create("seaartifact");
-                        member.TryGiveItems(artifact);
+                        member.GiveItemOrSendToBank(artifact);
                         member.SendOrangeBarMessage("You pull the Sea Artifact from the puddle.");
                     }
                 }

@@ -10,7 +10,6 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
-using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Tutorial;
 
@@ -115,14 +114,13 @@ public class TutorialDialogScript : DialogScriptBase
                     
                     var armor = source.Gender == Gender.Female ? ItemFactory.Create("blouse") : ItemFactory.Create("shirt");
 
-                    source.TryGiveItems(armor);
+                    source.GiveItemOrSendToBank(armor);
                 }
 
                 break;
             case "leia_2":
                 if (stage == TutorialQuestStage.GaveArmor)
                 {
-                    var weapon = source.Equipment[EquipmentSlot.Weapon];
                     var armor = source.Equipment[EquipmentSlot.Armor];
 
                     if ((armor == null)
@@ -347,7 +345,9 @@ public class TutorialDialogScript : DialogScriptBase
                 {
                     if (stage == TutorialQuestStage.GaveArmor)
                     {
-                        source.TryGiveItems(ring, ring, boots);
+                        source.GiveItemOrSendToBank(ring);
+                        source.GiveItemOrSendToBank(ring);
+                        source.GiveItemOrSendToBank(boots);
                         assail = SkillFactory.Create("assail");
                         source.SkillBook.TryAddToNextSlot(assail);
                         source.TryGiveGold(2000);
@@ -363,7 +363,9 @@ public class TutorialDialogScript : DialogScriptBase
 
                     if (stage == TutorialQuestStage.GaveAssailAndSpell)
                     {
-                        source.TryGiveItems(ring, ring, boots);
+                        source.GiveItemOrSendToBank(ring);
+                        source.GiveItemOrSendToBank(ring); 
+                        source.GiveItemOrSendToBank(boots);
                         source.SkillBook.TryAddToNextSlot(assail);
                         source.TryGiveGold(2000);
                         ExperienceDistributionScript.GiveExp(source, 2000);
@@ -379,7 +381,9 @@ public class TutorialDialogScript : DialogScriptBase
 
                     if (stage == TutorialQuestStage.LearnedWorld)
                     {
-                        source.TryGiveItems(ring, ring, boots);
+                        source.GiveItemOrSendToBank(ring);
+                        source.GiveItemOrSendToBank(ring);
+                        source.GiveItemOrSendToBank(boots);
                         source.TryGiveGold(1000);
                         ExperienceDistributionScript.GiveExp(source, 1400);
                         source.SpellBook.Remove("srad tut");
@@ -421,11 +425,10 @@ public class TutorialDialogScript : DialogScriptBase
                     }
                 }
 
-                source.TryGiveItems(
-                    armor,
-                    ring,
-                    ring,
-                    boots);
+                source.GiveItemOrSendToBank(armor);
+                source.GiveItemOrSendToBank(ring);
+                source.GiveItemOrSendToBank(ring);
+                source.GiveItemOrSendToBank(boots);
 
                 assail = SkillFactory.Create("assail");
                 source.SkillBook.TryAddToNextSlot(assail);

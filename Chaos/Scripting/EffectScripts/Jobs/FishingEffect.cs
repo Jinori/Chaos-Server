@@ -90,7 +90,7 @@ public class FishingEffect(IItemFactory itemFactory) : ContinuousAnimationEffect
         var templateKey = FishData.PickRandomWeighted();
         var fish = itemFactory.Create(templateKey);
 
-        if (!aisling.TryGiveItem(ref fish))
+        if (aisling.TryGiveItem(ref fish))
             return;
 
         aisling.SendOrangeBarMessage($"You caught a {fish.DisplayName}!");

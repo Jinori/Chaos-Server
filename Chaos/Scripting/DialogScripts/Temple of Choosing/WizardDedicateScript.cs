@@ -51,10 +51,10 @@ public class WizardDedicateScript : DialogScriptBase
             source.UserStatSheet.SetBaseClass(BaseClass.Wizard);
 
             if (source.Gender is Gender.Female)
-                source.TryGiveItems(ItemFactory.Create("magiskirt"));
+                source.GiveItemOrSendToBank(ItemFactory.Create("magiskirt"));
 
             if (source.Gender is Gender.Male)
-                source.TryGiveItems(ItemFactory.Create("gardcorp"));
+                source.GiveItemOrSendToBank(ItemFactory.Create("gardcorp"));
 
             source.Legend.AddOrAccumulate(
                 new LegendMark(

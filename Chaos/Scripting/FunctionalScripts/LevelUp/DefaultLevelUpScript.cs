@@ -56,7 +56,7 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
 
                 var halo = ItemFactory.Create("halo");
 
-                aisling.TryGiveItem(ref halo);
+                aisling.GiveItemOrSendToBank(halo);
                 
                 aisling.SendOrangeBarMessage("You've received a unique Legend Mark and accessory");
             }

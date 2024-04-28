@@ -48,10 +48,10 @@ public class WarriorDedicateScript : DialogScriptBase
             source.UserStatSheet.SetBaseClass(BaseClass.Warrior);
 
             if (source.Gender is Gender.Female)
-                source.TryGiveItems(ItemFactory.Create("leatherbliaut"));
+                source.GiveItemOrSendToBank(ItemFactory.Create("leatherbliaut"));
 
             if (source.Gender is Gender.Male)
-                source.TryGiveItems(ItemFactory.Create("leathertunic"));
+                source.GiveItemOrSendToBank(ItemFactory.Create("leathertunic"));
 
             source.Legend.AddOrAccumulate(
                 new LegendMark(

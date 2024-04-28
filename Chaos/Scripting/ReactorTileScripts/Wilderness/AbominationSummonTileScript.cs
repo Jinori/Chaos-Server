@@ -29,7 +29,7 @@ public class AbominationSummonTileScript : ReactorTileScriptBase
         if (hasStage && stage is not IceWallQuest.KillBoss)
             return;
 
-        if (Subject.MapInstance.GetEntities<Monster>().Any(x => x.Template.TemplateKey.EqualsI("wilderness_abomination")))
+        if (Subject.MapInstance.GetEntities<Monster>().Any(x => x.Template.TemplateKey.EqualsI("wilderness_frozen_cave")))
         {
             aisling.SendOrangeBarMessage("The abomination is already lurking about.");
             return;
@@ -43,7 +43,7 @@ public class AbominationSummonTileScript : ReactorTileScriptBase
 
         if (aisling.Inventory.HasCountByTemplateKey("charm", 1))
         {
-            var point = new Point(206, 7);
+            var point = new Point(7, 4);
             
             var abomination = MonsterFactory.Create("wilderness_abomination", Subject.MapInstance, point);
             

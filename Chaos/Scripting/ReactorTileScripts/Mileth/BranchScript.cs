@@ -24,7 +24,7 @@ public class BranchScript : ReactorTileScriptBase
         if (aisling.Trackers.Enums.TryGetValue(out RionaTutorialQuestStage stage) && stage == RionaTutorialQuestStage.StartedSpareAStick && IntegerRandomizer.RollChance(18))
         {
             var branch = ItemFactory.Create("branch");
-            aisling.TryGiveItem(ref branch);
+            aisling.GiveItemOrSendToBank(branch);
             var branchcount = aisling.Inventory.CountOf("branch");
 
             aisling.Client.SendServerMessage(

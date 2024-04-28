@@ -129,7 +129,8 @@ public class vivekaHungryQuestScript : DialogScriptBase
                         source.Trackers.Enums.Set(HungryViveka.CompletedCherryPie);
                         source.Trackers.TimedEvents.AddEvent("vivekahungrycd", TimeSpan.FromHours(24), true);
                         var wine = ItemFactory.Create("wine");
-                        source.TryGiveItems(wine, wine);
+                        source.GiveItemOrSendToBank(wine); 
+                        source.GiveItemOrSendToBank(wine);
 
                         Logger.WithTopics(
                                 Topics.Entities.Aisling,

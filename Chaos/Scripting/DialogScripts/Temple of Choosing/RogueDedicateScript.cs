@@ -48,10 +48,10 @@ public class RogueDedicateScript : DialogScriptBase
             source.UserStatSheet.SetBaseClass(BaseClass.Rogue);
 
             if (source.Gender is Gender.Female)
-                source.TryGiveItems(ItemFactory.Create("cotte"));
+                source.GiveItemOrSendToBank(ItemFactory.Create("cotte"));
 
             if (source.Gender is Gender.Male)
-                source.TryGiveItems(ItemFactory.Create("scoutleather"));
+                source.GiveItemOrSendToBank(ItemFactory.Create("scoutleather"));
 
             source.Legend.AddOrAccumulate(
                 new LegendMark(

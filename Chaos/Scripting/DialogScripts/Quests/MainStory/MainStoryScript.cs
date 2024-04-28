@@ -44,7 +44,7 @@ public class MainStoryScript(
                 if (hasStage && stage == MainStoryEnums.MysteriousArtifactFound)
                 {
                     var mysteriousartifact = itemFactory.Create("mysteriousartifact");
-                    source.TryGiveItems(mysteriousartifact);
+                    source.GiveItemOrSendToBank(mysteriousartifact);
                     source.Trackers.Enums.Set(MainStoryEnums.ReceivedMA);
                 }
 

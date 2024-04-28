@@ -35,7 +35,7 @@ public class GatherWhiteRoseScript : ReactorTileScriptBase
         var whiterose = _itemFactory.Create("whiterose");
         var dialog = _dialogFactory.Create("wildernesswhiterose", whiterose);
         dialog.Display(aisling);
-        aisling.TryGiveItem(ref whiterose);
+        aisling.GiveItemOrSendToBank(whiterose);
         aisling.SendOrangeBarMessage("You found a White Rose.");
         aisling.Trackers.TimedEvents.AddEvent("whiterose1cd", TimeSpan.FromHours(24), true);
     }

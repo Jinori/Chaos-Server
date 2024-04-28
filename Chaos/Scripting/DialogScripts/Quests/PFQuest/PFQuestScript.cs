@@ -246,7 +246,7 @@ public class PFQuestScript : DialogScriptBase
                     var leather = ItemFactory.Create("silverwolfleather");
                     source.Trackers.Enums.Set(PFQuestStage.WolfManesTurnedIn);
                     ExperienceDistributionScript.GiveExp(source, 150000);
-                    source.TryGiveItem(ref leather);
+                    source.GiveItemOrSendToBank(leather);
                 }
 
                 break;
@@ -504,7 +504,7 @@ public class PFQuestScript : DialogScriptBase
                           tristar.DisplayName);
 
                 ExperienceDistributionScript.GiveExp(source, 500000);
-                source.TryGiveItem(ref tristar);
+                source.GiveItemOrSendToBank(tristar);
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(

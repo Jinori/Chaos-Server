@@ -29,7 +29,7 @@ public class IceSample1Script : ReactorTileScriptBase
                 if ((stage == IceWallQuest.Start) && !aisling.Inventory.HasCount("Ice Sample 1", 1))
                 {
                     var sample = _itemFactory.Create("icesample1");
-                    aisling.TryGiveItem(ref sample);
+                    aisling.GiveItemOrSendToBank(sample);
 
                     aisling.Client.SendServerMessage(
                         ServerMessageType.OrangeBar1,

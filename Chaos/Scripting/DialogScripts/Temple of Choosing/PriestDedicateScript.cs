@@ -53,10 +53,10 @@ public class PriestDedicateScript : DialogScriptBase
             source.UserStatSheet.SetBaseClass(BaseClass.Priest);
 
             if (source.Gender is Gender.Female)
-                source.TryGiveItems(ItemFactory.Create("gorgetgown"));
+                source.GiveItemOrSendToBank(ItemFactory.Create("gorgetgown"));
 
             if (source.Gender is Gender.Male)
-                source.TryGiveItems(ItemFactory.Create("cowl"));
+                source.GiveItemOrSendToBank(ItemFactory.Create("cowl"));
 
             source.Legend.AddOrAccumulate(
                 new LegendMark(

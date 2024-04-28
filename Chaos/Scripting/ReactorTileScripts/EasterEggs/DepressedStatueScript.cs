@@ -34,7 +34,7 @@ public sealed class DepressedStatueScript : ReactorTileScriptBase
             "You noticed the depressed monk...");
         source.TryGiveGamePoints(5);
         source.TryGiveGold(50000);
-        source.TryGiveItem(ref toydoll);
+        source.GiveItemOrSendToBank(toydoll);
         source.SendOrangeBarMessage("Tell WHUG you found the depressed monk.");
         return;
     }

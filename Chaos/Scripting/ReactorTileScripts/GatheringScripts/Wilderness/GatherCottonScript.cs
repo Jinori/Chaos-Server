@@ -37,7 +37,7 @@ public class GatherCottonScript : ReactorTileScriptBase
             }
 
         var cottonitem = ItemFactory.Create("cotton");
-        aisling.TryGiveItem(ref cottonitem);
+        aisling.GiveItemOrSendToBank(cottonitem);
         aisling.SendOrangeBarMessage("You've gathered some cotton.");
         aisling.Trackers.Counters.AddOrIncrement("cottonpicked");
 

@@ -34,7 +34,7 @@ public sealed class UnlockedChestScript : ReactorTileScriptBase
             "This chest is unlocked! You open and rummage through its contents.");
         source.TryGiveGamePoints(5);
         source.TryGiveGold(20000);
-        source.TryGiveItem(ref toydoll);
+        source.GiveItemOrSendToBank(toydoll);
         source.SendOrangeBarMessage("Tell WHUG you found this chest.");
         return;
     }

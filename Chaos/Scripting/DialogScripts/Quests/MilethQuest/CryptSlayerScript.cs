@@ -319,31 +319,31 @@ public class CryptSlayerScript : DialogScriptBase
                     if (source.HasClass(BaseClass.Wizard))
                     {
                         var wizardstaff = ItemFactory.Create("MagusAres");
-                        source.TryGiveItem(ref wizardstaff);
+                        source.GiveItemOrSendToBank(wizardstaff);
                     }
 
                     if (source.HasClass(BaseClass.Warrior))
                     {
                         var warriorweapon = ItemFactory.Create("Claidheamh");
-                        source.TryGiveItem(ref warriorweapon);
+                        source.GiveItemOrSendToBank(warriorweapon);
                     }
 
                     if (source.HasClass(BaseClass.Priest))
                     {
                         var prieststaff = ItemFactory.Create("HolyHermes");
-                        source.TryGiveItem(ref prieststaff);
+                        source.GiveItemOrSendToBank(prieststaff);
                     }
 
                     if (source.HasClass(BaseClass.Rogue))
                     {
                         var rogueweapon = ItemFactory.Create("BlossomDagger");
-                        source.TryGiveItem(ref rogueweapon);
+                        source.GiveItemOrSendToBank(rogueweapon);
                     }
 
                     if (source.HasClass(BaseClass.Monk))
                     {
                         var monkweapon = ItemFactory.Create("WolfClaw");
-                        source.TryGiveItem(ref monkweapon);
+                        source.GiveItemOrSendToBank(monkweapon);
                     }
                 }
 

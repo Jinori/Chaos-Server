@@ -198,7 +198,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     Subject.Reply(source, "Thank you for waiting, here is your Dragon Scale Sword.");
                     var dragonScaleSword = ItemFactory.Create("dragonscalesword");
 
-                    source.TryGiveItem(ref dragonScaleSword);
+                    source.GiveItemOrSendToBank(dragonScaleSword);
                     return;
                 }
 
@@ -208,7 +208,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     Subject.Reply(source, "Thank you for waiting, here is your Dragon Scale Ring.");
                     var dragonScaleRing = ItemFactory.Create("dragonscalering");
 
-                    source.TryGiveItem(ref dragonScaleRing);
+                    source.GiveItemOrSendToBank(dragonScaleRing);
                     return;
                 }
 
@@ -218,7 +218,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     Subject.Reply(source, "Thank you for waiting, here is your Dragon Scale Claws.");
                     var dragonScaleClaws = ItemFactory.Create("dragonscaleclaws");
 
-                    source.TryGiveItem(ref dragonScaleClaws);
+                    source.GiveItemOrSendToBank(dragonScaleClaws);
                     return;
                 }
 
@@ -228,7 +228,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     Subject.Reply(source, "Thank you for waiting, here is your Dragon Scale Gauntlet.");
                     var dragonScaleGauntlet = ItemFactory.Create("dragonscalegauntlet");
 
-                    source.TryGiveItem(ref dragonScaleGauntlet);
+                    source.GiveItemOrSendToBank(dragonScaleGauntlet);
                     return;
                 }
 
@@ -238,7 +238,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     Subject.Reply(source, "Thank you for waiting, here is your Dragon Scale Dagger.");
                     var dragonScaleDagger = ItemFactory.Create("dragonscaledagger");
 
-                    source.TryGiveItem(ref dragonScaleDagger);
+                    source.GiveItemOrSendToBank(dragonScaleDagger);
                     return;
                 }
 

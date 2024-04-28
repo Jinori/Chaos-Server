@@ -38,13 +38,19 @@ public class LearnSpellScript : DialogScriptBase
         { "Beag Srad", new List<string> { "Srad", "Mor Srad", "Ard Srad" } },
         { "Srad Meall", new List<string> { "Mor Srad Meall" } },
         { "Srad", new List<string> { "Mor Srad", "Ard Srad" } },
+        { "Arcane Bolt", new List<string> { "Arcane Missile", "Arcane Blast" } },
+        { "Arcane Missile", new List<string> { "Arcane Blast" } },
 
         { "Mor Srad", new List<string> { "Ard Srad" } },
         { "Beag Pramh", new List<string> { "Pramh" } },
-        { "Beag Srad Lamh", new List<string> { "Srad Lamh" } },
-        { "Beag Sal Lamh", new List<string> { "Sal Lamh" } },
-        { "Beag Creag Lamh", new List<string> { "Creag Lamh" } },
-        { "Beag Athar Lamh", new List<string> { "Athar Lamh" } },
+        { "Beag Srad Lamh", new List<string> { "Srad Lamh", "Mor Srad Lamh" } },
+        { "Srad Lamh", new List<string> { "Mor Srad Lamh" } },
+        { "Beag Sal Lamh", new List<string> { "Sal Lamh", "Mor Sal Lamh" } },
+        { "Sal Lamh", new List<string> { "Mor Sal Lamh" } },
+        { "Beag Creag Lamh", new List<string> { "Creag Lamh", "Mor Creag Lamh" } },
+        { "Creag Lamh", new List<string> { "Mor Creag Lamh" } },
+        { "Beag Athar Lamh", new List<string> { "Athar Lamh", "Mor Athar Lamh" } },
+        { "Athar Lamh", new List<string> { "Mor Athar Lamh" } },
         //Warrior
         { "Battle Cry", new List<string> { "War Cry" } },
         //Rogue

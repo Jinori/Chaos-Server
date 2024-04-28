@@ -21,14 +21,14 @@ public class AnnaGiveArmorScript : DialogScriptBase
             if (source.Inventory.Any(Item => Item.Template.TemplateKey.EqualsI("blouse")))
                 return;
 
-            source.TryGiveItems(ItemFactory.Create("blouse"));
+            source.GiveItemOrSendToBank(ItemFactory.Create("blouse"));
         }
         else
         {
             if (source.Inventory.Any(Item => Item.Template.TemplateKey.EqualsI("shirt")))
                 return;
 
-            source.TryGiveItems(ItemFactory.Create("shirt1"));
+            source.GiveItemOrSendToBank(ItemFactory.Create("shirt1"));
         }
     }
 }

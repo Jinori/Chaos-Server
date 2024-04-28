@@ -39,16 +39,9 @@ public class GhostDeathScript : MonsterScriptBase
 
             if (aisling.Trackers.Enums.TryGetValue(out ManorNecklaceStage stage) && (stage != ManorNecklaceStage.SawNecklace))
                 return;
-
-            if (!aisling.TryGiveItem(ref item))
-            {
-                aisling.SendActiveMessage("You don't have any inventory space.");
-                aisling.SendActiveMessage("You received Zulera's Cursed Necklace! It was sent to your bank.");
-                aisling.Bank.Deposit(item);
-            }
-
+            
+            aisling.GiveItemOrSendToBank(item);
             aisling.Trackers.Enums.Set(ManorNecklaceStage.ReturningNecklace);
-
             aisling.SendActiveMessage("You received Zulera's Cursed Necklace! Take it back to her.");
         }
     }

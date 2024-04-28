@@ -95,7 +95,7 @@ public class TerrorChestScript : DialogScriptBase
 
                 ExperienceDistributionScript.GiveExp(source, expAmount);
                 source.TryGiveGold(20000);
-                source.TryGiveItem(ref item);
+                source.GiveItemOrSendToBank(item);
                 source.TryGiveGamePoints(10);
 
                 source.Client.SendServerMessage(

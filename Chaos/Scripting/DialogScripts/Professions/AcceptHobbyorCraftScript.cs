@@ -184,7 +184,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherGauntlet);
                 source.Trackers.Flags.AddFlag(RionaTutorialQuestFlags.Crafting);
                 var book = ItemFactory.Create("recipe_basicarmors");
-                source.TryGiveItem(ref book);
+                source.GiveItemOrSendToBank(book);
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(

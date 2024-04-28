@@ -29,7 +29,7 @@ public sealed class CrackInWallScript : ReactorTileScriptBase
 
         var item = ItemFactory.Create("Sparkles");
         source.Trackers.Flags.AddFlag(Definitions.EasterEggs.CrackInWall);
-        source.TryGiveItem(ref item);
+        source.GiveItemOrSendToBank(item);
         source.Client.SendServerMessage(
             ServerMessageType.ScrollWindow,
             "You notice a crack in the wall then reach your hand through.");

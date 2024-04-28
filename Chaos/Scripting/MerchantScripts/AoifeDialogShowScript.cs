@@ -27,24 +27,6 @@ public class AoifeDialogShowScript(Dialog subject) : DialogScriptBase(subject)
 
                 if (source.UserStatSheet.Level >= 99)
                 {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "aoife_stats",
-                        OptionText = "Purchase Stats"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Add(option);
-
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "aoife_ascend",
-                        OptionText = "Ascension"
-                    };
-
-                    if (!Subject.HasOption(option1.OptionText))
-                        Subject.Options.Add(option1);
-
                     var option2 = new DialogOption
                     {
                         DialogKey = "aoife_classdedication",

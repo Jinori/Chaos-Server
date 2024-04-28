@@ -152,7 +152,7 @@ public class QueenOctopusQuestScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, 200000);
                 source.SendOrangeBarMessage("You received 200,000 experience!");
                 source.Trackers.Enums.Set(QueenOctopusQuest.Pendant);
-                source.TryGiveItem(ref redpearl);
+                source.GiveItemOrSendToBank(redpearl);
 
                 Subject.Reply(
                     source,

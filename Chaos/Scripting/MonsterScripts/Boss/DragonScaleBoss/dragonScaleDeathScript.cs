@@ -85,7 +85,7 @@ public class dragonScaleDeathScript : MonsterScriptBase
                     {
                         target.Trackers.Enums.Set(DragonScale.KilledDragon);
                         target.SendOrangeBarMessage("The dragon collapses, you scour the body for a scale.");
-                        target.TryGiveItem(ref dragonscale);   
+                        target.GiveItemOrSendToBank(dragonscale);   
                     }
                 }
             }
