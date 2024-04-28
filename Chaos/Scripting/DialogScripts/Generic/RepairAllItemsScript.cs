@@ -8,16 +8,25 @@ using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Generic;
 
-public class RepairAllItemsScript : DialogScriptBase
+public class RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> logger) : DialogScriptBase(subject)
 {
-    private readonly ILogger<RepairAllItemsScript> Logger;
     private double RepairCost;
 
-    public RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> logger)
-        : base(subject) =>
-        Logger = logger;
-
-    private double CalculateRepairCostForItem(Item item)
+    public double CalculateNewRepairCostForItem(Item item)
+    {
+        // Skip if item is not damaged
+        if ((item.Template.MaxDurability == null)
+            || (item.CurrentDurability == null)
+            || (item.CurrentDurability.Value == item.Template.MaxDurability.Value))
+            return 0;
+        
+        double sellValue = item.Template.SellValue;
+        var damageProportion = 1 - (item.CurrentDurability.Value / item.Template.MaxDurability.Value);
+        const double REPAIR_FACTOR = 0.5;
+        return sellValue * damageProportion * REPAIR_FACTOR;
+    }
+    
+    private double CalculateOldRepairCostForItem(Item item)
     {
         // Skip if item is not damaged
         if ((item.Template.MaxDurability == null)
@@ -25,6 +34,8 @@ public class RepairAllItemsScript : DialogScriptBase
             || (item.CurrentDurability.Value == item.Template.MaxDurability.Value))
             return 0;
 
+        
+        
         // Calculate damage percentage
         var damage = (float)item.CurrentDurability.Value / item.Template.MaxDurability.Value;
 
@@ -37,10 +48,10 @@ public class RepairAllItemsScript : DialogScriptBase
         RepairCost = 0;
 
         foreach (var item in source.Equipment)
-            RepairCost += CalculateRepairCostForItem(item);
+            RepairCost += CalculateNewRepairCostForItem(item);
 
         foreach (var item in source.Inventory)
-            RepairCost += CalculateRepairCostForItem(item);
+            RepairCost += CalculateNewRepairCostForItem(item);
     }
 
     public override void OnDisplaying(Aisling source)
@@ -70,7 +81,7 @@ public class RepairAllItemsScript : DialogScriptBase
             return;
         }
 
-        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Gold)
+        logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Gold)
               .WithProperty(source)
               .WithProperty(Subject)
               .LogInformation("{@AislingName} has repaired all items for {@AmountGold}", source.Name, RepairCost);

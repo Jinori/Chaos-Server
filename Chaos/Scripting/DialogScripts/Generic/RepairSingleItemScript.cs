@@ -1,4 +1,5 @@
 using Chaos.Models.Menu;
+using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
@@ -7,14 +8,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Generic;
 
-public class RepairSingleItemScript : DialogScriptBase
+public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScript> logger) : DialogScriptBase(subject)
 {
-    private readonly ILogger<RepairSingleItemScript> Logger;
-    private int RepairCost { get; set; }
-
-    public RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScript> logger)
-        : base(subject) =>
-        Logger = logger;
+    private double RepairCost { get; set; }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -35,6 +31,20 @@ public class RepairSingleItemScript : DialogScriptBase
         }
     }
 
+    public double CalculateNewRepairCostForItem(Item item)
+    {
+        // Skip if item is not damaged
+        if ((item.Template.MaxDurability == null)
+            || (item.CurrentDurability == null)
+            || (item.CurrentDurability.Value == item.Template.MaxDurability.Value))
+            return 0;
+        
+        double sellValue = item.Template.SellValue;
+        var damageProportion = 1 - (item.CurrentDurability.Value / item.Template.MaxDurability.Value);
+        const double REPAIR_FACTOR = 0.5;
+        return sellValue * damageProportion * REPAIR_FACTOR;
+    }
+    
     private void OnDisplayingAccepted(Aisling source)
     {
         if (!TryFetchArgs<byte>(out var slot) || !source.Inventory.TryGetObject(slot, out var item))
@@ -46,11 +56,9 @@ public class RepairSingleItemScript : DialogScriptBase
 
         if (item is { CurrentDurability: not null, Template.MaxDurability: not null })
         {
-            var damage = (float)item.CurrentDurability.Value / item.Template.MaxDurability.Value;
-            var formula = item.Template.SellValue / 2.0 * (.8 * damage);
-            RepairCost = (int)(RepairCost + formula);
+            RepairCost = CalculateNewRepairCostForItem(item);
 
-            if (!source.TryTakeGold(RepairCost))
+            if (!source.TryTakeGold((int)RepairCost))
             {
                 Subject.Close(source);
                 source.SendOrangeBarMessage($"You do not have enough gold. You need {RepairCost} gold.");
@@ -58,7 +66,7 @@ public class RepairSingleItemScript : DialogScriptBase
                 return;
             }
 
-            Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Gold)
+            logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Gold)
                   .WithProperty(source)
                   .WithProperty(Subject)
                   .LogInformation(
@@ -91,9 +99,7 @@ public class RepairSingleItemScript : DialogScriptBase
 
         if (item is { CurrentDurability: not null, Template.MaxDurability: not null })
         {
-            var damage = (float)item.CurrentDurability.Value / item.Template.MaxDurability.Value;
-            var formula = item.Template.SellValue / 2.0 * (.8 * damage);
-            RepairCost = (int)(RepairCost + formula);
+            RepairCost = CalculateNewRepairCostForItem(item);
 
             Subject.InjectTextParameters(item.DisplayName, RepairCost);
         }
