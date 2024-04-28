@@ -226,7 +226,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         SpellThrottle = new ResettingCounter(WorldOptions.Instance.MaxSpellsPerSecond);
         SkillThrottle = new ResettingCounter(WorldOptions.Instance.MaxSkillsPerSecond);
         ItemThrottle = new ResettingCounter(WorldOptions.Instance.MaxItemsPerSecond);
-        WalkCounter = new ResettingCounter(4, 2);
+        WalkCounter = new ResettingCounter(3, 2);
         TurnThrottle = new ResettingCounter(3);
         AssailIntervalMs = WorldOptions.Instance.AislingAssailIntervalMs;
         ChannelSettings = new SynchronizedHashSet<ChannelSettings>();
