@@ -1704,8 +1704,8 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
-                            } requires 2 Raw Bronze.\nUpgrading {FauxItem.Template.Name
-                            } requires 1 Eppe, 1 Raw Bronze, and 1 Coal.",
+                            } requires 2 Raw Bronze and 1 Coal.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Eppe, 2 Raw Bronze, and 1 Coal.",
                             "weaponsmithingbook");
 
                         return;

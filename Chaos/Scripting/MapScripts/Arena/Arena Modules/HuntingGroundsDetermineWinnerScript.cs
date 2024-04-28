@@ -100,7 +100,7 @@ public sealed class HuntingGroundsDetermineWinnerScript : MapScriptBase
 
         if (possibleTargets.Count != 0)
         {
-            AssignedTargets[killer] = possibleTargets[IntegerRandomizer.RollSingle(possibleTargets.Count)];
+            AssignedTargets[killer] = possibleTargets.PickRandom();
             killer.SendPersistentMessage($"Target: {AssignedTargets[killer].Name}");
         }
         else
