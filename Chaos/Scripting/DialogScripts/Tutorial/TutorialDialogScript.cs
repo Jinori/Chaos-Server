@@ -335,7 +335,8 @@ public class TutorialDialogScript : DialogScriptBase
             {
                 SpellFactory.Create("sradtut");
                 var armor = source.Gender == Gender.Female ? ItemFactory.Create("blouse") : ItemFactory.Create("shirt");
-                var ring = ItemFactory.Create("smallrubyring");
+                var ring1 = ItemFactory.Create("smallrubyring");
+                var ring2 = ItemFactory.Create("smallrubyring");
                 var boots = ItemFactory.Create("boots");
                 assail = SkillFactory.Create("assail");
                 MapInstance? mapInstance;
@@ -345,8 +346,8 @@ public class TutorialDialogScript : DialogScriptBase
                 {
                     if (stage == TutorialQuestStage.GaveArmor)
                     {
-                        source.GiveItemOrSendToBank(ring);
-                        source.GiveItemOrSendToBank(ring);
+                        source.GiveItemOrSendToBank(ring1);
+                        source.GiveItemOrSendToBank(ring2);
                         source.GiveItemOrSendToBank(boots);
                         assail = SkillFactory.Create("assail");
                         source.SkillBook.TryAddToNextSlot(assail);
@@ -363,8 +364,8 @@ public class TutorialDialogScript : DialogScriptBase
 
                     if (stage == TutorialQuestStage.GaveAssailAndSpell)
                     {
-                        source.GiveItemOrSendToBank(ring);
-                        source.GiveItemOrSendToBank(ring); 
+                        source.GiveItemOrSendToBank(ring1);
+                        source.GiveItemOrSendToBank(ring2); 
                         source.GiveItemOrSendToBank(boots);
                         source.SkillBook.TryAddToNextSlot(assail);
                         source.TryGiveGold(2000);
@@ -381,8 +382,8 @@ public class TutorialDialogScript : DialogScriptBase
 
                     if (stage == TutorialQuestStage.LearnedWorld)
                     {
-                        source.GiveItemOrSendToBank(ring);
-                        source.GiveItemOrSendToBank(ring);
+                        source.GiveItemOrSendToBank(ring1);
+                        source.GiveItemOrSendToBank(ring2);
                         source.GiveItemOrSendToBank(boots);
                         source.TryGiveGold(1000);
                         ExperienceDistributionScript.GiveExp(source, 1400);
@@ -426,8 +427,8 @@ public class TutorialDialogScript : DialogScriptBase
                 }
 
                 source.GiveItemOrSendToBank(armor);
-                source.GiveItemOrSendToBank(ring);
-                source.GiveItemOrSendToBank(ring);
+                source.GiveItemOrSendToBank(ring1);
+                source.GiveItemOrSendToBank(ring2);
                 source.GiveItemOrSendToBank(boots);
 
                 assail = SkillFactory.Create("assail");
