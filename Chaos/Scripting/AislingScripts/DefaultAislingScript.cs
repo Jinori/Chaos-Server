@@ -3,6 +3,7 @@ using Chaos.Collections.Abstractions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Models.Data;
@@ -21,6 +22,7 @@ using Chaos.Scripting.Components;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyHealing;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -471,12 +473,19 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
                         || (DateTime.UtcNow.Subtract(lastManualAction.Value)
                                     .TotalMinutes
                             > WorldOptions.Instance.SleepAnimationTimerMins);
-
+            
             if (isAfk)
             {
                 if (Subject.IsAlive)
                     Subject.AnimateBody(BodyAnimation.Snore);
 
+                if (Subject.UserStatSheet.BaseClass is BaseClass.Priest)
+                {
+                    var pets = Subject.MapInstance.GetEntities<Monster>().Where(x => x.Script.Is<PetScript>() && x.Name.Contains(Subject.Name));
+                    foreach (var pet in pets)
+                        pet.MapInstance.RemoveEntity(pet);
+                }
+                
                 //set player to daydreaming if they are currently set to awake
                 if (Subject.Options.SocialStatus != SocialStatus.DayDreaming)
                 {

@@ -279,8 +279,8 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         {
             var message = localArgs.ChantMessage;
 
-            if (message.Length > CONSTANTS.MAX_SERVER_MESSAGE_LENGTH)
-                message = message[..CONSTANTS.MAX_SERVER_MESSAGE_LENGTH];
+            if (message.Length > CONSTANTS.MAX_MESSAGE_LINE_LENGTH)
+                message = message[..CONSTANTS.MAX_MESSAGE_LINE_LENGTH];
 
             localClient.Aisling.Chant(message);
 
@@ -541,7 +541,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
         ValueTask InnerOnEmote(IWorldClient localClient, EmoteArgs localArgs)
         {
             if ((int)localArgs.BodyAnimation <= 44)
-                client.Aisling.AnimateBody(localArgs.BodyAnimation);
+                client.Aisling.AnimateBody(localArgs.BodyAnimation, 100);
 
             return default;
         }
@@ -559,11 +559,11 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
             var mapInstance = aisling.MapInstance;
 
             if (mapInstance.TryGetEntity<VisibleEntity>(localArgs.TargetId, out var obj) && !aisling.CanObserve(obj))
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Qualifiers.Forced, Topics.Qualifiers.Cheating)
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Qualifiers.Forced)
                       .WithProperty(aisling)
                       .WithProperty(obj)
-                      .LogWarning(
-                          "Aisling {@AislingName} attempted to forcefully display an entity {@EntityId} that they cannot observe",
+                      .LogTrace(
+                          "Aisling {@AislingName} attempted to forcefully display an entity {@EntityId} that they cannot observe. (Unknown why this happens)",
                           aisling.Name,
                           obj.Id);
 
@@ -1369,7 +1369,7 @@ public sealed class WorldServer : ServerBase<IWorldClient>, IWorldServer<IWorldC
                     ServerMessageType.Whisper,
                     $"{MessageColor.SpanishGray.ToPrefix()}{targetAisling.Name} is daydreaming");
 
-            var maxLength = CONSTANTS.MAX_SERVER_MESSAGE_LENGTH - targetAisling.Name.Length - 4;
+            var maxLength = CONSTANTS.MAX_COMPLETE_MESSAGE_LENGTH - targetAisling.Name.Length - 4;
 
             if (localArgs.Message.Length > maxLength)
                 localArgs.Message = localArgs.Message[..maxLength];
