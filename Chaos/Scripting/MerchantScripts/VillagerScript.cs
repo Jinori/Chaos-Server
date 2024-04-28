@@ -1,5 +1,6 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.World;
@@ -135,8 +136,8 @@ public class VillagerScript : MerchantScriptBase
     }
     private void DisplayEatingMessage()
     {
-        var index = IntegerRandomizer.RollSingle(EatingActions.Count);
-        Subject.Chant($"*{EatingActions[index]}*");
+        var chant = EatingActions.PickRandom();
+        Subject.Chant($"*{chant}*");
     }
     
     private void ConductDialogueWithMerchant(string merchant)
@@ -256,26 +257,18 @@ public class VillagerScript : MerchantScriptBase
 
     public static DisplayColor GetRandomDisplayColor()
     {
-        var values = Enum.GetValues(typeof(DisplayColor));
+        var value = Enum.GetValues<DisplayColor>().ToList();
+        var random = value.PickRandom();
 
-        if (values.Length == 0)
-            return DisplayColor.Blue;
-        
-        var randomIndex = IntegerRandomizer.RollSingle(values.Length) - 1; 
-
-        if (values.GetValue(randomIndex) is DisplayColor color)
-            return color;
-
-        return DisplayColor.Blue;
+        return random;
     }
 
 
 
     private string GetRandomMessage()
     {
-        var randomIndex = IntegerRandomizer.RollSingle(VillagerMessages.Count);
-
-        return VillagerMessages[randomIndex];
+        var random = VillagerMessages.PickRandom();
+        return random;
     }
 
     private void HandleApproachToArmory(TimeSpan delta)
@@ -322,7 +315,7 @@ public class VillagerScript : MerchantScriptBase
 
             if (aislings.Count > 0)
             {
-                RandomAisling = aislings.Count == 1 ? aislings[0] : aislings[IntegerRandomizer.RollSingle(aislings.Count)];
+                RandomAisling = aislings.Count == 1 ? aislings[0] : aislings.PickRandom();
                 FollowUntil = DateTime.Now.AddSeconds(IntegerRandomizer.RollSingle((int)MaxFollowDuration.TotalSeconds));
                 HasPickedAnAisling = true;
             }

@@ -61,8 +61,7 @@ public class SgriosReviveScript : DialogScriptBase
 
         if (tutorial != TutorialQuestStage.CompletedTutorial)
         {
-            Point point2;
-            point2 = new Point(5, 8);
+            var point2 = new Point(5, 8);
             var mapInstance2 = _simpleCache.Get<MapInstance>("mileth_inn");
             source.TraverseMap(mapInstance2, point2, true);
             source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
@@ -74,8 +73,7 @@ public class SgriosReviveScript : DialogScriptBase
         {
             case Nation.Rucesion:
             {
-                Point point;
-                point = new Point(25, 36);
+                var point = new Point(25, 36);
                 var mapInstance = _simpleCache.Get<MapInstance>("rucesion");
                 source.TraverseMap(mapInstance, point, true);
 
@@ -83,8 +81,7 @@ public class SgriosReviveScript : DialogScriptBase
             }
             case Nation.Mileth:
             {
-                Point point;
-                point = new Point(23, 18);
+                var point = new Point(23, 18);
                 var mapInstance = _simpleCache.Get<MapInstance>("mileth");
                 source.TraverseMap(mapInstance, point, true);
 
@@ -92,8 +89,7 @@ public class SgriosReviveScript : DialogScriptBase
             }
             case Nation.Exile:
             {
-                Point point;
-                point = new Point(3, 13);
+                var point = new Point(3, 13);
                 var mapInstance = _simpleCache.Get<MapInstance>("mileth_village_way");
                 source.TraverseMap(mapInstance, point, true);
 
@@ -101,8 +97,7 @@ public class SgriosReviveScript : DialogScriptBase
             }
             case Nation.Suomi:
             {
-                Point point;
-                point = new Point(16, 8);
+                var point = new Point(16, 8);
                 var mapInstance = _simpleCache.Get<MapInstance>("suomi_village_way");
                 source.TraverseMap(mapInstance, point, true);
 
@@ -110,8 +105,7 @@ public class SgriosReviveScript : DialogScriptBase
             }
             case Nation.Loures:
             {
-                Point point;
-                point = new Point(10, 6);
+                var point = new Point(10, 6);
                 var mapInstance = _simpleCache.Get<MapInstance>("mileth_village_way");
                 source.TraverseMap(mapInstance, point, true);
 
@@ -119,8 +113,7 @@ public class SgriosReviveScript : DialogScriptBase
             }
             case Nation.Tagor:
             {
-                Point point;
-                point = new Point(22, 94);
+                var point = new Point(22, 94);
                 var mapInstance = _simpleCache.Get<MapInstance>("tagor");
                 source.TraverseMap(mapInstance, point, true);
 
@@ -128,8 +121,7 @@ public class SgriosReviveScript : DialogScriptBase
             }
             case Nation.Piet:
             {
-                Point point;
-                point = new Point(16, 8);
+                var point = new Point(16, 8);
                 var mapInstance = _simpleCache.Get<MapInstance>("piet_village_way");
                 source.TraverseMap(mapInstance, point, true);
 
@@ -137,17 +129,22 @@ public class SgriosReviveScript : DialogScriptBase
             }
             case Nation.Abel:
             {
-                Point point;
-                point = new Point(11, 13);
+                var point = new Point(11, 13);
                 var mapInstance = _simpleCache.Get<MapInstance>("abel_port_way");
                 source.TraverseMap(mapInstance, point, true);
 
                 break;
             }
+            case Nation.Void:
+            {
+                var point = new Point(12, 16);
+                var mapInstance = _simpleCache.Get<MapInstance>("arena_entrance");
+                source.TraverseMap(mapInstance, point, true);
+                break;
+            }
             case Nation.Undine:
             {
-                Point point;
-                point = new Point(11, 12);
+                var point = new Point(11, 12);
                 var mapInstance = _simpleCache.Get<MapInstance>("undine_village_way");
                 source.TraverseMap(mapInstance, point, true);
 
