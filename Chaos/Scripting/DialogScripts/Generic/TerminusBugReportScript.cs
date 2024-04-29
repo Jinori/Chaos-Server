@@ -6,14 +6,11 @@ using Discord.WebSocket;
 
 namespace Chaos.Scripting.DialogScripts.Generic;
 
-public class TerminusBugReportScript : DialogScriptBase
+public class TerminusBugReportScript(Dialog subject) : DialogScriptBase(subject)
 {
     //Place Bot Token Here When Live
-    private const string BOT_TOKEN = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.GXX0LL.48H24xZi7kJ6QZyzZn2GhKgmkoRSbgPB843q_Y";
+    private const string BOT_TOKEN = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.G3gHhJ.g_i72sDfAsnVca-Ga7C_i4O8Lj-mhPluMfg7zk";
     private const ulong CHANNEL_ID = 1083522838817939566;
-
-    public TerminusBugReportScript(Dialog subject)
-        : base(subject) { }
 
     public override void OnDisplaying(Aisling source)
     {

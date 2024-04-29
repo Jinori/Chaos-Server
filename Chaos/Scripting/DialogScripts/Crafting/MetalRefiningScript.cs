@@ -15,12 +15,12 @@ public class MetalRefiningScript : DialogScriptBase
     private readonly IDialogFactory DialogFactory;
     private readonly IItemFactory ItemFactory;
 
-    private readonly List<string> MetalTemplateKeys = new()
-    {
+    private readonly List<string> MetalTemplateKeys =
+    [
         "rawBronze", "tarnishedBronzeBar", "rawIron",
         "tarnishedIronBar", "rawMythril", "tarnishedMythrilBar", "rawHybrasyl",
         "tarnishedHybrasylBar"
-    };
+    ];
 
     private Animation FailAnimation { get; } = new()
     {
@@ -146,9 +146,11 @@ public class MetalRefiningScript : DialogScriptBase
             dialog.Context = Subject.Context;
             dialog.InjectTextParameters(item.DisplayName);
             dialog.Display(source);
+            
             var downgradeKey = GetDowngradeKey(item.Template.TemplateKey);
             var downgrade = ItemFactory.Create(downgradeKey);
-            source.Inventory.TryAddToNextSlot(downgrade);
+            
+            source.GiveItemOrSendToBank(downgrade);
             source.Animate(FailAnimation);
 
             return;

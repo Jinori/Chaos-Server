@@ -113,11 +113,10 @@ public class DamageGameScript : MonsterScriptBase
 
                 if (player != null)
                 {
-                    Subject.MapInstance.RemoveEntity(Subject);
                     DamageGame(player, DamageDone, Configuration);
-
                     var mapInstance = SimpleCache.Get<MapInstance>("hm_road");
                     player.TraverseMap(mapInstance, new Point(4, 6));
+                    Subject.MapInstance.RemoveEntity(Subject);
                 }
             }
         }

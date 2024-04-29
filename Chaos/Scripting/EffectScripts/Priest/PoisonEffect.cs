@@ -37,10 +37,17 @@ public class PoisonEffect : ContinuousAnimationEffectBase
 
         var damage = (int)Math.Min(maxHp * DAMAGE_PERCENTAGE, DAMAGE_CAP);
 
-        if (Subject.StatSheet.TrySubtractHp(damage))
+        if (Subject.StatSheet.CurrentHp > 1)
         {
+            var newHp = Subject.StatSheet.CurrentHp - damage;
+
+            if (newHp < 1)
+                Subject.StatSheet.SetHp(1);
+            else
+                Subject.StatSheet.TrySubtractHp(damage);
+
+            // Send the attribute update to the client
             AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
         }
     }
-
 }
