@@ -40,8 +40,8 @@ public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScri
             return 0;
         
         double sellValue = item.Template.SellValue;
-        var damageProportion = 1 - (item.CurrentDurability.Value / item.Template.MaxDurability.Value);
-        const double REPAIR_FACTOR = 0.5;
+        var damageProportion =  item.CurrentDurability.Value / item.Template.MaxDurability.Value;
+        const double REPAIR_FACTOR = 0.8;
         return sellValue * damageProportion * REPAIR_FACTOR;
     }
     
