@@ -177,14 +177,23 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             case "armorsmith_acceptcraft":
             {
                 source.Trackers.Enums.Set(Crafts.Armorsmithing);
+                source.Trackers.Flags.AddFlag(ArmorSmithCategories.BeginnerArmors);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.EarthBelt);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindBelt);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.FireBelt);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.SeaBelt);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherGauntlet);
                 source.Trackers.Flags.AddFlag(RionaTutorialQuestFlags.Crafting);
-                var book = ItemFactory.Create("recipe_basicarmors");
-                source.GiveItemOrSendToBank(book);
+                source.Trackers.Flags.AddFlag(CraftedArmors.RefinedScoutLeather);
+                source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGardcorp);
+                source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCowl);
+                source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCotte);
+                source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMagiSkirt);
+                source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGorgetGown);
+                source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDobok);
+                source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherTunic);
+                source.Trackers.Flags.AddFlag(CraftedArmors.RefinedEarthBodice);
+                source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherBliaut);
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(

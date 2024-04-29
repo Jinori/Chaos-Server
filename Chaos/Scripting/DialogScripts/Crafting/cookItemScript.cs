@@ -8,13 +8,13 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Crafting;
 
-public class cookItemScript : DialogScriptBase
+public class CookItemScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
     public int BuyCost { get; init; }
     protected HashSet<string>? ItemTemplateKeys { get; init; }
 
-    public cookItemScript(
+    public CookItemScript(
         Dialog subject,
         IItemFactory itemFactory
     )

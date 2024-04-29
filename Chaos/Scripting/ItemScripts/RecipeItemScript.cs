@@ -581,6 +581,43 @@ public class RecipeItemScript : ItemScriptBase
             #endregion
 
             #region Armor Smithing Recipes
+            case "recipe_beginnerarmors":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicArmors))
+                {
+                    if (craft != Crafts.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithCategories.BeginnerArmors,
+                        "Beginner Armors",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedScoutLeather);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGardcorp);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCowl);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCotte);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMagiSkirt);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGorgetGown);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDobok);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherTunic);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedEarthBodice);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherBliaut);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe");
+
+                return;
+            }
+            
             case "recipe_basicarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicArmors))
@@ -599,16 +636,14 @@ public class RecipeItemScript : ItemScriptBase
                         "Basic Armors",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedScoutLeather);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGardcorp);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCowl);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCotte);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMagiSkirt);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGorgetGown);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDobok);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherTunic);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedEarthBodice);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherBliaut);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedJourneyman);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedBenusta);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMysticGown);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLotusBodice);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDwarvishLeather);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedBrigandine);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLorica);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCuirass);
 
                     return;
                 }
