@@ -9,7 +9,7 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 public class TerminusBugReportScript(Dialog subject) : DialogScriptBase(subject)
 {
     //Place Bot Token Here When Live
-    private const string BOT_TOKEN = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.G3gHhJ.g_i72sDfAsnVca-Ga7C_i4O8Lj-mhPluMfg7zk";
+    private const string BOT_TOKEN = @"";
     private const ulong CHANNEL_ID = 1083522838817939566;
 
     public override void OnDisplaying(Aisling source)
