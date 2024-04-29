@@ -12,17 +12,9 @@ using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 
 namespace Chaos.Scripting.DialogScripts.Quests.EastWoodlands;
 
-public class EWKillQuestScript : DialogScriptBase
+public class EwKillQuestScript(Dialog subject, ILogger<theSacrificeQuestScript> logger) : DialogScriptBase(subject)
 {
-    private readonly ILogger<theSacrificeQuestScript> Logger;
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
-
-    public EWKillQuestScript(Dialog subject, ILogger<theSacrificeQuestScript> logger) 
-        : base(subject)
-    {
-        Logger = logger;
-        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
-    }
+    private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplaying(Aisling source)
     {
@@ -86,7 +78,7 @@ public class EWKillQuestScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(
+                    logger.WithTopics(
                             Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
@@ -115,7 +107,7 @@ public class EWKillQuestScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(
+                    logger.WithTopics(
                             Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
@@ -143,7 +135,7 @@ public class EWKillQuestScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(
+                    logger.WithTopics(
                             Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
@@ -171,7 +163,7 @@ public class EWKillQuestScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(
+                    logger.WithTopics(
                             Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
@@ -199,7 +191,7 @@ public class EWKillQuestScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(
+                    logger.WithTopics(
                             Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
@@ -227,7 +219,7 @@ public class EWKillQuestScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(
+                    logger.WithTopics(
                             Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
@@ -255,7 +247,7 @@ public class EWKillQuestScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(
+                    logger.WithTopics(
                             Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
@@ -275,34 +267,6 @@ public class EWKillQuestScript : DialogScriptBase
                     source.Trackers.Enums.Set(EastWoodlandsKillQuestStage.None);
                     return;
                 }
-                if (hasStage && stage == EastWoodlandsKillQuestStage.EWKoboldMage)
-                {
-                    if (!source.Trackers.Counters.TryGetValue("ewkoboldmagecounter", out int ewkoboldmage) || ewkoboldmage < 10)
-                    {
-                        Subject.Reply(source, "Those vertical dogs with staves are impressive. But you are even more incredible Aisling, go teach them a lesson. Slay 10 Kobold Mages.", "ghislain_initial");
-                        return;
-                    }
-
-                    Logger.WithTopics(
-                            Topics.Entities.Aisling,
-                            Topics.Entities.Experience,
-                            Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
-                        .WithProperty(source)
-                        .WithProperty(Subject)
-                        .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
-                            tenPercent);
-
-                    Subject.Reply(source,
-                        $"That's plenty. Good work! I saw your strength and knew you'd get the job done.",
-                        "ghislain_initial");
-                    source.TryGiveGamePoints(5);
-                    ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(8), true);
-                    source.Trackers.Counters.Remove("ewkoboldmagecounter", out _);
-                    source.Trackers.Enums.Set(EastWoodlandsKillQuestStage.None);
-                    return;
-                }
                 if (hasStage && stage == EastWoodlandsKillQuestStage.EWGoblinSoldier)
                 {
                     if (!source.Trackers.Counters.TryGetValue("ewgoblinsoldiercounter", out int ewgoblinsoldier) || ewgoblinsoldier < 10)
@@ -311,7 +275,7 @@ public class EWKillQuestScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(
+                    logger.WithTopics(
                             Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
@@ -339,7 +303,7 @@ public class EWKillQuestScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(
+                    logger.WithTopics(
                             Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
@@ -367,7 +331,7 @@ public class EWKillQuestScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(
+                    logger.WithTopics(
                             Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
@@ -395,7 +359,7 @@ public class EWKillQuestScript : DialogScriptBase
                         return;
                     }
 
-                    Logger.WithTopics(
+                    logger.WithTopics(
                             Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
@@ -481,15 +445,6 @@ public class EWKillQuestScript : DialogScriptBase
                 }
                 if (source.UserStatSheet.Level is >= 26 and <= 36)
                 {
-                    if (roll < 25)
-                    {
-                       Subject.Reply(source,
-                                               "You need to pay close attention to the Kobold Mages, they are no joke. I think you can handle it though if you use your brains. Go take out 10 Kobold Mages.",
-                                               "Close");
-                                           source.Trackers.Enums.Set(EastWoodlandsKillQuestStage.EWKoboldMage);
-                                           return; 
-                    }
-                    
                     if (roll < 50)
                     {
                         source.Trackers.Enums.Set(EastWoodlandsKillQuestStage.EWGoblinSoldier);
@@ -499,7 +454,7 @@ public class EWKillQuestScript : DialogScriptBase
                         return;
                     }
 
-                    if (roll < 75)
+                    if (roll < 100)
                     {
                         Subject.Reply(source,
                             "The goblin warriors are tough, let me see you take down 10 of them. I know you can do it.",

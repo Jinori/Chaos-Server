@@ -32,6 +32,7 @@ public class LearnSkillScript : DialogScriptBase
         { "DoublePunch", ["RapidPunch"] },
         //Rogue
         { "Assault", ["Blitz", "Barrage"] },
+        {"Armorpiercing", ["Birthdaysuit"] },
         { "Blitz", ["Barrage"] },
         { "Stab", ["Gut"] },
         { "Pierce", ["Skewer"] },

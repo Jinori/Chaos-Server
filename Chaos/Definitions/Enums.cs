@@ -778,11 +778,12 @@ public enum ArmorSmithCategories
     BasicBelts = 1 << 5,
     InitiateBelts = 1 << 6,
     ArtisanBelts = 1 << 7,
-    BasicArmors = 1 << 8,
-    InitiateArmors = 1 << 9,
-    ArtisanArmors = 1 << 10,
-    AdeptArmors = 1 << 11,
-    AdvancedArmors = 1 << 12,
+    BeginnerArmors = 1 << 8,
+    BasicArmors = 1 << 9,
+    InitiateArmors = 1 << 10,
+    ArtisanArmors = 1 << 11,
+    AdeptArmors = 1 << 12,
+    AdvancedArmors = 1 << 13,
 }
 
 [Flags]

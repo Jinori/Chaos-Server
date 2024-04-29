@@ -35,7 +35,7 @@ public class ShowElementEffect : ContinuousAnimationEffectBase
             return;
 
         if (Subject.StatSheet.DefenseElement == Element.Earth)
-            Animation.TargetAnimation = 403;
+            Animation.TargetAnimation = 401;
 
         if (Subject.StatSheet.DefenseElement == Element.Water)
             Animation.TargetAnimation = 402;
@@ -44,7 +44,7 @@ public class ShowElementEffect : ContinuousAnimationEffectBase
             Animation.TargetAnimation = 404;
 
         if (Subject.StatSheet.DefenseElement == Element.Wind)
-            Animation.TargetAnimation = 401;
+            Animation.TargetAnimation = 403;
 
         if (Subject.StatSheet.DefenseElement == Element.Darkness)
             Animation.TargetAnimation = 76;

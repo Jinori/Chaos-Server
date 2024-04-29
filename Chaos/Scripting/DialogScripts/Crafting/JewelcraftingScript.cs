@@ -385,22 +385,41 @@ public class JewelcraftingScript : DialogScriptBase
             existingMark.Count++;
 
             for (var i = currentRankIndex + 1; i < rankThresholds.Length; i++)
+            {
                 if (legendMarkCount >= rankThresholds[i])
                 {
-                    existingMark.Text = rankTitles[i];
-                    source.SendOrangeBarMessage($"You have reached the rank of {rankTitles[i]}");
-                    source.Titles.Add(rankTitles[i]);
-                    var first = source.Titles.First();
-
-                    if (source.Titles.First() is "")
+                    var newTitle = rankTitles[i];
+        
+                    // Remove the previous title of the rank
+                    if (source.Titles.Contains(existingMark.Text))
                     {
-                        source.Titles.Remove(first);
-                        source.Titles.Add(first);
-                        source.Client.SendSelfProfile();
+                        source.Titles.Remove(existingMark.Text);
+                    }
+        
+                    // Add the new title
+                    source.Titles.Add(newTitle);
+
+                    existingMark.Text = newTitle;
+                    source.SendOrangeBarMessage($"You have reached the rank of {newTitle}");
+
+                    // Ensure the new title is at the front of the titles list
+                    if (source.Titles.Any())
+                    {
+                        var firstTitle = source.Titles.First();
+                        if (firstTitle != newTitle)
+                        {
+                            source.Titles.Remove(newTitle);
+                            source.Titles.Insert(0, newTitle);
+                        }
                     }
 
+                    // Send the updated profile to the client
+                    source.Client.SendSelfProfile();
+        
                     break;
                 }
+            }
+
         }
     }
 }

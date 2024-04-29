@@ -18,7 +18,9 @@ public class WeaponSmithingCraftScript : DialogScriptBase
     private const string ITEM_COUNTER_PREFIX = "[Weaponsmithing]";
     private const string LEGENDMARK_KEY = "wpnsmth";
     private const double BASE_SUCCESS_RATE = 60;
+
     private const double SUCCESSRATEMAX = 95;
+
     //Ranks from lowest to highest
     private const string RANK_ONE_TITLE = "Beginner Weaponsmith";
     private const string RANK_TWO_TITLE = "Novice Weaponsmith";
@@ -27,7 +29,9 @@ public class WeaponSmithingCraftScript : DialogScriptBase
     private const string RANK_FIVE_TITLE = "Adept Weaponsmith";
     private const string RANK_SIX_TITLE = "Advanced Weaponsmith";
     private const string RANK_SEVEN_TITLE = "Expert Weaponsmith";
+
     private const string RANK_EIGHT_TITLE = "Master Weaponsmith";
+
     //Set this to true if doing armorsmithing type crafting
     private readonly bool Craftgoodgreatgrand = false;
     private readonly IDialogFactory DialogFactory;
@@ -38,6 +42,7 @@ public class WeaponSmithingCraftScript : DialogScriptBase
         AnimationSpeed = 100,
         TargetAnimation = 59
     };
+
     private Animation SuccessAnimation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -88,14 +93,14 @@ public class WeaponSmithingCraftScript : DialogScriptBase
     private double GetMultiplier(int totalTimesCrafted) =>
         totalTimesCrafted switch
         {
-            <= 25   => 1.0,
-            <= 75   => 1.05,
-            <= 150  => 1.1,
-            <= 300  => 1.15,
-            <= 500  => 1.2,
+            <= 25 => 1.0,
+            <= 75 => 1.05,
+            <= 150 => 1.1,
+            <= 300 => 1.15,
+            <= 500 => 1.2,
             <= 1000 => 1.25,
             <= 1500 => 1.3,
-            _       => 1.35
+            _ => 1.35
         };
 
     // Converts the rank string to an integer value
@@ -176,7 +181,8 @@ public class WeaponSmithingCraftScript : DialogScriptBase
         }
 
         var recipe =
-            CraftingRequirements.WeaponSmithingCraftRequirements.Values.FirstOrDefault(recipe1 => recipe1.Name.EqualsI(selectedRecipeName));
+            CraftingRequirements.WeaponSmithingCraftRequirements.Values.FirstOrDefault(recipe1 =>
+                recipe1.Name.EqualsI(selectedRecipeName));
 
         if (recipe is null)
         {
@@ -258,10 +264,10 @@ public class WeaponSmithingCraftScript : DialogScriptBase
 
             var newCraft = roll switch
             {
-                < 10  => ItemFactory.Create("grand" + recipe.TemplateKey),
-                < 40  => ItemFactory.Create("great" + recipe.TemplateKey),
+                < 10 => ItemFactory.Create("grand" + recipe.TemplateKey),
+                < 40 => ItemFactory.Create("great" + recipe.TemplateKey),
                 < 100 => ItemFactory.Create("good" + recipe.TemplateKey),
-                _     => ItemFactory.Create(recipe.TemplateKey)
+                _ => ItemFactory.Create(recipe.TemplateKey)
             };
 
             source.GiveItemOrSendToBank(newCraft);
@@ -291,7 +297,8 @@ public class WeaponSmithingCraftScript : DialogScriptBase
         }
 
         var recipe =
-            CraftingRequirements.WeaponSmithingCraftRequirements.Values.FirstOrDefault(recipe1 => recipe1.Name.EqualsI(selectedRecipeName));
+            CraftingRequirements.WeaponSmithingCraftRequirements.Values.FirstOrDefault(recipe1 =>
+                recipe1.Name.EqualsI(selectedRecipeName));
 
         if (recipe is null)
         {
@@ -379,22 +386,40 @@ public class WeaponSmithingCraftScript : DialogScriptBase
             existingMark.Count++;
 
             for (var i = currentRankIndex + 1; i < rankThresholds.Length; i++)
+            {
                 if (legendMarkCount >= rankThresholds[i])
                 {
-                    existingMark.Text = rankTitles[i];
-                    source.SendOrangeBarMessage($"You have reached the rank of {rankTitles[i]}");
-                    source.Titles.Add(rankTitles[i]);
-                    var first = source.Titles.First();
+                    var newTitle = rankTitles[i];
 
-                    if (source.Titles.First() is "")
+                    // Remove the previous title of the rank
+                    if (source.Titles.Contains(existingMark.Text))
                     {
-                        source.Titles.Remove(first);
-                        source.Titles.Add(first);
-                        source.Client.SendSelfProfile();
+                        source.Titles.Remove(existingMark.Text);
                     }
+
+                    // Add the new title
+                    source.Titles.Add(newTitle);
+
+                    existingMark.Text = newTitle;
+                    source.SendOrangeBarMessage($"You have reached the rank of {newTitle}");
+
+                    // Ensure the new title is at the front of the titles list
+                    if (source.Titles.Any())
+                    {
+                        var firstTitle = source.Titles.First();
+                        if (firstTitle != newTitle)
+                        {
+                            source.Titles.Remove(newTitle);
+                            source.Titles.Insert(0, newTitle);
+                        }
+                    }
+
+                    // Send the updated profile to the client
+                    source.Client.SendSelfProfile();
 
                     break;
                 }
+            }
         }
     }
 }
