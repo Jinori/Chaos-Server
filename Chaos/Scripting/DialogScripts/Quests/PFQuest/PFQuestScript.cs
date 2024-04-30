@@ -488,6 +488,8 @@ public class PFQuestScript : DialogScriptBase
 
                 source.TraverseMap(mapInstance, point);
                 source.Trackers.Enums.Set(PFQuestStage.CompletedPFQuest);
+                source.Trackers.Flags.AddFlag(AvailableCloaks.Purple);
+                source.SendOrangeBarMessage("You've received a new cloak for your mount!");
 
                 Logger.WithTopics(
                           Topics.Entities.Aisling,
