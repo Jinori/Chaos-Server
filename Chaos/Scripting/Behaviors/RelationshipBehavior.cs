@@ -36,6 +36,8 @@ public class RelationshipBehavior
             _ => throw new ArgumentOutOfRangeException(nameof(source))
         };
 
+    private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase) { "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort"};
+    
     protected virtual bool IsFriendlyTo(Aisling source, Merchant target) => true;
 
     protected virtual bool IsFriendlyTo(Merchant source, Merchant target) => source.Equals(target);
@@ -47,10 +49,7 @@ public class RelationshipBehavior
         if (source.Equals(target))
             return true;
 
-        var inPvpMap = ((source.MapInstance.BaseInstanceId  == "arena_battle_ring") && (target.MapInstance.BaseInstanceId  == "arena_battle_ring"))
-                       || ((source.MapInstance.BaseInstanceId  == "arena_lava") && (target.MapInstance.BaseInstanceId  == "arena_lava"))
-                       || ((source.MapInstance.BaseInstanceId  == "arena_lavateams") && (target.MapInstance.BaseInstanceId  == "arena_lavateams"))
-                       || ((source.MapInstance.BaseInstanceId  == "arena_colorClash") && (target.MapInstance.BaseInstanceId  == "arena_colorClash"));
+        var inPvpMap = ArenaKeys.Contains(source.MapInstance.BaseInstanceId!);
 
         var inGroup = source.Group?.Contains(target) ?? false;
 
@@ -165,10 +164,7 @@ public class RelationshipBehavior
         if (source.Equals(target))
             return false;
 
-        var onPvpMap = ((source.MapInstance.BaseInstanceId == "arena_battle_ring") && (target.MapInstance.BaseInstanceId  == "arena_battle_ring"))
-                       || ((source.MapInstance.BaseInstanceId  == "arena_lava") && (target.MapInstance.BaseInstanceId  == "arena_lava"))
-                       || ((source.MapInstance.BaseInstanceId  == "arena_lavateams") && (target.MapInstance.BaseInstanceId  == "arena_lavateams"))
-                       || ((source.MapInstance.BaseInstanceId  == "arena_colorClash") && (target.MapInstance.BaseInstanceId  == "arena_colorClash"));
+        var onPvpMap = ArenaKeys.Contains(source.MapInstance.BaseInstanceId!);
 
         var inGroup = source.Group?.Contains(target) ?? false;
 

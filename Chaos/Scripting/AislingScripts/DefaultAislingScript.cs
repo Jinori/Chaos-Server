@@ -32,14 +32,7 @@ namespace Chaos.Scripting.AislingScripts;
 
 public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealComponentOptions
 {
-    private readonly List<string> ArenaMaps =
-    [
-        "Arena Battle Ring",
-        "Lava Arena",
-        "Lava Arena - Teams",
-        "Color Clash - Teams",
-        "Escort - Teams"
-    ];
+    private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase) { "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort"};
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IIntervalTimer ClearOrangeBarTimer;
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
@@ -386,7 +379,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             return;
         }
 
-        if (ArenaMaps.Contains(Subject.MapInstance.Name))
+        if (ArenaKeys.Contains(Subject.MapInstance.BaseInstanceId!))
         {
             var aislings = Subject.MapInstance.GetEntities<Aisling>();
 
