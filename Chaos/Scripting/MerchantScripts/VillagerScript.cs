@@ -326,9 +326,17 @@ public class VillagerScript : MerchantScriptBase
             if (RandomAisling != null)
             {
                 var point = new Point(RandomAisling.X, RandomAisling.Y);
-
-                if (ShouldWalkTo(point))
-                    WalkTowards(new Location(Subject.MapInstance.InstanceId, point), delta);
+                var location = new Location(Subject.MapInstance.InstanceId, point);
+                
+                if (ShouldWalkTo(location))
+                    WalkTowards(location, delta);
+                else
+                {
+                    if (ShouldWalkToSpawnPoint())
+                        WalkTowards(Spawnpoint, delta);
+                    else
+                        ResetConversationState();
+                }
             }
         }
         else

@@ -119,7 +119,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
         
         if ((warningLevel > 0) && (warningLevel != item.LastWarningLevel))
         {
-            target.SendActiveMessage($"Your {item.DisplayName} is at {percent}% durability.");
+            target.SendActiveMessage($"{percent}% durability reached on {item.DisplayName}.");
             item.LastWarningLevel = warningLevel;
         }
     }
@@ -141,7 +141,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
                 else
                 {
                     target.Bank.Deposit(removedItem);
-                    target.SendActiveMessage($"{item.DisplayName} was nearly broke and sent to your bank.");
+                    target.SendActiveMessage($"{item.DisplayName} was nearly broken and sent to your bank.");
                     HandleLoggingItem(target, source, item, true);
                 }
             }

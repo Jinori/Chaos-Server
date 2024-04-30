@@ -435,19 +435,20 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     {
         if (!CanCarry(item))
         {
-            Bank.Deposit(item);
             Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Deposit, Topics.Entities.Item, Topics.Actions.Reward)
                   .WithProperty(item).WithProperty(this)
                   .LogInformation("{@Amount} {@ItemName} was sent to {@AislingName}'s bank", item.Count, item.DisplayName, Name);
             SendOrangeBarMessage($"{item.DisplayName} was sent to your bank as overflow");
+            Bank.Deposit(item);
             return;
         }
         
-        Inventory.TryAddToNextSlot(item);
         SendOrangeBarMessage($"You have received {item.DisplayName}.");
         Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Actions.Reward)
               .WithProperty(item).WithProperty(this)
               .LogInformation("{@Amount} {@ItemName} was given to {@AislingName}", item.Count, item.DisplayName, Name);
+        
+        Inventory.TryAddToNextSlot(item);
     }
 
     /// <summary>

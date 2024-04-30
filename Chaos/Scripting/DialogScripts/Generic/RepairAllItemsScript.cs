@@ -1,3 +1,4 @@
+using Chaos.Common.Utilities;
 using Chaos.Models.Menu;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
@@ -12,7 +13,7 @@ public class RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> 
 {
     private double RepairCost;
 
-    public double CalculateNewRepairCostForItem(Item item)
+    public int CalculateNewRepairCostForItem(Item item)
     {
         // Skip if item is not damaged
         if ((item.Template.MaxDurability == null)
@@ -21,9 +22,9 @@ public class RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> 
             return 0;
         
         double sellValue = item.Template.SellValue;
-        var damageProportion =  item.CurrentDurability.Value / item.Template.MaxDurability.Value;
+        var damageProportion =  1 - (double)item.CurrentDurability.Value / item.Template.MaxDurability.Value;
         const double REPAIR_FACTOR = 0.8;
-        return sellValue * damageProportion * REPAIR_FACTOR;
+        return Convert.ToInt32(sellValue * damageProportion * REPAIR_FACTOR);
     }
     
     private double CalculateOldRepairCostForItem(Item item)
