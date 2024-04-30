@@ -3075,6 +3075,57 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
+                    case "seabelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires requires 5 Linen and 1 Raw Sapphire.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    case "windbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires requires 5 Linen and 1 Raw Emerald.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    case "firebelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 5 Linen and 1 Raw Ruby.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    case "earthbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 5 Linen and 1 Raw Beryl.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "leathergauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 8 Linen",
+                            "armorsmithingbook");
+
+                        return;
+                    }
 
                     case "jeweledfirebelt":
                     {
