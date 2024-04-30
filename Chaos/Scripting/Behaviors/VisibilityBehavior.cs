@@ -9,11 +9,7 @@ namespace Chaos.Scripting.Behaviors;
 
 public class VisibilityBehavior
 {
-    private const int HIDE_THRESHOLD_SECONDS = 56;
-
-    private readonly ImmutableList<string> SeeHiddenEffects = ImmutableList.Create(
-        EffectBase.GetEffectKey(typeof(SeeHideEffect)),
-        EffectBase.GetEffectKey(typeof(SeeTrueHideEffect)));
+    private const int HIDE_THRESHOLD_SECONDS = 4;
 
     private readonly HashSet<string> BossKeys =
     [
@@ -77,8 +73,7 @@ public class VisibilityBehavior
         };
 
     private bool CanSeeHidden(Creature creature, VisibleEntity entity) =>
-        IsInSameGroup(creature, entity) || CanBossSee(creature, entity) ||
-        IsRecentHiderVisible(creature, entity, SeeHiddenEffects);
+        IsInSameGroup(creature, entity) || CanBossSee(creature, entity) || (entity is Creature c && HasRecentlyHidden(c));
 
     private bool CanSeeTrueHidden(Creature creature, VisibleEntity entity) =>
         IsInSameGroup(creature, entity) || CanBossSee(creature, entity) ||
@@ -92,22 +87,5 @@ public class VisibilityBehavior
         creature is Monster monster && entity is Aisling &&
         BossKeys.Contains(monster.Template.TemplateKey.ToLower());
 
-    private bool IsRecentHiderVisible(Creature creature, VisibleEntity entity, ImmutableList<string> effects)
-    {
-        if (creature is Monster monster && entity is Aisling aisling &&
-            monster.AggroList.ContainsKey(entity.Id) && aisling.Effects.TryGetEffect("Hide", out var effect))
-            return (effect.Remaining.Seconds >= HIDE_THRESHOLD_SECONDS) || HandleAggroRemoval(monster, aisling, effect);
-
-        return effects.Any(creature.Effects.Contains);
-    }
-
-    private bool HandleAggroRemoval(Monster monster, Aisling aisling, IEffect effect)
-    {
-        if (effect.Remaining.Seconds < HIDE_THRESHOLD_SECONDS)
-        {
-            monster.AggroList.TryRemove(aisling.Id, out _);
-            return false;
-        }
-        return true;
-    }
+    private bool HasRecentlyHidden(Creature creature) => creature.Effects.Contains("Hide") && creature.Trackers.Counters.CounterLessThanOrEqualTo("HideSec", HIDE_THRESHOLD_SECONDS);
 }

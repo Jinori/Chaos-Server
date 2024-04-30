@@ -10,7 +10,7 @@ using Chaos.Time;
 
 namespace Chaos.Scripting.ItemScripts;
 
-public class FishConsumableScript : ItemScriptBase
+public class FishConsumableScript(Item subject) : ItemScriptBase(subject)
 {
     private static readonly Dictionary<string, double> FishExperienceMultipliers = new()
     {
@@ -23,11 +23,7 @@ public class FishConsumableScript : ItemScriptBase
         { "Purple Whopper", 0.03 }
     };
 
-    private readonly IExperienceDistributionScript ExperienceDistributionScript;
-
-    public FishConsumableScript(Item subject)
-        : base(subject)
-        => ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    private readonly IExperienceDistributionScript ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
 
     private int CalculateExperienceGain(Aisling source, int tnl)
     {

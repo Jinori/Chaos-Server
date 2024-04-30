@@ -37,7 +37,8 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         "Arena Battle Ring",
         "Lava Arena",
         "Lava Arena - Teams",
-        "Color Clash - Teams"
+        "Color Clash - Teams",
+        "Escort - Teams"
     ];
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IIntervalTimer ClearOrangeBarTimer;
@@ -53,7 +54,8 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         "Arena Battle Ring",
         "Lava Arena",
         "Lava Arena - Teams",
-        "Color Clash - Teams"
+        "Color Clash - Teams",
+        "Escort - Teams"
     ];
 
     private readonly IMerchantFactory MerchantFactory;
