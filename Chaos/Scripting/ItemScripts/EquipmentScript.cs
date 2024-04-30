@@ -31,49 +31,6 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
     public override void OnUse(Aisling source)
     {
         var template = Subject.Template;
-
-        if (template.Category.Contains("Staff"))
-        {
-            // Check specific conditions for equipping a staff
-            if (template.TemplateKey.ContainsI("magus") && CanWieldStaff(source, "Wield Magus Staff"))
-            {
-                if (source.Equipment.Contains((byte)EquipmentSlot.Shield)
-                    && source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var shield))
-                {
-                    source.SendOrangeBarMessage($"You cannot equip a staff while using {shield.DisplayName}.");
-                    return;
-                }
-
-                EquipStaff(source, template);
-                return;
-            }
-
-            if (template.TemplateKey.ContainsI("holy") && CanWieldStaff(source, "Wield Holy Staff"))
-            {
-                if (source.Equipment.Contains((byte)EquipmentSlot.Shield)
-                    && source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var shield))
-                {
-                    source.SendOrangeBarMessage($"You cannot equip a staff while using {shield.DisplayName}.");
-                    return;
-                }
-
-                EquipStaff(source, template);
-                return;
-            }
-        }
-
-        if (template.Category.ContainsI("2H"))
-        {
-            // Ensure the character is not already equipped with a staff
-            if (source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var item))
-            {
-                if (item.Template.Category.ContainsI("Shield"))
-                {
-                    source.SendOrangeBarMessage("You cannot equip a two handed weapon with a shield equipped."); 
-                    return;   
-                }
-            }
-        }
         
         // Check if the item is a shield
         if (template.Category.Contains("Shield"))
@@ -152,6 +109,49 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
             source.SendOrangeBarMessage($"{Subject.DisplayName} requires Master to be able to be equipped.");
 
             return;
+        }
+        
+        if (template.Category.Contains("Staff"))
+        {
+            // Check specific conditions for equipping a staff
+            if (template.TemplateKey.ContainsI("magus") && CanWieldStaff(source, "Wield Magus Staff"))
+            {
+                if (source.Equipment.Contains((byte)EquipmentSlot.Shield)
+                    && source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var shield))
+                {
+                    source.SendOrangeBarMessage($"You cannot equip a staff while using {shield.DisplayName}.");
+                    return;
+                }
+
+                EquipStaff(source, template);
+                return;
+            }
+
+            if (template.TemplateKey.ContainsI("holy") && CanWieldStaff(source, "Wield Holy Staff"))
+            {
+                if (source.Equipment.Contains((byte)EquipmentSlot.Shield)
+                    && source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var shield))
+                {
+                    source.SendOrangeBarMessage($"You cannot equip a staff while using {shield.DisplayName}.");
+                    return;
+                }
+
+                EquipStaff(source, template);
+                return;
+            }
+        }
+
+        if (template.Category.ContainsI("2H"))
+        {
+            // Ensure the character is not already equipped with a staff
+            if (source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var item))
+            {
+                if (item.Template.Category.ContainsI("Shield"))
+                {
+                    source.SendOrangeBarMessage("You cannot equip a two handed weapon with a shield equipped."); 
+                    return;   
+                }
+            }
         }
 
         source.Equip(template.EquipmentType.Value, Subject);

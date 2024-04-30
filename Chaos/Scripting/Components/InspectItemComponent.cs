@@ -24,6 +24,7 @@ public class InspectItemComponent : IComponent
             var message = $"Name: {item.DisplayName}"
                           + $"\nLevel: {item.Level}"
                           + $"\nWeight: {item.Template.Weight}"
+                          + $"\n AC: {item.Template.Modifiers?.Ac}"
                           + $"\nMax Stack: {item.Template.MaxStacks}"
                           + $"\nSkill Damage: {item.Modifiers.FlatSkillDamage}"
                           + $"\nSpell Damage: {item.Modifiers.FlatSpellDamage}"

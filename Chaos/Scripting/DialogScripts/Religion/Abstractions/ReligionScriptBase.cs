@@ -529,7 +529,7 @@ public class ReligionScriptBase : DialogScriptBase
             case { CurrentlyHostingMass: false }:
             {
                 goddess.CurrentlyHostingMass = true;
-                source.Trackers.TimedEvents.AddEvent("Mass", TimeSpan.FromDays(7));
+                source.Trackers.TimedEvents.AddEvent("Mass", TimeSpan.FromDays(7), true);
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(

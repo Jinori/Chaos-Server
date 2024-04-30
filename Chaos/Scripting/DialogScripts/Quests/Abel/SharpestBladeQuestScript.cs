@@ -86,7 +86,7 @@ public class SharpestBladeQuestScript : DialogScriptBase
                     {
                         source.Inventory.RemoveQuantity("Brawlfish's Scale", 5, out _);
                         source.Trackers.Enums.Set(SharpestBlade.None);
-                        source.Trackers.TimedEvents.AddEvent("sharpestbladecd", TimeSpan.FromHours(24));
+                        source.Trackers.TimedEvents.AddEvent("sharpestbladecd", TimeSpan.FromHours(24), true);
 
                         Logger.WithTopics(
                                 Topics.Entities.Aisling,

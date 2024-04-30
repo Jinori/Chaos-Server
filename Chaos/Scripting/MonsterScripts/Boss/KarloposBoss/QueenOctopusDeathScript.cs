@@ -9,7 +9,7 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Servers.Options;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts;
+namespace Chaos.Scripting.MonsterScripts.Boss.KarloposBoss;
 
 // ReSharper disable once ClassCanBeSealed.Global
 public class QueenOctopusDeathScript : MonsterScriptBase

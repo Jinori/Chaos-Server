@@ -76,15 +76,14 @@ public class CrudeLeatherQuestScript : DialogScriptBase
             case "crudeleather_turnin":
             {
                 var hasRequiredWolfFurs = source.Inventory.HasCount("Wolf's Fur", 10);
-
-
+                
                 if (hasStage && stage == CrudeLeather.StartedQuest)
                 {
                     if (hasRequiredWolfFurs)
                     {
                         source.Inventory.RemoveQuantity("Wolf's Fur", 10, out _);
                         source.Trackers.Enums.Set(CrudeLeather.None);
-                        source.Trackers.TimedEvents.AddEvent("crudeleathercd", TimeSpan.FromHours(24));
+                        source.Trackers.TimedEvents.AddEvent("crudeleathercd", TimeSpan.FromHours(24), true);
 
                         Logger.WithTopics(
                                 Topics.Entities.Aisling,

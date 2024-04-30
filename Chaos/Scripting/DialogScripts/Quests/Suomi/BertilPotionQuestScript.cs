@@ -86,7 +86,7 @@ public class BertilPotionQuestScript : DialogScriptBase
                     {
                         source.Inventory.RemoveQuantity("Health Potion", 1, out _);
                         source.Trackers.Enums.Set(BertilPotion.None);
-                        source.Trackers.TimedEvents.AddEvent("bertilpotioncd", TimeSpan.FromHours(24));
+                        source.Trackers.TimedEvents.AddEvent("bertilpotioncd", TimeSpan.FromHours(24), true);
 
                         Logger.WithTopics(
                                 Topics.Entities.Aisling,

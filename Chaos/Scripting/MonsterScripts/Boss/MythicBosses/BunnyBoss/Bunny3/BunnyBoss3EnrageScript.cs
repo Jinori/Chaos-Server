@@ -4,7 +4,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss;
+namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.BunnyBoss.Bunny3;
 
 public sealed class BunnyBoss3EnrageScript : MonsterScriptBase
 {
@@ -35,7 +35,7 @@ public sealed class BunnyBoss3EnrageScript : MonsterScriptBase
             for (var i = 0; i <= 2; i++)
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
-                var mobs = MonsterFactory.Create("bunny3-2", Subject.MapInstance, point);
+                var mobs = MonsterFactory.Create("bunny3-1", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
 
@@ -50,7 +50,7 @@ public sealed class BunnyBoss3EnrageScript : MonsterScriptBase
             for (var i = 0; i <= 3; i++)
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
-                var mobs = MonsterFactory.Create("bunny3-3", Subject.MapInstance, point);
+                var mobs = MonsterFactory.Create("bunny3-2", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
 
@@ -65,7 +65,7 @@ public sealed class BunnyBoss3EnrageScript : MonsterScriptBase
             for (var i = 0; i <= 4; i++)
             {
                 var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
-                var mobs = MonsterFactory.Create("bunny3-4", Subject.MapInstance, point);
+                var mobs = MonsterFactory.Create("bunny3-3", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
 
