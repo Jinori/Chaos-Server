@@ -2,6 +2,7 @@ using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Utilities;
@@ -31,6 +32,10 @@ public class ThrowComponent : IComponent
             {
                 if (entity.Trackers.Enums.TryGetValue(out GodMode god) && (god == GodMode.Yes))
                     return;
+                
+                if (target is Merchant or Monster)
+                    return; 
+                
 
                 var throwDirection = context.TargetDirection;
                 var throwPoint = entity.DirectionalOffset(throwDirection);

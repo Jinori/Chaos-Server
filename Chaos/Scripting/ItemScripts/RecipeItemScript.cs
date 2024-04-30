@@ -3253,7 +3253,7 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicBerylEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicEmeraldEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicHeartstoneEarrings);
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicEmeraldEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicSapphireEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicBerylEarrings);
                 }
 

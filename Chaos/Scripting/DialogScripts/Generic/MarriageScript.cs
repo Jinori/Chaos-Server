@@ -17,7 +17,7 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class MarriageScript : DialogScriptBase
 {
-    private readonly IEffectFactory _effectFactory;
+    private readonly IEffectFactory EffectFactory;
     private readonly Animation Animation = new()
     {
         AnimationSpeed = 300,
@@ -36,7 +36,7 @@ public class MarriageScript : DialogScriptBase
     {
         ClientRegistry = clientRegistry;
         DialogFactory = dialogFactory;
-        _effectFactory = effectFactory;
+        EffectFactory = effectFactory;
     }
 
     private List<IPoint> GenerateValidSpawnPoints(MapTemplate selectedMap)
@@ -200,8 +200,8 @@ public class MarriageScript : DialogScriptBase
             partnerOne.Aisling.Legend.AddOrAccumulate(markOne);
             partnerTwo.Aisling.Legend.AddOrAccumulate(markTwo);
 
-            var effect = _effectFactory.Create("marriage");
-            var effect2 = _effectFactory.Create("marriage");
+            var effect = EffectFactory.Create("marriage");
+            var effect2 = EffectFactory.Create("marriage");
             partnerOne.Aisling.Effects.Apply(partnerOne.Aisling, effect);
             partnerTwo.Aisling.Effects.Apply(partnerTwo.Aisling, effect2);
             var heartList = GenerateValidSpawnPoints(source.MapInstance.Template);

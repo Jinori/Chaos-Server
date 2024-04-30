@@ -74,15 +74,6 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             }
             case "thorin_initial":
             {
-                if ((hasCraft && (craft != Crafts.Weaponsmithing)) && (stage != PentagramQuestStage.FoundPentagramPiece) && (stage != PentagramQuestStage.EmpoweringPentagramPiece))
-                {
-                    Subject.Reply(
-                        source,
-                        "You aren't a Weaponsmith, get out of my forge. I cannot have Aislings wandering around who don't know what they're doing. You could get hurt. Go see Riona to learn about crafts if you're curious.");
-
-                    return;
-                }
-
                 if (!hasCraft)
                 {
                     var option = new DialogOption
@@ -138,14 +129,6 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
 
             case "gwendolyn_initial":
             {
-                if (hasCraft && (craft != Crafts.Armorsmithing))
-                {
-                    Subject.Reply(
-                        source,
-                        "Why are you here Aisling? You are not an Armorsmith, you could get hurt around my equipment here. Please, go see Riona if you want to learn about crafting.");
-
-                    return;
-                }
 
                 if (!hasCraft)
                 {
@@ -210,15 +193,6 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             }
             case "mathis_initial":
             {
-                if (hasCraft && (craft != Crafts.Alchemy))
-                {
-                    Subject.Reply(
-                        source,
-                        "You don't belong in my lab. This is a very dangerous area for those who don't know what they're doing. Go see Riona if you want to learn about crafting.");
-
-                    return;
-                }
-
                 if (!hasCraft)
                 {
                     var option = new DialogOption
@@ -271,15 +245,6 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             }
             case "elara_initial":
             {
-                if (hasCraft && (craft != Crafts.Enchanting))
-                {
-                    Subject.Reply(
-                        source,
-                        "Shhh, don't bothe... Wait, what are you doing here? You don't know the first thing about enchanting. Get out, you're going to bother others. Go see Riona.");
-
-                    return;
-                }
-
                 if (!hasCraft)
                 {
                     var option = new DialogOption
@@ -332,15 +297,6 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             }
             case "celestia_initial":
             {
-                if ((hasCraft && (craft != Crafts.Jewelcrafting)) && (stage != PentagramQuestStage.FoundPentagramPiece) && (stage != PentagramQuestStage.EmpoweringPentagramPiece))
-                {
-                    Subject.Reply(
-                        source,
-                        "The art of Jewelcrafting is delicate and precious. You are a distraction to those who are working. If you want to learn about crafting, go see Riona.");
-
-                    return;
-                }
-
                 if (!hasCraft)
                 {
                     var option = new DialogOption

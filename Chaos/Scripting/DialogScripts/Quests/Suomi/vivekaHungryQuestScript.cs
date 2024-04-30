@@ -16,14 +16,14 @@ using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Suomi;
 
-public class vivekaHungryQuestScript : DialogScriptBase
+public class VivekaHungryQuestScript : DialogScriptBase
 {
     private readonly ILogger<SpareAStickScript> Logger;
 
     private readonly IItemFactory ItemFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public vivekaHungryQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<SpareAStickScript> logger)
+    public VivekaHungryQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<SpareAStickScript> logger)
         : base(subject)
     {
         Logger = logger;
