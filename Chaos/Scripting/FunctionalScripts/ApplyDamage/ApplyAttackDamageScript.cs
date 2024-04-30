@@ -4,15 +4,18 @@ using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
+using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.FunctionalScripts.ApplyDamage;
 
-public class ApplyAttackDamageScript(IEffectFactory effectFactory) : ScriptBase, IApplyDamageScript
+public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<ApplyAttackDamageScript> logger) : ScriptBase, IApplyDamageScript
 {
     protected readonly IEffectFactory EffectFactory = effectFactory;
     public IDamageFormula DamageFormula { get; set; } = DamageFormulae.Default;
@@ -54,7 +57,8 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory) : ScriptBase,
                     return;
 
                 ApplyDamageAndTriggerEvents(aisling, damage, source);
-
+                ApplyDurabilityDamage(aisling, source, script);
+                
                 break;
             case Monster monster:
                 if (ReflectDamage(source, monster, damage))
@@ -70,6 +74,105 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory) : ScriptBase,
         }
     }
 
+    private void ApplyDurabilityDamage(Aisling aisling, Creature source, IScript skillSource)
+    {
+        if (skillSource is not SubjectiveScriptBase<Skill> skillScript)
+            return;
+
+        if (skillScript.Subject.Template.IsAssail)
+        {
+            foreach (var item in aisling.Equipment)
+            {
+                
+                if (aisling.Trackers.Enums.TryGetValue(out GodMode godmode) && (godmode == GodMode.Yes))
+                    continue;
+
+                if (item.Slot is > 0 and < 14)
+                {
+                    if (item.CurrentDurability >= 1)
+                        item.CurrentDurability--;
+
+                    var dura = GetCurrentDurabilityPercentage(item);
+                    HandleDurabilityWarning(aisling, item, dura);
+                    HandleBreakingItem(aisling, source, item);
+                }
+            }
+        }
+    }
+
+    private int? GetCurrentDurabilityPercentage(Item item) =>
+        MathEx.CalculatePercent<int>(item.CurrentDurability!.Value, item.Template.MaxDurability!.Value);
+
+    private int GetWarningLevel(int? percent) =>
+        percent switch
+        {
+            <= 5  => 5,
+            <= 10 => 10,
+            <= 30 => 30,
+            <= 50 => 50,
+            _     => 0
+        };
+
+    private void HandleDurabilityWarning(Aisling target, Item item, int? percent)
+    {
+        var warningLevel = GetWarningLevel(percent);
+        
+        if ((warningLevel > 0) && (warningLevel != item.LastWarningLevel))
+        {
+            target.SendActiveMessage($"Your {item.DisplayName} is at {percent}% durability.");
+            item.LastWarningLevel = warningLevel;
+        }
+    }
+
+    private void HandleBreakingItem(Aisling target, Creature source, Item item)
+    {
+        if (item is { CurrentDurability: <= 0, Template.AccountBound: false })
+        {
+            target.SendActiveMessage($"Your {item.DisplayName} broke.");
+            target.Equipment.TryGetRemove(item.Slot, out _);
+            HandleLoggingItem(target, source, item, false);
+        }
+
+        if (item is { CurrentDurability: <= 0, Template.AccountBound: true })
+            if (target.Equipment.TryGetRemove(item.Slot, out var removedItem))
+            {
+                if (target.CanCarry(removedItem))
+                    target.Inventory.TryAddToNextSlot(removedItem);
+                else
+                {
+                    target.Bank.Deposit(removedItem);
+                    target.SendActiveMessage($"{item.DisplayName} was nearly broke and sent to your bank.");
+                    HandleLoggingItem(target, source, item, true);
+                }
+            }
+    }
+    
+    private void HandleLoggingItem(Aisling aisling, Creature source, Item item, bool banked)
+    {
+        if (banked)
+        {
+            logger.WithTopics(
+                      Topics.Entities.Aisling,
+                      Topics.Entities.Item,
+                      Topics.Actions.Deposit,
+                      Topics.Actions.Penalty)
+                  .WithProperty(aisling)
+                  .WithProperty(item)
+                  .LogInformation("{@AislingName} almost broke {@ItemName} through durability {@SourceName} but it was sent to the bank", aisling.Name, item.DisplayName, source.Name);
+        }
+        else
+        {
+            logger.WithTopics(
+                      Topics.Entities.Aisling,
+                      Topics.Entities.Item,
+                      Topics.Actions.Remove,
+                      Topics.Actions.Penalty)
+                  .WithProperty(aisling)
+                  .WithProperty(item)
+                  .LogInformation("{@AislingName} broke {@ItemName} through durability from {@SourceName}", aisling.Name, item.DisplayName, source.Name);
+        }
+    }
+    
     public static IApplyDamageScript Create() => FunctionalScriptRegistry.Instance.Get<IApplyDamageScript>(Key);
 
     private void ApplyDamageAndTriggerEvents(Creature creature, int damage, Creature source)

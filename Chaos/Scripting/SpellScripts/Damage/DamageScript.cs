@@ -14,7 +14,8 @@ namespace Chaos.Scripting.SpellScripts.Damage;
 
 public class DamageScript : ConfigurableSpellScriptBase,
                             SpellComponent<Creature>.ISpellComponentOptions,
-                            DamageComponent.IDamageComponentOptions
+                            DamageComponent.IDamageComponentOptions,
+                            NotifyTargetComponent.INotifyTargetComponentOptions
 {
     /// <inheritdoc />
     public DamageScript(Spell subject)
@@ -28,7 +29,8 @@ public class DamageScript : ConfigurableSpellScriptBase,
     public override void OnUse(SpellContext context)
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<SpellComponent<Creature>>()
-                                         ?.Execute<DamageComponent>();
+                                         ?.Execute<DamageComponent>()
+                                         .Execute<NotifyTargetComponent>();
 
     #region ScriptVars
     /// <inheritdoc />

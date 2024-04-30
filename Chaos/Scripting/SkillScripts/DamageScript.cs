@@ -14,8 +14,7 @@ namespace Chaos.Scripting.SkillScripts;
 
 public class DamageScript : ConfigurableSkillScriptBase,
                             AbilityComponent<Creature>.IAbilityComponentOptions,
-                            DamageComponent.IDamageComponentOptions,
-                            DurabilityComponent.IDurabilityComponentOptions
+                            DamageComponent.IDamageComponentOptions
 {
     /// <inheritdoc />
     public DamageScript(Skill subject)
@@ -29,8 +28,7 @@ public class DamageScript : ConfigurableSkillScriptBase,
     public override void OnUse(ActivationContext context)
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<AbilityComponent<Creature>>()
-                                         ?.Execute<DamageComponent>()
-            .Execute<DurabilityComponent>();
+                                         ?.Execute<DamageComponent>();
 
     #region ScriptVars
     /// <inheritdoc />
@@ -91,7 +89,5 @@ public class DamageScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
-    /// <inheritdoc />
-    public bool? ShouldDamageItems { get; init; }
     #endregion
 }

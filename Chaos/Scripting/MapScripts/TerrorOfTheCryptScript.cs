@@ -7,9 +7,7 @@ using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
-using Chaos.Site.Pages;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -20,22 +18,18 @@ public class TerrorOfTheCryptScript : MapScriptBase
     private readonly Animation Animation;
     private readonly IIntervalTimer AnimationInterval;
     private readonly IRectangle AnimationShape;
-    private readonly ISkillFactory SkillFactory;
     private readonly IMonsterFactory MonsterFactory;
     private readonly List<Point> ReverseOutline;
     private readonly List<Point> ShapeOutline;
-    private readonly ISpellFactory SpellFactory;
     private readonly TimeSpan StartDelay;
     private int AnimationIndex;
     private DateTime? StartTime;
     private ScriptState State;
 
-    public TerrorOfTheCryptScript(MapInstance subject, IMonsterFactory monsterFactory, ISpellFactory spellFactory, ISkillFactory skillFactory)
+    public TerrorOfTheCryptScript(MapInstance subject, IMonsterFactory monsterFactory)
         : base(subject)
     {
-        SkillFactory = skillFactory;
         MonsterFactory = monsterFactory;
-        SpellFactory = spellFactory;
         StartDelay = TimeSpan.FromSeconds(5);
         AnimationInterval = new IntervalTimer(TimeSpan.FromMilliseconds(200));
         AnimationShape = new Rectangle(new Point(8, 8), 5, 5);
@@ -114,72 +108,54 @@ public class TerrorOfTheCryptScript : MapScriptBase
                 // Check if the animation index has exceeded the shape outline count
                 if (AnimationIndex >= ShapeOutline.Count)
                 {
-                    // Create a monster
-                    var monster = MonsterFactory.Create("terrorLowInsight", Subject, new Point(8, 8));
-                    // Get the group level from the Aislings in the subject
                     var groupLevel = Subject.GetEntities<Aisling>().Select(aisling => aisling.StatSheet.Level).ToList();
-                    var groupArmorClass = Subject.GetEntities<Aisling>().Select(aisling => aisling.StatSheet.Ac).ToList();
+                    Monster monster;
+                    
+                    switch (groupLevel.Average())
+                    {
+                        case <= 10:
+                            monster = MonsterFactory.Create("terror10Minus", Subject, new Point(8, 8));
+                            break;
+                        
+                        case <= 19:
+                            monster = MonsterFactory.Create("terror10To19", Subject, new Point(8, 8));
+                            monster.StatSheet.SetDefenseElement(Elements.PickRandom());
+                            break;
+                        
+                        case <= 25:
+                            monster = MonsterFactory.Create("terror20To25", Subject, new Point(8, 8));
+                            monster.StatSheet.SetOffenseElement(Element.Darkness);
+                            monster.StatSheet.SetDefenseElement(Elements.PickRandom());
+                            break;
+                        
+                        case <= 40:
+                            monster = MonsterFactory.Create("terror26To40", Subject, new Point(8, 8));
+                            monster.StatSheet.SetOffenseElement(Element.Darkness);
+                            monster.StatSheet.SetDefenseElement(Element.Darkness);
+                            break;
+                        
+                        default:
+                            monster = MonsterFactory.Create("terror10Minus", Subject, new Point(8, 8));
+                            break;
+                    }
 
-                    // Create attributes based on the group level
                     var attrib = new Attributes
                     {
-                        Ac = (int)groupArmorClass.Average(),
-                        Con = (int)groupLevel.Average(),
-                        Dex = (int)groupLevel.Average(),
-                        Int = (int)groupLevel.Average(),
-                        Str = (int)groupLevel.Average(),
-                        Wis = (int)groupLevel.Average(),
-                        AtkSpeedPct = groupLevel.Count * 5,
+                        AtkSpeedPct = groupLevel.Count * 5 + 5,
                         MaximumHp = (int)groupLevel.Average() * groupLevel.Count * 700,
                         MaximumMp = (int)groupLevel.Average() * groupLevel.Count * 700,
                         SkillDamagePct = groupLevel.Count,
                         SpellDamagePct = groupLevel.Count,
                     };
-
-                    // Check the group level and add spells accordingly
-                    if (groupLevel.Average() > 10)
-                    {
-                        var spell = SpellFactory.Create("beagsrad");
-                        var cradh = SpellFactory.Create("beagcradh");
-                        monster.Spells.Add(spell);
-                        monster.Spells.Add(cradh);
-                        monster.StatSheet.SetOffenseElement(Elements.PickRandom());
-                        monster.StatSheet.SetDefenseElement(Elements.PickRandom());
-                    }
-
-                    if ((groupLevel.Average() > 10) && (groupLevel.Average() < 24))
-                    {
-                        var spell = SpellFactory.Create("beagsradlamh");
-                        var cradh = SpellFactory.Create("beagcradh");
-                        var wallop = SkillFactory.Create("wallop");
-                        monster.Skills.Add(wallop);
-                        monster.Spells.Add(spell);
-                        monster.Spells.Add(cradh);
-                        monster.StatSheet.SetOffenseElement(Element.Darkness);
-                        monster.StatSheet.SetDefenseElement(Elements.PickRandom());
-                    }
-
-                    if (groupLevel.Average() > 25)
-                    {
-                        var spell = SpellFactory.Create("srad");
-                        var cradh = SpellFactory.Create("cradh");
-                        monster.Spells.Add(spell);
-                        monster.Spells.Add(cradh);
-                        var wallop = SkillFactory.Create("wallop");
-                        monster.Skills.Add(wallop);
-                        var groundStomp = SkillFactory.Create("groundStomp");
-                        monster.Skills.Add(groundStomp);
-                        monster.StatSheet.SetOffenseElement(Element.Darkness);
-                        monster.StatSheet.SetDefenseElement(Element.Darkness);
-                    }
-
+                    
                     // Add the attributes to the monster
                     monster.StatSheet.AddBonus(attrib);
                     // Add HP and MP to the monster
                     monster.StatSheet.SetHealthPct(100);
                     monster.StatSheet.SetManaPct(100);
                     // Add the monster to the subject
-                    Subject.AddEntity(monster, monster);
+                    Subject.AddEntity(monster, monster);  
+                    
                     // Set the state to spawned
                     State = ScriptState.Spawned;
                     // Reset the animation index
