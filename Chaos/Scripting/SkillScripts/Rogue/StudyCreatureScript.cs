@@ -78,10 +78,6 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent
 
         if (mob is not null)
         {
-            if (mob is Aisling)
-            {
-                
-            }
             context.SourceAisling?.Client.SendServerMessage(
                 ServerMessageType.ScrollWindow,
                 $"Name: {mob.Name}\nLevel: {mob.StatSheet.Level}\nHealth: {mob.StatSheet.CurrentHp}\nArmor Class: {
