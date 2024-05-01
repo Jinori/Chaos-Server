@@ -379,7 +379,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             return;
         }
 
-        if (ArenaKeys.Contains(Subject.MapInstance.BaseInstanceId!))
+        if (ArenaKeys.Contains(Subject.MapInstance.LoadedFromInstanceId))
         {
             var aislings = Subject.MapInstance.GetEntities<Aisling>();
 

@@ -8,14 +8,13 @@ using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.DialogScripts.Mileth;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Rucesion;
 
-public class PrettyFlowerQuestScript(Dialog subject, ILogger<SpareAStickScript> logger)
+public class PrettyFlowerQuestScript(Dialog subject, ILogger<PrettyFlowerQuestScript> logger)
     : DialogScriptBase(subject)
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();

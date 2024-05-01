@@ -107,14 +107,10 @@ public sealed class ColorClashDetermineWinnerScript : MapScriptBase
     private void CalculateScores()
     {
         foreach (var reactorTile in Subject.GetEntities<ReactorTile>())
-        {
             if (reactorTile.Script.Is<ColorClashScript>(out var colorClashScript) && colorClashScript.CurrentTeam.HasValue)
-            {
                 TeamScores[colorClashScript.CurrentTeam.Value]++;
-            }
-        }
     }
-    
+     
     private void HandleWinningTeam(ArenaTeam winningTeam)
     {
         ResetMaps();

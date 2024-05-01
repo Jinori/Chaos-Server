@@ -49,7 +49,7 @@ public class RelationshipBehavior
         if (source.Equals(target))
             return true;
 
-        var inPvpMap = ArenaKeys.Contains(source.MapInstance.BaseInstanceId!);
+        var inPvpMap = ArenaKeys.Contains(source.MapInstance.LoadedFromInstanceId);
 
         var inGroup = source.Group?.Contains(target) ?? false;
 
@@ -164,7 +164,7 @@ public class RelationshipBehavior
         if (source.Equals(target))
             return false;
 
-        var onPvpMap = ArenaKeys.Contains(source.MapInstance.BaseInstanceId!);
+        var onPvpMap = ArenaKeys.Contains(source.MapInstance.LoadedFromInstanceId);
 
         var inGroup = source.Group?.Contains(target) ?? false;
 

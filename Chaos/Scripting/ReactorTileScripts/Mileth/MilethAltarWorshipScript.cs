@@ -11,17 +11,9 @@ using Chaos.Time;
 
 namespace Chaos.Scripting.ReactorTileScripts.Mileth;
 
-public class MilethAltarWorshipScript : ReactorTileScriptBase
+public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFactory) : ReactorTileScriptBase(subject)
 {
-    private readonly IItemFactory _itemFactory;
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
-
-    public MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFactory)
-        : base(subject)
-    {
-        _itemFactory = itemFactory;
-        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
-    }
+    private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
     public override void OnItemDroppedOn(Creature source, GroundItem groundItem)
     {
@@ -61,12 +53,12 @@ public class MilethAltarWorshipScript : ReactorTileScriptBase
 
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
             ExperienceDistributionScript.GiveExp(aisling, 20000);
-            aisling.GiveItemOrSendToBank(_itemFactory.Create("amethystring"));
+            aisling.GiveItemOrSendToBank(itemFactory.Create("amethystring"));
         }
         else
         {
             ExperienceDistributionScript.GiveExp(aisling, 5000);
-            aisling.GiveItemOrSendToBank(_itemFactory.Create("emeraldring"));
+            aisling.GiveItemOrSendToBank(itemFactory.Create("emeraldring"));
         }
     }
 }

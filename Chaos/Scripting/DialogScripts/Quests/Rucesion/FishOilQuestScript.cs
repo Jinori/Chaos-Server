@@ -16,7 +16,7 @@ using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Rucesion;
 
-public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<SpareAStickScript> logger)
+public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<FishOilQuestScript> logger)
     : DialogScriptBase(subject)
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();

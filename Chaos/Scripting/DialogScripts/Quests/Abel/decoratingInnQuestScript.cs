@@ -8,7 +8,6 @@ using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.DialogScripts.Mileth;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Time;
@@ -17,10 +16,10 @@ namespace Chaos.Scripting.DialogScripts.Quests.Abel;
 
 public class decoratingInnQuestScript : DialogScriptBase
 {
-    private readonly ILogger<SpareAStickScript> Logger;
+    private readonly ILogger<decoratingInnQuestScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public decoratingInnQuestScript(Dialog subject, ILogger<SpareAStickScript> logger)
+    public decoratingInnQuestScript(Dialog subject, ILogger<decoratingInnQuestScript> logger)
         : base(subject)
     {
         Logger = logger;

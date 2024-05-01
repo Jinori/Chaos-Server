@@ -8,24 +8,20 @@ using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.DialogScripts.Mileth;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
-using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.MilethQuest;
 
 public class CrudeLeatherQuestScript : DialogScriptBase
 {
-    private readonly IItemFactory ItemFactory;
-    private readonly ILogger<SpareAStickScript> Logger;
+    private readonly ILogger<CrudeLeatherQuestScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public CrudeLeatherQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<SpareAStickScript> logger)
+    public CrudeLeatherQuestScript(Dialog subject, ILogger<CrudeLeatherQuestScript> logger)
         : base(subject)
     {
-        ItemFactory = itemFactory;
         Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
@@ -77,60 +73,66 @@ public class CrudeLeatherQuestScript : DialogScriptBase
             {
                 var hasRequiredWolfFurs = source.Inventory.HasCount("Wolf's Fur", 10);
                 
-                if (hasStage && stage == CrudeLeather.StartedQuest)
+                if (hasStage && (stage == CrudeLeather.StartedQuest))
                 {
-                    if (hasRequiredWolfFurs)
+                    switch (hasRequiredWolfFurs)
                     {
-                        source.Inventory.RemoveQuantity("Wolf's Fur", 10, out _);
-                        source.Trackers.Enums.Set(CrudeLeather.None);
-                        source.Trackers.TimedEvents.AddEvent("crudeleathercd", TimeSpan.FromHours(24), true);
-
-                        Logger.WithTopics(
-                                Topics.Entities.Aisling,
-                                Topics.Entities.Gold,
-                                Topics.Entities.Experience,
-                                Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
-                            .WithProperty(source)
-                            .WithProperty(Subject)
-                            .LogInformation(
-                                "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
-                                source.Name,
-                                5000,
-                                15000);
-
-                        ExperienceDistributionScript.GiveExp(source, 15000);
-                        source.TryGiveGold(5000);
-                        source.TryGiveGamePoints(5);
-
-                        if (IntegerRandomizer.RollChance(8))
+                        case true:
                         {
-                            source.Legend.AddOrAccumulate(
-                                new LegendMark(
-                                    "Loved by Mileth Mundanes",
-                                    "milethLoved",
-                                    MarkIcon.Heart,
-                                    MarkColor.Blue,
-                                    1,
-                                    GameTime.Now));
+                            source.Inventory.RemoveQuantity("Wolf's Fur", 10, out _);
+                            source.Trackers.Enums.Set(CrudeLeather.None);
+                            source.Trackers.TimedEvents.AddEvent("crudeleathercd", TimeSpan.FromHours(24), true);
 
-                            source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
-                                "You received a unique legend mark!");
+                            Logger.WithTopics(
+                                      Topics.Entities.Aisling,
+                                      Topics.Entities.Gold,
+                                      Topics.Entities.Experience,
+                                      Topics.Entities.Dialog,
+                                      Topics.Entities.Quest)
+                                  .WithProperty(source)
+                                  .WithProperty(Subject)
+                                  .LogInformation(
+                                      "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
+                                      source.Name,
+                                      5000,
+                                      15000);
+
+                            ExperienceDistributionScript.GiveExp(source, 15000);
+                            source.TryGiveGold(5000);
+                            source.TryGiveGamePoints(5);
+
+                            if (IntegerRandomizer.RollChance(8))
+                            {
+                                source.Legend.AddOrAccumulate(
+                                    new LegendMark(
+                                        "Loved by Mileth Mundanes",
+                                        "milethLoved",
+                                        MarkIcon.Heart,
+                                        MarkColor.Blue,
+                                        1,
+                                        GameTime.Now));
+
+                                source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
+                                    "You received a unique legend mark!");
+                            }
+
+                            break;
                         }
-                    }
-
-                    if (!hasRequiredWolfFurs)
-                    {
-                        var wolfFurCount = source.Inventory.CountOf("Wolf's Fur");
-
-                        if (wolfFurCount < 1)
+                        case false:
                         {
-                            Subject.Reply(source, "You don't even have one! Please go get those wolf's fur.");
-                            return;
-                        }
+                            var wolfFurCount = source.Inventory.CountOf("Wolf's Fur");
+
+                            if (wolfFurCount < 1)
+                            {
+                                Subject.Reply(source, "You don't even have one! Please go get those wolf's fur.");
+                                return;
+                            }
                         
-                        Subject.Reply(source,
-                            $"Can you not count? What am I going to do with {wolfFurCount} wolf furs? I need at least 10 to make one crude leather breast plate for my students.");
+                            Subject.Reply(source,
+                                $"Can you not count? What am I going to do with {wolfFurCount} wolf furs? I need at least 10 to make one crude leather breast plate for my students.");
+
+                            break;
+                        }
                     }
                 }
 

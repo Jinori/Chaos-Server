@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Chaos.Collections;
 using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
 using Chaos.IO.FileSystem;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -12,28 +13,18 @@ using Microsoft.Extensions.Configuration;
 
 namespace Chaos.Scripting.MonsterScripts;
 
-public class DamageGameScript : MonsterScriptBase
+public class DamageGameScript(Monster subject, ISimpleCache simpleCache) : MonsterScriptBase(subject)
 {
-    private readonly IConfiguration Configuration;
-    private readonly IIntervalTimer CountDownTimer;
-    private readonly ISimpleCache SimpleCache;
+    private readonly IConfiguration Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true).Build();
+    private readonly IIntervalTimer CountDownTimer = new PeriodicMessageTimer(
+        TimeSpan.FromMinutes(1),
+        TimeSpan.FromSeconds(15),
+        TimeSpan.FromSeconds(10),
+        TimeSpan.FromSeconds(1),
+        "{Time}",
+        subject.Say);
     private int DamageDone;
     private bool GameStarted;
-
-    public DamageGameScript(Monster subject, ISimpleCache simpleCache)
-        : base(subject)
-    {
-        CountDownTimer = new PeriodicMessageTimer(
-            TimeSpan.FromMinutes(1),
-            TimeSpan.FromSeconds(15),
-            TimeSpan.FromSeconds(10),
-            TimeSpan.FromSeconds(1),
-            "{Time}",
-            subject.Say);
-
-        Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true).Build();
-        SimpleCache = simpleCache;
-    }
 
     public static void DamageGame(Aisling player, int damage, IConfiguration configuration)
     {
@@ -97,7 +88,7 @@ public class DamageGameScript : MonsterScriptBase
 
             // Serialize the updated dictionary and write it to the JSON file
             var updatedJson = JsonSerializer.Serialize(damageData);
-            File.WriteAllText(filePath, updatedJson);
+            FileEx.SafeWriteAllText(filePath, updatedJson);
         }
     }
 
@@ -113,11 +104,11 @@ public class DamageGameScript : MonsterScriptBase
 
                 if (player != null)
                 {
-                    Subject.MapInstance.RemoveEntity(Subject);
                     DamageGame(player, DamageDone, Configuration);
-                    var mapInstance = SimpleCache.Get<MapInstance>("hm_road");
+                    var mapInstance = simpleCache.Get<MapInstance>("hm_road");
                     player.TraverseMap(mapInstance, new Point(4, 6));
                     GameStarted = false;
+                    Subject.MapInstance.RemoveEntity(Subject);
                 }
             }
         }
