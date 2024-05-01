@@ -174,6 +174,10 @@ public class ArenaUndergroundScript : DialogScriptBase
                 }
 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
+                
+                if (aisling!.MapInstance.Template.TemplateKey != "arena_underground")
+                    return;
+                
                 aisling?.Trackers.Enums.Set(ArenaTeam.Red);
                 var rect = new Rectangle(new Point(11, 17), 4, 3);
                 aisling?.WarpTo(rect.GetRandomPoint());
@@ -191,6 +195,10 @@ public class ArenaUndergroundScript : DialogScriptBase
                 }
 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
+                
+                if (aisling!.MapInstance.Template.TemplateKey != "arena_underground")
+                    return;
+                
                 aisling?.Trackers.Enums.Set(ArenaTeam.Green);
                 var rect = new Rectangle(new Point(18, 10), 3, 4);
                 aisling?.WarpTo(rect.GetRandomPoint());
@@ -208,6 +216,10 @@ public class ArenaUndergroundScript : DialogScriptBase
                 }
 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
+                
+                if (aisling!.MapInstance.Template.TemplateKey != "arena_underground")
+                    return;
+                
                 aisling?.Trackers.Enums.Set(ArenaTeam.Gold);
                 var rect = new Rectangle(new Point(5, 10), 4, 3);
                 aisling?.WarpTo(rect.GetRandomPoint());
@@ -225,6 +237,10 @@ public class ArenaUndergroundScript : DialogScriptBase
                 }
 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
+
+                if (aisling!.MapInstance.Template.TemplateKey != "arena_underground")
+                    return;
+                
                 aisling?.Trackers.Enums.Set(ArenaTeam.Blue);
                 var rect = new Rectangle(new Point(12, 4), 4, 3);
                 aisling?.WarpTo(rect.GetRandomPoint());
@@ -248,6 +264,10 @@ public class ArenaUndergroundScript : DialogScriptBase
                 while (CenterWarp == CenterWarpPlayer);
 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
+                
+                if (aisling!.MapInstance.Template.TemplateKey != "arena_underground")
+                    return;
+                
                 aisling?.Trackers.Enums.Remove<ArenaTeam>();
                 aisling?.Trackers.Enums.Remove<ArenaSide>();
                 aisling?.WarpTo(CenterWarpPlayer);

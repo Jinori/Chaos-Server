@@ -9,12 +9,12 @@ namespace Chaos.Messaging.Admin;
 
 [Command("displaychar", helpText: "<targetName>")]
 
-public class displayCharInfoCommand : ICommand<Aisling>
+public class DisplayCharInfoCommand : ICommand<Aisling>
 {
 
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
 
-    public displayCharInfoCommand(IClientRegistry<IWorldClient> clientRegistry) => ClientRegistry = clientRegistry;
+    public DisplayCharInfoCommand(IClientRegistry<IWorldClient> clientRegistry) => ClientRegistry = clientRegistry;
 
     public ValueTask ExecuteAsync(Aisling source, ArgumentCollection args)
     {

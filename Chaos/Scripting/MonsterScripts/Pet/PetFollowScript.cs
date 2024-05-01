@@ -43,11 +43,17 @@ public sealed class PetFollowScript : MonsterScriptBase
             return;
         }
 
-        if (!ShouldMove || (Target != null))
-            return;
-
         var playerDistance = Subject.PetOwner.DistanceFrom(Subject);
         Subject.PetOwner.Trackers.Enums.TryGetValue(out PetFollowMode value);
+
+        if (playerDistance > 13)
+        {
+            Subject.TraverseMap(Subject.PetOwner.MapInstance, Subject.PetOwner);
+            return;
+        }
+        
+        if (!ShouldMove || (Target != null))
+            return;
         
         switch (value)
         {

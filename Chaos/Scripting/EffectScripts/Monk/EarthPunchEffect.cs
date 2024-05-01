@@ -14,7 +14,7 @@ public sealed class EarthPunchEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
-        AnimationSpeed = 100,
+        AnimationSpeed = 70,
         TargetAnimation = 208
     };
     /// <inheritdoc />
