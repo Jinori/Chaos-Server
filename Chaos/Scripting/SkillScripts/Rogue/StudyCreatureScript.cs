@@ -7,6 +7,7 @@ using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components;
+using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Scripting.SkillScripts.Abstractions;
 
 namespace Chaos.Scripting.SkillScripts.Rogue;
@@ -69,11 +70,18 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent
             3,
             context.Direction,
             excludeSource: true);
+        
+        var entities = context.SourceMap.GetEntitiesAtPoints<Creature>(points.OfType<IPoint>());
 
-        var mob = context.SourceMap.GetEntitiesAtPoints<Creature>(points.OfType<IPoint>()).FirstOrDefault();
+        var mob = entities.FirstOrDefault(entity => entity is not Aisling && !entity.Script.Is<PetScript>());
 
-        if ((mob is not null) && mob is not Aisling)
+
+        if (mob is not null)
         {
+            if (mob is Aisling)
+            {
+                
+            }
             context.SourceAisling?.Client.SendServerMessage(
                 ServerMessageType.ScrollWindow,
                 $"Name: {mob.Name}\nLevel: {mob.StatSheet.Level}\nHealth: {mob.StatSheet.CurrentHp}\nArmor Class: {

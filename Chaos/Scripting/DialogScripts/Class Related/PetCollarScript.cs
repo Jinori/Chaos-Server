@@ -44,25 +44,39 @@ public class PetCollarScript(
     private void RemoveExistingPets(Aisling source)
     {
         var pets = source.MapInstance.GetEntities<Monster>().Where(x => x.Script.Is<PetScript>() && x.Name.Contains(source.Name));
+
+        var nopetSummoned = !source.MapInstance.GetEntities<Monster>().Any(x => x.Script.Is<PetScript>() && x.Name.Contains(source.Name));
+
+        if (nopetSummoned)
+        {
+            Subject.Reply(source, "Your pet is not currently summoned");
+            source.SendOrangeBarMessage("Your pet is not currently summoned.");
+            return;
+        }
+        
         foreach (var pet in pets)
+        {
             pet.MapInstance.RemoveEntity(pet);
+            source.Trackers.TimedEvents.AddEvent("PetDeath", TimeSpan.FromMinutes(5), true);
+        }
     }
 
     private void HandleSummonPet(Aisling source)
     {
-        if (source.Trackers.TimedEvents.HasActiveEvent("SummonedPet", out var summonEvent))
+        var petSummoned = source.MapInstance.GetEntities<Monster>().Any(x => x.Script.Is<PetScript>() && x.Name.Contains(source.Name));
+
+        if (petSummoned)
         {
-            source.SendActiveMessage($"You recently summoned your pet. Please wait {summonEvent.Remaining.ToReadableString()}.");
+            source.SendOrangeBarMessage($"Your pet is currently summoned.");
             return;
         }
         
         if (source.Trackers.TimedEvents.HasActiveEvent("PetDeath", out var timedEvent))
         {
-            source.SendActiveMessage($"Your pet recently died. Please wait {timedEvent.Remaining.ToReadableString()}.");
+            source.SendActiveMessage($"Your pet recently came home. Please wait {timedEvent.Remaining.ToReadableString()}.");
             return;
         }
         
-        RemoveExistingPets(source);
         source.Trackers.Enums.TryGetValue(out SummonChosenPet petKey);
 
         if (petKey == SummonChosenPet.None)
@@ -79,7 +93,6 @@ public class PetCollarScript(
         var newMonster = monsterFactory.Create(petKey + "pet", source.MapInstance, source);
         InitializeNewPet(source, newMonster);
         source.MapInstance.AddEntity(newMonster, source);
-        source.Trackers.TimedEvents.AddEvent("SummonedPet", TimeSpan.FromMinutes(5), true);
     }
 
     private void InitializeNewPet(Aisling source, Monster newMonster)
