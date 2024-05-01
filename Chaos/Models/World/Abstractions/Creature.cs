@@ -255,7 +255,11 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
 
         if (source.Inventory.TryGetObject(slot, out var inventoryItem))
             if (!Script.CanDropItemOn(source, inventoryItem))
+            {
+                source.SendActiveMessage("You can't trade that item");
+
                 return;
+            }
 
         if (source.Inventory.RemoveQuantity(slot, count, out var items))
             foreach (var item in items)
@@ -354,7 +358,8 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
         switch (publicMessageType)
         {
             case PublicMessageType.Normal:
-                creaturesWithinRange = MapInstance.GetEntitiesWithinRange<Creature>(this);
+                creaturesWithinRange = MapInstance.GetEntitiesWithinRange<Creature>(this)
+                                                  .ThatCanObserve(this);
                 sendMessage = $"{Name}: {message}";
 
                 break;
@@ -364,7 +369,8 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
 
                 break;
             case PublicMessageType.Chant:
-                creaturesWithinRange = MapInstance.GetEntities<Creature>();
+                creaturesWithinRange = MapInstance.GetEntities<Creature>()
+                                                  .ThatCanObserve(this);
 
                 break;
             default:

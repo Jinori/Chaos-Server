@@ -46,7 +46,8 @@ public static class ComplexActionHelper
         Success,
         DontHaveThatMany,
         NotEnoughGold,
-        BadInput
+        BadInput,
+        ItemDamaged
     }
 
     public enum LearnSkillResult
@@ -73,7 +74,8 @@ public static class ComplexActionHelper
         Success,
         DontHaveThatMany,
         TooMuchGold,
-        BadInput
+        BadInput,
+        ItemDamaged
     }
 
     public enum WithdrawGoldResult
@@ -224,12 +226,25 @@ public static class ComplexActionHelper
         if (!source.Inventory.HasCount(slotItem.DisplayName, amount))
             return DepositItemResult.DontHaveThatMany;
 
+        if (slotItem.CurrentDurability != slotItem.Template.MaxDurability)
+            return DepositItemResult.ItemDamaged;
+
         var totalCost = amount * costPerItem;
 
         if (!source.TryTakeGold(totalCost))
             return DepositItemResult.NotEnoughGold;
 
         source.Inventory.RemoveQuantity(slot, amount, out var items);
+
+        //if any item is damaged, return it to the inventory
+        //and return the result
+        if (items!.Any(i => i.CurrentDurability != i.Template.MaxDurability))
+        {
+            foreach (var item in items!)
+                source.Inventory.TryAdd(item.Slot, item);
+
+            return DepositItemResult.ItemDamaged;
+        }
 
         foreach (var item in items!)
             source.Bank.Deposit(item);
@@ -257,12 +272,25 @@ public static class ComplexActionHelper
         if (!source.Inventory.HasCount(slotItem.DisplayName, amount))
             return DepositItemResult.DontHaveThatMany;
 
+        if (slotItem.CurrentDurability != slotItem.Template.MaxDurability)
+            return DepositItemResult.ItemDamaged;
+
         var totalCost = amount * costPerItem;
 
         if (!source.TryTakeGold(totalCost))
             return DepositItemResult.NotEnoughGold;
 
         source.Inventory.RemoveQuantity(itemName, amount, out var items);
+
+        //if any item is damaged, return it to the inventory
+        //and return the result
+        if (items!.Any(i => i.CurrentDurability != i.Template.MaxDurability))
+        {
+            foreach (var item in items!)
+                source.Inventory.TryAdd(item.Slot, item);
+
+            return DepositItemResult.ItemDamaged;
+        }
 
         foreach (var item in items!)
             source.Bank.Deposit(item);
@@ -347,12 +375,25 @@ public static class ComplexActionHelper
         if (!source.Inventory.HasCount(slotItem.DisplayName, amount))
             return SellItemResult.DontHaveThatMany;
 
+        if (slotItem.CurrentDurability != slotItem.Template.MaxDurability)
+            return SellItemResult.ItemDamaged;
+
         var totalValue = valuePerItem * amount;
 
         if (!source.TryGiveGold(totalValue))
             return SellItemResult.TooMuchGold;
 
-        source.Inventory.RemoveQuantity(slot, amount);
+        source.Inventory.RemoveQuantity(slot, amount, out var items);
+
+        if (items!.Any(item => item.CurrentDurability != item.Template.MaxDurability))
+        {
+            foreach (var item in items!)
+                source.Inventory.TryAdd(item.Slot, item);
+
+            source.TryTakeGold(totalValue);
+
+            return SellItemResult.ItemDamaged;
+        }
 
         return SellItemResult.Success;
     }
@@ -380,12 +421,25 @@ public static class ComplexActionHelper
         if (!source.Inventory.HasCount(slotItem.DisplayName, amount))
             return SellItemResult.DontHaveThatMany;
 
+        if (slotItem.CurrentDurability != slotItem.Template.MaxDurability)
+            return SellItemResult.ItemDamaged;
+
         var totalValue = valuePerItem * amount;
 
         if (!source.TryGiveGold(totalValue))
             return SellItemResult.TooMuchGold;
 
-        source.Inventory.RemoveQuantity(itemName, amount);
+        source.Inventory.RemoveQuantity(itemName, amount, out var items);
+
+        if (items!.Any(item => item.CurrentDurability != item.Template.MaxDurability))
+        {
+            foreach (var item in items!)
+                source.Inventory.TryAdd(item.Slot, item);
+
+            source.TryTakeGold(totalValue);
+
+            return SellItemResult.ItemDamaged;
+        }
 
         return SellItemResult.Success;
     }
