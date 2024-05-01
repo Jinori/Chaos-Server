@@ -23,52 +23,48 @@ public class ManaReplenishComponent : IComponent
     {
         var options = vars.GetOptions<IManaReplenishComponentOptions>();
         var targets = vars.GetTargets<Creature>();
-
-        var replenish = options.ManaReplenish ?? 0;
-
+    
         foreach (var target in targets)
         {
-            var finalReplenish = replenish + MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumMp, options.PctManaReplenish);
+            var baseReplenish = options.ManaReplenish ?? 0;
+            var percentageBasedReplenish = MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumMp, options.PctManaReplenish);
 
             if (options.ReplenishGroup)
             {
+                IEnumerable<Aisling>? group;
                 if (context.Source is Monster monster && context.Source.Script.Is<PetScript>())
-                {
-                    var petGroup = monster.PetOwner?.Group?.Where(x => x.WithinRange(target));
-                    if (petGroup != null)
-                        foreach (var member in petGroup)
-                        {
-                            member.StatSheet.AddMp(finalReplenish);
-                            member.Client.SendAttributes(StatUpdateType.Vitality);
-                            member.Animate(Sap);
-                        }
-                    else
-                    {
-                        monster.PetOwner?.StatSheet.AddMp(finalReplenish);
-                        monster.PetOwner?.Client.SendAttributes(StatUpdateType.Vitality);
-                        monster.PetOwner?.Animate(Sap);
-                    }
-                }
+                    group = monster.PetOwner?.Group?.Where(x => x.WithinRange(target));
                 else
-                {
-                    var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(target));
-
-                    if (group != null)
-                        foreach (var member in group)
-                        {
-                            member.StatSheet.AddMp(finalReplenish);
-                            member.Client.SendAttributes(StatUpdateType.Vitality);
-                            member.Animate(Sap);
-                        }
-                }
+                    group = context.SourceAisling?.Group?.Where(x => x.WithinRange(target));
+                
+                if (group != null)
+                    foreach (var member in group)
+                        ApplyManaReplenish(member, baseReplenish, percentageBasedReplenish, context.Source);
+                else
+                    ApplyManaReplenish(context.Source, baseReplenish, percentageBasedReplenish, context.Source);
 
                 return;
             }
-
-            context.Source.StatSheet.AddMp(finalReplenish);
-            context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
+        
+            ApplyManaReplenish(context.Source, baseReplenish, percentageBasedReplenish, context.Source);
         }
     }
+
+    private void ApplyManaReplenish(Creature creature, int baseReplenish, int percentageBasedReplenish, Creature source)
+    {
+        var maxReplenishAllowed = (int)(creature.StatSheet.EffectiveMaximumMp * 0.20);
+        var finalReplenish = Math.Min(baseReplenish + percentageBasedReplenish, maxReplenishAllowed);
+        creature.StatSheet.AddMp(finalReplenish);
+
+        if (creature is Aisling aisling)
+        {
+            aisling.Client.SendAttributes(StatUpdateType.Vitality);
+            aisling.SendOrangeBarMessage($"{source.Name} repenished {finalReplenish} mana through Sap Needle.");
+        }
+        
+        creature.Animate(Sap);
+    }
+
 
     public interface IManaReplenishComponentOptions
     {
