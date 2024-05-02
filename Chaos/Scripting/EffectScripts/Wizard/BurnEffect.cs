@@ -3,6 +3,7 @@ using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Models.Data;
+using Chaos.Models.World;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -29,6 +30,8 @@ public class BurnEffect : HierarchicalContinuousAnimationEffectBase
     /// <inheritdoc />
     public override string Name => "Burn";
     protected virtual decimal BurnPercentage { get; } = 5m;
+    
+    protected virtual decimal AislingBurnPercentage { get; } = 2.5m;
 
     protected override ImmutableArray<string> ReplaceHierarchy { get; } =
     [
@@ -51,12 +54,25 @@ public class BurnEffect : HierarchicalContinuousAnimationEffectBase
         var coefficient = Subject.StatSheet.Level > 99 ? 600 : 300;
         var estimatedHp = (Subject.StatSheet.Level * coefficient);
         var estimatedBurn = MathEx.GetPercentOf<int>(estimatedHp, BurnPercentage);
-        var potentialBurn = MathEx.GetPercentOf<int>((int)Subject.StatSheet.EffectiveMaximumHp, BurnPercentage);
-        var damage = Math.Min(estimatedBurn, potentialBurn);
 
-        return damage;
+        if (Subject is Aisling)
+        {
+            var potentialBurn = MathEx.GetPercentOf<int>((int)Subject.StatSheet.EffectiveMaximumHp, AislingBurnPercentage);
+            var damage = Math.Min(estimatedBurn, potentialBurn);
+            return damage;
+        }
+        else
+        {
+            var potentialBurn = MathEx.GetPercentOf<int>((int)Subject.StatSheet.EffectiveMaximumHp, BurnPercentage);
+            var damage = Math.Min(estimatedBurn, potentialBurn);
+            return damage;
+        }
     }
 
+    public override void OnApplied()
+    {
+        AislingSubject?.SendOrangeBarMessage("Your body catches fire.");
+    }
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
