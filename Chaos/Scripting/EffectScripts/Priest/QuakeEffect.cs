@@ -1,4 +1,5 @@
-﻿using Chaos.Common.Definitions;
+﻿using Chaos.Collections;
+using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Geometry.Abstractions;
@@ -36,6 +37,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
     };
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+
     /// <inheritdoc />
     public override byte Icon => 98;
     /// <inheritdoc />
@@ -55,6 +57,10 @@ public class QuakeEffect : ContinuousAnimationEffectBase
 
         var targets =
             Subject.MapInstance.GetEntitiesAtPoints<Creature>(points.Cast<IPoint>()).WithFilter(Subject, TargetFilter.HostileOnly).ToList();
+
+        if ((AislingSubject?.Group == null && AislingSubject?.Name != SourceOfEffect.Name) 
+            || (AislingSubject?.Group != null && !AislingSubject.Group.Contains(SourceOfEffect)))
+            Subject.Effects.Terminate("Quake");
         
         foreach (var target in targets)
         {
