@@ -15,6 +15,8 @@ public class SpellComponent<TEntity> : IConditionalComponent where TEntity: MapE
             .Execute<BreaksHideComponent>()
             .ExecuteAndCheck<GetTargetsComponent<TEntity>>()
             ?
+            .ExecuteAndCheck<SplashComponent<TEntity>>()
+            ?
             .Execute<MagicResistanceComponent>()
             .Execute<BodyAnimationComponent>()
             .Execute<AnimationComponent>()
@@ -22,6 +24,7 @@ public class SpellComponent<TEntity> : IConditionalComponent where TEntity: MapE
         != null;
 
     public interface ISpellComponentOptions : GetTargetsComponent<TEntity>.IGetTargetsComponentOptions,
+                                                SplashComponent<TEntity>.ISplashComponentOptions,
                                               MagicResistanceComponent.IMagicResistanceComponentOptions,
                                               SoundComponent.ISoundComponentOptions,
                                               BodyAnimationComponent.IBodyAnimationComponentOptions,

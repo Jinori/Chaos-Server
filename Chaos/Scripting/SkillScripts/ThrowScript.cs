@@ -53,4 +53,8 @@ public class ThrowScript : ConfigurableSkillScriptBase,
             .ExecuteAndCheck<AbilityComponent<Creature>>()
             ?
             .Execute<ThrowComponent>();
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

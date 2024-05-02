@@ -54,4 +54,8 @@ public class InspectScript : ConfigurableSkillScriptBase,
             .ExecuteAndCheck<AbilityComponent<Creature>>()
             ?
             .Execute<InspectItemComponent>();
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

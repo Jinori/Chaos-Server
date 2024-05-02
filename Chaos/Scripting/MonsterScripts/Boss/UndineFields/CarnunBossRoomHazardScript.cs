@@ -1,6 +1,4 @@
 using Chaos.Common.Definitions;
-using Chaos.Definitions;
-using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
@@ -11,7 +9,6 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Nightmare.PriestNightmare;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 

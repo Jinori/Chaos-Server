@@ -1,4 +1,3 @@
-using Chaos.Collections;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;

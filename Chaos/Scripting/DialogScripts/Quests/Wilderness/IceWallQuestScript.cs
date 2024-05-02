@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -8,7 +7,6 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
-using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Quests;
 

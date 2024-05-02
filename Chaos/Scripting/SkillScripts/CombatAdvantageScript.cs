@@ -79,4 +79,8 @@ public class CombatAdvantageScript : ConfigurableSkillScriptBase,
             ?
             .Execute<CombatAdvantageComponent>()
             .Execute<DamageComponent>();
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

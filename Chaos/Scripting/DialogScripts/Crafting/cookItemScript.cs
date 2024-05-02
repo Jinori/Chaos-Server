@@ -563,7 +563,7 @@ public class CookItemScript : DialogScriptBase
                     if (fruitsStage && (fstage == FruitsStage.cherry))
                         source.Inventory.RemoveQuantityByTemplateKey("cherry", 10);
 
-                    if (fruitsStage && (fstage == FruitsStage.cherry))
+                    if (fruitsStage && (fstage == FruitsStage.grape))
                         source.Inventory.RemoveQuantityByTemplateKey("grape", 10);
 
                     if (fruitsStage && (fstage == FruitsStage.acorn))

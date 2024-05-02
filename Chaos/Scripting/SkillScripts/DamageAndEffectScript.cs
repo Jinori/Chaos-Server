@@ -40,6 +40,9 @@ public class DamageAndEffectScript : ConfigurableSkillScriptBase,
     public IEffectFactory EffectFactory { get; init; }
     /// <inheritdoc />
     public string? EffectKey { get; init; }
+
+    public int? EffectApplyChance { get; init; }
+
     /// <inheritdoc />
     public Element? Element { get; init; }
 
@@ -83,4 +86,8 @@ public class DamageAndEffectScript : ConfigurableSkillScriptBase,
                                       .ExecuteAndCheck<AbilityComponent<Creature>>()
                                       ?.Execute<DamageComponent>()
                                       .Execute<ApplyEffectComponent>();
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

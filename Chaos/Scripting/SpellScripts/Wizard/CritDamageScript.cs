@@ -9,22 +9,17 @@ using Chaos.Scripting.Components.Utilities;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.SpellScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.SpellScripts.Damage;
+namespace Chaos.Scripting.SpellScripts.Wizard;
 
-public class DamageWithSplashScript : ConfigurableSpellScriptBase,
-                                      SpellComponent<Creature>.ISpellComponentOptions,
-                                      DamageComponent.IDamageComponentOptions,
-                                      SpreadComponent.ISpreadComponentOptions
+public class CritDamageScript : ConfigurableSpellScriptBase,
+                            SpellComponent<Creature>.ISpellComponentOptions,
+                            CritDamageComponent.IDamageComponentOptions,
+                            NotifyTargetComponent.INotifyTargetComponentOptions
 {
     /// <inheritdoc />
-    public int SpreadChance { get; init; }
-
-    /// <inheritdoc />
-    public int SpreadDistance { get; init; }
-
-    /// <inheritdoc />
-    public DamageWithSplashScript(Spell subject)
+    public CritDamageScript(Spell subject)
         : base(subject)
     {
         ApplyDamageScript = ApplyAttackDamageScript.Create();
@@ -32,57 +27,80 @@ public class DamageWithSplashScript : ConfigurableSpellScriptBase,
     }
 
     /// <inheritdoc />
-    public override void OnUse(SpellContext context) =>
-        new ComponentExecutor(context)
-            .WithOptions(this)
-            .ExecuteAndCheck<SpellComponent<Creature>>()
-            ?
-            .Execute<DamageComponent>()
-            .ExecuteAndCheck<SpreadComponent>();
+    public override void OnUse(SpellContext context)
+        => new ComponentExecutor(context).WithOptions(this)
+                                         .ExecuteAndCheck<SpellComponent<Creature>>()
+                                         ?.Execute<CritDamageComponent>()
+                                         .Execute<NotifyTargetComponent>();
 
     #region ScriptVars
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
+
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
+
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
+
     /// <inheritdoc />
     public int Range { get; init; }
+
     /// <inheritdoc />
     public bool ExcludeSourcePoint { get; init; }
+
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
+
     /// <inheritdoc />
     public byte? Sound { get; init; }
-    /// <inheritdoc />
-    public ushort? AnimationSpeed { get; init; }
+
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
+
+    /// <inheritdoc />
+    public ushort? AnimationSpeed { get; init; }
+
     /// <inheritdoc />
     public Animation? Animation { get; init; }
+
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
+
     /// <inheritdoc />
     public IApplyDamageScript ApplyDamageScript { get; init; }
+
     /// <inheritdoc />
     public int? BaseDamage { get; init; }
     /// <inheritdoc />
     public bool? MoreDmgLowTargetHp { get; init; }
     /// <inheritdoc />
     public Stat? DamageStat { get; init; }
+
     /// <inheritdoc />
     public decimal? DamageStatMultiplier { get; init; }
+
+    public int? CritChance { get; init; }
+
     /// <inheritdoc />
     public Element? Element { get; init; }
+
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }
+
+    /// <inheritdoc />
     public IScript SourceScript { get; init; }
+
     /// <inheritdoc />
     public int? ManaCost { get; init; }
+
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
     /// <inheritdoc />
     public bool IgnoreMagicResistance { get; init; }
     #endregion
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

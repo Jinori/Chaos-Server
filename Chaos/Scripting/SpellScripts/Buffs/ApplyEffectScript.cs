@@ -53,6 +53,9 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
     public bool AnimatePoints { get; init; }
     /// <inheritdoc />
     public string? EffectKey { get; init; }
+
+    public int? EffectApplyChance { get; init; }
+
     /// <inheritdoc />
     public TimeSpan? EffectDurationOverride { get; init; }
     /// <inheritdoc />
@@ -64,4 +67,8 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public bool IgnoreMagicResistance { get; init; }
     #endregion
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

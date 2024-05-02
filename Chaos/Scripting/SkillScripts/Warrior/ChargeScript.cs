@@ -119,4 +119,8 @@ public class ChargeScript : ConfigurableSkillScriptBase,
         // If no creature was found, warp the source to the endpoint
         context.Source.WarpTo(endPoint);
     }
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

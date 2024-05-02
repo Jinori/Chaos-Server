@@ -5,7 +5,6 @@ using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.LevelUp;
 using Chaos.Services.Factories.Abstractions;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 
 namespace Chaos.Messaging.Admin;

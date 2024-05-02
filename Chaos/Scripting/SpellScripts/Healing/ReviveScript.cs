@@ -56,4 +56,8 @@ public class ReviveScript : ConfigurableSpellScriptBase,
             .ExecuteAndCheck<SpellComponent<Aisling>>()
             ?
             .Execute<ReviveComponent>();
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

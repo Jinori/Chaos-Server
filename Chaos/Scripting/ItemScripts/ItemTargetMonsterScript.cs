@@ -26,6 +26,7 @@ public class ItemTargetMonsterScript : ConfigurableItemScriptBase,
     public TimeSpan? EffectDurationOverride { get; init; }
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
+    public int? EffectApplyChance { get; init; }
 
     public bool ExcludeSourcePoint { get; init; }
     public TargetFilter Filter { get; init; }
@@ -50,4 +51,8 @@ public class ItemTargetMonsterScript : ConfigurableItemScriptBase,
             ?
             .Execute<ConsumableComponent>()
             .Execute<ApplyEffectComponent>();
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

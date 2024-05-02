@@ -5,7 +5,6 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Chaos.Scripting.ReactorTileScripts.KarloposIsland;
 

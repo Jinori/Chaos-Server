@@ -58,6 +58,13 @@ public class MountScript : ItemScriptBase
 
             return;
         }
+        
+        if (source.Trackers.TimedEvents.HasActiveEvent("mount", out var timedEvent))
+        {
+            source.SendOrangeBarMessage($"You can mount again in {timedEvent.Remaining.ToReadableString()}");
+
+            return;
+        }
 
         if (source.Trackers.Enums.TryGetValue(out CurrentMount mount) && source.Trackers.Enums.TryGetValue(out CurrentCloak cloak))
         {
@@ -65,13 +72,6 @@ public class MountScript : ItemScriptBase
             {
                 source.SendOrangeBarMessage("You jump off your mount.");
                 source.Effects.Dispel("mount");
-
-                return;
-            }
-
-            if (source.Trackers.TimedEvents.HasActiveEvent("mount", out var timedEvent))
-            {
-                source.SendOrangeBarMessage($"You can mount again in {timedEvent.Remaining.ToReadableString()}");
 
                 return;
             }

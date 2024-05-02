@@ -1,13 +1,9 @@
-using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
-using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Time;
-using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Nightmare.WarriorNightmare;
 

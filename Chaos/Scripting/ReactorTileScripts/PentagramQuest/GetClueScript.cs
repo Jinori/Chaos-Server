@@ -3,7 +3,6 @@ using Chaos.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.ReactorTileScripts.PentagramQuest;

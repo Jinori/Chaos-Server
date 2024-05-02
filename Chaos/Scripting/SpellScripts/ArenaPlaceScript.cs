@@ -56,4 +56,8 @@ public class ArenaPlaceScript : ConfigurableSpellScriptBase,
             .ExecuteAndCheck<SpellComponent<Aisling>>()
             ?
             .Execute<ArenaHostComponent>();
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

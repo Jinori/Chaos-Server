@@ -8,7 +8,6 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
-using Microsoft.Extensions.Configuration;
 
 namespace Chaos.Scripting.DialogScripts;
 

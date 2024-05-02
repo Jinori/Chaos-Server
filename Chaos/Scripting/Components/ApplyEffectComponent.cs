@@ -1,3 +1,4 @@
+using Chaos.Common.Utilities;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
@@ -20,6 +21,9 @@ public class ApplyEffectComponent : IComponent
 
         foreach (var target in targets)
         {
+            if (options.EffectApplyChance.HasValue && !IntegerRandomizer.RollChance(options.EffectApplyChance.Value))
+                continue;
+            
             var effect = options.EffectFactory.Create(options.EffectKey);
 
             if (options.EffectDurationOverride.HasValue)
@@ -34,5 +38,6 @@ public class ApplyEffectComponent : IComponent
         TimeSpan? EffectDurationOverride { get; init; }
         IEffectFactory EffectFactory { get; init; }
         string? EffectKey { get; init; }
+        int? EffectApplyChance { get; init; }
     }
 }

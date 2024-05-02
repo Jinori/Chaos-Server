@@ -57,4 +57,8 @@ public class AddAggroScript : ConfigurableSpellScriptBase,
             .ExecuteAndCheck<SpellComponent<Creature>>()
             ?
             .Execute<AddAggroComponent>();
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

@@ -78,4 +78,8 @@ public class ManaBasedDamageScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public IScript SourceScript { get; init; }
     #endregion
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

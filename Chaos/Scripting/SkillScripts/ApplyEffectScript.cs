@@ -29,6 +29,8 @@ public class ApplyEffectScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public string? EffectKey { get; init; }
 
+    public int? EffectApplyChance { get; init; }
+
     /// <inheritdoc />
     public bool ExcludeSourcePoint { get; init; }
     /// <inheritdoc />
@@ -56,4 +58,8 @@ public class ApplyEffectScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public override void OnUse(ActivationContext context) =>
         new ComponentExecutor(context).WithOptions(this).ExecuteAndCheck<AbilityComponent<Creature>>()?.Execute<ApplyEffectComponent>();
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

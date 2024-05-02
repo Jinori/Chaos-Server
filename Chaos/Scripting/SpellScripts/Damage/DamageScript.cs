@@ -9,19 +9,22 @@ using Chaos.Scripting.Components.Utilities;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.SpellScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.SpellScripts.Damage;
 
 public class DamageScript : ConfigurableSpellScriptBase,
                             SpellComponent<Creature>.ISpellComponentOptions,
                             DamageComponent.IDamageComponentOptions,
+                            ApplyEffectComponent.IApplyEffectComponentOptions,
                             NotifyTargetComponent.INotifyTargetComponentOptions
 {
     /// <inheritdoc />
-    public DamageScript(Spell subject)
+    public DamageScript(Spell subject, IEffectFactory effectFactory)
         : base(subject)
     {
         ApplyDamageScript = ApplyAttackDamageScript.Create();
+        EffectFactory = effectFactory;
         SourceScript = this;
     }
 
@@ -30,6 +33,7 @@ public class DamageScript : ConfigurableSpellScriptBase,
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<SpellComponent<Creature>>()
                                          ?.Execute<DamageComponent>()
+                                         .Execute<ApplyEffectComponent>()
                                          .Execute<NotifyTargetComponent>();
 
     #region ScriptVars
@@ -96,4 +100,12 @@ public class DamageScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public bool IgnoreMagicResistance { get; init; }
     #endregion
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
+    public TimeSpan? EffectDurationOverride { get; init; }
+    public IEffectFactory EffectFactory { get; init; }
+    public string? EffectKey { get; init; }
+    public int? EffectApplyChance { get; init; }
 }

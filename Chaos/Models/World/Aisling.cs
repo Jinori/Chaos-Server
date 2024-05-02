@@ -433,22 +433,30 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
     public void GiveItemOrSendToBank(Item item)
     {
-        if (!CanCarry(item))
+        var items = item.FixStacks(ItemCloner);
+
+        foreach (var single in items)
         {
-            Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Deposit, Topics.Entities.Item, Topics.Actions.Reward)
-                  .WithProperty(item).WithProperty(this)
-                  .LogInformation("{@Amount} {@ItemName} was sent to {@AislingName}'s bank", item.Count, item.DisplayName, Name);
-            SendOrangeBarMessage($"{item.DisplayName} was sent to your bank as overflow");
-            Bank.Deposit(item);
-            return;
+            if (!CanCarry(single))
+            {
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Deposit, Topics.Entities.Item,
+                        Topics.Actions.Reward)
+                    .WithProperty(single).WithProperty(this)
+                    .LogInformation("{@Amount} {@ItemName} was sent to {@AislingName}'s bank", single.Count,
+                        single.DisplayName, Name);
+                SendOrangeBarMessage($"{single.DisplayName} was sent to your bank as overflow");
+                Bank.Deposit(single);
+                return;
+            }
+
+            SendOrangeBarMessage($"You have received {single.DisplayName}.");
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Actions.Reward)
+                .WithProperty(single).WithProperty(this)
+                .LogInformation("{@Amount} {@ItemName} was given to {@AislingName}", single.Count, single.DisplayName,
+                    Name);
+
+            Inventory.TryAddToNextSlot(single);
         }
-        
-        SendOrangeBarMessage($"You have received {item.DisplayName}.");
-        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Actions.Reward)
-              .WithProperty(item).WithProperty(this)
-              .LogInformation("{@Amount} {@ItemName} was given to {@AislingName}", item.Count, item.DisplayName, Name);
-        
-        Inventory.TryAddToNextSlot(item);
     }
 
     /// <summary>

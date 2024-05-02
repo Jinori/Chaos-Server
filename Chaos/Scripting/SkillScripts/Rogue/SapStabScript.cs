@@ -83,4 +83,8 @@ public class SapStabScript : ConfigurableSkillScriptBase,
             ?
             .Execute<DamageComponent>()
             .Execute<ManaReplenishComponent>();
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

@@ -12,15 +12,21 @@ public class AbilityComponent<TEntity> : IConditionalComponent where TEntity: Ma
         => new ComponentExecutor(context, vars).ExecuteAndCheck<ManaCostComponent>()
                                                ?.Execute<BreaksHideComponent>()
                                                .ExecuteAndCheck<GetTargetsComponent<TEntity>>()
-                                               ?.Execute<BodyAnimationComponent>()
+                                               ?
+                                               .ExecuteAndCheck<SplashComponent<TEntity>>()
+                                               ?
+                                               .Execute<BodyAnimationComponent>()
                                                .Execute<AnimationComponent>()
                                                .Execute<SoundComponent>()
            != null;
 
     public interface IAbilityComponentOptions : GetTargetsComponent<TEntity>.IGetTargetsComponentOptions,
-                                                SoundComponent.ISoundComponentOptions,
-                                                BodyAnimationComponent.IBodyAnimationComponentOptions,
-                                                AnimationComponent.IAnimationComponentOptions,
-                                                ManaCostComponent.IManaCostComponentOptions,
-                                                BreaksHideComponent.IBreaksHideComponentOptions { }
+        SplashComponent<TEntity>.ISplashComponentOptions,
+        SoundComponent.ISoundComponentOptions,
+        BodyAnimationComponent.IBodyAnimationComponentOptions,
+        AnimationComponent.IAnimationComponentOptions,
+        ManaCostComponent.IManaCostComponentOptions,
+        BreaksHideComponent.IBreaksHideComponentOptions
+    {
+    }
 }

@@ -5,7 +5,6 @@ using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Services.Factories;
 using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Nightmare;

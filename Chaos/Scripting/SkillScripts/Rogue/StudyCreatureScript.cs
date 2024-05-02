@@ -104,4 +104,8 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, AbilityComponent
         if (mob == null)
             context.SourceAisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your attempt to examine failed.");
     }
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

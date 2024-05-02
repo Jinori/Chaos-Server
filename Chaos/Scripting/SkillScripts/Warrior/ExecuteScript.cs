@@ -79,4 +79,8 @@ public class ExecuteScript : ConfigurableSkillScriptBase,
             .ExecuteAndCheck<AbilityComponent<Creature>>()
             ?
             .Execute<ExecuteComponent>();
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

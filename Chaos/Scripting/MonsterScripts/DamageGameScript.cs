@@ -9,7 +9,6 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
-using Microsoft.Extensions.Configuration;
 
 namespace Chaos.Scripting.MonsterScripts;
 

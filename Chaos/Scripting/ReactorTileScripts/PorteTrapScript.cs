@@ -161,6 +161,7 @@ If this reactor was created through a script, you must specify the owner in the 
     public int? DurationSecs { get; init; }
     public int? MaxTriggers { get; init; }
     public string? EffectKey { get; init; }
+    public int? EffectApplyChance { get; init; }
     public int? ManaDrain { get; init; }
     public decimal PctManaDrain { get; init; }
     #endregion

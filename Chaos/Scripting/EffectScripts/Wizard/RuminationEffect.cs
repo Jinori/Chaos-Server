@@ -92,6 +92,7 @@ public class RuminationEffect : ContinuousAnimationEffectBase
 
         //Show Vitality
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        AislingSubject?.ShowHealth();
     }
 
     public override void OnTerminated()

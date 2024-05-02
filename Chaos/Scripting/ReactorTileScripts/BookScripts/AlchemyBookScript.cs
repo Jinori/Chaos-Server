@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.World;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;

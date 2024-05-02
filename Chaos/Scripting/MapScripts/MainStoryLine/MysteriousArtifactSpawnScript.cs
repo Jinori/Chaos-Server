@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;

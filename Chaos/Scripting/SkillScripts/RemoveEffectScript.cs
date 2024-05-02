@@ -53,4 +53,8 @@ public class RemoveEffectScript : ConfigurableSkillScriptBase,
     public override void OnUse(ActivationContext context) => new ComponentExecutor(context).WithOptions(this)
                                                                                            .ExecuteAndCheck<AbilityComponent<Creature>>()
                                                                                            ?.Execute<RemoveEffectComponent>();
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

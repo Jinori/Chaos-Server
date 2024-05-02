@@ -137,6 +137,7 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
     public int? DurationSecs { get; init; }
     public int? MaxTriggers { get; init; }
     public string? EffectKey { get; init; }
+    public int? EffectApplyChance { get; init; }
     public int? ManaDrain { get; init; }
     public decimal PctManaDrain { get; init; }
     #endregion

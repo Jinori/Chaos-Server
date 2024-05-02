@@ -92,4 +92,8 @@ public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public bool IgnoreMagicResistance { get; init; }
     #endregion
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

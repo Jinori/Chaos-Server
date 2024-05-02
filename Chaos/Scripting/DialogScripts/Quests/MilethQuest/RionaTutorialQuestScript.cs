@@ -12,9 +12,8 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
-using Microsoft.Extensions.Logging;
 
-namespace Chaos.Scripting.DialogScripts.Quests;
+namespace Chaos.Scripting.DialogScripts.Quests.MilethQuest;
 
 public class RionaTutorialQuestScript : DialogScriptBase
 {

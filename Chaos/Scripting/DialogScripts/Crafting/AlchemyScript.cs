@@ -280,8 +280,10 @@ public class AlchemyScript : DialogScriptBase
                 recipe.TemplateKey.Replace("formula", ""); // Remove "formula" from the template key
 
             var newCraft = ItemFactory.Create(templateKeyWithoutFormula);
+            newCraft.Count = IntegerRandomizer.RollSingle(3);
 
             source.GiveItemOrSendToBank(newCraft);
+            
 
             Subject.InjectTextParameters(newCraft.DisplayName);
         }

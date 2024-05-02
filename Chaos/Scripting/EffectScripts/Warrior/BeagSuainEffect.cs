@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -9,7 +10,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Warrior;
 
-public sealed class BeagSuainEffect : ContinuousAnimationEffectBase
+public sealed class BeagSuainEffect : HierarchicalContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(8);
@@ -28,6 +29,10 @@ public sealed class BeagSuainEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     public override string Name => "BeagSuain";
 
+    protected override ImmutableArray<string> ReplaceHierarchy { get; } =
+    [
+        "beagsuain"
+    ];
     public override void OnApplied()
     {
         AislingSubject?.Client.SendServerMessage(
@@ -47,20 +52,5 @@ public sealed class BeagSuainEffect : ContinuousAnimationEffectBase
             Subject.Status &= ~Status.BeagSuain;
 
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.");
-    }
-
-    public override bool ShouldApply(Creature source, Creature target)
-    {
-        if (target.Effects.Contains("Beag Suain")
-            || target.Effects.Contains("Suain")
-            || target.Effects.Contains("SmallStun")
-            || target.Effects.Contains("Stun"))
-        {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already stunned.");
-
-            return false;
-        }
-
-        return true;
     }
 }

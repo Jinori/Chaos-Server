@@ -16,12 +16,53 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
     public AcceptHobbyorCraftScript(Dialog subject, IItemFactory itemFactory)
         : base(subject) =>
         ItemFactory = itemFactory;
+    
+    private readonly List<string> TitlesToRemove = new List<string>
+    {
+        "Novice Weaponsmith", 
+        "Initiate Weaponsmithing", 
+        "Artisan Weaponsmith", 
+        "Adept Weaponsmithing", 
+        "Advanced Weaponsmith", 
+        "Expert Weaponsmith", 
+        "Master Weaponsmith",
+        "Novice Armorsmith", 
+        "Initiate Armorsmith", 
+        "Artisan Armorsmith", 
+        "Artisan Armorsmith", 
+        "Adept Armorsmith", 
+        "Advanced Armorsmith", 
+        "Expert Armorsmith", 
+        "Master Armorsmith",
+        "Novice Enchanter", 
+        "Initiate Enchanter", 
+        "Artisan Enchanter", 
+        "Adept Enchanter", 
+        "Advanced Enchanter", 
+        "Expert Enchanter", 
+        "Master Enchanter",
+        "Novice Alchemist", 
+        "Initiate Alchemist", 
+        "Artisan Alchemist", 
+        "Adept Alchemist", 
+        "Advanced Alchemist", 
+        "Expert Alchemist", 
+        "Master Alchemist",
+        "Novice Jewelcrafter", 
+        "Initiate Jewelcrafter", 
+        "Artisan Jewelcrafter", 
+        "Adept Jewelcrafter", 
+        "Advanced Jewelcrafter", 
+        "Expert Jewelcrafter", 
+        "Master Jewelcrafter"
+    };
 
     public override void OnDisplaying(Aisling source)
     {
         source.Trackers.Flags.TryGetFlag(out Hobbies _);
         var hasCraft = source.Trackers.Enums.TryGetValue(out Crafts craft);
         var hasPenta = source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage);
+        
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -382,6 +423,10 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     source.Legend.Remove("ench", out _);
                 }
 
+                foreach (var title in TitlesToRemove)
+                {
+                    source.Titles.Remove(title);
+                }
                 source.Trackers.Enums.Remove<Crafts>();
 
                 return;

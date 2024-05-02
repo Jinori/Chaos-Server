@@ -56,4 +56,8 @@ public class RemoveEffectScript : ConfigurableItemScriptBase,
                                                                                        .ExecuteAndCheck<AbilityComponent<Aisling>>()
                                                                                        ?.Execute<RemoveEffectComponent>()
                                                                                        .Execute<ConsumableComponent>();
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

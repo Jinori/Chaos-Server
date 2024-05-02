@@ -9,7 +9,6 @@ using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 using Humanizer;
-using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.ReactorTileScripts.Casino;
 

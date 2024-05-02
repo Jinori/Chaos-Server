@@ -1,11 +1,9 @@
-using Chaos.Common.Utilities;
 using Chaos.Models.Menu;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Generic;
 

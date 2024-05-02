@@ -152,5 +152,12 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
     public IEffectFactory EffectFactory { get; init; }
     /// <inheritdoc />
     public string? EffectKey { get; init; }
+
+    public int? EffectApplyChance { get; init; }
+
     #endregion
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

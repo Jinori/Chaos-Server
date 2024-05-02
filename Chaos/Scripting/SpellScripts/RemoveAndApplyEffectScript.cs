@@ -63,4 +63,8 @@ public class RemoveAndApplyEffectScript : ConfigurableSpellScriptBase,
                                       .ExecuteAndCheck<SpellComponent<Creature>>()
                                       ?
                                       .Execute<RemoveAndApplyEffectComponent>();
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

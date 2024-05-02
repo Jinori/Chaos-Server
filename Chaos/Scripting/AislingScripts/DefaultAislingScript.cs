@@ -42,6 +42,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     private readonly List<string> MapsToNotPunishDeathOn =
     [
         "Mr. Hopps's Home",
+        "Mythic",
         "Nightmare",
         "Cain's Farm",
         "Arena Battle Ring",
@@ -253,14 +254,14 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
 
         if (Subject.Effects.Contains("mount"))
         {
-            Subject.Effects.Terminate("mount");
+            Subject.Effects.Dispel("mount");
 
             return;
         }
 
         if (Subject.Effects.Contains("rumination"))
         {
-            Subject.Effects.Terminate("rumination");
+            Subject.Effects.Dispel("rumination");
             Subject.SendOrangeBarMessage("Taking damage ended your rumination.");
         }
     }

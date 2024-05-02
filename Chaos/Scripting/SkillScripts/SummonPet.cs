@@ -45,4 +45,8 @@ public class SummonPet : ConfigurableSkillScriptBase, AbilityComponent<Creature>
     
     /// <inheritdoc />
     public override void OnUse(ActivationContext context) => context.SourceAisling?.SendActiveMessage("You've learned to care for a pet. Please use the collar.");
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

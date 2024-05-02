@@ -78,6 +78,8 @@ public class MonkDedicateScript : DialogScriptBase
 
             if (!source.SkillBook.Contains(skill))
                 source.SkillBook.TryAddToNextSlot(skill);
+            
+            source.SkillBook.Remove("assail");
 
             var mapInstance = SimpleCache.Get<MapInstance>("toc");
             var point = new Point(8, 5);

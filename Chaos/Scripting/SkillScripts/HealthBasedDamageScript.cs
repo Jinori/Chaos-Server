@@ -71,4 +71,8 @@ public class HealthBasedDamageScript : ConfigurableSkillScriptBase,
             .ExecuteAndCheck<AbilityComponent<Creature>>()
             ?
             .Execute<HealthBasedDamageComponent>();
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
 }

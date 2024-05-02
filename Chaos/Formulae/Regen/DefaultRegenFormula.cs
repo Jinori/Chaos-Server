@@ -41,7 +41,7 @@ public sealed class DefaultRegenFormula : IRegenFormula
     }
 
     /// <inheritdoc />
-    public int CalculateIntervalSecs(Creature creature) => 8;
+    public int CalculateIntervalSecs(Creature creature) => 6;
 
     /// <inheritdoc />
     public int CalculateManaRegen(Creature creature)

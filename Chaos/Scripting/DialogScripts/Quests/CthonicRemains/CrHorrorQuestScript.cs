@@ -9,7 +9,6 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Time;
-using Microsoft.Extensions.Logging;
 
 namespace Chaos.Scripting.DialogScripts.Quests.CthonicRemains;
 
