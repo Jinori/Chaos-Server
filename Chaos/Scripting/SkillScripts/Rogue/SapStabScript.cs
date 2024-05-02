@@ -15,7 +15,7 @@ namespace Chaos.Scripting.SkillScripts.Rogue;
 public class SapStabScript : ConfigurableSkillScriptBase,
                              AbilityComponent<Creature>.IAbilityComponentOptions,
                              DamageComponent.IDamageComponentOptions,
-                             ManaReplenishComponent.IManaReplenishComponentOptions
+                             SapNeedleComponent.ISapNeedleComponentOptions
 
 {
     /// <inheritdoc />
@@ -82,7 +82,7 @@ public class SapStabScript : ConfigurableSkillScriptBase,
             .ExecuteAndCheck<AbilityComponent<Creature>>()
             ?
             .Execute<DamageComponent>()
-            .Execute<ManaReplenishComponent>();
+            .Execute<SapNeedleComponent>();
 
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
