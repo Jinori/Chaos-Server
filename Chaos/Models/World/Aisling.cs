@@ -436,27 +436,16 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         var items = item.FixStacks(ItemCloner);
 
         foreach (var single in items)
-        {
-            if (!CanCarry(single))
+            if (!CanCarry(single) || !Inventory.TryAddToNextSlot(single))
             {
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Deposit, Topics.Entities.Item,
-                        Topics.Actions.Reward)
-                    .WithProperty(single).WithProperty(this)
-                    .LogInformation("{@Amount} {@ItemName} was sent to {@AislingName}'s bank", single.Count,
-                        single.DisplayName, Name);
-                SendOrangeBarMessage($"{single.DisplayName} was sent to your bank as overflow");
                 Bank.Deposit(single);
-                return;
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Deposit, Topics.Entities.Item,
+                          Topics.Actions.Reward)
+                      .WithProperty(single).WithProperty(this)
+                      .LogInformation("{@Amount} {@ItemName} was sent to {@AislingName}'s bank", single.Count,
+                          single.DisplayName, Name);
+                SendOrangeBarMessage($"{single.DisplayName} was sent to your bank as overflow");
             }
-
-            SendOrangeBarMessage($"You have received {single.DisplayName}.");
-            Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Actions.Reward)
-                .WithProperty(single).WithProperty(this)
-                .LogInformation("{@Amount} {@ItemName} was given to {@AislingName}", single.Count, single.DisplayName,
-                    Name);
-
-            Inventory.TryAddToNextSlot(single);
-        }
     }
 
     /// <summary>
@@ -1126,8 +1115,10 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         base.Update(delta);
     }
 
-    public override void Walk(Direction direction)
+    public override void Walk(Direction direction, bool? ignoreBlockingReactors = null)
     {
+        ignoreBlockingReactors ??= true;
+
         if (!Script.CanMove() || ((direction != Direction) && !Script.CanTurn()) || !ShouldWalk)
         {
             Refresh(true);
@@ -1152,7 +1143,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         }
 
         //otherwise, check if the point is walkable
-        else if (!MapInstance.IsWalkable(endPoint, Type))
+        else if (!MapInstance.IsWalkable(endPoint, Type, ignoreBlockingReactors))
         {
             Refresh(true);
 

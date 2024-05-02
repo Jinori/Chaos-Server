@@ -23,14 +23,19 @@ public class CastingScript : MonsterScriptBase
 
         Spells.ShuffleInPlace();
 
-        foreach (var spell in Spells)
-            if (IntegerRandomizer.RollChance(7) && Subject.TryUseSpell(spell, Target.Id))
-            {
-                Subject.WanderTimer.Reset();
-                Subject.MoveTimer.Reset();
-                Subject.SkillTimer.Reset();
+        var spell = Spells.Where(
+                              spell => Subject.CanUse(
+                                  spell,
+                                  Target,
+                                  null,
+                                  out _))
+                          .PickRandomWeightedSingleOrDefault(7);
 
-                break;
-            }
+        if (spell is not null && Subject.TryUseSpell(spell, Target.Id))
+        {
+            Subject.WanderTimer.Reset();
+            Subject.MoveTimer.Reset();
+            Subject.SkillTimer.Reset();
+        }
     }
 }
