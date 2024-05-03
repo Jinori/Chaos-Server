@@ -19,13 +19,13 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
     {
         if (source.UserStatSheet.BaseClass == BaseClass.Priest)
             return true;
-        
-        if (!source.SkillBook.Contains(skillName))
-        {
-            source.SendOrangeBarMessage($"You do not have the skill to wield it.");
-            return false;
-        }
-        return true;
+
+        if (source.UserStatSheet.BaseClass == BaseClass.Wizard)
+            return true;
+
+        if (source.SkillBook.Contains(skillName)) return true;
+        source.SendOrangeBarMessage($"You do not have the skill to wield it.");
+        return false;
     }
 
     public override void OnUse(Aisling source)
@@ -114,7 +114,7 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
         if (template.Category.Contains("Staff"))
         {
             // Check specific conditions for equipping a staff
-            if (template.TemplateKey.ContainsI("magus") && CanWieldStaff(source, "Wield Magus Staff"))
+            if (!template.TemplateKey.ContainsI("magus") && !CanWieldStaff(source, "Wield Magus Staff"))
             {
                 if (source.Equipment.Contains((byte)EquipmentSlot.Shield)
                     && source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var shield))
