@@ -17,8 +17,8 @@ public sealed class CripplingPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            MaximumHp = -350,
-            FlatSkillDamage = 15
+            AtkSpeedPct = -1,
+            SkillDamagePct = 4
         };
 
         subject.Modifiers.Add(attributes);

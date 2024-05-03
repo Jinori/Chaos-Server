@@ -17,7 +17,8 @@ public sealed class PotentPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            MaximumMp = 150
+            SpellDamagePct = 2,
+            FlatSpellDamage = 20
         };
 
         subject.Modifiers.Add(attributes);

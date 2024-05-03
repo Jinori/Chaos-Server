@@ -17,7 +17,7 @@ public sealed class LuckyPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            Hit = 1
+            Hit = 2
         };
 
         subject.Modifiers.Add(attributes);

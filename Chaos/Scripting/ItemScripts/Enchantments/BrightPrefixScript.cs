@@ -17,8 +17,7 @@ public sealed class BrightPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            FlatSpellDamage = 15,
-            MaximumMp = -350
+            MaximumMp = 150
         };
 
         subject.Modifiers.Add(attributes);

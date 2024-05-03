@@ -1,4 +1,5 @@
 ﻿using Chaos.Collections;
+using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -35,6 +36,14 @@ public class TerminusTutorialScript : DialogScriptBase
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "terminus_initial":
+
+                if (source.UserStatSheet.BaseClass == BaseClass.Monk)
+                {
+                    if (source.SkillBook.Contains("assail"))
+                    {
+                        source.SkillBook.Remove("assail");
+                    }
+                }
                 if (stage == TutorialQuestStage.GiantFloppy)
                 {
                     if (source.IsAlive)

@@ -17,7 +17,7 @@ public sealed class HalePrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            AtkSpeedPct = 5
+            Con = 1
         };
 
         subject.Modifiers.Add(attributes);

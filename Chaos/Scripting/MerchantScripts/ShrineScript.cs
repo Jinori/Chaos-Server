@@ -1,5 +1,6 @@
 ﻿using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
+using Chaos.Scripting.DialogScripts.Religion;
 using Chaos.Scripting.DialogScripts.Religion.Abstractions;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 
@@ -15,43 +16,41 @@ public class ShrineScript : MerchantScriptBase
     {
         if (source.DistanceFrom(Subject) <= 1)
         {
-            if (ReligionScriptBase.CheckDeity(source) != null)
+            var worshipedDeity = ReligionScriptBase.CheckDeity(source);
+
+            // Check if the player worships the deity of the shrine
+            if (worshipedDeity == null || !Subject.Template.Name.Contains(worshipedDeity))
             {
-                switch (ReligionScriptBase.CheckDeity(source))
-                {
-                    case "Miraelis":
-                    {
-                        source.SendActiveMessage("You pray at the shrine to Miraelis. You received faith.");
-
-                        break;
-                    }
-                    case "Serendael":
-                    {
-                        source.SendActiveMessage("You pray at the shrine to Serendael. You received faith.");
-
-                        break;
-                    }
-                    case "Theselene":
-                    {
-                        source.SendActiveMessage("You pray at the shrine to Theselene. You received faith.");
-
-                        break;
-                    }
-                    case "Skandara":
-                    {
-                        source.SendActiveMessage("You pray at the shrine to Skandara. You received faith.");
-
-                        break;
-                    }
-                }
-
-                ReligionScriptBase.TryAddFaith(source, 5);
-                Subject.MapInstance.RemoveEntity(Subject);
+                source.SendActiveMessage("You attempt to pray at the shrine but the god won't listen.");
+                return; // Exit the method if the player doesn't worship the shrine's deity
             }
-            else
-                source.SendActiveMessage("You attempt to pray at the shrine but no god will listen..");
+
+            // Player worships the deity of the shrine, allow them to receive faith
+            switch (worshipedDeity)
+            {
+                case "Miraelis":
+                    source.SendActiveMessage("You pray at the shrine to Miraelis. You received faith.");
+                    break;
+                case "Serendael":
+                    source.SendActiveMessage("You pray at the shrine to Serendael. You received faith.");
+                    break;
+                case "Theselene":
+                    source.SendActiveMessage("You pray at the shrine to Theselene. You received faith.");
+                    break;
+                case "Skandara":
+                    source.SendActiveMessage("You pray at the shrine to Skandara. You received faith.");
+                    break;
+            }
+
+            // Add faith to the player
+            ReligionScriptBase.TryAddFaith(source, 5);
+            // Remove the shrine from the map
+            Subject.MapInstance.RemoveEntity(Subject);
         }
         else
+        {
             source.SendActiveMessage("The shrine seems to beckon you closer...");
+        }
     }
+
 }

@@ -18,7 +18,8 @@ public enum WizardElement : byte
     Fire = 1 << 1,
     Earth = 1 << 2,
     Wind = 1 << 3,
-    Water = 1 << 4
+    Water = 1 << 4,
+    Removed = 1 << 5
 }
 
 [Flags]

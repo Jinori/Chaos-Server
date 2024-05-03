@@ -18,7 +18,7 @@ public sealed class FocusedPrefixScript : ItemScriptBase, IEnchantmentScript
         var attributes = new Attributes
         {
             Hit = 1,
-            Dmg = -1
+            AtkSpeedPct = 2
         };
 
         subject.Modifiers.Add(attributes);

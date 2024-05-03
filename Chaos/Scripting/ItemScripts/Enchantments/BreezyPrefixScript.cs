@@ -17,7 +17,7 @@ public sealed class BreezyPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            FlatSpellDamage = 10
+            SpellDamagePct = 1
         };
 
         subject.Modifiers.Add(attributes);

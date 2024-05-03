@@ -17,7 +17,8 @@ public sealed class HastyPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            AtkSpeedPct = 5
+            AtkSpeedPct = 3,
+            MaximumHp = -40
         };
 
         subject.Modifiers.Add(attributes);

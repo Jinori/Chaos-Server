@@ -17,7 +17,7 @@ public sealed class MightyPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            FlatSkillDamage = 10
+            SkillDamagePct = 1
         };
 
         subject.Modifiers.Add(attributes);

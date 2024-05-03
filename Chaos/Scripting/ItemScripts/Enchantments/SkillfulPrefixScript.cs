@@ -17,7 +17,8 @@ public sealed class SkillfulPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            AtkSpeedPct = 2
+            AtkSpeedPct = 2,
+            MaximumHp = -20
         };
 
         subject.Modifiers.Add(attributes);

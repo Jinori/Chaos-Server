@@ -1,29 +1,31 @@
-﻿using Chaos.Common.Definitions;
+﻿using System.Collections.Immutable;
+using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
-public class MorAiteEffect : NonOverwritableEffectBase
+public class MorAiteEffect : HierarchicalEffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(8);
-    protected override Animation? Animation { get; } = new()
+    protected override ImmutableArray<string> ReplaceHierarchy { get; } =
+    [
+        "ard naomh aite",
+        "mor naomh aite",
+        "naomh aite",
+        "beag naomh aite"
+    ];
+    
+    private Animation? Animation { get; } = new()
     {
         TargetAnimation = 125,
         AnimationSpeed = 100
     };
-    protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
-    {
-        "beag naomh aite",
-        "naomh aite",
-        "mor naomh aite",
-        "ard naomh aite"
-    };
+    
+    protected byte? Sound => 123;
     public override byte Icon => 9;
     public override string Name => "mor naomh aite";
-
-    protected override byte? Sound => 31;
 
     public override void OnApplied()
     {
@@ -32,6 +34,7 @@ public class MorAiteEffect : NonOverwritableEffectBase
         if (!Subject.Status.HasFlag(Status.MorAite))
             Subject.Status = Status.MorAite;
 
+        Subject.Animate(Animation!);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your defenses have been blessed.");
     }

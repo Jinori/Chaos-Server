@@ -17,8 +17,8 @@ public sealed class WhirlingPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            SpellDamagePct = 10,
-            FlatSpellDamage = 15
+            MagicResistance = 5,
+            Hit = -2
         };
 
         subject.Modifiers.Add(attributes);

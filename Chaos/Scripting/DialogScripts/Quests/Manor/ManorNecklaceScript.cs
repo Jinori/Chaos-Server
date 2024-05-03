@@ -15,7 +15,7 @@ namespace Chaos.Scripting.DialogScripts.Quests.Manor;
 
 public class ManorNecklaceScript : DialogScriptBase
 {
-    private readonly IItemFactory _itemFactory;
+    private readonly IItemFactory ItemFactory;
     private readonly ILogger<ManorNecklaceScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
@@ -23,7 +23,7 @@ public class ManorNecklaceScript : DialogScriptBase
         : base(subject)
     {
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
-        _itemFactory = itemFactory;
+        ItemFactory = itemFactory;
         Logger = logger;
     }
 
@@ -54,7 +54,7 @@ public class ManorNecklaceScript : DialogScriptBase
                     ServerMessageType.OrangeBar1,
                     "You receive a legend mark. The young one looks terribly sad.");
 
-                var necklace = _itemFactory.Create("zulerasHeirloom");
+                var necklace = ItemFactory.Create("zulerasHeirloom");
 
                 Logger.WithTopics(
                           Topics.Entities.Aisling,

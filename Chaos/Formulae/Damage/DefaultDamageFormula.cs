@@ -173,7 +173,7 @@ public class DefaultDamageFormula : IDamageFormula
         if (!skillScript.Subject.Template.IsAssail)
             return;
 
-        var damageMultiplier = 1 + (attacker.StatSheet.EffectiveDmg / 6.0) * 0.04;
+        var damageMultiplier = 1 + (attacker.StatSheet.EffectiveDmg * 0.01);
         damage = (int)(damage * damageMultiplier);
     }
 

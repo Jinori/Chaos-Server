@@ -7,18 +7,18 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class DarkPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class DarkenedPrefixScript : ItemScriptBase, IEnchantmentScript
 {
     /// <inheritdoc />
-    public DarkPrefixScript(Item subject)
+    public DarkenedPrefixScript(Item subject)
         : base(subject)
     {
         Subject.Prefix = "Darkened";
 
         var attributes = new Attributes
         {
-            Dmg = 5,
-            Dex = -3
+            SpellDamagePct = 2,
+            Ac = 1
         };
 
         subject.Modifiers.Add(attributes);

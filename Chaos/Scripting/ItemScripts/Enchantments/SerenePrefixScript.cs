@@ -17,8 +17,8 @@ public sealed class SerenePrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            MaximumMp = 100,
-            MaximumHp = -75
+            MaximumMp = 40,
+            MaximumHp = 80
         };
 
         subject.Modifiers.Add(attributes);

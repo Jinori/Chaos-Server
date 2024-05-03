@@ -17,8 +17,8 @@ public sealed class SavagePrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            Dmg = 5,
-            Str = 1
+            AtkSpeedPct = 1,
+            Dmg = 3
         };
 
         subject.Modifiers.Add(attributes);

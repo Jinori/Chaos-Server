@@ -31,6 +31,7 @@ public abstract class HierarchicalEffectBase : EffectBase
                 return false;
             
             target.Effects.Dispel(current);
+            AislingSubject?.SendOrangeBarMessage($"{source.Name}'s spell replaces your {current}.");
         }
         
         return shouldApply;

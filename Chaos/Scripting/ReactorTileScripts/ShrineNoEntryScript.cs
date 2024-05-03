@@ -29,7 +29,7 @@ public class ShrineNoEntryScript : ReactorTileScriptBase
         }
         if (new Point(7, 5).Equals(Subject) || new Point (7, 6).Equals(Subject) || new Point (7, 7).Equals(Subject))
         {
-                aisling.SendOrangeBarMessage("This shrine belonged to Zephyr, best not to enter.");
+                aisling.SendOrangeBarMessage("This shrine belonged to Zephyra, best not to enter.");
                 return;
         }
     }

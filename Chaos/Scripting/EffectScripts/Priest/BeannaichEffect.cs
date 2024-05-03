@@ -1,25 +1,29 @@
-﻿using Chaos.Common.Definitions;
+﻿using System.Collections.Immutable;
+using Chaos.Common.Definitions;
 using Chaos.Models.Data;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
-public class BeannaichEffect : NonOverwritableEffectBase
+public class BeannaichEffect : HierarchicalEffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
-    protected override Animation? Animation { get; } = new()
+
+    public override byte Icon => 105;
+    public override string Name => "beannaich";
+    
+    private Animation? Animation { get; } = new()
     {
         TargetAnimation = 125,
         AnimationSpeed = 100
     };
-    protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
-    {
-        "beannaich",
-        "mor beannaich"
-    };
-    public override byte Icon => 105;
-    public override string Name => "beannaich";
-    protected override byte? Sound => 123;
+    
+    protected byte? Sound => 123;
+    protected override ImmutableArray<string> ReplaceHierarchy { get; } =
+    [
+        "mor beannaich",
+        "beannaich"
+    ];
 
     public override void OnApplied()
     {
@@ -30,6 +34,7 @@ public class BeannaichEffect : NonOverwritableEffectBase
             Hit = 10
         };
 
+        Subject.Animate(Animation!);
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Hit increased.");

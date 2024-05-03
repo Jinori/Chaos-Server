@@ -1,24 +1,25 @@
-﻿using Chaos.Common.Definitions;
+﻿using System.Collections.Immutable;
+using Chaos.Common.Definitions;
 using Chaos.Models.Data;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
-public class MotivateEffect : NonOverwritableEffectBase
+public class MotivateEffect : HierarchicalEffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(2);
-    protected override Animation? Animation { get; } = new()
+    protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
         AnimationSpeed = 100
     };
-    protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
-    {
-        "Motivate"
-    };
+    protected override ImmutableArray<string> ReplaceHierarchy { get; } =
+    [
+        "motivate"
+    ];
     public override byte Icon => 99;
     public override string Name => "Motivate";
-    protected override byte? Sound => 121;
+    protected byte? Sound => 121;
 
     public override void OnApplied()
     {
@@ -29,6 +30,7 @@ public class MotivateEffect : NonOverwritableEffectBase
             AtkSpeedPct = 40
         };
 
+        Subject.Animate(Animation!);
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed increased.");

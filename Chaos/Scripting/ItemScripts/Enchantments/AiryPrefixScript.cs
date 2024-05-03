@@ -17,8 +17,7 @@ public sealed class AiryPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            Hit = 5,
-            Int = -2
+            Hit = 3
         };
 
         subject.Modifiers.Add(attributes);

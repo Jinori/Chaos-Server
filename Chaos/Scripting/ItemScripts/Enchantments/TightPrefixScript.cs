@@ -17,8 +17,8 @@ public sealed class TightPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            AtkSpeedPct = 7,
-            Dex = 1
+            AtkSpeedPct = 4,
+            MaximumHp = -80
         };
 
         subject.Modifiers.Add(attributes);

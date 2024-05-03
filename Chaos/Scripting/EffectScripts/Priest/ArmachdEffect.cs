@@ -1,25 +1,26 @@
-﻿using Chaos.Common.Definitions;
+﻿using System.Collections.Immutable;
+using Chaos.Common.Definitions;
 using Chaos.Models.Data;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
-public class ArmachdEffect : NonOverwritableEffectBase
+public class ArmachdEffect : HierarchicalEffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
-    protected override Animation? Animation { get; } = new()
+    protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 20,
         AnimationSpeed = 100
     };
-    protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
-    {
-        "Armachd"
-    };
+    protected override ImmutableArray<string> ReplaceHierarchy { get; } =
+    [
+        "armachd"
+    ];
     public override byte Icon => 0;
     public override string Name => "armachd";
 
-    protected override byte? Sound => 122;
+    protected byte? Sound => 122;
 
     public override void OnApplied()
     {
@@ -30,6 +31,7 @@ public class ArmachdEffect : NonOverwritableEffectBase
             Ac = 10
         };
 
+        Subject.Animate(Animation!);
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor increased.");

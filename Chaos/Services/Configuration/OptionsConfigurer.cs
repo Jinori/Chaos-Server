@@ -92,7 +92,7 @@ public sealed class OptionsConfigurer(IStagingDirectory stagingDirectory, IChann
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(BrilliantPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(CripplingPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(CursedPrefixScript.Mutate));
-        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(DarkPrefixScript.Mutate));
+        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(DarkenedPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(EternalPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(HastyPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(HazyPrefixScript.Mutate));

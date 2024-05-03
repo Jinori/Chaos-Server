@@ -584,7 +584,7 @@ public static class CraftingRequirements
                 Rank = "Basic",
                 Level = 37,
                 Difficulty = 1,
-                Modification = item => item.AddScript<DarkPrefixScript>()
+                Modification = item => item.AddScript<DarkenedPrefixScript>()
             }
             },
         {

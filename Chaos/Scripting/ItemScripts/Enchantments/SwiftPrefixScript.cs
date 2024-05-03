@@ -17,7 +17,7 @@ public sealed class SwiftPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            MaximumHp = 50
+            MaximumHp = 80
         };
 
         subject.Modifiers.Add(attributes);

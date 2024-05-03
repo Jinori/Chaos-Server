@@ -17,9 +17,9 @@ public sealed class CursedPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            MagicResistance = 10,
-            AtkSpeedPct = 15,
-            Dex = 1
+            MagicResistance = -5,
+            AtkSpeedPct = 3,
+            Dmg = 5
         };
 
         subject.Modifiers.Add(attributes);

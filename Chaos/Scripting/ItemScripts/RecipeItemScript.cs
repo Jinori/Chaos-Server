@@ -637,6 +637,8 @@ public class RecipeItemScript : ItemScriptBase
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedJourneyman);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGaluchatCoat);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCulotte);
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedBenusta);
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMysticGown);
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLotusBodice);

@@ -48,13 +48,6 @@ public abstract class EffectBase : IEffect
     /// <inheritdoc />
     public virtual bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains(Name) || target.Effects.Any(effect => effect.Icon == Icon))
-        {
-            AislingSubject?.SendOrangeBarMessage($"You are already affected by {Name}.");
-
-            return false;
-        }
-
         return true;
     }
 

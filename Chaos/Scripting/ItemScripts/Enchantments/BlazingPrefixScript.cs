@@ -17,9 +17,8 @@ public sealed class BlazingPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            Ac = 3,
-            Str = 1,
-            SkillDamagePct = 10
+            Ac = 1,
+            SkillDamagePct = 5
         };
 
         subject.Modifiers.Add(attributes);
