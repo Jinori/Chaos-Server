@@ -244,6 +244,7 @@ public class MainStoryScript(
                 };
                 source.Animate(animate);
                 source.Trackers.Enums.Set(MainStoryEnums.FinishedArtifact1);
+                source.Trackers.Flags.AddFlag(MainstoryFlags.CompletedArtifact1);
                 source.Inventory.Remove("Earth Artifact");
                 ExperienceDistributionScript.GiveExp(source, tenPercent);
                 source.SendOrangeBarMessage("You hand over the Earth Artifact.");
@@ -342,6 +343,7 @@ public class MainStoryScript(
                 };
                 source.Animate(animate);
                 source.Trackers.Enums.Set(MainStoryEnums.FinishedArtifact3);
+                source.Trackers.Flags.AddFlag(MainstoryFlags.CompletedArtifact3);
                 source.Inventory.Remove("Wind Artifact");
                 ExperienceDistributionScript.GiveExp(source, tenPercent);
                 source.SendOrangeBarMessage("You hand over the Wind Artifact.");
@@ -410,6 +412,7 @@ public class MainStoryScript(
                 };
                 source.Animate(animate);
                 source.Trackers.Enums.Set(MainStoryEnums.FinishedArtifact2);
+                source.Trackers.Flags.AddFlag(MainstoryFlags.CompletedArtifact2);
                 source.Inventory.Remove("Fire Artifact");
                 ExperienceDistributionScript.GiveExp(source, tenPercent);
                 source.SendOrangeBarMessage("You hand over the Fire Artifact.");
@@ -474,6 +477,7 @@ public class MainStoryScript(
                 };
                 source.Animate(animate);
                 source.Trackers.Enums.Set(MainStoryEnums.FinishedArtifact4);
+                source.Trackers.Flags.AddFlag(MainstoryFlags.CompletedArtifact4);
                 source.Inventory.Remove("Sea Artifact");
                 ExperienceDistributionScript.GiveExp(source, tenPercent);
                 source.SendOrangeBarMessage("You hand over the Sea Artifact.");

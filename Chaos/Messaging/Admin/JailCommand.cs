@@ -2,7 +2,6 @@ using Chaos.Collections;
 using Chaos.Collections.Common;
 using Chaos.Common.Definitions;
 using Chaos.Extensions.Common;
-using Chaos.Messaging;
 using Chaos.Messaging.Abstractions;
 using Chaos.Models.Legend;
 using Chaos.Models.World;
@@ -10,7 +9,7 @@ using Chaos.Networking.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 
-namespace Chaos.Commands.Admin;
+namespace Chaos.Messaging.Admin;
 
 [Command("jail")]
 public sealed class JailCommand : ICommand<Aisling>

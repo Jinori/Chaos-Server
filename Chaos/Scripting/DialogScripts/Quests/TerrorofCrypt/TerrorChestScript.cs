@@ -15,7 +15,7 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 
-namespace Chaos.Scripting.DialogScripts.Mileth;
+namespace Chaos.Scripting.DialogScripts.Quests.TerrorofCrypt;
 
 public class TerrorChestScript : DialogScriptBase
 {

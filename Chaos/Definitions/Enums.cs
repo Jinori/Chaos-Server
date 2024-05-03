@@ -1511,5 +1511,9 @@ public enum MainStoryEnums
 public enum MainstoryFlags
 {
     None,
-    FoundMysteriousArtifact = 1
+    FoundMysteriousArtifact = 1 << 1,
+    CompletedArtifact1 = 1 << 2,
+    CompletedArtifact2 = 1 << 3,
+    CompletedArtifact3 = 1 << 4,
+    CompletedArtifact4 = 1 << 5
 }

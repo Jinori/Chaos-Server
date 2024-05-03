@@ -42,7 +42,7 @@ public class PorteForestBossRoomScript : ReactorTileScriptBase
         // Check if all members of the group have the quest flag and are within level range
         var allMembersHaveQuestEnum = aisling.Group.All(
             member => member.Trackers.Enums.TryGetValue(out PFQuestStage stage)
-                      && (stage == PFQuestStage.WolfManesTurnedIn)
+                      && stage is PFQuestStage.WolfManesTurnedIn or PFQuestStage.WolfManes or PFQuestStage.TurnedInRoots
                       && member.Inventory.Contains("Turuc Pendant"));
 
         if (allMembersHaveQuestEnum)

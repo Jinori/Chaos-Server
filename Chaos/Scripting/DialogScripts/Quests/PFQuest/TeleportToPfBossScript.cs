@@ -7,7 +7,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Mileth;
+namespace Chaos.Scripting.DialogScripts.Quests.PFQuest;
 
 public class TeleportToPfBossScript : DialogScriptBase
 {
@@ -21,7 +21,8 @@ public class TeleportToPfBossScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         var point = new Point(source.X, source.Y);
-        var group = source.Group?.Where(x => x.WithinRange(point));
+        var point1 = point;
+        var group = source.Group?.Where(x => x.WithinRange(point1));
 
         if (group is null)
         {

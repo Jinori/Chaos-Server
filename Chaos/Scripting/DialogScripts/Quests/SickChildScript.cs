@@ -156,7 +156,7 @@ public class SickChildScript : DialogScriptBase
 
                 ExperienceDistributionScript.GiveExp(source, 20000);
                 source.Trackers.Enums.Set(SickChildStage.WhiteRose1Turn);
-                source.SendOrangeBarMessage("20000 Exp Rewarded!");
+                source.SendOrangeBarMessage("20,000 Exp Rewarded!");
                 Subject.Reply(source, "Thank you! I need to get this to the healers right away. Please excuse me.", "whiterosewait1");
             }
 
@@ -192,7 +192,7 @@ public class SickChildScript : DialogScriptBase
 
                 ExperienceDistributionScript.GiveExp(source, 30000);
                 source.Trackers.Enums.Set(SickChildStage.WhiteRose2Turn);
-                source.SendOrangeBarMessage("30000 Exp Rewarded!");
+                source.SendOrangeBarMessage("30,000 Exp Rewarded!");
 
                 Subject.Reply(
                     source,
@@ -248,7 +248,7 @@ public class SickChildScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, 75000);
                 source.TryGiveGold(20000);
                 source.TryGiveGamePoints(5);
-                source.SendOrangeBarMessage("5 Gamepoints, 20000 gold, and 75000 Exp Rewarded!");
+                source.SendOrangeBarMessage("5 Gamepoints, 20,000 gold, and 75,000 Exp Rewarded!");
                 source.Trackers.Enums.Set(SickChildStage.SickChildComplete);
 
                 source.Legend.AddOrAccumulate(
@@ -300,7 +300,7 @@ public class SickChildScript : DialogScriptBase
 
                 ExperienceDistributionScript.GiveExp(source, 125000);
                 source.TryGiveGamePoints(5);
-                source.SendOrangeBarMessage("5 Gamepoints and 125000 Exp Rewarded!");
+                source.SendOrangeBarMessage("5 Gamepoints and 125,000 Exp Rewarded!");
                 source.SendOrangeBarMessage("The princess is dead...");
 
                 source.Legend.AddOrAccumulate(

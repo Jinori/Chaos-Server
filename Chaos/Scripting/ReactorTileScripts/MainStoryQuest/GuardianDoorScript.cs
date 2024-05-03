@@ -44,9 +44,9 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
         }
 
         var allMembersHaveQuestEnum1 = aisling.Group.All(member =>
-            member.Trackers.Enums.TryGetValue(out MainStoryEnums stage) &&
-            stage == MainStoryEnums.StartedArtifact1 && aisling.Group.All(x =>
-                !x.Inventory.HasCount("Earth Artifact", 1)));
+            member.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact1) 
+            || member.Trackers.Flags.HasFlag(MainstoryFlags.CompletedArtifact1) 
+            && aisling.Group.All(x => !x.Inventory.HasCount("Earth Artifact", 1)));
 
         var group1 = aisling.Group.ThatAreWithinRange(source, 13).ToList();
 
@@ -65,9 +65,9 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
         }
         
         var allMembersHaveQuestEnum2 = aisling.Group.All(member =>
-            member.Trackers.Enums.TryGetValue(out MainStoryEnums stage) &&
-            stage == MainStoryEnums.StartedArtifact2 && aisling.Group.All(x =>
-                !x.Inventory.HasCount("Fire Artifact", 1)));
+            member.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact2) 
+            || member.Trackers.Flags.HasFlag(MainstoryFlags.CompletedArtifact2) 
+            && aisling.Group.All(x => !x.Inventory.HasCount("Fire Artifact", 1)));
 
         var group2 = aisling.Group.ThatAreWithinRange(source, 13).ToList();
 
@@ -86,9 +86,9 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
         }
         
         var allMembersHaveQuestEnum3 = aisling.Group.All(member =>
-            member.Trackers.Enums.TryGetValue(out MainStoryEnums stage) &&
-            stage == MainStoryEnums.StartedArtifact3 && aisling.Group.All(x =>
-                !x.Inventory.HasCount("Wind Artifact", 1)));
+            member.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact3) 
+            || member.Trackers.Flags.HasFlag(MainstoryFlags.CompletedArtifact3) 
+            && aisling.Group.All(x => !x.Inventory.HasCount("Wind Artifact", 1)));
 
         var group3 = aisling.Group.ThatAreWithinRange(source, 13).ToList();
 
@@ -107,9 +107,9 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
         }
         
         var allMembersHaveQuestEnum4 = aisling.Group.All(member =>
-            member.Trackers.Enums.TryGetValue(out MainStoryEnums stage) &&
-            stage == MainStoryEnums.StartedArtifact4 && aisling.Group.All(x =>
-                !x.Inventory.HasCount("Sea Artifact", 1)));
+            member.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact4) 
+            || member.Trackers.Flags.HasFlag(MainstoryFlags.CompletedArtifact4) 
+            && aisling.Group.All(x => !x.Inventory.HasCount("Sea Artifact", 1)));
 
         var group4 = aisling.Group.ThatAreWithinRange(source, 13).ToList();
 

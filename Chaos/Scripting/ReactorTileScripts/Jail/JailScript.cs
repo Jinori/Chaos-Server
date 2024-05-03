@@ -14,8 +14,16 @@ public class JailScript : ReactorTileScriptBase
 
     public override void OnWalkedOn(Creature source)
     {
-        if (source is not Aisling aisling || !aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out var timedEvent))
+        if (source is not Aisling aisling)
             return;
+
+        if (!aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out var timedEvent))
+        {
+            var escape = new Point(3, 6);
+            source.WarpTo(escape);
+            aisling.SendOrangeBarMessage("Your jail sentence is up, stay out of trouble.");
+            return;
+        }
 
         var timeLeft = timedEvent.Remaining.ToReadableString(
             false,
