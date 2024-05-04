@@ -35,7 +35,7 @@ public sealed class GrimlockBoss1EnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 2; i++)
             {
-                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type) && !Subject.MapInstance.IsWall(x));
                 var mobs = MonsterFactory.Create("grimlock1-3", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
@@ -57,7 +57,7 @@ public sealed class GrimlockBoss1EnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 3; i++)
             {
-                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type) && !Subject.MapInstance.IsWall(x));
                 var mobs = MonsterFactory.Create("grimlock1-3", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
@@ -78,7 +78,7 @@ public sealed class GrimlockBoss1EnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 4; i++)
             {
-                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type) && !Subject.MapInstance.IsWall(x));
                 var mobs = MonsterFactory.Create("grimlock1-3", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }

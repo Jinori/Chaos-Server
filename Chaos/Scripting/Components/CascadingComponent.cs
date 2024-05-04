@@ -26,6 +26,9 @@ public class CascadingComponent<TTileScript> : IComponent where TTileScript: ICa
 
         foreach (var point in cascadePoints)
         {
+            if (!context.TargetMap.IsWithinMap(point))
+                continue;
+            
             var tile = options.ReactorTileFactory.Create(
                 context.TargetMap,
                 point,

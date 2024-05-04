@@ -241,7 +241,7 @@ public class AlchemyScript : DialogScriptBase
             var playerRank = GetRankAsInt(existingMark.Text);
 
             if ((playerRank >= 2) && (playerRank - 1 > recipeStatus))
-                source.SendOrangeBarMessage("You can no longer gain experience from this recipe.");
+                source.SendOrangeBarMessage("You can no longer gain rank experience from this recipe.");
 
             if ((playerRank >= recipeStatus) && (playerRank <= recipeStatus + 1))
             {

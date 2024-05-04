@@ -73,8 +73,11 @@ public class VisibilityBehavior
         };
 
     private bool CanSeeHidden(Creature creature, VisibleEntity entity) =>
-        IsInSameGroup(creature, entity) || CanBossSee(creature, entity) || (entity is Creature c && HasRecentlyHidden(c));
+        IsInSameGroup(creature, entity) || HasSeeHideEffect(creature, entity) || CanBossSee(creature, entity) || (entity is Creature c && HasRecentlyHidden(c));
 
+    private bool HasSeeHideEffect(Creature creature, VisibleEntity entity) =>
+        creature is Aisling && entity is Aisling && creature.Effects.Contains("See Hide");
+    
     private bool CanSeeTrueHidden(Creature creature, VisibleEntity entity) =>
         IsInSameGroup(creature, entity) || CanBossSee(creature, entity) ||
         SeeTrueHiddenEffects.Any(creature.Effects.Contains);

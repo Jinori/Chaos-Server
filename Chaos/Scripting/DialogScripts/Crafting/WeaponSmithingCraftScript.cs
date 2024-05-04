@@ -83,7 +83,7 @@ public class WeaponSmithingCraftScript : DialogScriptBase
         var multiplier = GetMultiplier(totalTimesCrafted);
 
         // Calculate the success rate with all the factors
-        var successRate = (baseSuccessRate - rankDifficultyReduction - difficulty + timesCraftedThisItem / 10.0)
+        var successRate = (baseSuccessRate - rankDifficultyReduction - difficulty + timesCraftedThisItem / 5.0)
                           * multiplier;
 
         // Ensure the success rate does not exceed the maximum allowed value
@@ -216,7 +216,7 @@ public class WeaponSmithingCraftScript : DialogScriptBase
 
         foreach (var removeRegant in recipe.Ingredients)
             source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
-
+        
         if (!IntegerRandomizer.RollChance(
                 (int)CalculateSuccessRate(
                     legendMarkCount,
@@ -247,7 +247,7 @@ public class WeaponSmithingCraftScript : DialogScriptBase
             var playerRank = GetRankAsInt(existingMark.Text);
 
             if ((playerRank >= 2) && (playerRank - 1 > recipeStatus))
-                source.SendOrangeBarMessage("You can no longer gain experience from this recipe.");
+                source.SendOrangeBarMessage("You can no longer gain rank experience from this recipe.");
 
             if ((playerRank >= recipeStatus) && (playerRank <= recipeStatus + 1))
             {

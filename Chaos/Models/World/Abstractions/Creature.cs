@@ -295,7 +295,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
         var nextPoint = path.Pop();
         var direction = nextPoint.DirectionalRelationTo(this);
 
-        Walk(direction);
+        Walk(direction, pathOptions.IgnoreBlockingReactors);
     }
 
     public virtual void Say(string message) => ShowPublicMessage(PublicMessageType.Normal, message);
@@ -434,7 +434,8 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
 
                         if (onTraverse is not null)
                             await onTraverse();
-                    } catch (Exception e)
+                    } 
+                    catch (Exception e)
                     {
                         Logger.WithTopics(Topics.Entities.MapInstance, Topics.Entities.Creature, Topics.Actions.Traverse)
                               .WithProperty(this)

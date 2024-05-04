@@ -43,8 +43,9 @@ public class WrathEffect : ContinuousAnimationEffectBase
 
             return;
         }
-
-        Subject.StatSheet.SubtractManaPct(1);
+        
+        
+        Subject.StatSheet.SubtractManaPct(5);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
 
         var points = AoeShape.AllAround.ResolvePoints(Subject);
@@ -52,13 +53,15 @@ public class WrathEffect : ContinuousAnimationEffectBase
         var targets =
             Subject.MapInstance.GetEntitiesAtPoints<Creature>(points.Cast<IPoint>()).WithFilter(Subject, TargetFilter.HostileOnly).ToList();
 
+        var damage = (Subject.StatSheet.EffectiveStr + 3) * 2;
+        
         foreach (var target in targets)
         {
             ApplyDamageScript.ApplyDamage(
                 Subject,
                 target,
                 this,
-                Subject.StatSheet.Level);
+                damage);
 
             target.ShowHealth();
         }

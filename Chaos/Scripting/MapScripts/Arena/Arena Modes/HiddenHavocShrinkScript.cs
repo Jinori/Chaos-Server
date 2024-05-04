@@ -13,7 +13,6 @@ public sealed class HiddenHavocShrinkScript : CompositeMapScript
     
     private static readonly ICollection<string> ScriptKeys = new[]
     {
-        GetScriptKey(typeof(AnnounceMatchScript)),
         GetScriptKey(typeof(AislingDeathTouchScript)),
         GetScriptKey(typeof(MapShrinkScript)),
         GetScriptKey(typeof(DeclareWinnerScript)),

@@ -78,7 +78,7 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
         var multiplier = GetMultiplier(totalTimesCrafted);
 
         // Calculate the success rate with all the factors
-        var successRate = (baseSuccessRate - rankDifficultyReduction - difficulty + timesCraftedThisItem / 10.0)
+        var successRate = (baseSuccessRate - rankDifficultyReduction - difficulty + timesCraftedThisItem / 5.0)
                           * multiplier;
 
         // Ensure the success rate does not exceed the maximum allowed value
@@ -208,10 +208,7 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
 
         var timesCraftedThisItem =
             source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + recipe.Name, out var value) ? value : 0;
-
-        foreach (var removeRegant in recipe.Ingredients)
-            source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
-
+        
         if (!IntegerRandomizer.RollChance(
                 (int)CalculateSuccessRate(
                     legendMarkCount,
@@ -220,6 +217,20 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
                     GetStatusAsInt(recipe.Rank),
                     recipe.Difficulty)))
         {
+            
+            foreach (var removeRegant in recipe.Ingredients)
+                if (removeRegant.TemplateKey != recipe.TemplateKey) 
+                    source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
+                else
+                {
+                    if (IntegerRandomizer.RollChance(5))
+                    {
+                        Subject.Reply(source, "Mistakes eventually happen. You've critically failed and the weapon cannot be salvaged.");
+                        source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
+                        return;
+                    }
+                }
+
             Subject.Close(source);
             var dialog = DialogFactory.Create("weaponsmithing_upgradeFailed", Subject.DialogSource);
             dialog.MenuArgs = Subject.MenuArgs;
@@ -231,6 +242,11 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
             return;
         }
 
+        foreach (var removeRegant in recipe.Ingredients)
+        {
+            source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
+        }
+        
         source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + recipe.Name);
 
         if (existingMark is null)
@@ -242,7 +258,7 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
             var playerRank = GetRankAsInt(existingMark.Text);
 
             if ((playerRank >= 2) && (playerRank - 1 > recipeStatus))
-                source.SendOrangeBarMessage("You can no longer gain experience from this recipe.");
+                source.SendOrangeBarMessage("You can no longer gain rank experience from this recipe.");
 
             if ((playerRank >= recipeStatus) && (playerRank <= recipeStatus + 1))
             {

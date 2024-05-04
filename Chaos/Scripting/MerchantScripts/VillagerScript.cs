@@ -35,6 +35,8 @@ public class VillagerScript : MerchantScriptBase
         IgnoreBlockingReactors = true
     };
     
+    
+    
     private readonly IIntervalTimer ActionTimer;
     private readonly IIntervalTimer DialogueTimer;
     private readonly IIntervalTimer EatingTimer;
@@ -328,7 +330,7 @@ public class VillagerScript : MerchantScriptBase
                 var location = new Location(Subject.MapInstance.InstanceId, point);
                 
                 if (ShouldWalkTo(location))
-                    WalkTowards(location, delta);
+                    WalkTowardsPlayer(location, delta);
                 else
                 {
                     if (ShouldWalkToSpawnPoint())
@@ -611,6 +613,14 @@ public class VillagerScript : MerchantScriptBase
             
             Subject.Pathfind(destination, 0, Options);
         }
+    }
+    
+    private void WalkTowardsPlayer(Location destination, TimeSpan delta)
+    {
+        UpdateWalkTimer(delta);
+
+        if (WalkTimer.IntervalElapsed)
+            Subject.Pathfind(destination, 0);
     }
 
     #region TrackedLegendMarks

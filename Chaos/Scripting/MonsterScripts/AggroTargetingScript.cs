@@ -1,3 +1,4 @@
+using Chaos.Common.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
@@ -40,12 +41,12 @@ public class AggroTargetingScript : MonsterScriptBase
 
         TargetUpdateTimer.Update(delta);
 
-        if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject)))
+        if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject) || Target.MapInstance.IsWalkable(Target, CreatureType.Normal)))
         {
             AggroList.Remove(Target.Id, out _);
             Target = null;
         }
-
+        
         if (!TargetUpdateTimer.IntervalElapsed)
             return;
 
@@ -64,7 +65,7 @@ public class AggroTargetingScript : MonsterScriptBase
             if (!Map.TryGetEntity<Creature>(kvp.Key, out var possibleTarget))
                 continue;
 
-            if (!possibleTarget.IsAlive || !Subject.CanSee(possibleTarget) || !possibleTarget.WithinRange(Subject))
+            if (!possibleTarget.IsAlive || !Subject.CanSee(possibleTarget) || !possibleTarget.WithinRange(Subject) || Subject.MapInstance.IsWalkable(possibleTarget, Subject.Type))
                 continue;
 
             //if we're blind, we can only target things within 1 tile
