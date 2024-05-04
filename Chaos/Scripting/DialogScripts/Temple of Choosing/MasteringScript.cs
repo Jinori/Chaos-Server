@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
@@ -6,6 +7,7 @@ using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 
@@ -269,7 +271,25 @@ public class MasteringScript : DialogScriptBase
                 source.Titles.Add($"Master {userBaseClass}");
                 source.UserStatSheet.SetIsMaster(true);
                 AwardClassSpecificItems(source, userBaseClass);
-
+                switch (userBaseClass)
+                {
+                    case BaseClass.Warrior:
+                        AwardMasterLegendMark(source, BaseClass.Warrior, "warMaster");
+                        break;
+                    case BaseClass.Rogue:
+                        AwardMasterLegendMark(source, BaseClass.Rogue, "rogueMaster");
+                        break;
+                    case BaseClass.Wizard:
+                        AwardMasterLegendMark(source, BaseClass.Wizard, "wizMaster");
+                        break;
+                    case BaseClass.Priest:
+                        AwardMasterLegendMark(source, BaseClass.Priest, "priestMaster");
+                        break;
+                    case BaseClass.Monk:
+                        AwardMasterLegendMark(source, BaseClass.Monk, "monkMaster");
+                        break;
+                }
+                
                 source.SendOrangeBarMessage("You have been awarded a title, weapon, armor and helmet!");
                 source.Client.SendAttributes(StatUpdateType.Full);
                 
@@ -282,7 +302,17 @@ public class MasteringScript : DialogScriptBase
             }
         }
     }
-    
+
+    private void AwardMasterLegendMark(Aisling source, BaseClass baseClass, string classKey) =>
+        source.Legend.AddOrAccumulate(
+            new LegendMark(
+                $"Wields the Mantle of  {baseClass.ToString()} Master",
+                classKey,
+                MarkIcon.Victory,
+                MarkColor.Blue,
+                1,
+                GameTime.Now));
+
     private void NotifyAllAislingsOfNewMaster(Aisling source, BaseClass userBaseClass)
     {
         foreach (var aisling in ClientRegistry)
