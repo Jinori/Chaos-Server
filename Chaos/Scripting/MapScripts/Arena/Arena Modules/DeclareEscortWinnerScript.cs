@@ -59,14 +59,14 @@ public sealed class DeclareEscortWinnerScript : MapScriptBase
 
             //Successful offense
             if (currentPoint == new Point(39, 6))
-                HandleWinningTeam(ArenaTeam.Gold);
+                HandleWinningTeam(ArenaSide.Offensive);
         }
         
         if (!GameDurationTimer.IntervalElapsed)
             return;
         
         //Successful defense
-        HandleWinningTeam(ArenaTeam.Green);
+        HandleWinningTeam(ArenaSide.Defender);
     }
     
     private void SendMessage(string message)
@@ -75,22 +75,28 @@ public sealed class DeclareEscortWinnerScript : MapScriptBase
             player.SendServerMessage(ServerMessageType.ActiveMessage, message);
     }
     
-    private void HandleWinningTeam(ArenaTeam winningTeam)
+    private void HandleWinningTeam(ArenaSide winningTeam)
     {
         var playersThatWon = Subject.GetEntities<Aisling>()
-                                    .Where(x => x.Trackers.Enums.TryGetValue(out ArenaTeam value) && (value == winningTeam));
+                                    .Where(x => x.Trackers.Enums.TryGetValue(out ArenaSide value) && (value == winningTeam));
 
         foreach (var winner in playersThatWon)
+        {
             winner.SendActiveMessage($"Your team has won the round! Go {winningTeam}!");
+            winner.Trackers.Enums.Remove<ArenaSide>();
+        }
 
         var playersThatLost = Subject.GetEntities<Aisling>()
-                                     .Where(x => x.Trackers.Enums.TryGetValue(out ArenaTeam value) && (value != winningTeam));
+                                     .Where(x => x.Trackers.Enums.TryGetValue(out ArenaSide value) && (value != winningTeam));
 
         foreach (var loser in playersThatLost)
+        {
             loser.SendActiveMessage($"{winningTeam} has won the round. Better luck next time.");
+            loser.Trackers.Enums.Remove<ArenaSide>();
+        }
         
         var allToPort = Subject.GetEntities<Aisling>();
-
+        
         foreach (var player in allToPort)
         {
             player.Trackers.Enums.TryGetValue(out ArenaTeam value);

@@ -15,7 +15,7 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class AdminTrinketScript : DialogScriptBase
 {
-    private const string BOT_TOKEN = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.GXX0LL.48H24xZi7kJ6QZyzZn2GhKgmkoRSbgPB843q_Y";
+    private const string BOT_TOKEN = @"";
     private readonly ISimpleCache _cache;
     private readonly ISimpleCacheProvider _cacheProvider;
     private readonly ulong _channelId = 1089331247999885372;

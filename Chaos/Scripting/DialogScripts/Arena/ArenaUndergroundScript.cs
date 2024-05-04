@@ -26,7 +26,7 @@ namespace Chaos.Scripting.DialogScripts.Arena;
 public class ArenaUndergroundScript : DialogScriptBase
 {
     //Place Discord Bot Token Here When Live
-    private const string BOT_TOKEN = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.GXX0LL.48H24xZi7kJ6QZyzZn2GhKgmkoRSbgPB843q_Y";
+    private const string BOT_TOKEN = @"";
     private const ulong CHANNEL_ID = 1136412469762470038;
     private const ulong ARENA_WIN_CHANNEL_ID = 1136426304300916786;
     private readonly Point CenterWarp = new(11, 10);
@@ -99,8 +99,10 @@ public class ArenaUndergroundScript : DialogScriptBase
                 break;
             
             case "ophie_golddefending":
+                SetDefendingTeams(source, ArenaTeam.Gold);
+                break;
             case "ophie_greendefending":
-                SetDefendingTeams(source, key.Contains("gold") ? ArenaTeam.Gold : ArenaTeam.Green);
+                SetDefendingTeams(source, ArenaTeam.Green);
                 break;
             
             case "ophie_startescort":
@@ -175,7 +177,7 @@ public class ArenaUndergroundScript : DialogScriptBase
 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
                 
-                if (aisling!.MapInstance.Template.TemplateKey != "arena_underground")
+                if (aisling!.MapInstance.InstanceId != "arena_underground")
                     return;
                 
                 aisling?.Trackers.Enums.Set(ArenaTeam.Red);
@@ -196,7 +198,7 @@ public class ArenaUndergroundScript : DialogScriptBase
 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
                 
-                if (aisling!.MapInstance.Template.TemplateKey != "arena_underground")
+                if (aisling!.MapInstance.InstanceId != "arena_underground")
                     return;
                 
                 aisling?.Trackers.Enums.Set(ArenaTeam.Green);
@@ -217,7 +219,7 @@ public class ArenaUndergroundScript : DialogScriptBase
 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
                 
-                if (aisling!.MapInstance.Template.TemplateKey != "arena_underground")
+                if (aisling!.MapInstance.InstanceId != "arena_underground")
                     return;
                 
                 aisling?.Trackers.Enums.Set(ArenaTeam.Gold);
@@ -238,7 +240,7 @@ public class ArenaUndergroundScript : DialogScriptBase
 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
 
-                if (aisling!.MapInstance.Template.TemplateKey != "arena_underground")
+                if (aisling!.MapInstance.InstanceId != "arena_underground")
                     return;
                 
                 aisling?.Trackers.Enums.Set(ArenaTeam.Blue);
@@ -265,7 +267,7 @@ public class ArenaUndergroundScript : DialogScriptBase
 
                 var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
                 
-                if (aisling!.MapInstance.Template.TemplateKey != "arena_underground")
+                if (aisling!.MapInstance.InstanceId != "arena_underground")
                     return;
                 
                 aisling?.Trackers.Enums.Remove<ArenaTeam>();
@@ -287,21 +289,36 @@ public class ArenaUndergroundScript : DialogScriptBase
     
     private void SetDefendingTeams(Aisling source, ArenaTeam defendingTeam)
     {
-        var opposingTeam = defendingTeam == ArenaTeam.Gold ? ArenaTeam.Green : ArenaTeam.Gold;
-        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+        if (defendingTeam is ArenaTeam.Gold)
         {
-            aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
-
-            if (team is ArenaTeam.Blue or ArenaTeam.Red)
+            foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
             {
-                Subject.Reply(source, $"You must only use Gold or Green teams for Escort. {aisling.Name} is currently on the {team} team.");
-                return;
-            }
+                aisling.Trackers.Enums.Remove<ArenaSide>();
+                
+                aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
 
-            if (team == opposingTeam)
-                aisling.Trackers.Enums.Set(ArenaSide.Offensive);
-            else if (team == defendingTeam)
-                aisling.Trackers.Enums.Set(ArenaSide.Defender);
+                if (team is ArenaTeam.Gold)
+                {
+                    aisling.Trackers.Enums.Set(ArenaSide.Defender);
+                }
+                else
+                {
+                    aisling.Trackers.Enums.Set(ArenaSide.Offensive);
+                }
+            }
+        }
+        if (defendingTeam is ArenaTeam.Green)
+        {
+            foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
+            {
+                aisling.Trackers.Enums.Remove<ArenaSide>();
+                aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
+
+                if (team is ArenaTeam.Green)
+                    aisling.Trackers.Enums.Set(ArenaSide.Defender);
+                else
+                    aisling.Trackers.Enums.Set(ArenaSide.Offensive);
+            }
         }
     }
 
@@ -342,21 +359,12 @@ public class ArenaUndergroundScript : DialogScriptBase
             }
                     
             aisling.Trackers.Enums.TryGetValue(out ArenaSide side);
-                    
-                    
-            Rectangle targetRectangle;
 
             if (side == ArenaSide.Offensive)
-            {
-                targetRectangle = new Rectangle(new Point(35, 6), 2, 2);
-                aisling.TraverseMap(shard, GetValidRandomPoint(targetRectangle));
-            }
+                aisling.TraverseMap(shard, new Point(5, 35));
+
             if (side == ArenaSide.Defender)
-            {
-                targetRectangle = new Rectangle(new Point(6, 30), 3, 3);
-                aisling.TraverseMap(shard, GetValidRandomPoint(targetRectangle));
-                break;
-            }
+                aisling.TraverseMap(shard, new Point(39, 6));
         }
 
         Subject.Close(source);

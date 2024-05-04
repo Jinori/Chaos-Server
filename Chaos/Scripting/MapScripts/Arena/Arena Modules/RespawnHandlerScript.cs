@@ -12,8 +12,8 @@ public sealed class RespawnHandlerScript(MapInstance subject) : MapScriptBase(su
     private readonly Dictionary<uint, int> DeathCounts = new();
 
     // Respawn Points
-    private readonly Point GoldRespawnPointEscort = new(5, 37);
-    private readonly Point GreenRespawnPointEscort = new(39, 6);
+    private readonly Point EscortOffensiveRespawnPoint = new(5, 37);
+    private readonly Point EscortDefensiveRespawnPoint = new(39, 6);
     private readonly Point GoldRespawnPointColorClash = new(2, 2);
     private readonly Point GreenRespawnPointColorClash = new(29, 2);
     private readonly Point RedRespawnPointColorClash = new(2, 29);
@@ -74,6 +74,7 @@ public sealed class RespawnHandlerScript(MapInstance subject) : MapScriptBase(su
                 aisling.StatSheet.SetManaPct(100);
                 aisling.TraverseMap(Subject, point);
                 aisling.Refresh(true);
+                aisling.SendOrangeBarMessage("You've respawned! Head back into the fight.");
                 break;
             }
             // Initial death, move to holding area, set respawn time, and increment death count
@@ -92,12 +93,14 @@ public sealed class RespawnHandlerScript(MapInstance subject) : MapScriptBase(su
                 aisling.StatSheet.SetManaPct(100);
                 aisling.TraverseMap(Subject, respawnPointClash);
                 aisling.Refresh(true);
+                aisling.SendOrangeBarMessage("You've respawned! Head back into the fight.");
                 break;
             case "Escort - Teams":
-                var respawnPointEscort = team switch
+                aisling.Trackers.Enums.TryGetValue(out ArenaSide side);
+                var respawnPointEscort = side switch
                 {
-                    ArenaTeam.Gold  => GoldRespawnPointEscort,
-                    ArenaTeam.Green => GreenRespawnPointEscort,
+                    ArenaSide.Offensive  => EscortOffensiveRespawnPoint,
+                    ArenaSide.Defender => EscortDefensiveRespawnPoint,
                     _               => new Point(31, 26) // Default respawn point
                 };
                 
@@ -106,6 +109,7 @@ public sealed class RespawnHandlerScript(MapInstance subject) : MapScriptBase(su
                 aisling.StatSheet.SetManaPct(100);
                 aisling.TraverseMap(Subject, respawnPointEscort);
                 aisling.Refresh(true);
+                aisling.SendOrangeBarMessage("You've respawned! Head back into the fight.");
                 break;
         }
     }

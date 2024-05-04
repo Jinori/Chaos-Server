@@ -174,9 +174,11 @@ public sealed class NathraScript : MerchantScriptBase
             var points = AoeShape.AllAround.ResolvePoints(Subject, 3);
             var playersInAoe = points.SelectMany(point => Subject.MapInstance.GetEntitiesAtPoint<Aisling>(point)).ToList();
 
-            var shouldMove = (playersInAoe.Count != 0) &&
-                             playersInAoe.All(x => x.Trackers.Enums.TryGetValue(out ArenaSide side) && (side == ArenaSide.Defender)) &&
-                             playersInAoe.Any(x => x.Trackers.Enums.TryGetValue(out ArenaSide side) && (side == ArenaSide.Defender));
+            var areDefendersPresent = playersInAoe.Any(x => x.Trackers.Enums.TryGetValue(out ArenaSide side) && side == ArenaSide.Defender);
+            var areOffensivePresent = playersInAoe.Any(x => x.Trackers.Enums.TryGetValue(out ArenaSide side) && side == ArenaSide.Offensive);
+
+            var shouldStop = areDefendersPresent;
+            var shouldMove = !shouldStop && areOffensivePresent;
 
             if (shouldMove && StateTransitionMap.TryGetValue(NathraState, out var transition))
             {
@@ -185,8 +187,7 @@ public sealed class NathraScript : MerchantScriptBase
                     ChangeState(transition.nextState);
             }
 
-            if (shouldMove && NathraState is CheckpointState.WalkingToFirstPoint or CheckpointState.WalkingToSecondPoint or CheckpointState.WalkingToThirdPoint
-                                             or CheckpointState.WalkingToFourthPoint or CheckpointState.WalkingToGreenWinPoint)
+            if (shouldMove && NathraState is CheckpointState.WalkingToFirstPoint or CheckpointState.WalkingToSecondPoint or CheckpointState.WalkingToThirdPoint or CheckpointState.WalkingToFourthPoint or CheckpointState.WalkingToGreenWinPoint)
                 Subject.Walk(Subject.Direction);
         }
     }
