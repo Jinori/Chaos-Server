@@ -88,7 +88,7 @@ public class ClueScript : ReactorTileScriptBase
             }
             case "Manor Room 8":
             {
-                if (stage is ManorNecklaceStage.AcceptedQuest or ManorNecklaceStage.SawNecklace)
+                if (stage is ManorNecklaceStage.AcceptedQuest)
                 {
                     // Check if the group is null or has only one member
                     if (aisling.Group is null || aisling.Group.Any(x => !x.OnSameMapAs(aisling) || !x.WithinRange(aisling)))
