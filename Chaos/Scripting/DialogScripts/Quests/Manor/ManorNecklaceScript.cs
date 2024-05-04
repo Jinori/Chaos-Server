@@ -135,9 +135,14 @@ public class ManorNecklaceScript : DialogScriptBase
 
                         break;
                     case ManorNecklaceStage.SawNecklace:
+                    {
+                     
                         Subject.Reply(
                             source,
                             "You saw it!? Then ghost appeared? They must of taken it! Go back to that room and find it for me!");
+                        source.Trackers.Enums.Set(ManorNecklaceStage.AcceptedQuest);
+                        
+                    }
 
                         break;
                 }
