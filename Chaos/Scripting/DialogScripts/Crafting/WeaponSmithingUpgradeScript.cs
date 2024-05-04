@@ -218,6 +218,7 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
                     recipe.Difficulty)))
         {
             
+            
             foreach (var removeRegant in recipe.Ingredients)
                 if (removeRegant.TemplateKey != recipe.TemplateKey) 
                     source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
@@ -238,15 +239,15 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
             dialog.InjectTextParameters(recipe.Name);
             dialog.Display(source);
             source.Animate(FailAnimation);
-
+            
+            //Give item counter exp even if failure
+            source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + recipe.Name);
             return;
         }
 
         foreach (var removeRegant in recipe.Ingredients)
-        {
             source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
-        }
-        
+
         source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + recipe.Name);
 
         if (existingMark is null)

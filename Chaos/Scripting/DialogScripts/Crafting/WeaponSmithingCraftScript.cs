@@ -232,7 +232,8 @@ public class WeaponSmithingCraftScript : DialogScriptBase
             dialog.InjectTextParameters(recipe.Name);
             dialog.Display(source);
             source.Animate(FailAnimation);
-
+            //Give item counter exp even if failure
+            source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + recipe.Name);
             return;
         }
 

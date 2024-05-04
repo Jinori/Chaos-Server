@@ -126,7 +126,6 @@ public class FabricRefiningScript : DialogScriptBase
             var downgrade = ItemFactory.Create(downgradeKey);
             source.Inventory.TryAddToNextSlot(downgrade);
             source.Animate(FailAnimation);
-
             return;
         }
 
