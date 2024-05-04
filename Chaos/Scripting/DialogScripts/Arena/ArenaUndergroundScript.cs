@@ -625,18 +625,36 @@ public class ArenaUndergroundScript : DialogScriptBase
 
     private void TeleportParticipants(Aisling source, MapInstance shard, IRectangle bounds)
     {
+        var teleportPoints = new List<Point>();
+
         foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
         {
             Point point;
+            bool isInvalidPoint;
 
             do
+            {
                 point = bounds.GetRandomPoint();
-            while (shard.IsWall(point) || shard.IsBlockingReactor(point));
+                isInvalidPoint = shard.IsWall(point) || shard.IsBlockingReactor(point) || IsPointTooCloseToOthers(point, teleportPoints);
+            }
+            while (isInvalidPoint);
 
+            teleportPoints.Add(point);
             aisling.TraverseMap(shard, point);
         }
     }
 
+    private bool IsPointTooCloseToOthers(Point point, List<Point> points, int minDistance = 1)
+    {
+        foreach (var existingPoint in points)
+            if ((Math.Abs(existingPoint.X - point.X) <= minDistance) && (Math.Abs(existingPoint.Y - point.Y) <= minDistance))
+                return true;
+
+        return false;
+    }
+
+    
+    
     private void TeleportToTeamStartingPoint(Aisling aisling, MapInstance shard, ArenaTeam team)
     {
         var startingPoint = team switch
