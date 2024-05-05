@@ -56,7 +56,10 @@ public sealed class WolfBoss1EnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 3; i++)
             {
-                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type) && !Subject.MapInstance.IsWall(x));
+                if (!rectangle.GetPoints().Any(x => Subject.MapInstance.IsWalkable(x, Subject.Type)))
+                    continue;
+
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("wolf1-3", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
@@ -73,7 +76,10 @@ public sealed class WolfBoss1EnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 4; i++)
             {
-                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type) && !Subject.MapInstance.IsWall(x));
+                if (!rectangle.GetPoints().Any(x => Subject.MapInstance.IsWalkable(x, Subject.Type)))
+                    continue;
+
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("wolf1-3", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }

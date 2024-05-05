@@ -10,7 +10,7 @@ public class WolfBoss1Script : CompositeMonsterScript
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(BossDefenseScript)),
-        GetScriptKey(typeof(MoveToTargetScript)),
+        GetScriptKey(typeof(BossMoveToTargetScript)),
         GetScriptKey(typeof(WolfBoss1EnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),

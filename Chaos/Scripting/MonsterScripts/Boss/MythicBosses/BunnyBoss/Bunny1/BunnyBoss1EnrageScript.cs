@@ -34,7 +34,10 @@ public sealed class BunnyBoss1EnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 1; i++)
             {
-                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type) && !Subject.MapInstance.IsWall(x));
+                if (!rectangle.GetPoints().Any(x => Subject.MapInstance.IsWalkable(x, Subject.Type)))
+                    continue;
+
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("bunny1-1", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
@@ -49,7 +52,10 @@ public sealed class BunnyBoss1EnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 2; i++)
             {
-                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type) && !Subject.MapInstance.IsWall(x));
+                if (!rectangle.GetPoints().Any(x => Subject.MapInstance.IsWalkable(x, Subject.Type)))
+                    continue;
+
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("bunny1-2", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
@@ -64,7 +70,10 @@ public sealed class BunnyBoss1EnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 2; i++)
             {
-                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type) && !Subject.MapInstance.IsWall(x));
+                if (!rectangle.GetPoints().Any(x => Subject.MapInstance.IsWalkable(x, Subject.Type)))
+                    continue;
+
+                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("bunny1-3", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
