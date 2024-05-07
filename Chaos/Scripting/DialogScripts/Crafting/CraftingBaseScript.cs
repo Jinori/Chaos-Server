@@ -14,21 +14,23 @@ namespace Chaos.Scripting.DialogScripts.Crafting;
 public abstract class CraftingBaseScript : DialogScriptBase
 {
     /// <inheritdoc />
-    protected CraftingBaseScript(Dialog subject, IDialogFactory dialogFactory, IItemFactory itemFactory)
+    protected CraftingBaseScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
         : base(subject)
     {
-        DialogFactory = dialogFactory;
         ItemFactory = itemFactory;
+        DialogFactory = dialogFactory;
     }
 
+    protected readonly IItemFactory ItemFactory;
+    protected readonly IDialogFactory DialogFactory;
     protected abstract string LegendMarkKey { get; }
-    protected abstract string[] RankTitles { get; }
+    protected virtual string[] RankTitles => [];
     protected abstract string ItemCounterPrefix { get; }
     protected abstract double BaseSucessRate { get; }
     protected abstract double SuccessRateMax { get; }
+    protected abstract Dictionary<string, string> UpgradeMappings { get; }
+    protected abstract Dictionary<string, string> DowngradeMappings { get; }
     
-    private readonly IDialogFactory DialogFactory;
-    private readonly IItemFactory ItemFactory;
     private const string RECIPE_ONE_RANK = "Beginner";
     private const string RECIPE_TWO_RANK = "Basic";
     private const string RECIPE_THREE_RANK = "Initiate";
@@ -45,7 +47,7 @@ public abstract class CraftingBaseScript : DialogScriptBase
             25, 75, 150, 300, 500, 1000, 1500
         }
     ];
-    
+
     private Animation FailAnimation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -57,7 +59,7 @@ public abstract class CraftingBaseScript : DialogScriptBase
         TargetAnimation = 127
     };
     
-    private int GetStatusAsInt(string status)
+    public int GetStatusAsInt(string status)
     {
         var statusMappings = new Dictionary<string, int>
         {
@@ -90,10 +92,43 @@ public abstract class CraftingBaseScript : DialogScriptBase
             _       => 1.35
         };
     
-    private void AnimateFailure(MapEntity source) => source.Animate(FailAnimation);
-    private void AnimateSucess(MapEntity source) => source.Animate(SuccessAnimation);
+    protected string GetUpgradeKey(string rawItemKey)
+    {
+        if (UpgradeMappings.TryGetValue(rawItemKey, out var upgradeKey))
+            return upgradeKey;
+        
+        return rawItemKey;
+    }
 
-    private double CalculateRefiningSuccessRate(Aisling source, Item item)
+    protected string GetDowngradeKey(string rawItemKey)
+    {
+        if (DowngradeMappings.TryGetValue(rawItemKey, out var downgradeKey))
+            return downgradeKey;
+        
+        return rawItemKey;
+    }
+    
+    public void AnimateFailure(MapEntity source) => source.Animate(FailAnimation);
+    public void AnimateSucess(MapEntity source) => source.Animate(SuccessAnimation);
+
+    protected void ShowFailureDialog(Aisling source, string message, string failureDialogKey)
+    {
+        Subject.Close(source);
+        var dialog = DialogFactory.Create(failureDialogKey, Subject.DialogSource);
+        dialog.MenuArgs = Subject.MenuArgs;
+        dialog.Context = Subject.Context;
+        dialog.InjectTextParameters(message);
+        dialog.Display(source);
+    }
+
+    protected void HandleItemFailure(Aisling source, Item item, string failureOutcome)
+    {
+        var downgradeItem = ItemFactory.Create(failureOutcome);
+        source.GiveItemOrSendToBank(downgradeItem);
+        AnimateFailure(source);
+    }
+    
+    public double CalculateRefiningSuccessRate(Aisling source, Item item)
     {
         var timesCraftedSingleItem =
             source.Trackers.Counters.TryGetValue(ItemCounterPrefix + item.Template.TemplateKey, out var value) ? value : 0;
@@ -103,7 +138,7 @@ public abstract class CraftingBaseScript : DialogScriptBase
         return Math.Min(sucessRate, SuccessRateMax);
     }
 
-    private double CalculateCraftingSuccessRate(Aisling source, Item item, string recipeRank, int recipeDifficulty)
+    public double CalculateCraftingSuccessRate(Aisling source, Item item, string recipeRank, int recipeDifficulty)
     {
         source.Legend.TryGetValue(LegendMarkKey, out var existingMark);
         var legendMarkCount = existingMark?.Count ?? 0;
@@ -117,7 +152,7 @@ public abstract class CraftingBaseScript : DialogScriptBase
         return Math.Min(successRate, SuccessRateMax);
     }
 
-    private void UpdateRefiningCounter(Aisling source, Item item) => source.Trackers.Counters.AddOrIncrement(ItemCounterPrefix + item.Template.TemplateKey);
+    public void UpdateRefiningCounter(Aisling source, Item item) => source.Trackers.Counters.AddOrIncrement(ItemCounterPrefix + item.Template.TemplateKey);
     
     public void UpdateLegendmark(Aisling source, int craftCount)
     {
