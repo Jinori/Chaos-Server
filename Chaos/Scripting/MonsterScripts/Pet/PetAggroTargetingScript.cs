@@ -17,11 +17,11 @@ namespace Chaos.Scripting.MonsterScripts.Pet
         private int InitialAggro = 10;
 
         private Monster? FindAggroedMonster(Aisling owner) =>
-            owner.MapInstance.GetEntitiesWithinRange<Monster>(owner)
+            owner.MapInstance.GetEntitiesWithinRange<Monster>(owner, 9)
                  .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id) && !x.Name.Contains("Teammate") && !x.Name.Contains("Wind Wall") && !x.Script.Is<PetScript>());
 
         private Monster? FindClosestMonster(Aisling owner) =>
-            owner.MapInstance.GetEntitiesWithinRange<Monster>(owner, 12)
+            owner.MapInstance.GetEntitiesWithinRange<Monster>(owner, 9)
                  .Where(x => x.IsAlive && !x.Equals(Subject) && !x.Script.Is<PetScript>() && !x.Script.Is<NightmareTeammateScript>() && !x.Script.Is<NightmareWindWallScript>())
                  .MinBy(x => x.DistanceFrom(owner));
 
@@ -32,7 +32,7 @@ namespace Chaos.Scripting.MonsterScripts.Pet
 
             var groupMembers = owner.Group.Select(x => x.Id).ToList();
             
-            return owner.MapInstance.GetEntitiesWithinRange<Monster>(owner, 12)
+            return owner.MapInstance.GetEntitiesWithinRange<Monster>(owner, 9)
                        .Where(monster => monster.IsAlive && monster.AggroList.Keys.Any(aggroId => groupMembers.Contains(aggroId)))
                        .MaxBy(monster => monster.AggroList.Where(kvp => groupMembers.Contains(kvp.Key)).Sum(kvp => kvp.Value));
         }
