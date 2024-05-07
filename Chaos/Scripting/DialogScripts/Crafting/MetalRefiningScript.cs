@@ -70,29 +70,47 @@ public class MetalRefiningScript : CraftingBaseScript
     
     private void OnDisplayingConfirmation(Aisling source)
     {
-        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || (item.Count < 2))
+        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
         {
-            Subject.Reply(source, "You need at least two units of the material to proceed.", "metal_refining_initial");
+            Subject.Reply(source, "You don't have enough material.", "metal_refining_initial");
+            return;
+        }
+
+        var requiredCount = MetalTemplateKeys.Contains(item.Template.TemplateKey) && item.Template.TemplateKey.Contains("raw") ? 2 : 1;
+        if (item.Count < requiredCount)
+        {
+            Subject.Reply(source, $"You need at least {requiredCount} units of the material to proceed.", "metal_refining_initial");
             return;
         }
 
         if (!MetalTemplateKeys.Contains(item.Template.TemplateKey))
+        {
             Subject.Reply(source, "This item cannot be refined. Please select a valid material.", "metal_refining_initial");
-        
+            return;
+        }
+
         var successRate = CalculateRefiningSuccessRate(source, item);
-        Subject.InjectTextParameters(item.DisplayName, successRate);
+        Subject.InjectTextParameters(item.DisplayName, successRate.ToString("N2"));
     }
 
 
+    
     private void OnDisplayingAccepted(Aisling source)
     {
-        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || (item.Count < 2))
+        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
         {
             Subject.Reply(source, "You ran out of that metal to refine.", "metal_refining_initial");
             return;
         }
 
-        source.Inventory.RemoveQuantityByTemplateKey(item.Template.TemplateKey, 2);
+        var requiredCount = item.Template.TemplateKey.Contains("raw") ? 2 : 1;
+        if (item.Count < requiredCount)
+        {
+            Subject.Reply(source, $"You ran out of {item.DisplayName} to refine.", "metal_refining_initial");
+            return;
+        }
+
+        source.Inventory.RemoveQuantityByTemplateKey(item.Template.TemplateKey, requiredCount);
         var successRate = CalculateRefiningSuccessRate(source, item);
 
         if (!IntegerRandomizer.RollChance((int)successRate))
