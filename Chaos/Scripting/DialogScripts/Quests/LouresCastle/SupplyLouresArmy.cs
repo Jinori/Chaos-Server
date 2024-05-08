@@ -1,6 +1,8 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Geometry.Abstractions.Definitions;
+using Chaos.Models.Abstractions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -13,6 +15,7 @@ using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
+using Namotion.Reflection;
 
 namespace Chaos.Scripting.DialogScripts.Quests.LouresCastle;
 public class SupplyLouresArmy : DialogScriptBase
@@ -91,6 +94,20 @@ public class SupplyLouresArmy : DialogScriptBase
                     Subject.Reply(source, "Get out of my throne room!", "armysupply_kickplayer");
                     return;
                 }
+                
+                if (source.Trackers.Enums.HasValue(SupplyLouresStage.CompletedSupply))
+                {
+
+                    var option = new DialogOption
+                    {
+                        DialogKey = "armysupply_kinginitial2",
+                        OptionText = "Loures Castle"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+                
                 if (source.Trackers.Enums.HasValue(SupplyLouresStage.KilledAssassin2))
                 {
 
@@ -196,7 +213,7 @@ public class SupplyLouresArmy : DialogScriptBase
 
                     if (stage == SupplyLouresStage.StartedSupply)
                     {
-                        Subject.Reply(source, "Skip", "armysupply_return5");
+                        Subject.Reply(source, "Skip", "armysupply_return3");
                         return;
                     }
 
@@ -206,10 +223,10 @@ public class SupplyLouresArmy : DialogScriptBase
                         return;
                     }
 
-                    if (stage == SupplyLouresStage.CompletedSupply)
+                    if (stage == SupplyLouresStage.TurnedInSupply)
                     {
                         Subject.Reply(source,
-                            "Thank you again Aisling for bringing those materials back. My army has been thriving ever since! We're unstoppable!");
+                            "Skip", "armysupply_return7");
                         return;
                     }
 
@@ -218,6 +235,13 @@ public class SupplyLouresArmy : DialogScriptBase
                         Subject.Reply(source, "You should know, I had nothing to do with that attack.");
                     }
 
+                }
+                
+                if (stage == SupplyLouresStage.CompletedSupply)
+                {
+                    Subject.Reply(source,
+                        "Thank you again Aisling for bringing those materials back. Go tell Knight Thibault the army is as good as new!");
+                    return;
                 }
 
                 break;
@@ -232,21 +256,21 @@ public class SupplyLouresArmy : DialogScriptBase
 
             case "armysupply_startquest12":
             {
-                source.Trackers.Enums.HasValue(SupplyLouresStage.StartedQuest);
+                source.Trackers.Enums.Set(SupplyLouresStage.StartedQuest);
                 source.SendOrangeBarMessage("Find Alistair behind the Loures Castle.");
                 break;
             }
-
-            case "armysupply_startsupply3":
+            
+            case "armysupply_startsupply7":
             {
                 source.Trackers.Enums.Set(SupplyLouresStage.StartedSupply);
-                source.SendOrangeBarMessage("Collect 10 Polished Iron, 5 Pristine Ruby, and 10 Exquisite Cotton.");
+                source.SendOrangeBarMessage("Collect 10 Polished Iron Bars, 5 Pristine Ruby, and 10 Exquisite Cotton.");
                 return;
             }
 
             case "armysupply_return4":
             {
-                if (!source.Inventory.HasCount("Polished Iron", 10)
+                if (!source.Inventory.HasCount("Polished Iron Bar", 10)
                     || (!source.Inventory.HasCount("Pristine Ruby", 5)
                         || !source.Inventory.HasCount("Exquisite Cotton", 10)))
                 {
