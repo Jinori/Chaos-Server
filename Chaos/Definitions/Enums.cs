@@ -1515,5 +1515,20 @@ public enum MainstoryFlags
     CompletedArtifact1 = 1 << 2,
     CompletedArtifact2 = 1 << 3,
     CompletedArtifact3 = 1 << 4,
-    CompletedArtifact4 = 1 << 5
+    CompletedArtifact4 = 1 << 5,
+}
+
+public enum SupplyLouresStage
+{
+    None,
+    StartedQuest = 1,
+    StartedSupply = 2,
+    SawAssassin = 3,
+    KilledAssassin = 4,
+    KilledAssassin2 = 5,
+    TurnedInSupply = 6,
+    CompletedSupply = 7,
+    KeptThibaultsSecret = 8,
+    CompletedAssassin1 = 9,
+    CompletedAssassin2 = 10
 }

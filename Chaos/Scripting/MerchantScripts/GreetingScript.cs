@@ -16,6 +16,12 @@ public class GreetingScript(Merchant subject) : MerchantScriptBase(subject)
         {
             case "thibault":
             {
+                if (source.Trackers.Enums.HasValue(SupplyLouresStage.CompletedAssassin1))
+                {
+                    Subject.Say($"{source.Name}! You are not welcome here! Leave immediately!");
+                    return;
+                }
+                
                 Subject.Say($"{source.Name} enters the throne room!");
 
                 return;

@@ -30,7 +30,7 @@ public sealed class BossMoveToTargetScript(Monster subject, IEffectFactory effec
         if ((Target.Trackers.LastWalk != null) && (Target.Trackers.LastWalk.Value < DateTime.UtcNow.AddSeconds(-5)) && (Target.DistanceFrom(Subject) >= 2))
         {
             var points = Subject.GenerateCardinalPoints()
-                                .Where(x => !Subject.MapInstance.IsWalkable(x, Subject.Type))
+                                .Where(x => Subject.MapInstance.IsWalkable(x, Subject.Type))
                                 .ToList();
 
             if (points.Count != 0)

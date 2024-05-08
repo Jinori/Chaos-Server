@@ -9,6 +9,8 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
+using Chaos.Scripting.MonsterScripts.Nightmare.PriestNightmare;
+using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -58,8 +60,8 @@ public class QuakeEffect : ContinuousAnimationEffectBase
         var targets =
             Subject.MapInstance.GetEntitiesAtPoints<Creature>(points.Cast<IPoint>()).WithFilter(Subject, TargetFilter.HostileOnly).ToList();
 
-        if ((AislingSubject?.Group == null && AislingSubject?.Name != SourceOfEffect.Name) 
-            || (AislingSubject?.Group != null && !AislingSubject.Group.Contains(SourceOfEffect)))
+        if ((AislingSubject?.Group == null && AislingSubject?.Name != SourceOfEffect.Name && !Subject.Script.Is<PetScript>() && !Subject.Script.Is<NightmareTeammateScript>())
+            || AislingSubject?.Group != null && !AislingSubject.Group.Contains(SourceOfEffect) && !Subject.Script.Is<PetScript>() && !Subject.Script.Is<NightmareTeammateScript>())
             Subject.Effects.Terminate("Quake");
         
         foreach (var target in targets)
@@ -87,7 +89,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
         
         if (!target.IsFriendlyTo(source))
         {
-            if (target.Name.Contains("Teammate"))
+            if (target.Name.Contains("Teammate") || target.Script.Is<PetScript>())
                 return true;
             
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is not an ally.");

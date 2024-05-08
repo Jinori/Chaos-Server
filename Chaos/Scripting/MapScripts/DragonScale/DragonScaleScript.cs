@@ -1,13 +1,12 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MapScripts;
+namespace Chaos.Scripting.MapScripts.DragonScale;
 
 public class DragonScaleScript : MapScriptBase
 {
@@ -40,8 +39,8 @@ public class DragonScaleScript : MapScriptBase
                 {
                     if (Subject.GetEntities<Aisling>()
                                .Any(
-                                   a => a.Trackers.Enums.TryGetValue(out DragonScale stage)
-                                        && (stage == DragonScale.DroppedScale)))
+                                   a => a.Trackers.Enums.TryGetValue(out Definitions.DragonScale stage)
+                                        && (stage == Definitions.DragonScale.DroppedScale)))
                         State = ScriptState.DelayedStart;
                 }
 
@@ -73,10 +72,10 @@ public class DragonScaleScript : MapScriptBase
                 {
 
                     foreach (var aisling in Subject.GetEntities<Aisling>().Where(x =>
-                                 x.Trackers.Enums.TryGetValue(out DragonScale stage) &&
-                                 stage == DragonScale.DroppedScale))
+                                 x.Trackers.Enums.TryGetValue(out Definitions.DragonScale stage) &&
+                                 stage == Definitions.DragonScale.DroppedScale))
                     {
-                        aisling.Trackers.Enums.Set(DragonScale.SpawnedDragon);
+                        aisling.Trackers.Enums.Set(Definitions.DragonScale.SpawnedDragon);
                     }
 
                     // Create a monster
@@ -93,7 +92,7 @@ public class DragonScaleScript : MapScriptBase
                 case ScriptState.Spawned:
                 {
                     if (!Subject.GetEntities<Aisling>().Any(x =>
-                            x.Trackers.Enums.TryGetValue(out DragonScale stage) && stage == DragonScale.SpawnedDragon))
+                            x.Trackers.Enums.TryGetValue(out Definitions.DragonScale stage) && stage == Definitions.DragonScale.SpawnedDragon))
                     {
                         var monster = Subject.GetEntities<Monster>().FirstOrDefault(x => x.Name == "Dragon");
 
