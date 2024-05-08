@@ -1,10 +1,11 @@
 using Chaos.Common.Utilities;
+using Chaos.Extensions.Common;
 using Chaos.Models.Menu;
-using Chaos.Models.Panel;
 using Chaos.Models.World;
+using Chaos.Scripting.DialogScripts.Crafting.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Crafting;
+namespace Chaos.Scripting.DialogScripts.Crafting.Refining;
 
 public class MetalRefiningScript : CraftingBaseScript
 {
@@ -64,7 +65,7 @@ public class MetalRefiningScript : CraftingBaseScript
 
     public void OnDisplayingShowPlayerItems(Aisling source) =>
         Subject.Slots = source.Inventory
-                              .Where(x => MetalTemplateKeys.Contains(x.Template.TemplateKey) && (x.Count > 1))
+                              .Where(x => MetalTemplateKeys.ContainsI(x.Template.TemplateKey) && (x.Count > 1))
                               .Select(x => x.Slot)
                               .ToList();
     
@@ -76,14 +77,14 @@ public class MetalRefiningScript : CraftingBaseScript
             return;
         }
 
-        var requiredCount = MetalTemplateKeys.Contains(item.Template.TemplateKey) && item.Template.TemplateKey.Contains("raw") ? 2 : 1;
+        var requiredCount = MetalTemplateKeys.ContainsI(item.Template.TemplateKey) && item.Template.TemplateKey.ContainsI("raw") ? 2 : 1;
         if (item.Count < requiredCount)
         {
             Subject.Reply(source, $"You need at least {requiredCount} units of the material to proceed.", "metal_refining_initial");
             return;
         }
 
-        if (!MetalTemplateKeys.Contains(item.Template.TemplateKey))
+        if (!MetalTemplateKeys.ContainsI(item.Template.TemplateKey))
         {
             Subject.Reply(source, "This item cannot be refined. Please select a valid material.", "metal_refining_initial");
             return;
@@ -115,29 +116,10 @@ public class MetalRefiningScript : CraftingBaseScript
 
         if (!IntegerRandomizer.RollChance((int)successRate))
         {
-            HandleFailure(source, item);
+            HandleFailure(source, item, GetDowngradeKey(item.Template.TemplateKey), item.DisplayName, "metal_refining_failed");
             return;
         }
 
         HandleSuccess(source, item);
-    }
-
-    private void HandleFailure(Aisling source, Item item)
-    {
-        ShowFailureDialog(source, item.DisplayName, "metal_refining_failed");
-        
-        var downgradeKey = GetDowngradeKey(item.Template.TemplateKey);
-        HandleItemFailure(source, item, downgradeKey);
-    }
-
-    private void HandleSuccess(Aisling source, Item item)
-    {
-        UpdateRefiningCounter(source, item);
-
-        var upgrade = ItemFactory.Create(GetUpgradeKey(item.Template.TemplateKey));
-        source.GiveItemOrSendToBank(upgrade);
-
-        AnimateSucess(source);
-        Subject.InjectTextParameters(item.DisplayName, upgrade.DisplayName);
     }
 }

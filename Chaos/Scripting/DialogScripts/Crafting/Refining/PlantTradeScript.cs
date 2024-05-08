@@ -5,18 +5,18 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Crafting;
+namespace Chaos.Scripting.DialogScripts.Crafting.Refining;
 
 public class PlantTradeScript : DialogScriptBase
 {
     private readonly IDialogFactory DialogFactory;
     private readonly IItemFactory ItemFactory;
 
-    private readonly List<string> PlantTemplateKeys = new()
-    {
+    private readonly List<string> PlantTemplateKeys =
+    [
         "blossomofbetrayal", "bocanbough", "cactusflower", "dochasbloom", "kabineblossom", "koboldtail", "lilypad", "passionflower",
         "raineach", "sparkflower"
-    };
+    ];
 
     /// <inheritdoc />
     public PlantTradeScript(
@@ -43,7 +43,7 @@ public class PlantTradeScript : DialogScriptBase
             "passionflower"     => 50000,
             "raineach"          => 30000,
             "sparkflower"       => 50000,
-            _                   => 1000 // You can choose the default value here.
+            _                   => 1000
         };
 
     /// <inheritdoc />
@@ -148,7 +148,7 @@ public class PlantTradeScript : DialogScriptBase
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
-        if (Subject.Template.TemplateKey.ToLower() == "new_plant_pick")
+        if (Subject.Template.TemplateKey.Equals("new_plant_pick", StringComparison.CurrentCultureIgnoreCase))
         {
             if (!Subject.MenuArgs.TryGet<string>(1, out var previous))
             {
@@ -166,9 +166,8 @@ public class PlantTradeScript : DialogScriptBase
 
                 return;
             }
-
-            // Find the slot of the plant item the player wants to trade.
-            if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || item.Count < 1)
+            
+            if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || (item.Count < 1))
             {
                 Subject.Reply(source, "You ran out of those plants to trade.", "plant_trade_initial");
 

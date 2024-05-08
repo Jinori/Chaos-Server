@@ -9,7 +9,7 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
-namespace Chaos.Scripting.DialogScripts.Crafting;
+namespace Chaos.Scripting.DialogScripts.Crafting.Abstractions;
 
 public abstract class CraftingBaseScript : DialogScriptBase
 {
@@ -29,6 +29,7 @@ public abstract class CraftingBaseScript : DialogScriptBase
     protected abstract double BaseSucessRate { get; }
     protected abstract double SuccessRateMax { get; }
     protected abstract Dictionary<string, string> UpgradeMappings { get; }
+    
     protected abstract Dictionary<string, string> DowngradeMappings { get; }
     
     private const string RECIPE_ONE_RANK = "Beginner";
@@ -111,21 +112,29 @@ public abstract class CraftingBaseScript : DialogScriptBase
     public void AnimateFailure(MapEntity source) => source.Animate(FailAnimation);
     public void AnimateSucess(MapEntity source) => source.Animate(SuccessAnimation);
 
-    protected void ShowFailureDialog(Aisling source, string message, string failureDialogKey)
+    protected void HandleFailure(Aisling source, Item item, string downgradeKey, string itemDisplayName, string failureDialogKey)
     {
         Subject.Close(source);
         var dialog = DialogFactory.Create(failureDialogKey, Subject.DialogSource);
         dialog.MenuArgs = Subject.MenuArgs;
         dialog.Context = Subject.Context;
-        dialog.InjectTextParameters(message);
+        dialog.InjectTextParameters(itemDisplayName);
         dialog.Display(source);
-    }
-
-    protected void HandleItemFailure(Aisling source, Item item, string failureOutcome)
-    {
-        var downgradeItem = ItemFactory.Create(failureOutcome);
+        
+        var downgradeItem = ItemFactory.Create(downgradeKey);
         source.GiveItemOrSendToBank(downgradeItem);
         AnimateFailure(source);
+    }
+    
+    protected void HandleSuccess(Aisling source, Item item)
+    {
+        UpdateRefiningCounter(source, item);
+
+        var upgrade = ItemFactory.Create(GetUpgradeKey(item.Template.TemplateKey));
+        source.GiveItemOrSendToBank(upgrade);
+
+        AnimateSucess(source);
+        Subject.InjectTextParameters(item.DisplayName, upgrade.DisplayName);
     }
     
     public double CalculateRefiningSuccessRate(Aisling source, Item item)
