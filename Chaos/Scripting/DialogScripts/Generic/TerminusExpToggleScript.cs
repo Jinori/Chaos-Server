@@ -5,11 +5,8 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Generic;
 
-public class TerminusExpToggleScript : DialogScriptBase
+public class TerminusExpToggleScript(Dialog subject) : DialogScriptBase(subject)
 {
-    public TerminusExpToggleScript(Dialog subject)
-        : base(subject) { }
-
     public override void OnDisplaying(Aisling source)
     {
         source.Trackers.Enums.TryGetValue(out TutorialQuestStage tutorial);

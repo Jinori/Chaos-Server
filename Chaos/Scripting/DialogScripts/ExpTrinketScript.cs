@@ -1,3 +1,4 @@
+using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -12,38 +13,16 @@ public class ExpTrinketScript : DialogScriptBase
     public ExpTrinketScript(Dialog subject) : base(subject) =>
         Actions = new Dictionary<string, Action<Aisling>>
         {
-            ["exptrinket_initial"] = OnDisplayingInitial,
             ["exptrinket_starttimer"] = StartExpTimer,
             ["exptrinket_checkexprates"] = CheckExpRates,
-            ["exptrinket_resetexptimer"] = ResetExpValues
+            ["exptrinket_resetexptimer"] = ResetExpValues,
+            ["exptrinket_sharerate"] = ShareExpRates
         };
 
     public override void OnDisplaying(Aisling source)
     {
         if (Actions.TryGetValue(Subject.Template.TemplateKey.ToLower(), out var action))
             action(source);
-    }
-
-    private void OnDisplayingInitial(Aisling source)
-    {
-        if (source.Trackers.Enums.TryGetValue(out ExpTimerStage stage) && stage == ExpTimerStage.Tracking)
-        {
-            RemoveOption("Start Timer");
-            InsertOption("Stop Timer", "exptrinket_starttimer");
-        }
-    }
-
-    private void RemoveOption(string optionName)
-    {
-        var index = Subject.Options.FindIndex(o => o.OptionText == optionName);
-        if (index != -1)
-            Subject.Options.RemoveAt(index);
-    }
-
-    private void InsertOption(string optionText, string dialogKey)
-    {
-        if (Subject.Options.All(o => o.OptionText != optionText))
-            Subject.Options.Insert(0, new DialogOption { DialogKey = dialogKey, OptionText = optionText });
     }
 
     private void StartExpTimer(Aisling source)
@@ -55,12 +34,12 @@ public class ExpTrinketScript : DialogScriptBase
             case ExpTimerStage.None:
             case ExpTimerStage.Stopped:
                 SetExpTimer(source, ExpTimerStage.Tracking, source.UserStatSheet.TotalExp, DateTime.UtcNow);
-                Subject.Reply(source, "Timer has started tracking your experience!");
+                Subject.Reply(source, "As the sands flow, so shall your wisdom. The journey of growth starts now.");
                 break;
         
             case ExpTimerStage.Tracking:
                 SetExpTimer(source, ExpTimerStage.Stopped, source.SavedExpBoxed, DateTime.UtcNow);
-                Subject.Reply(source, "Timer has stopped.");
+                Subject.Reply(source, "The sands pause; your tale awaits its next breath. Reflect on what has passed.");
                 break;
         }
     }
@@ -79,17 +58,35 @@ public class ExpTrinketScript : DialogScriptBase
             var expGained = source.UserStatSheet.TotalExp - source.SavedExpBoxed;
             var expPerHour = expGained / duration.TotalHours;
 
-            Subject.Reply(source, $"You have gained {expGained:N0} EXP in {duration.TotalMinutes:N0} minutes, which is approximately {expPerHour:N0} EXP per hour.");
+            Subject.Reply(source, $"In the span of {duration.TotalMinutes:N0} minutes, you have harvested {expGained:N0} points of experience, weaving at a rate of about {expPerHour:N0} EXP per hour. May this knowledge fortify your path.");
         }
         else
+            Subject.Reply(source, "Silence prevails. When you are ready, so shall the record of deeds begin.");
+    }
+    
+    private void ShareExpRates(Aisling source)
+    {
+        if (source.Trackers.Enums.TryGetValue(out ExpTimerStage stage) && (stage == ExpTimerStage.Tracking))
         {
-            Subject.Reply(source, "No active EXP tracking session.");
+            var duration = DateTime.UtcNow - source.ExpTrinketStartTime;
+            var expGained = source.UserStatSheet.TotalExp - source.SavedExpBoxed;
+            var expPerHour = expGained / duration.TotalHours;
+
+            if (source.Group != null)
+                foreach (var member in source.Group)
+                    member.SendServerMessage(
+                        ServerMessageType.ScrollWindow,
+                        $"In the span of {duration.TotalMinutes:N0} minutes, you have harvested {expGained
+                            :N0} points of experience, weaving at a rate of about {expPerHour
+                            :N0} EXP per hour." + Environment.NewLine +  "May this knowledge fortify your path.");
+            
+            Subject.Close(source);
         }
     }
     private void ResetExpValues(Aisling source)
     {
         SetExpTimer(source, ExpTimerStage.Stopped, 0, DateTime.MinValue);
-        Subject.Reply(source, "EXP tracking values have been reset.");
+        Subject.Reply(source, "Reset, but not forgotten. Carry forward the lessons, leave behind the weight.");
     }
 
 }
