@@ -1532,3 +1532,10 @@ public enum SupplyLouresStage
     CompletedAssassin1 = 9,
     CompletedAssassin2 = 10
 }
+
+public enum ExpTimerStage
+{
+    None,
+    Tracking = 1,
+    Stopped = 2,
+}

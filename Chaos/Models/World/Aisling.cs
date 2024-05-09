@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using Chaos.Collections;
 using Chaos.Collections.Abstractions;
 using Chaos.Collections.Common;
@@ -38,6 +39,10 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     private readonly IFactory<Exchange> ExchangeFactory;
     private readonly ICloningService<Item> ItemCloner;
     public Bank Bank { get; private set; }
+    
+    public uint SavedExpBoxed { get; set; }
+    public uint ExpGainedSinceStart { get; set; }
+    public DateTime ExpTrinketStartTime { get; set; }
     public bool BetGoldOnTwentyOne { get; set; }
     public bool BetOnMonsterRaceOption { get; set; }
     public BodyColor BodyColor { get; set; }

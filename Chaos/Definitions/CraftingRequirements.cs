@@ -811,7 +811,7 @@ public static class CraftingRequirements
                 TemplateKey = "astralbrewformula",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "giantbatwing", DisplayName = "giantbatwing", Amount = 2 },
+                    new Ingredient { TemplateKey = "giantbatwing", DisplayName = "Giant Bat's Wing", Amount = 2 },
                     new Ingredient { TemplateKey = "koboldtail", DisplayName = "Kobold Tail", Amount = 1 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
@@ -945,7 +945,7 @@ public static class CraftingRequirements
                 TemplateKey = "powerbrewformula",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "cactusflower", DisplayName = "CactusFlower", Amount = 2 },
+                    new Ingredient { TemplateKey = "cactusflower", DisplayName = "Cactus Flower", Amount = 2 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
                 Rank = "Initiate",
@@ -1011,7 +1011,7 @@ public static class CraftingRequirements
                 TemplateKey = "strongAstralbrewformula",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient { TemplateKey = "giantbatwing", DisplayName = "giantbatwing", Amount = 3 },
+                    new Ingredient { TemplateKey = "giantbatwing", DisplayName = "Giant Bat's Wing", Amount = 3 },
                     new Ingredient { TemplateKey = "koboldtail", DisplayName = "Kobold Tail", Amount = 2 },
                     new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
                 },
