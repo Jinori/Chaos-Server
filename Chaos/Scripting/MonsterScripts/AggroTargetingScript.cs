@@ -31,7 +31,10 @@ public class AggroTargetingScript : MonsterScriptBase
         if (aggro == 0)
             return;
 
-        AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro);
+        if (source is Aisling { UserStatSheet.BaseClass: BaseClass.Monk }) 
+            AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro * 2);
+        else
+            AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro);
     }
 
     /// <inheritdoc />
