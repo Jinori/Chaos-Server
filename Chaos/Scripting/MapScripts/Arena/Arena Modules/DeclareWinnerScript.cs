@@ -70,25 +70,27 @@ public sealed class DeclareWinnerScript : MapScriptBase
     {
         if (WinnerDeclared)
             return;
-        
-        var aliveAislings = GetAliveAislings(allAislings);
-        
-        if (aliveAislings.Count == 0)
-            DeclareNoWinners();
-        
-        if (aliveAislings.Any(x => x.Effects.Contains("HiddenHavocHide")))
+    
+        // Filtering out the host if they are not playing
+        var aliveAislings = GetAliveAislings(allAislings)
+                            .Where(aisling => IsHostPlaying || !IsHost(aisling)).ToList();
+    
+        switch (aliveAislings.Count)
         {
-            if (aliveAislings.Count <= 2)
+            case 0:
+                DeclareNoWinners();
+
+                break;
+            case 1:
                 DeclareWinners(aliveAislings);
-        }
-        else
-        {
-            if (aliveAislings.Count == 1)
+
+                break;
+            default:
             {
-                if (IsHostPlaying)
+                if (aliveAislings.Any(x => x.Effects.Contains("HiddenHavocHide")) && (aliveAislings.Count <= 2))
                     DeclareWinners(aliveAislings);
-                else if (!IsHostPlaying || IsHost(aliveAislings.First()))
-                    DeclareWinners(allAislings);
+
+                break;
             }
         }
     }
@@ -142,7 +144,7 @@ public sealed class DeclareWinnerScript : MapScriptBase
     }
    
     
-    private List<Aisling> GetAliveAislings(IEnumerable<Aisling> allAislings) => allAislings.Where(x => x.IsAlive && (IsHostPlaying || !IsHost(x))).ToList();
+    private IEnumerable<Aisling> GetAliveAislings(IEnumerable<Aisling> allAislings) => allAislings.Where(x => x.IsAlive && (IsHostPlaying || !IsHost(x))).ToList();
 
     private void DeclareWinners(IReadOnlyList<Aisling> winners)
     {
@@ -232,6 +234,6 @@ public sealed class DeclareWinnerScript : MapScriptBase
         WinnerDeclared = true;
     }
     
-    private bool IsHost(Aisling aisling) =>
-        !aisling.Trackers.Enums.TryGetValue(out ArenaHost value) || ((value != ArenaHost.Host) && (value != ArenaHost.MasterHost));
+    private bool IsHost(Aisling aisling) => aisling.Trackers.Enums.TryGetValue(out ArenaHost value)
+                                            && value is ArenaHost.Host or ArenaHost.MasterHost;
 }
