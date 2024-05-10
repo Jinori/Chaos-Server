@@ -28,22 +28,6 @@ public class KillCounterScript : MonsterScriptBase
         IncrementCounter(aisling);
     }
 
-    private void HandleManorGhostKill(Aisling aisling)
-    {
-        if (!aisling.Trackers.Enums.TryGetValue(out ManorLouegieStage louegieStage) || (louegieStage != ManorLouegieStage.AcceptedQuestBanshee))
-            return;
-
-        if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo($"{Subject.Template.TemplateKey}", 100))
-        {
-            aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
-            aisling.Trackers.Enums.Set(ManorLouegieStage.CompletedQuest);
-
-            return;
-        }
-
-        IncrementCounter(aisling);
-    }
-
     private void HandleSnowWolfKill(Aisling aisling)
     {
         if (!aisling.Trackers.Enums.TryGetValue(out IceWallQuest wolf) || (wolf != IceWallQuest.KillWolves))

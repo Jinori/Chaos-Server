@@ -23,7 +23,6 @@ public sealed class HideEffect : EffectBase
     {
         Subject.Trackers.Counters.Set("HideSec", 0);
         Subject.SetVisibility(VisibilityType.Hidden);
-        AislingSubject?.ShouldRefresh
     }
 
     /// <inheritdoc />
