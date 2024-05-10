@@ -293,7 +293,7 @@ public class EnchantingScript : DialogScriptBase
         //Remove Old Item
         source.Inventory.Remove(item.DisplayName);
 
-        source.Inventory.TryAddDirect(slot, newItem);
+        source.GiveItemOrSendToBank(newItem);
         
         Subject.InjectTextParameters(item.DisplayName);
     }

@@ -180,7 +180,7 @@ public enum ManorNecklaceStage
 public enum ManorLouegieStage
 {
     None = 0,
-    AcceptedQuest = 1,
+    AcceptedQuestBanshee = 1,
     CompletedQuest = 2
 }
 

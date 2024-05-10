@@ -87,7 +87,7 @@ public class ManorFloorWarpScript : ConfigurableReactorTileScriptBase
         var allMembersHaveQuestFlag = aisling.Group.All(
             member =>
                 member.Trackers.Enums.TryGetValue(out ManorLouegieStage value)
-                && (value == ManorLouegieStage.AcceptedQuest)
+                && (value == ManorLouegieStage.AcceptedQuestBanshee)
                 && member.WithinLevelRange(source)
                 && (member.StatSheet.Level >= 41));
 

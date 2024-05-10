@@ -66,6 +66,12 @@ public class MountScript : ItemScriptBase
             return;
         }
 
+        if (source.MapInstance.Name.Contains("arena"))
+        {
+            source.SendOrangeBarMessage("You cannot mount in an arena.");
+            return;
+        }
+
         if (source.Trackers.Enums.TryGetValue(out CurrentMount mount) && source.Trackers.Enums.TryGetValue(out CurrentCloak cloak))
         {
             if (source.Sprite != 0)

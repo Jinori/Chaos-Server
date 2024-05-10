@@ -30,7 +30,7 @@ public class KillCounterScript : MonsterScriptBase
 
     private void HandleManorGhostKill(Aisling aisling)
     {
-        if (!aisling.Trackers.Enums.TryGetValue(out ManorLouegieStage louegieStage) || (louegieStage != ManorLouegieStage.AcceptedQuest))
+        if (!aisling.Trackers.Enums.TryGetValue(out ManorLouegieStage louegieStage) || (louegieStage != ManorLouegieStage.AcceptedQuestBanshee))
             return;
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo($"{Subject.Template.TemplateKey}", 100))
