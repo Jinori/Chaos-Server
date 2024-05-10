@@ -26,7 +26,7 @@ public class FishingEffect(IItemFactory itemFactory) : ContinuousAnimationEffect
         new KeyValuePair<string, decimal>("purplewhopper", 2)
     ];
 
-    private List<string> BaitLossMessages =
+    private readonly List<string> BaitLossMessages =
     [
         "Bait lost to a sly swimmer!",
         "Empty hook, clever fish.",
@@ -36,9 +36,9 @@ public class FishingEffect(IItemFactory itemFactory) : ContinuousAnimationEffect
         "Bait stolen by the depths.",
         "Your bait's a fish's feast.",
         "Snatched! The bait's gone.",
-        "A tug, but no prize.",
+        "A tug but no prize.",
         "Fish outsmarted you today.",
-        "Bait gone, better luck next.",
+        "Bait gone, better luck next time.",
         "Sneaky fish, bait's gone!",
         "Bait lost, nothing caught.",
         "Unseen fish steals the bait.",

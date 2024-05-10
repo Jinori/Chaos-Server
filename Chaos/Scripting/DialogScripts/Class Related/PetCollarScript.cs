@@ -2,13 +2,13 @@ using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Extensions;
-using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Services.Factories.Abstractions;
+using Humanizer;
 
 namespace Chaos.Scripting.DialogScripts.Class_Related;
 
@@ -20,6 +20,10 @@ public class PetCollarScript(
 )
     : DialogScriptBase(subject)
 {
+    
+    private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase) { "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort"};
+    
+    
     public override void OnDisplaying(Aisling source)
     {
         if (source.UserStatSheet.BaseClass is not BaseClass.Priest)
@@ -73,7 +77,7 @@ public class PetCollarScript(
         
         if (source.Trackers.TimedEvents.HasActiveEvent("PetDeath", out var timedEvent))
         {
-            source.SendActiveMessage($"Your pet recently came home. Please wait {timedEvent.Remaining.ToReadableString()}.");
+            source.SendActiveMessage($"Your pet recently came home. Please wait {timedEvent.Remaining.Humanize()}.");
             return;
         }
         
@@ -89,7 +93,12 @@ public class PetCollarScript(
     }
 
     private void SummonPet(Aisling source, SummonChosenPet petKey)
-    {
+    {        
+        if (ArenaKeys.Contains(source.MapInstance.LoadedFromInstanceId))
+        {
+            source.SendOrangeBarMessage("You cannot summon pets on an arena map.");
+            return;
+        }
         var newMonster = monsterFactory.Create(petKey + "pet", source.MapInstance, source);
         InitializeNewPet(source, newMonster);
         source.MapInstance.AddEntity(newMonster, source);

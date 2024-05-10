@@ -26,28 +26,6 @@ public sealed class BossMoveToTargetScript(Monster subject, IEffectFactory effec
 
         if (!Map.GetEntities<Aisling>().Any())
             return;
-
-        if ((Target.Trackers.LastWalk != null) && (Target.Trackers.LastWalk.Value < DateTime.UtcNow.AddSeconds(-5)) && (Target.DistanceFrom(Subject) >= 2))
-        {
-            var points = Subject.GenerateCardinalPoints()
-                                .Where(x => Subject.MapInstance.IsWalkable(x, Subject.Type))
-                                .ToList();
-
-            if (points.Count != 0)
-            {
-                var firstPoint = points.FirstOrDefault();
-
-                Target.TraverseMap(Subject.MapInstance, firstPoint);
-                Target.Trackers.LastWalk = DateTime.UtcNow;
-                var effect = EffectFactory.Create("earthpunch");
-                Target.Effects.Apply(Subject, effect);
-                var spell = SpellFactory.Create("deathall");
-                Subject.Spells.Add(spell);
-                Subject.TryUseSpell(spell);
-                Subject.Spells.Remove(spell);
-                Subject.Say("Death comes for those who wait.");   
-            }
-        }
         
         var distance = Subject.DistanceFrom(Target);
 

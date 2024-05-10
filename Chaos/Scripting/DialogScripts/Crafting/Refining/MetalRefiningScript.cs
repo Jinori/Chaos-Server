@@ -116,6 +116,7 @@ public class MetalRefiningScript : CraftingBaseScript
 
         if (!IntegerRandomizer.RollChance((int)successRate))
         {
+            UpdateRefiningCounter(source, item);
             HandleFailure(source, item, GetDowngradeKey(item.Template.TemplateKey), item.DisplayName, "metal_refining_failed");
             return;
         }

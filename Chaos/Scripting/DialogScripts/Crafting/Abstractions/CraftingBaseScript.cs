@@ -142,7 +142,7 @@ public abstract class CraftingBaseScript : DialogScriptBase
         var timesCraftedSingleItem =
             source.Trackers.Counters.TryGetValue(ItemCounterPrefix + item.Template.TemplateKey, out var value) ? value : 0;
 
-        var sucessRate = BaseSucessRate + timesCraftedSingleItem / 10.0;
+        var sucessRate = BaseSucessRate + timesCraftedSingleItem / 7.5;
 
         return Math.Min(sucessRate, SuccessRateMax);
     }

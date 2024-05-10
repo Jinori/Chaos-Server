@@ -101,6 +101,7 @@ public class FabricRefiningScript(Dialog subject, IItemFactory itemFactory, IDia
 
         if (!IntegerRandomizer.RollChance((int)successRate))
         {
+            UpdateRefiningCounter(source, item);
             HandleFailure(source, item, GetDowngradeKey(item.Template.TemplateKey), item.DisplayName, "fabric_refining_failed");
             return;
         }

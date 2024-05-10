@@ -1,4 +1,5 @@
 using Chaos.Collections;
+using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
@@ -36,7 +37,7 @@ public abstract class ItemSpawnerScript : MapScriptBase
 
         do
             point = selectedMap.Template.Bounds.GetRandomPoint();
-        while (selectedMap.IsWall(point) || selectedMap.IsBlockingReactor(point));
+        while (selectedMap.IsWall(point) || selectedMap.IsBlockingReactor(point) || !selectedMap.IsWalkable(point, CreatureType.Normal));
 
         return point;
     }

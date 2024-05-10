@@ -1,9 +1,8 @@
 using Chaos.Collections;
+using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
-using Chaos.Geometry.Abstractions;
-using Chaos.Models.Templates;
 using Chaos.Models.World;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
@@ -11,10 +10,8 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MapScripts.Abstractions;
 
-public abstract class MerchantSpawnerScript : MapScriptBase
+public abstract class MerchantSpawnerScript(MapInstance subject, IMerchantFactory merchantFactory) : MapScriptBase(subject)
 {
-    private readonly IMerchantFactory MerchantFactory;
-
     private IIntervalTimer? SpawnTimer;
     public abstract int MaxAmount { get; set; }
     public abstract int MaxPerSpawn { get; set; }
@@ -22,21 +19,18 @@ public abstract class MerchantSpawnerScript : MapScriptBase
 
     public abstract int MinDistanceFromWall { get; set; }
     public abstract int SpawnIntervalMs { get; set; }
-
-    protected MerchantSpawnerScript(MapInstance subject, IMerchantFactory merchantFactory)
-        : base(subject) =>
-        MerchantFactory = merchantFactory;
-
-    private IPoint GenerateSpawnPoint(MapTemplate selectedMap) => selectedMap.Bounds.GetRandomPoint(pt => !IsNearWall(pt, selectedMap));
-
-    public bool IsNearWall(IPoint point, MapTemplate selectedMap)
+    
+    private Point GenerateSpawnPoint(MapInstance selectedMap)
     {
-        var length = MinDistanceFromWall * 2 + 1;
-        var rect = new Rectangle(point, length, length);
+        Point point;
 
-        return rect.GetPoints().Any(pt => selectedMap.IsWall(pt));
+        do
+            point = selectedMap.Template.Bounds.GetRandomPoint();
+        while (selectedMap.IsWall(point) || selectedMap.IsBlockingReactor(point) || !selectedMap.IsWalkable(point, CreatureType.Normal));
+
+        return point;
     }
-
+    
     public override void Update(TimeSpan delta)
     {
         SpawnTimer ??= new IntervalTimer(TimeSpan.FromMilliseconds(SpawnIntervalMs));
@@ -62,8 +56,8 @@ public abstract class MerchantSpawnerScript : MapScriptBase
 
             for (var i = 0; i < spawnAmount; i++)
             {
-                var point = GenerateSpawnPoint(Subject.Template);
-                var merchant = MerchantFactory.Create(MerchantTemplateKey, Subject, point);
+                var point = GenerateSpawnPoint(Subject);
+                var merchant = merchantFactory.Create(MerchantTemplateKey, Subject, point);
                 Subject.AddEntity(merchant, point);
             }
         }

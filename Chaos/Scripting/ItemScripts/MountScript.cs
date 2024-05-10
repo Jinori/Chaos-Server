@@ -4,11 +4,14 @@ using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
+using Humanizer;
 
 namespace Chaos.Scripting.ItemScripts;
 
-public class MountScript : ItemScriptBase
+public class MountScript(Item subject, IEffectFactory effectFactory) : ItemScriptBase(subject)
 {
+    private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase) { "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort"};
+    
     private static readonly Dictionary<(CurrentMount, CurrentCloak), int> MountAndCloakSprites = new()
     {
         { (CurrentMount.Horse, CurrentCloak.Red), 1334 },
@@ -43,15 +46,9 @@ public class MountScript : ItemScriptBase
         { (CurrentMount.Bee, CurrentCloak.Purple), 1315 },
         // Add more mount and cloak combinations here as needed
     };
-    private readonly IEffectFactory _effectFactory;
-
-    public MountScript(Item subject, IEffectFactory effectFactory)
-        : base(subject) => _effectFactory = effectFactory;
 
     public override void OnUse(Aisling source)
     {
-        var effect = _effectFactory.Create("mount");
-
         if (source.Effects.Contains("hide"))
         {
             source.SendOrangeBarMessage("You cannot mount while hidden.");
@@ -61,14 +58,15 @@ public class MountScript : ItemScriptBase
         
         if (source.Trackers.TimedEvents.HasActiveEvent("mount", out var timedEvent))
         {
-            source.SendOrangeBarMessage($"You can mount again in {timedEvent.Remaining.ToReadableString()}");
+            source.SendOrangeBarMessage($"You can mount again in {timedEvent.Remaining.Humanize()}.");
 
             return;
         }
 
-        if (source.MapInstance.Name.Contains("arena"))
+        
+        if (ArenaKeys.Contains(source.MapInstance.LoadedFromInstanceId))
         {
-            source.SendOrangeBarMessage("You cannot mount in an arena.");
+            source.SendOrangeBarMessage("You cannot mount on an arena map.");
             return;
         }
 
@@ -87,6 +85,7 @@ public class MountScript : ItemScriptBase
                 source.Sprite = (ushort)sprite;
                 source.Refresh(true);
                 source.SendOrangeBarMessage("You jump on your mount.");
+                var effect = effectFactory.Create("mount");
                 source.Effects.Apply(source, effect);
             }
         }
