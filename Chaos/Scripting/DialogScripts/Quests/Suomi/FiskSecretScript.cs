@@ -11,7 +11,7 @@ using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
-namespace Chaos.Scripting.DialogScripts.Quests;
+namespace Chaos.Scripting.DialogScripts.Quests.Suomi;
 
 public class FiskSecretScript : DialogScriptBase
 {
@@ -100,12 +100,13 @@ public class FiskSecretScript : DialogScriptBase
 
                 if ((hasStage && (stage == FiskSecretStage.Started4))
                     || (stage == FiskSecretStage.StartedBouquet)
-                    || (stage == FiskSecretStage.CollectedBouquet))
-                {
-                    Subject.Reply(source, "Skip", "FiskSecret_startedreturn4");
+                    || (stage == FiskSecretStage.StartedBouquet1)
+                || (stage == FiskSecretStage.CollectedBouquet))
+            {
+                Subject.Reply(source, "Skip", "FiskSecret_startedreturn4");
 
-                    return;
-                }
+                return;
+            }
 
                 if ((hasStage && (stage == FiskSecretStage.Started5)) || (stage == FiskSecretStage.DeliverBouquet))
                 {
@@ -142,6 +143,18 @@ public class FiskSecretScript : DialogScriptBase
                     return;
                 }
 
+                if (hasStage && stage == FiskSecretStage.WontTell2)
+                {
+                    Subject.Reply(source, "Go try speaking to her again. I have faith in you.");
+                    return;
+                }
+                
+                if (hasStage && stage == FiskSecretStage.MushroomStart)
+                {
+                    Subject.Reply(source, "She wants you to collect mushrooms? Well, I guess go collect mushrooms, we need that flower.");
+                    return;
+                }
+
                 if (hasStage && (stage == FiskSecretStage.DeliveredBouquet))
                 {
                     Subject.Reply(source, "Skip", "FiskSecret_deliveredbouquet");
@@ -171,7 +184,7 @@ public class FiskSecretScript : DialogScriptBase
                 }
 
                 break;
-            }
+        }
             case "petunia_start3":
             {
                 source.SendOrangeBarMessage("Go talk to Eeva at the Inn to get Petunias.");

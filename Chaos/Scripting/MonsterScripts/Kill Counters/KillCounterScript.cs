@@ -161,10 +161,6 @@ public class KillCounterScript : MonsterScriptBase
                         HandleAbominationKill(aisling);
 
                         break;
-                    case "manorghost":
-                        HandleManorGhostKill(aisling);
-
-                        break;
                     case "tavern_rat":
                         HandleTavernRatKill(aisling);
 
