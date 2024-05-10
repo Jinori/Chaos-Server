@@ -1397,6 +1397,12 @@ public enum CrudeLeather
     StartedQuest = 1,
 }
 
+public enum PurpleWhopper
+{
+    None,
+    StartedQuest = 1,
+}
+
 public enum PietWood
 {
     None,
