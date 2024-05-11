@@ -20,8 +20,8 @@ public sealed class LouresAssassinDeathScript : MonsterScriptBase
         {
             var mapInstance = SimpleCache.Get<MapInstance>("loures_training_camp");
 
+            member.Trackers.Enums.Set(SupplyLouresStage.KilledAssassin);
             member.TraverseMap(mapInstance, member);
-                member.Trackers.Enums.Set(SupplyLouresStage.KilledAssassin);
             member.SendOrangeBarMessage("The Assassin flees.");
         }
     }

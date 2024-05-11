@@ -92,7 +92,7 @@ public class QueenOctopusDeathScript : MonsterScriptBase
 
                 var hasStage = member.Trackers.Enums.TryGetValue(out QueenOctopusQuest stage);
 
-                if (stage is QueenOctopusQuest.Pendant3 or QueenOctopusQuest.QueenSpawning or QueenOctopusQuest.QueenSpawned)
+                if (stage is QueenOctopusQuest.SpokeToMaria or QueenOctopusQuest.QueenSpawning or QueenOctopusQuest.QueenSpawned)
                     member.Trackers.Enums.Set(QueenOctopusQuest.QueenKilled);
 
                 member.TraverseMap(mapInstance, point);

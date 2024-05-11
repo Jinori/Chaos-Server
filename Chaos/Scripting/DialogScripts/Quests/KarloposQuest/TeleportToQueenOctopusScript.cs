@@ -1,14 +1,13 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
-using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Mileth;
+namespace Chaos.Scripting.DialogScripts.Quests.KarloposQuest;
 
 public class TeleportToQueenOctopusScript : DialogScriptBase
 {
@@ -21,8 +20,7 @@ public class TeleportToQueenOctopusScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        var point = new Point(source.X, source.Y);
-        var group = source.Group?.Where(x => x.WithinRange(point));
+        var group = source.Group?.Where(x => x.MapInstance.IsWithinMap(source));
 
         if (group is null)
         {
@@ -43,8 +41,9 @@ public class TeleportToQueenOctopusScript : DialogScriptBase
             var enumerable = group as Aisling[] ?? group.ToArray();
 
             foreach (var member in enumerable)
-                if (member.WithinRange(point, 10))
+                if (member.MapInstance.IsWithinMap(source))
                     ++groupCount;
+            
 
             if (groupCount.Equals(enumerable.Length))
             {
@@ -54,6 +53,7 @@ public class TeleportToQueenOctopusScript : DialogScriptBase
                 {
                     var mapInstance = SimpleCache.Get<MapInstance>("karloposqueenroom");
 
+                    Point point;
                     do
                         point = rectangle.GetRandomPoint();
                     while (!mapInstance.IsWalkable(point, member.Type));

@@ -1,6 +1,5 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
-using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -20,8 +19,7 @@ public class TeleportToTrialScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        var point = new Point(source.X, source.Y);
-        var group = source.Group?.Where(x => x.WithinRange(point));
+        var group = source.Group?.Where(x => x.MapInstance.IsWithinMap(source));
 
         if (group is null)
         {
@@ -68,7 +66,7 @@ public class TeleportToTrialScript : DialogScriptBase
             var enumerable = group as Aisling[] ?? group.ToArray();
 
             foreach (var member in enumerable)
-                if (member.WithinRange(point, 7))
+                if (member.MapInstance == source.MapInstance)
                     ++groupCount;
 
             if (groupCount.Equals(enumerable.Length))
@@ -77,13 +75,13 @@ public class TeleportToTrialScript : DialogScriptBase
 
                 foreach (var member in enumerable)
                 {
-                    var destinationMapInstance = nextInstance;
+                    Point point;
                     do
                         point = currentTrial.GetRandomPoint();
-                    while (!destinationMapInstance.IsWalkable(point, member.Type));
+                    while (!nextInstance.IsWalkable(point, member.Type));
 
                     member.Trackers.Counters.Remove("karlopostrialkills", out _);
-                    member.TraverseMap(destinationMapInstance, point);
+                    member.TraverseMap(nextInstance, point);
                 }
             }
             else

@@ -46,7 +46,7 @@ public class QueenOctopusRoomScript : ReactorTileScriptBase
             return;
         }
 
-        if (stage != QueenOctopusQuest.Pendant3 && stage != QueenOctopusQuest.QueenSpawned)
+        if (stage != QueenOctopusQuest.SpokeToMaria && stage != QueenOctopusQuest.QueenSpawned)
         {
             aisling.SendOrangeBarMessage("You are not on this part of the quest.");
             return;
@@ -63,12 +63,12 @@ public class QueenOctopusRoomScript : ReactorTileScriptBase
                 return true;
             
             
-            if (stage != QueenOctopusQuest.Pendant3 || !member.Inventory.Contains("Red Pearl") 
+            if (stage != QueenOctopusQuest.SpokeToMaria || !member.Inventory.Contains("Red Pearl") 
                 && !member.Inventory.Contains("Coral Pendant"))
             {
                 missingRequirements += $"{member.Name}: ";
 
-                if (stage != QueenOctopusQuest.Pendant3 && stage != QueenOctopusQuest.QueenSpawned)
+                if (stage != QueenOctopusQuest.SpokeToMaria && stage != QueenOctopusQuest.QueenSpawned)
                 {
                     missingRequirements += "not on this part of quest, ";
                     if (!member.Inventory.Contains("Red Pearl"))

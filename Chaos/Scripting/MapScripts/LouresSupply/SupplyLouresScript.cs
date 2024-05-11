@@ -31,7 +31,7 @@ public class SupplyLouresScript(MapInstance subject, ISimpleCache simpleCache)
                 case ScriptState.Dormant:
                 {
                     foreach (var aisling in Subject.GetEntities<Aisling>().Where(x =>
-                                 x.Trackers.Enums.HasValue(SickChildStage.SickChildKilled) || x.Trackers.Enums.HasValue(SupplyLouresStage.SawAssassin) && x is { IsAlive: true, UserStatSheet.Level: > 40 }))
+                                 x.Trackers.Enums.HasValue(SickChildStage.SickChildKilled) && x.Trackers.Enums.HasValue(SupplyLouresStage.StartedQuest) || x.Trackers.Enums.HasValue(SupplyLouresStage.SawAssassin) && x is { IsAlive: true, UserStatSheet.Level: > 40 }))
                     {
                         var mapInstance = SimpleCache.Get<MapInstance>("loures_training_camp1");
 

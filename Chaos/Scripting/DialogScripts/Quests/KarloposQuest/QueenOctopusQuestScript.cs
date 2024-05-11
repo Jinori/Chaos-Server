@@ -38,7 +38,7 @@ public class QueenOctopusQuestScript : DialogScriptBase
             {
                 if (!hasStage || (stage == QueenOctopusQuest.None))
                 {
-                    if (source.UserStatSheet.Level is <= 41 or >= 72)
+                    if (source.UserStatSheet.Level is < 41 or >= 72)
                         return;
                     
                     var option = new DialogOption
@@ -54,7 +54,7 @@ public class QueenOctopusQuestScript : DialogScriptBase
 
                 if (hasStage)
                 {
-                    if (source.UserStatSheet.Level is <= 41 or >= 72)
+                    if (source.UserStatSheet.Level is < 41 or >= 72)
                         return;
                     
                     var option = new DialogOption
@@ -87,6 +87,10 @@ public class QueenOctopusQuestScript : DialogScriptBase
                         Subject.Reply(source, "skip", "queenoctopus_Queen");
 
                         return;
+                    
+                    case QueenOctopusQuest.SpokeToMaria:
+                    Subject.Reply(source, "He said that to summon the Queen, you must bring the Coral Pendant and Red Pearl to the coast line in Karlopos Island North. Good luck!");
+                    return;
 
                     case QueenOctopusQuest.QueenKilled:
                         Subject.Reply(source, "skip", "queenoctopus_Queenkilled");
@@ -170,7 +174,7 @@ public class QueenOctopusQuestScript : DialogScriptBase
                 break;
             case "queenoctopus_queen2":
             {
-                source.Trackers.Enums.Set(QueenOctopusQuest.QueenKilled);
+                source.Trackers.Enums.Set(QueenOctopusQuest.SpokeToMaria);
             }
 
                 break;
@@ -190,6 +194,9 @@ public class QueenOctopusQuestScript : DialogScriptBase
 
                 ExperienceDistributionScript.GiveExp(source, 500000);
                 source.SendOrangeBarMessage("You received 500,000 experience!");
+
+                var coralneck = ItemFactory.Create("coralnecklace");
+                source.GiveItemOrSendToBank(coralneck);
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
