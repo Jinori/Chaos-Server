@@ -9,7 +9,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 public class PoisonEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(1);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(20);
 
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
@@ -22,7 +22,7 @@ public class PoisonEffect : ContinuousAnimationEffectBase
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
 
     /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(500));
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
     /// <inheritdoc />
     public override byte Icon => 27;
     /// <inheritdoc />
@@ -32,8 +32,8 @@ public class PoisonEffect : ContinuousAnimationEffectBase
     protected override void OnIntervalElapsed()
     {
         double maxHp = Subject.StatSheet.MaximumHp;
-        const double DAMAGE_PERCENTAGE = 0.04;
-        const int DAMAGE_CAP = 2000;
+        const double DAMAGE_PERCENTAGE = 0.01;
+        const int DAMAGE_CAP = 500;
 
         var damage = (int)Math.Min(maxHp * DAMAGE_PERCENTAGE, DAMAGE_CAP);
 
