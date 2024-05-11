@@ -10,7 +10,6 @@ public class KarloposBossScript : CompositeMonsterScript
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
-        GetScriptKey(typeof(BossThrowHazardousScript)),
         GetScriptKey(typeof(BossMoveToTargetScript)),
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(KarloposBossEnrageScript)),

@@ -97,12 +97,7 @@ public sealed class KarloposBossEnrageScript : MonsterScriptBase
                 SkillDamagePct = 20,
                 SpellDamagePct = 20
             };
-
-            var end = Spells.FirstOrDefault(x => x.Template.TemplateKey.ToLower() == "end_all");
-
-            if (end != null)
-                Subject.TryUseSpell(end);
-
+            
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }
