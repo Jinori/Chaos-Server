@@ -1,4 +1,4 @@
-﻿using Chaos.Common.Definitions;
+﻿﻿using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
@@ -12,70 +12,68 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Time;
 
-namespace Chaos.Scripting.DialogScripts.Quests.Undine;
+namespace Chaos.Scripting.DialogScripts.Quests.MilethQuest;
 
-public class PurpleWhopperQuestScript(Dialog subject, ILogger<PurpleWhopperQuestScript> logger)
-    : DialogScriptBase(subject)
+public class CrudeLeatherQuestScript (Dialog subject, ILogger<CrudeLeatherQuestScript> logger) : DialogScriptBase(subject)
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplaying(Aisling source)
     {
-        var hasStage = source.Trackers.Enums.TryGetValue(out PurpleWhopper stage);
+        var hasStage = source.Trackers.Enums.TryGetValue(out CrudeLeather stage);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "ayumi_initial":
+            case "eiganjo_initial":
             {
-                
+
                 var option = new DialogOption
                 {
-                    DialogKey = "purplewhopper_initial",
-                    OptionText = "Purple Whopper Scales"
+                    DialogKey = "crudeleather_initial",
+                    OptionText = "Crude Leather"
                 };
 
                 if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Insert(0, option);
-
                 break;
             }
 
-            case "purplewhopper_initial":
+            case "crudeleather_initial":
             {
-                if (source.Trackers.TimedEvents.HasActiveEvent("purplewhoppercd", out var cdtime))
+                if (source.Trackers.TimedEvents.HasActiveEvent("crudeleathercd", out var cdtime))
                 {
-                    Subject.Reply(source, $"*Ayumi seems a bit out of it* o you back, that some gud fish. I like more soon. See me in (({cdtime.Remaining.ToReadableString()}))");
+                    Subject.Reply(source, $"Thank you again Aisling for those wolf furs. I am working on a new Crude Leather Breast plate as we speak. I could probably use another ten tomorrow. Come back and see me at (({cdtime.Remaining.ToReadableString()}))");
                     return;
                 }
-                
-                if (hasStage && stage == PurpleWhopper.StartedQuest)
+
+                if (hasStage && stage == CrudeLeather.StartedQuest)
                 {
-                    Subject.Reply(source, "Skip", "purplewhopper_return");
+                    Subject.Reply(source, "Skip", "crudeleather_return");
                 }
                 break;
             }
 
-            case "purplewhopper_start2":
+            case "crudeleather_start2":
             {
-                source.Trackers.Enums.Set(PurpleWhopper.StartedQuest);
-                source.SendOrangeBarMessage("Bring Ayumi a Purple Whopper");
+                source.Trackers.Enums.Set(CrudeLeather.StartedQuest);
+                source.SendOrangeBarMessage("Retrieve 10 Wolf's Fur for Eiganjo.");
                 break;
             }
 
-            case "purplewhopper_turnin":
+            case "crudeleather_turnin":
             {
-                var hasRequiredWolfFurs = source.Inventory.HasCount("Purple Whopper", 1);
-                
-                if (hasStage && (stage == PurpleWhopper.StartedQuest))
+                var hasRequiredWolfFurs = source.Inventory.HasCount("Wolf's Fur", 10);
+
+                if (hasStage && (stage == CrudeLeather.StartedQuest))
                 {
                     switch (hasRequiredWolfFurs)
                     {
                         case true:
                         {
-                            source.Inventory.RemoveQuantity("Purple Whopper", 1, out _);
-                            source.Trackers.Enums.Set(PurpleWhopper.None);
-                            source.Trackers.TimedEvents.AddEvent("purplewhoppercd", TimeSpan.FromHours(24), true);
-
+                            source.Inventory.RemoveQuantity("Wolf's Fur", 10, out _);
+                            source.Trackers.Enums.Set(CrudeLeather.None);
+                            source.Trackers.TimedEvents.AddEvent("crudeleathercd", TimeSpan.FromHours(24), true);
+                            
                             logger.WithTopics(
                                       Topics.Entities.Aisling,
                                       Topics.Entities.Gold,
@@ -88,9 +86,9 @@ public class PurpleWhopperQuestScript(Dialog subject, ILogger<PurpleWhopperQuest
                                       "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
                                       source.Name,
                                       5000,
-                                      25000);
+                                      15000);
 
-                            ExperienceDistributionScript.GiveExp(source, 25000);
+                            ExperienceDistributionScript.GiveExp(source, 15000);
                             source.TryGiveGold(5000);
                             source.TryGiveGamePoints(5);
 
@@ -98,29 +96,36 @@ public class PurpleWhopperQuestScript(Dialog subject, ILogger<PurpleWhopperQuest
                             {
                                 source.Legend.AddOrAccumulate(
                                     new LegendMark(
-                                        "Loved by Undine Mundanes",
-                                        "undineLoved",
+                                        "Loved by Mileth Mundanes",
+                                        "milethLoved",
                                         MarkIcon.Heart,
                                         MarkColor.Blue,
                                         1,
                                         GameTime.Now));
-
                                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
                                     "You received a unique legend mark!");
                             }
-
                             break;
                         }
                         case false:
                         {
-                                Subject.Reply(source, "There no fish there. Where fish?");
+                            var wolfFurCount = source.Inventory.CountOf("Wolf's Fur");
+
+                            if (wolfFurCount < 1)
+                            {
+                                Subject.Reply(source, "You don't even have one! Please go get those wolf's fur.");
                                 return;
+                            }
+
+                            Subject.Reply(source,
+                                $"Can you not count? What am I going to do with {wolfFurCount} wolf furs? I need at least 10 to make one crude leather breast plate for my students.");
+
+                            break;
                         }
                     }
                 }
-
                 break;
             }
         }
-    }
+    } 
 }

@@ -1542,7 +1542,8 @@ public enum SupplyLouresStage
     CompletedSupply = 7,
     KeptThibaultsSecret = 8,
     CompletedAssassin1 = 9,
-    CompletedAssassin2 = 10
+    CompletedAssassin2 = 10,
+    CompletedAssassin3 = 11
 }
 
 public enum ExpTimerStage
