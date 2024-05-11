@@ -124,6 +124,7 @@ public class GemRefiningScript : CraftingBaseScript
 
         if (!IntegerRandomizer.RollChance((int)successRate))
         {
+            UpdateRefiningCounter(source, item);
             HandleFailure(source, item, GetDowngradeKey(item.Template.TemplateKey), item.DisplayName, "gem_refining_failed");
             return;
         }

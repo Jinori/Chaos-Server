@@ -411,6 +411,34 @@ public class SupplyLouresArmy : DialogScriptBase
                 source.Client.SendAttributes(StatUpdateType.Vitality);
                 return;
             }
+            
+            case "armysupply_toldtheking5":
+            {
+                source.Trackers.Enums.Set(SupplyLouresStage.CompletedAssassin3);
+                var item = ItemFactory.Create("sparklering");
+                source.GiveItemOrSendToBank(item);
+                source.SendOrangeBarMessage("King Bruce orders his men to give you a Sparkle Ring.");
+                Logger.WithTopics(
+                        Topics.Entities.Aisling,
+                        Topics.Entities.Experience,
+                        Topics.Entities.Dialog,
+                        Topics.Entities.Quest)
+                    .WithProperty(source)
+                    .WithProperty(Subject)
+                    .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 150000);
+
+                ExperienceDistributionScript.GiveExp(source, 150000);
+                source.TryGiveGamePoints(10);
+                source.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        "Betrayed Knight Thibault by telling the King.",
+                        "thibaultEnemy",
+                        MarkIcon.Rogue,
+                        MarkColor.Orange,
+                        1,
+                        GameTime.Now));
+                return;
+            }
         }
     }
     }

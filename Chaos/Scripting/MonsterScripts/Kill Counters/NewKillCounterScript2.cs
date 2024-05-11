@@ -7,11 +7,8 @@ using Humanizer;
 
 namespace Chaos.Scripting.MonsterScripts.Kill_Counters;
 
-public class NewKillCounterScript2 : ConfigurableMonsterScriptBase
+public class NewKillCounterScript2(Monster subject) : ConfigurableMonsterScriptBase(subject)
 {
-    public NewKillCounterScript2(Monster subject)
-        : base(subject) { }
-
     private static Type? GetEnumType(string? enumValue)
     {
         if (enumValue is null)

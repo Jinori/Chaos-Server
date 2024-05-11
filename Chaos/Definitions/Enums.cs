@@ -180,7 +180,7 @@ public enum ManorNecklaceStage
 public enum ManorLouegieStage
 {
     None = 0,
-    AcceptedQuest = 1,
+    AcceptedQuestBanshee = 1,
     CompletedQuest = 2
 }
 
@@ -1397,6 +1397,12 @@ public enum CrudeLeather
     StartedQuest = 1,
 }
 
+public enum PurpleWhopper
+{
+    None,
+    StartedQuest = 1,
+}
+
 public enum PietWood
 {
     None,
@@ -1536,7 +1542,8 @@ public enum SupplyLouresStage
     CompletedSupply = 7,
     KeptThibaultsSecret = 8,
     CompletedAssassin1 = 9,
-    CompletedAssassin2 = 10
+    CompletedAssassin2 = 10,
+    CompletedAssassin3 = 11
 }
 
 public enum ExpTimerStage

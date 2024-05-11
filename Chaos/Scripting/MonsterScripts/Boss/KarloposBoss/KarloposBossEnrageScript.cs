@@ -4,7 +4,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss;
+namespace Chaos.Scripting.MonsterScripts.Boss.KarloposBoss;
 
 public sealed class KarloposBossEnrageScript : MonsterScriptBase
 {

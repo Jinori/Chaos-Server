@@ -476,7 +476,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Frog Leg and 1 Empty Bottle.",
+                            } requires 1 Scorpion's Sting and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;

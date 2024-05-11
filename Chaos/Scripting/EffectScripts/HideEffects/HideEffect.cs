@@ -22,7 +22,7 @@ public sealed class HideEffect : EffectBase
     public override void OnApplied()
     {
         Subject.Trackers.Counters.Set("HideSec", 0);
-        Subject.SetVisibility(VisibilityType.Hidden);   
+        Subject.SetVisibility(VisibilityType.Hidden);
     }
 
     /// <inheritdoc />

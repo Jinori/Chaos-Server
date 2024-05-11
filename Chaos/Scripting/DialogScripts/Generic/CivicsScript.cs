@@ -19,9 +19,9 @@ public class CivicsScript : DialogScriptBase
             {"rlyeh_becomecitizenyes", source => HandleBecomeCitizen(source, Nation.Void)},
             
             // Undine
-            {"argus_civics", source => HandleCivicOptions(source, "Become Undine Citizen")},
-            {"argus_renounceyes", source => HandleRenounceCitizenship(source, Nation.Undine)},
-            {"argus_becomecitizenyes", source => HandleBecomeCitizen(source, Nation.Undine)},
+            {"ayumi_civics", source => HandleCivicOptions(source, "Become Undine Citizen")},
+            {"ayumi_renounceyes", source => HandleRenounceCitizenship(source, Nation.Undine)},
+            {"ayumi_becomecitizenyes", source => HandleBecomeCitizen(source, Nation.Undine)},
             
             // Abel
             {"runa_civics", source => HandleCivicOptions(source, "Become Abel Citizen")},
