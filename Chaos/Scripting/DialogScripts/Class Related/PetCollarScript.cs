@@ -122,7 +122,7 @@ public class PetCollarScript(
         };
 
         newMonster.StatSheet.SetOffenseElement(Elements.PickRandom());
-        newMonster.StatSheet.SetDefenseElement(Elements.PickRandom());
+        newMonster.StatSheet.SetDefenseElement(source.UserStatSheet.DefenseElement);
         newMonster.StatSheet.SetLevel(source.StatSheet.Level);
         newMonster.StatSheet.AddBonus(attributes);
         newMonster.StatSheet.SetHealthPct(100);

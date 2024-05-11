@@ -14,6 +14,9 @@ public sealed class DefaultRegenFormula : IRegenFormula
         if (creature.StatSheet.HealthPercent == 100)
             return 0;
 
+        if (creature.Effects.Contains("Poison"))
+            return 0;
+        
         if (creature.Status.HasFlag(Status.InnerFire))
         {
             var percentToRegenerate = creature switch

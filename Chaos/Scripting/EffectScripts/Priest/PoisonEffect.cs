@@ -32,8 +32,8 @@ public class PoisonEffect : ContinuousAnimationEffectBase
     protected override void OnIntervalElapsed()
     {
         double maxHp = Subject.StatSheet.MaximumHp;
-        const double DAMAGE_PERCENTAGE = 0.005;
-        const int DAMAGE_CAP = 500;
+        const double DAMAGE_PERCENTAGE = 0.04;
+        const int DAMAGE_CAP = 2000;
 
         var damage = (int)Math.Min(maxHp * DAMAGE_PERCENTAGE, DAMAGE_CAP);
 

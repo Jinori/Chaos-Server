@@ -7,7 +7,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class ArmachdEffect : HierarchicalEffectBase
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(8);
     protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 20,

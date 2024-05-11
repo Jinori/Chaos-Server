@@ -8,7 +8,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class AiteEffect : HierarchicalEffectBase
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(12);
     protected override ImmutableArray<string> ReplaceHierarchy { get; } =
     [
         "ard naomh aite",
