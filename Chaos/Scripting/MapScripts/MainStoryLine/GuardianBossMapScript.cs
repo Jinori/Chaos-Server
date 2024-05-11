@@ -7,7 +7,7 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MapScripts.MainStory;
+namespace Chaos.Scripting.MapScripts.MainStoryLine;
 
 public class GuardianBossMapScript : MapScriptBase
 {

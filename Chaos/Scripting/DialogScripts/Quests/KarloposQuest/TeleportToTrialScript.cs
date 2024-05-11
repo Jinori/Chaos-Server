@@ -1,5 +1,6 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -66,8 +67,16 @@ public class TeleportToTrialScript : DialogScriptBase
             var enumerable = group as Aisling[] ?? group.ToArray();
 
             foreach (var member in enumerable)
-                if (member.MapInstance == source.MapInstance)
+                if (member.WithinRange(source))
+                {
                     ++groupCount;
+                }
+                else
+                {
+                   member.SendOrangeBarMessage("You are not in range of your group.");
+                   Subject.Reply(source, "Your group is not in range of you.");
+                   return;
+                }
 
             if (groupCount.Equals(enumerable.Length))
             {
