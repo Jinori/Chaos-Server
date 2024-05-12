@@ -100,6 +100,12 @@ public class MainStoryScript(
             case "skandara_temple_initial":
             case "theselene_temple_initial":
             {
+                if (source.MapInstance.Name != "Shrine of Miraelis"
+                    && source.MapInstance.Name != "Shrine of Theselene"
+                    && source.MapInstance.Name != "Shrine of Skandara"
+                    && source.MapInstance.Name != "Shrine of Serendael")
+                    return;
+                
                 if (source.Inventory.Contains("Mysterious Artifact")
                     && source.Trackers.Enums.HasValue(MainStoryEnums.SpokeToZephyr))
                 {
