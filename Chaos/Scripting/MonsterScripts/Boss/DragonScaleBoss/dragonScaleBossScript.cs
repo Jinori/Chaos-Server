@@ -17,7 +17,7 @@ public class dragonScaleBossScript : CompositeMonsterScript
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
-        GetScriptKey(typeof(dragonScaleDeathScript)),
+        GetScriptKey(typeof(DragonScaleDeathScript)),
         GetScriptKey(typeof(DisplayNameScript))
     };
 

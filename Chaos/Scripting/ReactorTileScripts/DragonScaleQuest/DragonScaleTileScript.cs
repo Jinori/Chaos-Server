@@ -1,5 +1,6 @@
 using Chaos.Collections;
 using Chaos.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
@@ -39,8 +40,17 @@ public class DragonScaleTileScript(
     
     private bool CanStartBoss(Aisling source, DragonScale stage)
     {
-        if (stage != DragonScale.FoundAllClues && stage != DragonScale.SpawnedDragon)
+        if (stage != DragonScale.FoundAllClues && stage != DragonScale.SpawnedDragon && stage != DragonScale.CompletedDragonScale)
             return false;
+
+        if (stage == DragonScale.CompletedDragonScale)
+        {
+            if (source.Trackers.TimedEvents.HasActiveEvent("spawndragonscale", out var cdtime))
+            {
+                source.SendOrangeBarMessage($"There's no dragon here now. (({cdtime.Remaining.ToReadableString()})) ");
+                return false;
+            }
+        }
         
         var mapInstance = simpleCache.Get<MapInstance>("wilderness");
 

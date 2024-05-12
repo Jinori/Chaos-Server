@@ -78,7 +78,7 @@ public class GuardianDeathScript : MonsterScriptBase
 
             foreach (var member in Subject.MapInstance.GetEntities<Aisling>().ToList())
             {
-                if (member.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact1))
+                if (Subject.Name == "Earth Guardian")
                 {
                     if (!member.Inventory.Contains("Earth Artifact"))
                     {
@@ -87,7 +87,7 @@ public class GuardianDeathScript : MonsterScriptBase
                         member.SendOrangeBarMessage("You pull the Earth Artifact from the mud.");
                     }
                 }
-                if (member.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact2))
+                if (Subject.Name == "Flame Guardian")
                 {
                     if (!member.Inventory.Contains("Fire Artifact"))
                     {
@@ -96,7 +96,7 @@ public class GuardianDeathScript : MonsterScriptBase
                         member.SendOrangeBarMessage("You pull the Fire Artifact from its ashes.");
                     }
                 }
-                if (member.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact3))
+                if (Subject.Name == "Wind Guardian")
                 {
                     if (!member.Inventory.Contains("Wind Artifact"))
                     {
@@ -105,7 +105,7 @@ public class GuardianDeathScript : MonsterScriptBase
                         member.SendOrangeBarMessage("You pull the Wind Artifact from the ground.");
                     }
                 }
-                if (member.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact4))
+                if (Subject.Name == "Sea Guardian")
                 {
                     if (!member.Inventory.Contains("Sea Artifact"))
                     {

@@ -10,13 +10,13 @@ using Chaos.Services.Servers.Options;
 namespace Chaos.Scripting.MonsterScripts.Boss.DragonScaleBoss;
 
 // ReSharper disable once ClassCanBeSealed.Global
-public class dragonScaleDeathScript : MonsterScriptBase
+public class DragonScaleDeathScript : MonsterScriptBase
 {
     protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
     private readonly IItemFactory ItemFactory;
 
     /// <inheritdoc />
-    public dragonScaleDeathScript(Monster subject, IItemFactory itemFactory)
+    public DragonScaleDeathScript(Monster subject, IItemFactory itemFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -82,6 +82,7 @@ public class dragonScaleDeathScript : MonsterScriptBase
                 {
                     if (target.Trackers.Enums.TryGetValue(out DragonScale stage) && stage == DragonScale.SpawnedDragon)
                     {
+                        target.Trackers.TimedEvents.AddEvent("spawndragonscale", TimeSpan.FromDays(3), true);
                         target.Trackers.Enums.Set(DragonScale.KilledDragon);
                         target.SendOrangeBarMessage("The dragon collapses, you scour the body for a scale.");
                         target.GiveItemOrSendToBank(dragonscale);   

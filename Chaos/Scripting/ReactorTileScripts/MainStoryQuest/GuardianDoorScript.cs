@@ -43,6 +43,7 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
             return;
         }
 
+        var mainmember1 = source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact1);
         var allMembersHaveQuestEnum1 = aisling.Group.All(member =>
             member.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact1) 
             || member.Trackers.Flags.HasFlag(MainstoryFlags.CompletedArtifact1) 
@@ -51,7 +52,7 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
         var group1 = aisling.Group.ThatAreWithinRange(source, 13).ToList();
 
         
-        if (allMembersHaveQuestEnum1)
+        if (mainmember1 && allMembersHaveQuestEnum1)
         {
             var rectangle = new Rectangle(11, 16, 2, 3);
             
@@ -64,6 +65,7 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
             return;
         }
         
+        var mainmember2 = source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact2);
         var allMembersHaveQuestEnum2 = aisling.Group.All(member =>
             member.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact2) 
             || member.Trackers.Flags.HasFlag(MainstoryFlags.CompletedArtifact2) 
@@ -72,7 +74,7 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
         var group2 = aisling.Group.ThatAreWithinRange(source, 13).ToList();
 
         
-        if (allMembersHaveQuestEnum2)
+        if (mainmember2 && allMembersHaveQuestEnum2)
         {
             var rectangle = new Rectangle(16, 8, 2, 3);
             
@@ -84,6 +86,8 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
 
             return;
         }
+
+        var mainmember3 = source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact3);
         
         var allMembersHaveQuestEnum3 = aisling.Group.All(member =>
             member.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact3) 
@@ -93,7 +97,7 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
         var group3 = aisling.Group.ThatAreWithinRange(source, 13).ToList();
 
         
-        if (allMembersHaveQuestEnum3)
+        if (mainmember3 && allMembersHaveQuestEnum3)
         {
             var rectangle = new Rectangle(11, 16, 2, 3);
             
@@ -106,6 +110,7 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
             return;
         }
         
+        var mainmember4 = source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact4);
         var allMembersHaveQuestEnum4 = aisling.Group.All(member =>
             member.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact4) 
             || member.Trackers.Flags.HasFlag(MainstoryFlags.CompletedArtifact4) 
@@ -114,7 +119,7 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
         var group4 = aisling.Group.ThatAreWithinRange(source, 13).ToList();
 
         
-        if (allMembersHaveQuestEnum4)
+        if (mainmember4 && allMembersHaveQuestEnum4)
         {
             var rectangle = new Rectangle(4, 9, 2, 3);
             
@@ -127,7 +132,7 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
             return;
         }
         
-        aisling.SendOrangeBarMessage("Not all members have the quest or already completed it.");
+        aisling.SendOrangeBarMessage("Someone in your group isn't on this quest.");
         // Warp the source back
         point = source.DirectionalOffset(source.Direction.Reverse());
         source.WarpTo(point);
