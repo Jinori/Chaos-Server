@@ -100,10 +100,8 @@ public class MainStoryScript(
             case "skandara_temple_initial":
             case "theselene_temple_initial":
             {
-                if (source.MapInstance.Name != "Shrine of Miraelis"
-                    && source.MapInstance.Name != "Shrine of Theselene"
-                    && source.MapInstance.Name != "Shrine of Skandara"
-                    && source.MapInstance.Name != "Shrine of Serendael")
+                if (Subject.DialogSource.Name != "Miraelis" && Subject.DialogSource.Name != "Theselene" &&
+                    Subject.DialogSource.Name != "Skandara" && Subject.DialogSource.Name != "Theselene")
                     return;
                 
                 if (source.Inventory.Contains("Mysterious Artifact")
