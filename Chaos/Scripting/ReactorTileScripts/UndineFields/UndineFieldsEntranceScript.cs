@@ -38,7 +38,7 @@ public class UndineFieldsEntranceScript : ReactorTileScriptBase
         
         if (source is not Aisling aisling)
             return;
-
+        
         if (source.Trackers.Enums.TryGetValue(out UndineFieldDungeon stage) &&
             stage != UndineFieldDungeon.StartedDungeon && source.Trackers.Flags.TryGetFlag(out UndineFieldDungeonFlag flag) && flag != UndineFieldDungeonFlag.CompletedUF)
         {
