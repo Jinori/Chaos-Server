@@ -26,15 +26,15 @@ public sealed class CrackInWallScript : ReactorTileScriptBase
             return;
         }
 
-        var item = ItemFactory.Create("Sparkles");
+        var sparkles = ItemFactory.Create("Sparkles");
         source.Trackers.Flags.AddFlag(Definitions.EasterEggs.CrackInWall);
-        source.GiveItemOrSendToBank(item);
+        source.GiveItemOrSendToBank(sparkles);
         source.Client.SendServerMessage(
             ServerMessageType.ScrollWindow,
             "You notice a crack in the wall then reach your hand through.");
         source.TryGiveGamePoints(5);
         source.TryGiveGold(45000);
-        source.SendOrangeBarMessage("Tell WHUG you found this crack.");
+        source.SendOrangeBarMessage("Do not share Easter Eggs with others.");
         return;
     }
 }

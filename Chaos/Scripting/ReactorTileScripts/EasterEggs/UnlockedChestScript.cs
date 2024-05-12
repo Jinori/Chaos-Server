@@ -34,7 +34,7 @@ public sealed class UnlockedChestScript : ReactorTileScriptBase
         source.TryGiveGamePoints(5);
         source.TryGiveGold(20000);
         source.GiveItemOrSendToBank(toydoll);
-        source.SendOrangeBarMessage("Tell WHUG you found this chest.");
+        source.SendOrangeBarMessage("Do not share Easter Eggs with others.");
         return;
     }
 }

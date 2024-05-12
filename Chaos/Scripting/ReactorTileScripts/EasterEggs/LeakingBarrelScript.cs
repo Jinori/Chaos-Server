@@ -24,7 +24,7 @@ public sealed class LeakingBarrelScript : ReactorTileScriptBase
             ServerMessageType.ScrollWindow,
             "You notice tiny crabs sheltering in this barrel.");
         source.TryGiveGamePoints(5);
-        source.SendOrangeBarMessage("Tell WHUG you found this barrel.");
+        source.SendOrangeBarMessage("Do not share Easter Eggs with others.");
         return;
     }
 }

@@ -27,14 +27,14 @@ public sealed class DepressedStatueScript : ReactorTileScriptBase
         }
         
         source.Trackers.Flags.AddFlag(Definitions.EasterEggs.DepressedStatue);
-        var toydoll = ItemFactory.Create("bluepolyp");
+        var bluepolyp = ItemFactory.Create("bluepolyp");
         source.Client.SendServerMessage(
             ServerMessageType.ScrollWindow,
             "You noticed the depressed monk...");
         source.TryGiveGamePoints(5);
         source.TryGiveGold(50000);
-        source.GiveItemOrSendToBank(toydoll);
-        source.SendOrangeBarMessage("Tell WHUG you found the depressed monk.");
+        source.GiveItemOrSendToBank(bluepolyp);
+        source.SendOrangeBarMessage("Do not share Easter Eggs with others.");
         return;
     }
 }
