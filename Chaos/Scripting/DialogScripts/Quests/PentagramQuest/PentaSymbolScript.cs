@@ -1,5 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
@@ -18,6 +20,15 @@ public class PentaSymbolScript(Dialog subject, IItemFactory itemFactory) : Dialo
         { BaseClass.Monk, "pentamonksymbol1" }
     };
 
+    private readonly Dictionary<BaseClass, string> ClassToGem = new()
+    {
+        { BaseClass.Warrior, "Ruby" },
+        { BaseClass.Rogue, "Emerald" },
+        { BaseClass.Wizard, "Heartstone" },
+        { BaseClass.Priest, "Sapphire" },
+        { BaseClass.Monk, "Beryl" }
+    };
+
     private readonly Dictionary<BaseClass, string> ClassToPentagramPiece = new()
     {
         { BaseClass.Warrior, "pentagrampiece5" },
@@ -25,6 +36,15 @@ public class PentaSymbolScript(Dialog subject, IItemFactory itemFactory) : Dialo
         { BaseClass.Wizard, "pentagrampiece1" },
         { BaseClass.Priest, "pentagrampiece3" },
         { BaseClass.Monk, "pentagrampiece2" }
+    };
+
+    private readonly Dictionary<BaseClass, string> ClassToPentagramEmpoweredPiece = new()
+    {
+        { BaseClass.Warrior, "Ruby Pentagram Piece" },
+        { BaseClass.Rogue, "Emerald Pentagram Piece" },
+        { BaseClass.Wizard, "Heartstone Pentagram Piece" },
+        { BaseClass.Priest, "Sapphire Pentagram Piece" },
+        { BaseClass.Monk, "Beryl Pentagram Piece" }
     };
 
     public override void OnDisplaying(Aisling source)
@@ -64,18 +84,18 @@ public class PentaSymbolScript(Dialog subject, IItemFactory itemFactory) : Dialo
                 break;
         }
     }
-    
+
     private void AddOptionsForClass(Aisling source)
     {
         if (!ClassToSymbol.TryGetValue(source.UserStatSheet.BaseClass, out var optionKey))
             return;
-        
+
         Subject.AddOption("Stare at the object...", optionKey);
     }
-    
+
     private void GiveItemToClass(Aisling source)
     {
-        if (!ClassToPentagramPiece.TryGetValue(source.UserStatSheet.BaseClass, out var itemKey))
+        if (!ClassToPentagramEmpoweredPiece.TryGetValue(source.UserStatSheet.BaseClass, out var itemKey))
             return;
 
         var item = itemFactory.Create(itemKey);
@@ -108,10 +128,6 @@ public class PentaSymbolScript(Dialog subject, IItemFactory itemFactory) : Dialo
 
         if (!Subject.HasOption(optionText))
             Subject.Options.Insert(0, option);
-
-        Subject.Options.RemoveAll(
-            optionToRemove => optionToRemove.DialogKey.StartsWith("generic_buyShop_", StringComparison.Ordinal)
-                              || optionToRemove.DialogKey.StartsWith("generic_sellShop_", StringComparison.Ordinal));
     }
 
     private void AddEmpowermentOption(Aisling source)
@@ -131,13 +147,20 @@ public class PentaSymbolScript(Dialog subject, IItemFactory itemFactory) : Dialo
 
     private void CompleteEmpowerment(Aisling source)
     {
-        var itemKey = $"Pristine{source.UserStatSheet.BaseClass.ToString()}";
+        if (!ClassToGem.TryGetValue(source.UserStatSheet.BaseClass, out var itemKey))
+            return;
 
-        if (source.Inventory.HasCount("Pentagram Piece", 1) && source.Inventory.HasCount(itemKey, 1))
+        if (!ClassToPentagramPiece.TryGetValue(source.UserStatSheet.BaseClass, out var pentapiece))
+            return;
+
+        var item = $"Pristine {itemKey}";
+
+        if (source.Inventory.HasCountByTemplateKey(pentapiece, 1) && source.Inventory.HasCount(item, 1))
         {
-            source.Inventory.RemoveQuantity("Pentagram Piece", 1);
-            source.Inventory.RemoveQuantity(itemKey, 1);
-            var empoweredPiece = itemFactory.Create($"{source.UserStatSheet.BaseClass}PentagramPiece");
+            source.Inventory.RemoveQuantityByTemplateKey(pentapiece, 1);
+            source.Inventory.RemoveQuantity(item, 1);
+            source.Trackers.Enums.Set(PentagramQuestStage.EmpoweredPentagramPiece);
+            var empoweredPiece = itemFactory.Create($"{itemKey}PentagramPiece");
             source.GiveItemOrSendToBank(empoweredPiece);
 
             Subject.Reply(
@@ -145,24 +168,66 @@ public class PentaSymbolScript(Dialog subject, IItemFactory itemFactory) : Dialo
                 "All done, that was nerve wracking... If you and your group head to the forge, talk to Thorin, he might be able to put the pieces together.");
         }
         else
-            Subject.Reply(source, $"Where's the {itemKey} and Pentagram Piece that I need to do this procedure?");
+            Subject.Reply(source, $"Where's the {item} and Pentagram Piece that I need to do this procedure?");
     }
 
     private void HandleThorinInitial(Aisling source)
     {
-        if (source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage) && (stage == PentagramQuestStage.EmpoweredPentagramPiece))
+        if (source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage) &&
+            (stage == PentagramQuestStage.EmpoweredPentagramPiece))
             AddQuestDialogOption("craftpentagram1", "Will you help us craft the Pentagram?");
     }
 
     private void CraftPentagram(Aisling source)
     {
-        if ((source.Group == null) || (source.Group.Count < 5))
+        if (source.Group == null)
         {
-            Subject.Reply(source, "You're missing someone, they must be here with you.");
+            Subject.Reply(source, "You're not in a group.");
             return;
         }
 
-        foreach (var groupMember in source.Group)
+        if (source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source)))
+        {
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your full group must be nearby.");
+            Subject.Reply(source, "Your entire group is not here.");
+            return;
+        }
+
+        var hasWizard = false;
+        var hasMonk = false;
+        var hasRogue = false;
+        var hasWarrior = false;
+        var hasPriest = false;
+
+        foreach (var member in source.Group!)
+        {
+            switch (member.UserStatSheet.BaseClass.ToString())
+            {
+                case "Wizard":
+                    hasWizard = true;
+                    break;
+                case "Monk":
+                    hasMonk = true;
+                    break;
+                case "Rogue":
+                    hasRogue = true;
+                    break;
+                case "Warrior":
+                    hasWarrior = true;
+                    break;
+                case "Priest":
+                    hasPriest = true;
+                    break;
+            }
+        }
+
+        if (!(hasWizard && hasMonk && hasRogue && hasWarrior && hasPriest))
+        {
+            Subject.Reply(source, "Your group is missing one or more required classes.");
+            return;
+        }
+
+        foreach (var groupMember in source.Group!)
         {
             if (!groupMember.Trackers.Enums.TryGetValue(out PentagramQuestStage stage)
                 || (stage != PentagramQuestStage.EmpoweredPentagramPiece))
@@ -171,22 +236,29 @@ public class PentaSymbolScript(Dialog subject, IItemFactory itemFactory) : Dialo
                 return;
             }
 
-            var pieceKey = $"{groupMember.UserStatSheet.BaseClass}PentagramPiece";
+            if (!ClassToGem.TryGetValue(groupMember.UserStatSheet.BaseClass, out var itemKey))
+                return;
+
+            var pieceKey = $"{itemKey} Pentagram Piece";
 
             if (!groupMember.Inventory.HasCount(pieceKey, 1))
             {
-                source.SendOrangeBarMessage($"You need a {pieceKey} to craft the pentagram.");
+                Subject.Close(source);
+                source.SendOrangeBarMessage($"Your group's missing the {pieceKey}.");
                 return;
             }
         }
-        
+
         var pentagram = itemFactory.Create("Pentagram");
         var wizardName = source.Group.FirstOrDefault(x => x.UserStatSheet.BaseClass == BaseClass.Wizard);
-        
+
         foreach (var groupMember in source.Group)
         {
-            groupMember.Inventory.RemoveQuantity($"{groupMember.UserStatSheet.BaseClass}PentagramPiece", 1);
-            
+            if (!ClassToGem.TryGetValue(groupMember.UserStatSheet.BaseClass, out var itemKey))
+                return;
+
+            groupMember.Inventory.RemoveQuantityByTemplateKey($"{itemKey}PentagramPiece", 1);
+
             if (groupMember.UserStatSheet.BaseClass == BaseClass.Wizard)
             {
                 groupMember.GiveItemOrSendToBank(pentagram);
@@ -198,6 +270,7 @@ public class PentaSymbolScript(Dialog subject, IItemFactory itemFactory) : Dialo
             groupMember.Trackers.Enums.Set(PentagramQuestStage.CreatedPentagram);
         }
 
-        Subject.Reply(source, $"Thorin hands the Pentagram to {wizardName?.Name}, then addresses the group.\nGood luck to you all, you'll need it.");
+        Subject.Reply(source,
+            $"Thorin hands the Pentagram to {wizardName?.Name}, then addresses the group.\nGood luck to you all, you'll need it.");
     }
 }

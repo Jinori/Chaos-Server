@@ -1,6 +1,7 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -20,7 +21,7 @@ public class TeleportToQueenOctopusScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        var group = source.Group?.Where(x => x.MapInstance.IsWithinMap(source));
+        var group = source.Group?.Where(x => x.OnSameMapAs(source));
 
         if (group is null)
         {
@@ -28,47 +29,33 @@ public class TeleportToQueenOctopusScript : DialogScriptBase
             Subject.Reply(source, "You must have a group to continue.");
         }
 
-        if (group is not null)
+        if (source.Group!.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source)))
         {
-            var groupCount = 0;
+            Subject.Reply(source, "Your entire group must be present");
+            source.SendOrangeBarMessage("You must have a group nearby to enter.");
+            return;
+        }
 
-            var rectangle = new Rectangle(
-                9,
-                16,
-                2,
-                2);
+        var rectangle = new Rectangle(
+            9,
+            16,
+            2,
+            2);
 
-            var enumerable = group as Aisling[] ?? group.ToArray();
 
-            foreach (var member in enumerable)
-                if (member.MapInstance.IsWithinMap(source))
-                    ++groupCount;
-            
+        foreach (var member in source.Group!)
+        {
+            var mapInstance = SimpleCache.Get<MapInstance>("karloposqueenroom");
 
-            if (groupCount.Equals(enumerable.Length))
-            {
-                Subject.Close(source);
+            Point point;
+            do
+                point = rectangle.GetRandomPoint();
+            while (!mapInstance.IsWalkable(point, member.Type));
 
-                foreach (var member in enumerable)
-                {
-                    var mapInstance = SimpleCache.Get<MapInstance>("karloposqueenroom");
-
-                    Point point;
-                    do
-                        point = rectangle.GetRandomPoint();
-                    while (!mapInstance.IsWalkable(point, member.Type));
-
-                    member.TraverseMap(mapInstance, point);
-                    member.Trackers.Enums.Set(QueenOctopusQuest.QueenSpawning);
-                    member.Inventory.Remove("Red Pearl");
-                    member.Inventory.Remove("Coral Pendant");
-                }
-            }
-            else
-            {
-                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your group must be nearby.");
-                Subject.Reply(source, "Your group is not near.");
-            }
+            member.TraverseMap(mapInstance, point);
+            member.Trackers.Enums.Set(QueenOctopusQuest.QueenSpawning);
+            member.Inventory.Remove("Red Pearl");
+            member.Inventory.Remove("Coral Pendant");
         }
     }
 }

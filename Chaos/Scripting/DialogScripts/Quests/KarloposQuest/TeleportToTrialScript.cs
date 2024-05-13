@@ -20,7 +20,7 @@ public class TeleportToTrialScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        var group = source.Group?.Where(x => x.MapInstance.IsWithinMap(source));
+        var group = source.Group?.Where(x => x.WithinRange(source));
 
         if (group is null)
         {

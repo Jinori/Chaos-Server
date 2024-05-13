@@ -673,16 +673,16 @@ public class RecipeItemScript : ItemScriptBase
                         "Initiate Armors",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDwarvishLeather);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedJourneyman);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGaluchatCoat);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedBrigandine);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedBenusta);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMysticGown);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLotusBodice);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCuirass);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCulotte);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLorica);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedPaluten);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLorum);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMantle);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCorsette);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedStoller);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedElle);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMoonBodice);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedKasmaniumHauberk);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedEarthGarb);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedKasmaniumArmor);
 
                     return;
                 }
@@ -709,17 +709,16 @@ public class RecipeItemScript : ItemScriptBase
                         "Artisan Armors",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedPaluten);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLorum);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMantle);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedCorsette);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedStoller);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedElle);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMoonBodice);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedKasmaniumHauberk);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedEarthGarb);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedKasmaniumArmor);
-
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedKeaton);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMane);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedHierophant);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedPebbleRose);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedClymouth);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDolman);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLightningGarb);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedPhoenixMail);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedWindGarb);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedIpletMail);
                     return;
                 }
 
@@ -745,17 +744,16 @@ public class RecipeItemScript : ItemScriptBase
                         "Adept Armors",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedKeaton);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMane);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedHierophant);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedPebbleRose);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedClymouth);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDolman);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLightningGarb);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedPhoenixMail);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedWindGarb);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedIpletMail);
-
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedKagum);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedClamyth);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedBansagart);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedBardocle);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDuinUasal);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDalmatica);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedSeaGarb);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedHybrasylArmor);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMountainGarb);
+                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedHybrasylPlate);
                     return;
                 }
 
@@ -769,7 +767,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Armorsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("Not implemented yet.");
 
                         return;
                     }
@@ -780,17 +778,6 @@ public class RecipeItemScript : ItemScriptBase
                         ArmorSmithCategories.AdvancedArmors,
                         "Advanced Armors",
                         $"{Subject.Template.TemplateKey}");
-
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedKagum);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedClamyth);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedBansagart);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedBardocle);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDuinUasal);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDalmatica);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedSeaGarb);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedHybrasylArmor);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMountainGarb);
-                    source.Trackers.Flags.AddFlag(CraftedArmors.RefinedHybrasylPlate);
 
                     return;
                 }
