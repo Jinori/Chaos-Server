@@ -62,7 +62,7 @@ public sealed class PentagramBossEnrageScript : MonsterScriptBase
                     Subject.Say("You're not going to win this fight!");
 
                     foreach (var target in Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 10))
-                        target.TryUseSpell(SpellToCast2);
+                        target.TryUseSpell(SpellToCast);
 
                     break;
             }

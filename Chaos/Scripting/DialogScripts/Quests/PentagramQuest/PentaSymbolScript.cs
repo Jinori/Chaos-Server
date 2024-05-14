@@ -38,15 +38,6 @@ public class PentaSymbolScript(Dialog subject, IItemFactory itemFactory) : Dialo
         { BaseClass.Monk, "pentagrampiece2" }
     };
 
-    private readonly Dictionary<BaseClass, string> ClassToPentagramEmpoweredPiece = new()
-    {
-        { BaseClass.Warrior, "Ruby Pentagram Piece" },
-        { BaseClass.Rogue, "Emerald Pentagram Piece" },
-        { BaseClass.Wizard, "Heartstone Pentagram Piece" },
-        { BaseClass.Priest, "Sapphire Pentagram Piece" },
-        { BaseClass.Monk, "Beryl Pentagram Piece" }
-    };
-
     public override void OnDisplaying(Aisling source)
     {
         switch (Subject.Template.TemplateKey.ToLower())
@@ -95,7 +86,7 @@ public class PentaSymbolScript(Dialog subject, IItemFactory itemFactory) : Dialo
 
     private void GiveItemToClass(Aisling source)
     {
-        if (!ClassToPentagramEmpoweredPiece.TryGetValue(source.UserStatSheet.BaseClass, out var itemKey))
+        if (!ClassToPentagramPiece.TryGetValue(source.UserStatSheet.BaseClass, out var itemKey))
             return;
 
         var item = itemFactory.Create(itemKey);

@@ -1302,7 +1302,6 @@ public enum PentagramQuestStage
     BossSpawned = 9,
     DefeatedBoss = 10,
 }
-
 public enum NightmareQuestStage
 {
     None,

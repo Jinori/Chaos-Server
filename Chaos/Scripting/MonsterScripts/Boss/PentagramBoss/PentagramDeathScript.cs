@@ -77,8 +77,8 @@ public class PentagramDeathScript : MonsterScriptBase
             {
                 { (BaseClass.Warrior, Gender.Male), ["malescarletcarapace", "scarletchitinhelmet"] },
                 { (BaseClass.Warrior, Gender.Female), ["femalescarletcarapace", "scarletchitinhelmet"] },
-                { (BaseClass.Monk, Gender.Male), ["malenagatiercloak"] },
-                { (BaseClass.Monk, Gender.Female), ["femalenagatiercloak"] },
+                { (BaseClass.Monk, Gender.Male), ["malenagatiercloak", "nagatierjaw"] },
+                { (BaseClass.Monk, Gender.Female), ["femalenagatiercloak", "nagatierjaw"] },
                 { (BaseClass.Rogue, Gender.Male), ["malereitermail", "kopfloserhood"] },
                 { (BaseClass.Rogue, Gender.Female), ["femalereitermail", "kopfloserhood"] },
                 { (BaseClass.Priest, Gender.Male), ["maledarkclericrobes", "darkclericbrim"] },
@@ -89,9 +89,12 @@ public class PentagramDeathScript : MonsterScriptBase
 
             foreach (var target in rewardTargets)
             {
-                target.Trackers.Enums.Set(PentagramQuestStage.DefeatedBoss);
+                target.Trackers.Enums.Set(PentagramQuestStage.None);
                 target.SendOrangeBarMessage("The house calms down, and the darkness fades.");
                 target.Trackers.Counters.AddOrIncrement("pentabosskills");
+
+                if (target.Inventory.HasCount("pentagram", 1))
+                    target.Inventory.RemoveQuantity("pentagram", 1);
                 
                 target.Legend.AddOrAccumulate(
                     new LegendMark(

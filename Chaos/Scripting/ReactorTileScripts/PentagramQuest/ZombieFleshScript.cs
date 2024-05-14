@@ -1,3 +1,4 @@
+using AutoMapper.Execution;
 using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
@@ -171,7 +172,7 @@ public class ZombieFleshScript : ReactorTileScriptBase
 
         foreach (var groupmember in source.Group!)
         {
-            if (stage is not PentagramQuestStage.SignedPact and PentagramQuestStage.DefeatedBoss)
+            if (stage is not PentagramQuestStage.SignedPact)
             {
                 groupmember.SendOrangeBarMessage("You have not signed the pact to start the ritual.");
                 return false;
@@ -207,6 +208,13 @@ public class ZombieFleshScript : ReactorTileScriptBase
                     groupmember2.SendOrangeBarMessage("Someone inside the group hasn't created the pentagram.");
                 }
                 return false;
+            }
+
+            if (groupmember.UserStatSheet.BaseClass == BaseClass.Wizard)
+            {
+                if (!groupmember.Inventory.HasCount("Pentagram", 1))
+
+                    return false;
             }
         }
         return true;

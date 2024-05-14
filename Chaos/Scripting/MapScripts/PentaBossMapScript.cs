@@ -25,23 +25,23 @@ public class PentaBossMapScript : MapScriptBase
     private DateTime? StartTime;
     private ScriptState State;
     private readonly IIntervalTimer? UpdateTimer;
-    public const int UPDATE_INTERVAL_MS = 1;
+    public const int UPDATE_INTERVAL_MS = 200;
 
     public PentaBossMapScript(MapInstance subject, IMonsterFactory monsterFactory)
         : base(subject)
     {
         MonsterFactory = monsterFactory;
-        StartDelay = TimeSpan.FromSeconds(5);
+        StartDelay = TimeSpan.FromSeconds(3);
         AnimationInterval = new IntervalTimer(TimeSpan.FromMilliseconds(200));
         AnimationShape = new Rectangle(new Point(8, 8), 5, 5);
         ShapeOutline = AnimationShape.GetOutline().ToList();
         ReverseOutline = ShapeOutline.AsEnumerable().Reverse().ToList();
-        UpdateTimer = new IntervalTimer(TimeSpan.FromSeconds(UPDATE_INTERVAL_MS));
+        UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(UPDATE_INTERVAL_MS));
 
         Animation = new Animation
         {
             AnimationSpeed = 100,
-            TargetAnimation = 13
+            TargetAnimation = 76
         };
     }
 
