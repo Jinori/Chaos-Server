@@ -43,6 +43,7 @@ public class LearnSpellScript : DialogScriptBase
 
         { "Mor Srad", new List<string> { "Ard Srad" } },
         { "Beag Pramh", new List<string> { "Pramh" } },
+        { "beothaich", new List<string> { "Revive" } },
         { "Beag Srad Lamh", new List<string> { "Srad Lamh", "Mor Srad Lamh" } },
         { "Srad Lamh", new List<string> { "Mor Srad Lamh" } },
         { "Beag Sal Lamh", new List<string> { "Sal Lamh", "Mor Sal Lamh" } },
