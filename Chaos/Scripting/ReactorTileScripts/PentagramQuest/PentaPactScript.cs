@@ -1,5 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -27,12 +29,6 @@ public sealed class PentaPactScript : ReactorTileScriptBase
         if (hasStage)
         {
             source.SendOrangeBarMessage("You have already signed the pact.");
-            return;
-        }
-
-        if (source.Trackers.TimedEvents.HasActiveEvent("PentagramQuestTimer", out var timer))
-        {
-            source.SendOrangeBarMessage("You must wait before signing the pact again.");
             return;
         }
 
@@ -76,6 +72,12 @@ public sealed class PentaPactScript : ReactorTileScriptBase
                         source.SendOrangeBarMessage("There's too many people in your group to sign the pact.");
 
                         return;
+                }
+                
+                if (source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source)))
+                {
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your full group must be nearby to sign the pact.");
+                    return;
                 }
 
                 if (requiredClasses.Contains(memberClass))
