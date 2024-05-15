@@ -101,7 +101,7 @@ public class MainStoryScript(
             case "theselene_temple_initial":
             {
                 if (Subject.DialogSource.Name != "Miraelis" && Subject.DialogSource.Name != "Theselene" &&
-                    Subject.DialogSource.Name != "Skandara" && Subject.DialogSource.Name != "Theselene")
+                    Subject.DialogSource.Name != "Skandara" && Subject.DialogSource.Name != "Serendael")
                     return;
                 
                 if (source.Inventory.Contains("Mysterious Artifact")
