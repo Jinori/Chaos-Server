@@ -77,7 +77,7 @@ public class SharpestBladeQuestScript : DialogScriptBase
 
             case "sharpestblade_turnin":
             {
-                var hasRequiredBrawlfishScale = source.Inventory.HasCount("Brawlfish's Scale", 10);
+                var hasRequiredBrawlfishScale = source.Inventory.HasCount("Brawlfish's Scale", 5);
 
 
                 if (hasStage && stage == SharpestBlade.StartedQuest)

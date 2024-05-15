@@ -157,7 +157,7 @@ public class SupplyLouresArmy : DialogScriptBase
 
                     if (stage == SupplyLouresStage.StartedSupply)
                     {
-                        Subject.Reply(source, "Skip", "armysupply_return3");
+                        Subject.Reply(source, "Are you done getting supplies for Alistair? I think you should go back to speak to him if you forgot.");
                         return;
                     }
 
