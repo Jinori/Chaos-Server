@@ -4719,6 +4719,107 @@ public static class CraftingRequirements
     }
 },
 {
+    ArmorsmithingRecipes.LeatherBerylGauntlet,
+    new Recipe()
+    {
+        Name = "Leather Beryl Gauntlet",
+        TemplateKey = "leatherberylgauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
+            new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 1 }
+        },
+        Rank = "Basic",
+        Level = 11,
+        Difficulty = 1
+    }
+},
+{
+    ArmorsmithingRecipes.BronzeSapphireGauntlet,
+    new Recipe()
+    {
+        Name = "Bronze Sapphire Gauntlet",
+        TemplateKey = "bronzesapphiregauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
+            new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 1 },
+            new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 1 }
+        },
+        Rank = "Basic",
+        Level = 26,
+        Difficulty = 1
+    }
+},
+{
+    ArmorsmithingRecipes.BronzeRubyGauntlet,
+    new Recipe()
+    {
+        Name = "Bronze Ruby Gauntlet",
+        TemplateKey = "bronzerubygauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
+            new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 1 },
+            new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 1 }
+        },
+        Rank = "Basic",
+        Level = 26,
+        Difficulty = 1
+    }
+},
+{
+    ArmorsmithingRecipes.BronzeEmeraldGauntlet,
+    new Recipe()
+    {
+        Name = "Bronze Emerald Gauntlet",
+        TemplateKey = "bronzerubygauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
+            new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 1 },
+            new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 1 }
+        },
+        Rank = "Basic",
+        Level = 26,
+        Difficulty = 1
+    }
+},
+{
+    ArmorsmithingRecipes.BronzeHeartstoneGauntlet,
+    new Recipe()
+    {
+        Name = "Bronze Heartstone Gauntlet",
+        TemplateKey = "bronzerubygauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
+            new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 1 },
+            new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
+        },
+        Rank = "Basic",
+        Level = 26,
+        Difficulty = 1
+    }
+},
+{
+    ArmorsmithingRecipes.BronzeBerylGauntlet,
+    new Recipe()
+    {
+        Name = "Bronze Beryl Gauntlet",
+        TemplateKey = "bronzerubygauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
+            new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 1 },
+            new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 1 }
+        },
+        Rank = "Basic",
+        Level = 26,
+        Difficulty = 1
+    }
+},
+{
     ArmorsmithingRecipes.IronSapphireGauntlet,
     new Recipe()
     {
@@ -4780,6 +4881,23 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
             new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
             new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
+        },
+        Rank = "Initiate",
+        Level = 41,
+        Difficulty = 2
+    }
+},
+{
+    ArmorsmithingRecipes.IronBerylGauntlet,
+    new Recipe()
+    {
+        Name = "Iron Beryl Gauntlet",
+        TemplateKey = "ironberylgauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
+            new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
+            new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 1 }
         },
         Rank = "Initiate",
         Level = 41,
@@ -4855,6 +4973,23 @@ public static class CraftingRequirements
     }
 },
 {
+    ArmorsmithingRecipes.MythrilBerylGauntlet,
+    new Recipe()
+    {
+        Name = "Mythril Beryl Gauntlet",
+        TemplateKey = "mythrilberylgauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
+            new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
+            new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 1 }
+        },
+        Rank = "Artisan",
+        Level = 71,
+        Difficulty = 3
+    }
+},
+{
     ArmorsmithingRecipes.HybrasylSapphireGauntlet,
     new Recipe()
     {
@@ -4916,6 +5051,23 @@ public static class CraftingRequirements
             new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
             new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
             new Ingredient { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 2 }
+        },
+        Rank = "Adept",
+        Level = 97,
+        Difficulty = 5
+    }
+},
+{
+    ArmorsmithingRecipes.HybrasylBerylGauntlet,
+    new Recipe()
+    {
+        Name = "Hy-brasyl Beryl Gauntlet",
+        TemplateKey = "hybrasylberylgauntlet",
+        Ingredients = new List<Ingredient>()
+        {
+            new Ingredient { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
+            new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
+            new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 2 }
         },
         Rank = "Adept",
         Level = 97,

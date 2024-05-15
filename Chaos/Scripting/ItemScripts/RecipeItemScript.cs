@@ -183,18 +183,27 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherRubyGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherEmeraldGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherHeartstoneGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherBerylGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.BronzeSapphireGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.BronzeRubyGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.BronzeEmeraldGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.BronzeHeartstoneGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.BronzeBerylGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronEmeraldGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronRubyGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronHeartstoneGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronSapphireGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronBerylGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilEmeraldGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilRubyGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilHeartstoneGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilSapphireGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilBerylGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylEmeraldGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylRubyGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylHeartstoneGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylSapphireGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylBerylGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledSeaBelt);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledEarthBelt);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledWindBelt);
@@ -808,6 +817,12 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherRubyGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherEmeraldGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherHeartstoneGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherBerylGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.BronzeSapphireGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.BronzeRubyGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.BronzeEmeraldGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.BronzeHeartstoneGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.BronzeBerylGauntlet);
 
                     return;
                 }
@@ -838,6 +853,7 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronRubyGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronHeartstoneGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronSapphireGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.IronBerylGauntlet);
 
                     return;
                 }
@@ -868,6 +884,7 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilRubyGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilHeartstoneGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilSapphireGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.MythrilBerylGauntlet);
 
                     return;
                 }
@@ -898,6 +915,7 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylRubyGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylHeartstoneGauntlet);
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylSapphireGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylBerylGauntlet);
 
                     return;
                 }

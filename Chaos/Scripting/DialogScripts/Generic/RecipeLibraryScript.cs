@@ -2933,7 +2933,74 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
+                    
+                    case "leatherberylgauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen and 1 Pristine Beryl.",
+                            "armorsmithingbook");
 
+                        return;
+                    }
+                    
+
+                    case "bronzesapphiregauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Exquisite Linen, 1 Polished Bronze Bar, and 1 Pristine Sapphire.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "bronzerubygauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Exquisite Linen, 1 Polished Bronze Bar, and 1 Pristine Ruby.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "bronzeemeraldgauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Exquisite Linen, 1 Polished Bronze Bar, and 1 Pristine Emerald.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "bronzeheartstonegauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Exquisite Linen, 1 Polished Bronze Bar, and 1 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "bronzeberylgauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Exquisite Linen, 1 Polished Bronze Bar, and 1 Pristine Beryl.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
                     case "ironsapphiregauntlet":
                     {
                         Subject.Reply(
@@ -2973,6 +3040,17 @@ public class RecipeLibraryScript : DialogScriptBase
                             source,
                             $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
                             } requires 1 Polished Iron Bar, 2 Exquisite Cotton, and 1 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "ironberylgauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Polished Iron Bar, 2 Exquisite Cotton, and 1 Pristine Beryl.",
                             "armorsmithingbook");
 
                         return;
@@ -3021,6 +3099,17 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
+                    
+                    case "mythrilberylgauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Polished Mythril Bar, 2 Exquisite Wool, and 1 Pristine Beryl.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
 
                     case "hybrasylsapphiregauntlet":
                     {
@@ -3061,6 +3150,17 @@ public class RecipeLibraryScript : DialogScriptBase
                             source,
                             $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
                             } requires 2 Polished Hy-brasyl Bars, 3 Exquisite Silk, and 2 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "hybrasylberylgauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Hy-brasyl Bars, 3 Exquisite Silk, and 2 Pristine Beryl.",
                             "armorsmithingbook");
 
                         return;
