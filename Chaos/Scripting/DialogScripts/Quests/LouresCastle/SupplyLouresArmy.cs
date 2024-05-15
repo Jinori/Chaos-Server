@@ -1,21 +1,17 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
-using Chaos.Geometry.Abstractions.Definitions;
-using Chaos.Models.Abstractions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.EffectScripts.Rogue;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
-using Namotion.Reflection;
 
 namespace Chaos.Scripting.DialogScripts.Quests.LouresCastle;
 public class SupplyLouresArmy : DialogScriptBase
@@ -241,7 +237,6 @@ public class SupplyLouresArmy : DialogScriptBase
                 {
                     Subject.Reply(source,
                         "Thank you again Aisling for bringing those materials back. Go tell Knight Thibault the army is as good as new!");
-                    return;
                 }
 
                 break;
