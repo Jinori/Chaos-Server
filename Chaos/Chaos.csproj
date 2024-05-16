@@ -48,18 +48,14 @@
         <ProjectReference Include="..\Chaos.Time\Chaos.Time.csproj" />
         <ProjectReference Include="..\Chaos.TypeMapper\Chaos.TypeMapper.csproj" />
     </ItemGroup>
-        <PackageReference Include="Discord.Net" />
-        <PackageReference Include="Humanizer" />
-        <PackageReference Include="Humanizer.Core" />
-        <PackageReference Include="Newtonsoft.Json" />
-        <PackageReference Include="NLog.Web.AspNetCore" />
-    <ItemGroup>
+    <ItemGroup> 
         <PackageReference Include="Humanizer"/>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection"/>
         <PackageReference Include="Humanizer.Core" />
         <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="NLog.Web.AspNetCore" />
         <PackageReference Include="AutoMapper.Collection"/>
+        <PackageReference Include="Discord.Net" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"/>
         <PackageReference Include="System.Configuration.ConfigurationManager"/>
     </ItemGroup>

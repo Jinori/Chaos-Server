@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Definitions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -66,13 +65,11 @@ public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonste
     {
         if (Subject.Effects.Contains("pramh"))
         {
-            Subject.Status &= ~Status.Pramh;
             Subject.Effects.Dispel("pramh");
         }
 
         if (Subject.Effects.Contains("beagpramh"))
         {
-            Subject.Status &= ~Status.Pramh;
             Subject.Effects.Dispel("beagpramh");
         }
 

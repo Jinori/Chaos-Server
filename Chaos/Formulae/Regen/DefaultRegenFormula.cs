@@ -1,5 +1,5 @@
 using Chaos.Common.Utilities;
-using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Formulae.Abstractions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -17,7 +17,7 @@ public sealed class DefaultRegenFormula : IRegenFormula
         if (creature.Effects.Contains("Poison"))
             return 0;
         
-        if (creature.Status.HasFlag(Status.InnerFire))
+        if (creature.IsInnerFired())
         {
             var percentToRegenerate = creature switch
             {

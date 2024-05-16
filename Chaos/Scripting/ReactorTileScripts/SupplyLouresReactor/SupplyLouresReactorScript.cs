@@ -1,5 +1,3 @@
-using Chaos.Extensions.Common;
-using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;

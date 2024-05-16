@@ -38,10 +38,9 @@ public sealed class BossEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 3; i++)
             {
-                if (!rectangle.GetPoints().Any(x => Subject.MapInstance.IsWalkable(x, Subject.Type)))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
-                
-                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+
                 var mobs = MonsterFactory.Create("crypt_bat5", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
@@ -85,7 +84,7 @@ public sealed class BossEnrageScript : MonsterScriptBase
                 SpellDamagePct = 20
             };
 
-            var end = Spells.FirstOrDefault(x => x.Template.TemplateKey.ToLower() == "end_all");
+            var end = Spells.FirstOrDefault(x => x.Template.TemplateKey.Equals("end_all", StringComparison.CurrentCultureIgnoreCase));
 
             if (end != null)
                 Subject.TryUseSpell(end);

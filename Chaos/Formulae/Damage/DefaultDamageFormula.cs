@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae.Abstractions;
 using Chaos.Models.Panel;
@@ -110,22 +111,22 @@ public class DefaultDamageFormula : IDamageFormula
         if (!defender.Effects.Any(x => x.Name.EndsWithI("aite")))
             return;
 
-        if (defender.Status.HasFlag(Status.BeagAite))
+        if (defender.IsBeagAited())
         {
             damage = (int)(damage * 0.92);
         }
 
-        if (defender.Status.HasFlag(Status.Aite))
+        if (defender.IsAited())
         {
             damage = (int)(damage * 0.85);
         }
 
-        if (defender.Status.HasFlag(Status.MorAite))
+        if (defender.IsMorAited())
         {
             damage = (int)(damage * 0.78);
         }
 
-        if (defender.Status.HasFlag(Status.ArdAite))
+        if (defender.IsArdAited())
         {
             damage = (int)(damage * 0.70);
         }

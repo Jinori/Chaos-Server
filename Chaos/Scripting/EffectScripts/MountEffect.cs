@@ -1,23 +1,26 @@
 ﻿using Chaos.Models.Data;
+using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Components.EffectComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts;
 
-public class MountEffect : NonOverwritableEffectBase
+public class MountEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(999);
-    protected override Animation? Animation { get; } = new()
+    protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 6,
         AnimationSpeed = 100
     };
-    protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
-    {
+    public List<string> ConflictingEffectNames { get; init; } =
+    [
         "MountEffect"
-    };
+    ];
     public override byte Icon => 92;
     public override string Name => "mount";
-    protected override byte? Sound => 115;
+    protected byte? Sound => 115;
 
     public override void OnTerminated()
     {
@@ -26,8 +29,15 @@ public class MountEffect : NonOverwritableEffectBase
             AislingSubject.Sprite = 0;
             AislingSubject.Refresh(true);
 
-            if (!AislingSubject.Trackers.TimedEvents.HasActiveEvent("mount", out var mountEvent))
+            if (!AislingSubject.Trackers.TimedEvents.HasActiveEvent("mount", out _))
                 AislingSubject.Trackers.TimedEvents.AddEvent("mount", TimeSpan.FromSeconds(5), true);
         }
+    }
+    public override bool ShouldApply(Creature source, Creature target)
+    {
+        var execution = new ComponentExecutor(source, target).WithOptions(this)
+                                                             .ExecuteAndCheck<NonOverwritableEffectComponent>();
+
+        return execution is not null;
     }
 }

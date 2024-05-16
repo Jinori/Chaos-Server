@@ -4,10 +4,10 @@ using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 
-namespace Chaos.Scripting.Components;
+namespace Chaos.Scripting.Components.AbilityComponents;
 
 public class ExecuteComponent : IComponent
 {

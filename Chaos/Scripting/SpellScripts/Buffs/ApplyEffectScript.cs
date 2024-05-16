@@ -3,8 +3,8 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Components;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.AbilityComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.SpellScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
@@ -12,7 +12,7 @@ namespace Chaos.Scripting.SpellScripts.Buffs;
 
 public class ApplyEffectScript : ConfigurableSpellScriptBase,
                                  SpellComponent<Creature>.ISpellComponentOptions,
-                                 ApplyEffectComponent.IApplyEffectComponentOptions
+                                 ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 {
     /// <inheritdoc />
     public ApplyEffectScript(Spell subject, IEffectFactory effectFactory)
@@ -25,13 +25,15 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
             .WithOptions(this)
             .ExecuteAndCheck<SpellComponent<Creature>>()
             ?
-            .Execute<ApplyEffectComponent>();
+            .Execute<ApplyEffectAbilityComponent>();
 
     #region ScriptVars
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
+    /// <inheritdoc />
+    public bool SingleTarget { get; init; }
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
     /// <inheritdoc />

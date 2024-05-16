@@ -1,11 +1,13 @@
-﻿using System.Collections.Immutable;
-using Chaos.Common.Definitions;
+﻿using Chaos.Common.Definitions;
 using Chaos.Models.Data;
+using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Components.EffectComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
-public class MotivateEffect : HierarchicalEffectBase
+public class MotivateEffect : EffectBase, HierarchicalEffectComponent.IHierarchicalEffectComponentOptions
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(2);
     protected Animation? Animation { get; } = new()
@@ -13,10 +15,9 @@ public class MotivateEffect : HierarchicalEffectBase
         TargetAnimation = 127,
         AnimationSpeed = 100
     };
-    protected override ImmutableArray<string> ReplaceHierarchy { get; } =
-    [
-        "motivate"
-    ];
+
+    /// <inheritdoc />
+    public List<string> EffectNameHierarchy { get; init; } = [ "motivate"];
     public override byte Icon => 99;
     public override string Name => "Motivate";
     protected byte? Sound => 121;
@@ -48,5 +49,13 @@ public class MotivateEffect : HierarchicalEffectBase
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed has returned to normal.");
+    }
+    
+    public override bool ShouldApply(Creature source, Creature target)
+    {
+        var execution = new ComponentExecutor(source, target).WithOptions(this)
+                                                             .ExecuteAndCheck<HierarchicalEffectComponent>();
+        
+        return execution is not null;
     }
 }

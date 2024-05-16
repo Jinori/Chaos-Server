@@ -2,7 +2,7 @@ using Chaos.Common.Utilities;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Scripting.Abstractions;
-using Chaos.Scripting.Components;
+using Chaos.Scripting.Components.AbilityComponents;
 
 namespace Chaos.Scripting.SpellScripts.Abstractions;
 
@@ -15,7 +15,7 @@ public abstract class ConfigurableSpellScriptBase : ConfigurableScriptBase<Spell
     /// <inheritdoc />
     public virtual bool CanUse(SpellContext context)
     {
-        if (this is ManaCostComponent.IManaCostComponentOptions options)
+        if (this is ManaCostAbilityComponent.IManaCostComponentOptions options)
         {
             var cost = options.ManaCost ?? 0;
             cost += MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumMp, options.PctManaCost);

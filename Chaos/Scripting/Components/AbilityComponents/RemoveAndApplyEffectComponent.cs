@@ -1,10 +1,10 @@
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.Components;
+namespace Chaos.Scripting.Components.AbilityComponents;
 
 public class RemoveAndApplyEffectComponent : IComponent
 {

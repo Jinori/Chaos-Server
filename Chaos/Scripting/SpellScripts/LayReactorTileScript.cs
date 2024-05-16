@@ -3,8 +3,8 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Components;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.AbilityComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.SpellScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
@@ -13,13 +13,13 @@ namespace Chaos.Scripting.SpellScripts;
 public class LayReactorTileScript(Spell subject, IReactorTileFactory reactorTileFactory) : ConfigurableSpellScriptBase(subject),
                                                                                            SpellComponent<MapEntity>.
                                                                                            ISpellComponentOptions,
-                                                                                           LayReactorComponent.ILayReactorComponentOptions
+                                                                                           LayReactorAbilityComponent.ILayReactorComponentOptions
 {
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<SpellComponent<MapEntity>>()
-                                         ?.Execute<LayReactorComponent>();
+                                         ?.Execute<LayReactorAbilityComponent>();
 
     #region ScriptVars
     /// <inheritdoc />
@@ -27,6 +27,8 @@ public class LayReactorTileScript(Spell subject, IReactorTileFactory reactorTile
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
+    /// <inheritdoc />
+    public bool SingleTarget { get; init; }
 
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }

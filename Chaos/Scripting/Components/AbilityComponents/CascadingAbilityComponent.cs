@@ -3,11 +3,11 @@ using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.Components;
+namespace Chaos.Scripting.Components.AbilityComponents;
 
 /// <summary>
 ///     A component that creates a cascade of effects

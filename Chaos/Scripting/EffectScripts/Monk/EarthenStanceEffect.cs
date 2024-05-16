@@ -1,5 +1,4 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -16,9 +15,6 @@ public class EarthenStanceEffect : EffectBase
     {
         base.OnApplied();
 
-        if (!Subject.Status.HasFlag(Status.EarthenStance))
-            Subject.Status = Status.EarthenStance;
-
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Gaea protects your body, surrounding you in stone.");
     }
@@ -27,9 +23,6 @@ public class EarthenStanceEffect : EffectBase
 
     public override void OnTerminated()
     {
-        if (Subject.Status.HasFlag(Status.EarthenStance))
-            Subject.Status &= ~Status.EarthenStance;
-
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The pebbles and rock flow from your body.");
     }

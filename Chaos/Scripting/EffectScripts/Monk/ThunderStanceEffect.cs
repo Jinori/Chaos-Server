@@ -1,5 +1,4 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -16,9 +15,6 @@ public class ThunderStanceEffect : EffectBase
     {
         base.OnApplied();
 
-        if (!Subject.Status.HasFlag(Status.ThunderStance))
-            Subject.Status = Status.ThunderStance;
-
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Electrical surges and charges around your body.");
     }
@@ -27,9 +23,6 @@ public class ThunderStanceEffect : EffectBase
 
     public override void OnTerminated()
     {
-        if (Subject.Status.HasFlag(Status.ThunderStance))
-            Subject.Status &= ~Status.ThunderStance;
-
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The surge of electricity seems to fade.");
     }

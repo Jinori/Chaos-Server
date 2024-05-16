@@ -1,5 +1,4 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -16,9 +15,6 @@ public class MistStanceEffect : EffectBase
     {
         base.OnApplied();
 
-        if (!Subject.Status.HasFlag(Status.MistStance))
-            Subject.Status = Status.MistStance;
-
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A heavy, soothing mist envelops your body.");
     }
@@ -27,9 +23,6 @@ public class MistStanceEffect : EffectBase
 
     public override void OnTerminated()
     {
-        if (Subject.Status.HasFlag(Status.MistStance))
-            Subject.Status &= ~Status.MistStance;
-
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The mist rolls off your body.");
     }

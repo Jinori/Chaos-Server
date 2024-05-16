@@ -3,12 +3,12 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Components;
+using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.SkillScripts.Abstractions;
 
 namespace Chaos.Scripting.SkillScripts;
 
-public class SummonPet : ConfigurableSkillScriptBase, AbilityComponent<Creature>.IAbilityComponentOptions
+public class SummonPet : ConfigurableSkillScriptBase, GenericAbilityComponent<Creature>.IAbilityComponentOptions
 {
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
@@ -33,6 +33,8 @@ public class SummonPet : ConfigurableSkillScriptBase, AbilityComponent<Creature>
     public int Range { get; init; }
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
+    /// <inheritdoc />
+    public bool SingleTarget { get; init; }
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     /// <inheritdoc />

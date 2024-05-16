@@ -38,10 +38,9 @@ public sealed class NightmareCarnunEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 2; i++)
             {
-                if (!rectangle.GetPoints().Any(x => Subject.MapInstance.IsWalkable(x, Subject.Type)))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
-
-                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+                
                 var mobs = MonsterFactory.Create("nightmare_malewarriorminion", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
@@ -71,10 +70,9 @@ public sealed class NightmareCarnunEnrageScript : MonsterScriptBase
             
             for (var i = 0; i <= 3; i++)
             {
-                if (!rectangle.GetPoints().Any(x => Subject.MapInstance.IsWalkable(x, Subject.Type)))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
-
-                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+                
                 var mobs = MonsterFactory.Create("nightmare_malewarriorminion", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }

@@ -1,4 +1,3 @@
-using AutoMapper.Execution;
 using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;

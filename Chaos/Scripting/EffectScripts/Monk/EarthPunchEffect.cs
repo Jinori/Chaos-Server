@@ -1,5 +1,4 @@
 using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
@@ -26,24 +25,13 @@ public sealed class EarthPunchEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     public override string Name => "earthpunch";
 
-    public override void OnApplied()
-    {
+    public override void OnApplied() =>
         AislingSubject?.Client.SendServerMessage(
             ServerMessageType.OrangeBar1,
             "After taking a strike, you feel as though you cannot move.");
 
-        if (!Subject.Status.HasFlag(Status.BeagSuain))
-            Subject.Status = Status.BeagSuain;
-    }
-
     /// <inheritdoc />
     protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
 
-    public override void OnTerminated()
-    {
-        if (Subject.Status.HasFlag(Status.BeagSuain))
-            Subject.Status &= ~Status.BeagSuain;
-
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.");
-    }
+    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.");
 }

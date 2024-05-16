@@ -4,8 +4,8 @@ using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
-using Chaos.Scripting.Components;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.AbilityComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.SkillScripts.Abstractions;
@@ -13,8 +13,8 @@ using Chaos.Scripting.SkillScripts.Abstractions;
 namespace Chaos.Scripting.SkillScripts;
 
 public class CombatAdvantageScript : ConfigurableSkillScriptBase,
-                                     AbilityComponent<Creature>.IAbilityComponentOptions,
-                                     DamageComponent.IDamageComponentOptions,
+                                     GenericAbilityComponent<Creature>.IAbilityComponentOptions,
+                                     DamageAbilityComponent.IDamageComponentOptions,
                                      CombatAdvantageComponent.ICombatAdvantageComponentOptions
 {
     /// <inheritdoc />
@@ -57,6 +57,8 @@ public class CombatAdvantageScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
     /// <inheritdoc />
+    public bool SingleTarget { get; init; }
+    /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     /// <inheritdoc />
     public byte? Sound { get; init; }
@@ -75,10 +77,10 @@ public class CombatAdvantageScript : ConfigurableSkillScriptBase,
     public override void OnUse(ActivationContext context) =>
         new ComponentExecutor(context)
             .WithOptions(this)
-            .ExecuteAndCheck<AbilityComponent<Creature>>()
+            .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
             ?
             .Execute<CombatAdvantageComponent>()
-            .Execute<DamageComponent>();
+            .Execute<DamageAbilityComponent>();
 
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }

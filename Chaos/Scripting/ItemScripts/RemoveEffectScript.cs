@@ -3,16 +3,16 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
-using Chaos.Scripting.Components;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.AbilityComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts;
 
 public class RemoveEffectScript : ConfigurableItemScriptBase,
-                                  AbilityComponent<Aisling>.IAbilityComponentOptions,
+                                  GenericAbilityComponent<Aisling>.IAbilityComponentOptions,
                                   RemoveEffectComponent.IRemoveEffectComponentOptions,
-                                  ConsumableComponent.IConsumableComponentOptions
+                                  ConsumableAbilityComponent.IConsumableComponentOptions
 {
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
@@ -44,6 +44,8 @@ public class RemoveEffectScript : ConfigurableItemScriptBase,
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
     /// <inheritdoc />
+    public bool SingleTarget { get; init; }
+    /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     /// <inheritdoc />
     public byte? Sound { get; init; }
@@ -53,9 +55,9 @@ public class RemoveEffectScript : ConfigurableItemScriptBase,
         : base(subject) => ItemName = Subject.DisplayName;
 
     public override void OnUse(Aisling source) => new ComponentExecutor(source, source).WithOptions(this)
-                                                                                       .ExecuteAndCheck<AbilityComponent<Aisling>>()
+                                                                                       .ExecuteAndCheck<GenericAbilityComponent<Aisling>>()
                                                                                        ?.Execute<RemoveEffectComponent>()
-                                                                                       .Execute<ConsumableComponent>();
+                                                                                       .Execute<ConsumableAbilityComponent>();
 
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }

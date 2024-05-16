@@ -9,7 +9,7 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 
-namespace Chaos.Scripting.DialogScripts.Quests;
+namespace Chaos.Scripting.DialogScripts.Mehadi;
 
 public class BeggarFoodQuestScript : DialogScriptBase
 {

@@ -1,19 +1,23 @@
-﻿using Chaos.Common.Definitions;
+﻿using System.Reactive.Subjects;
+using Chaos.Common.Definitions;
 using Chaos.Models.Data;
+using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Components.EffectComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Items.CookingMeals;
 
-public class DinnerPlateEffect : NonOverwritableEffectBase
+public class DinnerPlateEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
-    protected override Animation? Animation { get; } = new()
+    protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
         AnimationSpeed = 100
     };
-    protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
-    {
+    public List<string> ConflictingEffectNames { get; init; } =
+    [
         "Dinner Plate",
         "Sweet Buns",
         "Fruit Basket",
@@ -29,10 +33,10 @@ public class DinnerPlateEffect : NonOverwritableEffectBase
         "Sandwich",
         "Soup",
         "Steak Meal"
-    };
+    ];
     public override byte Icon => 72;
     public override string Name => "Dinner Plate";
-    protected override byte? Sound => 115;
+    protected byte? Sound => 115;
 
     public override void OnApplied()
     {
@@ -68,5 +72,12 @@ public class DinnerPlateEffect : NonOverwritableEffectBase
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You're no longer full.");
+    }
+    public override bool ShouldApply(Creature source, Creature target)
+    {
+        var execution = new ComponentExecutor(source, target).WithOptions(this)
+                                                             .ExecuteAndCheck<NonOverwritableEffectComponent>();
+
+        return execution is not null;
     }
 }

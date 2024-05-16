@@ -1,5 +1,4 @@
 using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
@@ -26,22 +25,10 @@ public sealed class WolfFangFistEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     public override string Name => "wolfFangFist";
 
-    public override void OnApplied()
-    {
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A deadly strike puts you to sleep.");
-
-        if (!Subject.Status.HasFlag(Status.Suain))
-            Subject.Status = Status.Suain;
-    }
+    public override void OnApplied() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A deadly strike puts you to sleep.");
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
 
-    public override void OnTerminated()
-    {
-        if (Subject.Status.HasFlag(Status.Suain))
-            Subject.Status &= ~Status.Suain;
-
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.");
-    }
+    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.");
 }

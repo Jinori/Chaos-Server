@@ -1,6 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
@@ -225,8 +226,8 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
 
     private bool ReflectDamage(Creature source, Creature target, int damage)
     {
-        if ((target.Status.HasFlag(Status.AsgallFaileas) && IntegerRandomizer.RollChance(70))
-            || (target.Status.HasFlag(Status.EarthenStance) && IntegerRandomizer.RollChance(20)))
+        if ((target.IsAsgalled() && IntegerRandomizer.RollChance(70))
+            || (target.IsEarthenStanced() && IntegerRandomizer.RollChance(20)))
         {
             switch (source)
             {
@@ -243,7 +244,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
             return true;
         }
 
-        if (target.Status.HasFlag(Status.SmokeStance) && IntegerRandomizer.RollChance(15) && source is Monster monsterSource)
+        if (target.IsSmokeStanced() && IntegerRandomizer.RollChance(15) && source is Monster monsterSource)
         {
             var effect = EffectFactory.Create("Blind");
             monsterSource.Effects.Apply(target, effect);

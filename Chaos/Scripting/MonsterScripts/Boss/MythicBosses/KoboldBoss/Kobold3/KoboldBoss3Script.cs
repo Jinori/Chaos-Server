@@ -1,9 +1,8 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.MythicBosses.KoboldBoss;
 
-namespace Chaos.Scripting.MonsterScripts.Boss;
+namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.KoboldBoss.Kobold3;
 
 public class KoboldBoss3Script : CompositeMonsterScript
 {

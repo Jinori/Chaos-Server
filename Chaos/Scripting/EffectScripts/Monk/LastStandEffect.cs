@@ -1,5 +1,4 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -28,9 +27,6 @@ public class LastStandEffect : ContinuousAnimationEffectBase
     {
         base.OnApplied();
 
-        if (!Subject.Status.HasFlag(Status.LastStand))
-            Subject.Status = Status.LastStand;
-
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body resists all damage.");
     }
@@ -41,9 +37,6 @@ public class LastStandEffect : ContinuousAnimationEffectBase
 
     public override void OnTerminated()
     {
-        if (Subject.Status.HasFlag(Status.LastStand))
-            Subject.Status &= ~Status.LastStand;
-
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body can feel pain again.");
     }

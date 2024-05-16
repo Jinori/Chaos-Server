@@ -9,7 +9,7 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 
-namespace Chaos.Scripting.MonsterScripts;
+namespace Chaos.Scripting.MonsterScripts.Nightmare.PriestNightmare;
 
 // ReSharper disable once ClassCanBeSealed.Global
 public class TeammateDeathScript : MonsterScriptBase

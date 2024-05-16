@@ -5,8 +5,8 @@ using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
-using Chaos.Scripting.Components;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.AbilityComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.ReactorTileScripts;
@@ -17,7 +17,7 @@ namespace Chaos.Scripting.SkillScripts;
 
 public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
                                      SpellComponent<Creature>.ISpellComponentOptions,
-                                     DamageComponent.IDamageComponentOptions,
+                                     DamageAbilityComponent.IDamageComponentOptions,
                                      CascadingComponent<CascadingDamageTileScript>.ICascadingComponentOptions
 {
     /// <inheritdoc />
@@ -36,7 +36,7 @@ public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
             .WithOptions(this)
             .ExecuteAndCheck<SpellComponent<Creature>>()
             ?
-            .Execute<DamageComponent>()
+            .Execute<DamageAbilityComponent>()
             .Execute<CascadingComponent<CascadingDamageTileScript>>();
 
     #region ScriptVars
@@ -47,6 +47,8 @@ public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
+    /// <inheritdoc />
+    public bool SingleTarget { get; init; }
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
     /// <inheritdoc />

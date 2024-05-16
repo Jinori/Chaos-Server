@@ -16,7 +16,7 @@ namespace Chaos.Scripting.MonsterScripts.Boss.UndineFields;
 
 public sealed class CarnunBossRoomHazardScript : MonsterScriptBase
 {
-    private Rectangle? SafeRectangle = null;
+    private Rectangle? SafeRectangle;
     private readonly Rectangle ArenaRectangle;
     private Animation HazardAnimation { get; }
     private Animation SafeAnimation { get; }
@@ -74,7 +74,7 @@ public sealed class CarnunBossRoomHazardScript : MonsterScriptBase
         
         do
         {
-            var randomSafeCenterPoint = ArenaRectangle.GetRandomPoint(pt => !Map.IsWall(pt) && !Map.IsBlockingReactor(pt));;
+            var randomSafeCenterPoint = ArenaRectangle.GetRandomPoint();
             
             SafeRectangle = new Rectangle(randomSafeCenterPoint, WIDTH, HEIGHT);
             attempts++;

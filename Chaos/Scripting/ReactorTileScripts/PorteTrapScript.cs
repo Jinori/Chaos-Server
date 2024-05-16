@@ -6,8 +6,8 @@ using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
-using Chaos.Scripting.Components;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.AbilityComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
@@ -18,12 +18,12 @@ using Chaos.Time.Abstractions;
 namespace Chaos.Scripting.ReactorTileScripts;
 
 public class PorteTrapScript : ConfigurableReactorTileScriptBase,
-                               GetTargetsComponent<Creature>.IGetTargetsComponentOptions,
-                               SoundComponent.ISoundComponentOptions,
-                               AnimationComponent.IAnimationComponentOptions,
-                               DamageComponent.IDamageComponentOptions,
-                               ManaDrainComponent.IManaDrainComponentOptions,
-                               ApplyEffectComponent.IApplyEffectComponentOptions
+                               GetTargetsAbilityComponent<Creature>.IGetTargetsComponentOptions,
+                               SoundAbilityComponent.ISoundComponentOptions,
+                               AnimationAbilityComponent.IAnimationComponentOptions,
+                               DamageAbilityComponent.IDamageComponentOptions,
+                               ManaDrainAbilityComponent.IManaDrainComponentOptions,
+                               ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 {
     protected IIntervalTimer AnimationTimer { get; set; }
     protected Creature Owner { get; set; }
@@ -95,13 +95,13 @@ If this reactor was created through a script, you must specify the owner in the 
 
         var executed = new ComponentExecutor(Owner, source)
                        .WithOptions(this)
-                       .ExecuteAndCheck<GetTargetsComponent<Creature>>()
+                       .ExecuteAndCheck<GetTargetsAbilityComponent<Creature>>()
                        ?
-                       .Execute<SoundComponent>()
-                       .Execute<AnimationComponent>()
-                       .Execute<DamageComponent>()
-                       .Execute<ManaDrainComponent>()
-                       .Execute<ApplyEffectComponent>()
+                       .Execute<SoundAbilityComponent>()
+                       .Execute<AnimationAbilityComponent>()
+                       .Execute<DamageAbilityComponent>()
+                       .Execute<ManaDrainAbilityComponent>()
+                       .Execute<ApplyEffectAbilityComponent>()
                        != null;
 
         if (executed && MaxTriggers.HasValue)
@@ -121,7 +121,7 @@ If this reactor was created through a script, you must specify the owner in the 
         AnimationTimer.Update(delta);
 
         if (Subject.Owner is not null
-            && Subject.Owner.Status.HasFlag(Status.DetectTraps)
+            && Subject.Owner.IsDetectingTraps()
             && AnimationTimer.IntervalElapsed
             && Subject.MapInstance.Equals(Subject.Owner.MapInstance))
             Subject.Owner.MapInstance.ShowAnimation(
@@ -142,6 +142,8 @@ If this reactor was created through a script, you must specify the owner in the 
     public IEffectFactory EffectFactory { get; init; }
     public IApplyDamageScript ApplyDamageScript { get; init; }
     public AoeShape Shape { get; init; }
+    /// <inheritdoc />
+    public bool SingleTarget { get; init; }
     public BodyAnimation BodyAnimation { get; init; }
     public int Range { get; init; }
     public TargetFilter Filter { get; init; }

@@ -5,8 +5,8 @@ using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
-using Chaos.Scripting.Components;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.AbilityComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.SkillScripts.Abstractions;
@@ -14,8 +14,8 @@ using Chaos.Scripting.SkillScripts.Abstractions;
 namespace Chaos.Scripting.SkillScripts.Warrior;
 
 public class ChargeScript : ConfigurableSkillScriptBase,
-                            AbilityComponent<Creature>.IAbilityComponentOptions,
-                            DamageComponent.IDamageComponentOptions
+                            GenericAbilityComponent<Creature>.IAbilityComponentOptions,
+                            DamageAbilityComponent.IDamageComponentOptions
 {
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
@@ -54,6 +54,8 @@ public class ChargeScript : ConfigurableSkillScriptBase,
     public int Range { get; init; }
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
+    /// <inheritdoc />
+    public bool SingleTarget { get; init; }
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     /// <inheritdoc />
@@ -109,8 +111,8 @@ public class ChargeScript : ConfigurableSkillScriptBase,
 
                 // Needs Damage & Ability Component or a new Movement Component
                 new ComponentExecutor(context).WithOptions(this)
-                                              .ExecuteAndCheck<AbilityComponent<Creature>>()
-                                              ?.Execute<DamageComponent>();
+                                              .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
+                                              ?.Execute<DamageAbilityComponent>();
 
                 return;
             }

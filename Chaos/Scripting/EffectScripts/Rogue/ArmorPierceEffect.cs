@@ -1,30 +1,32 @@
 using Chaos.Common.Definitions;
 using Chaos.Models.Data;
+using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Components.EffectComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Rogue;
 
-public class ArmorPierceEffect : NonOverwritableEffectBase
+public class ArmorPierceEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
-    /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(6);
-    /// <inheritdoc />
-    protected override Animation? Animation { get; } = new()
+
+    protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 204,
         AnimationSpeed = 100
     };
-    /// <inheritdoc />
-    protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
-    {
+
+    public List<string> ConflictingEffectNames { get; init; } =
+    [
         "Armor Pierce"
-    };
-    /// <inheritdoc />
+    ];
+
     public override byte Icon => 65;
-    /// <inheritdoc />
+
     public override string Name => "Armor Pierce";
-    /// <inheritdoc />
-    protected override byte? Sound => 22;
+
+    protected byte? Sound => 22;
 
     public override void OnApplied()
     {
@@ -54,5 +56,13 @@ public class ArmorPierceEffect : NonOverwritableEffectBase
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor has been repaired, AC and MR restored.");
+    }
+    
+    public override bool ShouldApply(Creature source, Creature target)
+    {
+        var execution = new ComponentExecutor(source, target).WithOptions(this)
+                                                             .ExecuteAndCheck<NonOverwritableEffectComponent>();
+
+        return execution is not null;
     }
 }

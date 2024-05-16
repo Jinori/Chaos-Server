@@ -1,9 +1,8 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.MythicBosses.ZombieBoss.Zombie2;
 
-namespace Chaos.Scripting.MonsterScripts.Boss;
+namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.ZombieBoss.Zombie2;
 
 public class ZombieBoss2Script : CompositeMonsterScript
 {

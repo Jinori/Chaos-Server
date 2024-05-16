@@ -1,5 +1,4 @@
 using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -28,24 +27,12 @@ public sealed class PramhEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     public override string Name => "pramh";
 
-    public override void OnApplied()
-    {
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your eyelids become heavy.");
-
-        if (!Subject.Status.HasFlag(Status.Pramh))
-            Subject.Status = Status.Pramh;
-    }
+    public override void OnApplied() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your eyelids become heavy.");
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
 
-    public override void OnTerminated()
-    {
-        if (Subject.Status.HasFlag(Status.Pramh))
-            Subject.Status &= ~Status.Pramh;
-
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You awake from your slumber.");
-    }
+    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You awake from your slumber.");
 
     public override bool ShouldApply(Creature source, Creature target)
     {

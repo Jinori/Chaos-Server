@@ -1,6 +1,7 @@
 using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.MonsterScripts.Nightmare.MonkNightmare;
 using Chaos.Scripting.MonsterScripts.Nightmare.PriestNightmare;
 using Chaos.Scripting.MonsterScripts.Nightmare.RogueNightmare;
 using Chaos.Scripting.MonsterScripts.Pet;

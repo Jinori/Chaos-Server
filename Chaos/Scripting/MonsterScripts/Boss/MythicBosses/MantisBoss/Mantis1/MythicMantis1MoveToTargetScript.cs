@@ -3,7 +3,7 @@ using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss;
+namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.MantisBoss.Mantis1;
 
 public sealed class MythicMantis1MoveToTargetScript : MonsterScriptBase
 {

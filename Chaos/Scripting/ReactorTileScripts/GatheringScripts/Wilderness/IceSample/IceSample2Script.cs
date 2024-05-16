@@ -5,7 +5,7 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.ReactorTileScripts.IceSample1;
+namespace Chaos.Scripting.ReactorTileScripts.GatheringScripts.Wilderness.IceSample;
 
 public class IceSample2Script : ReactorTileScriptBase
 {

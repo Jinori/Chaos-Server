@@ -1,16 +1,16 @@
 using System.Collections.Immutable;
 using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.Data;
-using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Components.EffectComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Warrior;
 
-public sealed class BeagSuainEffect : HierarchicalContinuousAnimationEffectBase
+public sealed class BeagSuainEffect : ContinuousAnimationEffectBase, HierarchicalEffectComponent.IHierarchicalEffectComponentOptions
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(8);
@@ -29,28 +29,23 @@ public sealed class BeagSuainEffect : HierarchicalContinuousAnimationEffectBase
     /// <inheritdoc />
     public override string Name => "BeagSuain";
 
-    protected override ImmutableArray<string> ReplaceHierarchy { get; } =
-    [
-        "beagsuain"
-    ];
-    public override void OnApplied()
-    {
+    /// <inheritdoc />
+    public List<string> EffectNameHierarchy { get; init; } =
+        ["beagsuain"];
+    public override void OnApplied() =>
         AislingSubject?.Client.SendServerMessage(
             ServerMessageType.OrangeBar1,
             "After taking a strike, you feel as though you cannot move.");
 
-        if (!Subject.Status.HasFlag(Status.BeagSuain))
-            Subject.Status = Status.BeagSuain;
-    }
-
     /// <inheritdoc />
     protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
 
-    public override void OnTerminated()
+    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.");
+    public override bool ShouldApply(Creature source, Creature target)
     {
-        if (Subject.Status.HasFlag(Status.BeagSuain))
-            Subject.Status &= ~Status.BeagSuain;
+        var execution = new ComponentExecutor(source, target).WithOptions(this)
+                                                             .ExecuteAndCheck<HierarchicalEffectComponent>();
 
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.");
+        return execution is not null;
     }
 }

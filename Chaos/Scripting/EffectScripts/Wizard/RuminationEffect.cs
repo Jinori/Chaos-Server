@@ -1,5 +1,4 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.World;
@@ -31,10 +30,7 @@ public class RuminationEffect : ContinuousAnimationEffectBase
     public override void OnApplied()
     {
         base.OnApplied();
-
-        if (!Subject.Status.HasFlag(Status.Rumination))
-            Subject.Status = Status.Rumination;
-
+        
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
 
         AislingSubject?.Client.SendServerMessage(
@@ -95,13 +91,7 @@ public class RuminationEffect : ContinuousAnimationEffectBase
         AislingSubject?.ShowHealth();
     }
 
-    public override void OnTerminated()
-    {
-        if (Subject.Status.HasFlag(Status.Rumination))
-            Subject.Status &= ~Status.Rumination;
-
-        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-    }
+    public override void OnTerminated() => AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
 
     public override bool ShouldApply(Creature source, Creature target)
     {

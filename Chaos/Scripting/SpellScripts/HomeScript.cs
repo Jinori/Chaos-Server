@@ -1,8 +1,8 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Scripting.Components;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.AbilityComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.SpellScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
@@ -10,7 +10,7 @@ namespace Chaos.Scripting.SpellScripts;
 
 public class HomeScript(Spell subject, ISimpleCache simpleCache) : ConfigurableSpellScriptBase(subject),
                                                                    TeleportComponent.ITeleportComponentOptions,
-                                                                   ManaCostComponent.IManaCostComponentOptions
+                                                                   ManaCostAbilityComponent.IManaCostComponentOptions
 {
     /// <inheritdoc />
     public string DestinationMapKey { get; set; } = null!;
@@ -100,6 +100,6 @@ public class HomeScript(Spell subject, ISimpleCache simpleCache) : ConfigurableS
                 throw new ArgumentOutOfRangeException();
         }
 
-        new ComponentExecutor(context).WithOptions(this).ExecuteAndCheck<ManaCostComponent>()?.Execute<TeleportComponent>();
+        new ComponentExecutor(context).WithOptions(this).ExecuteAndCheck<ManaCostAbilityComponent>()?.Execute<TeleportComponent>();
     }
 }

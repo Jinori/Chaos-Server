@@ -8,65 +8,64 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Quests.UndineFields
+namespace Chaos.Scripting.DialogScripts.Quests.UndineFields;
+
+public class StartUndineFieldsSouthScript : DialogScriptBase
 {
-    public class StartUndineFieldsSouthScript : DialogScriptBase
+    private readonly ISimpleCache SimpleCache;
+
+    /// <inheritdoc />
+    public StartUndineFieldsSouthScript(Dialog subject, ISimpleCache simpleCache)
+        : base(subject) =>
+        SimpleCache = simpleCache;
+
+    public override void OnDisplaying(Aisling source)
     {
-        private readonly ISimpleCache SimpleCache;
+        var point = new Point(source.X, source.Y);
+        var group = source.Group?.Where(x => x.WithinRange(point));
 
-        /// <inheritdoc />
-        public StartUndineFieldsSouthScript(Dialog subject, ISimpleCache simpleCache)
-            : base(subject) =>
-            SimpleCache = simpleCache;
-
-        public override void OnDisplaying(Aisling source)
+        if (group is null)
         {
-            var point = new Point(source.X, source.Y);
-            var group = source.Group?.Where(x => x.WithinRange(point));
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You cannot venture the fields alone.");
+            Subject.Reply(source, "You must have a group to venture the fields.");
+            return; // Exit early if there is no group
+        }
 
-            if (group is null)
+        var rectangle = new Rectangle(36, 19, 2, 2);
+
+        var allGroupMembersNearby = true;
+
+        foreach (var member in group)
+        {
+            if (!member.WithinRange(point, 100))
             {
-                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You cannot venture the fields alone.");
-                Subject.Reply(source, "You must have a group to venture the fields.");
-                return; // Exit early if there is no group
+                allGroupMembersNearby = false;
+                break; // If any member is not nearby, exit the loop
             }
+        }
 
-            var rectangle = new Rectangle(36, 19, 2, 2);
-
-            var allGroupMembersNearby = true;
+        if (allGroupMembersNearby)
+        {
+            Subject.Close(source);
 
             foreach (var member in group)
             {
-                if (!member.WithinRange(point, 100))
+                var mapInstance = SimpleCache.Get<MapInstance>("undine_field_south");
+
+                Point newPoint;
+                do
                 {
-                    allGroupMembersNearby = false;
-                    break; // If any member is not nearby, exit the loop
-                }
+                    newPoint = rectangle.GetRandomPoint();
+                } while (!mapInstance.IsWalkable(newPoint, member.Type));
+
+                member.Trackers.Enums.Set(UndineFieldDungeon.StartedDungeon);
+                member.TraverseMap(mapInstance, newPoint);
             }
-
-            if (allGroupMembersNearby)
-            {
-                Subject.Close(source);
-
-                foreach (var member in group)
-                {
-                    var mapInstance = SimpleCache.Get<MapInstance>("undine_field_south");
-
-                    Point newPoint;
-                    do
-                    {
-                        newPoint = rectangle.GetRandomPoint();
-                    } while (!mapInstance.IsWalkable(newPoint, member.Type));
-
-                    member.Trackers.Enums.Set(UndineFieldDungeon.StartedDungeon);
-                    member.TraverseMap(mapInstance, newPoint);
-                }
-            }
-            else
-            {
-                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your group must be nearby.");
-                Subject.Reply(source, "Your group is not near.");
-            }
+        }
+        else
+        {
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your group must be nearby.");
+            Subject.Reply(source, "Your group is not near.");
         }
     }
 }

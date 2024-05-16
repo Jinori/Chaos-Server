@@ -4,6 +4,7 @@ using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Scripting.DialogScripts.Quests.PFQuest;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;

@@ -1,5 +1,4 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -15,23 +14,14 @@ public class DetectTrapsEffect : EffectBase
     public override void OnApplied()
     {
         base.OnApplied();
-
-        if (!Subject.Status.HasFlag(Status.DetectTraps))
-            Subject.Status = Status.DetectTraps;
-
+        
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your sense of survival peaks.");
     }
 
     public override void OnDispelled() => OnTerminated();
 
-    public override void OnTerminated()
-    {
-        if (Subject.Status.HasFlag(Status.DetectTraps))
-            Subject.Status &= ~Status.DetectTraps;
-
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your senses have returned to normal.");
-    }
+    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your senses have returned to normal.");
 
     public override bool ShouldApply(Creature source, Creature target)
     {

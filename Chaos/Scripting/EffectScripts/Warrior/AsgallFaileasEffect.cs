@@ -1,5 +1,4 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -15,10 +14,7 @@ public class AsgallFaileasEffect : EffectBase
     public override void OnApplied()
     {
         base.OnApplied();
-
-        if (!Subject.Status.HasFlag(Status.AsgallFaileas))
-            Subject.Status = Status.AsgallFaileas;
-
+        
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your stance is more defensive.");
     }
@@ -27,9 +23,6 @@ public class AsgallFaileasEffect : EffectBase
 
     public override void OnTerminated()
     {
-        if (Subject.Status.HasFlag(Status.AsgallFaileas))
-            Subject.Status &= ~Status.AsgallFaileas;
-
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your stance has returned to normal.");
     }

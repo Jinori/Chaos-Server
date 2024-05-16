@@ -1,5 +1,4 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -27,10 +26,7 @@ public class ClawFistEffect : ContinuousAnimationEffectBase
     public override void OnApplied()
     {
         base.OnApplied();
-
-        if (!Subject.Status.HasFlag(Status.ClawFist))
-            Subject.Status = Status.ClawFist;
-
+        
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your fists rush with a burst of energy.");
     }
@@ -41,9 +37,6 @@ public class ClawFistEffect : ContinuousAnimationEffectBase
 
     public override void OnTerminated()
     {
-        if (Subject.Status.HasFlag(Status.ClawFist))
-            Subject.Status &= ~Status.ClawFist;
-
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your hands return to normal.");
     }

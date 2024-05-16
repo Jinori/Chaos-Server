@@ -14,7 +14,7 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 
-namespace Chaos.Scripting.DialogScripts.Quests;
+namespace Chaos.Scripting.DialogScripts.Quests.PFQuest;
 
 public class PFQuestScript : DialogScriptBase
 {

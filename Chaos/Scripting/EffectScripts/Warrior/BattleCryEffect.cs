@@ -1,5 +1,4 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -16,10 +15,7 @@ public class BattleCryEffect : EffectBase
     public override void OnApplied()
     {
         base.OnApplied();
-
-        if (!Subject.Status.HasFlag(Status.BattleCry))
-            Subject.Status = Status.BattleCry;
-
+        
         var attributes = new Attributes
         {
             AtkSpeedPct = 25
@@ -34,9 +30,6 @@ public class BattleCryEffect : EffectBase
 
     public override void OnTerminated()
     {
-        if (Subject.Status.HasFlag(Status.BattleCry))
-            Subject.Status &= ~Status.BattleCry;
-
         var attributes = new Attributes
         {
             AtkSpeedPct = 25

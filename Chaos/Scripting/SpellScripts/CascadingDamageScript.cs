@@ -18,7 +18,7 @@ namespace Chaos.Scripting.SpellScripts;
 public class CascadingDamageScript : ConfigurableSpellScriptBase,
                                      GenericAbilityComponent<Creature>.IAbilityComponentOptions,
                                      DamageAbilityComponent.IDamageComponentOptions,
-                                     CascadingAbilityComponent<CascadingDamageTileScript>.ICascadingComponentOptions
+                                     CascadingComponent<CascadingDamageTileScript>.ICascadingComponentOptions
 {
     /// <inheritdoc />
     public CascadingDamageScript(Spell subject, IReactorTileFactory reactorTileFactory)
@@ -35,7 +35,7 @@ public class CascadingDamageScript : ConfigurableSpellScriptBase,
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
                                          ?.Execute<DamageAbilityComponent>()
-                                         .Execute<CascadingAbilityComponent<CascadingDamageTileScript>>();
+                                         .Execute<CascadingComponent<CascadingDamageTileScript>>();
 
     #region ScriptVars
     /// <inheritdoc />
@@ -76,6 +76,8 @@ public class CascadingDamageScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public Element? Element { get; init; }
+    /// <inheritdoc />
+    public bool? MoreDmgLowTargetHp { get; init; }
 
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }

@@ -3,7 +3,7 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.EffectScripts.Priest;
+namespace Chaos.Scripting.EffectScripts;
 
 public class MarriageEffect : ContinuousAnimationEffectBase
 {

@@ -7,7 +7,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Mileth;
+namespace Chaos.Scripting.DialogScripts.Quests.TerrorofCrypt;
 
 public class TeagueSendOnQuestScript : DialogScriptBase
 {

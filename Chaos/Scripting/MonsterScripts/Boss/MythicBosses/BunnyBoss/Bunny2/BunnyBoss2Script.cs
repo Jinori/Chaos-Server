@@ -2,7 +2,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss;
+namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.BunnyBoss.Bunny2;
 
 public class BunnyBoss2Script : CompositeMonsterScript
 {

@@ -1,5 +1,4 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -16,9 +15,6 @@ public class PreventAfflictionEffect : EffectBase
     {
         base.OnApplied();
 
-        if (!Subject.Status.HasFlag(Status.PreventAffliction))
-            Subject.Status = Status.PreventAffliction;
-
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your magic has been simplified.");
     }
@@ -27,9 +23,6 @@ public class PreventAfflictionEffect : EffectBase
 
     public override void OnTerminated()
     {
-        if (Subject.Status.HasFlag(Status.PreventAffliction))
-            Subject.Status &= ~Status.PreventAffliction;
-
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your magic returns to normal.");
     }

@@ -19,11 +19,11 @@ public class ManaBurnEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
     /// <inheritdoc />
-    public override byte Icon { get; } = 187;
+    public override byte Icon => 187;
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(500));
     /// <inheritdoc />
-    public override string Name { get; } = "Manaburn";
+    public override string Name => "Manaburn";
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()

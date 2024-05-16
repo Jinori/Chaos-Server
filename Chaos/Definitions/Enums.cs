@@ -10,38 +10,6 @@ public enum AoeShape
     Cleave
 }
 
-[Flags]
-public enum Status : ulong
-{
-    None = 0,
-    Dead = 1,
-    Suain = 1 << 2,
-    AsgallFaileas = 1 << 3,
-    PreventAffliction = 1 << 4,
-    ClawFist = 1 << 5,
-    BeagSuain = 1 << 6,
-    BattleCry = 1 << 7,
-    InnerFire = 1 << 8,
-    Rumination = 1 << 9,
-    ChiBlocker = 1 << 10,
-    Pramh = 1 << 11,
-    DetectTraps = 1 << 12,
-    EarthenStance = 1 << 13,
-    MistStance = 1 << 14,
-    ThunderStance = 1 << 15,
-    SmokeStance = 1 << 16,
-    BeagAite = 1 << 17,
-    Aite = 1 << 18,
-    MorAite = 1 << 19,
-    ArdAite = 1 << 20,
-    Hide = 1 << 21,
-    LastStand = 1 << 22,
-    Amnesia = 1 << 23,
-    PreventRecradh = 1 << 24,
-    WolfFangFist = 1 << 25
-    //add more statuses here
-}
-
 public enum GainExp
 {
     Yes,

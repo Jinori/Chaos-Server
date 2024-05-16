@@ -1,5 +1,4 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -12,22 +11,8 @@ public class PreventRecradhEffect : EffectBase
     public override byte Icon => 102;
     public override string Name => "preventrecradh";
 
-    public override void OnApplied()
-    {
-        base.OnApplied();
-
-        if (!Subject.Status.HasFlag(Status.PreventRecradh))
-            Subject.Status = Status.PreventRecradh;
-    }
-
     public override void OnDispelled() => OnTerminated();
-
-    public override void OnTerminated()
-    {
-        if (Subject.Status.HasFlag(Status.PreventRecradh))
-            Subject.Status &= ~Status.PreventRecradh;
-    }
-
+    
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (target.Effects.Contains("preventrecradh"))

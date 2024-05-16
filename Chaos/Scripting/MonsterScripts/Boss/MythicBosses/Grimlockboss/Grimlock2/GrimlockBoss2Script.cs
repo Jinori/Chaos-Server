@@ -1,9 +1,8 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.MythicBosses.Grimlockboss.Grimlock2;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.Grimlockboss.Grimlock1;
+namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.Grimlockboss.Grimlock2;
 
 public class GrimlockBoss2Script : CompositeMonsterScript
 {

@@ -24,15 +24,13 @@ public class WrathEffect : ContinuousAnimationEffectBase
     };
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
-    protected IApplyDamageScript ApplyDamageScript { get; }
+    protected IApplyDamageScript ApplyDamageScript { get; } = ApplyAttackDamageScript.Create();
     /// <inheritdoc />
-    public override byte Icon { get; } = 98;
+    public override byte Icon => 98;
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
     /// <inheritdoc />
-    public override string Name { get; } = "Wrath";
-
-    public WrathEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
+    public override string Name => "Wrath";
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()

@@ -14,7 +14,7 @@ using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
-namespace Chaos.Scripting.DialogScripts.Quests.Rucesion;
+namespace Chaos.Scripting.DialogScripts.Quests.Suomi;
 
 public class BertilPotionQuestScript : DialogScriptBase
 {

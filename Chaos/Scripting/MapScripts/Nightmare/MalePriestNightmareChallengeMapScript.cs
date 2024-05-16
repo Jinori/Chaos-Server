@@ -94,10 +94,17 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
 
         var teammatespawnRectangle = new Rectangle(target, 5, 5);
 
-        var point1 = teammatespawnRectangle.GetRandomPoint(point1 => point1 != target);
-        var point2 = teammatespawnRectangle.GetRandomPoint(point2 => point2 != target);
-        var point3 = teammatespawnRectangle.GetRandomPoint(point3 => point3 != target);
-        var point4 = teammatespawnRectangle.GetRandomPoint(point4 => point4 != target);
+        if (!teammatespawnRectangle.TryGetRandomPoint(x => Subject.IsWalkable(x, CreatureType.Normal), out var point1))
+            point1 = Point.From(target);
+
+        if (!teammatespawnRectangle.TryGetRandomPoint(x => Subject.IsWalkable(x, CreatureType.Normal), out var point2))
+            point2 = Point.From(target);
+
+        if (!teammatespawnRectangle.TryGetRandomPoint(x => Subject.IsWalkable(x, CreatureType.Normal), out var point3))
+            point3 = Point.From(target);
+
+        if (!teammatespawnRectangle.TryGetRandomPoint(x => Subject.IsWalkable(x, CreatureType.Normal), out var point4))
+            point4 = Point.From(target);
 
         if (Subject.GetEntities<Aisling>().Any(a => a.Gender == Gender.Male))
         {

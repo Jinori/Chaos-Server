@@ -26,7 +26,7 @@ namespace Chaos.Scripting.DialogScripts.Arena;
 public class ArenaUndergroundScript : DialogScriptBase
 {
     //Place Discord Bot Token Here When Live
-    private const string BOT_TOKEN = @"";
+    private const string BOT_TOKEN = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.Gek2EZ.se-vh-fRnr78vAYuub5KUK-aIzrUHEMlEkB75Y";
     private const ulong CHANNEL_ID = 1136412469762470038;
     private const ulong ARENA_WIN_CHANNEL_ID = 1136426304300916786;
     private readonly Point CenterWarp = new(11, 10);
@@ -37,7 +37,7 @@ public class ArenaUndergroundScript : DialogScriptBase
     private readonly Point LavaRedPoint = new(8, 5);
     private readonly Point ColorClashBluePoint = new(27, 27);
     private readonly Point ColorClashGoldPoint = new(4, 4);
-    private readonly Point ColorClashGreenPoint = new(39, 6);
+    private readonly Point ColorClashGreenPoint = new(26, 6);
     private readonly Point ColorClashRedPoint = new(4, 27);
     private readonly ISimpleCache SimpleCache;
     private readonly IShardGenerator ShardGenerator;

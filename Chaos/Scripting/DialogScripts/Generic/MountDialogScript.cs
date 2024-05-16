@@ -4,37 +4,56 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Generic
+namespace Chaos.Scripting.DialogScripts.Generic;
+
+public class MountDialogScript : DialogScriptBase
 {
-    public class MountDialogScript : DialogScriptBase
+    private readonly IEffectFactory _effectFactory;
+
+    public MountDialogScript(Dialog subject, IEffectFactory effectFactory)
+        : base(subject)
     {
-        private readonly IEffectFactory _effectFactory;
+        _effectFactory = effectFactory;
+    }
 
-        public MountDialogScript(Dialog subject, IEffectFactory effectFactory)
-            : base(subject)
+    private void SetMount(Dialog dialog, Aisling source, CurrentMount mount)
+    {
+        source.Trackers.Enums.Set(mount);
+        AddCloakOptions(dialog, source);
+    }
+
+    private void AddMountOptionIfFlag(
+        Dialog dialog,
+        Aisling source,
+        AvailableMounts mountFlag,
+        string optionKey
+    )
+    {
+        if (source.Trackers.Flags.HasFlag(mountFlag))
         {
-            _effectFactory = effectFactory;
+            var option = new DialogOption
+            {
+                DialogKey = optionKey,
+                OptionText = mountFlag.ToString()
+            };
+
+            if (!dialog.HasOption(option.OptionText))
+            {
+                dialog.Options.Insert(0, option);
+            }
         }
+    }
 
-        private void SetMount(Dialog dialog, Aisling source, CurrentMount mount)
+    private void AddCloakOptions(Dialog dialog, Aisling source)
+    {
+        foreach (AvailableCloaks cloakFlag in Enum.GetValues(typeof(AvailableCloaks)))
         {
-            source.Trackers.Enums.Set(mount);
-            AddCloakOptions(dialog, source);
-        }
-
-        private void AddMountOptionIfFlag(
-            Dialog dialog,
-            Aisling source,
-            AvailableMounts mountFlag,
-            string optionKey
-        )
-        {
-            if (source.Trackers.Flags.HasFlag(mountFlag))
+            if (source.Trackers.Flags.HasFlag(cloakFlag))
             {
                 var option = new DialogOption
                 {
-                    DialogKey = optionKey,
-                    OptionText = mountFlag.ToString()
+                    DialogKey = $"cloak_{cloakFlag.ToString().ToLower()}",
+                    OptionText = $"{cloakFlag} Cloak"
                 };
 
                 if (!dialog.HasOption(option.OptionText))
@@ -43,149 +62,129 @@ namespace Chaos.Scripting.DialogScripts.Generic
                 }
             }
         }
+    }
 
-        private void AddCloakOptions(Dialog dialog, Aisling source)
+    public override void OnDisplaying(Aisling source)
+    {
+        var templateKey = Subject.Template.TemplateKey.ToLower();
+        var flags = source.Trackers.Flags;
+
+        switch (templateKey)
         {
-            foreach (AvailableCloaks cloakFlag in Enum.GetValues(typeof(AvailableCloaks)))
-            {
-                if (source.Trackers.Flags.HasFlag(cloakFlag))
+            case "terminus_initial":
+                if (flags.TryGetFlag(out AvailableMounts _))
                 {
-                    var option = new DialogOption
-                    {
-                        DialogKey = $"cloak_{cloakFlag.ToString().ToLower()}",
-                        OptionText = $"{cloakFlag} Cloak"
-                    };
-
-                    if (!dialog.HasOption(option.OptionText))
-                    {
-                        dialog.Options.Insert(0, option);
-                    }
+                    Subject.Options.Insert(
+                        0,
+                        new DialogOption
+                        {
+                            DialogKey = "mount_initial",
+                            OptionText = "Mounts"
+                        });
                 }
-            }
-        }
 
-        public override void OnDisplaying(Aisling source)
-        {
-            var templateKey = Subject.Template.TemplateKey.ToLower();
-            var flags = source.Trackers.Flags;
+                break;
 
-            switch (templateKey)
-            {
-                case "terminus_initial":
-                    if (flags.TryGetFlag(out AvailableMounts _))
-                    {
-                        Subject.Options.Insert(
-                            0,
-                            new DialogOption
-                            {
-                                DialogKey = "mount_initial",
-                                OptionText = "Mounts"
-                            });
-                    }
+            case "mount_initial":
+                if (source.Effects.TryGetEffect("mount", out var effect) && source.Effects.Contains(effect))
+                {
+                    Subject.Reply(source, "Please get off your mount first.");
 
-                    break;
+                    return;
+                }
 
-                case "mount_initial":
-                    if (source.Effects.TryGetEffect("mount", out var effect) && source.Effects.Contains(effect))
-                    {
-                        Subject.Reply(source, "Please get off your mount first.");
+                AddMountOptionIfFlag(
+                    Subject,
+                    source,
+                    AvailableMounts.Horse,
+                    "mount_horse");
 
-                        return;
-                    }
+                AddMountOptionIfFlag(
+                    Subject,
+                    source,
+                    AvailableMounts.Wolf,
+                    "mount_wolf");
 
-                    AddMountOptionIfFlag(
-                        Subject,
-                        source,
-                        AvailableMounts.Horse,
-                        "mount_horse");
+                AddMountOptionIfFlag(
+                    Subject,
+                    source,
+                    AvailableMounts.Dunan,
+                    "mount_dunan");
 
-                    AddMountOptionIfFlag(
-                        Subject,
-                        source,
-                        AvailableMounts.Wolf,
-                        "mount_wolf");
+                AddMountOptionIfFlag(
+                    Subject,
+                    source,
+                    AvailableMounts.Kelberoth,
+                    "mount_kelberoth");
 
-                    AddMountOptionIfFlag(
-                        Subject,
-                        source,
-                        AvailableMounts.Dunan,
-                        "mount_dunan");
+                AddMountOptionIfFlag(
+                    Subject,
+                    source,
+                    AvailableMounts.Ant,
+                    "mount_ant");
 
-                    AddMountOptionIfFlag(
-                        Subject,
-                        source,
-                        AvailableMounts.Kelberoth,
-                        "mount_kelberoth");
+                AddMountOptionIfFlag(
+                    Subject,
+                    source,
+                    AvailableMounts.Bee,
+                    "mount_bee");
 
-                    AddMountOptionIfFlag(
-                        Subject,
-                        source,
-                        AvailableMounts.Ant,
-                        "mount_ant");
+                break;
 
-                    AddMountOptionIfFlag(
-                        Subject,
-                        source,
-                        AvailableMounts.Bee,
-                        "mount_bee");
+            case "mount_horse":
+                SetMount(Subject, source, CurrentMount.Horse);
 
-                    break;
+                break;
 
-                case "mount_horse":
-                    SetMount(Subject, source, CurrentMount.Horse);
+            case "mount_wolf":
+                SetMount(Subject, source, CurrentMount.Wolf);
 
-                    break;
+                break;
 
-                case "mount_wolf":
-                    SetMount(Subject, source, CurrentMount.Wolf);
+            case "mount_kelberoth":
+                SetMount(Subject, source, CurrentMount.Kelberoth);
 
-                    break;
+                break;
 
-                case "mount_kelberoth":
-                    SetMount(Subject, source, CurrentMount.Kelberoth);
+            case "mount_bee":
+                SetMount(Subject, source, CurrentMount.Bee);
 
-                    break;
+                break;
 
-                case "mount_bee":
-                    SetMount(Subject, source, CurrentMount.Bee);
+            case "mount_ant":
+                SetMount(Subject, source, CurrentMount.Ant);
 
-                    break;
+                break;
 
-                case "mount_ant":
-                    SetMount(Subject, source, CurrentMount.Ant);
+            case "mount_dunan":
+                SetMount(Subject, source, CurrentMount.Dunan);
 
-                    break;
+                break;
 
-                case "mount_dunan":
-                    SetMount(Subject, source, CurrentMount.Dunan);
+            case "cloak_blue":
+                source.Trackers.Enums.Set(CurrentCloak.Blue);
 
-                    break;
+                break;
 
-                case "cloak_blue":
-                    source.Trackers.Enums.Set(CurrentCloak.Blue);
+            case "cloak_red":
+                source.Trackers.Enums.Set(CurrentCloak.Red);
 
-                    break;
+                break;
 
-                case "cloak_red":
-                    source.Trackers.Enums.Set(CurrentCloak.Red);
+            case "cloak_purple":
+                source.Trackers.Enums.Set(CurrentCloak.Purple);
 
-                    break;
+                break;
 
-                case "cloak_purple":
-                    source.Trackers.Enums.Set(CurrentCloak.Purple);
+            case "cloak_black":
+                source.Trackers.Enums.Set(CurrentCloak.Black);
 
-                    break;
+                break;
 
-                case "cloak_black":
-                    source.Trackers.Enums.Set(CurrentCloak.Black);
+            case "cloak_green":
+                source.Trackers.Enums.Set(CurrentCloak.Green);
 
-                    break;
-
-                case "cloak_green":
-                    source.Trackers.Enums.Set(CurrentCloak.Green);
-
-                    break;
-            }
+                break;
         }
     }
 }

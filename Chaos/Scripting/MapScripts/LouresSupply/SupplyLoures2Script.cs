@@ -1,9 +1,7 @@
-﻿using AutoMapper.Execution;
-using Chaos.Collections;
+﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
-using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;

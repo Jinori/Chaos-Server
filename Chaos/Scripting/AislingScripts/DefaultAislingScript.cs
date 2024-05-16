@@ -18,7 +18,7 @@ using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.AislingScripts.Abstractions;
 using Chaos.Scripting.Behaviors;
 using Chaos.Services.Servers.Options;
-using Chaos.Scripting.Components;
+using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyHealing;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
@@ -30,7 +30,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.AislingScripts;
 
-public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealComponentOptions
+public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHealComponentOptions
 {
     private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase) { "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort"};
     private readonly IStore<BulletinBoard> BoardStore;
@@ -70,7 +70,6 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     private SocialStatus PreAfkSocialStatus { get; set; }
     /// <inheritdoc />
     public IScript SourceScript { get; init; }
-    protected virtual BlindBehavior BlindBehavior { get; }
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     private Animation MistHeal { get; } = new()
@@ -103,7 +102,6 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
         RestrictionBehavior = new RestrictionBehavior();
         VisibilityBehavior = new VisibilityBehavior();
         RelationshipBehavior = new RelationshipBehavior();
-        BlindBehavior = new BlindBehavior();
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         ClearOrangeBarTimer = new IntervalTimer(TimeSpan.FromSeconds(WorldOptions.Instance.ClearOrangeBarTimerSecs), false);
@@ -183,23 +181,15 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     {
 
         if (Subject.Effects.Contains("pramh"))
-        {
-            Subject.Status &= ~Status.Pramh;
             Subject.Effects.Dispel("pramh");
-        }
 
         if (Subject.Effects.Contains("beagpramh"))
-        {
-            Subject.Status &= ~Status.Pramh;
             Subject.Effects.Dispel("beagpramh");
-        }
 
         if (Subject.Effects.Contains("wolfFangFist"))
-        {
             Subject.Effects.Dispel("wolfFangFist");
-        }
 
-        if (Subject.Status.HasFlag(Status.ThunderStance))
+        if (Subject.Effects.Contains("thunderstance"))
         {
             var result = damage * 30;
 
@@ -213,7 +203,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
                 monster.AggroList.AddOrUpdate(Subject.Id, _ => result, (_, currentAggro) => currentAggro + result);
         }
 
-        if (Subject.Status.HasFlag(Status.MistStance))
+        if (Subject.Effects.Contains("miststance"))
         {
             var result = damage * .15m;
 
@@ -240,7 +230,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
             }
         }
 
-        if (Subject.Status.HasFlag(Status.LastStand))
+        if (Subject.Effects.Contains("laststand"))
             if (damage >= Subject.StatSheet.CurrentHp)
             {
                 Subject.StatSheet.SetHp(1);
@@ -291,9 +281,6 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
 
         //Remove all effects from the player
         var effects = Subject.Effects.ToList();
-
-        foreach (var condition in Enum.GetValues<Status>())
-            Subject.Status &= ~condition;
 
         foreach (var effect in effects)
             Subject.Effects.Dispel(effect.Name);

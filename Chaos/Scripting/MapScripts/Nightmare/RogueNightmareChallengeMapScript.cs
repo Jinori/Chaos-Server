@@ -59,7 +59,6 @@ public class RogueNightmareChallengeMapScript : MapScriptBase
     private int AnimationIndex;
     private DateTime? StartTime;
     private ScriptState State;
-    public required Rectangle? SpawnArea { get; set; }
 
     public RogueNightmareChallengeMapScript(
         MapInstance subject,
@@ -112,10 +111,6 @@ public class RogueNightmareChallengeMapScript : MapScriptBase
             TargetAnimation = 63
         };
     }
-
-    private IPoint GenerateSpawnPoint() => Subject.Template.Bounds.GetRandomPoint(PointValidator);
-
-    private bool PointValidator(Point point) => SpawnArea is null || SpawnArea.Contains(point);
 
     private void SpawnMonsters()
     {

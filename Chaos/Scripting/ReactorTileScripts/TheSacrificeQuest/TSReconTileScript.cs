@@ -3,7 +3,7 @@ using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 
-namespace Chaos.Scripting.ReactorTileScripts;
+namespace Chaos.Scripting.ReactorTileScripts.TheSacrificeQuest;
 
 public class TSReconTileScript : ReactorTileScriptBase
 {

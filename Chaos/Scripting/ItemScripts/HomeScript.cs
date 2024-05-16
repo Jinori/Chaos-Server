@@ -1,8 +1,8 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
-using Chaos.Scripting.Components;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.AbilityComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 

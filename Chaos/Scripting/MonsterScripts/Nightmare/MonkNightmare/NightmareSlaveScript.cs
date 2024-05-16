@@ -2,7 +2,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Nightmare.PriestNightmare;
+namespace Chaos.Scripting.MonsterScripts.Nightmare.MonkNightmare;
 
 public class NightmareSlaveScript : CompositeMonsterScript
 {

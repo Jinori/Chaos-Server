@@ -1,6 +1,5 @@
 ﻿using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
-using Chaos.Scripting.DialogScripts.Religion;
 using Chaos.Scripting.DialogScripts.Religion.Abstractions;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 

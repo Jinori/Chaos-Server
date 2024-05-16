@@ -29,7 +29,7 @@ public class FirestormEffect : ContinuousAnimationEffectBase
 
     protected void OnApply()
     {
-        if (Subject is not Monster monster)
+        if (Subject is not Monster)
             return;
 
         Subject.StatSheet.TrySubtractHp(1500);
@@ -38,7 +38,7 @@ public class FirestormEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
-        if (Subject is not Monster monster)
+        if (Subject is not Monster)
             return;
 
         const int DAMAGE_PER_TICK = 100;

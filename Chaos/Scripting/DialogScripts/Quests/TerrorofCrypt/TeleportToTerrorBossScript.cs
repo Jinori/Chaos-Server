@@ -6,7 +6,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Mileth;
+namespace Chaos.Scripting.DialogScripts.Quests.TerrorofCrypt;
 
 public class TeleportToTerrorBossScript : DialogScriptBase
 {

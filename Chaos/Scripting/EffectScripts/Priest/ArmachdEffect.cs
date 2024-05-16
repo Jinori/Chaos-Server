@@ -1,11 +1,13 @@
-﻿using System.Collections.Immutable;
-using Chaos.Common.Definitions;
+﻿using Chaos.Common.Definitions;
 using Chaos.Models.Data;
+using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Components.EffectComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
-public class ArmachdEffect : HierarchicalEffectBase
+public class ArmachdEffect : EffectBase, HierarchicalEffectComponent.IHierarchicalEffectComponentOptions
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(8);
     protected Animation? Animation { get; } = new()
@@ -13,10 +15,12 @@ public class ArmachdEffect : HierarchicalEffectBase
         TargetAnimation = 20,
         AnimationSpeed = 100
     };
-    protected override ImmutableArray<string> ReplaceHierarchy { get; } =
+
+    public List<string> EffectNameHierarchy { get; init; } =
     [
         "armachd"
     ];
+    
     public override byte Icon => 0;
     public override string Name => "armachd";
 
@@ -49,5 +53,13 @@ public class ArmachdEffect : HierarchicalEffectBase
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor has returned to normal.");
+    }
+    
+    public override bool ShouldApply(Creature source, Creature target)
+    {
+        var execution = new ComponentExecutor(source, target).WithOptions(this)
+                                                             .ExecuteAndCheck<HierarchicalEffectComponent>();
+        
+        return execution is not null;
     }
 }

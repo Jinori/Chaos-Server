@@ -41,7 +41,9 @@ public sealed class CryptReaperEnrageScript : MonsterScriptBase
                 if (!rectangle.GetPoints().Any(x => Subject.MapInstance.IsWalkable(x, Subject.Type)))
                     continue;
                 
-                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                    continue;
+
                 var mobs = MonsterFactory.Create("crypt_succubus15", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
@@ -71,10 +73,9 @@ public sealed class CryptReaperEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 4; i++)
             {
-                if (!rectangle.GetPoints().Any(x => Subject.MapInstance.IsWalkable(x, Subject.Type)))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
 
-                var point = rectangle.GetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
                 var mobs = MonsterFactory.Create("crypt_succubus15", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }

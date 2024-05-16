@@ -4,13 +4,16 @@ using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Components.EffectComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Wizard;
 
-public class BurnEffect : HierarchicalContinuousAnimationEffectBase
+public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectComponent.IHierarchicalEffectComponentOptions
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(10);
@@ -33,7 +36,7 @@ public class BurnEffect : HierarchicalContinuousAnimationEffectBase
     
     protected virtual decimal AislingBurnPercentage { get; } = 2.5m;
 
-    protected override ImmutableArray<string> ReplaceHierarchy { get; } =
+    public List<string> EffectNameHierarchy { get; init; } =
     [
         "burn",
         "firestorm",
@@ -69,10 +72,8 @@ public class BurnEffect : HierarchicalContinuousAnimationEffectBase
         }
     }
 
-    public override void OnApplied()
-    {
-        AislingSubject?.SendOrangeBarMessage("Your body catches fire.");
-    }
+    public override void OnApplied() => AislingSubject?.SendOrangeBarMessage("Your body catches fire.");
+
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
@@ -91,9 +92,13 @@ public class BurnEffect : HierarchicalContinuousAnimationEffectBase
         }
     }
     
-    public override void OnTerminated()
+    public override bool ShouldApply(Creature source, Creature target)
     {
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are no longer burning.");
+        var execution = new ComponentExecutor(source, target).WithOptions(this)
+                                                             .ExecuteAndCheck<HierarchicalEffectComponent>();
+
+        return execution is not null;
     }
     
+    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are no longer burning.");
 }

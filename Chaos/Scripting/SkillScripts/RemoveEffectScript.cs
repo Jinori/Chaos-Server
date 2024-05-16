@@ -3,14 +3,14 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Components;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.AbilityComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.SkillScripts.Abstractions;
 
 namespace Chaos.Scripting.SkillScripts;
 
 public class RemoveEffectScript : ConfigurableSkillScriptBase,
-                                  AbilityComponent<Creature>.IAbilityComponentOptions,
+                                  GenericAbilityComponent<Creature>.IAbilityComponentOptions,
                                   RemoveEffectComponent.IRemoveEffectComponentOptions
 {
     /// <inheritdoc />
@@ -41,6 +41,8 @@ public class RemoveEffectScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
     /// <inheritdoc />
+    public bool SingleTarget { get; init; }
+    /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     /// <inheritdoc />
     public byte? Sound { get; init; }
@@ -51,7 +53,7 @@ public class RemoveEffectScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context) => new ComponentExecutor(context).WithOptions(this)
-                                                                                           .ExecuteAndCheck<AbilityComponent<Creature>>()
+                                                                                           .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
                                                                                            ?.Execute<RemoveEffectComponent>();
 
     public int SplashChance { get; init; }

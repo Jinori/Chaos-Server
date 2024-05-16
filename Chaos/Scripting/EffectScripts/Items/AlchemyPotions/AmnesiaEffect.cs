@@ -72,6 +72,7 @@ public class AmnesiaEffect : ContinuousAnimationEffectBase
     {
         "Amnesia"
     };
+    
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(700));
     /// <inheritdoc />

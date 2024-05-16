@@ -3,7 +3,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss;
+namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.KoboldBoss.Kobold3;
 
 public sealed class KoboldBoss3EnrageScript : MonsterScriptBase
 {

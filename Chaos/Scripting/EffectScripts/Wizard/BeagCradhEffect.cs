@@ -1,36 +1,32 @@
 using Chaos.Common.Definitions;
-using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Components.EffectComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Wizard;
 
-public class BeagCradhEffect : NonOverwritableEffectBase
+public class BeagCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
-    /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(2);
-    /// <inheritdoc />
-    protected override Animation? Animation { get; } = new()
+    protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 45,
         AnimationSpeed = 100
     };
-    /// <inheritdoc />
-    protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
-    {
+    public List<string> ConflictingEffectNames { get; init; } =
+    [
         "ard cradh",
         "mor cradh",
         "cradh",
         "beag cradh"
-    };
-    /// <inheritdoc />
+    ];
     public override byte Icon => 4;
-    /// <inheritdoc />
     public override string Name => "beag cradh";
-    /// <inheritdoc />
-    protected override byte? Sound => 27;
+    protected byte? Sound => 27;
 
     public override void OnApplied()
     {
@@ -63,30 +59,23 @@ public class BeagCradhEffect : NonOverwritableEffectBase
     /// <inheritdoc />
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (source.Status.HasFlag(Status.PreventAffliction))
+        if (source.IsCradhLocked())
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are prevented from afflicting curses.");
 
             return false;
         }
 
-        if (target.Effects.Contains("preventrecradh"))
+        if (target.IsCradhPrevented())
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target cannot be cursed at this time.");
 
             return false;
         }
 
-        if (target.Effects.Contains("ard cradh")
-            || target.Effects.Contains("mor cradh")
-            || target.Effects.Contains("cradh")
-            || target.Effects.Contains("beag cradh"))
-        {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already cursed.");
+        var execution = new ComponentExecutor(source, target).WithOptions(this)
+                                                             .ExecuteAndCheck<NonOverwritableEffectComponent>();
 
-            return false;
-        }
-
-        return true;
+        return execution is not null;
     }
 }

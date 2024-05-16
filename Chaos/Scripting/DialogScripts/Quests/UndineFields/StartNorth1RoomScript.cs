@@ -7,19 +7,19 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Quests.UndineFields
+namespace Chaos.Scripting.DialogScripts.Quests.UndineFields;
+
+public class StartNorth1RoomScript : DialogScriptBase
 {
-    public class StartNorth1RoomScript : DialogScriptBase
+    private readonly ISimpleCache SimpleCache;
+
+    /// <inheritdoc />
+    public StartNorth1RoomScript(Dialog subject, ISimpleCache simpleCache)
+        : base(subject) =>
+        SimpleCache = simpleCache;
+
+    public override void OnDisplaying(Aisling source)
     {
-        private readonly ISimpleCache SimpleCache;
-
-        /// <inheritdoc />
-        public StartNorth1RoomScript(Dialog subject, ISimpleCache simpleCache)
-            : base(subject) =>
-            SimpleCache = simpleCache;
-
-        public override void OnDisplaying(Aisling source)
-        {
             var point = new Point(source.X, source.Y);
             var group = source.Group?.Where(x => x.WithinRange(point));
 
@@ -67,5 +67,4 @@ namespace Chaos.Scripting.DialogScripts.Quests.UndineFields
                 Subject.Reply(source, "Your group is not near.");
             }
         }
-    }
 }

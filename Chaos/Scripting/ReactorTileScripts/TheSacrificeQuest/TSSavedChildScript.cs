@@ -4,7 +4,7 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.ReactorTileScripts;
+namespace Chaos.Scripting.ReactorTileScripts.TheSacrificeQuest;
 
 public class TSSavedChildScript : ReactorTileScriptBase
 {

@@ -1,5 +1,4 @@
 using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Models.World;
@@ -48,10 +47,10 @@ public class UpsideDownCastingScript : MonsterScriptBase
     {
         if (debuffSpell.EqualsI("pramh") || debuffSpell.EqualsI("beagpramh"))
         {
-            if (!aisling.Status.HasFlag(Status.Pramh))
+            if (!aisling.IsPramhed())
                 return true;
 
-            if (aisling.Status.HasFlag(Status.Suain) && debuffSpell.EqualsI("pramh"))
+            if (aisling.IsSuained() && debuffSpell.EqualsI("pramh"))
                 return true;
 
             if ((aisling.UserStatSheet.BaseClass == BaseClass.Wizard) && debuffSpell.EqualsI("preventaffliction"))

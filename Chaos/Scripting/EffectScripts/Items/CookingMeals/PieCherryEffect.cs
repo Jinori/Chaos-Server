@@ -1,39 +1,43 @@
-﻿using Chaos.Common.Definitions;
+﻿using System.Reactive.Subjects;
+using Chaos.Common.Definitions;
 using Chaos.Models.Data;
+using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Components.EffectComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Items.CookingMeals;
 
-public class PieCherryEffect : NonOverwritableEffectBase
+public class PieCherryEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
     protected int MaxManaSaved;
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
-    protected override Animation? Animation { get; } = new()
+    protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
         AnimationSpeed = 100
     };
-    protected override IReadOnlyCollection<string> ConflictingEffectNames { get; } = new[]
-    {
+    public List<string> ConflictingEffectNames { get; init; } =
+    [
         "Dinner Plate",
         "Sweet Buns",
         "Fruit Basket",
         "Lobster Dinner",
-        "Acorn Pie",
-        "Apple Pie",
-        "Cherry Pie",
-        "Grape Pie",
-        "Greengrapes Pie",
-        "Strawberry Pie",
-        "Tangerines Pie",
+        "Pie Acorn",
+        "Pie Apple",
+        "Pie Cherry",
+        "Pie Grape",
+        "Pie Greengrapes",
+        "Pie Strawberry",
+        "Pie Tangerines",
         "Salad",
         "Sandwich",
         "Soup",
         "Steak Meal"
-    };
+    ];
     public override byte Icon => 72;
     public override string Name => "Cherry Pie";
-    protected override byte? Sound => 115;
+    protected byte? Sound => 115;
 
     public override void OnApplied()
     {
@@ -67,5 +71,12 @@ public class PieCherryEffect : NonOverwritableEffectBase
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your ability to cast spells has returned to normal.");
+    }
+    public override bool ShouldApply(Creature source, Creature target)
+    {
+        var execution = new ComponentExecutor(source, target).WithOptions(this)
+                                                             .ExecuteAndCheck<NonOverwritableEffectComponent>();
+
+        return execution is not null;
     }
 }

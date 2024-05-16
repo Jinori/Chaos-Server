@@ -1,5 +1,7 @@
 using AutoMapper;
 
+namespace ChaosTool.Utility;
+
 public static class AutoMapperEx
 {
     private const string INVALID_OPERATION_MESSAGE

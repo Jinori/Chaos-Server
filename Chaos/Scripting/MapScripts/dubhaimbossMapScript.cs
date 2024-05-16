@@ -7,21 +7,12 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MapScripts;
 
-public class dubhaimbossMapScript : MapScriptBase
+public class dubhaimbossMapScript(MapInstance subject, IMonsterFactory monsterFactory) : MapScriptBase(subject)
 {
-    private readonly IMonsterFactory MonsterFactory;
-    private readonly IIntervalTimer? UpdateTimer;
-    private readonly IIntervalTimer? BossTimer;
+    private readonly IIntervalTimer? UpdateTimer = new IntervalTimer(TimeSpan.FromSeconds(UPDATE_INTERVAL_MS));
+    private readonly IIntervalTimer? BossTimer = new IntervalTimer(TimeSpan.FromHours(BOSS_TIMER));
     public const int UPDATE_INTERVAL_MS = 1;
     public const int BOSS_TIMER = 1;
-
-    public dubhaimbossMapScript(MapInstance subject, IMonsterFactory monsterFactory)
-        : base(subject)
-    {
-        MonsterFactory = monsterFactory;
-        UpdateTimer = new IntervalTimer(TimeSpan.FromSeconds(UPDATE_INTERVAL_MS));
-        BossTimer = new IntervalTimer(TimeSpan.FromHours(BOSS_TIMER));
-    }
 
     public override void Update(TimeSpan delta)
     {
@@ -30,8 +21,11 @@ public class dubhaimbossMapScript : MapScriptBase
 
         if (!UpdateTimer!.IntervalElapsed) return;
         if (!BossTimer!.IntervalElapsed) return;
+
         var aislingCount = Subject.GetEntities<Aisling>().Count();
-        var point = Subject.GetRandomWalkablePoint();
+
+        if (!Subject.TryGetRandomWalkablePoint(out var point1))
+            BossTimer.Reset();
 
         if (Subject.GetEntities<Monster>().Any(x => x.Name == "Lord Gargoyle"))
             return;
@@ -39,8 +33,8 @@ public class dubhaimbossMapScript : MapScriptBase
         // Check if there are 4 or more aislings
         if (aislingCount < 4) return;
         
-        var dubhaimBoss = MonsterFactory.Create("dc_basement_gargoyleboss", Subject, point);
+        var dubhaimBoss = monsterFactory.Create("dc_basement_gargoyleboss", Subject, point1);
             
-        Subject.AddEntity(dubhaimBoss, point);
+        Subject.AddEntity(dubhaimBoss, point1);
     }
 }

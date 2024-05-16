@@ -96,7 +96,7 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
         AnimationTimer.Update(delta);
 
         if (Subject.Owner is not null
-            && Subject.Owner.Status.HasFlag(Status.DetectTraps)
+            && Subject.Owner.IsDetectingTraps()
             && AnimationTimer.IntervalElapsed
             && Subject.MapInstance.Equals(Subject.Owner.MapInstance))
             Subject.Owner.MapInstance.ShowAnimationToFriendly(

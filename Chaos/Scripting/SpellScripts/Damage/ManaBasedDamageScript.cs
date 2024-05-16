@@ -4,8 +4,8 @@ using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
-using Chaos.Scripting.Components;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.AbilityComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.SpellScripts.Abstractions;
@@ -14,7 +14,7 @@ namespace Chaos.Scripting.SpellScripts.Damage;
 
 public class ManaBasedDamageScript : ConfigurableSpellScriptBase,
                                      SpellComponent<Creature>.ISpellComponentOptions,
-                                     ManaBasedDamageComponent.IManaBasedDamageComponentOptions
+                                     ManaBasedDamageAbilityComponent.IManaBasedDamageComponentOptions
 {
     /// <inheritdoc />
     public ManaBasedDamageScript(Spell subject)
@@ -30,7 +30,7 @@ public class ManaBasedDamageScript : ConfigurableSpellScriptBase,
             .WithOptions(this)
             .ExecuteAndCheck<SpellComponent<Creature>>()
             ?
-            .Execute<ManaBasedDamageComponent>();
+            .Execute<ManaBasedDamageAbilityComponent>();
 
     #region ScriptVars
     /// <inheritdoc />
@@ -43,6 +43,8 @@ public class ManaBasedDamageScript : ConfigurableSpellScriptBase,
     public int Range { get; init; }
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
+    /// <inheritdoc />
+    public bool SingleTarget { get; init; }
     /// <inheritdoc />
     public bool IgnoreMagicResistance { get; init; }
     /// <inheritdoc />

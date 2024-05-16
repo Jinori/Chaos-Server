@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Chaos.Extensions.Common;
 using ChaosTool.Controls.Abstractions;
+using ChaosTool.Utility;
 using ChaosTool.ViewModel;
 using MaterialDesignExtensions.Controls;
 using TOOL_CONSTANTS = ChaosTool.Definitions.CONSTANTS;

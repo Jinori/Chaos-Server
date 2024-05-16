@@ -1,4 +1,4 @@
-using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
@@ -8,22 +8,19 @@ namespace Chaos.Scripting.Behaviors;
 
 public class RestrictionBehavior
 {
-    private readonly List<string> MapsGhostsCanMoveOn = new()
-    {
+    private readonly List<string> MapsGhostsCanMoveOn =
+    [
         "Arena Battle Ring",
         "The Afterlife"
-    };
+    ];
 
     public virtual bool CanMove(Creature creature)
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.Status.HasFlag(Status.Suain)
-                                      || aisling.Status.HasFlag(Status.Pramh)
-                                      || aisling.Status.HasFlag(Status.BeagSuain):
+            case Aisling aisling when aisling.IsSuained() || aisling.IsBeagSuained() || aisling.IsPramhed():
             {
                 aisling.SendOrangeBarMessage("You cannot move.");
-
                 return false;
             }
             case Aisling { OnTwentyOneTile: true } aislingCasino:
@@ -32,10 +29,10 @@ public class RestrictionBehavior
 
                 return false;
             }
-            case Monster monster when monster.Status.HasFlag(Status.Suain)
-                                      || monster.Vision is not VisionType.Normal
-                                      || monster.Status.HasFlag(Status.Pramh)
-                                      || monster.Status.HasFlag(Status.BeagSuain):
+            case Monster monster when monster.IsSuained()
+                                      || monster.IsBlind
+                                      || monster.IsPramhed()
+                                      || monster.IsBeagSuained():
             {
                 return false;
             }
@@ -50,7 +47,7 @@ public class RestrictionBehavior
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh):
+            case Aisling aisling when aisling.IsSuained() || aisling.IsPramhed():
             {
                 aisling.SendOrangeBarMessage("You cannot turn.");
 
@@ -60,9 +57,7 @@ public class RestrictionBehavior
             {
                 return false;
             }
-            case Monster monster when monster.Status.HasFlag(Status.Suain)
-                                      || monster.Status.HasFlag(Status.Pramh)
-                                      || monster.Status.HasFlag(Status.BeagSuain):
+            case Monster monster when monster.IsSuained() || monster.IsPramhed() || monster.IsBeagSuained():
             {
                 return false;
             }
@@ -82,7 +77,7 @@ public class RestrictionBehavior
                 return false;
             }
 
-            if (aisling.Status.HasFlag(Status.Suain) || aisling.Status.HasFlag(Status.Pramh))
+            if (aisling.IsPramhed() || aisling.IsSuained())
             {
                 aisling.SendOrangeBarMessage("You can't do that now.");
 
@@ -104,17 +99,17 @@ public class RestrictionBehavior
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.Status.HasFlag(Status.Suain)
-                                      || aisling.Status.HasFlag(Status.Pramh)
+            case Aisling aisling when aisling.IsSuained()
+                                      || aisling.IsPramhed()
                                       || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _):
             {
                 aisling.SendOrangeBarMessage("You cannot use skills.");
 
                 return false;
             }
-            case Monster monster when monster.Status.HasFlag(Status.Suain)
-                                      || monster.Status.HasFlag(Status.Pramh)
-                                      || monster.Status.HasFlag(Status.BeagSuain):
+            case Monster monster when monster.IsSuained()
+                                      || monster.IsPramhed()
+                                      || monster.IsBeagSuained():
             {
                 return false;
             }
@@ -140,26 +135,26 @@ public class RestrictionBehavior
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.Status.HasFlag(Status.Suain) && (spell.Template.Name == "ao suain"):
+            case Aisling aisling when aisling.IsSuained() && (spell.Template.Name == "ao suain"):
             {
                 return true;
             }
-            case Aisling aisling when aisling.Status.HasFlag(Status.Pramh) && (spell.Template.Name == "dinarcoli"):
+            case Aisling aisling when aisling.IsPramhed() && (spell.Template.Name == "dinarcoli"):
             {
                 return true;
             }
 
-            case Aisling aisling when aisling.Status.HasFlag(Status.Suain)
-                                      || aisling.Status.HasFlag(Status.Pramh)
+            case Aisling aisling when aisling.IsSuained()
+                                      || aisling.IsPramhed()
                                       || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _):
             {
                 aisling.SendOrangeBarMessage("You cannot use spells.");
 
                 return false;
             }
-            case Monster monster when monster.Status.HasFlag(Status.Suain)
-                                      || monster.Status.HasFlag(Status.Pramh)
-                                      || monster.Status.HasFlag(Status.BeagSuain):
+            case Monster monster when monster.IsSuained()
+                                      || monster.IsPramhed()
+                                      || monster.IsBeagSuained():
             {
                 return false;
             }

@@ -3,7 +3,7 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Mileth;
+namespace Chaos.Scripting.DialogScripts.Quests.TerrorofCrypt;
 
 public class TeagueCoinsScript : DialogScriptBase
 {

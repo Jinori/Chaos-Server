@@ -54,7 +54,10 @@ public class EingrenManor2NdFloorScript(MapInstance subject, ISimpleCache simple
         for (var i = 0; i < 10; i++)
         {
             var randomMonsterType = monsterTypes[Random.Next(0, monsterTypes.Length)];
-            var point = Subject.GetRandomWalkablePoint();
+
+            if (!Subject.TryGetRandomWalkablePoint(out var point))
+                continue;
+
             var monster = monsterFactory.Create(randomMonsterType, Subject, point);
             Subject.AddEntity(monster, point);
 
@@ -118,9 +121,16 @@ public class EingrenManor2NdFloorScript(MapInstance subject, ISimpleCache simple
     {
         var selectedMapKey = MapKeys[Random.Shared.Next(MapKeys.Length)];
         var mapInstance = simpleCache.Get<MapInstance>(selectedMapKey);
-        var point = mapInstance.GetRandomWalkablePoint();
-
+        
+        if (!mapInstance.TryGetRandomWalkablePoint(out var point))
+        {
+            var manorHall = simpleCache.Get<MapInstance>("manor_main_hall");
+            foreach (var player in Subject.GetEntities<Aisling>())
+                player.TraverseMap(manorHall, new Point(20, 3));
+        }
+        
         foreach (var player in Subject.GetEntities<Aisling>())
-            player.TraverseMap(mapInstance, point);
+            if (point != null)
+                player.TraverseMap(mapInstance, point);
     }
 }

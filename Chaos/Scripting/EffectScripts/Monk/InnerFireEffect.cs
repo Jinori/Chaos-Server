@@ -1,5 +1,4 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -27,10 +26,7 @@ public class InnerFireEffect : ContinuousAnimationEffectBase
     public override void OnApplied()
     {
         base.OnApplied();
-
-        if (!Subject.Status.HasFlag(Status.InnerFire))
-            Subject.Status = Status.InnerFire;
-
+        
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body is at inner peace.");
     }
@@ -41,9 +37,6 @@ public class InnerFireEffect : ContinuousAnimationEffectBase
 
     public override void OnTerminated()
     {
-        if (Subject.Status.HasFlag(Status.InnerFire))
-            Subject.Status &= ~Status.InnerFire;
-
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body returns to a normal state.");
     }

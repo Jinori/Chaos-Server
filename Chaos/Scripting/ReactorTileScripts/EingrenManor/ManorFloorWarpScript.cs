@@ -27,7 +27,8 @@ public class ManorFloorWarpScript : ConfigurableReactorTileScriptBase
     public override void OnWalkedOn(Creature source)
     {
         // List of map template keys
-        string[] mapKeys = {
+        string[] mapKeys =
+        [
             "manor_library",
             "manor_study",
             "manor_study_2",
@@ -41,7 +42,7 @@ public class ManorFloorWarpScript : ConfigurableReactorTileScriptBase
             "manor_bedroom_3",
             "manor_bunks",
             "manor_master_suite"
-        };
+        ];
 
         // Randomly select a map key
         var selectedMapKey = mapKeys[Random.Next(mapKeys.Length)];
@@ -99,11 +100,22 @@ public class ManorFloorWarpScript : ConfigurableReactorTileScriptBase
 
         if (allMembersHaveQuestFlag)
         {
-            var point = targetMap.GetRandomWalkablePoint();
-            foreach (var member in aisling.Group)
+            if (!targetMap.TryGetRandomWalkablePoint(out var point1))
             {
-                member.TraverseMap(targetMap, point);
+                // Send a message to the Aisling
+                aisling.Client.SendServerMessage(
+                    ServerMessageType.OrangeBar1,
+                    "A strange force is stopping you from entering. Try again.");
+                
+                // Warp the source back
+                var backPoint = source.DirectionalOffset(source.Direction.Reverse());
+                source.WarpTo(backPoint);
+
+                return;
             }
+            
+            foreach (var member in aisling.Group)
+                    member.TraverseMap(targetMap, point1);
         }
         else
         {

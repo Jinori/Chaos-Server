@@ -2,9 +2,9 @@ using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.Execution;
 
-namespace Chaos.Scripting.Components;
+namespace Chaos.Scripting.Components.AbilityComponents;
 
 public class DropAggroComponent : IComponent
 {

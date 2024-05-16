@@ -3,8 +3,8 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Components;
-using Chaos.Scripting.Components.Utilities;
+using Chaos.Scripting.Components.AbilityComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.SpellScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
@@ -13,7 +13,7 @@ namespace Chaos.Scripting.SpellScripts;
 [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
 public class ToggleEffectScript : ConfigurableSpellScriptBase,
                                   SpellComponent<Creature>.ISpellComponentOptions,
-                                  ToggleEffectComponent.IToggleEffectComponentOptions
+                                  ToggleEffectAbilityComponent.IToggleEffectComponentOptions
 {
     /// <inheritdoc />
     public ToggleEffectScript(Spell subject, IEffectFactory effectFactory)
@@ -24,7 +24,7 @@ public class ToggleEffectScript : ConfigurableSpellScriptBase,
     public override void OnUse(SpellContext context)
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<SpellComponent<Creature>>()
-                                         ?.Execute<ToggleEffectComponent>();
+                                         ?.Execute<ToggleEffectAbilityComponent>();
 
     #region ScriptVars
     /// <inheritdoc />
@@ -32,6 +32,8 @@ public class ToggleEffectScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
+    /// <inheritdoc />
+    public bool SingleTarget { get; init; }
 
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
