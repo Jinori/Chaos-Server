@@ -11,10 +11,8 @@ public sealed class UnlockedChestScript : ReactorTileScriptBase
 
     /// <inheritdoc />
     public UnlockedChestScript(ReactorTile subject, IItemFactory itemFactory)
-        : base(subject)
-    {
+        : base(subject) =>
         ItemFactory = itemFactory;
-    }
 
     /// <inheritdoc />
     public override void OnClicked(Aisling source)
@@ -35,6 +33,5 @@ public sealed class UnlockedChestScript : ReactorTileScriptBase
         source.TryGiveGold(20000);
         source.GiveItemOrSendToBank(toydoll);
         source.SendOrangeBarMessage("Do not share Easter Eggs with others.");
-        return;
     }
 }

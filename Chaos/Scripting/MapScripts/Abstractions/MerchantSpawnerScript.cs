@@ -26,9 +26,29 @@ public abstract class MerchantSpawnerScript(MapInstance subject, IMerchantFactor
 
         do
             point = selectedMap.Template.Bounds.GetRandomPoint();
-        while (selectedMap.IsWall(point) || selectedMap.IsBlockingReactor(point) || !selectedMap.IsWalkable(point, CreatureType.Normal));
+        while (IsTooCloseToObstacle(selectedMap, point));
 
         return point;
+    }
+
+    private bool IsTooCloseToObstacle(MapInstance selectedMap, Point point)
+    {
+        if (selectedMap.IsWall(point) || selectedMap.IsBlockingReactor(point) || !selectedMap.IsWalkable(point, CreatureType.Normal))
+            return true;
+
+        Point[] directions =
+        [
+            new Point(point.X - 1, point.Y),
+            new Point(point.X + 1, point.Y),
+            new Point(point.X, point.Y - 1),
+            new Point(point.X, point.Y + 1)
+        ];
+
+        foreach (var direction in directions)
+            if (selectedMap.IsWall(direction) || selectedMap.IsBlockingReactor(direction) || !selectedMap.IsWalkable(direction, CreatureType.Normal))
+                return true;
+
+        return false;
     }
     
     public override void Update(TimeSpan delta)

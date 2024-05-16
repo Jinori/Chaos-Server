@@ -13,14 +13,13 @@ public sealed class HuntingGroundsDetermineWinnerScript : MapScriptBase
 {
     private readonly IIntervalTimer GameDurationTimer;
     public readonly Dictionary<Aisling, int> IndividualScores = new();
-    public readonly List<Aisling> ActivePlayers = new(); 
+    public readonly List<Aisling> ActivePlayers = [];
     private readonly Dictionary<Aisling, Aisling> AssignedTargets = new();
     private readonly List<Aisling> DeathList = [];
     private bool HandleWin;
     private bool MatchStart;
     private readonly ISimpleCache SimpleCache;
-    
-    /// <inheritdoc />
+
     public HuntingGroundsDetermineWinnerScript(MapInstance subject, ISimpleCache simpleCache)
         : base(subject)
     {
@@ -33,13 +32,7 @@ public sealed class HuntingGroundsDetermineWinnerScript : MapScriptBase
             "Match will conclude in {Time}.",
             SendMessage);
     }
-    
-    private void SendMessage(string message)
-    {
-        foreach (var player in Subject.GetEntities<Aisling>())
-            player.SendServerMessage(ServerMessageType.ActiveMessage, message);
-    }
-    
+
     public override void Update(TimeSpan delta)
     {
         GameDurationTimer.Update(delta);
@@ -49,35 +42,38 @@ public sealed class HuntingGroundsDetermineWinnerScript : MapScriptBase
             Subject.Destroy();
             return;
         }
-        
+
         if (Subject.GetEntities<Aisling>().Count() < 2)
             return;
 
         if (!MatchStart)
         {
-            foreach (var player in Subject.GetEntities<Aisling>())
-                ActivePlayers.Add(player);
-
-            AssignRandomTargets();
+            InitializeMatch();
             MatchStart = true;
         }
-        
+
         UpdateDeathListAndScores();
-        
+
         if (!HandleWin && (GameDurationTimer.IntervalElapsed || IndividualScores.Values.Any(score => score >= 40)))
         {
             HandleWin = true;
-
-            var winner = CalculateScores();
-        
-            if (winner != null)
-                HandleWinner(winner.Value.Key, winner.Value.Value);
-            else
-                NotifyNoWinner();
+            DeclareWinner();
         }
     }
 
-    public void AssignRandomTargets()
+    private void InitializeMatch()
+    {
+        ActivePlayers.AddRange(Subject.GetEntities<Aisling>());
+        AssignRandomTargets();
+    }
+
+    private void SendMessage(string message)
+    {
+        foreach (var player in Subject.GetEntities<Aisling>())
+            player.SendServerMessage(ServerMessageType.ActiveMessage, message);
+    }
+
+    private void AssignRandomTargets()
     {
         var random = new Random();
         var playerList = ActivePlayers.ToList();
@@ -85,7 +81,6 @@ public sealed class HuntingGroundsDetermineWinnerScript : MapScriptBase
         foreach (var player in ActivePlayers)
         {
             var possibleTargets = playerList.Where(x => !x.Equals(player) && !AssignedTargets.ContainsValue(x)).ToList();
-
             if (possibleTargets.Count != 0)
             {
                 AssignedTargets[player] = possibleTargets[random.Next(possibleTargets.Count)];
@@ -93,48 +88,90 @@ public sealed class HuntingGroundsDetermineWinnerScript : MapScriptBase
             }
         }
     }
-    
-    private void ReassignTarget(Aisling killer)
-    {
-        var possibleTargets = ActivePlayers.Where(x => !x.Equals(killer) && !AssignedTargets.ContainsValue(x)).ToList();
 
+    private void ReassignTarget(Aisling player)
+    {
+        var possibleTargets = ActivePlayers.Where(x => !x.Equals(player) && !AssignedTargets.ContainsValue(x)).ToList();
         if (possibleTargets.Count != 0)
         {
-            AssignedTargets[killer] = possibleTargets.PickRandom();
-            killer.SendPersistentMessage($"Target: {AssignedTargets[killer].Name}");
+            AssignedTargets[player] = possibleTargets.PickRandom();
+            player.SendPersistentMessage($"Target: {AssignedTargets[player].Name}");
         }
         else
-            AssignedTargets.Remove(killer);
+            AssignedTargets.Remove(player);
     }
 
-    public void UpdateDeathListAndScores()
+    private void UpdateDeathListAndScores()
     {
-        var list = Subject.GetEntities<Aisling>().Where(x => !x.IsAlive).ToList();
+        var deadPlayers = Subject.GetEntities<Aisling>().Where(x => !x.IsAlive).ToList();
 
-        foreach (var deadPlayer in list)
-            if (!DeathList.Contains(deadPlayer))
+        foreach (var deadPlayer in deadPlayers)
+        {
+            if (DeathList.Contains(deadPlayer)) continue;
+
+            DeathList.Add(deadPlayer);
+            if (deadPlayer.Trackers.LastDamagedBy is Aisling killer)
             {
-                DeathList.Add(deadPlayer);
-
-                if (deadPlayer.Trackers.LastDamagedBy is Aisling killer)
+                if (AssignedTargets.TryGetValue(killer, out var target) && target.Equals(deadPlayer))
                 {
-                    if (AssignedTargets.TryGetValue(killer, out var target) && (target.Equals(deadPlayer)))
-                    {
-                        IndividualScores[killer] = IndividualScores.GetValueOrDefault(killer, 0) + 5;
-                        ReassignTarget(killer);
-                    }
-                    else
-                        IndividualScores[killer] = IndividualScores.GetValueOrDefault(killer, 0) + 1;
-
-                    ActivePlayers.Remove(deadPlayer);
-                    AssignedTargets.Remove(deadPlayer);
-
-                    foreach (var player in AssignedTargets.Where(kvp => kvp.Value.Equals(deadPlayer)).ToList())
-                        ReassignTarget(player.Key);
+                    IndividualScores[killer] = IndividualScores.GetValueOrDefault(killer, 0) + 5;
+                    ReassignTarget(killer);
                 }
+                else
+                    IndividualScores[killer] = IndividualScores.GetValueOrDefault(killer, 0) + 1;
+
+                ActivePlayers.Remove(deadPlayer);
+                AssignedTargets.Remove(deadPlayer);
+
+                foreach (var player in AssignedTargets.Where(kvp => kvp.Value.Equals(deadPlayer)).ToList())
+                    ReassignTarget(player.Key);
             }
+        }
+
+        RespawnDeadPlayers();
     }
-    
+
+    private void RespawnDeadPlayers()
+    {
+        var respawnedPlayers = DeathList.Where(player => player.IsAlive).ToList();
+        foreach (var player in respawnedPlayers)
+        {
+            ActivePlayers.Add(player);
+            ReassignTarget(player);
+        }
+        DeathList.RemoveAll(player => player.IsAlive);
+    }
+
+    private void DeclareWinner()
+    {
+        var winner = CalculateWinner();
+        if (winner != null)
+            HandleWinner(winner.Value.Key, winner.Value.Value);
+        else
+            NotifyNoWinner();
+    }
+
+    private KeyValuePair<Aisling, int>? CalculateWinner()
+    {
+        if (IndividualScores.Count == 0)
+            return null;
+
+        var highestScorer = IndividualScores.MaxBy(kvp => kvp.Value);
+        return highestScorer;
+    }
+
+    private void HandleWinner(Aisling winner, int points)
+    {
+        var allPlayers = Subject.GetEntities<Aisling>().ToList();
+
+        foreach (var player in allPlayers)
+        {
+            player.SendServerMessage(ServerMessageType.OrangeBar2, $"{winner.Name} has won the match with {points} points!");
+            var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
+            player.TraverseMap(mapInstance, new Point(12, 10));
+        }
+    }
+
     private void NotifyNoWinner()
     {
         foreach (var player in Subject.GetEntities<Aisling>())
@@ -143,27 +180,5 @@ public sealed class HuntingGroundsDetermineWinnerScript : MapScriptBase
             var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
             player.TraverseMap(mapInstance, new Point(12, 10));
         }
-    }
-    
-    private void HandleWinner(Aisling winner, int points)
-    {
-        var allToPort = Subject.GetEntities<Aisling>().ToList();
-
-        foreach (var player in allToPort)
-        {
-            player.SendServerMessage(ServerMessageType.OrangeBar2, $"{winner.Name} has won the match with {points} points!");
-            var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
-            player.TraverseMap(mapInstance, new Point(12, 10));
-        }
-    }
-    
-    private KeyValuePair<Aisling, int>? CalculateScores()
-    {
-        if (IndividualScores.Count == 0)
-            return null;
-        
-        var highestScorer = IndividualScores.MaxBy(kvp => kvp.Value);
-        
-        return highestScorer;
     }
 }

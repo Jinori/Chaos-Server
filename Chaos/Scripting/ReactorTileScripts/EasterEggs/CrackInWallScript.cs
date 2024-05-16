@@ -11,10 +11,8 @@ public sealed class CrackInWallScript : ReactorTileScriptBase
 
     /// <inheritdoc />
     public CrackInWallScript(ReactorTile subject, IItemFactory itemFactory)
-        : base(subject)
-    {
+        : base(subject) =>
         ItemFactory = itemFactory;
-    }
 
     /// <inheritdoc />
     public override void OnClicked(Aisling source)
@@ -35,6 +33,5 @@ public sealed class CrackInWallScript : ReactorTileScriptBase
         source.TryGiveGamePoints(5);
         source.TryGiveGold(45000);
         source.SendOrangeBarMessage("Do not share Easter Eggs with others.");
-        return;
     }
 }

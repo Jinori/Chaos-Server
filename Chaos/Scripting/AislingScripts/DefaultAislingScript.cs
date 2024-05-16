@@ -204,7 +204,7 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
 
         if (Subject.Status.HasFlag(Status.ThunderStance))
         {
-            var result = damage * 3;
+            var result = damage * 30;
 
             if (IntegerRandomizer.RollChance(2))
             {

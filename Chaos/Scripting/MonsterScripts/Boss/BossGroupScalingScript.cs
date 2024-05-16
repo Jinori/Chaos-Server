@@ -5,14 +5,9 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss;
 
-public sealed class BossGroupScalingScript : MonsterScriptBase
+public sealed class BossGroupScalingScript(Monster subject, ISpellFactory spellFactory) : MonsterScriptBase(subject)
 {
     private static bool GroupBonusApplied;
-    private readonly ISpellFactory _spellFactory;
-
-    public BossGroupScalingScript(Monster subject, ISpellFactory spellFactory)
-        : base(subject) =>
-        _spellFactory = spellFactory;
 
     private void AddSpellsBasedOnGroupLevel(IEnumerable<int> groupLevel)
     {
@@ -33,8 +28,8 @@ public sealed class BossGroupScalingScript : MonsterScriptBase
 
     private void AddSpellsToBoss(string spellName1, string spellName2)
     {
-        Subject.Spells.Add(_spellFactory.Create(spellName1));
-        Subject.Spells.Add(_spellFactory.Create(spellName2));
+        Subject.Spells.Add(spellFactory.Create(spellName1));
+        Subject.Spells.Add(spellFactory.Create(spellName2));
     }
 
     private Attributes CreateGroupBonusAttributes(IReadOnlyCollection<int> groupLevel)

@@ -7,72 +7,89 @@ using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MapScripts.Arena.Arena_Modules;
-
-public sealed class MeteorChaosScript : MapScriptBase
+namespace Chaos.Scripting.MapScripts.Arena.Arena_Modules
 {
-    private readonly IApplyDamageScript ApplyDamageScript;
-    private IIntervalTimer MeteorChaosTimer { get; }
-    private int CurrentAnimationIndex { get; set; }
-    private readonly Animation[] Animations =
-    [
-        new Animation
-            { AnimationSpeed = 100, TargetAnimation = 147 },
-        new Animation
-            { AnimationSpeed = 100, TargetAnimation = 148 },
-        new Animation
-            { AnimationSpeed = 100, TargetAnimation = 149 }
-    ];
-
-    /// <inheritdoc />
-    public MeteorChaosScript(MapInstance subject)
-        : base(subject)
+    /// <summary>
+    /// Script to handle the chaos caused by meteors in the arena.
+    /// </summary>
+    public sealed class MeteorChaosScript : MapScriptBase
     {
-        ApplyDamageScript = ApplyAttackDamageScript.Create();
-        MeteorChaosTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
-    }
-
-    /// <inheritdoc />
-    public override void Update(TimeSpan delta)
-    {
-        MeteorChaosTimer.Update(delta);
-
-        if (!MeteorChaosTimer.IntervalElapsed)
-            return;
-
-        // Get all non-wall points on the map
-        // You might want to switch this to the loop-based approach as previously suggested
-        var nonWallPoints = Enumerable.Range(0, Subject.Template.Width)
-                                      .SelectMany(
-                                          x => Enumerable.Range(0, Subject.Template.Height)
-                                                         .Where(y => !Subject.IsWall(new Point(x, y)))
-                                                         .Select(y => new Point(x, y)))
-                                      .ToList();
-
-        if (nonWallPoints.Count > 0)
+        private readonly IApplyDamageScript _applyDamageScript;
+        private readonly IIntervalTimer _meteorChaosTimer;
+        private int _currentAnimationIndex;
+        private readonly Animation[] _animations = new[]
         {
-            // Select a random non-wall point
+            new Animation { AnimationSpeed = 100, TargetAnimation = 147 },
+            new Animation { AnimationSpeed = 100, TargetAnimation = 148 },
+            new Animation { AnimationSpeed = 100, TargetAnimation = 149 }
+        };
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MeteorChaosScript"/> class.
+        /// </summary>
+        /// <param name="subject">The map instance subject to apply the script.</param>
+        public MeteorChaosScript(MapInstance subject)
+            : base(subject)
+        {
+            _applyDamageScript = ApplyAttackDamageScript.Create();
+            _meteorChaosTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
+        }
+
+        /// <inheritdoc />
+        public override void Update(TimeSpan delta)
+        {
+            _meteorChaosTimer.Update(delta);
+
+            if (!_meteorChaosTimer.IntervalElapsed)
+                return;
+
+            TryApplyMeteorChaos();
+        }
+
+        /// <summary>
+        /// Applies the meteor chaos effect by showing animation and applying damage.
+        /// </summary>
+        private void TryApplyMeteorChaos()
+        {
+            var nonWallPoints = GetNonWallPoints().ToList();
+
+            if (nonWallPoints.Count == 0) return;
+
             var targetPoint = nonWallPoints[Random.Shared.Next(nonWallPoints.Count)];
+            Subject.ShowAnimation(_animations[_currentAnimationIndex].GetPointAnimation(targetPoint));
 
-            // Use the current animation
-            Subject.ShowAnimation(Animations[CurrentAnimationIndex].GetPointAnimation(targetPoint));
+            ApplyDamageToEntitiesAtPoint(targetPoint);
+            UpdateAnimationIndex();
+        }
 
-            // Check if a player is standing on the point and apply damage
+        /// <summary>
+        /// Gets all non-wall points on the map.
+        /// </summary>
+        /// <returns>An enumerable of non-wall points.</returns>
+        private IEnumerable<Point> GetNonWallPoints() =>
+            Enumerable.Range(0, Subject.Template.Width)
+                      .SelectMany(x => Enumerable.Range(0, Subject.Template.Height)
+                                                 .Where(y => !Subject.IsWall(new Point(x, y)))
+                                                 .Select(y => new Point(x, y)));
+
+        /// <summary>
+        /// Applies damage to entities at a specific point.
+        /// </summary>
+        /// <param name="targetPoint">The target point to apply damage.</param>
+        private void ApplyDamageToEntitiesAtPoint(Point targetPoint)
+        {
             var targetPlayer = Subject.GetEntitiesAtPoint<Aisling>(targetPoint).FirstOrDefault();
 
-            if (targetPlayer != null)
-            {
-                var damage = (int)(targetPlayer.StatSheet.EffectiveMaximumHp * 0.18); // 18% of max HP
+            if (targetPlayer == null) return;
 
-                ApplyDamageScript.ApplyDamage(
-                    targetPlayer,
-                    targetPlayer,
-                    this,
-                    damage);
-            }
+            var damage = (int)(targetPlayer.StatSheet.EffectiveMaximumHp * 0.18);
 
-            // Cycle to the next animation
-            CurrentAnimationIndex = (CurrentAnimationIndex + 1) % Animations.Length;
+            _applyDamageScript.ApplyDamage(targetPlayer, targetPlayer, this, damage);
         }
+
+        /// <summary>
+        /// Updates the animation index to cycle through animations.
+        /// </summary>
+        private void UpdateAnimationIndex() => _currentAnimationIndex = (_currentAnimationIndex + 1) % _animations.Length;
     }
 }

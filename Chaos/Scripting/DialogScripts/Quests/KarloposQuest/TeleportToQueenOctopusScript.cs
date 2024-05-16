@@ -21,21 +21,15 @@ public class TeleportToQueenOctopusScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        var group = source.Group?.Where(x => x.OnSameMapAs(source));
-
-        if (group is null)
+        if (source.Group is null || source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source)))
         {
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are too nervous to venture alone.");
-            Subject.Reply(source, "You must have a group to continue.");
-        }
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure you are grouped or your group is near you.");
+            var point = source.DirectionalOffset(source.Direction.Reverse());
+            source.WarpTo(point);
 
-        if (source.Group!.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source)))
-        {
-            Subject.Reply(source, "Your entire group must be present");
-            source.SendOrangeBarMessage("You must have a group nearby to enter.");
             return;
         }
-
+        
         var rectangle = new Rectangle(
             9,
             16,

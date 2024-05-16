@@ -11,10 +11,8 @@ public sealed class DepressedStatueScript : ReactorTileScriptBase
 
     /// <inheritdoc />
     public DepressedStatueScript(ReactorTile subject, IItemFactory itemFactory)
-        : base(subject)
-    {
+        : base(subject) =>
         ItemFactory = itemFactory;
-    }
 
     /// <inheritdoc />
     public override void OnClicked(Aisling source)
@@ -35,6 +33,5 @@ public sealed class DepressedStatueScript : ReactorTileScriptBase
         source.TryGiveGold(50000);
         source.GiveItemOrSendToBank(bluepolyp);
         source.SendOrangeBarMessage("Do not share Easter Eggs with others.");
-        return;
     }
 }

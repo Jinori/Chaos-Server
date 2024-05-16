@@ -25,6 +25,5 @@ public sealed class LeakingBarrelScript : ReactorTileScriptBase
             "You notice tiny crabs sheltering in this barrel.");
         source.TryGiveGamePoints(5);
         source.SendOrangeBarMessage("Do not share Easter Eggs with others.");
-        return;
     }
 }
