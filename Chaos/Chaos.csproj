@@ -30,6 +30,8 @@
         <None Update="appsettings.logging.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Remove="PersistentIdUInt64.json.bak"/>
+        <None Remove="PersistentIdUInt64.json.bak"/>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Chaos.Messaging.Abstractions\Chaos.Messaging.Abstractions.csproj" />
@@ -46,14 +48,18 @@
         <ProjectReference Include="..\Chaos.Time\Chaos.Time.csproj" />
         <ProjectReference Include="..\Chaos.TypeMapper\Chaos.TypeMapper.csproj" />
     </ItemGroup>
-    <ItemGroup>
         <PackageReference Include="Discord.Net" />
         <PackageReference Include="Humanizer" />
         <PackageReference Include="Humanizer.Core" />
         <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="NLog.Web.AspNetCore" />
-        <PackageReference Include="AutoMapper.Collection"/>
+    <ItemGroup>
+        <PackageReference Include="Humanizer"/>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection"/>
+        <PackageReference Include="Humanizer.Core" />
+        <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="NLog.Web.AspNetCore" />
+        <PackageReference Include="AutoMapper.Collection"/>
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"/>
         <PackageReference Include="System.Configuration.ConfigurationManager"/>
     </ItemGroup>

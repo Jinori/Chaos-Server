@@ -174,9 +174,6 @@ public class DefaultAislingScript : AislingScriptBase, HealComponent.IHealCompon
     }
 
     /// <inheritdoc />
-    public override bool IsBlind() => BlindBehavior.IsBlind(Subject);
-
-    /// <inheritdoc />
     public override bool IsFriendlyTo(Creature creature) => RelationshipBehavior.IsFriendlyTo(Subject, creature);
 
     /// <inheritdoc />

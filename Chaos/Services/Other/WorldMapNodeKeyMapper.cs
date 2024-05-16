@@ -3,9 +3,9 @@ using Chaos.Common.Utilities;
 
 namespace Chaos.Services.Other;
 
-public sealed class BulletinBoardKeyMapper : KeyMapper<ushort>
+public class WorldMapNodeKeyMapper : KeyMapper<ushort>
 {
     /// <inheritdoc />
-    public BulletinBoardKeyMapper()
+    public WorldMapNodeKeyMapper()
         : base(new SequentialIdGenerator<ushort>()) { }
 }
