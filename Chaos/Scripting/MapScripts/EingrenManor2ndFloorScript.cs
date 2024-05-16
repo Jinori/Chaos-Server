@@ -1,5 +1,7 @@
 using Chaos.Collections;
 using Chaos.Common.Utilities;
+using Chaos.Definitions;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
@@ -56,7 +58,7 @@ public class EingrenManor2NdFloorScript(MapInstance subject, ISimpleCache simple
             var monster = monsterFactory.Create(randomMonsterType, Subject, point);
             Subject.AddEntity(monster, point);
 
-            if (IntegerRandomizer.RollChance(10))
+            if (IntegerRandomizer.RollChance(5))
             {
                 var bossSpawn = monsterFactory.Create("banshee", Subject, point);
                 Subject.AddEntity(bossSpawn, point);
@@ -84,6 +86,29 @@ public class EingrenManor2NdFloorScript(MapInstance subject, ISimpleCache simple
     {
         var hasMonsters = Subject.GetEntities<Monster>().Any(x => x.PetOwner is null);
         var hasPlayers = Subject.GetEntities<Aisling>().ToList().Count != 0;
+
+        if (Subject.GetEntities<Aisling>()
+            .Any(x => x.Trackers.Counters.CounterGreaterThanOrEqualTo("bansheekills", 100)))
+        {
+            var rectangle = new Rectangle(25, 3, 2, 2);
+
+            foreach (var member in Subject.GetEntities<Aisling>())
+            {
+                var mapInstance = simpleCache.Get<MapInstance>("manor_main_hall");
+
+                Point newPoint;
+                do
+                {
+                    newPoint = rectangle.GetRandomPoint();
+                } while (!mapInstance.IsWalkable(newPoint, member.Type));
+                
+                member.Trackers.Counters.Remove("bansheekills", out _);
+                member.Trackers.Enums.Set(ManorLouegieStage.CompletedQuest);
+                member.TraverseMap(mapInstance, newPoint);
+            }
+
+            return;
+        }
 
         if (!hasMonsters && hasPlayers && (TransitionTime == null))
             TransitionTime = DateTime.UtcNow.AddSeconds(8);

@@ -274,8 +274,8 @@ public class SupplyLouresArmy : DialogScriptBase
                     return;
                 }
 
-                source.Inventory.RemoveQuantity("Polished Iron", 10);
-                source.Inventory.RemoveQuantity("Pristine Ruby", 10);
+                source.Inventory.RemoveQuantity("Polished Iron Bar", 10);
+                source.Inventory.RemoveQuantity("Pristine Ruby", 5);
                 source.Inventory.RemoveQuantity("Exquisite Cotton", 10);
                 source.Trackers.Enums.Set(SupplyLouresStage.TurnedInSupply);
                 Logger.WithTopics(

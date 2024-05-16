@@ -48,12 +48,12 @@ public sealed class PentagramBossEnrageScript : MonsterScriptBase
             
             switch (roll)
             {
-                case < 30:
+                case < 40:
                     Subject.Say("You've made a mistake coming here!");
                     Subject.TryUseSpell(SpellToCast);
 
                     break;
-                case < 65:
+                case < 75:
                     Subject.Say("Demonic Despair!");
                     Subject.TryUseSpell(SpellToCast1);
 
@@ -62,7 +62,10 @@ public sealed class PentagramBossEnrageScript : MonsterScriptBase
                     Subject.Say("You're not going to win this fight!");
 
                     foreach (var target in Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 10))
+                    {
+                        target.TryUseSpell(SpellToCast2);
                         target.TryUseSpell(SpellToCast);
+                    }
 
                     break;
             }
@@ -84,10 +87,10 @@ public sealed class PentagramBossEnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Dmg = 20,
+                Dmg = 10,
                 MagicResistance = 10,
-                SkillDamagePct = 10,
-                SpellDamagePct = 10
+                SkillDamagePct = 5,
+                SpellDamagePct = 5
             };
 
             Subject.StatSheet.AddBonus(attrib);
@@ -101,16 +104,16 @@ public sealed class PentagramBossEnrageScript : MonsterScriptBase
             var attrib = new Attributes
             {
                 Int = 10,
-                Str = 15,
-                Ac = -30,
-                AtkSpeedPct = 40,
+                Str = 10,
+                Ac = -20,
+                AtkSpeedPct = 20,
                 Dmg = 15,
                 FlatSkillDamage = 5,
                 FlatSpellDamage = 5,
                 Hit = 20,
                 MagicResistance = 10,
-                SkillDamagePct = 20,
-                SpellDamagePct = 20
+                SkillDamagePct = 10,
+                SpellDamagePct = 10
             };
 
             Subject.StatSheet.AddBonus(attrib);

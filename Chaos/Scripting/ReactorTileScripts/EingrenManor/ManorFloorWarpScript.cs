@@ -48,6 +48,12 @@ public class ManorFloorWarpScript : ConfigurableReactorTileScriptBase
         var targetMap = SimpleCache.Get<MapInstance>(selectedMapKey);
         var aisling = source as Aisling;
 
+        if (source.Trackers.TimedEvents.HasActiveEvent("Louegie2ndFloor", out _))
+        {
+            aisling?.SendOrangeBarMessage("You have recently killed all the banshees.");
+            return;
+        }
+
         if (source.StatSheet.Level < (targetMap.MinimumLevel ?? 0))
         {
             aisling?.SendOrangeBarMessage($"You must be at least level {targetMap.MinimumLevel} to enter this area.");
