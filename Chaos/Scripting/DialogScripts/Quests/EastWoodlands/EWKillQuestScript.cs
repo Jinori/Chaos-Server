@@ -53,6 +53,17 @@ public class EwKillQuestScript(Dialog subject, ILogger<theSacrificeQuestScript> 
 
                 if (source.UserStatSheet.Level >= 41)
                 {
+                    source.Trackers.Counters.Remove("ewvipercounter", out _);
+                    source.Trackers.Counters.Remove("ewbeecounter1", out _);
+                    source.Trackers.Counters.Remove("ewbeecounter2", out _);
+                    source.Trackers.Counters.Remove("ewmantiscounter1", out _);
+                    source.Trackers.Counters.Remove("ewmantiscounter2", out _);
+                    source.Trackers.Counters.Remove("ewgoblinsoldiercounter", out _);
+                    source.Trackers.Counters.Remove("ewhobgoblincounter", out _);
+                    source.Trackers.Counters.Remove("ewgoblinguardcounter", out _);
+                    source.Trackers.Counters.Remove("ewgoblinwarriorcounter", out _);
+                    source.Trackers.Counters.Remove("ewkoboldcounter", out _);
+                    source.Trackers.Counters.Remove("ewwolfcounter", out _);
                     Subject.Reply(source, "You are too strong to be worried about these pest.");
                     return;
                 }

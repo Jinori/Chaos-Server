@@ -96,6 +96,7 @@ public class QueenOctopusDeathScript : MonsterScriptBase
                     member.Trackers.Enums.Set(QueenOctopusQuest.QueenKilled);
 
                 member.TraverseMap(mapInstance, point);
+                member.SendOrangeBarMessage("The Queen returns to the water, you scurry off the beach.");
             }
         }
     }

@@ -56,6 +56,7 @@ public class RogueNightmareChallengeMapScript : MapScriptBase
     private readonly ISimpleCache SimpleCache;
     private readonly TimeSpan StartDelay;
     private readonly IIntervalTimer? UpdateTimer;
+    public required Rectangle? SpawnArea { get; set; }
     private int AnimationIndex;
     private DateTime? StartTime;
     private ScriptState State;
@@ -118,8 +119,9 @@ public class RogueNightmareChallengeMapScript : MapScriptBase
 
         for (var i = 0; i < 4; i++)
         {
-            var point = GenerateSpawnPoint();
-
+            if (!Subject.TryGetRandomWalkablePoint(out var point))
+                continue;
+            
             var monster = MonsterFactory.Create(
                 "nightmare_murauder",
                 Subject,

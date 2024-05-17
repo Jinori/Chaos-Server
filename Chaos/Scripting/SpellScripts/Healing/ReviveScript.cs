@@ -40,6 +40,9 @@ public class ReviveScript : ConfigurableSpellScriptBase,
     public bool ReviveSelf { get; init; }
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
+
+    public bool SingleTarget { get; init; }
+
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     /// <inheritdoc />

@@ -7,7 +7,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MapScripts;
 
-public class dubhaimbossMapScript(MapInstance subject, IMonsterFactory monsterFactory) : MapScriptBase(subject)
+public class DubhaimbossMapScript(MapInstance subject, IMonsterFactory monsterFactory) : MapScriptBase(subject)
 {
     private readonly IIntervalTimer? UpdateTimer = new IntervalTimer(TimeSpan.FromSeconds(UPDATE_INTERVAL_MS));
     private readonly IIntervalTimer? BossTimer = new IntervalTimer(TimeSpan.FromHours(BOSS_TIMER));
