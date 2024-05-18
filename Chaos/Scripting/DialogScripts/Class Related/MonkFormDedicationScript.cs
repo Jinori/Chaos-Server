@@ -13,25 +13,25 @@ namespace Chaos.Scripting.DialogScripts.Class_Related;
 
 public class MonkFormDedicationScript(Dialog subject) : DialogScriptBase(subject)
 {
-    private Animation WaterForm = new()
+    private readonly Animation WaterForm = new()
     {
         TargetAnimation = 67,
         AnimationSpeed = 100
     };
     
-    private Animation FireForm = new()
+    private readonly Animation FireForm = new()
     {
         TargetAnimation = 102,
         AnimationSpeed = 100
     };
     
-    private Animation WindForm = new()
+    private readonly Animation WindForm = new()
     {
         TargetAnimation = 156,
         AnimationSpeed = 100
     };
     
-    private Animation EarthForm = new()
+    private readonly Animation EarthForm = new()
     {
         TargetAnimation = 87,
         AnimationSpeed = 100
