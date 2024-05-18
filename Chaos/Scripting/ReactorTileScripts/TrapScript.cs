@@ -59,11 +59,10 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
     {
-        //if the person who stepped on it isnt a valid target, do nothing
         if (!Filter.IsValidTarget(Owner, source))
             return;
 
-        if (source.Trackers.Enums.TryGetValue(out GodMode godmode) && godmode == GodMode.Yes)
+        if (source.IsGodModeEnabled())
             return;
         
         var executed = new ComponentExecutor(Owner, source).WithOptions(this)
