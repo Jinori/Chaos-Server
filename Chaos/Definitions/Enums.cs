@@ -1339,6 +1339,19 @@ public enum EastWoodlandsKillQuestStage
     EWGoblinWarrior = 11,
     EWHobgoblin = 12
 }
+
+public enum WestWoodlandsKillQuestStage
+{
+    None,
+    WWGoblinGuard = 1,
+    WWGoblinWarrior = 2,
+    WWHobGoblin = 3,
+    WWShrieker = 4,
+    WWWisp = 5,
+    WWFaerie = 6,
+    WWTwink = 7,
+}
+
 [Flags]
 public enum ReconPoints
 {
