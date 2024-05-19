@@ -103,7 +103,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
             foreach (var item in aisling.Equipment)
             {
                 
-                if (aisling.Trackers.Enums.TryGetValue(out GodMode godmode) && (godmode == GodMode.Yes))
+                if (aisling.IsGodModeEnabled())
                     continue;
 
                 if (item.Slot is > 0 and < 14)

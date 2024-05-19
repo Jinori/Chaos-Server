@@ -68,7 +68,7 @@ If this reactor was created through a script, you must specify the owner in the 
         if (!Filter.IsValidTarget(Owner, source))
             return;
 
-        if (source.Trackers.Enums.TryGetValue(out GodMode godMode) && (godMode == GodMode.Yes))
+        if (source.IsGodModeEnabled())
             return;
 
         var aisling = source as Aisling;

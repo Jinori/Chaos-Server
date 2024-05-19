@@ -30,7 +30,7 @@ public class ThrowComponent : IComponent
         {
             if (entity != null)
             {
-                if (entity.Trackers.Enums.TryGetValue(out GodMode god) && (god == GodMode.Yes))
+                if (entity.IsGodModeEnabled())
                     return;
                 
                 if (target is Merchant or Monster)

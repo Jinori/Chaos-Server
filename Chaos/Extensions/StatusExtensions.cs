@@ -1,9 +1,12 @@
+using Chaos.Definitions;
 using Chaos.Models.World.Abstractions;
 
 namespace Chaos.Extensions;
 
 public static class StatusExtensions
 {
+
+    public static bool IsGodModeEnabled(this Creature creature) => creature.Trackers.Enums.HasValue(GodMode.Yes);
     public static bool IsPramhed(this Creature creature) => creature.Effects.Contains("beagpramh") || creature.Effects.Contains("pramh");
     public static bool IsSuained(this Creature creature) => creature.Effects.Contains("suain") || creature.Effects.Contains("wolffangfist");
     public static bool IsAsgalled(this Creature creature) => creature.Effects.Contains("asgallfaileas");

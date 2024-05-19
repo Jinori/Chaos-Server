@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -79,7 +80,7 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
     {
         var damagePerTick = EstimateDamage();
 
-        if (Subject.Trackers.Enums.HasValue(GodMode.Yes))
+        if (Subject.IsGodModeEnabled())
             return;
         
         if (Subject.StatSheet.CurrentHp <= damagePerTick)

@@ -1,5 +1,6 @@
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Geometry.Abstractions;
@@ -80,9 +81,6 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
         foreach (var creature in creaturesToDamage.ToList())
             if (creature.Id != Subject.Id)
             {
-                if (creature.Trackers.Enums.TryGetValue(out GodMode godMode) && godMode == GodMode.Yes)
-                    return;
-                
                 var damage = (int)(creature.StatSheet.EffectiveMaximumHp * 0.30);
 
                 ApplyDamageScript.ApplyDamage(

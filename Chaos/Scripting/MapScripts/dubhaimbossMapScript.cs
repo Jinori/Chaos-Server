@@ -32,9 +32,12 @@ public class DubhaimbossMapScript(MapInstance subject, IMonsterFactory monsterFa
         
         // Check if there are 4 or more aislings
         if (aislingCount < 4) return;
-        
-        var dubhaimBoss = monsterFactory.Create("dc_basement_gargoyleboss", Subject, point1);
+
+        if (point1 != null)
+        {
+            var dubhaimBoss = monsterFactory.Create("dc_basement_gargoyleboss", Subject, point1);
             
-        Subject.AddEntity(dubhaimBoss, point1);
+            Subject.AddEntity(dubhaimBoss, point1);
+        }
     }
 }
