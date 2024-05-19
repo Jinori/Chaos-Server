@@ -14,7 +14,7 @@ public class ArdCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(3);
     protected Animation? Animation { get; } = new()
     {
-        TargetAnimation = 43,
+        TargetAnimation = 486,
         AnimationSpeed = 100
     };
     public List<string> ConflictingEffectNames { get; init; } =

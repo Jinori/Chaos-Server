@@ -24,7 +24,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
-        TargetAnimation = 55
+        TargetAnimation = 550
     };
 
     /// <inheritdoc />

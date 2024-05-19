@@ -75,7 +75,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private Animation MistHeal { get; } = new()
     {
         AnimationSpeed = 100,
-        TargetAnimation = 9
+        TargetAnimation = 646
     };
     protected virtual RelationshipBehavior RelationshipBehavior { get; }
     protected virtual RestrictionBehavior RestrictionBehavior { get; }

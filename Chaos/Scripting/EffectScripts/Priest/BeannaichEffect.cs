@@ -16,7 +16,7 @@ public class BeannaichEffect : EffectBase, HierarchicalEffectComponent.IHierarch
     
     private Animation? Animation { get; } = new()
     {
-        TargetAnimation = 125,
+        TargetAnimation = 521,
         AnimationSpeed = 100
     };
     

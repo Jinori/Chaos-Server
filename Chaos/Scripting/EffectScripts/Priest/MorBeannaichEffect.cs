@@ -13,7 +13,7 @@ public class MorBeannaichEffect : EffectBase, HierarchicalEffectComponent.IHiera
 
     private Animation? Animation { get; } = new()
     {
-        TargetAnimation = 125,
+        TargetAnimation = 515,
         AnimationSpeed = 100
     };
     

@@ -15,7 +15,7 @@ public class MorCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
     protected Animation? Animation { get; } = new()
     {
-        TargetAnimation = 18,
+        TargetAnimation = 487,
         AnimationSpeed = 100
     };
     public List<string> ConflictingEffectNames { get; init; } =

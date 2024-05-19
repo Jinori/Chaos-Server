@@ -11,7 +11,7 @@ public class ArmorPierceEffect : EffectBase, NonOverwritableEffectComponent.INon
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(6);
 
-    protected Animation? Animation { get; } = new()
+    protected Animation Animation { get; } = new()
     {
         TargetAnimation = 204,
         AnimationSpeed = 100
@@ -39,6 +39,8 @@ public class ArmorPierceEffect : EffectBase, NonOverwritableEffectComponent.INon
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
+        Subject.Animate(Animation);
+
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your armor has been pierced! AC and MR lowered!");
     }

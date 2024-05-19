@@ -12,7 +12,7 @@ public class ArmachdEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(8);
     protected Animation? Animation { get; } = new()
     {
-        TargetAnimation = 20,
+        TargetAnimation = 512,
         AnimationSpeed = 100
     };
 

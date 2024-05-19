@@ -18,7 +18,7 @@ public class MorFasDeireasEffect : EffectBase, HierarchicalEffectComponent.IHier
     
     private Animation? Animation { get; } = new()
     {
-        TargetAnimation = 125,
+        TargetAnimation = 514,
         AnimationSpeed = 100
     };
     

@@ -50,7 +50,6 @@
     </ItemGroup>
     <ItemGroup> 
         <PackageReference Include="Humanizer"/>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection"/>
         <PackageReference Include="Humanizer.Core" />
         <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="NLog.Web.AspNetCore" />

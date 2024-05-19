@@ -49,7 +49,7 @@ public class MonkFormChange: DialogScriptBase
     private readonly List<string> EarthSkills = [ "earthpunch", "seismickick"];
     private readonly List<string> EarthSpells = [ "earthenstance"];
     
-    private readonly List<string> WaterSkills = [ "airpunch", "tempestkick"];
+    private readonly List<string> WaterSkills = [ "waterpunch", "tsunamikick"];
     private readonly List<string> WaterSpells = [ "miststance"];
     
     /// <inheritdoc />

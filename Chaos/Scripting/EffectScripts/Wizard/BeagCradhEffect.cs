@@ -14,7 +14,7 @@ public class BeagCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOv
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(2);
     protected Animation? Animation { get; } = new()
     {
-        TargetAnimation = 45,
+        TargetAnimation = 483,
         AnimationSpeed = 100
     };
     public List<string> ConflictingEffectNames { get; init; } =

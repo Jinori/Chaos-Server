@@ -20,7 +20,7 @@ public class ArdAiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
     
     private Animation? Animation { get; } = new()
     {
-        TargetAnimation = 125,
+        TargetAnimation = 414,
         AnimationSpeed = 100
     };
     

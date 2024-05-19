@@ -12,7 +12,7 @@ public class MotivateEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(2);
     protected Animation? Animation { get; } = new()
     {
-        TargetAnimation = 127,
+        TargetAnimation = 516,
         AnimationSpeed = 100
     };
 

@@ -20,7 +20,7 @@ public class BeagAiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
     
     private Animation? Animation { get; } = new()
     {
-        TargetAnimation = 125,
+        TargetAnimation = 411,
         AnimationSpeed = 100
     };
     

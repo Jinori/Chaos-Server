@@ -21,7 +21,7 @@ public class AiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchicalE
     
     private Animation? Animation { get; } = new()
     {
-        TargetAnimation = 125,
+        TargetAnimation = 412,
         AnimationSpeed = 100
     };
     

@@ -1,62 +1,52 @@
 using Chaos.Common.Definitions;
-using Chaos.Definitions;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Components.AbilityComponents;
-using Chaos.Scripting.Components.Execution;
+using Chaos.Models.World;
 using Chaos.Scripting.SkillScripts.Abstractions;
 
 namespace Chaos.Scripting.SkillScripts;
 
-public class ThrowScript : ConfigurableSkillScriptBase,
-                           ThrowComponent.IThrowComponentOptions,
-                           GenericAbilityComponent<Creature>.IAbilityComponentOptions
+public class ThrowScript : SkillScriptBase
 {
-    /// <inheritdoc />
-    public bool AnimatePoints { get; init; }
-    /// <inheritdoc />
-    public Animation? Animation { get; init; }
-    /// <inheritdoc />
-    public ushort? AnimationSpeed { get; init; }
-    /// <inheritdoc />
-    public BodyAnimation BodyAnimation { get; init; }
-
-    /// <inheritdoc />
-    public int DistanceToThrow { get; set; }
-    /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
-    /// <inheritdoc />
-    public TargetFilter Filter { get; init; }
-    /// <inheritdoc />
-    public int? ManaCost { get; init; }
-    /// <inheritdoc />
-    public bool MustHaveTargets { get; init; }
-    /// <inheritdoc />
-    public decimal PctManaCost { get; init; }
-    /// <inheritdoc />
-    public int Range { get; init; }
-    /// <inheritdoc />
-    public AoeShape Shape { get; init; }
-    /// <inheritdoc />
-    public bool SingleTarget { get; init; }
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
-    /// <inheritdoc />
-    public byte? Sound { get; init; }
-
+    private readonly Animation ThrowAnimation = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 123
+    };
+    
     /// <inheritdoc />
     public ThrowScript(Skill subject)
         : base(subject) { }
 
-    public override void OnUse(ActivationContext context) =>
-        new ComponentExecutor(context)
-            .WithOptions(this)
-            .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-            ?
-            .Execute<ThrowComponent>();
+    /// <inheritdoc />
+    public override void OnUse(ActivationContext context)
+    {
+        var throwDirection = context.Source.Direction;
+        var thrownPoint = context.Source.DirectionalOffset(throwDirection);
+        var thrownAislings = context.TargetMap.GetEntitiesAtPoint<Aisling>(thrownPoint);
+        var targetPoint = thrownPoint.DirectionalOffset(throwDirection);
 
-    public int SplashChance { get; init; }
-    public int SplashDistance { get; init; }
-    public TargetFilter SplashFilter { get; init; }
+        //potential points are the throw point, and the 3 points around it
+        var potentialTargetPoints = targetPoint.GenerateCardinalPoints()
+                                               .WithConsistentDirectionBias(throwDirection)
+                                               .SkipLast(1)
+                                               .Prepend(targetPoint)
+                                               .ToList();
+
+        foreach (var aisling in thrownAislings)
+        {
+            foreach(var point in potentialTargetPoints)
+                if (context.SourceMap.IsWalkable(point, CreatureType.Aisling, false))
+                {
+                    var aislingPoint = Point.From(aisling);
+                    aisling.WarpTo(point);
+                    
+                    context.SourceMap.ShowAnimation(ThrowAnimation.GetPointEffectAnimation(aislingPoint));
+                    context.SourceMap.ShowAnimation(ThrowAnimation.GetPointEffectAnimation(point));
+
+                    break;
+                }
+        }
+    }
 }

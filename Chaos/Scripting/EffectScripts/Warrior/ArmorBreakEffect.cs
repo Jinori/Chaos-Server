@@ -12,7 +12,7 @@ public class ArmorBreakEffect : EffectBase, NonOverwritableEffectComponent.INonO
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(10);
     protected Animation? Animation { get; } = new()
     {
-        TargetAnimation = 383,
+        TargetAnimation = 547,
         AnimationSpeed = 100
     };
     public List<string> ConflictingEffectNames { get; init; } =

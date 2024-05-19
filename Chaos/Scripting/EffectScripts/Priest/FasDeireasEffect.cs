@@ -19,7 +19,7 @@ public class FasDeireasEffect : EffectBase, HierarchicalEffectComponent.IHierarc
     
     private Animation? Animation { get; } = new()
     {
-        TargetAnimation = 125,
+        TargetAnimation = 520,
         AnimationSpeed = 100
     };
     

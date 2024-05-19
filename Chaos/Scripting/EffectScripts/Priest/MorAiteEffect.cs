@@ -20,7 +20,7 @@ public class MorAiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
     
     private Animation? Animation { get; } = new()
     {
-        TargetAnimation = 125,
+        TargetAnimation = 413,
         AnimationSpeed = 100
     };
     
