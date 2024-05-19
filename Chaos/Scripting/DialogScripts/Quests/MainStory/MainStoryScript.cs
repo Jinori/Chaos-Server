@@ -127,8 +127,15 @@ public class MainStoryScript(
                     || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact4)
                     || source.Trackers.Enums.HasValue(MainStoryEnums.StartedAssemble)
                     || source.Trackers.Enums.HasValue(MainStoryEnums.CompletedArtifactsHunt)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedCircuitTrial)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.CompletedCircuitTrial)
+                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedFirstTrial)
+                    || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedFirstTrial)
+                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedSecondTrial)
+                    || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedSecondTrial)
+                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedThirdTrial)
+                    || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedThirdTrial)
+                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedFourthTrial)
+                    || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedFourthTrial)
+                    || source.Trackers.Enums.HasValue(MainStoryEnums.CompletedTrials)
                     || source.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner)
                     || source.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner)
                     || source.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner2)
@@ -194,6 +201,11 @@ public class MainStoryScript(
             #region Miraelis
             case "mainstory_miraelis_initial":
             {
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.CompletedArtifactsHunt))
+                {
+                    Subject.Reply(source, "We don't have the Divine Trials ready for you yet. Come back soon");
+                    return;
+                }
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact4))
                 {
                     Subject.Reply(source, "Skip", "mainstory_miraelis_assembleartifacts1");

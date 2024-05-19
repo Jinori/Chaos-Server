@@ -1499,14 +1499,38 @@ public enum MainStoryEnums
     FinishedArtifact4 = 11,
     StartedAssemble = 12,
     CompletedArtifactsHunt = 13,
-    StartedCircuitTrial = 14,
-    CompletedCircuitTrial = 15,
-    SearchForSummoner = 16,
-    FoundSummoner = 17,
-    DefeatedServant = 18,
-    FoundSummoner2 = 19,
-    KilledSummoner = 20,
-    CompletedPreMasterMainStory = 21,
+    StartedFirstTrial = 14,
+    FinishedFirstTrial = 15,
+    StartedSecondTrial = 16,
+    FinishedSecondTrial = 17,
+    StartedThirdTrial = 18,
+    FinishedThirdTrial = 19,
+    StartedFourthTrial = 20,
+    FinishedFourthTrial = 21,
+    CompletedTrials = 22,
+    SearchForSummoner = 23,
+    FoundSummoner = 24,
+    DefeatedServant = 25,
+    FoundSummoner2 = 26,
+    KilledSummoner = 27,
+    CompletedPreMasterMainStory = 28,
+}
+
+public enum CombatTrial
+{
+    None,
+    StartedTrial = 1,
+    StartedFirst = 2,
+    FinishedFirst = 3,
+    StartedSecond = 4,
+    FinishedSecond = 5,
+    StartedThird = 6,
+    FinishedThird = 7,
+    StartedFourth = 8,
+    FinishedFourth = 9,
+    StartedFifth = 10,
+    FinishedFifth = 11,
+    FinishedTrial = 12
 }
 
 [Flags]

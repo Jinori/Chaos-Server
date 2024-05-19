@@ -19,6 +19,10 @@ public sealed class ArenaHostComponent : IComponent
         var options = vars.GetOptions<IArenaHostComponentOptions>();
 
         foreach (var target in targets.ToList())
+        {
+            if (target.MapInstance.Template.TemplateKey != "arenaunderground")
+                return; 
+            
             switch (options.ArenaTeamColor)
             {
                 case ArenaTeam.Blue:
@@ -60,7 +64,10 @@ public sealed class ArenaHostComponent : IComponent
                     target.WarpTo(CenterWarpPlayer);
 
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
+        }
     }
 
     public interface IArenaHostComponentOptions

@@ -26,7 +26,7 @@ public class WWKillQuestScript(Dialog subject, ILogger<theSacrificeQuestScript> 
         {
             case "maxwell_initial":
             {
-                if (source.UserStatSheet.Level < 41)
+                if (source.UserStatSheet.Level >= 41)
                 {
                     var option = new DialogOption
                     {
@@ -51,7 +51,7 @@ public class WWKillQuestScript(Dialog subject, ILogger<theSacrificeQuestScript> 
                     return;
                 }
 
-                if (source.UserStatSheet.Level >= 41)
+                if (source.UserStatSheet.Level >= 71)
                 {
                     source.Trackers.Counters.Remove("wwgoblinguardcounter", out _);
                     source.Trackers.Counters.Remove("wwgoblinwarriorcounter", out _);
@@ -298,7 +298,7 @@ public class WWKillQuestScript(Dialog subject, ILogger<theSacrificeQuestScript> 
                 break;
             }
 
-            case "ewkillquest_start":
+            case "wwkillquest_start":
             {
                 var roll = new Random().Next(1, 101);
 
