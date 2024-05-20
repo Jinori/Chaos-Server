@@ -14,7 +14,7 @@ public class ThrowScript : SkillScriptBase
         AnimationSpeed = 100,
         TargetAnimation = 123
     };
-    
+
     /// <inheritdoc />
     public ThrowScript(Skill subject)
         : base(subject) { }
@@ -36,12 +36,12 @@ public class ThrowScript : SkillScriptBase
 
         foreach (var aisling in thrownAislings)
         {
-            foreach(var point in potentialTargetPoints)
+            foreach (var point in potentialTargetPoints)
                 if (context.SourceMap.IsWalkable(point, CreatureType.Aisling, false))
                 {
                     var aislingPoint = Point.From(aisling);
                     aisling.WarpTo(point);
-                    
+
                     context.SourceMap.ShowAnimation(ThrowAnimation.GetPointEffectAnimation(aislingPoint));
                     context.SourceMap.ShowAnimation(ThrowAnimation.GetPointEffectAnimation(point));
 
