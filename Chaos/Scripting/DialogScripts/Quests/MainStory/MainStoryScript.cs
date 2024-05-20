@@ -1,5 +1,6 @@
 ﻿using Chaos.Collections;
 using Chaos.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Formulae;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Data;
@@ -201,9 +202,59 @@ public class MainStoryScript(
             #region Miraelis
             case "mainstory_miraelis_initial":
             {
+
+                if (source.Trackers.Enums.HasValue(CombatTrial.FinishedTrial))
+                {
+                    Subject.Reply(source, "Skip", "mainstory_miraelis_finishedtrial1");
+                    return;
+                }
+                
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.CompletedArtifactsHunt))
                 {
-                    Subject.Reply(source, "We don't have the Divine Trials ready for you yet. Come back soon");
+                    if (source.UserStatSheet.Level < 71)
+                    {
+                        Subject.Reply(source, "You are too young to start the trials. Return to me when you are stronger.");
+                        return;
+                    }
+                    Subject.Reply(source, "Skip", "mainstory_miraelis_starttrial1");
+                    return;
+                }
+
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedFirstTrial))
+                {
+                    Subject.Reply(source, "Skip", "mainstory_miraelis_retrytrial1");
+                    return;
+                }
+
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedSecondTrial))
+                {
+                    Subject.Reply(source, "I see you are trying the Trial of Luck, speak to Serendael to try again.");
+                    return;
+                }
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedThirdTrial))
+                {
+                    Subject.Reply(source, "I see you are trying the Trial of Intelligence, speak to Theselene to try again.");
+                    return;
+                }
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedFourthTrial))
+                {
+                    Subject.Reply(source, "I see you are trying the Trial of Sacrifice, speak to Skandara to try again.");
+                    return;
+                }
+
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedFirstTrial))
+                {
+                    Subject.Reply(source, "Speak to Serendael about the Trial of Luck.");
+                    return;
+                }
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedSecondTrial))
+                {
+                    Subject.Reply(source, "Speak to Theselene about the Trial of Intelligence.");
+                    return;
+                }
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedThirdTrial))
+                {
+                    Subject.Reply(source, "Speak to Skandara about the Trial of Sacrifice.");
                     return;
                 }
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact4))
@@ -235,6 +286,48 @@ public class MainStoryScript(
                         "Skip", "mainstory_miraelis_finisheda1");
                 }
                 break;
+            }
+
+            case "mainstory_miraelis_starttrial4":
+            {
+                Subject.Close(source);
+                
+                source.Trackers.Enums.Set(CombatTrial.StartedTrial);
+                source.Trackers.Enums.Set(MainStoryEnums.StartedFirstTrial);
+                var mapinstance = SimpleCache.Get<MapInstance>("trialofcombat");
+                var point = new Point(15, 15);
+                source.TraverseMap(mapinstance, point);
+                
+                return;
+            }
+            
+            case "mainstory_miraelis_retrytrial1":
+            {
+                if (source.Trackers.TimedEvents.HasActiveEvent("combattrialcd", out var cdtime))
+                {
+                    Subject.Reply(source, $"You have recently tried the Combat Trial. You can try again in {cdtime.Remaining.ToReadableString()}");
+                    return;
+                }
+                break;
+            }
+            
+            case "mainstory_miraelis_retrytrial2":
+            {
+                Subject.Close(source);
+                
+                source.Trackers.Enums.Set(CombatTrial.StartedTrial);
+                var mapinstance = SimpleCache.Get<MapInstance>("trialofcombat");
+                var point = new Point(15, 15);
+                source.TraverseMap(mapinstance, point);
+                return;
+            }
+
+            case "mainstory_miraelis_finishedtrial2":
+            {
+                Subject.Close(source);
+                source.Trackers.Enums.Set(MainStoryEnums.FinishedFirstTrial);
+                source.Trackers.Enums.Remove<CombatTrial>();
+                return;
             }
             
             case "mainstory_miraelis_initial10":
@@ -308,6 +401,46 @@ public class MainStoryScript(
             #region Serendael
             case "mainstory_serendael_initial":
             {
+                if (source.Trackers.Enums.HasValue(LuckTrial.CompletedTrial))
+                {
+                    source.Trackers.Enums.Set(LuckTrial.StartedTrial);
+                    source.Trackers.Enums.Set(MainStoryEnums.StartedSecondTrial);
+                }
+                
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedFirstTrial))
+                {
+                    Subject.Reply(source, "Skip", "mainstory_serendael_starttrial1");
+                    return;
+                }
+
+                if (source.Trackers.Enums.HasValue(LuckTrial.CompletedTrial2))
+                {
+                    Subject.Reply(source, "Skip", "mainstory_serendael_finishedtrial1");
+                    return;
+                }
+                
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedSecondTrial))
+                {
+                    Subject.Reply(source, "Skip", "mainstory_serendael_retrytrial1");
+                    return;
+                }
+                
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedSecondTrial))
+                {
+                    Subject.Reply(source, "Speak to Theselene about the Trial of Intelligence.");
+                    return;
+                }
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedThirdTrial))
+                {
+                    Subject.Reply(source, "Speak to Skandara about the Trial of Sacrifice.");
+                    return;
+                }
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact4))
+                {
+                    Subject.Reply(source, "Skip", "mainstory_miraelis_assembleartifacts1");
+                    return;
+                }
+                
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.SpokeToZephyr))
                 {
                     Subject.Reply(source, "The coin flip is on your side if you've made it here but please speak to Goddess Miraelis.");
@@ -337,6 +470,48 @@ public class MainStoryScript(
                 break;
             }
 
+            case "mainstory_serendael_starttrial4":
+            {
+                Subject.Close(source);
+                
+                source.Trackers.Enums.Set(LuckTrial.StartedTrial);
+                source.Trackers.Enums.Set(MainStoryEnums.StartedSecondTrial);
+                var mapinstance = SimpleCache.Get<MapInstance>("trialofluck");
+                var point = new Point(8, 71);
+                source.TraverseMap(mapinstance, point);
+                
+                return;
+            }
+            
+            case "mainstory_serendael_retrytrial1":
+            {
+                if (source.Trackers.TimedEvents.HasActiveEvent("lucktrialcd", out var cdtime))
+                {
+                    Subject.Reply(source, $"You have recently tried the Luck Trial. You can try again in {cdtime.Remaining.ToReadableString()}");
+                    return;
+                }
+                break;
+            }
+            
+            case "mainstory_serendael_retrytrial2":
+            {
+                Subject.Close(source);
+                source.Trackers.Enums.Set(LuckTrial.StartedTrial);
+                source.Trackers.Enums.Set(MainStoryEnums.StartedSecondTrial);
+                var mapinstance = SimpleCache.Get<MapInstance>("trialofluck");
+                var point = new Point(8, 71);
+                source.TraverseMap(mapinstance, point);
+                return;
+            }
+
+            case "mainstory_serendael_finishedtrial2":
+            {
+                Subject.Close(source);
+                source.Trackers.Enums.Set(MainStoryEnums.FinishedSecondTrial);
+                source.Trackers.Enums.Remove<LuckTrial>();
+                return;
+            }
+            
             case "mainstory_serendael_initial4":
             {
                 source.Trackers.Enums.Set(MainStoryEnums.StartedArtifact3);

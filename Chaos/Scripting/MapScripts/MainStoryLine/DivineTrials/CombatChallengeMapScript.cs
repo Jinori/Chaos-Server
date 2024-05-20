@@ -1,367 +1,341 @@
-﻿using System.Reactive.Subjects;
-using System.Runtime.InteropServices.JavaScript;
-using Chaos.Collections;
+﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
-using Chaos.Geometry.Abstractions;
-using Chaos.Models.Data;
 using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials;
-
-public class CombatChallengeMapScript : MapScriptBase
+namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
 {
-    private readonly IMonsterFactory MonsterFactory;
-    private readonly TimeSpan StartDelay;
-    private DateTime? StartTime;
-    private ScriptState State;
-    private readonly IIntervalTimer? UpdateTimer;
-    public const int UPDATE_INTERVAL_MS = 200;
-
-    public CombatChallengeMapScript(MapInstance subject, IMonsterFactory monsterFactory, IIntervalTimer animationInterval, IRectangle animationShape, List<Point> reverseOutline, List<Point> shapeOutline)
-        : base(subject)
+    public class CombatChallengeMapScript : MapScriptBase
     {
-        MonsterFactory = monsterFactory;
-        StartDelay = TimeSpan.FromSeconds(5);
-        UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(UPDATE_INTERVAL_MS));
-    }
+        private readonly IMonsterFactory MonsterFactory;
+        private readonly ISimpleCache SimpleCache;
+        private readonly TimeSpan StartDelay = TimeSpan.FromSeconds(5);
+        private readonly TimeSpan CombatTimer2 = TimeSpan.FromMinutes(10);
+        private DateTime? StartTime;
+        private ScriptState State;
+        private readonly IIntervalTimer UpdateTimer;
+        private readonly IIntervalTimer CombatTimer;
+        public const int UPDATE_INTERVAL_MS = 1000;
+        public const int COMBAT_INTERVAL = 10;
 
-    public override void Update(TimeSpan delta)
-    {
-        UpdateTimer?.Update(delta);
-
-        if (UpdateTimer!.IntervalElapsed)
+        public CombatChallengeMapScript(MapInstance subject, ISimpleCache simpleCache, IMonsterFactory monsterFactory)
+            : base(subject)
         {
-            // Switch statement to determine the current state of the script
+            MonsterFactory = monsterFactory;
+            SimpleCache = simpleCache;
+            UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(UPDATE_INTERVAL_MS), false);
+            CombatTimer = new IntervalTimer(TimeSpan.FromMinutes(COMBAT_INTERVAL), false);
+        }
+
+        public override void OnEntered(Creature creature)
+        {
+            if (creature is not Aisling aisling)
+                return;
+
+            // Check if the player has a specific quest flag and the trial is not already in progress
+            if (aisling.Trackers.Enums.HasValue(MainStoryEnums.StartedFirstTrial) && State == ScriptState.Dormant)
+            {
+                // Start the combat trial
+                StartCombatTrial();
+            }
+        }
+        public override void Update(TimeSpan delta)
+        {
+            if (!StartTime.HasValue)
+                return;
+
+            UpdateTimer.Update(delta);
+            CombatTimer.Update(delta);
+
+            if (CombatTimer.IntervalElapsed)
+            {
+                HandleCombatTimeout();
+                return;
+            }
+
+            if (UpdateTimer.IntervalElapsed)
+            {
+                UpdateTimer.Reset();
+                var remainingTime = CombatTimer2 - (DateTime.UtcNow - StartTime.Value);
+                if (remainingTime > TimeSpan.Zero)
+                {
+                    NotifyRemainingTime(remainingTime);
+                }
+                HandleScriptState();
+            }
+        }
+
+        private void HandleCombatTimeout()
+        {
+            foreach (var aisling in Subject.GetEntities<Aisling>())
+            {
+                var mapInstance = SimpleCache.Get<MapInstance>("godsrealm");
+                var point = new Point(16, 16);
+                aisling.TraverseMap(mapInstance, point);
+                aisling.SendOrangeBarMessage("Time is up. You failed the Combat Trial.");
+                aisling.Trackers.TimedEvents.AddEvent("combattrialcd", TimeSpan.FromHours(1), true);
+                aisling.Trackers.Enums.Set(CombatTrial.None);
+                aisling.Trackers.Enums.Set(MainStoryEnums.StartedFirstTrial);
+            }
+            StartTime = null;
+        }
+
+        private void NotifyRemainingTime(TimeSpan remainingTime)
+        {
+            foreach (var aisling in Subject.GetEntities<Aisling>())
+            {
+                aisling.SendPersistentMessage($"Time left: {remainingTime.ToReadableString()}");
+            }
+        }
+
+        private void HandleScriptState()
+        {
             switch (State)
             {
                 case ScriptState.Dormant:
-                {
-                    if (Subject.GetEntities<Aisling>()
-                        .Any(
-                            a => a.Trackers.Enums.HasValue(CombatTrial.StartedTrial)))
+                    if (Subject.GetEntities<Aisling>().Any(a => a.Trackers.Enums.HasValue(CombatTrial.StartedTrial)))
+                    {
                         State = ScriptState.DelayedStart;
-                }
+                    }
                     break;
-                // Delayed start state
-                case ScriptState.DelayedStart:
-                    // Set the start time if it is not already set
-                    StartTime ??= DateTime.UtcNow;
 
-                    // Check if the start delay has been exceeded
+                case ScriptState.DelayedStart:
                     if (DateTime.UtcNow - StartTime > StartDelay)
                     {
-                        // Reset the start time
-                        StartTime = null;
-
-                        if (Subject.GetEntities<Aisling>()
-                            .Any(x => x.Trackers.Enums.HasValue(CombatTrial.StartedTrial)))
-                        {
-                            State = ScriptState.SpawningFirstWave;
-                            // Get all Aislings in the subject
-                            foreach (var aisling in Subject.GetEntities<Aisling>())
-                                // Send an orange bar message to the Aisling
-                                aisling.SendMessage("Miraelis: Let's see how you handle some minions.");
-                        }
-
-                        if (Subject.GetEntities<Aisling>()
-                            .Any(x => x.Trackers.Enums.HasValue(CombatTrial.FinishedFirst)))
-                        {
-                            State = ScriptState.SpawningSecondWave;
-                            // Get all Aislings in the subject
-                            foreach (var aisling in Subject.GetEntities<Aisling>())
-                                // Send an orange bar message to the Aisling
-                                aisling.SendMessage("Miraelis: Theselene give this Aisling a challenge.");
-                        }
-
-                        if (Subject.GetEntities<Aisling>()
-                            .Any(x => x.Trackers.Enums.HasValue(CombatTrial.FinishedSecond)))
-                        {
-                            State = ScriptState.SpawningThirdWave;
-                            foreach (var aisling in Subject.GetEntities<Aisling>())
-                                // Send an orange bar message to the Aisling
-                                aisling.SendMessage("Miraelis: You handled that well. Serendael you're up.");
-                        }
-
-                        if (Subject.GetEntities<Aisling>()
-                            .Any(x => x.Trackers.Enums.HasValue(CombatTrial.FinishedThird)))
-                        {
-                            State = ScriptState.SpawningFourthWave;
-
-                            foreach (var aisling in Subject.GetEntities<Aisling>())
-                                // Send an orange bar message to the Aisling
-                                aisling.SendMessage("Miraelis: That was good. Skandara can you finish this?");
-                        }
-
-                        if (Subject.GetEntities<Aisling>()
-                            .Any(x => x.Trackers.Enums.HasValue(CombatTrial.FinishedFourth)))
-                        {
-                            State = ScriptState.SpawningFifthWave;
-
-                            foreach (var aisling in Subject.GetEntities<Aisling>())
-                                // Send an orange bar message to the Aisling
-                                aisling.SendMessage("Miraelis: Alright, enough games. Everyone test this Aisling.");
-
-                        }
-
-                        if (Subject.GetEntities<Aisling>()
-                            .Any(x => x.Trackers.Enums.HasValue(CombatTrial.FinishedFifth)))
-                        {
-                            State = ScriptState.CompletedTrial;
-                            foreach (var aisling in Subject.GetEntities<Aisling>())
-                                // Send an orange bar message to the Aisling
-                                aisling.SendMessage(
-                                    "Miraelis: You are definitely the Aisling for this task. Come see me.");
-                        }
+                        State = GetNextStateAfterDelayedStart();
+                        StartTime = DateTime.UtcNow;
                     }
-
                     break;
-                // Spawning state
-                case ScriptState.SpawningFirstWave:
-                {
-                    for (var i = 0; i <= 5; i++)
-                    {
-                        if (!Subject.Template.Bounds.TryGetRandomPoint(pt => !Subject.IsWall(pt), out var point))
-                            continue;
-                        
-                        var monster = MonsterFactory.Create("mainstory_firstwave", Subject, point);
-                        Subject.AddEntity(monster, monster);
-                    }
 
-                    // Set the state to spawned
+                case ScriptState.SpawningFirstWave:
+                    StartWave("Miraelis: Let's see how you handle some minions.");
+                    SpawnMonsters("mainstory_firstwave", 6);
                     State = ScriptState.SpawnedFirstWave;
                     break;
-                }
 
-                    break;
-                // Spawned state
                 case ScriptState.SpawnedFirstWave:
-                {
-                    // Check if there are any Aislings in the subject
-                    if (!Subject.GetEntities<Aisling>().Any())
+                    if (CheckAislingDeaths() || CheckAllMonstersCleared(CombatTrial.FinishedFirst))
                     {
-                        // Get all monsters in the subject
-                        var monsters = Subject.GetEntities<Monster>().ToList();
-
-                        // Remove all monsters from the subject
-                        foreach (var monster in monsters)
-                            Subject.RemoveEntity(monster);
-
-                        // Set the state to dormant
-                        State = ScriptState.Dormant;
-                    }
-
-                    if (!Subject.GetEntities<Monster>().Any(x => x.Script.Is<PetScript>()))
-                    {
-                        foreach (var aisling in Subject.GetEntities<Aisling>())
-                        {
-                            aisling.Trackers.Enums.Set(CombatTrial.FinishedFirst);
-                        }
-
                         State = ScriptState.DelayedStart;
+                        StartTime = DateTime.UtcNow;
                     }
-
                     break;
-                }
 
-            case ScriptState.SpawningSecondWave:
-                {
-                    foreach (var aisling in Subject.GetEntities<Aisling>())
-                        // Send an orange bar message to the Aisling
-                        aisling.SendMessage("Theselene: You won't make it through this.");
-                    
-                    for (var i = 0; i <= 5; i++)
-                    {
-                        if (!Subject.Template.Bounds.TryGetRandomPoint(pt => !Subject.IsWall(pt), out var point))
-                            continue;
-                        
-                        var monster = MonsterFactory.Create("mainstory_secondwave", Subject, point);
-                        Subject.AddEntity(monster, monster);
-                    }
-
-                    // Set the state to spawned
+                case ScriptState.SpawningSecondWave:
+                    StartWave("Theselene: You won't make it through this.");
+                    SpawnMonsters("mainstory_secondwave", 4);
                     State = ScriptState.SpawnedSecondWave;
                     break;
-                }
 
-                    break;
-                // Spawned state
                 case ScriptState.SpawnedSecondWave:
-                    // Check if there are any Aislings in the subject
-                    if (!Subject.GetEntities<Aisling>().Any())
+                    if (CheckAislingDeaths() || CheckAllMonstersCleared(CombatTrial.FinishedSecond))
                     {
-                        // Get all monsters in the subject
-                        var monsters = Subject.GetEntities<Monster>().ToList();
-
-                        // Remove all monsters from the subject
-                        foreach (var monster in monsters)
-                            Subject.RemoveEntity(monster);
-
-                        // Set the state to dormant
-                        State = ScriptState.Dormant;
-                    }
-
-                    if (!Subject.GetEntities<Monster>().Any(x => x.Script.Is<PetScript>()))
-                    {
-                        foreach (var aisling in Subject.GetEntities<Aisling>())
-                        {
-                            aisling.Trackers.Enums.Set(CombatTrial.FinishedSecond);
-                        }
                         State = ScriptState.DelayedStart;
+                        StartTime = DateTime.UtcNow;
                     }
                     break;
-                
+
                 case ScriptState.SpawningThirdWave:
-                {
-                    foreach (var aisling in Subject.GetEntities<Aisling>())
-                        // Send an orange bar message to the Aisling
-                        aisling.SendMessage("Serendael: Good luck, you'll need it.");
-                    
-                    for (var i = 0; i <= 5; i++)
-                    {
-                        if (!Subject.Template.Bounds.TryGetRandomPoint(pt => !Subject.IsWall(pt), out var point))
-                            continue;
-                        
-                        var monster = MonsterFactory.Create("mainstory_thirdwave", Subject, point);
-                        Subject.AddEntity(monster, monster);
-                    }
-
-                    // Set the state to spawned
-                    State = ScriptState.SpawnedSecondWave;
+                    StartWave("Serendael: Good luck, you'll need it.");
+                    SpawnMonsters("mainstory_thirdwave", 3);
+                    State = ScriptState.SpawnedThirdWave;
                     break;
-                }
 
-                    break;
-                // Spawned state
                 case ScriptState.SpawnedThirdWave:
-                    // Check if there are any Aislings in the subject
-                    if (!Subject.GetEntities<Aisling>().Any())
+                    if (CheckAislingDeaths() || CheckAllMonstersCleared(CombatTrial.FinishedThird))
                     {
-                        // Get all monsters in the subject
-                        var monsters = Subject.GetEntities<Monster>().ToList();
-
-                        // Remove all monsters from the subject
-                        foreach (var monster in monsters)
-                            Subject.RemoveEntity(monster);
-
-                        // Set the state to dormant
-                        State = ScriptState.Dormant;
-                    }
-
-                    if (!Subject.GetEntities<Monster>().Any(x => x.Script.Is<PetScript>()))
-                    {
-                        foreach (var aisling in Subject.GetEntities<Aisling>())
-                        {
-                            aisling.Trackers.Enums.Set(CombatTrial.FinishedThird);
-                        }
                         State = ScriptState.DelayedStart;
+                        StartTime = DateTime.UtcNow;
                     }
                     break;
-                
-                case ScriptState.SpawningFourthWave:
-                {
-                    foreach (var aisling in Subject.GetEntities<Aisling>())
-                        // Send an orange bar message to the Aisling
-                        aisling.SendMessage("Skandara: You really are stubborn.");
-                    
-                    for (var i = 0; i <= 5; i++)
-                    {
-                        if (!Subject.Template.Bounds.TryGetRandomPoint(pt => !Subject.IsWall(pt), out var point))
-                            continue;
-                        
-                        var monster = MonsterFactory.Create("mainstory_fourthwave", Subject, point);
-                        Subject.AddEntity(monster, monster);
-                    }
 
-                    // Set the state to spawned
+                case ScriptState.SpawningFourthWave:
+                    StartWave("Skandara: You really are stubborn.");
+                    SpawnMonsters("mainstory_fourthwave", 5);
                     State = ScriptState.SpawnedFourthWave;
                     break;
-                }
-                // Spawned state
+
                 case ScriptState.SpawnedFourthWave:
-                    // Check if there are any Aislings in the subject
-                    if (!Subject.GetEntities<Aisling>().Any())
+                    if (CheckAislingDeaths() || CheckAllMonstersCleared(CombatTrial.FinishedFourth))
                     {
-                        // Get all monsters in the subject
-                        var monsters = Subject.GetEntities<Monster>().ToList();
-
-                        // Remove all monsters from the subject
-                        foreach (var monster in monsters)
-                            Subject.RemoveEntity(monster);
-
-                        // Set the state to dormant
-                        State = ScriptState.Dormant;
-                    }
-
-                    if (!Subject.GetEntities<Monster>().Any(x => x.Script.Is<PetScript>()))
-                    {
-                        foreach (var aisling in Subject.GetEntities<Aisling>())
-                        {
-                            aisling.Trackers.Enums.Set(CombatTrial.FinishedFourth);
-                        }
                         State = ScriptState.DelayedStart;
+                        StartTime = DateTime.UtcNow;
                     }
                     break;
-                
-                case ScriptState.SpawningFifthWave:
-                {
-                    foreach (var aisling in Subject.GetEntities<Aisling>())
-                        // Send an orange bar message to the Aisling
-                        aisling.SendMessage("Miraelis: The Gods will not hold back.");
-                    
-                    for (var i = 0; i <= 5; i++)
-                    {
-                        if (!Subject.Template.Bounds.TryGetRandomPoint(pt => !Subject.IsWall(pt), out var point))
-                            continue;
-                        
-                        var monster = MonsterFactory.Create("mainstory_fifthwave", Subject, point);
-                        Subject.AddEntity(monster, monster);
-                    }
 
-                    // Set the state to spawned
+                case ScriptState.SpawningFifthWave:
+                    StartWave("Miraelis: The Gods will not hold back.");
+                    SpawnMonsters(["mainstory_fifthwave1", "mainstory_fifthwave2", "mainstory_fifthwave3", "mainstory_fifthwave4"
+                    ], 2);
                     State = ScriptState.SpawnedFifthWave;
                     break;
-                }
-                // Spawned state
+
                 case ScriptState.SpawnedFifthWave:
-                    // Check if there are any Aislings in the subject
-                    if (!Subject.GetEntities<Aisling>().Any())
+                    if (CheckAislingDeaths() || CheckAllMonstersCleared(CombatTrial.FinishedFifth))
                     {
-                        // Get all monsters in the subject
-                        var monsters = Subject.GetEntities<Monster>().ToList();
-
-                        // Remove all monsters from the subject
-                        foreach (var monster in monsters)
-                            Subject.RemoveEntity(monster);
-
-                        // Set the state to dormant
-                        State = ScriptState.Dormant;
-                    }
-
-                    if (!Subject.GetEntities<Monster>().Any(x => x.Script.Is<PetScript>()))
-                    {
-                        foreach (var aisling in Subject.GetEntities<Aisling>())
-                        {
-                            aisling.Trackers.Enums.Set(CombatTrial.FinishedFifth);
-                        }
-                        State = ScriptState.DelayedStart;
+                        State = ScriptState.CompletedTrial;
                     }
                     break;
+
+                case ScriptState.CompletedTrial:
+                    HandleCompletedTrial();
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
+        }
+
+        private void StartWave(string message)
+        {
+            foreach (var aisling in Subject.GetEntities<Aisling>())
+            {
+                aisling.SendMessage(message);
+            }
+        }
+
+        private void SpawnMonsters(string monsterType, int count)
+        {
+            for (var i = 0; i < count; i++)
+            {
+                if (Subject.Template.Bounds.TryGetRandomPoint(pt => !Subject.IsWall(pt), out var point))
+                {
+                    var monster = MonsterFactory.Create(monsterType, Subject, point);
+                    Subject.AddEntity(monster, monster);
+                }
+            }
+        }
+
+        private void SpawnMonsters(string[] monsterTypes, int count)
+        {
+            foreach (var monsterType in monsterTypes)
+            {
+                for (var i = 0; i < count; i++)
+                {
+                    if (Subject.Template.Bounds.TryGetRandomPoint(pt => !Subject.IsWall(pt), out var point))
+                    {
+                        var monster = MonsterFactory.Create(monsterType, Subject, point);
+                        Subject.AddEntity(monster, monster);
+                    }
+                }
+            }
+        }
+
+        private bool CheckAislingDeaths()
+        {
+            if (Subject.GetEntities<Aisling>().Any(a => a.IsDead))
+            {
+                foreach (var aisling in Subject.GetEntities<Aisling>())
+                {
+                    var mapInstance = SimpleCache.Get<MapInstance>("godsrealm");
+                    var point = new Point(16, 16);
+                    aisling.TraverseMap(mapInstance, point);
+                    aisling.IsDead = false;
+                    aisling.StatSheet.SetHealthPct(25);
+                    aisling.StatSheet.SetManaPct(25);
+                    aisling.Client.SendAttributes(StatUpdateType.Vitality);
+                    aisling.Trackers.TimedEvents.AddEvent("combattrialcd", TimeSpan.FromHours(1), true);
+                    aisling.SendActiveMessage("Miraelis revives you.");
+                    aisling.Refresh();
+                }
+                return true;
+            }
+            return false;
+        }
+
+        private bool CheckAllMonstersCleared(CombatTrial trial)
+        {
+            if (!Subject.GetEntities<Monster>().Any(m => !m.Script.Is<PetScript>()))
+            {
+                foreach (var aisling in Subject.GetEntities<Aisling>())
+                {
+                    aisling.Trackers.Enums.Set(trial);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        private void HandleCompletedTrial()
+        {
+            if (!Subject.GetEntities<Aisling>().Any())
+            {
+                ClearMonsters();
+                State = ScriptState.Dormant;
+            }
+            else if (!Subject.GetEntities<Monster>().Any(m => !m.Script.Is<PetScript>()))
+            {
+                foreach (var aisling in Subject.GetEntities<Aisling>())
+                {
+                    aisling.Trackers.Enums.Set(CombatTrial.FinishedTrial);
+                    var mapInstance = SimpleCache.Get<MapInstance>("godsrealm");
+                    var point = new Point(16, 16);
+                    aisling.TraverseMap(mapInstance, point);
+                    aisling.SendOrangeBarMessage("Congratulations! You have completed the Combat Trial!");
+                }
+                ClearMonsters();
+                State = ScriptState.Dormant;
+                StartTime = null;
+            }
+        }
+
+        private void ClearMonsters()
+        {
+            foreach (var monster in Subject.GetEntities<Monster>())
+            {
+                Subject.RemoveEntity(monster);
+            }
+        }
+        public void StartCombatTrial()
+        {
+            StartTime = DateTime.UtcNow; // Set the start time to the current UTC time
+            State = ScriptState.DelayedStart; // Set the state to DelayedStart to begin the trial
+            UpdateTimer.Reset(); // Reset the update timer
+            CombatTimer.Reset(); // Reset the combat timer
+        }
+        
+        private ScriptState GetNextStateAfterDelayedStart()
+        {
+            foreach (var aisling in Subject.GetEntities<Aisling>())
+            {
+                if (aisling.Trackers.Enums.HasValue(CombatTrial.FinishedFirst))
+                {
+                    return ScriptState.SpawningSecondWave;
+                }
+                else if (aisling.Trackers.Enums.HasValue(CombatTrial.FinishedSecond))
+                {
+                    return ScriptState.SpawningThirdWave;
+                }
+                else if (aisling.Trackers.Enums.HasValue(CombatTrial.FinishedThird))
+                {
+                    return ScriptState.SpawningFourthWave;
+                }
+                else if (aisling.Trackers.Enums.HasValue(CombatTrial.FinishedFourth))
+                {
+                    return ScriptState.SpawningFifthWave;
+                }
+                else if (aisling.Trackers.Enums.HasValue(CombatTrial.FinishedFifth))
+                {
+                    return ScriptState.CompletedTrial;
+                }
+            }
+
+            // If no specific trial has finished, return SpawningFirstWave as default
+            return ScriptState.SpawningFirstWave;
         }
     }
 
-    private enum ScriptState
+    public enum ScriptState
     {
         Dormant,
         DelayedStart,

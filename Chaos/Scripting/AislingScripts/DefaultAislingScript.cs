@@ -49,7 +49,11 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "Lava Arena",
         "Lava Arena - Teams",
         "Color Clash - Teams",
-        "Escort - Teams"
+        "Escort - Teams",
+        "Trial of Sacrifice",
+        "Trial of Combat",
+        "Trial of Luck",
+        "Trial of Intelligence"
     ];
 
     private readonly IMerchantFactory MerchantFactory;

@@ -1533,6 +1533,18 @@ public enum CombatTrial
     FinishedTrial = 12
 }
 
+public enum LuckTrial
+{
+    None,
+    StartedTrial = 1,
+    BadDoor = 2,
+    SucceededFirst = 3,
+    SucceededSecond = 4,
+    SucceededThird = 5,
+    CompletedTrial = 6,
+    CompletedTrial2 = 7
+}
+
 [Flags]
 public enum MainstoryFlags
 {
