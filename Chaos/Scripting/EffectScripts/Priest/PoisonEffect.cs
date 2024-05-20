@@ -15,7 +15,7 @@ public class PoisonEffect : ContinuousAnimationEffectBase
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
-        TargetAnimation = 247
+        TargetAnimation = 465
     };
 
     /// <inheritdoc />
@@ -34,7 +34,7 @@ public class PoisonEffect : ContinuousAnimationEffectBase
         double maxHp = Subject.StatSheet.MaximumHp;
         const double DAMAGE_PERCENTAGE = 0.01;
         const int DAMAGE_CAP = 500;
-
+        
         var damage = (int)Math.Min(maxHp * DAMAGE_PERCENTAGE, DAMAGE_CAP);
 
         if (Subject.StatSheet.CurrentHp <= damage)
@@ -42,5 +42,7 @@ public class PoisonEffect : ContinuousAnimationEffectBase
 
         if (Subject.StatSheet.TrySubtractHp(damage))
             AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        
+        Subject.Animate(Animation);
     }
 }

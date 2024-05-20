@@ -38,7 +38,7 @@ public sealed class BeagSuainEffect : ContinuousAnimationEffectBase, Hierarchica
             "After taking a strike, you feel as though you cannot move.");
 
     /// <inheritdoc />
-    protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
+    protected override void OnIntervalElapsed() => Subject.Animate(Animation);
 
     public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.");
     public override bool ShouldApply(Creature source, Creature target)

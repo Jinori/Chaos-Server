@@ -30,7 +30,11 @@ public sealed class BeagPramhEffect : ContinuousAnimationEffectBase
     public override void OnApplied() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your eyelids become heavy.");
 
     /// <inheritdoc />
-    protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
+    protected override void OnIntervalElapsed()
+    {
+        Subject.Animate(Animation);
+        AislingSubject?.Client.SendCancelCasting();  
+    } 
 
     public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You awake from your slumber.");
 

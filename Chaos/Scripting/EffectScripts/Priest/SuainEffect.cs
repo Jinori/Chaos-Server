@@ -28,7 +28,11 @@ public sealed class SuainEffect : ContinuousAnimationEffectBase
     public override void OnApplied() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel ice run through your veins.");
 
     /// <inheritdoc />
-    protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
+    protected override void OnIntervalElapsed()
+    {
+        Subject.Animate(Animation);
+        AislingSubject?.Client.SendCancelCasting();  
+    } 
 
     public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.");
 }

@@ -18,7 +18,7 @@ public class MorAiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
         "beag naomh aite"
     ];
     
-    private Animation? Animation { get; } = new()
+    private Animation Animation { get; } = new()
     {
         TargetAnimation = 413,
         AnimationSpeed = 100
@@ -32,7 +32,7 @@ public class MorAiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
     {
         base.OnApplied();
 
-        Subject.Animate(Animation!);
+        Subject.Animate(Animation);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your defenses have been blessed.");
     }
