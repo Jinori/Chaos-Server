@@ -12,7 +12,7 @@ namespace Chaos.Scripting.EffectScripts.Wizard;
 public class ArdCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(3);
-    protected Animation? Animation { get; } = new()
+    protected Animation Animation { get; } = new()
     {
         TargetAnimation = 486,
         AnimationSpeed = 100
@@ -38,6 +38,7 @@ public class ArdCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
             MagicResistance = 30
         };
 
+        Subject.Animate(Animation);
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've been cursed by {Subject.Name} AC and MR lowered!");

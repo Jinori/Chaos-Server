@@ -116,7 +116,7 @@ public class PetCollarScript(
             Int = source.StatSheet.EffectiveInt + source.StatSheet.Level,
             Str = source.StatSheet.EffectiveStr + source.StatSheet.Level,
             Wis = source.StatSheet.EffectiveWis + source.StatSheet.Level,
-            AtkSpeedPct = source.StatSheet.Level,
+            AtkSpeedPct = source.StatSheet.Level / 2,
             MaximumHp = source.StatSheet.Level * 1000 / 7 + 1000,
             MaximumMp = source.StatSheet.Level * 500 / 7 + 1000
         };
