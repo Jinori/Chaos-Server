@@ -1,32 +1,33 @@
 ﻿using Chaos.Common.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Components.EffectComponents;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class MistEffect : EffectBase
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(10);
+    protected int ArmorClassSaved;
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(10);
     public override byte Icon => 18;
     public override string Name => "mist";
+    public int GetAcReduction() => (int)Math.Round(-3 - (15.0 / 98.0) * (Subject.StatSheet.Level - 1));
 
     public override void OnApplied()
     {
         base.OnApplied();
-
-        var attributesToSubtract = new Attributes
-        {
-            Ac = 20
-        };
+        ArmorClassSaved = GetAcReduction();
 
         var attributesToAdd = new Attributes
         {
+            Ac = ArmorClassSaved,
             MagicResistance = -20
         };
-
-        Subject.StatSheet.SubtractBonus(attributesToSubtract);
+        
         Subject.StatSheet.AddBonus(attributesToAdd);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor increased while magic resist decreased.");
@@ -38,28 +39,23 @@ public class MistEffect : EffectBase
     {
         var attributesToSubtract = new Attributes
         {
-            MagicResistance = 20
-        };
-
-        var attributesToAdd = new Attributes
-        {
-            Ac = 20
+            MagicResistance = 20,
+            Ac = ArmorClassSaved
         };
 
         Subject.StatSheet.SubtractMp(100);
         Subject.StatSheet.SubtractBonus(attributesToSubtract);
-        Subject.StatSheet.AddBonus(attributesToAdd);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor and MR has returned to normal.");
     }
-
+    
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("mist"))
+        if (source.Effects.Contains("mist"))
         {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Mist has already been applied.");
+            source.Effects.Dispel("mist");
 
-            return false;
+            return true;
         }
 
         return true;

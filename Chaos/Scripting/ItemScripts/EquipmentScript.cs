@@ -24,6 +24,7 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
             return true;
 
         if (source.SkillBook.Contains(skillName)) return true;
+
         source.SendOrangeBarMessage($"You do not have the skill to wield it.");
         return false;
     }
@@ -35,6 +36,12 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
         // Check if the item is a shield
         if (template.Category.Contains("Shield"))
         {
+            if (source.UserStatSheet.BaseClass == BaseClass.Monk)
+            {
+                source.SendOrangeBarMessage("Agility and discipline, not shields, for protection.");
+                return;   
+            }
+            
             // Ensure the character is not already equipped with a staff
             if (source.Equipment.TryGetObject((byte)EquipmentSlot.Weapon, out var item))
             {

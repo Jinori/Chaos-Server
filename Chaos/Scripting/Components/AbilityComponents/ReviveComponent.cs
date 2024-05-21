@@ -1,8 +1,10 @@
-using System.Reactive.Subjects;
 using Chaos.Common.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
+using Chaos.Models.Panel;
 using Chaos.Models.World;
+using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 
@@ -28,6 +30,7 @@ public class ReviveComponent : IComponent
 
                 if ((context.Source.Id == target.Id) && !target.IsAlive)
                 {
+                    
                     target.Trackers.TimedEvents.AddEvent("revivedrecently", TimeSpan.FromMinutes(30));
                     target.IsDead = false;
                     target.StatSheet.SetHealthPct(25);
@@ -51,7 +54,20 @@ public class ReviveComponent : IComponent
                     return;
                 }
                 
-                target.Trackers.TimedEvents.AddEvent("revivedrecently", TimeSpan.FromMinutes(30));
+                var reviveScript = options.SourceScript.As<SubjectiveScriptBase<Spell>>();
+                
+                switch (reviveScript?.Subject.Template.TemplateKey)
+                {
+                    case "beothaich":
+                        target.Trackers.TimedEvents.AddEvent("revivedrecently", TimeSpan.FromMinutes(30));
+
+                        break;
+                    case "revive":
+                        target.Trackers.TimedEvents.AddEvent("revivedrecently", TimeSpan.FromMinutes(25));
+
+                        break;
+                }
+
                 target.IsDead = false;
                 target.StatSheet.SetHealthPct(50);
                 target.StatSheet.SetManaPct(50);
@@ -63,6 +79,7 @@ public class ReviveComponent : IComponent
 
     public interface IReviveComponentOptions
     {
+        IScript SourceScript { get; init; }
         public bool ReviveSelf { get; init; }
     }
 }

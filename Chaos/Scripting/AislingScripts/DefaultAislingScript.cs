@@ -184,16 +184,16 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     public override void OnAttacked(Creature source, int damage)
     {
 
-        if (Subject.Effects.Contains("pramh"))
+        if (Subject.IsPramhed())
+        {
             Subject.Effects.Dispel("pramh");
-
-        if (Subject.Effects.Contains("beagpramh"))
             Subject.Effects.Dispel("beagpramh");
+        }
 
         if (Subject.Effects.Contains("wolfFangFist"))
             Subject.Effects.Dispel("wolfFangFist");
 
-        if (Subject.Effects.Contains("thunderstance"))
+        if (Subject.IsThunderStanced())
         {
             var result = damage * 30;
 
@@ -207,9 +207,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 monster.AggroList.AddOrUpdate(Subject.Id, _ => result, (_, currentAggro) => currentAggro + result);
         }
 
-        if (Subject.Effects.Contains("miststance"))
+        if (Subject.IsMistStanced())
         {
-            var result = damage * .15m;
+            var result = Math.Round(damage * 0.15m);
 
             if (Subject.Group is not null)
                 foreach (var person in Subject.Group)
@@ -218,9 +218,11 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
                     ApplyHealScript.ApplyHeal(
                         source,
-                        Subject,
+                        person,
                         this,
                         (int)result);
+
+                    person.SendMessage($"Mist heals you for {result}.");
                 }
             else
             {
@@ -231,10 +233,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     Subject,
                     this,
                     (int)result);
+
+                Subject.SendMessage($"Mist heals you for {result}.");
             }
         }
 
-        if (Subject.Effects.Contains("laststand"))
+        if (Subject.IsInLastStand())
             if (damage >= Subject.StatSheet.CurrentHp)
             {
                 Subject.StatSheet.SetHp(1);
@@ -250,7 +254,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             return;
         }
 
-        if (Subject.Effects.Contains("rumination"))
+        if (Subject.IsRuminating())
         {
             Subject.Effects.Dispel("rumination");
             Subject.SendOrangeBarMessage("Taking damage ended your rumination.");

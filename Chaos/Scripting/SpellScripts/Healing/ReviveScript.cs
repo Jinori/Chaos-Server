@@ -3,6 +3,7 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
+using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.SpellScripts.Abstractions;
@@ -37,6 +38,8 @@ public class ReviveScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public int Range { get; init; }
     /// <inheritdoc />
+    public IScript SourceScript { get; init; }
+    /// <inheritdoc />
     public bool ReviveSelf { get; init; }
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
@@ -50,7 +53,8 @@ public class ReviveScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public ReviveScript(Spell subject)
-        : base(subject) { }
+        : base(subject) =>
+        SourceScript = this;
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context) =>

@@ -10,6 +10,7 @@ namespace Chaos.Scripting.EffectScripts.Rogue;
 public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(25);
+    protected int AttackSpeedSaved;
     protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 88,
@@ -28,11 +29,11 @@ public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
     {
         base.OnApplied();
 
-        var atkSpeed = Math.Ceiling((double)Subject.StatSheet.EffectiveDex / 10 + 10);
+        AttackSpeedSaved = 10 + Subject.StatSheet.EffectiveDex / 10;
 
         var attributes = new Attributes
         {
-            AtkSpeedPct = (int)atkSpeed
+            AtkSpeedPct = AttackSpeedSaved
         };
 
         Subject.StatSheet.AddBonus(attributes);
@@ -46,7 +47,7 @@ public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
     {
         var attributes = new Attributes
         {
-            AtkSpeedPct = 10 + Subject.StatSheet.Dex / 10
+            AtkSpeedPct = AttackSpeedSaved
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
