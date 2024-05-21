@@ -14,10 +14,10 @@ namespace Chaos.Scripting.DialogScripts.Quests.Astrid;
 
 public class AstridKillQuestScript : DialogScriptBase
 {
-    private readonly ILogger<theSacrificeQuestScript> Logger;
+    private readonly ILogger<TheSacrificeQuestScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public AstridKillQuestScript(Dialog subject, ILogger<theSacrificeQuestScript> logger) 
+    public AstridKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> logger) 
         : base(subject)
     {
         Logger = logger;

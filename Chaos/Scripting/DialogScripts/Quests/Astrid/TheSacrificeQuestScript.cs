@@ -13,12 +13,12 @@ using Humanizer;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Astrid;
 
-public class theSacrificeQuestScript : DialogScriptBase
+public class TheSacrificeQuestScript : DialogScriptBase
 {
-    private readonly ILogger<theSacrificeQuestScript> Logger;
+    private readonly ILogger<TheSacrificeQuestScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public theSacrificeQuestScript(Dialog subject, ILogger<theSacrificeQuestScript> logger) 
+    public TheSacrificeQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> logger) 
         : base(subject)
     {
         Logger = logger;
@@ -29,8 +29,8 @@ public class theSacrificeQuestScript : DialogScriptBase
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out TheSacrificeQuestStage stage);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-        var tenPercent = Convert.ToInt32(.10 * tnl);
-        var seventyfivePercent = Convert.ToInt32(.75 * tnl);
+        var fivePercent = Convert.ToInt32(.5 * tnl);
+        var fiftyPercent = Convert.ToInt32(.5 * tnl);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -70,7 +70,7 @@ public class theSacrificeQuestScript : DialogScriptBase
                     
                     if (numFlags >= 3)
                     {
-                        var experience = (numFlags * tenPercent);
+                        var experience = (numFlags * fivePercent);
                         
                         Logger.WithTopics(
                                 Topics.Entities.Aisling,
@@ -113,7 +113,7 @@ public class theSacrificeQuestScript : DialogScriptBase
                         captorkills1 = Math.Min(captorkills1, 25);
                         captorkills2 = Math.Min(captorkills2, 25);
 
-                        var experience = captorkills1 * 1000 + captorkills2 * 2000 + tenPercent;
+                        var experience = captorkills1 * 1000 + captorkills2 * 2000 + fivePercent;
 
                         Subject.Reply(source, $"You killed {killamount.ToWords()} captors! That'll hurt them for sure! They will think twice about taking our kids again! Thank you for your heroic actions.", "chloe_initial");
 
@@ -152,11 +152,11 @@ public class theSacrificeQuestScript : DialogScriptBase
                                 Topics.Entities.Quest)
                             .WithProperty(source)
                             .WithProperty(Subject)
-                            .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, seventyfivePercent);
+                            .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, fiftyPercent);
 
                         Subject.Reply(source, $"Wow! You saved a child! Thank you so much Aisling!", "chloe_initial");
                         source.TryGiveGamePoints(5);
-                        ExperienceDistributionScript.GiveExp(source, seventyfivePercent);
+                        ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                         source.Trackers.Flags.RemoveFlag(SavedChild.savedchild);
                         source.Trackers.Enums.Set(TheSacrificeQuestStage.None);
                         source.Trackers.TimedEvents.AddEvent("thesacrificecd", TimeSpan.FromHours(8), true);

@@ -426,7 +426,7 @@ public class SupplyLouresArmy : DialogScriptBase
                 source.TryGiveGamePoints(10);
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
-                        "Betrayed Knight Thibault by telling the King.",
+                        "Betrayed Knight Thibault by telling the King",
                         "thibaultEnemy",
                         MarkIcon.Rogue,
                         MarkColor.Orange,

@@ -17,11 +17,11 @@ public class MotivateEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
     };
 
     /// <inheritdoc />
-    public List<string> EffectNameHierarchy { get; init; } = [ "motivate"];
+    public List<string> EffectNameHierarchy { get; init; } = ["Motivate"];
     public override byte Icon => 99;
     public override string Name => "Motivate";
     protected byte? Sound => 121;
-
+    
     public override void OnApplied()
     {
         base.OnApplied();

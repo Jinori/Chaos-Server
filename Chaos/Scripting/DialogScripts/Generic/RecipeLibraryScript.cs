@@ -292,7 +292,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 15 fruit of any type, 5 vegetable of any type, and 2 flour.",
+                            } requires 15 fruit of any type, 5 vegetable of any type, and 1 flour.",
                             "cookbook");
 
                         return;
