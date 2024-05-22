@@ -821,7 +821,7 @@ public class CookItemScript : DialogScriptBase
                 #region addextraingredients
                 case "extraingredients_initial":
                 {
-                    if (source.Inventory.HasCountByTemplateKey("flour", 2))
+                    if (source.Inventory.HasCountByTemplateKey("flour", 1))
                     {
                         var item = ItemFactory.CreateFaux("flour");
                         Subject.Items.Add(ItemDetails.DisplayRecipe(item));
