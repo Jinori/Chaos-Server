@@ -59,11 +59,11 @@ public class ReviveComponent : IComponent
                 switch (reviveScript?.Subject.Template.TemplateKey)
                 {
                     case "beothaich":
-                        target.Trackers.TimedEvents.AddEvent("revivedrecently", TimeSpan.FromMinutes(30));
+                        target.Trackers.TimedEvents.AddEvent("revivedrecently", TimeSpan.FromMinutes(30), true);
 
                         break;
                     case "revive":
-                        target.Trackers.TimedEvents.AddEvent("revivedrecently", TimeSpan.FromMinutes(25));
+                        target.Trackers.TimedEvents.AddEvent("revivedrecently", TimeSpan.FromMinutes(15), true);
 
                         break;
                 }
