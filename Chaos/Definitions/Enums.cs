@@ -1545,6 +1545,14 @@ public enum LuckTrial
     CompletedTrial2 = 7
 }
 
+public enum IntelligenceTrial
+{
+    None, 
+    StartedTrial = 1,
+    CompletedTrial = 2,
+    CompletedTrial2 = 3
+}
+
 [Flags]
 public enum MainstoryFlags
 {
