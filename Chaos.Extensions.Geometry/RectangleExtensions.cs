@@ -98,6 +98,12 @@ public static class RectangleExtensions
         var discoveryQueue = new Stack<Point>();
         var mazeRect = new Rectangle(0, 0, width, height);
 
+        var mazeRect = new Rectangle(
+            0,
+            0,
+            width,
+            height);
+
         //initialize maze full of walls
         for (var x = 0; x < maze.GetLength(0); x++)
             for (var y = 0; y < maze.GetLength(1); y++)
@@ -165,9 +171,10 @@ public static class RectangleExtensions
                 (arr[i], arr[j]) = (arr[j], arr[i]);
             }
         }
-        
-        static Point OffsetCoordinates(IRectangle rect, IPoint point) => new Point(point.X + rect.Left, point.Y + rect.Top);
-        static Point UnOffsetCoordinates(IRectangle rect, IPoint point) => new Point(point.X - rect.Left, point.Y - rect.Top);
+
+        static Point OffsetCoordinates(IRectangle rect, IPoint point) => new(point.X + rect.Left, point.Y + rect.Top);
+
+        static Point UnOffsetCoordinates(IRectangle rect, IPoint point) => new(point.X - rect.Left, point.Y - rect.Top);
     }
 
     /// <summary>
