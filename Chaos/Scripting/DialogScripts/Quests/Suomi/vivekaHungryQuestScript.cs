@@ -130,7 +130,7 @@ public class VivekaHungryQuestScript : DialogScriptBase
                         source.Trackers.TimedEvents.AddEvent("vivekahungrycd", TimeSpan.FromHours(24), true);
                         var wine1 = ItemFactory.Create("wine");
                         var wine2 = ItemFactory.Create("wine");
-                        source.GiveItemOrSendToBank(wine1); 
+                        source.GiveItemOrSendToBank(wine1);
                         source.GiveItemOrSendToBank(wine2);
 
                         Logger.WithTopics(
@@ -148,22 +148,21 @@ public class VivekaHungryQuestScript : DialogScriptBase
                                 15000);
 
                         ExperienceDistributionScript.GiveExp(source, 5000);
-                    }
 
+                        if (IntegerRandomizer.RollChance(8))
+                        {
+                            source.Legend.AddOrAccumulate(
+                                new LegendMark(
+                                    "Loved by Suomi Mundanes",
+                                    "SuomiLoved",
+                                    MarkIcon.Heart,
+                                    MarkColor.Blue,
+                                    1,
+                                    GameTime.Now));
 
-                    if (IntegerRandomizer.RollChance(8))
-                    {
-                        source.Legend.AddOrAccumulate(
-                            new LegendMark(
-                                "Loved by Suomi Mundanes",
-                                "SuomiLoved",
-                                MarkIcon.Heart,
-                                MarkColor.Blue,
-                                1,
-                                GameTime.Now));
-
-                        source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
-                            "You received a unique legend mark!");
+                            source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
+                                "You received a unique legend mark!");
+                        }
                     }
                 }
 

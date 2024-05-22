@@ -81,7 +81,7 @@ public static class RectangleExtensions
     /// </returns>
     public static IEnumerable<Point> GenerateMaze(this IRectangle rect, IPoint start, IPoint end)
     {
-        //neighbor pattern
+         //neighbor pattern
         List<(int, int)> pattern =
         [
             (0, 1),
@@ -92,10 +92,11 @@ public static class RectangleExtensions
 
         var height = rect.Height;
         var width = rect.Width;
-        var startNode = Point.From(start);
-        var endNode = Point.From(end);
+        var startNode = UnOffsetCoordinates(rect, start);
+        var endNode = UnOffsetCoordinates(rect, end);
         var maze = new bool[width, height];
         var discoveryQueue = new Stack<Point>();
+        var mazeRect = new Rectangle(0, 0, width, height);
 
         //initialize maze full of walls
         for (var x = 0; x < maze.GetLength(0); x++)
@@ -124,7 +125,7 @@ public static class RectangleExtensions
                 var target = new Point(current.X + dx * 2, current.Y + dy * 2);
 
                 //if the target is out of bounds or already carved, skip
-                if (!rect.Contains(target) || !maze[target.X, target.Y])
+                if (!mazeRect.Contains(target) || !maze[target.X, target.Y])
                     continue;
 
                 //carve out the wall between the current node and the target
@@ -149,9 +150,10 @@ public static class RectangleExtensions
         maze[endNode.X, endNode.Y] = false;
 
         //yield all walls in the maze
-        foreach (var point in rect.GetPoints())
-            if (maze[point.X, point.Y])
-                yield return point;
+        for (var x = 0; x < maze.GetLength(0); x++)
+            for (var y = 0; y < maze.GetLength(1); y++)
+                if (maze[x, y])
+                    yield return OffsetCoordinates(rect, new Point(x, y));
 
         yield break;
 
@@ -163,6 +165,9 @@ public static class RectangleExtensions
                 (arr[i], arr[j]) = (arr[j], arr[i]);
             }
         }
+        
+        static Point OffsetCoordinates(IRectangle rect, IPoint point) => new Point(point.X + rect.Left, point.Y + rect.Top);
+        static Point UnOffsetCoordinates(IRectangle rect, IPoint point) => new Point(point.X - rect.Left, point.Y - rect.Top);
     }
 
     /// <summary>
