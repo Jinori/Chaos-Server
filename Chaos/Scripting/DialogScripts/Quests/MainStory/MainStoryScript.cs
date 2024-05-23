@@ -552,6 +552,29 @@ public class MainStoryScript(
             #region Theselene
             case "mainstory_theselene_initial":
             {
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedSecondTrial))
+                {
+                    Subject.Reply(source, "Skip", "mainstory_theselene_starttrial1");
+                    return;
+                }
+
+                if (source.Trackers.Enums.HasValue(IntelligenceTrial.CompletedTrial))
+                {
+                    Subject.Reply(source, "Skip", "mainstory_theselene_finishedtrial1");
+                    return;
+                }
+                
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedThirdTrial))
+                {
+                    Subject.Reply(source, "Skip", "mainstory_theselene_retrytrial1");
+                    return;
+                }
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedThirdTrial))
+                {
+                    Subject.Reply(source, "Speak to Skandara about the Trial of Sacrifice.");
+                    return;
+                }
+                
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.SpokeToZephyr))
                 {
                     Subject.Reply(source, "Do not bother me, go speak to Goddess Miraelis.");
@@ -579,6 +602,48 @@ public class MainStoryScript(
                         "Skip", "mainstory_theselene_finisheda1");
                 }
                 break;
+            }
+            
+            case "mainstory_theselene_starttrial4":
+            {
+                Subject.Close(source);
+                
+                source.Trackers.Enums.Set(IntelligenceTrial.StartedTrial);
+                source.Trackers.Enums.Set(MainStoryEnums.StartedThirdTrial);
+                var mapinstance = SimpleCache.Get<MapInstance>("trialofintelligence");
+                var point = new Point(10, 27);
+                source.TraverseMap(mapinstance, point);
+                
+                return;
+            }
+            
+            case "mainstory_theselene_retrytrial1":
+            {
+                if (source.Trackers.TimedEvents.HasActiveEvent("intelligencetrialcd", out var cdtime))
+                {
+                    Subject.Reply(source, $"You have recently tried the Intelligence Trial. You can try again in {cdtime.Remaining.ToReadableString()}");
+                    return;
+                }
+                break;
+            }
+            
+            case "mainstory_theselene_retrytrial2":
+            {
+                Subject.Close(source);
+                source.Trackers.Enums.Set(IntelligenceTrial.StartedTrial);
+                source.Trackers.Enums.Set(MainStoryEnums.StartedThirdTrial);
+                var mapinstance = SimpleCache.Get<MapInstance>("trialofintelligence");
+                var point = new Point(10, 27);
+                source.TraverseMap(mapinstance, point);
+                return;
+            }
+
+            case "mainstory_theselene_finishedtrial2":
+            {
+                Subject.Close(source);
+                source.Trackers.Enums.Set(MainStoryEnums.FinishedThirdTrial);
+                source.Trackers.Enums.Remove<IntelligenceTrial>();
+                return;
             }
 
             case "mainstory_theselene_initial4":

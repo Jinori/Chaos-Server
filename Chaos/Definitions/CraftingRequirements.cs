@@ -4773,7 +4773,7 @@ public static class CraftingRequirements
     new Recipe()
     {
         Name = "Bronze Emerald Gauntlet",
-        TemplateKey = "bronzerubygauntlet",
+        TemplateKey = "bronzeemeraldgauntlet",
         Ingredients = new List<Ingredient>()
         {
             new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
@@ -4790,7 +4790,7 @@ public static class CraftingRequirements
     new Recipe()
     {
         Name = "Bronze Heartstone Gauntlet",
-        TemplateKey = "bronzerubygauntlet",
+        TemplateKey = "bronzeheartstonegauntlet",
         Ingredients = new List<Ingredient>()
         {
             new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
@@ -4807,7 +4807,7 @@ public static class CraftingRequirements
     new Recipe()
     {
         Name = "Bronze Beryl Gauntlet",
-        TemplateKey = "bronzerubygauntlet",
+        TemplateKey = "bronzeberylgauntlet",
         Ingredients = new List<Ingredient>()
         {
             new Ingredient { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },

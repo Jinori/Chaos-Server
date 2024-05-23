@@ -1,5 +1,7 @@
-﻿using Chaos.Collections;
+﻿using System.Diagnostics;
+using Chaos.Collections;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
@@ -22,7 +24,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
         private readonly IIntervalTimer UpdateTimer;
         private readonly TimeSpan IntelligenceTimer2 = TimeSpan.FromMinutes(8);
         private readonly IIntervalTimer IntelligenceTimer;
-        public const int LUCK_INTERVAL = 1;
+        public const int LUCK_INTERVAL = 8;
 
         public const int UPDATE_INTERVAL_MS = 1;
 
@@ -39,27 +41,34 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
         {
             if (creature is not Aisling aisling)
                 return;
-            
-            var rect = new Rectangle(
-                1,
-                7,
-                27,
-                27);
 
-            var start = new Point(12, 33);
-            var end = new Point(12, 7);
-
-            // Generate the maze walls
-            var mazeWalls = rect.GenerateMaze(start, end)
-                .ToList();
-
-            // Now use the walkablePoints to create and place reactors
-            foreach (var point in mazeWalls)
+            if (!Subject.GetEntities<Aisling>().Any(x => x.IsGodModeEnabled()))
             {
-                var reactor = ReactorTileFactory.Create("intelligencechallengereactor", Subject, point);
-                Subject.SimpleAdd(reactor);
+                var rect = new Rectangle(
+                    1,
+                    6,
+                    17,
+                    17);
+
+                var start = new Point(9, 22);
+                var end = new Point(9, 6);
+
+                // Generate the maze walls
+                var mazeWalls = rect.GenerateMaze(start, end)
+                    .ToList();
+
+                // Now use the walkablePoints to create and place reactors
+                foreach (var point in mazeWalls)
+                {
+                    var reactor = ReactorTileFactory.Create("intelligencechallengereactor", Subject, point);
+                    Subject.SimpleAdd(reactor);
+                }
             }
 
+            if (Subject.GetEntities<Aisling>().Any())
+            {
+                aisling.Trackers.Counters.Set("trialofintelligencelives", 5);
+            }
             // Check if the player has a specific quest flag and the trial is not already in progress
             if (aisling.Trackers.Enums.HasValue(MainStoryEnums.StartedThirdTrial) && State == ScriptState.Dormant)
             {
@@ -98,65 +107,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
                 {
                     NotifyRemainingTime(remainingTime);
                 }
-
-                // Switch statement to determine the current state of the script
-                switch (State)
-                {
-                    case ScriptState.Dormant:
-                        if (Subject.GetEntities<Aisling>()
-                            .Any(
-                                a => a.Trackers.Enums.HasValue(MainStoryEnums.StartedThirdTrial)))
-                        {
-                            State = ScriptState.DelayedStart;
-                        }
-
-                        break;
-                    // Delayed start state
-                    case ScriptState.DelayedStart:
-                        // Check if the start delay has been exceeded
-                        if (DateTime.UtcNow - StartTime > StartDelay)
-                        {
-                        }
-
-                        break;
-                    // Spawning state
-                    case ScriptState.SpawningReactors:
-                        // Spawn merchants for the current round
-                        State = ScriptState.SpawnedReactors;
-                        break;
-                    // Spawned state
-                    case ScriptState.SpawnedReactors:
-                    {
-
-                        if (!Subject.GetEntities<Aisling>().Any())
-                        {
-                            State = ScriptState.DelayedStart;
-                        }
-                        
-                        break;
-                    }
-
-                    case ScriptState.Completed:
-                    {
-                        foreach (var aisling in Subject.GetEntities<Aisling>())
-                        {
-                            aisling.Trackers.Enums.Set(IntelligenceTrial.CompletedTrial);
-                        }
-                    }
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
             }
-        }
-
-        private enum ScriptState
-        {
-            Dormant,
-            DelayedStart,
-            SpawningReactors,
-            SpawnedReactors,
-            Completed
         }
 
         private void NotifyRemainingTime(TimeSpan remainingTime)
@@ -171,16 +122,17 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
         {
             foreach (var aisling in Subject.GetEntities<Aisling>())
             {
-                if (aisling.Trackers.Enums.HasValue(LuckTrial.CompletedTrial))
+                if (aisling.Trackers.Enums.HasValue(IntelligenceTrial.CompletedTrial))
                     continue;
                 
                 var mapInstance = SimpleCache.Get<MapInstance>("godsrealm");
                 var point = new Point(16, 16);
                 aisling.TraverseMap(mapInstance, point);
-                aisling.SendOrangeBarMessage("Time is up. You failed the Luck Trial.");
-                aisling.Trackers.TimedEvents.AddEvent("lucktrialcd", TimeSpan.FromHours(1), true);
-                aisling.Trackers.Enums.Set(LuckTrial.None);
-                aisling.Trackers.Enums.Set(MainStoryEnums.StartedSecondTrial);
+                aisling.SendOrangeBarMessage("Time is up. You failed the Intelligence Trial.");
+                aisling.Trackers.TimedEvents.AddEvent("intelligencetrialcd", TimeSpan.FromHours(1), true);
+                aisling.Trackers.Enums.Set(IntelligenceTrial.None);
+                aisling.Trackers.Enums.Set(MainStoryEnums.StartedThirdTrial);
+                aisling.Trackers.Counters.Remove("trialofintelligencelives", out _);
             }
 
             StartTime = null;

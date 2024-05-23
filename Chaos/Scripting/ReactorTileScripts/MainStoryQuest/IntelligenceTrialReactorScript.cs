@@ -1,3 +1,5 @@
+using Chaos.Definitions;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -32,8 +34,28 @@ public class IntelligenceTrialReactorScript : ReactorTileScriptBase
 
         if (source.MapInstance.Name != "Trial of Intelligence")
             return;
-        aisling.SendOrangeBarMessage("You fall into a trap and restart the maze.");
-        aisling.WarpTo(new Point(12, 34));
+        var lifecounter = source.Trackers.Counters.TryGetValue("trialofintelligencelives", out var count);
+        if (!lifecounter)
+        {
+            // If the counter doesn't exist, initialize it to 5
+            count = 5;
+            aisling.Trackers.Counters.Set("trialofintelligencelives", count);
+        }
+
+        if (count < 1)
+        {
+            aisling.Trackers.Counters.Set("trialofintelligencelives", 5);
+            aisling.SendOrangeBarMessage("You are out of tries, restart the maze.");
+            aisling.WarpTo(new Point(9, 27));
+        }
+        else
+        {
+            var newcount = count - 1;
+            aisling.Trackers.Counters.Set("trialofintelligencelives", newcount);
+            aisling.SendOrangeBarMessage($"You have {newcount} tries left.");
+            var point = aisling.DirectionalOffset(source.Direction.Reverse());
+            aisling.WarpTo(point);
+        }
     }
 
     public override void Update(TimeSpan delta)
@@ -43,7 +65,7 @@ public class IntelligenceTrialReactorScript : ReactorTileScriptBase
         if (AdminTrapViewInterval.IntervalElapsed)
         {
             var nearbyAdmins = Map.GetEntitiesWithinRange<Aisling>(Subject)
-                .Where(aisling => aisling.IsAdmin);
+                .Where(aisling => aisling.Trackers.Enums.HasValue(GodMode.Yes));
 
             foreach (var nearbyAdmin in nearbyAdmins)
                 Subject.Animate(ViewAnimation);

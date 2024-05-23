@@ -40,8 +40,10 @@ public class GreetingScript(Merchant subject) : MerchantScriptBase(subject)
                 if (aisling.Trackers.TimedEvents.HasActiveEvent("CryptSlayerCd", out _))
                     return;
 
-                if (aisling.Trackers.Enums.TryGetValue(out RionaTutorialQuestStage stage) &&
-                    (stage == RionaTutorialQuestStage.StartedSkarn))
+                if (aisling.Trackers.Enums.HasValue(RionaTutorialQuestStage.StartedSkarn))
+                    return;
+
+                if (aisling.Trackers.Enums.HasValue(CryptSlayerStage.Completed))
                     return;
 
                 Subject.Say($"{source.Name}, I have a job for you.");
