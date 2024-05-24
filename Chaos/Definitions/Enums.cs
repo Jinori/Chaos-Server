@@ -1533,6 +1533,23 @@ public enum CombatTrial
     FinishedTrial = 12
 }
 
+public enum SacrificeTrial
+{
+    None,
+    StartedTrial = 1,
+    StartedFirst = 2,
+    FinishedFirst = 3,
+    StartedSecond = 4,
+    FinishedSecond = 5,
+    StartedThird = 6,
+    FinishedThird = 7,
+    StartedFourth = 8,
+    FinishedFourth = 9,
+    StartedFifth = 10,
+    FinishedFifth = 11,
+    FinishedTrial = 12
+}
+
 public enum LuckTrial
 {
     None,

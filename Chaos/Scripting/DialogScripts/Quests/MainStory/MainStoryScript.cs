@@ -7,7 +7,6 @@ using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.DialogScripts.Mileth;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
@@ -18,14 +17,11 @@ namespace Chaos.Scripting.DialogScripts.Quests.MainStory;
 public class MainStoryScript(
     Dialog subject,
     IItemFactory itemFactory,
-    ILogger<SpareAStickScript> logger,
     IMerchantFactory merchantFactory,
     ISimpleCache simpleCache,
     IDialogFactory dialogFactory)
     : DialogScriptBase(subject)
 {
-    private readonly ILogger<SpareAStickScript> Logger = logger;
-
     private readonly ISimpleCache SimpleCache = simpleCache;
 
     private IExperienceDistributionScript ExperienceDistributionScript { get; } =
@@ -306,7 +302,6 @@ public class MainStoryScript(
                 if (source.Trackers.TimedEvents.HasActiveEvent("combattrialcd", out var cdtime))
                 {
                     Subject.Reply(source, $"You have recently tried the Combat Trial. You can try again in {cdtime.Remaining.ToReadableString()}");
-                    return;
                 }
                 break;
             }
@@ -488,7 +483,6 @@ public class MainStoryScript(
                 if (source.Trackers.TimedEvents.HasActiveEvent("lucktrialcd", out var cdtime))
                 {
                     Subject.Reply(source, $"You have recently tried the Luck Trial. You can try again in {cdtime.Remaining.ToReadableString()}");
-                    return;
                 }
                 break;
             }
@@ -622,7 +616,6 @@ public class MainStoryScript(
                 if (source.Trackers.TimedEvents.HasActiveEvent("intelligencetrialcd", out var cdtime))
                 {
                     Subject.Reply(source, $"You have recently tried the Intelligence Trial. You can try again in {cdtime.Remaining.ToReadableString()}");
-                    return;
                 }
                 break;
             }
@@ -686,6 +679,23 @@ public class MainStoryScript(
             #region Skandara
             case "mainstory_skandara_initial":
             {
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedThirdTrial))
+                {
+                    Subject.Reply(source, "Skip", "mainstory_skandara_starttrial1");
+                    return;
+                }
+
+                if (source.Trackers.Enums.HasValue(SacrificeTrial.FinishedTrial))
+                {
+                    Subject.Reply(source, "Skip", "mainstory_skandara_finishedtrial1");
+                    return;
+                }
+                
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedFourthTrial))
+                {
+                    Subject.Reply(source, "Skip", "mainstory_skandara_retrytrial1");
+                    return;
+                }
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.SpokeToZephyr))
                 {
                     Subject.Reply(source, "I am not aware of why we are all here, please speak to Goddess Miraelis.");
@@ -711,6 +721,48 @@ public class MainStoryScript(
                 }
                 break;
             }
+            
+            case "mainstory_skandara_starttrial4":
+            {
+                Subject.Close(source);
+                
+                source.Trackers.Enums.Set(SacrificeTrial.StartedTrial);
+                source.Trackers.Enums.Set(MainStoryEnums.StartedFourthTrial);
+                var mapinstance = SimpleCache.Get<MapInstance>("trialofsacrifice");
+                var point = new Point(13, 13);
+                source.TraverseMap(mapinstance, point);
+                
+                return;
+            }
+            
+            case "mainstory_skandara_retrytrial1":
+            {
+                if (source.Trackers.TimedEvents.HasActiveEvent("sacrificetrialcd", out var cdtime))
+                {
+                    Subject.Reply(source, $"You have recently tried the Sacrifice Trial. You can try again in {cdtime.Remaining.ToReadableString()}");
+                }
+                break;
+            }
+            
+            case "mainstory_skandara_retrytrial2":
+            {
+                Subject.Close(source);
+                source.Trackers.Enums.Set(SacrificeTrial.StartedTrial);
+                source.Trackers.Enums.Set(MainStoryEnums.StartedFourthTrial);
+                var mapinstance = SimpleCache.Get<MapInstance>("trialofsacrifice");
+                var point = new Point(13, 13);
+                source.TraverseMap(mapinstance, point);
+                return;
+            }
+
+            case "mainstory_skandara_finishedtrial2":
+            {
+                Subject.Close(source);
+                source.Trackers.Enums.Set(MainStoryEnums.FinishedFourthTrial);
+                source.Trackers.Enums.Remove<SacrificeTrial>();
+                return;
+            }
+            
             case "mainstory_skandara_initial4":
             {
                 source.Trackers.Enums.Set(MainStoryEnums.StartedArtifact4);

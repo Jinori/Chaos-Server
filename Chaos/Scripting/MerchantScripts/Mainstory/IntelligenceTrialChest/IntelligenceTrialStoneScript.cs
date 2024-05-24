@@ -39,6 +39,7 @@ public class IntelligenceTrialStoneScript : MerchantScriptBase
                     var point = new Point(16, 16);
                     var mapinstance = SimpleCache.Get<MapInstance>("godsrealm");
                     source.TraverseMap(mapinstance, point);
+                    source.SendOrangeBarMessage("Congratulations! You have completed the Sacrifice Trial!");
                 }
             }
         }
