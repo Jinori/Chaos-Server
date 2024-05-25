@@ -3261,7 +3261,7 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicEmeraldEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicHeartstoneEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicSapphireEarrings);
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicBerylEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicRubyEarrings);
                 }
 
                 break;
@@ -3288,8 +3288,8 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronBerylEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronEmeraldEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronHeartstoneEarrings);
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronEmeraldEarrings);
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronBerylEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronRubyEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronSapphireEarrings);
                 }
 
                 break;
@@ -3315,8 +3315,8 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilBerylEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilEmeraldEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilHeartstoneEarrings);
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilEmeraldEarrings);
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilBerylEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilRubyEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilSapphireEarrings);
                 }
 
                 break;
@@ -3342,8 +3342,8 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylBerylEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylEmeraldEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylHeartstoneEarrings);
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylEmeraldEarrings);
-                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylBerylEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylRubyEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylSapphireEarrings);
                 }
 
                 break;
