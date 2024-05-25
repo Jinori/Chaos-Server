@@ -17,7 +17,7 @@ namespace Chaos.Scripting.ReactorTileScripts;
 public sealed class SacrificeBossCascadingDamageTileScript : ConfigurableReactorTileScriptBase,
                                                 ICascadingTileScript,
                                                 GetCascadingTargetsAbilityComponent<Creature>.IGetCascadingTargetsComponentOptions,
-                                                SacrificeBossAbilityComponent.IDamageComponentOptions,
+                                                DamageAbilityComponent.IDamageComponentOptions,
                                                 SoundAbilityComponent.ISoundComponentOptions,
                                                 AnimationAbilityComponent.IAnimationComponentOptions
 {

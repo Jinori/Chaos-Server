@@ -1,6 +1,7 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Boss.MainStory.TrialOfSacrifice.sacrificemob;
 using Chaos.Scripting.MonsterScripts.Boss.PentagramBoss;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.MainStory.TrialOfSacrifice.sacrificebossmob;
@@ -12,7 +13,7 @@ public class SacrificeBossScript : CompositeMonsterScript
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(SacrificeBossDefenseScript)),
         GetScriptKey(typeof(SacrificeBossEnrageScript)),
-        GetScriptKey(typeof(AggroTargetingScript)),
+        GetScriptKey(typeof(SacrificeMobAggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),

@@ -1,3 +1,4 @@
+using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
@@ -33,6 +34,8 @@ public sealed class SacrificeBossEnrageScript : MonsterScriptBase
         if (Saying1Timer.IntervalElapsed)
         {
             Saying1Timer.Reset();
+            const Direction DIRECTION = Direction.Up;
+            Subject.Direction = DIRECTION;
             Subject.Say("There you are Zoe, I've been looking for you.");
         }
 

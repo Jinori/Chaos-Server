@@ -7,92 +7,25 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
-using Chaos.Scripting.FunctionalScripts.Abstractions;
 
-namespace Chaos.Scripting.Components.AbilityComponents;
-
-public struct SacrificeBossAbilityComponent : IComponent
+namespace Chaos.Scripting.Components.AbilityComponents
 {
-    /// <inheritdoc />
-    public void Execute(ActivationContext context, ComponentVars vars)
+    public struct SacrificeBossAbilityComponent : IComponent
     {
-        var options = vars.GetOptions<IDamageComponentOptions>();
-        var targets = vars.GetTargets<Creature>();
-
-        foreach (var target in targets)
+        /// <inheritdoc />
+        public void Execute(ActivationContext context, ComponentVars vars)
         {
-            var damage = CalculateDamage(
-                context.Source,
-                target,
-                options.BaseDamage,
-                options.PctHpDamage,
-                options.DamageStat,
-                options.DamageStatMultiplier,
-                options.MoreDmgLowTargetHp);
+            var targets = vars.GetTargets<Creature>();
 
-            if (damage <= 0)
-                continue;
-
-            options.ApplyDamageScript.ApplyDamage(
-                context.Source,
-                target,
-                options.SourceScript,
-                damage,
-                options.Element);
-            
-            if (target is Aisling aisling)
+            foreach (var target in targets)
             {
-                aisling.Trackers.Enums.Set(SacrificeTrial.FinishedFifth);
+                // Check if the target is a player and update their enums
+                if (target is Aisling aisling)
+                {
+                    aisling.Trackers.Enums.Set(SacrificeTrial.FinishedFifth);
+                    aisling.SendOrangeBarMessage("You got new enum.");
+                }
             }
         }
-    }
-
-    private int CalculateDamage(
-        Creature source,
-        Creature target,
-        int? baseDamage = null,
-        decimal? pctHpDamage = null,
-        Stat? damageStat = null,
-        decimal? damageStatMultiplier = null,
-        bool? moreDmgLowTargetHp = null
-    )
-    {
-        var finalDamage = baseDamage ?? 0;
-
-        if (moreDmgLowTargetHp is true)
-        {
-            var healthPercentFactor = 1 + (1 - target.StatSheet.HealthPercent / 100m);
-
-            finalDamage += Convert.ToInt32(
-                MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0) * healthPercentFactor);
-        }
-        else
-            finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0);
-
-        if (!damageStat.HasValue)
-            return finalDamage;
-
-        if (!damageStatMultiplier.HasValue)
-        {
-            finalDamage += source.StatSheet.GetEffectiveStat(damageStat.Value);
-
-            return finalDamage;
-        }
-
-        finalDamage += Convert.ToInt32(source.StatSheet.GetEffectiveStat(damageStat.Value) * damageStatMultiplier.Value);
-
-        return finalDamage;
-    }
-
-    public interface IDamageComponentOptions
-    {
-        IApplyDamageScript ApplyDamageScript { get; init; }
-        int? BaseDamage { get; init; }
-        Stat? DamageStat { get; init; }
-        decimal? DamageStatMultiplier { get; init; }
-        Element? Element { get; init; }
-        bool? MoreDmgLowTargetHp { get; init; }
-        decimal? PctHpDamage { get; init; }
-        IScript SourceScript { get; init; }
     }
 }
