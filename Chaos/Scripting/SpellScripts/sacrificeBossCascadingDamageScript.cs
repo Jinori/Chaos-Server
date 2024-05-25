@@ -17,8 +17,8 @@ namespace Chaos.Scripting.SpellScripts;
 
 public class SacrificeBossCascadingDamageScript : ConfigurableSpellScriptBase,
                                      GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                                     SacrificeBossAbilityComponent.IDamageComponentOptions,
-                                     CascadingComponent<SacrificeBossCascadingDamageTileScript>.ICascadingComponentOptions
+                                     DamageAbilityComponent.IDamageComponentOptions,
+                                     CascadingComponent<CascadingDamageTileScript>.ICascadingComponentOptions
 {
     /// <inheritdoc />
     public SacrificeBossCascadingDamageScript(Spell subject, IReactorTileFactory reactorTileFactory)
@@ -33,9 +33,9 @@ public class SacrificeBossCascadingDamageScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
         => new ComponentExecutor(context).WithOptions(this)
-                                         .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-                                         ?.Execute<DamageAbilityComponent>()
-                                         .Execute<CascadingComponent<CascadingDamageTileScript>>();
+            .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
+            ?.Execute<DamageAbilityComponent>()
+            .Execute<CascadingComponent<CascadingDamageTileScript>>();
 
     #region ScriptVars
     /// <inheritdoc />

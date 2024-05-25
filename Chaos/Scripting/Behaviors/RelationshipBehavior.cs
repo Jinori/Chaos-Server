@@ -91,7 +91,7 @@ public class RelationshipBehavior
             return (isSourceOrTargetPet && isGroupMember) || isOwner;
         }
         
-        var isZoe = source.Script.Is<sacrificeZoeScript>() || target.Script.Is<sacrificeZoeScript>();
+        var isZoe = source.Script.Is<SacrificeZoe>() || target.Script.Is<SacrificeZoe>();
 
         if (isZoe)
         {
@@ -137,7 +137,7 @@ public class RelationshipBehavior
         if (source.Script.Is<NightmareTotemScript>() || target.Script.Is<NightmareTotemScript>())
             return false;
         
-        if (source.Script.Is<sacrificeZoeScript>() || target.Script.Is<sacrificeZoeScript>())
+        if (source.Script.Is<SacrificeZoe>() || target.Script.Is<SacrificeZoe>())
             return false;
         
         if (source.Script.Is<NightmareSlaveScript>() || target.Script.Is<NightmareSlaveScript>())
@@ -203,7 +203,7 @@ public class RelationshipBehavior
         if (isTotem)
             return false;
         
-        var isZoe = target.Script.Is<sacrificeZoeScript>() || source.Script.Is<sacrificeZoeScript>();
+        var isZoe = target.Script.Is<SacrificeZoe>() || source.Script.Is<SacrificeZoe>();
         
         if (isZoe)
             return false;
@@ -238,7 +238,7 @@ public class RelationshipBehavior
             return !(isGroupMember || isOwner || isAisling);            
         }
         
-        if (source.Script.Is<sacrificeZoeScript>() || target.Script.Is<sacrificeZoeScript>())
+        if (source.Script.Is<SacrificeZoe>() || target.Script.Is<SacrificeZoe>())
         {
             var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
             var isOwner = target.Equals(source.PetOwner);
@@ -275,7 +275,7 @@ public class RelationshipBehavior
         if (source.Script.Is<NightmareTotemScript>() ^ target.Script.Is<NightmareTotemScript>())
             return true;
         
-        if (source.Script.Is<sacrificeZoeScript>() ^ target.Script.Is<sacrificeZoeScript>())
+        if (source.Script.Is<SacrificeZoe>() ^ target.Script.Is<SacrificeZoe>())
             return true;
         
         if (source.Script.Is<NightmareSlaveScript>() ^ target.Script.Is<NightmareSlaveScript>())

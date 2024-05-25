@@ -199,6 +199,17 @@ public class MainStoryScript(
             case "mainstory_miraelis_initial":
             {
 
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.CompletedTrials))
+                {
+                    Subject.Reply(source, "I haven't discovered much more since the last time we spoke Aisling. We are working on it, I promise. Come see me again soon.");
+                    return;
+                }
+
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedFourthTrial))
+                {
+                    Subject.Reply(source, "Skip", "mainstory_miraelis_summonerinitial1");
+                    return;
+                }
                 if (source.Trackers.Enums.HasValue(CombatTrial.FinishedTrial))
                 {
                     Subject.Reply(source, "Skip", "mainstory_miraelis_finishedtrial1");
@@ -282,6 +293,12 @@ public class MainStoryScript(
                         "Skip", "mainstory_miraelis_finisheda1");
                 }
                 break;
+            }
+
+            case "mainstory_miraelis_summonerinitial1":
+            {
+                source.Trackers.Enums.Set(MainStoryEnums.CompletedTrials);
+                return;
             }
 
             case "mainstory_miraelis_starttrial4":
@@ -755,7 +772,7 @@ public class MainStoryScript(
                 return;
             }
 
-            case "mainstory_skandara_finishedtrial2":
+            case "mainstory_skandara_finishedtrial3":
             {
                 Subject.Close(source);
                 source.Trackers.Enums.Set(MainStoryEnums.FinishedFourthTrial);

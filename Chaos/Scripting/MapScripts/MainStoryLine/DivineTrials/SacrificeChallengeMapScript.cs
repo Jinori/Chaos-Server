@@ -4,6 +4,7 @@ using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
+using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
@@ -176,6 +177,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
                     var point = new Point(11, 18);
                     var sacrificeboss = MonsterFactory.Create("sacrificemobboss", Subject, point);
                     Subject.AddEntity(sacrificeboss, point);
+                    sacrificeboss.Direction.Equals(Direction.Up);
                     State = ScriptState2.SpawnedFifthWave;
                     break;
 
@@ -253,21 +255,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
             {
                 foreach (var aisling in Subject.GetEntities<Aisling>())
                 {
-                    if (aisling.Trackers.Enums.HasValue(SacrificeTrial.FinishedFifth))
-                    {
-                        HandleCompletedTrial();
-                        return true;
-                    }
-                    var mapInstance = SimpleCache.Get<MapInstance>("godsrealm");
-                    var point = new Point(16, 16);
-                    aisling.TraverseMap(mapInstance, point);
-                    aisling.IsDead = false;
-                    aisling.StatSheet.SetHealthPct(25);
-                    aisling.StatSheet.SetManaPct(25);
-                    aisling.Client.SendAttributes(StatUpdateType.Vitality);
-                    aisling.Trackers.TimedEvents.AddEvent("sacrificetrialcd", TimeSpan.FromHours(1), true);
-                    aisling.SendActiveMessage("Goddess Miraelis revives you.");
-                    aisling.Refresh();
+                    HandleCompletedTrial();
                 }
                 return true;
             }
@@ -276,7 +264,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
 
         private bool CheckAllMonstersCleared(SacrificeTrial trial)
         {
-            if (!Subject.GetEntities<Monster>().Any(m => !m.Script.Is<PetScript>() && !m.Script.Is<sacrificeZoeScript>()))
+            if (!Subject.GetEntities<Monster>().Any(m => !m.Script.Is<PetScript>() && !m.Script.Is<SacrificeZoe>()))
             {
                 foreach (var aisling in Subject.GetEntities<Aisling>())
                 {

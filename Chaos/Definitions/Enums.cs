@@ -1352,6 +1352,34 @@ public enum WestWoodlandsKillQuestStage
     WWTwink = 7,
 }
 
+public enum KarloposKillQuestStage
+{
+    None,
+    KarloposCrab = 1,
+    KarloposTurtle = 2,
+    KarloposSlug = 3,
+    KarloposSpore = 4,
+    KarloposOctopus = 5,
+    KarloposGog = 6,
+    KarloposKraken = 7
+}
+
+public enum PietSewerKillQuestStage
+{
+    None,
+    SewerCrab = 1,
+    SewerTurtle = 2,
+    SewerFrog = 3,
+    SewerAnemone = 4,
+    SewerBrawlfish = 5,
+    SewerRockCobbler = 6,
+    SewerKraken = 7,
+    SewerGog = 8,
+    SewerGremlin = 9,
+    SewerMiniSkrull = 10,
+    SewerSkrull = 11
+}
+
 [Flags]
 public enum ReconPoints
 {

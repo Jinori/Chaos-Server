@@ -5,7 +5,7 @@ using Chaos.Scripting.MonsterScripts.Nightmare.RogueNightmare;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.MainStory.TrialOfSacrifice.zoe;
 
-public class sacrificeZoeScript : CompositeMonsterScript
+public class SacrificeZoe : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
@@ -16,7 +16,7 @@ public class sacrificeZoeScript : CompositeMonsterScript
 
     //If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
     /// <inheritdoc />
-    public sacrificeZoeScript(IScriptProvider scriptProvider, Monster subject)
+    public SacrificeZoe(IScriptProvider scriptProvider, Monster subject)
     {
         if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript
             compositeScript)
