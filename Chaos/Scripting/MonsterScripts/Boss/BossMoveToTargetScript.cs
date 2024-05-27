@@ -1,3 +1,4 @@
+using Chaos.Common.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
@@ -29,11 +30,19 @@ public sealed class BossMoveToTargetScript(Monster subject, IEffectFactory effec
         
         var distance = Subject.DistanceFrom(Target);
 
-        if ((distance != 1) && distance <= 3)
+
+        var point = Target.GenerateCardinalPoints().OfType<IPoint>().FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+        //Remove aggro if we can't get to the target so we have a chance to attack someone else
+        if (point is null && (Map.GetEntities<Aisling>().Count() > 1))
         {
-            Subject.Pathfind(Target);
+            AggroList.Remove(Target.Id, out _);
+            Target = null;
+            return;
         }
-        
+
+        if ((distance != 1) && (distance <= 3))
+            Subject.Pathfind(Target);
+
         else if (distance >= 4)
         {
             var safeSpot = Target.GenerateCardinalPoints().OfType<IPoint>().FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));

@@ -25,11 +25,11 @@ public class ClassDedicationScript : DialogScriptBase
 
     private readonly Dictionary<string, BaseClass> ClassNameMappings = new()
     {
-        { "aoife_selectwizard", BaseClass.Wizard },
-        { "aoife_selectwarrior", BaseClass.Warrior },
-        { "aoife_selectrogue", BaseClass.Rogue },
-        { "aoife_selectpriest", BaseClass.Priest },
-        { "aoife_selectmonk", BaseClass.Monk }
+        { "miraelisgod_selectwizard", BaseClass.Wizard },
+        { "miraelisgod_selectwarrior", BaseClass.Warrior },
+        { "miraelisgod_selectrogue", BaseClass.Rogue },
+        { "miraelisgod_selectpriest", BaseClass.Priest },
+        { "miraelisgod_selectmonk", BaseClass.Monk }
     };
     private readonly IClientRegistry<IWorldClient> ClientRegistry;
 
@@ -66,8 +66,8 @@ public class ClassDedicationScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        const string CLASS_CONFIRM_REQUIREMENTS = "aoife_confirmrequirements";
-        const string CLASS_CHOOSE_NEW = "aoife_choosenewclass";
+        const string CLASS_CONFIRM_REQUIREMENTS = "miraelisgod_confirmrequirements";
+        const string CLASS_CHOOSE_NEW = "miraelisgod_choosenewclass";
         var currentTemplateKey = Subject.Template.TemplateKey.ToLower();
 
         switch (currentTemplateKey)
@@ -122,7 +122,7 @@ public class ClassDedicationScript : DialogScriptBase
                 if (source.UserStatSheet.TotalExp >= REQUIRED_EXPERIENCE)
                 {
                     builtReply += " and you've hunted enough experience! Let's continue.";
-                    Subject.Reply(source, builtReply, "aoife_chooseNewClass");
+                    Subject.Reply(source, builtReply, "miraelisgod_chooseNewClass");
                 }
                 else
                 {

@@ -1,20 +1,17 @@
 ﻿using Chaos.Common.Definitions;
-using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Components.EffectComponents;
-using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Monk;
 
-public class MistEffect : EffectBase
+public class DodgeEffect : EffectBase
 {
     protected int ArmorClassSaved;
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(10);
     public override byte Icon => 18;
-    public override string Name => "mist";
+    public override string Name => "Dodge";
     public int GetAcReduction() => (int)Math.Round(-3 - (15.0 / 98.0) * (Subject.StatSheet.Level - 1));
 
     public override void OnApplied()
@@ -24,36 +21,53 @@ public class MistEffect : EffectBase
 
         var attributesToAdd = new Attributes
         {
-            Ac = ArmorClassSaved,
-            MagicResistance = -20
+            Ac = ArmorClassSaved
+        };
+        var attributesToSubtract = new Attributes
+        {
+            MagicResistance = 15
         };
         
         Subject.StatSheet.AddBonus(attributesToAdd);
+        Subject.StatSheet.SubtractBonus(attributesToSubtract);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor increased while magic resist decreased.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor increased while Magic Resist decreased.");
     }
 
     public override void OnDispelled() => OnTerminated();
 
     public override void OnTerminated()
     {
+        var attributesToAdd = new Attributes
+        {
+            MagicResistance = 15
+        };
         var attributesToSubtract = new Attributes
         {
-            MagicResistance = 20,
             Ac = ArmorClassSaved
         };
-
-        Subject.StatSheet.SubtractMp(100);
+        
+        Subject.StatSheet.AddBonus(attributesToAdd);
         Subject.StatSheet.SubtractBonus(attributesToSubtract);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor and MR has returned to normal.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor and Magic Resist have returned to normal.");
+    }
+    
+    /// <inheritdoc />
+    public override void Update(TimeSpan delta)
+    {
+        if (Subject is Aisling aisling && aisling.Equipment.Contains(3))
+        {
+            aisling.Effects.Dispel("Dodge");
+            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A physical shield prevents your magic.");
+        }
     }
     
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (source.Effects.Contains("mist"))
+        if (source.Effects.Contains("Dodge"))
         {
-            source.Effects.Dispel("mist");
+            source.Effects.Dispel("Dodge");
 
             return true;
         }

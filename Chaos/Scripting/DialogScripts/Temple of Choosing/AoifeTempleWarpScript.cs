@@ -7,24 +7,60 @@ using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 
-public class AoifeTempleWarpScript : DialogScriptBase
+public class AoifeTempleWarpScript(Dialog subject, ISimpleCache simpleCache) : DialogScriptBase(subject)
 {
-    private readonly ISimpleCache SimpleCache;
-
-    public AoifeTempleWarpScript(Dialog subject, ISimpleCache simpleCache)
-        : base(subject) => SimpleCache = simpleCache;
-
     public override void OnDisplayed(Aisling source)
     {
-        if (source.Trackers.Flags.HasFlag(QuestFlag1.ChosenClass))
+        switch (Subject.Template.TemplateKey.ToLower())
         {
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You have already chosen a class. Luck be with you.");
+            case "aoife_temple":
+            {
+                if (source.Trackers.Flags.HasFlag(QuestFlag1.ChosenClass))
+                {
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You have already chosen a class. Luck be with you.");
 
-            return;
+                    return;
+                }
+
+                var mapInstance = simpleCache.Get<MapInstance>("tocinner");
+                var point = new Point(22, 13);
+                source.TraverseMap(mapInstance, point);
+
+                return;
+            }
+            case "aoife_tranchamber":
+            {
+                var mapInstance = simpleCache.Get<MapInstance>("transcendencechamber");
+                var point = new Point(8, 6);
+                source.TraverseMap(mapInstance, point);
+
+                return;
+            }
+            case "aoife_whimsypav":
+            {
+                var mapInstance = simpleCache.Get<MapInstance>("whimsypavilion");
+                var point = new Point(9, 7);
+                source.TraverseMap(mapInstance, point);
+
+                return;
+            }
+            case "aoife_lunarsanctum":
+            {
+                var mapInstance = simpleCache.Get<MapInstance>("lunarsanctum");
+                var point = new Point(9, 8);
+                source.TraverseMap(mapInstance, point);
+
+                return;
+            }
+            case "aoife_radianttemple":
+            {
+                var mapInstance = simpleCache.Get<MapInstance>("radianttemple");
+                var point = new Point(9, 7);
+                source.TraverseMap(mapInstance, point);
+
+                return;
+            }
         }
 
-        var mapInstance = SimpleCache.Get<MapInstance>("tocinner");
-        var point = new Point(22, 13);
-        source.TraverseMap(mapInstance, point);
     }
 }

@@ -34,21 +34,30 @@ public class PetAttackingScript : MonsterScriptBase
         return "";
     }
     
-    
-    /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
-        //if target is invalid or we're not close enough
-        //reset attack delay and return
         if (Subject.PetOwner?.DistanceFrom(Subject) >= 8)
         {
             Target = null;
-
             return;
         }
-
-        if (Target is not { IsAlive: true })
+        
+        if (Target is not { IsAlive: true } || (Subject.DistanceFrom(Target) != 1))
             return;
+
+        var direction = Target.DirectionalRelationTo(Subject);
+
+        if (Subject.Direction != direction)
+            return;
+
+        var lastWalk = Subject.Trackers.LastWalk ?? DateTime.MinValue;
+
+        if (DateTime.UtcNow.Subtract(lastWalk)
+                    .TotalMilliseconds
+            < Subject.EffectiveAssailIntervalMs)
+            return;
+
+        var attacked = false;
 
         if (Subject.DistanceFrom(Target) >= 1)
             if (ShouldUseSpell)
@@ -56,45 +65,33 @@ public class PetAttackingScript : MonsterScriptBase
                     if (IntegerRandomizer.RollChance(10))
                         Subject.TryUseSpell(spell, Target.Id);
         
-        if (Subject.DistanceFrom(Target) != 1) 
-            return;
-        
-        var direction = Target.DirectionalRelationTo(Subject);
-
-        if (Subject.Direction != direction)
-            return;
-
-        if (DateTime.UtcNow.Subtract(Subject.Trackers.LastWalk ?? DateTime.MinValue).TotalMilliseconds < Subject.EffectiveAssailIntervalMs)
-            return;
-
-        var attacked = false;
-
-        foreach (var assail in Skills.Where(skill => skill.Template.IsAssail))
-            attacked |= Subject.TryUseSkill(assail);
+        foreach (var skill in Skills)
+            if (skill.Template.IsAssail)
+                attacked |= Subject.TryUseSkill(skill);
 
         if (ShouldUseSkill)
-            foreach (var skill in Skills.Where(skill => !skill.Template.IsAssail))
-                if (IntegerRandomizer.RollChance(18))
+        {
+            var skill = Skills.Where(skill => Subject.CanUse(skill, out _))
+                              .PickRandomWeightedSingleOrDefault(7);
+
+            if (skill is not null)
+            {            
+                var petKey = SummonChosenPet.None;
+                var found = Subject.PetOwner?.Trackers.Enums.TryGetValue(out petKey) ?? false;
+
+                if (found)
                 {
-                    if (Subject.TryUseSkill(skill))
-                    {
-                        var petKey = SummonChosenPet.None;
-                        var found = Subject.PetOwner?.Trackers.Enums.TryGetValue(out petKey) ?? false;
-
-                        if (found)
-                        {
-                            var chant = GetRandomChant(petKey);
-                            Subject.Chant(chant);
-                        }
-                        attacked = true;
-
-                        break;   
-                    }
+                    var chant = GetRandomChant(petKey);
+                    Subject.Chant(chant);
                 }
+                attacked |= Subject.TryUseSkill(skill);
+            }
+        }
 
         if (attacked)
+        {
+            Subject.WanderTimer.Reset();
             Subject.MoveTimer.Reset();
+        }
     }
-    
-    
 }

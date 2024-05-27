@@ -61,7 +61,15 @@ public class MasteringScript : DialogScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "aoife_checkhealth":
+            case "miraelisgod_mastering":
+            {
+                if (source.UserStatSheet.Master)
+                    Subject.Reply(source, "You already wear the Mantle of the Master.");
+
+                break;
+            }
+            
+            case "miraelisgod_checkhealth":
             {
                 // Retrieve the base class of the source
                 var baseClass = source.UserStatSheet.BaseClass;
@@ -83,7 +91,7 @@ public class MasteringScript : DialogScriptBase
 
                 break;
             }
-            case "aoife_checkmana":
+            case "miraelisgod_checkmana":
             {
                 // Retrieve the base class of the source
                 var baseClass = source.UserStatSheet.BaseClass;
@@ -106,7 +114,7 @@ public class MasteringScript : DialogScriptBase
                 break;
             }
 
-            case "aoife_checkskillsspells":
+            case "miraelisgod_checkskillsspells":
             {
                 // Retrieve the base class of the source
                 var baseClass = source.UserStatSheet.BaseClass;
@@ -176,7 +184,7 @@ public class MasteringScript : DialogScriptBase
                 break;
             }
 
-            case "aoife_checkitems":
+            case "miraelisgod_checkitems":
             {
                 // Retrieve the base class of the source
                 var baseClass = source.UserStatSheet.BaseClass;
@@ -246,7 +254,7 @@ public class MasteringScript : DialogScriptBase
                 break;
             }
 
-            case "aoife_becomemaster":
+            case "miraelisgod_becomemaster":
             {
                 if (source.UserStatSheet.TotalExp < 350000000)
                 {

@@ -221,8 +221,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                         person,
                         this,
                         (int)result);
-
-                    person.SendMessage($"Mist heals you for {result}.");
+                    
                 }
             else
             {
@@ -233,8 +232,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     Subject,
                     this,
                     (int)result);
-
-                Subject.SendMessage($"Mist heals you for {result}.");
+                
             }
         }
 

@@ -66,7 +66,7 @@ public class LockPickChestScript(Dialog subject) : DialogScriptBase(subject)
         if (IntegerRandomizer.RollChance(LOCKPICK_FAILURE_CHANCE))
         {
             source.Inventory.RemoveQuantity("Lockpicks", 1);
-            source.SendServerMessage(ServerMessageType.OrangeBar1, "The lock defeats your clumsy efforts and claims your lockpick as a trophy!");
+            source.SendServerMessage(ServerMessageType.OrangeBar1, "The lock defeats your efforts and claims your lockpick as a trophy!");
         }
         else
             source.SendServerMessage(ServerMessageType.OrangeBar1, "You fail to pick the lock. The chest giggles!");

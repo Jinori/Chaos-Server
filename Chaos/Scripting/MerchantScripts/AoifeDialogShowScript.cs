@@ -29,21 +29,12 @@ public class AoifeDialogShowScript(Dialog subject) : DialogScriptBase(subject)
                 {
                     var option2 = new DialogOption
                     {
-                        DialogKey = "aoife_classdedication",
-                        OptionText = "Class Dedication"
+                        DialogKey = "aoife_aetheriarealm",
+                        OptionText = "Realm of Aetheria"
                     };
 
                     if (!Subject.HasOption(option2.OptionText))
                         Subject.Options.Add(option2);
-                    
-                    var option3 = new DialogOption()
-                    {
-                        DialogKey = "aoife_mastering",
-                        OptionText = "Master Of Your Path"
-                    };
-                    
-                    if (!source.UserStatSheet.Master && !Subject.HasOption(option3.OptionText))
-                        Subject.Options.Add(option3);
                 }
             }
 
