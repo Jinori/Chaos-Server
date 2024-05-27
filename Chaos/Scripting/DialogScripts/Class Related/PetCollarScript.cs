@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -74,10 +75,17 @@ public class PetCollarScript(
             source.SendOrangeBarMessage($"Your pet is currently summoned.");
             return;
         }
+
+        if (source.Group is { Count: > 2 })
+        {
+            source.SendOrangeBarMessage("You cannot summon a pet with more than two group members.");
+            source.Trackers.TimedEvents.AddEvent("PetDeath", TimeSpan.FromMinutes(5), true);
+            return;
+        }
         
         if (source.Trackers.TimedEvents.HasActiveEvent("PetDeath", out var timedEvent))
         {
-            source.SendActiveMessage($"Your pet recently came home. Please wait {timedEvent.Remaining.Humanize()}.");
+            source.SendActiveMessage($"Your pet recently came home. Please wait {timedEvent.Remaining.ToReadableString()}.");
             return;
         }
         

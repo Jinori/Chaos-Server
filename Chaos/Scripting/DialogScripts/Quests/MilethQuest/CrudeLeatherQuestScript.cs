@@ -85,11 +85,11 @@ public class CrudeLeatherQuestScript (Dialog subject, ILogger<CrudeLeatherQuestS
                                   .LogInformation(
                                       "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
                                       source.Name,
-                                      5000,
+                                      15000,
                                       15000);
 
                             ExperienceDistributionScript.GiveExp(source, 15000);
-                            source.TryGiveGold(5000);
+                            source.TryGiveGold(15000);
                             source.TryGiveGamePoints(5);
 
                             if (IntegerRandomizer.RollChance(8))

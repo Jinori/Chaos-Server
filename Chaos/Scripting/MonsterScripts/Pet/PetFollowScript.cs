@@ -43,6 +43,16 @@ public sealed class PetFollowScript : MonsterScriptBase
             return;
         }
 
+        if (Subject.PetOwner.Group is not null)
+        {
+            if (Subject.PetOwner.Group?.Count > 2)
+            {
+                Subject.MapInstance.RemoveEntity(Subject);
+                Subject.PetOwner.SendOrangeBarMessage("Your pet has gone home due to too many group members.");
+                return;
+            }
+        }
+
         var playerDistance = Subject.PetOwner.DistanceFrom(Subject);
         Subject.PetOwner.Trackers.Enums.TryGetValue(out PetFollowMode value);
 

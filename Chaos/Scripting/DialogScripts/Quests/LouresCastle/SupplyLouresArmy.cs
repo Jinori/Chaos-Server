@@ -285,9 +285,9 @@ public class SupplyLouresArmy : DialogScriptBase
                         Topics.Entities.Quest)
                     .WithProperty(source)
                     .WithProperty(Subject)
-                    .LogInformation("{@AislingName} has received {@ExpAmount} exp and {@GoldAmount}", source.Name, 100000, 20000);
+                    .LogInformation("{@AislingName} has received {@ExpAmount} exp and {@GoldAmount}", source.Name, 200000, 25000);
 
-                ExperienceDistributionScript.GiveExp(source, 100000);
+                ExperienceDistributionScript.GiveExp(source, 200000);
                 source.TryGiveGold(25000);
                 source.TryGiveGamePoints(10);
                 source.Legend.AddOrAccumulate(
@@ -314,8 +314,8 @@ public class SupplyLouresArmy : DialogScriptBase
                 else
                 {
                     source.TryGiveGamePoints(20);
-                    source.TryGiveGold(50000);
-                    source.SendOrangeBarMessage("Thibault rewards you 50,000 Gold and 20 Gamepoints.");
+                    source.TryGiveGold(100000);
+                    source.SendOrangeBarMessage("Thibault rewards you 100,000 Gold and 20 Gamepoints.");
                 }
 
                 source.Trackers.Enums.Set(SupplyLouresStage.CompletedSupply);
@@ -371,9 +371,9 @@ public class SupplyLouresArmy : DialogScriptBase
                         Topics.Entities.Quest)
                     .WithProperty(source)
                     .WithProperty(Subject)
-                    .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 150000);
+                    .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 300000);
 
-                ExperienceDistributionScript.GiveExp(source, 150000);
+                ExperienceDistributionScript.GiveExp(source, 300000);
                 source.TryGiveGamePoints(10);
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
