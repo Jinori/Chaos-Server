@@ -57,6 +57,8 @@ public class TeleportToTrialScript : DialogScriptBase
             }
             while (!nextInstance.IsWalkable(point, member.Type));
 
+            var dialog = member.ActiveDialog.Get();
+            dialog?.Close(member);
             member.Trackers.Counters.Remove("karlopostrialkills", out _);
             member.TraverseMap(nextInstance, point);
         }

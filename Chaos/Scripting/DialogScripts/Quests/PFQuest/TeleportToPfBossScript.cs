@@ -49,7 +49,8 @@ public class TeleportToPfBossScript : DialogScriptBase
         
         foreach (var member in source.Group!)
         {
-            Subject.Close(source);
+            var dialog = member.ActiveDialog.Get();
+            dialog?.Close(member);
                 var mapInstance = SimpleCache.Get<MapInstance>("pf_peak");
 
                 do

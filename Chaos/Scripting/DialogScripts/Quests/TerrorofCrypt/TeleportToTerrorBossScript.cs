@@ -42,6 +42,10 @@ public class TeleportToTerrorBossScript : DialogScriptBase
         var pointS = new Point(13, 8);
 
         foreach (var member in group)
+        {
+            var dialog = member.ActiveDialog.Get();
+            dialog?.Close(member);
             member.TraverseMap(mapInstance, pointS);
+        }
     }
 }

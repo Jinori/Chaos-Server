@@ -169,7 +169,11 @@ public enum DarkThingsStage
     StartedSpidersSilk = 4,
     StartedScorpionSting = 5,
     StartedGiantBatsWing = 6,
-    StartedWhiteBatsWing = 7
+    StartedWhiteBatsWing = 7,
+    StartedMarauderSpine = 8,
+    StartedKardiFur = 9,
+    StartedMimicTeeth = 10,
+    StartedSuccubusHair = 11
 }
 
 public enum ALittleBitofThatStage

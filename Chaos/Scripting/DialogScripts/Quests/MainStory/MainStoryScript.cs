@@ -30,8 +30,6 @@ public class MainStoryScript(
     public override void OnDisplaying(Aisling source)
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out MainStoryEnums stage);
-        var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-        var tenPercent = Convert.ToInt32(.10 * tnl);
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -367,7 +365,7 @@ public class MainStoryScript(
                 source.Trackers.Enums.Set(MainStoryEnums.FinishedArtifact1);
                 source.Trackers.Flags.AddFlag(MainstoryFlags.CompletedArtifact1);
                 source.Inventory.Remove("Earth Artifact");
-                ExperienceDistributionScript.GiveExp(source, tenPercent);
+                ExperienceDistributionScript.GiveExp(source, 50000);
                 source.SendOrangeBarMessage("You hand over the Earth Artifact.");
 
 
@@ -404,7 +402,7 @@ public class MainStoryScript(
                 source.Trackers.Enums.Set(MainStoryEnums.CompletedArtifactsHunt);
                 source.Inventory.RemoveQuantity("coal", 50);
                 source.Inventory.RemoveQuantity("Ruined Iron", 20);
-                ExperienceDistributionScript.GiveExp(source, tenPercent);
+                ExperienceDistributionScript.GiveExp(source, 75000);
                 source.SendOrangeBarMessage("You hand over the coal and ruined iron.");
                 return;
             }
@@ -547,7 +545,7 @@ public class MainStoryScript(
                 source.Trackers.Enums.Set(MainStoryEnums.FinishedArtifact3);
                 source.Trackers.Flags.AddFlag(MainstoryFlags.CompletedArtifact3);
                 source.Inventory.Remove("Wind Artifact");
-                ExperienceDistributionScript.GiveExp(source, tenPercent);
+                ExperienceDistributionScript.GiveExp(source, 100000);
                 source.SendOrangeBarMessage("You hand over the Wind Artifact.");
 
 
@@ -680,7 +678,7 @@ public class MainStoryScript(
                 source.Trackers.Enums.Set(MainStoryEnums.FinishedArtifact2);
                 source.Trackers.Flags.AddFlag(MainstoryFlags.CompletedArtifact2);
                 source.Inventory.Remove("Fire Artifact");
-                ExperienceDistributionScript.GiveExp(source, tenPercent);
+                ExperienceDistributionScript.GiveExp(source, 125000);
                 source.SendOrangeBarMessage("You hand over the Fire Artifact.");
 
 
@@ -804,7 +802,7 @@ public class MainStoryScript(
                 source.Trackers.Enums.Set(MainStoryEnums.FinishedArtifact4);
                 source.Trackers.Flags.AddFlag(MainstoryFlags.CompletedArtifact4);
                 source.Inventory.Remove("Sea Artifact");
-                ExperienceDistributionScript.GiveExp(source, tenPercent);
+                ExperienceDistributionScript.GiveExp(source, 150000);
                 source.SendOrangeBarMessage("You hand over the Sea Artifact.");
 
 

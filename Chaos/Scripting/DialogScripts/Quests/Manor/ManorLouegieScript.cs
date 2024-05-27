@@ -25,6 +25,12 @@ public class ManorLouegieScript : DialogScriptBase
     {
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentypercent = Convert.ToInt32(0.20 * tnl);
+
+        if (twentypercent > 320000)
+        {
+            twentypercent = 320000;
+        }
+        
         var hasStage = source.Trackers.Enums.TryGetValue(out ManorLouegieStage stage);
 
         switch (Subject.Template.TemplateKey.ToLower())

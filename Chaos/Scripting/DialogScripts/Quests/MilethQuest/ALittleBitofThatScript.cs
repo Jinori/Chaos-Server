@@ -33,6 +33,11 @@ public class ALittleBitofThatScript : DialogScriptBase
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = Convert.ToInt32(.20 * tnl);
 
+        if (twentyPercent > 320000)
+        {
+            twentyPercent = 320000;
+        }
+
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "egil_initial":
