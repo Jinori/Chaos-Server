@@ -21,12 +21,17 @@ public class KarloposKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestSc
         var hasStage = source.Trackers.Enums.TryGetValue(out KarloposKillQuestStage stage);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var tenPercent = Convert.ToInt32(.10 * tnl);
+        
+        if (tenPercent > 320000)
+        {
+            tenPercent = 320000;
+        }
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "kregg_initial":
             {
-                if (source.UserStatSheet.Level < 71)
+                if (source.UserStatSheet.Level is >= 41 and < 71)
                 {
                     var option = new DialogOption
                     {

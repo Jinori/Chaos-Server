@@ -21,29 +21,75 @@ public class TeleportToQueenOctopusScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        if (source.Group is null || source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source)))
+        if (!IsGroupValid(source))
         {
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure you are grouped or your group is near you.");
-            var point = source.DirectionalOffset(source.Direction.Reverse());
-            source.WarpTo(point);
-
+            SendGroupInvalidMessage(source);
+            WarpSourceBack(source);
             return;
         }
-        
-        var rectangle = new Rectangle(
-            9,
-            16,
-            2,
-            2);
 
+        var group = GetNearbyGroupMembers(source);
 
-        foreach (var member in source.Group!)
+        if (group == null || group.Count == 0)
         {
-            var mapInstance = SimpleCache.Get<MapInstance>("karloposqueenroom");
+            SendNoGroupMembersMessage(source);
+            return;
+        }
+
+        if (!IsGroupWithinLevelRange(source, group))
+        {
+            SendLevelRangeInvalidMessage(source);
+            return;
+        }
+
+        TeleportGroupToQueenRoom(source, group);
+    }
+
+    private bool IsGroupValid(Aisling source) =>
+        source.Group != null && !source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source));
+
+    private List<Aisling>? GetNearbyGroupMembers(Aisling source) =>
+        source.Group?.Where(x => x.WithinRange(new Point(source.X, source.Y))).ToList();
+
+    private bool IsGroupWithinLevelRange(Aisling source, List<Aisling> group) =>
+        group.All(member => member.WithinLevelRange(source));
+
+    private void SendGroupInvalidMessage(Aisling source) =>
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure you are grouped or your group is near you.");
+
+    private void SendNoGroupMembersMessage(Aisling source)
+    {
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Walking this beach requires a group.");
+        Subject.Reply(source, "You have no group members nearby.");
+    }
+
+    private void SendLevelRangeInvalidMessage(Aisling source)
+    {
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure your companions are within level range.");
+        Subject.Reply(source, "Some of your companions are not within your level range.");
+    }
+
+    private void WarpSourceBack(Aisling source)
+    {
+        var point = source.DirectionalOffset(source.Direction.Reverse());
+        source.WarpTo(point);
+    }
+
+    private void TeleportGroupToQueenRoom(Aisling source, List<Aisling> group)
+    {
+        const string MAP_INSTANCE_KEY = "karloposqueenroom";
+        var rectangle = new Rectangle(9, 16, 2, 2);
+        var mapInstance = SimpleCache.Get<MapInstance>(MAP_INSTANCE_KEY);
+
+        foreach (var member in group)
+        {
+            Subject.Close(source);
 
             Point point;
             do
+            {
                 point = rectangle.GetRandomPoint();
+            }
             while (!mapInstance.IsWalkable(point, member.Type));
 
             member.TraverseMap(mapInstance, point);

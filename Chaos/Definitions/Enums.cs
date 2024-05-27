@@ -1380,6 +1380,19 @@ public enum PietSewerKillQuestStage
     SewerSkrull = 11
 }
 
+public enum AbelDungeonKillQuestStage
+{
+    None,
+    DungeonSlug = 1,
+    DungeonGlupe = 2,
+    DungeonLeech = 3,
+    DungeonPolyp = 4,
+    DungeonSpore = 5,
+    DungeonDwarf = 6,
+    DungeonDwarfSoldier = 7,
+    DungeonBoss = 8
+}
+
 [Flags]
 public enum ReconPoints
 {

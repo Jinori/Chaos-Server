@@ -54,7 +54,7 @@ public class QueenOctopusQuestScript : DialogScriptBase
 
                 if (hasStage)
                 {
-                    if (source.UserStatSheet.Level is < 41 or >= 72)
+                    if (source.UserStatSheet.Level < 41)
                         return;
                     
                     var option = new DialogOption
@@ -154,7 +154,6 @@ public class QueenOctopusQuestScript : DialogScriptBase
                           redpearl.DisplayName);
 
                 ExperienceDistributionScript.GiveExp(source, 200000);
-                source.SendOrangeBarMessage("You received 200,000 experience!");
                 source.Trackers.Enums.Set(QueenOctopusQuest.Pendant);
                 source.GiveItemOrSendToBank(redpearl);
 

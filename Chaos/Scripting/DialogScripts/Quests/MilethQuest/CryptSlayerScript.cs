@@ -34,8 +34,13 @@ public class CryptSlayerScript : DialogScriptBase
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out CryptSlayerStage stage);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-        var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
+        var tenPercent = MathEx.GetPercentOf<int>(tnl, 10);
         var randomCryptSlayerStage = CryptSlayerStage.None;
+        
+        if (tenPercent > 320000)
+        {
+            tenPercent = 320000;
+        }
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -68,7 +73,7 @@ public class CryptSlayerScript : DialogScriptBase
 
                     source.Legend.AddOrAccumulate(
                         new LegendMark(
-                            "Controlled the Mileth Crypt population",
+                            "Controlled the Mileth Crypt Population",
                             "CryptSlayerCompleted",
                             MarkIcon.Victory,
                             MarkColor.Blue,
@@ -353,11 +358,11 @@ public class CryptSlayerScript : DialogScriptBase
                           Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
-                      .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenPercent);
 
-                ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                ExperienceDistributionScript.GiveExp(source, tenPercent);
                 source.TryGiveGamePoints(5);
-                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {twentyPercent} exp!");
+                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {tenPercent} exp!");
                 source.Trackers.Enums.Remove(typeof(CryptSlayerStage));
                 Subject.Reply(source, "Thank you so much for killing those. That's enough for today, come back soon.");
                 source.Trackers.Counters.Remove("CryptSlayer", out _);

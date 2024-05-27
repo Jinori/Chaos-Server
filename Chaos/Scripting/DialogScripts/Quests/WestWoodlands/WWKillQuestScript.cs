@@ -21,6 +21,11 @@ public class WWKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
         var hasStage = source.Trackers.Enums.TryGetValue(out WestWoodlandsKillQuestStage stage);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var tenPercent = Convert.ToInt32(.10 * tnl);
+        
+        if (tenPercent > 320000)
+        {
+            tenPercent = 320000;
+        }
 
         switch (Subject.Template.TemplateKey.ToLower())
         {

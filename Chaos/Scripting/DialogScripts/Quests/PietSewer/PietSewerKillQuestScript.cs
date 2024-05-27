@@ -21,6 +21,11 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
         var hasStage = source.Trackers.Enums.TryGetValue(out PietSewerKillQuestStage stage);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var tenPercent = Convert.ToInt32(.10 * tnl);
+        
+        if (tenPercent > 320000)
+        {
+            tenPercent = 320000;
+        }
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -30,8 +35,8 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                 {
                     var option = new DialogOption
                     {
-                        DialogKey = "karloposkillquest_initial",
-                        OptionText = "Karlopos Slayer"
+                        DialogKey = "pietsewerkillquest_initial",
+                        OptionText = "Piet Sewer Slayer"
                     };
                     
                     if (!Subject.HasOption(option.OptionText))
@@ -55,7 +60,7 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                 {
                     var option = new DialogOption
                     {
-                        DialogKey = "karloposkillquest_start",
+                        DialogKey = "pietsewerkillquest_start",
                         OptionText = "What can I do?"
                     };
 

@@ -81,9 +81,7 @@ public class QueenOctopusRoomScript : ReactorTileScriptBase
 
             return true;
         });
-
-
-
+        
         if (allMembersHaveQuestEnum)
         {
             // Create a merchant at the Aisling's current point

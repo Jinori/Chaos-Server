@@ -14,12 +14,12 @@ using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Abel;
 
-public class decoratingInnQuestScript : DialogScriptBase
+public class DecoratingInnQuestScript : DialogScriptBase
 {
-    private readonly ILogger<decoratingInnQuestScript> Logger;
+    private readonly ILogger<DecoratingInnQuestScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public decoratingInnQuestScript(Dialog subject, ILogger<decoratingInnQuestScript> logger)
+    public DecoratingInnQuestScript(Dialog subject, ILogger<DecoratingInnQuestScript> logger)
         : base(subject)
     {
         Logger = logger;
@@ -268,7 +268,7 @@ public class decoratingInnQuestScript : DialogScriptBase
 
                     if (hasRequiredFlowers)
                     {
-                     source.Inventory.RemoveQuantity("Pink Rose", 3, out _);
+                     source.Inventory.RemoveQuantity("Petunia", 3, out _);
                      source.Inventory.RemoveQuantity("Gold Rose", 1, out _);
                      source.Inventory.RemoveQuantity("Pink Rose", 3, out _);
                      source.Trackers.TimedEvents.AddEvent("decoratingtheinncd", TimeSpan.FromHours(24), true);

@@ -21,51 +21,42 @@ public class TeleportToPfBossScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         var point = new Point(source.X, source.Y);
-        var point1 = point;
-        var group = source.Group?.Where(x => x.WithinRange(point1));
-
-        if (group is null)
+        var group = source.Group?.Where(x => x.WithinRange(point)).ToList();
+        
+        
+        if (source.Group is null || source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source)))
         {
-            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are too nervous to venture onto the peak alone.");
-            Subject.Reply(source, "You must have a group to get onto the peak.");
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure you are grouped or your group is near you.");
+            var point1 = source.DirectionalOffset(source.Direction.Reverse());
+            source.WarpTo(point1);
+
+            return;
         }
-
-        if (group is not null)
+        
+        if (group != null && !group.All(member => member.WithinLevelRange(source)))
         {
-            var groupCount = 0;
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure your companions are within level range.");
+            Subject.Reply(source, "Some of your companions are not within your level range.");
 
-            var rectangle = new Rectangle(
-                9,
-                16,
-                2,
-                2);
+            return;
+        }
+        
+        var rectangle = new Rectangle(
+            9,
+            16,
+            2,
+            2);
+        
+        foreach (var member in source.Group!)
+        {
+            Subject.Close(source);
+                var mapInstance = SimpleCache.Get<MapInstance>("pf_peak");
 
-            var enumerable = group as Aisling[] ?? group.ToArray();
+                do
+                    point = rectangle.GetRandomPoint();
+                while (!mapInstance.IsWalkable(point, member.Type));
 
-            foreach (var member in enumerable)
-                if (member.WithinRange(point, 10))
-                    ++groupCount;
-
-            if (groupCount.Equals(enumerable.Count()))
-            {
-                Subject.Close(source);
-
-                foreach (var member in enumerable)
-                {
-                    var mapInstance = SimpleCache.Get<MapInstance>("pf_peak");
-
-                    do
-                        point = rectangle.GetRandomPoint();
-                    while (!mapInstance.IsWalkable(point, member.Type));
-
-                    member.TraverseMap(mapInstance, point);
-                }
-            }
-            else
-            {
-                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your group must be nearby.");
-                Subject.Reply(source, "Your group is not near.");
-            }
+                member.TraverseMap(mapInstance, point);
         }
     }
 }

@@ -102,11 +102,11 @@ public class FiskSecretScript : DialogScriptBase
                     || (stage == FiskSecretStage.StartedBouquet)
                     || (stage == FiskSecretStage.StartedBouquet1)
                 || (stage == FiskSecretStage.CollectedBouquet))
-            {
-                Subject.Reply(source, "Skip", "FiskSecret_startedreturn4");
+                {
+                    Subject.Reply(source, "Skip", "FiskSecret_startedreturn4");
 
-                return;
-            }
+                    return;
+                }
 
                 if ((hasStage && (stage == FiskSecretStage.Started5)) || (stage == FiskSecretStage.DeliverBouquet))
                 {

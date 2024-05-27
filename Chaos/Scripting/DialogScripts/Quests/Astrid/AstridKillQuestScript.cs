@@ -29,6 +29,11 @@ public class AstridKillQuestScript : DialogScriptBase
         var hasStage = source.Trackers.Enums.TryGetValue(out AstridKillQuestStage stage);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var tenPercent = Convert.ToInt32(.10 * tnl);
+        
+        if (tenPercent > 100000)
+        {
+            tenPercent = 100000;
+        }
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
