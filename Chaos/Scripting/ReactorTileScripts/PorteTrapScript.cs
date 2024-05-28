@@ -120,16 +120,16 @@ If this reactor was created through a script, you must specify the owner in the 
 
         AnimationTimer.Update(delta);
 
-        var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 5).Where(x => x.IsDetectingTraps());
-        
         if (AnimationTimer.IntervalElapsed)
         {
-            foreach (var aisling in aislings)
-            {
-                Subject.Animate(DetectTrapAnimation);
-            }
+            var detectingAislings = Subject.MapInstance
+                                           .GetEntitiesWithinRange<Aisling>(Subject, 5)
+                                           .Where(aisling => aisling.IsDetectingTraps());
+
+            foreach (var aisling in detectingAislings)
+                aisling.MapInstance.ShowAnimation(DetectTrapAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y)));
         }
-        
+
         if (Timer != null)
         {
             Timer.Update(delta);

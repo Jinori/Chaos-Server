@@ -34,14 +34,7 @@ public sealed class BossThrowHazardousScript : MonsterScriptBase
 
         ApplyDamageScript = ApplyAttackDamageScript.Create();
     }
-
-    private Aisling? FindLowestAggro() =>
-        Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
-               .ThatAreObservedBy(Subject)
-               .FirstOrDefault(
-                   obj => !obj.Equals(Subject)
-                          && obj.IsAlive
-                          && (obj.Id == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min()).Key));
+    
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
@@ -54,12 +47,10 @@ public sealed class BossThrowHazardousScript : MonsterScriptBase
 
         if (!SpawnTiles.IntervalElapsed)
             return;
-
-        var target = FindLowestAggro();
-
-        if (target != null)
+        
+        if (Target != null)
         {
-            var points = AoeShape.AllAround.ResolvePoints(target);
+            var points = AoeShape.AllAround.ResolvePoints(Target);
 
             var enumerable = points as Point[] ?? points.ToArray();
 
@@ -82,7 +73,7 @@ public sealed class BossThrowHazardousScript : MonsterScriptBase
                     damage,
                     Element.Fire);
 
-                target.ShowHealth();
+                aisling.ShowHealth();
             }
         }
     }
