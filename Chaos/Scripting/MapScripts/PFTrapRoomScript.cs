@@ -7,18 +7,12 @@ namespace Chaos.Scripting.MapScripts;
 
 public class TrapRoomScript : MapScriptBase
 {
-    private readonly IMonsterFactory MonsterFactory;
-    private readonly IReactorTileFactory ReactorTileFactory;
-
     public TrapRoomScript(MapInstance subject, IReactorTileFactory reactorTileFactory, IMonsterFactory monsterFactory)
         : base(subject)
     {
-        ReactorTileFactory = reactorTileFactory;
-        MonsterFactory = monsterFactory;
-
-        var monster = MonsterFactory.Create("pf_path_monster", Subject, new Point());
+        var monster = monsterFactory.Create("pf_path_monster", Subject, new Point());
         var points = new HashSet<Point>();
-        var count = Subject.Template.Width * Subject.Template.Height / 3;
+        var count = Subject.Template.Width * Subject.Template.Height / 6;
 
         for (var i = 0; i < count; i++)
         {
@@ -28,7 +22,7 @@ public class TrapRoomScript : MapScriptBase
 
         foreach (var point in points)
         {
-            var trap = ReactorTileFactory.Create(
+            var trap = reactorTileFactory.Create(
                 "pf_roomtrap",
                 Subject,
                 point,

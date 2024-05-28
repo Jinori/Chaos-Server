@@ -18,7 +18,7 @@ public class KarloposTrapRoomScript : MapScriptBase
 
         var monster = MonsterFactory.Create("karlopos_path_monster", Subject, new Point());
         var points = new HashSet<Point>();
-        var count = Subject.Template.Width * Subject.Template.Height / 20;
+        var count = Subject.Template.Width * Subject.Template.Height / 6;
 
         for (var i = 0; i < count; i++)
         {
