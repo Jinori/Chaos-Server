@@ -127,7 +127,7 @@ public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogge
                                       source.Name,
                                       50000);
 
-                            ExperienceDistributionScript.GiveExp(source, 50000);
+                            ExperienceDistributionScript.GiveExp(source, 25000);
                             source.TryGiveGamePoints(5);
 
                             if (IntegerRandomizer.RollChance(8))

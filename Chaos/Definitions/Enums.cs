@@ -1397,6 +1397,20 @@ public enum AbelDungeonKillQuestStage
     DungeonBoss = 8
 }
 
+public enum DubhaimCastleKillQuestStage
+{
+    None,
+    DubhaimDunan = 1,
+    DubhaimGhast = 2,
+    DubhaimCruel1 = 3,
+    DubhaimCruel2 = 4,
+    DubhaimGargoyle1 = 5,
+    DubhaimGargoyle2 = 6,
+    DubhaimGargoyle3 = 7,
+    DubhaimGargoyleFiend1 = 8,
+    DubhaimGargoyleFiend2 = 9,
+}
+
 [Flags]
 public enum ReconPoints
 {

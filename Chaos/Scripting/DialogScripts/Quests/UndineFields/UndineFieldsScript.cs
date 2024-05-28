@@ -107,7 +107,7 @@ public class UndineFieldsScript : DialogScriptBase
                 if (stage == UndineFieldDungeon.KilledCarnun)
                 {
                     source.Trackers.Flags.AddFlag(UndineFieldDungeonFlag.CompletedUF);
-                    ExperienceDistributionScript.GiveExp(source, 200000);
+                    ExperienceDistributionScript.GiveExp(source, 750000);
                     source.Trackers.Flags.AddFlag(AvailableCloaks.Red);
                     source.SendOrangeBarMessage("You unlocked the Red Cloak for mounts!");
                     
@@ -122,7 +122,7 @@ public class UndineFieldsScript : DialogScriptBase
                         .LogInformation(
                             "{@AislingName} has received {@ExpAmount} exp and Red Cloak from Undine Fields Dungeon",
                             source.Name,
-                            200000);
+                            750000);
                 }
                 break;
         }

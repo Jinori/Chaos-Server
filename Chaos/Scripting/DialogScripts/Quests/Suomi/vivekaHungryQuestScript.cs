@@ -147,7 +147,7 @@ public class VivekaHungryQuestScript : DialogScriptBase
                                 5000,
                                 15000);
 
-                        ExperienceDistributionScript.GiveExp(source, 5000);
+                        ExperienceDistributionScript.GiveExp(source, 25000);
 
                         if (IntegerRandomizer.RollChance(8))
                         {

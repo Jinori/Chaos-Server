@@ -31,8 +31,9 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
         {
             case "waldyr_initial":
             {
-                if (source.UserStatSheet.Level < 99)
-                {
+                if (source.UserStatSheet.Level < 41)
+                    return;
+                
                     var option = new DialogOption
                     {
                         DialogKey = "pietsewerkillquest_initial",
@@ -41,7 +42,6 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                     
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
-                }
 
                 break;
             }

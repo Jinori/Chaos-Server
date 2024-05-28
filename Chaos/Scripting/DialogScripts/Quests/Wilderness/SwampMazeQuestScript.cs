@@ -90,11 +90,11 @@ public class SwampMazeQuestScript : DialogScriptBase
                           .LogInformation(
                               "{@AislingName} has received {@ExpAmount} exp from a quest and the item {@ItemName}",
                               source.Name,
-                              50000,
+                              25000,
                               "Mushroom Hat");
 
                     source.GiveItemOrSendToBank(ItemFactory.Create("mushroomhat"));
-                    ExperienceDistributionScript.GiveExp(source, 50000);
+                    ExperienceDistributionScript.GiveExp(source, 25000);
                     source.SendOrangeBarMessage("You receive 50000 exp and a Mushroom Hat!");
                 }
             }

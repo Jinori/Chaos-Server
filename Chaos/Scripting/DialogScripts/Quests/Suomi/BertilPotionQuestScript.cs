@@ -101,7 +101,7 @@ public class BertilPotionQuestScript : DialogScriptBase
                                 source.Name,
                                 20000);
 
-                        ExperienceDistributionScript.GiveExp(source, 10000);
+                        ExperienceDistributionScript.GiveExp(source, 15000);
                         source.TryGiveGamePoints(5);
 
                         if (IntegerRandomizer.RollChance(8))

@@ -18,11 +18,11 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
 
     private readonly IExperienceDistributionScript ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
 
-    private int CalculateAscensionsCount(Aisling source, string hPorMP)
+    private int CalculateAscensionsCount(Aisling source, string hPorMp)
     {
         var loopCounter = 0;
-        var gains = hPorMP == "HP" ? HEALTH_GAIN : MANA_GAIN;
-        var baseVal = hPorMP == "HP" ? source.StatSheet.MaximumHp : source.StatSheet.MaximumMp;
+        var gains = hPorMp == "HP" ? HEALTH_GAIN : MANA_GAIN;
+        var baseVal = hPorMp == "HP" ? source.StatSheet.MaximumHp : source.StatSheet.MaximumMp;
         float currentExp = source.UserStatSheet.TotalExp;
 
         for (; (currentExp -= (baseVal + gains * loopCounter) * 500) >= 0; loopCounter++) { }

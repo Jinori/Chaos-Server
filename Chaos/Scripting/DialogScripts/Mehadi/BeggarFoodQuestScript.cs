@@ -36,6 +36,9 @@ public class BeggarFoodQuestScript : DialogScriptBase
             case "beggar_initial":
                 if (!hasStage)
                 {
+                    if (source.UserStatSheet.Level < 41)
+                        return; 
+                    
                     var option = new DialogOption
                     {
                         DialogKey = "beggarfood_initial",

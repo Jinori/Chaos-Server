@@ -119,16 +119,16 @@ public class PietWoodQuestScript : DialogScriptBase
                         }
                         case false:
                         {
-                            var wolfFurCount = source.Inventory.CountOf("Trent Wood");
+                            var trentWood = source.Inventory.CountOf("Trent Wood");
 
-                            if (wolfFurCount < 1)
+                            if (trentWood < 1)
                             {
                                 Subject.Reply(source, "Where is the Trent Wood at? Are you too weak?");
                                 return;
                             }
                         
                             Subject.Reply(source,
-                                $"I understand trent wood can be difficult to find... you only have {wolfFurCount} Trent Wood. That won't be enough, I usually use 20 Trent Wood a day to keep my Inn warm!");
+                                $"I understand trent wood can be difficult to find... you only have {trentWood} Trent Wood. That won't be enough, I usually use 20 Trent Wood a day to keep my Inn warm!");
 
                             break;
                         }

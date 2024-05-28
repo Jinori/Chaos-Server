@@ -91,7 +91,7 @@ public class PurpleWhopperQuestScript(Dialog subject, ILogger<PurpleWhopperQuest
                                       25000);
 
                             ExperienceDistributionScript.GiveExp(source, 25000);
-                            source.TryGiveGold(5000);
+                            source.TryGiveGold(10000);
                             source.TryGiveGamePoints(5);
 
                             if (IntegerRandomizer.RollChance(8))

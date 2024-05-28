@@ -74,8 +74,13 @@ public class TerrorChestScript : DialogScriptBase
                 }
 
                 var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-                var expAmount = Convert.ToInt32(0.30 * tnl);
+                var expAmount = Convert.ToInt32(0.20 * tnl);
 
+                if (expAmount > 320000)
+                {
+                    expAmount = 600000;
+                }
+                
                 Logger.WithTopics(
                           Topics.Entities.Aisling,
                           Topics.Entities.Gold,
