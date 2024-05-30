@@ -59,7 +59,7 @@ public class suomiFarmerScript : DialogScriptBase
                 var mapInstance = SimpleCache.Get<MapInstance>("suomi");
                 var point = new Point(78, 40);
                 source.TraverseMap(mapInstance, point);
-                source.Trackers.TimedEvents.AddEvent("SuomiGrapeCd", TimeSpan.FromHours(24), true);
+                source.Trackers.TimedEvents.AddEvent("SuomiGrapeCd", TimeSpan.FromHours(22), true);
             }
 
                 break;
@@ -100,7 +100,7 @@ public class suomiFarmerScript : DialogScriptBase
                 var mapInstance = SimpleCache.Get<MapInstance>("suomi");
                 var point = new Point(29, 71);
                 source.TraverseMap(mapInstance, point);
-                source.Trackers.TimedEvents.AddEvent("SuomiCherryCd", TimeSpan.FromHours(24), true);
+                source.Trackers.TimedEvents.AddEvent("SuomiCherryCd", TimeSpan.FromHours(22), true);
             }
 
                 break;

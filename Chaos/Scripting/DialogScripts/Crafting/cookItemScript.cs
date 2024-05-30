@@ -708,6 +708,8 @@ public class CookItemScript : DialogScriptBase
                     if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
+                        source.SendOrangeBarMessage("The ingredients you used were rotten.");
+                        source.SendOrangeBarMessage("The ingredients you used were rotten.");
 
                         return;
                     }
@@ -1712,6 +1714,7 @@ public class CookItemScript : DialogScriptBase
                     if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
+                        source.SendOrangeBarMessage("The ingredients you used were rotten.");
 
                         return;
                     }
@@ -1881,6 +1884,7 @@ public class CookItemScript : DialogScriptBase
                     if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
+                        source.SendOrangeBarMessage("The ingredients you used were rotten.");
 
                         return;
                     }
@@ -2047,6 +2051,7 @@ public class CookItemScript : DialogScriptBase
                     if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
+                        source.SendOrangeBarMessage("The ingredients you used were rotten.");
 
                         return;
                     }
@@ -2307,6 +2312,7 @@ public class CookItemScript : DialogScriptBase
                     if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
+                        source.SendOrangeBarMessage("The ingredients you used were rotten.");
 
                         return;
                     }
@@ -2589,6 +2595,7 @@ public class CookItemScript : DialogScriptBase
                     if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
+                        source.SendOrangeBarMessage("The ingredients you used were rotten.");
 
                         return;
                     }
@@ -2811,6 +2818,7 @@ public class CookItemScript : DialogScriptBase
                     if (IntegerRandomizer.RollChance(20))
                     {
                         Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
+                        source.SendOrangeBarMessage("The ingredients you used were rotten.");
 
                         return;
                     }

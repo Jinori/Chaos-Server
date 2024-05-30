@@ -100,7 +100,7 @@ public class DubhaimCastleKillQuestScript(Dialog subject, ILogger<TheSacrificeQu
                         "hosk_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dubhaimdunancounter", out _);
                     source.Trackers.Enums.Set(DubhaimCastleKillQuestStage.None);
                     return;
@@ -130,7 +130,7 @@ public class DubhaimCastleKillQuestScript(Dialog subject, ILogger<TheSacrificeQu
                         "hosk_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dubhaimghastcounter", out _);
                     source.Trackers.Enums.Set(DubhaimCastleKillQuestStage.None);
                     return;
@@ -161,7 +161,7 @@ public class DubhaimCastleKillQuestScript(Dialog subject, ILogger<TheSacrificeQu
                         "hosk_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dubhaimcruel1counter", out _);
                     source.Trackers.Enums.Set(DubhaimCastleKillQuestStage.None);
                     return;
@@ -193,7 +193,7 @@ public class DubhaimCastleKillQuestScript(Dialog subject, ILogger<TheSacrificeQu
                         "hosk_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dubhaimgargoyle1counter", out _);
                     source.Trackers.Enums.Set(DubhaimCastleKillQuestStage.None);
                     return;
@@ -225,7 +225,7 @@ public class DubhaimCastleKillQuestScript(Dialog subject, ILogger<TheSacrificeQu
                         "hosk_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dubhaimgargoyle2counter", out _);
                     source.Trackers.Enums.Set(DubhaimCastleKillQuestStage.None);
                     return;
@@ -257,7 +257,7 @@ public class DubhaimCastleKillQuestScript(Dialog subject, ILogger<TheSacrificeQu
                         "hosk_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dubhaimgargoylefiend1counter", out _);
                     source.Trackers.Enums.Set(DubhaimCastleKillQuestStage.None);
                     return;
@@ -289,7 +289,7 @@ public class DubhaimCastleKillQuestScript(Dialog subject, ILogger<TheSacrificeQu
                         "hosk_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dubhaimgargoyle3counter", out _);
                     source.Trackers.Enums.Set(DubhaimCastleKillQuestStage.None);
                     return;
@@ -321,7 +321,7 @@ public class DubhaimCastleKillQuestScript(Dialog subject, ILogger<TheSacrificeQu
                         "hosk_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dubhaimgargoylefiend2counter", out _);
                     source.Trackers.Enums.Set(DubhaimCastleKillQuestStage.None);
                 }

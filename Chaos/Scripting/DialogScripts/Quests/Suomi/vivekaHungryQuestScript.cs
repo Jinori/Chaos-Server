@@ -127,7 +127,7 @@ public class VivekaHungryQuestScript : DialogScriptBase
                     {
                         source.Inventory.RemoveQuantity("Cherry Pie", 1, out _);
                         source.Trackers.Enums.Set(HungryViveka.CompletedCherryPie);
-                        source.Trackers.TimedEvents.AddEvent("vivekahungrycd", TimeSpan.FromHours(24), true);
+                        source.Trackers.TimedEvents.AddEvent("vivekahungrycd", TimeSpan.FromHours(22), true);
                         var wine1 = ItemFactory.Create("wine");
                         var wine2 = ItemFactory.Create("wine");
                         source.GiveItemOrSendToBank(wine1);
@@ -193,7 +193,7 @@ public class VivekaHungryQuestScript : DialogScriptBase
                     if (hasRequiredCherryPie)
                     {
                         source.Inventory.RemoveQuantity("Cherry Pie", 1, out _);
-                        source.Trackers.TimedEvents.AddEvent("vivekahungrycd", TimeSpan.FromHours(24), true);
+                        source.Trackers.TimedEvents.AddEvent("vivekahungrycd", TimeSpan.FromHours(22), true);
 
                         Logger.WithTopics(
                                 Topics.Entities.Aisling,

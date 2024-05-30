@@ -376,7 +376,7 @@ public class CryptSlayerScript : DialogScriptBase
                         1,
                         GameTime.Now));
 
-                source.Trackers.TimedEvents.AddEvent("CryptSlayerCd", TimeSpan.FromHours(8), true);
+                source.Trackers.TimedEvents.AddEvent("CryptSlayerCd", TimeSpan.FromHours(22), true);
                 var skarn = Subject.DialogSource as Merchant;
                 skarn?.Say($"Thanks for the help, {source.Name}!");
 

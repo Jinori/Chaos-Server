@@ -107,7 +107,7 @@ public class WWKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "maxwell_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("wwslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("wwslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("wwgoblinguardcounter", out _);
                     source.Trackers.Enums.Set(WestWoodlandsKillQuestStage.None);
                     return;
@@ -138,7 +138,7 @@ public class WWKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "maxwell_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("wwslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("wwslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("wwgoblinwarriorcounter", out _);
                     source.Trackers.Enums.Set(WestWoodlandsKillQuestStage.None);
                     return;
@@ -170,7 +170,7 @@ public class WWKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "maxwell_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("wwslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("wwslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("wwhobgoblincounter", out _);
                     source.Trackers.Enums.Set(WestWoodlandsKillQuestStage.None);
                     return;
@@ -201,7 +201,7 @@ public class WWKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "maxwell_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("wwslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("wwslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("wwshriekercounter", out _);
                     source.Trackers.Enums.Set(WestWoodlandsKillQuestStage.None);
                     return;
@@ -232,7 +232,7 @@ public class WWKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "maxwell_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("wwslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("wwslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("wwwispcounter", out _);
                     source.Trackers.Enums.Set(WestWoodlandsKillQuestStage.None);
                     return;
@@ -263,7 +263,7 @@ public class WWKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "maxwell_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("wwslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("wwslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("wwfaeriecounter", out _);
                     source.Trackers.Enums.Set(WestWoodlandsKillQuestStage.None);
                     return;
@@ -294,7 +294,7 @@ public class WWKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "maxwell_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("wwslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("wwslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("wwbosscounter", out _);
                     source.Trackers.Enums.Set(WestWoodlandsKillQuestStage.None);
                     return;

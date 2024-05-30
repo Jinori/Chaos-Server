@@ -105,7 +105,7 @@ public class KarloposKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestSc
                         "kregg_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("karloposslayercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("karloposslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("karloposcrabcounter", out _);
                     source.Trackers.Enums.Set(KarloposKillQuestStage.None);
                     return;
@@ -134,7 +134,7 @@ public class KarloposKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestSc
                         "kregg_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("karloposslayercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("karloposslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("karloposturtlecounter", out _);
                     source.Trackers.Enums.Set(KarloposKillQuestStage.None);
                     return;
@@ -162,7 +162,7 @@ public class KarloposKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestSc
                         "kregg_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("karloposslayercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("karloposslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("karloposslugcounter", out _);
                     source.Trackers.Enums.Set(KarloposKillQuestStage.None);
                     return;
@@ -190,7 +190,7 @@ public class KarloposKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestSc
                         "kregg_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("karloposslayercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("karloposslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("karlopossporecounter", out _);
                     source.Trackers.Enums.Set(KarloposKillQuestStage.None);
                     return;
@@ -218,7 +218,7 @@ public class KarloposKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestSc
                         "kregg_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("karloposslayercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("karloposslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("karloposkrakencounter", out _);
                     source.Trackers.Enums.Set(KarloposKillQuestStage.None);
                     return;
@@ -246,7 +246,7 @@ public class KarloposKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestSc
                         "kregg_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("karloposslayercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("karloposslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("karloposoctopuscounter", out _);
                     source.Trackers.Enums.Set(KarloposKillQuestStage.None);
                     return;
@@ -277,7 +277,7 @@ public class KarloposKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestSc
                         "kregg_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("karloposslayercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("karloposslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("karloposgogcounter", out _);
                     source.Trackers.Enums.Set(KarloposKillQuestStage.None);
                 }

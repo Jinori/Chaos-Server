@@ -64,17 +64,17 @@ public class PurpleWhopperQuestScript(Dialog subject, ILogger<PurpleWhopperQuest
 
             case "purplewhopper_turnin":
             {
-                var hasRequiredWolfFurs = source.Inventory.HasCount("Purple Whopper", 1);
+                var hasRequiredPurpleWhopper = source.Inventory.HasCount("Purple Whopper", 1);
                 
-                if (hasStage && (stage == PurpleWhopper.StartedQuest))
+                if (hasStage && stage == PurpleWhopper.StartedQuest)
                 {
-                    switch (hasRequiredWolfFurs)
+                    switch (hasRequiredPurpleWhopper)
                     {
                         case true:
                         {
                             source.Inventory.RemoveQuantity("Purple Whopper", 1, out _);
                             source.Trackers.Enums.Set(PurpleWhopper.None);
-                            source.Trackers.TimedEvents.AddEvent("purplewhoppercd", TimeSpan.FromHours(24), true);
+                            source.Trackers.TimedEvents.AddEvent("purplewhoppercd", TimeSpan.FromHours(22), true);
 
                             logger.WithTopics(
                                       Topics.Entities.Aisling,
@@ -94,7 +94,7 @@ public class PurpleWhopperQuestScript(Dialog subject, ILogger<PurpleWhopperQuest
                             source.TryGiveGold(10000);
                             source.TryGiveGamePoints(5);
 
-                            if (IntegerRandomizer.RollChance(8))
+                            if (IntegerRandomizer.RollChance(100))
                             {
                                 source.Legend.AddOrAccumulate(
                                     new LegendMark(

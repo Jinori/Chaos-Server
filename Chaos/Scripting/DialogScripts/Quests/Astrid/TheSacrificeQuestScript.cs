@@ -93,7 +93,7 @@ public class TheSacrificeQuestScript : DialogScriptBase
                         source.Trackers.Flags.RemoveFlag(ReconPoints.Reconpoint6);
                         source.Trackers.Flags.RemoveFlag(ReconPoints.Reconpoint7);
                         source.Trackers.Enums.Set(TheSacrificeQuestStage.None);
-                        source.Trackers.TimedEvents.AddEvent("thesacrificecd", TimeSpan.FromHours(8), true);
+                        source.Trackers.TimedEvents.AddEvent("thesacrificecd", TimeSpan.FromHours(22), true);
                         return;
                     }
                     
@@ -132,7 +132,7 @@ public class TheSacrificeQuestScript : DialogScriptBase
                         source.Trackers.Counters.Set("captorkills1", 0);
                         source.Trackers.Counters.Set("captorkills2", 0);
                         source.Trackers.Enums.Set(TheSacrificeQuestStage.None);
-                        source.Trackers.TimedEvents.AddEvent("thesacrificecd", TimeSpan.FromHours(8), true);
+                        source.Trackers.TimedEvents.AddEvent("thesacrificecd", TimeSpan.FromHours(22), true);
                         return;
                     }
 
@@ -159,7 +159,7 @@ public class TheSacrificeQuestScript : DialogScriptBase
                         ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                         source.Trackers.Flags.RemoveFlag(SavedChild.savedchild);
                         source.Trackers.Enums.Set(TheSacrificeQuestStage.None);
-                        source.Trackers.TimedEvents.AddEvent("thesacrificecd", TimeSpan.FromHours(8), true);
+                        source.Trackers.TimedEvents.AddEvent("thesacrificecd", TimeSpan.FromHours(22), true);
                         return;
                     }
                     

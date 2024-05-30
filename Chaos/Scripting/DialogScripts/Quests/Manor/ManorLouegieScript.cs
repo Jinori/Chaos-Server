@@ -72,7 +72,7 @@ public class ManorLouegieScript : DialogScriptBase
                         source.Trackers.Enums.Set(ManorLouegieStage.None);
                         ExperienceDistributionScript.GiveExp(source, twentypercent);
                         source.TryGiveGamePoints(10);
-                        source.Trackers.TimedEvents.AddEvent("Louegie2ndFloor", TimeSpan.FromHours(24), true);
+                        source.Trackers.TimedEvents.AddEvent("Louegie2ndFloor", TimeSpan.FromHours(22), true);
                         return;
                     }
                 }

@@ -115,7 +115,7 @@ public class TerrorChestScript : DialogScriptBase
                         1,
                         GameTime.Now));
 
-                source.Trackers.TimedEvents.AddEvent("TerrorOfTheCrypt", TimeSpan.FromDays(1), true);
+                source.Trackers.TimedEvents.AddEvent("TerrorOfTheCrypt", TimeSpan.FromHours(22), true);
             }
         }
         else

@@ -104,7 +104,7 @@ public class EwKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "ghislain_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("ewvipercounter", out _);
                     source.Trackers.Enums.Set(EastWoodlandsKillQuestStage.None);
                     return;
@@ -133,7 +133,7 @@ public class EwKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "ghislain_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("ewbeecounter1", out _);
                     source.Trackers.Enums.Set(EastWoodlandsKillQuestStage.None);
                     return;
@@ -161,7 +161,7 @@ public class EwKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "ghislain_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("ewbeecounter2", out _);
                     source.Trackers.Enums.Set(EastWoodlandsKillQuestStage.None);
                     return;
@@ -189,7 +189,7 @@ public class EwKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "ghislain_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("ewmantiscounter1", out _);
                     source.Trackers.Enums.Set(EastWoodlandsKillQuestStage.None);
                     return;
@@ -217,7 +217,7 @@ public class EwKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "ghislain_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("ewmantiscounter2", out _);
                     source.Trackers.Enums.Set(EastWoodlandsKillQuestStage.None);
                     return;
@@ -245,7 +245,7 @@ public class EwKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "ghislain_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("ewwolfcounter", out _);
                     source.Trackers.Enums.Set(EastWoodlandsKillQuestStage.None);
                     return;
@@ -273,7 +273,7 @@ public class EwKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "ghislain_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("ewkoboldcounter", out _);
                     source.Trackers.Enums.Set(EastWoodlandsKillQuestStage.None);
                     return;
@@ -301,7 +301,7 @@ public class EwKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "ghislain_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("ewgoblinsoldiercounter", out _);
                     source.Trackers.Enums.Set(EastWoodlandsKillQuestStage.None);
                     return;
@@ -329,7 +329,7 @@ public class EwKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "ghislain_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("ewgoblinwarriorcounter", out _);
                     source.Trackers.Enums.Set(EastWoodlandsKillQuestStage.None);
                     return;
@@ -357,7 +357,7 @@ public class EwKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "ghislain_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("ewgoblinguardcounter", out _);
                     source.Trackers.Enums.Set(EastWoodlandsKillQuestStage.None);
                     return;
@@ -385,7 +385,7 @@ public class EwKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                         "ghislain_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("ewslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("ewhobgoblincounter", out _);
                     source.Trackers.Enums.Set(EastWoodlandsKillQuestStage.None);
                 }

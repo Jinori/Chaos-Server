@@ -209,7 +209,7 @@ public class DecoratingInnQuestScript : DialogScriptBase
                     {
                         source.Inventory.RemoveQuantity("Pink Rose", 3, out _);
                         source.Trackers.Enums.Set(DecoratingInn.CompletedQuest);
-                        source.Trackers.TimedEvents.AddEvent("decoratingtheinncd", TimeSpan.FromHours(24), true);
+                        source.Trackers.TimedEvents.AddEvent("decoratingtheinncd", TimeSpan.FromHours(22), true);
 
                         Logger.WithTopics(
                                 Topics.Entities.Aisling,
@@ -271,7 +271,7 @@ public class DecoratingInnQuestScript : DialogScriptBase
                      source.Inventory.RemoveQuantity("Petunia", 3, out _);
                      source.Inventory.RemoveQuantity("Gold Rose", 1, out _);
                      source.Inventory.RemoveQuantity("Pink Rose", 3, out _);
-                     source.Trackers.TimedEvents.AddEvent("decoratingtheinncd", TimeSpan.FromHours(24), true);
+                     source.Trackers.TimedEvents.AddEvent("decoratingtheinncd", TimeSpan.FromHours(22), true);
 
                         Logger.WithTopics(
                                 Topics.Entities.Aisling,

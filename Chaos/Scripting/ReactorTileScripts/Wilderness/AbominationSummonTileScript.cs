@@ -49,7 +49,7 @@ public class AbominationSummonTileScript : ReactorTileScriptBase
             
             aisling.SendOrangeBarMessage("The snow around you shakes and you hear a loud roar...");
             Subject.MapInstance.AddEntity(abomination, point);
-            aisling.Trackers.TimedEvents.AddEvent("abominationcd", TimeSpan.FromHours(8), true);
+            aisling.Trackers.TimedEvents.AddEvent("abominationcd", TimeSpan.FromHours(22), true);
         }
     }
 }

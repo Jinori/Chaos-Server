@@ -100,7 +100,7 @@ public class AstridKillQuestScript : DialogScriptBase
                         "phio_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("astridslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("astridslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("astridwolfcounter", out _);
                     source.Trackers.Enums.Set(AstridKillQuestStage.None);
                     return;
@@ -129,7 +129,7 @@ public class AstridKillQuestScript : DialogScriptBase
                         "phio_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("astridslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("astridslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("astridkoboldcounter", out _);
                     source.Trackers.Enums.Set(AstridKillQuestStage.None);
                     return;
@@ -158,7 +158,7 @@ public class AstridKillQuestScript : DialogScriptBase
                         "phio_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("astridslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("astridslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("astridgoblinguardcounter", out _);
                     source.Trackers.Enums.Set(AstridKillQuestStage.None);
                     return;
@@ -187,7 +187,7 @@ public class AstridKillQuestScript : DialogScriptBase
                         "phio_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("astridslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("astridslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("astridgoblinsoldiercounter", out _);
                     source.Trackers.Enums.Set(AstridKillQuestStage.None);
                     return;
@@ -216,7 +216,7 @@ public class AstridKillQuestScript : DialogScriptBase
                         "phio_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("astridslayercd", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("astridslayercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("astridgoblinwarriorcounter", out _);
                     source.Trackers.Enums.Set(AstridKillQuestStage.None);
                 }

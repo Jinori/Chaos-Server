@@ -65,7 +65,7 @@ public class MetalRefiningScript : CraftingBaseScript
 
     public void OnDisplayingShowPlayerItems(Aisling source) =>
         Subject.Slots = source.Inventory
-                              .Where(x => MetalTemplateKeys.ContainsI(x.Template.TemplateKey) && (x.Count > 1))
+                              .Where(x => MetalTemplateKeys.ContainsI(x.Template.TemplateKey) && (x.Count >= 1))
                               .Select(x => x.Slot)
                               .ToList();
     

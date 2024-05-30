@@ -76,6 +76,7 @@ If this reactor was created through a script, you must specify the owner in the 
         if ((aisling?.MapInstance.InstanceId == "pf_path") && aisling.Inventory.HasCount("Giant Ant Wing", 1))
         {
             aisling.Inventory.RemoveQuantity("Giant Ant Wing", 1);
+            Subject.MapInstance.RemoveEntity(Subject);
 
             aisling.SendOrangeBarMessage(
                 $"You lay down a Giant Ant Wing to avoid the trap, {aisling.Inventory.CountOf("Giant Ant Wing")} left.");
@@ -86,6 +87,7 @@ If this reactor was created through a script, you must specify the owner in the 
         if ((aisling?.MapInstance.InstanceId == "karlopostrap") && aisling.Inventory.HasCount("Giant Ant Wing", 1))
         {
             aisling.Inventory.RemoveQuantity("Giant Ant Wing", 1);
+            Subject.MapInstance.RemoveEntity(Subject);
 
             aisling.SendOrangeBarMessage(
                 $"You lay down a Giant Ant Wing to avoid the trap, {aisling.Inventory.CountOf("Giant Ant Wing")} left.");

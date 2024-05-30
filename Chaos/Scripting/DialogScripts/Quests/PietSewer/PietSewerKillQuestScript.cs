@@ -34,14 +34,14 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                 if (source.UserStatSheet.Level < 41)
                     return;
                 
-                    var option = new DialogOption
-                    {
-                        DialogKey = "pietsewerkillquest_initial",
-                        OptionText = "Piet Sewer Slayer"
-                    };
+                var option = new DialogOption
+                {
+                    DialogKey = "pietsewerkillquest_initial",
+                    OptionText = "Piet Sewer Slayer"
+                };
                     
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
+                if (!Subject.HasOption(option.OptionText))
+                    Subject.Options.Insert(0, option);
 
                 break;
             }
@@ -92,7 +92,7 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                         "waldyr_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("sewercrabcounter", out _);
                     source.Trackers.Enums.Set(PietSewerKillQuestStage.None);
                     return;
@@ -121,7 +121,7 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                         "waldyr_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("sewerturtlecounter", out _);
                     source.Trackers.Enums.Set(PietSewerKillQuestStage.None);
                     return;
@@ -149,7 +149,7 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                         "waldyr_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("sewerfrogcounter", out _);
                     source.Trackers.Enums.Set(PietSewerKillQuestStage.None);
                     return;
@@ -177,7 +177,7 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                         "waldyr_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("seweranemonecounter", out _);
                     source.Trackers.Enums.Set(PietSewerKillQuestStage.None);
                     return;
@@ -205,7 +205,7 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                         "waldyr_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("sewerbrawlfishcounter", out _);
                     source.Trackers.Enums.Set(PietSewerKillQuestStage.None);
                     return;
@@ -233,7 +233,7 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                         "waldyr_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("sewerrockcobblercounter", out _);
                     source.Trackers.Enums.Set(PietSewerKillQuestStage.None);
                     return;
@@ -261,7 +261,7 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                         "waldyr_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("sewerkrakencounter", out _);
                     source.Trackers.Enums.Set(PietSewerKillQuestStage.None);
                     return;
@@ -292,7 +292,7 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                         "waldyr_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("sewergremlincounter", out _);
                     source.Trackers.Enums.Set(PietSewerKillQuestStage.None);
                     return;
@@ -322,7 +322,7 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                         "waldyr_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("sewergremlincounter", out _);
                     source.Trackers.Enums.Set(PietSewerKillQuestStage.None);
                     return;
@@ -353,7 +353,7 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                         "waldyr_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("sewerminiskrullcounter", out _);
                     source.Trackers.Enums.Set(PietSewerKillQuestStage.None);
                     return;
@@ -384,7 +384,7 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                         "waldyr_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("pietsewercd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("sewerskrullcounter", out _);
                     source.Trackers.Enums.Set(PietSewerKillQuestStage.None);
                 }

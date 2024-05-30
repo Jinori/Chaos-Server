@@ -80,7 +80,7 @@ public class PietWoodQuestScript : DialogScriptBase
                         {
                             source.Inventory.RemoveQuantity("Trent Wood", 20, out _);
                             source.Trackers.Enums.Set(PietWood.None);
-                            source.Trackers.TimedEvents.AddEvent("pietwoodcd", TimeSpan.FromHours(24), true);
+                            source.Trackers.TimedEvents.AddEvent("pietwoodcd", TimeSpan.FromHours(22), true);
 
                             Logger.WithTopics(
                                       Topics.Entities.Aisling,

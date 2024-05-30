@@ -37,9 +37,6 @@ public class UndineFieldsScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        if (source.UserStatSheet.Level < 41)
-            return;
-        
         var hasStage = source.Trackers.Enums.TryGetValue(out UndineFieldDungeon stage);
         var hasFlag = source.Trackers.Flags.TryGetFlag(out UndineFieldDungeonFlag flag);
 

@@ -97,7 +97,18 @@ public class ArenaBattleRingScript : DialogScriptBase
                 //if we cant set the active object, return
                 if (!source.ActiveObject.SetIfNull(worldMap))
                     return;
+                
+                if (source.IsDead)
+                {
+                    source.IsDead = false;
+                    source.StatSheet.SetHealthPct(25);
+                    source.StatSheet.SetManaPct(25);
+                    source.Client.SendAttributes(StatUpdateType.Vitality);
+                    source.SendActiveMessage("You have been revived.");
+                    source.Refresh();
+                }
 
+                source.Trackers.Enums.Remove<ArenaTeam>();
                 source.MapInstance.RemoveEntity(source);
                 source.Client.SendWorldMap(worldMap);
 

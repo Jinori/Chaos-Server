@@ -72,7 +72,7 @@ public class CrudeLeatherQuestScript (Dialog subject, ILogger<CrudeLeatherQuestS
                         {
                             source.Inventory.RemoveQuantity("Wolf's Fur", 10, out _);
                             source.Trackers.Enums.Set(CrudeLeather.None);
-                            source.Trackers.TimedEvents.AddEvent("crudeleathercd", TimeSpan.FromHours(24), true);
+                            source.Trackers.TimedEvents.AddEvent("crudeleathercd", TimeSpan.FromHours(22), true);
                             
                             logger.WithTopics(
                                       Topics.Entities.Aisling,
