@@ -5,10 +5,10 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts;
 
-internal class RepairTrinket : DialogScriptBase
+internal class RepairTrinketScript : DialogScriptBase
 {
     /// <inheritdoc />
-    public RepairTrinket(Dialog subject)
+    public RepairTrinketScript(Dialog subject)
         : base(subject) { }
 
     /// <inheritdoc />
