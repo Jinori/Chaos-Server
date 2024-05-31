@@ -58,7 +58,7 @@ public class DubhaimCastleKillQuestScript(Dialog subject, ILogger<TheSacrificeQu
                 if (source.Trackers.TimedEvents.HasActiveEvent("dubhaimcastlecd", out var cdtime))
                 {
                     Subject.Reply(source,
-                        $"That pleases me. Please come back to me soon. (({cdtime.Remaining.ToReadableString()}))",
+                        $"That makes me happy. Please return to me soon. (Time remaining: {cdtime.Remaining.ToReadableString()})",
                         "hosk_initial");
                     return;
                 }
@@ -80,7 +80,8 @@ public class DubhaimCastleKillQuestScript(Dialog subject, ILogger<TheSacrificeQu
                 {
                     if (!source.Trackers.Counters.TryGetValue("dubhaimdunancounter", out var dunan) || dunan < 10)
                     {
-                        Subject.Reply(source, "You must be stronger than this, slay 10 Dunan and return to me.",
+                        Subject.Reply(source, 
+                        "You need to be stronger than this. Come back after you've slain 10 Dunan.",
                             "hosk_initial");
                         return;
                     }

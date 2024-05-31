@@ -1535,6 +1535,31 @@ public enum UndineFieldDungeon
     KilledCarnun = 4,
 }
 
+public enum ShipAttack
+{
+    None,
+    StartedShipAttack = 1,
+    FinishedWave1 = 2,
+    FinishedWave2 = 3,
+    FinishedWave3 = 4,
+    FinishedWave4 = 5,
+    FinishedWave5 = 6,
+    FinishedWave6 = 7,
+    FinishedWave7 = 8,
+    FinishedWave8 = 9,
+    FinishedWave9 = 10,
+    FinishedWave10 = 11,
+    FinishedShipAttack = 12,
+    CompletedShipAttack = 13
+}
+
+[Flags]
+public enum ShipAttackFlags
+{
+    None, 
+    CompletedShipAttack = 1
+}
+
 [Flags]
 public enum UndineFieldDungeonFlag
 {

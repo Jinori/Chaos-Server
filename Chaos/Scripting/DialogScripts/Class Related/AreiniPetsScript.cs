@@ -27,7 +27,7 @@ public class AreiniPetsScript(Dialog subject) : DialogScriptBase(subject)
         RemoveOption("Pet Level 40 Ability");
         RemoveOption("Pet Level 55 Ability");
         RemoveOption("Pet Level 80 Ability");
-        RemoveOption("Change Pet");
+        RemoveOption("Change Pet Appearance");
     }
 
     private void HandlePriestClassOptions(Aisling source)
