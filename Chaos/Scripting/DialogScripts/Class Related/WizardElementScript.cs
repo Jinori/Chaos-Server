@@ -159,7 +159,7 @@ public class WizardElementScript : DialogScriptBase
                         Subject.Options.Add(
                             new DialogOption
                             {
-                                DialogKey = "dar_firedescription",
+                                DialogKey = "dar_firedescription3",
                                 OptionText = "Fire Element"
                             });
 
@@ -167,7 +167,7 @@ public class WizardElementScript : DialogScriptBase
                         Subject.Options.Add(
                             new DialogOption
                             {
-                                DialogKey = "dar_waterdescription",
+                                DialogKey = "dar_waterdescription3",
                                 OptionText = "Water Element"
                             });
 
@@ -175,7 +175,7 @@ public class WizardElementScript : DialogScriptBase
                         Subject.Options.Add(
                             new DialogOption
                             {
-                                DialogKey = "dar_earthdescription",
+                                DialogKey = "dar_earthdescription3",
                                 OptionText = "Earth Element"
                             });
 
@@ -183,7 +183,7 @@ public class WizardElementScript : DialogScriptBase
                         Subject.Options.Add(
                             new DialogOption
                             {
-                                DialogKey = "dar_winddescription",
+                                DialogKey = "dar_winddescription3",
                                 OptionText = "Wind Element"
                             });
 
