@@ -1,16 +1,23 @@
 using Chaos.Extensions.Common;
+using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts;
 
-internal class RepairTrinket : DialogScriptBase
+internal class RepairTrinketScript : DialogScriptBase
 {
     /// <inheritdoc />
-    public RepairTrinket(Dialog subject)
+    public RepairTrinketScript(Dialog subject)
         : base(subject) { }
 
+    private Animation RepairAnimation { get; } = new()
+    {
+        TargetAnimation = 595,
+        AnimationSpeed = 100
+    };
+    
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
@@ -20,7 +27,7 @@ internal class RepairTrinket : DialogScriptBase
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("repairTrinket", out var repairTime))
                 {
-                    Subject.Reply(source, $"You must wait {repairTime.Remaining.ToReadableString()} to repair again.");
+                    Subject.Reply(source, $"The mystical energies need time to restore. You must wait {repairTime.Remaining.ToReadableString()} before attempting another repair.");
                     return;
                 }
                 RepairItems(source, source);
@@ -36,7 +43,7 @@ internal class RepairTrinket : DialogScriptBase
         {
             if (source.Trackers.TimedEvents.HasActiveEvent("repairTrinket", out var repairTime))
             {
-                Subject.Reply(source, $"You must wait {repairTime.Remaining.ToReadableString()} to repair again.");
+                Subject.Reply(source, $"The mystical energies need time to restore. You must wait {repairTime.Remaining.ToReadableString()} before attempting another repair.");
                 return;
             }
             if (!TryFetchArgs<string>(out var name))
@@ -51,13 +58,13 @@ internal class RepairTrinket : DialogScriptBase
             if (aisling != null)
                 RepairItems(source, aisling);
             else
-                source.SendActiveMessage("An aisling with that name is not near.");   
+                source.SendActiveMessage("No aisling by that name can be sensed in your vicinity.");   
         }
     }
 
     public void RepairItems(Aisling source, Aisling aisling)
     {
-        source.Trackers.TimedEvents.AddEvent("repairTrinket", TimeSpan.FromHours(6), true);
+       source.Trackers.TimedEvents.AddEvent("repairTrinket", TimeSpan.FromHours(6), true);
         
         foreach (var repair in aisling.Equipment)
             if ((repair.Template.MaxDurability > 0) && (repair.CurrentDurability != repair.Template.MaxDurability))
@@ -77,8 +84,10 @@ internal class RepairTrinket : DialogScriptBase
                     });
         
         if (source.Name == aisling.Name) 
-            aisling.SendActiveMessage($"You have repaired your own items.");
+            aisling.SendActiveMessage($"You have successfully restored your own items.");
         if (source.Name != aisling.Name)
-            aisling.SendActiveMessage($"{source.Name} has repaired your items.");
+            aisling.SendActiveMessage($"{source.Name}'s mastery of smithing has restored your items.");
+        
+        aisling.Animate(RepairAnimation, aisling.Id);
     }
 }
