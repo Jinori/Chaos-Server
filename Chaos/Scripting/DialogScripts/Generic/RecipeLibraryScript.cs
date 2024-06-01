@@ -1209,7 +1209,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Pristine Beryl.",
                             "jewelcraftingbook");
 
                         return;
@@ -1218,7 +1218,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Pristine Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1228,7 +1228,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Polished Mythril Bar and 1 Finished Sapphire.",
+                            } requires 1 Polished Mythril Bar and 1 Pristine Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1238,7 +1238,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Polished Mythril Bar and 1 Finished Heartstone.",
+                            } requires 1 Polished Mythril Bar and 1 Pristine Heartstone.",
                             "jewelcraftingbook");
 
                         return;
@@ -1247,7 +1247,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Emerald.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Pristine Emerald.",
                             "jewelcraftingbook");
 
                         return;
@@ -1256,7 +1256,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Finished Beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Pristine Beryl.",
                             "jewelcraftingbook");
 
                         return;
@@ -1265,7 +1265,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Finished Ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Pristine Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1275,7 +1275,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Sapphire.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Pristine Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1285,7 +1285,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Heartstone.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Pristine Heartstone.",
                             "jewelcraftingbook");
 
                         return;
@@ -1295,7 +1295,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Emerald.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Pristine Emerald.",
                             "jewelcraftingbook");
 
                         return;
@@ -1394,7 +1394,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Pristine Beryl.",
                             "jewelcraftingbook");
 
                         return;
@@ -1403,7 +1403,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Pristine Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1413,7 +1413,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Polished Mythril Bar and 1 Finished Sapphire.",
+                            } requires 1 Polished Mythril Bar and 1 Pristine Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1423,7 +1423,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Polished Mythril Bar and 1 Finished Heartstone.",
+                            } requires 1 Polished Mythril Bar and 1 Pristine Heartstone.",
                             "jewelcraftingbook");
 
                         return;
@@ -1432,7 +1432,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Emerald.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Pristine Emerald.",
                             "jewelcraftingbook");
 
                         return;
@@ -1441,7 +1441,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Finished Beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Pristine Beryl.",
                             "jewelcraftingbook");
 
                         return;
@@ -1450,7 +1450,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Finished Ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Pristine Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1460,7 +1460,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Sapphire.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Pristine Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1470,7 +1470,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Heartstone.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Pristine Heartstone.",
                             "jewelcraftingbook");
 
                         return;
@@ -1480,7 +1480,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Emerald.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Pristine Emerald.",
                             "jewelcraftingbook");
 
                         return;
@@ -1597,7 +1597,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Pristine Beryl.",
                             "jewelcraftingbook");
 
                         return;
@@ -1606,7 +1606,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Pristine Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1616,7 +1616,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Polished Mythril Bar and 1 Finished Sapphire.",
+                            } requires 1 Polished Mythril Bar and 1 Pristine Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1625,7 +1625,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Finished Emerald.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Mythril Bar and 1 Pristine Emerald.",
                             "jewelcraftingbook");
 
                         return;
@@ -1634,7 +1634,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Finished Beryl.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Pristine Beryl.",
                             "jewelcraftingbook");
 
                         return;
@@ -1643,7 +1643,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     {
                         Subject.Reply(
                             source,
-                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Finished Ruby.",
+                            $"{FauxItem.Template.Name} requires 1 Polished Hy-Brasyl Bar and 3 Pristine Ruby.",
                             "jewelcraftingbook");
 
                         return;
@@ -1653,7 +1653,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Sapphire.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Pristine Sapphire.",
                             "jewelcraftingbook");
 
                         return;
@@ -1663,7 +1663,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Polished Hy-Brasyl Bar and 3 Finished Emerald.",
+                            } requires 1 Polished Hy-Brasyl Bar and 3 Pristine Emerald.",
                             "jewelcraftingbook");
 
                         return;
