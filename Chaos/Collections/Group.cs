@@ -1,6 +1,8 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Synchronization;
+using Chaos.Common.Utilities;
 using Chaos.Messaging.Abstractions;
+using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Services.Servers.Options;
@@ -25,6 +27,16 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
     }
 
     public int Count => Members.Count;
+    
+    public GroupLootOption LootOption { get; set; } = GroupLootOption.Default;
+
+    public enum GroupLootOption
+    {
+        Default,
+        Random = 1,
+        NeedBeforeGreed = 2,
+        MasterLooter = 3
+    }
 
     public Group(Aisling sender, Aisling receiver, IChannelService channelService)
     {
@@ -189,6 +201,33 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
         return true;
     }
 
+    public void DistributeRandomized(IEnumerable<Item> lootItems)
+    {
+        if (Members.Count == 0)
+            return;
+
+        foreach (var item in lootItems)
+        {
+            var randomMember = Members.PickRandom();
+            randomMember.GiveItemOrSendToBank(item);
+            randomMember.SendOrangeBarMessage($"You randomly received {item.DisplayName} from group loot.");
+        }
+    }
+
+    public void DistributeEvenGold(int gold)
+    {
+        if ((Members.Count == 0) || (gold <= 1))
+            return;
+
+        var amountPerMember = gold / Members.Count;
+
+        foreach (var member in Members)
+        {
+            member.GiveGoldOrSendToBank(amountPerMember);
+            member.SendOrangeBarMessage($"Your split of the group gold is {amountPerMember}.");
+        }
+    }
+    
     public override string ToString()
     {
         using var @lock = Sync.Enter();
