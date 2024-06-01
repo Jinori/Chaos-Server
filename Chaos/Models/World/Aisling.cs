@@ -452,6 +452,21 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
             }
     }
 
+    public void GiveGoldOrSendToBank(int gold)
+    {
+        if (!TryGiveGold(gold))
+        {
+            Bank.AddGold((uint)gold);
+            
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Deposit, Topics.Entities.Gold,
+                      Topics.Actions.Reward)
+                  .WithProperty(Gold).WithProperty(this)
+                  .LogInformation("{@Amount} gold was sent to {@AislingName}'s bank", gold, Name);
+            
+            SendOrangeBarMessage($"{gold} gold was sent to your bank as overflow");
+        }
+    }
+
     /// <summary>
     ///     Determines whether or not an aisling's class counts as being a certain class
     /// </summary>
