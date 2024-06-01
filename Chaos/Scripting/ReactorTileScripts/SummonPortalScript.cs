@@ -1,6 +1,4 @@
 using Chaos.Collections;
-using Chaos.Extensions.Geometry;
-using Chaos.Geometry.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -45,38 +43,21 @@ public class SummonPortalScript : ReactorTileScriptBase
             var targetMap = SimpleCache.Get<MapInstance>(owner.MapInstance.InstanceId);
             var aisling = source as Aisling;
         
+            if ((aisling?.Group != null) && !aisling.Group.Contains(owner))
+                return;
+
+            if (aisling?.Group == null)
+                return;
+
             if (source.StatSheet.Level < (targetMap.MinimumLevel ?? 0))
             {
-                aisling?.SendOrangeBarMessage($"You must be at least level {targetMap.MinimumLevel} to enter this area.");
-                var point = source.DirectionalOffset(source.Direction.Reverse());
-                source.WarpTo(source.Trackers.LastPosition as IPoint ?? point);
+                aisling.SendOrangeBarMessage($"You must be at least level {targetMap.MinimumLevel} to enter this area.");
                 return;
             }
 
             if (source.StatSheet.Level > (targetMap.MaximumLevel ?? int.MaxValue))
             {
-                aisling?.SendOrangeBarMessage($"You must be at most level {targetMap.MaximumLevel} to enter this area.");
-
-                var point = source.DirectionalOffset(source.Direction.Reverse());
-                source.WarpTo(source.Trackers.LastPosition as IPoint ?? point);
-                return;
-            }
-
-            if ((aisling?.Group != null) && !aisling.Group.Contains(owner))
-            {
-                aisling.SendOrangeBarMessage($"You are not in a group with the owner of the portal.");
-
-                var point = source.DirectionalOffset(source.Direction.Reverse());
-                source.WarpTo(source.Trackers.LastPosition as IPoint ?? point);
-                return;
-            }
-            
-            if (aisling?.Group == null)
-            {
-                aisling?.SendOrangeBarMessage($"You are not in a group with the owner of the portal.");
-
-                var point = source.DirectionalOffset(source.Direction.Reverse());
-                source.WarpTo(source.Trackers.LastPosition as IPoint ?? point);
+                aisling.SendOrangeBarMessage($"You must be at most level {targetMap.MaximumLevel} to enter this area.");
                 return;
             }
             
@@ -94,12 +75,15 @@ public class SummonPortalScript : ReactorTileScriptBase
         if (AnimationTimer.IntervalElapsed)
         {
             var aislings = Subject.MapInstance
-                                           .GetEntitiesWithinRange<Aisling>(Subject, 12);
+                                           .GetEntitiesWithinRange<Aisling>(Subject, 12).Where(x => (x.Group != null) && x.Group.Contains(Subject.Owner));
 
             foreach (var aisling in aislings)
                 aisling.MapInstance.ShowAnimation(PortalAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y)));
         }
-        
+
+        if (Subject.Owner is Aisling { Client.Connected: false })
+            Map.RemoveEntity(Subject);
+
         if (Timer != null)
         {
             Timer.Update(delta);

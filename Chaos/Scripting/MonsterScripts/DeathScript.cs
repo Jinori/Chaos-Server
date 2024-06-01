@@ -1,3 +1,4 @@
+using Chaos.Collections;
 using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -48,24 +49,63 @@ public class DeathScript : MonsterScriptBase
 
         Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
 
-        var droppedGold = Subject.TryDropGold(Subject, Subject.Gold, out var money);
-        var droppedITems = Subject.TryDrop(Subject, Subject.Items, out var groundItems);
-
-        if (rewardTargets is not null)
+        if (rewardTarget?.Group != null)
         {
-            if (WorldOptions.Instance.LootDropsLockToRewardTargetSecs.HasValue)
+            switch (rewardTarget.Group.LootOption)
             {
-                var lockSecs = WorldOptions.Instance.LootDropsLockToRewardTargetSecs.Value;
+                case Group.GroupLootOption.Default:
+                    var droppedGold = Subject.TryDropGold(Subject, Subject.Gold, out var money);
+                    var droppedITems = Subject.TryDrop(Subject, Subject.Items, out var groundItems);
+                    if (rewardTargets is not null)
+                    {
+                        if (WorldOptions.Instance.LootDropsLockToRewardTargetSecs.HasValue)
+                        {
+                            var lockSecs = WorldOptions.Instance.LootDropsLockToRewardTargetSecs.Value;
 
-                if (droppedGold)
-                    money!.LockToAislings(lockSecs, rewardTargets);
+                            if (droppedGold)
+                                money!.LockToAislings(lockSecs, rewardTargets);
 
-                if (droppedITems)
-                    foreach (var groundItem in groundItems!)
-                        groundItem.LockToAislings(lockSecs, rewardTargets);
+                            if (droppedITems)
+                                foreach (var groundItem in groundItems!)
+                                    groundItem.LockToAislings(lockSecs, rewardTargets);
+                        }
+
+                        ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
+                    }
+                    break;
+                case Group.GroupLootOption.Random:
+                    if (rewardTargets is not null)
+                    {
+                        if (Subject.Items.Count >= 1) 
+                            rewardTarget.Group.DistributeRandomized(Subject.Items);
+                    
+                        if (Subject.Gold >= 1) 
+                            rewardTarget.Group.DistributeEvenGold(Subject.Gold);
+                    
+                        ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);   
+                    }
+                    break;
+                case Group.GroupLootOption.MasterLooter:
+                    var droppedGold1 = Subject.TryDropGold(Subject, Subject.Gold, out var money1);
+                    var droppedITems1 = Subject.TryDrop(Subject, Subject.Items, out var groundItems1);
+                    if (rewardTargets is not null)
+                    {
+                        if (WorldOptions.Instance.LootDropsLockToRewardTargetSecs.HasValue)
+                        {
+                            var lockSecs = WorldOptions.Instance.LootDropsLockToRewardTargetSecs.Value;
+
+                            if (droppedGold1)
+                                money1!.LockToAislings(lockSecs, rewardTarget.Group.Leader);
+
+                            if (droppedITems1)
+                                foreach (var groundItem in groundItems1!)
+                                    groundItem.LockToAislings(lockSecs, rewardTarget.Group.Leader);
+                        }
+
+                        ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
+                    }
+                    break;
             }
-
-            ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
         }
     }
 }
