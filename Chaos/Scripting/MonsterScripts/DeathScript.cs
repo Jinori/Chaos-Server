@@ -107,5 +107,26 @@ public class DeathScript : MonsterScriptBase
                     break;
             }
         }
+        else
+        {
+            var droppedGold = Subject.TryDropGold(Subject, Subject.Gold, out var money);
+            var droppedITems = Subject.TryDrop(Subject, Subject.Items, out var groundItems);
+            if (rewardTargets is not null)
+            {
+                if (WorldOptions.Instance.LootDropsLockToRewardTargetSecs.HasValue)
+                {
+                    var lockSecs = WorldOptions.Instance.LootDropsLockToRewardTargetSecs.Value;
+
+                    if (droppedGold)
+                        money!.LockToAislings(lockSecs, rewardTargets);
+
+                    if (droppedITems)
+                        foreach (var groundItem in groundItems!)
+                            groundItem.LockToAislings(lockSecs, rewardTargets);
+                }
+
+                ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
+            }
+        }
     }
 }
