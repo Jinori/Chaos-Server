@@ -209,21 +209,21 @@ static void RegisterStructuredLoggingTransformations()
                                  IpAddress = client.RemoteIp
                              });
 
-                         builder.RegisterObjectTransformation<ILobbyClient>(
+                         builder.RegisterObjectTransformation<IChaosLobbyClient>(
                              client => new
                              {
                                  IpAddress = client.RemoteIp,
                                  Type = "LobbyClient"
                              });
 
-                         builder.RegisterObjectTransformation<ILoginClient>(
+                         builder.RegisterObjectTransformation<IChaosLoginClient>(
                              client => new
                              {
                                  IpAddress = client.RemoteIp,
                                  Type = "LoginClient"
                              });
 
-                         builder.RegisterObjectTransformation<IWorldClient>(
+                         builder.RegisterObjectTransformation<IChaosWorldClient>(
                              client => new
                              {
                                  IpAddress = client.RemoteIp,
