@@ -12,7 +12,7 @@ public class TheseleneTempleScript : ReligionScriptBase
     private const string GODNAME = "Theselene";
 
     /// <inheritdoc />
-    public TheseleneTempleScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IItemFactory itemFactory)
+    public TheseleneTempleScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory)
         : base(subject, clientRegistry, itemFactory) { }
 
     /// <inheritdoc />

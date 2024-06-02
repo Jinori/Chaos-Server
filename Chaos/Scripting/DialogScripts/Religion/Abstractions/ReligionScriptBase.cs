@@ -233,7 +233,7 @@ public class ReligionScriptBase : DialogScriptBase
     };
     #endregion Prayers
 
-    protected IClientRegistry<IWorldClient> ClientRegistry { get; }
+    protected IClientRegistry<IChaosWorldClient> ClientRegistry { get; }
     protected IItemFactory ItemFactory { get; }
 
     protected Animation PrayerSuccess { get; } = new()
@@ -245,7 +245,7 @@ public class ReligionScriptBase : DialogScriptBase
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
-    public ReligionScriptBase(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IItemFactory itemFactory)
+    public ReligionScriptBase(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory)
         : base(subject)
     {
         ClientRegistry = clientRegistry;

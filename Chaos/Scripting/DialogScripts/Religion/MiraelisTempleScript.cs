@@ -12,7 +12,7 @@ public class MiraelisTempleScript : ReligionScriptBase
     private const string GODNAME = "Miraelis";
 
     /// <inheritdoc />
-    public MiraelisTempleScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IItemFactory itemFactory)
+    public MiraelisTempleScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory)
         : base(subject, clientRegistry, itemFactory) { }
 
     /// <inheritdoc />

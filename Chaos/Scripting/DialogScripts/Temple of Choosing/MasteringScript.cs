@@ -13,12 +13,12 @@ namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 
 public class MasteringScript : DialogScriptBase
 {
-    private readonly IClientRegistry<IWorldClient> ClientRegistry;
+    private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
     private readonly IItemFactory ItemFactory;
     private readonly ILogger<MasteringScript> Logger;
     
     /// <inheritdoc />
-    public MasteringScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IItemFactory itemFactory,
+    public MasteringScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory,
         ILogger<MasteringScript> logger
     )
         : base(subject)

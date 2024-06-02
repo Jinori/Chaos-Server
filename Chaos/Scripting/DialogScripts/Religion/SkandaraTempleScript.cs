@@ -12,7 +12,7 @@ public class SkandaraTempleScript : ReligionScriptBase
     private const string GODNAME = "Skandara";
 
     /// <inheritdoc />
-    public SkandaraTempleScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IItemFactory itemFactory)
+    public SkandaraTempleScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory)
         : base(subject, clientRegistry, itemFactory) { }
 
     /// <inheritdoc />

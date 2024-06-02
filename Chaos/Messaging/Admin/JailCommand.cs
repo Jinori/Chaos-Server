@@ -15,9 +15,9 @@ namespace Chaos.Messaging.Admin;
 public sealed class JailCommand : ICommand<Aisling>
 {
     private readonly ISimpleCache Cache;
-    private readonly IClientRegistry<IWorldClient> ClientRegistry;
+    private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
 
-    public JailCommand(ISimpleCache cache, IClientRegistry<IWorldClient> clientRegistry)
+    public JailCommand(ISimpleCache cache, IClientRegistry<IChaosWorldClient> clientRegistry)
     {
         Cache = cache;
         ClientRegistry = clientRegistry;

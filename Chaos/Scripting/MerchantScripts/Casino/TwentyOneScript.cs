@@ -8,7 +8,7 @@ using Humanizer;
 
 namespace Chaos.Scripting.MerchantScripts.Casino;
 
-public class TwentyOneScript(Merchant subject, IClientRegistry<IWorldClient> clientRegistry, ILogger<TwentyOneScript> logger)
+public class TwentyOneScript(Merchant subject, IClientRegistry<IChaosWorldClient> clientRegistry, ILogger<TwentyOneScript> logger)
     : MerchantScriptBase(subject)
 {
     private readonly List<Aisling> AislingsThatDidNotBust = [];

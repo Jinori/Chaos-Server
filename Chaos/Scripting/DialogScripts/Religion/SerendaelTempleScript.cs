@@ -12,7 +12,7 @@ public class SerendaelTempleScript : ReligionScriptBase
     private const string GODNAME = "Serendael";
 
     /// <inheritdoc />
-    public SerendaelTempleScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry, IItemFactory itemFactory)
+    public SerendaelTempleScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory)
         : base(subject, clientRegistry, itemFactory) { }
 
     /// <inheritdoc />

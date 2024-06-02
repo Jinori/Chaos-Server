@@ -35,7 +35,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase) { "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort"};
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IIntervalTimer ClearOrangeBarTimer;
-    private readonly IClientRegistry<IWorldClient> ClientRegistry;
+    private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
     private readonly IEffectFactory EffectFactory;
     private readonly ILogger<DefaultAislingScript> Logger;
     private readonly IStore<MailBox> MailStore;
@@ -88,7 +88,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     /// <inheritdoc />
     public DefaultAislingScript(
         Aisling subject,
-        IClientRegistry<IWorldClient> clientRegistry,
+        IClientRegistry<IChaosWorldClient> clientRegistry,
         IMerchantFactory merchantFactory,
         ISimpleCache simpleCache,
         IEffectFactory effectFactory,

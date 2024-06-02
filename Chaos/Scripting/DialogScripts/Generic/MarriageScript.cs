@@ -23,12 +23,12 @@ public class MarriageScript : DialogScriptBase
         AnimationSpeed = 300,
         TargetAnimation = 36
     };
-    private readonly IClientRegistry<IWorldClient> ClientRegistry;
+    private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
     private readonly IDialogFactory DialogFactory;
 
     public MarriageScript(
         Dialog subject,
-        IClientRegistry<IWorldClient> clientRegistry,
+        IClientRegistry<IChaosWorldClient> clientRegistry,
         IDialogFactory dialogFactory,
         IEffectFactory effectFactory
     )

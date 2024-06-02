@@ -10,7 +10,7 @@ namespace Chaos.Scripting.MerchantScripts;
 
 public class SkandaraMassScript(
     Merchant subject,
-    IClientRegistry<IWorldClient> clientRegistry,
+    IClientRegistry<IChaosWorldClient> clientRegistry,
     IItemFactory itemFactory
 )
     : MerchantScriptBase(subject)
@@ -105,7 +105,7 @@ public class SkandaraMassScript(
     private DateTime? MassAnnouncementTime { get; set; }
     private bool MassCompleted { get; set; }
     private int SermonCount { get; set; }
-    protected IClientRegistry<IWorldClient> ClientRegistry { get; } = clientRegistry;
+    protected IClientRegistry<IChaosWorldClient> ClientRegistry { get; } = clientRegistry;
 
     protected IItemFactory ItemFactory { get; } = itemFactory;
 

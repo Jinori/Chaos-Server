@@ -8,10 +8,10 @@ namespace Chaos.Scripting.MonsterScripts.Pet;
 // ReSharper disable once ClassCanBeSealed.Global
 public class PetLootScript : MonsterScriptBase
 {
-    private readonly IClientRegistry<IWorldClient> ClientRegistry;
+    private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
 
     /// <inheritdoc />
-    public PetLootScript(Monster subject, IClientRegistry<IWorldClient> clientRegistry)
+    public PetLootScript(Monster subject, IClientRegistry<IChaosWorldClient> clientRegistry)
         : base(subject) =>
         ClientRegistry = clientRegistry;
 

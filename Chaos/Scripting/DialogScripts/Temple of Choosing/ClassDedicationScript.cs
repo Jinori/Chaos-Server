@@ -31,9 +31,9 @@ public class ClassDedicationScript : DialogScriptBase
         { "miraelisgod_selectpriest", BaseClass.Priest },
         { "miraelisgod_selectmonk", BaseClass.Monk }
     };
-    private readonly IClientRegistry<IWorldClient> ClientRegistry;
+    private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
 
-    public ClassDedicationScript(Dialog subject, IClientRegistry<IWorldClient> clientRegistry)
+    public ClassDedicationScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry)
         : base(subject) => ClientRegistry = clientRegistry;
 
     private void DedicateUserToClass(Aisling source, BaseClass baseClass, string templateKey)
