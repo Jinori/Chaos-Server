@@ -356,16 +356,16 @@ public class ReligionScriptBase : DialogScriptBase
                             player.SendActiveMessage("You receive faith!");
 
                         TryAddFaith(player, FAITH_REWARD);
-                        
-                        var tnl = LevelUpFormulae.Default.CalculateTnl(source);
+                        UpdateReligionRank(player);
+                        var tnl = LevelUpFormulae.Default.CalculateTnl(player);
                         var twentyFivePercent = Convert.ToInt32(.25 * tnl);
                 
-                        ExperienceDistributionScript.GiveExp(source, twentyFivePercent);
+                        ExperienceDistributionScript.GiveExp(player, twentyFivePercent);
                     }
                 
                 goddess?.Say($"Thank you, {source.Name}. You honor me.");
                 AnnounceMassEnd(deity);
-
+                source.Trackers.TimedEvents.AddEvent("Mass", TimeSpan.FromDays(4), true);
                 break;
             }
             case false:
@@ -387,10 +387,11 @@ public class ReligionScriptBase : DialogScriptBase
                         player.SendActiveMessage("You receive faith!");
 
                     TryAddFaith(player, FAITH_REWARD);
-                    var tnl = LevelUpFormulae.Default.CalculateTnl(source);
+                    UpdateReligionRank(player);
+                    var tnl = LevelUpFormulae.Default.CalculateTnl(player);
                     var twentyFivePercent = Convert.ToInt32(.25 * tnl);
                 
-                    ExperienceDistributionScript.GiveExp(source, twentyFivePercent);
+                    ExperienceDistributionScript.GiveExp(player, twentyFivePercent);
                 }
 
                 foreach (var latePlayers in aislingsAtEnd!.Except(aislingsStillHere))
@@ -398,7 +399,7 @@ public class ReligionScriptBase : DialogScriptBase
                     latePlayers.SendActiveMessage("You must be present from start to finish to receive full benefits.");
                     TryAddFaith(latePlayers, LATE_FAITH_REWARD);
                 }
-
+                source.Trackers.TimedEvents.AddEvent("Mass", TimeSpan.FromDays(4), true);
                 break;
             }
         }
@@ -529,7 +530,7 @@ public class ReligionScriptBase : DialogScriptBase
             case { CurrentlyHostingMass: false }:
             {
                 goddess.CurrentlyHostingMass = true;
-                source.Trackers.TimedEvents.AddEvent("Mass", TimeSpan.FromDays(7), true);
+                source.Trackers.TimedEvents.AddEvent("Mass", TimeSpan.FromDays(4), true);
 
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
@@ -551,28 +552,24 @@ public class ReligionScriptBase : DialogScriptBase
 
         if ((playerGod != null) && (playerGod != deity))
         {
-            Subject.Reply(source, $"Your faith lies within {playerGod} already. Please seek them out.");
-
+            subject.Reply(source, $"Your faith lies within {playerGod} already. Please seek them out.");
             return;
         }
 
         var rank = GetPlayerRank(source);
 
-        // Get all options.
-        var allOptions = new List<string>
-            { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "Join the Temple", "Leave Faith" };
-
-        // Remove the options that are not available for this rank.
-        foreach (var option in allOptions.Except(RoleOptions[rank]))
-            RemoveOption(subject, option);
+        var allOptions = new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "Join the Temple", "Leave Faith" };
+        
+        if (RoleOptions.TryGetValue(rank, out var allowedOptions))
+            foreach (var option in allOptions)
+                if (!allowedOptions.Contains(option))
+                    RemoveOption(subject, option);
 
         if (rank == Rank.None)
         {
-            source.Trackers.Enums.TryGetValue(out JoinReligionQuest stage);
-
-            if (stage is JoinReligionQuest.MiraelisQuest or JoinReligionQuest.SerendaelQuest or JoinReligionQuest.SkandaraQuest
-                         or JoinReligionQuest.TheseleneQuest)
-                AddOption(subject, $"Essence of {deity}", $"{deity}_temple_completejoinQuest");
+            if (source.Trackers.Enums.TryGetValue(out JoinReligionQuest stage))
+                if (stage is JoinReligionQuest.MiraelisQuest or JoinReligionQuest.SerendaelQuest or JoinReligionQuest.SkandaraQuest or JoinReligionQuest.TheseleneQuest)
+                    AddOption(subject, $"Essence of {deity}", $"{deity}_temple_completejoinQuest");
 
             RemoveOption(subject, "Leave Faith");
         }
@@ -652,6 +649,7 @@ public class ReligionScriptBase : DialogScriptBase
         {
             count++;
             source.Trackers.Enums.Set(typeof(ReligionPrayer), count);
+            TryAddFaith(source, 1);
             UpdateReligionRank(source);
             var tnl = LevelUpFormulae.Default.CalculateTnl(source);
             var threePercent = Convert.ToInt32(.03 * tnl);
@@ -798,34 +796,40 @@ public class ReligionScriptBase : DialogScriptBase
     private void UpdateReligionRank(Aisling source)
     {
         var key = CheckDeity(source);
-        source.Legend.TryGetValue(key!, out var existingMark);
 
-        if (existingMark is null)
-            source.Legend.AddOrAccumulate(
-                new LegendMark(
-                    $"Worshipper of {key}",
-                    key!,
-                    MarkIcon.Heart,
-                    MarkColor.White,
-                    1,
-                    GameTime.Now));
-
-        if (existingMark is not null)
+        if (key != null)
         {
-            var faithCount = existingMark.Count;
+            source.Legend.TryGetValue(key, out var existingMark);
 
-            existingMark.Text = faithCount switch
+            if (existingMark is null)
+                source.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        $"Worshipper of {key}",
+                        key,
+                        MarkIcon.Heart,
+                        MarkColor.White,
+                        1,
+                        GameTime.Now));
+
+            if (existingMark is not null)
             {
-                > 1499 when !existingMark.Text.Contains("Champion") => $"Champion of {key}",
-                > 999 when !existingMark.Text.Contains("Favor")     => $"Favor of {key}",
-                > 749 when !existingMark.Text.Contains("Seer")      => $"Seer of {key}",
-                > 499 when !existingMark.Text.Contains("Emissary")  => $"Emissary of {key}",
-                > 299 when !existingMark.Text.Contains("Acolyte")   => $"Acolyte of {key}",
-                _ when !existingMark.Text.Contains("Novice")        => $"Worshipper of {key}",
-                _                                                   => existingMark.Text
-            };
-
-            existingMark.Count++;
+                var faithCount = existingMark.Count;
+                var previousRank = existingMark.Text;
+                
+                existingMark.Text = faithCount switch
+                {
+                    > 1499 when !existingMark.Text.Contains("Champion") => $"Champion of {key}",
+                    > 999 when !existingMark.Text.Contains("Favor")     => $"Favor of {key}",
+                    > 749 when !existingMark.Text.Contains("Seer")      => $"Seer of {key}",
+                    > 499 when !existingMark.Text.Contains("Emissary")  => $"Emissary of {key}",
+                    > 299 when !existingMark.Text.Contains("Acolyte")   => $"Acolyte of {key}",
+                    _ when !existingMark.Text.Contains("Novice")        => $"Worshipper of {key}",
+                    _                                                   => existingMark.Text
+                };
+                
+                if (existingMark.Text != previousRank)
+                    source.SendActiveMessage($"Your rank has increased to {existingMark.Text}.");
+            }
         }
     }
 

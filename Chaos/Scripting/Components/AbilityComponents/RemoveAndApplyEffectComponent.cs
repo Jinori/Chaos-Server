@@ -36,6 +36,7 @@ public class RemoveAndApplyEffectComponent : IComponent
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
                     target.Effects.Dispel(options.EffectKeyToRemove);
+                    context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
                 }
                 else
                     return;
@@ -48,6 +49,7 @@ public class RemoveAndApplyEffectComponent : IComponent
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
                     target.Effects.Dispel(options.EffectKeyToRemove);
+                    context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
                 }
                 else
                     return;
@@ -60,6 +62,7 @@ public class RemoveAndApplyEffectComponent : IComponent
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
                     target.Effects.Dispel(options.EffectKeyToRemove);
+                    context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
                 }
                 else
                     return;
@@ -72,6 +75,7 @@ public class RemoveAndApplyEffectComponent : IComponent
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
                     target.Effects.Dispel(options.EffectKeyToRemove);
+                    context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
                 }
                 else
                     return;
