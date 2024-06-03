@@ -106,7 +106,7 @@ public class UndineFieldsScript : DialogScriptBase
                     source.Trackers.Flags.AddFlag(UndineFieldDungeonFlag.CompletedUF);
                     ExperienceDistributionScript.GiveExp(source, 750000);
                     source.Trackers.Flags.AddFlag(AvailableCloaks.Red);
-                    source.SendOrangeBarMessage("You unlocked the Red Cloak for mounts!");
+                    source.SendOrangeBarMessage("You've unlocked the Red Cloak for mounts!");
                     
                     Logger.WithTopics(
                             Topics.Entities.Aisling,

@@ -30,8 +30,14 @@ public class PetCollarScript(
         if (source.UserStatSheet.BaseClass is not BaseClass.Priest)
         {
             Subject.Reply(source, "You attempt to use the collar but it burns your hands, forcing you to drop it.");
-            RemoveExistingPets(source);
             source.Inventory.RemoveQuantity("Pet Collar", 1);
+            var pets = source.MapInstance.GetEntities<Monster>().Where(x => x.Script.Is<PetScript>() && x.Name.Contains(source.Name));
+
+            foreach (var pet in pets)
+            {
+                pet.MapInstance.RemoveEntity(pet);
+            }
+
             return;
         }
         

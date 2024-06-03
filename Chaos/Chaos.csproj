@@ -49,6 +49,7 @@
         <ProjectReference Include="..\Chaos.TypeMapper\Chaos.TypeMapper.csproj" />
     </ItemGroup>
     <ItemGroup> 
+        <PackageReference Include="FluentAssertions" /> 
         <PackageReference Include="Humanizer"/>
         <PackageReference Include="Humanizer.Core" />
         <PackageReference Include="Newtonsoft.Json" />

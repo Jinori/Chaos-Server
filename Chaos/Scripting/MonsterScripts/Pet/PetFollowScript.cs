@@ -9,10 +9,10 @@ namespace Chaos.Scripting.MonsterScripts.Pet;
 
 public sealed class PetFollowScript : MonsterScriptBase
 {
-    private readonly IClientRegistry<IWorldClient> ClientRegistry;
+    private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
 
     /// <inheritdoc />
-    public PetFollowScript(Monster subject, IClientRegistry<IWorldClient> clientRegistry)
+    public PetFollowScript(Monster subject, IClientRegistry<IChaosWorldClient> clientRegistry)
         : base(subject) =>
         ClientRegistry = clientRegistry;
 

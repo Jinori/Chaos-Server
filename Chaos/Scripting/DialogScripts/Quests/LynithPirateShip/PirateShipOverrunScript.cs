@@ -11,14 +11,12 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.DialogScripts.Quests.PFQuest;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
-using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Quests.LynithPirateShip;
 
 public class PirateShipOverrunScript : DialogScriptBase
 {
-    private readonly IItemFactory ItemFactory;
     private readonly ILogger<PFQuestScript> Logger;
     private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
@@ -26,13 +24,11 @@ public class PirateShipOverrunScript : DialogScriptBase
     /// <inheritdoc />
     public PirateShipOverrunScript(
         Dialog subject,
-        IItemFactory itemFactory,
         ISimpleCache simpleCache,
         ILogger<PFQuestScript> logger
     )
         : base(subject)
     {
-        ItemFactory = itemFactory;
         SimpleCache = simpleCache;
         Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
@@ -61,7 +57,7 @@ public class PirateShipOverrunScript : DialogScriptBase
                 
                 case "shipattack_initial":
             {
-                var hasStage = source.Trackers.Enums.TryGetValue(out ShipAttack stage);
+                var hasStage = source.Trackers.Enums.TryGetValue(out ShipAttack _);
                 
                 if (source.Trackers.Enums.HasValue(ShipAttack.CompletedShipAttack) || source.Trackers.Flags.HasFlag(ShipAttackFlags.CompletedShipAttack))
                 {
@@ -94,7 +90,6 @@ public class PirateShipOverrunScript : DialogScriptBase
                 if (source.Trackers.Enums.HasValue(ShipAttack.FinishedShipAttack))
                 {
                     Subject.Reply(source, "Skip", "shipattack_returnwin");
-                    return;
                 }
             }
                 break;
@@ -102,8 +97,9 @@ public class PirateShipOverrunScript : DialogScriptBase
             case "shipattack_initial5":
             {
                 var group = source.Group?.Where(x => x.WithinRange(new Point(source.X, source.Y))).ToList();
+                var groupnearby = source.Group != null && !source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source));
 
-                if ((group == null) || !group.Any())
+                if ((group == null) || !groupnearby)
                 {
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You must have a group to defend the ship.");
                     Subject.Reply(source, "You must have a group with you to help defend the ship.");
@@ -118,7 +114,7 @@ public class PirateShipOverrunScript : DialogScriptBase
                     return;
                 }
 
-                if (!group.All(member => member.UserStatSheet.Level < 71))
+                if (!group.All(member => member.UserStatSheet.Level > 70))
                 {
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Someone in your group is under level 71.");
                     Subject.Reply(source, "I can't have you babysitting while you're defending my deck! Please make sure your group members are above level 71!");
@@ -144,7 +140,7 @@ public class PirateShipOverrunScript : DialogScriptBase
                 break;
             }
 
-            case "shipattack_returnloss3":
+            case "shipattack_returnloss":
                     source.Trackers.Enums.Set(ShipAttack.None);
 
                 break;

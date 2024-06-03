@@ -32,8 +32,8 @@ public class PFPendantScript : ItemScriptBase
 
         if (!source.IsAlive || !source.Inventory.Contains("Turuc Pendant") || !source.MapInstance.Name.EqualsI(mapInstance.Name))
             return false;
-
-        var mantisIsSpawned = mapInstance.GetEntities<Monster>().Any(x => x.Template.TemplateKey.EqualsI("PF_giant_mantis"));
+        
+        var mantisIsSpawned = source.MapInstance.GetEntities<Monster>().Any(x => x.Template.TemplateKey.EqualsI("PF_giant_mantis"));
 
         if (mantisIsSpawned)
         {
@@ -80,8 +80,29 @@ public class PFPendantScript : ItemScriptBase
         var mantis = CreateMantis(mapInstance, source);
         var point = GetSpawnPoint(mantis, source);
 
-        mantis.AggroRange = 12;
-        mantis.Experience = 1000;
+        var groupLevel = source.MapInstance.GetEntities<Aisling>()
+            .Where(aisling => !aisling.Trackers.Enums.HasValue(GodMode.Yes))
+            .Select(aisling => aisling.StatSheet.Level)
+            .ToList();
+
+        var attrib = new Attributes
+        {
+            Con = (int)groupLevel.Average(),
+            Dex = (int)groupLevel.Average(),
+            Int = (int)groupLevel.Average(),
+            Str = (int)groupLevel.Average(),
+            Wis = (int)groupLevel.Average(),
+            AtkSpeedPct = groupLevel.Count * 8 + 3,
+            MaximumHp = (int)(mantis.StatSheet.MaximumHp + groupLevel.Average() * groupLevel.Count * 200),
+            MaximumMp = (int)(mantis.StatSheet.MaximumHp + groupLevel.Average() * groupLevel.Count * 200),
+            SkillDamagePct = (int)(mantis.StatSheet.SkillDamagePct + groupLevel.Average() / 3 + groupLevel.Count + 5),
+            SpellDamagePct = (int)(mantis.StatSheet.SpellDamagePct + groupLevel.Average() / 3 + groupLevel.Count + 5)
+        };
+        
+        mantis.StatSheet.AddBonus(attrib);
+        // Add HP and MP to the mantis
+        mantis.StatSheet.SetHealthPct(100);
+        mantis.StatSheet.SetManaPct(100);
         mantis.SetLocation(point);
 
         source.MapInstance.AddEntity(mantis, point);
