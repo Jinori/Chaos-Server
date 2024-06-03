@@ -32,14 +32,11 @@ public static class JsonSerializerEx
             path,
             stream =>
             {
-                //corrupted files will not be valid json
-                //we can try loading a backup for corrupted files
-                //corrupted files will not be valid json
-                //we can try loading a backup for corrupted files
                 try
                 {
                     JsonValidator.EnsureValidJson(stream);
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     throw new RetryableException("Stream content is not valid json.", e);
                 }
@@ -69,12 +66,11 @@ public static class JsonSerializerEx
             {
                 //corrupted files will not be valid json
                 //we can try loading a backup for corrupted files
-                //corrupted files will not be valid json
-                //we can try loading a backup for corrupted files
                 try
                 {
                     JsonValidator.EnsureValidJson(stream);
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     throw new RetryableException("Stream content is not valid json.", e);
                 }

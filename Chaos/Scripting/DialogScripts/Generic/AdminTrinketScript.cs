@@ -20,14 +20,14 @@ public class AdminTrinketScript : DialogScriptBase
     private readonly ISimpleCacheProvider _cacheProvider;
     private readonly ulong _channelId = 1089331247999885372;
 
-    private readonly IClientRegistry<IWorldClient> _clientRegistry;
+    private readonly IClientRegistry<IChaosWorldClient> _clientRegistry;
     private readonly ISimpleCache SimpleCache;
 
     public AdminTrinketScript(
         Dialog subject,
         ISimpleCache cache,
         ISimpleCacheProvider cacheProvider,
-        IClientRegistry<IWorldClient> clientRegistry,
+        IClientRegistry<IChaosWorldClient> clientRegistry,
         ISimpleCache simpleCache
     )
         : base(subject)

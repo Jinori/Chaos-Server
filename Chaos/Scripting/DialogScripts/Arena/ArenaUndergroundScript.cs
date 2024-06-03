@@ -30,7 +30,7 @@ public class ArenaUndergroundScript : DialogScriptBase
     private const ulong CHANNEL_ID = 1136412469762470038;
     private const ulong ARENA_WIN_CHANNEL_ID = 1136426304300916786;
     private readonly Point CenterWarp = new(11, 10);
-    private readonly IClientRegistry<IWorldClient> ClientRegistry;
+    private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
     private readonly Point LavaBluePoint = new(8, 23);
     private readonly Point LavaGoldPoint = new(23, 21);
     private readonly Point LavaGreenPoint = new(23, 6);
@@ -51,7 +51,7 @@ public class ArenaUndergroundScript : DialogScriptBase
         Dialog subject,
         IShardGenerator shardGenerator,
         ISimpleCache simpleCache,
-        IClientRegistry<IWorldClient> clientRegistry,
+        IClientRegistry<IChaosWorldClient> clientRegistry,
         IMerchantFactory merchantFactory
     )
         : base(subject)

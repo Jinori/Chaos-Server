@@ -37,7 +37,8 @@ public static class JsonValidator
             {
                 // Intentionally empty loop to read through the entire JSON
             }
-        } finally
+        }
+        finally
         {
             jsonStream.Position = position;
         }

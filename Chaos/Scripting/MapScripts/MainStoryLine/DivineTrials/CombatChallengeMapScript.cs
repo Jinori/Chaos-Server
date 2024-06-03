@@ -49,6 +49,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
                 StartCombatTrial();
             }
         }
+
         public override void Update(TimeSpan delta)
         {
             if (!StartTime.HasValue)
@@ -88,6 +89,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
                 aisling.Trackers.Enums.Set(MainStoryEnums.StartedFirstTrial);
             }
             StartTime = null;
+            State = ScriptState.Dormant;
         }
 
         private void NotifyRemainingTime(TimeSpan remainingTime)
@@ -113,7 +115,6 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
                     if (DateTime.UtcNow - StartTime > StartDelay)
                     {
                         State = GetNextStateAfterDelayedStart();
-                        StartTime = DateTime.UtcNow;
                     }
                     break;
 
@@ -126,8 +127,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
                 case ScriptState.SpawnedFirstWave:
                     if (CheckAislingDeaths() || CheckAllMonstersCleared(CombatTrial.FinishedFirst))
                     {
-                        State = ScriptState.DelayedStart;
-                        StartTime = DateTime.UtcNow;
+                        State = GetNextStateAfterWave();
                     }
                     break;
 
@@ -140,8 +140,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
                 case ScriptState.SpawnedSecondWave:
                     if (CheckAislingDeaths() || CheckAllMonstersCleared(CombatTrial.FinishedSecond))
                     {
-                        State = ScriptState.DelayedStart;
-                        StartTime = DateTime.UtcNow;
+                        State = GetNextStateAfterWave();
                     }
                     break;
 
@@ -154,8 +153,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
                 case ScriptState.SpawnedThirdWave:
                     if (CheckAislingDeaths() || CheckAllMonstersCleared(CombatTrial.FinishedThird))
                     {
-                        State = ScriptState.DelayedStart;
-                        StartTime = DateTime.UtcNow;
+                        State = GetNextStateAfterWave();
                     }
                     break;
 
@@ -168,15 +166,13 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
                 case ScriptState.SpawnedFourthWave:
                     if (CheckAislingDeaths() || CheckAllMonstersCleared(CombatTrial.FinishedFourth))
                     {
-                        State = ScriptState.DelayedStart;
-                        StartTime = DateTime.UtcNow;
+                        State = GetNextStateAfterWave();
                     }
                     break;
 
                 case ScriptState.SpawningFifthWave:
                     StartWave("Miraelis: The Gods will not hold back.");
-                    SpawnMonsters(["mainstory_fifthwave1", "mainstory_fifthwave2", "mainstory_fifthwave3", "mainstory_fifthwave4"
-                    ], 2);
+                    SpawnMonsters(new[] {"mainstory_fifthwave1", "mainstory_fifthwave2", "mainstory_fifthwave3", "mainstory_fifthwave4"}, 2);
                     State = ScriptState.SpawnedFifthWave;
                     break;
 
@@ -296,6 +292,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
                 Subject.RemoveEntity(monster);
             }
         }
+
         public void StartCombatTrial()
         {
             StartTime = DateTime.UtcNow; // Set the start time to the current UTC time
@@ -303,7 +300,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
             UpdateTimer.Reset(); // Reset the update timer
             CombatTimer.Reset(); // Reset the combat timer
         }
-        
+
         private ScriptState GetNextStateAfterDelayedStart()
         {
             foreach (var aisling in Subject.GetEntities<Aisling>())
@@ -332,6 +329,33 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
 
             // If no specific trial has finished, return SpawningFirstWave as default
             return ScriptState.SpawningFirstWave;
+        }
+
+        private ScriptState GetNextStateAfterWave()
+        {
+            if (Subject.GetEntities<Aisling>().All(a => a.Trackers.Enums.HasValue(CombatTrial.FinishedFirst)))
+            {
+                return ScriptState.SpawningSecondWave;
+            }
+            if (Subject.GetEntities<Aisling>().All(a => a.Trackers.Enums.HasValue(CombatTrial.FinishedSecond)))
+            {
+                return ScriptState.SpawningThirdWave;
+            }
+            if (Subject.GetEntities<Aisling>().All(a => a.Trackers.Enums.HasValue(CombatTrial.FinishedThird)))
+            {
+                return ScriptState.SpawningFourthWave;
+            }
+            if (Subject.GetEntities<Aisling>().All(a => a.Trackers.Enums.HasValue(CombatTrial.FinishedFourth)))
+            {
+                return ScriptState.SpawningFifthWave;
+            }
+            if (Subject.GetEntities<Aisling>().All(a => a.Trackers.Enums.HasValue(CombatTrial.FinishedFifth)))
+            {
+                return ScriptState.CompletedTrial;
+            }
+
+            // If no specific wave finished, remain in the current state
+            return State;
         }
     }
 

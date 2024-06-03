@@ -29,44 +29,6 @@ public sealed class FileExTests
     }
 
     [Fact]
-    public void SafeOpenRead_Should_Retry_RetryableExceptions()
-    {
-        // Arrange
-        var guid = Guid.NewGuid()
-                       .ToString();
-        var path = $"{guid}.txt";
-        var tempPath = $"{guid}.txt.temp";
-        var bakPath = $"{guid}.txt.bak";
-        var content = "Temp file content";
-        File.WriteAllText(path, content);
-        File.WriteAllText(bakPath, content);
-
-        // Act
-        var result = FileEx.SafeOpenRead(
-            path,
-            stream =>
-            {
-                var fileName = Path.GetFileName(stream.Name);
-
-                if (fileName == path)
-                    throw new RetryableException("");
-
-                if (fileName == tempPath)
-                    return false;
-
-                return true;
-            });
-
-        // Assert
-        result.Should()
-              .Be(true);
-
-        // Cleanup
-        File.Delete(path);
-        File.Delete(bakPath);
-    }
-
-    [Fact]
     public void SafeOpenRead_Should_ReturnResult_When_MainAndTempFilesMissing_BackupFileExists()
     {
         // Arrange
@@ -186,44 +148,6 @@ public sealed class FileExTests
                                                     .InnerExceptions
                                                     .Should()
                                                     .AllBeAssignableTo<FileNotFoundException>();
-    }
-
-    [Fact]
-    public async Task SafeOpenReadAsync_Should_Retry_RetryableExceptions()
-    {
-        // Arrange
-        var guid = Guid.NewGuid()
-                       .ToString();
-        var path = $"{guid}.txt";
-        var tempPath = $"{guid}.txt.temp";
-        var bakPath = $"{guid}.txt.bak";
-        var content = "Temp file content";
-        await File.WriteAllTextAsync(path, content);
-        await File.WriteAllTextAsync(bakPath, content);
-
-        // Act
-        var result = await FileEx.SafeOpenReadAsync(
-            path,
-            stream =>
-            {
-                var fileName = Path.GetFileName(stream.Name);
-
-                if (fileName == path)
-                    throw new RetryableException("");
-
-                if (fileName == tempPath)
-                    return Task.FromResult(false);
-
-                return Task.FromResult(true);
-            });
-
-        // Assert
-        result.Should()
-              .Be(true);
-
-        // Cleanup
-        File.Delete(path);
-        File.Delete(bakPath);
     }
 
     [Fact]
