@@ -167,6 +167,37 @@ public class DubhaimCastleKillQuestScript(Dialog subject, ILogger<TheSacrificeQu
                     source.Trackers.Enums.Set(DubhaimCastleKillQuestStage.None);
                     return;
                 }
+                
+                if (hasStage && stage == DubhaimCastleKillQuestStage.DubhaimCruel2)
+                {
+                    if (!source.Trackers.Counters.TryGetValue("dubhaimcruel2counter", out var Cruel2) || Cruel2 < 10)
+                    {
+                        Subject.Reply(source,
+                            "There are some aggressive Cruels in the hidden rooms of the castle, please go kill 10 of them.",
+                            "hosk_initial");
+                        return;
+                    }
+
+                    logger.WithTopics(
+                            Topics.Entities.Aisling,
+                            Topics.Entities.Experience,
+                            Topics.Entities.Dialog,
+                            Topics.Entities.Quest)
+                        .WithProperty(source)
+                        .WithProperty(Subject)
+                        .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
+                            tenPercent);
+
+                    Subject.Reply(source,
+                        $"The Cruels will show no mercy, they'll be back stronger.",
+                        "hosk_initial");
+                    source.TryGiveGamePoints(5);
+                    ExperienceDistributionScript.GiveExp(source, tenPercent);
+                    source.Trackers.TimedEvents.AddEvent("dubhaimcastlecd", TimeSpan.FromHours(22), true);
+                    source.Trackers.Counters.Remove("dubhaimcruel2counter", out _);
+                    source.Trackers.Enums.Set(DubhaimCastleKillQuestStage.None);
+                    return;
+                }
 
                 if (hasStage && stage == DubhaimCastleKillQuestStage.DubhaimGargoyle1)
                 {

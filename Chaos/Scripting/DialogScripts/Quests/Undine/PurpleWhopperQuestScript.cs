@@ -94,7 +94,7 @@ public class PurpleWhopperQuestScript(Dialog subject, ILogger<PurpleWhopperQuest
                             source.TryGiveGold(10000);
                             source.TryGiveGamePoints(5);
 
-                            if (IntegerRandomizer.RollChance(100))
+                            if (IntegerRandomizer.RollChance(8))
                             {
                                 source.Legend.AddOrAccumulate(
                                     new LegendMark(
