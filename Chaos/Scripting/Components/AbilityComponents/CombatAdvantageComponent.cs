@@ -36,6 +36,9 @@ public class CombatAdvantageComponent : IComponent
             {
                 //get the direction that vectors behind the target relative to the source
                 var behindTargetDirection = entity.DirectionalRelationTo(context.SourcePoint);
+                
+                if (entity.Effects.TryGetEffect("GMHide", out var effect))
+                    return;
 
                 //for each direction around the target, starting with the direction behind the target
                 foreach (var direction in behindTargetDirection.AsEnumerable())

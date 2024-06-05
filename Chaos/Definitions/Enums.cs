@@ -1553,6 +1553,24 @@ public enum ShipAttack
     CompletedShipAttack = 13
 }
 
+public enum HelpSable
+{
+    None,
+    StartedSable = 1,
+    FinishedSable = 2,
+    StartedSam = 3,
+    FinishedSam = 4,
+    StartedRoger = 5,
+    FinishedRoger = 6,
+    StartedCaptain = 7,
+    FinishedCaptain = 8,
+    StartedDoltoo = 9,
+    EscortingDoltooStart = 10,
+    EscortingDoltooFailed = 11,
+    CompletedEscort = 12,
+    FinishedDoltoo = 13
+}
+
 [Flags]
 public enum ShipAttackFlags
 {

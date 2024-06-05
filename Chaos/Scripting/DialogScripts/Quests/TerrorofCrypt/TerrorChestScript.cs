@@ -68,7 +68,7 @@ public class TerrorChestScript : DialogScriptBase
                 }
                 else // isOvercoat
                 {
-                    var templateKeyRewards = new List<string> { "dyeableTrainingOutfit" };
+                    var templateKeyRewards = new List<string> { "dyeableTrainingOutfit", "blackpenguincostume", "bluepenguincostume", "chickencostume", "cowcostume","dogoutfit", "jestersuit", "pumpkincostume", "reindeercostume", "sharkcostume", "sheepcostume" };
                     var index = new Random().Next(templateKeyRewards.Count);
                     item = ItemFactory.Create(templateKeyRewards[index]);
                 }

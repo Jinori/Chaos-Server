@@ -286,5 +286,4 @@ public class PirateDialogScript : DialogScriptBase
 
         return hasPirateArmor || hasPirateHelmet;
     }
-
 }
