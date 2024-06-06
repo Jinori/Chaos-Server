@@ -138,7 +138,8 @@ public class HelpSableScript : DialogScriptBase
                     }
                     return;
                 }
-                
+
+                source.Inventory.RemoveQuantity("Red Pirate Bandana", 1);
                 source.Trackers.Enums.Set(HelpSable.FinishedSable);
                 source.TryGiveGamePoints(5);
                 ExperienceDistributionScript.GiveExp(source, 75000);

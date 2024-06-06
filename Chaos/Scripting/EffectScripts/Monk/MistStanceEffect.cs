@@ -29,9 +29,6 @@ public class MistStanceEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.IsDead)
-            return false;
-        
         if (target.Effects.Contains("miststance"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");

@@ -214,6 +214,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             if (Subject.Group is not null)
                 foreach (var person in Subject.Group)
                 {
+                    if (person.IsDead)
+                        continue;
+                    
                     person.Animate(MistHeal, person.Id);
 
                     ApplyHealScript.ApplyHeal(
@@ -225,6 +228,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 }
             else
             {
+                if (Subject.IsDead)
+                    return;
+                
                 Subject.Animate(MistHeal, Subject.Id);
 
                 ApplyHealScript.ApplyHeal(

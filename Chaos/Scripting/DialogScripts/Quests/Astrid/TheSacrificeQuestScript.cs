@@ -29,7 +29,7 @@ public class TheSacrificeQuestScript : DialogScriptBase
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out TheSacrificeQuestStage stage);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-        var fivePercent = Convert.ToInt32(.5 * tnl);
+        var fivePercent = Convert.ToInt32(.05 * tnl);
         var fiftyPercent = Convert.ToInt32(.5 * tnl);
 
         switch (Subject.Template.TemplateKey.ToLower())

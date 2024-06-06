@@ -40,7 +40,7 @@ public class HelpDoltooScript : DialogScriptBase
         {
             case "doltoo_initial":
             {
-                if (source.UserStatSheet.Master)
+                if (!source.UserStatSheet.Master)
                     return;
 
                 if (source.Trackers.Enums.HasValue(HelpSable.FinishedDoltoo))
@@ -72,8 +72,7 @@ public class HelpDoltooScript : DialogScriptBase
                 }
 
                 if (source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo) 
-                    || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart) 
-                    || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooFailed))
+                    || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart))
                 {
                     Subject.Reply(source, "Skip", "helpdoltoo_return");
                 }
@@ -83,19 +82,18 @@ public class HelpDoltooScript : DialogScriptBase
             case "helpdoltoo_initial4":
             {
                 source.Trackers.Enums.Set(HelpSable.StartedDoltoo);
-                var point = new Point(30, 17);
+                var point = new Point(source.X, source.Y);
                 var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brigquest");
                 source.TraverseMap(mapinstance1, point);
-                source.Trackers.Enums.Set(HelpSable.EscortingDoltooStart);
                 break;
             }
 
             case "helpdoltoo_return2":
             { 
-                var point = new Point(30, 17);
+                var point = new Point(source.X, source.Y);
                 var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brigquest");
                 source.TraverseMap(mapinstance1, point);
-                source.Trackers.Enums.Set(HelpSable.EscortingDoltooStart);
+                source.Trackers.Enums.Set(HelpSable.StartedDoltoo);
 
                 break;
             }

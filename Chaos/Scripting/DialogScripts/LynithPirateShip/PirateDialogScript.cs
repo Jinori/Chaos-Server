@@ -3,7 +3,6 @@ using Chaos.Common.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
-using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
@@ -41,7 +40,7 @@ public class PirateDialogScript : DialogScriptBase
                 {
                     Subject.Reply(source,
                         "What are you doing here tiny? This is a galley for pirates like me! You can't be snooping around our food! You're up to no good aren't ya? Off to the brig with you!");
-                    var point = new Point(30, 17);
+                    var point = new Point(69, 9);
 
                     source.SendOrangeBarMessage("Salty Sam throws you in the brig!");
                     switch (source.UserStatSheet.Level)
@@ -106,7 +105,7 @@ public class PirateDialogScript : DialogScriptBase
                     Subject.Reply(source,
                         "Who let you in here? Get off my ship! This is no place for you to be wandering around! Actually, off to the brig!");
                     source.SendOrangeBarMessage("Jolly Roger throws you in the brig!");
-                    var point = new Point(30, 17);
+                    var point = new Point(69, 9);
 
                     switch (source.UserStatSheet.Level)
                     {
@@ -169,7 +168,7 @@ public class PirateDialogScript : DialogScriptBase
                 {
                     Subject.Reply(source,
                         "You don't belong in our quarters! Get! You're going to the brig!");
-                    var point = new Point(30, 17);
+                    var point = new Point(69, 9);
 
                     switch (source.UserStatSheet.Level)
                     {
@@ -217,7 +216,7 @@ public class PirateDialogScript : DialogScriptBase
 
             case "captainwolfgang_disrespectcaptain":
             {
-                var point = new Point(30, 17);
+                var point = new Point(69, 9);
                 source.SendOrangeBarMessage("Captain Wolfgang throws you into the brig!");
                 switch (source.UserStatSheet.Level)
                 {
@@ -264,8 +263,6 @@ public class PirateDialogScript : DialogScriptBase
                         source.SendOrangeBarMessage("The Captain escorts you somewhere safe.");
                         return;
                 }
-
-                break;
             }
         }
     }
