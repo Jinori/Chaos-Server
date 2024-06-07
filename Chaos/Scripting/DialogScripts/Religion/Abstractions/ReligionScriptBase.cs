@@ -41,14 +41,15 @@ public class ReligionScriptBase : DialogScriptBase
 
     private static readonly Dictionary<Rank, List<string>> RoleOptions = new()
     {
-        { Rank.None, ["Join the Temple", "The Gods"] },
-        { Rank.Worshipper, ["Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith"] },
-        { Rank.Acolyte, ["Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith"] },
-        { Rank.Emissary, ["Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith"] },
-        { Rank.Seer, ["Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith"] },
-        { Rank.Favor, ["Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith"] },
-        { Rank.Champion, ["Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith"] }
+        { Rank.None, new List<string> { "Join the Temple", "The Gods" } },
+        { Rank.Worshipper, new List<string> { "Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith" } },
+        { Rank.Acolyte, new List<string> { "Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith" } },
+        { Rank.Emissary, new List<string> { "Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith" } },
+        { Rank.Seer, new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith" } },
+        { Rank.Favor, new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith" } },
+        { Rank.Champion, new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith" } }
     };
+
 
     #region Prayers
     public readonly Dictionary<string, List<string>> DeityPrayers = new()
@@ -489,24 +490,23 @@ public class ReligionScriptBase : DialogScriptBase
         var key = CheckDeity(source);
 
         if ((key != null) && source.Legend.TryGetValue(key, out var faith))
-        {
-            var faithCount = faith.Count;
-
-            return faithCount switch
-            {
-                <= 0                         => Rank.None,
-                < FaithThresholds.WORSHIPPER => Rank.Worshipper,
-                < FaithThresholds.ACOLYTE    => Rank.Acolyte,
-                < FaithThresholds.EMISSARY   => Rank.Emissary,
-                < FaithThresholds.SEER       => Rank.Seer,
-                < FaithThresholds.FAVOR      => Rank.Favor,
-                < FaithThresholds.CHAMPION   => Rank.Champion,
-                _                            => Rank.Champion
-            };
-        }
+            return DetermineRank(faith.Count);
 
         return Rank.None;
     }
+
+    private Rank DetermineRank(int faithCount) =>
+        faithCount switch
+        {
+            <= 0                          => Rank.None,
+            >= FaithThresholds.CHAMPION   => Rank.Champion,
+            >= FaithThresholds.FAVOR      => Rank.Favor,
+            >= FaithThresholds.SEER       => Rank.Seer,
+            >= FaithThresholds.EMISSARY   => Rank.Emissary,
+            >= FaithThresholds.ACOLYTE    => Rank.Acolyte,
+            >= FaithThresholds.WORSHIPPER => Rank.Worshipper,
+            _                             => Rank.None
+        };
 
     public void GoddessHoldMass(Aisling source, string deity, Merchant? goddess)
     {
@@ -550,7 +550,7 @@ public class ReligionScriptBase : DialogScriptBase
     {
         var playerGod = CheckDeity(source);
 
-        if ((playerGod != null) && (playerGod != deity))
+        if (playerGod != null && playerGod != deity)
         {
             subject.Reply(source, $"Your faith lies within {playerGod} already. Please seek them out.");
             return;
@@ -559,22 +559,34 @@ public class ReligionScriptBase : DialogScriptBase
         var rank = GetPlayerRank(source);
 
         var allOptions = new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "Join the Temple", "Leave Faith" };
-        
+
         if (RoleOptions.TryGetValue(rank, out var allowedOptions))
-            foreach (var option in allOptions)
-                if (!allowedOptions.Contains(option))
-                    RemoveOption(subject, option);
+        {
+            var optionsToRemove = allOptions.Except(allowedOptions).ToList();
+            foreach (var option in optionsToRemove)
+            {
+                RemoveOption(subject, option);
+            }
+        }
 
         if (rank == Rank.None)
         {
-            if (source.Trackers.Enums.TryGetValue(out JoinReligionQuest stage))
-                if (stage is JoinReligionQuest.MiraelisQuest or JoinReligionQuest.SerendaelQuest or JoinReligionQuest.SkandaraQuest or JoinReligionQuest.TheseleneQuest)
-                    AddOption(subject, $"Essence of {deity}", $"{deity}_temple_completejoinQuest");
-
+            AddJoinQuestOptionIfApplicable(source, subject, deity);
             RemoveOption(subject, "Leave Faith");
         }
     }
 
+    private void AddJoinQuestOptionIfApplicable(Aisling source, Dialog subject, string? deity)
+    {
+        if (source.Trackers.Enums.TryGetValue(out JoinReligionQuest stage))
+        {
+            if (stage is JoinReligionQuest.MiraelisQuest or JoinReligionQuest.SerendaelQuest or JoinReligionQuest.SkandaraQuest or JoinReligionQuest.TheseleneQuest)
+            {
+                AddOption(subject, $"Essence of {deity}", $"{deity}_temple_completejoinQuest");
+            }
+        }
+    }
+    
     public static bool IsDeityMember(Aisling source, string deity) => source.Legend.ContainsKey(deity);
 
     public void JoinDeity(Aisling source, string deity)

@@ -1,4 +1,5 @@
 using Chaos.Common.Utilities;
+using Chaos.Extensions.Common;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
@@ -44,10 +45,20 @@ public class MiraelisTempleScript : ReligionScriptBase
                 TransferFaith(source, GODNAME);
 
                 break;
+            
+            case "miraelis_temple_holdmass":
+                if (source.Trackers.TimedEvents.HasActiveEvent("Mass", out var timedEvent))
+                    Subject.Reply(
+                        source,
+                        $"You cannot hold Mass at this time. You've already hosted it recently. \nTry again in {
+                            timedEvent.Remaining.ToReadableString()}.");
+
+                break;
             case "miraelis_temple_holdmassself5minute":
                 AnnounceMassStart(source, GODNAME, true);
 
                 break;
+            
             case "miraelis_temple_holdmassself1minute":
                 AnnounceOneMinuteWarning(source, GODNAME, true);
 

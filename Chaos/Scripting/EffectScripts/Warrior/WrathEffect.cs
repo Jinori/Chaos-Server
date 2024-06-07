@@ -1,4 +1,5 @@
-﻿using Chaos.Common.Definitions;
+﻿using System.Globalization;
+using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Geometry.Abstractions;
@@ -35,13 +36,27 @@ public class WrathEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
-        if ((Subject.StatSheet.ManaPercent < 5) || (Subject.StatSheet.CurrentMp == 1))
+        if (Subject.StatSheet.EffectiveMaximumMp <= 99)
         {
-            Subject.Effects.Terminate(Name);
-            return;
+            if (Subject.StatSheet.CurrentMp <= 1)
+            {
+                Subject.Effects.Terminate(Name);
+                return;
+            }
+
+            Subject.StatSheet.SubtractMp(10);
+        }
+        else
+        {
+            if ((Subject.StatSheet.ManaPercent <= 5m) || (Subject.StatSheet.CurrentMp <= 1))
+            {
+                Subject.Effects.Terminate(Name);
+                return;
+            }
+
+            Subject.StatSheet.SubtractManaPct(5m);
         }
         
-        Subject.StatSheet.SubtractManaPct(5);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
 
         var points = AoeShape.AllAround.ResolvePoints(Subject);
@@ -70,7 +85,7 @@ public class WrathEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.StatSheet.ManaPercent <= 5)
+        if (target.StatSheet.ManaPercent <= 5m)
             return false;
 
         return true;
