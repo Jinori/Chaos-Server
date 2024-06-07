@@ -802,6 +802,7 @@ public class ReligionScriptBase : DialogScriptBase
             source.Legend.TryGetValue(key, out var existingMark);
 
             if (existingMark is null)
+            {
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         $"Worshipper of {key}",
@@ -810,28 +811,37 @@ public class ReligionScriptBase : DialogScriptBase
                         MarkColor.White,
                         1,
                         GameTime.Now));
+            }
 
             if (existingMark is not null)
             {
                 var faithCount = existingMark.Count;
                 var previousRank = existingMark.Text;
-                
-                existingMark.Text = faithCount switch
+
+                var newRank = faithCount switch
                 {
-                    > 1499 when !existingMark.Text.Contains("Champion") => $"Champion of {key}",
-                    > 999 when !existingMark.Text.Contains("Favor")     => $"Favor of {key}",
-                    > 749 when !existingMark.Text.Contains("Seer")      => $"Seer of {key}",
-                    > 499 when !existingMark.Text.Contains("Emissary")  => $"Emissary of {key}",
-                    > 299 when !existingMark.Text.Contains("Acolyte")   => $"Acolyte of {key}",
-                    _ when !existingMark.Text.Contains("Novice")        => $"Worshipper of {key}",
-                    _                                                   => existingMark.Text
+                    > 1499 when !previousRank.Contains("Champion")   => $"Champion of {key}",
+                    > 999 when !previousRank.Contains("Favor")       => $"Favor of {key}",
+                    > 749 when !previousRank.Contains("Seer")        => $"Seer of {key}",
+                    > 499 when !previousRank.Contains("Emissary")    => $"Emissary of {key}",
+                    > 299 when !previousRank.Contains("Acolyte")     => $"Acolyte of {key}",
+                    <= 299 when !previousRank.Contains("Worshipper") => $"Worshipper of {key}",
+                    _                                                => previousRank
                 };
-                
-                if (existingMark.Text != previousRank)
-                    source.SendActiveMessage($"Your rank has increased to {existingMark.Text}.");
+
+                var rankOrder = new List<string> { "Worshipper", "Acolyte", "Emissary", "Seer", "Favor", "Champion" };
+                var currentRankIndex = rankOrder.FindIndex(rank => previousRank.Contains(rank));
+                var newRankIndex = rankOrder.FindIndex(rank => newRank.Contains(rank));
+
+                if (newRankIndex > currentRankIndex)
+                {
+                    existingMark.Text = newRank;
+                    source.SendActiveMessage($"Your rank has increased to {newRank}.");
+                }
             }
         }
     }
+
 
     public class FaithThresholds
     {

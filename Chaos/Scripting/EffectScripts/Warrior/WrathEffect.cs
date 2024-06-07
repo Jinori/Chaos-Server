@@ -35,13 +35,11 @@ public class WrathEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
-        if ((Subject.StatSheet.ManaPercent < 1) || (Subject.StatSheet.CurrentMp == 1))
+        if ((Subject.StatSheet.ManaPercent < 5) || (Subject.StatSheet.CurrentMp == 1))
         {
             Subject.Effects.Terminate(Name);
-
             return;
         }
-        
         
         Subject.StatSheet.SubtractManaPct(5);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
