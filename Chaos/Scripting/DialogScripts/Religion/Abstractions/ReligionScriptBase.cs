@@ -505,7 +505,7 @@ public class ReligionScriptBase : DialogScriptBase
             >= FaithThresholds.EMISSARY   => Rank.Emissary,
             >= FaithThresholds.ACOLYTE    => Rank.Acolyte,
             >= FaithThresholds.WORSHIPPER => Rank.Worshipper,
-            _                             => Rank.None
+            _                             => Rank.Worshipper
         };
 
     public void GoddessHoldMass(Aisling source, string deity, Merchant? goddess)
@@ -558,7 +558,7 @@ public class ReligionScriptBase : DialogScriptBase
 
         var rank = GetPlayerRank(source);
 
-        var allOptions = new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "Join the Temple", "Leave Faith" };
+        var allOptions = new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "Join the Temple", "Leave Faith", "The Gods" };
 
         if (RoleOptions.TryGetValue(rank, out var allowedOptions))
         {
@@ -633,7 +633,7 @@ public class ReligionScriptBase : DialogScriptBase
             source.Inventory.RemoveQuantityByTemplateKey($"{deity}Stone", 1);
 
         if (source.Bank.Contains($"{deity} Stone"))
-            source.Bank.TryWithdraw($"{deity} Stone", 1, out var _);
+            source.Bank.TryWithdraw($"{deity} Stone", 1, out _);
 
         source.Trackers.Enums.Set(JoinReligionQuest.None);
         source.Legend.Remove(deity, out _);
