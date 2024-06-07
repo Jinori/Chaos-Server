@@ -220,7 +220,7 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
             
             
             foreach (var removeRegant in recipe.Ingredients)
-                if (removeRegant.TemplateKey != recipe.TemplateKey) 
+                if (!string.Equals(removeRegant.TemplateKey, recipe.TemplateKey, StringComparison.CurrentCultureIgnoreCase)) 
                     source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
                 else
                 {

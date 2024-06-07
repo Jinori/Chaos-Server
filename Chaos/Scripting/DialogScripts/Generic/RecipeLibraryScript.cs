@@ -2194,6 +2194,17 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
+                        case "stonefist":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Stone Fist, 3 Polished Iron Bar, and 2 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
                     case "phoenixclaw":
                     {
                         Subject.Reply(

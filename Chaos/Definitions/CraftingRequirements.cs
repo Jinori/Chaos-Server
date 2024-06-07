@@ -3643,6 +3643,23 @@ public static class CraftingRequirements
             }
         },
         {
+            WeaponSmithingRecipes.StoneFist,
+            new Recipe()
+            {
+                Name = "Stone Fist",
+                TemplateKey = "stonefist",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient { TemplateKey = "stonefist", DisplayName = "Stone Fist", Amount = 1 },
+                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
+                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
+                },
+                Rank = "Initiate",
+                Level = 41,
+                Difficulty = 2
+            }
+        },
+        {
             WeaponSmithingRecipes.PhoenixClaw,
             new Recipe()
             {

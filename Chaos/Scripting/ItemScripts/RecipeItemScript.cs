@@ -1513,6 +1513,7 @@ public class RecipeItemScript : ItemScriptBase
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.EagleTalon);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.StoneFist);
 
                     return;
                 }

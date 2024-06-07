@@ -939,16 +939,17 @@ public enum WeaponSmithingRecipes : ulong
     DullClaw = 1L << 43,
     WolfClaw = 1L << 44,
     EagleTalon = 1L << 45,
-    PhoenixClaw = 1L << 46,
-    Nunchaku = 1L << 47,
-    WoodenShield = 1L << 48,
-    LeatherShield = 1L << 49,
-    BronzeShield = 1L << 50,
-    GravelShield = 1L << 51,
-    IronShield = 1L << 52,
-    LightShield = 1L << 53,
-    MythrilShield = 1L << 54,
-    HybrasylShield = 1L << 55
+    StoneFist = 1L << 46,
+    PhoenixClaw = 1L << 47,
+    Nunchaku = 1L << 48,
+    WoodenShield = 1L << 49,
+    LeatherShield = 1L << 50,
+    BronzeShield = 1L << 51,
+    GravelShield = 1L << 52,
+    IronShield = 1L << 53,
+    LightShield = 1L << 54,
+    MythrilShield = 1L << 55,
+    HybrasylShield = 1L << 56
 }
 #endregion
 
