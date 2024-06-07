@@ -54,6 +54,21 @@ public class HelpSamScript : DialogScriptBase
                    )
                     return;
                 
+                if (source.Trackers.Enums.HasValue(HelpSable.StartedSam))
+                {
+                    var option1 = new DialogOption
+                    {
+                        DialogKey = "helpsam_initial",
+                        OptionText = "I got your Black Pirate Bandana."
+                    };
+
+                    if (!Subject.HasOption(option1.OptionText))
+                        Subject.Options.Insert(0, option1);
+                    
+                    return;
+                }
+                
+                
                 var option = new DialogOption
                 {
                     DialogKey = "helpsam_initial",

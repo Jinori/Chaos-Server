@@ -52,6 +52,20 @@ public class HelpRogerScript : DialogScriptBase
                    )
                     return;
                 
+                if (source.Trackers.Enums.HasValue(HelpSable.StartedRoger))
+                {
+                    var option1 = new DialogOption
+                    {
+                        DialogKey = "helproger_initial",
+                        OptionText = "I found a Male Pirate Shirt."
+                    };
+
+                    if (!Subject.HasOption(option1.OptionText))
+                        Subject.Options.Insert(0, option1);
+                    
+                    return;
+                }
+                
                 var option = new DialogOption
                 {
                     DialogKey = "helproger_initial",

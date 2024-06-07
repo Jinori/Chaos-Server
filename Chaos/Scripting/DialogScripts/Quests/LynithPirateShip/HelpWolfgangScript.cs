@@ -50,6 +50,20 @@ public class HelpWolfgangScript : DialogScriptBase
                    )
                     return;
                 
+                if (source.Trackers.Enums.HasValue(HelpSable.StartedCaptain))
+                {
+                    var option1 = new DialogOption
+                    {
+                        DialogKey = "helpwolfgang_initial",
+                        OptionText = "Captain, I got your Male Pirate Garb."
+                    };
+
+                    if (!Subject.HasOption(option1.OptionText))
+                        Subject.Options.Insert(0, option1);
+                    
+                    return;
+                }
+                
                 var option = new DialogOption
                 {
                     DialogKey = "helpwolfgang_initial",

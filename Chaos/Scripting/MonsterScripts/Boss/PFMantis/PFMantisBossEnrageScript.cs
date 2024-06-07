@@ -1,13 +1,20 @@
+using Chaos.Common.Definitions;
 using Chaos.Models.Data;
+using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Time;
+using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.PFMantis;
 
 public sealed class PFMantisBossEnrageScript : MonsterScriptBase
 {
     private readonly IMonsterFactory MonsterFactory;
+    private readonly IIntervalTimer SpellCastTimer;
+    private readonly ISpellFactory SpellFactory;
+    private readonly Spell SpellToCast;
     private bool Bonus20Applied;
     private bool Bonus40Applied;
     private bool Bonus60Applied;
@@ -20,12 +27,28 @@ public sealed class PFMantisBossEnrageScript : MonsterScriptBase
     };
 
     /// <inheritdoc />
-    public PFMantisBossEnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
+    public PFMantisBossEnrageScript(Monster subject, IMonsterFactory monsterFactory, ISpellFactory spellFactory)
+        : base(subject)
+    {
+        SpellFactory = spellFactory;
+        SpellToCast = SpellFactory.Create("weaken");
         MonsterFactory = monsterFactory;
+        SpellCastTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(15), 20, RandomizationType.Balanced, false);
+    }
 
     public override void Update(TimeSpan delta)
     {
+        SpellCastTimer.Update(delta);
+
+        if (SpellCastTimer.IntervalElapsed)
+        {
+            foreach (var target in Subject.MapInstance.GetEntities<Aisling>())
+            {
+                Subject.TryUseSpell(SpellToCast, target.Id);
+            }
+        }
+        
+
         if (!Bonus90Applied && (Subject.StatSheet.HealthPercent <= 90))
         {
             Bonus90Applied = true;
@@ -33,7 +56,7 @@ public sealed class PFMantisBossEnrageScript : MonsterScriptBase
             //Give Bonuses
             var attrib = new Attributes
             {
-                AtkSpeedPct = 15,
+                AtkSpeedPct = 5,
                 Str = 5,
                 Int = 2,
                 MagicResistance = 10
@@ -69,8 +92,8 @@ public sealed class PFMantisBossEnrageScript : MonsterScriptBase
                 Int = 5,
                 Str = 5,
                 Wis = 5,
-                Ac = 10,
-                AtkSpeedPct = 15,
+                Ac = -10,
+                AtkSpeedPct = 5,
                 FlatSkillDamage = 5,
                 FlatSpellDamage = 5,
                 Hit = 10

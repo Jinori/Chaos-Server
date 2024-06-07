@@ -56,6 +56,20 @@ public class HelpSableScript : DialogScriptBase
                    )
                     return;
                 
+                if (source.Trackers.Enums.HasValue(HelpSable.StartedSable))
+                {
+                    var option1 = new DialogOption
+                    {
+                        DialogKey = "helpsable_initial",
+                        OptionText = "I have your Red Pirate Bandana."
+                    };
+
+                    if (!Subject.HasOption(option1.OptionText))
+                        Subject.Options.Insert(0, option1);
+                    
+                    return;
+                }
+                
                 var option = new DialogOption
                 {
                     DialogKey = "helpsable_initial",

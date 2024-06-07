@@ -41,7 +41,7 @@ public class ArdCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
         Subject.Animate(Animation);
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've been cursed by {Subject.Name} AC and MR lowered!");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've been cursed by ard cradh! AC and MR lowered!");
     }
 
     public override void OnDispelled() => OnTerminated();
