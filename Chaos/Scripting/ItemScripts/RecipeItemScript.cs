@@ -592,7 +592,7 @@ public class RecipeItemScript : ItemScriptBase
             #region Armor Smithing Recipes
             case "recipe_beginnerarmors":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicArmors))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BeginnerArmors))
                 {
                     if (craft != Crafts.Armorsmithing)
                     {

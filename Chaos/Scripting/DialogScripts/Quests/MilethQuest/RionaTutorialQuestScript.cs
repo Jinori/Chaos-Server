@@ -41,7 +41,6 @@ public class RionaTutorialQuestScript : DialogScriptBase
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "riona_initial":
-
                 if (stage is RionaTutorialQuestStage.StartedCrafting
                              or RionaTutorialQuestStage.CompletedCrafting
                              or RionaTutorialQuestStage.StartedLeveling
@@ -56,6 +55,22 @@ public class RionaTutorialQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
+                }
+
+                if (source.Trackers.Enums.HasValue(Crafts.Armorsmithing)
+                    || source.Trackers.Enums.HasValue(Crafts.Enchanting)
+                    || source.Trackers.Enums.HasValue(Crafts.Weaponsmithing)
+                    || source.Trackers.Enums.HasValue(Crafts.Jewelcrafting)
+                    || source.Trackers.Enums.HasValue(Crafts.Alchemy))
+                {
+                    var option3 = new DialogOption
+                    {
+                        DialogKey = "riona_relearnrecipes",
+                        OptionText = "Check my Recipes"
+                    };
+
+                    if (!Subject.HasOption(option3.OptionText))
+                        Subject.Options.Insert(0, option3);
                 }
 
                 if (stage is RionaTutorialQuestStage.CompletedTutorialQuest)
