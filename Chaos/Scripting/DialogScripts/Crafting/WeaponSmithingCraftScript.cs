@@ -215,7 +215,18 @@ public class WeaponSmithingCraftScript : DialogScriptBase
             source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + recipe.Name, out var value) ? value : 0;
 
         foreach (var removeRegant in recipe.Ingredients)
+        {
+            if (removeRegant.TemplateKey == "club")
+            {
+                if (!IntegerRandomizer.RollChance(20))
+                {
+                    source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
+                }
+                continue;
+            }
+            
             source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
+        }
         
         if (!IntegerRandomizer.RollChance(
                 (int)CalculateSuccessRate(

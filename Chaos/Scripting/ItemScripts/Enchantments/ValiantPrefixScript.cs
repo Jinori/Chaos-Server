@@ -17,8 +17,7 @@ public sealed class ValiantPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            SkillDamagePct = 2,
-            AtkSpeedPct = -1
+            SkillDamagePct = 2
         };
 
         subject.Modifiers.Add(attributes);
