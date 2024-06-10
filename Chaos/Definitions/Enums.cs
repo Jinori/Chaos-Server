@@ -1706,3 +1706,18 @@ public enum ExpTimerStage
     Tracking = 1,
     Stopped = 2,
 }
+
+public enum WerewolfOfPiet
+{
+    None = 0, 
+    StartedQuest = 1,
+    FollowedMerchant = 2,
+    SpawnedWerewolf = 3,
+    KilledandGotCursed = 4,
+    SpokeToWizard = 5,
+    EnteredSWpath = 6,
+    KilledWerewolf = 7,
+    CollectedBlueFlower = 8,
+    ReturnedToWizard = 11,
+    ReceivedCure = 12
+}

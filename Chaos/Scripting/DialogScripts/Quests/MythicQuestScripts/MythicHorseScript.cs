@@ -280,7 +280,7 @@ public class MythicHorseScript : DialogScriptBase
 
                 source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Trackers.Enums.Set(MythicHorse.AlliedHorse);
-                source.SendOrangeBarMessage("You are now allied with the bunnies!");
+                source.SendOrangeBarMessage("You are now allied with the horses!");
 
                 Subject.Reply(
                     source,
