@@ -1,6 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.World;
@@ -27,6 +28,8 @@ public class VillagerScript : MerchantScriptBase
         TalkingToPlayer,
         FollowingPlayer,
         CalloutPasserby,
+        HandleWerewolfConversation,
+        WalkToSpawnPoint,
         Eating
     }
 
@@ -57,13 +60,13 @@ public class VillagerScript : MerchantScriptBase
     public readonly Location MilethRestaurantDoorPoint = new("mileth", 34, 11);
     public readonly Location MilethRestaurantPoint = new("mileth_restaurant", 8, 7);
 
-    public readonly Location PietArmoryDoorInsidePoint = new("piet_armor_shop", 6, 8);
+    public readonly Location PietArmoryDoorInsidePoint = new("piet_armor_shop", 11, 8);
     public readonly Location PietArmoryDoorPoint = new("piet", 55, 22);
-    public readonly Location PietArmoryPoint = new("piet_armor_shop", 11, 8);
+    public readonly Location PietArmoryPoint = new("piet_armor_shop", 6, 8);
 
-    public readonly Location PietRestaurantDoorInsidePoint = new("piet_restaurant", 8, 7);
+    public readonly Location PietRestaurantDoorInsidePoint = new("piet_restaurant", 8, 14);
     public readonly Location PietRestaurantDoorPoint = new("piet", 11, 49);
-    public readonly Location PietRestaurantPoint = new("piet_restaurant", 9, 14);
+    public readonly Location PietRestaurantPoint = new("piet_restaurant", 8, 7);
 
     public readonly Location PietStorageDoorInsidePoint = new("piet_storage", 6, 11);
     public readonly Location PietStorageDoorPoint = new("piet", 51, 13);
@@ -78,9 +81,11 @@ public class VillagerScript : MerchantScriptBase
     public bool HasMerchantResponded;
     public bool HasMerchantResponded2;
     public bool HasMerchantResponded3;
+    public bool HasSaidGoodbye;
     public bool HasPickedAnAisling;
     public bool HasReceivedItem;
     public bool HasSaidGreeting;
+    public bool DoWerewolfConversation;
     private string? ItemRequested;
     private Aisling? RandomAisling;
 
@@ -95,7 +100,7 @@ public class VillagerScript : MerchantScriptBase
         Subject.VillagerState = VillagerState.Idle;
 
         DialogueTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(1.5),
+            TimeSpan.FromSeconds(2.5),
             50,
             RandomizationType.Positive,
             false);
@@ -128,7 +133,7 @@ public class VillagerScript : MerchantScriptBase
 
         Subject.Say("That should help a bit.");
     }
-
+    
     private void HandleEatingState()
     {
         if ((DateTime.Now - LastChant).TotalSeconds >= 2)
@@ -160,8 +165,68 @@ public class VillagerScript : MerchantScriptBase
         Subject.Chant($"*{chant}*");
     }
 
+    private void ConductWerewolfConversation(Merchant npc)
+    { 
+        if (!HasSaidGreeting)
+        {
+            var greeting = string.Format(PickRandom(StartWereWolfConversation), npc.Name);
+            Subject.Say(greeting);
+            HasSaidGreeting = true;
+            DialogueTimer.Reset();
+        }
+        else if (!HasMerchantResponded)
+        {
+            var response = PickRandom(WerewolfReply1);
+            npc?.Say(response);
+            HasMerchantResponded = true;
+        }
+        else if (!HasMerchantResponded2)
+        {
+            var greeting = string.Format(PickRandom(StartWereWolfConversation2), npc.Name);
+            Subject.Say(greeting);
+            HasMerchantResponded2 = true;
+            DialogueTimer.Reset();
+        }
+        else if (!HasMerchantResponded3)
+        {
+            var response = PickRandom(WerewolfReply2);
+            npc?.Say(response);
+            HasMerchantResponded3 = true;
+        }
+        else if (!HasSaidGoodbye)
+        {
+            var greeting = string.Format(PickRandom(StartWereWolfConversation3), npc.Name);
+            Subject.Say(greeting);
+            HasSaidGoodbye = true;
+            DialogueTimer.Reset();
+        }
+        else if (!HasHadConversation)
+        {
+            var response = PickRandom(WerewolfReply3);
+            npc?.Say(response);
+
+            var hasStage = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject)
+                                  .Any(x => x.Trackers.Enums.TryGetValue(out WerewolfOfPiet _));
+
+            var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject)
+                                  .Where(x => x.Trackers.Enums.HasValue(WerewolfOfPiet.None) || !hasStage)
+                                  .ToList();
+
+            foreach (var aisling in aislings)
+            {
+                var dialog = DialogFactory.Create("werewolf_initial", npc);
+                dialog.Display(aisling);
+            }
+
+            HasHadConversation = true;
+        }
+    }
+    
     private void ConductDialogueWithMerchant(string merchant)
     {
+        if (IntegerRandomizer.RollChance(99) && Subject.MapInstance.InstanceId.ContainsI("Piet") && !DoWerewolfConversation)
+            DoWerewolfConversation = true;
+
         switch (merchant)
         {
             case "restaurant":
@@ -169,35 +234,38 @@ public class VillagerScript : MerchantScriptBase
                 var npc = Subject.MapInstance.GetEntitiesWithinRange<Merchant>(Subject)
                     .FirstOrDefault(x => x.Id != Subject.Id);
 
-                if (npc == null)
+                if (DoWerewolfConversation)
                 {
-                    return; // Exit if no NPC is found.
+                    if (npc != null)
+                        ConductWerewolfConversation(npc);
                 }
-
-                if (!HasSaidGreeting)
+                else
                 {
-                    var greeting = string.Format(PickRandom(Greetings), npc.Name);
-                    Subject.Say(greeting);
-                    HasSaidGreeting = true;
-                    DialogueTimer.Reset();
+                    if (!HasSaidGreeting)
+                    {
+                        var greeting = string.Format(PickRandom(Greetings), npc?.Name);
+                        Subject.Say(greeting);
+                        HasSaidGreeting = true;
+                        DialogueTimer.Reset();
+                    }
+                    else if (!HasAskedForItem)
+                    {
+                        var foodRequest = PickRandom(FoodRequests);
+                        Subject.Say(foodRequest);
+                        HasAskedForItem = true;
+                        DialogueTimer.Reset();
+                    }
+                    else if (!HasMerchantResponded)
+                    {
+                        var response = PickRandom(ServingFoodResponses);
+                        npc?.Say(response);
+                        HasMerchantResponded = true;
+                        Subject.VillagerState = VillagerState.Eating;
+                        EatingTimer.Reset();
+                        LastChant = DateTime.Now;
+                    }
                 }
-                else if (!HasAskedForItem)
-                {
-                    var foodRequest = PickRandom(FoodRequests);
-                    Subject.Say(foodRequest);
-                    HasAskedForItem = true;
-                    DialogueTimer.Reset();
-                }
-                else if (!HasMerchantResponded)
-                {
-                    var response = PickRandom(ServingFoodResponses);
-                    npc.Say(response);
-                    HasMerchantResponded = true;
-                    Subject.VillagerState = VillagerState.Eating;
-                    EatingTimer.Reset();
-                    LastChant = DateTime.Now;
-                }
-
+                
                 break;
             }
 
@@ -207,36 +275,43 @@ public class VillagerScript : MerchantScriptBase
                 var npc = Subject.MapInstance.GetEntitiesWithinRange<Merchant>(Subject)
                     .FirstOrDefault(x => x.Id != Subject.Id);
                 
-
-                if (!HasSaidGreeting)
+                if (DoWerewolfConversation)
                 {
-                    var greeting = string.Format(PickRandom(Greetings), npc?.Name);
-                    Subject.Say(greeting);
-                    HasSaidGreeting = true;
-                    DialogueTimer.Reset();
+                    if (npc != null)
+                        ConductWerewolfConversation(npc);
                 }
-                else if (!HasAskedForItem)
+                else
                 {
-                    var color = GetRandomDisplayColor();
-                    var purchaseRequest = string.Format(PickRandom(AskAboutDye), color);
-                    ItemRequested = color.ToString();
-                    Subject.Say(purchaseRequest);
-                    HasAskedForItem = true;
-                    DialogueTimer.Reset();
-                }
-                else if (!HasMerchantResponded)
-                {
-                    var purchaseRequest = string.Format(PickRandom(TailorResponses), ItemRequested);
-                    npc?.Say(purchaseRequest);
-                    HasMerchantResponded = true;
-                    DialogueTimer.Reset();
-                }
-                else if (!HasReceivedItem)
-                {
-                    var response = PickRandom(ItemReceivedResponses);
-                    Subject.Say(response);
-                    HasReceivedItem = true;
-                    HasHadConversation = true;
+                    if (!HasSaidGreeting)
+                    {
+                        var greeting = string.Format(PickRandom(Greetings), npc?.Name);
+                        Subject.Say(greeting);
+                        HasSaidGreeting = true;
+                        DialogueTimer.Reset();
+                    }
+                    else if (!HasAskedForItem)
+                    {
+                        var color = GetRandomDisplayColor();
+                        var purchaseRequest = string.Format(PickRandom(AskAboutDye), color);
+                        ItemRequested = color.ToString();
+                        Subject.Say(purchaseRequest);
+                        HasAskedForItem = true;
+                        DialogueTimer.Reset();
+                    }
+                    else if (!HasMerchantResponded)
+                    {
+                        var purchaseRequest = string.Format(PickRandom(TailorResponses), ItemRequested);
+                        npc?.Say(purchaseRequest);
+                        HasMerchantResponded = true;
+                        DialogueTimer.Reset();
+                    }
+                    else if (!HasReceivedItem)
+                    {
+                        var response = PickRandom(ItemReceivedResponses);
+                        Subject.Say(response);
+                        HasReceivedItem = true;
+                        HasHadConversation = true;
+                    }
                 }
 
                 break;
@@ -245,36 +320,44 @@ public class VillagerScript : MerchantScriptBase
             {
                 var npc = Subject.MapInstance.GetEntitiesWithinRange<Merchant>(Subject)
                     .FirstOrDefault(x => x.Id != Subject.Id);
-
-                if (!HasSaidGreeting)
+                
+                if (DoWerewolfConversation)
                 {
-                    var greeting = string.Format(PickRandom(Greetings), npc?.Name);
-                    Subject.Say(greeting);
-                    HasSaidGreeting = true;
-                    DialogueTimer.Reset();
+                    if (npc != null)
+                        ConductWerewolfConversation(npc);
                 }
-                else if (!HasAskedForItem)
+                else
                 {
-                    var randomItem = npc?.ItemsForSale.PickRandom();
-                    var purchaseRequest = string.Format(PickRandom(PurchaseRequests), randomItem?.DisplayName);
-                    ItemRequested = randomItem?.DisplayName;
-                    Subject.Say(purchaseRequest);
-                    HasAskedForItem = true;
-                    DialogueTimer.Reset();
-                }
-                else if (!HasMerchantResponded)
-                {
-                    var purchaseRequest = string.Format(PickRandom(MerchantResponses), ItemRequested);
-                    npc?.Say(purchaseRequest);
-                    HasMerchantResponded = true;
-                    DialogueTimer.Reset();
-                }
-                else if (!HasReceivedItem)
-                {
-                    var response = PickRandom(ItemReceivedResponses);
-                    Subject.Say(response);
-                    HasReceivedItem = true;
-                    HasHadConversation = true;
+                    if (!HasSaidGreeting)
+                    {
+                        var greeting = string.Format(PickRandom(Greetings), npc?.Name);
+                        Subject.Say(greeting);
+                        HasSaidGreeting = true;
+                        DialogueTimer.Reset();
+                    }
+                    else if (!HasAskedForItem)
+                    {
+                        var randomItem = npc?.ItemsForSale.PickRandom();
+                        var purchaseRequest = string.Format(PickRandom(PurchaseRequests), randomItem?.DisplayName);
+                        ItemRequested = randomItem?.DisplayName;
+                        Subject.Say(purchaseRequest);
+                        HasAskedForItem = true;
+                        DialogueTimer.Reset();
+                    }
+                    else if (!HasMerchantResponded)
+                    {
+                        var purchaseRequest = string.Format(PickRandom(MerchantResponses), ItemRequested);
+                        npc?.Say(purchaseRequest);
+                        HasMerchantResponded = true;
+                        DialogueTimer.Reset();
+                    }
+                    else if (!HasReceivedItem)
+                    {
+                        var response = PickRandom(ItemReceivedResponses);
+                        Subject.Say(response);
+                        HasReceivedItem = true;
+                        HasHadConversation = true;
+                    }   
                 }
 
                 break;
