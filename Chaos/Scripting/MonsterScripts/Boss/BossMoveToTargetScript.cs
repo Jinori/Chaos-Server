@@ -40,7 +40,7 @@ public sealed class BossMoveToTargetScript(Monster subject, IEffectFactory effec
             return;
         }
 
-        if ((distance != 1) && (distance <= 3))
+        if ((distance != 1) && (distance <= 4))
             Subject.Pathfind(Target);
 
         else if (distance >= 4)
