@@ -117,6 +117,7 @@ public class RecipeItemScript : ItemScriptBase
             #endregion
             
             #region All Recipes
+
             case "recipe_allcrafts":
             {
                 source.Trackers.Flags.AddFlag(CookingRecipes.DinnerPlate);
@@ -204,14 +205,30 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylHeartstoneGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylSapphireGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.HybrasylBerylGauntlet);
-                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledSeaBelt);
-                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledEarthBelt);
-                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledWindBelt);
-                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledFireBelt);
-                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledMetalBelt);
-                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledNatureBelt);
-                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledDarkBelt);
-                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledLightBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.FireBronzeBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.SeaBronzeBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.EarthBronzeBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindBronzeBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkBronzeBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightBronzeBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.FireIronBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.SeaIronBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.EarthIronBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindIronBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkIronBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightIronBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.FireMythrilBraidBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.SeaMythrilBraidBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.EarthMythrilBraidBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindMythrilBraidBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkMythrilBraidBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightMythrilBraidBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.FireHybrasylBraidBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.SeaHybrasylBraidBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.EarthHybrasylBraidBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindHybrasylBraidBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkHybrasylBraidBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightHybrasylBraidBelt);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Eppe);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Saber);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.SnowDagger);
@@ -404,6 +421,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
+
             #endregion
 
             #region Cooking Recipes
@@ -942,10 +960,12 @@ public class RecipeItemScript : ItemScriptBase
                         "Basic Belts",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledSeaBelt);
-                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledEarthBelt);
-                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledWindBelt);
-                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledFireBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.FireBronzeBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.SeaBronzeBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.EarthBronzeBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindBronzeBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkBronzeBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightBronzeBelt);
 
                     return;
                 }
@@ -972,8 +992,12 @@ public class RecipeItemScript : ItemScriptBase
                         "Initiate Belts",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledMetalBelt);
-                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledNatureBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.FireIronBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.SeaIronBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.EarthIronBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindIronBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkIronBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightIronBelt);
 
                     return;
                 }
@@ -1000,8 +1024,45 @@ public class RecipeItemScript : ItemScriptBase
                         "Artisan Belts",
                         $"{Subject.Template.TemplateKey}");
 
-                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledDarkBelt);
-                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledLightBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.FireMythrilBraidBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.SeaMythrilBraidBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.EarthMythrilBraidBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindMythrilBraidBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkMythrilBraidBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightMythrilBraidBelt);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_adeptbelts":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.ArtisanBelts))
+                {
+                    if (craft != Crafts.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithCategories.AdeptBelts,
+                        "Adept Belts",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.FireHybrasylBraidBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.SeaHybrasylBraidBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.EarthHybrasylBraidBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindHybrasylBraidBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkHybrasylBraidBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightHybrasylBraidBelt);
 
                     return;
                 }
