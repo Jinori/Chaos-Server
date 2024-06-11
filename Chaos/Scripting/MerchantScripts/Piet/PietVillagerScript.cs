@@ -215,7 +215,7 @@ public class PietVillagerScript : MerchantScriptBase
     
     private void ConductDialogueWithMerchant(string merchant)
     {
-        if (IntegerRandomizer.RollChance(99) && Subject.MapInstance.InstanceId.ContainsI("Piet") && !DoWerewolfConversation)
+        if (IntegerRandomizer.RollChance(0) && Subject.MapInstance.InstanceId.ContainsI("Piet") && !DoWerewolfConversation)
             DoWerewolfConversation = true;
 
         switch (merchant)

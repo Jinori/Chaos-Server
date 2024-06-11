@@ -21,11 +21,6 @@ public class WerewolfEffect : EffectBase, NonOverwritableEffectComponent.INonOve
     public override byte Icon => 85;
     public override string Name => "werewolf";
     protected byte? Sound => 115;
-
-    public override void Update()
-    {
-        
-    }
     
     public override void OnApplied()
     {
@@ -33,11 +28,6 @@ public class WerewolfEffect : EffectBase, NonOverwritableEffectComponent.INonOve
 
         if (AislingSubject != null)
         {
-            var attributes = new Attributes
-            {
-                Dmg = ,
-            }
-            
             AislingSubject.Sprite = 407;
             AislingSubject.Refresh(true);
         }
