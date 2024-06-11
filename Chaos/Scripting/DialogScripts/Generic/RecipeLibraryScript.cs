@@ -3227,6 +3227,270 @@ public class RecipeLibraryScript : DialogScriptBase
                         return;
                     }
                     
+                    case "firebronzebelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen, 1 Polished Bronze Bar and 2 Flawed Ruby.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "seabronzebelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen, 1 Polished Bronze Bar and 2 Flawed Sapphire.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "earthbronzebelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen, 1 Polished Bronze Bar and 2 Flawed Beryl.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "windbronzebelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen, 1 Polished Bronze Bar and 2 Flawed Emerald.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "darkbronzebelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen, 1 Polished Bronze Bar and 2 Flawed Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "lightbronzebelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Linen, 1 Polished Bronze Bar and 2 Flawed Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "fireironbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Cotton, 1 Polished Iron Bar and 2 Uncut Ruby.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "seaironbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Cotton, 1 Polished Iron Bar and 2 Uncut Sapphire.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "earthironbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Cotton, 1 Polished Iron Bar and 2 Uncut Beryl.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "windironbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Cotton, 1 Polished Iron Bar and 2 Uncut Emerald.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "darkironbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Cotton, 1 Polished Iron Bar and 2 Uncut Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "lightironbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Cotton, 1 Polished Iron Bar and 2 Uncut Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "firemythrilbraidbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Wool, 1 Polished Mythril Bar and 2 Pristine Ruby.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "seamythrilbraidbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Wool, 1 Polished Mythril Bar and 2 Pristine Sapphire.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "earthmythrilbraidbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Wool, 1 Polished Mythril Bar and 2 Pristine Beryl.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "windmythrilbraidbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Wool, 1 Polished Mythril Bar and 2 Pristine Emerald.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "darkmythrilbraidbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Wool, 1 Polished Mythril Bar and 2 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "lightmythrilbraidbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Exquisite Wool, 1 Polished Mythril Bar and 2 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "firehybrasylbraidbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Silk, 1 Polished Hybrasyl Bar and 5 Pristine Ruby.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "seahybrasylbraidbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Silk, 1 Polished Hybrasyl Bar and 5 Pristine Sapphire.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "earthhybrasylbraidbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Silk, 1 Polished Hybrasyl Bar and 5 Pristine Beryl.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "windhybrasylbraidbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Silk, 1 Polished Hybrasyl Bar and 5 Pristine Emerald.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "darkhybrasylbraidbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Silk, 1 Polished Hybrasyl Bar and 5 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "lighthybrasylbraidbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Exquisite Silk, 1 Polished Hybrasyl Bar and 5 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
                     case "leathergauntlet":
                     {
                         Subject.Reply(
@@ -3237,83 +3501,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-
-                    case "jeweledfirebelt":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
-                            } requires 2 Fine Linen and 1 Pristine Ruby.",
-                            "armorsmithingbook");
-
-                        return;
-                    }
-
-                    case "jeweledwindbelt":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
-                            } requires 2 Fine Linen and 1 Pristine Emerald.",
-                            "armorsmithingbook");
-
-                        return;
-                    }
-
-                    case "jeweledearthbelt":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
-                            } requires 2 Fine Linen and 1 Pristine Beryl.",
-                            "armorsmithingbook");
-
-                        return;
-                    }
-
-                    case "jewelednaturebelt":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
-                            } requires 3 Fine Cotton and 1 Pristine Heartstone.",
-                            "armorsmithingbook");
-
-                        return;
-                    }
-
-                    case "jeweledmetalbelt":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
-                            } requires 3 Fine Cotton and 1 Pristine Heartstone.",
-                            "armorsmithingbook");
-
-                        return;
-                    }
-
-                    case "jeweledlightbelt":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
-                            } requires 3 Fine Wool and 1 Pristine Heartstone.",
-                            "armorsmithingbook");
-
-                        return;
-                    }
-
-                    case "jeweleddarkbelt":
-                    {
-                        Subject.Reply(
-                            source,
-                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
-                            } requires 3 Fine Wool and 1 Pristine Heartstone.",
-                            "armorsmithingbook");
-
-                        return;
-                    }
+                    
                 }
 
                 break;

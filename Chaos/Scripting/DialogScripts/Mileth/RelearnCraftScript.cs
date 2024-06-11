@@ -302,23 +302,43 @@ public class RelearnCraftScript : DialogScriptBase
 
                    if (source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicBelts))
                    {
-                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledSeaBelt);
-                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledEarthBelt);
-                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledWindBelt);
-                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledFireBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.FireBronzeBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.SeaBronzeBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.EarthBronzeBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindBronzeBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkBronzeBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightBronzeBelt);
 
                    }
 
                    if (source.Trackers.Flags.HasFlag(ArmorSmithCategories.InitiateBelts))
                    {
-                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledMetalBelt);
-                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledNatureBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.FireIronBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.SeaIronBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.EarthIronBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindIronBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkIronBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightIronBelt);
                    }
 
                    if (source.Trackers.Flags.HasFlag(ArmorSmithCategories.ArtisanBelts))
                    {
-                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledDarkBelt);
-                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.JeweledLightBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.FireMythrilBraidBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.SeaMythrilBraidBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.EarthMythrilBraidBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindMythrilBraidBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkMythrilBraidBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightMythrilBraidBelt);
+                   }
+
+                   if (source.Trackers.Flags.HasFlag(ArmorSmithCategories.AdeptBelts))
+                   {
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.FireHybrasylBraidBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.SeaHybrasylBraidBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.EarthHybrasylBraidBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindHybrasylBraidBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkHybrasylBraidBelt);
+                       source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightHybrasylBraidBelt);
                    }
                    
                    source.SendOrangeBarMessage("You have learned all your Armor Smithing recipes.");

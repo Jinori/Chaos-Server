@@ -13,6 +13,7 @@ using Chaos.Pathfinding.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MerchantScripts;
 using Chaos.Scripting.MerchantScripts.Abstractions;
+using Chaos.Scripting.MerchantScripts.Piet;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Other.Abstractions;
 using Chaos.Time;
@@ -33,6 +34,8 @@ public sealed class Merchant : Creature,
     public bool CurrentlyHostingMass { get; set; }
 
     public VillagerScript.VillagerState VillagerState { get; set; }
+    
+    public PietVillagerScript.PietVillagerState PietVillagerState { get; set; }
 
     /// <inheritdoc />
     public ICollection<Item> ItemsForSale { get; }

@@ -1,5 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.World;
@@ -10,11 +12,11 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MerchantScripts;
+namespace Chaos.Scripting.MerchantScripts.Piet;
 
-public class VillagerScript : MerchantScriptBase
+public class PietVillagerScript : MerchantScriptBase
 {
-    public enum VillagerState
+    public enum PietVillagerState
     {
         Idle,
         Wandering,
@@ -42,20 +44,21 @@ public class VillagerScript : MerchantScriptBase
     private readonly IIntervalTimer ActionTimer;
     private readonly IIntervalTimer DialogueTimer;
     private readonly IIntervalTimer EatingTimer;
+    private readonly IDialogFactory DialogFactory;
     private DateTime LastChant;
     private readonly TimeSpan MaxFollowDuration = TimeSpan.FromSeconds(50);
-    public readonly Location MilethArmoryDoorInsidePoint = new("mileth_armor_shop", 11, 8);
-    public readonly Location MilethArmoryDoorPoint = new("mileth", 10, 31);
-    public readonly Location MilethArmoryPoint = new("mileth_armor_shop", 4, 8);
 
-    public readonly Location MilethTailorDoorInsidePoint = new("mileth_tailor", 6, 14);
-    public readonly Location MilethTailorDoorPoint = new("mileth", 34, 27);
-    public readonly Location MilethTailorPoint = new("mileth_tailor", 6, 10);
+    public readonly Location PietArmoryDoorInsidePoint = new("piet_armor_shop", 11, 8);
+    public readonly Location PietArmoryDoorPoint = new("piet", 55, 22);
+    public readonly Location PietArmoryPoint = new("piet_armor_shop", 6, 8);
 
+    public readonly Location PietRestaurantDoorInsidePoint = new("piet_restaurant", 8, 14);
+    public readonly Location PietRestaurantDoorPoint = new("piet", 11, 49);
+    public readonly Location PietRestaurantPoint = new("piet_restaurant", 8, 7);
 
-    public readonly Location MilethRestaurantDoorInsidePoint = new("mileth_restaurant", 8, 14);
-    public readonly Location MilethRestaurantDoorPoint = new("mileth", 34, 11);
-    public readonly Location MilethRestaurantPoint = new("mileth_restaurant", 8, 7);
+    public readonly Location PietStorageDoorInsidePoint = new("piet_storage", 6, 11);
+    public readonly Location PietStorageDoorPoint = new("piet", 51, 13);
+    public readonly Location PietStoragePoint = new("piet_storage", 5, 8);
 
     private readonly Location Spawnpoint;
     private readonly ISpellFactory SpellFactory;
@@ -70,20 +73,22 @@ public class VillagerScript : MerchantScriptBase
     public bool HasPickedAnAisling;
     public bool HasReceivedItem;
     public bool HasSaidGreeting;
+    public bool DoWerewolfConversation;
     private string? ItemRequested;
     private Aisling? RandomAisling;
 
     /// <inheritdoc />
-    public VillagerScript(Merchant subject, ISpellFactory spellFactory)
+    public PietVillagerScript(Merchant subject, ISpellFactory spellFactory, IDialogFactory dialogFactory)
         : base(subject)
     {
         SpellFactory = spellFactory;
+        DialogFactory = dialogFactory;
         WalkTimer = new IntervalTimer(TimeSpan.FromMilliseconds(600), false);
         ActionTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
-        Subject.VillagerState = VillagerState.Idle;
+        Subject.PietVillagerState = PietVillagerState.Idle;
 
         DialogueTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(2.5),
+            TimeSpan.FromSeconds(5),
             50,
             RandomizationType.Positive,
             false);
@@ -138,7 +143,7 @@ public class VillagerScript : MerchantScriptBase
             DialogueTimer.Reset();
 
             EatingTimer.Reset();
-            Subject.VillagerState = VillagerState.WalkingToRestaurant;
+            Subject.PietVillagerState = PietVillagerState.WalkingToRestaurant;
         }
     }
 
@@ -147,16 +152,86 @@ public class VillagerScript : MerchantScriptBase
         var chant = EatingActions.PickRandom();
         Subject.Chant($"*{chant}*");
     }
+
+    private void ConductWerewolfConversation(Merchant npc)
+{
+    if (!HasSaidGreeting)
+    {
+        var greeting = string.Format(PickRandom(StartWereWolfConversation), npc.Name);
+        Subject.Say(greeting);
+        HasSaidGreeting = true;
+        DialogueTimer.Reset();
+    }
+    else if (!HasMerchantResponded && DialogueTimer.IntervalElapsed)
+    {
+        var response = PickRandom(WerewolfReply1);
+        npc.Say(response);
+        HasMerchantResponded = true;
+        DialogueTimer.Reset();
+    }
+    else if (!HasMerchantResponded2 && DialogueTimer.IntervalElapsed)
+    {
+        var greeting = string.Format(PickRandom(StartWereWolfConversation2), npc.Name);
+        Subject.Say(greeting);
+        HasMerchantResponded2 = true;
+        DialogueTimer.Reset();
+    }
+    else if (!HasMerchantResponded3 && DialogueTimer.IntervalElapsed)
+    {
+        var response = PickRandom(WerewolfReply2);
+        npc.Say(response);
+        HasMerchantResponded3 = true;
+        DialogueTimer.Reset();
+    }
+    else if (!HasSaidGoodbye && DialogueTimer.IntervalElapsed)
+    {
+        var greeting = string.Format(PickRandom(StartWereWolfConversation3), npc.Name);
+        Subject.Say(greeting);
+        HasSaidGoodbye = true;
+        DialogueTimer.Reset();
+    }
+    else if (!HasHadConversation && DialogueTimer.IntervalElapsed)
+    {
+        var response = PickRandom(WerewolfReply3);
+        npc.Say(response);
+
+        var hasStage = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject)
+                              .Any(x => x.Trackers.Enums.TryGetValue(out WerewolfOfPiet _));
+
+        var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject)
+                              .Where(x => x.Trackers.Enums.HasValue(WerewolfOfPiet.None) || !hasStage)
+                              .ToList();
+
+        foreach (var aisling in aislings)
+        {
+            var dialog = DialogFactory.Create("werewolf_initial", npc);
+            dialog.Display(aisling);
+        }
+
+        HasHadConversation = true;
+    }
+}
+
     
     private void ConductDialogueWithMerchant(string merchant)
     {
+        if (IntegerRandomizer.RollChance(0) && Subject.MapInstance.InstanceId.ContainsI("Piet") && !DoWerewolfConversation)
+            DoWerewolfConversation = true;
+
         switch (merchant)
         {
             case "restaurant":
             {
                 var npc = Subject.MapInstance.GetEntitiesWithinRange<Merchant>(Subject)
                     .FirstOrDefault(x => x.Id != Subject.Id);
-                
+
+                if (DoWerewolfConversation)
+                {
+                    if (npc != null)
+                        ConductWerewolfConversation(npc);
+                }
+                else
+                {
                     if (!HasSaidGreeting)
                     {
                         var greeting = string.Format(PickRandom(Greetings), npc?.Name);
@@ -176,10 +251,11 @@ public class VillagerScript : MerchantScriptBase
                         var response = PickRandom(ServingFoodResponses);
                         npc?.Say(response);
                         HasMerchantResponded = true;
-                        Subject.VillagerState = VillagerState.Eating;
+                        Subject.PietVillagerState = PietVillagerState.Eating;
                         EatingTimer.Reset();
                         LastChant = DateTime.Now;
                     }
+                }
                 
                 break;
             }
@@ -190,6 +266,13 @@ public class VillagerScript : MerchantScriptBase
                 var npc = Subject.MapInstance.GetEntitiesWithinRange<Merchant>(Subject)
                     .FirstOrDefault(x => x.Id != Subject.Id);
                 
+                if (DoWerewolfConversation)
+                {
+                    if (npc != null)
+                        ConductWerewolfConversation(npc);
+                }
+                else
+                {
                     if (!HasSaidGreeting)
                     {
                         var greeting = string.Format(PickRandom(Greetings), npc?.Name);
@@ -220,6 +303,7 @@ public class VillagerScript : MerchantScriptBase
                         HasReceivedItem = true;
                         HasHadConversation = true;
                     }
+                }
 
                 break;
             }
@@ -228,6 +312,13 @@ public class VillagerScript : MerchantScriptBase
                 var npc = Subject.MapInstance.GetEntitiesWithinRange<Merchant>(Subject)
                     .FirstOrDefault(x => x.Id != Subject.Id);
                 
+                if (DoWerewolfConversation)
+                {
+                    if (npc != null)
+                        ConductWerewolfConversation(npc);
+                }
+                else
+                {
                     if (!HasSaidGreeting)
                     {
                         var greeting = string.Format(PickRandom(Greetings), npc?.Name);
@@ -258,6 +349,8 @@ public class VillagerScript : MerchantScriptBase
                         HasReceivedItem = true;
                         HasHadConversation = true;
                     }   
+                }
+
                 break;
             }
         }
@@ -281,37 +374,38 @@ public class VillagerScript : MerchantScriptBase
 
     private void HandleApproachToArmory(TimeSpan delta)
     {
-            if (ShouldWalkTo(MilethArmoryDoorPoint))
-                WalkTowards(MilethArmoryDoorPoint, delta);
-            else if (ShouldWalkTo(MilethArmoryPoint))
-                WalkTowards(MilethArmoryPoint, delta);
+            if (ShouldWalkTo(PietArmoryDoorPoint))
+                WalkTowards(PietArmoryDoorPoint, delta);
+            else if (ShouldWalkTo(PietArmoryPoint))
+                WalkTowards(PietArmoryPoint, delta);
+
     }
 
     private void HandleApproachToTailor(TimeSpan delta)
     {
-            if (ShouldWalkTo(MilethTailorDoorPoint))
-                WalkTowards(MilethTailorDoorPoint, delta);
-            else if (ShouldWalkTo(MilethTailorPoint))
-                WalkTowards(MilethTailorPoint, delta);
+            if (ShouldWalkTo(PietStorageDoorPoint))
+                WalkTowards(PietStorageDoorPoint, delta);
+            else if (ShouldWalkTo(PietStoragePoint))
+                WalkTowards(PietStoragePoint, delta);
     }
 
     private void HandleApproachToRestaurant(TimeSpan delta)
     {
-            if (ShouldWalkTo(MilethRestaurantDoorPoint))
-                WalkTowards(MilethRestaurantDoorPoint, delta);
-            else if (ShouldWalkTo(MilethRestaurantPoint))
-                WalkTowards(MilethRestaurantPoint, delta);
+            if (ShouldWalkTo(PietRestaurantDoorPoint))
+                WalkTowards(PietRestaurantDoorPoint, delta);
+            else if (ShouldWalkTo(PietRestaurantPoint))
+                WalkTowards(PietRestaurantPoint, delta);
     }
 
     private void HandleConversationWithMerchant(TimeSpan delta)
     {
-            if (IsCloseTo(MilethArmoryPoint, 2))
+            if (IsCloseTo(PietArmoryPoint, 2))
                 UpdateDialogue(delta, "armorer");
 
-            if (IsCloseTo(MilethTailorPoint, 2))
+            if (IsCloseTo(PietStoragePoint, 2))
                 UpdateDialogue(delta, "tailor");
 
-            if (IsCloseTo(MilethRestaurantPoint, 2))
+            if (IsCloseTo(PietRestaurantPoint, 2))
                 UpdateDialogue(delta, "restaurant");
     }
 
@@ -357,21 +451,21 @@ public class VillagerScript : MerchantScriptBase
         }
     }
 
-    private static readonly List<KeyValuePair<VillagerState, decimal>> StateData =
+    private static readonly List<KeyValuePair<PietVillagerState, decimal>> StateData =
     [
-        new KeyValuePair<VillagerState, decimal>(VillagerState.Wandering, 40),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.SayRandomMessage, 20),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.WalkingToRestaurant, 10),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.WalkingToTailor, 10),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.WalkingToArmory, 10),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.FollowingPlayer, 5),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.CalloutPasserby, 5),
+        new KeyValuePair<PietVillagerState, decimal>(PietVillagerState.Wandering, 40),
+        new KeyValuePair<PietVillagerState, decimal>(PietVillagerState.SayRandomMessage, 20),
+        new KeyValuePair<PietVillagerState, decimal>(PietVillagerState.WalkingToRestaurant, 10),
+        new KeyValuePair<PietVillagerState, decimal>(PietVillagerState.WalkingToTailor, 10),
+        new KeyValuePair<PietVillagerState, decimal>(PietVillagerState.WalkingToArmory, 10),
+        new KeyValuePair<PietVillagerState, decimal>(PietVillagerState.FollowingPlayer, 5),
+        new KeyValuePair<PietVillagerState, decimal>(PietVillagerState.CalloutPasserby, 5),
     ];
 
     private void HandleIdleState()
     {
         var state = StateData.PickRandomWeightedSingleOrDefault();
-        Subject.VillagerState = state;
+        Subject.PietVillagerState = state;
 
         ActionTimer.Reset();
     }
@@ -383,8 +477,8 @@ public class VillagerScript : MerchantScriptBase
         {
             case "armorer":
             {
-                    if (ShouldWalkTo(MilethArmoryDoorInsidePoint))
-                        WalkTowards(MilethArmoryDoorInsidePoint, delta);
+                    if (ShouldWalkTo(PietArmoryDoorInsidePoint))
+                        WalkTowards(PietArmoryDoorInsidePoint, delta);
                     else if (ShouldWalkToSpawnPoint())
                         WalkTowards(Spawnpoint, delta);
                     else
@@ -393,8 +487,8 @@ public class VillagerScript : MerchantScriptBase
             }
             case "tailor":
             {
-                    if (ShouldWalkTo(MilethTailorDoorInsidePoint))
-                        WalkTowards(MilethTailorDoorInsidePoint, delta);
+                    if (ShouldWalkTo(PietStorageDoorInsidePoint))
+                        WalkTowards(PietStorageDoorInsidePoint, delta);
                     else if (ShouldWalkToSpawnPoint())
                         WalkTowards(Spawnpoint, delta);
                     else
@@ -403,12 +497,13 @@ public class VillagerScript : MerchantScriptBase
             }
             case "restaurant":
             {
-                    if (ShouldWalkTo(MilethRestaurantDoorInsidePoint))
-                        WalkTowards(MilethRestaurantDoorInsidePoint, delta);
+                    if (ShouldWalkTo(PietRestaurantDoorInsidePoint))
+                        WalkTowards(PietRestaurantDoorInsidePoint, delta);
                     else if (ShouldWalkToSpawnPoint())
                         WalkTowards(Spawnpoint, delta);
                     else
                         ResetConversationState();
+
                     break;
             }
         }
@@ -453,7 +548,7 @@ public class VillagerScript : MerchantScriptBase
 
         if (Subject.WanderTimer.IntervalElapsed && IntegerRandomizer.RollChance(10))
         {
-            Subject.VillagerState = VillagerState.Idle;
+            Subject.PietVillagerState = PietVillagerState.Idle;
             ActionTimer.Reset();
         }
 
@@ -511,10 +606,13 @@ public class VillagerScript : MerchantScriptBase
         HasSaidGreeting = false;
         HasAskedForItem = false;
         HasMerchantResponded = false;
+        HasMerchantResponded2 = false;
+        HasMerchantResponded3 = false;
+        HasSaidGoodbye = false;
         ItemRequested = null;
         RandomAisling = null;
         FollowUntil = DateTime.MinValue;
-        Subject.VillagerState = VillagerState.Wandering;
+        Subject.PietVillagerState = PietVillagerState.Wandering;
     }
 
     private void HandleSayRandomMessageState()
@@ -524,7 +622,7 @@ public class VillagerScript : MerchantScriptBase
         if (aislings.Any())
             Subject.Say(GetRandomMessage());
 
-        Subject.VillagerState = VillagerState.Idle;
+        Subject.PietVillagerState = PietVillagerState.Idle;
     }
 
     private bool ShouldWalkTo(Location destination) =>
@@ -539,55 +637,55 @@ public class VillagerScript : MerchantScriptBase
         ActionTimer.Update(delta);
         EatingTimer.Update(delta);
 
-        switch (Subject.VillagerState)
+        switch (Subject.PietVillagerState)
         {
-            case VillagerState.Idle:
+            case PietVillagerState.Idle:
                 if (ActionTimer.IntervalElapsed)
                     HandleIdleState();
 
                 break;
 
-            case VillagerState.SayRandomMessage:
+            case PietVillagerState.SayRandomMessage:
                 HandleSayRandomMessageState();
                 break;
 
-            case VillagerState.Wandering:
+            case PietVillagerState.Wandering:
                 if (Subject.WanderTimer.IntervalElapsed)
                     HandleWanderingState();
 
                 break;
 
-            case VillagerState.WalkingToArmory:
+            case PietVillagerState.WalkingToArmory:
                 HandleWalkingToArmory(delta);
 
                 break;
-            case VillagerState.WalkingToTailor:
+            case PietVillagerState.WalkingToTailor:
                 HandleWalkingToTailor(delta);
 
                 break;
 
 
-            case VillagerState.WalkingToRestaurant:
+            case PietVillagerState.WalkingToRestaurant:
                 HandleWalkingToRestaurant(delta);
 
                 break;
 
-            case VillagerState.CalloutPasserby:
+            case PietVillagerState.CalloutPasserby:
                 HandleCalloutPasserby(delta);
 
                 break;
 
-            case VillagerState.TalkingToAnotherMerchant:
+            case PietVillagerState.TalkingToAnotherMerchant:
                 break;
-            case VillagerState.TalkingToPlayer:
+            case PietVillagerState.TalkingToPlayer:
                 break;
 
-            case VillagerState.FollowingPlayer:
+            case PietVillagerState.FollowingPlayer:
                 HandleFollowingPlayer(delta);
 
                 break;
 
-            case VillagerState.Eating:
+            case PietVillagerState.Eating:
                 HandleEatingState();
                 break;
         }
@@ -609,15 +707,15 @@ public class VillagerScript : MerchantScriptBase
 
         if (WalkTimer.IntervalElapsed)
         {
-                if (destination == MilethArmoryDoorPoint)
-                    AttemptToOpenDoor(MilethArmoryDoorPoint);
+                if (destination == PietArmoryDoorPoint)
+                    AttemptToOpenDoor(PietArmoryDoorPoint);
 
-                if (destination == MilethTailorDoorPoint)
-                    AttemptToOpenDoor(MilethTailorDoorPoint);
+                if (destination == PietStorageDoorPoint)
+                    AttemptToOpenDoor(PietStorageDoorPoint);
 
-                if (destination == MilethRestaurantDoorPoint)
-                    AttemptToOpenDoor(MilethRestaurantDoorPoint);
-                
+                if (destination == PietRestaurantDoorPoint)
+                    AttemptToOpenDoor(PietRestaurantDoorPoint);
+
                 Subject.Pathfind(destination, 0, Options);
         }
     }
@@ -1027,5 +1125,54 @@ public class VillagerScript : MerchantScriptBase
         "{0}, you nailed it! The food was excellent.",
         "Huge thanks, {0}! Every bite was a delight."
     ];
+
+    private static readonly List<string> StartWereWolfConversation =
+    [
+        "{0}! Did you hear those howls last night?",
+        "I couldn't sleep last night, the howls were so loud.",
+        "The howls last night were unbearable!",
+        "{0} are you hearing the howls at night?"
+    ];
+
+    private static readonly List<string> WerewolfReply1 =
+    [
+        "At first I thought it was just the wind but nope!",
+        "Yes the howls! I wonder where they're coming from.",
+        "I heard the howls, they sounded close.",
+        "The howls are pretty frightening.",
+    ];
+
+    private static readonly List<string> StartWereWolfConversation2 =
+    [
+        "There must be a werewolf in our town.",
+        "I think it's one of our town members.",
+        "Someone in our town must be a werewolf.",
+        "It seems to only be in our town, someone is causing them.",
+    ];
+
+    private static readonly List<string> WerewolfReply2 =
+    [
+        "Oh no. I hope it's not hungry.",
+        "I really should lock my doors at night!",
+        "If it's someone here, we should leave.",
+        "Something sure is out there at night.",
+    ];
+
+    private static readonly List<string> StartWereWolfConversation3 =
+    [
+        "I better get back now, good talking with you {0}!",
+        "I need to get going, lots to do before night fall.",
+        "I am really scared, I should get going now.",
+        "It could be one of us! I need to go now, bye {0}!",
+    ];
+
+    private static readonly List<string> WerewolfReply3 =
+    [
+        "See you again soon! Be safe out there.",
+        "That's a good idea, please be safe!",
+        "Don't wander alone! See you again soon.",
+        "Be safe out there, bye!",
+    ];
+
     #endregion Messages
 }
