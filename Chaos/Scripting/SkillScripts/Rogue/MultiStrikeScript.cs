@@ -1,3 +1,4 @@
+using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
@@ -60,8 +61,17 @@ namespace Chaos.Scripting.SkillScripts.Rogue
             Context = context;
             Targets = context.SourceMap.GetEntitiesWithinRange<Creature>(context.Source, 5)
                              .Where(creature => creature.IsHostileTo(context.Source))
+                             .Where(creature => !IsWallBetween(context.Source, creature))
                              .OrderBy(creature => creature.DistanceFrom(context.Source)).Take(5)
                              .ToList();
+        }
+        
+        private bool IsWallBetween(Creature source, Creature target)
+        {
+            var sourcePoint = new Point(source.X, source.Y);
+            var targetPoint = new Point(target.X, target.Y);
+            var path = sourcePoint.GetDirectPath(targetPoint);
+            return path.Any(point => source.MapInstance.IsWall(point));
         }
 
         public override void Update(TimeSpan delta)
