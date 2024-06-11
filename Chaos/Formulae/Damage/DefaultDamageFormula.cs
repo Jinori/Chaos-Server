@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae.Abstractions;

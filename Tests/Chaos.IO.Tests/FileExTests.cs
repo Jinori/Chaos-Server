@@ -1,4 +1,3 @@
-using Chaos.IO.Exceptions;
 using Chaos.IO.FileSystem;
 using FluentAssertions;
 using Xunit;

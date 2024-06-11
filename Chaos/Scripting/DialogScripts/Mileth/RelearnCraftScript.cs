@@ -1,16 +1,7 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
-using Chaos.Definitions;
-using Chaos.Models.Legend;
+﻿using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
-using Chaos.NLog.Logging.Definitions;
-using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.FunctionalScripts.Abstractions;
-using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
-using Chaos.Services.Factories.Abstractions;
-using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Mileth;
 

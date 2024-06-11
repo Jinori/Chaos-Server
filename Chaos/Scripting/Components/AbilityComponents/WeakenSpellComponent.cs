@@ -1,6 +1,5 @@
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
-using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.Components.Abstractions;

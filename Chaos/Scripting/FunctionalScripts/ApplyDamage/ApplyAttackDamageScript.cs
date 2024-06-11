@@ -1,6 +1,5 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
-using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
@@ -48,7 +47,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
         {
             case Aisling aisling:
                 
-                var relation = source.DirectionalRelationTo(target);
+                var relation = target.DirectionalRelationTo(source);
                 
                 if (aisling.UserStatSheet.BaseClass is BaseClass.Monk)
                 {
@@ -72,7 +71,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
                 
                 break;
             case Monster monster:
-                var relation1 = source.DirectionalRelationTo(target);
+                var relation1 = target.DirectionalRelationTo(source);
                                 
                 if (relation1 == target.Direction.Reverse())
                     damage = (int)(damage * 1.5);

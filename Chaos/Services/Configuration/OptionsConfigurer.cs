@@ -6,7 +6,6 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Messaging.Abstractions;
 using Chaos.MetaData;
-using Chaos.MetaData.ItemMetadata;
 using Chaos.Models.Templates;
 using Chaos.Networking.Abstractions;
 using Chaos.Scripting.ItemScripts.Enchantments;

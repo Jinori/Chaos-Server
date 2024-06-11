@@ -9,7 +9,6 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Services.Factories.Abstractions;
-using Humanizer;
 
 namespace Chaos.Scripting.DialogScripts.Class_Related;
 

@@ -43,9 +43,9 @@ namespace Chaos.Scripting.SkillScripts.Rogue
         public IScript SourceScript { get; init; }
         private IIntervalTimer StrikeTimer { get; }
 
-        private List<Creature> Targets { get; set; }
+        private List<Creature>? Targets { get; set; }
 
-        private ActivationContext Context { get; set; }
+        private ActivationContext? Context { get; set; }
 
         public MultiStrikeScript(Skill subject)
             : base(subject)
@@ -60,22 +60,22 @@ namespace Chaos.Scripting.SkillScripts.Rogue
             Context = context;
             Targets = context.SourceMap.GetEntitiesWithinRange<Creature>(context.Source, 5)
                              .Where(creature => creature.IsHostileTo(context.Source))
-                             .OrderBy(creature => creature.DistanceFrom(context.Source))
+                             .OrderBy(creature => creature.DistanceFrom(context.Source)).Take(5)
                              .ToList();
         }
 
         public override void Update(TimeSpan delta)
         {
-            if (Targets == null || (Context.Source == null))
-                return;
-
-            if (Targets.Count <= 0)
-                return;
-
             StrikeTimer.Update(delta);
 
             if (StrikeTimer.IntervalElapsed)
             {
+                if ((Targets == null) || (Context?.Source == null))
+                    return;
+                
+                if (Targets.Count <= 0)
+                    return;
+                
                 var target = Targets.FirstOrDefault();
 
                 if (target != null)

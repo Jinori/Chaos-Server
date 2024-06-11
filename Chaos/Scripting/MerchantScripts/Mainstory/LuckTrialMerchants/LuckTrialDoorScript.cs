@@ -3,7 +3,6 @@ using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Scripting.MerchantScripts.Abstractions;
-using Chaos.Services.Storage;
 using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.MerchantScripts.LuckTrialMerchants;

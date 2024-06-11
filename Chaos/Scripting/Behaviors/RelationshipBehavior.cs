@@ -1,3 +1,4 @@
+using Chaos.Common.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -193,6 +194,9 @@ public class RelationshipBehavior
 
     protected virtual bool IsHostileTo(Aisling source, Monster target)
     {
+        if (target.Type is CreatureType.WhiteSquare)
+            return false;
+        
         var isPet = target.Script.Is<PetScript>() || source.Script.Is<PetScript>();
 
         if (isPet)
@@ -225,10 +229,19 @@ public class RelationshipBehavior
 
     protected virtual bool IsHostileTo(Merchant source, Merchant target) => false;
 
-    protected virtual bool IsHostileTo(Merchant source, Monster target) => true;
+    protected virtual bool IsHostileTo(Merchant source, Monster target)
+    {
+        if (target.Type is CreatureType.WhiteSquare)
+            return false;
+
+        return true;
+    }
 
     protected virtual bool IsHostileTo(Monster source, Aisling target)
     {
+        if (source.Type is CreatureType.WhiteSquare)
+            return false;
+        
         if (source.Script.Is<PetScript>() || target.Script.Is<PetScript>())
         {
             var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
@@ -265,10 +278,19 @@ public class RelationshipBehavior
         return true;
     }
 
-    protected virtual bool IsHostileTo(Monster source, Merchant target) => true;
+    protected virtual bool IsHostileTo(Monster source, Merchant target)
+    {
+        if (source.Type is CreatureType.WhiteSquare)
+            return false;
+
+        return true;
+    }
 
     protected virtual bool IsHostileTo(Monster source, Monster target)
     {
+        if (source.Type is CreatureType.WhiteSquare || target.Type is CreatureType.WhiteSquare)
+            return false;
+        
         if (source.Script.Is<PetScript>() ^ target.Script.Is<PetScript>())
             return true;
         
