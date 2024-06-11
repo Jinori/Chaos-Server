@@ -72,7 +72,7 @@ public sealed class OptionsConfigurer(IStagingDirectory stagingDirectory, IChann
                 (node, template) =>
                 {
                     if (!template.IsDyeable)
-                        return Enumerable.Empty<ItemMetaNode>();
+                        return [];
 
                     return Enum.GetNames<DisplayColor>()
                                .Select(
