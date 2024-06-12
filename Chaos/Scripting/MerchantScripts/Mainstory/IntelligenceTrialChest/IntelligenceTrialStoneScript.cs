@@ -1,7 +1,6 @@
 ﻿using Chaos.Collections;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
-using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 using Chaos.Storage.Abstractions;

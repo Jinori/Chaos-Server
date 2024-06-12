@@ -6,7 +6,6 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Messaging.Abstractions;
 using Chaos.MetaData;
-using Chaos.MetaData.ItemMetadata;
 using Chaos.Models.Templates;
 using Chaos.Networking.Abstractions;
 using Chaos.Scripting.ItemScripts.Enchantments;
@@ -72,7 +71,7 @@ public sealed class OptionsConfigurer(IStagingDirectory stagingDirectory, IChann
                 (node, template) =>
                 {
                     if (!template.IsDyeable)
-                        return Enumerable.Empty<ItemMetaNode>();
+                        return [];
 
                     return Enum.GetNames<DisplayColor>()
                                .Select(

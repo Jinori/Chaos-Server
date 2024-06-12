@@ -1,4 +1,3 @@
-using System.Reactive.Subjects;
 using Chaos.Common.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.Data;

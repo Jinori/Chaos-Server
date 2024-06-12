@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;

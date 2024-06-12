@@ -1,7 +1,6 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Nightmare.RogueNightmare;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.MainStory.TrialOfSacrifice.zoe;
 

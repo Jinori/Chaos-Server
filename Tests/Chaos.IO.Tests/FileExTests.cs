@@ -1,4 +1,3 @@
-using Chaos.IO.Exceptions;
 using Chaos.IO.FileSystem;
 using FluentAssertions;
 using Xunit;
@@ -347,7 +346,7 @@ public sealed class FileExTests
         var text = "This is a test";
 
         // Act
-        var act = () => FileEx.SafeWriteAllText(path, text);
+        var act = () => FileEx.SafeWriteAllText(path!, text);
 
         // Assert
         act.Should()

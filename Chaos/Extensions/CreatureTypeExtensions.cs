@@ -13,7 +13,7 @@ public static class CreatureTypeExtensions
             CreatureType.Normal      => true,
             CreatureType.WalkThrough => otherType is not CreatureType.Aisling,
             CreatureType.Merchant    => true,
-            CreatureType.WhiteSquare => true,
+            CreatureType.WhiteSquare => false,
             CreatureType.Aisling     => otherType is not CreatureType.WalkThrough,
             _                        => throw new ArgumentOutOfRangeException()
         };

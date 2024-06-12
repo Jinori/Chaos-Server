@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using Chaos.Common.Definitions;
-using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae.Abstractions;
@@ -11,6 +10,8 @@ using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.SkillScripts.Abstractions;
 using Chaos.Scripting.SpellScripts.Abstractions;
 using Chaos.Services.Servers.Options;
+
+// ReSharper disable UseCollectionExpression
 
 namespace Chaos.Formulae.Damage;
 

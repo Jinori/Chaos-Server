@@ -1,3 +1,4 @@
+using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
@@ -10,6 +11,8 @@ using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.SkillScripts.Abstractions;
+using Chaos.Time;
+using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.SkillScripts.Rogue
 {
@@ -17,94 +20,93 @@ namespace Chaos.Scripting.SkillScripts.Rogue
                                       GenericAbilityComponent<Creature>.IAbilityComponentOptions,
                                       DamageAbilityComponent.IDamageComponentOptions
     {
-        /// <inheritdoc />
         public bool AnimatePoints { get; init; }
-        /// <inheritdoc />
         public Animation? Animation { get; init; }
-
-        /// <inheritdoc />
         public IApplyDamageScript ApplyDamageScript { get; init; }
-        /// <inheritdoc />
         public int? BaseDamage { get; init; }
-        /// <inheritdoc />
         public ushort? AnimationSpeed { get; init; }
-        /// <inheritdoc />
         public BodyAnimation BodyAnimation { get; init; }
-        /// <inheritdoc />
         public Stat? DamageStat { get; init; }
-        /// <inheritdoc />
         public decimal? DamageStatMultiplier { get; init; }
-        /// <inheritdoc />
         public Element? Element { get; init; }
-        /// <inheritdoc />
         public bool ExcludeSourcePoint { get; init; }
-        /// <inheritdoc />
         public TargetFilter Filter { get; init; }
-        /// <inheritdoc />
         public int? ManaCost { get; init; }
-        /// <inheritdoc />
         public bool? MoreDmgLowTargetHp { get; init; }
-        /// <inheritdoc />
         public bool MustHaveTargets { get; init; }
-        /// <inheritdoc />
         public decimal? PctHpDamage { get; init; }
-        /// <inheritdoc />
         public decimal PctManaCost { get; init; }
-        /// <inheritdoc />
         public int Range { get; init; }
-        /// <inheritdoc />
         public AoeShape Shape { get; init; }
-        /// <inheritdoc />
         public bool SingleTarget { get; init; }
-        /// <inheritdoc />
         public bool ShouldNotBreakHide { get; init; }
-        /// <inheritdoc />
         public byte? Sound { get; init; }
-        /// <inheritdoc />
         public IScript SourceScript { get; init; }
+        private IIntervalTimer StrikeTimer { get; }
 
-        /// <inheritdoc />
+        private List<Creature>? Targets { get; set; }
+
+        private ActivationContext? Context { get; set; }
+
         public MultiStrikeScript(Skill subject)
             : base(subject)
         {
             SourceScript = this;
             ApplyDamageScript = ApplyAttackDamageScript.Create();
+            StrikeTimer = new IntervalTimer(TimeSpan.FromMilliseconds(350), false);
         }
 
-        /// <inheritdoc />
-        public override async void OnUse(ActivationContext context)
+        public override void OnUse(ActivationContext context)
         {
-            var targets = context.SourceMap.GetEntitiesWithinRange<Creature>(context.Source, 5)
-                                           .Where(creature => creature.IsHostileTo(context.Source))
-                                           .OrderBy(creature => creature.DistanceFrom(context.Source))
-                                           .ToList();
-
-            // Execute on all targets except the closest one first
-            foreach (var target in targets.Skip(1))
-                await ExecuteAbilityOnTarget(context, target);
-
-            // Execute on the closest target last
-            if (targets.Count != 0)
-                await ExecuteAbilityOnTarget(context, targets.First());
+            Context = context;
+            Targets = context.SourceMap.GetEntitiesWithinRange<Creature>(context.Source, 5)
+                             .Where(creature => creature.IsHostileTo(context.Source))
+                             .Where(creature => !IsWallBetween(context.Source, creature))
+                             .OrderBy(creature => creature.DistanceFrom(context.Source)).Take(5)
+                             .ToList();
+        }
+        
+        private bool IsWallBetween(Creature source, Creature target)
+        {
+            var sourcePoint = new Point(source.X, source.Y);
+            var targetPoint = new Point(target.X, target.Y);
+            var path = sourcePoint.GetDirectPath(targetPoint);
+            return path.Any(point => source.MapInstance.IsWall(point));
         }
 
-        private async Task ExecuteAbilityOnTarget(ActivationContext context, Creature target)
+        public override void Update(TimeSpan delta)
         {
-            var behindTargetDirection = target.DirectionalRelationTo(context.SourcePoint);
-            var destinationPoint = target.DirectionalOffset(behindTargetDirection);
-                
-            if (context.SourceMap.IsWalkable(destinationPoint, context.Source.Type) &&
-                !context.SourceMap.IsBlockingReactor(destinationPoint))
+            StrikeTimer.Update(delta);
+
+            if (StrikeTimer.IntervalElapsed)
             {
-                context.Source.WarpTo(destinationPoint);
-                var newDirection = target.DirectionalRelationTo(context.Source);
-                context.Source.Turn(newDirection);
-
-                new ComponentExecutor(context).WithOptions(this)
-                                              .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-                                              ?.Execute<DamageAbilityComponent>();
+                if ((Targets == null) || (Context?.Source == null))
+                    return;
                 
-                await Task.Delay(350);
+                if (Targets.Count <= 0)
+                    return;
+                
+                var target = Targets.FirstOrDefault();
+
+                if (target != null)
+                {
+                    var destinationPoint = target.DirectionalOffset(target.Direction.Reverse());
+
+                    if (target.MapInstance.IsWalkable(destinationPoint, CreatureType.Normal) &&
+                        !target.MapInstance.IsBlockingReactor(destinationPoint))
+                    {
+                        Context.Source.WarpTo(destinationPoint);
+                        var newDirection = target.DirectionalRelationTo(Context.Source);
+                        Context.Source.Turn(newDirection);
+
+                        new ComponentExecutor(Context).WithOptions(this)
+                                                      .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
+                                                      ?.Execute<DamageAbilityComponent>();
+                    }
+                }
+
+                if (target != null)
+                    Targets.Remove(target);
             }
         }
 

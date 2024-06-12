@@ -84,7 +84,7 @@ public class MonsterMapperProfile : Profile
                 {
                     var itemTemplate = SimpleCache.Get<ItemTemplate>(drop.ItemTemplateKey);
 
-                    subBuilder.AppendLine($"{itemTemplate.Name} ({drop.DropChance:P2})");
+                    subBuilder.AppendLine($"{itemTemplate.Name} ({drop.DropChance:0.##########%})");
                 }
 
                 return subBuilder;
