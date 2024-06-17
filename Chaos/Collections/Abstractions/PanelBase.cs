@@ -318,7 +318,121 @@ public abstract class PanelBase<T> : IPanel<T> where T: PanelEntityBase
 
         return true;
     }
+    
+    public virtual bool TrySwapSpecial(byte slot1, byte slot2)
+    {
+        if (!IsValidSlot(slot1) || !IsValidSlot(slot2))
+            return false;
 
+        using var @lock = Sync.Enter();
+        
+        switch (slot2)
+        {
+            case 35:
+            {
+                var obj = Objects[slot1];
+
+                if (obj != null)
+                {
+                    BroadcastOnRemoved(slot1, obj);
+                    Objects[slot1] = null;
+
+                    var newSlot = FindNextAvailableSlotAfter(36);
+
+                    if (newSlot != byte.MaxValue)
+                    {
+                        Objects[newSlot] = obj;
+                        obj.Slot = newSlot;
+                        BroadcastOnAdded(obj);
+
+                        return true;
+                    }
+
+                    Objects[slot1] = obj;
+                    BroadcastOnAdded(obj);
+
+                    return false;
+                }
+
+                break;
+            }
+            case 71:
+            {
+                var obj = Objects[slot1];
+
+                if (obj != null)
+                {
+                    BroadcastOnRemoved(slot1, obj);
+                    Objects[slot1] = null;
+
+                    var newSlot = FindNextAvailableSlotAfter(0);
+
+                    if (newSlot != byte.MaxValue)
+                    {
+                        Objects[newSlot] = obj;
+                        obj.Slot = newSlot;
+                        BroadcastOnAdded(obj);
+
+                        return true;
+                    }
+
+                    Objects[slot1] = obj;
+                    BroadcastOnAdded(obj);
+
+                    return false;
+                }
+
+                break;
+            }
+            default:
+            {
+                var obj1 = Objects[slot1];
+                var obj2 = Objects[slot2];
+
+                if (obj1 != null)
+                {
+                    BroadcastOnRemoved(slot1, obj1);
+                    obj1.Slot = slot2;
+                }
+
+                if (obj2 != null)
+                {
+                    BroadcastOnRemoved(slot2, obj2);
+                    obj2.Slot = slot1;
+                }
+
+                Objects[slot1] = obj2;
+                Objects[slot2] = obj1;
+
+                if (obj1 != null)
+                    BroadcastOnAdded(obj1);
+
+                if (obj2 != null)
+                    BroadcastOnAdded(obj2);
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    
+    private byte FindNextAvailableSlotAfter(byte startSlot)
+    {
+        for (var i = (byte)(startSlot + 1); i < Objects.Length; i++)
+            if ((Objects[i] == null) && IsValidSlot(i))
+                return i;
+
+        // Wrap around if no available slot is found after startSlot
+        for (byte i = 0; i < startSlot; i++)
+            if ((Objects[i] == null) && IsValidSlot(i))
+                return i;
+
+        // If no slots are available, return a special value to indicate failure
+        return byte.MaxValue;
+    }
+    
     public void Update(TimeSpan delta)
     {
         using var @lock = Sync.Enter();

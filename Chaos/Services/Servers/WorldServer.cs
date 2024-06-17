@@ -1138,11 +1138,11 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
 
                     break;
                 case PanelType.SpellBook:
-                    localClient.Aisling.SpellBook.TrySwap(localArgs.Slot1, localArgs.Slot2);
-
+                    localClient.Aisling.SpellBook.TrySwapSpecial(localArgs.Slot1, localArgs.Slot2);   
                     break;
+                
                 case PanelType.SkillBook:
-                    localClient.Aisling.SkillBook.TrySwap(localArgs.Slot1, localArgs.Slot2);
+                    localClient.Aisling.SkillBook.TrySwapSpecial(localArgs.Slot1, localArgs.Slot2);
 
                     break;
                 case PanelType.Equipment:
