@@ -10,7 +10,7 @@ public class UpsideDownMonsterScript : CompositeMonsterScript
     {
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
-        GetScriptKey(typeof(UpsideDownCastingScript)),
+        GetScriptKey(typeof(UpsideCastingScript)),
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(WanderingScript)),

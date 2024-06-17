@@ -464,7 +464,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         if (ItemCheckTimer.IntervalElapsed)
         {
             var currentLaternSize = Subject.LanternSize;
-            Subject.LanternSize = ItemKeysToCheck.Any(x => Subject.Equipment.ContainsByTemplateKey(x)) ? LanternSize.Small : LanternSize.None;
+
+            if (ItemKeysToCheck.Any(x => Subject.Equipment.ContainsByTemplateKey(x)))
+                Subject.SetLanternSize(LanternSize.Small);
+
             if (currentLaternSize != Subject.LanternSize)
                 Subject.Display();
         }

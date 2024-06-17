@@ -83,7 +83,7 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
             monsters.Add(monster);
         }
 
-        Subject.AddObjects(monsters);
+        Subject.AddEntities(monsters);
     }
 
     private void SpawnTeam()
@@ -161,7 +161,7 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
             teammates.Add(monster4);
         }
 
-        Subject.AddObjects(teammates);
+        Subject.AddEntities(teammates);
     }
 
     private void SpawnWalls()
@@ -196,7 +196,7 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
             windwalls.Add(windwall);
         }
 
-        Subject.AddObjects(windwalls);
+        Subject.AddEntities(windwalls);
     }
 
 

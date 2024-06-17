@@ -83,7 +83,7 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
             monsters.Add(monster);
         }
 
-        Subject.AddObjects(monsters);
+        Subject.AddEntities(monsters);
     }
 
     private void SpawnWalls()
@@ -118,7 +118,7 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
             windwalls.Add(windwall);
         }
 
-        Subject.AddObjects(windwalls);
+        Subject.AddEntities(windwalls);
     }
 
 

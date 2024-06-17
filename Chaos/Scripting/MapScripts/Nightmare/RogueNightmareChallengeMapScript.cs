@@ -130,7 +130,7 @@ public class RogueNightmareChallengeMapScript : MapScriptBase
             monsters.Add(monster);
         }
 
-        Subject.AddObjects(monsters);
+        Subject.AddEntities(monsters);
     }
 
     public override void Update(TimeSpan delta)
