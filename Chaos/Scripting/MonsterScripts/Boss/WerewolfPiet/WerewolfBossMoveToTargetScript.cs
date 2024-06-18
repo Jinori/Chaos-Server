@@ -3,19 +3,11 @@ using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss;
+namespace Chaos.Scripting.MonsterScripts.Boss.WerewolfPiet;
 
-public sealed class WerewolfBossMoveToTargetScript(Monster subject, IEffectFactory effectFactory, ISpellFactory spellFactory) : MonsterScriptBase(subject)
+public sealed class WerewolfBossMoveToTargetScript(Monster subject) : MonsterScriptBase(subject)
 {
-    /// <inheritdoc />
-    ///
-    ///
-
-    private readonly IEffectFactory EffectFactory = effectFactory;
-    private readonly ISpellFactory SpellFactory = spellFactory;
-    
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
@@ -54,7 +46,7 @@ public sealed class WerewolfBossMoveToTargetScript(Monster subject, IEffectFacto
                               .Where(
                                   obj => !obj.Equals(Subject)
                                          && obj.IsAlive
-                                         && Subject.ApproachTime.TryGetValue(obj.Id, out var time)
+                                         && Subject.ApproachTime.TryGetValue(obj, out var time)
                                          && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
                               .ClosestOrDefault(Subject);
                 return;

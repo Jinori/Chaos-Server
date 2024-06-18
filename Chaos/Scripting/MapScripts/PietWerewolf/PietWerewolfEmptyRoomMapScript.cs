@@ -45,7 +45,7 @@ namespace Chaos.Scripting.MapScripts.PietWerewolf
             {
                 // Start the combat trial
                 var point = new Point(10, 7);
-                var werewolftoby = MerchantFactory.Create("werewolftoby", Subject, point);
+                var werewolftoby = MerchantFactory.Create("werewolfToby", Subject, point);
                 Subject.AddEntity(werewolftoby, point);
                 StartTimers();
                 State = ScriptState.DelayedStart;
@@ -106,67 +106,6 @@ namespace Chaos.Scripting.MapScripts.PietWerewolf
 
                 default:
                     throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        private void SpawnMonsters(string monsterType, int count)
-        {
-            for (var i = 0; i < count; i++)
-            {
-                var toby = Subject.GetEntities<Merchant>().Where(x => x.Name.Equals("Toby"));
-                foreach (var merchant in toby) Subject.RemoveEntity(merchant);
-
-                var point = new Point(11, 6);
-                var groupLevel = Subject.GetEntities<Aisling>().Select(aisling => aisling.StatSheet.Level).ToList();
-                var monster = MonsterFactory.Create(monsterType, Subject, point);
-
-                // Calculate the excess vitality over 20,000 for any player
-                var excessVitality = Subject.GetEntities<Aisling>()
-                    .Where(aisling => !aisling.Trackers.Enums.HasValue(GodMode.Yes))
-                    .Select(aisling => (aisling.StatSheet.MaximumHp + aisling.StatSheet.MaximumMp) - 20000)
-                    .Where(excess => excess > 0)
-                    .Sum(excess => excess / 1000);
-
-                var attrib = new Attributes
-                {
-                    AtkSpeedPct = groupLevel.Count * 8 + 3,
-                    MaximumHp = (int)(monster.StatSheet.MaximumHp + groupLevel.Average() * groupLevel.Count * 600),
-                    MaximumMp = (int)(monster.StatSheet.MaximumHp + groupLevel.Average() * groupLevel.Count * 600),
-                    Int = (int)(monster.StatSheet.Int + groupLevel.Average() * groupLevel.Count / 8),
-                    Str = (int)(monster.StatSheet.Str + groupLevel.Average() * groupLevel.Count / 6),
-                    SkillDamagePct = (int)(monster.StatSheet.SkillDamagePct + groupLevel.Average() / 3 +
-                                           groupLevel.Count + 20),
-                    SpellDamagePct = (int)(monster.StatSheet.SpellDamagePct + groupLevel.Average() / 3 +
-                                           groupLevel.Count + 20)
-                };
-
-                // Adjust the attributes based on the excess vitality
-                if (excessVitality > 0)
-                {
-                    // Example adjustments: increase stats by a percentage of the excess vitality
-                    attrib = attrib with
-                    {
-                        MaximumHp = (int)(excessVitality * 0.05)
-                    }; // 5% of excess vitality added to HP
-                    attrib = attrib with
-                    {
-                        MaximumMp = (int)(excessVitality * 0.05)
-                    }; // 5% of excess vitality added to MP
-                    attrib.Int += (int)(excessVitality * 0.01); // 1% of excess vitality added to Int
-                    attrib.Str += (int)(excessVitality * 0.01); // 1% of excess vitality added to Str
-                    attrib.SkillDamagePct +=
-                        (int)(excessVitality * 0.01); // 1% of excess vitality added to Skill Damage
-                    attrib.SpellDamagePct +=
-                        (int)(excessVitality * 0.01); // 1% of excess vitality added to Spell Damage
-                }
-
-                // Add the attributes to the monster
-                monster.StatSheet.AddBonus(attrib);
-                // Add HP and MP to the monster
-                monster.StatSheet.SetHealthPct(100);
-                monster.StatSheet.SetManaPct(100);
-                // Add the monster to the subject
-                Subject.AddEntity(monster, monster);
             }
         }
 

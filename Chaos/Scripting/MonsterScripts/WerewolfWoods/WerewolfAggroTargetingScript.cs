@@ -100,7 +100,7 @@ public class WerewolfAggroTargetingScript : MonsterScriptBase
                                  && obj.IsAlive
                                  && !obj.Effects.Contains("werewolf")
                                  || obj.Trackers.Enums.HasValue(AttackedWerewolf.Yes)// Exclude Aislings with the werewolf effect
-                                 && Subject.ApproachTime.TryGetValue(obj.Id, out var time)
+                                 && Subject.ApproachTime.TryGetValue(obj, out var time)
                                  && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
                       .ClosestOrDefault(Subject);
 
