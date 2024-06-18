@@ -1,6 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
@@ -215,7 +216,7 @@ public class PietVillagerScript : MerchantScriptBase
     
     private void ConductDialogueWithMerchant(string merchant)
     {
-        if (IntegerRandomizer.RollChance(0) && Subject.MapInstance.InstanceId.ContainsI("Piet") && !DoWerewolfConversation)
+        if (IntegerRandomizer.RollChance(20) && Subject.MapInstance.InstanceId.ContainsI("Piet") && !DoWerewolfConversation)
             DoWerewolfConversation = true;
 
         switch (merchant)
@@ -594,7 +595,7 @@ public class PietVillagerScript : MerchantScriptBase
         }
     }
 
-    private bool IsCloseTo(Location point, int distance) => Subject.DistanceFrom(point) <= distance;
+    private bool IsCloseTo(Location point, int distance) => Subject.WithinRange(point, 2);
 
     private static string PickRandom(ICollection<string> phrases) => phrases.PickRandom();
 

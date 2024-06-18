@@ -44,7 +44,7 @@ public class UndineFieldsScript : DialogScriptBase
         {
             case "alexios_initial":
             {
-                if (source.StatSheet.Level < 60)
+                if (source.StatSheet.Level < 80)
                     return;
 
                 if (flag == UndineFieldDungeonFlag.CompletedUF)

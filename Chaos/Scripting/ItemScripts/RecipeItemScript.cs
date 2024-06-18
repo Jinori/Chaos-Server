@@ -107,6 +107,8 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(AvailableCloaks.Red);
                 source.Trackers.Flags.AddFlag(AvailableCloaks.Green);
                 source.Trackers.Flags.AddFlag(AvailableCloaks.Purple);
+                source.Trackers.Flags.AddFlag(LanternSizes.SmallLantern);
+                source.Trackers.Flags.AddFlag(LanternSizes.LargeLantern);
 
                 source.Animate(ani);
                 source.SendOrangeBarMessage("You now have all mounts and cloaks.");

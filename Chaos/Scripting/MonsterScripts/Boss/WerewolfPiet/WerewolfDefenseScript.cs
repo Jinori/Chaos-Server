@@ -1,28 +1,18 @@
-using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
-using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Time;
-using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss;
+namespace Chaos.Scripting.MonsterScripts.Boss.WerewolfPiet;
 
-public sealed class BossDefenseScript : MonsterScriptBase
+public sealed class WerewolfDefenseScript : MonsterScriptBase
 {
-    private IIntervalTimer AvoidBashers { get; }
 
     /// <inheritdoc />
-    public BossDefenseScript(Monster subject)
-        : base(subject) =>
-        AvoidBashers = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(5),
-            45,
-            RandomizationType.Positive,
-            false);
+    public WerewolfDefenseScript(Monster subject)
+        : base(subject) {}
 
     /// <inheritdoc />
     public override bool CanSee(VisibleEntity entity)
@@ -55,25 +45,6 @@ public sealed class BossDefenseScript : MonsterScriptBase
     public override void Update(TimeSpan delta)
     {
         base.Update(delta);
-        AvoidBashers.Update(delta);
-
-        if (AvoidBashers.IntervalElapsed)
-        {
-            var aislings = Map.GetEntitiesWithinRange<Aisling>(Subject, AggroRange).Where(x => x.DistanceFrom(Subject) <= 1).ToList();
-
-            if (aislings.Count >= 2)
-            {
-                var target = FindLowestAggro();
-
-                if (target != null)
-                {
-                    var targetPoint = new Point(target.X, target.Y);
-                    var bossPoint = new Point(Subject.X, Subject.Y);
-                    target.WarpTo(bossPoint);
-                    Subject.WarpTo(targetPoint);
-                }
-            }
-        }
 
         if (!Subject.Effects.Any())
             return;

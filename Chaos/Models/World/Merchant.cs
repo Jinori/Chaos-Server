@@ -37,6 +37,9 @@ public sealed class Merchant : Creature,
     
     public PietVillagerScript.PietVillagerState PietVillagerState { get; set; }
 
+    public PietWerewolfMerchantScript.PietWerewolfState PietWerewolfState { get; set; }
+    
+    public MasterWerewolfMerchantScript.MasterWerewolfState MasterWerewolfState { get; set; }
     /// <inheritdoc />
     public ICollection<Item> ItemsForSale { get; }
 
