@@ -114,7 +114,7 @@ public class UndineFieldsArenaMapScript : MapScriptBase
             windwalls.Add(windwall);
         }
 
-        Subject.AddObjects(windwalls);
+        Subject.AddEntities(windwalls);
     }
     
     public override void Update(TimeSpan delta)

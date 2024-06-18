@@ -78,7 +78,7 @@ public class NightmareMonsterAggroTargetingScript : MonsterScriptBase
                                  && !obj.Name.Equals("Nightmare")
                                  && !obj.Name.Contains("Wind Wall")
                                  && obj.IsAlive
-                                 && Subject.ApproachTime.TryGetValue(obj.Id, out var time)
+                                 && Subject.ApproachTime.TryGetValue(obj, out var time)
                                  && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
                       .ClosestOrDefault(Subject);
 

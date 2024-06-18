@@ -1553,7 +1553,7 @@ public enum UndineFieldDungeon
     KilledCarnun = 4,
 }
 
-public enum ShipAttack
+public enum WerewolfofPiet
 {
     None,
     StartedShipAttack = 1,
@@ -1732,8 +1732,22 @@ public enum WerewolfOfPiet
     SpawnedWerewolf = 3,
     KilledandGotCursed = 4,
     SpokeToWizard = 5,
-    EnteredSWpath = 6,
-    KilledWerewolf = 7,
-    CollectedBlueFlower = 8,
-    ReceivedCure = 11
+    KilledWerewolf = 6,
+    CollectedBlueFlower = 7,
+    ReceivedCure = 8
+}
+
+[Flags]
+public enum LanternSizes
+{
+    None = 0,
+    SmallLantern = 1,
+    LargeLantern = 2,
+}
+
+public enum AttackedWerewolf
+{
+    None = 0,
+    Yes = 1,
+    No = 2,
 }

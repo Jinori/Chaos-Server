@@ -613,7 +613,7 @@ public enum NameTagStyle : byte
 /// <summary>
 ///     A byte representing the size of the lantern effect around a player. Used by ServerOpCode.DisplayAisling
 /// </summary>
-public enum LanternSize : byte
+public enum LanternSize : sbyte
 {
     None = 0,
     Small = 1,
@@ -926,6 +926,13 @@ public enum PanelType : byte
     SpellBook = 1,
     SkillBook = 2,
     Equipment = 3
+}
+
+public enum PageType : byte
+{
+    Page1,
+    Page2,
+    Page3
 }
 
 /// <summary>

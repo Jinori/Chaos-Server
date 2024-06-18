@@ -45,7 +45,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                 return;
 
             // Check if the player has a specific quest flag and the trial is not already in progress
-            if (aisling.Trackers.Enums.HasValue(ShipAttack.StartedShipAttack) && State == ScriptState.Dormant)
+            if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.StartedShipAttack) && State == ScriptState.Dormant)
             {
                 // Start the combat trial
                 StartCombatTrial();
@@ -94,7 +94,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                 aisling.TraverseMap(mapInstance, point);
                 aisling.SendOrangeBarMessage("The Sea Monsters took over the ship and you swam to shore.");
                 aisling.Trackers.TimedEvents.AddEvent("lynithpirateshipcd", TimeSpan.FromHours(8), true);
-                aisling.Trackers.Enums.Set(ShipAttack.None);
+                aisling.Trackers.Enums.Set(WerewolfofPiet.None);
                 aisling.StatSheet.SetHealthPct(1);
                 aisling.StatSheet.SetManaPct(1);
                 aisling.Client.SendAttributes(StatUpdateType.Vitality);
@@ -119,7 +119,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
             {
                 case ScriptState.Dormant:
                     if (Subject.GetEntities<Aisling>()
-                        .Any(a => a.Trackers.Enums.HasValue(ShipAttack.StartedShipAttack)))
+                        .Any(a => a.Trackers.Enums.HasValue(WerewolfofPiet.StartedShipAttack)))
                     {
                         State = ScriptState.DelayedStart;
                     }
@@ -142,7 +142,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                     break;
 
                 case ScriptState.SpawnedFirstWave:
-                    if (CheckAllMonstersCleared(ShipAttack.FinishedWave1) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave1) || EnoughMonstersOnShip())
                     {
                         State = GetNextStateAfterDelayedStart();
                     }
@@ -158,7 +158,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                     break;
 
                 case ScriptState.SpawnedSecondWave:
-                    if (CheckAllMonstersCleared(ShipAttack.FinishedWave2) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave2) || EnoughMonstersOnShip())
                     {
                         State = GetNextStateAfterDelayedStart();
                     }
@@ -174,7 +174,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                     break;
 
                 case ScriptState.SpawnedThirdWave:
-                    if (CheckAllMonstersCleared(ShipAttack.FinishedWave3) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave3) || EnoughMonstersOnShip())
                     {
                        State = GetNextStateAfterDelayedStart();
                     }
@@ -190,7 +190,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                     break;
 
                 case ScriptState.SpawnedFourthWave:
-                    if (CheckAllMonstersCleared(ShipAttack.FinishedWave4) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave4) || EnoughMonstersOnShip())
                     {
                        State = GetNextStateAfterDelayedStart();
                     }
@@ -206,7 +206,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                     break;
 
                 case ScriptState.SpawnedFifthWave:
-                    if (CheckAllMonstersCleared(ShipAttack.FinishedWave5) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave5) || EnoughMonstersOnShip())
                     {
                        State = GetNextStateAfterDelayedStart();
                     }
@@ -222,7 +222,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                     break;
 
                 case ScriptState.SpawnedSixthWave:
-                    if (CheckAllMonstersCleared(ShipAttack.FinishedWave6) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave6) || EnoughMonstersOnShip())
                     {
                        State = GetNextStateAfterDelayedStart();
                     }
@@ -238,7 +238,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                     break;
 
                 case ScriptState.SpawnedSeventhWave:
-                    if (CheckAllMonstersCleared(ShipAttack.FinishedWave7) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave7) || EnoughMonstersOnShip())
                     {
                        State = GetNextStateAfterDelayedStart();
                     }
@@ -254,7 +254,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                     break;
 
                 case ScriptState.SpawnedEighthWave:
-                    if (CheckAllMonstersCleared(ShipAttack.FinishedWave8) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave8) || EnoughMonstersOnShip())
                     {
                        State = GetNextStateAfterDelayedStart();
                     }
@@ -270,7 +270,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                     break;
 
                 case ScriptState.SpawnedNinthWave:
-                    if (CheckAllMonstersCleared(ShipAttack.FinishedWave9)|| EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave9)|| EnoughMonstersOnShip())
                     {
                        State = GetNextStateAfterDelayedStart();
                     }
@@ -287,7 +287,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                     break;
 
                 case ScriptState.SpawnedTenthWave:
-                    if (CheckAllMonstersCleared(ShipAttack.FinishedWave10) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave10) || EnoughMonstersOnShip())
                     {
                         State = ScriptState.CompletedTrial;
                     }
@@ -392,7 +392,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
             return false;
         }
         
-        private bool CheckAllMonstersCleared(ShipAttack trial)
+        private bool CheckAllMonstersCleared(WerewolfofPiet trial)
         {
             if (!Subject.GetEntities<Monster>().Any(m => !m.Script.Is<PetScript>()))
             {
@@ -417,7 +417,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
             {
                 foreach (var aisling in Subject.GetEntities<Aisling>())
                 {
-                    aisling.Trackers.Enums.Set(ShipAttack.FinishedShipAttack);
+                    aisling.Trackers.Enums.Set(WerewolfofPiet.FinishedShipAttack);
                     var mapInstance = SimpleCache.Get<MapInstance>("lynith_pirate_ship_deck");
                     aisling.TraverseMap(mapInstance, aisling);
                     aisling.SendOrangeBarMessage("You defended the ship from the Sea Monsters! Speak to the Captain.");
@@ -449,43 +449,43 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
         {
             foreach (var aisling in Subject.GetEntities<Aisling>())
             {
-                if (aisling.Trackers.Enums.HasValue(ShipAttack.FinishedWave1))
+                if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave1))
                 {
                     return ScriptState.SpawningSecondWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(ShipAttack.FinishedWave2))
+                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave2))
                 {
                     return ScriptState.SpawningThirdWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(ShipAttack.FinishedWave3))
+                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave3))
                 {
                     return ScriptState.SpawningFourthWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(ShipAttack.FinishedWave4))
+                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave4))
                 {
                     return ScriptState.SpawningFifthWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(ShipAttack.FinishedWave5))
+                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave5))
                 {
                     return ScriptState.SpawningSixthWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(ShipAttack.FinishedWave6))
+                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave6))
                 {
                     return ScriptState.SpawningSeventhWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(ShipAttack.FinishedWave7))
+                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave7))
                 {
                     return ScriptState.SpawningEighthWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(ShipAttack.FinishedWave8))
+                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave8))
                 {
                     return ScriptState.SpawningNinthWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(ShipAttack.FinishedWave9))
+                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave9))
                 {
                     return ScriptState.SpawningTenthWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(ShipAttack.FinishedWave10))
+                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave10))
                 {
                     return ScriptState.CompletedTrial;
                 }

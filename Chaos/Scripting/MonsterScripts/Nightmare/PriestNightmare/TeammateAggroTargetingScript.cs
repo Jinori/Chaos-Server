@@ -38,7 +38,7 @@ public sealed class TeammateAggroTargetingScript : MonsterScriptBase
                       && !obj.Script.Is<NightmareTeammateScript>()
                       && !obj.Script.Is<PetScript>()
                       && !obj.Name.Contains("Wind Wall")
-                      && Subject.ApproachTime.TryGetValue(obj.Id, out var time)
+                      && Subject.ApproachTime.TryGetValue(obj, out var time)
                       && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
            .ClosestOrDefault(Subject);
 

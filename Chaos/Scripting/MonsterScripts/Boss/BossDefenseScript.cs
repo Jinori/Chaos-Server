@@ -103,7 +103,7 @@ public sealed class BossDefenseScript : MonsterScriptBase
                     break;
 
                 case "beagsuain":
-                    RemoveEffectAndHeal(effect);
+                    RemoveEffect(effect);
                     Subject.Say("Not a chance!");
 
                     break;

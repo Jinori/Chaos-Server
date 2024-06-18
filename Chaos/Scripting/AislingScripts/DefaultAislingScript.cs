@@ -33,9 +33,9 @@ namespace Chaos.Scripting.AislingScripts;
 public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHealComponentOptions
 {
     private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase) { "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort"};
-    private readonly HashSet<string> ItemKeysToCheck = new(StringComparer.OrdinalIgnoreCase) { "lantern" };
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IIntervalTimer ClearOrangeBarTimer;
+    private readonly IIntervalTimer OneSecondTimer;
     private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
     private readonly IEffectFactory EffectFactory;
     private readonly ILogger<DefaultAislingScript> Logger;
@@ -61,7 +61,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private readonly ISimpleCache SimpleCache;
     private readonly IIntervalTimer SleepAnimationTimer;
     private readonly IItemFactory ItemFactory;
-    private readonly IIntervalTimer ItemCheckTimer;
 
     /// <inheritdoc />
     public IApplyHealScript ApplyHealScript { get; init; }
@@ -97,21 +96,20 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         IStore<MailBox> mailStore,
         IStore<BulletinBoard> boardStore,
         ILogger<DefaultAislingScript> logger,
-        IItemFactory itemFactory
-    )
+        IItemFactory itemFactory)
         : base(subject)
     {
         MailStore = mailStore;
         BoardStore = boardStore;
         Logger = logger;
         ItemFactory = itemFactory;
+        OneSecondTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
         RestrictionBehavior = new RestrictionBehavior();
         VisibilityBehavior = new VisibilityBehavior();
         RelationshipBehavior = new RelationshipBehavior();
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         ClearOrangeBarTimer = new IntervalTimer(TimeSpan.FromSeconds(WorldOptions.Instance.ClearOrangeBarTimerSecs), false);
-        ItemCheckTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
         ClientRegistry = clientRegistry;
         EffectFactory = effectFactory;
         MerchantFactory = merchantFactory;
@@ -454,20 +452,33 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.UserStatSheet.SetMaxWeight(LevelUpFormulae.Default.CalculateMaxWeight(Subject));
     }
 
+    private void HandleWerewolfEffect()
+    {
+        if (!Subject.Trackers.Enums.HasValue(WerewolfOfPiet.KilledandGotCursed)
+            && !Subject.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard)
+            && !Subject.Trackers.Enums.HasValue(WerewolfOfPiet.KilledWerewolf)
+            && !Subject.Trackers.Enums.HasValue(WerewolfOfPiet.CollectedBlueFlower))
+            return;
+
+        var lightlevel = Subject.MapInstance.CurrentLightLevel;
+        
+        if (lightlevel == LightLevel.Darkest_A && !Subject.Effects.Contains("werewolf"))
+        {
+            var effect = EffectFactory.Create("werewolf");
+            Subject.Effects.Apply(Subject, effect);
+        } else if (lightlevel != LightLevel.Darkest_A && Subject.Effects.Contains("werewolf"))
+            Subject.Effects.Terminate("werewolf");
+    }
+
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         SleepAnimationTimer.Update(delta);
         ClearOrangeBarTimer.Update(delta);
-        ItemCheckTimer.Update(delta);
-
-        if (ItemCheckTimer.IntervalElapsed)
-        {
-            var currentLaternSize = Subject.LanternSize;
-            Subject.LanternSize = ItemKeysToCheck.Any(x => Subject.Equipment.ContainsByTemplateKey(x)) ? LanternSize.Small : LanternSize.None;
-            if (currentLaternSize != Subject.LanternSize)
-                Subject.Display();
-        }
+        OneSecondTimer.Update(delta);
+        
+        if (OneSecondTimer.IntervalElapsed)
+            HandleWerewolfEffect();
         
         if (SleepAnimationTimer.IntervalElapsed)
         {

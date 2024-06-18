@@ -1,4 +1,6 @@
-﻿using Chaos.Models.Data;
+﻿using Chaos.Common.Definitions;
+using Chaos.Models.Data;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.EffectComponents;
 using Chaos.Scripting.Components.Execution;
@@ -8,6 +10,8 @@ namespace Chaos.Scripting.EffectScripts;
 
 public class WerewolfEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
+
+    private Attributes NegativeAttributes = null!;
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(999);
     protected Animation? Animation { get; } = new()
     {
@@ -28,8 +32,32 @@ public class WerewolfEffect : EffectBase, NonOverwritableEffectComponent.INonOve
 
         if (AislingSubject != null)
         {
-            AislingSubject.Sprite = 407;
-            AislingSubject.Refresh(true);
+            NegativeAttributes = new Attributes
+            {
+                Dmg = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveDmg * 0.25),
+                Hit = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveHit * 0.25),
+                Str = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveStr * 0.25),
+                Ac = Convert.ToInt32(AislingSubject.UserStatSheet.Ac * 0.25),
+                MaximumHp = Convert.ToInt32(AislingSubject.UserStatSheet.MaximumHp * 0.25),
+                MaximumMp = Convert.ToInt32(AislingSubject.UserStatSheet.MaximumMp * 0.25),
+                Int = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveInt * 0.25),
+                Dex = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveDex * 0.25),
+                Con = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveCon * 0.25),
+                Wis = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveWis * 0.25),
+                MagicResistance = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveMagicResistance * 0.25),
+                FlatSkillDamage = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveFlatSkillDamage * 0.25),
+                FlatSpellDamage = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveFlatSpellDamage * 0.25),
+                SpellDamagePct = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveSpellDamagePct * 0.25),
+                SkillDamagePct = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveSkillDamagePct * 0.25),
+                AtkSpeedPct = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveAttackSpeedPct * 0.25),
+                
+
+            };
+            
+            AislingSubject.StatSheet.SubtractBonus(NegativeAttributes);
+            AislingSubject.Client.SendAttributes(StatUpdateType.Full);
+            AislingSubject.Sprite = 426;
+            AislingSubject.Display();
         }
     }
     
@@ -37,6 +65,8 @@ public class WerewolfEffect : EffectBase, NonOverwritableEffectComponent.INonOve
     {
         if (AislingSubject != null)
         {
+            AislingSubject.StatSheet.AddBonus(NegativeAttributes);
+            AislingSubject.Client.SendAttributes(StatUpdateType.Full);
             AislingSubject.Sprite = 0;
             AislingSubject.Refresh(true);
         }

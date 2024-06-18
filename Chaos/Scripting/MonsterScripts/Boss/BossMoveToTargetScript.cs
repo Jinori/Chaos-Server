@@ -54,7 +54,7 @@ public sealed class BossMoveToTargetScript(Monster subject, IEffectFactory effec
                               .Where(
                                   obj => !obj.Equals(Subject)
                                          && obj.IsAlive
-                                         && Subject.ApproachTime.TryGetValue(obj.Id, out var time)
+                                         && Subject.ApproachTime.TryGetValue(obj, out var time)
                                          && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
                               .ClosestOrDefault(Subject);
                 return;

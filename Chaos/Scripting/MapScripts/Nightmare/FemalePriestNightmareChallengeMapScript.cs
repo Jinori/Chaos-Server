@@ -83,7 +83,7 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
             monsters.Add(monster);
         }
 
-        Subject.AddObjects(monsters);
+        Subject.AddEntities(monsters);
     }
 
     private void SpawnTeam()
@@ -161,7 +161,7 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
             teammates.Add(monster4);
         }
 
-        Subject.AddObjects(teammates);
+        Subject.AddEntities(teammates);
     }
 
     public override void Update(TimeSpan delta)

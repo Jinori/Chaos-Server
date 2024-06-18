@@ -1,6 +1,9 @@
-﻿using Chaos.Common.Definitions;
+﻿using Chaos.Collections;
+using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -9,6 +12,8 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Piet;
@@ -16,29 +21,34 @@ namespace Chaos.Scripting.DialogScripts.Quests.Piet;
 public class PietWerewolfScript : DialogScriptBase
 {
     private readonly ILogger<PietWerewolfScript> Logger;
+    private readonly ISpellFactory SpellFactory;
+    private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public PietWerewolfScript(Dialog subject, ILogger<PietWerewolfScript> logger)
+    public PietWerewolfScript(Dialog subject, ILogger<PietWerewolfScript> logger, ISpellFactory spellFactory, ISimpleCache simpleCache)
         : base(subject)
     {
         Logger = logger;
+        SpellFactory = spellFactory;
+        SimpleCache = simpleCache;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
     public override void OnDisplaying(Aisling source)
     {
-        var hasStage = source.Trackers.Enums.TryGetValue(out PietWood stage);
-
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "werewolf_initial2":
+            case "appie_initial":
             {
-                if (!source.Trackers.Enums.HasValue(WerewolfOfPiet.KilledWerewolf))
+                if (!source.Trackers.Enums.HasValue(WerewolfOfPiet.KilledWerewolf) && 
+                    !source.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard) && 
+                    !source.Trackers.Enums.HasValue(WerewolfOfPiet.KilledandGotCursed) && 
+                    !source.Trackers.Enums.HasValue(WerewolfOfPiet.CollectedBlueFlower))
                     return;
                 
                 var option = new DialogOption
                 {
-                    DialogKey = "werewolf_initial3",
+                    DialogKey = "werewolf_initial2",
                     OptionText = "Werewolf Cure"
                 };
 
@@ -48,21 +58,29 @@ public class PietWerewolfScript : DialogScriptBase
                 break;
             }
 
-            case "werewolf_initial3":
+            case "werewolf_initial":
+            {
+                if (source.UserStatSheet.Level < 71)
+                {
+                    Subject.Reply(source, "Please don't mind that conversation, we will figure it out. You need to stay safe and not worry about our problems young one. Maybe when you're older, I'm sure that Werewolf will still be lurking in our town.");
+                }
+
+                break;
+            }
+
+            case "werewolf_initial2":
             {
                 if (source.Trackers.Enums.HasValue(WerewolfOfPiet.KilledandGotCursed))
                 {
-                    Subject.Reply(source, "Skip", "werewolf_initial4");
+                    Subject.Reply(source, "Skip", "werewolf_initial3");
                     return;
                 }
 
                 if (source.Trackers.Enums.HasValue(WerewolfOfPiet.CollectedBlueFlower)
                     || source.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard)
-                    || source.Trackers.Enums.HasValue(WerewolfOfPiet.EnteredSWpath)
                     || source.Trackers.Enums.HasValue(WerewolfOfPiet.SpawnedWerewolf))
                 {
                     Subject.Reply(source, "Skip", "werewolf_return");
-                    return;
                 }
 
                 break;
@@ -73,13 +91,6 @@ public class PietWerewolfScript : DialogScriptBase
                 if (source.Trackers.Enums.HasValue(WerewolfOfPiet.CollectedBlueFlower))
                 {
                     Subject.Reply(source, "Skip", "werewolf_turnin1");
-                    return;
-                }
-
-                if (source.Trackers.Enums.HasValue(WerewolfOfPiet.EnteredSWpath))
-                {
-                    Subject.Reply(source, "So you found the Werewolf's Woods, that's good. Get through the woods and find that flower. We will need it for the cure.");
-                    source.SendOrangeBarMessage("Return to the woods and find the flower.");
                     return;
                 }
 
@@ -94,12 +105,11 @@ public class PietWerewolfScript : DialogScriptBase
                 {
                     Subject.Reply(source, "Why are you back here? Go search Shinewood Forest for the Werewolf's Woods and retrieve the flower we need for the cure.");
                     source.SendOrangeBarMessage("Search Shinewood Forest for Werewolf's Woods.");
-                    return;
                 }
                 break;
             }
 
-            case "werewolf_initial7":
+            case "werewolf_initial6":
             {
                 source.Trackers.Enums.Set(WerewolfOfPiet.SpokeToWizard);
                 source.SendOrangeBarMessage("Search Shinewood Forest for the Werewolf's Woods.");
@@ -113,16 +123,18 @@ public class PietWerewolfScript : DialogScriptBase
                 break;
             }
 
-            case "werewolf_turnin":
+            case "werewolf_turnin2":
             {
-                var hasRequiredBlueFlower = source.Inventory.HasCount("Blue Flower", 1);
+                var hasRequiredBlueFlower = source.Inventory.HasCount("Rose of Sharon", 1);
                 
                     switch (hasRequiredBlueFlower)
                     {
                         case true:
                         {
-                            source.Inventory.RemoveQuantity("Blue Flower", 1, out _);
+                            source.Inventory.RemoveQuantity("Rose of Sharon", 1, out _);
                             source.Trackers.Enums.Set(WerewolfOfPiet.ReceivedCure);
+                            var werewolfspell = SpellFactory.Create("werewolfform");
+                            source.SpellBook.TryAdd(73, werewolfspell);
 
                             Logger.WithTopics(
                                       Topics.Entities.Aisling,
@@ -135,14 +147,14 @@ public class PietWerewolfScript : DialogScriptBase
                                   .LogInformation(
                                       "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from Werewolf Quest",
                                       source.Name,
-                                      5000,
-                                      20000);
+                                      75000,
+                                      600000);
 
                             ExperienceDistributionScript.GiveExp(source, 600000);
                             source.TryGiveGold(75000);
                             source.TryGiveGamePoints(10);
 
-                            if (IntegerRandomizer.RollChance(8))
+                            if (IntegerRandomizer.RollChance(15))
                             {
                                 source.Legend.AddOrAccumulate(
                                     new LegendMark(
@@ -159,7 +171,65 @@ public class PietWerewolfScript : DialogScriptBase
 
                             break;
                         }
+                        case false:
+                        {
+                            Subject.Reply(source,"I know you saw the Rose of Sharon, where did it go?");
+                            break;
+                        }
                     }
+                break;
+            }
+
+            case "werewolfwarp1":
+            {
+                if (source.Group == null)
+                {
+                    
+                
+                    Subject.Reply(source, "You must have a group to enter these woods.");
+                    source.SendOrangeBarMessage("You must have a group to enter these woods.");
+                    return;
+                }
+                
+                if (source.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard) && source.Group != null)
+                {
+                    if (source.Group != null && source.Group.Any(x => !x.WithinRange(source)))
+                    {
+                        Subject.Reply(source, "Your group members are not nearby.");
+                        return;
+                    }
+
+                    if (source.Group != null && source.Group.Any(x => !x.WithinLevelRange(source)))
+                    {
+                        Subject.Reply(source, "Your group members must be within your level range.");
+                        return;
+                    }
+
+                    if (source.Group != null && source.Group.Any(x =>
+                            !x.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard) &&
+                            !x.Trackers.Enums.HasValue(WerewolfOfPiet.ReceivedCure)))
+                    {
+                        Subject.Reply(source,
+                            "Your group members must be on this part of the quest or finished the quest to help you.");
+                    }
+                }
+                break;
+            }
+
+            case "werewolfwarp2":
+            {
+                var groupmembers = source.MapInstance.GetEntities<Aisling>()
+                    .Where(x => x.WithinLevelRange(source) && x.WithinRange(source));
+
+                foreach (var member in groupmembers)
+                {
+                    var dialog = member.ActiveDialog.Get();
+                    dialog?.Close(member);
+                    var rectangle = new Rectangle(12, 1, 2, 2);
+                    var mapinstance = SimpleCache.Get<MapInstance>("werewolf_woods25");
+                    var pointinrectangle = rectangle.GetRandomPoint();
+                    member.TraverseMap(mapinstance, pointinrectangle);
+                }
                 break;
             }
         }

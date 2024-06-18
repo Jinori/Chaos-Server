@@ -83,7 +83,7 @@ public class MonkNightmareChallengeMapScript : MapScriptBase
             monsters.Add(monster);
         }
 
-        Subject.AddObjects(monsters);
+        Subject.AddEntities(monsters);
     }
 
     private void SpawnSlaves()
@@ -104,7 +104,7 @@ public class MonkNightmareChallengeMapScript : MapScriptBase
             slaves.Add(slave);
         }
 
-        Subject.AddObjects(slaves);
+        Subject.AddEntities(slaves);
     }
 
 

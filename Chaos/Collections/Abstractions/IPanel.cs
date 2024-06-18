@@ -7,7 +7,7 @@ public interface IPanel<T> : IEnumerable<T>, IDeltaUpdatable
 {
     int AvailableSlots { get; }
     bool IsFull { get; }
-    PanelType PaneType { get; }
+    PanelType PanelType { get; }
     void AddObserver(Observers.Abstractions.IObserver<T> observer);
     bool Contains(T obj);
     bool Contains(byte slot);
@@ -28,5 +28,6 @@ public interface IPanel<T> : IEnumerable<T>, IDeltaUpdatable
     bool TryGetRemove(string name, [MaybeNullWhen(false)] out T obj);
     bool TryGetRemoveByTemplateKey(string templateKey, [MaybeNullWhen(false)] out T obj);
     bool TrySwap(byte slot1, byte slot2);
+    bool TrySwapSpecial(byte slot1, byte slot2);
     void Update(byte slot, Action<T>? action = null);
 }
