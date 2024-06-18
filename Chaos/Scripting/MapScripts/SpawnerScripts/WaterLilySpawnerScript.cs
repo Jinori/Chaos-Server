@@ -12,7 +12,7 @@ public class WaterLilySpawnerScript : ItemSpawnerScript
     public override int MaxPerSpawn { get; set; } = 3;
 
     public override int SpawnChance { get; set; } = 12;
-    public override int SpawnIntervalMs { get; set; } = 400000;
+    public override int SpawnIntervalMs { get; set; } = 350000;
 
     /// <inheritdoc />
     public WaterLilySpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)

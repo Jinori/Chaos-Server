@@ -1450,6 +1450,7 @@ public enum EasterEggs
     UnlockedChest = 1 << 2,
     CrackInWall = 1 << 3,
     DepressedStatue = 1 << 4,
+    GraveSite = 1 << 5,
 }
 [Flags]
 public enum SavedChild
@@ -1462,6 +1463,14 @@ public enum CrudeLeather
 {
     None,
     StartedQuest = 1,
+}
+
+public enum GraveSite
+{
+    None, 
+    StartedQuest = 1,
+    ReadTheHeadstone = 2,
+    CompletedQuest = 3,
 }
 
 public enum PurpleWhopper

@@ -1,4 +1,5 @@
-﻿using Chaos.Definitions;
+﻿using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
@@ -19,6 +20,16 @@ public class RelearnCraftScript : DialogScriptBase
         {
             case "riona_relearnrecipes":
             {
+                if (source.Trackers.Counters.TryGetValue("CryptSlayerLegend", out var legend) && (legend >= 10))
+                {
+                    source.Trackers.Flags.AddFlag(LanternSize.Large);
+                    source.Trackers.Flags.AddFlag(LanternSize.Small);
+                }
+                else if (legend is < 10 and > 0)
+                {
+                    source.Trackers.Flags.AddFlag(LanternSize.Small);
+                }
+                
                if (source.Trackers.Enums.HasValue(Crafts.Weaponsmithing))
                {
                    

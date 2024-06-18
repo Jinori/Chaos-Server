@@ -4,6 +4,7 @@ using Chaos.Collections.Abstractions;
 using Chaos.Common.Definitions;
 using Chaos.Cryptography.Abstractions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Networking;
 using Chaos.Geometry.Abstractions.Definitions;
@@ -509,7 +510,10 @@ public sealed class ChaosWorldClient : WorldClientBase, IChaosWorldClient
     public void SendMapInfo()
     {
         var args = Mapper.Map<MapInfoArgs>(Aisling.MapInstance);
-
+        
+        if (Aisling.IsGodModeEnabled()) 
+            args.Flags &= (byte)~MapFlags.Darkness;
+        
         Send(args);
     }
 

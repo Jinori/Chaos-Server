@@ -585,14 +585,14 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
 
         if (visibleEntity is Creature c)
         {
-            Script.OnEntered(c);
-
             if (visibleEntity is Aisling aisling)
             {
                 aisling.Client.SendMapChangePending();
                 aisling.Client.SendMapInfo();
                 aisling.Client.SendLocation();
 
+                Script.OnEntered(c);
+                
                 //incoming entity needs full viewport updates so that they can see existing entities
                 aisling.UpdateViewPort();
 
@@ -600,8 +600,13 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
                 aisling.Client.SendSound(Music, true);
                 aisling.Client.SendMapLoadComplete();
                 aisling.Client.SendDisplayAisling(aisling);
-            } else //incoming entity needs full viewport updates so that they can see existing entities
-                c.UpdateViewPort();
+                aisling.Client.SendLightLevel(CurrentLightLevel);
+            }
+            else
+            {
+                Script.OnEntered(c);
+                c.UpdateViewPort();//incoming entity needs full viewport updates so that they can see existing entities
+            }
         }
 
         //if an aisling is being added to the map

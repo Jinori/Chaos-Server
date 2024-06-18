@@ -1,3 +1,4 @@
+using System.Reactive.Subjects;
 using Chaos.Collections;
 using Chaos.Collections.Abstractions;
 using Chaos.Collections.Common;
@@ -362,8 +363,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     /// <inheritdoc />
     public override bool CanObserve(VisibleEntity entity, bool fullCheck = false)
     {
-        /*if (IsAdmin)
-            return true;*/
+        if (IsAdmin && this.IsGodModeEnabled())
+            return true;
 
         //can always see yourself
         if (entity.Equals(this))
@@ -608,6 +609,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         Client.SendMapLoadComplete();
         Client.SendDisplayAisling(this);
         Client.SendRefreshResponse();
+        Client.SendLightLevel(MapInstance.CurrentLightLevel);
 
         foreach (var reactor in MapInstance.GetDistinctReactorsAtPoint(this)
                                            .ToList())

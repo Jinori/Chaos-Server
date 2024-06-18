@@ -697,13 +697,15 @@ public sealed partial class IntegrityCheckControl
     {
         await JsonContext.LoadingTask;
 
-        ReBuildIndexes();
+        if (!ReBuildIndexes())
+            return;
+        
 
         await DetectIntegrityViolationsAsync()
             .ConfigureAwait(false);
     }
 
-    private void ReBuildIndexes()
+    private bool ReBuildIndexes()
     {
         try
         {
@@ -744,6 +746,7 @@ public sealed partial class IntegrityCheckControl
             InUseMapTemplateIndex = JsonContext.MapInstances
                                                .Select(mi => mi.Instance.TemplateKey)
                                                .ToFrozenSet(StringComparer.OrdinalIgnoreCase);
+            return true;
         } catch (Exception ex)
         {
             MessageBox.Show(
@@ -751,6 +754,7 @@ public sealed partial class IntegrityCheckControl
                 "Error",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
+            return false;
         }
     }
     #endregion

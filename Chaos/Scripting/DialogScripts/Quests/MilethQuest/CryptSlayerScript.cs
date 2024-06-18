@@ -69,6 +69,7 @@ public class CryptSlayerScript : DialogScriptBase
                 if (source.Trackers.Counters.TryGetValue("CryptSlayerLegend", out var legend) && (legend >= 10))
                 {
                     source.Trackers.Enums.Set(CryptSlayerStage.Completed);
+                    source.Trackers.Flags.AddFlag(LanternSize.Large);
                     source.Legend.Remove("CryptSlayer", out _);
 
                     source.Legend.AddOrAccumulate(
@@ -80,7 +81,7 @@ public class CryptSlayerScript : DialogScriptBase
                             1,
                             GameTime.Now));
 
-                    Subject.Reply(source, "Thanks for all your hard work Aisling, we can keep these creatures where they belong.");
+                    Subject.Reply(source, "Thanks for all your hard work Aisling, we can keep these creatures where they belong. Here's a Large Lantern for your troubles.");
                 }
 
                 break;
@@ -317,8 +318,9 @@ public class CryptSlayerScript : DialogScriptBase
 
                 if (source.Trackers.Counters.CounterLessThanOrEqualTo("CryptSlayerLegend", 1))
                 {
+                    source.Trackers.Flags.AddFlag(LanternSize.Small);
                     source.Trackers.Flags.AddFlag(RionaTutorialQuestFlags.Skarn);
-                    source.SendOrangeBarMessage("Skarn hands you a weapon.");
+                    source.SendOrangeBarMessage("Skarn hands you a weapon and a Small Lantern (Hit F1).");
 
                     if (source.HasClass(BaseClass.Wizard))
                     {

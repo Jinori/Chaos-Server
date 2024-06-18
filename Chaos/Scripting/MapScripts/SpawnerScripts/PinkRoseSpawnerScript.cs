@@ -8,8 +8,8 @@ namespace Chaos.Scripting.MapScripts.SpawnerScripts;
 public class PinkRoseSpawnerScript : ItemSpawnerScript
 {
     public override string ItemTemplateKey { get; set; } = "pinkrose";
-    public override int MaxAmount { get; set; } = 10;
-    public override int MaxPerSpawn { get; set; } = 2;
+    public override int MaxAmount { get; set; } = 12;
+    public override int MaxPerSpawn { get; set; } = 3;
 
     public override int SpawnChance { get; set; } = 9;
     public override int SpawnIntervalMs { get; set; } = 400000;
