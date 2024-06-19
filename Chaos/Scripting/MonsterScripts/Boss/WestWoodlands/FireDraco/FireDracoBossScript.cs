@@ -1,9 +1,8 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.WestWoodlands.FireDraco;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.WestWoodlands.Twink;
+namespace Chaos.Scripting.MonsterScripts.Boss.WestWoodlands.FireDraco;
 
 public class FireDracoBossScript : CompositeMonsterScript
 {

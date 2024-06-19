@@ -11,6 +11,7 @@ public class GoblinChiefBossScript : CompositeMonsterScript
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(GoblinChiefEnrageScript)),
         GetScriptKey(typeof(BossDefenseScript)),
+        GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
