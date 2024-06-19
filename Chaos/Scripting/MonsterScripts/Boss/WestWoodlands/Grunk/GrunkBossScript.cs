@@ -1,8 +1,9 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Boss.WestWoodlands.Grunk;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.EastWoodlands.GoblinChief;
+namespace Chaos.Scripting.MonsterScripts.Boss.WestWoodlands.Grunk;
 
 public class GrunkBossScript : CompositeMonsterScript
 {
@@ -11,6 +12,7 @@ public class GrunkBossScript : CompositeMonsterScript
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(GrunkEnrageScript)),
         GetScriptKey(typeof(BossDefenseScript)),
+        GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),

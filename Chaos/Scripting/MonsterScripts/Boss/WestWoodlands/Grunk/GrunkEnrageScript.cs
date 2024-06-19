@@ -3,7 +3,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.EastWoodlands.GoblinChief;
+namespace Chaos.Scripting.MonsterScripts.Boss.WestWoodlands.Grunk;
 
 public sealed class GrunkEnrageScript : MonsterScriptBase
 {
