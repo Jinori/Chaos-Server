@@ -1,6 +1,5 @@
 using Chaos.Common.Definitions;
 using Chaos.Models.Menu;
-using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 
@@ -18,105 +17,68 @@ public class MoveSkillSpellScript : DialogScriptBase
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "verity_orgspellsbookone":
-            {
-                if (!TryFetchArgs<byte>(out var slot) || !source.SpellBook.TryGetObject(slot, out var spell))
-                {
-                    Subject.ReplyToUnknownInput(source);
-
-                    return;
-                }
-
-                if (!source.SpellBook.Contains(spell))
-                {
-                    Subject.Reply(source, "You don't seem to have that spell.");
-                    return;
-                }
-
-                if (!source.SpellBook.TryAddToNextSlot(PageType.Page2, spell))
-                {
-                    Subject.Reply(source, "I tried writing that in your second book but something failed.");
-                    return;
-                }
-                
-                source.SpellBook.Remove(slot);
-                Subject.Reply(source, $"Your spell {spell.Template.Name} was moved from book one to book two.");
+                MoveSpell(source, PageType.Page2, "book one", "book two");
                 break;
-            }
             case "verity_orgspellsbooktwo":
-            {
-                if (!TryFetchArgs<byte>(out var slot) || !source.SpellBook.TryGetObject(slot, out var spell))
-                {
-                    Subject.ReplyToUnknownInput(source);
-
-                    return;
-                }
-
-                if (!source.SpellBook.Contains(spell))
-                {
-                    Subject.Reply(source, "You don't seem to have that spell.");
-                    return;
-                }
-
-                if (!source.SpellBook.TryAddToNextSlot(PageType.Page1, spell))
-                {
-                    Subject.Reply(source, "I tried writing that in your first book but something failed.");
-                    return;
-                }
-                
-                source.SpellBook.Remove(slot);
-                Subject.Reply(source, $"Your spell {spell.Template.Name} was moved from book two to book one.");
+                MoveSpell(source, PageType.Page1, "book two", "book one");
                 break;
-            }
             case "verity_orgskillsbookone":
-            {
-                if (!TryFetchArgs<byte>(out var slot) || !source.SkillBook.TryGetObject(slot, out var skill))
-                {
-                    Subject.ReplyToUnknownInput(source);
-
-                    return;
-                }
-
-                if (!source.SkillBook.Contains(skill))
-                {
-                    Subject.Reply(source, "You don't seem to have that skill.");
-                    return;
-                }
-
-                if (!source.SkillBook.TryAddToNextSlot(PageType.Page2, skill))
-                {
-                    Subject.Reply(source, "I tried writing that in your second book but something failed.");
-                    return;
-                }
-                
-                source.SkillBook.Remove(slot);
-                Subject.Reply(source, $"Your skill {skill.Template.Name} was moved from book one to book two.");
+                MoveSkill(source, PageType.Page2, "book one", "book two");
                 break;
-            }
             case "verity_orgskillsbooktwo":
-            {
-                if (!TryFetchArgs<byte>(out var slot) || !source.SkillBook.TryGetObject(slot, out var skill))
-                {
-                    Subject.ReplyToUnknownInput(source);
-
-                    return;
-                }
-
-                if (!source.SkillBook.Contains(skill))
-                {
-                    Subject.Reply(source, "You don't seem to have that skill.");
-                    return;
-                }
-
-                if (!source.SkillBook.TryAddToNextSlot(PageType.Page1, skill))
-                {
-                    Subject.Reply(source, "I tried writing that in your first book but something failed.");
-                    return;
-                }
-                
-                source.SkillBook.Remove(slot);
-                Subject.Reply(source, $"Your skill {skill.Template.Name} was moved from book two to book one.");
+                MoveSkill(source, PageType.Page1, "book two", "book one");
                 break;
-            }
+            default:
+                Subject.ReplyToUnknownInput(source);
+                break;
         }
+    }
+
+    private void MoveSpell(Aisling source, PageType toPage, string fromBook, string toBook)
+    {
+        if (!TryFetchArgs<byte>(out var slot) || !source.SpellBook.TryGetObject(slot, out var spell))
+        {
+            Subject.ReplyToUnknownInput(source);
+            return;
+        }
+
+        if (!source.SpellBook.Contains(spell))
+        {
+            Subject.Reply(source, "You don't seem to have that spell.");
+            return;
+        }
+
+        if (!source.SpellBook.TryAddToNextSlot(toPage, spell))
+        {
+            Subject.Reply(source, $"I tried writing that in your {toBook} but something failed.");
+            return;
+        }
+
+        source.SpellBook.Remove(slot);
+        Subject.Reply(source, $"Your spell {spell.Template.Name} was moved from {fromBook} to {toBook}.");
+    }
+
+    private void MoveSkill(Aisling source, PageType toPage, string fromBook, string toBook)
+    {
+        if (!TryFetchArgs<byte>(out var slot) || !source.SkillBook.TryGetObject(slot, out var skill))
+        {
+            Subject.ReplyToUnknownInput(source);
+            return;
+        }
+
+        if (!source.SkillBook.Contains(skill))
+        {
+            Subject.Reply(source, "You don't seem to have that skill.");
+            return;
+        }
+
+        if (!source.SkillBook.TryAddToNextSlot(toPage, skill))
+        {
+            Subject.Reply(source, $"I tried writing that in your {toBook} but something failed.");
+            return;
+        }
+
+        source.SkillBook.Remove(slot);
+        Subject.Reply(source, $"Your skill {skill.Template.Name} was moved from {fromBook} to {toBook}.");
     }
 }
