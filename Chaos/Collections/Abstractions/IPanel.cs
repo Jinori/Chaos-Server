@@ -28,6 +28,5 @@ public interface IPanel<T> : IEnumerable<T>, IDeltaUpdatable
     bool TryGetRemove(string name, [MaybeNullWhen(false)] out T obj);
     bool TryGetRemoveByTemplateKey(string templateKey, [MaybeNullWhen(false)] out T obj);
     bool TrySwap(byte slot1, byte slot2);
-    bool TrySwapSpecial(byte slot1, byte slot2);
     void Update(byte slot, Action<T>? action = null);
 }
