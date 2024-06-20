@@ -4,9 +4,9 @@ using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.EingrenManor.SoulCollector;
+namespace Chaos.Scripting.MonsterScripts.Boss.EingrenManor.Hollow;
 
-public sealed class CreepyCassieEnrageScript : MonsterScriptBase
+public sealed class HollowEnrageScript : MonsterScriptBase
 {
     private readonly IMonsterFactory MonsterFactory;
     private bool Bonus30Applied;
@@ -20,7 +20,7 @@ public sealed class CreepyCassieEnrageScript : MonsterScriptBase
     };
 
     /// <inheritdoc />
-    public CreepyCassieEnrageScript(Monster subject, IMonsterFactory monsterFactory)
+    public HollowEnrageScript(Monster subject, IMonsterFactory monsterFactory)
         : base(subject) =>
         MonsterFactory = monsterFactory;
 
@@ -30,19 +30,23 @@ public sealed class CreepyCassieEnrageScript : MonsterScriptBase
         {
             Bonus75Applied = true;
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 15 };
+            var attrib = new Attributes
+            {
+                Hit = 10,
+                Dmg = 5
+            };
+            Subject.StatSheet.SetHealthPct(90);
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 
-            for (var i = 0; i <= 5/fo
-                    ; i++)
+            for (var i = 0; i <= 4; i++)
             {
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
-
-                var mobs = MonsterFactory.Create("EM_dreadfulDoll", Subject.MapInstance, point);
+                
+                var mobs = MonsterFactory.Create("EM_vengefulDoll", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
         }
@@ -54,12 +58,12 @@ public sealed class CreepyCassieEnrageScript : MonsterScriptBase
             var attrib = new Attributes
             {
                 Dmg = 10,
-                MagicResistance = 10,
-                Ac = 5,
+                MagicResistance = 25,
                 SkillDamagePct = 10,
-                SpellDamagePct = 10
+                Hit = 10
             };
 
+            Subject.StatSheet.SetHealthPct(60);
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }
@@ -70,16 +74,11 @@ public sealed class CreepyCassieEnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Str = 10,
                 Ac = 15,
-                AtkSpeedPct = 25,
-                Dmg = 10,
-                FlatSkillDamage = 5,
-                FlatSpellDamage = 5,
-                Hit = 20,
-                MagicResistance = 10
+                AtkSpeedPct = 25
             };
 
+            Subject.StatSheet.SetHealthPct(30);
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }

@@ -4,9 +4,9 @@ using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.BeeBoss.Bee1;
+namespace Chaos.Scripting.MonsterScripts.Boss.EingrenManor.CreepyCassie;
 
-public sealed class LostOrcEnrageScript : MonsterScriptBase
+public sealed class CreepyCassieEnrageScript : MonsterScriptBase
 {
     private readonly IMonsterFactory MonsterFactory;
     private bool Bonus30Applied;
@@ -20,7 +20,7 @@ public sealed class LostOrcEnrageScript : MonsterScriptBase
     };
 
     /// <inheritdoc />
-    public LostOrcEnrageScript(Monster subject, IMonsterFactory monsterFactory)
+    public CreepyCassieEnrageScript(Monster subject, IMonsterFactory monsterFactory)
         : base(subject) =>
         MonsterFactory = monsterFactory;
 
@@ -30,19 +30,18 @@ public sealed class LostOrcEnrageScript : MonsterScriptBase
         {
             Bonus75Applied = true;
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 10 };
-            Subject.StatSheet.SetHealthPct(90);
+            var attrib = new Attributes { AtkSpeedPct = 15 };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 
-            for (var i = 0; i <= 3; i++)
+            for (var i = 0; i <= 5; i++)
             {
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
-                
-                var mobs = MonsterFactory.Create("Astrid_goblin_guardn", Subject.MapInstance, point);
+
+                var mobs = MonsterFactory.Create("EM_dreadfulDoll", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
         }
@@ -53,13 +52,13 @@ public sealed class LostOrcEnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Dmg = 5,
-                MagicResistance = 25,
+                Dmg = 10,
+                MagicResistance = 10,
+                Ac = 5,
                 SkillDamagePct = 10,
-                Hit = 10
+                SpellDamagePct = 10
             };
 
-            Subject.StatSheet.SetHealthPct(65);
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }
@@ -70,11 +69,16 @@ public sealed class LostOrcEnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
+                Str = 10,
                 Ac = 15,
-                AtkSpeedPct = 25
+                AtkSpeedPct = 25,
+                Dmg = 10,
+                FlatSkillDamage = 5,
+                FlatSpellDamage = 5,
+                Hit = 20,
+                MagicResistance = 10
             };
 
-            Subject.StatSheet.SetHealthPct(40);
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }
