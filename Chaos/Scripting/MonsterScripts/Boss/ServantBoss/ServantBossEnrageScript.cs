@@ -65,8 +65,8 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
 
                     foreach (var target in Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 10))
                     {
-                        target.TryUseSpell(SpellToCast2);
-                        target.TryUseSpell(SpellToCast);
+                        Subject.TryUseSpell(SpellToCast2, target.Id);
+                        Subject.TryUseSpell(SpellToCast, target.Id);
                     }
 
                     break;
