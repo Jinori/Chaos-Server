@@ -7,7 +7,7 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripting.ReactorTileScripts;
+namespace Chaos.Scripting.ReactorTileScripts.WerewolfQuest;
 
 public class PietWerewolfWarpScript : ConfigurableReactorTileScriptBase
 {

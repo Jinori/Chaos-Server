@@ -89,7 +89,7 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Dmg = 10,
+                Dmg = 5,
                 MagicResistance = 10,
                 SkillDamagePct = 5,
                 SpellDamagePct = 5
@@ -107,15 +107,15 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
             {
                 Int = 10,
                 Str = 10,
-                Ac = -20,
-                AtkSpeedPct = 20,
-                Dmg = 15,
+                Ac = -10,
+                AtkSpeedPct = 10,
+                Dmg = 8,
                 FlatSkillDamage = 5,
                 FlatSpellDamage = 5,
                 Hit = 20,
                 MagicResistance = 10,
-                SkillDamagePct = 10,
-                SpellDamagePct = 10
+                SkillDamagePct = 5,
+                SpellDamagePct = 5
             };
 
             Subject.StatSheet.AddBonus(attrib);

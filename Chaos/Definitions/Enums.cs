@@ -95,6 +95,7 @@ public enum Hobbies
     None = 0,
     Fishing = 1,
     Cooking = 1 << 2,
+    Foraging = 1 << 3,
 }
 
 public enum Religion
@@ -1709,6 +1710,7 @@ public enum MainstoryFlags
     CompletedArtifact2 = 1 << 3,
     CompletedArtifact3 = 1 << 4,
     CompletedArtifact4 = 1 << 5,
+    CompletedFloor3 = 1 << 6,
 }
 
 public enum SupplyLouresStage

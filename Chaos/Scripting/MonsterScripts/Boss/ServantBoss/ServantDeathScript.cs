@@ -76,6 +76,7 @@ public class ServantDeathScript : MonsterScriptBase
             foreach (var target in rewardTargets)
             {
                 target.Trackers.Enums.Set(MainStoryEnums.DefeatedServant);
+                target.Trackers.Flags.AddFlag(MainstoryFlags.CompletedFloor3);
                 target.SendOrangeBarMessage("The servant collapses. Return to Goddess Miraelis");
             }
         }

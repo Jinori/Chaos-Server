@@ -79,9 +79,35 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
                 }
-            }
 
                 break;
+            }
+                
+            case "goran_initial":
+            {
+                if (!source.Trackers.Flags.HasFlag(Hobbies.Fishing))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "foraging_starthobby",
+                        OptionText = "I want to forage!"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Add(option);
+                }
+
+                break;
+            }
+                
+            case "foraging_accepthobby":
+            {
+                source.Trackers.Flags.AddFlag(Hobbies.Foraging);
+                source.SendOrangeBarMessage("You know how to Forage! Grab a Cloth Glove and kits from Goran!");
+
+                return;
+            }
+            
             case "fishing_accepthobby":
             {
                 source.Trackers.Flags.AddFlag(Hobbies.Fishing);
