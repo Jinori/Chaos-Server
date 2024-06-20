@@ -46,7 +46,7 @@ public class MasterWerewolfMerchantScript : MerchantScriptBase
             .Any(x => x.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard)))
             Subject.MasterWerewolfState = MasterWerewolfState.SeenByAislingWithEnum;
 
-        Subject.PietVillagerState = PietVillagerScript.PietVillagerState.Wandering;
+        Subject.MasterWerewolfState = MasterWerewolfState.Wandering;
 
         ActionTimer.Reset();
     }

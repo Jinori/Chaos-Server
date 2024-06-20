@@ -13,6 +13,7 @@ using Chaos.Pathfinding.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MerchantScripts;
 using Chaos.Scripting.MerchantScripts.Abstractions;
+using Chaos.Scripting.MerchantScripts.Mainstory.Summoner;
 using Chaos.Scripting.MerchantScripts.Piet;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Other.Abstractions;
@@ -40,6 +41,8 @@ public sealed class Merchant : Creature,
     public PietWerewolfMerchantScript.PietWerewolfState PietWerewolfState { get; set; }
     
     public MasterWerewolfMerchantScript.MasterWerewolfState MasterWerewolfState { get; set; }
+    
+    public SummonerMerchantScript.SummonerState SummonerState { get; set; }
     /// <inheritdoc />
     public ICollection<Item> ItemsForSale { get; }
 

@@ -3,6 +3,7 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
+using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
@@ -12,6 +13,7 @@ using Chaos.Scripting.DialogScripts.Quests.PFQuest;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Storage.Abstractions;
+using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.LynithPirateShip;
 
@@ -158,6 +160,16 @@ public class PirateShipOverrunScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, 750000);
                 source.Trackers.Flags.AddFlag(AvailableCloaks.Blue);
                 source.SendOrangeBarMessage("You unlocked the Blue Cloak for mounts!");
+                
+                source.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        "Protected Lynith Pirate Ship from Sea Monsters",
+                        "pirateshipoverrun",
+                        MarkIcon.Victory,
+                        MarkColor.Blue,
+                        1,
+                        GameTime.Now));
+
                     
                 Logger.WithTopics(
                         Topics.Entities.Aisling,

@@ -1640,8 +1640,9 @@ public enum MainStoryEnums
     SearchForSummoner = 23,
     FoundSummoner = 24,
     DefeatedServant = 25,
-    FoundSummoner2 = 26,
-    KilledSummoner = 27,
+    SearchForSummoner2 = 26,
+    FoundSummoner2 = 27,
+    KilledSummoner = 28,
     CompletedPreMasterMainStory = 28,
 }
 

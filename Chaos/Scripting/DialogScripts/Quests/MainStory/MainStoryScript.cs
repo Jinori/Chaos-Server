@@ -195,13 +195,6 @@ public class MainStoryScript(
             #region Miraelis
             case "mainstory_miraelis_initial":
             {
-
-                if (source.Trackers.Enums.HasValue(MainStoryEnums.CompletedTrials))
-                {
-                    Subject.Reply(source, "I haven't discovered much more since the last time we spoke Aisling. We are working on it, I promise. Come see me again soon.");
-                    return;
-                }
-
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedFourthTrial))
                 {
                     Subject.Reply(source, "Skip", "mainstory_miraelis_summonerinitial1");
@@ -295,6 +288,7 @@ public class MainStoryScript(
             case "mainstory_miraelis_summonerinitial1":
             {
                 source.Trackers.Enums.Set(MainStoryEnums.CompletedTrials);
+                source.Trackers.TimedEvents.AddEvent("mainstorycd1", TimeSpan.FromHours(1), true);
                 return;
             }
 
@@ -392,7 +386,7 @@ public class MainStoryScript(
                 var animate = new Animation()
                 {
                     AnimationSpeed = 200,
-                    TargetAnimation = 14
+                    TargetAnimation = 937
                 };
                 
                 var miraelis = Subject.DialogSource as Merchant;

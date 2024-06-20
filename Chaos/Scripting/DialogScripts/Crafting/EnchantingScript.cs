@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
@@ -301,7 +302,7 @@ public class EnchantingScript : DialogScriptBase
     //ShowItems in a Shop Window to the player
     private void OnDisplayingShowItems(Aisling source)
     {
-        if (source.IsAdmin)
+        if (source.IsGodModeEnabled())
             foreach (var recipe in CraftingRequirements.EnchantingRequirements)
             {
                 var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);

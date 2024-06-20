@@ -153,21 +153,15 @@ public class PietWerewolfScript : DialogScriptBase
                             ExperienceDistributionScript.GiveExp(source, 600000);
                             source.TryGiveGold(75000);
                             source.TryGiveGamePoints(10);
-
-                            if (IntegerRandomizer.RollChance(15))
-                            {
-                                source.Legend.AddOrAccumulate(
+                            
+                                source.Legend.AddUnique(
                                     new LegendMark(
-                                        "Loved by Piet Mundanes",
-                                        "pietLoved",
-                                        MarkIcon.Heart,
+                                        "Learned to control the Werewolf Curse",
+                                        "pietwerewolf",
+                                        MarkIcon.Yay,
                                         MarkColor.Blue,
                                         1,
                                         GameTime.Now));
-
-                                source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
-                                    "You received a unique legend mark!");
-                            }
 
                             break;
                         }

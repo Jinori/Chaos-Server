@@ -1,4 +1,6 @@
+using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
@@ -9,6 +11,7 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
+using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.UndineFields;
 
@@ -107,6 +110,15 @@ public class UndineFieldsScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, 750000);
                     source.Trackers.Flags.AddFlag(AvailableCloaks.Red);
                     source.SendOrangeBarMessage("You've unlocked the Red Cloak for mounts!");
+                    
+                    source.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Challenged the Carnun in his arena and declared Victory.",
+                            "carnunwon",
+                            MarkIcon.Victory,
+                            MarkColor.Blue,
+                            1,
+                            GameTime.Now));
                     
                     Logger.WithTopics(
                             Topics.Entities.Aisling,
