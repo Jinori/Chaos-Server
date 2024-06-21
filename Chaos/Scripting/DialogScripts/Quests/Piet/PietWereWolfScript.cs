@@ -38,6 +38,14 @@ public class PietWerewolfScript : DialogScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
+            case "toby_initial":
+            {
+                if (source.Trackers.Enums.HasValue(WerewolfOfPiet.KilledandGotCursed))
+                    Subject.Reply(source, "Thank you Aisling for knocking me out of Werewolf Form! I tried to cure or control it but I just can't. Appie says there is no cure! I'm sorry you're now effected with the curse, go speak to Appie, the Piet Magic Shop owner, he may beable to help you.");
+                
+                return;
+            }
+            
             case "appie_initial":
             {
                 if (!source.Trackers.Enums.HasValue(WerewolfOfPiet.KilledWerewolf) && 

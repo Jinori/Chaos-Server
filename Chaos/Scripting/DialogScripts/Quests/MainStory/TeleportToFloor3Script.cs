@@ -55,7 +55,11 @@ public class TeleportToFloor3Script : DialogScriptBase
     }
 
     private bool IsGroupEligible(Aisling source) =>
-        source.Group != null && !source.Group.Any(x => !x.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3) || !x.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner));
+        source.Group != null && source.Group.All(x =>
+            x.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3) ||
+            (x.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner) ||
+             x.Trackers.Enums.HasValue(MainStoryEnums.RetryServant) &&
+             x.Inventory.HasCount("True Elemental Artifact", 1)));
     private bool IsGroupValid(Aisling source) =>
         source.Group != null && !source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source));
 
@@ -63,14 +67,17 @@ public class TeleportToFloor3Script : DialogScriptBase
         source.Group?.Where(x => x.WithinRange(new Point(source.X, source.Y))).ToList();
 
     private bool IsGroupWithinLevelRange(Aisling source, List<Aisling> group) =>
-        group.All(member => member.WithinLevelRange(source));
+        group.All(member => member.WithinLevelRange(source) && member.UserStatSheet.Level > 96);
 
-    private void SendGroupInvalidMessage(Aisling source) =>
-        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure you are grouped or your group is near you.");
+    private void SendGroupInvalidMessage(Aisling source)
+    {
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Exploring the third floor requires a group.");
+        Subject.Reply(source, "You have no group members nearby.");
+    }
 
     private void SendNoGroupMembersMessage(Aisling source)
     {
-        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Walking this beach requires a group.");
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Exploring the third floor requires a group.");
         Subject.Reply(source, "You have no group members nearby.");
     }
 
@@ -83,7 +90,7 @@ public class TeleportToFloor3Script : DialogScriptBase
     private void SendGroupEligibleMessage(Aisling source)
     {
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Not all group members are on this quest or completed it.");
-        Subject.Reply(source, "Not all of your members are ready to explore the third floor of the manor.");
+        Subject.Reply(source, "Not all of your members are ready to explore the third floor of the manor. Members must be on same part of quest and have the True Elemental Artifact or have completed Eingren Manor Floor 3 already.");
     }
 
     private void WarpSourceBack(Aisling source)
@@ -94,9 +101,8 @@ public class TeleportToFloor3Script : DialogScriptBase
 
     private void TeleportGroupTo3RdFloor(Aisling source, List<Aisling> group)
     {
-        const string MAP_INSTANCE_KEY = "manor_floor_3";
         var rectangle = new Rectangle(35, 59, 3, 3);
-        var mapInstance = SimpleCache.Get<MapInstance>(MAP_INSTANCE_KEY);
+        var mapInstance = SimpleCache.Get<MapInstance>("manor_floor_3");
 
         foreach (var member in group)
         {
@@ -109,6 +115,13 @@ public class TeleportToFloor3Script : DialogScriptBase
             }
             while (!mapInstance.IsWalkable(point, member.Type));
 
+            if (member.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner) ||
+                member.Trackers.Enums.HasValue(MainStoryEnums.RetryServant))
+            {
+                member.Trackers.Enums.Set(MainStoryEnums.Entered3rdFloor);
+                member.Trackers.TimedEvents.AddEvent("enterfloor3", TimeSpan.FromHours(8), true);
+            }
+            
             member.TraverseMap(mapInstance, point);
         }
     }

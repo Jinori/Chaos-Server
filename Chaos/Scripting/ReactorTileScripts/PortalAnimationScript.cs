@@ -1,19 +1,17 @@
-using Chaos.Collections;
-using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
-using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.ReactorTileScripts.MainStoryQuest;
+namespace Chaos.Scripting.ReactorTileScripts;
 
-public class EingrenEscapePortalScript : ReactorTileScriptBase
+public class PortalAnimationScript : ReactorTileScriptBase
 {
-    private readonly ISimpleCache SimpleCache;
+    protected IIntervalTimer? Timer { get; set; }
     protected IIntervalTimer AnimationTimer { get; set; }
+
     protected Animation PortalAnimation { get; } = new()
     {
         AnimationSpeed = 145,
@@ -21,24 +19,20 @@ public class EingrenEscapePortalScript : ReactorTileScriptBase
     };
 
     /// <inheritdoc />
-    public EingrenEscapePortalScript(ReactorTile subject, ISimpleCache simpleCache)
+    public PortalAnimationScript(ReactorTile subject)
         : base(subject)
     {
-        SimpleCache = simpleCache;
         AnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
+        Timer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
     }
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
     {
-        if (source is not Aisling)
-            return;
-        
-        var targetMap = SimpleCache.Get<MapInstance>("manor_main_hall");
-        var rectangle = new Rectangle(13, 2, 2, 3);
-        var point = rectangle.GetRandomPoint();
-            
-        source.TraverseMap(targetMap, point);
+        if (source is Merchant)
+        {
+            Subject.MapInstance.RemoveEntity(source);
+        }
     }
 
     /// <inheritdoc />
@@ -53,6 +47,14 @@ public class EingrenEscapePortalScript : ReactorTileScriptBase
 
             foreach (var aisling in aislings)
                 aisling.MapInstance.ShowAnimation(PortalAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y)));
+        }
+
+        if (Timer != null)
+        {
+            Timer.Update(delta);
+
+            if (Timer.IntervalElapsed)
+                Map.RemoveEntity(Subject);
         }
     }
 }

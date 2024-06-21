@@ -1639,12 +1639,14 @@ public enum MainStoryEnums
     FinishedFourthTrial = 21,
     CompletedTrials = 22,
     SearchForSummoner = 23,
-    FoundSummoner = 24,
-    DefeatedServant = 25,
-    SearchForSummoner2 = 26,
-    FoundSummoner2 = 27,
-    KilledSummoner = 28,
-    CompletedPreMasterMainStory = 28,
+    Entered3rdFloor = 24,
+    RetryServant = 25,
+    DefeatedServant = 26,
+    CompletedServant = 27,
+    SearchForSummoner2 = 28,
+    FoundSummoner2 = 29,
+    KilledSummoner = 30,
+    CompletedPreMasterMainStory = 31,
 }
 
 public enum CombatTrial
@@ -1706,11 +1708,12 @@ public enum MainstoryFlags
 {
     None,
     FoundMysteriousArtifact = 1 << 1,
-    CompletedArtifact1 = 1 << 2,
-    CompletedArtifact2 = 1 << 3,
-    CompletedArtifact3 = 1 << 4,
-    CompletedArtifact4 = 1 << 5,
-    CompletedFloor3 = 1 << 6,
+    AccessGodsRealm = 1 << 2,
+    CompletedArtifact1 = 1 << 3,
+    CompletedArtifact2 = 1 << 4,
+    CompletedArtifact3 = 1 << 5,
+    CompletedArtifact4 = 1 << 6,
+    CompletedFloor3 = 1 << 7,
 }
 
 public enum SupplyLouresStage

@@ -18,15 +18,9 @@ public class ForagingSpotScript(ReactorTile subject, IEffectFactory effectFactor
 
     private void HandleAisling(Aisling aisling)
     {
-        if (!IsUsingFishingPole(aisling))
+        if (!IsUsingForagingGlove(aisling))
         {
             aisling.SendOrangeBarMessage("If you plan on foraging, a glove is needed.");
-            return;
-        }
-
-        if (!HasBait(aisling))
-        {
-            aisling.SendOrangeBarMessage("Your basic foraging kit breaks.");
             return;
         }
 
@@ -34,13 +28,11 @@ public class ForagingSpotScript(ReactorTile subject, IEffectFactory effectFactor
             StartFishing(aisling);
     }
 
-    private bool IsUsingFishingPole(Aisling aisling)
+    private bool IsUsingForagingGlove(Aisling aisling)
     {
         var weaponTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
-        return weaponTemplateKey?.EndsWith("Glove", StringComparison.Ordinal) == true;
+        return weaponTemplateKey?.EndsWith("glove", StringComparison.Ordinal) == true;
     }
-
-    private bool HasBait(Aisling aisling) => aisling.Inventory.HasCount("Basic Foraging Kit", 1);
 
     private bool AlreadyFishing(Aisling aisling) => aisling.Effects.Contains("Foraging");
 

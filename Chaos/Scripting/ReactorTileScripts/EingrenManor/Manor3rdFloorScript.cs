@@ -26,9 +26,11 @@ public class Manor3RdFloorScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if (!source.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner))
+        if ((!aisling.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner) && 
+             !aisling.Trackers.Enums.HasValue(MainStoryEnums.RetryServant)) || 
+            !aisling.Inventory.HasCount("True Elemental Artifact", 1)) 
         {
-            aisling.SendOrangeBarMessage("The stairs seem unstable, you best turn around.");
+            aisling.SendOrangeBarMessage("The stairs seems to have a seal, you best turn around.");
             var point2 = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point2);
             return;

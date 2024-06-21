@@ -28,7 +28,7 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
     };
 
     /// <inheritdoc />
-    public ServantBossEnrageScript(Monster subject, ISpellFactory spellFactory, ISkillFactory skillFactory)
+    public ServantBossEnrageScript(Monster subject, ISpellFactory spellFactory)
         : base(subject)
     {
         var spellFactory1 = spellFactory;
@@ -51,17 +51,17 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
             switch (roll)
             {
                 case < 40:
-                    Subject.Say("Feel my power!");
+                    Subject.Say("Master is going to Cthonic Remains!");
                     Subject.TryUseSpell(SpellToCast);
 
                     break;
                 case < 75:
-                    Subject.Say("Die you fool!");
+                    Subject.Say("He will rule the world with the creants!");
                     Subject.TryUseSpell(SpellToCast1);
 
                     break;
                 case < 101:
-                    Subject.Say("Your end is near!");
+                    Subject.Say("Nothing will stop master from summoning them!");
 
                     foreach (var target in Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 10))
                     {

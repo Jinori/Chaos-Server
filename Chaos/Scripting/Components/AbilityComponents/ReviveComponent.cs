@@ -31,7 +31,7 @@ public class ReviveComponent : IComponent
                 if ((context.Source.Id == target.Id) && !target.IsAlive)
                 {
                     
-                    target.Trackers.TimedEvents.AddEvent("revivedrecently", TimeSpan.FromMinutes(30));
+                    target.Trackers.TimedEvents.AddEvent("revivedrecently", TimeSpan.FromMinutes(30), true);
                     target.IsDead = false;
                     target.StatSheet.SetHealthPct(25);
                     target.StatSheet.SetManaPct(25);

@@ -1,14 +1,10 @@
-using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
-using Chaos.Models.Legend;
 using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Servers.Options;
-using Chaos.Time;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.ServantBoss;
 
@@ -16,13 +12,11 @@ namespace Chaos.Scripting.MonsterScripts.Boss.ServantBoss;
 public class ServantDeathScript : MonsterScriptBase
 {
     protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
-    private readonly IItemFactory ItemFactory;
 
     /// <inheritdoc />
-    public ServantDeathScript(Monster subject, IItemFactory itemFactory)
+    public ServantDeathScript(Monster subject)
         : base(subject)
     {
-        ItemFactory = itemFactory;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
@@ -73,11 +67,24 @@ public class ServantDeathScript : MonsterScriptBase
 
             ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
 
-            foreach (var target in rewardTargets)
+            var aislings = Subject.MapInstance.GetEntities<Aisling>().Where(x => x.Trackers.Enums.HasValue(MainStoryEnums.Entered3rdFloor) || x.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3)).ToList();
+
+            foreach (var aisling in aislings)
             {
-                target.Trackers.Enums.Set(MainStoryEnums.DefeatedServant);
-                target.Trackers.Flags.AddFlag(MainstoryFlags.CompletedFloor3);
-                target.SendOrangeBarMessage("The servant collapses. Return to Goddess Miraelis");
+                if (aisling.Trackers.Enums.HasValue(MainStoryEnums.Entered3rdFloor))
+                {
+                    aisling.Trackers.Enums.Set(MainStoryEnums.DefeatedServant);
+                    aisling.Trackers.Flags.AddFlag(MainstoryFlags.CompletedFloor3);
+                    aisling.Inventory.RemoveQuantityByTemplateKey("trueelementalartifact", 1);
+                    aisling.SendOrangeBarMessage("The servant collapses. Return to Goddess Miraelis");
+                }
+                else if (aisling.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3))
+                {
+                    aisling.SendOrangeBarMessage("Thank you for helping others.");
+                    aisling.TryGiveGamePoints(25);
+                    aisling.TryGiveGold(100000);
+                    ExperienceDistributionScript.GiveExp(aisling, 350000);
+                }
             }
         }
     }

@@ -111,31 +111,7 @@ public class MainStoryScript(
                         Subject.Options.Insert(0, option);
                 }
 
-                if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact1)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact1)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact2)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact2)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact3)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact3)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact4)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact4)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedAssemble)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.CompletedArtifactsHunt)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedFirstTrial)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedFirstTrial)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedSecondTrial)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedSecondTrial)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedThirdTrial)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedThirdTrial)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedFourthTrial)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedFourthTrial)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.CompletedTrials)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner2)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.DefeatedServant)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.KilledSummoner)
-                    || source.Trackers.Enums.HasValue(MainStoryEnums.CompletedPreMasterMainStory))
+                if (source.Trackers.Flags.HasFlag(MainstoryFlags.AccessGodsRealm))
                 {
                     var option = new DialogOption
                     {
@@ -281,6 +257,12 @@ public class MainStoryScript(
                 {
                     Subject.Reply(source,
                         "Skip", "mainstory_miraelis_finisheda1");
+                    return;
+                }
+
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.SpokeToZephyr))
+                {
+                    Subject.Reply(source, "Skip", "mainstory_miraelis_initial11");
                 }
                 break;
             }
@@ -335,6 +317,7 @@ public class MainStoryScript(
             
             case "mainstory_miraelis_initial10":
             {
+                source.Trackers.Flags.AddFlag(MainstoryFlags.AccessGodsRealm);
                 source.Trackers.Enums.Set(MainStoryEnums.StartedArtifact1);
                 source.Inventory.Remove("Mysterious Artifact");
             }

@@ -1,5 +1,6 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Extensions;
 using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
@@ -17,7 +18,7 @@ public class ForagingEffect(IItemFactory itemFactory) : ContinuousAnimationEffec
 {
     private const int FORAGE_GATHER_CHANCE = 2;
     private const byte FORAGE_ICON = 95;
-    private const int FORAGE_KIT_BREAK = 5;
+    private const int DAMAGE_GLOVE = 5;
     
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
@@ -49,22 +50,17 @@ public class ForagingEffect(IItemFactory itemFactory) : ContinuousAnimationEffec
         new KeyValuePair<string, decimal>("sparkflower", 5),
     ];
 
-    private readonly List<string> ForagingKitBreakMessages =
+    private readonly List<string> GloveBreakMessages =
     [
-        "The scissors break in your kit",
-        "Your Kit breaks!",
-        "Your kit is worn out and broken.",
-        "The tools in this kit are dull.",
-        "This kit cannot be used anymore.",
-        "Your kit has given out.",
-        "Best not to use that kit anymore.",
-        "That kit wasn't worth a damn.",
-        "Kit broken from wear and tear.",
-        "Some of those tools rusted out.",
-        "That bush breaks your scissors in half.",
-        "The tools just weren't sharp enough anymore.",
-        "That kit is worn out.",
-        "The tool you were using breaks from that kit.",
+        "Your glove gets a little bit worn.",
+        "That bush tore a small hole in your glove.",
+        "Glove takes a little damage",
+        "Your glove is torn slightly from the bush.",
+        "The bush damages your glove slightly.",
+        "You feel your glove wearing out.",
+        "You notice your glove is breaking slowly.",
+        "A little tear happens on your glove.",
+        "Glove fabric experiences a tear."
     ];
 
     private static readonly Dictionary<string, double> ForagingExperienceMultipliers = new()
@@ -75,7 +71,6 @@ public class ForagingEffect(IItemFactory itemFactory) : ContinuousAnimationEffec
         { "grape", 0.005 },
         { "greengrapes", 0.007 },
         { "strawberry", 0.007 },
-        { "tangerines", 0.007 },
         { "tangerines", 0.007 },
         { "carrot", 0.005 },
         { "rambutan", 0.01 },
@@ -123,18 +118,35 @@ public class ForagingEffect(IItemFactory itemFactory) : ContinuousAnimationEffec
     var aisling = AislingSubject!;
     var playerLocation = new Point(Subject.X, Subject.Y);
 
-    if ((ForagingSpots.Count == 0) || !ForagingSpots.Contains(playerLocation) || !aisling.Inventory.HasCount("Basic Foraging Kit", 1))
+    if ((ForagingSpots.Count == 0) || !ForagingSpots.Contains(playerLocation) || aisling.Equipment[EquipmentSlot.Weapon]?.Template.Name != ("Cloth Glove"))
     {
         Subject.Effects.Terminate("Foraging");
         return;
     }
 
-    if (IntegerRandomizer.RollChance(FORAGE_KIT_BREAK))
+    if (IntegerRandomizer.RollChance(DAMAGE_GLOVE))
     {
-        var randomMessage = ForagingKitBreakMessages[Random.Shared.Next(ForagingKitBreakMessages.Count)];
-        
+        var randomMessage = GloveBreakMessages[Random.Shared.Next(GloveBreakMessages.Count)];
+        var equipment = aisling.Equipment;
+
+        foreach (var item in equipment)
+        {
+            if (aisling.IsGodModeEnabled())
+                continue;
+            
+            if (!item.DisplayName.Contains("Glove"))
+                return;
+            
+                // Reduce the item's durability by 20, ensuring it does not drop below 0
+                for (var i = 0; i < 5; i++)
+                {
+                    if (item.CurrentDurability >= 1)
+                        item.CurrentDurability--;
+                    else
+                        break; // Stop reducing if durability reaches 0
+                }
+        }
         aisling.SendOrangeBarMessage(randomMessage);
-        aisling.Inventory.RemoveQuantity("Basic Foraging Kit", 1);
     }
     
     if (!IntegerRandomizer.RollChance(FORAGE_GATHER_CHANCE))
@@ -152,14 +164,11 @@ public class ForagingEffect(IItemFactory itemFactory) : ContinuousAnimationEffec
         ExperienceDistributionScript.GiveExp(aisling, expGain);
         aisling.SendOrangeBarMessage($"You gather a {herb.DisplayName} and gained {expGain} experience!");
         
-        // Remove fishing bait
-        aisling.Inventory.RemoveQuantity("Basic Foraging Kit", 1);
         UpdatePlayerLegend(aisling);
     }
     else
     {
         aisling.SendOrangeBarMessage($"You gathered a {herb.DisplayName}!");
-        aisling.Inventory.RemoveQuantity("Basic Foraging Kit", 1);
     }
 }
 
@@ -179,8 +188,8 @@ private int CalculateExperienceGain(Aisling source, int tnl, string fishName)
 private void UpdatePlayerLegend(Aisling source) =>
     source.Legend.AddOrAccumulate(
         new LegendMark(
-            "Gathered a plant",
-            "plant",
+            "Foraged a bush",
+            "forage",
             MarkIcon.Yay,
             MarkColor.White,
             1,

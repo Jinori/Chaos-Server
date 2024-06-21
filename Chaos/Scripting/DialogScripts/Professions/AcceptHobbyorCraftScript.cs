@@ -85,7 +85,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 
             case "goran_initial":
             {
-                if (!source.Trackers.Flags.HasFlag(Hobbies.Fishing))
+                if (!source.Trackers.Flags.HasFlag(Hobbies.Foraging))
                 {
                     var option = new DialogOption
                     {
@@ -103,7 +103,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
             case "foraging_accepthobby":
             {
                 source.Trackers.Flags.AddFlag(Hobbies.Foraging);
-                source.SendOrangeBarMessage("You know how to Forage! Grab a Cloth Glove and kits from Goran!");
+                source.SendOrangeBarMessage("You know how to Forage! Grab a Cloth Glove from Goran!");
 
                 return;
             }

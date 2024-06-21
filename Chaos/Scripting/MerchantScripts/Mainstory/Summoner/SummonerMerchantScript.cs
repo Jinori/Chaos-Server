@@ -1,8 +1,6 @@
 using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Extensions;
-using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.MerchantScripts.Abstractions;
@@ -17,7 +15,6 @@ public class SummonerMerchantScript : MerchantScriptBase
     public enum SummonerState
     {
         Idle,
-        Wandering,
         SeenByAislingWithEnum,
         Escape
     }
@@ -25,19 +22,25 @@ public class SummonerMerchantScript : MerchantScriptBase
     private readonly IIntervalTimer ActionTimer;
     private readonly IIntervalTimer DialogueTimer;
     private readonly IIntervalTimer WalkTimer;
+    private readonly IIntervalTimer PortalClose;
     private readonly IMonsterFactory MonsterFactory;
+    private readonly IReactorTileFactory ReactorTileFactory;
+    private Point EscapePoint;
+    private Point ReactorPoint;
 
     /// <inheritdoc />
-    public SummonerMerchantScript(Merchant subject, IMonsterFactory monsterFactory, Point point)
+    public SummonerMerchantScript(Merchant subject, IMonsterFactory monsterFactory, IReactorTileFactory reactorTileFactory)
         : base(subject)
     {
         MonsterFactory = monsterFactory;
+        ReactorTileFactory = reactorTileFactory;
+        PortalClose = new IntervalTimer(TimeSpan.FromSeconds(2), false);
         DialogueTimer = new RandomizedIntervalTimer(
             TimeSpan.FromSeconds(3),
             20,
             RandomizationType.Positive,
             false);
-        WalkTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
+        WalkTimer = new IntervalTimer(TimeSpan.FromMilliseconds(800), false);
         ActionTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
         Subject.SummonerState = SummonerState.Idle;
     }
@@ -46,14 +49,14 @@ public class SummonerMerchantScript : MerchantScriptBase
     public bool HasSaidDialog1;
     public bool HasSaidDialog2;
     public bool HasSaidDialog3;
+    public bool HasEscapePoint;
+    public bool PortalOpened;
 
     private void HandleIdleState()
     {
         if (Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject)
-            .Any(x => x.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner)))
+            .Any(x => x.Trackers.Enums.HasValue(MainStoryEnums.Entered3rdFloor) || x.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3)))
             Subject.SummonerState = SummonerState.SeenByAislingWithEnum;
-
-        Subject.SummonerState = SummonerState.Wandering;
 
         ActionTimer.Reset();
     }
@@ -61,51 +64,40 @@ public class SummonerMerchantScript : MerchantScriptBase
     private void HandleSummonerEscape(TimeSpan delta)
     {
         WalkTimer.Update(delta);
+        PortalClose.Update(delta);
 
-        if (!WalkTimer.IntervalElapsed)
-            return;
-        
-        var escapePoints = new Point[]
+        if (WalkTimer.IntervalElapsed)
         {
-            new Point(181, 141),
-            new Point(26, 195),
-            new Point(195, 19)
-        };
-
-        var closestPoint = escapePoints.OrderBy(point2 => point2.WithinRange(Subject)).FirstOrDefault();
-
-        if (!Subject.WithinRange(closestPoint, 2))
-            Subject.Pathfind(closestPoint);
-        else
-        {
-            var ani = new Animation
+            if (!HasEscapePoint)
             {
-                TargetAnimation = 78,
-                AnimationSpeed = 300
-            };
-            Subject.Animate(ani);
-            Subject.MapInstance.RemoveEntity(Subject);
+                EscapePoint = new Point(Subject.X - 4, Subject.Y - 4); // Set the escape point three spaces away
+                HasEscapePoint = true;
+            }
+
+            Subject.Pathfind(EscapePoint);
+
+            if (Subject.WithinRange(EscapePoint, 1))
+            {
+                if (!PortalOpened)
+                {
+                    ReactorPoint = new Point(Subject.X - 2, Subject.Y - 2);
+                    var reactortile = ReactorTileFactory.Create("portalanimation", Subject.MapInstance, ReactorPoint);
+                    Subject.MapInstance.SimpleAdd(reactortile);
+                    PortalOpened = true;
+                }
+                else if (PortalOpened)
+                {
+                    PortalClose.Update(delta);
+                    Subject.Pathfind(ReactorPoint);
+                }
+            }
+
+            if (PortalOpened && Subject.WithinRange(ReactorPoint, 2))
+            {
+                Subject.MapInstance.RemoveEntity(Subject);
+            }
         }
     }
-
-    private void HandleWanderingState()
-    {
-        Subject.Wander();
-
-        if (Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject)
-            .Any(x => x.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner)))
-            Subject.SummonerState = SummonerState.SeenByAislingWithEnum;
-
-        if (Subject.WanderTimer.IntervalElapsed && IntegerRandomizer.RollChance(10))
-        {
-            Subject.SummonerState = SummonerState.Idle;
-            ActionTimer.Reset();
-        }
-
-        Subject.WanderTimer.Reset();
-    }
-
-    private static string PickRandom(ICollection<string> phrases) => phrases.PickRandom();
 
     private void HandleSummonerConversation(TimeSpan delta)
     {
@@ -115,30 +107,26 @@ public class SummonerMerchantScript : MerchantScriptBase
         
         if (!HasSaidGreeting)
         {
-            Subject.Turn(Direction.Up);
-            var greeting = string.Format(PickRandom(Greeting));
-            Subject.Say(greeting);
+            Subject.Say("You are very bold Aislings. Coming into my home...");
             HasSaidGreeting = true;
             DialogueTimer.Reset();
         }
         else if (!HasSaidDialog1 && DialogueTimer.IntervalElapsed)
         {
-            var dialog1 = PickRandom(Dialog1);
-            Subject.Say(dialog1);
+            Subject.Say("This world is mine now. Return to which you came.");
             HasSaidDialog1 = true;
             DialogueTimer.Reset();
         }
         else if (!HasSaidDialog2 && DialogueTimer.IntervalElapsed)
         {
-            var greeting = string.Format(PickRandom(Dialog2));
-            Subject.Say(greeting);
+            Subject.Say("I have other things to tend to, Servant! Get them!");
             HasSaidDialog2 = true;
             DialogueTimer.Reset();
         }
         else if (!HasSaidDialog3 && DialogueTimer.IntervalElapsed)
         {
             var aislings = Subject.MapInstance.GetEntities<Aisling>()
-                .Where(x => x.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner)).ToList();
+                .Where(x => x.Trackers.Enums.HasValue(MainStoryEnums.Entered3rdFloor) || x.Trackers.Enums.HasValue(MainstoryFlags.CompletedFloor3)).ToList();
             foreach (var aisling in aislings)
             {
                 aisling.SendOrangeBarMessage("Summoner Kades summons his Servant and escapes.");
@@ -150,8 +138,8 @@ public class SummonerMerchantScript : MerchantScriptBase
                 AnimationSpeed = 300
             };
             
-            var servantpoint = new Point(Subject.X, Subject.Y);
-            var servant = MonsterFactory.Create("servant", Subject.MapInstance, servantpoint);
+            var servantpoint = new Point(Subject.X - 2, Subject.Y + 4);
+            var servant = MonsterFactory.Create("em_servant", Subject.MapInstance, servantpoint);
             Subject.MapInstance.AddEntity(servant, servantpoint);
             servant.Animate(ani);
 
@@ -174,12 +162,6 @@ public class SummonerMerchantScript : MerchantScriptBase
                 break;
             }
 
-            case SummonerState.Wandering:
-            {
-                HandleWanderingState();
-                break;
-            }
-
             case SummonerState.SeenByAislingWithEnum:
             {
                 HandleSummonerConversation(delta);
@@ -192,18 +174,4 @@ public class SummonerMerchantScript : MerchantScriptBase
             }
         }
     }
-    private static readonly List<string> Greeting =
-    [
-        "You are very bold Aislings. Coming into my home threatening me...",
-    ];
-
-    private static readonly List<string> Dialog1 =
-    [
-        "This world is mine now. There's nothing you can do to stop me.",
-    ];
-
-    private static readonly List<string> Dialog2 =
-    [
-        "I have other things to tend to, Servant! Get them!"
-    ];
 }
