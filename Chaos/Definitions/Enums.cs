@@ -1375,6 +1375,13 @@ public enum WestWoodlandsKillQuestStage
     WWTwink = 7,
 }
 
+public enum WestWoodlandsDungeonQuestStage
+{
+    None,
+    Started = 1,
+    Completed = 2
+}
+
 public enum KarloposKillQuestStage
 {
     None,

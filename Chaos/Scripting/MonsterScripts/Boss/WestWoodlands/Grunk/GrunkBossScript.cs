@@ -18,7 +18,7 @@ public class GrunkBossScript : CompositeMonsterScript
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
-        GetScriptKey(typeof(DeathScript)),
+        GetScriptKey(typeof(WWBossDeathScript)),
         GetScriptKey(typeof(DisplayNameScript))
     };
 

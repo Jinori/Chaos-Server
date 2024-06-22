@@ -12,7 +12,7 @@ using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 
 namespace Chaos.Scripting.DialogScripts.Quests.WestWoodlands;
 
-public class WWKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> logger) : DialogScriptBase(subject)
+public class WWKillQuestScript(Dialog subject, ILogger<WWKillQuestScript> logger) : DialogScriptBase(subject)
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 

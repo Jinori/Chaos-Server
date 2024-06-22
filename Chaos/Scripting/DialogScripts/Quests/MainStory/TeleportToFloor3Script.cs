@@ -122,6 +122,8 @@ public class TeleportToFloor3Script : DialogScriptBase
                 member.Trackers.TimedEvents.AddEvent("enterfloor3", TimeSpan.FromHours(8), true);
             }
             
+            var dialog = member.ActiveDialog.Get();
+            dialog?.Close(member);
             member.TraverseMap(mapInstance, point);
         }
     }
