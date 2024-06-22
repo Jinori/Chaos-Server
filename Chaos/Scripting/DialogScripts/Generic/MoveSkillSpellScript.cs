@@ -42,6 +42,12 @@ public class MoveSkillSpellScript : DialogScriptBase
             return;
         }
 
+        if (!spell.CanUse())
+        {
+            Subject.Reply(source, "You must wait for the cooldown to expire.");
+            return;
+        }
+        
         if (!source.SpellBook.Contains(spell))
         {
             Subject.Reply(source, "You don't seem to have that spell.");
@@ -66,6 +72,12 @@ public class MoveSkillSpellScript : DialogScriptBase
             return;
         }
 
+        if (!skill.CanUse())
+        {
+            Subject.Reply(source, "You must wait for the cooldown to expire.");
+            return;
+        }
+        
         if (!source.SkillBook.Contains(skill))
         {
             Subject.Reply(source, "You don't seem to have that skill.");
