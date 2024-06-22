@@ -66,7 +66,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
                     var option3 = new DialogOption
                     {
                         DialogKey = "riona_relearnrecipes",
-                        OptionText = "Check my Recipes"
+                        OptionText = "Check my Lanterns and Recipes"
                     };
 
                     if (!Subject.HasOption(option3.OptionText))
