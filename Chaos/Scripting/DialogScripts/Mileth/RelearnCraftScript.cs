@@ -22,12 +22,13 @@ public class RelearnCraftScript : DialogScriptBase
             {
                 if (source.Trackers.Counters.TryGetValue("CryptSlayerLegend", out var legend) && (legend >= 10))
                 {
-                    source.Trackers.Flags.AddFlag(LanternSize.Large);
-                    source.Trackers.Flags.AddFlag(LanternSize.Small);
+                    source.Trackers.Flags.AddFlag(LanternSizes.None);
+                    source.Trackers.Flags.AddFlag(LanternSizes.LargeLantern);
+                    source.Trackers.Flags.AddFlag(LanternSizes.SmallLantern);
                 }
                 else if (legend is < 10 and > 0)
                 {
-                    source.Trackers.Flags.AddFlag(LanternSize.Small);
+                    source.Trackers.Flags.AddFlag(LanternSizes.SmallLantern);
                 }
                 
                 if (source.Trackers.Enums.HasValue(Crafts.Weaponsmithing))

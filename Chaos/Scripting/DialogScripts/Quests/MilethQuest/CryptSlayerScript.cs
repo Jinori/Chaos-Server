@@ -69,7 +69,7 @@ public class CryptSlayerScript : DialogScriptBase
                 if (source.Trackers.Counters.TryGetValue("CryptSlayerLegend", out var legend) && (legend >= 10))
                 {
                     source.Trackers.Enums.Set(CryptSlayerStage.Completed);
-                    source.Trackers.Flags.AddFlag(LanternSize.Large);
+                    source.Trackers.Flags.AddFlag(LanternSizes.LargeLantern);
                     source.Legend.Remove("CryptSlayer", out _);
 
                     source.Legend.AddOrAccumulate(
@@ -318,7 +318,7 @@ public class CryptSlayerScript : DialogScriptBase
 
                 if (source.Trackers.Counters.CounterLessThanOrEqualTo("CryptSlayerLegend", 1))
                 {
-                    source.Trackers.Flags.AddFlag(LanternSize.Small);
+                    source.Trackers.Flags.AddFlag(LanternSizes.SmallLantern);
                     source.Trackers.Flags.AddFlag(RionaTutorialQuestFlags.Skarn);
                     source.SendOrangeBarMessage("Skarn hands you a weapon and a Small Lantern (Hit F1).");
 
