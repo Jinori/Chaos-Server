@@ -20,7 +20,8 @@ public class WerewolfEffect : EffectBase, NonOverwritableEffectComponent.INonOve
     };
     public List<string> ConflictingEffectNames { get; init; } =
     [
-        "WerewolfEffect"
+        "Werewolf",
+        "Mount"
     ];
     public override byte Icon => 85;
     public override string Name => "werewolf";

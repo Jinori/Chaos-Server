@@ -1,5 +1,6 @@
 ﻿using Chaos.Collections;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -43,6 +44,9 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
         public override void OnEntered(Creature creature)
         {
             if (creature is not Aisling aisling)
+                return;
+
+            if (aisling.IsGodModeEnabled())
                 return;
 
             // Check if the player has a specific quest flag and the trial is not already in progress

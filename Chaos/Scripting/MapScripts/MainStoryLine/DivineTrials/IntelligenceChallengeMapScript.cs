@@ -40,6 +40,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
         {
             if (creature is not Aisling aisling)
                 return;
+            
 
             if (!Subject.GetEntities<Aisling>().Any(x => x.IsGodModeEnabled()))
             {

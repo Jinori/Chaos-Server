@@ -89,13 +89,6 @@ public class CryptSlayerScript : DialogScriptBase
             case "cryptslayer_initial":
                 if (!hasStage || (stage == CryptSlayerStage.None))
                 {
-                    if (source.UserStatSheet.Level > 71)
-                    {
-                        Subject.Reply(source, "I have no quest for an experienced player like yourself.");
-
-                        return;
-                    }
-
                     if (source.Trackers.TimedEvents.HasActiveEvent("CryptSlayerCd", out var timedEvent))
                     {
                         Subject.Reply(
@@ -378,7 +371,7 @@ public class CryptSlayerScript : DialogScriptBase
                         1,
                         GameTime.Now));
 
-                source.Trackers.TimedEvents.AddEvent("CryptSlayerCd", TimeSpan.FromHours(22), true);
+                source.Trackers.TimedEvents.AddEvent("CryptSlayerCd", TimeSpan.FromHours(4), true);
                 var skarn = Subject.DialogSource as Merchant;
                 skarn?.Say($"Thanks for the help, {source.Name}!");
 

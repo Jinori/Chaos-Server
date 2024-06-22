@@ -16,7 +16,8 @@ public class MountEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
     };
     public List<string> ConflictingEffectNames { get; init; } =
     [
-        "MountEffect"
+        "Mount",
+        "Werewolf"
     ];
     public override byte Icon => 92;
     public override string Name => "mount";

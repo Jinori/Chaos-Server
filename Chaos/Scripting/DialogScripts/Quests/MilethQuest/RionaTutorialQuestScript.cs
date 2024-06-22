@@ -38,6 +38,11 @@ public class RionaTutorialQuestScript : DialogScriptBase
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var fiftypercent = MathEx.GetPercentOf<int>(tnl, 50);
 
+        if (fiftypercent > 25000)
+        {
+            fiftypercent = 25000;
+        }
+
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "riona_initial":
@@ -66,7 +71,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
                     var option3 = new DialogOption
                     {
                         DialogKey = "riona_relearnrecipes",
-                        OptionText = "Check my Lanterns and Recipes"
+                        OptionText = "Check my Progressions"
                     };
 
                     if (!Subject.HasOption(option3.OptionText))

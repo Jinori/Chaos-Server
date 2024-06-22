@@ -42,6 +42,9 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
             if (creature is not Aisling aisling)
                 return;
 
+            if (aisling.IsGodModeEnabled())
+                return;
+
             // Check if the player has a specific quest flag and the trial is not already in progress
             if (aisling.Trackers.Enums.HasValue(MainStoryEnums.StartedFirstTrial) && State == ScriptState.Dormant)
             {

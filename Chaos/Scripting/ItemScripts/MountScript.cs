@@ -51,14 +51,18 @@ public class MountScript(Item subject, IEffectFactory effectFactory) : ItemScrip
         if (source.Effects.Contains("hide"))
         {
             source.SendOrangeBarMessage("You cannot mount while hidden.");
-
+            return;
+        }
+        
+        if (source.Effects.Contains("Werewolf"))
+        {
+            source.SendOrangeBarMessage("You cannot mount while you are a werewolf.");
             return;
         }
         
         if (source.Trackers.TimedEvents.HasActiveEvent("mount", out var timedEvent))
         {
             source.SendOrangeBarMessage($"You can mount again in {timedEvent.Remaining.Humanize()}.");
-
             return;
         }
 
@@ -71,7 +75,7 @@ public class MountScript(Item subject, IEffectFactory effectFactory) : ItemScrip
 
         if (source.Trackers.Enums.TryGetValue(out CurrentMount mount) && source.Trackers.Enums.TryGetValue(out CurrentCloak cloak))
         {
-            if (source.Sprite != 0)
+            if (source.Effects.Contains("mount"))
             {
                 source.SendOrangeBarMessage("You jump off your mount.");
                 source.Effects.Dispel("mount");

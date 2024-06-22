@@ -1,6 +1,7 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -34,6 +35,9 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.EingrenManor3
             if (creature is not Aisling aisling)
                 return;
 
+            if (aisling.IsGodModeEnabled())
+                return;
+            
             // Check if the player has a specific quest flag
             if (aisling.Trackers.Enums.HasValue(MainStoryEnums.Entered3rdFloor))
             {

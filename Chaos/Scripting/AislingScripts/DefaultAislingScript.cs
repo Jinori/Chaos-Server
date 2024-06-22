@@ -464,6 +464,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         
         if (lightlevel == LightLevel.Darkest_A && !Subject.Effects.Contains("werewolf"))
         {
+            if (Subject.Effects.Contains("mount"))
+            {
+                Subject.Effects.Dispel("mount");
+                Subject.SendOrangeBarMessage("You jump off your mount due to becoming a Werewolf.");
+
+                return;
+            }
+            
             var effect = EffectFactory.Create("werewolf");
             Subject.Effects.Apply(Subject, effect);
         } else if (lightlevel != LightLevel.Darkest_A && Subject.Effects.Contains("werewolf"))
