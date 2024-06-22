@@ -19,6 +19,7 @@ public class DarkCarnunBossScript : CompositeMonsterScript
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(ArenaDeathScript)),
+        GetScriptKey(typeof(BossDefenseScript))
     };
 
     /// <inheritdoc />
