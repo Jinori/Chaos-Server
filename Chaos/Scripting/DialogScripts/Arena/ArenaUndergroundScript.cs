@@ -298,13 +298,9 @@ public class ArenaUndergroundScript : DialogScriptBase
                 aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
 
                 if (team is ArenaTeam.Gold)
-                {
                     aisling.Trackers.Enums.Set(ArenaSide.Defender);
-                }
                 else
-                {
                     aisling.Trackers.Enums.Set(ArenaSide.Offensive);
-                }
             }
         }
         if (defendingTeam is ArenaTeam.Green)
@@ -388,6 +384,7 @@ public class ArenaUndergroundScript : DialogScriptBase
                 aisling.StatSheet.SetHealthPct(100);
                 aisling.StatSheet.SetManaPct(100);
                 aisling.Client.SendAttributes(StatUpdateType.Vitality);
+                source.Display();
             }
 
             aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
@@ -566,6 +563,7 @@ public class ArenaUndergroundScript : DialogScriptBase
             source.Client.SendAttributes(StatUpdateType.Vitality);
             source.SendActiveMessage("Ophie has revived you.");
             source.Refresh();
+            source.Display();
 
             source.SendServerMessage(ServerMessageType.OrangeBar2, "You have been revived by Ophie.");
         }
@@ -694,6 +692,7 @@ public class ArenaUndergroundScript : DialogScriptBase
             source.Client.SendAttributes(StatUpdateType.Vitality);
             source.SendActiveMessage("You have been revived.");
             source.Refresh();
+            source.Display();
         }
 
         source.Trackers.Enums.Remove<ArenaTeam>();

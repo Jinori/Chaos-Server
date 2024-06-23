@@ -125,5 +125,6 @@ public class HairstyleScript : DialogScriptBase
 
         source.HairStyle = item.Template.ItemSprite.DisplaySprite;
         source.Refresh(true);
+        source.Display();
     }
 }

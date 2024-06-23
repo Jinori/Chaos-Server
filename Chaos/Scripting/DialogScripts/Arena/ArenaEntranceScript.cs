@@ -38,6 +38,7 @@ public class ArenaEntranceScript : DialogScriptBase
                     source.Client.SendAttributes(StatUpdateType.Vitality);
                     source.SendActiveMessage("R'lyeh has revived you.");
                     source.Refresh();
+                    source.Display();
                 }
 
                 break;

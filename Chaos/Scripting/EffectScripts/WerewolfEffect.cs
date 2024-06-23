@@ -70,6 +70,7 @@ public class WerewolfEffect : EffectBase, NonOverwritableEffectComponent.INonOve
             AislingSubject.Client.SendAttributes(StatUpdateType.Full);
             AislingSubject.Sprite = 0;
             AislingSubject.Refresh(true);
+            AislingSubject.Display();
         }
     }
     public override bool ShouldApply(Creature source, Creature target)

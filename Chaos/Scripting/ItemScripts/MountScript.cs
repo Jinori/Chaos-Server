@@ -87,6 +87,7 @@ public class MountScript(Item subject, IEffectFactory effectFactory) : ItemScrip
             {
                 source.Sprite = (ushort)sprite;
                 source.Refresh(true);
+                source.Display();
                 source.SendOrangeBarMessage("You jump on your mount.");
                 var effect = effectFactory.Create("mount");
                 source.Effects.Apply(source, effect);

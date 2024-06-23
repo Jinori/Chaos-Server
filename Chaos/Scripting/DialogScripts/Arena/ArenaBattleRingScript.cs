@@ -47,6 +47,7 @@ public class ArenaBattleRingScript : DialogScriptBase
                     source.Client.SendAttributes(StatUpdateType.Vitality);
                     source.SendActiveMessage("Alex has revived you.");
                     source.Refresh();
+                    source.Display();
                 }
 
                 break;
@@ -106,6 +107,7 @@ public class ArenaBattleRingScript : DialogScriptBase
                     source.Client.SendAttributes(StatUpdateType.Vitality);
                     source.SendActiveMessage("You have been revived.");
                     source.Refresh();
+                    source.Display();
                 }
 
                 source.Trackers.Enums.Remove<ArenaTeam>();

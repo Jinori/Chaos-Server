@@ -73,20 +73,20 @@ public class LanternDialogScript : DialogScriptBase
             case "lantern_small":
             {
                 source.SetLanternSize(LanternSize.Small);
-                source.Refresh(true);
+                source.Display();
                 break;
             }
 
             case "lantern_large":
             {
                 source.SetLanternSize(LanternSize.Large);
-                source.Refresh(true);
+                source.Display();
                 break;
             }
             case "lantern_none":
             {
                 source.SetLanternSize(LanternSize.None);
-                source.Refresh(true);
+                source.Display();
                 break;
             }
         }

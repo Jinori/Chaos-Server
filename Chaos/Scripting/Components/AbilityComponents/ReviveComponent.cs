@@ -38,7 +38,7 @@ public class ReviveComponent : IComponent
                     target.Client.SendAttributes(StatUpdateType.Vitality);
                     target.SendActiveMessage("You have self revived.");
                     target.Refresh();
-
+                    target.Display();
                     break;
                 }
             }
@@ -74,6 +74,7 @@ public class ReviveComponent : IComponent
                 target.Client.SendAttributes(StatUpdateType.Vitality);
                 target.SendActiveMessage("You have been revived.");
                 target.Refresh();
+                target.Display();
             }
     }
 

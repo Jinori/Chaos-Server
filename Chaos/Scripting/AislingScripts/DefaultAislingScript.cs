@@ -283,7 +283,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.TraverseMap(mapInstance, pointS);
             
             Subject.Refresh(true);
-
             return;
         }
 
@@ -291,6 +290,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         //Refresh to show ghost
         Subject.Refresh(true);
+        Subject.Display();
 
         //Remove all effects from the player
         var effects = Subject.Effects.ToList();

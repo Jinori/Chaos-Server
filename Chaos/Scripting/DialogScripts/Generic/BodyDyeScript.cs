@@ -56,5 +56,6 @@ public class BodyDyeScript : DialogScriptBase
 
         source.BodyColor = item.Color.ConvertToBodyColor();
         source.Refresh(true);
+        source.Display();
     }
 }

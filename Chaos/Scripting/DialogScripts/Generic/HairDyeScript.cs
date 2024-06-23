@@ -56,5 +56,6 @@ public class HairDyeScript : DialogScriptBase
 
         source.HairColor = item.Color;
         source.Refresh(true);
+        source.Display();
     }
 }

@@ -53,6 +53,7 @@ public class SgriosReviveScript : DialogScriptBase
         source.Client.SendAttributes(StatUpdateType.Vitality);
         source.Turn(Direction.Down);
         source.Refresh(true);
+        source.Display();
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Sgrios mumbles unintelligble gibberish");
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are revived and sent home.");
         source.Trackers.Enums.TryGetValue(out TutorialQuestStage tutorial);
