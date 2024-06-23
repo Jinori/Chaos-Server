@@ -311,6 +311,8 @@ public class MainStoryScript(
             {
                 Subject.Close(source);
                 source.Trackers.Enums.Set(MainStoryEnums.FinishedFirstTrial);
+                ExperienceDistributionScript.GiveExp(source, 200000);
+                source.TryGiveGamePoints(5);
                 source.Trackers.Enums.Remove<CombatTrial>();
                 return;
             }
@@ -341,7 +343,7 @@ public class MainStoryScript(
                 source.Trackers.Enums.Set(MainStoryEnums.FinishedArtifact1);
                 source.Trackers.Flags.AddFlag(MainstoryFlags.CompletedArtifact1);
                 source.Inventory.Remove("Earth Artifact");
-                ExperienceDistributionScript.GiveExp(source, 50000);
+                ExperienceDistributionScript.GiveExp(source, 75000);
                 source.SendOrangeBarMessage("You hand over the Earth Artifact.");
 
 
@@ -378,7 +380,7 @@ public class MainStoryScript(
                 source.Trackers.Enums.Set(MainStoryEnums.CompletedArtifactsHunt);
                 source.Inventory.RemoveQuantity("coal", 50);
                 source.Inventory.RemoveQuantity("Ruined Iron", 20);
-                ExperienceDistributionScript.GiveExp(source, 75000);
+                ExperienceDistributionScript.GiveExp(source, 125000);
                 source.SendOrangeBarMessage("You hand over the coal and ruined iron.");
                 return;
             }
@@ -493,6 +495,8 @@ public class MainStoryScript(
             {
                 Subject.Close(source);
                 source.Trackers.Enums.Set(MainStoryEnums.FinishedSecondTrial);
+                ExperienceDistributionScript.GiveExp(source, 300000);
+                source.TryGiveGamePoints(10);
                 source.Trackers.Enums.Remove<LuckTrial>();
                 return;
             }
@@ -626,6 +630,8 @@ public class MainStoryScript(
             {
                 Subject.Close(source);
                 source.Trackers.Enums.Set(MainStoryEnums.FinishedThirdTrial);
+                ExperienceDistributionScript.GiveExp(source, 400000);
+                source.TryGiveGamePoints(5);
                 source.Trackers.Enums.Remove<IntelligenceTrial>();
                 return;
             }
@@ -750,6 +756,8 @@ public class MainStoryScript(
             {
                 Subject.Close(source);
                 source.Trackers.Enums.Set(MainStoryEnums.FinishedFourthTrial);
+                ExperienceDistributionScript.GiveExp(source, 500000);
+                source.TryGiveGamePoints(15);
                 source.Trackers.Enums.Remove<SacrificeTrial>();
                 return;
             }

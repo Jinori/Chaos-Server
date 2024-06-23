@@ -16,6 +16,7 @@ public class FormCommand : ICommand<Aisling>
             {
                 source.Sprite = 0;
                 source.Refresh(true);
+                source.Display();
             }
 
             return default;
@@ -23,6 +24,7 @@ public class FormCommand : ICommand<Aisling>
 
         source.Sprite = formNumber;
         source.Refresh(true);
+        source.Display();
 
         return default;
     }

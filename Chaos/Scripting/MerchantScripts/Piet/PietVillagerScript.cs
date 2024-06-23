@@ -62,7 +62,6 @@ public class PietVillagerScript : MerchantScriptBase
     public readonly Location PietStoragePoint = new("piet_storage", 5, 8);
 
     private readonly Location Spawnpoint;
-    private readonly ISpellFactory SpellFactory;
     private readonly IIntervalTimer WalkTimer;
     private DateTime FollowUntil;
     public bool HasAskedForItem;
@@ -79,10 +78,9 @@ public class PietVillagerScript : MerchantScriptBase
     private Aisling? RandomAisling;
 
     /// <inheritdoc />
-    public PietVillagerScript(Merchant subject, ISpellFactory spellFactory, IDialogFactory dialogFactory)
+    public PietVillagerScript(Merchant subject, IDialogFactory dialogFactory)
         : base(subject)
     {
-        SpellFactory = spellFactory;
         DialogFactory = dialogFactory;
         WalkTimer = new IntervalTimer(TimeSpan.FromMilliseconds(600), false);
         ActionTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
@@ -106,23 +104,6 @@ public class PietVillagerScript : MerchantScriptBase
         if (door is { Closed: true })
             door.OnClicked(Subject);
     }
-
-    private void CastBuff()
-    {
-        var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 8)
-            .Where(x => x.Effects.Contains("ardaite")).ToList();
-
-        if (aislings.Count > 0)
-        {
-            var spell = SpellFactory.Create("ardnaomhaite");
-
-            foreach (var player in aislings)
-                Subject.TryUseSpell(spell, player.Id);
-        }
-
-        Subject.Say("That should help a bit.");
-    }
-    
     private void HandleEatingState()
     {
         if ((DateTime.Now - LastChant).TotalSeconds >= 2)
@@ -400,13 +381,13 @@ public class PietVillagerScript : MerchantScriptBase
 
     private void HandleConversationWithMerchant(TimeSpan delta)
     {
-            if (IsCloseTo(PietArmoryPoint, 2))
+            if (IsCloseTo(PietArmoryPoint))
                 UpdateDialogue(delta, "armorer");
 
-            if (IsCloseTo(PietStoragePoint, 2))
+            if (IsCloseTo(PietStoragePoint))
                 UpdateDialogue(delta, "tailor");
 
-            if (IsCloseTo(PietRestaurantPoint, 2))
+            if (IsCloseTo(PietRestaurantPoint))
                 UpdateDialogue(delta, "restaurant");
     }
 
@@ -595,7 +576,7 @@ public class PietVillagerScript : MerchantScriptBase
         }
     }
 
-    private bool IsCloseTo(Location point, int distance) => Subject.WithinRange(point, 2);
+    private bool IsCloseTo(Location point) => Subject.WithinRange(point, 2);
 
     private static string PickRandom(ICollection<string> phrases) => phrases.PickRandom();
 
@@ -628,8 +609,6 @@ public class PietVillagerScript : MerchantScriptBase
 
     private bool ShouldWalkTo(Location destination) =>
         (Subject.DistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
-
-    private bool ShouldWalkTo(Point destination) => Subject.DistanceFrom(destination) > 0;
     private bool ShouldWalkToSpawnPoint() => Subject.DistanceFrom(Spawnpoint) > 0;
 
     /// <inheritdoc />

@@ -1751,9 +1751,9 @@ public enum WerewolfOfPiet
     None = 0, 
     StartedQuest = 1,
     FollowedMerchant = 2,
-    SpawnedWerewolf = 3,
-    KilledandGotCursed = 4,
-    SpokeToWizard = 5,
+    KilledandGotCursed = 3,
+    SpokeToWizard = 4,
+    SpawnedWerewolf2 = 5,
     KilledWerewolf = 6,
     CollectedBlueFlower = 7,
     ReceivedCure = 8

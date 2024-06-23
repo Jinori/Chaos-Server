@@ -67,11 +67,11 @@ public class WWDungeonScript(Dialog subject, ILogger<WWDungeonScript> logger, IS
                 {
                     if (source.Trackers.TimedEvents.HasActiveEvent("wwdungeontimer", out _))
                     {
-                        Subject.Reply(source, "Skip", "wwdungeonquest_return2");
+                        Subject.Reply(source, "Skip", "wwdungeon_return2");
                         return;
                     }
 
-                    Subject.Reply(source, "Skip", "wwdungeonquest_return");
+                    Subject.Reply(source, "Skip", "wwdungeon_return");
                     return;
                 }
 

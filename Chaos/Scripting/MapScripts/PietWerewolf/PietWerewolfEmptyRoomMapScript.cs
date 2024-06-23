@@ -45,7 +45,7 @@ namespace Chaos.Scripting.MapScripts.PietWerewolf
             {
                 // Start the combat trial
                 var point = new Point(10, 7);
-                var werewolftoby = MerchantFactory.Create("werewolfToby", Subject, point);
+                var werewolftoby = MerchantFactory.Create("werewolfTobyInHouse", Subject, point);
                 Subject.AddEntity(werewolftoby, point);
                 StartTimers();
                 State = ScriptState.DelayedStart;

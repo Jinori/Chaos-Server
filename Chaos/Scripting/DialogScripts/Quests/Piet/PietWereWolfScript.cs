@@ -15,6 +15,7 @@ using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
+using FluentAssertions.Execution;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Piet;
 
@@ -86,7 +87,7 @@ public class PietWerewolfScript : DialogScriptBase
 
                 if (source.Trackers.Enums.HasValue(WerewolfOfPiet.CollectedBlueFlower)
                     || source.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard)
-                    || source.Trackers.Enums.HasValue(WerewolfOfPiet.SpawnedWerewolf))
+                    || source.Trackers.Enums.HasValue(WerewolfOfPiet.SpawnedWerewolf2))
                 {
                     Subject.Reply(source, "Skip", "werewolf_return");
                 }
@@ -102,7 +103,7 @@ public class PietWerewolfScript : DialogScriptBase
                     return;
                 }
 
-                if (source.Trackers.Enums.HasValue(WerewolfOfPiet.SpawnedWerewolf))
+                if (source.Trackers.Enums.HasValue(WerewolfOfPiet.SpawnedWerewolf2))
                 {
                     Subject.Reply(source, "Looks like you took a beating, that werewolf is tough. You have to go back and get that flower.");
                     source.SendOrangeBarMessage("Kill the Werewolf and retrieve the flower.");
@@ -186,7 +187,11 @@ public class PietWerewolfScript : DialogScriptBase
             {
                 if (source.Group == null)
                 {
-                    
+                    if (source.Trackers.Enums.HasValue(WerewolfOfPiet.SpawnedWerewolf2))
+                    {
+                        Subject.Reply(source, "Skip", "werewolfwarpreturn");
+                        return;
+                    }
                 
                     Subject.Reply(source, "You must have a group to enter these woods.");
                     source.SendOrangeBarMessage("You must have a group to enter these woods.");
@@ -232,6 +237,18 @@ public class PietWerewolfScript : DialogScriptBase
                     var pointinrectangle = rectangle.GetRandomPoint();
                     member.TraverseMap(mapinstance, pointinrectangle);
                 }
+                break;
+            }
+
+            case "werewolfwarpreturn":
+            {
+                var dialog = source.ActiveDialog.Get();
+                dialog?.Close(source);
+                var rectangle = new Rectangle(12, 1, 2, 2);
+                var mapinstance = SimpleCache.Get<MapInstance>("werewolf_woods25");
+                var pointinrectangle = rectangle.GetRandomPoint();
+                source.TraverseMap(mapinstance, pointinrectangle);
+                
                 break;
             }
         }

@@ -3,7 +3,6 @@ using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Generic;
 
@@ -74,6 +73,7 @@ public class LanternDialogScript : DialogScriptBase
             {
                 source.SetLanternSize(LanternSize.Small);
                 source.Display();
+                
                 break;
             }
 
@@ -81,12 +81,14 @@ public class LanternDialogScript : DialogScriptBase
             {
                 source.SetLanternSize(LanternSize.Large);
                 source.Display();
+                
                 break;
             }
             case "lantern_none":
             {
                 source.SetLanternSize(LanternSize.None);
                 source.Display();
+                
                 break;
             }
         }

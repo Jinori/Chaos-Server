@@ -1229,13 +1229,9 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         Client.SendDoors(doorsToSend);
 
         if (refresh && stashedApproachTime is not null)
-        {
-            var intersectingKeys = stashedApproachTime.Keys.Where(key => ApproachTime.ContainsKey(key));
-            var intersectingKeysWithOriginalValues = intersectingKeys.Select(key => KeyValuePair.Create(key, stashedApproachTime[key]));
-
-            ApproachTime.Clear();
-            ApproachTime.AddRange(intersectingKeysWithOriginalValues);
-        }
+            foreach (var kvp in stashedApproachTime)
+                if (ApproachTime.ContainsKey(kvp.Key))
+                    ApproachTime[kvp.Key] = kvp.Value;
     }
 
     public override void Walk(Direction direction, bool? ignoreBlockingReactors = null)

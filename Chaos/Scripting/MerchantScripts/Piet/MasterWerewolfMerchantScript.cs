@@ -104,6 +104,7 @@ public class MasterWerewolfMerchantScript : MerchantScriptBase
                 .Where(x => x.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard)).ToList();
             foreach (var aisling in aislings)
             {
+                aisling.Trackers.Enums.Set(WerewolfOfPiet.SpawnedWerewolf2);
                 aisling.SendOrangeBarMessage("The Master Werewolf becomes hostile...");
             }
 

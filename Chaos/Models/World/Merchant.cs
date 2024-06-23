@@ -39,6 +39,7 @@ public sealed class Merchant : Creature,
     public PietVillagerScript.PietVillagerState PietVillagerState { get; set; }
 
     public PietWerewolfMerchantScript.PietWerewolfState PietWerewolfState { get; set; }
+    public PietWerewolfMerchant2Script.PietWerewolfState2 PietWerewolfState2 { get; set; }
     
     public MasterWerewolfMerchantScript.MasterWerewolfState MasterWerewolfState { get; set; }
     
