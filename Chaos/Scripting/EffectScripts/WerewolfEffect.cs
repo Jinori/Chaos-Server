@@ -38,7 +38,7 @@ public class WerewolfEffect : EffectBase, NonOverwritableEffectComponent.INonOve
                 Dmg = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveDmg * 0.25),
                 Hit = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveHit * 0.25),
                 Str = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveStr * 0.25),
-                Ac = Convert.ToInt32(AislingSubject.UserStatSheet.Ac * 0.25),
+                Ac = -Convert.ToInt32(AislingSubject.UserStatSheet.Ac * 0.25),
                 MaximumHp = Convert.ToInt32(AislingSubject.UserStatSheet.MaximumHp * 0.25),
                 MaximumMp = Convert.ToInt32(AislingSubject.UserStatSheet.MaximumMp * 0.25),
                 Int = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveInt * 0.25),

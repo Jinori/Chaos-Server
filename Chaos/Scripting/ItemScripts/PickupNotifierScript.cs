@@ -67,4 +67,12 @@ public class PickupNotifierScript : ItemScriptBase
         var nearbyPlayers = NotifyNearbyPlayers(aisling, originalCount);
         NotifyGroupMembers(aisling, originalCount, nearbyPlayers);
     }
+
+    public override bool CanUse(Aisling source)
+    {
+        if (Subject.Template.Name == "Revive Potion")
+            return true;
+
+        return false;
+    }
 }

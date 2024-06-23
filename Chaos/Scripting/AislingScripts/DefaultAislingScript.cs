@@ -462,7 +462,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         var lightlevel = Subject.MapInstance.CurrentLightLevel;
         
-        if (lightlevel == LightLevel.Darkest_A && !Subject.Effects.Contains("werewolf"))
+        if (lightlevel == LightLevel.Darkest_A && !Subject.Effects.Contains("werewolf") && Subject.MapInstance.AutoDayNightCycle.Equals(true))
         {
             if (Subject.Effects.Contains("mount"))
             {
