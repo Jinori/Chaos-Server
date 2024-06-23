@@ -16,9 +16,6 @@ namespace Chaos.Scripting.ReactorTileScripts
             : base(subject) { }
 
         /// <inheritdoc />
-        public override void OnWalkedOn(Creature source)
-        {
-            source.WarpTo(Points);
-        }
+        public override void OnWalkedOn(Creature source) => source.WarpTo(Points);
     }
 }

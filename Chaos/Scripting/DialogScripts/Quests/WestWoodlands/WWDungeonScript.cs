@@ -136,9 +136,9 @@ public class WWDungeonScript(Dialog subject, ILogger<WWDungeonScript> logger, IS
                         dialog?.Close(member);
                         member.Trackers.Enums.Set(WestWoodlandsDungeonQuestStage.Started);
                         var point = rectangle.GetRandomPoint();
-                        member.TraverseMap(mapinstance, point);
                         member.SendOrangeBarMessage("Clear the Lost Woodlands of all monsters.");
                         member.Trackers.TimedEvents.AddEvent("wwdungeontimer", TimeSpan.FromHours(2), true);
+                        member.TraverseMap(mapinstance, point);
                     }
                 }
                 break;
