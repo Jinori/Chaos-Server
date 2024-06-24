@@ -142,6 +142,12 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
 
         if (template.Category.ContainsI("2H"))
         {
+            if (!source.SkillBook.Contains("Two Handed Attack"))
+            {
+                source.SendOrangeBarMessage("You cannot equip a Two Handed Weapon without the skill.");
+                return;
+            }
+            
             // Ensure the character is not already equipped with a staff
             if (source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var item))
             {

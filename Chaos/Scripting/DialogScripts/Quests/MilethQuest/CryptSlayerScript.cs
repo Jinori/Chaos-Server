@@ -52,13 +52,6 @@ public class CryptSlayerScript : DialogScriptBase
                     return;
                 }
 
-                if (source.UserStatSheet.Level > 71)
-                {
-                    Subject.Reply(source, "You're an experienced Aisling, I have nothing for you.");
-
-                    return;
-                }
-
                 if (stage == CryptSlayerStage.Completed)
                 {
                     Subject.Reply(source, "Thanks for all your hard work Aisling, we can keep these creatures where they belong.");
@@ -154,7 +147,7 @@ public class CryptSlayerScript : DialogScriptBase
                         source.Trackers.Enums.Set(randomCryptSlayerStage);
                     }
 
-                    if (source.UserStatSheet.Level is >= 50 and <= 71)
+                    if (source.UserStatSheet.Level >= 50)
                     {
                         randomCryptSlayerStage = new[]
                         {

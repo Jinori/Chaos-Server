@@ -1,4 +1,5 @@
 using Chaos.Collections;
+using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
@@ -10,17 +11,32 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Quests.WestWoodlands;
 
-public class WWDungeonScript(Dialog subject, ILogger<WWDungeonScript> logger, ISimpleCache simpleCache) : DialogScriptBase(subject)
+public class WWDungeonScript(Dialog subject, ILogger<WWDungeonScript> logger, ISimpleCache simpleCache, IItemFactory itemFactory) : DialogScriptBase(subject)
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplaying(Aisling source)
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out WestWoodlandsDungeonQuestStage stage);
+        
+        var gearDictionary = new Dictionary<(BaseClass, Gender), string[]>
+        {
+            { (BaseClass.Warrior, Gender.Male), ["ipletmail", "iplethelmet"] },
+            { (BaseClass.Warrior, Gender.Female), ["labyrinthmail", "labyrinthhelmet"] },
+            { (BaseClass.Monk, Gender.Male), ["windgarb"] },
+            { (BaseClass.Monk, Gender.Female), ["lightninggarb"] },
+            { (BaseClass.Rogue, Gender.Male), ["keaton"] },
+            { (BaseClass.Rogue, Gender.Female), ["pebblerose"] },
+            { (BaseClass.Priest, Gender.Male), ["dolman"] },
+            { (BaseClass.Priest, Gender.Female), ["hierophant"] },
+            { (BaseClass.Wizard, Gender.Male), ["mane"] },
+            { (BaseClass.Wizard, Gender.Female), ["clymouth"] }
+        };
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -164,10 +180,10 @@ public class WWDungeonScript(Dialog subject, ILogger<WWDungeonScript> logger, IS
             case "wwdungeon_turnin2":
             {
                 source.Trackers.Enums.Set(WestWoodlandsDungeonQuestStage.None);
+                source.Trackers.Counters.AddOrIncrement("wwdungeon");
                 source.Trackers.TimedEvents.AddEvent("wwdungeoncd", TimeSpan.FromHours(22), true);
                 ExperienceDistributionScript.GiveExp(source, 500000);
                 source.TryGiveGamePoints(10);
-                source.SendOrangeBarMessage("Maxwell thanks you for all your efforts.");
                 
                 logger.WithTopics(
                         Topics.Entities.Aisling,
@@ -178,6 +194,43 @@ public class WWDungeonScript(Dialog subject, ILogger<WWDungeonScript> logger, IS
                     .WithProperty(Subject)
                     .LogInformation("{@AislingName} has received {@ExpAmount} exp from a Lost Woodlands quest", source.Name,
                         500000);
+
+
+                source.Trackers.Counters.TryGetValue("wwdungeon", out var count);
+                
+                switch (count)
+                {
+                    case 1:
+                    {
+                        var gearKey = (source.UserStatSheet.BaseClass, source.Gender);
+                        if (gearDictionary.TryGetValue(gearKey, out var gear))
+                        {
+                            foreach (var gearItemName in gear)
+                            {
+                                var gearItem = itemFactory.Create(gearItemName);
+                                source.GiveItemOrSendToBank(gearItem);
+                                source.SendOrangeBarMessage("Maxwell thanks you with some armor he had.");
+                            }
+                        }
+
+                        break;
+                    }
+                    
+                    case 5:
+                    {
+                        var boots = itemFactory.Create("silkboots");
+                        source.GiveItemOrSendToBank(boots);
+                        source.SendOrangeBarMessage("Maxwell thanks you with some boots he had.");
+                        break;
+                    }
+                    case 10:
+                    {
+                        var wings = itemFactory.Create("cherubwings");
+                        source.GiveItemOrSendToBank(wings);
+                        source.SendOrangeBarMessage("Maxwell thanks you with some wings he had.");
+                        break;
+                    }
+                }
                 
                 break;
             }

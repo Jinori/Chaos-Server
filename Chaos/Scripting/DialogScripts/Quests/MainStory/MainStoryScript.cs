@@ -262,7 +262,7 @@ public class MainStoryScript(
 
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.SpokeToZephyr))
                 {
-                    Subject.Reply(source, "Skip", "mainstory_miraelis_initial11");
+                    Subject.Reply(source, "Skip", "mainstory_miraelis_initial1");
                 }
                 break;
             }
