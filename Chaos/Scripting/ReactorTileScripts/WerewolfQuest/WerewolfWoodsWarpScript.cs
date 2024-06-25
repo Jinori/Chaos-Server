@@ -37,6 +37,7 @@ public class WerewolfWoodsWarpScript : ConfigurableReactorTileScriptBase
             return;
 
         if (!source.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard)
+            && !source.Trackers.Enums.HasValue(WerewolfOfPiet.SpawnedWerewolf2)
             && !source.Trackers.Enums.HasValue(WerewolfOfPiet.KilledWerewolf)
             && !source.Trackers.Enums.HasValue(WerewolfOfPiet.CollectedBlueFlower)
             && !source.Trackers.Enums.HasValue(WerewolfOfPiet.ReceivedCure))

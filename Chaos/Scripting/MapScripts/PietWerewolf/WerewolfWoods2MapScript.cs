@@ -1,7 +1,6 @@
 ﻿using Chaos.Collections;
 using Chaos.Definitions;
 using Chaos.Extensions;
-using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
@@ -23,7 +22,7 @@ namespace Chaos.Scripting.MapScripts.PietWerewolf
         private readonly IIntervalTimer UpdateTimer;
         public const int UPDATE_INTERVAL_MS = 1000;
 
-        public WerewolfWoods2MapScript(MapInstance subject, IMonsterFactory monsterFactory, ISimpleCache simpleCache, IMerchantFactory merchantFactory, IEffectFactory effectFactory)
+        public WerewolfWoods2MapScript(MapInstance subject, IMonsterFactory monsterFactory, ISimpleCache simpleCache, IMerchantFactory merchantFactory)
             : base(subject)
         {
             MonsterFactory = monsterFactory;
@@ -88,7 +87,7 @@ namespace Chaos.Scripting.MapScripts.PietWerewolf
                     break;
 
                 case ScriptState2.SpawningWerewolf:
-                    SpawnMonsters("masterwerewolf", 1);
+                    SpawnMonsters("masterwerewolf");
                     State = ScriptState2.SpawnedWerewolf;
                     break;
 
@@ -109,66 +108,15 @@ namespace Chaos.Scripting.MapScripts.PietWerewolf
             }
         }
 
-        private void SpawnMonsters(string monsterType, int count)
+        private void SpawnMonsters(string monsterType)
         {
-            for (var i = 0; i < count; i++)
-            {
                 var point = new Point(13, 9);
-                var groupLevel = Subject.GetEntities<Aisling>().Select(aisling => aisling.StatSheet.Level).ToList();
                 var monster = MonsterFactory.Create(monsterType, Subject, point);
-
-                // Calculate the excess vitality over 20,000 for any player
-                var excessVitality = Subject.GetEntities<Aisling>()
-                    .Where(aisling => !aisling.Trackers.Enums.HasValue(GodMode.Yes))
-                    .Select(aisling => (aisling.StatSheet.MaximumHp + aisling.StatSheet.MaximumMp) - 20000)
-                    .Where(excess => excess > 0)
-                    .Sum(excess => excess / 1000);
-
-                var attrib = new Attributes
-                {
-                    AtkSpeedPct = groupLevel.Count * 8 + 3,
-                    MaximumHp = (int)(monster.StatSheet.MaximumHp + groupLevel.Average() * groupLevel.Count * 600),
-                    MaximumMp = (int)(monster.StatSheet.MaximumHp + groupLevel.Average() * groupLevel.Count * 600),
-                    Int = (int)(monster.StatSheet.Int + groupLevel.Average() * groupLevel.Count / 8),
-                    Str = (int)(monster.StatSheet.Str + groupLevel.Average() * groupLevel.Count / 6),
-                    SkillDamagePct = (int)(monster.StatSheet.SkillDamagePct + groupLevel.Average() / 3 +
-                                           groupLevel.Count + 20),
-                    SpellDamagePct = (int)(monster.StatSheet.SpellDamagePct + groupLevel.Average() / 3 +
-                                           groupLevel.Count + 20)
-                };
-
-                // Adjust the attributes based on the excess vitality
-                if (excessVitality > 0)
-                {
-                    // Example adjustments: increase stats by a percentage of the excess vitality
-                    attrib = attrib with
-                    {
-                        MaximumHp = (int)(excessVitality * 0.05)
-                    }; // 5% of excess vitality added to HP
-                    attrib = attrib with
-                    {
-                        MaximumMp = (int)(excessVitality * 0.05)
-                    }; // 5% of excess vitality added to MP
-                    attrib.Int += (int)(excessVitality * 0.01); // 1% of excess vitality added to Int
-                    attrib.Str += (int)(excessVitality * 0.01); // 1% of excess vitality added to Str
-                    attrib.SkillDamagePct +=
-                        (int)(excessVitality * 0.01); // 1% of excess vitality added to Skill Damage
-                    attrib.SpellDamagePct +=
-                        (int)(excessVitality * 0.01); // 1% of excess vitality added to Spell Damage
-                }
-
-                // Add the attributes to the monster
-                monster.StatSheet.AddBonus(attrib);
-                // Add HP and MP to the monster
-                monster.StatSheet.SetHealthPct(100);
-                monster.StatSheet.SetManaPct(100);
-                
                 var masterwerewolf = Subject.GetEntities<Merchant>().Where(x => x.Name == "Master Werewolf").ToList();
                 foreach (var merchant in masterwerewolf)
                     Subject.RemoveEntity(merchant);
                 // Add the monster to the subject
                 Subject.AddEntity(monster, monster);
-            }
         }
 
         private bool CheckAllMonstersCleared()
@@ -194,7 +142,7 @@ namespace Chaos.Scripting.MapScripts.PietWerewolf
             {
                 foreach (var aisling in Subject.GetEntities<Aisling>())
                 {
-                    if (aisling.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard))
+                    if (aisling.Trackers.Enums.HasValue(WerewolfOfPiet.SpawnedWerewolf2))
                     {
                         aisling.Trackers.Enums.Set(WerewolfOfPiet.KilledWerewolf);   
                     }

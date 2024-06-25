@@ -138,11 +138,17 @@ public class ForagingEffect(IItemFactory itemFactory) : ContinuousAnimationEffec
                 // Reduce the item's durability by 20, ensuring it does not drop below 0
                 for (var i = 0; i < 5; i++)
                 {
-                    if (item.CurrentDurability >= 1)
+                    if (item.CurrentDurability > 5)
                         item.CurrentDurability--;
                     else
-                        break; // Stop reducing if durability reaches 0
+                        break;
+                    // Stop reducing if durability reaches 0
                 }
+
+                if (!(item.CurrentDurability < 5)) continue;
+                aisling.Equipment.Remove(item.DisplayName);
+                aisling.SendOrangeBarMessage("Your glove breaks!");
+                
         }
         aisling.SendOrangeBarMessage(randomMessage);
     }
@@ -155,7 +161,7 @@ public class ForagingEffect(IItemFactory itemFactory) : ContinuousAnimationEffec
 
     if (aisling.TryGiveItem(ref herb))
     {
-        // Calculate experience based on fish caught and award it to the player
+        // Calculate experience based on herb foraged and award it to the player
         var tnl = LevelUpFormulae.Default.CalculateTnl(aisling);
         var expGain = CalculateExperienceGain(aisling, tnl, herb.DisplayName);
 

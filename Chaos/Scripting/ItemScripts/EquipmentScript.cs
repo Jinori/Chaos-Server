@@ -32,6 +32,12 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
     public override void OnUse(Aisling source)
     {
         var template = Subject.Template;
+
+        if (Subject.CurrentDurability is < 1)
+        {
+            source.SendOrangeBarMessage("That item is broken.");
+            return;
+        }
         
         // Check if the item is a shield
         if (template.Category.Contains("Shield"))

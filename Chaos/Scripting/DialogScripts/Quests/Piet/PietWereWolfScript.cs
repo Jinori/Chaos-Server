@@ -226,7 +226,7 @@ public class PietWerewolfScript : DialogScriptBase
             case "werewolfwarp2":
             {
                 var groupmembers = source.MapInstance.GetEntities<Aisling>()
-                    .Where(x => x.WithinLevelRange(source) && x.WithinRange(source));
+                    .Where(x => x.Group != null && x.WithinLevelRange(source) && x.WithinRange(source) && x.Group.Contains(source));
 
                 foreach (var member in groupmembers)
                 {
