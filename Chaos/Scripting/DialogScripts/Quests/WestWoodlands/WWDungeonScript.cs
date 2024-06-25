@@ -1,5 +1,6 @@
 using Chaos.Collections;
 using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
@@ -11,19 +12,25 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Quests.WestWoodlands;
 
-public class WWDungeonScript(Dialog subject, ILogger<WWDungeonScript> logger, ISimpleCache simpleCache, IItemFactory itemFactory) : DialogScriptBase(subject)
+public class WWDungeonScript(
+    Dialog subject,
+    ILogger<WWDungeonScript> logger,
+    ISimpleCache simpleCache,
+    IItemFactory itemFactory) : DialogScriptBase(subject)
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
+    private IExperienceDistributionScript ExperienceDistributionScript { get; } =
+        DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplaying(Aisling source)
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out WestWoodlandsDungeonQuestStage stage);
-        
+
         var gearDictionary = new Dictionary<(BaseClass, Gender), string[]>
         {
             { (BaseClass.Warrior, Gender.Male), ["ipletmail", "iplethelmet"] },
@@ -134,6 +141,7 @@ public class WWDungeonScript(Dialog subject, ILogger<WWDungeonScript> logger, IS
                         }
                     }
                 }
+
                 break;
             }
 
@@ -145,7 +153,7 @@ public class WWDungeonScript(Dialog subject, ILogger<WWDungeonScript> logger, IS
 
                     var mapinstance = simpleCache.Get<MapInstance>("lost_woodlands");
                     var rectangle = new Rectangle(83, 143, 4, 4);
-                    
+
                     foreach (var member in group)
                     {
                         var dialog = member.ActiveDialog.Get();
@@ -157,13 +165,15 @@ public class WWDungeonScript(Dialog subject, ILogger<WWDungeonScript> logger, IS
                         member.TraverseMap(mapinstance, point);
                     }
                 }
+
                 break;
             }
 
             case "wwdungeon_return":
             {
                 source.Trackers.Enums.Set(WestWoodlandsDungeonQuestStage.None);
-                Subject.Reply(source, "Looks like you weren't able to clear the Lost Woods in time. That's okay.", "wwdungeon_initial");
+                Subject.Reply(source, "Looks like you weren't able to clear the Lost Woods in time. That's okay.",
+                    "wwdungeon_initial");
                 break;
             }
 
@@ -173,7 +183,91 @@ public class WWDungeonScript(Dialog subject, ILogger<WWDungeonScript> logger, IS
                 var rectangle = new Rectangle(83, 143, 4, 4);
                 var point = rectangle.GetRandomPoint();
                 source.TraverseMap(mapinstance, point);
-                
+
+                break;
+            }
+
+            case "wwdungeon_turnin3":
+            {
+                source.Trackers.Enums.Set(WestWoodlandsDungeonQuestStage.None);
+                source.Trackers.Counters.AddOrIncrement("wwdungeon");
+                source.Trackers.TimedEvents.AddEvent("wwdungeoncd", TimeSpan.FromHours(22), true);
+                ExperienceDistributionScript.GiveExp(source, 500000);
+                source.TryGiveGamePoints(10);
+
+                logger.WithTopics(
+                        Topics.Entities.Aisling,
+                        Topics.Entities.Experience,
+                        Topics.Entities.Dialog,
+                        Topics.Entities.Quest)
+                    .WithProperty(source)
+                    .WithProperty(Subject)
+                    .LogInformation("{@AislingName} has received {@ExpAmount} exp from a Lost Woodlands quest",
+                        source.Name,
+                        500000);
+
+
+                source.Trackers.Counters.TryGetValue("wwdungeon", out var count);
+
+                var roll = IntegerRandomizer.RollSingle(101);
+
+                switch (roll)
+                {
+                    case < 15:
+                    {
+                        if (!source.Trackers.Flags.HasFlag(AvailableMounts.Ant))
+                        {
+                            source.Trackers.Flags.AddFlag(AvailableMounts.Ant);
+                            source.SendOrangeBarMessage("Maxwell hands you a new mount!");
+                        }
+                        else
+                        {
+                            var item = itemFactory.Create("sparklering");
+                            source.GiveItemOrSendToBank(item);
+                            source.SendOrangeBarMessage("Maxwell hands you a Sparkle Ring!");
+                        }
+
+                        break;
+                    }
+
+                    case < 45:
+                    {
+                        var item = itemFactory.Create("ialtagseye");
+                        source.GiveItemOrSendToBank(item);
+                        source.SendOrangeBarMessage("Maxwell hands you a Ialtag's Eye!");
+                        break;
+                    }
+
+                    case < 55:
+                    {
+                        var boots = itemFactory.Create("silkboots");
+                        source.GiveItemOrSendToBank(boots);
+                        source.SendOrangeBarMessage("Maxwell thanks you with some boots he had.");
+                        break;
+                    }
+                    case < 75:
+                    {
+                        var ring = itemFactory.Create("sonorring");
+                        source.GiveItemOrSendToBank(ring);
+                        source.SendOrangeBarMessage("Maxwell hands you a Sonor Ring!");
+                        break;
+                    }
+                    case < 90:
+                    {
+                        var ring = itemFactory.Create("myanmarring");
+                        source.GiveItemOrSendToBank(ring);
+                        source.SendOrangeBarMessage("Maxwell thanks you with a spare ring he had.");
+                        break;
+                    }
+                    case < 101:
+                    {
+                        var wings = itemFactory.Create("cherubwings");
+                        source.GiveItemOrSendToBank(wings);
+                        source.SendOrangeBarMessage("Maxwell thanks you with some wings he had.");
+                        break;
+                    }
+                }
+
                 break;
             }
 
@@ -184,7 +278,7 @@ public class WWDungeonScript(Dialog subject, ILogger<WWDungeonScript> logger, IS
                 source.Trackers.TimedEvents.AddEvent("wwdungeoncd", TimeSpan.FromHours(22), true);
                 ExperienceDistributionScript.GiveExp(source, 500000);
                 source.TryGiveGamePoints(10);
-                
+
                 logger.WithTopics(
                         Topics.Entities.Aisling,
                         Topics.Entities.Experience,
@@ -192,48 +286,26 @@ public class WWDungeonScript(Dialog subject, ILogger<WWDungeonScript> logger, IS
                         Topics.Entities.Quest)
                     .WithProperty(source)
                     .WithProperty(Subject)
-                    .LogInformation("{@AislingName} has received {@ExpAmount} exp from a Lost Woodlands quest", source.Name,
+                    .LogInformation("{@AislingName} has received {@ExpAmount} exp from a Lost Woodlands quest",
+                        source.Name,
                         500000);
 
 
-                source.Trackers.Counters.TryGetValue("wwdungeon", out var count);
-                
-                switch (count)
-                {
-                    case 1:
-                    {
-                        var gearKey = (source.UserStatSheet.BaseClass, source.Gender);
-                        if (gearDictionary.TryGetValue(gearKey, out var gear))
-                        {
-                            foreach (var gearItemName in gear)
-                            {
-                                var gearItem = itemFactory.Create(gearItemName);
-                                source.GiveItemOrSendToBank(gearItem);
-                                source.SendOrangeBarMessage("Maxwell thanks you with some armor he had.");
-                            }
-                        }
+                source.Trackers.Counters.TryGetValue("wwdungeon", out _);
 
-                        break;
-                    }
-                    
-                    case 5:
+                var gearKey = (source.UserStatSheet.BaseClass, source.Gender);
+                if (gearDictionary.TryGetValue(gearKey, out var gear))
+                {
+                    foreach (var gearItemName in gear)
                     {
-                        var boots = itemFactory.Create("silkboots");
-                        source.GiveItemOrSendToBank(boots);
-                        source.SendOrangeBarMessage("Maxwell thanks you with some boots he had.");
-                        break;
-                    }
-                    case 10:
-                    {
-                        var wings = itemFactory.Create("cherubwings");
-                        source.GiveItemOrSendToBank(wings);
-                        source.SendOrangeBarMessage("Maxwell thanks you with some wings he had.");
-                        break;
+                        var gearItem = itemFactory.Create(gearItemName);
+                        source.GiveItemOrSendToBank(gearItem);
+                        source.SendOrangeBarMessage("Maxwell thanks you with some armor he had.");
                     }
                 }
-                
-                break;
             }
+
+                break;
         }
     }
 }
