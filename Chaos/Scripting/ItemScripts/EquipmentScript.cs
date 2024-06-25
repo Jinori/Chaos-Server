@@ -35,7 +35,7 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
 
         if (Subject.CurrentDurability is < 1)
         {
-            source.SendOrangeBarMessage("That item is broken.");
+            source.SendOrangeBarMessage("That item is broken and needs to be repaired.");
             return;
         }
         

@@ -111,85 +111,78 @@ public class ForagingEffect(IItemFactory itemFactory) : ContinuousAnimationEffec
                                .Select(x => new Point(x.X, x.Y))
                                .ToList();
 
- protected override void OnIntervalElapsed()
-{
-    var aisling = AislingSubject!;
-    var playerLocation = new Point(Subject.X, Subject.Y);
-
-    if ((ForagingSpots.Count == 0) || !ForagingSpots.Contains(playerLocation) || aisling.Equipment[EquipmentSlot.Weapon]?.Template.Name != ("Cloth Glove"))
+    protected override void OnIntervalElapsed()
     {
-        Subject.Effects.Terminate("Foraging");
-        return;
-    }
+        var aisling = AislingSubject!;
+        var playerLocation = new Point(Subject.X, Subject.Y);
 
-    if (IntegerRandomizer.RollChance(DAMAGE_GLOVE))
-    {
-        var randomMessage = GloveBreakMessages[Random.Shared.Next(GloveBreakMessages.Count)];
-        var equipment = aisling.Equipment;
-
-        foreach (var item in equipment)
+        if ((ForagingSpots.Count == 0)
+            || !ForagingSpots.Contains(playerLocation)
+            || (aisling.Equipment[EquipmentSlot.Weapon]?.Template.Name != ("Cloth Glove")))
         {
-            if (aisling.IsGodModeEnabled())
-                continue;
-            
-            if (!item.DisplayName.Contains("Glove"))
-                return;
-            
-                // Reduce the item's durability by 20, ensuring it does not drop below 0
-                for (var i = 0; i < 5; i++)
-                {
-                    if (item.CurrentDurability > 5)
-                        item.CurrentDurability--;
-                    else
-                        break;
-                    // Stop reducing if durability reaches 0
-                }
+            Subject.Effects.Terminate("Foraging");
 
-                if (!(item.CurrentDurability < 5)) continue;
-                aisling.Equipment.Remove(item.DisplayName);
-                aisling.SendOrangeBarMessage("Your glove breaks!");
-                
+            return;
         }
-        aisling.SendOrangeBarMessage(randomMessage);
+
+        if (IntegerRandomizer.RollChance(DAMAGE_GLOVE))
+        {
+            var randomMessage = GloveBreakMessages[Random.Shared.Next(GloveBreakMessages.Count)];
+            var hasGloveOn = aisling.Equipment.TryGetObject("Cloth Glove", out var item);
+
+            switch (hasGloveOn)
+            {
+                case true when item?.CurrentDurability > 5:
+                    item.CurrentDurability -= 5;
+
+                    break;
+                case true when item?.CurrentDurability <= 5:
+                    aisling.Equipment.RemoveByTemplateKey("clothglove");
+                    aisling.SendOrangeBarMessage("Your glove breaks!");
+
+                    break;
+            }
+
+            aisling.SendOrangeBarMessage(randomMessage);
+        }
+
+        if (!IntegerRandomizer.RollChance(FORAGE_GATHER_CHANCE))
+            return;
+
+        var templateKey = ForagingData.PickRandomWeighted();
+        var herb = itemFactory.Create(templateKey);
+
+        if (aisling.TryGiveItem(ref herb))
+        {
+            // Calculate experience based on herb foraged and award it to the player
+            var tnl = LevelUpFormulae.Default.CalculateTnl(aisling);
+            var expGain = CalculateExperienceGain(aisling, tnl, herb.DisplayName);
+
+            ExperienceDistributionScript.GiveExp(aisling, expGain);
+            aisling.SendOrangeBarMessage($"You gather a {herb.DisplayName} and gained {expGain} experience!");
+
+            UpdatePlayerLegend(aisling);
+        }
+        else
+        {
+            aisling.SendOrangeBarMessage($"You gathered a {herb.DisplayName}!");
+        }
     }
-    
-    if (!IntegerRandomizer.RollChance(FORAGE_GATHER_CHANCE))
-        return;
 
-    var templateKey = ForagingData.PickRandomWeighted();
-    var herb = itemFactory.Create(templateKey);
-
-    if (aisling.TryGiveItem(ref herb))
+    private int CalculateExperienceGain(Aisling source, int tnl, string fishName)
     {
-        // Calculate experience based on herb foraged and award it to the player
-        var tnl = LevelUpFormulae.Default.CalculateTnl(aisling);
-        var expGain = CalculateExperienceGain(aisling, tnl, herb.DisplayName);
 
-        ExperienceDistributionScript.GiveExp(aisling, expGain);
-        aisling.SendOrangeBarMessage($"You gather a {herb.DisplayName} and gained {expGain} experience!");
-        
-        UpdatePlayerLegend(aisling);
-    }
-    else
-    {
-        aisling.SendOrangeBarMessage($"You gathered a {herb.DisplayName}!");
-    }
-}
+        if (!ForagingExperienceMultipliers.TryGetValue(fishName, out var multiplier))
+        {
+            source.SendActiveMessage("Something went wrong when trying to forage a herb!");
 
-private int CalculateExperienceGain(Aisling source, int tnl, string fishName)
-{
-    
-    if (!ForagingExperienceMultipliers.TryGetValue(fishName, out var multiplier))
-    {
-        source.SendActiveMessage("Something went wrong when trying to forage a herb!");
+            return 0;
+        }
 
-        return 0;
+        return Convert.ToInt32(multiplier * tnl);
     }
 
-    return Convert.ToInt32(multiplier * tnl);
-}
-
-private void UpdatePlayerLegend(Aisling source) =>
+    private void UpdatePlayerLegend(Aisling source) =>
     source.Legend.AddOrAccumulate(
         new LegendMark(
             "Foraged a bush",

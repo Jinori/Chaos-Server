@@ -70,12 +70,12 @@ public class PickupNotifierScript : ItemScriptBase
 
     public override bool CanUse(Aisling source)
     {
-        if (Subject.Template.Name == "Revive Potion" && !source.IsAlive);
+        if (((Subject.Template.Name == "Revive Potion") && source.IsDead) || !source.IsAlive)
+                return true;
+
+        if (source.IsAlive || !source.IsDead) 
             return true;
 
-        if (!source.IsAlive)
-            return false;
-
-        return true;
+        return false;
     }
 }
