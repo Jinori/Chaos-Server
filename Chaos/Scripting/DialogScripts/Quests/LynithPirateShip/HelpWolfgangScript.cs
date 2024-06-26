@@ -40,8 +40,10 @@ public class HelpWolfgangScript : DialogScriptBase
             {
                 if (source.StatSheet.Level < 99)
                     return;
-                
-                if (source.Trackers.Enums.HasValue(HelpSable.FinishedCaptain)
+                var hasStage = source.Trackers.Enums.TryGetValue(out HelpSable stage);
+
+                if (!hasStage 
+                    || source.Trackers.Enums.HasValue(HelpSable.FinishedCaptain)
                     || source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo)
                     || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooFailed)
                     || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart)

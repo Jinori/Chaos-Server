@@ -55,7 +55,7 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
         ShapeOutline1 = AnimationShape1.GetOutline().ToList();
         ReverseOutline1 = ShapeOutline1.AsEnumerable().Reverse().ToList();
         UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(200));
-        MonsterDelay = new IntervalTimer(TimeSpan.FromSeconds(20));
+        MonsterDelay = new IntervalTimer(TimeSpan.FromSeconds(30));
         NightmareComplete = new IntervalTimer(TimeSpan.FromMinutes(6));
 
         Animation = new Animation
@@ -71,7 +71,7 @@ public class MalePriestNightmareChallengeMapScript : MapScriptBase
     {
         var monsters = new List<Monster>();
 
-        for (var i = 0; i < 5; i++)
+        for (var i = 0; i < 4; i++)
         {
             var point = GenerateSpawnPoint();
 

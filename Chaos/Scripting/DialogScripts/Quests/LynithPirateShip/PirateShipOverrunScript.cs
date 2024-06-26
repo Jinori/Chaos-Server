@@ -59,37 +59,37 @@ public class PirateShipOverrunScript : DialogScriptBase
                 
                 case "shipattack_initial":
             {
-                var hasStage = source.Trackers.Enums.TryGetValue(out WerewolfofPiet _);
+                var hasStage = source.Trackers.Enums.TryGetValue(out PirateShip _);
                 
-                if (source.Trackers.Enums.HasValue(WerewolfofPiet.CompletedShipAttack) || source.Trackers.Flags.HasFlag(ShipAttackFlags.CompletedShipAttack))
+                if (source.Trackers.Enums.HasValue(PirateShip.CompletedShipAttack) || source.Trackers.Flags.HasFlag(ShipAttackFlags.CompletedShipAttack))
                 {
                     Subject.Reply(source, "Thank you again Aisling for defending my ship, we probably would've sunk without you.");
                     return;
                 }
 
-                if (source.Trackers.Enums.HasValue(WerewolfofPiet.None) || !hasStage)
+                if (source.Trackers.Enums.HasValue(PirateShip.None) || !hasStage)
                 {
                     Subject.Reply(source, "Skip", "shipattack_initial2");
                     return;
                 }
                 
-                if (source.Trackers.Enums.HasValue(WerewolfofPiet.StartedShipAttack)
-                    || source.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave1)
-                    || source.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave2)
-                    || source.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave3)
-                    || source.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave4)
-                    || source.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave5)
-                    || source.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave6)
-                    || source.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave7)
-                    || source.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave8)
-                    || source.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave9)
-                    || source.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave10))
+                if (source.Trackers.Enums.HasValue(PirateShip.StartedShipAttack)
+                    || source.Trackers.Enums.HasValue(PirateShip.FinishedWave1)
+                    || source.Trackers.Enums.HasValue(PirateShip.FinishedWave2)
+                    || source.Trackers.Enums.HasValue(PirateShip.FinishedWave3)
+                    || source.Trackers.Enums.HasValue(PirateShip.FinishedWave4)
+                    || source.Trackers.Enums.HasValue(PirateShip.FinishedWave5)
+                    || source.Trackers.Enums.HasValue(PirateShip.FinishedWave6)
+                    || source.Trackers.Enums.HasValue(PirateShip.FinishedWave7)
+                    || source.Trackers.Enums.HasValue(PirateShip.FinishedWave8)
+                    || source.Trackers.Enums.HasValue(PirateShip.FinishedWave9)
+                    || source.Trackers.Enums.HasValue(PirateShip.FinishedWave10))
                 {
                     Subject.Reply(source, "Skip", "shipattack_returnloss");
                     return;
                 }
 
-                if (source.Trackers.Enums.HasValue(WerewolfofPiet.FinishedShipAttack))
+                if (source.Trackers.Enums.HasValue(PirateShip.FinishedShipAttack))
                 {
                     Subject.Reply(source, "Skip", "shipattack_returnwin");
                 }
@@ -127,7 +127,7 @@ public class PirateShipOverrunScript : DialogScriptBase
                 {
                     var dialog = member.ActiveDialog.Get();
                     dialog?.Close(member);
-                    member.Trackers.Enums.Set(WerewolfofPiet.StartedShipAttack);
+                    member.Trackers.Enums.Set(PirateShip.StartedShipAttack);
                     member.SendOrangeBarMessage("Defend the Ship Deck against the Sea Monsters.");
                     var rect = new Rectangle(11, 11, 15, 6);
                     var mapinstance = SimpleCache.Get<MapInstance>("lynith_pirate_ship_deckquest");
@@ -143,7 +143,7 @@ public class PirateShipOverrunScript : DialogScriptBase
             }
 
             case "shipattack_returnloss":
-                    source.Trackers.Enums.Set(WerewolfofPiet.None);
+                    source.Trackers.Enums.Set(PirateShip.None);
 
                 break;
 
@@ -155,7 +155,7 @@ public class PirateShipOverrunScript : DialogScriptBase
                     source.TryGiveGamePoints(25);
                     return;
                 }
-                source.Trackers.Enums.Set(WerewolfofPiet.CompletedShipAttack);
+                source.Trackers.Enums.Set(PirateShip.CompletedShipAttack);
                 source.Trackers.Flags.AddFlag(ShipAttackFlags.CompletedShipAttack);
                 ExperienceDistributionScript.GiveExp(source, 750000);
                 source.Trackers.Flags.AddFlag(AvailableCloaks.Blue);

@@ -45,7 +45,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                 return;
 
             // Check if the player has a specific quest flag and the trial is not already in progress
-            if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.StartedShipAttack) && State == ScriptState.Dormant)
+            if (aisling.Trackers.Enums.HasValue(PirateShip.StartedShipAttack) && State == ScriptState.Dormant)
             {
                 // Start the combat trial
                 StartCombatTrial();
@@ -94,7 +94,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                 aisling.TraverseMap(mapInstance, point);
                 aisling.SendOrangeBarMessage("The Sea Monsters took over the ship and you swam to shore.");
                 aisling.Trackers.TimedEvents.AddEvent("lynithpirateshipcd", TimeSpan.FromHours(8), true);
-                aisling.Trackers.Enums.Set(WerewolfofPiet.None);
+                aisling.Trackers.Enums.Set(PirateShip.None);
                 aisling.StatSheet.SetHealthPct(1);
                 aisling.StatSheet.SetManaPct(1);
                 aisling.Client.SendAttributes(StatUpdateType.Vitality);
@@ -119,7 +119,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
             {
                 case ScriptState.Dormant:
                     if (Subject.GetEntities<Aisling>()
-                        .Any(a => a.Trackers.Enums.HasValue(WerewolfofPiet.StartedShipAttack)))
+                        .Any(a => a.Trackers.Enums.HasValue(PirateShip.StartedShipAttack)))
                     {
                         State = ScriptState.DelayedStart;
                     }
@@ -142,7 +142,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                     break;
 
                 case ScriptState.SpawnedFirstWave:
-                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave1) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(PirateShip.FinishedWave1) || EnoughMonstersOnShip())
                     {
                         State = GetNextStateAfterDelayedStart();
                     }
@@ -158,7 +158,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                     break;
 
                 case ScriptState.SpawnedSecondWave:
-                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave2) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(PirateShip.FinishedWave2) || EnoughMonstersOnShip())
                     {
                         State = GetNextStateAfterDelayedStart();
                     }
@@ -168,13 +168,13 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                 case ScriptState.SpawningThirdWave:
                     StartWave("Captain Wolfgang: Keep up the good work! More incoming!");
                     SpawnMonsters("overrun_starfish", 3);
-                    SpawnMonsters("overrun_greenoctopus", 5);
+                    SpawnMonsters("overrun_greenoctopus", 4);
                     SpawnMonsters("overrun_siren", 1);
                     State = ScriptState.SpawnedThirdWave;
                     break;
 
                 case ScriptState.SpawnedThirdWave:
-                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave3) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(PirateShip.FinishedWave3) || EnoughMonstersOnShip())
                     {
                        State = GetNextStateAfterDelayedStart();
                     }
@@ -185,12 +185,12 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                     StartWave("Captain Wolfgang: I can't believe how many you are handling.");
                     SpawnMonsters("overrun_squid", 3);
                     SpawnMonsters("overrun_siren", 2);
-                    SpawnMonsters("overrun_greenoctopus", 6);
+                    SpawnMonsters("overrun_greenoctopus", 5);
                     State = ScriptState.SpawnedFourthWave;
                     break;
 
                 case ScriptState.SpawnedFourthWave:
-                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave4) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(PirateShip.FinishedWave4) || EnoughMonstersOnShip())
                     {
                        State = GetNextStateAfterDelayedStart();
                     }
@@ -206,7 +206,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                     break;
 
                 case ScriptState.SpawnedFifthWave:
-                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave5) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(PirateShip.FinishedWave5) || EnoughMonstersOnShip())
                     {
                        State = GetNextStateAfterDelayedStart();
                     }
@@ -215,14 +215,14 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
 
                 case ScriptState.SpawningSixthWave:
                     StartWave("Captain Wolfgang: More are coming out of the water!");
-                    SpawnMonsters("overrun_seamonster", 4);
-                    SpawnMonsters("overrun_squid", 5);
-                    SpawnMonsters("overrun_gremlin", 2);
+                    SpawnMonsters("overrun_seamonster", 3);
+                    SpawnMonsters("overrun_squid", 4);
+                    SpawnMonsters("overrun_gremlin", 1);
                     State = ScriptState.SpawnedSixthWave;
                     break;
 
                 case ScriptState.SpawnedSixthWave:
-                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave6) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(PirateShip.FinishedWave6) || EnoughMonstersOnShip())
                     {
                        State = GetNextStateAfterDelayedStart();
                     }
@@ -231,14 +231,14 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
 
                 case ScriptState.SpawningSeventhWave:
                     StartWave("Captain Wolfgang: The Skeleton Pirates! Oh, my old crew...");
-                    SpawnMonsters("overrun_gremlin", 2);
-                    SpawnMonsters("overrun_blueoctopus", 6);
-                    SpawnMonsters("overrun_SkeletonPirate1", 4);
+                    SpawnMonsters("overrun_gremlin", 1);
+                    SpawnMonsters("overrun_blueoctopus", 5);
+                    SpawnMonsters("overrun_SkeletonPirate1", 3);
                     State = ScriptState.SpawnedSeventhWave;
                     break;
 
                 case ScriptState.SpawnedSeventhWave:
-                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave7) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(PirateShip.FinishedWave7) || EnoughMonstersOnShip())
                     {
                        State = GetNextStateAfterDelayedStart();
                     }
@@ -247,14 +247,14 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
 
                 case ScriptState.SpawningEighthWave:
                     StartWave("Captain Wolfgang: There's more incoming!");
-                    SpawnMonsters("overrun_skeletonpirate1", 6);
-                    SpawnMonsters("overrun_gremlin", 3);
-                    SpawnMonsters("overrun_blueoctopus", 5);
+                    SpawnMonsters("overrun_skeletonpirate1", 5);
+                    SpawnMonsters("overrun_gremlin", 2);
+                    SpawnMonsters("overrun_blueoctopus", 3);
                     State = ScriptState.SpawnedEighthWave;
                     break;
 
                 case ScriptState.SpawnedEighthWave:
-                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave8) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(PirateShip.FinishedWave8) || EnoughMonstersOnShip())
                     {
                        State = GetNextStateAfterDelayedStart();
                     }
@@ -263,14 +263,14 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
 
                 case ScriptState.SpawningNinthWave:
                     StartWave("Captain Wolfgang: Keep them off the ship!");
-                    SpawnMonsters("overrun_skeletonpirate2", 6);
-                    SpawnMonsters("overrun_siren", 4);
-                    SpawnMonsters("overrun_squid", 5);
+                    SpawnMonsters("overrun_skeletonpirate2", 5);
+                    SpawnMonsters("overrun_siren", 3);
+                    SpawnMonsters("overrun_squid", 4);
                     State = ScriptState.SpawnedNinthWave;
                     break;
 
                 case ScriptState.SpawnedNinthWave:
-                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave9)|| EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(PirateShip.FinishedWave9)|| EnoughMonstersOnShip())
                     {
                        State = GetNextStateAfterDelayedStart();
                     }
@@ -280,14 +280,14 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                 case ScriptState.SpawningTenthWave:
                     StartWave("Captain Wolfgang: I think this is the last of them...");
                     SpawnMonsters("overrun_eyeboss", 1);
-                    SpawnMonsters("overrun_skeletonpirate2", 7);
+                    SpawnMonsters("overrun_skeletonpirate2", 6);
                     SpawnMonsters("overrun_siren", 3);
-                    SpawnMonsters("overrun_eel", 5);
+                    SpawnMonsters("overrun_eel", 3);
                     State = ScriptState.SpawnedTenthWave;
                     break;
 
                 case ScriptState.SpawnedTenthWave:
-                    if (CheckAllMonstersCleared(WerewolfofPiet.FinishedWave10) || EnoughMonstersOnShip())
+                    if (CheckAllMonstersCleared(PirateShip.FinishedWave10) || EnoughMonstersOnShip())
                     {
                         State = ScriptState.CompletedTrial;
                     }
@@ -332,13 +332,13 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
 
                     var attrib = new Attributes
                     {
-                        AtkSpeedPct = groupLevel.Count * 8 + 3,
-                        MaximumHp = (int)(monster.StatSheet.MaximumHp + groupLevel.Average() * groupLevel.Count * 200),
-                        MaximumMp = (int)(monster.StatSheet.MaximumHp + groupLevel.Average() * groupLevel.Count * 200),
-                        Int = (int)(monster.StatSheet.Int + groupLevel.Average() * groupLevel.Count / 8),
-                        Str = (int)(monster.StatSheet.Str + groupLevel.Average() * groupLevel.Count / 6),
-                        SkillDamagePct = (int)(monster.StatSheet.SkillDamagePct + groupLevel.Average() / 3 + groupLevel.Count + 10),
-                        SpellDamagePct = (int)(monster.StatSheet.SpellDamagePct + groupLevel.Average() / 3 + groupLevel.Count + 10)
+                        AtkSpeedPct = groupLevel.Count * 5 + 2,
+                        MaximumHp = (int)(monster.StatSheet.MaximumHp + groupLevel.Average() * groupLevel.Count * 50),
+                        MaximumMp = (int)(monster.StatSheet.MaximumHp + groupLevel.Average() * groupLevel.Count * 50),
+                        Int = (int)(monster.StatSheet.Int + groupLevel.Average() * groupLevel.Count / 9),
+                        Str = (int)(monster.StatSheet.Str + groupLevel.Average() * groupLevel.Count / 7),
+                        SkillDamagePct = (int)(monster.StatSheet.SkillDamagePct + groupLevel.Average() / 3 + groupLevel.Count + 2),
+                        SpellDamagePct = (int)(monster.StatSheet.SpellDamagePct + groupLevel.Average() / 3 + groupLevel.Count + 2)
                     };
 
                     // Adjust the attributes based on the excess vitality
@@ -347,11 +347,11 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                         // Example adjustments: increase stats by a percentage of the excess vitality
                         attrib = attrib with
                         {
-                            MaximumHp = (int)(excessVitality * 0.05)
+                            MaximumHp = (int)(excessVitality * 0.03)
                         }; // 5% of excess vitality added to HP
                         attrib = attrib with
                         {
-                            MaximumMp = (int)(excessVitality * 0.05)
+                            MaximumMp = (int)(excessVitality * 0.03)
                         }; // 5% of excess vitality added to MP
                         attrib.Int += (int)(excessVitality * 0.01); // 1% of excess vitality added to Int
                         attrib.Str += (int)(excessVitality * 0.01); // 1% of excess vitality added to Str
@@ -392,7 +392,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
             return false;
         }
         
-        private bool CheckAllMonstersCleared(WerewolfofPiet trial)
+        private bool CheckAllMonstersCleared(PirateShip trial)
         {
             if (!Subject.GetEntities<Monster>().Any(m => !m.Script.Is<PetScript>()))
             {
@@ -417,7 +417,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
             {
                 foreach (var aisling in Subject.GetEntities<Aisling>())
                 {
-                    aisling.Trackers.Enums.Set(WerewolfofPiet.FinishedShipAttack);
+                    aisling.Trackers.Enums.Set(PirateShip.FinishedShipAttack);
                     var mapInstance = SimpleCache.Get<MapInstance>("lynith_pirate_ship_deck");
                     aisling.TraverseMap(mapInstance, aisling);
                     aisling.SendOrangeBarMessage("You defended the ship from the Sea Monsters! Speak to the Captain.");
@@ -449,43 +449,43 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
         {
             foreach (var aisling in Subject.GetEntities<Aisling>())
             {
-                if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave1))
+                if (aisling.Trackers.Enums.HasValue(PirateShip.FinishedWave1))
                 {
                     return ScriptState.SpawningSecondWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave2))
+                else if (aisling.Trackers.Enums.HasValue(PirateShip.FinishedWave2))
                 {
                     return ScriptState.SpawningThirdWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave3))
+                else if (aisling.Trackers.Enums.HasValue(PirateShip.FinishedWave3))
                 {
                     return ScriptState.SpawningFourthWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave4))
+                else if (aisling.Trackers.Enums.HasValue(PirateShip.FinishedWave4))
                 {
                     return ScriptState.SpawningFifthWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave5))
+                else if (aisling.Trackers.Enums.HasValue(PirateShip.FinishedWave5))
                 {
                     return ScriptState.SpawningSixthWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave6))
+                else if (aisling.Trackers.Enums.HasValue(PirateShip.FinishedWave6))
                 {
                     return ScriptState.SpawningSeventhWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave7))
+                else if (aisling.Trackers.Enums.HasValue(PirateShip.FinishedWave7))
                 {
                     return ScriptState.SpawningEighthWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave8))
+                else if (aisling.Trackers.Enums.HasValue(PirateShip.FinishedWave8))
                 {
                     return ScriptState.SpawningNinthWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave9))
+                else if (aisling.Trackers.Enums.HasValue(PirateShip.FinishedWave9))
                 {
                     return ScriptState.SpawningTenthWave;
                 }
-                else if (aisling.Trackers.Enums.HasValue(WerewolfofPiet.FinishedWave10))
+                else if (aisling.Trackers.Enums.HasValue(PirateShip.FinishedWave10))
                 {
                     return ScriptState.CompletedTrial;
                 }

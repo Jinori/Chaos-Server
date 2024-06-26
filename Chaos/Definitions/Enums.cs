@@ -1570,7 +1570,7 @@ public enum UndineFieldDungeon
     KilledCarnun = 4,
 }
 
-public enum WerewolfofPiet
+public enum PirateShip
 {
     None,
     StartedShipAttack = 1,

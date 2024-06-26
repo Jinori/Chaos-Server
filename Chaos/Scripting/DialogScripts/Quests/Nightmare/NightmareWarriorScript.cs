@@ -60,7 +60,7 @@ public class NightmareWarriorScript : DialogScriptBase
                     return;
                 }
                 
-                Subject.Reply(source, "What are you still doing here? Are you afraid?");
+                Subject.Reply(source, "What are you still doing here? Are you afraid? Go find the tree the Carnun fought his battles nearby in the last area of West Woodlands.");
                 break;
             }
 

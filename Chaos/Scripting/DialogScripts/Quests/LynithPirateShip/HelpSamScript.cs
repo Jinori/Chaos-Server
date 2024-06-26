@@ -41,7 +41,10 @@ public class HelpSamScript : DialogScriptBase
                 if (source.StatSheet.Level < 41)
                     return;
 
-                if (source.Trackers.Enums.HasValue(HelpSable.FinishedSam)
+                var hasStage = source.Trackers.Enums.TryGetValue(out HelpSable stage);
+
+                if (!hasStage
+                    || source.Trackers.Enums.HasValue(HelpSable.FinishedSam)
                     || source.Trackers.Enums.HasValue(HelpSable.StartedRoger)
                     || source.Trackers.Enums.HasValue(HelpSable.FinishedRoger)
                     || source.Trackers.Enums.HasValue(HelpSable.StartedCaptain)
@@ -50,8 +53,7 @@ public class HelpSamScript : DialogScriptBase
                     || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooFailed)
                     || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart)
                     || source.Trackers.Enums.HasValue(HelpSable.CompletedEscort)
-                    || source.Trackers.Enums.HasValue(HelpSable.FinishedDoltoo)
-                   )
+                    || source.Trackers.Enums.HasValue(HelpSable.FinishedDoltoo))
                     return;
                 
                 if (source.Trackers.Enums.HasValue(HelpSable.StartedSam))

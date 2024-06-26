@@ -213,7 +213,7 @@ public class WWDungeonScript(
 
                 switch (roll)
                 {
-                    case < 15:
+                    case < 8:
                     {
                         if (!source.Trackers.Flags.HasFlag(AvailableMounts.Ant))
                         {
@@ -230,7 +230,7 @@ public class WWDungeonScript(
                         break;
                     }
 
-                    case < 45:
+                    case < 28:
                     {
                         var item = itemFactory.Create("ialtagseye");
                         source.GiveItemOrSendToBank(item);
@@ -238,21 +238,21 @@ public class WWDungeonScript(
                         break;
                     }
 
-                    case < 55:
+                    case < 48:
                     {
                         var boots = itemFactory.Create("silkboots");
                         source.GiveItemOrSendToBank(boots);
                         source.SendOrangeBarMessage("Maxwell thanks you with some boots he had.");
                         break;
                     }
-                    case < 75:
+                    case < 68:
                     {
                         var ring = itemFactory.Create("sonorring");
                         source.GiveItemOrSendToBank(ring);
                         source.SendOrangeBarMessage("Maxwell hands you a Sonor Ring!");
                         break;
                     }
-                    case < 90:
+                    case < 88:
                     {
                         var ring = itemFactory.Create("myanmarring");
                         source.GiveItemOrSendToBank(ring);

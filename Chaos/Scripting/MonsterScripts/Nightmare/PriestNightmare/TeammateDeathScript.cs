@@ -6,6 +6,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 
@@ -15,13 +16,16 @@ namespace Chaos.Scripting.MonsterScripts.Nightmare.PriestNightmare;
 public class TeammateDeathScript : MonsterScriptBase
 {
     private readonly ISimpleCache SimpleCache;
+    private readonly IItemFactory ItemFactory;
+    
 
     /// <inheritdoc />
-    public TeammateDeathScript(Monster subject, ISimpleCache simpleCache)
+    public TeammateDeathScript(Monster subject, ISimpleCache simpleCache, IItemFactory itemFactory)
         : base(subject)
     {
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         SimpleCache = simpleCache;
+        ItemFactory = itemFactory;
     }
 
     protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
@@ -34,7 +38,7 @@ public class TeammateDeathScript : MonsterScriptBase
 
         var teammates = Map.GetEntities<Monster>().Where(m => m.Name == "Teammate");
 
-        var players = Map.GetEntities<Aisling>().Where(x => x.IsAlive);
+        var players = Map.GetEntities<Aisling>().Where(x => x.IsAlive).ToList();
 
         foreach (var player in players)
             player.SendOrangeBarMessage($"{Subject.Name} has been killed! Your nightmare gets worse.");
@@ -44,6 +48,37 @@ public class TeammateDeathScript : MonsterScriptBase
 
         foreach (var player in players)
         {
+            var nightmaregearDictionary = new Dictionary<(BaseClass, Gender), string[]>
+            {
+                { (BaseClass.Warrior, Gender.Male), ["malecarnunplate", "carnunhelmet"] },
+                { (BaseClass.Warrior, Gender.Female), ["femalecarnunplate", "carnunhelmet"] },
+                { (BaseClass.Monk, Gender.Male), ["maleaosdicpatternwalker"] },
+                { (BaseClass.Monk, Gender.Female), ["femaleaosdicpatternwalker"] },
+                { (BaseClass.Rogue, Gender.Male), ["malemarauderhide", "maraudermask"] },
+                { (BaseClass.Rogue, Gender.Female), ["femalemarauderhide", "maraudermask"] },
+                { (BaseClass.Priest, Gender.Male), ["malecthonicdisciplerobes", "cthonicdisciplecaputium"] },
+                { (BaseClass.Priest, Gender.Female), ["morrigudisciplepellison", "holyhairband"] },
+                { (BaseClass.Wizard, Gender.Male), ["cthonicmagusrobes", "cthonicmaguscaputium"] },
+                { (BaseClass.Wizard, Gender.Female), ["morrigumaguspellison", "magushairband"] }
+            };
+            
+            var gearKey = (player.UserStatSheet.BaseClass, player.Gender);
+
+            if (nightmaregearDictionary.TryGetValue(gearKey, out var nightmaregear))
+            {
+                var hasGear = nightmaregear.All(
+                    gearItemName =>
+                        player.Inventory.ContainsByTemplateKey(gearItemName)
+                        || player.Bank.Contains(gearItemName)
+                        || player.Equipment.ContainsByTemplateKey(gearItemName));
+
+                if (!hasGear)
+                    foreach (var gearItemName in nightmaregear)
+                    {
+                        var gearItem = ItemFactory.Create(gearItemName);
+                        player.GiveItemOrSendToBank(gearItem);
+                    }
+            }
             var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
             var pointS = new Point(5, 7);
 

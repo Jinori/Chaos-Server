@@ -45,8 +45,14 @@ public class HelpDoltooScript : DialogScriptBase
 
                 if (!source.Trackers.Enums.HasValue(HelpSable.FinishedDoltoo))
                     return;
-                
-                if (source.Trackers.Enums.HasValue(HelpSable.FinishedCaptain) || source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo) || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart))
+                var hasStage = source.Trackers.Enums.TryGetValue(out HelpSable stage);
+
+                if (!hasStage)
+                    return;
+
+                if (source.Trackers.Enums.HasValue(HelpSable.FinishedCaptain)
+                    || source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo) 
+                    || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart))
                 {
                     var option1 = new DialogOption
                     {

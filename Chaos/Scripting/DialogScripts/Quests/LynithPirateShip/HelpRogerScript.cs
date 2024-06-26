@@ -40,14 +40,16 @@ public class HelpRogerScript : DialogScriptBase
             {
                 if (source.StatSheet.Level < 71)
                     return;
-                
-                if (source.Trackers.Enums.HasValue(HelpSable.FinishedRoger)
+                var hasStage = source.Trackers.Enums.TryGetValue(out HelpSable stage);
+
+                if (!hasStage
+                    || source.Trackers.Enums.HasValue(HelpSable.FinishedRoger)
                     || source.Trackers.Enums.HasValue(HelpSable.StartedCaptain)
-                    || source.Trackers.Enums.HasValue(HelpSable.FinishedCaptain)
-                    || source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo)
-                    || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooFailed)
-                    || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart)
-                    || source.Trackers.Enums.HasValue(HelpSable.CompletedEscort)
+                    || source.Trackers.Enums.HasValue(HelpSable.FinishedCaptain) 
+                    || source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo) 
+                    || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooFailed) 
+                    || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart) 
+                    || source.Trackers.Enums.HasValue(HelpSable.CompletedEscort) 
                     || source.Trackers.Enums.HasValue(HelpSable.FinishedDoltoo)
                    )
                     return;
