@@ -57,8 +57,7 @@ public class WerewolfEffect : EffectBase, NonOverwritableEffectComponent.INonOve
             
             AislingSubject.StatSheet.SubtractBonus(NegativeAttributes);
             AislingSubject.Client.SendAttributes(StatUpdateType.Full);
-            AislingSubject.Sprite = 426;
-            AislingSubject.Display();
+            AislingSubject.SetSprite(426);
         }
     }
     
@@ -68,9 +67,7 @@ public class WerewolfEffect : EffectBase, NonOverwritableEffectComponent.INonOve
         {
             AislingSubject.StatSheet.AddBonus(NegativeAttributes);
             AislingSubject.Client.SendAttributes(StatUpdateType.Full);
-            AislingSubject.Sprite = 0;
-            AislingSubject.Refresh(true);
-            AislingSubject.Display();
+            AislingSubject.SetSprite(0);
         }
     }
     public override bool ShouldApply(Creature source, Creature target)

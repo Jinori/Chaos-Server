@@ -85,9 +85,7 @@ public class MountScript(Item subject, IEffectFactory effectFactory) : ItemScrip
 
             if (MountAndCloakSprites.TryGetValue((mount, cloak), out var sprite))
             {
-                source.Sprite = (ushort)sprite;
-                source.Refresh(true);
-                source.Display();
+                source.SetSprite((ushort)sprite);
                 source.SendOrangeBarMessage("You jump on your mount.");
                 var effect = effectFactory.Create("mount");
                 source.Effects.Apply(source, effect);
