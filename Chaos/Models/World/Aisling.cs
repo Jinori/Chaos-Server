@@ -643,6 +643,14 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         Display();
     }
 
+    public void SetSprite(ushort sprite)
+    {
+        Sprite = sprite;
+
+        Refresh(true);
+        Display();
+    }
+
     public override void SetVision(VisionType visionType)
     {
         if (visionType == Vision)
