@@ -38,10 +38,10 @@ public class MultiplexingWarpScript : ConfigurableReactorTileScriptBase
                 if (w.MaxLevel.HasValue && (w.MaxLevel.Value < source.StatSheet.Level))
                     return false;
 
-                if (w.MinVitality.HasValue && (w.MinVitality.Value > vitality))
+                if (w.MinVitality.HasValue && (w.MinVitality.Value > vitality) && source.StatSheet.Level > 98)
                     return false;
 
-                if (w.MaxVitality.HasValue && (w.MaxVitality.Value < vitality))
+                if (w.MaxVitality.HasValue && (w.MaxVitality.Value < vitality) && source.StatSheet.Level > 98)
                     return false;
 
                 return true;

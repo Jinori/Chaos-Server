@@ -54,8 +54,8 @@ public sealed class HorseBoss1EnrageScript : MonsterScriptBase
             //Give Bonuses
             var attrib = new Attributes { AtkSpeedPct = 10 };
             Subject.StatSheet.AddBonus(attrib);
-            HPRegenInterval = 8f;
-            HPMultiplier = 0.04f;
+            HPRegenInterval = 12f;
+            HPMultiplier = 0.01f;
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
         }
@@ -72,8 +72,8 @@ public sealed class HorseBoss1EnrageScript : MonsterScriptBase
                 SpellDamagePct = 5
             };
 
-            HPRegenInterval = 6f;
-            HPMultiplier = 0.06f;
+            HPRegenInterval = 8f;
+            HPMultiplier = 0.02f;
 
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
@@ -87,15 +87,15 @@ public sealed class HorseBoss1EnrageScript : MonsterScriptBase
             {
                 Int = 3,
                 Str = 5,
-                Ac = -10,
+                Ac = -5,
                 AtkSpeedPct = 10,
                 Hit = 10,
                 SkillDamagePct = 5,
                 SpellDamagePct = 5
             };
 
-            HPRegenInterval = 4f;
-            HPMultiplier = 0.08f;
+            HPRegenInterval = 6f;
+            HPMultiplier = 0.03f;
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }
