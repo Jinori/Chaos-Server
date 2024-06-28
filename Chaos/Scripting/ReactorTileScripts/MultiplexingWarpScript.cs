@@ -21,10 +21,9 @@ public class MultiplexingWarpScript : ConfigurableReactorTileScriptBase
 
     public override void OnWalkedOn(Creature source)
     {
-        var vit = source.StatSheet.MaximumHp + (source.StatSheet.MaximumMp * 2);
         var vitality = source.StatSheet.MaximumHp + source.StatSheet.MaximumMp * 2;
 
-        var warp = Warps.SingleOrDefault(
+        var warp = Warps.FirstOrDefault(
             w =>
             {
                 if (source is not Aisling aisling)
