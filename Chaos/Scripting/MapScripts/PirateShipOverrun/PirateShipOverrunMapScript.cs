@@ -22,13 +22,13 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
         private readonly IMonsterFactory MonsterFactory;
         private readonly ISimpleCache SimpleCache;
         private readonly TimeSpan StartDelay = TimeSpan.FromSeconds(5);
-        private readonly TimeSpan CombatTimer2 = TimeSpan.FromMinutes(20);
+        private readonly TimeSpan CombatTimer2 = TimeSpan.FromMinutes(30);
         private DateTime? StartTime;
         private ScriptState State;
         private readonly IIntervalTimer UpdateTimer;
         private readonly IIntervalTimer CombatTimer;
         public const int UPDATE_INTERVAL_MS = 1000;
-        public const int COMBAT_INTERVAL = 20;
+        public const int COMBAT_INTERVAL = 30;
 
         public PirateShipOverrunMapScript(MapInstance subject, ISimpleCache simpleCache, IMonsterFactory monsterFactory)
             : base(subject)
@@ -90,8 +90,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                 {
                     point = rect.GetRandomPoint();
                 } while (!mapInstance.IsWalkable(point, aisling.Type));
-
-                aisling.TraverseMap(mapInstance, point);
+                
                 aisling.SendOrangeBarMessage("The Sea Monsters took over the ship and you swam to shore.");
                 aisling.Trackers.TimedEvents.AddEvent("lynithpirateshipcd", TimeSpan.FromHours(8), true);
                 aisling.Trackers.Enums.Set(PirateShip.None);
@@ -99,6 +98,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                 aisling.StatSheet.SetManaPct(1);
                 aisling.Client.SendAttributes(StatUpdateType.Vitality);
                 aisling.Refresh();
+                aisling.TraverseMap(mapInstance, point);
             }
 
             StartTime = null;
@@ -320,12 +320,13 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                 if (Subject.Template.Bounds.TryGetRandomPoint(
                         pt => !Subject.IsWall(pt) && !IsPointInRectangle(pt, exclusionRectangle), out var point))
                 {
-                    var groupLevel = Subject.GetEntities<Aisling>().Select(aisling => aisling.StatSheet.Level).ToList();
+                    var groupLevel = Subject.GetEntities<Aisling>().Where(x => !x.IsGodModeEnabled()).Select(aisling => aisling.StatSheet.Level).ToList();
                     var monster = MonsterFactory.Create(monsterType, Subject, point);
 
                     // Calculate the excess vitality over 20,000 for any player
                     var excessVitality = Subject.GetEntities<Aisling>()
-                        .Where(aisling => !aisling.Trackers.Enums.HasValue(GodMode.Yes))
+                        .Where(aisling => !aisling.IsGodModeEnabled())
+                        .Where(aisling => aisling.StatSheet.Level > 98)
                         .Select(aisling => (aisling.StatSheet.MaximumHp + aisling.StatSheet.MaximumMp) - 20000)
                         .Where(excess => excess > 0)
                         .Sum(excess => excess / 1000);
@@ -379,9 +380,11 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
 
         private bool EnoughMonstersOnShip()
         {
-            IRectangle shipRectangle = new Rectangle(4, 6, 29, 13);
+            IRectangle shipRectangle1 = new Rectangle(5, 8, 5, 8);
+            IRectangle shipRectangle2 = new Rectangle(10, 9, 7, 9);
+            IRectangle shipRectangle3 = new Rectangle(17, 11, 15, 7);
 
-            var monstersOnShip = Subject.GetEntities<Monster>().Where(x => shipRectangle.Contains(x)).ToList();
+            var monstersOnShip = Subject.GetEntities<Monster>().Where(x => shipRectangle1.Contains(x) && shipRectangle2.Contains(x) && shipRectangle3.Contains(x)).ToList();
 
             if (monstersOnShip.Count > 8)
             {

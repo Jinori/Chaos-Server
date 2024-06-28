@@ -105,61 +105,31 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
 
         if (!teammatespawnRectangle.TryGetRandomPoint(x => Subject.IsWalkable(x, CreatureType.Normal), out var point4))
             point4 = Point.From(target);
+        
+        var monster1 = MonsterFactory.Create(
+            "nightmare_femalewarrior",
+            Subject,
+            point1);
 
-        if (Subject.GetEntities<Aisling>().Any(a => a.Gender == Gender.Male))
-        {
-            var monster1 = MonsterFactory.Create(
-                "nightmare_malewarrior",
-                Subject,
-                point1);
+        var monster2 = MonsterFactory.Create(
+            "nightmare_femalemonk",
+            Subject,
+            point2);
 
-            var monster2 = MonsterFactory.Create(
-                "nightmare_malemonk",
-                Subject,
-                point2);
+        var monster3 = MonsterFactory.Create(
+            "nightmare_femalerogue",
+            Subject,
+            point3);
 
-            var monster3 = MonsterFactory.Create(
-                "nightmare_malerogue",
-                Subject,
-                point3);
+        var monster4 = MonsterFactory.Create(
+            "nightmare_femalewizard",
+            Subject,
+            point4);
 
-            var monster4 = MonsterFactory.Create(
-                "nightmare_malewizard",
-                Subject,
-                point4);
-
-            teammates.Add(monster1);
-            teammates.Add(monster2);
-            teammates.Add(monster3);
-            teammates.Add(monster4);
-        }
-        else
-        {
-            var monster1 = MonsterFactory.Create(
-                "nightmare_femalewarrior",
-                Subject,
-                point1);
-
-            var monster2 = MonsterFactory.Create(
-                "nightmare_femalemonk",
-                Subject,
-                point2);
-
-            var monster3 = MonsterFactory.Create(
-                "nightmare_femalerogue",
-                Subject,
-                point3);
-
-            var monster4 = MonsterFactory.Create(
-                "nightmare_femalewizard",
-                Subject,
-                point4);
-
-            teammates.Add(monster1);
-            teammates.Add(monster2);
-            teammates.Add(monster3);
-            teammates.Add(monster4);
-        }
+        teammates.Add(monster1);
+        teammates.Add(monster2);
+        teammates.Add(monster3);
+        teammates.Add(monster4);
 
         Subject.AddEntities(teammates);
     }
