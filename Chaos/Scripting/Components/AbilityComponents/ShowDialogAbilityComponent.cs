@@ -6,6 +6,7 @@ using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Models.World;
+using System.Collections.Generic;
 
 namespace Chaos.Scripting.Components.AbilityComponents
 {
@@ -24,62 +25,53 @@ namespace Chaos.Scripting.Components.AbilityComponents
             if (targetAisling == null)
                 return;
 
-            // Anytime a person reads dialog, it will check these. We can use this to make sure we clean up anything they have that they shouldn't
-            if (targetAisling.UserStatSheet.BaseClass is BaseClass.Warrior)
-                if (targetAisling.SkillBook.ContainsByTemplateKey("beagsuain") && targetAisling.SkillBook.ContainsByTemplateKey("groundstomp"))
-                    targetAisling.SkillBook.RemoveByTemplateKey("beagsuain");
-
-            if (targetAisling.UserStatSheet.BaseClass is BaseClass.Monk)
-                if (targetAisling.Trackers.Enums.TryGetValue(out MonkElementForm form))
-                {
-                    CleanUpSkillsAndSpells(targetAisling, form);
-                }
+            CleanUpSkillsAndSpells(targetAisling);
 
             targetAisling.DialogHistory.Clear();
             var dialog = options.DialogFactory.Create(options.DialogKey, options.DialogSource);
             dialog.Display(targetAisling);
         }
 
-        private void CleanUpSkillsAndSpells(Aisling targetAisling, MonkElementForm form)
+        private void CleanUpSkillsAndSpells(Aisling targetAisling)
         {
-            List<string> allowedSkills = [];
-            List<string> allowedSpells = [];
-
-            switch (form)
+            if (targetAisling.UserStatSheet.BaseClass is BaseClass.Warrior)
             {
-                case MonkElementForm.Water:
-                    allowedSkills = ["waterpunch", "tsunamikick"];
-                    allowedSpells = ["miststance"];
-                    break;
-                case MonkElementForm.Earth:
-                    allowedSkills = ["earthpunch", "seismickick"];
-                    allowedSpells = ["earthenstance"];
-                    break;
-                case MonkElementForm.Air:
-                    allowedSkills = ["airpunch", "tempestkick"];
-                    allowedSpells = ["thunderstance"];
-                    break;
-                case MonkElementForm.Fire:
-                    allowedSkills = ["firepunch", "dracotailkick"];
-                    allowedSpells = ["smokestance"];
-                    break;
-            }
-            
-
-            // Remove any skills or spells not matching the allowed list
-            foreach (var skill in targetAisling.SkillBook)
-            {
-                if (!allowedSkills.Contains(skill.Template.TemplateKey))
-                {
-                    targetAisling.SkillBook.RemoveByTemplateKey(skill.Template.TemplateKey);
-                }
+                if (targetAisling.SkillBook.ContainsByTemplateKey("beagsuain") && targetAisling.SkillBook.ContainsByTemplateKey("groundstomp"))
+                    targetAisling.SkillBook.RemoveByTemplateKey("beagsuain");
+                return;
             }
 
-            foreach (var spell in targetAisling.SpellBook)
+            if (targetAisling.UserStatSheet.BaseClass is BaseClass.Monk && targetAisling.Trackers.Enums.TryGetValue(out MonkElementForm form))
             {
-                if (!allowedSpells.Contains(spell.Template.TemplateKey))
+                var elementSkillsAndSpells = new Dictionary<MonkElementForm, (List<string> Skills, List<string> Spells)>
                 {
-                    targetAisling.SpellBook.RemoveByTemplateKey(spell.Template.TemplateKey);
+                    { MonkElementForm.Water, (["waterpunch", "tsunamikick"], ["miststance"]) },
+                    { MonkElementForm.Earth, (["earthpunch", "seismickick"], ["earthenstance"]) },
+                    { MonkElementForm.Air, (["airpunch", "tempestkick"], ["thunderstance"]) },
+                    { MonkElementForm.Fire, (["firepunch", "dracotailkick"], ["smokestance"]) }
+                };
+
+                foreach (var element in elementSkillsAndSpells)
+                {
+                    if (element.Key != form)
+                    {
+                        // Remove skills of other elements
+                        foreach (var skill in element.Value.Skills)
+                        {
+                            if (targetAisling.SkillBook.ContainsByTemplateKey(skill))
+                            {
+                                targetAisling.SkillBook.RemoveByTemplateKey(skill);
+                            }
+                        }
+                        // Remove spells of other elements
+                        foreach (var spell in element.Value.Spells)
+                        {
+                            if (targetAisling.SpellBook.ContainsByTemplateKey(spell))
+                            {
+                                targetAisling.SpellBook.RemoveByTemplateKey(spell);
+                            }
+                        }
+                    }
                 }
             }
         }

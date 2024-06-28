@@ -21,6 +21,7 @@ public class MultiplexingWarpScript : ConfigurableReactorTileScriptBase
 
     public override void OnWalkedOn(Creature source)
     {
+        var vit = source.StatSheet.MaximumHp + (source.StatSheet.MaximumMp * 2);
         var vitality = source.StatSheet.MaximumHp + source.StatSheet.MaximumMp * 2;
 
         var warp = Warps.SingleOrDefault(
@@ -38,10 +39,10 @@ public class MultiplexingWarpScript : ConfigurableReactorTileScriptBase
                 if (w.MaxLevel.HasValue && (w.MaxLevel.Value < source.StatSheet.Level))
                     return false;
 
-                if (w.MinVitality.HasValue && (w.MinVitality.Value > vitality) && source.StatSheet.Level > 98)
+                if ((source.StatSheet.Level > 98) && w.MinVitality.HasValue && (w.MinVitality.Value > vitality))
                     return false;
 
-                if (w.MaxVitality.HasValue && (w.MaxVitality.Value < vitality) && source.StatSheet.Level > 98)
+                if ((source.StatSheet.Level > 98) && w.MaxVitality.HasValue && (w.MaxVitality.Value < vitality))
                     return false;
 
                 return true;
