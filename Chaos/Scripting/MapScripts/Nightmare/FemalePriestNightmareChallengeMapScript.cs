@@ -76,7 +76,7 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
             var point = GenerateSpawnPoint();
 
             var monster = MonsterFactory.Create(
-                "nightmare_morrigu",
+                "nightmare_magda",
                 Subject,
                 point);
 
