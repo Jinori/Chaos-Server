@@ -18,7 +18,8 @@ public class WolfBoss3Script : CompositeMonsterScript
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(DeathScript)),
-        GetScriptKey(typeof(DisplayNameScript))
+        GetScriptKey(typeof(DisplayNameScript)),
+        GetScriptKey(typeof(ThisIsABossScript))
     };
 
     /// <inheritdoc />

@@ -1,9 +1,11 @@
 using Chaos.Common.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.EffectComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Boss;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -42,6 +44,9 @@ public sealed class BeagSuainEffect : ContinuousAnimationEffectBase, Hierarchica
     public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.");
     public override bool ShouldApply(Creature source, Creature target)
     {
+        if (target.Script.Is<ThisIsABossScript>())
+            return false;
+        
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
 

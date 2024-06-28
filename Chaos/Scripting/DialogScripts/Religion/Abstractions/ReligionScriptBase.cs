@@ -679,7 +679,7 @@ public class ReligionScriptBase : DialogScriptBase
         else
         {
             Subject.Reply(source, "You have reached your limit in prayer. Try again tomorrow!");
-            source.Trackers.TimedEvents.AddEvent("PrayerCooldown", TimeSpan.FromDays(1), true);
+            source.Trackers.TimedEvents.AddEvent("PrayerCooldown", TimeSpan.FromHours(22), true);
             source.Trackers.Enums.Set(ReligionPrayer.None);
         }
     }

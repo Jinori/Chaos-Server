@@ -18,7 +18,8 @@ public class ElderMageBossScript : CompositeMonsterScript
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(WWBossDeathScript)),
-        GetScriptKey(typeof(DisplayNameScript))
+        GetScriptKey(typeof(DisplayNameScript)),
+        GetScriptKey(typeof(ThisIsABossScript))
     };
 
     /// <inheritdoc />

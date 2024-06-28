@@ -22,6 +22,7 @@ using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyHealing;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Scripting.MonsterScripts.Boss;
 using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
@@ -184,7 +185,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     public override void OnAttacked(Creature source, int damage)
     {
-
         if (Subject.IsPramhed())
         {
             Subject.Effects.Dispel("pramh");
@@ -200,14 +200,26 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
             if (IntegerRandomizer.RollChance(2))
             {
-                var effect = EffectFactory.Create("Suain");
-                source.Effects.Apply(Subject, effect);
+                if (!source.Script.Is<ThisIsABossScript>())
+                {
+                    var effect = EffectFactory.Create("Suain");
+                    source.Effects.Apply(Subject, effect);   
+                }
             }
 
             if (source is Monster monster)
                 monster.AggroList.AddOrUpdate(Subject.Id, _ => result, (_, currentAggro) => currentAggro + result);
         }
 
+        if (Subject.IsSmokeStanced() && IntegerRandomizer.RollChance(15))
+        {
+            if (!source.Script.Is<ThisIsABossScript>())
+            {
+                var effect = EffectFactory.Create("Blind");
+                source.Effects.Apply(Subject, effect);   
+            }
+        }
+        
         if (Subject.IsMistStanced())
         {
             var result = Math.Round(damage * 0.15m);

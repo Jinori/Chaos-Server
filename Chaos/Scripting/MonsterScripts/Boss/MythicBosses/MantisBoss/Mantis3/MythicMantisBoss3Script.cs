@@ -17,7 +17,8 @@ public class MythicMantisBoss3Script : CompositeMonsterScript
         GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(DeathScript)),
-        GetScriptKey(typeof(DisplayNameScript))
+        GetScriptKey(typeof(DisplayNameScript)),
+        GetScriptKey(typeof(ThisIsABossScript))
     };
 
     /// <inheritdoc />

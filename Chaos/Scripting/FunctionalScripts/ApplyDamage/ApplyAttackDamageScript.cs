@@ -243,12 +243,6 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
             return true;
         }
 
-        if (target.IsSmokeStanced() && IntegerRandomizer.RollChance(15) && source is Monster monsterSource)
-        {
-            var effect = EffectFactory.Create("Blind");
-            monsterSource.Effects.Apply(target, effect);
-        }
-
         return false;
     }
 }

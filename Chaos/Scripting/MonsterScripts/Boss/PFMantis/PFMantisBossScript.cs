@@ -19,7 +19,8 @@ public class PFMantisBossScript : CompositeMonsterScript
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(PfMantisDeathScript)),
         GetScriptKey(typeof(DeathScript)),
-        GetScriptKey(typeof(DisplayNameScript))
+        GetScriptKey(typeof(DisplayNameScript)),
+        GetScriptKey(typeof(ThisIsABossScript))
     };
 
     /// <inheritdoc />

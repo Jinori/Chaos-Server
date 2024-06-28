@@ -5,6 +5,7 @@ using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Boss;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -47,6 +48,9 @@ public sealed class BlindEffect : ContinuousAnimationEffectBase
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (target.IsGodModeEnabled())
+            return false;
+
+        if (target.Script.Is<ThisIsABossScript>())
             return false;
         
         if (target.Effects.Contains("Blind"))

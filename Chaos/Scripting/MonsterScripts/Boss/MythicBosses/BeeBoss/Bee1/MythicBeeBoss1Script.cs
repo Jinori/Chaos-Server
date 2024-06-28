@@ -18,7 +18,8 @@ public class MythicBeeBoss1Script : CompositeMonsterScript
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(DeathScript)),
         GetScriptKey(typeof(DisplayNameScript)),
-        GetScriptKey(typeof(BossDefenseScript))
+        GetScriptKey(typeof(BossDefenseScript)),
+        GetScriptKey(typeof(ThisIsABossScript))
     };
 
     /// <inheritdoc />

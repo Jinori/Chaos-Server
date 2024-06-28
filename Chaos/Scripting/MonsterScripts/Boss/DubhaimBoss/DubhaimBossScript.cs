@@ -18,7 +18,8 @@ public class DubhaimBossScript : CompositeMonsterScript
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(DubhaimBossDeathScript)),
-        GetScriptKey(typeof(DisplayNameScript))
+        GetScriptKey(typeof(DisplayNameScript)),
+        GetScriptKey(typeof(ThisIsABossScript))
     };
 
     //If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.

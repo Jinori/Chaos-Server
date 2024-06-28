@@ -460,7 +460,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 2 Scorpion Sting, 1 Kobold Tail and 1 Empty Bottle.",
+                            } requires 2 Scorpion's Sting, 1 Kobold Tail and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -556,7 +556,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 3 Scorpion Sting, 2 Kobold Tail and 1 Empty Bottle.",
+                            } requires 3 Scorpion's Sting, 2 Kobold Tail and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;

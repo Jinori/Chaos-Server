@@ -1,6 +1,10 @@
 using Chaos.Common.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.Data;
+using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Boss;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -34,4 +38,18 @@ public sealed class EarthPunchEffect : ContinuousAnimationEffectBase
     protected override void OnIntervalElapsed() => AislingSubject?.Client.SendCancelCasting();
 
     public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel fine again.");
+    
+    public override bool ShouldApply(Creature source, Creature target)
+    {
+        if (target.Script.Is<ThisIsABossScript>())
+            return false;
+        
+        if (target.Effects.Contains("earthpunch"))
+        {
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already stunned.");
+            return false;
+        }
+
+        return true;
+    }
 }

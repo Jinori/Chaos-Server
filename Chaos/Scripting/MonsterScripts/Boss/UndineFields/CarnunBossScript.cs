@@ -18,7 +18,8 @@ public class CarnunBossScript : CompositeMonsterScript
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(CarnunBossRoomHazardScript)),
         GetScriptKey(typeof(CarnunDeathScript)),
-        GetScriptKey(typeof(DisplayNameScript))
+        GetScriptKey(typeof(DisplayNameScript)),
+        GetScriptKey(typeof(ThisIsABossScript))
     };
 
     //If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
