@@ -21,7 +21,8 @@ public class MultiplexingWarpScript : ConfigurableReactorTileScriptBase
 
     public override void OnWalkedOn(Creature source)
     {
-        var vitality = source.StatSheet.MaximumHp + source.StatSheet.MaximumMp * 2;
+        // Calculate vitality only if the player's level is 99
+        var vitality = source.StatSheet.Level == 99 ? source.StatSheet.MaximumHp + source.StatSheet.MaximumMp * 2 : 0;
 
         var warp = Warps.FirstOrDefault(
             w =>
@@ -38,11 +39,15 @@ public class MultiplexingWarpScript : ConfigurableReactorTileScriptBase
                 if (w.MaxLevel.HasValue && (w.MaxLevel.Value < source.StatSheet.Level))
                     return false;
 
-                if ((source.StatSheet.Level > 98) && w.MinVitality.HasValue && (w.MinVitality.Value > vitality))
-                    return false;
+                // Check MinVitality and MaxVitality conditions only if the player is level 99
+                if (source.StatSheet.Level == 99)
+                {
+                    if (w.MinVitality.HasValue && (w.MinVitality.Value > vitality))
+                        return false;
 
-                if ((source.StatSheet.Level > 98) && w.MaxVitality.HasValue && (w.MaxVitality.Value < vitality))
-                    return false;
+                    if (w.MaxVitality.HasValue && (w.MaxVitality.Value < vitality))
+                        return false;
+                }
 
                 return true;
             });
@@ -65,7 +70,6 @@ public class MultiplexingWarpScript : ConfigurableReactorTileScriptBase
         public int? MaxLevel { get; set; }
         public int? MaxVitality { get; set; }
         public int? MinLevel { get; set; }
-
         public int? MinLevelNotify { get; set; }
         public int? MinVitality { get; set; }
     }

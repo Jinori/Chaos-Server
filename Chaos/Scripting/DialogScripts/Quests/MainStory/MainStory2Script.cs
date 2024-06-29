@@ -123,8 +123,8 @@ public class MainStory2Script(
             {
                 var pentagearDictionary = new Dictionary<(BaseClass, Gender), string[]>
                 {
-                    { (BaseClass.Warrior, Gender.Male), ["hybrasylarmor", "hybrasylhelmet"] },
-                    { (BaseClass.Warrior, Gender.Female), ["hybrasylplate", "hybrasylhelmet"] },
+                    { (BaseClass.Warrior, Gender.Male), ["hybrasylarmor"] },
+                    { (BaseClass.Warrior, Gender.Female), ["hybrasylplate"] },
                     { (BaseClass.Monk, Gender.Male), ["mountaingarb"] },
                     { (BaseClass.Monk, Gender.Female), ["seagarb"] },
                     { (BaseClass.Rogue, Gender.Male), ["bardocle"] },
@@ -157,6 +157,8 @@ public class MainStory2Script(
             case "defeatedsummoner3":
             {
                 source.Trackers.Enums.Set(MainStoryEnums.CompletedPreMasterMainStory);
+                ExperienceDistributionScript.GiveExp(source, 10000000);
+                source.TryGiveGamePoints(25);
                 source.SendOrangeBarMessage("Wait for Goddess Miraelis to have more information.");
                 return;
             }

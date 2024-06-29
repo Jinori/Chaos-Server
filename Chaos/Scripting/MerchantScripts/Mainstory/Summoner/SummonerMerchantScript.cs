@@ -126,7 +126,7 @@ public class SummonerMerchantScript : MerchantScriptBase
         else if (!HasSaidDialog3 && DialogueTimer.IntervalElapsed)
         {
             var aislings = Subject.MapInstance.GetEntities<Aisling>()
-                .Where(x => x.Trackers.Enums.HasValue(MainStoryEnums.Entered3rdFloor) || x.Trackers.Enums.HasValue(MainstoryFlags.CompletedFloor3)).ToList();
+                .Where(x => x.Trackers.Enums.HasValue(MainStoryEnums.Entered3rdFloor) || x.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3)).ToList();
             foreach (var aisling in aislings)
             {
                 aisling.SendOrangeBarMessage("Summoner Kades summons his Servant and escapes.");

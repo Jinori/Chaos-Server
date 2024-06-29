@@ -1,4 +1,5 @@
 ﻿using Chaos.Collections;
+using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Geometry.Abstractions.Definitions;
@@ -33,6 +34,7 @@ public class MainStoryScript(
         switch (Subject.Template.TemplateKey.ToLower())
         {
             #region MysteriousArtifact
+
             case "mysteriousartifact_yes":
             {
                 if (hasStage && stage == MainStoryEnums.MysteriousArtifactFound)
@@ -86,9 +88,11 @@ public class MainStoryScript(
                 source.Trackers.Enums.Set(MainStoryEnums.SpokeToZephyr);
             }
                 break;
-#endregion
+
+            #endregion
 
             #region EnterExitRealm
+
             case "miraelis_temple_initial":
             case "serendael_temple_initial":
             case "skandara_temple_initial":
@@ -97,7 +101,7 @@ public class MainStoryScript(
                 if (Subject.DialogSource.Name != "Miraelis" && Subject.DialogSource.Name != "Theselene" &&
                     Subject.DialogSource.Name != "Skandara" && Subject.DialogSource.Name != "Serendael")
                     return;
-                
+
                 if (source.Inventory.Contains("Mysterious Artifact")
                     && source.Trackers.Enums.HasValue(MainStoryEnums.SpokeToZephyr))
                 {
@@ -154,7 +158,7 @@ public class MainStoryScript(
                 source.Animate(animation);
                 return;
             }
-            
+
             case "mainstory_miraelis_leaverealm":
                 const Direction DIRECTION = Direction.Down;
             {
@@ -166,9 +170,11 @@ public class MainStoryScript(
                 source.SendOrangeBarMessage("You wake up from a strange dream in Mileth Inn");
                 return;
             }
+
             #endregion
 
             #region Miraelis
+
             case "mainstory_miraelis_initial":
             {
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedFourthTrial))
@@ -176,19 +182,22 @@ public class MainStoryScript(
                     Subject.Reply(source, "Skip", "mainstory_miraelis_summonerinitial1");
                     return;
                 }
+
                 if (source.Trackers.Enums.HasValue(CombatTrial.FinishedTrial))
                 {
                     Subject.Reply(source, "Skip", "mainstory_miraelis_finishedtrial1");
                     return;
                 }
-                
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.CompletedArtifactsHunt))
                 {
                     if (source.UserStatSheet.Level < 71)
                     {
-                        Subject.Reply(source, "You are too young to start the trials. Return to me when you are stronger.");
+                        Subject.Reply(source,
+                            "You are too young to start the trials. Return to me when you are stronger.");
                         return;
                     }
+
                     Subject.Reply(source, "Skip", "mainstory_miraelis_starttrial1");
                     return;
                 }
@@ -204,14 +213,18 @@ public class MainStoryScript(
                     Subject.Reply(source, "I see you are trying the Trial of Luck, speak to Serendael to try again.");
                     return;
                 }
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedThirdTrial))
                 {
-                    Subject.Reply(source, "I see you are trying the Trial of Intelligence, speak to Theselene to try again.");
+                    Subject.Reply(source,
+                        "I see you are trying the Trial of Intelligence, speak to Theselene to try again.");
                     return;
                 }
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedFourthTrial))
                 {
-                    Subject.Reply(source, "I see you are trying the Trial of Sacrifice, speak to Skandara to try again.");
+                    Subject.Reply(source,
+                        "I see you are trying the Trial of Sacrifice, speak to Skandara to try again.");
                     return;
                 }
 
@@ -220,16 +233,19 @@ public class MainStoryScript(
                     Subject.Reply(source, "Speak to Serendael about the Trial of Luck.");
                     return;
                 }
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedSecondTrial))
                 {
                     Subject.Reply(source, "Speak to Theselene about the Trial of Intelligence.");
                     return;
                 }
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedThirdTrial))
                 {
                     Subject.Reply(source, "Speak to Skandara about the Trial of Sacrifice.");
                     return;
                 }
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact4))
                 {
                     Subject.Reply(source, "Skip", "mainstory_miraelis_assembleartifacts1");
@@ -264,6 +280,7 @@ public class MainStoryScript(
                 {
                     Subject.Reply(source, "Skip", "mainstory_miraelis_initial1");
                 }
+
                 break;
             }
 
@@ -277,29 +294,31 @@ public class MainStoryScript(
             case "mainstory_miraelis_starttrial4":
             {
                 Subject.Close(source);
-                
+
                 source.Trackers.Enums.Set(CombatTrial.StartedTrial);
                 source.Trackers.Enums.Set(MainStoryEnums.StartedFirstTrial);
                 var mapinstance = SimpleCache.Get<MapInstance>("trialofcombat");
                 var point = new Point(15, 15);
                 source.TraverseMap(mapinstance, point);
-                
+
                 return;
             }
-            
+
             case "mainstory_miraelis_retrytrial1":
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("combattrialcd", out var cdtime))
                 {
-                    Subject.Reply(source, $"You have recently tried the Combat Trial. You can try again in {cdtime.Remaining.ToReadableString()}");
+                    Subject.Reply(source,
+                        $"You have recently tried the Combat Trial. You can try again in {cdtime.Remaining.ToReadableString()}");
                 }
+
                 break;
             }
-            
+
             case "mainstory_miraelis_retrytrial2":
             {
                 Subject.Close(source);
-                
+
                 source.Trackers.Enums.Set(CombatTrial.StartedTrial);
                 var mapinstance = SimpleCache.Get<MapInstance>("trialofcombat");
                 var point = new Point(15, 15);
@@ -316,7 +335,7 @@ public class MainStoryScript(
                 source.Trackers.Enums.Remove<CombatTrial>();
                 return;
             }
-            
+
             case "mainstory_miraelis_initial10":
             {
                 source.Trackers.Flags.AddFlag(MainstoryFlags.AccessGodsRealm);
@@ -373,10 +392,10 @@ public class MainStoryScript(
                     AnimationSpeed = 200,
                     TargetAnimation = 937
                 };
-                
+
                 var miraelis = Subject.DialogSource as Merchant;
                 miraelis!.Animate(animate);
-                
+
                 source.Trackers.Enums.Set(MainStoryEnums.CompletedArtifactsHunt);
                 source.Inventory.RemoveQuantity("coal", 50);
                 source.Inventory.RemoveQuantity("Ruined Iron", 20);
@@ -384,9 +403,11 @@ public class MainStoryScript(
                 source.SendOrangeBarMessage("You hand over the coal and ruined iron.");
                 return;
             }
+
             #endregion
-            
+
             #region Serendael
+
             case "mainstory_serendael_initial":
             {
                 if (source.Trackers.Enums.HasValue(LuckTrial.CompletedTrial))
@@ -394,7 +415,7 @@ public class MainStoryScript(
                     source.Trackers.Enums.Set(LuckTrial.StartedTrial);
                     source.Trackers.Enums.Set(MainStoryEnums.StartedSecondTrial);
                 }
-                
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedFirstTrial))
                 {
                     Subject.Reply(source, "Skip", "mainstory_serendael_starttrial1");
@@ -406,35 +427,38 @@ public class MainStoryScript(
                     Subject.Reply(source, "Skip", "mainstory_serendael_finishedtrial1");
                     return;
                 }
-                
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedSecondTrial))
                 {
                     Subject.Reply(source, "Skip", "mainstory_serendael_retrytrial1");
                     return;
                 }
-                
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedSecondTrial))
                 {
                     Subject.Reply(source, "Speak to Theselene about the Trial of Intelligence.");
                     return;
                 }
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedThirdTrial))
                 {
                     Subject.Reply(source, "Speak to Skandara about the Trial of Sacrifice.");
                     return;
                 }
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact4))
                 {
                     Subject.Reply(source, "Skip", "mainstory_miraelis_assembleartifacts1");
                     return;
                 }
-                
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.SpokeToZephyr))
                 {
-                    Subject.Reply(source, "The coin flip is on your side if you've made it here but please speak to Goddess Miraelis.");
+                    Subject.Reply(source,
+                        "The coin flip is on your side if you've made it here but please speak to Goddess Miraelis.");
                     return;
                 }
-                
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact2))
                 {
                     Subject.Reply(source, "Skip", "mainstory_serendael_initial1");
@@ -461,25 +485,27 @@ public class MainStoryScript(
             case "mainstory_serendael_starttrial4":
             {
                 Subject.Close(source);
-                
+
                 source.Trackers.Enums.Set(LuckTrial.StartedTrial);
                 source.Trackers.Enums.Set(MainStoryEnums.StartedSecondTrial);
                 var mapinstance = SimpleCache.Get<MapInstance>("trialofluck");
                 var point = new Point(8, 71);
                 source.TraverseMap(mapinstance, point);
-                
+
                 return;
             }
-            
+
             case "mainstory_serendael_retrytrial1":
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("lucktrialcd", out var cdtime))
                 {
-                    Subject.Reply(source, $"You have recently tried the Luck Trial. You can try again in {cdtime.Remaining.ToReadableString()}");
+                    Subject.Reply(source,
+                        $"You have recently tried the Luck Trial. You can try again in {cdtime.Remaining.ToReadableString()}");
                 }
+
                 break;
             }
-            
+
             case "mainstory_serendael_retrytrial2":
             {
                 Subject.Close(source);
@@ -500,7 +526,7 @@ public class MainStoryScript(
                 source.Trackers.Enums.Remove<LuckTrial>();
                 return;
             }
-            
+
             case "mainstory_serendael_initial4":
             {
                 source.Trackers.Enums.Set(MainStoryEnums.StartedArtifact3);
@@ -536,11 +562,27 @@ public class MainStoryScript(
                 source.SendOrangeBarMessage("Speak to Goddess Skandara about the Sea Artifact");
             }
                 break;
+
             #endregion
 
             #region Theselene
+
             case "mainstory_theselene_initial":
             {
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.CompletedPreMasterMainStory))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "mainstory_theselene_exchange",
+                        OptionText = "Trade 97 Armor"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+
+                    Subject.Text.EqualsI("Welcome back great hero. Are you interested in trading your 97 armor in?");
+                }
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedSecondTrial))
                 {
                     Subject.Reply(source, "Skip", "mainstory_theselene_starttrial1");
@@ -552,18 +594,19 @@ public class MainStoryScript(
                     Subject.Reply(source, "Skip", "mainstory_theselene_finishedtrial1");
                     return;
                 }
-                
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedThirdTrial))
                 {
                     Subject.Reply(source, "Skip", "mainstory_theselene_retrytrial1");
                     return;
                 }
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedThirdTrial))
                 {
                     Subject.Reply(source, "Speak to Skandara about the Trial of Sacrifice.");
                     return;
                 }
-                
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.SpokeToZephyr))
                 {
                     Subject.Reply(source, "Do not bother me, go speak to Goddess Miraelis.");
@@ -590,31 +633,34 @@ public class MainStoryScript(
                     Subject.Reply(source,
                         "Skip", "mainstory_theselene_finisheda1");
                 }
+
                 break;
             }
-            
+
             case "mainstory_theselene_starttrial4":
             {
                 Subject.Close(source);
-                
+
                 source.Trackers.Enums.Set(IntelligenceTrial.StartedTrial);
                 source.Trackers.Enums.Set(MainStoryEnums.StartedThirdTrial);
                 var mapinstance = SimpleCache.Get<MapInstance>("trialofintelligence");
                 var point = new Point(10, 27);
                 source.TraverseMap(mapinstance, point);
-                
+
                 return;
             }
-            
+
             case "mainstory_theselene_retrytrial1":
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("intelligencetrialcd", out var cdtime))
                 {
-                    Subject.Reply(source, $"You have recently tried the Intelligence Trial. You can try again in {cdtime.Remaining.ToReadableString()}");
+                    Subject.Reply(source,
+                        $"You have recently tried the Intelligence Trial. You can try again in {cdtime.Remaining.ToReadableString()}");
                 }
+
                 break;
             }
-            
+
             case "mainstory_theselene_retrytrial2":
             {
                 Subject.Close(source);
@@ -671,9 +717,76 @@ public class MainStoryScript(
                 source.SendOrangeBarMessage("Speak to Goddess Serendael about the Wind Artifact");
                 return;
             }
+
+            case "mainstory_theselene_exchange2":
+            {
+                // Dictionary containing the appropriate armor for each class and gender
+                var pentagearDictionary = new Dictionary<(BaseClass, Gender), string[]>
+                {
+                    { (BaseClass.Warrior, Gender.Male), ["hybrasylarmor"] },
+                    { (BaseClass.Warrior, Gender.Female), ["hybrasylplate"] },
+                    { (BaseClass.Monk, Gender.Male), ["mountaingarb"] },
+                    { (BaseClass.Monk, Gender.Female), ["seagarb"] },
+                    { (BaseClass.Rogue, Gender.Male), ["bardocle"] },
+                    { (BaseClass.Rogue, Gender.Female), ["kagum"] },
+                    { (BaseClass.Priest, Gender.Male), ["dalmatica"] },
+                    { (BaseClass.Priest, Gender.Female), ["bansagart"] },
+                    { (BaseClass.Wizard, Gender.Male), ["duinuasal"] },
+                    { (BaseClass.Wizard, Gender.Female), ["clamyth"] }
+                };
+
+                // List of all level 97 armor items
+                var level97Armor = new HashSet<string>
+                {
+                    "hybrasylarmor", "hybrasylplate", "mountaingarb", "seagarb", "bardocle",
+                    "kagum", "dalmatica", "bansagart", "duinuasal", "clamyth"
+                };
+
+                // Remove any level 97 armor that does not match the current class
+                var currentGear = source.Inventory.Where(item => level97Armor.Contains(item.Template.TemplateKey))
+                    .ToList();
+                bool hasRemovedOldGear = false;
+
+                foreach (var item in currentGear)
+                {
+                    if (!pentagearDictionary[(source.UserStatSheet.BaseClass, source.Gender)]
+                            .Contains(item.Template.TemplateKey))
+                    {
+                        source.Inventory.RemoveByTemplateKey(item.Template.TemplateKey);
+                        hasRemovedOldGear = true;
+                    }
+                }
+
+                // Check if the player has given up their old gear before giving new gear
+                if (hasRemovedOldGear)
+                {
+                    // Give the appropriate armor based on the player's current class and gender
+                    var gearKey = (source.UserStatSheet.BaseClass, source.Gender);
+                    if (pentagearDictionary.TryGetValue(gearKey, out var armor))
+                    {
+                        foreach (var gearItemName in armor)
+                        {
+                            var gearItem = itemFactory.Create(gearItemName);
+                            source.GiveItemOrSendToBank(gearItem);
+                        }
+                    }
+                }
+                else
+                {
+                    // Notify the player that they must give up their old gear first
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
+                        "You must give up your old level 97 gear before receiving new gear.");
+                    Subject.Close(source);
+                }
+
+                break;
+            }
+
+
             #endregion
 
             #region Skandara
+
             case "mainstory_skandara_initial":
             {
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedThirdTrial))
@@ -687,18 +800,19 @@ public class MainStoryScript(
                     Subject.Reply(source, "Skip", "mainstory_skandara_finishedtrial1");
                     return;
                 }
-                
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedFourthTrial))
                 {
                     Subject.Reply(source, "Skip", "mainstory_skandara_retrytrial1");
                     return;
                 }
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.SpokeToZephyr))
                 {
                     Subject.Reply(source, "I am not aware of why we are all here, please speak to Goddess Miraelis.");
                     return;
                 }
-                
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact3))
                 {
                     Subject.Reply(source, "Skip", "mainstory_skandara_initial1");
@@ -716,31 +830,34 @@ public class MainStoryScript(
                     Subject.Reply(source,
                         "Skip", "mainstory_skandara_finisheda1");
                 }
+
                 break;
             }
-            
+
             case "mainstory_skandara_starttrial4":
             {
                 Subject.Close(source);
-                
+
                 source.Trackers.Enums.Set(SacrificeTrial.StartedTrial);
                 source.Trackers.Enums.Set(MainStoryEnums.StartedFourthTrial);
                 var mapinstance = SimpleCache.Get<MapInstance>("trialofsacrifice");
                 var point = new Point(13, 13);
                 source.TraverseMap(mapinstance, point);
-                
+
                 return;
             }
-            
+
             case "mainstory_skandara_retrytrial1":
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("sacrificetrialcd", out var cdtime))
                 {
-                    Subject.Reply(source, $"You have recently tried the Sacrifice Trial. You can try again in {cdtime.Remaining.ToReadableString()}");
+                    Subject.Reply(source,
+                        $"You have recently tried the Sacrifice Trial. You can try again in {cdtime.Remaining.ToReadableString()}");
                 }
+
                 break;
             }
-            
+
             case "mainstory_skandara_retrytrial2":
             {
                 Subject.Close(source);
@@ -761,7 +878,7 @@ public class MainStoryScript(
                 source.Trackers.Enums.Remove<SacrificeTrial>();
                 return;
             }
-            
+
             case "mainstory_skandara_initial4":
             {
                 source.Trackers.Enums.Set(MainStoryEnums.StartedArtifact4);
@@ -797,6 +914,7 @@ public class MainStoryScript(
                 source.SendOrangeBarMessage("Speak to Goddess Miraelis about the True Elemental Artifact.");
             }
                 break;
+
             #endregion
         }
     }

@@ -44,6 +44,8 @@ public sealed class Merchant : Creature,
     public MasterWerewolfMerchantScript.MasterWerewolfState MasterWerewolfState { get; set; }
     
     public SummonerMerchantScript.SummonerState SummonerState { get; set; }
+    
+    public Summoner2MerchantScript.SummonerState2 SummonerState2 { get; set; }
     /// <inheritdoc />
     public ICollection<Item> ItemsForSale { get; }
 
