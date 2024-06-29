@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -65,6 +66,9 @@ public class MasteringScript : DialogScriptBase
             {
                 if (source.UserStatSheet.Master)
                     Subject.Reply(source, "You already wear the Mantle of the Master.");
+                
+                if (!source.Trackers.Enums.HasValue(MainStoryEnums.CompletedPreMasterMainStory))
+                    Subject.Reply(source, "You must follow the Main Story to completion.");
 
                 break;
             }
