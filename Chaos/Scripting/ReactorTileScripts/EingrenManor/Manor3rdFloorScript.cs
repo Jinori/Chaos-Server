@@ -30,7 +30,7 @@ public class Manor3RdFloorScript : ReactorTileScriptBase
              !aisling.Trackers.Enums.HasValue(MainStoryEnums.RetryServant)) || 
             !aisling.Inventory.HasCount("True Elemental Artifact", 1)) 
         {
-            aisling.SendOrangeBarMessage("The stairs seems to have a seal, you best turn around.");
+            aisling.SendOrangeBarMessage("The stairs seems to have a seal, go speak to Goddess Miraelis");
             var point2 = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point2);
             return;

@@ -1,5 +1,6 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
@@ -65,8 +66,14 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
 
                     foreach (var target in Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 10))
                     {
+                        if (target.IsDead)
+                            return;
+
+                        if (target.IsGodModeEnabled())
+                            return;
+                        
                         Subject.TryUseSpell(SpellToCast2, target.Id);
-                        Subject.TryUseSpell(SpellToCast, target.Id);
+                        Subject.TryUseSpell(SpellToCast1, target.Id);
                     }
 
                     break;
@@ -77,7 +84,7 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
         {
             Bonus75Applied = true;
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 25 };
+            var attrib = new Attributes { AtkSpeedPct = 10 };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
@@ -89,7 +96,7 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Dmg = 5,
+                Dmg = 2,
                 MagicResistance = 10,
                 SkillDamagePct = 5,
                 SpellDamagePct = 5

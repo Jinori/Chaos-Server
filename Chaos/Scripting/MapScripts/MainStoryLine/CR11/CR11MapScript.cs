@@ -72,12 +72,12 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
                     if (Subject.GetEntities<Aisling>()
                         .Any(a => a.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner2)))
                     {
-                        State = ScriptState.SpawningServant;
+                        State = ScriptState.SpawningSummoner;
                     }
 
                     break;
 
-                case ScriptState.SpawningServant:
+                case ScriptState.SpawningSummoner:
                     if (Subject.GetEntities<Monster>().Any(x => x.Name == "Summoner Kades"))
                         State = ScriptState.SpawnedSummoner;
                     
@@ -118,7 +118,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
     public enum ScriptState
     {
         Dormant,
-        SpawningServant,
+        SpawningSummoner,
         SpawnedSummoner,
         CompletedServant
     }

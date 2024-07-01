@@ -1565,7 +1565,7 @@ public static class CraftingRequirements
             JewelcraftingRecipes.HybrasylBerylEarrings,
             new Recipe()
             {
-                Name = "Hybrasyl Beryl Earrings",
+                Name = "Hy-brasyl Beryl Earrings",
                 TemplateKey = "hybrasylberylearrings",
                 Ingredients =
                 [
@@ -1582,7 +1582,7 @@ public static class CraftingRequirements
             JewelcraftingRecipes.HybrasylRubyEarrings,
             new Recipe()
             {
-                Name = "Hybrasyl Ruby Earrings",
+                Name = "Hy-brasyl Ruby Earrings",
                 TemplateKey = "hybrasylrubyearrings",
                 Ingredients =
                 [
@@ -1599,7 +1599,7 @@ public static class CraftingRequirements
             JewelcraftingRecipes.HybrasylSapphireEarrings,
             new Recipe()
             {
-                Name = "Hybrasyl Sapphire Earrings",
+                Name = "Hy-brasyl Sapphire Earrings",
                 TemplateKey = "hybrasylsapphireearrings",
                 Ingredients =
                 [
@@ -1616,7 +1616,7 @@ public static class CraftingRequirements
             JewelcraftingRecipes.HybrasylEmeraldEarrings,
             new Recipe()
             {
-                Name = "Hybrasyl Emerald Earrings",
+                Name = "Hy-brasyl Emerald Earrings",
                 TemplateKey = "hybrasylemeraldearrings",
                 Ingredients =
                 [
@@ -1633,7 +1633,7 @@ public static class CraftingRequirements
             JewelcraftingRecipes.HybrasylHeartstoneEarrings,
             new Recipe()
             {
-                Name = "Hybrasyl Heartstone Earrings",
+                Name = "Hy-brasyl Heartstone Earrings",
                 TemplateKey = "hybrasylheartstoneearrings",
                 Ingredients =
                 [
@@ -3021,7 +3021,7 @@ public static class CraftingRequirements
             WeaponSmithingRecipes.HybrasylShield,
             new Recipe()
             {
-                Name = "Hybrasyl Shield",
+                Name = "Hy-brasyl Shield",
                 TemplateKey = "hybrasylshield",
                 Ingredients =
                 [
@@ -4087,7 +4087,7 @@ public static class CraftingRequirements
             WeaponSmithingRecipes.HybrasylShield,
             new Recipe()
             {
-                Name = "Hybrasyl Shield",
+                Name = "Hy-brasyl Shield",
                 TemplateKey = "hybrasylshield",
                 Ingredients =
                 [
@@ -4850,7 +4850,7 @@ public static class CraftingRequirements
             CraftedArmors.RefinedHybrasylArmor,
             new Recipe()
             {
-                Name = "Hybrasyl Armor Pattern",
+                Name = "Hy-brasyl Armor Pattern",
                 TemplateKey = "hybrasylarmorpattern",
                 Ingredients =
                 [
@@ -5280,13 +5280,13 @@ public static class CraftingRequirements
             ArmorsmithingRecipes.FireHybrasylBraidBelt,
             new Recipe
             {
-                Name = "Fire Hybrasyl Braid Belt",
+                Name = "Fire Hy-brasyl Braid Belt",
                 TemplateKey = "firehybrasylbraidbelt",
                 Ingredients =
                 [
                     new Ingredient("exquisitesilk", "Exquisite Silk", 3),
 
-                    new Ingredient("polishedhybrasylbar", "Polished Hybrasyl Bar", 1),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
 
                     new Ingredient("pristineruby", "Pristine Ruby", 5)
                 ],
@@ -5299,13 +5299,13 @@ public static class CraftingRequirements
             ArmorsmithingRecipes.EarthHybrasylBraidBelt,
             new Recipe
             {
-                Name = "Earth Hybrasyl Braid Belt",
+                Name = "Earth Hy-brasyl Braid Belt",
                 TemplateKey = "earthhybrasylbraidbelt",
                 Ingredients =
                 [
                     new Ingredient("exquisitesilk", "Exquisite Silk", 3),
 
-                    new Ingredient("polishedhybrasylbar", "Polished Hybrasyl Bar", 1),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
 
                     new Ingredient("pristineberyl", "Pristine Beryl", 5)
                 ],
@@ -5318,13 +5318,13 @@ public static class CraftingRequirements
             ArmorsmithingRecipes.WindHybrasylBraidBelt,
             new Recipe
             {
-                Name = "Wind Hybrasyl Braid Belt",
+                Name = "Wind Hy-brasyl Braid Belt",
                 TemplateKey = "windhybrasylbraidbelt",
                 Ingredients =
                 [
                     new Ingredient("exquisitesilk", "Exquisite Silk", 3),
 
-                    new Ingredient("polishedhybrasylbar", "Polished Hybrasyl Bar", 1),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
 
                     new Ingredient("pristineemerald", "Pristine Emerald", 5)
                 ],
@@ -5343,7 +5343,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("exquisitesilk", "Exquisite Silk", 3),
 
-                    new Ingredient("polishedhybrasylbar", "Polished Hybrasyl Bar", 1),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
 
                     new Ingredient("pristinesapphire", "Pristine Sapphire", 5)
                 ],
@@ -5356,13 +5356,13 @@ public static class CraftingRequirements
             ArmorsmithingRecipes.DarkHybrasylBraidBelt,
             new Recipe
             {
-                Name = "Dark Hybrasyl Braid Belt",
+                Name = "Dark Hy-brasyl Braid Belt",
                 TemplateKey = "darkhybrasylbraidbelt",
                 Ingredients =
                 [
                     new Ingredient("exquisitesilk", "Exquisite Silk", 3),
 
-                    new Ingredient("polishedhybrasylbar", "Polished Hybrasyl Bar", 1),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
 
                     new Ingredient("pristineheartstone", "Pristine Heartstone", 5)
                 ],
@@ -5375,13 +5375,13 @@ public static class CraftingRequirements
             ArmorsmithingRecipes.LightHybrasylBraidBelt,
             new Recipe
             {
-                Name = "Light Hybrasyl Braid Belt",
+                Name = "Light Hy-brasyl Braid Belt",
                 TemplateKey = "lighthybrasylbraidbelt",
                 Ingredients =
                 [
                     new Ingredient("exquisitesilk", "Exquisite Silk", 3),
 
-                    new Ingredient("polishedhybrasylbar", "Polished Hybrasyl Bar", 1),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
 
                     new Ingredient("pristineheartstone", "Pristine Heartstone", 5)
                 ],

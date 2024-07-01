@@ -87,7 +87,7 @@ public class GemRefiningScript : CraftingBaseScript
 
     public void OnDisplayingShowPlayerItems(Aisling source) =>
         Subject.Slots = source.Inventory
-                              .Where(x => GemTemplateKeys.ContainsI(x.Template.TemplateKey) && (x.Count > 1))
+                              .Where(x => GemTemplateKeys.ContainsI(x.Template.TemplateKey) && x.Count > 0)
                               .Select(x => x.Slot)
                               .ToList();
     
@@ -144,5 +144,5 @@ public class GemRefiningScript : CraftingBaseScript
         Subject.InjectTextParameters(item.DisplayName, upgrade.DisplayName);
     }
     
-    private int RequiredQuantity(string templateKey) => templateKey.Contains("raw") ? 2 : 1;
+    private int RequiredQuantity(string templateKey) => 1;
 }

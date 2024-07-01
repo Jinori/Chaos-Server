@@ -1,6 +1,8 @@
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.Data;
+using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -51,8 +53,8 @@ public class Summoner2MerchantScript : MerchantScriptBase
     public bool HasSaidDialog4;
     public bool HasSummonedCreants;
     public bool HasOpenedPortals;
-    public bool CreantsEscaped;
-    public bool HasSpawnedSummoner;
+    public bool CreantsSummoned;
+    public bool HasCreantsEscaped;
 
     private void HandleIdleState()
     {
@@ -62,7 +64,7 @@ public class Summoner2MerchantScript : MerchantScriptBase
         {
             Subject.SummonerState2 = SummonerState2.SeenByAislingWithEnum;
 
-            var players = Subject.MapInstance.GetEntities<Aisling>().Where(x => x.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner2)).ToList();
+            var players = Subject.MapInstance.GetEntities<Aisling>().Where(x => x.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner2) && !x.IsGodModeEnabled()).ToList();
 
             foreach (var player in players)
             {
@@ -127,7 +129,7 @@ public class Summoner2MerchantScript : MerchantScriptBase
             HasSummonedCreants = true;
             DialogueTimer.Reset();
         }
-        else if (!CreantsEscaped && DialogueTimer.IntervalElapsed)
+        else if (!CreantsSummoned && DialogueTimer.IntervalElapsed)
         {
             Subject.Say("Téigh chuig bhur dtithe cearta, beidh mé ann go luath.");
             var players = Subject.MapInstance.GetEntities<Aisling>()
@@ -139,7 +141,7 @@ public class Summoner2MerchantScript : MerchantScriptBase
                 player.SendOrangeBarMessage("You witness the summoning of the Creants.");
             }
 
-            CreantsEscaped = true;
+            CreantsSummoned = true;
             DialogueTimer.Reset();
         }
         else if (!HasOpenedPortals && DialogueTimer.IntervalElapsed)
@@ -159,6 +161,15 @@ public class Summoner2MerchantScript : MerchantScriptBase
             
             Subject.Say("Caithfidh mé aire a thabhairt do na trioblóidí seo.");
             HasOpenedPortals = true;
+            DialogueTimer.Reset();
+        }
+        else if (!HasCreantsEscaped && DialogueTimer.IntervalElapsed)
+        {
+            if (!Subject.MapInstance.GetEntities<Merchant>().Any(x =>
+                    x.Name != "Tauren" && x.Name != "Phoenix" && x.Name != "Medusa" && x.Name != "Shamensyth")) return;
+            
+            Subject.Say("My babies have returned to the world.");
+            HasCreantsEscaped = true;
             DialogueTimer.Reset();
         }
         else if (!HasSaidDialog4 && DialogueTimer.IntervalElapsed)
