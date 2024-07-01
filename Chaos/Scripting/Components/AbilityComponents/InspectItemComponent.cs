@@ -78,7 +78,8 @@ namespace Chaos.Scripting.Components.AbilityComponents
             var sb = new StringBuilder();
             sb.AppendLineFColored(MessageColor.Orange, CenterText("[Inspect Fish]\n"))
               .AppendLineFColored(MessageColor.Gainsboro, CenterText($"Name: {item.DisplayName}"))
-              .AppendLineF(CenterText($"Weight: {item.Template.Weight}"))
+              .AppendLineFColored(MessageColor.Yellow, CenterDescription(item.Template.Description))
+              .AppendLineFColored(MessageColor.Gainsboro, CenterText($"Weight: {item.Template.Weight}"))
               .AppendLineF(CenterText($"Buy Cost: {item.Template.BuyCost}"))
               .AppendLineF(CenterText($"Sell Value: {item.Template.SellValue}"))
               .AppendLineF(CenterText($"Max Stack: {item.Template.MaxStacks}"));
@@ -94,7 +95,8 @@ namespace Chaos.Scripting.Components.AbilityComponents
             var sb = new StringBuilder();
             sb.AppendLineFColored(MessageColor.Orange, CenterText("[Inspect Food]\n"))
               .AppendLineFColored(MessageColor.Gainsboro, CenterText($"Name: {item.DisplayName}"))
-              .AppendLineF(CenterText($"Weight: {item.Template.Weight}"))
+              .AppendLineFColored(MessageColor.Yellow, CenterDescription(item.Template.Description))
+              .AppendLineFColored(MessageColor.Gainsboro, CenterText($"Weight: {item.Template.Weight}"))
               .AppendLineF(CenterText($"Buy Cost: {item.Template.BuyCost}"))
               .AppendLineF(CenterText($"Sell Value: {item.Template.SellValue}"))
               .AppendLineF(CenterText($"Max Stack: {item.Template.MaxStacks}"));
@@ -108,29 +110,33 @@ namespace Chaos.Scripting.Components.AbilityComponents
         private string BuildGenericItemMessage(Item item)
         {
             var sb = new StringBuilder();
+
             sb.AppendLineFColored(MessageColor.Orange, CenterText("[Inspect Item]\n"))
               .AppendLineFColored(MessageColor.Gainsboro, CenterText($"Name: {item.DisplayName}"))
-              .AppendLineF(CenterText($"Level: {item.Level}"))
-              .AppendLineF(CenterText($"Weight: {item.Template.Weight}"))
-              .AppendLineF(CenterText($"AC: {item.Template.Modifiers?.Ac}"))
-              .AppendLineF(CenterText($"Buy Cost: {item.Template.BuyCost}"))
-              .AppendLineF(CenterText($"Sell Value: {item.Template.SellValue}"))
-              .AppendLineF(CenterText($"Max Stack: {item.Template.MaxStacks}"))
-              .AppendLineF(CenterText($"Skill Damage: {item.Modifiers.FlatSkillDamage}"))
-              .AppendLineF(CenterText($"Spell Damage: {item.Modifiers.FlatSpellDamage}"))
-              .AppendLineF(CenterText($"Health: {item.Modifiers.MaximumHp}"))
-              .AppendLineF(CenterText($"Mana: {item.Modifiers.MaximumMp}"))
-              .AppendLineF(CenterText($"Attack Speed %: {item.Modifiers.AtkSpeedPct}"))
-              .AppendLineF(CenterText($"Magic Resistance: {item.Modifiers.MagicResistance}"))
-              .AppendLineF(CenterText($"Strength: {item.Modifiers.Str}"))
-              .AppendLineF(CenterText($"Intelligence: {item.Modifiers.Int}"))
-              .AppendLineF(CenterText($"Wisdom: {item.Modifiers.Wis}"))
-              .AppendLineF(CenterText($"Constitution: {item.Modifiers.Con}"))
-              .AppendLineF(CenterText($"Dexterity: {item.Modifiers.Dex}"))
-              .AppendLineF(CenterText($"DMG: {item.Modifiers.Dmg}"))
-              .AppendLineF(CenterText($"HIT: {item.Modifiers.Hit}"))
-              .AppendLineF(CenterText($"Skill Pct Damage: {item.Modifiers.SkillDamagePct}"))
-              .AppendLineF(CenterText($"Spell Pct Damage: {item.Modifiers.SpellDamagePct}"));
+              .AppendLineFColored(MessageColor.Yellow, CenterDescription(item.Template.Description))
+              .AppendLineFColored(MessageColor.Gainsboro, CenterText($"Level: {item.Template.Level}"));
+            AppendPropertyIfNotNullOrEmpty(sb, "Gender", item.Template.Gender.ToString());
+            AppendPropertyIfNotNullOrEmpty(sb, "Class", item.Template.Class.ToString());
+            AppendPropertyIfNotZero(sb, "Weight", item.Template.Weight);
+            AppendPropertyIfNotZero(sb, "AC", item.Template.Modifiers?.Ac ?? 0);
+            AppendPropertyIfNotZero(sb, "Buy Cost", item.Template.BuyCost);
+            AppendPropertyIfNotZero(sb, "Sell Value", item.Template.SellValue);
+            AppendPropertyIfNotZero(sb, "Max Stack", item.Template.MaxStacks);
+            AppendPropertyIfNotZero(sb, "Skill Damage", item.Modifiers.FlatSkillDamage);
+            AppendPropertyIfNotZero(sb, "Spell Damage", item.Modifiers.FlatSpellDamage);
+            AppendPropertyIfNotZero(sb, "Health", item.Modifiers.MaximumHp);
+            AppendPropertyIfNotZero(sb, "Mana", item.Modifiers.MaximumMp);
+            AppendPropertyIfNotZero(sb, "Attack Speed %", item.Modifiers.AtkSpeedPct);
+            AppendPropertyIfNotZero(sb, "Magic Resistance", item.Modifiers.MagicResistance);
+            AppendPropertyIfNotZero(sb, "Strength", item.Modifiers.Str);
+            AppendPropertyIfNotZero(sb, "Intelligence", item.Modifiers.Int);
+            AppendPropertyIfNotZero(sb, "Wisdom", item.Modifiers.Wis);
+            AppendPropertyIfNotZero(sb, "Constitution", item.Modifiers.Con);
+            AppendPropertyIfNotZero(sb, "Dexterity", item.Modifiers.Dex);
+            AppendPropertyIfNotZero(sb, "DMG", item.Modifiers.Dmg);
+            AppendPropertyIfNotZero(sb, "HIT", item.Modifiers.Hit);
+            AppendPropertyIfNotZero(sb, "Skill Pct Damage", item.Modifiers.SkillDamagePct);
+            AppendPropertyIfNotZero(sb, "Spell Pct Damage", item.Modifiers.SpellDamagePct);
 
             return sb.ToString();
         }
@@ -156,6 +162,22 @@ namespace Chaos.Scripting.Components.AbilityComponents
             int? value = vitalityData.Get<int>(key);
             if (value.HasValue && (value.Value != 0))
                 sb.AppendLineF(CenterText($"{label}: {value.Value}"));
+        }
+
+        private void AppendPropertyIfNotZero(StringBuilder sb, string propertyName, int value)
+        {
+            if (value != 0)
+            {
+                sb.AppendLineF(CenterText($"{propertyName}: {value}"));
+            }
+        }
+
+        private void AppendPropertyIfNotNullOrEmpty(StringBuilder sb, string propertyName, string? value)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                sb.AppendLineF(CenterText($"{propertyName}: {value}"));
+            }
         }
 
         private string CenterText(string text)
