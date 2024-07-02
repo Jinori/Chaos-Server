@@ -3242,9 +3242,9 @@ public static class CraftingRequirements
 
                     new Ingredient("coal", "Coal", 4)
                 ],
-                Rank = "Adept",
+                Rank = "Artisan",
                 Level = 86,
-                Difficulty = 5
+                Difficulty = 4
             }
         },
         {

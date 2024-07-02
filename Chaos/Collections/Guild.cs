@@ -258,7 +258,7 @@ public sealed class Guild : IDedicatedChannel, IEquatable<Guild>
         }
 
         foreach (var member in GetOnlineMembers())
-            member.SendActiveMessage($"{memberName} has been kicked from the guild by {by}");
+            member.SendActiveMessage($"{memberName} has been kicked from the guild by {by.Name}");
 
         return true;
     }
