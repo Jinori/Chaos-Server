@@ -84,6 +84,12 @@ public class ClassDedicationScript : DialogScriptBase
                 Subject.NextDialogKey = null;
 
                 return;
+            case CLASS_CONFIRM_REQUIREMENTS when !source.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3):
+                Subject.Reply(source, "You must follow the Main Story Quest further.");
+                Subject.PrevDialogKey = null;
+                Subject.NextDialogKey = null;
+
+                return;
             case CLASS_CONFIRM_REQUIREMENTS when source.UserStatSheet.Master:
                 Subject.Reply(source, "You are already a Master of your class and cannot rededicate yourself.");
                 Subject.PrevDialogKey = null;

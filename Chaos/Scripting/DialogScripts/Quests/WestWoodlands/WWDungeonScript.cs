@@ -12,7 +12,6 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
@@ -213,57 +212,80 @@ public class WWDungeonScript(
 
                 switch (roll)
                 {
-                    case < 8:
+                    case < 5:
                     {
                         if (!source.Trackers.Flags.HasFlag(AvailableMounts.Ant))
                         {
                             source.Trackers.Flags.AddFlag(AvailableMounts.Ant);
                             source.SendOrangeBarMessage("Maxwell hands you a new mount!");
+                            source.TryGiveGamePoints(5);
                         }
                         else
                         {
                             var item = itemFactory.Create("sparklering");
                             source.GiveItemOrSendToBank(item);
                             source.SendOrangeBarMessage("Maxwell hands you a Sparkle Ring!");
+                            source.TryGiveGamePoints(5);
                         }
 
                         break;
                     }
 
-                    case < 28:
+                    case < 20:
                     {
                         var item = itemFactory.Create("ialtagseye");
                         source.GiveItemOrSendToBank(item);
                         source.SendOrangeBarMessage("Maxwell hands you a Ialtag's Eye!");
+                        source.TryGiveGamePoints(5);
                         break;
                     }
 
-                    case < 48:
+                    case < 35:
                     {
                         var boots = itemFactory.Create("silkboots");
                         source.GiveItemOrSendToBank(boots);
                         source.SendOrangeBarMessage("Maxwell thanks you with some boots he had.");
+                        source.TryGiveGamePoints(5);
                         break;
                     }
-                    case < 68:
+                    case < 50:
                     {
                         var ring = itemFactory.Create("sonorring");
                         source.GiveItemOrSendToBank(ring);
                         source.SendOrangeBarMessage("Maxwell hands you a Sonor Ring!");
+                        source.TryGiveGamePoints(5);
                         break;
                     }
-                    case < 88:
+                    case < 65:
                     {
                         var ring = itemFactory.Create("myanmarring");
                         source.GiveItemOrSendToBank(ring);
                         source.SendOrangeBarMessage("Maxwell thanks you with a spare ring he had.");
+                        source.TryGiveGamePoints(5);
+                        break;
+                    }
+                    case < 75:
+                    {
+                        if (!source.Inventory.ContainsByTemplateKey("cherubwings") || !source.Equipment.ContainsByTemplateKey("cherubwings") ||
+                            !source.Bank.Contains("Cherub Wings"))
+                        {
+                            var wings = itemFactory.Create("cherubwings");
+                                                    source.GiveItemOrSendToBank(wings);
+                                                    source.SendOrangeBarMessage("Maxwell thanks you with some wings he had.");
+                                                    source.TryGiveGamePoints(5);
+                                                    return;
+                        }
+
+                        source.TryGiveGold(75000);
+                        source.SendOrangeBarMessage("Maxwell thanks you with 75,000 Gold.");
+                        source.TryGiveGamePoints(5);
+                        
                         break;
                     }
                     case < 101:
                     {
-                        var wings = itemFactory.Create("cherubwings");
-                        source.GiveItemOrSendToBank(wings);
-                        source.SendOrangeBarMessage("Maxwell thanks you with some wings he had.");
+                        source.SendOrangeBarMessage("Maxwell just thanks you.");
+                        source.TryGiveGamePoints(20);
                         break;
                     }
                 }

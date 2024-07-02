@@ -20,6 +20,7 @@ public class PossessedKnightBossScript : CompositeMonsterScript
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(MoveToTargetScript)),
+        GetScriptKey(typeof(ThisIsABossScript))
     };
 
     /// <inheritdoc />

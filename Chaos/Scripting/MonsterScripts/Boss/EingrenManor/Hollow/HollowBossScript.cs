@@ -20,6 +20,7 @@ public class HollowBossScript : CompositeMonsterScript
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(BossMoveToTargetScript)),
+        GetScriptKey(typeof(ThisIsABossScript))
     };
 
     /// <inheritdoc />

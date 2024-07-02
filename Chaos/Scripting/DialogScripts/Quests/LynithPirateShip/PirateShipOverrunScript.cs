@@ -14,6 +14,7 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
+using Humanizer;
 
 namespace Chaos.Scripting.DialogScripts.Quests.LynithPirateShip;
 
@@ -67,6 +68,12 @@ public class PirateShipOverrunScript : DialogScriptBase
                     return;
                 }
 
+                if (source.Trackers.TimedEvents.HasActiveEvent("lynithpirateshipcd", out var cdtime))
+                {
+                    Subject.Reply(source, $"We just built our ship back up after the last attack. It'll be awhile before they return. (({cdtime.Remaining.Humanize()}))");
+                    return;
+                }
+
                 if (source.Trackers.Enums.HasValue(PirateShip.None) || !hasStage)
                 {
                     Subject.Reply(source, "Skip", "shipattack_initial2");
@@ -106,6 +113,13 @@ public class PirateShipOverrunScript : DialogScriptBase
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You must have a group to defend the ship.");
                     Subject.Reply(source, "You must have a group with you to help defend the ship.");
 
+                    return;
+                }
+
+                if (group.All(member => member.Trackers.TimedEvents.HasActiveEvent("lynithpirateshipcd", out _)))
+                {
+                    Subject.Reply(source, "One of your members have attempted this quest too recently.");
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "One of your members have attempted this quest too recently.");
                     return;
                 }
 

@@ -17,11 +17,11 @@ public static class CraftingRequirements
         public Action<Item>? Modification { get; set; }
     }
 
-    public sealed class Ingredient
+    public sealed class Ingredient(string templateKey, string displayName, int amount)
     {
-        public string TemplateKey { get; set; } = null!;
-        public string DisplayName { get; set; } = null!;
-        public int Amount { get; set; }
+        public string TemplateKey { get; set; } = templateKey;
+        public string DisplayName { get; set; } = displayName;
+        public int Amount { get; set; } = amount;
     }
 
     #region Enchanting Recipes
@@ -34,11 +34,10 @@ public static class CraftingRequirements
             {
                 Name = "Aquaedon's Calming",
                 TemplateKey = "aquaedoncalming",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofaquaedon", "Essence of Aquaedon", 3)
+                ],
                 Rank = "Basic",
                 Level = 40,
                 Difficulty = 2,
@@ -51,11 +50,10 @@ public static class CraftingRequirements
             {
                 Name = "Aquaedon's Clarity",
                 TemplateKey = "aquaedonclarity",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofaquaedon", "Essence of Aquaedon", 1)
+                ],
                 Rank = "Beginner",
                 Level = 5,
                 Difficulty = 1,
@@ -68,11 +66,10 @@ public static class CraftingRequirements
             {
                 Name = "Aquaedon's Resolve",
                 TemplateKey = "aquaedonresolve",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 10 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofaquaedon", "Essence of Aquaedon", 10)
+                ],
                 Rank = "Adept",
                 Level = 90,
                 Difficulty = 5,
@@ -85,11 +82,10 @@ public static class CraftingRequirements
             {
                 Name = "Aquaedon's Will",
                 TemplateKey = "aquaedonwill",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 7 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofaquaedon", "Essence of Aquaedon", 7)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -102,11 +98,10 @@ public static class CraftingRequirements
             {
                 Name = "Aquaedon's Wisdom",
                 TemplateKey = "aquaedonwisdom",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofaquaedon", DisplayName = "Essence of Aquaedon", Amount = 5 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofaquaedon", "Essence of Aquaedon", 5)
+                ],
                 Rank = "Initiate",
                 Level = 50,
                 Difficulty = 3,
@@ -119,10 +114,10 @@ public static class CraftingRequirements
             {
                 Name = "Ignatar's Destruction",
                 TemplateKey = "ignatardestruction",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 7 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofignatar", "Essence of Ignatar", 7)
+                ],
                 Rank = "Artisan",
                 Level = 80,
                 Difficulty = 4,
@@ -135,10 +130,10 @@ public static class CraftingRequirements
             {
                 Name = "Ignatar's Envy",
                 TemplateKey = "ignatarenvy",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 1 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofignatar", "Essence of Ignatar", 1)
+                ],
                 Rank = "Beginner",
                 Level = 3,
                 Difficulty = 1,
@@ -151,10 +146,10 @@ public static class CraftingRequirements
             {
                 Name = "Ignatar's Grief",
                 TemplateKey = "ignatargrief",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 1 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofignatar", "Essence of Ignatar", 1)
+                ],
                 Rank = "Basic",
                 Level = 24,
                 Difficulty = 2,
@@ -167,10 +162,10 @@ public static class CraftingRequirements
             {
                 Name = "Ignatar's Jealousy",
                 TemplateKey = "ignatarjealousy",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 5 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofignatar", "Essence of Ignatar", 5)
+                ],
                 Rank = "Initiate",
                 Level = 60,
                 Difficulty = 3,
@@ -183,10 +178,10 @@ public static class CraftingRequirements
             {
                 Name = "Ignatar's Regret",
                 TemplateKey = "ignatarregret",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofignatar", DisplayName = "Essence of Ignatar", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofignatar", "Essence of Ignatar", 3)
+                ],
                 Rank = "Initiate",
                 Level = 48,
                 Difficulty = 3,
@@ -199,10 +194,10 @@ public static class CraftingRequirements
             {
                 Name = "Geolith's Constitution",
                 TemplateKey = "geolithconstitution",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 5 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofgeolith", "Essence of Geolith", 5)
+                ],
                 Rank = "Initiate",
                 Level = 50,
                 Difficulty = 3,
@@ -215,10 +210,10 @@ public static class CraftingRequirements
             {
                 Name = "Geolith's Fortitude",
                 TemplateKey = "geolithfortitude",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 7 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofgeolith", "Essence of Geolith", 7)
+                ],
                 Rank = "Artisan",
                 Level = 83,
                 Difficulty = 4,
@@ -231,10 +226,10 @@ public static class CraftingRequirements
             {
                 Name = "Geolith's Gratitude",
                 TemplateKey = "geolithgratitude",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 1 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofgeolith", "Essence of Geolith", 1)
+                ],
                 Rank = "Beginner",
                 Level = 3,
                 Difficulty = 1,
@@ -247,10 +242,10 @@ public static class CraftingRequirements
             {
                 Name = "Geolith's Pride",
                 TemplateKey = "geolithpride",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofgeolith", "Essence of Geolith", 3)
+                ],
                 Rank = "Basic",
                 Level = 28,
                 Difficulty = 2,
@@ -263,10 +258,10 @@ public static class CraftingRequirements
             {
                 Name = "Geolith's Obsession",
                 TemplateKey = "geolithobsession",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofgeolith", DisplayName = "Essence of Geolith", Amount = 5 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofgeolith", "Essence of Geolith", 5)
+                ],
                 Rank = "Initiate",
                 Level = 65,
                 Difficulty = 3,
@@ -279,11 +274,10 @@ public static class CraftingRequirements
             {
                 Name = "Miraelis' Blessing",
                 TemplateKey = "miraelisblessing",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofmiraelis", "Essence of Miraelis", 3)
+                ],
                 Rank = "Basic",
                 Level = 34,
                 Difficulty = 2,
@@ -296,11 +290,10 @@ public static class CraftingRequirements
             {
                 Name = "Miraelis' Harmony",
                 TemplateKey = "miraelisharmony",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 5 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofmiraelis", "Essence of Miraelis", 5)
+                ],
                 Rank = "Initiate",
                 Level = 69,
                 Difficulty = 3,
@@ -313,11 +306,10 @@ public static class CraftingRequirements
             {
                 Name = "Miraelis' Intellect",
                 TemplateKey = "miraelisintellect",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 5 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofmiraelis", "Essence of Miraelis", 5)
+                ],
                 Rank = "Initiate",
                 Level = 50,
                 Difficulty = 3,
@@ -330,11 +322,10 @@ public static class CraftingRequirements
             {
                 Name = "Miraelis' Nurturing",
                 TemplateKey = "miraelisnurturing",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 7 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofmiraelis", "Essence of Miraelis", 7)
+                ],
                 Rank = "Artisan",
                 Level = 88,
                 Difficulty = 4,
@@ -347,11 +338,10 @@ public static class CraftingRequirements
             {
                 Name = "Miraelis' Serenity",
                 TemplateKey = "miraelisserenity",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofmiraelis", DisplayName = "Essence of Miraelis", Amount = 1 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofmiraelis", "Essence of Miraelis", 1)
+                ],
                 Rank = "Beginner",
                 Level = 5,
                 Difficulty = 1,
@@ -364,11 +354,10 @@ public static class CraftingRequirements
             {
                 Name = "Serendael's Addiction",
                 TemplateKey = "serendaeladdiction",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 10 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofserendael", "Essence of Serendael", 10)
+                ],
                 Rank = "Adept",
                 Level = 90,
                 Difficulty = 5,
@@ -381,11 +370,10 @@ public static class CraftingRequirements
             {
                 Name = "Serendael's Chance",
                 TemplateKey = "serendaelchance",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 5 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofserendael", "Essence of Serendael", 5)
+                ],
                 Rank = "Initiate",
                 Level = 55,
                 Difficulty = 3,
@@ -398,11 +386,10 @@ public static class CraftingRequirements
             {
                 Name = "Serendael's Luck",
                 TemplateKey = "serendaelluck",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofserendael", "Essence of Serendael", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2,
@@ -415,11 +402,10 @@ public static class CraftingRequirements
             {
                 Name = "Serendael's Magic",
                 TemplateKey = "serendaelmagic",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofserendael", "Essence of Serendael", 3)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3,
@@ -432,11 +418,10 @@ public static class CraftingRequirements
             {
                 Name = "Serendael's Roll",
                 TemplateKey = "serendaelroll",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofserendael", DisplayName = "Essence of Serendael", Amount = 7 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofserendael", "Essence of Serendael", 7)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -449,11 +434,10 @@ public static class CraftingRequirements
             {
                 Name = "Skandara's Drive",
                 TemplateKey = "skandaradrive",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 7 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofskandara", "Essence of Skandara", 7)
+                ],
                 Rank = "Artisan",
                 Level = 75,
                 Difficulty = 4,
@@ -466,11 +450,10 @@ public static class CraftingRequirements
             {
                 Name = "Skandara's Might",
                 TemplateKey = "skandaramight",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofskandara", "Essence of Skandara", 1)
+                ],
                 Rank = "Basic",
                 Level = 16,
                 Difficulty = 2,
@@ -483,11 +466,10 @@ public static class CraftingRequirements
             {
                 Name = "Skandara's Pierce",
                 TemplateKey = "skandarapierce",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 10 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofskandara", "Essence of Skandara", 10)
+                ],
                 Rank = "Adept",
                 Level = 95,
                 Difficulty = 5,
@@ -500,11 +482,10 @@ public static class CraftingRequirements
             {
                 Name = "Skandara's Strength",
                 TemplateKey = "skandarastrength",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 5 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofskandara", "Essence of Skandara", 5)
+                ],
                 Rank = "Initiate",
                 Level = 50,
                 Difficulty = 3,
@@ -517,11 +498,10 @@ public static class CraftingRequirements
             {
                 Name = "Skandara's Triumph",
                 TemplateKey = "skandaratriumph",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceofskandara", DisplayName = "Essence of Skandara", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofskandara", "Essence of Skandara", 3)
+                ],
                 Rank = "Initiate",
                 Level = 44,
                 Difficulty = 3,
@@ -534,11 +514,10 @@ public static class CraftingRequirements
             {
                 Name = "Theselene's Balance",
                 TemplateKey = "theselenebalance",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 7 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceoftheselene", "Essence of Theselene", 7)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -551,11 +530,10 @@ public static class CraftingRequirements
             {
                 Name = "Theselene's Dexterity",
                 TemplateKey = "theselenedexterity",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 5 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceoftheselene", "Essence of Theselene", 5)
+                ],
                 Rank = "Initiate",
                 Level = 50,
                 Difficulty = 3,
@@ -568,11 +546,10 @@ public static class CraftingRequirements
             {
                 Name = "Theselene's Elusion",
                 TemplateKey = "theseleneelusion",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 1 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceoftheselene", "Essence of Theselene", 1)
+                ],
                 Rank = "Beginner",
                 Level = 5,
                 Difficulty = 1,
@@ -585,11 +562,10 @@ public static class CraftingRequirements
             {
                 Name = "Theselene's Risk",
                 TemplateKey = "theselenerisk",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 10 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceoftheselene", "Essence of Theselene", 10)
+                ],
                 Rank = "Adept",
                 Level = 90,
                 Difficulty = 5,
@@ -602,11 +578,10 @@ public static class CraftingRequirements
             {
                 Name = "Theselene's Shadow",
                 TemplateKey = "theseleneshadow",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "essenceoftheselene", DisplayName = "Essence of Theselene", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceoftheselene", "Essence of Theselene", 3)
+                ],
                 Rank = "Basic",
                 Level = 37,
                 Difficulty = 2,
@@ -619,10 +594,10 @@ public static class CraftingRequirements
             {
                 Name = "Zephyra's Gust",
                 TemplateKey = "zephyragust",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 10 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofzephyra", "Essence of Zephyra", 10)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5,
@@ -635,10 +610,10 @@ public static class CraftingRequirements
             {
                 Name = "Zephyra's Mist",
                 TemplateKey = "zephyramist",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofzephyra", "Essence of Zephyra", 3)
+                ],
                 Rank = "Initiate",
                 Level = 45,
                 Difficulty = 3,
@@ -651,10 +626,10 @@ public static class CraftingRequirements
             {
                 Name = "Zephyra's Spirit",
                 TemplateKey = "zephyraspirit",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofzephyra", "Essence of Zephyra", 1)
+                ],
                 Rank = "Basic",
                 Level = 20,
                 Difficulty = 2,
@@ -667,10 +642,10 @@ public static class CraftingRequirements
             {
                 Name = "Zephyra's Vortex",
                 TemplateKey = "zephyravortex",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 7 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofzephyra", "Essence of Zephyra", 7)
+                ],
                 Rank = "Artisan",
                 Level = 78,
                 Difficulty = 4,
@@ -683,10 +658,10 @@ public static class CraftingRequirements
             {
                 Name = "Zephyra's Wind",
                 TemplateKey = "zephyrawind",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "essenceofzephyra", DisplayName = "Essence of Zephyra", Amount = 5 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("essenceofzephyra", "Essence of Zephyra", 5)
+                ],
                 Rank = "Initiate",
                 Level = 58,
                 Difficulty = 3,
@@ -707,11 +682,12 @@ public static class CraftingRequirements
             {
                 Name = "Hemloch Formula",
                 TemplateKey = "hemlochformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "mold", DisplayName = "Mold", Amount = 5 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("mold", "Mold", 5),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -723,11 +699,12 @@ public static class CraftingRequirements
             {
                 Name = "Small Health Potion Formula",
                 TemplateKey = "smallhealthpotionformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "apple", DisplayName = "Apple", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Beginner",
                 Level = 1,
                 Difficulty = 1
@@ -739,11 +716,12 @@ public static class CraftingRequirements
             {
                 Name = "Small Mana Potion Formula",
                 TemplateKey = "smallmanapotionformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "acorn", DisplayName = "Acorn", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("acorn", "Acorn", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Beginner",
                 Level = 1,
                 Difficulty = 1
@@ -755,11 +733,12 @@ public static class CraftingRequirements
             {
                 Name = "Small Rejuvenation Potion Formula",
                 TemplateKey = "smallrejuvenationpotionformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "baguette", DisplayName = "Baguette", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("baguette", "Baguette", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Beginner",
                 Level = 1,
                 Difficulty = 1
@@ -771,11 +750,12 @@ public static class CraftingRequirements
             {
                 Name = "Small Haste Brew Formula",
                 TemplateKey = "smallhastebrewformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "sparkflower", DisplayName = "Spark Flower", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("sparkflower", "Spark Flower", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Beginner",
                 Level = 1,
                 Difficulty = 1
@@ -787,11 +767,12 @@ public static class CraftingRequirements
             {
                 Name = "Small Power Brew Formula",
                 TemplateKey = "smallpowerbrewformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "cactusflower", DisplayName = "Cactus Flower", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("cactusflower", "Cactus Flower", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Beginner",
                 Level = 1,
                 Difficulty = 1
@@ -803,11 +784,12 @@ public static class CraftingRequirements
             {
                 Name = "Small Accuracy Potion Formula",
                 TemplateKey = "smallaccuracypotionformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "kabineblossom", DisplayName = "Kabine Blossom", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("kabineblossom", "Kabine Blossom", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Beginner",
                 Level = 1,
                 Difficulty = 1
@@ -819,12 +801,14 @@ public static class CraftingRequirements
             {
                 Name = "Juggernaut Brew Formula",
                 TemplateKey = "juggernautbrewformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "scorpionsting", DisplayName = "Scorpion Sting", Amount = 2 },
-                    new Ingredient { TemplateKey = "koboldtail", DisplayName = "Kobold Tail", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("scorpionsting", "Scorpion's Sting", 2),
+
+                    new Ingredient("koboldtail", "Kobold Tail", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -836,12 +820,14 @@ public static class CraftingRequirements
             {
                 Name = "Astral Brew Formula",
                 TemplateKey = "astralbrewformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "giantbatwing", DisplayName = "Giant Bat's Wing", Amount = 2 },
-                    new Ingredient { TemplateKey = "koboldtail", DisplayName = "Kobold Tail", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("giantbatwing", "Giant Bat's Wing", 2),
+
+                    new Ingredient("koboldtail", "Kobold Tail", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -853,11 +839,12 @@ public static class CraftingRequirements
             {
                 Name = "Antidote Potion Formula",
                 TemplateKey = "antidotepotionformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "scorpionsting", DisplayName = "Scorpion's Sting", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("scorpionsting", "Scorpion's Sting", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -869,12 +856,14 @@ public static class CraftingRequirements
             {
                 Name = "Small Firestorm Tonic Formula",
                 TemplateKey = "smallfirestormtonicformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "cactusflower", DisplayName = "Cactus Flower", Amount = 1 },
-                    new Ingredient { TemplateKey = "wolffur", DisplayName = "Wolf's Fur", Amount = 3 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("cactusflower", "Cactus Flower", 1),
+
+                    new Ingredient("wolffur", "Wolf's Fur", 3),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -886,12 +875,14 @@ public static class CraftingRequirements
             {
                 Name = "Small Stun Tonic Formula",
                 TemplateKey = "smallstuntonicformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "dochasbloom", DisplayName = "Dochas Bloom", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
-                    new Ingredient { TemplateKey = "vipergland", DisplayName = "Viper's Gland", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("dochasbloom", "Dochas Bloom", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1),
+
+                    new Ingredient("vipergland", "Viper's Gland", 3)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -903,12 +894,14 @@ public static class CraftingRequirements
             {
                 Name = "Health Potion Formula",
                 TemplateKey = "healthpotionformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "apple", DisplayName = "Apple", Amount = 2 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
-                    new Ingredient { TemplateKey = "passionflower", DisplayName = "Passion Flower", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1),
+
+                    new Ingredient("passionflower", "Passion Flower", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -920,12 +913,14 @@ public static class CraftingRequirements
             {
                 Name = "Mana Potion Formula",
                 TemplateKey = "manapotionformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "acorn", DisplayName = "Acorn", Amount = 2 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
-                    new Ingredient { TemplateKey = "lilypad", DisplayName = "Lily Pad", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("acorn", "Acorn", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1),
+
+                    new Ingredient("lilypad", "Lily Pad", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -937,12 +932,14 @@ public static class CraftingRequirements
             {
                 Name = "Rejuvenation Potion Formula",
                 TemplateKey = "rejuvenationpotionformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "raineach", DisplayName = "Raineach", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
-                    new Ingredient { TemplateKey = "baguette", DisplayName = "Baguette", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("raineach", "Raineach", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1),
+
+                    new Ingredient("baguette", "Baguette", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -954,11 +951,12 @@ public static class CraftingRequirements
             {
                 Name = "Haste Brew Formula",
                 TemplateKey = "hastebrewformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "sparkflower", DisplayName = "Spark Flower", Amount = 2 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("sparkflower", "Spark Flower", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -970,11 +968,12 @@ public static class CraftingRequirements
             {
                 Name = "Power Brew Formula",
                 TemplateKey = "powerbrewformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "cactusflower", DisplayName = "Cactus Flower", Amount = 2 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("cactusflower", "Cactus Flower", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -986,11 +985,12 @@ public static class CraftingRequirements
             {
                 Name = "Accuracy Potion Formula",
                 TemplateKey = "accuracypotionformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "kabineblossom", DisplayName = "Kabine Blossom", Amount = 2 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("kabineblossom", "Kabine Blossom", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -1002,13 +1002,14 @@ public static class CraftingRequirements
             {
                 Name = "Revive Potion Formula",
                 TemplateKey = "revivepotionformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "BlossomofBetrayal", DisplayName = "Blossom of Betrayal", Amount = 1 },
-                    new Ingredient { TemplateKey = "sparkflower", DisplayName = "Spark Flower", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("BlossomofBetrayal", "Blossom of Betrayal", 1),
+
+                    new Ingredient("sparkflower", "Spark Flower", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -1020,12 +1021,14 @@ public static class CraftingRequirements
             {
                 Name = "Strong Juggernaut Brew Formula",
                 TemplateKey = "strongjuggernautbrewformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "scorpionsting", DisplayName = "Scorpion Sting", Amount = 3 },
-                    new Ingredient { TemplateKey = "koboldtail", DisplayName = "Kobold Tail", Amount = 2 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("scorpionsting", "Scorpion's Sting", 3),
+
+                    new Ingredient("koboldtail", "Kobold Tail", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -1037,12 +1040,14 @@ public static class CraftingRequirements
             {
                 Name = "Strong Astral Brew Formula",
                 TemplateKey = "strongAstralbrewformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "giantbatwing", DisplayName = "Giant Bat's Wing", Amount = 3 },
-                    new Ingredient { TemplateKey = "koboldtail", DisplayName = "Kobold Tail", Amount = 2 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("giantbatwing", "Giant Bat's Wing", 3),
+
+                    new Ingredient("koboldtail", "Kobold Tail", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -1054,11 +1059,12 @@ public static class CraftingRequirements
             {
                 Name = "Cleansing Brew Formula",
                 TemplateKey = "cleansingbrewformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "waterlily", DisplayName = "Water Lily", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("waterlily", "Water Lily", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -1070,12 +1076,14 @@ public static class CraftingRequirements
             {
                 Name = "Firestorm Tonic Formula",
                 TemplateKey = "firestormtonicformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "cactusflower", DisplayName = "Cactus Flower", Amount = 2 },
-                    new Ingredient { TemplateKey = "wolffur", DisplayName = "Wolf's Fur", Amount = 5 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("cactusflower", "Cactus Flower", 2),
+
+                    new Ingredient("wolffur", "Wolf's Fur", 5),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -1087,12 +1095,14 @@ public static class CraftingRequirements
             {
                 Name = "Stun Tonic Formula",
                 TemplateKey = "stuntonicformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "dochasbloom", DisplayName = "Dochas Bloom", Amount = 2 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
-                    new Ingredient { TemplateKey = "vipergland", DisplayName = "Viper's Gland", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("dochasbloom", "Dochas Bloom", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1),
+
+                    new Ingredient("vipergland", "Viper's Gland", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -1104,11 +1114,12 @@ public static class CraftingRequirements
             {
                 Name = "Warmth Potion Formula",
                 TemplateKey = "warmthpotionformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "bocanbough", DisplayName = "Bocan Bough", Amount = 2 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("bocanbough", "Bocan Bough", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -1120,12 +1131,12 @@ public static class CraftingRequirements
             {
                 Name = "Amnesia Brew Formula",
                 TemplateKey = "amnesiaBrewformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "blossomofbetrayal", DisplayName = "Blossom of Betrayal", Amount = 1 },
-                    new Ingredient { TemplateKey = "Empty Bottle", DisplayName = "Empty Bottle", Amount = 1 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("blossomofbetrayal", "Blossom of Betrayal", 1),
+
+                    new Ingredient("Empty Bottle", "Empty Bottle", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -1137,12 +1148,14 @@ public static class CraftingRequirements
             {
                 Name = "Strong Health Potion Formula",
                 TemplateKey = "stronghealthpotionformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "apple", DisplayName = "Apple", Amount = 5 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
-                    new Ingredient { TemplateKey = "passionflower", DisplayName = "Passion Flower", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 5),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1),
+
+                    new Ingredient("passionflower", "Passion Flower", 1)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -1154,12 +1167,14 @@ public static class CraftingRequirements
             {
                 Name = "Strong Mana Potion Formula",
                 TemplateKey = "strongmanapotionformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "acorn", DisplayName = "Acorn", Amount = 5 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
-                    new Ingredient { TemplateKey = "lilypad", DisplayName = "Lily Pad", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("acorn", "Acorn", 5),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1),
+
+                    new Ingredient("lilypad", "Lily Pad", 1)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -1171,12 +1186,14 @@ public static class CraftingRequirements
             {
                 Name = "Strong Rejuvenation Potion Formula",
                 TemplateKey = "strongrejuvenationpotionformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "raineach", DisplayName = "Raineach", Amount = 2 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
-                    new Ingredient { TemplateKey = "baguette", DisplayName = "Baguette", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("raineach", "Raineach", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1),
+
+                    new Ingredient("baguette", "Baguette", 2)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -1188,12 +1205,14 @@ public static class CraftingRequirements
             {
                 Name = "Strong Haste Brew Formula",
                 TemplateKey = "stronghastebrewformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "sparkflower", DisplayName = "Spark Flower", Amount = 2 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
-                    new Ingredient { TemplateKey = "wispcore", DisplayName = "Wisp Core", Amount = 1 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("sparkflower", "Spark Flower", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1),
+
+                    new Ingredient("wispcore", "Wisp Core", 1)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -1205,12 +1224,14 @@ public static class CraftingRequirements
             {
                 Name = "Strong Power Brew Formula",
                 TemplateKey = "strongpowerbrewformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "mummybandage", DisplayName = "Mummy Bandage", Amount = 1 },
-                    new Ingredient { TemplateKey = "cactusflower", DisplayName = "Cactus Flower", Amount = 2 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("mummybandage", "Mummy Bandage", 1),
+
+                    new Ingredient("cactusflower", "Cactus Flower", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -1222,12 +1243,14 @@ public static class CraftingRequirements
             {
                 Name = "Strong Accuracy Potion Formula",
                 TemplateKey = "strongaccuracypotionformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "kabineblossom", DisplayName = "Kabine Blossom", Amount = 2 },
-                    new Ingredient { TemplateKey = "redtentacle", DisplayName = "Red Tentacle", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("kabineblossom", "Kabine Blossom", 2),
+
+                    new Ingredient("redtentacle", "Red Tentacle", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -1239,14 +1262,18 @@ public static class CraftingRequirements
             {
                 Name = "Stat Boost Elixir Formula",
                 TemplateKey = "statboostelixirformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "vipervenom", DisplayName = "Viper's Venom", Amount = 1 },
-                    new Ingredient { TemplateKey = "marauderspine", DisplayName = "Marauder's Spine", Amount = 1 },
-                    new Ingredient { TemplateKey = "satyrhoof", DisplayName = "Satyr's Hoof", Amount = 1 },
-                    new Ingredient { TemplateKey = "polypsac", DisplayName = "Polyp Sac", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("vipervenom", "Viper's Venom", 1),
+
+                    new Ingredient("marauderspine", "Marauder's Spine", 1),
+
+                    new Ingredient("satyrhoof", "Satyr's Hoof", 1),
+
+                    new Ingredient("polypsac", "Polyp Sac", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -1258,12 +1285,14 @@ public static class CraftingRequirements
             {
                 Name = "Knowledge Elixir Formula",
                 TemplateKey = "knowledgeelixirformula",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "ancientbone", DisplayName = "Ancient Bone", Amount = 1 },
-                    new Ingredient { TemplateKey = "lionfish", DisplayName = "Lion Fish", Amount = 1 },
-                    new Ingredient { TemplateKey = "emptybottle", DisplayName = "Empty Bottle", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("ancientbone", "Ancient Bone", 1),
+
+                    new Ingredient("lionfish", "Lion Fish", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -1283,12 +1312,12 @@ public static class CraftingRequirements
             {
                 Name = "Basic Beryl Earrings",
                 TemplateKey = "basicberylearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedberyl", DisplayName = "Flawed Beryl", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedberyl", "Flawed Beryl", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2,
@@ -1300,12 +1329,12 @@ public static class CraftingRequirements
             {
                 Name = "Basic Ruby Earrings",
                 TemplateKey = "basicrubyearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedruby", DisplayName = "Flawed Ruby", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedruby", "Flawed Ruby", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2,
@@ -1317,12 +1346,12 @@ public static class CraftingRequirements
             {
                 Name = "Basic Sapphire Earrings",
                 TemplateKey = "basicsapphireearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedsapphire", DisplayName = "Flawed Sapphire", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedsapphire", "Flawed Sapphire", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2,
@@ -1334,12 +1363,12 @@ public static class CraftingRequirements
             {
                 Name = "Basic Emerald Earrings",
                 TemplateKey = "basicemeraldearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedemerald", DisplayName = "Flawed Emerald", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedemerald", "Flawed Emerald", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2,
@@ -1351,12 +1380,12 @@ public static class CraftingRequirements
             {
                 Name = "Basic Heartstone Earrings",
                 TemplateKey = "basicheartstoneearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedheartstone", DisplayName = "Flawed Heartstone", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedheartstone", "Flawed Heartstone", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2,
@@ -1368,12 +1397,12 @@ public static class CraftingRequirements
             {
                 Name = "Iron Beryl Earrings",
                 TemplateKey = "ironberylearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutberyl", DisplayName = "Uncut Beryl", Amount = 1 },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
 
-                },
+                    new Ingredient("uncutberyl", "Uncut Beryl", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3,
@@ -1385,11 +1414,12 @@ public static class CraftingRequirements
             {
                 Name = "Iron Ruby Earrings",
                 TemplateKey = "ironrubyearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutruby", DisplayName = "Uncut Ruby", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutruby", "Uncut Ruby", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3,
@@ -1401,11 +1431,12 @@ public static class CraftingRequirements
             {
                 Name = "Iron Sapphire Earrings",
                 TemplateKey = "ironsapphireearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutsapphire", DisplayName = "Uncut Sapphire", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutsapphire", "Uncut Sapphire", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3,
@@ -1417,11 +1448,12 @@ public static class CraftingRequirements
             {
                 Name = "Iron Emerald Earrings",
                 TemplateKey = "ironemeraldearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutemerald", DisplayName = "Uncut Emerald", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutemerald", "Uncut Emerald", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3,
@@ -1433,11 +1465,12 @@ public static class CraftingRequirements
             {
                 Name = "Iron Heartstone Earrings",
                 TemplateKey = "ironheartstoneearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutheartstone", DisplayName = "Uncut Heartstone", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutheartstone", "Uncut Heartstone", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3,
@@ -1449,12 +1482,12 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Beryl Earrings",
                 TemplateKey = "mythrilberylearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineberyl", "Pristine Beryl", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -1466,12 +1499,12 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Ruby Earrings",
                 TemplateKey = "mythrilrubyearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineruby", "Pristine Ruby", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -1483,12 +1516,12 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Sapphire Earrings",
                 TemplateKey = "mythrilsapphireearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -1500,12 +1533,12 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Emerald Earrings",
                 TemplateKey = "mythrilemeraldearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineemerald", "Pristine Emerald", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -1517,13 +1550,12 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Heartstone Earrings",
                 TemplateKey = "mythrilheartstoneearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -1533,14 +1565,14 @@ public static class CraftingRequirements
             JewelcraftingRecipes.HybrasylBerylEarrings,
             new Recipe()
             {
-                Name = "Hybrasyl Beryl Earrings",
+                Name = "Hy-brasyl Beryl Earrings",
                 TemplateKey = "hybrasylberylearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
+
+                    new Ingredient("pristineberyl", "Pristine Beryl", 3)
+                ],
                 Rank = "Adept",
                 Level = 71,
                 Difficulty = 5,
@@ -1550,14 +1582,14 @@ public static class CraftingRequirements
             JewelcraftingRecipes.HybrasylRubyEarrings,
             new Recipe()
             {
-                Name = "Hybrasyl Ruby Earrings",
+                Name = "Hy-brasyl Ruby Earrings",
                 TemplateKey = "hybrasylrubyearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
+
+                    new Ingredient("pristineruby", "Pristine Ruby", 3)
+                ],
                 Rank = "Adept",
                 Level = 71,
                 Difficulty = 5,
@@ -1567,14 +1599,14 @@ public static class CraftingRequirements
             JewelcraftingRecipes.HybrasylSapphireEarrings,
             new Recipe()
             {
-                Name = "Hybrasyl Sapphire Earrings",
+                Name = "Hy-brasyl Sapphire Earrings",
                 TemplateKey = "hybrasylsapphireearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
+
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 3)
+                ],
                 Rank = "Adept",
                 Level = 71,
                 Difficulty = 5,
@@ -1584,14 +1616,14 @@ public static class CraftingRequirements
             JewelcraftingRecipes.HybrasylEmeraldEarrings,
             new Recipe()
             {
-                Name = "Hybrasyl Emerald Earrings",
+                Name = "Hy-brasyl Emerald Earrings",
                 TemplateKey = "hybrasylemeraldearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
+
+                    new Ingredient("pristineemerald", "Pristine Emerald", 3)
+                ],
                 Rank = "Adept",
                 Level = 71,
                 Difficulty = 5,
@@ -1601,15 +1633,14 @@ public static class CraftingRequirements
             JewelcraftingRecipes.HybrasylHeartstoneEarrings,
             new Recipe()
             {
-                Name = "Hybrasyl Heartstone Earrings",
+                Name = "Hy-brasyl Heartstone Earrings",
                 TemplateKey = "hybrasylheartstoneearrings",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
+
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 3)
+                ],
                 Rank = "Adept",
                 Level = 71,
                 Difficulty = 5,
@@ -1621,11 +1652,12 @@ public static class CraftingRequirements
             {
                 Name = "Small Ruby Ring",
                 TemplateKey = "smallrubyring",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "rawruby", DisplayName = "Raw Ruby", Amount = 1 },
-                    new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("rawruby", "Raw Ruby", 1),
+
+                    new Ingredient("rawbronze", "Raw Bronze", 1)
+                ],
                 Rank = "Beginner",
                 Level = 1,
                 Difficulty = 1,
@@ -1637,11 +1669,12 @@ public static class CraftingRequirements
             {
                 Name = "Beryl Ring",
                 TemplateKey = "berylring",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "rawberyl", DisplayName = "Raw Beryl", Amount = 1 },
-                    new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("rawberyl", "Raw Beryl", 1),
+
+                    new Ingredient("rawbronze", "Raw Bronze", 1)
+                ],
                 Rank = "Beginner",
                 Level = 1,
                 Difficulty = 1,
@@ -1653,12 +1686,12 @@ public static class CraftingRequirements
             {
                 Name = "Bronze Beryl Ring",
                 TemplateKey = "bronzeberylring",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedberyl", DisplayName = "Flawed Beryl", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedberyl", "Flawed Beryl", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2,
@@ -1670,12 +1703,12 @@ public static class CraftingRequirements
             {
                 Name = "Bronze Ruby Ring",
                 TemplateKey = "bronzerubyring",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedruby", DisplayName = "Flawed Ruby", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedruby", "Flawed Ruby", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2,
@@ -1687,12 +1720,12 @@ public static class CraftingRequirements
             {
                 Name = "Bronze Sapphire Ring",
                 TemplateKey = "bronzesapphirering",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedsapphire", DisplayName = "Flawed Sapphire", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedsapphire", "Flawed Sapphire", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2,
@@ -1704,12 +1737,12 @@ public static class CraftingRequirements
             {
                 Name = "Bronze Emerald Ring",
                 TemplateKey = "bronzeemeraldring",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedemerald", DisplayName = "Flawed Emerald", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedemerald", "Flawed Emerald", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2,
@@ -1721,12 +1754,12 @@ public static class CraftingRequirements
             {
                 Name = "Bronze Heartstone Ring",
                 TemplateKey = "bronzeheartstonering",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedheartstone", DisplayName = "Flawed Heartstone", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedheartstone", "Flawed Heartstone", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2,
@@ -1738,11 +1771,12 @@ public static class CraftingRequirements
             {
                 Name = "Iron Beryl Ring",
                 TemplateKey = "ironberylring",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutberyl", DisplayName = "Uncut Beryl", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutberyl", "Uncut Beryl", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3,
@@ -1754,11 +1788,12 @@ public static class CraftingRequirements
             {
                 Name = "Iron Ruby Ring",
                 TemplateKey = "ironrubyring",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutruby", DisplayName = "Uncut Ruby", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutruby", "Uncut Ruby", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3,
@@ -1770,11 +1805,12 @@ public static class CraftingRequirements
             {
                 Name = "Iron Sapphire Ring",
                 TemplateKey = "ironsapphirering",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutsapphire", DisplayName = "Uncut Sapphire", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutsapphire", "Uncut Sapphire", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3,
@@ -1786,11 +1822,12 @@ public static class CraftingRequirements
             {
                 Name = "Iron Emerald Ring",
                 TemplateKey = "ironemeraldring",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutemerald", DisplayName = "Uncut Emerald", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutemerald", "Uncut Emerald", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3,
@@ -1802,11 +1839,12 @@ public static class CraftingRequirements
             {
                 Name = "Iron Heartstone Ring",
                 TemplateKey = "ironheartstonering",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutheartstone", DisplayName = "Uncut Heartstone", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutheartstone", "Uncut Heartstone", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3,
@@ -1818,12 +1856,12 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Beryl Ring",
                 TemplateKey = "mythrilberylring",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineberyl", "Pristine Beryl", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -1835,12 +1873,12 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Ruby Ring",
                 TemplateKey = "mythrilrubyring",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineruby", "Pristine Ruby", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -1852,12 +1890,12 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Sapphire Ring",
                 TemplateKey = "mythrilsapphirering",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -1869,12 +1907,12 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Emerald Ring",
                 TemplateKey = "mythrilemeraldring",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineemerald", "Pristine Emerald", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -1886,13 +1924,12 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Heartstone Ring",
                 TemplateKey = "mythrilheartstonering",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -1904,12 +1941,12 @@ public static class CraftingRequirements
             {
                 Name = "Hy-Brasyl Beryl Ring",
                 TemplateKey = "hybrasylberylring",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+
+                    new Ingredient("pristineberyl", "Pristine Beryl", 3)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5,
@@ -1921,12 +1958,12 @@ public static class CraftingRequirements
             {
                 Name = "Hy-Brasyl Ruby Ring",
                 TemplateKey = "hybrasylrubyring",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+
+                    new Ingredient("pristineruby", "Pristine Ruby", 3)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5,
@@ -1938,12 +1975,12 @@ public static class CraftingRequirements
             {
                 Name = "Hy-Brasyl Sapphire Ring",
                 TemplateKey = "hybrasylsapphirering",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 3)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5,
@@ -1955,12 +1992,12 @@ public static class CraftingRequirements
             {
                 Name = "Hy-Brasyl Emerald Ring",
                 TemplateKey = "hybrasylemeraldring",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+
+                    new Ingredient("pristineemerald", "Pristine Emerald", 3)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5,
@@ -1972,13 +2009,12 @@ public static class CraftingRequirements
             {
                 Name = "Hy-Brasyl Heartstone Ring",
                 TemplateKey = "hybrasylheartstonering",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 3)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5,
@@ -1990,11 +2026,12 @@ public static class CraftingRequirements
             {
                 Name = "Fire Necklace",
                 TemplateKey = "firenecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "rawruby", DisplayName = "Raw Ruby", Amount = 1 },
-                    new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("rawruby", "Raw Ruby", 1),
+
+                    new Ingredient("rawbronze", "Raw Bronze", 1)
+                ],
                 Rank = "Beginner",
                 Level = 1,
                 Difficulty = 1,
@@ -2006,11 +2043,12 @@ public static class CraftingRequirements
             {
                 Name = "Sea Necklace",
                 TemplateKey = "seanecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "rawsapphire", DisplayName = "Raw Sapphire", Amount = 1 },
-                    new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("rawsapphire", "Raw Sapphire", 1),
+
+                    new Ingredient("rawbronze", "Raw Bronze", 1)
+                ],
                 Rank = "Beginner",
                 Level = 1,
                 Difficulty = 1,
@@ -2022,11 +2060,12 @@ public static class CraftingRequirements
             {
                 Name = "Wind Necklace",
                 TemplateKey = "windnecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "rawemerald", DisplayName = "Raw Emerald", Amount = 1 },
-                    new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("rawemerald", "Raw Emerald", 1),
+
+                    new Ingredient("rawbronze", "Raw Bronze", 1)
+                ],
                 Rank = "Beginner",
                 Level = 1,
                 Difficulty = 1,
@@ -2038,11 +2077,12 @@ public static class CraftingRequirements
             {
                 Name = "Earth Necklace",
                 TemplateKey = "earthnecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "rawberyl", DisplayName = "Raw Beryl", Amount = 1 },
-                    new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("rawberyl", "Raw Beryl", 1),
+
+                    new Ingredient("rawbronze", "Raw Bronze", 1)
+                ],
                 Rank = "Beginner",
                 Level = 1,
                 Difficulty = 1,
@@ -2054,12 +2094,12 @@ public static class CraftingRequirements
             {
                 Name = "Bone Earth Necklace",
                 TemplateKey = "boneearthnecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedberyl", DisplayName = "Flawed Beryl", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedberyl", "Flawed Beryl", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2,
@@ -2071,12 +2111,12 @@ public static class CraftingRequirements
             {
                 Name = "Bone Fire Necklace",
                 TemplateKey = "bonefirenecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedruby", DisplayName = "Flawed Ruby", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedruby", "Flawed Ruby", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2,
@@ -2088,12 +2128,12 @@ public static class CraftingRequirements
             {
                 Name = "Bone Sea Necklace",
                 TemplateKey = "boneseanecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedsapphire", DisplayName = "Flawed Sapphire", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedsapphire", "Flawed Sapphire", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2,
@@ -2105,12 +2145,12 @@ public static class CraftingRequirements
             {
                 Name = "Bone Wind Necklace",
                 TemplateKey = "bonewindnecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedemerald", DisplayName = "Flawed Emerald", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedemerald", "Flawed Emerald", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2,
@@ -2122,11 +2162,12 @@ public static class CraftingRequirements
             {
                 Name = "Kanna Earth Necklace",
                 TemplateKey = "kannaearthnecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutberyl", DisplayName = "Uncut Beryl", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutberyl", "Uncut Beryl", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3,
@@ -2138,11 +2179,12 @@ public static class CraftingRequirements
             {
                 Name = "Kanna Wind Necklace",
                 TemplateKey = "kannawindnecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutemerald", DisplayName = "Uncut Emerald", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutemerald", "Uncut Emerald", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3,
@@ -2154,11 +2196,12 @@ public static class CraftingRequirements
             {
                 Name = "Kanna Fire Necklace",
                 TemplateKey = "kannafirenecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutruby", DisplayName = "Uncut Ruby", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutruby", "Uncut Ruby", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3,
@@ -2170,11 +2213,12 @@ public static class CraftingRequirements
             {
                 Name = "Kanna Sea Necklace",
                 TemplateKey = "kannaseanecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutsapphire", DisplayName = "Uncut Sapphire", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutsapphire", "Uncut Sapphire", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3,
@@ -2186,12 +2230,12 @@ public static class CraftingRequirements
             {
                 Name = "Polished Earth Necklace",
                 TemplateKey = "polishedearthnecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineberyl", "Pristine Beryl", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -2203,12 +2247,12 @@ public static class CraftingRequirements
             {
                 Name = "Polished Wind Necklace",
                 TemplateKey = "polishedwindnecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineemerald", "Pristine Emerald", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -2220,12 +2264,12 @@ public static class CraftingRequirements
             {
                 Name = "Polished Fire Necklace",
                 TemplateKey = "polishedfirenecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineruby", "Pristine Ruby", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -2237,12 +2281,12 @@ public static class CraftingRequirements
             {
                 Name = "Polished Sea Necklace",
                 TemplateKey = "polishedseanecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4,
@@ -2254,12 +2298,12 @@ public static class CraftingRequirements
             {
                 Name = "Star Sea Necklace",
                 TemplateKey = "starseanecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 3)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5,
@@ -2271,12 +2315,12 @@ public static class CraftingRequirements
             {
                 Name = "Star Fire Necklace",
                 TemplateKey = "starfirenecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+
+                    new Ingredient("pristineruby", "Pristine Ruby", 3)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5,
@@ -2288,12 +2332,12 @@ public static class CraftingRequirements
             {
                 Name = "Star Earth Necklace",
                 TemplateKey = "starearthnecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+
+                    new Ingredient("pristineberyl", "Pristine Beryl", 3)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5,
@@ -2305,12 +2349,12 @@ public static class CraftingRequirements
             {
                 Name = "Star Wind Necklace",
                 TemplateKey = "starwindnecklace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-Brasyl", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+
+                    new Ingredient("pristineemerald", "Pristine Emerald", 3)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5,
@@ -2331,11 +2375,12 @@ public static class CraftingRequirements
             {
                 Name = "Eppe",
                 TemplateKey = "eppe",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("rawbronze", "Raw Bronze", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Beginner",
                 Level = 2,
                 Difficulty = 1
@@ -2347,11 +2392,12 @@ public static class CraftingRequirements
             {
                 Name = "Saber",
                 TemplateKey = "saber",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("rawbronze", "Raw Bronze", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Beginner",
                 Level = 7,
                 Difficulty = 1
@@ -2363,12 +2409,12 @@ public static class CraftingRequirements
             {
                 Name = "Claidheamh",
                 TemplateKey = "claidheamh",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -2380,12 +2426,12 @@ public static class CraftingRequirements
             {
                 Name = "Broad Sword",
                 TemplateKey = "broadsword",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Basic",
                 Level = 17,
                 Difficulty = 2
@@ -2397,12 +2443,12 @@ public static class CraftingRequirements
             {
                 Name = "Battle Sword",
                 TemplateKey = "battlesword",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -2414,12 +2460,12 @@ public static class CraftingRequirements
             {
                 Name = "Masquerade",
                 TemplateKey = "masquerade",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 4 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 4),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Basic",
                 Level = 31,
                 Difficulty = 2
@@ -2431,11 +2477,12 @@ public static class CraftingRequirements
             {
                 Name = "Bramble",
                 TemplateKey = "bramble",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 2),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -2447,11 +2494,12 @@ public static class CraftingRequirements
             {
                 Name = "Longsword",
                 TemplateKey = "longsword",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
@@ -2463,12 +2511,12 @@ public static class CraftingRequirements
             {
                 Name = "Claidhmore",
                 TemplateKey = "claidhmore",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 2),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -2480,12 +2528,12 @@ public static class CraftingRequirements
             {
                 Name = "Emerald Sword",
                 TemplateKey = "emeraldsword",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Artisan",
                 Level = 77,
                 Difficulty = 4
@@ -2497,12 +2545,12 @@ public static class CraftingRequirements
             {
                 Name = "Gladius",
                 TemplateKey = "gladius",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 4 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 4),
+
+                    new Ingredient("coal", "Coal", 4)
+                ],
                 Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
@@ -2514,12 +2562,12 @@ public static class CraftingRequirements
             {
                 Name = "Kindjal",
                 TemplateKey = "kindjal",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 5 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 2),
+
+                    new Ingredient("coal", "Coal", 5)
+                ],
                 Rank = "Adept",
                 Level = 90,
                 Difficulty = 5
@@ -2531,12 +2579,12 @@ public static class CraftingRequirements
             {
                 Name = "Hatchet",
                 TemplateKey = "hatchet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -2548,12 +2596,14 @@ public static class CraftingRequirements
             {
                 Name = "Spiked Club",
                 TemplateKey = "spikedclub",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "club", DisplayName = "Club", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("club", "Club", 1),
+
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 50,
                 Difficulty = 3
@@ -2565,11 +2615,12 @@ public static class CraftingRequirements
             {
                 Name = "Chain Mace",
                 TemplateKey = "chainmace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedIron", "Polished Iron Bar", 3),
+
+                    new Ingredient("coal", "Coal", 3)
+                ],
                 Rank = "Initiate",
                 Level = 60,
                 Difficulty = 3
@@ -2581,12 +2632,12 @@ public static class CraftingRequirements
             {
                 Name = "Handaxe",
                 TemplateKey = "handaxe",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 2),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -2598,12 +2649,12 @@ public static class CraftingRequirements
             {
                 Name = "Talgonite Axe",
                 TemplateKey = "talgoniteaxe",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 5 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 3),
+
+                    new Ingredient("coal", "Coal", 5)
+                ],
                 Rank = "Adept",
                 Level = 95,
                 Difficulty = 5
@@ -2615,12 +2666,12 @@ public static class CraftingRequirements
             {
                 Name = "Magus Ares",
                 TemplateKey = "magusares",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -2632,12 +2683,12 @@ public static class CraftingRequirements
             {
                 Name = "Holy Hermes",
                 TemplateKey = "holyhermes",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -2649,11 +2700,12 @@ public static class CraftingRequirements
             {
                 Name = "Magus Zeus",
                 TemplateKey = "maguszeus",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedIron", "Polished Iron Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -2665,11 +2717,12 @@ public static class CraftingRequirements
             {
                 Name = "Holy Kronos",
                 TemplateKey = "holykronos",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedIron", "Polished Iron Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -2681,11 +2734,12 @@ public static class CraftingRequirements
             {
                 Name = "Snow Dagger",
                 TemplateKey = "snowdagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("rawbronze", "Raw Bronze", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Beginner",
                 Level = 2,
                 Difficulty = 1
@@ -2697,11 +2751,12 @@ public static class CraftingRequirements
             {
                 Name = "Center Dagger",
                 TemplateKey = "centerdagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("rawbronze", "Raw Bronze", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Beginner",
                 Level = 4,
                 Difficulty = 1
@@ -2713,12 +2768,12 @@ public static class CraftingRequirements
             {
                 Name = "Blossom Dagger",
                 TemplateKey = "blossomdagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 14,
                 Difficulty = 2
@@ -2730,12 +2785,12 @@ public static class CraftingRequirements
             {
                 Name = "Moon Dagger",
                 TemplateKey = "moondagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Basic",
                 Level = 31,
                 Difficulty = 2
@@ -2747,11 +2802,12 @@ public static class CraftingRequirements
             {
                 Name = "Light Dagger",
                 TemplateKey = "lightdagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 2),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -2763,11 +2819,12 @@ public static class CraftingRequirements
             {
                 Name = "Sun Dagger",
                 TemplateKey = "sundagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedIron", "Polished Iron Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 62,
                 Difficulty = 3
@@ -2779,12 +2836,12 @@ public static class CraftingRequirements
             {
                 Name = "Lotus Dagger",
                 TemplateKey = "lotusdagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 2),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Artisan",
                 Level = 75,
                 Difficulty = 4
@@ -2796,12 +2853,12 @@ public static class CraftingRequirements
             {
                 Name = "Blood Dagger",
                 TemplateKey = "blooddagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 3),
+
+                    new Ingredient("coal", "Coal", 3)
+                ],
                 Rank = "Artisan",
                 Level = 89,
                 Difficulty = 4
@@ -2813,11 +2870,12 @@ public static class CraftingRequirements
             {
                 Name = "Dull Claw",
                 TemplateKey = "dullclaw",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("rawbronze", "Raw Bronze", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Beginner",
                 Level = 3,
                 Difficulty = 1
@@ -2829,12 +2887,12 @@ public static class CraftingRequirements
             {
                 Name = "Wolf Claw",
                 TemplateKey = "wolfclaw",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -2846,11 +2904,12 @@ public static class CraftingRequirements
             {
                 Name = "Eagle Talon",
                 TemplateKey = "eagletalon",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedIron", "Polished Iron Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -2862,12 +2921,12 @@ public static class CraftingRequirements
             {
                 Name = "Phoenix Claw",
                 TemplateKey = "phoenixclaw",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedMythril", "Polished Mythril Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -2879,11 +2938,12 @@ public static class CraftingRequirements
             {
                 Name = "Wooden Shield",
                 TemplateKey = "woodenshield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("rawbronze", "Raw Bronze", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Beginner",
                 Level = 3,
                 Difficulty = 1
@@ -2895,12 +2955,12 @@ public static class CraftingRequirements
             {
                 Name = "Leather Shield",
                 TemplateKey = "leathershield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 15,
                 Difficulty = 2
@@ -2912,12 +2972,12 @@ public static class CraftingRequirements
             {
                 Name = "Bronze Shield",
                 TemplateKey = "bronzeshield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Basic",
                 Level = 31,
                 Difficulty = 2
@@ -2929,11 +2989,12 @@ public static class CraftingRequirements
             {
                 Name = "Iron Shield",
                 TemplateKey = "ironshield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Initiate",
                 Level = 45,
                 Difficulty = 3
@@ -2945,12 +3006,12 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Shield",
                 TemplateKey = "mythrilshield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedMythril", "Polished Mythril Bar", 2),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 61,
                 Difficulty = 3
@@ -2960,14 +3021,14 @@ public static class CraftingRequirements
             WeaponSmithingRecipes.HybrasylShield,
             new Recipe()
             {
-                Name = "Hybrasyl Shield",
+                Name = "Hy-brasyl Shield",
                 TemplateKey = "hybrasylshield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Artisan",
                 Level = 77,
                 Difficulty = 4
@@ -2983,12 +3044,14 @@ public static class CraftingRequirements
             {
                 Name = "Eppe",
                 TemplateKey = "eppe",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "eppe", DisplayName = "Eppe", Amount = 1 },
-                    new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 1 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("eppe", "Eppe", 1),
+
+                    new Ingredient("rawbronze", "Raw Bronze", 1),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Beginner",
                 Level = 2,
                 Difficulty = 1
@@ -3000,12 +3063,14 @@ public static class CraftingRequirements
             {
                 Name = "Saber",
                 TemplateKey = "saber",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "Saber", DisplayName = "Saber", Amount = 1 },
-                    new Ingredient { TemplateKey = "rawbronze", DisplayName = "Raw Bronze", Amount = 1 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("Saber", "Saber", 1),
+
+                    new Ingredient("rawbronze", "Raw Bronze", 1),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Beginner",
                 Level = 7,
                 Difficulty = 1
@@ -3017,13 +3082,14 @@ public static class CraftingRequirements
             {
                 Name = "Claidheamh",
                 TemplateKey = "claidheamh",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "claidheamh", DisplayName = "Claidheamh", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("claidheamh", "Claidheamh", 1),
+
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -3035,13 +3101,14 @@ public static class CraftingRequirements
             {
                 Name = "Broad Sword",
                 TemplateKey = "broadsword",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "broadsword", DisplayName = "Broad Sword", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("broadsword", "Broad Sword", 1),
+
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Basic",
                 Level = 17,
                 Difficulty = 2
@@ -3053,13 +3120,14 @@ public static class CraftingRequirements
             {
                 Name = "Battle Sword",
                 TemplateKey = "battlesword",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "battlesword", DisplayName = "Battle Sword", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("battlesword", "Battle Sword", 1),
+
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -3071,13 +3139,14 @@ public static class CraftingRequirements
             {
                 Name = "Masquerade",
                 TemplateKey = "masquerade",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "masquerade", DisplayName = "Masquerade", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("masquerade", "Masquerade", 1),
+
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Basic",
                 Level = 31,
                 Difficulty = 2
@@ -3089,12 +3158,14 @@ public static class CraftingRequirements
             {
                 Name = "Bramble",
                 TemplateKey = "bramble",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "bramble", DisplayName = "Bramble", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("bramble", "Bramble", 1),
+
+                    new Ingredient("polishedIron", "Polished Iron Bar", 1),
+
+                    new Ingredient("coal", "Coal", 3)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -3106,12 +3177,14 @@ public static class CraftingRequirements
             {
                 Name = "Longsword",
                 TemplateKey = "longsword",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "Longsword", DisplayName = "Longsword", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("Longsword", "Longsword", 1),
+
+                    new Ingredient("polishedIron", "Polished Iron Bar", 1),
+
+                    new Ingredient("coal", "Coal", 3)
+                ],
                 Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
@@ -3123,13 +3196,14 @@ public static class CraftingRequirements
             {
                 Name = "Claidhmore",
                 TemplateKey = "claidhmore",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "Claidhmore", DisplayName = "Claidhmore", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("Claidhmore", "Claidhmore", 1),
+
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 2),
+
+                    new Ingredient("coal", "Coal", 3)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -3141,13 +3215,14 @@ public static class CraftingRequirements
             {
                 Name = "Emerald Sword",
                 TemplateKey = "emeraldsword",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "emeraldsword", DisplayName = "Emerald Sword", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("emeraldsword", "Emerald Sword", 1),
+
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 2),
+
+                    new Ingredient("coal", "Coal", 3)
+                ],
                 Rank = "Artisan",
                 Level = 77,
                 Difficulty = 4
@@ -3159,13 +3234,14 @@ public static class CraftingRequirements
             {
                 Name = "Gladius",
                 TemplateKey = "gladius",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "Gladius", DisplayName = "Gladius", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("Gladius", "Gladius", 1),
+
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 3),
+
+                    new Ingredient("coal", "Coal", 4)
+                ],
                 Rank = "Adept",
                 Level = 86,
                 Difficulty = 5
@@ -3177,13 +3253,14 @@ public static class CraftingRequirements
             {
                 Name = "Kindjal",
                 TemplateKey = "kindjal",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "kindjal", DisplayName = "Kindjal", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("kindjal", "Kindjal", 1),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 3),
+
+                    new Ingredient("coal", "Coal", 4)
+                ],
                 Rank = "Adept",
                 Level = 90,
                 Difficulty = 5
@@ -3195,13 +3272,14 @@ public static class CraftingRequirements
             {
                 Name = "Dragon Slayer",
                 TemplateKey = "dragonslayer",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "dragonslayer", DisplayName = "Dragon Slayer", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 5 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 5 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("dragonslayer", "Dragon Slayer", 1),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 5),
+
+                    new Ingredient("coal", "Coal", 5)
+                ],
                 Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
@@ -3213,13 +3291,14 @@ public static class CraftingRequirements
             {
                 Name = "Hatchet",
                 TemplateKey = "hatchet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "hatchet", DisplayName = "Hatchet", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("hatchet", "Hatchet", 1),
+
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -3231,13 +3310,14 @@ public static class CraftingRequirements
             {
                 Name = "Harpoon",
                 TemplateKey = "harpoon",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "harpoon", DisplayName = "Harpoon", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("harpoon", "Harpoon", 1),
+
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 21,
                 Difficulty = 2
@@ -3249,13 +3329,14 @@ public static class CraftingRequirements
             {
                 Name = "Scimitar",
                 TemplateKey = "scimitar",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "Scimitar", DisplayName = "Scimitar", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("Scimitar", "Scimitar", 1),
+
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 31,
                 Difficulty = 3
@@ -3267,12 +3348,14 @@ public static class CraftingRequirements
             {
                 Name = "Club",
                 TemplateKey = "club",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "Club", DisplayName = "Club", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("Club", "Club", 1),
+
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 2),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -3284,12 +3367,14 @@ public static class CraftingRequirements
             {
                 Name = "Spiked Club",
                 TemplateKey = "spikedclub",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "SpikedClub", DisplayName = "Spiked Club", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("SpikedClub", "Spiked Club", 1),
+
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 50,
                 Difficulty = 3
@@ -3301,12 +3386,14 @@ public static class CraftingRequirements
             {
                 Name = "Chain Mace",
                 TemplateKey = "chainmace",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "chainmace", DisplayName = "Chain Mace", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("chainmace", "Chain Mace", 1),
+
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 3),
+
+                    new Ingredient("coal", "Coal", 3)
+                ],
                 Rank = "Initiate",
                 Level = 60,
                 Difficulty = 3
@@ -3318,13 +3405,14 @@ public static class CraftingRequirements
             {
                 Name = "Handaxe",
                 TemplateKey = "handaxe",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "handaxe", DisplayName = "Handaxe", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("handaxe", "Handaxe", 1),
+
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 2),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -3336,13 +3424,14 @@ public static class CraftingRequirements
             {
                 Name = "Cutlass",
                 TemplateKey = "cutlass",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "cutlass", DisplayName = "Cutlass", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("cutlass", "Cutlass", 1),
+
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Artisan",
                 Level = 80,
                 Difficulty = 4
@@ -3354,13 +3443,14 @@ public static class CraftingRequirements
             {
                 Name = "Talgonite Axe",
                 TemplateKey = "talgoniteaxe",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "Talgoniteaxe", DisplayName = "Talgonite Axe", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 4 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("Talgoniteaxe", "Talgonite Axe", 1),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 4),
+
+                    new Ingredient("coal", "Coal", 4)
+                ],
                 Rank = "Adept",
                 Level = 95,
                 Difficulty = 5
@@ -3372,13 +3462,14 @@ public static class CraftingRequirements
             {
                 Name = "Hy-brasyl Battle Axe",
                 TemplateKey = "hybrasylbattleaxe",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "Talgoniteaxe", DisplayName = "Talgonite Axe", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 5 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 5 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("Talgoniteaxe", "Talgonite Axe", 1),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 5),
+
+                    new Ingredient("coal", "Coal", 5)
+                ],
                 Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
@@ -3390,13 +3481,14 @@ public static class CraftingRequirements
             {
                 Name = "Magus Ares",
                 TemplateKey = "magusares",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "magusares", DisplayName = "Magus Ares", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("magusares", "Magus Ares", 1),
+
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -3408,13 +3500,14 @@ public static class CraftingRequirements
             {
                 Name = "Holy Hermes",
                 TemplateKey = "holyhermes",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "holyhermes", DisplayName = "Holy Hermes", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("holyhermes", "Holy Hermes", 1),
+
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -3426,12 +3519,14 @@ public static class CraftingRequirements
             {
                 Name = "Magus Zeus",
                 TemplateKey = "maguszeus",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "maguszeus", DisplayName = "Magus Zeus", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("maguszeus", "Magus Zeus", 1),
+
+                    new Ingredient("polishedIron", "Polished Iron Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -3443,12 +3538,14 @@ public static class CraftingRequirements
             {
                 Name = "Holy Kronos",
                 TemplateKey = "holykronos",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "holykronos", DisplayName = "Holy Kronos", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("holykronos", "Holy Kronos", 1),
+
+                    new Ingredient("polishedIron", "Polished Iron Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -3460,13 +3557,14 @@ public static class CraftingRequirements
             {
                 Name = "Magus Diana",
                 TemplateKey = "magusdiana",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "magusdiana", DisplayName = "Magus Diana", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("magusdiana", "Magus Diana", 1),
+
+                    new Ingredient("polishedMythril", "Polished Mythril Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -3478,13 +3576,14 @@ public static class CraftingRequirements
             {
                 Name = "Holy Diana",
                 TemplateKey = "holydiana",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "holydiana", DisplayName = "Holy Diana", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("holydiana", "Holy Diana", 1),
+
+                    new Ingredient("polishedMythril", "Polished Mythril Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -3496,13 +3595,14 @@ public static class CraftingRequirements
             {
                 Name = "Stone Cross",
                 TemplateKey = "stonecross",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "stonecross", DisplayName = "Stone Cross", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 4 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("stonecross", "Stone Cross", 1),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 4),
+
+                    new Ingredient("coal", "Coal", 3)
+                ],
                 Rank = "Adept",
                 Level = 90,
                 Difficulty = 5
@@ -3514,13 +3614,14 @@ public static class CraftingRequirements
             {
                 Name = "Oak Staff",
                 TemplateKey = "oakstaff",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "stonecross", DisplayName = "Stone Cross", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 5 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("stonecross", "Stone Cross", 1),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 5),
+
+                    new Ingredient("coal", "Coal", 4)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -3532,13 +3633,14 @@ public static class CraftingRequirements
             {
                 Name = "Staff of Wisdom",
                 TemplateKey = "staffofwisdom",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "stonecross", DisplayName = "Stone Cross", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 5 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("stonecross", "Stone Cross", 1),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 5),
+
+                    new Ingredient("coal", "Coal", 4)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -3550,12 +3652,14 @@ public static class CraftingRequirements
             {
                 Name = "Snow Dagger",
                 TemplateKey = "snowdagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "snowdagger", DisplayName = "Snow Dagger", Amount = 1 },
-                    new Ingredient { TemplateKey = "rawBronze", DisplayName = "Raw Bronze", Amount = 1 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("snowdagger", "Snow Dagger", 1),
+
+                    new Ingredient("rawBronze", "Raw Bronze", 1),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Beginner",
                 Level = 2,
                 Difficulty = 1
@@ -3567,12 +3671,14 @@ public static class CraftingRequirements
             {
                 Name = "Center Dagger",
                 TemplateKey = "centerdagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "centerdagger", DisplayName = "Center Dagger", Amount = 1 },
-                    new Ingredient { TemplateKey = "rawBronze", DisplayName = "Raw Bronze", Amount = 1 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("centerdagger", "Center Dagger", 1),
+
+                    new Ingredient("rawBronze", "Raw Bronze", 1),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Beginner",
                 Level = 4,
                 Difficulty = 1
@@ -3584,12 +3690,14 @@ public static class CraftingRequirements
             {
                 Name = "Blossom Dagger",
                 TemplateKey = "blossomdagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "blossomdagger", DisplayName = "Blossom Dagger", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("blossomdagger", "Blossom Dagger", 1),
+
+                    new Ingredient("polishedBronze", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 14,
                 Difficulty = 2
@@ -3601,12 +3709,14 @@ public static class CraftingRequirements
             {
                 Name = "Curved Dagger",
                 TemplateKey = "curveddagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "curveddagger", DisplayName = "Curved Dagger", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("curveddagger", "Curved Dagger", 1),
+
+                    new Ingredient("polishedBronze", "Polished Bronze Bar", 3),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 30,
                 Difficulty = 2
@@ -3618,12 +3728,14 @@ public static class CraftingRequirements
             {
                 Name = "Moon Dagger",
                 TemplateKey = "moondagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "moondagger", DisplayName = "Moon Dagger", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("moondagger", "Moon Dagger", 1),
+
+                    new Ingredient("polishedBronze", "Polished Bronze Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Basic",
                 Level = 31,
                 Difficulty = 2
@@ -3635,12 +3747,14 @@ public static class CraftingRequirements
             {
                 Name = "Light Dagger",
                 TemplateKey = "lightdagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "lightdagger", DisplayName = "Light Dagger", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("lightdagger", "Light Dagger", 1),
+
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -3652,12 +3766,14 @@ public static class CraftingRequirements
             {
                 Name = "Sun Dagger",
                 TemplateKey = "sundagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "sundagger", DisplayName = "Sun Dagger", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("sundagger", "Sun Dagger", 1),
+
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 62,
                 Difficulty = 3
@@ -3669,13 +3785,14 @@ public static class CraftingRequirements
             {
                 Name = "Lotus Dagger",
                 TemplateKey = "lotusdagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "lotusdagger", DisplayName = "Lotus Dagger", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("lotusdagger", "Lotus Dagger", 1),
+
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Artisan",
                 Level = 75,
                 Difficulty = 4
@@ -3687,13 +3804,14 @@ public static class CraftingRequirements
             {
                 Name = "Blood Dagger",
                 TemplateKey = "blooddagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "blooddagger", DisplayName = "Blood Dagger", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("blooddagger", "Blood Dagger", 1),
+
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Artisan",
                 Level = 89,
                 Difficulty = 4
@@ -3705,13 +3823,14 @@ public static class CraftingRequirements
             {
                 Name = "Nagetierdagger",
                 TemplateKey = "nagetierdagger",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "nagetierdagger", DisplayName = "Nagetier Dagger", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 5 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("nagetierdagger", "Nagetier Dagger", 1),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 5),
+
+                    new Ingredient("coal", "Coal", 4)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -3723,12 +3842,14 @@ public static class CraftingRequirements
             {
                 Name = "Dull Claw",
                 TemplateKey = "dullclaw",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "dullclaw", DisplayName = "Dull Claw", Amount = 1 },
-                    new Ingredient { TemplateKey = "rawBronze", DisplayName = "Raw Bronze", Amount = 1 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("dullclaw", "Dull Claw", 1),
+
+                    new Ingredient("rawBronze", "Raw Bronze", 1),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Beginner",
                 Level = 3,
                 Difficulty = 1
@@ -3740,12 +3861,14 @@ public static class CraftingRequirements
             {
                 Name = "Wolf Claw",
                 TemplateKey = "wolfclaw",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "wolfclaw", DisplayName = "Wolf Claw", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("wolfclaw", "Wolf Claw", 1),
+
+                    new Ingredient("polishedBronze", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -3757,12 +3880,14 @@ public static class CraftingRequirements
             {
                 Name = "Eagle Talon",
                 TemplateKey = "eagletalon",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "Eagletalon", DisplayName = "Eagle Talon", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("Eagletalon", "Eagle Talon", 1),
+
+                    new Ingredient("polishedIron", "Polished Iron Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -3774,12 +3899,14 @@ public static class CraftingRequirements
             {
                 Name = "Stone Fist",
                 TemplateKey = "stonefist",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "stonefist", DisplayName = "Stone Fist", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("stonefist", "Stone Fist", 1),
+
+                    new Ingredient("polishedIron", "Polished Iron Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -3791,13 +3918,14 @@ public static class CraftingRequirements
             {
                 Name = "Phoenix Claw",
                 TemplateKey = "phoenixclaw",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "phoenixclaw", DisplayName = "Phoenix Claw", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedMythril", DisplayName = "Polished Mythril Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("phoenixclaw", "Phoenix Claw", 1),
+
+                    new Ingredient("polishedMythril", "Polished Mythril Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -3809,13 +3937,14 @@ public static class CraftingRequirements
             {
                 Name = "Nunchaku",
                 TemplateKey = "nunchaku",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "Nunchaku", DisplayName = "Nunchaku", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedHybrasyl", DisplayName = "Polished Hy-brasyl Bar", Amount = 5 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 4 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("Nunchaku", "Nunchaku", 1),
+
+                    new Ingredient("polishedHybrasyl", "Polished Hy-brasyl Bar", 5),
+
+                    new Ingredient("coal", "Coal", 4)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -3827,12 +3956,14 @@ public static class CraftingRequirements
             {
                 Name = "Wooden Shield",
                 TemplateKey = "woodenshield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "woodenshield", DisplayName = "Wooden Shield", Amount = 1 },
-                    new Ingredient { TemplateKey = "rawBronze", DisplayName = "Raw Bronze", Amount = 1 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("woodenshield", "Wooden Shield", 1),
+
+                    new Ingredient("rawBronze", "Raw Bronze", 1),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Beginner",
                 Level = 3,
                 Difficulty = 1
@@ -3844,12 +3975,14 @@ public static class CraftingRequirements
             {
                 Name = "Leather Shield",
                 TemplateKey = "leathershield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "leathershield", DisplayName = "Leather Shield", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("leathershield", "Leather Shield", 1),
+
+                    new Ingredient("polishedBronze", "Polished Bronze Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Basic",
                 Level = 15,
                 Difficulty = 2
@@ -3861,12 +3994,14 @@ public static class CraftingRequirements
             {
                 Name = "Bronze Shield",
                 TemplateKey = "bronzeshield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "bronzeshield", DisplayName = "Bronze Shield", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedBronze", DisplayName = "Polished Bronze Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("bronzeshield", "Bronze Shield", 1),
+
+                    new Ingredient("polishedBronze", "Polished Bronze Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Basic",
                 Level = 31,
                 Difficulty = 2
@@ -3878,12 +4013,14 @@ public static class CraftingRequirements
             {
                 Name = "Gravel Shield",
                 TemplateKey = "gravelshield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "gravelshield", DisplayName = "Gravel Shield", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("gravelshield", "Gravel Shield", 1),
+
+                    new Ingredient("polishedIron", "Polished Iron Bar", 2),
+
+                    new Ingredient("coal", "Coal", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -3895,12 +4032,14 @@ public static class CraftingRequirements
             {
                 Name = "Iron Shield",
                 TemplateKey = "ironshield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "ironshield", DisplayName = "Iron Shield", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("ironshield", "Iron Shield", 1),
+
+                    new Ingredient("polishedIron", "Polished Iron Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 45,
                 Difficulty = 3
@@ -3912,12 +4051,14 @@ public static class CraftingRequirements
             {
                 Name = "Light Shield",
                 TemplateKey = "lightshield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "lightshield", DisplayName = "Light Shield", Amount = 1 },
-                    new Ingredient { TemplateKey = "polishedIron", DisplayName = "Polished Iron Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("lightshield", "Light Shield", 1),
+
+                    new Ingredient("polishedIron", "Polished Iron Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 50,
                 Difficulty = 3
@@ -3929,13 +4070,14 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Shield",
                 TemplateKey = "mythrilshield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "mythrilshield", DisplayName = "Mythril Shield", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 3 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("mythrilshield", "Mythril Shield", 1),
+
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 3),
+
+                    new Ingredient("coal", "Coal", 2)
+                ],
                 Rank = "Initiate",
                 Level = 61,
                 Difficulty = 3
@@ -3945,15 +4087,16 @@ public static class CraftingRequirements
             WeaponSmithingRecipes.HybrasylShield,
             new Recipe()
             {
-                Name = "Hybrasyl Shield",
+                Name = "Hy-brasyl Shield",
                 TemplateKey = "hybrasylshield",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "hybrasylshield", DisplayName = "Hy-brasyl Shield", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 4 },
-                    new Ingredient { TemplateKey = "coal", DisplayName = "Coal", Amount = 3 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("hybrasylshield", "Hy-brasyl Shield", 1),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 4),
+
+                    new Ingredient("coal", "Coal", 3)
+                ],
                 Rank = "Artisan",
                 Level = 77,
                 Difficulty = 4
@@ -3973,10 +4116,10 @@ public static class CraftingRequirements
             {
                 Name = "Scout Leather Pattern",
                 TemplateKey = "scoutleatherpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("finelinen", "Fine Linen", 3)
+                ],
                 Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
@@ -3988,10 +4131,10 @@ public static class CraftingRequirements
             {
                 Name = "Dwarvish Leather Pattern",
                 TemplateKey = "dwarvishleatherpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -4003,10 +4146,10 @@ public static class CraftingRequirements
             {
                 Name = "Paluten Pattern",
                 TemplateKey = "palutenpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 3)
+                ],
                 Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
@@ -4018,10 +4161,10 @@ public static class CraftingRequirements
             {
                 Name = "Keaton Pattern",
                 TemplateKey = "keatonpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite Wool", 4)
+                ],
                 Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
@@ -4033,10 +4176,10 @@ public static class CraftingRequirements
             {
                 Name = "Bardocle Pattern",
                 TemplateKey = "bardoclepattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 5)
+                ],
                 Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
@@ -4048,10 +4191,10 @@ public static class CraftingRequirements
             {
                 Name = "Gardcorp Pattern",
                 TemplateKey = "gardcorppattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("finelinen", "Fine Linen", 3)
+                ],
                 Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
@@ -4063,10 +4206,10 @@ public static class CraftingRequirements
             {
                 Name = "Journeyman Pattern",
                 TemplateKey = "journeymanpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -4078,10 +4221,10 @@ public static class CraftingRequirements
             {
                 Name = "Lorum Pattern",
                 TemplateKey = "lorumpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 3)
+                ],
                 Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
@@ -4093,10 +4236,10 @@ public static class CraftingRequirements
             {
                 Name = "Mane Pattern",
                 TemplateKey = "manepattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite Wool", 4)
+                ],
                 Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
@@ -4108,10 +4251,10 @@ public static class CraftingRequirements
             {
                 Name = "Duin-Uasal Pattern",
                 TemplateKey = "duinuasalpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 5)
+                ],
                 Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
@@ -4123,10 +4266,10 @@ public static class CraftingRequirements
             {
                 Name = "Cowl Pattern",
                 TemplateKey = "cowlpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("finelinen", "Fine Linen", 3)
+                ],
                 Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
@@ -4138,10 +4281,10 @@ public static class CraftingRequirements
             {
                 Name = "Galuchat Coat Pattern",
                 TemplateKey = "galuchatcoatpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -4153,10 +4296,10 @@ public static class CraftingRequirements
             {
                 Name = "Mantle Pattern",
                 TemplateKey = "mantlepattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 3)
+                ],
                 Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
@@ -4168,10 +4311,10 @@ public static class CraftingRequirements
             {
                 Name = "Hierophant Pattern",
                 TemplateKey = "hierophantpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite Wool", 4)
+                ],
                 Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
@@ -4183,10 +4326,10 @@ public static class CraftingRequirements
             {
                 Name = "Dalmatica Pattern",
                 TemplateKey = "dalmaticapattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 5)
+                ],
                 Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
@@ -4198,10 +4341,10 @@ public static class CraftingRequirements
             {
                 Name = "Dobok Pattern",
                 TemplateKey = "dobokpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("finelinen", "Fine Linen", 3)
+                ],
                 Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
@@ -4213,10 +4356,10 @@ public static class CraftingRequirements
             {
                 Name = "Culotte Pattern",
                 TemplateKey = "culottepattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -4228,10 +4371,10 @@ public static class CraftingRequirements
             {
                 Name = "Earth Garb Pattern",
                 TemplateKey = "earthgarbpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 3)
+                ],
                 Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
@@ -4243,10 +4386,10 @@ public static class CraftingRequirements
             {
                 Name = "Wind Garb Pattern",
                 TemplateKey = "windgarbpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite Wool", 4)
+                ],
                 Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
@@ -4258,10 +4401,10 @@ public static class CraftingRequirements
             {
                 Name = "Mountain Garb Pattern",
                 TemplateKey = "mountaingarbpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 5)
+                ],
                 Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
@@ -4273,10 +4416,10 @@ public static class CraftingRequirements
             {
                 Name = "Leather Tunic Pattern",
                 TemplateKey = "leathertunicpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("finelinen", "Fine Linen", 3)
+                ],
                 Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
@@ -4288,10 +4431,10 @@ public static class CraftingRequirements
             {
                 Name = "Lorica Pattern",
                 TemplateKey = "loricapattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -4303,10 +4446,10 @@ public static class CraftingRequirements
             {
                 Name = "Kasmanium Armor Pattern",
                 TemplateKey = "kasmaniumarmorpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 3)
+                ],
                 Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
@@ -4318,10 +4461,10 @@ public static class CraftingRequirements
             {
                 Name = "Iplet Mail Pattern",
                 TemplateKey = "ipletmailpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite Wool", 4)
+                ],
                 Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
@@ -4333,10 +4476,10 @@ public static class CraftingRequirements
             {
                 Name = "Hy-brasyl Plate Pattern",
                 TemplateKey = "hybrasylplatepattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 5)
+                ],
                 Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
@@ -4349,10 +4492,10 @@ public static class CraftingRequirements
             {
                 Name = "Cotte Pattern",
                 TemplateKey = "cottepattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("finelinen", "Fine Linen", 3)
+                ],
                 Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
@@ -4364,10 +4507,10 @@ public static class CraftingRequirements
             {
                 Name = "Brigandine Pattern",
                 TemplateKey = "brigandinepattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -4379,10 +4522,10 @@ public static class CraftingRequirements
             {
                 Name = "Corsette Pattern",
                 TemplateKey = "corsettepattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 3)
+                ],
                 Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
@@ -4394,10 +4537,10 @@ public static class CraftingRequirements
             {
                 Name = "Pebble Rose Pattern",
                 TemplateKey = "pebblerosepattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite Wool", 4)
+                ],
                 Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
@@ -4409,10 +4552,10 @@ public static class CraftingRequirements
             {
                 Name = "Kagum Pattern",
                 TemplateKey = "kagumpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 5)
+                ],
                 Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
@@ -4424,10 +4567,10 @@ public static class CraftingRequirements
             {
                 Name = "Magi Skirt Pattern",
                 TemplateKey = "magiskirtpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("finelinen", "Fine Linen", 3)
+                ],
                 Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
@@ -4439,10 +4582,10 @@ public static class CraftingRequirements
             {
                 Name = "Benusta Pattern",
                 TemplateKey = "benustapattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -4454,10 +4597,10 @@ public static class CraftingRequirements
             {
                 Name = "Stoller Pattern",
                 TemplateKey = "stollerpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 3)
+                ],
                 Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
@@ -4469,10 +4612,10 @@ public static class CraftingRequirements
             {
                 Name = "Clymouth Pattern",
                 TemplateKey = "clymouthpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite Wool", 4)
+                ],
                 Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
@@ -4484,10 +4627,10 @@ public static class CraftingRequirements
             {
                 Name = "Clamyth Pattern",
                 TemplateKey = "clamythpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 5)
+                ],
                 Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
@@ -4499,10 +4642,10 @@ public static class CraftingRequirements
             {
                 Name = "Gorget Gown Pattern",
                 TemplateKey = "gorgetgownpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("finelinen", "Fine Linen", 3)
+                ],
                 Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
@@ -4514,10 +4657,10 @@ public static class CraftingRequirements
             {
                 Name = "Mystic Gown Pattern",
                 TemplateKey = "mysticgownpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -4529,10 +4672,10 @@ public static class CraftingRequirements
             {
                 Name = "Elle Pattern",
                 TemplateKey = "ellepattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 3)
+                ],
                 Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
@@ -4544,10 +4687,10 @@ public static class CraftingRequirements
             {
                 Name = "Dolman Pattern",
                 TemplateKey = "dolmanpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite Wool", 4)
+                ],
                 Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
@@ -4559,10 +4702,10 @@ public static class CraftingRequirements
             {
                 Name = "Bansagart Pattern",
                 TemplateKey = "bansagartpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 5)
+                ],
                 Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
@@ -4574,10 +4717,10 @@ public static class CraftingRequirements
             {
                 Name = "Earth Bodice Pattern",
                 TemplateKey = "earthbodicepattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("finelinen", "Fine Linen", 3)
+                ],
                 Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
@@ -4589,10 +4732,10 @@ public static class CraftingRequirements
             {
                 Name = "Lotus Bodice Pattern",
                 TemplateKey = "lotusbodicepattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -4604,10 +4747,10 @@ public static class CraftingRequirements
             {
                 Name = "Moon Bodice Pattern",
                 TemplateKey = "moonbodicepattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 3)
+                ],
                 Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
@@ -4619,10 +4762,10 @@ public static class CraftingRequirements
             {
                 Name = "Lightning Garb Pattern",
                 TemplateKey = "lightninggarbpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite Wool", 4)
+                ],
                 Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
@@ -4634,10 +4777,10 @@ public static class CraftingRequirements
             {
                 Name = "Sea Garb Pattern",
                 TemplateKey = "seagarbpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 5)
+                ],
                 Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
@@ -4649,10 +4792,10 @@ public static class CraftingRequirements
             {
                 Name = "Leather Bliaut Pattern",
                 TemplateKey = "leatherbliautpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "finelinen", DisplayName = "Fine Linen", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("finelinen", "Fine Linen", 3)
+                ],
                 Rank = "Beginner",
                 Level = 8,
                 Difficulty = 1
@@ -4664,10 +4807,10 @@ public static class CraftingRequirements
             {
                 Name = "Cuirass Pattern",
                 TemplateKey = "cuirasspattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -4679,10 +4822,10 @@ public static class CraftingRequirements
             {
                 Name = "Kasmanium Hauberk Pattern",
                 TemplateKey = "kasmaniumhauberkpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 3 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 3)
+                ],
                 Rank = "Initiate",
                 Level = 56,
                 Difficulty = 3
@@ -4694,10 +4837,10 @@ public static class CraftingRequirements
             {
                 Name = "Phoenix Mail Pattern",
                 TemplateKey = "phoenixmailpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 4 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite Wool", 4)
+                ],
                 Rank = "Artisan",
                 Level = 86,
                 Difficulty = 4
@@ -4707,12 +4850,12 @@ public static class CraftingRequirements
             CraftedArmors.RefinedHybrasylArmor,
             new Recipe()
             {
-                Name = "Hybrasyl Armor Pattern",
+                Name = "Hy-brasyl Armor Pattern",
                 TemplateKey = "hybrasylarmorpattern",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 5 },
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 5)
+                ],
                 Rank = "Adept",
                 Level = 99,
                 Difficulty = 5
@@ -4729,11 +4872,12 @@ public static class CraftingRequirements
             {
                 Name = "Earth Belt",
                 TemplateKey = "earthbelt",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "linen", DisplayName = "Linen", Amount = 5 },
-                    new Ingredient { TemplateKey = "rawberyl", DisplayName = "Raw Beryl", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("linen", "Linen", 5),
+
+                    new Ingredient("rawberyl", "Raw Beryl", 1)
+                ],
                 Rank = "Beginner",
                 Level = 5,
                 Difficulty = 1
@@ -4745,11 +4889,12 @@ public static class CraftingRequirements
             {
                 Name = "Wind Belt",
                 TemplateKey = "windbelt",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "linen", DisplayName = "Linen", Amount = 5 },
-                    new Ingredient { TemplateKey = "rawemerald", DisplayName = "Raw Emerald", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("linen", "Linen", 5),
+
+                    new Ingredient("rawemerald", "Raw Emerald", 1)
+                ],
                 Rank = "Beginner",
                 Level = 5,
                 Difficulty = 1
@@ -4761,11 +4906,12 @@ public static class CraftingRequirements
             {
                 Name = "Sea Belt",
                 TemplateKey = "seabelt",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "linen", DisplayName = "Linen", Amount = 5 },
-                    new Ingredient { TemplateKey = "rawsapphire", DisplayName = "Raw Sapphire", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("linen", "Linen", 5),
+
+                    new Ingredient("rawsapphire", "Raw Sapphire", 1)
+                ],
                 Rank = "Beginner",
                 Level = 5,
                 Difficulty = 1
@@ -4777,11 +4923,12 @@ public static class CraftingRequirements
             {
                 Name = "Fire Belt",
                 TemplateKey = "firebelt",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "linen", DisplayName = "Linen", Amount = 5 },
-                    new Ingredient { TemplateKey = "rawruby", DisplayName = "Raw Ruby", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("linen", "Linen", 5),
+
+                    new Ingredient("rawruby", "Raw Ruby", 1)
+                ],
                 Rank = "Beginner",
                 Level = 5,
                 Difficulty = 1
@@ -4793,13 +4940,14 @@ public static class CraftingRequirements
             {
                 Name = "Fire Bronze Belt",
                 TemplateKey = "firebronzebelt",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedruby", DisplayName = "Flawed Ruby", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2),
+
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedruby", "Flawed Ruby", 2)
+                ],
                 Rank = "Basic",
                 Level = 20,
                 Difficulty = 2
@@ -4811,13 +4959,14 @@ public static class CraftingRequirements
             {
                 Name = "Sea Bronze Belt",
                 TemplateKey = "seabronzebelt",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedsapphire", DisplayName = "Flawed Sapphire", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2),
+
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedsapphire", "Flawed Sapphire", 2)
+                ],
                 Rank = "Basic",
                 Level = 20,
                 Difficulty = 2
@@ -4829,13 +4978,14 @@ public static class CraftingRequirements
             {
                 Name = "Earth Bronze Belt",
                 TemplateKey = "earthbronzebelt",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedberyl", DisplayName = "Flawed Beryl", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2),
+
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedberyl", "Flawed Beryl", 2)
+                ],
                 Rank = "Basic",
                 Level = 20,
                 Difficulty = 2
@@ -4847,13 +4997,14 @@ public static class CraftingRequirements
             {
                 Name = "Wind Bronze Belt",
                 TemplateKey = "windbronzebelt",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedemerald", DisplayName = "Flawed Emerald", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2),
+
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedemerald", "Flawed Emerald", 2)
+                ],
                 Rank = "Basic",
                 Level = 20,
                 Difficulty = 2
@@ -4865,13 +5016,14 @@ public static class CraftingRequirements
             {
                 Name = "Dark Bronze Belt",
                 TemplateKey = "darkbronzebelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedheartstone", DisplayName = "Flawed Heartstone", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2),
+
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedheartstone", "Flawed Heartstone", 2)
+                ],
                 Rank = "Basic",
                 Level = 30,
                 Difficulty = 2
@@ -4883,13 +5035,14 @@ public static class CraftingRequirements
             {
                 Name = "Light Bronze Belt",
                 TemplateKey = "lightbronzebelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "flawedheartstone", DisplayName = "Flawed Heartstone", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2),
+
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("flawedheartstone", "Flawed Heartstone", 2)
+                ],
                 Rank = "Basic",
                 Level = 30,
                 Difficulty = 2
@@ -4901,12 +5054,14 @@ public static class CraftingRequirements
             {
                 Name = "Fire Iron Belt",
                 TemplateKey = "fireironbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutruby", DisplayName = "Uncut Ruby", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 2),
+
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutruby", "Uncut Ruby", 2)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -4918,12 +5073,14 @@ public static class CraftingRequirements
             {
                 Name = "Sea Iron Belt",
                 TemplateKey = "seaironbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutsapphire", DisplayName = "Uncut Sapphire", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 2),
+
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutsapphire", "Uncut Sapphire", 2)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -4935,12 +5092,14 @@ public static class CraftingRequirements
             {
                 Name = "Wind Iron Belt",
                 TemplateKey = "windironbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutemerald", DisplayName = "Uncut Emerald", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 2),
+
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutemerald", "Uncut Emerald", 2)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -4952,12 +5111,14 @@ public static class CraftingRequirements
             {
                 Name = "Earth Iron Belt",
                 TemplateKey = "earthironbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutberyl", DisplayName = "Uncut Beryl", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 2),
+
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutberyl", "Uncut Beryl", 2)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -4969,12 +5130,14 @@ public static class CraftingRequirements
             {
                 Name = "Light Iron Belt",
                 TemplateKey = "lightironbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutheartstone", DisplayName = "Uncut Heartstone", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 2),
+
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutheartstone", "Uncut Heartstone", 2)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -4986,12 +5149,14 @@ public static class CraftingRequirements
             {
                 Name = "Dark Iron Belt",
                 TemplateKey = "darkironbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "uncutheartstone", DisplayName = "Uncut Heartstone", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 2),
+
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("uncutheartstone", "Uncut Heartstone", 2)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -5003,13 +5168,14 @@ public static class CraftingRequirements
             {
                 Name = "Fire Mythril Braid Belt",
                 TemplateKey = "firemythrilbraidbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite Wool", 2),
+
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineruby", "Pristine Ruby", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -5021,13 +5187,14 @@ public static class CraftingRequirements
             {
                 Name = "Earth Mythril Braid Belt",
                 TemplateKey = "earthmythrilbraidbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite Wool", 2),
+
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineberyl", "Pristine Beryl", 2)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -5039,12 +5206,14 @@ public static class CraftingRequirements
             {
                 Name = "Wind Mythril Braid Belt",
                 TemplateKey = "windmythrilbraidbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
-                    new Ingredient { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite Wool", 2),
+
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineemerald", "Pristine Emerald", 2)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -5056,13 +5225,14 @@ public static class CraftingRequirements
             {
                 Name = "Sea Mythril Braid Belt",
                 TemplateKey = "seamythrilbraidbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite wool", Amount = 2 },
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite wool", 2),
+
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 2)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -5074,14 +5244,14 @@ public static class CraftingRequirements
             {
                 Name = "Dark Mythril Braid Belt",
                 TemplateKey = "darkmythrilbraidbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite Wool", 2),
+
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 2)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -5093,14 +5263,14 @@ public static class CraftingRequirements
             {
                 Name = "Light Mythril Braid Belt",
                 TemplateKey = "lightmythrilbraidbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitewool", "Exquisite Wool", 2),
+
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 2)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -5110,15 +5280,16 @@ public static class CraftingRequirements
             ArmorsmithingRecipes.FireHybrasylBraidBelt,
             new Recipe
             {
-                Name = "Fire Hybrasyl Braid Belt",
+                Name = "Fire Hy-brasyl Braid Belt",
                 TemplateKey = "firehybrasylbraidbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hybrasyl Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 5 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 3),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
+
+                    new Ingredient("pristineruby", "Pristine Ruby", 5)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -5128,15 +5299,16 @@ public static class CraftingRequirements
             ArmorsmithingRecipes.EarthHybrasylBraidBelt,
             new Recipe
             {
-                Name = "Earth Hybrasyl Braid Belt",
+                Name = "Earth Hy-brasyl Braid Belt",
                 TemplateKey = "earthhybrasylbraidbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hybrasyl Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 5 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 3),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
+
+                    new Ingredient("pristineberyl", "Pristine Beryl", 5)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -5146,15 +5318,16 @@ public static class CraftingRequirements
             ArmorsmithingRecipes.WindHybrasylBraidBelt,
             new Recipe
             {
-                Name = "Wind Hybrasyl Braid Belt",
+                Name = "Wind Hy-brasyl Braid Belt",
                 TemplateKey = "windhybrasylbraidbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hybrasyl Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 5 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 3),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
+
+                    new Ingredient("pristineemerald", "Pristine Emerald", 5)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -5166,13 +5339,14 @@ public static class CraftingRequirements
             {
                 Name = "Sea Hybrasyl Braid Belt",
                 TemplateKey = "seahybrasylbraidbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hybrasyl Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 5 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 3),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
+
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 5)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -5182,16 +5356,16 @@ public static class CraftingRequirements
             ArmorsmithingRecipes.DarkHybrasylBraidBelt,
             new Recipe
             {
-                Name = "Dark Hybrasyl Braid Belt",
+                Name = "Dark Hy-brasyl Braid Belt",
                 TemplateKey = "darkhybrasylbraidbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hybrasyl Bar", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 5 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 3),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
+
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 5)
+                ],
                 Rank = "Advanced",
                 Level = 60,
                 Difficulty = 6
@@ -5201,16 +5375,16 @@ public static class CraftingRequirements
             ArmorsmithingRecipes.LightHybrasylBraidBelt,
             new Recipe
             {
-                Name = "Light Hybrasyl Braid Belt",
+                Name = "Light Hy-brasyl Braid Belt",
                 TemplateKey = "lighthybrasylbraidbelt",
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hybrasyl Bar", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 5 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 3),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 1),
+
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 5)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -5222,10 +5396,10 @@ public static class CraftingRequirements
             {
                 Name = "Leather Gauntlet",
                 TemplateKey = "leathergauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "linen", DisplayName = "Linen", Amount = 8 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("linen", "Linen", 8)
+                ],
                 Rank = "Beginner",
                 Level = 5,
                 Difficulty = 1
@@ -5237,11 +5411,12 @@ public static class CraftingRequirements
             {
                 Name = "Leather Sapphire Gauntlet",
                 TemplateKey = "leathersapphiregauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                    new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2),
+
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -5253,11 +5428,12 @@ public static class CraftingRequirements
             {
                 Name = "Leather Ruby Gauntlet",
                 TemplateKey = "leatherrubygauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                    new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2),
+
+                    new Ingredient("pristineruby", "Pristine Ruby", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -5269,11 +5445,12 @@ public static class CraftingRequirements
             {
                 Name = "Leather Emerald Gauntlet",
                 TemplateKey = "leatheremeraldgauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                    new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2),
+
+                    new Ingredient("pristineemerald", "Pristine Emerald", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -5285,12 +5462,12 @@ public static class CraftingRequirements
             {
                 Name = "Leather Heartstone Gauntlet",
                 TemplateKey = "leatherheartstonegauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                    new Ingredient
-                        { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2),
+
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -5302,11 +5479,12 @@ public static class CraftingRequirements
             {
                 Name = "Leather Beryl Gauntlet",
                 TemplateKey = "leatherberylgauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 2 },
-                    new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 2),
+
+                    new Ingredient("pristineberyl", "Pristine Beryl", 1)
+                ],
                 Rank = "Basic",
                 Level = 11,
                 Difficulty = 2
@@ -5318,13 +5496,14 @@ public static class CraftingRequirements
             {
                 Name = "Bronze Sapphire Gauntlet",
                 TemplateKey = "bronzesapphiregauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 1),
+
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 1)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -5336,13 +5515,14 @@ public static class CraftingRequirements
             {
                 Name = "Bronze Ruby Gauntlet",
                 TemplateKey = "bronzerubygauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 1),
+
+                    new Ingredient("pristineruby", "Pristine Ruby", 1)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -5354,13 +5534,14 @@ public static class CraftingRequirements
             {
                 Name = "Bronze Emerald Gauntlet",
                 TemplateKey = "bronzeemeraldgauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 1),
+
+                    new Ingredient("pristineemerald", "Pristine Emerald", 1)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -5372,14 +5553,14 @@ public static class CraftingRequirements
             {
                 Name = "Bronze Heartstone Gauntlet",
                 TemplateKey = "bronzeheartstonegauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 1 },
-                    new Ingredient
-                        { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 1),
+
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 1)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -5391,13 +5572,14 @@ public static class CraftingRequirements
             {
                 Name = "Bronze Beryl Gauntlet",
                 TemplateKey = "bronzeberylgauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedbronzebar", DisplayName = "Polished Bronze Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "exquisitelinen", DisplayName = "Exquisite Linen", Amount = 1 },
-                    new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 1),
+
+                    new Ingredient("exquisitelinen", "Exquisite Linen", 1),
+
+                    new Ingredient("pristineberyl", "Pristine Beryl", 1)
+                ],
                 Rank = "Basic",
                 Level = 26,
                 Difficulty = 2
@@ -5409,12 +5591,14 @@ public static class CraftingRequirements
             {
                 Name = "Iron Sapphire Gauntlet",
                 TemplateKey = "ironsapphiregauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
-                    new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 2),
+
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -5426,12 +5610,14 @@ public static class CraftingRequirements
             {
                 Name = "Iron Ruby Gauntlet",
                 TemplateKey = "ironrubygauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
-                    new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 2),
+
+                    new Ingredient("pristineruby", "Pristine Ruby", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -5443,12 +5629,14 @@ public static class CraftingRequirements
             {
                 Name = "Iron Emerald Gauntlet",
                 TemplateKey = "ironemeraldgauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
-                    new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 2),
+
+                    new Ingredient("pristineemerald", "Pristine Emerald", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -5460,13 +5648,14 @@ public static class CraftingRequirements
             {
                 Name = "Iron Heartstone Gauntlet",
                 TemplateKey = "ironheartstonegauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
-                    new Ingredient
-                        { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 2),
+
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -5478,12 +5667,14 @@ public static class CraftingRequirements
             {
                 Name = "Iron Beryl Gauntlet",
                 TemplateKey = "ironberylgauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient { TemplateKey = "polishedironbar", DisplayName = "Polished Iron Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "exquisitecotton", DisplayName = "Exquisite Cotton", Amount = 2 },
-                    new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
+
+                    new Ingredient("exquisitecotton", "Exquisite Cotton", 2),
+
+                    new Ingredient("pristineberyl", "Pristine Beryl", 1)
+                ],
                 Rank = "Initiate",
                 Level = 41,
                 Difficulty = 3
@@ -5495,13 +5686,14 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Sapphire Gauntlet",
                 TemplateKey = "mythrilsapphiregauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
-                    new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("exquisitewool", "Exquisite Wool", 2),
+
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -5513,13 +5705,14 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Ruby Gauntlet",
                 TemplateKey = "mythrilrubygauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
-                    new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("exquisitewool", "Exquisite Wool", 2),
+
+                    new Ingredient("pristineruby", "Pristine Ruby", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -5531,13 +5724,14 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Emerald Gauntlet",
                 TemplateKey = "mythrilemeraldgauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
-                    new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("exquisitewool", "Exquisite Wool", 2),
+
+                    new Ingredient("pristineemerald", "Pristine Emerald", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -5549,14 +5743,14 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Heartstone Gauntlet",
                 TemplateKey = "mythrilheartstonegauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
-                    new Ingredient
-                        { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("exquisitewool", "Exquisite Wool", 2),
+
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -5568,13 +5762,14 @@ public static class CraftingRequirements
             {
                 Name = "Mythril Beryl Gauntlet",
                 TemplateKey = "mythrilberylgauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedmythrilbar", DisplayName = "Polished Mythril Bar", Amount = 1 },
-                    new Ingredient { TemplateKey = "exquisitewool", DisplayName = "Exquisite Wool", Amount = 2 },
-                    new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 1 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 1),
+
+                    new Ingredient("exquisitewool", "Exquisite Wool", 2),
+
+                    new Ingredient("pristineberyl", "Pristine Beryl", 1)
+                ],
                 Rank = "Artisan",
                 Level = 71,
                 Difficulty = 4
@@ -5586,13 +5781,14 @@ public static class CraftingRequirements
             {
                 Name = "Hy-brasyl Sapphire Gauntlet",
                 TemplateKey = "hybrasylsapphiregauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
-                    new Ingredient { TemplateKey = "pristinesapphire", DisplayName = "Pristine Sapphire", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 2),
+
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 3),
+
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 2)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -5604,13 +5800,14 @@ public static class CraftingRequirements
             {
                 Name = "Hy-brasyl Ruby Gauntlet",
                 TemplateKey = "hybrasylrubygauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
-                    new Ingredient { TemplateKey = "pristineruby", DisplayName = "Pristine Ruby", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 2),
+
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 3),
+
+                    new Ingredient("pristineruby", "Pristine Ruby", 2)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -5622,13 +5819,14 @@ public static class CraftingRequirements
             {
                 Name = "Hy-brasyl Emerald Gauntlet",
                 TemplateKey = "hybrasylemeraldgauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
-                    new Ingredient { TemplateKey = "pristineemerald", DisplayName = "Pristine Emerald", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 2),
+
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 3),
+
+                    new Ingredient("pristineemerald", "Pristine Emerald", 2)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -5640,14 +5838,14 @@ public static class CraftingRequirements
             {
                 Name = "Hy-brasyl Heartstone Gauntlet",
                 TemplateKey = "hybrasylheartstonegauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
-                    new Ingredient
-                        { TemplateKey = "pristineheartstone", DisplayName = "Pristine Heartstone", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 2),
+
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 3),
+
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 2)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5
@@ -5659,13 +5857,14 @@ public static class CraftingRequirements
             {
                 Name = "Hy-brasyl Beryl Gauntlet",
                 TemplateKey = "hybrasylberylgauntlet",
-                Ingredients = new List<Ingredient>()
-                {
-                    new Ingredient
-                        { TemplateKey = "polishedhybrasylbar", DisplayName = "Polished Hy-brasyl Bar", Amount = 2 },
-                    new Ingredient { TemplateKey = "exquisitesilk", DisplayName = "Exquisite Silk", Amount = 3 },
-                    new Ingredient { TemplateKey = "pristineberyl", DisplayName = "Pristine Beryl", Amount = 2 }
-                },
+                Ingredients =
+                [
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 2),
+
+                    new Ingredient("exquisitesilk", "Exquisite Silk", 3),
+
+                    new Ingredient("pristineberyl", "Pristine Beryl", 2)
+                ],
                 Rank = "Adept",
                 Level = 97,
                 Difficulty = 5

@@ -1,4 +1,5 @@
-﻿using Chaos.Definitions;
+﻿using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
@@ -18,6 +19,7 @@ public class MainStory2Script(
         DefaultExperienceDistributionScript.Create();
 
     private readonly IItemFactory ItemFactory = itemFactory;
+    
 
     public override void OnDisplaying(Aisling source)
     {
@@ -119,18 +121,44 @@ public class MainStory2Script(
 
             case "defeatedservant3":
             {
+                var pentagearDictionary = new Dictionary<(BaseClass, Gender), string[]>
+                {
+                    { (BaseClass.Warrior, Gender.Male), ["hybrasylarmor"] },
+                    { (BaseClass.Warrior, Gender.Female), ["hybrasylplate"] },
+                    { (BaseClass.Monk, Gender.Male), ["mountaingarb"] },
+                    { (BaseClass.Monk, Gender.Female), ["seagarb"] },
+                    { (BaseClass.Rogue, Gender.Male), ["bardocle"] },
+                    { (BaseClass.Rogue, Gender.Female), ["kagum"] },
+                    { (BaseClass.Priest, Gender.Male), ["dalmatica"] },
+                    { (BaseClass.Priest, Gender.Female), ["bansagart"] },
+                    { (BaseClass.Wizard, Gender.Male), ["duinuasal"] },
+                    { (BaseClass.Wizard, Gender.Female), ["clamyth"] }
+                };
+                
+                var gearKey = (source.UserStatSheet.BaseClass, source.Gender);
+                if (pentagearDictionary.TryGetValue(gearKey, out var armor))
+                {
+                    foreach (var gearItemName in armor)
+                    {
+                        var gearItem = ItemFactory.Create(gearItemName);
+                        source.GiveItemOrSendToBank(gearItem);
+                    }
+                }
+                
                 source.Trackers.TimedEvents.AddEvent("servantwait", TimeSpan.FromHours(3), true);
                 source.Trackers.Enums.Set(MainStoryEnums.CompletedServant);
                 ExperienceDistributionScript.GiveExp(source, 750000);
                 source.TryGiveGamePoints(10);
                 source.TryGiveGold(125000);
-                source.SendOrangeBarMessage("Find the Summoner in the Cthonic Remains.");
+                source.SendOrangeBarMessage("Wait for Miraelis to gather intel. ((3 Hours)).");
                 return;
             }
 
             case "defeatedsummoner3":
             {
                 source.Trackers.Enums.Set(MainStoryEnums.CompletedPreMasterMainStory);
+                ExperienceDistributionScript.GiveExp(source, 10000000);
+                source.TryGiveGamePoints(25);
                 source.SendOrangeBarMessage("Wait for Goddess Miraelis to have more information.");
                 return;
             }

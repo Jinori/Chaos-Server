@@ -1652,8 +1652,9 @@ public enum MainStoryEnums
     CompletedServant = 27,
     SearchForSummoner2 = 28,
     FoundSummoner2 = 29,
-    KilledSummoner = 30,
-    CompletedPreMasterMainStory = 31,
+    SpawnedCreants = 30,
+    KilledSummoner = 31,
+    CompletedPreMasterMainStory = 32,
 }
 
 public enum CombatTrial

@@ -19,7 +19,8 @@ public class KoboldBoss2Script : CompositeMonsterScript
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(DeathScript)),
         GetScriptKey(typeof(DisplayNameScript)),
-        GetScriptKey(typeof(KoboldBossRegenScript))
+        GetScriptKey(typeof(KoboldBossRegenScript)),
+        GetScriptKey(typeof(ThisIsABossScript))
     };
 
     //If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
