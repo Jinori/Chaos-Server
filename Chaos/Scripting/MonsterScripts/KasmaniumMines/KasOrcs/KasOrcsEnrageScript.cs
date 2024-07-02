@@ -38,7 +38,7 @@ public sealed class KasOrcsEnrageScript : MonsterScriptBase
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 
-            for (var i = 0; i <= 2; i++)
+            for (var i = 0; i <= 1; i++)
             {
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
