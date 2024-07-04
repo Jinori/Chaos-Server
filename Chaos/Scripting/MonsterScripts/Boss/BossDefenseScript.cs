@@ -19,8 +19,8 @@ public sealed class BossDefenseScript : MonsterScriptBase
     public BossDefenseScript(Monster subject)
         : base(subject) =>
         AvoidBashers = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(5),
-            45,
+            TimeSpan.FromSeconds(25),
+            25,
             RandomizationType.Positive,
             false);
 

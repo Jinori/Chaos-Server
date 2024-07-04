@@ -10,19 +10,17 @@ using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.ReactorTileScripts.CthonicRemains;
 
-public class Cr11FloorScript : ReactorTileScriptBase
+public class CthonicDomainReactorScript : ReactorTileScriptBase
 {
     private readonly IDialogFactory DialogFactory;
     private readonly IMerchantFactory MerchantFactory;
-    private readonly ISimpleCache SimpleCache;
 
     /// <inheritdoc />
-    public Cr11FloorScript(ReactorTile subject, IDialogFactory dialogFactory, IMerchantFactory merchantFactory, ISimpleCache simpleCache)
+    public CthonicDomainReactorScript(ReactorTile subject, IDialogFactory dialogFactory, IMerchantFactory merchantFactory)
         : base(subject)
     {
         DialogFactory = dialogFactory;
         MerchantFactory = merchantFactory;
-        SimpleCache = simpleCache;
     }
 
     /// <inheritdoc />
@@ -34,14 +32,15 @@ public class Cr11FloorScript : ReactorTileScriptBase
         if (aisling.Trackers.Enums.HasValue(MainStoryEnums.KilledSummoner) ||
             aisling.Trackers.Enums.HasValue(MainStoryEnums.CompletedPreMasterMainStory))
         {
-            var mapinstance = SimpleCache.Get<MapInstance>("cr11");
-            var point1 = new Point(18, 46);
-            aisling.TraverseMap(mapinstance, point1);
+            aisling.SendOrangeBarMessage("The room before you crumbled, there is no going back.");
+            var point3 = source.DirectionalOffset(source.Direction.Reverse());
+            source.WarpTo(point3);
         }
 
         if (!aisling.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner2) && 
             !aisling.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner2)
-            && !aisling.Trackers.Enums.HasValue(MainStoryEnums.SpawnedCreants)) 
+            && !aisling.Trackers.Enums.HasValue(MainStoryEnums.SpawnedCreants)
+            && !aisling.Trackers.Enums.HasValue(MainStoryEnums.StartedSummonerFight)) 
         {
             aisling.SendOrangeBarMessage("You are too afraid to venture any further.");
             var point2 = source.DirectionalOffset(source.Direction.Reverse());
@@ -51,7 +50,7 @@ public class Cr11FloorScript : ReactorTileScriptBase
         
         var point = new Point (source.X, source.Y);
         var blankmerchant = MerchantFactory.Create("blank_merchant", Subject.MapInstance, point);
-        var dialog = DialogFactory.Create("3rdfloor_entrance", blankmerchant);
+        var dialog = DialogFactory.Create("cthonicdomain_entrance", blankmerchant);
         dialog.Display(aisling);
     }
 }

@@ -45,7 +45,9 @@ public class MainStory2Script(
                     return;
                 }
                 
-                if (source.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner2))
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner2) 
+                    || source.Trackers.Enums.HasValue(MainStoryEnums.SpawnedCreants) 
+                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedSummonerFight))
                 {
                     Subject.Reply(source, "It's great that you've found him again but this time we need to defeat him. Return to the Cthonic Remains and defeat the Summoner.");
                     return;
@@ -66,7 +68,7 @@ public class MainStory2Script(
                     
                     Subject.Reply(source, "We have no new information for you yet.");
                 }
-                
+                  
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.DefeatedServant))
                 {
                     Subject.Reply(source, "Skip", "defeatedservant1");
@@ -123,8 +125,8 @@ public class MainStory2Script(
             {
                 var pentagearDictionary = new Dictionary<(BaseClass, Gender), string[]>
                 {
-                    { (BaseClass.Warrior, Gender.Male), ["hybrasylarmor"] },
-                    { (BaseClass.Warrior, Gender.Female), ["hybrasylplate"] },
+                    { (BaseClass.Warrior, Gender.Male), ["hybrasylplate"] },
+                    { (BaseClass.Warrior, Gender.Female), ["hybrasylarmor"] },
                     { (BaseClass.Monk, Gender.Male), ["mountaingarb"] },
                     { (BaseClass.Monk, Gender.Female), ["seagarb"] },
                     { (BaseClass.Rogue, Gender.Male), ["bardocle"] },

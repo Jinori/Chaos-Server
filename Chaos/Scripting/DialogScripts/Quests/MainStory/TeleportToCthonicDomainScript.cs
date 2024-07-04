@@ -10,12 +10,12 @@ using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Quests.MainStory;
 
-public class TeleportToFloor3Script : DialogScriptBase
+public class TeleportToCthonicDomainScript : DialogScriptBase
 {
     private readonly ISimpleCache SimpleCache;
 
     /// <inheritdoc />
-    public TeleportToFloor3Script(Dialog subject, ISimpleCache simpleCache)
+    public TeleportToCthonicDomainScript(Dialog subject, ISimpleCache simpleCache)
         : base(subject) =>
         SimpleCache = simpleCache;
 
@@ -56,10 +56,12 @@ public class TeleportToFloor3Script : DialogScriptBase
 
     private bool IsGroupEligible(Aisling source) =>
         source.Group != null && source.Group.All(x =>
-            x.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3) ||
-            (x.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner) ||
-             x.Trackers.Enums.HasValue(MainStoryEnums.RetryServant) &&
-             x.Inventory.HasCount("True Elemental Artifact", 1)));
+            x.Trackers.Enums.HasValue(MainStoryEnums.CompletedPreMasterMainStory) ||
+            x.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner2) ||
+            x.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner2) || 
+            x.Trackers.Enums.HasValue(MainStoryEnums.SpawnedCreants) ||
+            x.Trackers.Enums.HasValue(MainStoryEnums.StartedSummonerFight) ||
+            x.Trackers.Enums.HasValue(MainStoryEnums.KilledSummoner));
     private bool IsGroupValid(Aisling source) =>
         source.Group != null && !source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source));
 
@@ -67,30 +69,33 @@ public class TeleportToFloor3Script : DialogScriptBase
         source.Group?.Where(x => x.WithinRange(new Point(source.X, source.Y))).ToList();
 
     private bool IsGroupWithinLevelRange(Aisling source, List<Aisling> group) =>
-        group.All(member => member.WithinLevelRange(source) && member.UserStatSheet.Level > 96);
+        group.All(member =>
+            member.WithinLevelRange(source) &&
+            member.UserStatSheet.Level > 98 &&
+            (member.UserStatSheet.MaximumHp + member.UserStatSheet.MaximumMp * 2) > 30000);
 
     private void SendGroupInvalidMessage(Aisling source)
     {
-        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Exploring the third floor requires a group.");
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Facing the darkness in this room requires a group.");
         Subject.Reply(source, "You have no group members nearby.");
     }
 
     private void SendNoGroupMembersMessage(Aisling source)
     {
-        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Exploring the third floor requires a group.");
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Facing the darkness in this room requires a group.");
         Subject.Reply(source, "You have no group members nearby.");
     }
 
     private void SendLevelRangeInvalidMessage(Aisling source)
     {
-        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure your companions are within level range.");
-        Subject.Reply(source, "Some of your companions are not within your level range.");
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "One of your group members do not meet the requirements.");
+        Subject.Reply(source, "The requirements to face the darkness is 30,000 Vitality and level 99. One of your group members does not meet the requirements.");
     }
 
     private void SendGroupEligibleMessage(Aisling source)
     {
-        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Not all group members are on this quest or completed it.");
-        Subject.Reply(source, "Not all of your members are ready to explore the third floor of the manor. Members must be on same part of quest and have the True Elemental Artifact or have completed Eingren Manor Floor 3 already.");
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Not all group members are on this quest.");
+        Subject.Reply(source, "Not all of your members are ready to face the darkness. Members must be on same part of quest or have completed the Pre-Master Mainstory Quest Line.");
     }
 
     private void WarpSourceBack(Aisling source)
@@ -101,8 +106,8 @@ public class TeleportToFloor3Script : DialogScriptBase
 
     private void TeleportGroupTo3RdFloor(Aisling source, List<Aisling> group)
     {
-        var rectangle = new Rectangle(35, 59, 3, 3);
-        var mapInstance = SimpleCache.Get<MapInstance>("manor_floor_3");
+        var rectangle = new Rectangle(24, 14, 3, 4);
+        var mapInstance = SimpleCache.Get<MapInstance>("cthonic_domain");
 
         foreach (var member in group)
         {
@@ -115,10 +120,11 @@ public class TeleportToFloor3Script : DialogScriptBase
             }
             while (!mapInstance.IsWalkable(point, member.Type));
 
-            if (member.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner) ||
-                member.Trackers.Enums.HasValue(MainStoryEnums.RetryServant))
+            if (member.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner2) ||
+                member.Trackers.Enums.HasValue(MainStoryEnums.SpawnedCreants) ||
+                member.Trackers.Enums.HasValue(MainStoryEnums.StartedSummonerFight))
             {
-                member.Trackers.Enums.Set(MainStoryEnums.Entered3rdFloor);
+                member.Trackers.Enums.Set(MainStoryEnums.SearchForSummoner2);
             }
             
             var dialog = member.ActiveDialog.Get();

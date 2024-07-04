@@ -16,11 +16,18 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
     private bool Bonus30Applied;
     private bool Bonus50Applied;
     private bool Bonus75Applied;
+    private bool Attack1;
+    private bool Attack2;
+    private bool Attack3;
+    private bool Attack4;
     private readonly IIntervalTimer SpellCastTimer;
-    private readonly IIntervalTimer SkillUseTimer;
+    private readonly IIntervalTimer WaitTimer;
+    private readonly IIntervalTimer ActionTimer;
+    private readonly IIntervalTimer SayTimer;
     private readonly Spell SpellToCast;
     private readonly Spell SpellToCast1;
     private readonly Spell SpellToCast2;
+    private readonly Spell SpellToCast3;
 
     private Animation UpgradeAnimation { get; } = new()
     {
@@ -36,47 +43,96 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
         SpellToCast = spellFactory1.Create("MorrocSpell1");
         SpellToCast1 = spellFactory1.Create("Havoc");
         SpellToCast2 = spellFactory1.Create("ardcradh");
-        SkillUseTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1500), false);
-        SpellCastTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(10), 20, RandomizationType.Balanced, false);
+        SpellToCast3 = spellFactory1.Create("MorrocSpell2");
+        ActionTimer = new IntervalTimer(TimeSpan.FromMilliseconds(300), false);
+        SpellCastTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(8), 10, RandomizationType.Balanced, false);
+        WaitTimer = new IntervalTimer(TimeSpan.FromSeconds(4), false);
     }
 
     public override void Update(TimeSpan delta)
     {
         SpellCastTimer.Update(delta);
-        SkillUseTimer.Update(delta);
+        WaitTimer.Update(delta);
+        ActionTimer.Update(delta);
+
+        if (ActionTimer.IntervalElapsed)
+        {
+
+            if (Attack1)
+            {
+                Attack1 = false;
+                Subject.TryUseSpell(SpellToCast);
+            }
+
+            if (Attack2)
+            {
+                Attack2 = false;
+                Subject.TryUseSpell(SpellToCast3);
+            }
+
+            if (Attack3)
+            {
+                Attack3 = false;
+
+                foreach (var target in Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 10))
+                {
+                    if (target.IsDead)
+                        return;
+
+                    if (target.IsGodModeEnabled())
+                        return;
+
+                    Subject.TryUseSpell(SpellToCast2, target.Id);
+                }
+            }
+
+            if (Attack4)
+            {
+                var ani = new Animation
+                {
+                    AnimationSpeed = 300,
+                    TargetAnimation = 576
+                };
+
+                Subject.Animate(ani);
+                if (WaitTimer.IntervalElapsed)
+                {
+                    Attack4 = false;
+                    Subject.TryUseSpell(SpellToCast1);
+                }
+            }
+        }
 
         if (SpellCastTimer.IntervalElapsed)
         {
-            var roll = IntegerRandomizer.RollSingle(100);
-            
-            switch (roll)
+            if (!Attack1 && !Attack2 && !Attack3 && !Attack4)
             {
-                case < 40:
-                    Subject.Say("Master is going to Cthonic Remains!");
-                    Subject.TryUseSpell(SpellToCast);
+                var roll = IntegerRandomizer.RollSingle(100);
 
-                    break;
-                case < 75:
-                    Subject.Say("He will rule the world with the creants!");
-                    Subject.TryUseSpell(SpellToCast1);
+                switch (roll)
+                {
+                    case < 20:
+                        Subject.Say("Master is going to Cthonic Remains!");
+                        Attack1 = true;
 
-                    break;
-                case < 101:
-                    Subject.Say("Nothing will stop master from summoning them!");
+                        break;
+                    case < 45:
+                        Subject.Say("He will rule the world with the creants!");
+                        Attack2 = true;
 
-                    foreach (var target in Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 10))
-                    {
-                        if (target.IsDead)
-                            return;
+                        break;
+                    case < 70:
+                        Subject.Say("Nothing will stop master from summoning them!");
+                        Attack3 = true;
 
-                        if (target.IsGodModeEnabled())
-                            return;
-                        
-                        Subject.TryUseSpell(SpellToCast2, target.Id);
-                        Subject.TryUseSpell(SpellToCast1, target.Id);
-                    }
-
-                    break;
+                        break;
+                    case < 101:
+                        Attack4 = true;
+                        Subject.Say("You all will suffer!");
+                        WaitTimer.Reset();
+                        SayTimer.Reset();
+                        break;
+                }
             }
         }
 
