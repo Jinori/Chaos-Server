@@ -23,7 +23,6 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
     private readonly IIntervalTimer SpellCastTimer;
     private readonly IIntervalTimer WaitTimer;
     private readonly IIntervalTimer ActionTimer;
-    private readonly IIntervalTimer SayTimer;
     private readonly Spell SpellToCast;
     private readonly Spell SpellToCast1;
     private readonly Spell SpellToCast2;
@@ -52,7 +51,6 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
     public override void Update(TimeSpan delta)
     {
         SpellCastTimer.Update(delta);
-        WaitTimer.Update(delta);
         ActionTimer.Update(delta);
 
         if (ActionTimer.IntervalElapsed)
@@ -88,6 +86,8 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
 
             if (Attack4)
             {
+                WaitTimer.Update(delta);
+                
                 var ani = new Animation
                 {
                     AnimationSpeed = 300,
@@ -99,8 +99,10 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
                 {
                     Attack4 = false;
                     Subject.TryUseSpell(SpellToCast1);
+                    WaitTimer.Reset();
                 }
             }
+            ActionTimer.Reset();
         }
 
         if (SpellCastTimer.IntervalElapsed)
@@ -129,11 +131,10 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
                     case < 101:
                         Attack4 = true;
                         Subject.Say("You all will suffer!");
-                        WaitTimer.Reset();
-                        SayTimer.Reset();
                         break;
                 }
             }
+            SpellCastTimer.Reset();
         }
 
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
