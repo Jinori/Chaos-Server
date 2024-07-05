@@ -16,7 +16,7 @@ namespace Chaos.Scripting.EffectScripts.Jobs;
 
 public class ForagingEffect(IItemFactory itemFactory) : ContinuousAnimationEffectBase
 {
-    private const int FORAGE_GATHER_CHANCE = 2;
+    private const int FORAGE_GATHER_CHANCE = 1;
     private const byte FORAGE_ICON = 95;
     private const int DAMAGE_GLOVE = 5;
     

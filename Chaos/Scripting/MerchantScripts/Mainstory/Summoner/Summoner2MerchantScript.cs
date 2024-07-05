@@ -69,7 +69,7 @@ public class Summoner2MerchantScript : MerchantScriptBase
             foreach (var player in players)
             {
                 player.Trackers.Enums.Set(MainStoryEnums.FoundSummoner2);
-                player.SendOrangeBarMessage("There is an active barrier keeping you away.");
+                player.SendOrangeBarMessage("The Summoner pulls you in.");
             }
 
             return;
@@ -150,10 +150,10 @@ public class Summoner2MerchantScript : MerchantScriptBase
             var point2 = new Point(5, 5);
             var point3 = new Point(5, 5);
             var point4 = new Point(5, 5);
-            var portal1 = ReactorTileFactory.Create("portalanimation", Subject.MapInstance, point1);
-            var portal2 = ReactorTileFactory.Create("portalanimation", Subject.MapInstance, point2);
-            var portal3 = ReactorTileFactory.Create("portalanimation", Subject.MapInstance, point3);
-            var portal4 = ReactorTileFactory.Create("portalanimation", Subject.MapInstance, point4);
+            var portal1 = ReactorTileFactory.Create("portalanimation2", Subject.MapInstance, point1);
+            var portal2 = ReactorTileFactory.Create("portalanimation2", Subject.MapInstance, point2);
+            var portal3 = ReactorTileFactory.Create("portalanimation2", Subject.MapInstance, point3);
+            var portal4 = ReactorTileFactory.Create("portalanimation2", Subject.MapInstance, point4);
             Subject.MapInstance.SimpleAdd(portal1);
             Subject.MapInstance.SimpleAdd(portal2);
             Subject.MapInstance.SimpleAdd(portal3);
@@ -167,6 +167,11 @@ public class Summoner2MerchantScript : MerchantScriptBase
         {
             if (!Subject.MapInstance.GetEntities<Merchant>().Any(x =>
                     x.Name != "Tauren" && x.Name != "Phoenix" && x.Name != "Medusa" && x.Name != "Shamensyth")) return;
+            
+            foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => !x.IsGodModeEnabled() && x.Trackers.Enums.HasValue(MainStoryEnums.SpawnedCreants)))
+            {
+                player.Trackers.Enums.Set(MainStoryEnums.StartedSummonerFight);
+            }
             
             Subject.Say("My babies have returned to the world.");
             HasCreantsEscaped = true;

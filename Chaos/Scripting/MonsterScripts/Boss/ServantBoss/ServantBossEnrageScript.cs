@@ -17,10 +17,10 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
     private bool Bonus50Applied;
     private bool Bonus75Applied;
     private readonly IIntervalTimer SpellCastTimer;
-    private readonly IIntervalTimer SkillUseTimer;
+    private readonly IIntervalTimer ActionTimer;
     private readonly Spell SpellToCast;
-    private readonly Spell SpellToCast1;
     private readonly Spell SpellToCast2;
+    private readonly Spell SpellToCast3;
 
     private Animation UpgradeAnimation { get; } = new()
     {
@@ -34,50 +34,43 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
     {
         var spellFactory1 = spellFactory;
         SpellToCast = spellFactory1.Create("MorrocSpell1");
-        SpellToCast1 = spellFactory1.Create("Havoc");
         SpellToCast2 = spellFactory1.Create("ardcradh");
-        SkillUseTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1500), false);
-        SpellCastTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(10), 20, RandomizationType.Balanced, false);
+        SpellToCast3 = spellFactory1.Create("MorrocSpell2");
+        ActionTimer = new IntervalTimer(TimeSpan.FromMilliseconds(300), false);
+        SpellCastTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(8), 10, RandomizationType.Balanced, false);
     }
 
     public override void Update(TimeSpan delta)
     {
         SpellCastTimer.Update(delta);
-        SkillUseTimer.Update(delta);
+        ActionTimer.Update(delta);
 
         if (SpellCastTimer.IntervalElapsed)
         {
-            var roll = IntegerRandomizer.RollSingle(100);
-            
-            switch (roll)
-            {
-                case < 40:
-                    Subject.Say("Master is going to Cthonic Remains!");
-                    Subject.TryUseSpell(SpellToCast);
+                var roll = IntegerRandomizer.RollSingle(100);
 
-                    break;
-                case < 75:
-                    Subject.Say("He will rule the world with the creants!");
-                    Subject.TryUseSpell(SpellToCast1);
+                switch (roll)
+                {
+                    case < 30:
+                        Subject.Say("Master is going to Cthonic Remains!");
+                        Subject.TryUseSpell(SpellToCast);
 
-                    break;
-                case < 101:
-                    Subject.Say("Nothing will stop master from summoning them!");
+                        break;
+                    case < 60:
+                        Subject.Say("He will rule the world with the creants!");
+                        Subject.TryUseSpell(SpellToCast3);
 
-                    foreach (var target in Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 10))
-                    {
-                        if (target.IsDead)
-                            return;
+                        break;
+                    case < 101:
+                        Subject.Say("Nothing will stop master from summoning them!");
 
-                        if (target.IsGodModeEnabled())
-                            return;
-                        
-                        Subject.TryUseSpell(SpellToCast2, target.Id);
-                        Subject.TryUseSpell(SpellToCast1, target.Id);
-                    }
-
-                    break;
-            }
+                        foreach (var aisling in Subject.MapInstance.GetEntities<Aisling>()
+                                     .Where(x => x.WithinRange(Subject, 10) && !x.IsGodModeEnabled()))
+                        {
+                            Subject.TryUseSpell(SpellToCast2, aisling.Id);
+                        }
+                        break;
+                }
         }
 
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))

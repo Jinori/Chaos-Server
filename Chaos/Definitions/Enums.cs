@@ -1653,6 +1653,7 @@ public enum MainStoryEnums
     SearchForSummoner2 = 28,
     FoundSummoner2 = 29,
     SpawnedCreants = 30,
+    StartedSummonerFight = 31,
     KilledSummoner = 31,
     CompletedPreMasterMainStory = 32,
 }

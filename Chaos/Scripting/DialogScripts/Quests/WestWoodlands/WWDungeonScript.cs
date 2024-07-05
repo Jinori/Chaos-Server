@@ -212,7 +212,7 @@ public class WWDungeonScript(
 
                 switch (roll)
                 {
-                    case < 5:
+                    case < 10:
                     {
                         if (!source.Trackers.Flags.HasFlag(AvailableMounts.Ant))
                         {
@@ -231,7 +231,7 @@ public class WWDungeonScript(
                         break;
                     }
 
-                    case < 20:
+                    case < 25:
                     {
                         var item = itemFactory.Create("ialtagseye");
                         source.GiveItemOrSendToBank(item);
@@ -240,7 +240,7 @@ public class WWDungeonScript(
                         break;
                     }
 
-                    case < 35:
+                    case < 40:
                     {
                         var boots = itemFactory.Create("silkboots");
                         source.GiveItemOrSendToBank(boots);
@@ -248,7 +248,7 @@ public class WWDungeonScript(
                         source.TryGiveGamePoints(5);
                         break;
                     }
-                    case < 50:
+                    case < 55:
                     {
                         var ring = itemFactory.Create("sonorring");
                         source.GiveItemOrSendToBank(ring);
@@ -256,7 +256,7 @@ public class WWDungeonScript(
                         source.TryGiveGamePoints(5);
                         break;
                     }
-                    case < 65:
+                    case < 70:
                     {
                         var ring = itemFactory.Create("myanmarring");
                         source.GiveItemOrSendToBank(ring);
@@ -264,7 +264,7 @@ public class WWDungeonScript(
                         source.TryGiveGamePoints(5);
                         break;
                     }
-                    case < 75:
+                    case < 83:
                     {
                         if (!source.Inventory.ContainsByTemplateKey("cherubwings") || !source.Equipment.ContainsByTemplateKey("cherubwings") ||
                             !source.Bank.Contains("Cherub Wings"))

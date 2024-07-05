@@ -267,6 +267,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         if (Subject.Effects.Contains("mount"))
         {
             Subject.Effects.Dispel("mount");
+            Subject.Refresh();
 
             return;
         }

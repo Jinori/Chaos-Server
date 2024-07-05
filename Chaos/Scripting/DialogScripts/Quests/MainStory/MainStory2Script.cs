@@ -45,7 +45,9 @@ public class MainStory2Script(
                     return;
                 }
                 
-                if (source.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner2))
+                if (source.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner2) 
+                    || source.Trackers.Enums.HasValue(MainStoryEnums.SpawnedCreants)
+                    || source.Trackers.Enums.HasValue(MainStoryEnums.StartedSummonerFight))
                 {
                     Subject.Reply(source, "It's great that you've found him again but this time we need to defeat him. Return to the Cthonic Remains and defeat the Summoner.");
                     return;
@@ -53,20 +55,22 @@ public class MainStory2Script(
 
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.CompletedServant))
                 {
+                    var vitality = source.UserStatSheet.MaximumHp + source.UserStatSheet.MaximumMp * 2;
+                    
                     if (source.Trackers.TimedEvents.HasActiveEvent("servantwait", out var cdtime))
                     {
                         Subject.Reply(source, $"We are still gathering information about what the Summoner is doing in the Cthonic Remains, please wait {cdtime.Remaining.Humanize()}.");
                     }
                     
-                    if (source.UserStatSheet.Level < 99)
+                    if (source.UserStatSheet.Level < 99 || vitality < 30000)
                     {
                         Subject.Reply(source, "We discovered what the summoner is up to, but unfortunately we don't feel comfortable sending you against it just yet. You are still slightly too weak to handle the Summoner.");
                         return;
                     }
                     
-                    Subject.Reply(source, "We have no new information for you yet.");
+                    Subject.Reply(source, "Skip", "summoner_initial6");
                 }
-                
+                  
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.DefeatedServant))
                 {
                     Subject.Reply(source, "Skip", "defeatedservant1");
@@ -119,12 +123,19 @@ public class MainStory2Script(
                 return;
             }
 
+            case "summoner_initial12":
+            {
+                source.Trackers.Enums.Set(MainStoryEnums.SearchForSummoner2);
+                source.SendOrangeBarMessage("Goddess Miraelis's voice echoes in your head... 30,000 Vitality required.");
+                return;
+            }
+
             case "defeatedservant3":
             {
                 var pentagearDictionary = new Dictionary<(BaseClass, Gender), string[]>
                 {
-                    { (BaseClass.Warrior, Gender.Male), ["hybrasylarmor"] },
-                    { (BaseClass.Warrior, Gender.Female), ["hybrasylplate"] },
+                    { (BaseClass.Warrior, Gender.Male), ["hybrasylplate"] },
+                    { (BaseClass.Warrior, Gender.Female), ["hybrasylarmor"] },
                     { (BaseClass.Monk, Gender.Male), ["mountaingarb"] },
                     { (BaseClass.Monk, Gender.Female), ["seagarb"] },
                     { (BaseClass.Rogue, Gender.Male), ["bardocle"] },
