@@ -40,9 +40,19 @@ namespace Chaos.Scripting.Components.AbilityComponents
                     targetAisling.SkillBook.RemoveByTemplateKey("beagsuain");
                 return;
             }
-
+            
+            if (targetAisling.UserStatSheet.BaseClass is BaseClass.Monk)
+            {
+                if (targetAisling.SkillBook.ContainsByTemplateKey("kick") && targetAisling.SkillBook.ContainsByTemplateKey("roundhousekick"))
+                    targetAisling.SkillBook.RemoveByTemplateKey("kick");
+                
+                if (targetAisling.SkillBook.ContainsByTemplateKey("highkick") && targetAisling.SkillBook.ContainsByTemplateKey("mantiskick"))
+                    targetAisling.SkillBook.RemoveByTemplateKey("highkick");
+            }
+            
             if (targetAisling.UserStatSheet.BaseClass is BaseClass.Monk && targetAisling.Trackers.Enums.TryGetValue(out MonkElementForm form))
             {
+                
                 var elementSkillsAndSpells = new Dictionary<MonkElementForm, (List<string> Skills, List<string> Spells)>
                 {
                     { MonkElementForm.Water, (["waterpunch", "tsunamikick"], ["miststance"]) },
