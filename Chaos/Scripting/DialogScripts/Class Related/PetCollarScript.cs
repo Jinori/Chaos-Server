@@ -226,7 +226,7 @@ public class PetCollarScript(
 
                     break;
                 case Level80PetSkills.EssenceLeechLick:
-                    newMonster.Skills.Add(skillFactory.Create("sapneedle"));
+                    newMonster.Skills.Add(skillFactory.Create("petmanalick"));
 
                     break;
             }

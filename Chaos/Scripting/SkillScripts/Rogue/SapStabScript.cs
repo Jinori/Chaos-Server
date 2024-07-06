@@ -44,6 +44,8 @@ public class SapStabScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public int? ManaCost { get; init; }
     /// <inheritdoc />
+    public bool IsPetSap { get; init; }
+    /// <inheritdoc />
     public int? ManaReplenish { get; init; }
     /// <inheritdoc />
     public bool? MoreDmgLowTargetHp { get; init; }

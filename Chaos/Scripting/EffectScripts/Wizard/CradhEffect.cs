@@ -38,7 +38,7 @@ public class CradhEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
             MagicResistance = 10
         };
         
-        Subject.Animate(Animation);
+        Subject.Animate(Animation.GetPointAnimation(Subject));
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've been cursed by cradh! AC and MR lowered!");
