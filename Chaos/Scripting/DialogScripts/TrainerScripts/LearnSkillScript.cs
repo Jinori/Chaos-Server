@@ -31,6 +31,8 @@ public class LearnSkillScript : DialogScriptBase
         //Monk
         { "Punch", ["DoublePunch", "RapidPunch"] },
         { "DoublePunch", ["RapidPunch"] },
+        { "Kick",["RoundHouseKick"] },
+        { "HighKick",["MantisKick"] },
         //Rogue
         { "Assault", ["Blitz", "Barrage"] },
         {"Armorpiercing", ["Birthdaysuit"] },
