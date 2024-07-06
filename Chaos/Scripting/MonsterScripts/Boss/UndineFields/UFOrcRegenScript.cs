@@ -61,7 +61,7 @@ public sealed class UFOrcRegenScript : MonsterScriptBase
             Bonus30Applied = true;
 
             HPRegenInterval = 6f;
-            HPMultiplier = 0.04f;
+            HPMultiplier = 0.03f;
         }
     }
 }

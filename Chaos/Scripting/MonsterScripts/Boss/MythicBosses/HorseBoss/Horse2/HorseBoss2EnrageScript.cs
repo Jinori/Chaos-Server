@@ -7,8 +7,8 @@ namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.HorseBoss.Horse2;
 
 public sealed class HorseBoss2EnrageScript : MonsterScriptBase
 {
-    private static float HPRegenInterval = 8f;
-    private static float HPMultiplier = 0.03f;
+    private static float HPRegenInterval = 15f;
+    private static float HPMultiplier = 0.01f;
     private readonly IMonsterFactory MonsterFactory;
     private bool Bonus30Applied;
     private bool Bonus50Applied;
@@ -54,8 +54,8 @@ public sealed class HorseBoss2EnrageScript : MonsterScriptBase
             //Give Bonuses
             var attrib = new Attributes { AtkSpeedPct = 35 };
             Subject.StatSheet.AddBonus(attrib);
-            HPRegenInterval = 6f;
-            HPMultiplier = 0.06f;
+            HPRegenInterval = 9f;
+            HPMultiplier = 0.01f;
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
         }
@@ -72,8 +72,8 @@ public sealed class HorseBoss2EnrageScript : MonsterScriptBase
                 SpellDamagePct = 10
             };
 
-            HPRegenInterval = 4f;
-            HPMultiplier = 0.08f;
+            HPRegenInterval = 8f;
+            HPMultiplier = 0.02f;
 
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
@@ -95,8 +95,8 @@ public sealed class HorseBoss2EnrageScript : MonsterScriptBase
                 SpellDamagePct = 10
             };
 
-            HPRegenInterval = 3f;
-            HPMultiplier = 0.10f;
+            HPRegenInterval = 7f;
+            HPMultiplier = 0.3f;
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }

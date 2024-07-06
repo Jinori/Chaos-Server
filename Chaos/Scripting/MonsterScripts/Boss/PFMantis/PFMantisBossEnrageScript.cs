@@ -44,6 +44,9 @@ public sealed class PFMantisBossEnrageScript : MonsterScriptBase
         {
             foreach (var target in Subject.MapInstance.GetEntities<Aisling>())
             {
+                if (target.IsDead)
+                    continue;
+                
                 Subject.TryUseSpell(SpellToCast, target.Id);
             }
         }

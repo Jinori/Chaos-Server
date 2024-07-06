@@ -20,7 +20,7 @@ public sealed class LynithMonsterCastScript : MonsterScriptBase
     public LynithMonsterCastScript(Monster subject, ISpellFactory spellFactory)
         : base(subject)
     {
-        SpellToCast = spellFactory.Create("SeaMonsterSpell1");
+        SpellToCast = spellFactory.Create("morcradh");
         SpellToCast1 = spellFactory.Create("SeaMonsterSpell2");
         SpellToCast2 = spellFactory.Create("SeaMonsterSpell3");
         SpellCastTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(15), 20, RandomizationType.Balanced, false);
@@ -51,8 +51,11 @@ public sealed class LynithMonsterCastScript : MonsterScriptBase
                 case < 101:
                     foreach (var target in Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 10))
                     {
-                        target.TryUseSpell(SpellToCast2);
-                        target.TryUseSpell(SpellToCast);
+                        if (target.IsDead)
+                            continue;
+                        
+                        Subject.TryUseSpell(SpellToCast, target.Id);
+                        Subject.TryUseSpell(SpellToCast1, target.Id);
                     }
 
                     break;

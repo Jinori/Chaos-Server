@@ -54,7 +54,7 @@ namespace Chaos.Scripting.MonsterScripts.Upside_Down
 
             var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 12).ToList();
             var friendlyCreatures = Subject.MapInstance.GetEntitiesWithinRange<Creature>(Subject, 12)
-                                        .Where(x => x.IsFriendlyTo(Subject)).ToList();
+                                        .Where(x => x.IsFriendlyTo(Subject) && !x.IsDead).ToList();
 
             if (aislings.Count <= 0)
                 return;

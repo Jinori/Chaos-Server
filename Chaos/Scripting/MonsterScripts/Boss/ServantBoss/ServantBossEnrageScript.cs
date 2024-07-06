@@ -65,7 +65,7 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
                         Subject.Say("Nothing will stop master from summoning them!");
 
                         foreach (var aisling in Subject.MapInstance.GetEntities<Aisling>()
-                                     .Where(x => x.WithinRange(Subject, 10) && !x.IsGodModeEnabled()))
+                                     .Where(x => x.WithinRange(Subject, 10) && !x.IsGodModeEnabled() && !x.IsDead))
                         {
                             Subject.TryUseSpell(SpellToCast2, aisling.Id);
                         }

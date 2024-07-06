@@ -70,12 +70,12 @@ public sealed class EarthGuardianBossDefenseScript : MonsterScriptBase
             {
                 var target = FindLowestAggro();
 
-                if (target != null)
+                if (target is { IsAlive: true })
                 {
                     var bossPoint = new Point(Subject.X + 1, Subject.Y);
                     target.WarpTo(bossPoint);
                     var spelltocast = SpellFactory.Create("morcreaglamh");
-                    Subject.TryUseSpell(spelltocast);
+                    Subject.TryUseSpell(spelltocast, target.Id);
                 }
             }
         }

@@ -23,15 +23,6 @@ public sealed class WerewolfDefenseScript : MonsterScriptBase
 
         return false;
     }
-
-    private Aisling? FindLowestAggro() =>
-        Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
-               .ThatAreObservedBy(Subject)
-               .FirstOrDefault(
-                   obj => !obj.Equals(Subject)
-                          && obj.IsAlive
-                          && (obj.Id == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min()).Key));
-
     private void RemoveEffect(IEffect effect) => Subject.Effects.Dispel(effect.Name);
 
     private void RemoveEffectAndHeal(IEffect effect)

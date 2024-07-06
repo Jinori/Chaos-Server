@@ -6,7 +6,7 @@ namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.GargoyleBoss.Gargoyle
 
 public sealed class Gargoyle2BossRegenScript : MonsterScriptBase
 {
-    private static float HPRegenInterval = 8f;
+    private static float HPRegenInterval = 10f;
     private static float HPMultiplier = 0.02f;
     private bool Bonus30Applied;
     private bool Bonus50Applied;
@@ -48,8 +48,8 @@ public sealed class Gargoyle2BossRegenScript : MonsterScriptBase
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
-            HPRegenInterval = 6f;
-            HPMultiplier = 0.03f;
+            HPRegenInterval = 10f;
+            HPMultiplier = 0.01f;
             Subject.Animate(UpgradeAnimation);
         }
 
@@ -57,8 +57,8 @@ public sealed class Gargoyle2BossRegenScript : MonsterScriptBase
         {
             Bonus50Applied = true;
 
-            HPRegenInterval = 4f;
-            HPMultiplier = 0.04f;
+            HPRegenInterval = 9f;
+            HPMultiplier = 0.02f;
             Subject.Animate(UpgradeAnimation);
         }
 
@@ -66,8 +66,8 @@ public sealed class Gargoyle2BossRegenScript : MonsterScriptBase
         {
             Bonus30Applied = true;
 
-            HPRegenInterval = 3f;
-            HPMultiplier = 0.05f;
+            HPRegenInterval = 8f;
+            HPMultiplier = 0.03f;
 
             Subject.Animate(UpgradeAnimation);
         }

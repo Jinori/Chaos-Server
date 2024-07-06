@@ -63,8 +63,11 @@ public sealed class PentagramBossEnrageScript : MonsterScriptBase
 
                     foreach (var target in Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 10))
                     {
-                        target.TryUseSpell(SpellToCast2);
-                        target.TryUseSpell(SpellToCast);
+                        if (target.IsDead)
+                            continue;
+                        
+                        Subject.TryUseSpell(SpellToCast2, target.Id);
+                        Subject.TryUseSpell(SpellToCast, target.Id);
                     }
 
                     break;
