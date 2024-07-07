@@ -69,7 +69,7 @@ public class CreantMerchantScript : MerchantScriptBase
                 .Any(x => x.Trackers.Enums.HasValue(MainStoryEnums.SpawnedCreants)))
             return;
         
-        var point = new Point(5, 5);
+        var point = new Point(8, 14);
 
         if (Subject.WithinRange(point, 1))
         {
@@ -93,7 +93,7 @@ public class CreantMerchantScript : MerchantScriptBase
                 .Any(x => x.Trackers.Enums.HasValue(MainStoryEnums.SpawnedCreants)))
             return;
         
-        var point = new Point(5, 5);
+        var point = new Point(15, 21);
 
         if (Subject.WithinRange(point, 1))
         {
@@ -116,7 +116,7 @@ public class CreantMerchantScript : MerchantScriptBase
                 .Any(x => x.Trackers.Enums.HasValue(MainStoryEnums.SpawnedCreants)))
             return;
         
-        var point = new Point(5, 5);
+        var point = new Point(23, 14);
 
         if (Subject.WithinRange(point, 1))
         {
@@ -139,7 +139,7 @@ public class CreantMerchantScript : MerchantScriptBase
                 .Any(x => x.Trackers.Enums.HasValue(MainStoryEnums.SpawnedCreants)))
             return;
         
-        var point = new Point(5, 5);
+        var point = new Point(15, 6);
 
         if (Subject.WithinRange(point, 1))
         {

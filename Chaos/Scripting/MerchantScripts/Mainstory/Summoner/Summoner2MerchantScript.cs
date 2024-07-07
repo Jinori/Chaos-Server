@@ -69,7 +69,6 @@ public class Summoner2MerchantScript : MerchantScriptBase
             foreach (var player in players)
             {
                 player.Trackers.Enums.Set(MainStoryEnums.FoundSummoner2);
-                player.SendOrangeBarMessage("The Summoner pulls you in.");
             }
 
             return;
@@ -102,7 +101,7 @@ public class Summoner2MerchantScript : MerchantScriptBase
             HasSaidDialog2 = true;
             DialogueTimer.Reset();
         }
-        else if (!HasSummonedCreants && DialogueTimer.IntervalElapsed)
+        else if (!HasSummonedCreants)
         {
             var ani = new Animation
             {
@@ -110,10 +109,10 @@ public class Summoner2MerchantScript : MerchantScriptBase
                 AnimationSpeed = 300
             };
             
-            var point1 = new Point(5, 5);
-            var point2 = new Point(5, 5);
-            var point3 = new Point(5, 5);
-            var point4 = new Point(5, 5);
+            var point1 = new Point(13, 14);
+            var point2 = new Point(15, 16);
+            var point3 = new Point(17, 14);
+            var point4 = new Point(15, 12);
             var merchant1 = MerchantFactory.Create("phoenix_merchant", Subject.MapInstance, point1);
             var merchant2 = MerchantFactory.Create("tauren_merchant", Subject.MapInstance, point1);
             var merchant3 = MerchantFactory.Create("shamensyth_merchant", Subject.MapInstance, point1);
@@ -129,7 +128,7 @@ public class Summoner2MerchantScript : MerchantScriptBase
             HasSummonedCreants = true;
             DialogueTimer.Reset();
         }
-        else if (!CreantsSummoned && DialogueTimer.IntervalElapsed)
+        else if (!CreantsSummoned)
         {
             Subject.Say("Téigh chuig bhur dtithe cearta, beidh mé ann go luath.");
             var players = Subject.MapInstance.GetEntities<Aisling>()
@@ -144,12 +143,12 @@ public class Summoner2MerchantScript : MerchantScriptBase
             CreantsSummoned = true;
             DialogueTimer.Reset();
         }
-        else if (!HasOpenedPortals && DialogueTimer.IntervalElapsed)
+        else if (!HasOpenedPortals)
         {
-            var point1 = new Point(5, 5);
-            var point2 = new Point(5, 5);
-            var point3 = new Point(5, 5);
-            var point4 = new Point(5, 5);
+            var point1 = new Point(15, 6);
+            var point2 = new Point(8, 14);
+            var point3 = new Point(15, 21);
+            var point4 = new Point(22, 14);
             var portal1 = ReactorTileFactory.Create("portalanimation2", Subject.MapInstance, point1);
             var portal2 = ReactorTileFactory.Create("portalanimation2", Subject.MapInstance, point2);
             var portal3 = ReactorTileFactory.Create("portalanimation2", Subject.MapInstance, point3);

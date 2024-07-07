@@ -4,6 +4,7 @@ using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.EffectScripts.Priest;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
@@ -18,6 +19,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
         private readonly IMerchantFactory MerchantFactory;
         private readonly IIntervalTimer DelayedStartTimer;
         private ScriptState State;
+        private bool HasBeenPorted;
         private readonly IIntervalTimer UpdateTimer;
         public const int UPDATE_INTERVAL_MS = 500;
 
@@ -71,7 +73,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
             {
                 case ScriptState.Dormant:
                     if (Subject.GetEntities<Aisling>()
-                        .Any(a => a.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner2)))
+                        .Any(a => a.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner2)))
                     {
                         State = ScriptState.PortAislings;
                     }
@@ -82,11 +84,12 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
                 {
                     foreach (var aisling in Subject.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
                     {
-                        var rect = new Rectangle(5, 5, 5, 5);
+                        var rect = new Rectangle(17, 16, 3, 3);
                         var point = rect.GetRandomPoint();
+                        
                         if (!rect.Contains(aisling))
                         {
-                            aisling.WarpTo(point);
+                                aisling.WarpTo(point);
                             aisling.SendOrangeBarMessage("Summoner Kades powerful magic keeps you caged.");
                         }
                     }

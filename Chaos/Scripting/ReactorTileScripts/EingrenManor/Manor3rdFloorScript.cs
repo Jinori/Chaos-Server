@@ -26,9 +26,8 @@ public class Manor3RdFloorScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if ((!aisling.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner) && 
-             !aisling.Trackers.Enums.HasValue(MainStoryEnums.RetryServant)) || 
-            !aisling.Inventory.HasCount("True Elemental Artifact", 1)) 
+        if (!aisling.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner) && 
+            !aisling.Trackers.Enums.HasValue(MainStoryEnums.RetryServant)) 
         {
             aisling.SendOrangeBarMessage("The stairs seems to have a seal, go speak to Goddess Miraelis");
             var point2 = source.DirectionalOffset(source.Direction.Reverse());

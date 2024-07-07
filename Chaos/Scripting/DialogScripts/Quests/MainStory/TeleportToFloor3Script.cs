@@ -57,9 +57,9 @@ public class TeleportToFloor3Script : DialogScriptBase
     private bool IsGroupEligible(Aisling source) =>
         source.Group != null && source.Group.All(x =>
             x.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3) ||
-            (x.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner) ||
-             x.Trackers.Enums.HasValue(MainStoryEnums.RetryServant) &&
-             x.Inventory.HasCount("True Elemental Artifact", 1)));
+            x.Trackers.Enums.HasValue(MainStoryEnums.RetryServant) ||
+            x.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner) &&
+             x.Inventory.HasCount("True Elemental Artifact", 1));
     private bool IsGroupValid(Aisling source) =>
         source.Group != null && !source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source));
 
@@ -106,8 +106,6 @@ public class TeleportToFloor3Script : DialogScriptBase
 
         foreach (var member in group)
         {
-            Subject.Close(source);
-
             Point point;
             do
             {
@@ -120,9 +118,12 @@ public class TeleportToFloor3Script : DialogScriptBase
             {
                 member.Trackers.Enums.Set(MainStoryEnums.Entered3rdFloor);
             }
+
+            member.Inventory.Remove("True Elemental Artifact");
             
             var dialog = member.ActiveDialog.Get();
             dialog?.Close(member);
+            Subject.Close(source);
             member.TraverseMap(mapInstance, point);
         }
     }
