@@ -159,6 +159,17 @@ public class Summoner2MerchantScript : MerchantScriptBase
             Subject.MapInstance.SimpleAdd(portal4);
             
             Subject.Say("Caithfidh mé aire a thabhairt do na trioblóidí seo.");
+            
+            Subject.Say("Téigh chuig bhur dtithe cearta, beidh mé ann go luath.");
+            var players = Subject.MapInstance.GetEntities<Aisling>()
+                .Where(x => x.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner2)).ToList();
+
+            foreach (var player in players)
+            {
+                player.Trackers.Enums.Set(MainStoryEnums.SpawnedCreants);
+                player.SendOrangeBarMessage("You witness the summoning of the Creants.");
+            }
+            
             HasOpenedPortals = true;
             DialogueTimer.Reset();
         }
@@ -178,7 +189,7 @@ public class Summoner2MerchantScript : MerchantScriptBase
         }
         else if (!HasSaidDialog4 && DialogueTimer.IntervalElapsed)
         {
-            Subject.Say("You have been following me, it is time to die.");
+            Subject.Say("You have been following me, it is time to perish.");
             HasSaidDialog4 = true;
             DialogueTimer.Reset();
         }

@@ -1044,7 +1044,7 @@ public class RecipeItemScript : ItemScriptBase
             
             case "recipe_adeptbelts":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.ArtisanBelts))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.AdeptBelts))
                 {
                     if (craft != Crafts.Armorsmithing)
                     {

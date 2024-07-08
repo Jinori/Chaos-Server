@@ -1942,7 +1942,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    case "hybrasylaxe":
+                    case "hybrasylbattleaxe":
                     {
                         Subject.Reply(
                             source,
