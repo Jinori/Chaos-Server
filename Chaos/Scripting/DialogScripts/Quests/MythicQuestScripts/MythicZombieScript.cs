@@ -29,7 +29,7 @@ public class MythicZombieScript : DialogScriptBase
     {
         var hasMain = source.Trackers.Enums.TryGetValue(out MythicQuestMain main);
         var hasZombie = source.Trackers.Enums.TryGetValue(out MythicZombie zombie);
-        var hasFrog = source.Trackers.Enums.TryGetValue(out MythicFrog frog);
+        var hasGargoyle = source.Trackers.Enums.TryGetValue(out MythicGargoyle frog);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
@@ -48,7 +48,7 @@ public class MythicZombieScript : DialogScriptBase
                 {
                     Subject.Reply(
                         source,
-                        "You have allied yourself with our enemies and that fills me with rabbit-like fear. I cannot trust you to hop on our side again. Please leave our warren.");
+                        "The friendship you started with the gargoyles is not welcome here, it is bad that you turned your back on us. Leave!");
 
                     return;
                 }
@@ -117,7 +117,7 @@ public class MythicZombieScript : DialogScriptBase
                 }
 
                 if (zombie == MythicZombie.BossZombieDefeated)
-                    Subject.Reply(source, "Thank you again Aisling for your help. We are winning our fight.");
+                    Subject.Reply(source, "we likess your skillss, you are a great ally to the zombie. Thanks you Aisling!");
 
                 break;
             }
@@ -155,14 +155,14 @@ public class MythicZombieScript : DialogScriptBase
                 }
 
                 source.Trackers.Counters.Remove("MythicZombie1", out _);
-                Subject.Reply(source, " ");
+                Subject.Reply(source, "Thas what i like to watch! A goooood smack to them Quirky Dunans does them right! You make uss look better when yous fight on our side.");
 
                 break;
             }
 
             case "zombie_higher":
             {
-                Subject.Reply(source, "Great, clear 10 Gargoyle Servants and 10 Guards");
+                Subject.Reply(source, "Rip apart 10 Gargoyle Servants and 10 Guards");
                 source.SendOrangeBarMessage("Kill 10 Gargoyle Servants and 10 Guards");
                 source.Trackers.Enums.Set(MythicZombie.HigherZombie);
 
@@ -205,7 +205,7 @@ public class MythicZombieScript : DialogScriptBase
 
             case "zombie_item":
             {
-                Subject.Reply(source, " ");
+                Subject.Reply(source, "Briiing me back 25 of them Dark Flames... we shaaall light our graaveeyards with them!");
                 source.SendOrangeBarMessage("Collect 25 Dark Flames for Superior Zombie");
                 source.Trackers.Enums.Set(MythicZombie.ItemZombie);
 
@@ -216,7 +216,7 @@ public class MythicZombieScript : DialogScriptBase
             {
                 if (!source.Inventory.RemoveQuantity("Dark Flame", 25))
                 {
-                    Subject.Reply(source, " ");
+                    Subject.Reply(source, "We noooo light anythiing with that! There no use for anything less than 25 Dark Flames! Go nooow!");
 
                     return;
                 }
@@ -224,17 +224,17 @@ public class MythicZombieScript : DialogScriptBase
                 source.Animate(ani, source.Id);
                 ExperienceDistributionScript.GiveExp(source, twentyPercent);
                 source.Trackers.Enums.Set(MythicZombie.ItemZombieComplete);
-                Subject.Reply(source, " ");
+                Subject.Reply(source, "Thisss is what we waanted. You did good Aisling!");
 
                 break;
             }
 
             case "zombie_ally":
             {
-                if (hasFrog
-                    && (hasFrog == frog is MythicFrog.AlliedFrog or MythicFrog.BossFrogStarted or MythicFrog.BossFrogDefeated))
+                if (hasGargoyle
+                    && (hasGargoyle == frog is MythicGargoyle.AlliedGargoyle or MythicGargoyle.BossGargoyleStarted or MythicGargoyle.BossGargoyleStarted))
                 {
-                    Subject.Reply(source, "Thank you again for your help.");
+                    Subject.Reply(source, "Thiss is not good. You went behind our baaacksss and helped them scummy Gargoylesss! I don't like you anymore! Leave my sightsss.");
                     source.Trackers.Enums.Set(MythicZombie.EnemyZombieAllied);
 
                     return;
@@ -243,14 +243,14 @@ public class MythicZombieScript : DialogScriptBase
                 source.Trackers.Counters.AddOrIncrement("MythicAllies", 1);
                 source.Trackers.Enums.Set(MythicZombie.AlliedZombie);
                 source.SendOrangeBarMessage("You are now allied with the Zombies!");
-                Subject.Reply(source, " ");
+                Subject.Reply(source, "Yesss! A gooood ally to our graveyardsss. We are happy to haaave you Aisling.");
 
                 break;
             }
 
             case "zombie_boss":
             {
-                Subject.Reply(source, "Please return safely.");
+                Subject.Reply(source, "That Gargoyle Fiend won't know whaat hit him when you find him! Rip him up Aisling.");
                 source.Trackers.Enums.Set(MythicZombie.BossZombieStarted);
                 source.SendOrangeBarMessage("Kill Gargoyle Fiend three times.");
             }
@@ -261,7 +261,7 @@ public class MythicZombieScript : DialogScriptBase
             {
                 if (!source.Trackers.Counters.TryGetValue("MythicZombie", out var zombieboss1) || (zombieboss1 < 3))
                 {
-                    Subject.Reply(source, " ");
+                    Subject.Reply(source, "Thaaat Gargoyle Fiend still flies over my fieldsss! You go show him he can't do that noo more!");
 
                     source.SendOrangeBarMessage("You haven't defeated Gargoyle Fiend.");
 
@@ -274,7 +274,7 @@ public class MythicZombieScript : DialogScriptBase
                     TargetAnimation = 21
                 };
 
-                Subject.Reply(source, " ");
+                Subject.Reply(source, "Yeaaahh you showed him whaat he can't do no more! I am grateful for yooour friendship Aisling! That was some gooood fightin.");
                 source.Animate(ani2, source.Id);
 
                 if (source.UserStatSheet.Level <= 98)
