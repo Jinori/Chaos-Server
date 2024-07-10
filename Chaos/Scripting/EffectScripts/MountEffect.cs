@@ -22,7 +22,6 @@ public class MountEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
     public override byte Icon => 92;
     public override string Name => "mount";
     protected byte? Sound => 115;
-
     public override void OnTerminated()
     {
         if (AislingSubject != null)

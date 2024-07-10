@@ -1943,7 +1943,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylberylring",
                 Ingredients =
                 [
-                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl Bar", 1),
 
                     new Ingredient("pristineberyl", "Pristine Beryl", 3)
                 ],
@@ -1960,7 +1960,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylrubyring",
                 Ingredients =
                 [
-                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl Bar", 1),
 
                     new Ingredient("pristineruby", "Pristine Ruby", 3)
                 ],
@@ -1977,7 +1977,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylsapphirering",
                 Ingredients =
                 [
-                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl Bar", 1),
 
                     new Ingredient("pristinesapphire", "Pristine Sapphire", 3)
                 ],
@@ -1994,7 +1994,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylemeraldring",
                 Ingredients =
                 [
-                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl Bar", 1),
 
                     new Ingredient("pristineemerald", "Pristine Emerald", 3)
                 ],
@@ -2011,7 +2011,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylheartstonering",
                 Ingredients =
                 [
-                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl Bar", 1),
 
                     new Ingredient("pristineheartstone", "Pristine Heartstone", 3)
                 ],
@@ -2300,7 +2300,7 @@ public static class CraftingRequirements
                 TemplateKey = "starseanecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl Bar", 1),
 
                     new Ingredient("pristinesapphire", "Pristine Sapphire", 3)
                 ],
@@ -2317,7 +2317,7 @@ public static class CraftingRequirements
                 TemplateKey = "starfirenecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl Bar", 1),
 
                     new Ingredient("pristineruby", "Pristine Ruby", 3)
                 ],
@@ -2334,7 +2334,7 @@ public static class CraftingRequirements
                 TemplateKey = "starearthnecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl Bar", 1),
 
                     new Ingredient("pristineberyl", "Pristine Beryl", 3)
                 ],
@@ -2351,7 +2351,7 @@ public static class CraftingRequirements
                 TemplateKey = "starwindnecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl", 1),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-Brasyl Bar", 1),
 
                     new Ingredient("pristineemerald", "Pristine Emerald", 3)
                 ],

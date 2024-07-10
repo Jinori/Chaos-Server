@@ -1,8 +1,6 @@
-using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.Data;
-using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -22,8 +20,6 @@ public class Summoner2MerchantScript : MerchantScriptBase
     
     private readonly IIntervalTimer ActionTimer;
     private readonly IIntervalTimer DialogueTimer;
-    private readonly IIntervalTimer WalkTimer;
-    private readonly IIntervalTimer PortalClose;
     private readonly IMonsterFactory MonsterFactory;
     private readonly IMerchantFactory MerchantFactory;
     private readonly IReactorTileFactory ReactorTileFactory;
@@ -35,13 +31,7 @@ public class Summoner2MerchantScript : MerchantScriptBase
         MonsterFactory = monsterFactory;
         ReactorTileFactory = reactorTileFactory;
         MerchantFactory = merchantFactory;
-        PortalClose = new IntervalTimer(TimeSpan.FromSeconds(2), false);
-        DialogueTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(3),
-            20,
-            RandomizationType.Positive,
-            false);
-        WalkTimer = new IntervalTimer(TimeSpan.FromMilliseconds(800), false);
+        DialogueTimer = new IntervalTimer(TimeSpan.FromSeconds(2),false);
         ActionTimer = new IntervalTimer(TimeSpan.FromMilliseconds(200), false);
         Subject.SummonerState2 = SummonerState2.Idle;
     }
@@ -125,22 +115,16 @@ public class Summoner2MerchantScript : MerchantScriptBase
             merchant2.Animate(ani);
             merchant3.Animate(ani);
             merchant4.Animate(ani);
-            HasSummonedCreants = true;
-            DialogueTimer.Reset();
-        }
-        else if (!CreantsSummoned)
-        {
+            
             Subject.Say("Téigh chuig bhur dtithe cearta, beidh mé ann go luath.");
             var players = Subject.MapInstance.GetEntities<Aisling>()
                 .Where(x => x.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner2)).ToList();
 
             foreach (var player in players)
             {
-                player.Trackers.Enums.Set(MainStoryEnums.SpawnedCreants);
                 player.SendOrangeBarMessage("You witness the summoning of the Creants.");
             }
-
-            CreantsSummoned = true;
+            HasSummonedCreants = true;
             DialogueTimer.Reset();
         }
         else if (!HasOpenedPortals)
@@ -160,14 +144,12 @@ public class Summoner2MerchantScript : MerchantScriptBase
             
             Subject.Say("Caithfidh mé aire a thabhairt do na trioblóidí seo.");
             
-            Subject.Say("Téigh chuig bhur dtithe cearta, beidh mé ann go luath.");
             var players = Subject.MapInstance.GetEntities<Aisling>()
                 .Where(x => x.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner2)).ToList();
 
             foreach (var player in players)
             {
                 player.Trackers.Enums.Set(MainStoryEnums.SpawnedCreants);
-                player.SendOrangeBarMessage("You witness the summoning of the Creants.");
             }
             
             HasOpenedPortals = true;
@@ -183,7 +165,7 @@ public class Summoner2MerchantScript : MerchantScriptBase
                 player.Trackers.Enums.Set(MainStoryEnums.StartedSummonerFight);
             }
             
-            Subject.Say("My babies have returned to the world.");
+            Subject.Say("My friends have returned to the world.");
             HasCreantsEscaped = true;
             DialogueTimer.Reset();
         }

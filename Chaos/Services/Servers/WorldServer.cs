@@ -1711,6 +1711,12 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
                 //if the player has an exchange open, cancel it so items are returned
                 var activeExchange = aisling.ActiveObject.TryGet<Exchange>();
                 activeExchange?.Cancel(aisling);
+                
+                           
+                if (aisling.Effects.Contains( "mount"))
+                {
+                    aisling.Effects.Terminate("mount");
+                }
 
                 //leave the group if in one
                 aisling.Group?.Leave(aisling);

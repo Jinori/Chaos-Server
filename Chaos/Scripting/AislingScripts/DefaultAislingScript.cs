@@ -521,6 +521,11 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     foreach (var pet in pets)
                         pet.MapInstance.RemoveEntity(pet);
                 }
+
+                if (Subject.Effects.Contains("mount"))
+                {
+                    Subject.Effects.Dispel("mount");
+                }
                 
                 //set player to daydreaming if they are currently set to awake
                 if (Subject.Options.SocialStatus != SocialStatus.DayDreaming)

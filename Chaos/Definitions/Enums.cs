@@ -1654,8 +1654,8 @@ public enum MainStoryEnums
     FoundSummoner2 = 29,
     SpawnedCreants = 30,
     StartedSummonerFight = 31,
-    KilledSummoner = 31,
-    CompletedPreMasterMainStory = 32,
+    KilledSummoner = 32,
+    CompletedPreMasterMainStory = 33,
 }
 
 public enum CombatTrial

@@ -21,7 +21,7 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
                           GetTargetsAbilityComponent<Creature>.IGetTargetsComponentOptions,
                           SoundAbilityComponent.ISoundComponentOptions,
                           AnimationAbilityComponent.IAnimationComponentOptions,
-                          DamageAbilityComponent.IDamageComponentOptions,
+                          TrapDamageAbilityComponent.ITrapDamageComponentOptions,
                           ManaDrainAbilityComponent.IManaDrainComponentOptions,
                           ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 {
@@ -69,7 +69,7 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
                                                            .ExecuteAndCheck<GetTargetsAbilityComponent<Creature>>()
                                                            ?.Execute<SoundAbilityComponent>()
                                                            .Execute<AnimationAbilityComponent>()
-                                                           .Execute<DamageAbilityComponent>()
+                                                           .Execute<TrapDamageAbilityComponent>()
                                                            .Execute<ManaDrainAbilityComponent>()
                                                            .Execute<ApplyEffectAbilityComponent>()
                        != null;

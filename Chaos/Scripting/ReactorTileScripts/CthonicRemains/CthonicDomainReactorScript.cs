@@ -35,6 +35,7 @@ public class CthonicDomainReactorScript : ReactorTileScriptBase
             aisling.SendOrangeBarMessage("The room before you crumbled, there is no going back.");
             var point3 = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point3);
+            return;
         }
 
         if (!aisling.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner2) && 
