@@ -1,9 +1,8 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.CR_Bosses.SummonerKades;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.CR_Bosses.Kades;
+namespace Chaos.Scripting.MonsterScripts.Boss.CR_Bosses.SummonerKades;
 
 public class SummonerKadesBossScript : CompositeMonsterScript
 {
@@ -11,7 +10,6 @@ public class SummonerKadesBossScript : CompositeMonsterScript
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(MoveToTargetScript)),
-        GetScriptKey(typeof(SummonerKadesEnrageScript)),
         GetScriptKey(typeof(SummonerKadesFleeScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),

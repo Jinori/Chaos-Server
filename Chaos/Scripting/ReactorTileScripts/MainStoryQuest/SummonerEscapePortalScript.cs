@@ -45,10 +45,6 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
             return;
         }
 
-        if (Subject.MapInstance.GetEntities<Aisling>()
-            .Any(x => !x.Trackers.Enums.HasValue(MainStoryEnums.StartedSummonerFight)))
-            return;
-
         switch (Subject.MapInstance.Template.MapId)
         {
             case 22100:

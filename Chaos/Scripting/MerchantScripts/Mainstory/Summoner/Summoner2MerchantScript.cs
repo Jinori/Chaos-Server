@@ -32,7 +32,7 @@ public class Summoner2MerchantScript : MerchantScriptBase
         MonsterFactory = monsterFactory;
         ReactorTileFactory = reactorTileFactory;
         MerchantFactory = merchantFactory;
-        DialogueTimer = new IntervalTimer(TimeSpan.FromSeconds(7),false);
+        DialogueTimer = new IntervalTimer(TimeSpan.FromSeconds(1),false);
         WalkTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
         UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(100), false);
         Subject.SummonerState2 = SummonerState2.Idle;
