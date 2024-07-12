@@ -35,6 +35,7 @@ public class ReviveCommand(IClientRegistry<IChaosWorldClient> clientRegistry) : 
             aisling.StatSheet.SetHealthPct(100);
             aisling.StatSheet.SetManaPct(100);
             aisling.Refresh(true);
+            aisling.Display();
         } finally
         {
             @lock?.Dispose();

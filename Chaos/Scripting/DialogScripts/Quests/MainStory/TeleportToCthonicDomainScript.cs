@@ -51,6 +51,12 @@ public class TeleportToCthonicDomainScript : DialogScriptBase
             return;
         }
 
+        if (!IsGroupRequiredVitality(source))
+        {
+            SendGroupVitalityMessage(source);
+            WarpSourceBack(source);
+        }
+
         TeleportGroupTo3RdFloor(source, group);
     }
 
@@ -62,6 +68,9 @@ public class TeleportToCthonicDomainScript : DialogScriptBase
             x.Trackers.Enums.HasValue(MainStoryEnums.SpawnedCreants) ||
             x.Trackers.Enums.HasValue(MainStoryEnums.StartedSummonerFight) ||
             x.Trackers.Enums.HasValue(MainStoryEnums.KilledSummoner));
+
+    private bool IsGroupRequiredVitality(Aisling source) =>
+        source.Group != null && source.Group.All(x => x.StatSheet.MaximumHp + x.StatSheet.MaximumMp * 2 >= 30000);
     private bool IsGroupValid(Aisling source) =>
         source.Group != null && !source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source));
 
@@ -96,6 +105,12 @@ public class TeleportToCthonicDomainScript : DialogScriptBase
     {
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Not all group members are on this quest.");
         Subject.Reply(source, "Not all of your members are ready to face the darkness. Members must be on same part of quest or have completed the Pre-Master Mainstory Quest Line.");
+    }
+    
+    private void SendGroupVitalityMessage(Aisling source)
+    {
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Not all group members are above 30,000 Vitality.");
+        Subject.Reply(source, "Not all of your members are higher than 30,000 Vitality to face the Summoner.");
     }
 
     private void WarpSourceBack(Aisling source)

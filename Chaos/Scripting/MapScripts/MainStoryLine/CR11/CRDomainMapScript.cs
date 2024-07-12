@@ -1,11 +1,15 @@
 ﻿using Chaos.Collections;
+using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
+using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Priest;
 using Chaos.Scripting.MapScripts.Abstractions;
+using Chaos.Scripting.MerchantScripts.Mainstory.Summoner;
+using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -19,7 +23,6 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
         private readonly IMerchantFactory MerchantFactory;
         private readonly IIntervalTimer DelayedStartTimer;
         private ScriptState State;
-        private bool HasBeenPorted;
         private readonly IIntervalTimer UpdateTimer;
         public const int UPDATE_INTERVAL_MS = 500;
 
@@ -108,13 +111,27 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
                     break;
 
                 case ScriptState.SpawnedSummoner:
-                    if (Subject.GetEntities<Monster>().Any(x => x.Name != "Summoner Kades")) 
+                    
+                    if (Subject.GetEntities<Aisling>().Any(x => !x.IsAlive))
+                    {
+                        foreach (var monster in Subject.GetEntities<Monster>().ToList())
+                        {
+                            Subject.RemoveEntity(monster);
+                            State = ScriptState.GroupWiped;
+                        }
+
+                        return;
+                    }
+                    if (Subject.GetEntities<Aisling>().Any(x => x.Trackers.Enums.HasValue(MainStoryEnums.KilledSummoner))) 
                         State = ScriptState.CompletedSummoner;
 
                     break;
 
                 case ScriptState.CompletedSummoner:
                     HandleCompletedSummoner();
+                    break;
+                
+                case ScriptState.GroupWiped:
                     break;
 
                 default:
@@ -131,7 +148,6 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
                     var rect = new Rectangle(2, 36, 5, 5);
                     var point = rect.GetRandomPoint();
                     var map = SimpleCache.Get<MapInstance>("cr11");
-                    aisling.Trackers.Enums.Set(MainStoryEnums.KilledSummoner);
                     aisling.SendOrangeBarMessage("Summoner Kades vanishes, the walls begin to crumble and you escape.");
                     aisling.TraverseMap(map, point);
                 }
@@ -146,6 +162,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
         SpawningSummoner,
         SpawnedSummoner,
         PortAislings,
-        CompletedSummoner
+        CompletedSummoner,
+        GroupWiped
     }
 }

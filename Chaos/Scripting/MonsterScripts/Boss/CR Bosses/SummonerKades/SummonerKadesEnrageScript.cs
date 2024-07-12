@@ -4,9 +4,9 @@ using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.CR_Bosses.Kades;
+namespace Chaos.Scripting.MonsterScripts.Boss.CR_Bosses.SummonerKades;
 
-public sealed class KadesEnrageScript : MonsterScriptBase
+public sealed class SummonerKadesEnrageScript : MonsterScriptBase
 {
     private readonly IMonsterFactory MonsterFactory;
     private bool Bonus30Applied;
@@ -20,7 +20,7 @@ public sealed class KadesEnrageScript : MonsterScriptBase
     };
 
     /// <inheritdoc />
-    public KadesEnrageScript(Monster subject, IMonsterFactory monsterFactory)
+    public SummonerKadesEnrageScript(Monster subject, IMonsterFactory monsterFactory)
         : base(subject) =>
         MonsterFactory = monsterFactory;
 

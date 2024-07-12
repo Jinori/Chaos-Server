@@ -1658,6 +1658,18 @@ public enum MainStoryEnums
     CompletedPreMasterMainStory = 33,
 }
 
+public enum SummonerBossFight
+{
+    None,
+    StartedSummonerFight = 1,
+    FirstStage = 2,
+    SecondStage = 3,
+    ThirdStage = 4,
+    FourthStage = 5,
+    KilledSummoner = 6,
+    CompletedSummoner = 7
+}
+
 public enum CombatTrial
 {
     None,
