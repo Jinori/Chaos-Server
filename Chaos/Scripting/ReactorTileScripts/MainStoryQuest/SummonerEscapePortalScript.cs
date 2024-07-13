@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
@@ -53,7 +52,7 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
                 var rectangle = new Rectangle(10, 13, 3, 3);
                 var point = rectangle.GetRandomPoint();
 
-                foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive).ToList())
+                foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
                 {
                     player.TraverseMap(targetMap, point);
                     if (source.Name != player.Name)
@@ -71,7 +70,7 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
                 var rectangle = new Rectangle(10, 13, 3, 3);
                 var point = rectangle.GetRandomPoint();
 
-                foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive).ToList())
+                foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
                 {
                     player.TraverseMap(targetMap, point);
                     if (source.Name != player.Name)
@@ -88,7 +87,7 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
                 var rectangle = new Rectangle(6, 9, 3, 3);
                 var point = rectangle.GetRandomPoint();
 
-                foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive).ToList())
+                foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
                 {
                     player.TraverseMap(targetMap, point);
                     if (source.Name != player.Name)
@@ -105,7 +104,7 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
                 var rectangle = new Rectangle(13, 8, 3, 3);
                 var point = rectangle.GetRandomPoint();
 
-                foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive).ToList())
+                foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
                 {
                     player.TraverseMap(targetMap, point);
                     if (source.Name != player.Name)
@@ -118,11 +117,11 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
             }
             case 31001:
             {
-                var targetMap = SimpleCache.Get<MapInstance>("cthonic_domain");
+                var targetMap = SimpleCache.Get<MapInstance>("cthonic_domain2");
                 var rectangle = new Rectangle(13, 14, 3, 3);
                 var point = rectangle.GetRandomPoint();
 
-                foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive).ToList())
+                foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
                 {
                     player.TraverseMap(targetMap, point);
                     if (source.Name != player.Name)

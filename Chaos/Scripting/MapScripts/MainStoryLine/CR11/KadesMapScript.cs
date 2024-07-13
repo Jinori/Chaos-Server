@@ -1,5 +1,6 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
@@ -21,12 +22,17 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
     public class KadesMapScript : MapScriptBase
     {
         private readonly IMonsterFactory MonsterFactory;
+        private readonly IIntervalTimer UpdateTimer;
+        private readonly IIntervalTimer SpawnTimer;
+        private bool LastFight;
 
         public KadesMapScript(MapInstance subject,
             IMonsterFactory monsterFactory)
             : base(subject)
         {
             MonsterFactory = monsterFactory;
+            SpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(45), false);
+            UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(500), false);
         }
 
         public override void OnEntered(Creature creature)
@@ -69,7 +75,74 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
                     spawnPoints = new Point(6, 8);
                     Subject.AddEntity(summoner, spawnPoints);
                     break;
+                case 22100:
+                    summoner.StatSheet.SetHealthPct(15);
+                    summoner.StatSheet.SetManaPct(15);
+                    spawnPoints = new Point(6, 8);
+                    Subject.AddEntity(summoner, spawnPoints);
+                    LastFight = true;
+                    break;
             }
+        }
+        public override void Update(TimeSpan delta)
+        {
+            UpdateTimer.Update(delta);
+            SpawnTimer.Update(delta);
+
+            if (!UpdateTimer.IntervalElapsed)
+                return;
+
+            if (!LastFight)
+                return;
+
+            var summoner = Subject.GetEntities<Monster>().FirstOrDefault(x => x.Name == "Summoner Kades");
+
+            if (summoner == null) return;
+            
+                        
+            if (SpawnTimer.IntervalElapsed)
+            {
+                var point = new Point(summoner.X + 2, summoner.Y + 2);
+                var roll = IntegerRandomizer.RollSingle(12);
+                
+                if (roll <= 3)
+                {
+                    var monstersummon = MonsterFactory.Create("gale_guardian", Subject, point);
+                    Subject.AddEntity(monstersummon, point);
+                    return;
+                }
+
+                if (roll <= 6)
+                {
+                    var monstersummon = MonsterFactory.Create("terra_guardian", Subject, point);
+                    Subject.AddEntity(monstersummon, point);
+                    return;
+                }
+
+                if (roll <= 9)
+                {
+                    var monstersummon = MonsterFactory.Create("tide_guardian", Subject, point);
+                    Subject.AddEntity(monstersummon, point);
+                    return;
+                }
+
+                if (roll <= 12)
+                {
+                    var monstersummon = MonsterFactory.Create("ignis_guardian", Subject, point);
+                    Subject.AddEntity(monstersummon, point);
+                    return;
+                }
+            }
+            
+            var monsters = Subject.GetEntities<Monster>().Where(x => x.Template.TemplateKey is "gale_guardian" or "ignis_guardian" or "tide_guardian" or "terra_guardian").ToList();
+
+            if (monsters.Count == 0) return;
+
+            if (summoner.StatSheet.HealthPercent >= 3) return;
+                
+            summoner.Say("Give me your life summon!");
+            Subject.RemoveEntity(monsters.First());
+            summoner.StatSheet.SetHealthPct(15);
         }
     }
 }

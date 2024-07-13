@@ -1,4 +1,5 @@
 using Chaos.Common.Utilities;
+using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
@@ -6,6 +7,7 @@ using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Boss;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
 
@@ -25,7 +27,7 @@ public class ExecuteComponent : IComponent
         var hasKilled = false;
 
         foreach (var target in targets)
-            if (target.StatSheet.HealthPercent <= options.KillTargetAtHealthPct)
+            if (!target.Script.Is<ThisIsABossScript>() && target.StatSheet.HealthPercent <= options.KillTargetAtHealthPct)
             {
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,
