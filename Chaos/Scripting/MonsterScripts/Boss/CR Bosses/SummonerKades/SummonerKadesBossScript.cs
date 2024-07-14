@@ -2,15 +2,14 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.CR_Bosses.Kades;
+namespace Chaos.Scripting.MonsterScripts.Boss.CR_Bosses.SummonerKades;
 
-public class KadesBossScript : CompositeMonsterScript
+public class SummonerKadesBossScript : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(MoveToTargetScript)),
-        GetScriptKey(typeof(KadesEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
@@ -23,7 +22,7 @@ public class KadesBossScript : CompositeMonsterScript
     };
 
     /// <inheritdoc />
-    public KadesBossScript(IScriptProvider scriptProvider, Monster subject)
+    public SummonerKadesBossScript(IScriptProvider scriptProvider, Monster subject)
     {
         if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript compositeScript)
             throw new InvalidOperationException("Unable to create componentized script");

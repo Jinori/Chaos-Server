@@ -26,6 +26,15 @@ public class Manor3RdFloorScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
+        if (aisling.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3))
+        {
+            aisling.SendOrangeBarMessage("The stairs up are destroyed.");
+            var point2 = source.DirectionalOffset(source.Direction.Reverse());
+            source.WarpTo(point2);
+            return;
+        }
+        
+
         if (!aisling.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner) && 
             !aisling.Trackers.Enums.HasValue(MainStoryEnums.RetryServant)) 
         {
