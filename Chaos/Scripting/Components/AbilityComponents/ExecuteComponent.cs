@@ -14,7 +14,7 @@ namespace Chaos.Scripting.Components.AbilityComponents;
 public class ExecuteComponent : IComponent
 {
     
-    private Animation animate { get; } = new()
+    private Animation Animate { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 97
@@ -45,20 +45,32 @@ public class ExecuteComponent : IComponent
 
                 context.SourceAisling?.SendActiveMessage($"You've been healed by {healAmount} from Execute!");
                 
-                context.SourceAisling?.Animate(animate);
+                context.SourceAisling?.Animate(Animate);
 
                 if (!target.IsAlive)
                     hasKilled = true;
             }
             else
             {
-                var tenPercent = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, options.DmgHealthPct);
-
-                options.ApplyDamageScript.ApplyDamage(
-                    context.Source,
-                    target,
-                    options.SourceScript,
-                    tenPercent);
+                if (!target.Script.Is<ThisIsABossScript>())
+                { 
+                    var tenPercent = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, options.DmgHealthPct);
+                    options.ApplyDamageScript.ApplyDamage(
+                        context.Source,
+                        target,
+                        options.SourceScript,
+                        tenPercent);
+                }
+                else
+                {
+                    var onepercent = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp,
+                        options.DmgHealthPct);
+                    options.ApplyDamageScript.ApplyDamage(
+                        context.Source,
+                        target,
+                        options.SourceScript,
+                        onepercent);
+                }
             }
 
         if (hasKilled)

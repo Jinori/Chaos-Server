@@ -22,6 +22,12 @@ public enum GodMode
     Yes
 }
 
+public enum StartEvent
+{
+    Off,
+    StartEvent
+}
+
 public enum MonkElementForm
 {
     Water,

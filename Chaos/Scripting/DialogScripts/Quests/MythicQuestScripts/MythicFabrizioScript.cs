@@ -78,6 +78,7 @@ public class MythicFabrizioScript : DialogScriptBase
 
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedMythic);
                     ExperienceDistributionScript.GiveExp(source, source.UserStatSheet.Level <= 98 ? tnl : 50000000);
+                    source.SendOrangeBarMessage("You will now gain %5 experience through monster kills.");
 
                     source.Legend.AddOrAccumulate(
                         new LegendMark(

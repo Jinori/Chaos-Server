@@ -122,7 +122,7 @@ public class TeleportToCthonicDomainScript : DialogScriptBase
     private void TeleportGroupTo3RdFloor(Aisling source, List<Aisling> group)
     {
         var rectangle = new Rectangle(24, 14, 3, 4);
-        var mapInstance = SimpleCache.Get<MapInstance>("cthonic_domain");
+        var mapInstance = SimpleCache.Get<MapInstance>("cthonic_domain2");
 
         foreach (var member in group)
         {

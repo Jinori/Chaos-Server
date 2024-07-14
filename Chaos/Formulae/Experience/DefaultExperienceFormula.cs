@@ -1,3 +1,4 @@
+using Chaos.Definitions;
 using Chaos.Formulae.Abstractions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -29,6 +30,11 @@ public class DefaultExperienceFormula : IExperienceFormula
                     experience *= (decimal)1.05;
                 }
 
+                if (HasCompletedMythic(aislings))
+                {
+                    experience *= (decimal)1.05;
+                }
+
                 return Convert.ToInt64(experience);
         }
 
@@ -45,6 +51,19 @@ public class DefaultExperienceFormula : IExperienceFormula
                 return true;
             }
         }
+        return false;
+    }
+
+    private bool HasCompletedMythic(Aisling[] aislings)
+    {
+        foreach (var aisling in aislings)
+        {
+            if (aisling.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
+            {
+                return true;
+            }
+        }
+
         return false;
     }
 

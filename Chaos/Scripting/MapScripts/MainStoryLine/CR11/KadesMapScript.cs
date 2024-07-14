@@ -13,6 +13,7 @@ using Chaos.Scripting.MerchantScripts.Mainstory.Summoner;
 using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Services.Storage;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -22,15 +23,17 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
     public class KadesMapScript : MapScriptBase
     {
         private readonly IMonsterFactory MonsterFactory;
+        private readonly ISimpleCache SimpleCache;
         private readonly IIntervalTimer UpdateTimer;
         private readonly IIntervalTimer SpawnTimer;
         private bool LastFight;
 
         public KadesMapScript(MapInstance subject,
-            IMonsterFactory monsterFactory)
+            IMonsterFactory monsterFactory, ISimpleCache simpleCache)
             : base(subject)
         {
             MonsterFactory = monsterFactory;
+            SimpleCache = simpleCache;
             SpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(45), false);
             UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(500), false);
         }
@@ -78,7 +81,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
                 case 22100:
                     summoner.StatSheet.SetHealthPct(15);
                     summoner.StatSheet.SetManaPct(15);
-                    spawnPoints = new Point(6, 8);
+                    spawnPoints = new Point(17, 10);
                     Subject.AddEntity(summoner, spawnPoints);
                     LastFight = true;
                     break;
@@ -94,6 +97,26 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
 
             if (!LastFight)
                 return;
+
+            if (!Subject.GetEntities<Monster>().Any(x => x.Name == "Summoner Kades"))
+            {
+                foreach (var monster in Subject.GetEntities<Monster>())
+                {
+                    Subject.RemoveEntity(monster);
+                }
+                
+                foreach (var player in Subject.GetEntities<Aisling>().Where(x => !x.IsGodModeEnabled()))
+                {
+                    if (player.Trackers.Enums.HasValue(MainStoryEnums.StartedSummonerFight))
+                        player.Trackers.Enums.Set(MainStoryEnums.KilledSummoner);
+                    
+                    player.SendOrangeBarMessage("Summoner Kades vanishes...");
+
+                    var point = new Point(player.X, player.Y);
+                    var map = SimpleCache.Get<MapInstance>("cthonic_domain");
+                    player.TraverseMap(map, point);
+                }
+            }
 
             var summoner = Subject.GetEntities<Monster>().FirstOrDefault(x => x.Name == "Summoner Kades");
 

@@ -55,7 +55,23 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "Trial of Sacrifice",
         "Trial of Combat",
         "Trial of Luck",
-        "Trial of Intelligence"
+        "Trial of Intelligence",
+        "Mileth",
+        "Abel",
+        "Rucesion",
+        "Undine",
+        "Suomi",
+        "Loures Castle",
+        "Loures Castle Way",
+        "Tagor",
+        "Piet",
+        "Rucesion Village Way",
+        "Mileth Village Way",
+        "Abel Port",
+        "Suomi Village Way",
+        "Undine Village Way",
+        "Piet Village Way",
+        "Nobis"
     ];
 
     private readonly IMerchantFactory MerchantFactory;

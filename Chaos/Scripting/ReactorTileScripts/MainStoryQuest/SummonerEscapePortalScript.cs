@@ -117,7 +117,7 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
             }
             case 31001:
             {
-                var targetMap = SimpleCache.Get<MapInstance>("cthonic_domain2");
+                var targetMap = SimpleCache.Get<MapInstance>("cthonic_domain3");
                 var rectangle = new Rectangle(13, 14, 3, 3);
                 var point = rectangle.GetRandomPoint();
 
