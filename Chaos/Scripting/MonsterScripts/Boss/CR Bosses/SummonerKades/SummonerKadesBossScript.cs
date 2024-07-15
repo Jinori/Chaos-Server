@@ -9,12 +9,12 @@ public class SummonerKadesBossScript : CompositeMonsterScript
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
-        GetScriptKey(typeof(MoveToTargetScript)),
+        GetScriptKey(typeof(KadesMoveToTargetScript)),
         GetScriptKey(typeof(SummonerKadesFleeScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
-        GetScriptKey(typeof(CastingScript)),
-        GetScriptKey(typeof(AttackingScript)),
+        GetScriptKey(typeof(KadesCastingScript)),
+        GetScriptKey(typeof(KadesAttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(BossDefenseScript)),

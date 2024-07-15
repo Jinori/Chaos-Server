@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
@@ -59,12 +60,12 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
                 PortalOpened = true;
                 var portal = ReactorTileFactory.Create("SummonerEscapePortal", Subject.MapInstance, PortalPoint);
                 Subject.MapInstance.SimpleAdd(portal);
-                Subject.RemoveScript<MoveToTargetScript>();
-                Subject.RemoveScript<AggroTargetingScript>();
-                Subject.RemoveScript<AttackingScript>();
-                Subject.RemoveScript<DefaultBehaviorsScript>();
-                Subject.RemoveScript<CastingScript>();
 
+                foreach (var aisling in Subject.MapInstance.GetEntities<Aisling>())
+                {
+                    aisling.Trackers.Enums.Set(SummonerBossFight.FirstStage);
+                }
+                    
                 Subject.Say("You will see my true power.");
             }
 
@@ -107,11 +108,10 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
                 var monster2 = MonsterFactory.Create("terra_guardian", Subject.MapInstance, point3!);
                 Subject.MapInstance.AddEntity(monster, point2!);
                 Subject.MapInstance.AddEntity(monster2, point3!);
-                Subject.RemoveScript<MoveToTargetScript>();
-                Subject.RemoveScript<AggroTargetingScript>();
-                Subject.RemoveScript<AttackingScript>();
-                Subject.RemoveScript<DefaultBehaviorsScript>();
-                Subject.RemoveScript<CastingScript>();
+                foreach (var aisling in Subject.MapInstance.GetEntities<Aisling>())
+                {
+                    aisling.Trackers.Enums.Set(SummonerBossFight.SecondStage);
+                }
 
             }
 
@@ -152,13 +152,14 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
                 rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var point3);
                 var monster = MonsterFactory.Create("gale_guardian", Subject.MapInstance, point2!);
                 var monster2 = MonsterFactory.Create("gale_guardian", Subject.MapInstance, point3!);
+                
+                foreach (var aisling in Subject.MapInstance.GetEntities<Aisling>())
+                {
+                    aisling.Trackers.Enums.Set(SummonerBossFight.ThirdStage);
+                }
+                
                 Subject.MapInstance.AddEntity(monster, point2!);
                 Subject.MapInstance.AddEntity(monster2, point3!);
-                Subject.RemoveScript<MoveToTargetScript>();
-                Subject.RemoveScript<AggroTargetingScript>();
-                Subject.RemoveScript<AttackingScript>();
-                Subject.RemoveScript<DefaultBehaviorsScript>();
-                Subject.RemoveScript<CastingScript>();
 
             }
 
@@ -200,13 +201,13 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
                 rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var point3);
                 var monster = MonsterFactory.Create("tide_guardian", Subject.MapInstance, point2!);
                 var monster2 = MonsterFactory.Create("tide_guardian", Subject.MapInstance, point3!);
+                foreach (var aisling in Subject.MapInstance.GetEntities<Aisling>())
+                {
+                    aisling.Trackers.Enums.Set(SummonerBossFight.FourthStage);
+                }
+                
                 Subject.MapInstance.AddEntity(monster, point2!);
                 Subject.MapInstance.AddEntity(monster2, point3!);
-                Subject.RemoveScript<MoveToTargetScript>();
-                Subject.RemoveScript<AggroTargetingScript>();
-                Subject.RemoveScript<AttackingScript>();
-                Subject.RemoveScript<DefaultBehaviorsScript>();
-                Subject.RemoveScript<CastingScript>();
 
             }
 
@@ -250,11 +251,10 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
                 var monster2 = MonsterFactory.Create("ignis_guardian", Subject.MapInstance, point3!);
                 Subject.MapInstance.AddEntity(monster, point2!);
                 Subject.MapInstance.AddEntity(monster2, point3!);
-                Subject.RemoveScript<MoveToTargetScript>();
-                Subject.RemoveScript<AggroTargetingScript>();
-                Subject.RemoveScript<AttackingScript>();
-                Subject.RemoveScript<DefaultBehaviorsScript>();
-                Subject.RemoveScript<CastingScript>();
+                foreach (var aisling in Subject.MapInstance.GetEntities<Aisling>())
+                {
+                    aisling.Trackers.Enums.Set(SummonerBossFight.FifthStage);
+                }
 
             }
 

@@ -1669,11 +1669,17 @@ public enum SummonerBossFight
     None,
     StartedSummonerFight = 1,
     FirstStage = 2,
-    SecondStage = 3,
-    ThirdStage = 4,
-    FourthStage = 5,
-    KilledSummoner = 6,
-    CompletedSummoner = 7
+    FirstStage1 = 3,
+    SecondStage = 4,
+    SecondStage1 = 5,
+    ThirdStage = 6,
+    ThirdStage1 = 7,
+    FourthStage = 8,
+    FourthStage1 = 9,
+    FifthStage = 10,
+    FifthStage1 = 11,
+    KilledSummoner = 12,
+    CompletedSummoner = 13
 }
 
 public enum CombatTrial

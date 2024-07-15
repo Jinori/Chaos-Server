@@ -111,6 +111,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
                         player.Trackers.Enums.Set(MainStoryEnums.KilledSummoner);
                     
                     player.SendOrangeBarMessage("Summoner Kades vanishes...");
+                    player.Trackers.Enums.Remove<SummonerBossFight>();
 
                     var point = new Point(player.X, player.Y);
                     var map = SimpleCache.Get<MapInstance>("cthonic_domain");

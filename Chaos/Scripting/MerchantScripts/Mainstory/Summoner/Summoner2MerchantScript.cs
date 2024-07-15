@@ -248,16 +248,16 @@ public class Summoner2MerchantScript : MerchantScriptBase
             HasCreantsEscaped = true;
             DialogueTimer.Reset();
         }
-        else if (!HasSaidDialog4 && DialogueTimer.IntervalElapsed)
-        {
-            Subject.Say("You have been following me, it is time to perish.");
-            HasSaidDialog4 = true;
-            DialogueTimer.Reset();
-        }
         else if (!HasSaidDialog3 && DialogueTimer.IntervalElapsed)
         {
+            Subject.Say("You have been following me, it is time to perish.");
+            HasSaidDialog3 = true;
+            DialogueTimer.Reset();
+        }
+        else if (!HasSaidDialog4 && DialogueTimer.IntervalElapsed)
+        {
             var aislings = Subject.MapInstance.GetEntities<Aisling>()
-                .Where(x => x.Trackers.Enums.HasValue(MainStoryEnums.SpawnedCreants) || x.Trackers.Enums.HasValue(MainStoryEnums.CompletedPreMasterMainStory)).ToList();
+                .Where(x => x.Trackers.Enums.HasValue(MainStoryEnums.StartedSummonerFight) || x.Trackers.Enums.HasValue(MainStoryEnums.CompletedPreMasterMainStory)).ToList();
             foreach (var aisling in aislings)
             {
                 aisling.SendOrangeBarMessage("Summoner Kades becomes hostile.");
@@ -274,7 +274,7 @@ public class Summoner2MerchantScript : MerchantScriptBase
             Subject.MapInstance.AddEntity(summonermonster, summoner);
             summonermonster.Animate(ani);
             
-            HasSaidDialog3 = true;
+            HasSaidDialog4 = true;
             DialogueTimer.Reset();
             Subject.MapInstance.RemoveEntity(Subject);
         }

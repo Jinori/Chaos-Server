@@ -1,4 +1,5 @@
 using Chaos.Collections;
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
@@ -54,6 +55,7 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
 
                 foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
                 {
+                    player.Trackers.Enums.Set(SummonerBossFight.FirstStage1);
                     player.TraverseMap(targetMap, point);
                     if (source.Name != player.Name)
                         player.SendOrangeBarMessage($"{source.Name} drags you through the portal.");
@@ -72,6 +74,7 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
 
                 foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
                 {
+                    player.Trackers.Enums.Set(SummonerBossFight.SecondStage1);
                     player.TraverseMap(targetMap, point);
                     if (source.Name != player.Name)
                         player.SendOrangeBarMessage($"{source.Name} drags you through the portal.");
@@ -89,6 +92,7 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
 
                 foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
                 {
+                    player.Trackers.Enums.Set(SummonerBossFight.ThirdStage1);
                     player.TraverseMap(targetMap, point);
                     if (source.Name != player.Name)
                         player.SendOrangeBarMessage($"{source.Name} drags you through the portal.");
@@ -106,6 +110,7 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
 
                 foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
                 {
+                    player.Trackers.Enums.Set(SummonerBossFight.FourthStage1);
                     player.TraverseMap(targetMap, point);
                     if (source.Name != player.Name)
                         player.SendOrangeBarMessage($"{source.Name} drags you through the portal.");
@@ -123,6 +128,7 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
 
                 foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
                 {
+                    player.Trackers.Enums.Set(SummonerBossFight.FifthStage1);
                     player.TraverseMap(targetMap, point);
                     if (source.Name != player.Name)
                         player.SendOrangeBarMessage($"{source.Name} drags you through the portal.");
