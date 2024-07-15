@@ -163,7 +163,7 @@ public class MainStory2Script(
                 return;
             }
 
-            case "defeatedsummoner3":
+            case "defeatedsummoner6":
             {
                 source.Trackers.Enums.Set(MainStoryEnums.CompletedPreMasterMainStory);
                 ExperienceDistributionScript.GiveExp(source, 10000000);
