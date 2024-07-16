@@ -160,43 +160,82 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             var requiredAdvClass = skill.Template.AdvClass;
 
             if (requiredBaseClass.HasValue && !source.HasClass(requiredBaseClass.Value))
+            {
+                //Console.WriteLine("Failed: Base class requirement not met.");
+
                 return false;
+            }
 
             if (requiredAdvClass.HasValue && (requiredAdvClass.Value != source.UserStatSheet.AdvClass))
+            {
+                //Console.WriteLine("Failed: Advanced class requirement not met.");
+
                 return false;
+            }
 
             if (source.SkillBook.Contains(skill))
+            {
+                //Console.WriteLine("Failed: Skill already in skillbook.");
+
                 return false;
+            }
 
             // Check if the current skill is an upgrade
-            if (SkillUpgrades.Values.Any(upgrades => upgrades.Contains(skill.Template.TemplateKey)))
+            if (SkillUpgrades.Values.Any(upgrades => upgrades.Contains(skill.Template.TemplateKey, StringComparer.OrdinalIgnoreCase)))
             {
-                var baseSkillKey = SkillUpgrades.FirstOrDefault(kvp => kvp.Value.Contains(skill.Template.TemplateKey)).Key;
+                var baseSkillKey = SkillUpgrades
+                                   .FirstOrDefault(kvp => kvp.Value.Contains(skill.Template.TemplateKey, StringComparer.OrdinalIgnoreCase))
+                                   .Key;
 
                 // Ensure the player knows the immediate preceding skill in the upgrade chain
                 var upgradeIndex = SkillUpgrades[baseSkillKey].IndexOf(skill.Template.TemplateKey);
+
                 if (upgradeIndex > 0)
                 {
                     var precedingSkill = SkillUpgrades[baseSkillKey][upgradeIndex - 1];
-                    if (source.SkillBook.All(s => s.Template.TemplateKey != precedingSkill))
+
+                    if (source.SkillBook.All(
+                            s => !string.Equals(s.Template.TemplateKey, precedingSkill, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        //Console.WriteLine($"Failed: Immediate preceding skill ({precedingSkill}) in the upgrade chain not known.");
+
                         return false;
+                    }
                 }
                 else
                 {
                     // If the skill is the first upgrade, ensure the base skill is known
-                    if (source.SkillBook.All(s => s.Template.TemplateKey != baseSkillKey))
+                    if (source.SkillBook.All(s => !string.Equals(s.Template.TemplateKey, baseSkillKey, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        /*Console.WriteLine(
+                            $"Failed: Base skill ({baseSkillKey}) not known. SkillBook contains: {string.Join(
+                                ", ",
+                                source.SkillBook.Select(s => s.Template.TemplateKey))}");*/
+
                         return false;
+                    }
                 }
             }
 
             // Ensure that only the base skill is shown if neither the base skill nor the upgrade is known
-            if (SkillUpgrades.TryGetValue(skill.Template.TemplateKey, out var value))
+            if (SkillUpgrades.TryGetValue(skill.Template.TemplateKey, out var upgrades))
+            {
                 // If the player knows any upgrades in the chain, do not show the base skill
-                if (value.Any(upgrade => source.SkillBook.Any(s => s.Template.TemplateKey == upgrade)))
+                if (upgrades.Any(
+                        upgrade => source.SkillBook.Any(
+                            s => string.Equals(s.Template.TemplateKey, upgrade, StringComparison.OrdinalIgnoreCase))))
+                {
+                    //Console.WriteLine("Failed: Known upgrade exists in skillbook.");
+
                     return false;
+                }
+            }
+
+            //Console.WriteLine("Passed: Skill is learnable.");
 
             return true;
         }
+
 
 
 
