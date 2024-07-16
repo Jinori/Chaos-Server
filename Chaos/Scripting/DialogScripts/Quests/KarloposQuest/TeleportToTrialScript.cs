@@ -25,12 +25,11 @@ public class TeleportToTrialScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
-        var point = new Point(source.X, source.Y);
-        var group = source.Group?.Where(x => x.WithinRange(point)).ToList();
+        var group = source.Group;
 
         if (group == null || group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source)))
         {
-            SendMessageAndReply(source, "You are missing your group.", "You must have a group to enter the next trial.");
+            SendMessageAndReply(source, "You are missing your group.", "You must have a group to enter the next room.");
             WarpSourceBack(source);
             return;
         }
@@ -51,6 +50,7 @@ public class TeleportToTrialScript : DialogScriptBase
         
         foreach (var member in group)
         {
+            Point point;
             do
             {
                 point = currentTrial.GetRandomPoint();
@@ -68,6 +68,7 @@ public class TeleportToTrialScript : DialogScriptBase
     {
         currentTrial = mapInstanceId.ToLower() switch
         {
+            "karlopossecret" => new Rectangle(20, 56, 3, 2),
             "karlopostrap" => new Rectangle(3, 7, 3, 2),
             "karloposfirsttrial" => new Rectangle(9, 11, 3, 2),
             "karlopossecondtrial" => new Rectangle(9, 9, 3, 2),
@@ -78,6 +79,7 @@ public class TeleportToTrialScript : DialogScriptBase
 
         return mapInstanceId.ToLower() switch
         {
+            "karlopossecret" => SimpleCache.Get<MapInstance>("karlopostrap"),
             "karlopostrap" => SimpleCache.Get<MapInstance>("karloposfirsttrial"),
             "karloposfirsttrial" => SimpleCache.Get<MapInstance>("karlopossecondtrial"),
             "karlopossecondtrial" => SimpleCache.Get<MapInstance>("karloposthirdtrial"),

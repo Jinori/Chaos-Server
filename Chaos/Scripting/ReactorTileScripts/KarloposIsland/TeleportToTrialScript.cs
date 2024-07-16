@@ -42,7 +42,7 @@ public class TeleportToTrialScript : ReactorTileScriptBase
             return;
         }
         
-        if (currentMap.Name != "Karlopos Island Long Beach")
+        if (currentMap.Name != "Karlopos Island Long Beach" && currentMap.Name != "Karlopos Secret Passage")
         {
             if (aisling is { Group: not null })
             {
