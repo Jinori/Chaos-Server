@@ -20,7 +20,6 @@ public class Summoner2MerchantScript : MerchantScriptBase
     
     private readonly IIntervalTimer UpdateTimer;
     private readonly IIntervalTimer DialogueTimer;
-    private readonly IIntervalTimer WalkTimer;
     private readonly IMonsterFactory MonsterFactory;
     private readonly IMerchantFactory MerchantFactory;
     private readonly IReactorTileFactory ReactorTileFactory;
@@ -32,8 +31,7 @@ public class Summoner2MerchantScript : MerchantScriptBase
         MonsterFactory = monsterFactory;
         ReactorTileFactory = reactorTileFactory;
         MerchantFactory = merchantFactory;
-        DialogueTimer = new IntervalTimer(TimeSpan.FromSeconds(1),false);
-        WalkTimer = new IntervalTimer(TimeSpan.FromSeconds(7), false);
+        DialogueTimer = new IntervalTimer(TimeSpan.FromSeconds(7),false);
         UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(100), false);
         Subject.SummonerState2 = SummonerState2.Idle;
     }
@@ -283,7 +281,6 @@ public class Summoner2MerchantScript : MerchantScriptBase
     public override void Update(TimeSpan delta)
     {
         DialogueTimer.Update(delta);
-        WalkTimer.Update(delta);
         
         switch (Subject.SummonerState2)
         {

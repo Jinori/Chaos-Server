@@ -25,24 +25,34 @@ public class GhostDeathScript : MonsterScriptBase
 
         var aislingsToReward = Subject.MapInstance.GetEntities<Aisling>()
                                       .Where(
-                                          x => x.Trackers.Enums.TryGetValue(out ManorNecklaceStage value)
-                                               && Equals(value, ManorNecklaceStage.SawNecklace));
+                                          x => x.Trackers.Enums.TryGetValue(out ManorNecklaceStage _));
 
         foreach (var aisling in aislingsToReward)
         {
-            var item = ItemFactory.Create("zulerasCursedNecklace");
+            if (aisling.Trackers.Enums.HasValue(ManorNecklaceStage.SawNecklace))
+            {
+                var item = ItemFactory.Create("zulerasCursedNecklace");
+                aisling.Inventory.RemoveByTemplateKey("clue1");
+                aisling.Inventory.RemoveByTemplateKey("clue2");
+                aisling.Inventory.RemoveByTemplateKey("clue3");
+                aisling.Inventory.RemoveByTemplateKey("clue4");
 
-            aisling.Inventory.RemoveByTemplateKey("clue1");
-            aisling.Inventory.RemoveByTemplateKey("clue2");
-            aisling.Inventory.RemoveByTemplateKey("clue3");
-            aisling.Inventory.RemoveByTemplateKey("clue4");
-
-            if (aisling.Trackers.Enums.TryGetValue(out ManorNecklaceStage stage) && (stage != ManorNecklaceStage.SawNecklace))
-                return;
+                if (aisling.Trackers.Enums.TryGetValue(out ManorNecklaceStage stage) && (stage != ManorNecklaceStage.SawNecklace))
+                    return;
             
-            aisling.GiveItemOrSendToBank(item);
-            aisling.Trackers.Enums.Set(ManorNecklaceStage.ReturningNecklace);
-            aisling.SendActiveMessage("You received Zulera's Cursed Necklace! Take it back to her.");
+                aisling.GiveItemOrSendToBank(item);
+                aisling.Trackers.Enums.Set(ManorNecklaceStage.ReturningNecklace);
+                aisling.SendActiveMessage("You received Zulera's Cursed Necklace! Take it back to her.");
+                
+            }
+
+            if (aisling.Trackers.Enums.HasValue(ManorNecklaceStage.ReturnedNecklace)
+                || aisling.Trackers.Enums.HasValue(ManorNecklaceStage.KeptNecklace))
+            {
+                aisling.TryGiveGamePoints(15);
+                aisling.GiveGoldOrSendToBank(25000);
+                aisling.SendActiveMessage("Thank you for helping others.");
+            }
         }
     }
 }

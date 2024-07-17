@@ -140,6 +140,7 @@ public class TeleportToCthonicDomainScript : DialogScriptBase
                 member.Trackers.Enums.HasValue(MainStoryEnums.StartedSummonerFight))
             {
                 member.Trackers.Enums.Set(MainStoryEnums.SearchForSummoner2);
+                member.Trackers.Enums.Remove<SummonerBossFight>();
             }
             
             var dialog = member.ActiveDialog.Get();

@@ -11,14 +11,14 @@ namespace Chaos.Scripting.ReactorTileScripts.EingrenManor;
 
 public class ClueScript : ReactorTileScriptBase
 {
-    private readonly IItemFactory _itemFactory;
-    private readonly IMonsterFactory _monsterFactory;
+    private readonly IItemFactory ItemFactory;
+    private readonly IMonsterFactory MonsterFactory;
 
     public ClueScript(ReactorTile subject, IItemFactory itemFactory, IMonsterFactory monsterFactory)
         : base(subject)
     {
-        _itemFactory = itemFactory;
-        _monsterFactory = monsterFactory;
+        ItemFactory = itemFactory;
+        MonsterFactory = monsterFactory;
     }
 
     public override void OnWalkedOn(Creature source)
@@ -34,7 +34,7 @@ public class ClueScript : ReactorTileScriptBase
             {
                 if ((stage == ManorNecklaceStage.AcceptedQuest) && !aisling.Inventory.HasCount("Clue One", 1))
                 {
-                    var clue = _itemFactory.Create("clue1");
+                    var clue = ItemFactory.Create("clue1");
                     aisling.GiveItemOrSendToBank(clue);
 
                     aisling.Client.SendServerMessage(
@@ -48,7 +48,7 @@ public class ClueScript : ReactorTileScriptBase
             {
                 if ((stage == ManorNecklaceStage.AcceptedQuest) && !aisling.Inventory.HasCount("Clue Two", 1))
                 {
-                    var clue = _itemFactory.Create("clue2");
+                    var clue = ItemFactory.Create("clue2");
                     aisling.GiveItemOrSendToBank(clue);
 
                     aisling.Client.SendServerMessage(
@@ -62,7 +62,7 @@ public class ClueScript : ReactorTileScriptBase
             {
                 if ((stage == ManorNecklaceStage.AcceptedQuest) && !aisling.Inventory.HasCount("Clue Three", 1))
                 {
-                    var clue = _itemFactory.Create("clue3");
+                    var clue = ItemFactory.Create("clue3");
                     aisling.GiveItemOrSendToBank(clue);
 
                     aisling.Client.SendServerMessage(
@@ -76,7 +76,7 @@ public class ClueScript : ReactorTileScriptBase
             {
                 if ((stage == ManorNecklaceStage.AcceptedQuest) && !aisling.Inventory.HasCount("Clue Four", 1))
                 {
-                    var clue = _itemFactory.Create("clue4");
+                    var clue = ItemFactory.Create("clue4");
                     aisling.GiveItemOrSendToBank(clue);
 
                     aisling.Client.SendServerMessage(
@@ -110,28 +110,30 @@ public class ClueScript : ReactorTileScriptBase
                     var allMembersHaveQuestFlag = aisling.Group.All(
                         member =>
                             member.Trackers.Enums.TryGetValue(out ManorNecklaceStage value)
-                            && value is ManorNecklaceStage.AcceptedQuest or ManorNecklaceStage.SawNecklace
+                            && value is ManorNecklaceStage.AcceptedQuest or ManorNecklaceStage.SawNecklace or ManorNecklaceStage.ReturnedNecklace or ManorNecklaceStage.KeptNecklace
                             && member.WithinLevelRange(source));
 
                     // Check if all members have all four clues
                     var allMembersHaveAllClues = aisling.Group.All(
-                        member => member.Inventory.HasCount("Clue One", 1)
+                        member => (member.Inventory.HasCount("Clue One", 1)
                                   && member.Inventory.HasCount("Clue Two", 1)
                                   && member.Inventory.HasCount("Clue Three", 1)
-                                  && member.Inventory.HasCount("Clue Four", 1));
+                                  && member.Inventory.HasCount("Clue Four", 1))
+                                  || member.Trackers.Enums.HasValue(ManorNecklaceStage.ReturnedNecklace)
+                                  || member.Trackers.Enums.HasValue(ManorNecklaceStage.KeptNecklace));
 
                     if (allMembersHaveQuestFlag && allMembersHaveAllClues)
                     {
-                        var monster = _monsterFactory.Create("airphasedGhost", aisling.MapInstance, new Point(3, 6));
+                        var monster = MonsterFactory.Create("airphasedGhost", aisling.MapInstance, new Point(3, 6));
                         monster.AggroRange = 10;
                         monster.Experience = 2000;
-                        var monster2 = _monsterFactory.Create("earthphasedGhost", aisling.MapInstance, new Point(3, 3));
+                        var monster2 = MonsterFactory.Create("earthphasedGhost", aisling.MapInstance, new Point(3, 3));
                         monster2.AggroRange = 10;
                         monster2.Experience = 2000;
-                        var monster3 = _monsterFactory.Create("waterphasedGhost", aisling.MapInstance, new Point(5, 3));
+                        var monster3 = MonsterFactory.Create("waterphasedGhost", aisling.MapInstance, new Point(5, 3));
                         monster3.AggroRange = 10;
                         monster3.Experience = 2000;
-                        var monster4 = _monsterFactory.Create("firephasedGhost", aisling.MapInstance, new Point(5, 5));
+                        var monster4 = MonsterFactory.Create("firephasedGhost", aisling.MapInstance, new Point(5, 5));
                         monster4.AggroRange = 10;
                         monster4.Experience = 2000;
                         aisling.MapInstance.AddEntity(monster, monster);
@@ -141,7 +143,10 @@ public class ClueScript : ReactorTileScriptBase
 
                         foreach (var member in aisling.Group)
                         {
-                            member.Trackers.Enums.Set(ManorNecklaceStage.SawNecklace);
+                            if (member.Trackers.Enums.HasValue(ManorNecklaceStage.AcceptedQuest))
+                            {
+                                member.Trackers.Enums.Set(ManorNecklaceStage.SawNecklace);
+                            }
 
                             member.Client.SendServerMessage(
                                 ServerMessageType.OrangeBar1,
