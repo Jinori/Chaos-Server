@@ -11,6 +11,7 @@ public class SummonerKadesBossScript : CompositeMonsterScript
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(KadesMoveToTargetScript)),
         GetScriptKey(typeof(SummonerKadesFleeScript)),
+        GetScriptKey(typeof(SummonerKadesEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(KadesCastingScript)),
