@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\Chaos.Messaging.Abstractions\Chaos.Messaging.Abstractions.csproj"/>
-        <ProjectReference Include="..\..\Chaos.Messaging\Chaos.Messaging.csproj"/>
-        <ProjectReference Include="..\Chaos.Testing.Infrastructure\Chaos.Testing.Infrastructure.csproj"/>
-    </ItemGroup>
-
-</Project>

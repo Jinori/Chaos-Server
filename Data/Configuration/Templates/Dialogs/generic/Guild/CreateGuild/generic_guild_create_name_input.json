@@ -1,9 +1,0 @@
-{
-  "nextDialogKey": "generic_guild_create_confirmation",
-  "options": [],
-  "scriptKeys": [],
-  "scriptVars": {},
-  "templateKey": "generic_guild_create_name_input",
-  "text": "What would you like to name your guild?",
-  "type": "MenuTextEntry"
-}
