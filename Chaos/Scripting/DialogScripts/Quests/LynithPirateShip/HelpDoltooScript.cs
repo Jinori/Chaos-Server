@@ -43,8 +43,12 @@ public class HelpDoltooScript : DialogScriptBase
                 if (!source.UserStatSheet.Master)
                     return;
 
-                if (!source.Trackers.Enums.HasValue(HelpSable.FinishedDoltoo))
+                if (!source.Trackers.Enums.HasValue(HelpSable.FinishedCaptain) 
+                    && !source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo) 
+                    && !source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart) 
+                    && !source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooFailed))
                     return;
+                
                 var hasStage = source.Trackers.Enums.TryGetValue(out HelpSable stage);
 
                 if (!hasStage)
@@ -56,7 +60,7 @@ public class HelpDoltooScript : DialogScriptBase
                 {
                     var option1 = new DialogOption
                     {
-                        DialogKey = "helpsable_initial",
+                        DialogKey = "helpdoltoo_initial",
                         OptionText = "Sorry I left you."
                     };
 

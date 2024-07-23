@@ -29,6 +29,9 @@ public sealed class BossRegenScript : MonsterScriptBase
         {
             HPRegenTimer += (float)delta.TotalSeconds;
 
+            if (Subject.Effects.Contains("poison"))
+                return;
+
             if (HPRegenTimer >= HPRegenInterval)
             {
                 var hpToRegen = Subject.StatSheet.MaximumHp * HPMultiplier;

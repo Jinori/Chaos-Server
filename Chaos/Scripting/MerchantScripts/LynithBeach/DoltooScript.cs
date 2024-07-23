@@ -7,6 +7,7 @@ using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 using Chaos.Services.Storage;
+using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -20,7 +21,7 @@ public sealed class DoltooScript : MerchantScriptBase
     private CheckpointState State;
     private readonly Random Random = new();
     private Aisling? AislingToFollow;
-    private readonly SimpleCache SimpleCache;
+    private readonly ISimpleCache SimpleCache;
 
     private readonly Dictionary<int, List<string>> CheckpointSayings = new()
     {
@@ -56,13 +57,13 @@ public sealed class DoltooScript : MerchantScriptBase
         TargetAnimation = 96
     };
 
-    public DoltooScript(Merchant subject, SimpleCache simpleCache)
+    public DoltooScript(Merchant subject, ISimpleCache simpleCache)
         : base(subject)
     {
         SimpleCache = simpleCache;
-        WalkTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1200), false);
+        WalkTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
         AnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
-        SayingsTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(20), 40, RandomizationType.Balanced, false);
+        SayingsTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(30), 40, RandomizationType.Balanced, false);
     }
 
     private void DisplayRandomSaying()
@@ -108,7 +109,7 @@ public sealed class DoltooScript : MerchantScriptBase
             {
                 if (AnimationTimer.IntervalElapsed)
                 {
-                    var points = AoeShape.AllAround.ResolvePoints(Subject, 3);
+                    var points = AoeShape.AllAround.ResolvePoints(Subject, 4);
                     var enumerable = points as Point[] ?? points.ToArray();
 
                     foreach (var tile in enumerable)
@@ -122,7 +123,7 @@ public sealed class DoltooScript : MerchantScriptBase
                 }
                 
                 var merchantPoint = new Point(Subject.X, Subject.Y);
-                var rectBrig = new Rectangle(0, 19, 6, 5);
+                var rectBrig = new Rectangle(0, 9, 6, 5);
                 if (rectBrig.Contains(merchantPoint))
                 {
                     State = CheckpointState.ExitingMap;
@@ -131,15 +132,15 @@ public sealed class DoltooScript : MerchantScriptBase
                 
                 if (WalkTimer.IntervalElapsed)
                 {
-                    var points = AoeShape.AllAround.ResolvePoints(Subject, 2);
+                    var points = AoeShape.AllAround.ResolvePoints(Subject, 4);
                     var playersInAoe = points
                         .SelectMany(point => Subject.MapInstance.GetEntitiesAtPoint<Aisling>(point)).ToList();
 
                     var playerNearby = playersInAoe.Count >= 1;
 
-                    if (playerNearby && DoltooState is CheckpointState.FollowingPlayer)
+                    if (playerNearby)
                     {
-                        var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 3).ToList();
+                        var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 4).ToList();
 
                         if (aislings.Count > 0)
                         {

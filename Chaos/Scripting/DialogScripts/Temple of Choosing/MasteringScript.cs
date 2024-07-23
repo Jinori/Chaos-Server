@@ -31,11 +31,11 @@ public class MasteringScript : DialogScriptBase
 
     private readonly Dictionary<BaseClass, (int requiredHealth, int requiredMana)> MasteringRequirements = new()
     {
-        { BaseClass.Monk, (10000, 5000) },
-        { BaseClass.Warrior, (10000, 3200) },
-        { BaseClass.Rogue, (9000, 4000) },
-        { BaseClass.Wizard, (8750, 8000) },
-        { BaseClass.Priest, (8750, 8000) }
+        { BaseClass.Monk, (20000, 10000) },
+        { BaseClass.Warrior, (16000, 7000) },
+        { BaseClass.Rogue, (14000, 8000) },
+        { BaseClass.Wizard, (10000, 12000) },
+        { BaseClass.Priest, (9500, 13000) }
     };
 
     private readonly Dictionary<BaseClass, (string skillOne, string skillTwo)> MasteringSkillSpellRequirements = new()
@@ -68,7 +68,7 @@ public class MasteringScript : DialogScriptBase
                     Subject.Reply(source, "You already wear the Mantle of the Master.");
                 
                 if (!source.Trackers.Enums.HasValue(MainStoryEnums.CompletedPreMasterMainStory))
-                    Subject.Reply(source, "You must follow the Main Story to completion.");
+                    Subject.Reply(source, "You seek to master the ancient arts. However, the path to mastery is entwined with the threads of the main story quest. Until you have completed your journey through the core challenges that lie ahead, the secrets of mastery will remain beyond your reach. Remember, true wisdom and power come to those who fully embrace their destiny. Return to me once you have fulfilled our primary quest, and I shall guide you further on your path to mastery");
 
                 break;
             }
@@ -260,16 +260,16 @@ public class MasteringScript : DialogScriptBase
 
             case "miraelisgod_becomemaster":
             {
-                if (source.UserStatSheet.TotalExp < 350000000)
+                if (source.UserStatSheet.TotalExp < 250000000)
                 {
                     Subject.Reply(
                         source,
-                        "Oh, I almost forgot! You must have at least 350,000,000 experience to become a Master. Please seek the knowledge and return.");
+                        "You must have at least 250,000,000 experience to become a Master. Please seek the knowledge and return.");
 
                     return;
                 }
 
-                source.UserStatSheet.SubtractTotalExp(350000000);
+                source.UserStatSheet.SubtractTotalExp(250000000);
 
                 var userBaseClass = source.UserStatSheet.BaseClass;
 
@@ -359,7 +359,7 @@ public class MasteringScript : DialogScriptBase
     {
         var armor = source.Gender == Gender.Male ? ItemFactory.Create("warriormastermantle") : ItemFactory.Create("warriormasterdress");
         var helm = source.Gender == Gender.Male ? ItemFactory.Create("malewarriormasterhelm") : ItemFactory.Create("femalewarriormasterhelm");
-        var weapon = ItemFactory.Create("greathybrasylbattleaxe");
+        var weapon = ItemFactory.Create("hybrasylescalon");
         
         var itemsToGive = new[] { armor, helm, weapon };
         

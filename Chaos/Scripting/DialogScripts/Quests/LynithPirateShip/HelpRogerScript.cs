@@ -67,15 +67,18 @@ public class HelpRogerScript : DialogScriptBase
                     
                     return;
                 }
-                
-                var option = new DialogOption
-                {
-                    DialogKey = "helproger_initial",
-                    OptionText = "Could I get you something?"
-                };
 
-                if (!Subject.HasOption(option.OptionText))
-                    Subject.Options.Insert(0, option);
+                if (source.Trackers.Enums.HasValue(HelpSable.FinishedSam))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "helproger_initial",
+                        OptionText = "Could I get you something?"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
             }
                 break;
                 

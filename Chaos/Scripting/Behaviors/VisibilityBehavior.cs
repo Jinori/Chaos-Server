@@ -56,7 +56,37 @@ public class VisibilityBehavior
             "pf_giant_mantis",
             "undine_field_carnun",
             "dragonscale_boss",
-            "wilderness_abomination"
+            "wilderness_abomination",
+            "masterwerewolf",
+            "werewolfTobyMonster",
+            "overrun_eyeboss",
+            "summoner_boss",
+            "em_servant",
+            "chandi_mukul",
+            "louressupply_assassin",
+            "nightmare_carnun",
+            "sewer_skrull10",
+            "sewer_miniskrull5",
+            "pf_giant_mantis",
+            "ww_boss",
+            "event_forsakenmonk",
+            "event_forsakenpriest",
+            "event_forsakenwizard",
+            "event_forsakenrogue",
+            "event_forsakenwarrior",
+            "lw_eldermage",
+            "lw_firedraco",
+            "lw_grunk",
+            "lw_twink",
+            "lw_singlefiredraco",
+            "ad_boss10",
+            "dc_coldstone",
+            "dc_goliath",
+            "dc_gargoylelord",
+            "em_creepycassie",
+            "em_hollow",
+            "em_possessedknight",
+            "wilderness_rooster1"
         }.Select(key => key.ToLower())
     ];
     
@@ -86,16 +116,27 @@ public class VisibilityBehavior
         return isInSameGroup || hasSeeHideEffect || canBossSee;
     }
 
-    private bool HasSeeHideEffect(Creature creature, VisibleEntity entity) =>
-        creature is Aisling && entity is Aisling && creature.Effects.Contains("See Hide");
+    private bool HasSeeHideEffect(Creature creature, VisibleEntity entity)
+    {
+        if (creature.MapInstance.Name == "Hidden Havoc" || entity.MapInstance.Name == "Hidden Havoc")
+            return false;
+        
+        return creature is Aisling && entity is Aisling && creature.Effects.Contains("See Hide");
+    }
     
     private bool CanSeeTrueHidden(Creature creature, VisibleEntity entity) =>
         IsInSameGroup(creature, entity) || CanBossSee(creature, entity) ||
         SeeTrueHiddenEffects.Any(creature.Effects.Contains);
 
-    private bool IsInSameGroup(Creature creature, VisibleEntity entity) =>
-        creature is Aisling aisling && entity is Aisling targetAisling &&
-        (aisling.Group?.Contains(targetAisling) == true);
+    private bool IsInSameGroup(Creature creature, VisibleEntity entity)
+    {
+        // Check if the map name is "Hidden Havoc"
+        if (creature.MapInstance.Name == "Hidden Havoc" || entity.MapInstance.Name == "Hidden Havoc")
+            return false;
+
+        return creature is Aisling aisling && entity is Aisling targetAisling &&
+               (aisling.Group?.Contains(targetAisling) == true);
+    }
 
     private bool CanBossSee(Creature creature, VisibleEntity entity) =>
         creature is Monster monster && entity is Aisling &&

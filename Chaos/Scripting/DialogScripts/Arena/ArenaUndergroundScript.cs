@@ -576,7 +576,7 @@ public class ArenaUndergroundScript : DialogScriptBase
     private void StartHiddenHavoc(Aisling source, bool hostPlaying)
     {
         source.Trackers.Enums.Set(hostPlaying ? ArenaHostPlaying.Yes : ArenaHostPlaying.No);
-        var shard = ShardGenerator.CreateShardOfInstance("arena_lava");
+        var shard = ShardGenerator.CreateShardOfInstance("arena_hidden_havoc");
         shard.Shards.TryAdd(shard.InstanceId, shard);
         var script = shard.Script.As<HiddenHavocShrinkScript>();
                 
