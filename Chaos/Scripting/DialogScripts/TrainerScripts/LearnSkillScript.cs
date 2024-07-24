@@ -28,6 +28,9 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             { "wallop", new List<string> { "pulverize", "thrash" } },
             { "slash", new List<string> { "sunder" } },
             { "windblade", new List<string> { "tempestblade" } },
+            {"groundstomp", new List<string> { "paralyzeforce"} },
+            {"flurry", new List<string> {"madsoul"} },
+            {"bullrush", new List<string> {"charge"} },
             //Monk
             { "punch", new List<string> { "doublepunch", "rapidpunch" } },
             { "doublepunch", new List<string> { "rapidpunch" } },

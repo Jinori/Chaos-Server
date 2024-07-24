@@ -10,7 +10,7 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 public class Fury5Effect : EffectBase
 {
 
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(16);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(8);
     public override byte Icon => 87;
     public override string Name => "Fury5";
     protected Animation Animation { get; } = new()

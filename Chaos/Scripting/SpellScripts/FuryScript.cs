@@ -62,5 +62,10 @@ public class FuryScript : SpellScriptBase
                 context.Source.Effects.Apply(context.Source, effect6);
             }
 
+            if (context.Source.Effects.Contains("Fury6"))
+            {
+                context.Source.Effects.Apply(context.Source, effect6);
+            }
+
     }
 }

@@ -34,13 +34,6 @@ namespace Chaos.Scripting.Components.AbilityComponents
 
         private void CleanUpSkillsAndSpells(Aisling targetAisling)
         {
-            if (targetAisling.UserStatSheet.BaseClass is BaseClass.Warrior)
-            {
-                if (targetAisling.SkillBook.ContainsByTemplateKey("beagsuain") && targetAisling.SkillBook.ContainsByTemplateKey("groundstomp"))
-                    targetAisling.SkillBook.RemoveByTemplateKey("beagsuain");
-                return;
-            }
-            
             if (targetAisling.UserStatSheet.BaseClass is BaseClass.Monk)
             {
                 if (targetAisling.SkillBook.ContainsByTemplateKey("kick") && targetAisling.SkillBook.ContainsByTemplateKey("roundhousekick"))

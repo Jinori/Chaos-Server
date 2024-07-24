@@ -9,9 +9,9 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 public class Fury6Effect : EffectBase
 {
 
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(16);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(6);
     public override byte Icon => 87;
-    public override string Name => "Fury5";
+    public override string Name => "Fury6";
     protected Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -36,6 +36,11 @@ public class Fury6Effect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
+        if (target.Effects.Contains("fury6"))
+        {
+            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are already in Fury 6.");
+            return false;
+        }
         if (!target.Effects.Contains("fury6") && target.StatSheet.CurrentHp <= 256000)
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You need 256000 health to enter Fury 6.");
