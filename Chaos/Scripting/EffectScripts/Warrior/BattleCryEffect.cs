@@ -18,7 +18,7 @@ public class BattleCryEffect : EffectBase
         
         var attributes = new Attributes
         {
-            AtkSpeedPct = 25
+            AtkSpeedPct = 20
         };
 
         AislingSubject?.StatSheet.AddBonus(attributes);
@@ -32,7 +32,7 @@ public class BattleCryEffect : EffectBase
     {
         var attributes = new Attributes
         {
-            AtkSpeedPct = 25
+            AtkSpeedPct = 20
         };
 
         AislingSubject?.StatSheet.SubtractBonus(attributes);

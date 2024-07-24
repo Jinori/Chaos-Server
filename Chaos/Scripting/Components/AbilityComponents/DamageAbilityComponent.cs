@@ -28,15 +28,15 @@ public struct DamageAbilityComponent : IComponent
                 options.DamageStatMultiplier,
                 options.MoreDmgLowTargetHp);
 
-            if (damage <= 0)
-                continue;
-
-            options.ApplyDamageScript.ApplyDamage(
-                context.Source,
-                target,
-                options.SourceScript,
-                damage,
-                options.Element);
+            if (damage > 0)
+            {
+                options.ApplyDamageScript.ApplyDamage(
+                    context.Source,
+                    target,
+                    options.SourceScript,
+                    damage,
+                    options.Element);
+            }
         }
     }
 
@@ -47,34 +47,55 @@ public struct DamageAbilityComponent : IComponent
         decimal? pctHpDamage = null,
         Stat? damageStat = null,
         decimal? damageStatMultiplier = null,
-        bool? moreDmgLowTargetHp = null
-    )
+        bool? moreDmgLowTargetHp = null)
     {
         var finalDamage = baseDamage ?? 0;
 
-        if (moreDmgLowTargetHp is true)
+        if (moreDmgLowTargetHp == true)
         {
             var healthPercentFactor = 1 + (1 - target.StatSheet.HealthPercent / 100m);
-
             finalDamage += Convert.ToInt32(
                 MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0) * healthPercentFactor);
         }
         else
+        {
             finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0);
+        }
 
         if (!damageStat.HasValue)
-            return finalDamage;
-
-        if (!damageStatMultiplier.HasValue)
         {
-            finalDamage += source.StatSheet.GetEffectiveStat(damageStat.Value);
-
+            ApplyFuryEffects(source, ref finalDamage);
             return finalDamage;
         }
 
-        finalDamage += Convert.ToInt32(source.StatSheet.GetEffectiveStat(damageStat.Value) * damageStatMultiplier.Value);
+        finalDamage += damageStatMultiplier.HasValue
+            ? Convert.ToInt32(source.StatSheet.GetEffectiveStat(damageStat.Value) * damageStatMultiplier.Value)
+            : source.StatSheet.GetEffectiveStat(damageStat.Value);
+
+        ApplyFuryEffects(source, ref finalDamage);
 
         return finalDamage;
+    }
+
+    private void ApplyFuryEffects(Creature source, ref int finalDamage)
+    {
+        var furyMultipliers = new Dictionary<string, double>
+        {
+            { "fury1", 1.15 },
+            { "fury2", 1.30 },
+            { "fury3", 1.50 },
+            { "fury4", 1.70 },
+            { "fury5", 1.95 },
+            { "fury6", 2.20 }
+        };
+
+        foreach (var fury in furyMultipliers)
+        {
+            if (source.Effects.Contains(fury.Key))
+            {
+                finalDamage = (int)(finalDamage * fury.Value);
+            }
+        }
     }
 
     public interface IDamageComponentOptions
