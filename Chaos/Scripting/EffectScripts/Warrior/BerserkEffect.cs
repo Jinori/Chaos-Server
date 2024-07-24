@@ -7,7 +7,7 @@ using Chaos.Scripting.ItemScripts;
 
 namespace Chaos.Scripting.EffectScripts.Warrior;
 
-public class BerzerkEffect : EffectBase
+public class BerserkEffect : EffectBase
 {
 
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(2);
