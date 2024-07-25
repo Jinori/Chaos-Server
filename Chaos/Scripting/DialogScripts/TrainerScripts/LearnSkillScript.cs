@@ -33,7 +33,6 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             {"bullrush", new List<string> {"charge"} },
             //Monk
             { "punch", new List<string> { "doublepunch", "rapidpunch" } },
-            { "doublepunch", new List<string> { "rapidpunch" } },
             { "kick", new List<string> { "roundhousekick" } },
             { "highkick", new List<string> { "mantiskick" } },
             //Rogue
@@ -164,85 +163,80 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
 
             if (requiredBaseClass.HasValue && !source.HasClass(requiredBaseClass.Value))
             {
-                //Console.WriteLine("Failed: Base class requirement not met.");
-
                 return false;
             }
 
             if (requiredAdvClass.HasValue && (requiredAdvClass.Value != source.UserStatSheet.AdvClass))
             {
-                //Console.WriteLine("Failed: Advanced class requirement not met.");
-
                 return false;
             }
 
             if (source.SkillBook.Contains(skill))
             {
-                //Console.WriteLine("Failed: Skill already in skillbook.");
-
                 return false;
             }
 
-            // Check if the current skill is an upgrade
+// Check if the current skill is part of an upgrade chain
             if (SkillUpgrades.Values.Any(upgrades => upgrades.Contains(skill.Template.TemplateKey, StringComparer.OrdinalIgnoreCase)))
             {
+                // Identify the base skill key
                 var baseSkillKey = SkillUpgrades
-                                   .FirstOrDefault(kvp => kvp.Value.Contains(skill.Template.TemplateKey, StringComparer.OrdinalIgnoreCase))
-                                   .Key;
+                    .FirstOrDefault(kvp => kvp.Value.Contains(skill.Template.TemplateKey, StringComparer.OrdinalIgnoreCase))
+                    .Key;
 
-                // Ensure the player knows the immediate preceding skill in the upgrade chain
-                var upgradeIndex = SkillUpgrades[baseSkillKey].IndexOf(skill.Template.TemplateKey);
+                // Find the index of the current skill in its upgrade chain (case-insensitive)
+                var upgradeIndex = SkillUpgrades[baseSkillKey]
+                    .FindIndex(u => string.Equals(u, skill.Template.TemplateKey, StringComparison.OrdinalIgnoreCase));
 
-                if (upgradeIndex > 0)
+                /*// Debugging information
+                Console.WriteLine($"Base Skill Key: {baseSkillKey}");
+                Console.WriteLine($"Skill Template Key: {skill.Template.TemplateKey}");
+                Console.WriteLine($"Upgrade Index: {upgradeIndex}");
+                Console.WriteLine($"Upgrades List: {string.Join(", ", SkillUpgrades[baseSkillKey])}");*/
+
+                switch (upgradeIndex)
                 {
-                    var precedingSkill = SkillUpgrades[baseSkillKey][upgradeIndex - 1];
-
-                    if (source.SkillBook.All(
-                            s => !string.Equals(s.Template.TemplateKey, precedingSkill, StringComparison.OrdinalIgnoreCase)))
-                    {
-                        //Console.WriteLine($"Failed: Immediate preceding skill ({precedingSkill}) in the upgrade chain not known.");
-
+                    case -1:
+                        //Console.WriteLine($"Skill {skill.Template.TemplateKey} not found in upgrade chain for base skill {baseSkillKey}.");
                         return false;
+                    case > 0:
+                    {
+                        var precedingSkill = SkillUpgrades[baseSkillKey][upgradeIndex - 1];
+
+                        if (source.SkillBook.All(s => !string.Equals(s.Template.TemplateKey, precedingSkill, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            return false;
+                        }
+
+                        break;
                     }
-                }
-                else
-                {
-                    // If the skill is the first upgrade, ensure the base skill is known
-                    if (source.SkillBook.All(s => !string.Equals(s.Template.TemplateKey, baseSkillKey, StringComparison.OrdinalIgnoreCase)))
+                    default:
                     {
-                        /*Console.WriteLine(
-                            $"Failed: Base skill ({baseSkillKey}) not known. SkillBook contains: {string.Join(
-                                ", ",
-                                source.SkillBook.Select(s => s.Template.TemplateKey))}");*/
+                        if (source.SkillBook.All(s => !string.Equals(s.Template.TemplateKey, baseSkillKey, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            return false;
+                        }
 
-                        return false;
+                        break;
                     }
                 }
             }
+
 
             // Ensure that only the base skill is shown if neither the base skill nor the upgrade is known
             if (SkillUpgrades.TryGetValue(skill.Template.TemplateKey, out var upgrades))
             {
-                // If the player knows any upgrades in the chain, do not show the base skill
                 if (upgrades.Any(
                         upgrade => source.SkillBook.Any(
                             s => string.Equals(s.Template.TemplateKey, upgrade, StringComparison.OrdinalIgnoreCase))))
                 {
-                    //Console.WriteLine("Failed: Known upgrade exists in skillbook.");
-
                     return false;
                 }
             }
 
-            //Console.WriteLine("Passed: Skill is learnable.");
-
             return true;
         }
-
-
-
-
-
+        
         private void OnDisplayingRequirements(Aisling source)
         {
             if (!TryFetchArgs<string>(out var skillName)

@@ -191,53 +191,65 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
 
             if (requiredBaseClass.HasValue && !source.HasClass(requiredBaseClass.Value))
             {
-                //Console.WriteLine("Failed: Base class requirement not met.");
+                // Base class requirement not met
                 return false;
             }
 
             if (requiredAdvClass.HasValue && (requiredAdvClass.Value != source.UserStatSheet.AdvClass))
             {
-                //Console.WriteLine("Failed: Advanced class requirement not met.");
+                // Advanced class requirement not met
                 return false;
             }
 
             if (source.SpellBook.Contains(spell))
             {
-                //Console.WriteLine("Failed: Spell already in spellbook.");
+                // Spell already in spellbook
                 return false;
             }
 
-            // Check if the current spell is an upgrade
-            if (SpellUpgradesByTemplateKey.Values.Any(upgrades => upgrades.Contains(spell.Template.TemplateKey)))
+            // Check if the current spell is part of an upgrade chain
+            if (SpellUpgradesByTemplateKey.Values.Any(upgrades =>
+                    upgrades.Contains(spell.Template.TemplateKey, StringComparer.OrdinalIgnoreCase)))
             {
                 var baseSpellKey = SpellUpgradesByTemplateKey
-                                   .FirstOrDefault(kvp => kvp.Value.Contains(spell.Template.TemplateKey, StringComparer.OrdinalIgnoreCase))
-                                   .Key;
+                    .FirstOrDefault(kvp =>
+                        kvp.Value.Contains(spell.Template.TemplateKey, StringComparer.OrdinalIgnoreCase))
+                    .Key;
 
-                // Ensure the player knows the immediate preceding spell in the upgrade chain
-                var upgradeIndex = SpellUpgradesByTemplateKey[baseSpellKey].IndexOf(spell.Template.TemplateKey);
+                // Find the index of the current spell in its upgrade chain (case-insensitive)
+                var upgradeIndex = SpellUpgradesByTemplateKey[baseSpellKey]
+                    .FindIndex(u => string.Equals(u, spell.Template.TemplateKey, StringComparison.OrdinalIgnoreCase));
 
-                if (upgradeIndex > 0)
+                switch (upgradeIndex)
                 {
-                    var precedingSpell = SpellUpgradesByTemplateKey[baseSpellKey][upgradeIndex - 1];
-
-                    if (source.SpellBook.All(
-                            s => !string.Equals(s.Template.TemplateKey, precedingSpell, StringComparison.OrdinalIgnoreCase)))
-                    {
-                        //Console.WriteLine($"Failed: Immediate preceding spell ({precedingSpell}) in the upgrade chain not known.");
+                    case -1:
+                        // Spell not found in the upgrade chain
                         return false;
+                    case > 0:
+                    {
+                        var precedingSpell = SpellUpgradesByTemplateKey[baseSpellKey][upgradeIndex - 1];
+
+                        // Check if the preceding spell is known
+                        if (source.SpellBook.All(s =>
+                                !string.Equals(s.Template.TemplateKey, precedingSpell, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            // Immediate preceding spell in the upgrade chain not known
+                            return false;
+                        }
+
+                        break;
                     }
-                }
-                else
-                {
-                    // If the spell is the first upgrade, ensure the base spell is known
-                    if (source.SpellBook.All(s => !string.Equals(s.Template.TemplateKey, baseSpellKey, StringComparison.OrdinalIgnoreCase)))
+                    default:
                     {
-                        /*Console.WriteLine(
-                            $"Failed: Base spell ({baseSpellKey}) not known. SpellBook contains: {string.Join(
-                                ", ",
-                                source.SpellBook.Select(s => s.Template.TemplateKey))}");*/
-                        return false;
+                        // If the spell is the first upgrade, ensure the base spell is known
+                        if (source.SpellBook.All(s =>
+                                !string.Equals(s.Template.TemplateKey, baseSpellKey, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            // Base spell not known
+                            return false;
+                        }
+
+                        break;
                     }
                 }
             }
@@ -246,18 +258,15 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             if (SpellUpgradesByTemplateKey.TryGetValue(spell.Template.TemplateKey, out var upgrades))
             {
                 // If the player knows any upgrades in the chain, do not show the base spell
-                if (upgrades.Any(
-                        upgrade => source.SpellBook.Any(
-                            s => string.Equals(s.Template.TemplateKey, upgrade, StringComparison.OrdinalIgnoreCase))))
+                if (upgrades.Any(upgrade => source.SpellBook.Any(s =>
+                        string.Equals(s.Template.TemplateKey, upgrade, StringComparison.OrdinalIgnoreCase))))
                 {
-                    //Console.WriteLine("Failed: Known upgrade exists in spellbook.");
-
+                    // Known upgrade exists in spellbook
                     return false;
                 }
             }
 
-            //Console.WriteLine("Passed: Spell is learnable.");
-
+            // Spell is learnable
             return true;
         }
 
