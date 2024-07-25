@@ -1,3 +1,4 @@
+using System.Reactive.Subjects;
 using Chaos.Common.Utilities;
 using Chaos.Extensions;
 using Chaos.Models.Data;
@@ -42,8 +43,8 @@ public class ExecuteComponent : IComponent
                     context.Source,
                     options.SourceScript,
                     healAmount);
-
-                context.SourceAisling?.SendActiveMessage($"You've been healed by {healAmount} from Execute!");
+                
+                context.SourceAisling?.SendActiveMessage($"You've been healed by {healAmount}!");
                 
                 context.SourceAisling?.Animate(Animate);
 
