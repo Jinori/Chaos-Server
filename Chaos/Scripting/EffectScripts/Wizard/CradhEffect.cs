@@ -11,7 +11,7 @@ namespace Chaos.Scripting.EffectScripts.Wizard;
 
 public class CradhEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(4);
     protected Animation Animation { get; } = new()
     {
         TargetAnimation = 484,
@@ -19,6 +19,7 @@ public class CradhEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
     };
     public List<string> ConflictingEffectNames { get; init; } =
     [
+        "dia cradh",
         "ard cradh",
         "mor cradh",
         "cradh",

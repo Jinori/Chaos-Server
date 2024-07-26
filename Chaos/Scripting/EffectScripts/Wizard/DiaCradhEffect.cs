@@ -9,12 +9,12 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Wizard;
 
-public class MorCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
+public class DiaCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(6);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(10);
     protected Animation Animation { get; } = new()
     {
-        TargetAnimation = 487,
+        TargetAnimation = 257,
         AnimationSpeed = 100
     };
     public List<string> ConflictingEffectNames { get; init; } =
@@ -25,8 +25,8 @@ public class MorCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
         "cradh",
         "beag cradh"
     ];
-    public override byte Icon => 62;
-    public override string Name => "mor cradh";
+    public override byte Icon => 78;
+    public override string Name => "dia cradh";
     protected byte? Sound => 27;
 
     public override void OnApplied()
@@ -35,14 +35,14 @@ public class MorCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
 
         var attributes = new Attributes
         {
-            Ac = -35,
-            MagicResistance = 20
+            Ac = -65,
+            MagicResistance = 40
         };
-        
+
         Subject.Animate(Animation.GetPointAnimation(Subject));
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've been cursed by cradh! AC and MR lowered!");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've been cursed by dia cradh! AC and MR lowered!");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -51,15 +51,15 @@ public class MorCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
     {
         var attributes = new Attributes
         {
-            Ac = -35,
-            MagicResistance = 20
+            Ac = -65,
+            MagicResistance = 40
         };
 
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "mor cradh curse has been lifted.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Dia Cradh curse has been lifted.");
     }
-
+    
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (source.IsCradhLocked())

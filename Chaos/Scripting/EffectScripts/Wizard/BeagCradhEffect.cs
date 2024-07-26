@@ -19,6 +19,7 @@ public class BeagCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOv
     };
     public List<string> ConflictingEffectNames { get; init; } =
     [
+        "dia cradh",
         "ard cradh",
         "mor cradh",
         "cradh",
