@@ -24,14 +24,12 @@ public class FuryScript : SpellScriptBase
             var effect5 = EffectFactory.Create("Fury5");
             var effect6 = EffectFactory.Create("Fury6");
             
-            
             if (!context.Source.Effects.Contains("Fury1")
                 && !context.Source.Effects.Contains("Fury2")
                 && !context.Source.Effects.Contains("Fury3")
                 && !context.Source.Effects.Contains("Fury4")
                 && !context.Source.Effects.Contains("Fury5")
-                && !context.Source.Effects.Contains("Fury6") 
-                && context.Source.StatSheet.CurrentHp >= 8000)
+                && !context.Source.Effects.Contains("Fury6"))
             {
                 context.Source.Effects.Apply(context.Source, effect1);
                 return;
@@ -66,6 +64,5 @@ public class FuryScript : SpellScriptBase
             {
                 context.Source.Effects.Apply(context.Source, effect6);
             }
-
     }
 }

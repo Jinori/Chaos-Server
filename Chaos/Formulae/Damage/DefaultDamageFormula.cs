@@ -73,9 +73,6 @@ public class DefaultDamageFormula : IDamageFormula
 
     protected virtual void ApplyElementalModifier(ref int damage, Element attackElement, Element defenseElement, IScript script)
     {
-        if (script is SubjectiveScriptBase<Spell> { Subject.Template.TemplateKey: "zap" })
-            return;
-
         damage = Convert.ToInt32(damage * ElementalModifierLookup[(int)attackElement][(int)defenseElement]);
         
     }

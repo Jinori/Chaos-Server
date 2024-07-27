@@ -1,11 +1,7 @@
-using Chaos.Common.Utilities;
-using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
-using Chaos.Scripting.MonsterScripts.Boss;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
@@ -23,7 +19,6 @@ public struct FuryEffectAbilityComponent : IComponent
     /// <inheritdoc />
     public void Execute(ActivationContext context, ComponentVars vars)
     {
-        var options = vars.GetOptions<IApplyEffectComponentOptions>();
 
         var targets = vars.GetTargets<Creature>();
         var effect1 = EffectFactory.Create("Fury1");

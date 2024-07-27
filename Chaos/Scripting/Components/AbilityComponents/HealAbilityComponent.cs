@@ -30,6 +30,17 @@ public struct HealAbilityComponent : IComponent
             if (heal <= 0)
                 continue;
 
+            if (target.Effects.Contains("prevent heal"))
+            {
+                if (target.Name != context.SourceAisling?.Name)
+                {
+                    context.SourceAisling?.SendOrangeBarMessage($"{target.Name} is currently resisting heals.");
+                    continue;
+                }
+                context.SourceAisling?.SendOrangeBarMessage($"You are currently resisting heals.");
+                continue;
+            }
+
             options.ApplyHealScript.ApplyHeal(
                 context.Source,
                 target,
