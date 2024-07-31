@@ -51,7 +51,7 @@ public class GuildMemberKickScript : GuildScriptBase
     {
         if (!IsInGuild(source, out var guild, out var sourceRank))
         {
-            Subject.Reply(source, "You are not in a guild", "top");
+            Subject.Reply(source, "You are not in a guild.", "top");
 
             return;
         }
@@ -65,14 +65,14 @@ public class GuildMemberKickScript : GuildScriptBase
 
         if (!IsOfficer(sourceRank))
         {
-            Subject.Reply(source, "You do not have permission to kick members", "generic_guild_members_initial");
+            Subject.Reply(source, "You do not have permission to kick members.", "generic_guild_members_initial");
 
             return;
         }
 
         if (!guild.HasMember(name))
         {
-            Subject.Reply(source, $"{name} is not in your guild", "generic_guild_members_initial");
+            Subject.Reply(source, $"{name} is not in your guild.", "generic_guild_members_initial");
 
             return;
         }
@@ -81,7 +81,7 @@ public class GuildMemberKickScript : GuildScriptBase
 
         if (!IsSuperiorRank(sourceRank, targetCurrentRank))
         {
-            Subject.Reply(source, $"You do not have permission to kick {name}", "generic_guild_members_initial");
+            Subject.Reply(source, $"You do not have permission to kick {name}.", "generic_guild_members_initial");
 
             return;
         }
@@ -106,7 +106,7 @@ public class GuildMemberKickScript : GuildScriptBase
     {
         if (!IsInGuild(source, out var guild, out _))
         {
-            Subject.Reply(source, "You are not in a guild", "top");
+            Subject.Reply(source, "You are not in a guild.", "top");
 
             return;
         }
