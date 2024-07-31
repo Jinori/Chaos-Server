@@ -98,7 +98,7 @@ public sealed class Guild : IDedicatedChannel, IEquatable<Guild>
 
         foreach (var member in GetOnlineMembers()
                      .Where(member => !member.Equals(by)))
-            member.SendActiveMessage($"{aisling.Name} has been admitted to the guild by {by.Name}");
+            member.SendActiveMessage($"{aisling.Name} has been admitted to the guild by {by.Name}!");
     }
 
     public void Associate(Aisling aisling)
@@ -124,17 +124,14 @@ public sealed class Guild : IDedicatedChannel, IEquatable<Guild>
 
         if (aisling.Guild is null)
             throw new InvalidOperationException(
-                $"Attempted to change rank of \"{aisling.Name}\" in guild \"{Name}\", but that player is not in a guild");
+                $"Attempted to change rank of \"{aisling.Name}\" in guild \"{Name}\", but that player is not in a guild.");
 
         if (string.IsNullOrEmpty(aisling.GuildRank))
             throw new InvalidOperationException(
-                $"Attempted to change rank of \"{aisling.Name}\" in guild \"{Name}\", but that player does not have a rank");
+                $"Attempted to change rank of \"{aisling.Name}\" in guild \"{Name}\", but that player does not have a rank.");
 
         var newRank = GuildHierarchy.First(r => r.Tier == newTier);
         var currentRank = GuildHierarchy.First(r => r.Name.EqualsI(aisling.GuildRank!));
-
-        if (currentRank.Tier == 0)
-            return;
 
         currentRank.RemoveMember(aisling.Name);
         newRank.AddMember(aisling.Name);
@@ -144,11 +141,11 @@ public sealed class Guild : IDedicatedChannel, IEquatable<Guild>
         if (newRank.Tier < currentRank.Tier)
             foreach (var member in GetOnlineMembers()
                          .Where(member => !member.Equals(by)))
-                member.SendActiveMessage($"{aisling.Name} has been promoted to {newRank.Name} by {by.Name}");
+                member.SendActiveMessage($"{aisling.Name} has been promoted to {newRank.Name} by {by.Name}!");
         else
             foreach (var member in GetOnlineMembers()
                          .Where(member => !member.Equals(by)))
-                member.SendActiveMessage($"{aisling.Name} has been demoted to {newRank.Name} by {by.Name}");
+                member.SendActiveMessage($"{aisling.Name} has been demoted to {newRank.Name} by {by.Name}!");
     }
 
     public void ChangeRankName(string currentRankName, string newRankName)
@@ -174,7 +171,7 @@ public sealed class Guild : IDedicatedChannel, IEquatable<Guild>
             aisling.Guild = null;
             aisling.GuildRank = null;
             aisling.Client.SendSelfProfile();
-            aisling.SendActiveMessage($"{Name} has been disbanded");
+            aisling.SendActiveMessage($"{Name} has been disbanded!");
         }
 
         GuildHierarchy.Clear();
@@ -258,7 +255,7 @@ public sealed class Guild : IDedicatedChannel, IEquatable<Guild>
         }
 
         foreach (var member in GetOnlineMembers())
-            member.SendActiveMessage($"{memberName} has been kicked from the guild by {by.Name}");
+            member.SendActiveMessage($"{memberName} has been kicked from the guild by {by.Name}!");
 
         return true;
     }
@@ -283,10 +280,10 @@ public sealed class Guild : IDedicatedChannel, IEquatable<Guild>
         aisling.GuildRank = null;
         aisling.Client.SendSelfProfile();
 
-        aisling.SendActiveMessage($"You have left {Name}");
+        aisling.SendActiveMessage($"You have left {Name}.");
 
         foreach (var member in GetOnlineMembers())
-            member.SendActiveMessage($"{memberName} has left the guild");
+            member.SendActiveMessage($"{memberName} has left the guild!");
 
         return true;
     }

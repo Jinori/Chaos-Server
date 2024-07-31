@@ -9,17 +9,10 @@ namespace Chaos.Scripting.Components.AbilityComponents;
 
 public struct FasSpioradAbilityComponent : IComponent
 {
-    private readonly IEffectFactory EffectFactory;
-    
-    public FasSpioradAbilityComponent(IEffectFactory effectFactory)
-    {
-        EffectFactory = effectFactory;
-    }
     /// <inheritdoc />
     public void Execute(ActivationContext context, ComponentVars vars)
     {
         var targets = vars.GetTargets<Creature>();
-        var effect1 = EffectFactory.Create("PreventHeal");
         
         
         foreach (var target in targets)
@@ -31,7 +24,6 @@ public struct FasSpioradAbilityComponent : IComponent
             {
                 target.StatSheet.SubtractHp((int)healthSacrificed);
                 target.StatSheet.AddMp((int)manaToReplenish);
-                target.Effects.Apply(context.Source, effect1);
                 context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
                 context.SourceAisling?.SendOrangeBarMessage($"You replenished {(int)manaToReplenish} mana using Fas Spiorad!");
             }

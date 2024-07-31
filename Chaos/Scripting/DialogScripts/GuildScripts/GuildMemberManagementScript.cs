@@ -59,5 +59,11 @@ public class GuildMemberManagementScript : GuildScriptBase
                 ("Demote", "generic_guild_members_demote_initial"),
                 ("Admit", "generic_guild_members_admit_initial"),
                 ("Kick", "generic_guild_members_kick_initial"));
+
+        if (sourceRank.Tier == 0)
+        {
+            Subject.AddOptions(
+            ("Promote to Leader", "generic_guild_members_transferownership_initial"));
+        }
     }
 }

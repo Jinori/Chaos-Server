@@ -117,7 +117,6 @@ public class RestrictionBehavior
             case Aisling aisling when aisling.Effects.Contains("mount"):
             {
                 aisling.Effects.Dispel("mount");
-                aisling.Refresh();
 
                 return true;
             }

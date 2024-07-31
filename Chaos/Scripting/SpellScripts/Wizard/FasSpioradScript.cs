@@ -11,7 +11,9 @@ using Chaos.Services.Factories.Abstractions;
 namespace Chaos.Scripting.SpellScripts.Wizard;
 
 public class FasSpioradScript : ConfigurableSpellScriptBase,
-                                 SpellComponent<Creature>.ISpellComponentOptions
+                                 SpellComponent<Creature>.ISpellComponentOptions,
+                                 ApplyEffectAbilityComponent.IApplyEffectComponentOptions
+
 {
     /// <inheritdoc />
     public FasSpioradScript(Spell subject, IEffectFactory effectFactory)
@@ -19,26 +21,11 @@ public class FasSpioradScript : ConfigurableSpellScriptBase,
         EffectFactory = effectFactory;
 
     /// <inheritdoc />
-    public override void OnUse(SpellContext context)
-    {
-        var effect1 = EffectFactory.Create("PreventHeal");
-        
-            var healthSacrificed = context.Source.StatSheet.CurrentHp * .60;
-            var manaToReplenish = healthSacrificed * 1.10;
-
-            if (context.Source.StatSheet.CurrentHp >= 1)
-            {
-                context.Source.StatSheet.SubtractHp((int)healthSacrificed);
-                context.Source.StatSheet.AddMp((int)manaToReplenish);
-                context.Source.Effects.Apply(context.Source, effect1);
-                context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
-                context.SourceAisling?.SendOrangeBarMessage($"You replenished {(int)manaToReplenish} mana using Fas Spiorad!");
-            }
-            else
-            {
-                context.SourceAisling?.SendOrangeBarMessage("You do not have the health to convert to mana.");
-            }
-    }
+    public override void OnUse(SpellContext context) =>
+        new ComponentExecutor(context).WithOptions(this)
+            .ExecuteAndCheck<SpellComponent<Creature>>()
+            ?.Execute<FasSpioradAbilityComponent>()
+            .Execute<ApplyEffectAbilityComponent>();
 
     #region ScriptVars
     /// <inheritdoc />

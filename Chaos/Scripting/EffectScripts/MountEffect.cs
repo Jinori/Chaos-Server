@@ -1,4 +1,6 @@
-﻿using Chaos.Models.Data;
+﻿using Chaos.Extensions;
+using Chaos.Models.Data;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.EffectComponents;
 using Chaos.Scripting.Components.Execution;
@@ -27,9 +29,9 @@ public class MountEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
         if (AislingSubject != null)
         {
             AislingSubject.Sprite = 0;
-            AislingSubject.Refresh(true);
+            AislingSubject.Display();
 
-            if (!AislingSubject.Trackers.TimedEvents.HasActiveEvent("mount", out _))
+            if (!AislingSubject.Trackers.TimedEvents.HasActiveEvent("mount", out _) && !AislingSubject.IsGodModeEnabled())
                 AislingSubject.Trackers.TimedEvents.AddEvent("mount", TimeSpan.FromSeconds(5), true);
         }
     }

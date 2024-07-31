@@ -56,7 +56,7 @@ public class GuildMemberDemoteScript : GuildScriptBase
         //ensure the player is in a guild
         if (!IsInGuild(source, out var guild, out var sourceRank))
         {
-            Subject.Reply(source, "You are not in a guild", "top");
+            Subject.Reply(source, "You are not in a guild.", "top");
 
             return;
         }
@@ -76,7 +76,7 @@ public class GuildMemberDemoteScript : GuildScriptBase
         //ensure the player to demote is in the guild
         if (!guild.HasMember(name))
         {
-            Subject.Reply(source, $"{name} is not in your guild", "generic_guild_members_initial");
+            Subject.Reply(source, $"{name} is not in your guild.", "generic_guild_members_initial");
 
             return;
         }
@@ -86,7 +86,7 @@ public class GuildMemberDemoteScript : GuildScriptBase
         //ensure the player to demote is not the same or higher rank (same or lower tier)
         if (!IsSuperiorRank(sourceRank, targetCurrentRank))
         {
-            Subject.Reply(source, $"You do not have permission to demote {name}", "generic_guild_members_initial");
+            Subject.Reply(source, $"You do not have permission to demote {name}.", "generic_guild_members_initial");
 
             return;
         }
@@ -106,13 +106,13 @@ public class GuildMemberDemoteScript : GuildScriptBase
         //ensure the aisling is online
         if (aislingToDemote is null)
         {
-            Subject.Reply(source, $"{name} is not online", "generic_guild_members_initial");
+            Subject.Reply(source, $"{name} is not online.", "generic_guild_members_initial");
 
             return;
         }
 
         //change the rank of the aisling
-        guild.ChangeRank(aislingToDemote, sourceRank.Tier + 1, source);
+        guild.ChangeRank(aislingToDemote, targetCurrentRank.Tier + 1, source);
 
         Logger.WithTopics(Topics.Entities.Guild, Topics.Actions.Demote)
               .WithProperty(Subject)
@@ -133,7 +133,7 @@ public class GuildMemberDemoteScript : GuildScriptBase
         //ensure the player is in a guild
         if (!IsInGuild(source, out var guild, out _))
         {
-            Subject.Reply(source, "You are not in a guild", "top");
+            Subject.Reply(source, "You are not in a guild.", "top");
 
             return;
         }
@@ -149,12 +149,19 @@ public class GuildMemberDemoteScript : GuildScriptBase
         //ensure the player to demote is in the guild
         if (!guild.HasMember(name))
         {
-            Subject.Reply(source, $"{name} is not in your guild", "generic_guild_members_initial");
+            Subject.Reply(source, $"{name} is not in your guild.", "generic_guild_members_initial");
 
             return;
         }
 
         var targetCurrentRank = guild.RankOf(name);
+        
+        if (!CanBeDemoted(targetCurrentRank))
+        {
+            Subject.Reply(source, $"{name} is already the lowest rank and can not be further demoted.", "generic_guild_members_initial");
+
+            return;
+        }
 
         //grab the rank the aisling will be demoted to
         if (!guild.TryGetRank(targetCurrentRank.Tier + 1, out var toRank))

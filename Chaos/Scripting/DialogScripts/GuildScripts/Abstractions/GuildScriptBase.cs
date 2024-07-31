@@ -32,7 +32,7 @@ public abstract class GuildScriptBase : DialogScriptBase
 
     protected static bool CanBeDemoted(GuildRank rank) => rank.Tier != 3;
 
-    protected static bool CanBePromoted(GuildRank rank) => rank.Tier != 0;
+    protected static bool CanBePromoted(GuildRank rank) => rank.Tier != 1;
 
     protected bool GuildExists(string name) => GuildStore.Exists(name);
 
