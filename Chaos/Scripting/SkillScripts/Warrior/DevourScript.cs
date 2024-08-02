@@ -16,7 +16,7 @@ namespace Chaos.Scripting.SkillScripts.Warrior;
 
 public class DevourScript : ConfigurableSkillScriptBase,
                              GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                             DamageAbilityComponent.IDamageComponentOptions,
+                             MissingHealthDamageAbilityComponent.IDamageComponentOptions,
                              CleaveHealComponent.ICleaveHealComponentOptions
 {
     /// <inheritdoc />
@@ -84,7 +84,7 @@ public class DevourScript : ConfigurableSkillScriptBase,
             .WithOptions(this)
             .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
             ?
-            .Execute<DamageAbilityComponent>()
+            .Execute<MissingHealthDamageAbilityComponent>()
             .Execute<CleaveHealComponent>();
 
     public int SplashChance { get; init; }

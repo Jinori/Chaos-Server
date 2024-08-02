@@ -123,6 +123,8 @@ public class GuildMemberPromoteScript : GuildScriptBase
         }
         
         guild.ChangeRank(aislingToPromote, targetCurrentRank.Tier - 1, source);
+        
+        GuildStore.Save(guild);
 
         Logger.WithTopics(Topics.Entities.Guild, Topics.Actions.Promote)
               .WithProperty(Subject)
@@ -205,6 +207,8 @@ public class GuildMemberPromoteScript : GuildScriptBase
         
         guild.ChangeRank(source, sourceRank.Tier + 1, source);
         source.SendOrangeBarMessage($"You give leadership over to {aislingToPromote.Name}.");
+        
+        GuildStore.Save(guild);
 
         Logger.WithTopics(Topics.Entities.Guild, Topics.Actions.Promote)
               .WithProperty(Subject)

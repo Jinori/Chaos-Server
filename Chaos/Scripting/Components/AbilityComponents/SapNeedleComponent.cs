@@ -77,7 +77,7 @@ public class SapNeedleComponent : IComponent
             aisling.SendOrangeBarMessage(
                 options.IsPetSap
                     ? $"Pet licked {finalReplenish} mana."
-                    : $"{source.Name} replenished {finalReplenish} mana through Sap Needle.");
+                    : $"{source.Name} replenished {finalReplenish} mana.");
         }
         
         creature.Animate(Sap);

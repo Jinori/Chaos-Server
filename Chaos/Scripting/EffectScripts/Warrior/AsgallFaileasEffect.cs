@@ -7,7 +7,7 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 
 public class AsgallFaileasEffect : EffectBase
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(12);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(4);
     public override byte Icon => 44;
     public override string Name => "asgallfaileas";
 
@@ -29,7 +29,7 @@ public class AsgallFaileasEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (source.StatSheet.CurrentMp < 310)
+        if (source.StatSheet.CurrentMp < 300)
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You do not have enough mana.");
 

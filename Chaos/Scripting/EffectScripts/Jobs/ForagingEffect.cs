@@ -35,8 +35,20 @@ public class ForagingEffect(IItemFactory itemFactory) : ContinuousAnimationEffec
         new KeyValuePair<string, decimal>("rambutan", 4),
         new KeyValuePair<string, decimal>("tomato", 15),
         new KeyValuePair<string, decimal>("vegetable", 15),
-        new KeyValuePair<string, decimal>("petunia", 5),
-        new KeyValuePair<string, decimal>("pinkrose", 5)
+        new KeyValuePair<string, decimal>("petunia", 0.1m),
+        new KeyValuePair<string, decimal>("pinkrose", 0.1m),
+        new KeyValuePair<string, decimal>("pinkrose", 0.1m),
+        new KeyValuePair<string, decimal>("waterlily", 0.1m),
+        new KeyValuePair<string, decimal>("blossomofbetrayal", 0.02m),
+        new KeyValuePair<string, decimal>("bocanbough", 0.04m),
+        new KeyValuePair<string, decimal>("cactusflower", 0.04m),
+        new KeyValuePair<string, decimal>("dochasbloom", 0.04m),
+        new KeyValuePair<string, decimal>("lilypad", 0.04m),
+        new KeyValuePair<string, decimal>("koboldtail", 0.05m),
+        new KeyValuePair<string, decimal>("kabineblossom", 0.05m),
+        new KeyValuePair<string, decimal>("passionflower", 0.05m),
+        new KeyValuePair<string, decimal>("raineach", 0.05m),
+        new KeyValuePair<string, decimal>("sparkflower", 0.03m)
     ];
 
     private readonly List<string> GloveBreakMessages =
@@ -67,6 +79,17 @@ public class ForagingEffect(IItemFactory itemFactory) : ContinuousAnimationEffec
         { "Vegetable", 0.005 },
         { "Petunia", 0.015 },
         { "Pink Rose", 0.015 },
+        { "Water Lily", 0.015 },
+        { "Blossom of Betrayal", 0.03 },
+        { "Bocan Bough", 0.01 },
+        { "Cactus Flower", 0.01 },
+        { "Dochas Bloom", 0.01 },
+        { "Lily Pad", 0.01 },
+        { "Kobold Tail", 0.009 },
+        { "Kabine Blossom", 0.009 },
+        { "Passion Flower", 0.009 },
+        { "Raineach", 0.009 },
+        { "sparkflower", 0.009 },
     };
     
     private List<Point> ForagingSpots = new();

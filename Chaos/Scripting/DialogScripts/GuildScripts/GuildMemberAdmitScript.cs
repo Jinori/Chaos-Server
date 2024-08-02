@@ -217,6 +217,8 @@ public class GuildMemberAdmitScript : GuildScriptBase
             invitingPlayer.Aisling.SendOrangeBarMessage($"{playerInvited.Aisling.Name} has joined {guild.Name}!");
             playerInvited.Aisling.SendOrangeBarMessage($"You joined {guild.Name}!");
             guild.AddMember(playerInvited.Aisling, invitingPlayer.Aisling);
+            
+            GuildStore.Save(guild);
         }
 
         Subject.Close(source);
