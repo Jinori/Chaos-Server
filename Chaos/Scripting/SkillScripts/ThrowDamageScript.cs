@@ -13,13 +13,14 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.SkillScripts;
 
-public class DamageScript : ConfigurableSkillScriptBase,
+public class ThrowDamageScript : ConfigurableSkillScriptBase,
                             GenericAbilityComponent<Creature>.IAbilityComponentOptions,
                             DamageAbilityComponent.IDamageComponentOptions,
+                            ThrowCreatureComponent.IDamageComponentOptions,
                             ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 {
     /// <inheritdoc />
-    public DamageScript(Skill subject, IEffectFactory effectFactory)
+    public ThrowDamageScript(Skill subject, IEffectFactory effectFactory)
         : base(subject)
     {
         EffectFactory = effectFactory;
@@ -31,9 +32,9 @@ public class DamageScript : ConfigurableSkillScriptBase,
     public override void OnUse(ActivationContext context)
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-                                         ?
-                                         .Execute<ApplyEffectAbilityComponent>()
-                                         .Execute<DamageAbilityComponent>();
+                                         ?.Execute<DamageAbilityComponent>()
+                                         .Execute<ThrowCreatureComponent>()
+                                         .Execute<ApplyEffectAbilityComponent>();
 
     #region ScriptVars
     /// <inheritdoc />
@@ -102,6 +103,7 @@ public class DamageScript : ConfigurableSkillScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
+    public int? ThrowRange { get; init; }
     public TimeSpan? EffectDurationOverride { get; init; }
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
