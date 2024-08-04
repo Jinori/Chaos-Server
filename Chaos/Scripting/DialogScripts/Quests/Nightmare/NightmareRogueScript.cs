@@ -45,11 +45,11 @@ public class NightmareRogueScript : DialogScriptBase
                 switch (hasStage)
                 {
                     case false:
-                        Subject.AddOption($"Murauder Legend", "nightmarerogue1");
+                        Subject.AddOption($"Marauder Legend", "nightmarerogue1");
 
                         return;
                     case true when (stage == NightmareQuestStage.Started):
-                        Subject.AddOption($"Murauder Legend", "nightmarerogue1");
+                        Subject.AddOption($"Marauder Legend", "nightmarerogue1");
                        
                         return;
                     case true when (stage == NightmareQuestStage.CompletedNightmareWin1):

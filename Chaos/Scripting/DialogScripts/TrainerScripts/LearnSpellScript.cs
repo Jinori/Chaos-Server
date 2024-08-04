@@ -1,3 +1,4 @@
+using Chaos.Common.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Abstractions;
 using Chaos.Models.Data;
@@ -206,6 +207,11 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
                 // Spell already in spellbook
                 return false;
             }
+            
+            if (source.HasClass(BaseClass.Wizard) && (spell.Template.WizardElement != WizardElement.None))
+                if (source.Trackers.Flags.TryGetFlag(out WizardElement currentElements))
+                    if ((currentElements & spell.Template.WizardElement) == 0)
+                        return false;
 
             // Check if the current spell is part of an upgrade chain
             if (SpellUpgradesByTemplateKey.Values.Any(upgrades =>
@@ -297,7 +303,7 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             spell = SpellTeacherSource.SpellsToTeach.FirstOrDefault(
                 spell => spell.Template.Name.EqualsI(spellName)
                          && source.HasClass(spell.Template.Class!.Value)
-                         && (!spell.Template.AdvClass.HasValue || (source.UserStatSheet.AdvClass == spell.Template.AdvClass.Value)));
+                         && (!spell.Template.AdvClass.HasValue || source.UserStatSheet.AdvClass == spell.Template.AdvClass.Value));
 
             return spell != null;
         }
