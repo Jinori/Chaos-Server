@@ -225,8 +225,9 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
 
     private bool ReflectDamage(Creature source, Creature target, int damage)
     {
-        if ((target.IsAsgalled() && IntegerRandomizer.RollChance(70))
-            || (target.IsEarthenStanced() && IntegerRandomizer.RollChance(20)))
+        if ((target.IsAsgalled() && IntegerRandomizer.RollChance(50))
+            || (target.IsEarthenStanced() && IntegerRandomizer.RollChance(30))
+            || (target.IsRockStanced() && IntegerRandomizer.RollChance(70)))
         {
             switch (source)
             {

@@ -61,6 +61,7 @@ public class DefaultDamageFormula : IDamageFormula
             script);
 
         HandleClawFist(ref damage, script, source);
+        HandleChaosFist(ref damage, script, source);
         HandleAite(ref damage, target);
         HandleWeaponDamage(ref damage, source);
         HandleDmgStat(ref damage, script, source);
@@ -156,6 +157,18 @@ public class DefaultDamageFormula : IDamageFormula
 
         if (skillScript.Subject.Template.IsAssail)
             damage = Convert.ToInt32(damage * 1.3);
+    }
+    
+    protected virtual void HandleChaosFist(ref int damage, IScript source, Creature attacker)
+    {
+        if (!attacker.Effects.Contains("chaosfist"))
+            return;
+
+        if (source is not SubjectiveScriptBase<Skill> skillScript)
+            return;
+
+        if (skillScript.Subject.Template.IsAssail)
+            damage = Convert.ToInt32(damage * 1.7);
     }
     
     protected virtual void HandleDmgStat(ref int damage, IScript source, Creature attacker)

@@ -20,6 +20,8 @@ public static class StatusExtensions
     public static bool IsRuminating(this Creature creature) => creature.Effects.Contains("rumination");
     public static bool IsDetectingTraps(this Creature creature) => creature.Effects.Contains("detecttraps");
     public static bool IsEarthenStanced(this Creature creature) => creature.Effects.Contains("earthenstance");
+    
+    public static bool IsRockStanced(this Creature creature) => creature.Effects.Contains("rockstance");
     public static bool IsMistStanced(this Creature creature) => creature.Effects.Contains("miststance");
     public static bool IsThunderStanced(this Creature creature) => creature.Effects.Contains("thunderstance");
     public static bool IsSmokeStanced(this Creature creature) => creature.Effects.Contains("smokestance");

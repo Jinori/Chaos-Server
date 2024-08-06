@@ -5,6 +5,8 @@ using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
@@ -14,11 +16,12 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Jobs;
 
-public class ForagingEffect(IItemFactory itemFactory) : ContinuousAnimationEffectBase
+public class ForagingEffect(IItemFactory itemFactory, Logger<ForagingEffect> logger) : ContinuousAnimationEffectBase
 {
     private const int FORAGE_GATHER_CHANCE = 1;
     private const byte FORAGE_ICON = 95;
     private const int DAMAGE_GLOVE = 5;
+    private readonly Logger<ForagingEffect> Logger = logger;
     
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
@@ -35,20 +38,19 @@ public class ForagingEffect(IItemFactory itemFactory) : ContinuousAnimationEffec
         new KeyValuePair<string, decimal>("rambutan", 4),
         new KeyValuePair<string, decimal>("tomato", 15),
         new KeyValuePair<string, decimal>("vegetable", 15),
-        new KeyValuePair<string, decimal>("petunia", 0.1m),
-        new KeyValuePair<string, decimal>("pinkrose", 0.1m),
-        new KeyValuePair<string, decimal>("pinkrose", 0.1m),
-        new KeyValuePair<string, decimal>("waterlily", 0.1m),
-        new KeyValuePair<string, decimal>("blossomofbetrayal", 0.02m),
-        new KeyValuePair<string, decimal>("bocanbough", 0.04m),
-        new KeyValuePair<string, decimal>("cactusflower", 0.04m),
-        new KeyValuePair<string, decimal>("dochasbloom", 0.04m),
-        new KeyValuePair<string, decimal>("lilypad", 0.04m),
-        new KeyValuePair<string, decimal>("koboldtail", 0.05m),
-        new KeyValuePair<string, decimal>("kabineblossom", 0.05m),
-        new KeyValuePair<string, decimal>("passionflower", 0.05m),
-        new KeyValuePair<string, decimal>("raineach", 0.05m),
-        new KeyValuePair<string, decimal>("sparkflower", 0.03m)
+        new KeyValuePair<string, decimal>("petunia", 1),
+        new KeyValuePair<string, decimal>("pinkrose", 1),
+        new KeyValuePair<string, decimal>("waterlily", 1),
+        new KeyValuePair<string, decimal>("blossomofbetrayal", 0.2m),
+        new KeyValuePair<string, decimal>("bocanbough", 0.4m),
+        new KeyValuePair<string, decimal>("cactusflower", 0.4m),
+        new KeyValuePair<string, decimal>("dochasbloom", 0.4m),
+        new KeyValuePair<string, decimal>("lilypad", 0.4m),
+        new KeyValuePair<string, decimal>("koboldtail", 0.5m),
+        new KeyValuePair<string, decimal>("kabineblossom", 0.5m),
+        new KeyValuePair<string, decimal>("passionflower", 0.5m),
+        new KeyValuePair<string, decimal>("raineach", 0.5m),
+        new KeyValuePair<string, decimal>("sparkflower", 0.3m)
     ];
 
     private readonly List<string> GloveBreakMessages =
@@ -161,6 +163,17 @@ public class ForagingEffect(IItemFactory itemFactory) : ContinuousAnimationEffec
 
             ExperienceDistributionScript.GiveExp(aisling, expGain);
             aisling.SendOrangeBarMessage($"You gather a {herb.DisplayName} and gained {expGain} experience!");
+            
+            Logger.WithTopics(
+                    Topics.Entities.Aisling,
+                    Topics.Entities.Item,
+                    Topics.Entities.Dialog,
+                    Topics.Entities.Quest,
+                    Topics.Entities.Experience)
+                .WithProperty(aisling)
+                .WithProperty(Subject)
+                .LogInformation("{@AislingName} has received {@herb} and {@Experience} from fishing.", aisling.Name, herb.DisplayName, expGain);
+
 
             UpdatePlayerLegend(aisling);
         }

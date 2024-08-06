@@ -5,11 +5,11 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Monk;
 
-public class EarthenStanceEffect : EffectBase
+public class RockStanceEffect : EffectBase
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(9);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(13);
     public override byte Icon => 92;
-    public override string Name => "earthenstance";
+    public override string Name => "rockstance";
 
     public override void OnApplied()
     {
@@ -29,7 +29,7 @@ public class EarthenStanceEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("earthenstance"))
+        if (target.Effects.Contains("rockstance"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");
 

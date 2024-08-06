@@ -4,6 +4,8 @@ using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
@@ -13,11 +15,12 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Jobs;
 
-public class FishingEffect(IItemFactory itemFactory) : ContinuousAnimationEffectBase
+public class FishingEffect(IItemFactory itemFactory, ILogger<FishingEffect> logger) : ContinuousAnimationEffectBase
 {
     private const int FISH_CATCH_CHANCE = 2;
     private const byte FISHING_ICON = 95;
     private const int FISH_STEAL_BAIT = 5;
+    private readonly ILogger<FishingEffect> Logger = logger;
     
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
@@ -120,6 +123,17 @@ public class FishingEffect(IItemFactory itemFactory) : ContinuousAnimationEffect
         // Remove fishing bait
         aisling.Inventory.RemoveQuantity("Fishing Bait", 1);
         UpdatePlayerLegend(aisling);
+        
+        Logger.WithTopics(
+                Topics.Entities.Aisling,
+                Topics.Entities.Item,
+                Topics.Entities.Dialog,
+                Topics.Entities.Quest,
+                Topics.Entities.Experience)
+            .WithProperty(aisling)
+            .WithProperty(Subject)
+            .LogInformation("{@AislingName} has received {@fish} and {@Experience} from fishing.", aisling.Name, fish.DisplayName, expGain);
+
     }
     else
     {
