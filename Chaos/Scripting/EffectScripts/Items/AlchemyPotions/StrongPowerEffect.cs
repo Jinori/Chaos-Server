@@ -41,7 +41,7 @@ public class StrongPowerEffect : EffectBase, NonOverwritableEffectComponent.INon
 
         var attributes = new Attributes
         {
-            Dmg = 8
+            Dmg = 10
         };
 
         Subject.StatSheet.AddBonus(attributes);
@@ -55,7 +55,7 @@ public class StrongPowerEffect : EffectBase, NonOverwritableEffectComponent.INon
     {
         var attributes = new Attributes
         {
-            Dmg = 8
+            Dmg = 10
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

@@ -41,7 +41,7 @@ public class SmallPowerEffect : EffectBase, NonOverwritableEffectComponent.INonO
 
         var attributes = new Attributes
         {
-            Dmg = 1
+            Dmg = 3
         };
 
         Subject.StatSheet.AddBonus(attributes);
@@ -55,7 +55,7 @@ public class SmallPowerEffect : EffectBase, NonOverwritableEffectComponent.INonO
     {
         var attributes = new Attributes
         {
-            Dmg = 1
+            Dmg = 3
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

@@ -42,7 +42,7 @@ public class AccuracyEffect : EffectBase, NonOverwritableEffectComponent.INonOve
 
         var attributes = new Attributes
         {
-            Hit = 5
+            Hit = 10
         };
 
         Subject.StatSheet.AddBonus(attributes);
@@ -56,7 +56,7 @@ public class AccuracyEffect : EffectBase, NonOverwritableEffectComponent.INonOve
     {
         var attributes = new Attributes
         {
-            Hit = 5
+            Hit = 10
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

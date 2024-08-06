@@ -42,7 +42,7 @@ public class StrongAccuracyEffect : EffectBase, NonOverwritableEffectComponent.I
 
         var attributes = new Attributes
         {
-            Hit = 8
+            Hit = 15
         };
 
         Subject.StatSheet.AddBonus(attributes);
@@ -56,7 +56,7 @@ public class StrongAccuracyEffect : EffectBase, NonOverwritableEffectComponent.I
     {
         var attributes = new Attributes
         {
-            Hit = 8
+            Hit = 15
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

@@ -42,7 +42,7 @@ public class SmallAccuracyEffect : EffectBase, NonOverwritableEffectComponent.IN
 
         var attributes = new Attributes
         {
-            Hit = 1
+            Hit = 5
         };
 
         Subject.StatSheet.AddBonus(attributes);
@@ -56,7 +56,7 @@ public class SmallAccuracyEffect : EffectBase, NonOverwritableEffectComponent.IN
     {
         var attributes = new Attributes
         {
-            Hit = 1
+            Hit = 5
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

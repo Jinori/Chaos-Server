@@ -41,7 +41,7 @@ public class FirestormEffect : ContinuousAnimationEffectBase
         if (Subject is not Monster)
             return;
 
-        const int DAMAGE_PER_TICK = 100;
+        const int DAMAGE_PER_TICK = 150;
 
         if (Subject.StatSheet.CurrentHp <= DAMAGE_PER_TICK)
             return;

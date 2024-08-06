@@ -41,7 +41,7 @@ public class StrongAstralEffect : EffectBase, NonOverwritableEffectComponent.INo
 
         var attributes = new Attributes
         {
-            MaximumMp = 1000
+            MaximumMp = 3000
         };
 
         Subject.StatSheet.AddBonus(attributes);
@@ -55,7 +55,7 @@ public class StrongAstralEffect : EffectBase, NonOverwritableEffectComponent.INo
     {
         var attributes = new Attributes
         {
-            MaximumMp = 1000
+            MaximumMp = 3000
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

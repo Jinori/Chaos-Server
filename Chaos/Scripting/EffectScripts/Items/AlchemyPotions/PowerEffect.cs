@@ -41,7 +41,7 @@ public class PowerEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
 
         var attributes = new Attributes
         {
-            Dmg = 5
+            Dmg = 6
         };
 
         Subject.StatSheet.AddBonus(attributes);
@@ -55,7 +55,7 @@ public class PowerEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
     {
         var attributes = new Attributes
         {
-            Dmg = 5
+            Dmg = 6
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

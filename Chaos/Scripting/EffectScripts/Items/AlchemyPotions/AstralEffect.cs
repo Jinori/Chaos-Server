@@ -41,7 +41,7 @@ public class AstralEffect : EffectBase, NonOverwritableEffectComponent.INonOverw
 
         var attributes = new Attributes
         {
-            MaximumMp = 200
+            MaximumMp = 800
         };
 
         Subject.StatSheet.AddBonus(attributes);
@@ -55,7 +55,7 @@ public class AstralEffect : EffectBase, NonOverwritableEffectComponent.INonOverw
     {
         var attributes = new Attributes
         {
-            MaximumMp = 200
+            MaximumMp = 800
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
