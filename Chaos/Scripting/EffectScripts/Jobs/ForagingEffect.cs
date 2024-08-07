@@ -1,6 +1,5 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
-using Chaos.Extensions;
 using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
@@ -16,17 +15,16 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Jobs;
 
-public class ForagingEffect(IItemFactory itemFactory, Logger<ForagingEffect> logger) : ContinuousAnimationEffectBase
+public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> logger) : ContinuousAnimationEffectBase
 {
     private const int FORAGE_GATHER_CHANCE = 1;
     private const byte FORAGE_ICON = 95;
     private const int DAMAGE_GLOVE = 5;
-    private readonly Logger<ForagingEffect> Logger = logger;
-    
+
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
-    private static readonly List<KeyValuePair<string, decimal>> ForagingData =
-    [
+    private static readonly List<KeyValuePair<string, decimal>> ForagingData = new()
+    {
         new KeyValuePair<string, decimal>("acorn", 25),
         new KeyValuePair<string, decimal>("apple", 20), 
         new KeyValuePair<string, decimal>("cherry", 20), 
@@ -51,10 +49,10 @@ public class ForagingEffect(IItemFactory itemFactory, Logger<ForagingEffect> log
         new KeyValuePair<string, decimal>("passionflower", 0.5m),
         new KeyValuePair<string, decimal>("raineach", 0.5m),
         new KeyValuePair<string, decimal>("sparkflower", 0.3m)
-    ];
+    };
 
-    private readonly List<string> GloveBreakMessages =
-    [
+    private readonly List<string> GloveBreakMessages = new()
+    {
         "Your glove gets a little bit worn.",
         "That bush tore a small hole in your glove.",
         "Glove takes a little damage",
@@ -64,7 +62,7 @@ public class ForagingEffect(IItemFactory itemFactory, Logger<ForagingEffect> log
         "You notice your glove is breaking slowly.",
         "A little tear happens on your glove.",
         "Glove fabric experiences a tear."
-    ];
+    };
 
     private static readonly Dictionary<string, double> ForagingExperienceMultipliers = new()
     {
@@ -91,9 +89,9 @@ public class ForagingEffect(IItemFactory itemFactory, Logger<ForagingEffect> log
         { "Kabine Blossom", 0.009 },
         { "Passion Flower", 0.009 },
         { "Raineach", 0.009 },
-        { "sparkflower", 0.009 },
+        { "Sparkflower", 0.009 },
     };
-    
+
     private List<Point> ForagingSpots = new();
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(1);
 
@@ -161,10 +159,15 @@ public class ForagingEffect(IItemFactory itemFactory, Logger<ForagingEffect> log
             var tnl = LevelUpFormulae.Default.CalculateTnl(aisling);
             var expGain = CalculateExperienceGain(aisling, tnl, herb.DisplayName);
 
+            if (expGain >= 25000)
+            {
+                expGain = 25000;
+            }
+
             ExperienceDistributionScript.GiveExp(aisling, expGain);
             aisling.SendOrangeBarMessage($"You gather a {herb.DisplayName} and gained {expGain} experience!");
             
-            Logger.WithTopics(
+            logger.WithTopics(
                     Topics.Entities.Aisling,
                     Topics.Entities.Item,
                     Topics.Entities.Dialog,
@@ -172,7 +175,7 @@ public class ForagingEffect(IItemFactory itemFactory, Logger<ForagingEffect> log
                     Topics.Entities.Experience)
                 .WithProperty(aisling)
                 .WithProperty(Subject)
-                .LogInformation("{@AislingName} has received {@herb} and {@Experience} from fishing.", aisling.Name, herb.DisplayName, expGain);
+                .LogInformation("{@AislingName} has received {@Herb} and {@Experience} from foraging.", aisling.Name, herb.DisplayName, expGain);
 
 
             UpdatePlayerLegend(aisling);
@@ -183,10 +186,10 @@ public class ForagingEffect(IItemFactory itemFactory, Logger<ForagingEffect> log
         }
     }
 
-    private int CalculateExperienceGain(Aisling source, int tnl, string fishName)
+    private int CalculateExperienceGain(Aisling source, int tnl, string herbName)
     {
 
-        if (!ForagingExperienceMultipliers.TryGetValue(fishName, out var multiplier))
+        if (!ForagingExperienceMultipliers.TryGetValue(herbName, out var multiplier))
         {
             source.SendActiveMessage("Something went wrong when trying to forage a herb!");
 

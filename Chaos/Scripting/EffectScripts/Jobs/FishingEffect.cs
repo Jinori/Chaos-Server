@@ -20,8 +20,7 @@ public class FishingEffect(IItemFactory itemFactory, ILogger<FishingEffect> logg
     private const int FISH_CATCH_CHANCE = 2;
     private const byte FISHING_ICON = 95;
     private const int FISH_STEAL_BAIT = 5;
-    private readonly ILogger<FishingEffect> Logger = logger;
-    
+
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
     private static readonly List<KeyValuePair<string, decimal>> FishData =
@@ -116,6 +115,11 @@ public class FishingEffect(IItemFactory itemFactory, ILogger<FishingEffect> logg
         // Calculate experience based on fish caught and award it to the player
         var tnl = LevelUpFormulae.Default.CalculateTnl(aisling);
         var expGain = CalculateExperienceGain(aisling, tnl, fish.DisplayName);
+        
+        if (expGain >= 25000)
+        {
+            expGain = 25000;
+        }
 
         ExperienceDistributionScript.GiveExp(aisling, expGain);
         aisling.SendOrangeBarMessage($"You caught a {fish.DisplayName} and gained {expGain} experience!");
@@ -124,7 +128,7 @@ public class FishingEffect(IItemFactory itemFactory, ILogger<FishingEffect> logg
         aisling.Inventory.RemoveQuantity("Fishing Bait", 1);
         UpdatePlayerLegend(aisling);
         
-        Logger.WithTopics(
+        logger.WithTopics(
                 Topics.Entities.Aisling,
                 Topics.Entities.Item,
                 Topics.Entities.Dialog,
