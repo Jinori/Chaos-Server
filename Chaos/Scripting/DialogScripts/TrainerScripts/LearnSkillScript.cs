@@ -33,6 +33,7 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             {"bullrush", new List<string> {"charge"} },
             //Monk
             { "punch", new List<string> { "doublepunch", "rapidpunch" } },
+            { "doublepunch", new List<string> { "rapidpunch" }},
             { "kick", new List<string> { "roundhousekick" } },
             { "highkick", new List<string> { "mantiskick" } },
             //Rogue
@@ -297,7 +298,7 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
                 return false;
             }
 
-            if (!ValidateRequiredStats(source, dialog, requirements) || !ValidatePrerequisiteSkills(source, dialog, requirements) || !ValidatePrerequisiteSpells(source, dialog, requirements) || !ValidateAndTakeItemRequirements(source, dialog, requirements) || !ValidateAndTakeGoldRequirement(source, dialog, requirements))
+            if (!ValidateRequiredStats(source, dialog, requirements) || !ValidatePrerequisiteSkills(source, dialog, requirements) || !ValidatePrerequisiteSpells(source, dialog, requirements) || !ValidateAndTakeItemAndGoldRequirements(source, dialog, requirements))
                 return false;
 
             return true;
@@ -403,7 +404,7 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             return true;
         }
 
-        private bool ValidateAndTakeItemRequirements(Aisling source, Dialog dialog, LearningRequirements requirements)
+        private bool ValidateAndTakeItemAndGoldRequirements(Aisling source, Dialog dialog, LearningRequirements requirements)
         {
             foreach (var itemRequirement in requirements.ItemRequirements)
             {
@@ -415,24 +416,19 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
                     return false;
                 }
             }
-
-            foreach (var itemRequirement in requirements.ItemRequirements)
-            {
-                var requiredItem = ItemFactory.CreateFaux(itemRequirement.ItemTemplateKey);
-                source.Inventory.RemoveQuantity(requiredItem.DisplayName, itemRequirement.AmountRequired);
-            }
-
-            return true;
-        }
-
-        private bool ValidateAndTakeGoldRequirement(Aisling source, Dialog dialog, LearningRequirements requirements)
-        {
+            
             if (requirements.RequiredGold.HasValue && (source.Gold < requirements.RequiredGold.Value))
             {
                 dialog.Reply(source, "Come back when you are more wealthy.", "generic_learnskill_initial");
                 return false;
             }
 
+            foreach (var itemRequirement in requirements.ItemRequirements)
+            {
+                var requiredItem = ItemFactory.CreateFaux(itemRequirement.ItemTemplateKey);
+                source.Inventory.RemoveQuantity(requiredItem.DisplayName, itemRequirement.AmountRequired);
+            }
+            
             if (requirements.RequiredGold.HasValue)
                 source.TryTakeGold(requirements.RequiredGold.Value);
 

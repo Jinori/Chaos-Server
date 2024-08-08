@@ -15,8 +15,8 @@ namespace Chaos.Scripting.SkillScripts;
 
 public class DamageAndEffectScript : ConfigurableSkillScriptBase,
                                      GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                                     DamageAbilityComponent.IDamageComponentOptions,
-                                     ApplyEffectAbilityComponent.IApplyEffectComponentOptions
+                                     ApplyEffectAbilityComponent.IApplyEffectComponentOptions,
+                                     DamageAbilityComponent.IDamageComponentOptions
 {
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
