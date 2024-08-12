@@ -41,6 +41,8 @@ namespace Chaos.Scripting.SkillScripts.Rogue
         public bool ShouldNotBreakHide { get; init; }
         public byte? Sound { get; init; }
         public IScript SourceScript { get; init; }
+        public bool? SurroundingTargets { get; init; }
+        public decimal? DamageMultiplierPerTarget { get; init; }
         private IIntervalTimer StrikeTimer { get; }
 
         private List<Creature>? Targets { get; set; }

@@ -63,6 +63,9 @@ public class ChargeScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public IScript SourceScript { get; init; }
 
+    public bool? SurroundingTargets { get; init; }
+    public decimal? DamageMultiplierPerTarget { get; init; }
+
     /// <inheritdoc />
     public ChargeScript(Skill subject)
         : base(subject)

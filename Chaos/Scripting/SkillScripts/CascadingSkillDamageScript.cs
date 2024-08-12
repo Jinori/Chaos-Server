@@ -73,6 +73,10 @@ public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
     public decimal? PctHpDamage { get; init; }
     /// <inheritdoc />
     public IScript SourceScript { get; init; }
+
+    public bool? SurroundingTargets { get; init; }
+    public decimal? DamageMultiplierPerTarget { get; init; }
+
     /// <inheritdoc />
     public Animation? Animation { get; init; }
     /// <inheritdoc />

@@ -26,7 +26,7 @@ public sealed class AdaptiveSkinEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     public override byte Icon => 2;
     /// <inheritdoc />
-    public override string Name => "IronSkin";
+    public override string Name => "AdaptiveSkin";
 
     public override void OnApplied()
     {
@@ -92,7 +92,7 @@ public sealed class AdaptiveSkinEffect : ContinuousAnimationEffectBase
     {
         if (target.Effects.Contains("IronSkin"))
         {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You already have Iron Skin applied.");
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You already have Adaptive Skin applied.");
             return false;
         }
         return true;

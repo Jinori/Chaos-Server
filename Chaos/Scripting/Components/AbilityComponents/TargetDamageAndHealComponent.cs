@@ -9,7 +9,7 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
 
-public struct DamageAbilityComponent : IComponent
+public struct TargetDamageAndHealComponent : IComponent
 {
     /// <inheritdoc />
     public void Execute(ActivationContext context, ComponentVars vars)
@@ -17,8 +17,8 @@ public struct DamageAbilityComponent : IComponent
         var options = vars.GetOptions<IDamageComponentOptions>();
         var targets = vars.GetTargets<Creature>();
 
-        bool surroundingTargets = options.SurroundingTargets ?? false;
-        int numberOfTargets = surroundingTargets ? targets.Count() : 1;
+        var surroundingTargets = options.SurroundingTargets ?? false;
+        var numberOfTargets = surroundingTargets ? targets.Count : 1;
 
         foreach (var target in targets)
         {
@@ -26,7 +26,7 @@ public struct DamageAbilityComponent : IComponent
                 context.Source,
                 target,
                 numberOfTargets,
-                options.DamageMultiplierPerTarget ?? 0.05m,  // Default to 5% if not specified
+                options.DamageMultiplierPerTarget ?? 0.05m, // Default to 5% if not specified
                 options.BaseDamage,
                 options.PctHpDamage,
                 options.DamageStat,
@@ -42,6 +42,14 @@ public struct DamageAbilityComponent : IComponent
                     damage,
                     options.Element);
             }
+        }
+
+        // Apply healing based on the number of surrounding targets
+        if (options.HealUser ?? false)
+        {
+            ApplyHealing(context.Source, numberOfTargets,
+                options.HealMultiplierPerTarget ?? 0.05m); // Default to 5% if not specified
+            context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
         }
     }
 
@@ -62,7 +70,8 @@ public struct DamageAbilityComponent : IComponent
         {
             var healthPercentFactor = 1 + (1 - target.StatSheet.HealthPercent / 100m);
             finalDamage += Convert.ToInt32(
-                MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0) * healthPercentFactor);
+                MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0) *
+                healthPercentFactor);
         }
         else
         {
@@ -71,7 +80,6 @@ public struct DamageAbilityComponent : IComponent
 
         if (!damageStat.HasValue)
         {
-            ApplyFuryEffects(source, ref finalDamage);
             return finalDamage;
         }
 
@@ -85,33 +93,18 @@ public struct DamageAbilityComponent : IComponent
             finalDamage = (int)(finalDamage * (1 + damageMultiplierPerTarget * (numberOfTargets - 1)));
         }
 
-        ApplyFuryEffects(source, ref finalDamage);
-
         return finalDamage;
     }
 
-    private void ApplyFuryEffects(Creature source, ref int finalDamage)
+    private void ApplyHealing(Creature source, int numberOfTargets, decimal healMultiplierPerTarget)
     {
-        var furyMultipliers = new Dictionary<string, double>
-        {
-            { "fury1", 1.15 },
-            { "fury2", 1.30 },
-            { "fury3", 1.50 },
-            { "fury4", 1.70 },
-            { "fury5", 1.95 },
-            { "fury6", 2.20 }
-        };
-
-        foreach (var fury in furyMultipliers)
-        {
-            if (source.Effects.Contains(fury.Key))
-            {
-                finalDamage = (int)(finalDamage * fury.Value);
-            }
-        }
+        var healAmount = (int)(source.StatSheet.MaximumHp * healMultiplierPerTarget * numberOfTargets);
+        source.StatSheet.AddHp(healAmount);
+        source.ShowHealth();
     }
+}
 
-    public interface IDamageComponentOptions
+public interface IDamageComponentOptions
     {
         IApplyDamageScript ApplyDamageScript { get; init; }
         int? BaseDamage { get; init; }
@@ -121,7 +114,8 @@ public struct DamageAbilityComponent : IComponent
         bool? MoreDmgLowTargetHp { get; init; }
         decimal? PctHpDamage { get; init; }
         IScript SourceScript { get; init; }
-        bool? SurroundingTargets { get; init; }  // New option to check for surrounding targets
-        decimal? DamageMultiplierPerTarget { get; init; }  // New option for damage multiplier per target
+        bool? SurroundingTargets { get; init; }
+        decimal? DamageMultiplierPerTarget { get; init; }
+        bool? HealUser { get; init; }  // New option to toggle healing
+        decimal? HealMultiplierPerTarget { get; init; }  // New option for heal multiplier per target
     }
-}

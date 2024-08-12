@@ -63,6 +63,9 @@ public class BullRushScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public IScript SourceScript { get; init; }
 
+    public bool? SurroundingTargets { get; init; }
+    public decimal? DamageMultiplierPerTarget { get; init; }
+
     /// <inheritdoc />
     public BullRushScript(Skill subject)
         : base(subject)

@@ -88,6 +88,8 @@ public class DamageScript : ConfigurableSkillScriptBase,
     public decimal? PctHpDamage { get; init; }
 
     public IScript SourceScript { get; init; }
+    public bool? SurroundingTargets { get; init; }
+    public decimal? DamageMultiplierPerTarget { get; init; }
 
     /// <inheritdoc />
     public int? ManaCost { get; init; }
