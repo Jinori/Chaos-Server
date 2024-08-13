@@ -48,7 +48,7 @@ public class RestrictionBehavior
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.IsSuained() || aisling.IsPramhed() || aisling.IsRooted():
+            case Aisling aisling when aisling.IsSuained() || aisling.IsPramhed():
             {
                 aisling.SendOrangeBarMessage("You cannot turn.");
 
@@ -58,7 +58,7 @@ public class RestrictionBehavior
             {
                 return false;
             }
-            case Monster monster when monster.IsSuained() || monster.IsPramhed() || monster.IsBeagSuained() || monster.IsRooted():
+            case Monster monster when monster.IsSuained() || monster.IsPramhed() || monster.IsBeagSuained():
             {
                 return false;
             }

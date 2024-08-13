@@ -81,7 +81,11 @@ public class SiphoningEffect : ContinuousAnimationEffectBase
             }
 
             if (SourceOfEffect is { IsDead: true })
+            {
+                Subject.Effects.Dispel("siphoning");
                 return;
+            }
+            
             
             // Heal the SourceOfEffect
             if (SourceOfEffect != null && SourceOfEffect.StatSheet.CurrentHp != SourceOfEffect.StatSheet.EffectiveMaximumHp)
