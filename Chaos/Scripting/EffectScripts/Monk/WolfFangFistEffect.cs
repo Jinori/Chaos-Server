@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
 using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
@@ -40,6 +41,13 @@ public sealed class WolfFangFistEffect : ContinuousAnimationEffectBase
     {
         if (target.Script.Is<ThisIsABossScript>())
             return false;
+
+        if ((target.IsAsgalled() && IntegerRandomizer.RollChance(50))
+            || (target.IsEarthenStanced() && IntegerRandomizer.RollChance(30))
+            || (target.IsRockStanced() && IntegerRandomizer.RollChance(70)))
+        {
+            return false;
+        }
         
         if (target.Effects.Contains("Suain") || target.Effects.Contains("wolffangfist"))
         {

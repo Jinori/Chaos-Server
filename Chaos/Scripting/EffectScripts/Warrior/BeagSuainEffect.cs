@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
 using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
@@ -46,6 +47,13 @@ public sealed class BeagSuainEffect : ContinuousAnimationEffectBase, Hierarchica
     {
         if (target.Script.Is<ThisIsABossScript>())
             return false;
+        
+        if ((target.IsAsgalled() && IntegerRandomizer.RollChance(50))
+            || (target.IsEarthenStanced() && IntegerRandomizer.RollChance(30))
+            || (target.IsRockStanced() && IntegerRandomizer.RollChance(70)))
+        {
+            return false;
+        }
         
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
