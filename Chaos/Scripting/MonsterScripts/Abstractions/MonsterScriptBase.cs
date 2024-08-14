@@ -77,6 +77,9 @@ public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonste
         {
             Subject.Effects.Dispel("wolfFangFist");
         }
+        
+        if (Subject.Effects.Contains("Crit"))
+            Subject.Effects.Dispel("Crit");
 
         if (Subject.Effects.Contains("Amnesia"))
             Subject.Effects.Dispel("Amensia");

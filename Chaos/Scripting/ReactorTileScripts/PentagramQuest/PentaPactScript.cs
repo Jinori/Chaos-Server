@@ -26,7 +26,7 @@ public sealed class PentaPactScript : ReactorTileScriptBase
     public override void OnClicked(Aisling source)
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage);
-        if (hasStage || stage == PentagramQuestStage.None)
+        if (hasStage && stage != PentagramQuestStage.None)
         {
             source.SendOrangeBarMessage("You have already signed the pact.");
             return;

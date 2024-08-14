@@ -209,6 +209,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         if (Subject.Effects.Contains("wolfFangFist"))
             Subject.Effects.Dispel("wolfFangFist");
+        
+        if (Subject.Effects.Contains("Crit"))
+            Subject.Effects.Dispel("Crit");
 
         if (Subject.IsThunderStanced())
         {

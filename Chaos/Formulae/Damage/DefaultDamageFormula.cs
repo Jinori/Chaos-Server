@@ -187,17 +187,12 @@ public class DefaultDamageFormula : IDamageFormula
     {
         var damageMultiplier = 1.0;
         
-        if (defender.Effects.Contains("pramh"))
-        {
-            damageMultiplier *= 2.0;
-        }
-
         if (defender.Effects.Contains("beagpramh"))
         {
             damageMultiplier *= 1.25;
         }
 
-        if (defender.Effects.Contains("wolfFangFist"))
+        if (defender.Effects.Contains("wolfFangFist") || defender.Effects.Contains("Crit") || defender.Effects.Contains("pramh"))
         {
             damageMultiplier *= 2.0;
         }
