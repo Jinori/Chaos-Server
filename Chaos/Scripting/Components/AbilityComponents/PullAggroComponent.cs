@@ -1,5 +1,4 @@
 using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
 using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
@@ -46,9 +45,7 @@ public class PullAggroComponent : IComponent
     {
         if (source.MapInstance == target.MapInstance)
         {
-            var direction = source.Direction;
-            var pointNextToSource = source.GenerateCardinalPoints()
-                .WithConsistentDirectionBias(direction).ToList();
+            var pointsAroundSource = source.GenerateCardinalPoints().Concat(source.GenerateIntercardinalPoints()).ToList();
 
             if (target.Name.Contains("Dummy") || target.Script.Is<ThisIsABossScript>())
             {
@@ -61,8 +58,9 @@ public class PullAggroComponent : IComponent
             if (target.WithinRange(source, 1))
                 return;
 
-            foreach (var point in pointNextToSource)
+            foreach (var point in pointsAroundSource)
             {
+                // Check if there's a direct line of sight and the point is walkable
                 if (source.MapInstance.IsWalkable(point, CreatureType.Normal, false))
                 {
                     target.WarpTo(point);

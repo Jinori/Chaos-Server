@@ -9,6 +9,7 @@ using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -18,6 +19,7 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
                                                 ICascadingTileScript,
                                                 GetCascadingTargetsAbilityComponent<Creature>.IGetCascadingTargetsComponentOptions,
                                                 DamageAbilityComponent.IDamageComponentOptions,
+                                                ApplyEffectAbilityComponent.IApplyEffectComponentOptions,
                                                 SoundAbilityComponent.ISoundComponentOptions,
                                                 AnimationAbilityComponent.IAnimationComponentOptions
 {
@@ -27,9 +29,10 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
     private int Stages => Range;
 
     /// <inheritdoc />
-    public CascadingDamageTileScript(ReactorTile subject)
+    public CascadingDamageTileScript(ReactorTile subject, IEffectFactory effectFactory)
         : base(subject)
     {
+        EffectFactory = effectFactory;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
         CascadeTimer = new IntervalTimer(TimeSpan.FromMilliseconds(CascadeIntervalMs));
@@ -76,6 +79,7 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
         {
             Executor.ExecuteAndCheck<GetCascadingTargetsAbilityComponent<Creature>>()
                     ?.Execute<DamageAbilityComponent>()
+                    .Execute<ApplyEffectAbilityComponent>()
                     .Execute<AnimationAbilityComponent>()
                     .Check(ShouldPlaySound)
                     ?.Execute<SoundAbilityComponent>();
@@ -147,4 +151,9 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
     #endregion
+
+    public TimeSpan? EffectDurationOverride { get; init; }
+    public IEffectFactory EffectFactory { get; init; }
+    public string? EffectKey { get; init; }
+    public int? EffectApplyChance { get; init; }
 }
