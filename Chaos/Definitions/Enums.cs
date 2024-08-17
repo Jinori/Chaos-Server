@@ -1799,3 +1799,47 @@ public enum AttackedWerewolf
     Yes = 1,
     No = 2,
 }
+
+[Flags]
+public enum FishingQuest
+{
+    None = 0,
+    Reached250 = 1,
+    Reached500 = 3,
+    Reached800 = 5,
+    Reached1500 = 7,
+    Reached3000 = 9,
+    Reached5000 = 11,
+    Reached7500 = 13,
+    Reached10000 = 15,
+    Reached12500 = 17,
+    Reached15000 = 19,
+    Reached20000 = 21,
+    Reached25000 = 23,
+    Reached30000 = 25,
+    Reached40000 = 27,
+    Reached50000 = 29,
+    CompletedFishing = 31
+}
+
+[Flags]
+public enum ForagingQuest
+{
+    None = 0,
+    Reached250 = 1,
+    Reached500 = 3,
+    Reached800 = 5,
+    Reached1500 = 7,
+    Reached3000 = 9,
+    Reached5000 = 11,
+    Reached7500 = 13,
+    Reached10000 = 15,
+    Reached12500 = 17,
+    Reached15000 = 19,
+    Reached20000 = 21,
+    Reached25000 = 23,
+    Reached30000 = 25,
+    Reached40000 = 27,
+    Reached50000 = 29,
+    CompletedForaging = 31
+}
