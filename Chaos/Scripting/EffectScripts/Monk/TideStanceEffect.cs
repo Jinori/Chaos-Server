@@ -5,11 +5,11 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Monk;
 
-public class MistStanceEffect : EffectBase
+public class TideStanceEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(15);
     public override byte Icon => 91;
-    public override string Name => "miststance";
+    public override string Name => "tidetance";
 
     public override void OnApplied()
     {

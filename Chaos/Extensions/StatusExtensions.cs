@@ -23,8 +23,11 @@ public static class StatusExtensions
     
     public static bool IsRockStanced(this Creature creature) => creature.Effects.Contains("rockstance");
     public static bool IsMistStanced(this Creature creature) => creature.Effects.Contains("miststance");
+    public static bool IsTideStanced(this Creature creature) => creature.Effects.Contains("tidestance");
     public static bool IsThunderStanced(this Creature creature) => creature.Effects.Contains("thunderstance");
+    public static bool IsLightningStanced(this Creature creature) => creature.Effects.Contains("lightningstance");
     public static bool IsSmokeStanced(this Creature creature) => creature.Effects.Contains("smokestance");
+    public static bool IsFlameStanced(this Creature creature) => creature.Effects.Contains("flamestance");
     public static bool IsInLastStand(this Creature creature) => creature.Effects.Contains("laststand");
     public static bool IsBeagAited(this Creature creature) => creature.Effects.Contains("beag naomh aite");
     public static bool IsAited(this Creature creature) => creature.Effects.Contains("naomh aite");

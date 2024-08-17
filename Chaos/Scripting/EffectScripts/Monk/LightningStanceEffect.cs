@@ -5,18 +5,18 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Monk;
 
-public class MistStanceEffect : EffectBase
+public class LightningStanceEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(15);
-    public override byte Icon => 91;
-    public override string Name => "miststance";
+    public override byte Icon => 94;
+    public override string Name => "lightningstance";
 
     public override void OnApplied()
     {
         base.OnApplied();
 
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A heavy, soothing mist envelops your body.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Electrical surges and charges around your body.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -24,12 +24,12 @@ public class MistStanceEffect : EffectBase
     public override void OnTerminated()
     {
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The mist rolls off your body.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The surge of electricity seems to fade.");
     }
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (!target.Effects.Contains("miststance") && !target.Effects.Contains("tidestance")) 
+        if (!target.Effects.Contains("thunderstance") && !target.Effects.Contains("lightningstance"))
             return true;
         
         (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");

@@ -6,6 +6,8 @@ using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
+using Chaos.Formulae.Damage;
+using Chaos.Geometry.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.Panel;
@@ -20,6 +22,7 @@ using Chaos.Scripting.Behaviors;
 using Chaos.Services.Servers.Options;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.FunctionalScripts.ApplyHealing;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MonsterScripts.Boss;
@@ -78,7 +81,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private readonly ISimpleCache SimpleCache;
     private readonly IIntervalTimer SleepAnimationTimer;
     private readonly IItemFactory ItemFactory;
-
+    public IApplyDamageScript ApplyDamageScript { get; init; } 
     /// <inheritdoc />
     public IApplyHealScript ApplyHealScript { get; init; }
     /// <inheritdoc />
@@ -94,10 +97,28 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     public IScript SourceScript { get; init; }
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
+    private Animation LightningStanceStrike { get; } = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 698
+    };
+    
+    private Animation FlameHit { get; } = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 870
+    };
+    
     private Animation MistHeal { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 646
+    };
+    
+    private Animation TideHeal { get; } = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 849
     };
     protected virtual RelationshipBehavior RelationshipBehavior { get; }
     protected virtual RestrictionBehavior RestrictionBehavior { get; }
@@ -133,6 +154,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         SimpleCache = simpleCache;
         SourceScript = this;
         ApplyHealScript = ApplyNonAlertingHealScript.Create();
+        ApplyDamageScript = ApplyAttackDamageScript.Create();
+        ApplyDamageScript.DamageFormula = DamageFormulae.Default;
         ApplyHealScript.HealFormula = HealFormulae.Default;
     }
 
@@ -209,23 +232,89 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         if (Subject.Effects.Contains("wolfFangFist"))
             Subject.Effects.Dispel("wolfFangFist");
-        
+
         if (Subject.Effects.Contains("Crit"))
             Subject.Effects.Dispel("Crit");
 
-        if (Subject.IsThunderStanced())
+        if (Subject.IsLightningStanced())
         {
             var result = damage * 30;
 
+            // Apply additional effect with a 2% chance
             if (IntegerRandomizer.RollChance(2))
             {
                 if (!source.Script.Is<ThisIsABossScript>())
                 {
                     var effect = EffectFactory.Create("Suain");
-                    source.Effects.Apply(Subject, effect);   
+                    source.Effects.Apply(Subject, effect);
                 }
             }
 
+            // Update aggro list for monsters
+            if (source is Monster monster)
+                monster.AggroList.AddOrUpdate(Subject.Id, _ => result, (_, currentAggro) => currentAggro + result);
+
+            // Get all non-wall points on the map within 4 spaces of the subject
+            var nonWallPoints = Enumerable.Range(0, Subject.MapInstance.Template.Width)
+                .SelectMany(x => Enumerable.Range(0, Subject.MapInstance.Template.Height)
+                    .Where(y => !Subject.MapInstance.IsWall(new Point(x, y)) &&
+                                Math.Sqrt(Math.Pow(x - Subject.X, 2) + Math.Pow(y - Subject.Y, 2)) <= 4)
+                    .Select(y => new Point(x, y))).ToList();
+
+            if (nonWallPoints.Count <= 0)
+                return;
+
+            // Select a random non-wall point as the top-left corner of the 2x2 area
+            var topLeftPoint = nonWallPoints[Random.Shared.Next(nonWallPoints.Count)];
+
+            // Define the 2x2 area by generating points around the top-left corner
+            var areaPoints = new List<Point>
+            {
+                topLeftPoint,
+                new Point(topLeftPoint.X + 1, topLeftPoint.Y),
+                new Point(topLeftPoint.X, topLeftPoint.Y + 1),
+                new Point(topLeftPoint.X + 1, topLeftPoint.Y + 1)
+            };
+
+            // Show animation and apply damage to all entities within the 2x2 area
+            foreach (var point in areaPoints)
+            {
+                // Ensure the point is within the map bounds
+                if (point.X >= 0 && point.Y >= 0 && point.X < Subject.MapInstance.Template.Width &&
+                    point.Y < Subject.MapInstance.Template.Height)
+                {
+                    Subject.MapInstance.ShowAnimation(LightningStanceStrike.GetPointAnimation(point));
+
+                    // Check if an entity is standing on the point and apply damage
+                    var target = Subject.MapInstance
+                        .GetEntitiesAtPoint<Creature>(point).FirstOrDefault(x => x.IsAlive && x.IsHostileTo(Subject));
+
+                    if (target != null)
+                    {
+                        var areaDamage = (int)(target.StatSheet.EffectiveMaximumHp * 0.05); // 5% of max HP
+                        ApplyDamageScript.ApplyDamage(Subject, target, this, areaDamage);
+                        target.ShowHealth();
+                    }
+                }
+            }
+        }
+
+
+        if (Subject.IsThunderStanced())
+        {
+            var result = damage * 30;
+
+            // Apply additional effect with a 2% chance
+            if (IntegerRandomizer.RollChance(2))
+            {
+                if (!source.Script.Is<ThisIsABossScript>())
+                {
+                    var effect = EffectFactory.Create("Suain");
+                    source.Effects.Apply(Subject, effect);
+                }
+            }
+
+            // Update aggro list for monsters
             if (source is Monster monster)
                 monster.AggroList.AddOrUpdate(Subject.Id, _ => result, (_, currentAggro) => currentAggro + result);
         }
@@ -235,66 +324,136 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             if (!source.Script.Is<ThisIsABossScript>())
             {
                 var effect = EffectFactory.Create("Blind");
-                source.Effects.Apply(Subject, effect);   
+                source.Effects.Apply(Subject, effect);
             }
         }
         
-        if (Subject.IsMistStanced())
+        if (Subject.IsFlameStanced() && IntegerRandomizer.RollChance(15))
         {
-            var result = Math.Round(damage * 0.15m);
+            if (!source.Script.Is<ThisIsABossScript>())
+            {
+                var effect = EffectFactory.Create("Blind");
+                source.Effects.Apply(Subject, effect);
+            }
+            
+            var points = AoeShape.AllAround.ResolvePoints(Subject);
+
+            var targets =
+                Subject.MapInstance.GetEntitiesAtPoints<Creature>(points.Cast<IPoint>()).WithFilter(Subject, TargetFilter.HostileOnly).ToList();
+
+            var flamedamage = (int)(Subject.StatSheet.EffectiveMaximumHp * .04);
+        
+            foreach (var target in targets)
+            {
+                ApplyDamageScript.ApplyDamage(
+                    Subject,
+                    target,
+                    this,
+                    flamedamage);
+                
+                target.ShowHealth();
+                target.Animate(FlameHit, Subject.Id);
+            }
+        }
+        
+
+        if (Subject.IsTideStanced())
+        {
+            var healAmount = Math.Round(damage * 0.15m);
 
             if (Subject.Group is not null)
+            {
                 foreach (var person in Subject.Group)
                 {
                     if (person.IsDead)
                         continue;
-                    
-                    person.Animate(MistHeal, person.Id);
 
+                    person.Animate(TideHeal, person.Id);
+                    
                     ApplyHealScript.ApplyHeal(
                         source,
                         person,
                         this,
-                        (int)result);
+                        (int)healAmount);
                     
+                    var manaReplenished = Math.Round(damage * 0.08m);
+                    person.StatSheet.AddMp((int)manaReplenished);
                 }
+            }
             else
             {
                 if (Subject.IsDead)
                     return;
-                
-                Subject.Animate(MistHeal, Subject.Id);
 
+                Subject.Animate(TideHeal, Subject.Id);
+                
                 ApplyHealScript.ApplyHeal(
                     source,
                     Subject,
                     this,
-                    (int)result);
+                    (int)healAmount);
                 
+                var manaReplenished = Math.Round(damage * 0.08m);
+                Subject.StatSheet.AddMp((int)manaReplenished);
             }
-        }
 
-        if (Subject.IsInLastStand())
-            if (damage >= Subject.StatSheet.CurrentHp)
+            if (Subject.IsMistStanced())
             {
-                Subject.StatSheet.SetHp(1);
-                Subject.Client.SendAttributes(StatUpdateType.Vitality);
+                var result = Math.Round(damage * 0.15m);
+
+                if (Subject.Group is not null)
+                    foreach (var person in Subject.Group)
+                    {
+                        if (person.IsDead)
+                            continue;
+
+                        person.Animate(MistHeal, person.Id);
+
+                        ApplyHealScript.ApplyHeal(
+                            source,
+                            person,
+                            this,
+                            (int)result);
+
+                    }
+                else
+                {
+                    if (Subject.IsDead)
+                        return;
+
+                    Subject.Animate(MistHeal, Subject.Id);
+
+                    ApplyHealScript.ApplyHeal(
+                        source,
+                        Subject,
+                        this,
+                        (int)result);
+
+                }
+            }
+
+            if (Subject.IsInLastStand())
+                if (damage >= Subject.StatSheet.CurrentHp)
+                {
+                    Subject.StatSheet.SetHp(1);
+                    Subject.Client.SendAttributes(StatUpdateType.Vitality);
+
+                    return;
+                }
+
+            if (Subject.Effects.Contains("mount"))
+            {
+                Subject.Effects.Dispel("mount");
+                Subject.Refresh();
 
                 return;
             }
 
-        if (Subject.Effects.Contains("mount"))
-        {
-            Subject.Effects.Dispel("mount");
-            Subject.Refresh();
-
-            return;
-        }
-
-        if (Subject.IsRuminating())
-        {
-            Subject.Effects.Dispel("rumination");
-            Subject.SendOrangeBarMessage("Taking damage ended your rumination.");
+            if (Subject.IsRuminating())
+            {
+                Subject.Effects.Dispel("rumination");
+                Subject.SendOrangeBarMessage("Taking damage ended your rumination.");
+            }
         }
     }
 

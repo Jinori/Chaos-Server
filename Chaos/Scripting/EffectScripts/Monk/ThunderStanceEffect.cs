@@ -29,13 +29,11 @@ public class ThunderStanceEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("thunderstance"))
-        {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");
+        if (!target.Effects.Contains("thunderstance") && !target.Effects.Contains("lightningstance"))
+            return true;
+        
+        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");
 
-            return false;
-        }
-
-        return true;
+        return false;
     }
 }
