@@ -17,11 +17,11 @@ public class ManaBurnEffect : ContinuousAnimationEffectBase
         TargetAnimation = 135
     };
     /// <inheritdoc />
-    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
+    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500), false);
     /// <inheritdoc />
     public override byte Icon => 187;
     /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(500));
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(500), false);
     /// <inheritdoc />
     public override string Name => "Manaburn";
 

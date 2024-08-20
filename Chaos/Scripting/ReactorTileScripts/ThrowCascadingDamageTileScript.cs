@@ -15,9 +15,10 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.ReactorTileScripts;
 
-public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBase,
+public sealed class ThrowCascadingDamageTileScript : ConfigurableReactorTileScriptBase,
                                                 ICascadingTileScript,
                                                 GetCascadingTargetsAbilityComponent<Creature>.IGetCascadingTargetsComponentOptions,
+                                                ThrowCreatureComponent.IDamageComponentOptions,
                                                 DamageAbilityComponent.IDamageComponentOptions,
                                                 ApplyEffectAbilityComponent.IApplyEffectComponentOptions,
                                                 SoundAbilityComponent.ISoundComponentOptions,
@@ -29,7 +30,7 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
     private int Stages => Range;
 
     /// <inheritdoc />
-    public CascadingDamageTileScript(ReactorTile subject, IEffectFactory effectFactory)
+    public ThrowCascadingDamageTileScript(ReactorTile subject, IEffectFactory effectFactory)
         : base(subject)
     {
         EffectFactory = effectFactory;
@@ -78,7 +79,8 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
         if (CascadeTimer.IntervalElapsed)
         {
             Executor.ExecuteAndCheck<GetCascadingTargetsAbilityComponent<Creature>>()
-                    ?.Execute<DamageAbilityComponent>()
+                    ?.Execute<ThrowCreatureComponent>()
+                    .Execute<DamageAbilityComponent>()
                     .Execute<ApplyEffectAbilityComponent>()
                     .Execute<AnimationAbilityComponent>()
                     .Check(ShouldPlaySound)

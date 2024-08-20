@@ -25,7 +25,7 @@ public class SiphoningEffect : ContinuousAnimationEffectBase
     };
 
     /// <inheritdoc />
-    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(2));
+    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(2), false);
     protected IApplyDamageScript ApplyDamageScript { get; }
 
     protected Animation CreatureAnimation { get; } = new()
@@ -34,7 +34,7 @@ public class SiphoningEffect : ContinuousAnimationEffectBase
         TargetAnimation = 162
     };
     /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(2000));
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(2000), false);
 
     /// <inheritdoc />
     public override byte Icon => 2;

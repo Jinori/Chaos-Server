@@ -23,12 +23,12 @@ public class WhirlwindEffect : ContinuousAnimationEffectBase
         TargetAnimation = 185
     };
     /// <inheritdoc />
-    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
+    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500), false);
     protected IApplyDamageScript ApplyDamageScript { get; } = ApplyAttackDamageScript.Create();
     /// <inheritdoc />
     public override byte Icon => 98;
     /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
     /// <inheritdoc />
     public override string Name => "Whirlwind";
 

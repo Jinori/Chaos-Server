@@ -17,13 +17,13 @@ public sealed class SuainEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
-        AnimationSpeed = 100,
-        TargetAnimation = 40
+        AnimationSpeed = 500,
+        TargetAnimation = 882
     };
     /// <inheritdoc />
-    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1));
+    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1), false);
     /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
     /// <inheritdoc />
     public override byte Icon => 118;
     /// <inheritdoc />

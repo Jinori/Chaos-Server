@@ -25,7 +25,7 @@ public class MorSalSplashEffect : ContinuousAnimationEffectBase
     };
 
     /// <inheritdoc />
-    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(20000));
+    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(20000), false);
     protected IApplyDamageScript ApplyDamageScript { get; }
 
     protected Animation CreatureAnimation { get; } = new()
@@ -34,7 +34,7 @@ public class MorSalSplashEffect : ContinuousAnimationEffectBase
         TargetAnimation = 58
     };
     /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
 
     /// <inheritdoc />
     public override byte Icon => 38;

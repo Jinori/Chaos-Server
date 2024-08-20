@@ -140,6 +140,10 @@ public class RestrictionBehavior
             {
                 return true;
             }
+            case Aisling aisling when aisling.IsSuained() && (spell.Template.Name == "Cure Ailments"):
+            {
+                return true;
+            }
             case Aisling aisling when aisling.IsPramhed() && (spell.Template.Name == "dinarcoli"):
             {
                 return true;

@@ -124,7 +124,7 @@ public class ForagingQuestScript : DialogScriptBase
                 }
                 if (sourceforagingmarks >= 3000 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached3000))
                 {
-                    var clothglove1 = ItemFactory.Create("goodclothglove");
+                    var clothglove1 = ItemFactory.Create("ironglove");
                     source.Trackers.Flags.AddFlag(ForagingQuest.Reached3000);
                     if (source.StatSheet.Level != 99)
                     {
@@ -202,7 +202,7 @@ public class ForagingQuestScript : DialogScriptBase
                 }
                 if (sourceforagingmarks >= 15000 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached15000))
                 {
-                    var clothglove2 = ItemFactory.Create("greatclothglove");
+                    var clothglove2 = ItemFactory.Create("mythrilglove");
                     source.Trackers.Flags.AddFlag(ForagingQuest.Reached15000);
                     if (source.StatSheet.Level != 99)
                     {
@@ -283,7 +283,7 @@ public class ForagingQuestScript : DialogScriptBase
                 
                 if (sourceforagingmarks >= 50000 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached50000))
                 {
-                    var clothglove3 = ItemFactory.Create("grandclothglove");
+                    var clothglove3 = ItemFactory.Create("hybrasylglove");
                     source.Trackers.Flags.AddFlag(ForagingQuest.Reached50000);
                     source.Trackers.Flags.AddFlag(ForagingQuest.CompletedForaging);
                     if (source.StatSheet.Level != 99)

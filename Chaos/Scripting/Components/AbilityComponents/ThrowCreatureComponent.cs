@@ -4,6 +4,7 @@ using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
+using System.Collections.Generic;
 
 namespace Chaos.Scripting.Components.AbilityComponents
 {
@@ -18,19 +19,17 @@ namespace Chaos.Scripting.Components.AbilityComponents
             var throwDirection = context.Source.Direction;
             var throwRange = options.ThrowRange ?? 1; // Default to 1 if not specified
 
-            // Calculate the target point based on the throw direction and range
-            var thrownPoint = context.Source.DirectionalOffset(throwDirection, throwRange);
-            var targetPoint = thrownPoint.DirectionalOffset(throwDirection);
-
-            // Potential points are the throw point, and the 3 points around it
-            var potentialTargetPoints = targetPoint.GenerateCardinalPoints()
-                .WithConsistentDirectionBias(throwDirection)
-                .SkipLast(1)
-                .Prepend(targetPoint)
-                .ToList();
-
             foreach (var target in targets)
             {
+                // Calculate the target point based on the throw direction and range relative to the target's position
+                var targetCurrentPoint = Point.From(target);
+                var targetThrowPoint = targetCurrentPoint.DirectionalOffset(throwDirection, throwRange);
+                var potentialTargetPoints = targetThrowPoint.GenerateCardinalPoints()
+                    .WithConsistentDirectionBias(throwDirection)
+                    .SkipLast(1)
+                    .Prepend(targetThrowPoint)
+                    .ToList();
+
                 foreach (var point in potentialTargetPoints)
                 {
                     if (context.SourceMap.IsWalkable(point, CreatureType.Aisling, false))
@@ -38,11 +37,10 @@ namespace Chaos.Scripting.Components.AbilityComponents
                         if (!target.IsHostileTo(context.Source))
                             continue;
 
-                        var aislingPoint = Point.From(target);
-
-                        if (context.SourceMap.IsWall(targetPoint))
+                        if (context.SourceMap.IsWall(point))
                             continue;
 
+                        // Warp the target to the point and add it to the set of thrown targets
                         target.WarpTo(point);
                         break;
                     }

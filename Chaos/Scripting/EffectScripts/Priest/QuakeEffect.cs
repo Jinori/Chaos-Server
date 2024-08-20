@@ -28,7 +28,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
     };
 
     /// <inheritdoc />
-    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(20000));
+    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(20000), false);
     protected IApplyDamageScript ApplyDamageScript { get; }
 
     protected Animation CreatureAnimation { get; } = new()
@@ -37,7 +37,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
         TargetAnimation = 55
     };
     /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
 
     /// <inheritdoc />
     public override byte Icon => 98;

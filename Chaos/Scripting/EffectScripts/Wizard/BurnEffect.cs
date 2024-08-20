@@ -24,9 +24,9 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
     };
     /// <inheritdoc />
     /// <inheritdoc />
-    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1));
+    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1), false);
     /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
     /// <inheritdoc />
     public sealed override byte Icon => 31;
     /// <inheritdoc />
