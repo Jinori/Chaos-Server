@@ -17,24 +17,32 @@ public struct HierarchicalEffectComponent : IConditionalComponent
 
         var options = vars.GetOptions<IHierarchicalEffectComponentOptions>();
 
-        var conflictingEffect = target.Effects.FirstOrDefault(e => options.EffectNameHierarchy.Contains(e.Name));
-
-        if (conflictingEffect is null)
-            return true;
-
+        // Get the rank of the current effect being applied
         var thisRank = options.EffectNameHierarchy.IndexOf(options.Name);
-        var conflictingRank = options.EffectNameHierarchy.IndexOf(conflictingEffect.Name);
 
-        if (thisRank <= conflictingRank)
+        // Remove all effects that have a higher rank than the new effect
+        var effectsToRemove = target.Effects
+            .Where(e => options.EffectNameHierarchy.Contains(e.Name))
+            .Where(e => options.EffectNameHierarchy.IndexOf(e.Name) > thisRank)
+            .ToList();
+
+        foreach (var effect in effectsToRemove)
         {
-            target.Effects.Dispel(conflictingEffect.Name);
-
-            return true;
+            target.Effects.Dispel(effect.Name);
         }
 
-        context.SourceAisling?.SendActiveMessage($"Target is already under a stronger effect. [{conflictingEffect.Name}]");
+        // Check if there's any lower-ranked effect still present
+        var lowerRankEffect = target.Effects
+            .Where(e => options.EffectNameHierarchy.Contains(e.Name))
+            .FirstOrDefault(e => options.EffectNameHierarchy.IndexOf(e.Name) < thisRank);
 
-        return false;
+        if (lowerRankEffect != null)
+        {
+            context.SourceAisling?.SendActiveMessage($"Target is already under a stronger effect. [{lowerRankEffect.Name}]");
+            return false;
+        }
+
+        return true;
     }
 
     public interface IHierarchicalEffectComponentOptions : IEffect

@@ -10,16 +10,16 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
-public class PoisonEffect : ContinuousAnimationEffectBase
+public class MiasmaEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(20);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(30);
 
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
-        TargetAnimation = 247
+        TargetAnimation = 295
     };
 
     /// <inheritdoc />
@@ -30,20 +30,23 @@ public class PoisonEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     public override byte Icon => 27;
     /// <inheritdoc />
-    public override string Name => "Poison";
+    public override string Name => "Miasma";
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
         double maxHp = Subject.StatSheet.MaximumHp;
-        const double DAMAGE_PERCENTAGE = 0.01;
-        const int DAMAGE_CAP = 500;
+        const double DAMAGE_PERCENTAGE = 0.02;
+        const int DAMAGE_CAP = 1000;
         
         var damage = (int)Math.Min(maxHp * DAMAGE_PERCENTAGE, DAMAGE_CAP);
 
         if (Subject.StatSheet.CurrentHp <= damage)
             return;
 
+        if (Subject.IsGodModeEnabled())
+            return;
+        
         if (Subject.StatSheet.TrySubtractHp(damage))
             AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
         
@@ -52,18 +55,21 @@ public class PoisonEffect : ContinuousAnimationEffectBase
     
     public override bool ShouldApply(Creature source, Creature target)
     {
+        if (target.Script.Is<ThisIsABossScript>())
+            return false;
+
         if (target.IsGodModeEnabled())
             return false;
         
         if (target.Effects.Contains("poison"))
         {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has this effect already.");
+            target.Effects.Terminate("poison");
             return true;
         }
 
         if (target.Effects.Contains("miasma"))
         {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is currently affected by Miasma.");
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has this effect already.");
             return false;
         }
 

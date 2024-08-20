@@ -12,6 +12,7 @@ public class MorFasDeireasEffect : EffectBase, HierarchicalEffectComponent.IHier
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
     public List<string> EffectNameHierarchy { get; init; } =
     [
+        "blessing",
         "mor fas deireas",
         "fas deireas",
     ];

@@ -13,6 +13,7 @@ public class FasDeireasEffect : EffectBase, HierarchicalEffectComponent.IHierarc
     
     public List<string> EffectNameHierarchy { get; init; } =
     [
+        "blessing",
         "mor fas deireas",
         "fas deireas",
     ];

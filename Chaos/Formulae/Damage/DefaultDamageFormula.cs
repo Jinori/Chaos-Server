@@ -123,6 +123,11 @@ public class DefaultDamageFormula : IDamageFormula
         {
             damage = (int)(damage * 0.70);
         }
+
+        if (defender.Effects.Contains("blessing"))
+        {
+            damage = (int)(damage * 0.65);
+        }
     }
 
 

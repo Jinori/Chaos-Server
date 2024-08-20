@@ -12,6 +12,7 @@ public class ArdAiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(20);
     public List<string> EffectNameHierarchy { get; init; } =
     [
+        "blessing",
         "ard naomh aite",
         "mor naomh aite",
         "naomh aite",

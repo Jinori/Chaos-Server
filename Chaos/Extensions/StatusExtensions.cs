@@ -33,6 +33,8 @@ public static class StatusExtensions
     public static bool IsAited(this Creature creature) => creature.Effects.Contains("naomh aite");
     public static bool IsMorAited(this Creature creature) => creature.Effects.Contains("mor naomh aite");
     public static bool IsArdAited(this Creature creature) => creature.Effects.Contains("ard naomh aite");
+    
+    public static bool IsBlessed(this Creature creature) => creature.Effects.Contains("blessing");
     public static bool IsHidden(this Creature creature) => creature.Effects.Contains("hide") || creature.Effects.Contains("gmhide") || creature.Effects.Contains("truehide");
     public static bool IsAmnesiad(this Creature creature) => creature.Effects.Contains("amnesia");
     public static bool IsCradhPrevented(this Creature creature) => creature.Effects.Contains("preventrecradh");

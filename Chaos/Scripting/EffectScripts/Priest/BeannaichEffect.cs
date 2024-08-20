@@ -23,6 +23,7 @@ public class BeannaichEffect : EffectBase, HierarchicalEffectComponent.IHierarch
     protected byte? Sound => 123;
     public List<string> EffectNameHierarchy { get; init; } =
     [
+        "blessing",
         "mor beannaich",
         "beannaich"
     ];

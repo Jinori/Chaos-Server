@@ -17,7 +17,7 @@ public class MotivateEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
     };
 
     /// <inheritdoc />
-    public List<string> EffectNameHierarchy { get; init; } = ["Motivate"];
+    public List<string> EffectNameHierarchy { get; init; } = ["blessing", "Motivate"];
     public override byte Icon => 99;
     public override string Name => "Motivate";
     protected byte? Sound => 121;

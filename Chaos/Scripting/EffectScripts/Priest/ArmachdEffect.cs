@@ -18,6 +18,7 @@ public class ArmachdEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
 
     public List<string> EffectNameHierarchy { get; init; } =
     [
+        "blessing",
         "armachd"
     ];
     

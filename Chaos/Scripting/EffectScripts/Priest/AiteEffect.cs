@@ -12,6 +12,7 @@ public class AiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchicalE
     /// <inheritdoc />
     public List<string> EffectNameHierarchy { get; init; } =
     [
+        "blessing",
         "ard naomh aite",
         "mor naomh aite",
         "naomh aite",

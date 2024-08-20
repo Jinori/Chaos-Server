@@ -12,6 +12,7 @@ public class BeagAiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(8);
     public List<string> EffectNameHierarchy { get; init; } =
     [
+        "blessing",
         "ard naomh aite",
         "mor naomh aite",
         "naomh aite",
