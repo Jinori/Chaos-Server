@@ -40,21 +40,21 @@ public sealed class AirElementalChaosScript : MapScriptBase
                                       .SelectMany(x => Enumerable.Range(0, Subject.Template.Height)
                                                                  .Where(y => !Subject.IsWall(new Point(x, y)))
                                                                  .Select(y => new Point(x, y))).ToList();
-        
-        if (nonWallPoints.Count > 0)
-        {
-            // Select a random non-wall point
-            var targetPoint = nonWallPoints[Random.Shared.Next(nonWallPoints.Count)];
-            
-            Subject.ShowAnimation(LightningAnimation.GetPointAnimation(targetPoint));
 
-            // Check if a player is standing on the point and apply damage
-            var targetPlayer = Subject.GetEntitiesAtPoint<Aisling>(targetPoint).FirstOrDefault();
-            if (targetPlayer != null)
-            {
-                var damage = (int)(targetPlayer.StatSheet.EffectiveMaximumHp * 0.1); // 10% of max HP
-                ApplyDamageScript.ApplyDamage(targetPlayer, targetPlayer, this, damage);
-            }
-        }
+        if (nonWallPoints.Count <= 0) 
+            return;
+        
+        // Select a random non-wall point
+        var targetPoint = nonWallPoints[Random.Shared.Next(nonWallPoints.Count)];
+            
+        Subject.ShowAnimation(LightningAnimation.GetPointAnimation(targetPoint));
+
+        // Check if a player is standing on the point and apply damage
+        var targetPlayer = Subject.GetEntitiesAtPoint<Aisling>(targetPoint).FirstOrDefault();
+        if (targetPlayer == null) 
+            return;
+            
+        var damage = (int)(targetPlayer.StatSheet.EffectiveMaximumHp * 0.1); // 10% of max HP
+        ApplyDamageScript.ApplyDamage(targetPlayer, targetPlayer, this, damage);
     }
 }
