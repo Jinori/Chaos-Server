@@ -7,315 +7,106 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Crafting.HobbyQuest;
-
-public class ForagingQuestScript : DialogScriptBase
+namespace Chaos.Scripting.DialogScripts.Crafting.HobbyQuest
 {
+    public class ForagingQuestScript : DialogScriptBase
+    {
+        private readonly IItemFactory ItemFactory;
+        private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
-    public ForagingQuestScript(Dialog subject, IItemFactory itemFactory)
-        : base(subject)
-    {
-        ItemFactory = itemFactory;
-    }
-    public bool HasOne;
-    private readonly IItemFactory ItemFactory;
-    
-    private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
-    public override void OnDisplaying(Aisling source)
-    {
-        var sourceforagingmarks = source.Legend.GetCount("forage");
-        var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-        var tenPercent = Convert.ToInt32(.10 * tnl);
-        var fifteenpercent = Convert.ToInt32(.15 * tnl);
-        var twentypercent = Convert.ToInt32(.20 * tnl);
-        var twentyfivepercent = Convert.ToInt32(.25 * tnl);
-        var thirtypercent = Convert.ToInt32(.30 * tnl);
-        var thirtyfivepercent = Convert.ToInt32(.35 * tnl);
-        var fortypercent = Convert.ToInt32(.40 * tnl);
-        var fortyfivepercent = Convert.ToInt32(.45 * tnl);
-        var fiftypercent = Convert.ToInt32(.50 * tnl);
-        
-        switch (Subject.Template.TemplateKey.ToLower())
+        private static readonly (int Marks, int Gold, int ExpPercent, int Exp99, int GamePoints, string? ItemKey, string? Message, ForagingQuest Flag)[] RewardStages = 
         {
+            (250, 10000, 10, 1000000, 5, null, null, ForagingQuest.Reached250),
+            (500, 25000, 10, 5000000, 5, null, null, ForagingQuest.Reached500),
+            (800, 50000, 15, 10000000, 5, null, null, ForagingQuest.Reached800),
+            (1500, 100000, 20, 20000000, 5, null, null, ForagingQuest.Reached1500),
+            (3000, 150000, 25, 25000000, 10, "ironglove", "Goran hands you a new cloth glove!", ForagingQuest.Reached3000),
+            (5000, 200000, 25, 30000000, 10, null, null, ForagingQuest.Reached5000),
+            (7500, 300000, 30, 45000000, 10, null, null, ForagingQuest.Reached7500),
+            (10000, 500000, 35, 50000000, 10, null, null, ForagingQuest.Reached10000),
+            (12500, 750000, 40, 50000000, 15, null, null, ForagingQuest.Reached12500),
+            (15000, 1000000, 45, 75000000, 15, "mythrilglove", "Goran hands you a new cloth glove!", ForagingQuest.Reached15000),
+            (20000, 2000000, 50, 75000000, 20, null, null, ForagingQuest.Reached20000),
+            (25000, 2500000, 50, 100000000, 25, null, null, ForagingQuest.Reached25000),
+            (30000, 5000000, 50, 125000000, 50, null, null, ForagingQuest.Reached30000),
+            (40000, 7500000, 50, 150000000, 75, null, null, ForagingQuest.Reached40000),
+            (50000, 10000000, 50, 200000000, 100, "hybrasylglove", "Goran hands you a new cloth glove!", ForagingQuest.Reached50000)
+        };
 
-            case "goran_initial":
-                if (source.Trackers.Flags.HasFlag(Hobbies.Foraging) && sourceforagingmarks >= 250 )
+        public ForagingQuestScript(Dialog subject, IItemFactory itemFactory)
+            : base(subject)
+        {
+            ItemFactory = itemFactory;
+        }
+
+        public override void OnDisplaying(Aisling source)
+        {
+            var sourceForagingMarks = source.Legend.GetCount("forage");
+            var hasRewarded = false;
+
+            // Display initial dialog based on conditions
+            if (Subject.Template.TemplateKey.Equals("goran_initial", StringComparison.OrdinalIgnoreCase) &&
+                source.Trackers.Flags.HasFlag(Hobbies.Foraging) &&
+                sourceForagingMarks >= RewardStages[0].Marks)
+            {
+                Subject.Options.Insert(0, new DialogOption
                 {
-                    Subject.Options.Insert(
-                        0,
-                        new DialogOption
-                        {
-                            DialogKey = "foragingquest_initial",
-                            OptionText = "I am an Experienced Forager now."
-                        });
-                }
+                    DialogKey = "foragingquest_initial",
+                    OptionText = "I am an Experienced Forager now."
+                });
+                return;
+            }
 
-                break;
-
-            case "foragingquest_initial":
+            // Handle the initial dialog for foraging quest
+            if (Subject.Template.TemplateKey.Equals("foragingquest_initial", StringComparison.OrdinalIgnoreCase))
             {
                 if (source.Trackers.Flags.HasFlag(ForagingQuest.CompletedForaging))
                 {
                     Subject.Reply(source, "The greenery fears your presence now. It tells me so... *goran chuckles*", "goran_initial");
                     return;
                 }
-                
-                if (sourceforagingmarks >= 250 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached250))
-                {
-                    source.Trackers.Flags.AddFlag(ForagingQuest.Reached250);
 
-                    if (source.StatSheet.Level != 99)
+                foreach (var stage in RewardStages)
+                {
+                    // Check if the player has reached a reward stage and hasn't been rewarded for it yet
+                    if (sourceForagingMarks >= stage.Marks && !source.Trackers.Flags.HasFlag(stage.Flag))
                     {
-                        ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 1000000);
-                    }
-                    source.GiveGoldOrSendToBank(10000);
-                    source.TryGiveGamePoints(5);
-                    HasOne = true;
-                }
+                        // Apply the flag to mark that the reward for this stage has been given
+                        source.Trackers.Flags.AddFlag(stage.Flag);
 
-                if (sourceforagingmarks >= 500 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached500))
-                {
-                    source.Trackers.Flags.AddFlag(ForagingQuest.Reached500);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, tenPercent);
+                        // Calculate experience based on player level
+                        int exp = source.StatSheet.Level != 99 ? 
+                            stage.ExpPercent * LevelUpFormulae.Default.CalculateTnl(source) / 100 : 
+                            stage.Exp99;
+                        
+                        // Apply rewards
+                        ExperienceDistributionScript.GiveExp(source, exp);
+                        source.GiveGoldOrSendToBank(stage.Gold);
+                        source.TryGiveGamePoints(stage.GamePoints);
+
+                        if (!string.IsNullOrEmpty(stage.ItemKey))
+                        {
+                            var item = ItemFactory.Create(stage.ItemKey);
+                            source.GiveItemOrSendToBank(item);
+                        }
+
+                        if (!string.IsNullOrEmpty(stage.Message))
+                        {
+                            source.SendOrangeBarMessage(stage.Message);
+                        }
+
+                        hasRewarded = true;
                     }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 5000000);
-                    }
-                    source.GiveGoldOrSendToBank(25000);
-                    source.TryGiveGamePoints(5);
-                    HasOne = true;
-                }
-                if (sourceforagingmarks >= 800 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached800))
-                {
-                    source.Trackers.Flags.AddFlag(ForagingQuest.Reached800);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fifteenpercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 10000000);
-                    }
-                    source.GiveGoldOrSendToBank(50000);
-                    source.TryGiveGamePoints(5);
-                    HasOne = true;
-                }
-                if (sourceforagingmarks >= 1500 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached1500))
-                {
-                    source.Trackers.Flags.AddFlag(ForagingQuest.Reached1500);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, twentypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 20000000);
-                    }
-                    source.GiveGoldOrSendToBank(100000);
-                    source.TryGiveGamePoints(5);
-                    HasOne = true;
-                }
-                if (sourceforagingmarks >= 3000 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached3000))
-                {
-                    var clothglove1 = ItemFactory.Create("ironglove");
-                    source.Trackers.Flags.AddFlag(ForagingQuest.Reached3000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, twentyfivepercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 25000000);
-                    }
-                    source.GiveGoldOrSendToBank(150000);
-                    source.TryGiveGamePoints(10);
-                    source.GiveItemOrSendToBank(clothglove1);
-                    source.SendOrangeBarMessage("Goran hands you a new cloth glove!");
-                    HasOne = true;
-                }
-                if (sourceforagingmarks >= 5000 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached5000))
-                {
-                    source.Trackers.Flags.AddFlag(ForagingQuest.Reached5000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, twentyfivepercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 30000000);
-                    }
-                    source.GiveGoldOrSendToBank(200000);
-                    source.TryGiveGamePoints(10);
-                    HasOne = true;
-                }
-                if (sourceforagingmarks >= 7500 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached7500))
-                {
-                    source.Trackers.Flags.AddFlag(ForagingQuest.Reached7500);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, thirtypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 45000000);
-                    }
-                    source.GiveGoldOrSendToBank(300000);
-                    source.TryGiveGamePoints(10);
-                    HasOne = true;
-                }
-                if (sourceforagingmarks >= 10000 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached10000))
-                {
-                    source.Trackers.Flags.AddFlag(ForagingQuest.Reached10000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, thirtyfivepercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 50000000);
-                    }
-                    source.GiveGoldOrSendToBank(500000);
-                    source.TryGiveGamePoints(10);
-                    HasOne = true;
-                }
-                if (sourceforagingmarks >= 12500 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached12500))
-                {
-                    source.Trackers.Flags.AddFlag(ForagingQuest.Reached12500);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fortypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 50000000);
-                    }
-                    source.GiveGoldOrSendToBank(750000);
-                    source.TryGiveGamePoints(15);
-                    HasOne = true;
-                }
-                if (sourceforagingmarks >= 15000 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached15000))
-                {
-                    var clothglove2 = ItemFactory.Create("mythrilglove");
-                    source.Trackers.Flags.AddFlag(ForagingQuest.Reached15000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fortyfivepercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 75000000);
-                    }
-                    source.GiveGoldOrSendToBank(1000000);
-                    source.TryGiveGamePoints(15);
-                    source.SendOrangeBarMessage("Goran hands you a new cloth glove!");
-                    source.GiveItemOrSendToBank(clothglove2);
-                    HasOne = true;
-                }
-                if (sourceforagingmarks >= 20000 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached20000))
-                {
-                    source.Trackers.Flags.AddFlag(ForagingQuest.Reached20000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fiftypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 75000000);
-                    }
-                    source.GiveGoldOrSendToBank(2000000);
-                    source.TryGiveGamePoints(20);
-                    HasOne = true;
-                }
-                if (sourceforagingmarks >= 25000 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached25000))
-                {
-                    source.Trackers.Flags.AddFlag(ForagingQuest.Reached25000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fiftypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 100000000);
-                    }
-                    source.GiveGoldOrSendToBank(2500000);
-                    source.TryGiveGamePoints(25);
-                    HasOne = true;
-                }
-                
-                if (sourceforagingmarks >= 30000 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached30000))
-                {
-                    source.Trackers.Flags.AddFlag(ForagingQuest.Reached30000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fiftypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 125000000);
-                    }
-                    source.GiveGoldOrSendToBank(5000000);
-                    source.TryGiveGamePoints(50);
-                    HasOne = true;
-                }
-                
-                if (sourceforagingmarks >= 40000 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached40000))
-                {
-                    source.Trackers.Flags.AddFlag(ForagingQuest.Reached40000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fiftypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 150000000);
-                    }
-                    source.GiveGoldOrSendToBank(7500000);
-                    source.TryGiveGamePoints(75);
-                    HasOne = true;
-                }
-                
-                if (sourceforagingmarks >= 50000 && !source.Trackers.Flags.HasFlag(ForagingQuest.Reached50000))
-                {
-                    var clothglove3 = ItemFactory.Create("hybrasylglove");
-                    source.Trackers.Flags.AddFlag(ForagingQuest.Reached50000);
-                    source.Trackers.Flags.AddFlag(ForagingQuest.CompletedForaging);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fiftypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 200000000);
-                    }
-                    source.SendOrangeBarMessage("Goran hands you a new cloth glove!");
-                    source.GiveItemOrSendToBank(clothglove3);
-                    source.GiveGoldOrSendToBank(10000000);
-                    source.TryGiveGamePoints(100);
-                    Subject.Reply(source, "You have put so much dedication into Foraging, I am so glad you've enjoyed that time. I have nothing left to give you Aisling.", "goran_initial");
-                    return;
                 }
 
-                if (HasOne)
+                if (hasRewarded)
                 {
-                    Subject.Reply(source,
-                        "Not many keep foraging like you Aisling, you're getting better with each day. I must reward you a little something.", "goran_initial");
-                    return;
+                    Subject.Reply(source, "Not many keep foraging like you, Aisling. You're getting better with each day. I must reward you with a little something.", "goran_initial");
                 }
-
-                if (!HasOne)
+                else
                 {
-                    Subject.Reply(source, "Your skill hasn't improved since the last time I saw you Aisling, keep on foraging!", "goran_initial");
-                    return;
+                    Subject.Reply(source, "Your skill hasn't improved since the last time I saw you, Aisling. Keep on foraging!", "goran_initial");
                 }
-
-                break;
             }
         }
     }

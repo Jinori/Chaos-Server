@@ -71,10 +71,8 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
                                                            .Execute<AnimationAbilityComponent>()
                                                            .Execute<TrapDamageAbilityComponent>()
                                                            .Execute<ManaDrainAbilityComponent>()
-                                                           .Execute<ApplyEffectAbilityComponent>()
-                       != null;
+                                                           .Execute<ApplyEffectAbilityComponent>() != null;
 
-        
         if (Owner is Aisling && source is Aisling aisling)
             aisling.SendOrangeBarMessage($"You stumble upon a trap, set by {Owner.Name}!");
             

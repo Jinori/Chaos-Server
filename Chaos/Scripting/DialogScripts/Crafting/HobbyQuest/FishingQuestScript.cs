@@ -11,312 +11,126 @@ namespace Chaos.Scripting.DialogScripts.Crafting.HobbyQuest;
 
 public class FishingQuestScript : DialogScriptBase
 {
-
     public FishingQuestScript(Dialog subject, IItemFactory itemFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;
     }
-    public bool HasOne;
     private readonly IItemFactory ItemFactory;
-    
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
+    
     public override void OnDisplaying(Aisling source)
     {
-        var sourcefishingmarks = source.Legend.GetCount("fish");
+        var sourceFishingMarks = source.Legend.GetCount("fish");
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
-        var tenPercent = Convert.ToInt32(.10 * tnl);
-        var fifteenpercent = Convert.ToInt32(.15 * tnl);
-        var twentypercent = Convert.ToInt32(.20 * tnl);
-        var twentyfivepercent = Convert.ToInt32(.25 * tnl);
-        var thirtypercent = Convert.ToInt32(.30 * tnl);
-        var thirtyfivepercent = Convert.ToInt32(.35 * tnl);
-        var fortypercent = Convert.ToInt32(.40 * tnl);
-        var fortyfivepercent = Convert.ToInt32(.45 * tnl);
-        var fiftypercent = Convert.ToInt32(.50 * tnl);
-        
+
+        var markMilestones = new[] { 250, 500, 800, 1500, 3000, 5000, 7500, 10000, 12500, 15000, 20000, 25000, 30000, 40000, 50000 };
+        var goldRewards = new[] { 10000, 25000, 50000, 100000, 150000, 200000, 300000, 500000, 750000, 1000000, 2000000, 2500000, 5000000, 7500000, 10000000 };
+        var expMultipliers = new[] { 0.10, 0.10, 0.15, 0.20, 0.25, 0.25, 0.30, 0.30, 0.40, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50 };
+        var pointRewards = new[] { 5, 5, 5, 5, 10, 10, 10, 10, 15, 15, 20, 25, 50, 75, 100 };
+        var flags = new[]
+        {
+            FishingQuest.Reached250,
+            FishingQuest.Reached500,
+            FishingQuest.Reached800,
+            FishingQuest.Reached1500,
+            FishingQuest.Reached3000,
+            FishingQuest.Reached5000,
+            FishingQuest.Reached7500,
+            FishingQuest.Reached10000,
+            FishingQuest.Reached12500,
+            FishingQuest.Reached15000,
+            FishingQuest.Reached20000,
+            FishingQuest.Reached25000,
+            FishingQuest.Reached30000,
+            FishingQuest.Reached40000,
+            FishingQuest.CompletedFishing
+        };
+        var itemRewards = new[]
+        {
+            null!, null!, null!, null!, "goodfishingpole",
+            null!, null!, null!, null!, "greatfishingpole",
+            null!, null!, null!, null!, "grandfishingpole"
+        };
+
         switch (Subject.Template.TemplateKey.ToLower())
         {
-
             case "kamel_initial":
-                if (source.Trackers.Flags.HasFlag(Hobbies.Fishing) && sourcefishingmarks >= 250 )
+                if (source.Trackers.Flags.HasFlag(Hobbies.Fishing) && sourceFishingMarks >= 250)
                 {
-                    Subject.Options.Insert(
-                        0,
-                        new DialogOption
-                        {
-                            DialogKey = "fishingquest_initial",
-                            OptionText = "I am an Experienced Fisher now."
-                        });
+                    Subject.Options.Insert(0, new DialogOption
+                    {
+                        DialogKey = "fishingquest_initial",
+                        OptionText = "I am an Experienced Fisher now."
+                    });
                 }
-
                 break;
 
             case "fishingquest_initial":
-            {
-                if (source.Trackers.Flags.HasFlag(FishingQuest.CompletedFishing))
-                {
-                    Subject.Reply(source, "You're more experienced than I am now, fishing is your domain. I am so proud.");
-                    return;
-                }
-                
-                if (sourcefishingmarks >= 250 && !source.Trackers.Flags.HasFlag(FishingQuest.Reached250))
-                {
-                    source.Trackers.Flags.AddFlag(FishingQuest.Reached250);
+                bool hasReward = false;
 
-                    if (source.StatSheet.Level != 99)
+                for (var i = 0; i < markMilestones.Length; i++)
+                {
+                    if (sourceFishingMarks >= markMilestones[i] && !source.Trackers.Flags.HasFlag(flags[i]))
                     {
-                        ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 1000000);
-                    }
-                    source.GiveGoldOrSendToBank(10000);
-                    source.TryGiveGamePoints(5);
-                    HasOne = true;
-                }
+                        source.Trackers.Flags.AddFlag(flags[i]);
+                        var exp = source.StatSheet.Level != 99
+                            ? Convert.ToInt32(expMultipliers[i] * tnl)
+                            : CalculateLevel99Exp(markMilestones[i]);
+                        ExperienceDistributionScript.GiveExp(source, exp);
+                        source.GiveGoldOrSendToBank(goldRewards[i]);
+                        source.TryGiveGamePoints(pointRewards[i]);
 
-                if (sourcefishingmarks >= 500 && !source.Trackers.Flags.HasFlag(FishingQuest.Reached500))
-                {
-                    source.Trackers.Flags.AddFlag(FishingQuest.Reached500);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, tenPercent);
+                        if (!string.IsNullOrEmpty(itemRewards[i]))
+                        {
+                            var item = ItemFactory.Create(itemRewards[i]);
+                            source.GiveItemOrSendToBank(item);
+                            source.SendOrangeBarMessage($"Kamel hands you a new {itemRewards[i]}!");
+                        }
+
+                        hasReward = true;
                     }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 5000000);
-                    }
-                    source.GiveGoldOrSendToBank(25000);
-                    source.TryGiveGamePoints(5);
-                    HasOne = true;
-                }
-                if (sourcefishingmarks >= 800 && !source.Trackers.Flags.HasFlag(FishingQuest.Reached800))
-                {
-                    source.Trackers.Flags.AddFlag(FishingQuest.Reached800);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fifteenpercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 10000000);
-                    }
-                    source.GiveGoldOrSendToBank(50000);
-                    source.TryGiveGamePoints(5);
-                    HasOne = true;
-                }
-                if (sourcefishingmarks >= 1500 && !source.Trackers.Flags.HasFlag(FishingQuest.Reached1500))
-                {
-                    source.Trackers.Flags.AddFlag(FishingQuest.Reached1500);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, twentypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 20000000);
-                    }
-                    source.GiveGoldOrSendToBank(100000);
-                    source.TryGiveGamePoints(5);
-                    HasOne = true;
-                }
-                if (sourcefishingmarks >= 3000 && !source.Trackers.Flags.HasFlag(FishingQuest.Reached3000))
-                {
-                    var fishingpole1 = ItemFactory.Create("goodfishingpole");
-                    source.Trackers.Flags.AddFlag(FishingQuest.Reached3000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, twentyfivepercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 25000000);
-                    }
-                    source.GiveGoldOrSendToBank(150000);
-                    source.TryGiveGamePoints(10);
-                    source.GiveItemOrSendToBank(fishingpole1);
-                    source.SendOrangeBarMessage("Kamel hands you a new fishing pole!");
-                    HasOne = true;
-                }
-                if (sourcefishingmarks >= 5000 && !source.Trackers.Flags.HasFlag(FishingQuest.Reached5000))
-                {
-                    source.Trackers.Flags.AddFlag(FishingQuest.Reached5000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, twentyfivepercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 30000000);
-                    }
-                    source.GiveGoldOrSendToBank(200000);
-                    source.TryGiveGamePoints(10);
-                    HasOne = true;
-                }
-                if (sourcefishingmarks >= 7500 && !source.Trackers.Flags.HasFlag(FishingQuest.Reached7500))
-                {
-                    source.Trackers.Flags.AddFlag(FishingQuest.Reached7500);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, thirtypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 45000000);
-                    }
-                    source.GiveGoldOrSendToBank(300000);
-                    source.TryGiveGamePoints(10);
-                    HasOne = true;
-                }
-                if (sourcefishingmarks >= 10000 && !source.Trackers.Flags.HasFlag(FishingQuest.Reached10000))
-                {
-                    source.Trackers.Flags.AddFlag(FishingQuest.Reached10000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, thirtypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 50000000);
-                    }
-                    source.GiveGoldOrSendToBank(500000);
-                    source.TryGiveGamePoints(10);
-                    HasOne = true;
-                }
-                if (sourcefishingmarks >= 12500 && !source.Trackers.Flags.HasFlag(FishingQuest.Reached12500))
-                {
-                    source.Trackers.Flags.AddFlag(FishingQuest.Reached12500);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fortypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 50000000);
-                    }
-                    source.GiveGoldOrSendToBank(750000);
-                    source.TryGiveGamePoints(15);
-                    HasOne = true;
-                }
-                if (sourcefishingmarks >= 15000 && !source.Trackers.Flags.HasFlag(FishingQuest.Reached15000))
-                {
-                    var fishingpole2 = ItemFactory.Create("greatfishingpole");
-                    source.Trackers.Flags.AddFlag(FishingQuest.Reached15000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fiftypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 75000000);
-                    }
-                    source.GiveGoldOrSendToBank(1000000);
-                    source.TryGiveGamePoints(15);
-                    source.SendOrangeBarMessage("Kamel hands you a new fishing pole!");
-                    source.GiveItemOrSendToBank(fishingpole2);
-                    HasOne = true;
-                }
-                if (sourcefishingmarks >= 20000 && !source.Trackers.Flags.HasFlag(FishingQuest.Reached20000))
-                {
-                    source.Trackers.Flags.AddFlag(FishingQuest.Reached20000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fiftypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 75000000);
-                    }
-                    source.GiveGoldOrSendToBank(2000000);
-                    source.TryGiveGamePoints(20);
-                    HasOne = true;
-                }
-                if (sourcefishingmarks >= 25000 && !source.Trackers.Flags.HasFlag(FishingQuest.Reached25000))
-                {
-                    source.Trackers.Flags.AddFlag(FishingQuest.Reached25000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fiftypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 100000000);
-                    }
-                    source.GiveGoldOrSendToBank(2500000);
-                    source.TryGiveGamePoints(25);
-                    HasOne = true;
-                }
-                
-                if (sourcefishingmarks >= 30000 && !source.Trackers.Flags.HasFlag(FishingQuest.Reached30000))
-                {
-                    source.Trackers.Flags.AddFlag(FishingQuest.Reached30000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fiftypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 125000000);
-                    }
-                    source.GiveGoldOrSendToBank(5000000);
-                    source.TryGiveGamePoints(50);
-                    HasOne = true;
-                }
-                
-                if (sourcefishingmarks >= 40000 && !source.Trackers.Flags.HasFlag(FishingQuest.Reached40000))
-                {
-                    source.Trackers.Flags.AddFlag(FishingQuest.Reached40000);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fiftypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 150000000);
-                    }
-                    source.GiveGoldOrSendToBank(7500000);
-                    source.TryGiveGamePoints(75);
-                    HasOne = true;
-                }
-                
-                if (sourcefishingmarks >= 50000 && !source.Trackers.Flags.HasFlag(FishingQuest.Reached50000))
-                {
-                    var fishingpole3 = ItemFactory.Create("grandfishingpole");
-                    source.Trackers.Flags.AddFlag(FishingQuest.Reached50000);
-                    source.Trackers.Flags.AddFlag(FishingQuest.CompletedFishing);
-                    if (source.StatSheet.Level != 99)
-                    {
-                        ExperienceDistributionScript.GiveExp(source, fiftypercent);
-                    }
-                    else
-                    {
-                        ExperienceDistributionScript.GiveExp(source, 200000000);
-                    }
-                    source.SendOrangeBarMessage("Kamel hands you a new fishing pole!");
-                    source.GiveItemOrSendToBank(fishingpole3);
-                    source.GiveGoldOrSendToBank(10000000);
-                    source.TryGiveGamePoints(100);
-                    Subject.Reply(source, "This is the end of the road, I have nothing more to give you. You are a true fishermen.");
-                    return;
                 }
 
-                if (HasOne)
+                if (hasReward)
                 {
-                    Subject.Reply(source,
-                        "You've done excellent getting those fish! I can't say I'm not proud. Here's something for your troubles. Come back anytime!", "kamel_initial");
-                    return;
+                    if (source.Trackers.Flags.HasFlag(FishingQuest.CompletedFishing))
+                    {
+                        Subject.Reply(source, "This is the end of the road, I have nothing more to give you. You are a true fisherman.");
+                    }
+                    else
+                    {
+                        Subject.Reply(source, "You've done excellent getting those fish! I can't say I'm not proud. Here's something for your troubles. Come back anytime!", "kamel_initial");
+                    }
                 }
-
-                if (!HasOne)
+                else
                 {
-                    Subject.Reply(source, "You haven't gotten enough experience fishing yet Aisling, keep on fishing!", "kamel_initial");
-                    return;
+                    Subject.Reply(source, "You haven't gotten enough experience fishing yet, Aisling. Keep on fishing!", "kamel_initial");
                 }
-
                 break;
-            }
         }
+    }
+
+    private int CalculateLevel99Exp(int marks)
+    {
+        return marks switch
+        {
+            250 => 1000000,
+            500 => 5000000,
+            800 => 10000000,
+            1500 => 20000000,
+            3000 => 25000000,
+            5000 => 30000000,
+            7500 => 45000000,
+            10000 => 50000000,
+            12500 => 50000000,
+            15000 => 75000000,
+            20000 => 75000000,
+            25000 => 100000000,
+            30000 => 125000000,
+            40000 => 150000000,
+            50000 => 200000000,
+            _ => 0
+        };
     }
 }

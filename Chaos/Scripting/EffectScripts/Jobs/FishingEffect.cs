@@ -17,9 +17,9 @@ namespace Chaos.Scripting.EffectScripts.Jobs;
 
 public class FishingEffect(IItemFactory itemFactory, ILogger<FishingEffect> logger) : ContinuousAnimationEffectBase
 {
-    private const int FISH_CATCH_CHANCE = 2;
+    private int FishCatchChance = 2;
     private const byte FISHING_ICON = 95;
-    private const int FISH_STEAL_BAIT = 5;
+    private int FishStealBait = 5;
 
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
@@ -74,7 +74,7 @@ public class FishingEffect(IItemFactory itemFactory, ILogger<FishingEffect> logg
         TargetAnimation = 169
     };
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(10));
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(10),false);
 
     public override byte Icon => FISHING_ICON;
     public override string Name => "Fishing";
@@ -95,8 +95,22 @@ public class FishingEffect(IItemFactory itemFactory, ILogger<FishingEffect> logg
         Subject.Effects.Terminate("Fishing");
         return;
     }
+    
+    if (IsUsingGoodPole(aisling))
+    {
+        FishCatchChance = 4;
+        FishStealBait = 4;
+    } else if (IsUsingGreatPole(aisling))
+    {
+        FishCatchChance = 5;
+        FishStealBait = 3;
+    }else if (IsUsingGrandPole(aisling))
+    {
+        FishCatchChance = 6;
+        FishStealBait = 2;
+    }
 
-    if (IntegerRandomizer.RollChance(FISH_STEAL_BAIT))
+    if (IntegerRandomizer.RollChance(FishStealBait))
     {
         var randomMessage = BaitLossMessages[Random.Shared.Next(BaitLossMessages.Count)];
         
@@ -104,7 +118,7 @@ public class FishingEffect(IItemFactory itemFactory, ILogger<FishingEffect> logg
         aisling.Inventory.RemoveQuantity("Fishing Bait", 1);
     }
     
-    if (!IntegerRandomizer.RollChance(FISH_CATCH_CHANCE))
+    if (!IntegerRandomizer.RollChance(FishCatchChance))
         return;
 
     var templateKey = FishData.PickRandomWeighted();
@@ -144,6 +158,24 @@ public class FishingEffect(IItemFactory itemFactory, ILogger<FishingEffect> logg
         aisling.SendOrangeBarMessage($"You caught a {fish.DisplayName}!");
         aisling.Inventory.RemoveQuantity("Fishing Bait", 1);
     }
+}
+ 
+private bool IsUsingGoodPole(Aisling aisling)
+{
+    var weaponTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
+    return weaponTemplateKey?.StartsWith("good", StringComparison.OrdinalIgnoreCase) == true;
+}
+
+private bool IsUsingGreatPole(Aisling aisling)
+{
+    var weaponTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
+    return weaponTemplateKey?.StartsWith("Great", StringComparison.OrdinalIgnoreCase) == true;
+}
+
+private bool IsUsingGrandPole(Aisling aisling)
+{
+    var weaponTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
+    return weaponTemplateKey?.StartsWith("Grand", StringComparison.OrdinalIgnoreCase) == true;
 }
 
 private int CalculateExperienceGain(Aisling source, int tnl, string fishName)

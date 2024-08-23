@@ -30,6 +30,9 @@ namespace Chaos.Scripting.Components.AbilityComponents
                     .Prepend(targetThrowPoint)
                     .ToList();
 
+                if (target.StatSheet.CurrentHp < 1)
+                    return;
+
                 foreach (var point in potentialTargetPoints)
                 {
                     if (context.SourceMap.IsWalkable(point, CreatureType.Aisling, false))

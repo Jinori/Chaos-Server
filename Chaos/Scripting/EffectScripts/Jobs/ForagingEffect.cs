@@ -17,9 +17,9 @@ namespace Chaos.Scripting.EffectScripts.Jobs;
 
 public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> logger) : ContinuousAnimationEffectBase
 {
-    private const int FORAGE_GATHER_CHANCE = 2;
+    private int ForageGatherChance = 2;
     private const byte FORAGE_ICON = 95;
-    private const int DAMAGE_GLOVE = 5;
+    private int DamageGlove = 5;
 
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
@@ -101,7 +101,7 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
         TargetAnimation = 169
     };
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(10));
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(10), false);
 
     public override byte Icon => FORAGE_ICON;
     public override string Name => "Foraging";
@@ -119,35 +119,50 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
 
         if ((ForagingSpots.Count == 0)
             || !ForagingSpots.Contains(playerLocation)
-            || (aisling.Equipment[EquipmentSlot.Weapon]?.Template.Name != ("Cloth Glove")))
+            || aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey.EndsWith("Glove", StringComparison.OrdinalIgnoreCase) != true)
         {
             Subject.Effects.Terminate("Foraging");
-
             return;
         }
 
-        if (IntegerRandomizer.RollChance(DAMAGE_GLOVE))
+        
+        if (IsUsingIronGlove(aisling))
         {
-            var randomMessage = GloveBreakMessages[Random.Shared.Next(GloveBreakMessages.Count)];
-            var hasGloveOn = aisling.Equipment.TryGetObject("Cloth Glove", out var item);
-
-            switch (hasGloveOn)
-            {
-                case true when item?.CurrentDurability > 5:
-                    item.CurrentDurability -= 5;
-
-                    break;
-                case true when item?.CurrentDurability <= 5:
-                    aisling.Equipment.RemoveByTemplateKey("clothglove");
-                    aisling.SendOrangeBarMessage("Your glove breaks!");
-
-                    break;
-            }
-
-            aisling.SendOrangeBarMessage(randomMessage);
+            ForageGatherChance = 4;
+            DamageGlove = 4;
+        } else if (IsUsingMythrilGlove(aisling))
+        {
+            ForageGatherChance = 5;
+            DamageGlove = 3;
+        }else if (IsUsingHybrasylGlove(aisling))
+        {
+            ForageGatherChance = 6;
+            DamageGlove = 2;
         }
 
-        if (!IntegerRandomizer.RollChance(FORAGE_GATHER_CHANCE))
+        if (IntegerRandomizer.RollChance(DamageGlove))
+        {
+            var randomMessage = GloveBreakMessages[Random.Shared.Next(GloveBreakMessages.Count)];
+            var equippedGlove = aisling.Equipment[EquipmentSlot.Weapon];
+
+            if (equippedGlove != null && equippedGlove.Template.TemplateKey.EndsWith("Glove", StringComparison.OrdinalIgnoreCase))
+            {
+                if (equippedGlove.CurrentDurability > 5)
+                {
+                    equippedGlove.CurrentDurability -= 5;
+                }
+                else
+                {
+                    aisling.Equipment.RemoveByTemplateKey(equippedGlove.Template.TemplateKey);
+                    aisling.SendOrangeBarMessage("Your glove breaks!");
+                }
+
+                aisling.SendOrangeBarMessage(randomMessage);
+            }
+        }
+
+
+        if (!IntegerRandomizer.RollChance(ForageGatherChance))
             return;
 
         var templateKey = ForagingData.PickRandomWeighted();
@@ -184,6 +199,24 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
         {
             aisling.SendOrangeBarMessage($"You gathered a {herb.DisplayName}!");
         }
+    }
+    
+    private bool IsUsingIronGlove(Aisling aisling)
+    {
+        var weaponTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
+        return weaponTemplateKey?.StartsWith("Iron", StringComparison.OrdinalIgnoreCase) == true;
+    }
+
+    private bool IsUsingMythrilGlove(Aisling aisling)
+    {
+        var weaponTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
+        return weaponTemplateKey?.StartsWith("Mythril", StringComparison.OrdinalIgnoreCase) == true;
+    }
+
+    private bool IsUsingHybrasylGlove(Aisling aisling)
+    {
+        var weaponTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
+        return weaponTemplateKey?.StartsWith("Hybrasyl", StringComparison.OrdinalIgnoreCase) == true;
     }
 
     private int CalculateExperienceGain(Aisling source, int tnl, string herbName)

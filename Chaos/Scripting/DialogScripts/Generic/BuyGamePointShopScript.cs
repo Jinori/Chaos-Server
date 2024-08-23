@@ -1,3 +1,4 @@
+using Chaos.Definitions;
 using Chaos.Models.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
@@ -165,7 +166,21 @@ public class BuyGamePointShopScript : DialogScriptBase
     protected virtual void OnDisplayingInitial(Aisling source)
     {
         foreach (var item in BuyShopSource.ItemsForSale)
+        {
+            if (item.Template.TemplateKey == "ironglove")
+                if (!source.Trackers.Flags.HasFlag(ForagingQuest.Reached3000))
+                    continue;
+            
+            if (item.Template.TemplateKey == "mythrilglove")
+                if (!source.Trackers.Flags.HasFlag(ForagingQuest.Reached15000))
+                    continue;
+            
+            if (item.Template.TemplateKey == "hybrasylglove")
+                if (!source.Trackers.Flags.HasFlag(ForagingQuest.Reached50000))
+                    continue;
+            
             if (BuyShopSource.HasStock(item.Template.TemplateKey))
                 Subject.Items.Add(ItemDetails.BuyWithGp(item));
+        }
     }
 }

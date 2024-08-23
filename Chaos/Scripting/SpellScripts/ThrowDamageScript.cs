@@ -69,8 +69,8 @@ public class ThrowDamageScript : ConfigurableSpellScriptBase,
     public override void OnUse(SpellContext context)
         => new ComponentExecutor(context).WithOptions(this)
             .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-            ?.Execute<DamageAbilityComponent>()
-            .Execute<ThrowCreatureComponent>()
+            ?.Execute<ThrowCreatureComponent>()
+            .Execute<DamageAbilityComponent>()
             .Execute<CascadingComponent<CascadingDamageTileScript>>()
             .Execute<ApplyEffectAbilityComponent>();
 

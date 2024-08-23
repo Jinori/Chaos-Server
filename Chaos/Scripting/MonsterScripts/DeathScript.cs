@@ -4,6 +4,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using Chaos.Scripting.ReactorTileScripts;
 using Chaos.Services.Servers.Options;
 
 namespace Chaos.Scripting.MonsterScripts;
@@ -39,6 +40,18 @@ public class DeathScript : MonsterScriptBase
 
         Aisling[]? rewardTargets = null;
 
+        if (rewardTarget is null)
+        {
+            var lastDamage = Subject.Trackers.LastDamagedBy;
+            var trap = Subject.MapInstance.GetDistinctReactorsAtPoint(Subject)
+                .Where(x => x.Script.Is<TrapScript>() && lastDamage != null && x.WithinRange(lastDamage));
+
+            if (trap.Any() && lastDamage != null)
+            {
+                rewardTarget = lastDamage as Aisling;
+            }
+        }
+        
         if (rewardTarget != null)
             rewardTargets = (rewardTarget.Group
                              ?? (IEnumerable<Aisling>)new[]
