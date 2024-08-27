@@ -39,7 +39,7 @@ public class MythicFabrizioScript : DialogScriptBase
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "fabrizio_initial":
+            case "fabrizio_initialquest":
             {
                 if (source.UserStatSheet.Level < 9)
                 {

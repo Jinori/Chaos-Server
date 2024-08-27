@@ -1,4 +1,3 @@
-using Chaos.Definitions;
 using Chaos.Models.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
@@ -11,19 +10,19 @@ using Chaos.Utilities;
 
 namespace Chaos.Scripting.DialogScripts.Generic;
 
-public class BuyTokenShopScript : DialogScriptBase
+public class BuyPlatinumTokenShopScript : DialogScriptBase
 {
     private readonly IBuyShopSource BuyShopSource;
     private readonly ICloningService<Item> ItemCloner;
     private readonly IItemFactory ItemFactory;
-    private readonly ILogger<BuyTokenShopScript> Logger;
+    private readonly ILogger<BuySilverTokenShopScript> Logger;
 
     /// <inheritdoc />
-    public BuyTokenShopScript(
+    public BuyPlatinumTokenShopScript(
         Dialog subject,
         IItemFactory itemFactory,
         ICloningService<Item> itemCloner,
-        ILogger<BuyTokenShopScript> logger
+        ILogger<BuySilverTokenShopScript> logger
     )
         : base(subject)
     {
@@ -38,22 +37,22 @@ public class BuyTokenShopScript : DialogScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "generic_buyshoptoken_initial":
+            case "generic_buyplatinumtoken_initial":
             {
                 OnDisplayingInitial(source);
                 break;
             }
-            case "generic_buyshoptoken_amountrequest":
+            case "generic_buyplatinumtoken_amountrequest":
             {
                 OnDisplayingAmountRequest(source);
                 break;
             }
-            case "generic_buyshoptoken_confirmation":
+            case "generic_buyplatinumtoken_confirmation":
             {
                 OnDisplayingConfirmation(source);
                 break;
             }
-            case "generic_buyshoptoken_accepted":
+            case "generic_buyplatinumtoken_accepted":
             {
                 OnDisplayingAccepted(source);
                 break;
@@ -72,12 +71,12 @@ public class BuyTokenShopScript : DialogScriptBase
         }
 
         var totalCost = item.Template.BuyCost * amount;
-        var bossTokens = !source.Inventory.HasCountByTemplateKey("silvertoken", totalCost);
+        var bossTokens = !source.Inventory.HasCountByTemplateKey("platinumtoken", totalCost);
         
 
         if (bossTokens)
         {
-            Subject.Reply(source, $"You don't have enough boss tokens, you need {totalCost} tokens", "generic_buyshoptoken_initial");
+            Subject.Reply(source, $"You don't have enough Platinum Tokens, you need {totalCost} tokens", "generic_buyplatinumtoken_initial");
             return;
         }
 
@@ -94,7 +93,7 @@ public class BuyTokenShopScript : DialogScriptBase
         {
             case ComplexActionHelper.BuyItemResult.Success:
                 Logger.LogDebug(
-                    "{@Player} bought {ItemCount} {@Item} from {@Merchant} for {TokenAmount} boss tokens",
+                    "{@Player} bought {ItemCount} {@Item} from {@Merchant} for {TokenAmount} Platinum Tokens",
                     source,
                     amount,
                     item,
@@ -105,14 +104,14 @@ public class BuyTokenShopScript : DialogScriptBase
                 
                 break;
             case ComplexActionHelper.BuyItemResult.CantCarry:
-                Subject.Reply(source, "You can't carry that many", "generic_buyshoptoken_initial");
+                Subject.Reply(source, "You can't carry that many", "generic_buyplatinumtoken_initial");
                 break;
             case ComplexActionHelper.BuyItemResult.NotEnoughStock:
                 var availableStock = BuyShopSource.GetStock(item.Template.TemplateKey);
                 Subject.Reply(
                     source,
                     $"Sorry, we only have {availableStock} {item.DisplayName}s in stock",
-                    "generic_buyshoptoken_initial");
+                    "generic_buyplatinumtoken_initial");
                 break;
             case ComplexActionHelper.BuyItemResult.BadInput:
                 Subject.ReplyToUnknownInput(source);
@@ -150,7 +149,7 @@ public class BuyTokenShopScript : DialogScriptBase
             Subject.Reply(
                 source,
                 $"Sorry, we only have {availableStock} {item.DisplayName}s in stock",
-                "generic_buyshoptoken_initial");
+                "generic_buyplatinumtoken_initial");
             return;
         }
 
@@ -162,7 +161,7 @@ public class BuyTokenShopScript : DialogScriptBase
         foreach (var item in BuyShopSource.ItemsForSale)
         {
             if (BuyShopSource.HasStock(item.Template.TemplateKey))
-                Subject.Items.Add(ItemDetails.BuyWithTokens(item)); // You might want to create a new method for buying with tokens
+                Subject.Items.Add(ItemDetails.BuyWithTokens(item));
         }
     }
 }
