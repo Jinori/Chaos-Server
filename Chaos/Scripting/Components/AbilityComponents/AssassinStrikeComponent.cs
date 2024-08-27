@@ -77,16 +77,15 @@ public struct AssassinStrikeComponent : IComponent
                 ? Convert.ToInt32(source.StatSheet.GetEffectiveStat(damageStat.Value) * damageStatMultiplier.Value)
                 : source.StatSheet.GetEffectiveStat(damageStat.Value);
         }
+
+        if (target is not Monster monster) 
+            return finalDamage;
         
-        if (target is Monster monster)
-        {
+        if (monster.AggroList.TryGetValue(source.Id, out _)) 
+            return finalDamage;
             
-            if (monster.AggroList != null && !monster.AggroList.ContainsKey(source.Id))
-            {
-                var bonusDamage = finalDamage * .50;
-                finalDamage += Convert.ToInt32(bonusDamage);
-            }
-        }
+        var bonusDamage = finalDamage * .50;
+        finalDamage += Convert.ToInt32(bonusDamage);
 
         return finalDamage;
     }
