@@ -18,6 +18,11 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
         private readonly ILogger<LearnSkillScript> Logger;
         private readonly ISkillFactory SkillFactory;
         private readonly ISkillTeacherSource SkillTeacherSource;
+        
+        private bool IsPureMaster(Aisling source)
+        {
+            return source.Legend.ContainsKey("dedicated");
+        }
 
         private readonly Dictionary<string, List<string>> SkillUpgrades = new()
         {
@@ -43,6 +48,15 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             { "pierce", new List<string> { "skewer" } },
         };
 
+        private readonly Dictionary<string, List<string>> PureAbilities = new()
+        {
+            { "annihilate", new List<string> { "annihilate" } },
+            { "dragonstrike", new List<string> { "dragonstrike" } },
+            { "chaosfist", new List<string> { "chaosfist" } },
+            { "madsoul", new List<string> { "madsoul" } },
+        };
+
+        
         private readonly ISpellFactory SpellFactory;
 
         public LearnSkillScript(
@@ -161,8 +175,14 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
         {
             var requiredBaseClass = skill.Template.Class;
             var requiredAdvClass = skill.Template.AdvClass;
+            var requiredMaster = skill.Template.RequiresMaster;
 
             if (requiredBaseClass.HasValue && !source.HasClass(requiredBaseClass.Value))
+            {
+                return false;
+            }
+
+            if (requiredMaster && !source.UserStatSheet.Master)
             {
                 return false;
             }
@@ -176,6 +196,12 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             {
                 return false;
             }
+            
+            if (PureAbilities.ContainsKey(skill.Template.TemplateKey.ToLower()) && IsPureMaster(source))
+            {
+                return false;
+            }
+            
 
 // Check if the current skill is part of an upgrade chain
             if (SkillUpgrades.Values.Any(upgrades => upgrades.Contains(skill.Template.TemplateKey, StringComparer.OrdinalIgnoreCase)))

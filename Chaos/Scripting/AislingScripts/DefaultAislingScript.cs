@@ -31,6 +31,7 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
+using FluentAssertions.Execution;
 
 namespace Chaos.Scripting.AislingScripts;
 
@@ -355,7 +356,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 target.Animate(FlameHit, Subject.Id);
             }
         }
-        
+
 
         if (Subject.IsTideStanced())
         {
@@ -369,13 +370,13 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                         continue;
 
                     person.Animate(TideHeal, person.Id);
-                    
+
                     ApplyHealScript.ApplyHeal(
                         source,
                         person,
                         this,
                         (int)healAmount);
-                    
+
                     var manaReplenished = Math.Round(damage * 0.08m);
                     person.StatSheet.AddMp((int)manaReplenished);
                 }
@@ -386,74 +387,70 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     return;
 
                 Subject.Animate(TideHeal, Subject.Id);
-                
+
                 ApplyHealScript.ApplyHeal(
                     source,
                     Subject,
                     this,
                     (int)healAmount);
-                
+
                 var manaReplenished = Math.Round(damage * 0.08m);
                 Subject.StatSheet.AddMp((int)manaReplenished);
             }
+        }
 
-            if (Subject.IsMistStanced())
-            {
-                var result = Math.Round(damage * 0.15m);
+        if (Subject.IsMistStanced())
+        {
+            var result = Math.Round(damage * 0.15m);
 
-                if (Subject.Group is not null)
-                    foreach (var person in Subject.Group)
-                    {
-                        if (person.IsDead)
-                            continue;
-
-                        person.Animate(MistHeal, person.Id);
-
-                        ApplyHealScript.ApplyHeal(
-                            source,
-                            person,
-                            this,
-                            (int)result);
-
-                    }
-                else
+            if (Subject.Group is not null)
+                foreach (var person in Subject.Group)
                 {
-                    if (Subject.IsDead)
-                        return;
+                    if (person.IsDead)
+                        continue;
 
-                    Subject.Animate(MistHeal, Subject.Id);
+                    person.Animate(MistHeal, person.Id);
 
                     ApplyHealScript.ApplyHeal(
                         source,
-                        Subject,
+                        person,
                         this,
                         (int)result);
 
                 }
-            }
-
-            if (Subject.IsInLastStand())
-                if (damage >= Subject.StatSheet.CurrentHp)
-                {
-                    Subject.StatSheet.SetHp(1);
-                    Subject.Client.SendAttributes(StatUpdateType.Vitality);
-
+            else
+            {
+                if (Subject.IsDead)
                     return;
-                }
 
-            if (Subject.Effects.Contains("mount"))
+                Subject.Animate(MistHeal, Subject.Id);
+
+                ApplyHealScript.ApplyHeal(
+                    source,
+                    Subject,
+                    this,
+                    (int)result);
+
+            }
+        }
+
+        if (Subject.IsInLastStand())
+            if (damage >= Subject.StatSheet.CurrentHp)
             {
-                Subject.Effects.Dispel("mount");
-                Subject.Refresh();
-
-                return;
+                Subject.StatSheet.SetHp(1);
+                Subject.Client.SendAttributes(StatUpdateType.Vitality);
             }
 
-            if (Subject.IsRuminating())
-            {
-                Subject.Effects.Dispel("rumination");
-                Subject.SendOrangeBarMessage("Taking damage ended your rumination.");
-            }
+        if (Subject.Effects.Contains("mount"))
+        {
+            Subject.Effects.Dispel("mount");
+            Subject.Refresh();
+        }
+
+        if (Subject.IsRuminating())
+        {
+            Subject.Effects.Dispel("rumination");
+            Subject.SendOrangeBarMessage("Taking damage ended your rumination.");
         }
     }
 

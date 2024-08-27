@@ -75,6 +75,11 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
         aisling.Animate(ani);
         aisling.Client.SendAttributes(StatUpdateType.Full);
 
+        if (aisling.StatSheet.Level == 99)
+        {
+            aisling.Trackers.Enums.Set(ClassStatBracket.PreMaster);
+        }
+
         if (aisling.UserStatSheet.BaseClass is BaseClass.Priest)
             switch (aisling.StatSheet.Level)
             {

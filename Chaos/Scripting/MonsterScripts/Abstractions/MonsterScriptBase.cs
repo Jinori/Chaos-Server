@@ -82,7 +82,7 @@ public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonste
             Subject.Effects.Dispel("Crit");
 
         if (Subject.Effects.Contains("Amnesia"))
-            Subject.Effects.Dispel("Amensia");
+            Subject.Effects.Terminate("Amnesia");
             
         OnAttacked(source, damage, null);
     }

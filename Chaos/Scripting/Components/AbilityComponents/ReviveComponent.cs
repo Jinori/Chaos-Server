@@ -63,7 +63,11 @@ public class ReviveComponent : IComponent
 
                         break;
                     case "revive":
-                        target.Trackers.TimedEvents.AddEvent("revivedrecently", TimeSpan.FromMinutes(15), true);
+                        target.Trackers.TimedEvents.AddEvent("revivedrecently", TimeSpan.FromMinutes(20), true);
+                        break;
+                        
+                    case "resurrect": 
+                        target.Trackers.TimedEvents.AddEvent("revivedrecently", TimeSpan.FromMinutes(10), true);
 
                         break;
                 }

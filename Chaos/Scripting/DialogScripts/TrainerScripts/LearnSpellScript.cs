@@ -20,6 +20,11 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
         private readonly ISkillFactory SkillFactory;
         private readonly ISpellFactory SpellFactory;
         private readonly ISpellTeacherSource SpellTeacherSource;
+        
+        private bool IsPureMaster(Aisling source)
+        {
+            return source.Legend.ContainsKey("dedicated");
+        }
 
         private readonly Dictionary<string, List<string>> SpellUpgradesByTemplateKey = new(StringComparer.OrdinalIgnoreCase)
         {
@@ -76,6 +81,15 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
 
             // Monk
             { "goad", new List<string> { "howl" } }
+        };
+        
+        private readonly Dictionary<string, List<string>> PureAbilities = new()
+        {
+            { "magmasurge", new List<string> { "magmasurge" } },
+            { "tidalbreeze", new List<string> { "tidalbreeze" } },
+            { "grouphide", new List<string> { "grouphide" } },
+            { "healzone", new List<string> { "healzone" } },
+            { "darkstorm", new List<string> { "darkstorm" } },
         };
 
         public LearnSpellScript(
@@ -205,6 +219,11 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             if (source.SpellBook.Contains(spell))
             {
                 // Spell already in spellbook
+                return false;
+            }
+            
+            if (PureAbilities.ContainsKey(spell.Template.TemplateKey.ToLower()) && IsPureMaster(source))
+            {
                 return false;
             }
             

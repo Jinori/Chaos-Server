@@ -38,13 +38,16 @@ public class ExecuteComponent : IComponent
 
                 var healAmount = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, options.HealAmountIfExecuted);
 
-                options.ApplyHealScript.ApplyHeal(
-                    target,
-                    context.Source,
-                    options.SourceScript,
-                    healAmount);
+                if (options.HealAmountIfExecuted > 0)
+                {
+                    options.ApplyHealScript.ApplyHeal(
+                        target,
+                        context.Source,
+                        options.SourceScript,
+                        healAmount);
                 
-                context.SourceAisling?.SendActiveMessage($"You've been healed by {healAmount}!");
+                    context.SourceAisling?.SendActiveMessage($"You've been healed by {healAmount}!"); 
+                }
                 
                 context.SourceAisling?.Animate(Animate);
 
