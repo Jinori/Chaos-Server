@@ -38,22 +38,22 @@ public class BuyTokenShopScript : DialogScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "generic_buyshopbosstoken_initial":
+            case "generic_buyshoptoken_initial":
             {
                 OnDisplayingInitial(source);
                 break;
             }
-            case "generic_buyshopbosstoken_amountrequest":
+            case "generic_buyshoptoken_amountrequest":
             {
                 OnDisplayingAmountRequest(source);
                 break;
             }
-            case "generic_buyshopbosstoken_confirmation":
+            case "generic_buyshoptoken_confirmation":
             {
                 OnDisplayingConfirmation(source);
                 break;
             }
-            case "generic_buyshopbosstoken_accepted":
+            case "generic_buyshoptoken_accepted":
             {
                 OnDisplayingAccepted(source);
                 break;
@@ -72,12 +72,12 @@ public class BuyTokenShopScript : DialogScriptBase
         }
 
         var totalCost = item.Template.BuyCost * amount;
-        var bossTokens = !source.Inventory.HasCountByTemplateKey("bosstoken", totalCost);
+        var bossTokens = !source.Inventory.HasCountByTemplateKey("silvertoken", totalCost);
         
 
         if (bossTokens)
         {
-            Subject.Reply(source, $"You don't have enough boss tokens, you need {totalCost} tokens", "generic_buyshopbosstoken_initial");
+            Subject.Reply(source, $"You don't have enough boss tokens, you need {totalCost} tokens", "generic_buyshoptoken_initial");
             return;
         }
 
@@ -100,16 +100,19 @@ public class BuyTokenShopScript : DialogScriptBase
                     item,
                     Subject.DialogSource,
                     totalCost);
+
+                source.Inventory.RemoveQuantityByTemplateKey("silvertoken", totalCost);
+                
                 break;
             case ComplexActionHelper.BuyItemResult.CantCarry:
-                Subject.Reply(source, "You can't carry that many", "generic_buyshopbosstoken_initial");
+                Subject.Reply(source, "You can't carry that many", "generic_buyshoptoken_initial");
                 break;
             case ComplexActionHelper.BuyItemResult.NotEnoughStock:
                 var availableStock = BuyShopSource.GetStock(item.Template.TemplateKey);
                 Subject.Reply(
                     source,
                     $"Sorry, we only have {availableStock} {item.DisplayName}s in stock",
-                    "generic_buyshopbosstoken_initial");
+                    "generic_buyshoptoken_initial");
                 break;
             case ComplexActionHelper.BuyItemResult.BadInput:
                 Subject.ReplyToUnknownInput(source);
@@ -147,7 +150,7 @@ public class BuyTokenShopScript : DialogScriptBase
             Subject.Reply(
                 source,
                 $"Sorry, we only have {availableStock} {item.DisplayName}s in stock",
-                "generic_buyshopbosstoken_initial");
+                "generic_buyshoptoken_initial");
             return;
         }
 
@@ -158,20 +161,8 @@ public class BuyTokenShopScript : DialogScriptBase
     {
         foreach (var item in BuyShopSource.ItemsForSale)
         {
-            if (item.Template.TemplateKey == "ironglove")
-                if (!source.Trackers.Flags.HasFlag(ForagingQuest.Reached3000))
-                    continue;
-
-            if (item.Template.TemplateKey == "mythrilglove")
-                if (!source.Trackers.Flags.HasFlag(ForagingQuest.Reached15000))
-                    continue;
-
-            if (item.Template.TemplateKey == "hybrasylglove")
-                if (!source.Trackers.Flags.HasFlag(ForagingQuest.Reached50000))
-                    continue;
-
             if (BuyShopSource.HasStock(item.Template.TemplateKey))
-                Subject.Items.Add(ItemDetails.BuyWithGp(item)); // You might want to create a new method for buying with tokens
+                Subject.Items.Add(ItemDetails.BuyWithTokens(item)); // You might want to create a new method for buying with tokens
         }
     }
 }

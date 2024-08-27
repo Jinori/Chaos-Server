@@ -78,7 +78,7 @@ public struct AssassinStrikeComponent : IComponent
                 : source.StatSheet.GetEffectiveStat(damageStat.Value);
         }
 
-        if (target is not Monster monster) 
+        if (target is not Monster monster)
             return finalDamage;
         
         if (monster.AggroList.TryGetValue(source.Id, out _)) 
@@ -98,7 +98,6 @@ public struct AssassinStrikeComponent : IComponent
         Stat? DamageStat { get; init; }
         decimal? DamageStatMultiplier { get; init; }
         Element? Element { get; init; }
-        bool? MoreDmgHighTargetHp { get; init; } 
         decimal? PctHpDamage { get; init; }
         IScript SourceScript { get; init; }
     }
