@@ -44,6 +44,11 @@ public class AggroTargetingScript : MonsterScriptBase
 
         TargetUpdateTimer.Update(delta);
 
+        if (Subject.Effects.TryGetEffect("amnesia", out _))
+        {
+            return;
+        }
+        
         if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject) || Target.MapInstance.IsWalkable(Target, CreatureType.Normal)))
         {
             AggroList.Remove(Target.Id, out _);
