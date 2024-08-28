@@ -31,6 +31,12 @@ public sealed class ItemDetails
         Item = item,
         Price = item.Template.BuyCost
     };
+    
+    public static ItemDetails SellForTokens(Item item) => new()
+    {
+        Item = item,
+        Price = item.Template.SellValue
+    };
 
     public static ItemDetails WithdrawItem(Item item) => new()
     {
