@@ -435,6 +435,13 @@ public class MasteringScript : DialogScriptBase
         source.SpellBook.TryAddToNextSlot(pramh);
         source.SpellBook.TryAddToNextSlot(vortex);
         
+        if (source.Bank.Contains("Pet Collar"))
+            source.Bank.TryWithdraw("Pet Collar", 1, out _);
+        
+        if (source.Inventory.Contains("Pet Collar"))
+            source.Inventory.Remove("Pet Collar");
+        
+        
         if (!source.Legend.TryGetValue("dedicated", out _))
         {
             var resurrect = SpellFactory.Create("resurrect");

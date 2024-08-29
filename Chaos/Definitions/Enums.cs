@@ -1843,3 +1843,10 @@ public enum ForagingQuest
     Reached50000 = 29,
     CompletedForaging = 31
 }
+
+public enum MasterPriestPath
+{
+    None = 0,
+    Dark = 1,
+    Light = 2
+}
