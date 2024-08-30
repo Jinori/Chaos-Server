@@ -1664,6 +1664,33 @@ public enum MainStoryEnums
     CompletedPreMasterMainStory = 33,
 }
 
+public enum MainstoryMasterEnums
+{
+    None = 0,
+    StartedDungeon = 1,
+    FinishedDungeon = 2,
+    CompletedDungeon = 3,
+    StartedCreants = 4,
+    KilledCreants = 5,
+    CompletedCreants = 6,
+}
+
+[Flags]
+public enum CreantEnums
+{
+    StartedMedusa = 1,
+    KilledMedusa = 2,
+    CompletedMedusa = 3,
+    StartedPhoenix = 4,
+    KilledPhoenix = 5,
+    CompletedPhoenix = 6,
+    StartedTauren = 7,
+    KilledTauren = 8,
+    CompletedTauren = 9,
+    StartedSham = 10,
+    KilledSham = 11,
+    CompletedSham = 12
+}
 public enum SummonerBossFight
 {
     None,
@@ -1747,6 +1774,23 @@ public enum MainstoryFlags
     CompletedArtifact3 = 1 << 5,
     CompletedArtifact4 = 1 << 6,
     CompletedFloor3 = 1 << 7,
+    FinishedDungeon = 1 << 8
+}
+
+[Flags]
+public enum CthonicDemiseBoss
+{
+    None,
+    Warrior1 = 1 << 1,
+    Warrior2 = 1 << 2,
+    Priest1 = 1 << 3,
+    Priest2 = 1 << 4,
+    Rogue1 = 1 << 5,
+    Rogue2 = 1 << 6,
+    Wizard1 = 1 << 7,
+    Wizard2 = 1 << 8,
+    Monk1 = 1 << 9,
+    Monk2 = 1 << 10
 }
 
 public enum SupplyLouresStage

@@ -18,8 +18,6 @@ public class MainStory2Script(
     private IExperienceDistributionScript ExperienceDistributionScript { get; } =
         DefaultExperienceDistributionScript.Create();
 
-    private readonly IItemFactory ItemFactory = itemFactory;
-    
 
     public override void OnDisplaying(Aisling source)
     {
@@ -27,6 +25,12 @@ public class MainStory2Script(
         {
             case "mainstory_miraelis_initial":
             {
+                if (source.UserStatSheet.Master)
+                {
+                    Subject.Reply(source, "Skip", "mainstory_miraelis_masterinitial");
+                    return;
+                }
+                
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.RetryServant))
                 {
                     Subject.Reply(source, "Go back to Eingren Manor third floor with a group and take down the servant, figure out what he knows about where the Summoner went.");
@@ -35,7 +39,7 @@ public class MainStory2Script(
                 
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.CompletedPreMasterMainStory))
                 {
-                    Subject.Reply(source, "You've done very well this far Aisling. You've by far passed our expectations of you. With the Summoner's minions lurking around Unora, it is not safe. Please be careful until we get together a plan on taking down these creants.");
+                    Subject.Reply(source, "You've done very well this far Aisling. You've by far passed our expectations of you. Please come speak to me after you have mastered your class.");
                     return;
                 }
                 
@@ -115,7 +119,7 @@ public class MainStory2Script(
             case "summoner_initial5":
             {
                 source.Trackers.Enums.Set(MainStoryEnums.SearchForSummoner);
-                var trueartifact = ItemFactory.Create("trueelementalartifact");
+                var trueartifact = itemFactory.Create("trueelementalartifact");
                 source.GiveItemOrSendToBank(trueartifact);
                 source.SendOrangeBarMessage("Find the Summoner on the third floor of Eingren Manor.");
                 return;
@@ -149,7 +153,7 @@ public class MainStory2Script(
                 {
                     foreach (var gearItemName in armor)
                     {
-                        var gearItem = ItemFactory.Create(gearItemName);
+                        var gearItem = itemFactory.Create(gearItemName);
                         source.GiveItemOrSendToBank(gearItem);
                     }
                 }
@@ -168,7 +172,7 @@ public class MainStory2Script(
                 source.Trackers.Enums.Set(MainStoryEnums.CompletedPreMasterMainStory);
                 ExperienceDistributionScript.GiveExp(source, 10000000);
                 source.TryGiveGamePoints(25);
-                source.SendOrangeBarMessage("Wait for Goddess Miraelis to have more information.");
+                source.SendOrangeBarMessage("Speak to Goddess Miraelis after you have mastered.");
                 return;
             }
         }

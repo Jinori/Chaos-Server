@@ -4,7 +4,6 @@ using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
