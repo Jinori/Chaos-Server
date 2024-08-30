@@ -7,11 +7,11 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.DragonScaleBoss;
 
-public sealed class dragonScaleBossDefenseScript : MonsterScriptBase
+public sealed class DragonScaleBossDefenseScript : MonsterScriptBase
 {
 
     /// <inheritdoc />
-    public dragonScaleBossDefenseScript(Monster subject)
+    public DragonScaleBossDefenseScript(Monster subject)
         : base(subject) { }
 
     /// <inheritdoc />

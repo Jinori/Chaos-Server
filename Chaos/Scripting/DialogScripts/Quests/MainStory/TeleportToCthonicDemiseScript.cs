@@ -30,7 +30,7 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
 
         var group = GetNearbyGroupMembers(source);
 
-        if (group == null || group.Count == 0)
+        if (group == null || group.Count <= 3)
         {
             SendNoGroupMembersMessage(source);
             WarpSourceBack(source);
@@ -91,8 +91,8 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
 
     private void SendNoGroupMembersMessage(Aisling source)
     {
-        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Facing the army alone is suicide.");
-        Subject.Reply(source, "You have no group members nearby.");
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Facing the army requires at least four members of the group.");
+        Subject.Reply(source, "You do not have enough group members nearby. To face the army, you must have atleast four group members.");
     }
 
     private void SendLevelRangeInvalidMessage(Aisling source)
@@ -120,6 +120,9 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
 
         foreach (var member in group)
         {
+            if (member.Inventory.Contains("Cthonic Bell"))
+                member.Inventory.RemoveQuantity("Cthonic Bell", 100);
+            
             Point point;
             do
             {

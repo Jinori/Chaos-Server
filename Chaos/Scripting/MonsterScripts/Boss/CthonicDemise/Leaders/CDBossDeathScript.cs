@@ -8,7 +8,7 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Servers.Options;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.CthonicDemise;
+namespace Chaos.Scripting.MonsterScripts.Boss.CthonicDemise.Leaders;
 
 public class CdBossDeathScript : MonsterScriptBase
 {
