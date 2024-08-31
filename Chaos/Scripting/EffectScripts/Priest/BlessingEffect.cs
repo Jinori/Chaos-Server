@@ -9,7 +9,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class BlessingEffect : EffectBase, HierarchicalEffectComponent.IHierarchicalEffectComponentOptions
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(8);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 512,
@@ -51,7 +51,7 @@ public class BlessingEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
         Subject.Animate(Animation!);
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor increased.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel blessed.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -68,7 +68,7 @@ public class BlessingEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
 
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor has returned to normal.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Blessing has faded.");
     }
     
     public override bool ShouldApply(Creature source, Creature target)

@@ -99,16 +99,16 @@ public class CdBossDeathScript : MonsterScriptBase
     {
         var bossProgressions = new Dictionary<string, CthonicDemiseBoss>
         {
-            { "darkmasterjohn", CthonicDemiseBoss.Warrior1 },
-            { "darkmasterjane", CthonicDemiseBoss.Warrior2 },
-            { "darkmasterroy", CthonicDemiseBoss.Rogue1 },
-            { "darkmasterray", CthonicDemiseBoss.Rogue2 },
-            { "darkmastermike", CthonicDemiseBoss.Monk1 },
-            { "darkmastermary", CthonicDemiseBoss.Monk2 },
-            { "darkmasterphil", CthonicDemiseBoss.Priest1 },
-            { "darkmasterpam", CthonicDemiseBoss.Priest2 },
-            { "darkmasterwilliam", CthonicDemiseBoss.Wizard1 },
-            { "darkmasterwanda", CthonicDemiseBoss.Wizard2 }
+            { "darkmasterjohn", CthonicDemiseBoss.John },
+            { "darkmasterjane", CthonicDemiseBoss.Jane },
+            { "darkmasterroy", CthonicDemiseBoss.Roy },
+            { "darkmasterray", CthonicDemiseBoss.Ray },
+            { "darkmastermike", CthonicDemiseBoss.Mike },
+            { "darkmastermary", CthonicDemiseBoss.Mary },
+            { "darkmasterphil", CthonicDemiseBoss.Phil },
+            { "darkmasterpam", CthonicDemiseBoss.Pam },
+            { "darkmasterwilliam", CthonicDemiseBoss.William },
+            { "darkmasterwanda", CthonicDemiseBoss.Wanda }
         };
 
         if (bossProgressions.TryGetValue(Subject.Template.TemplateKey, out var bossFlag))
@@ -136,9 +136,11 @@ public class CdBossDeathScript : MonsterScriptBase
                         if (target.UserStatSheet.BaseClass == BaseClass.Warrior &&
                             !target.Trackers.Flags.HasFlag(bossFlag))
                         {
+                            target.SpellBook.Remove("berserk");
+                            
                             var spell = SpellFactory.Create("fury");
                             target.SpellBook.TryAddToNextSlot(spell);
-                            target.SendOrangeBarMessage("You've learned a new ability!");
+                            target.SendOrangeBarMessage("You've learned a new ability that replaced Berserk!");
                         }
 
                     if (Subject.Template.TemplateKey == "darkmasterroy")
@@ -154,9 +156,10 @@ public class CdBossDeathScript : MonsterScriptBase
                         if (target.UserStatSheet.BaseClass == BaseClass.Warrior &&
                             !target.Trackers.Flags.HasFlag(bossFlag))
                         {
+                            target.SkillBook.Remove("Throw Surigum");
                             var skill = SkillFactory.Create("surigumblitz");
                             target.SkillBook.TryAddToNextSlot(skill);
-                            target.SendOrangeBarMessage("You've learned a new ability!");
+                            target.SendOrangeBarMessage("You've learned a new ability that replaced Throw Surigum!");
                         }
 
                     if (Subject.Template.TemplateKey == "darkmastermike")
@@ -242,7 +245,7 @@ public class CdBossDeathScript : MonsterScriptBase
                         target.Trackers.Flags.AddFlag(MainstoryFlags.FinishedDungeon);
                         target.Trackers.Enums.Set(MainstoryMasterEnums.FinishedDungeon);
                         target.SendOrangeBarMessage(
-                            "You have defeated Summoner Kades's army, return to Goddess Miraelis.");
+                            "You've defeated Summoner Kades's army, visit Goddess Miraelis.");
                     }
                 }
         }
@@ -250,15 +253,15 @@ public class CdBossDeathScript : MonsterScriptBase
 
     private bool CheckAllBossesDefeated(Aisling target)
     {
-        return target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Warrior1) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Warrior2) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Monk1) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Monk2) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Priest1) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Priest2) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Rogue1) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Rogue2) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Wizard1) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Wizard2);
+        return target.Trackers.Flags.HasFlag(CthonicDemiseBoss.John) &&
+               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Jane) &&
+               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Mike) &&
+               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Mary) &&
+               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Phil) &&
+               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Pam) &&
+               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Roy) &&
+               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Ray) &&
+               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.William) &&
+               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Wanda);
     }
 }

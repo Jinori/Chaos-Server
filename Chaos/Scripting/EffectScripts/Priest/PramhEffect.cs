@@ -44,6 +44,9 @@ public sealed class PramhEffect : ContinuousAnimationEffectBase
     {
         if (target.Script.Is<ThisIsABossScript>())
             return false;
+
+        if (target.IsGodModeEnabled())
+            return false;
         
         if (target.Effects.Contains("pramh")
             || target.Effects.Contains("beagpramh"))

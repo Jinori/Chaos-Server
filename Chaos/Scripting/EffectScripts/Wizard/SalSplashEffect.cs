@@ -102,6 +102,9 @@ public class SalSplashEffect : ContinuousAnimationEffectBase
         if (target.IsFriendlyTo(source))
             return false;
 
+        if (target.IsGodModeEnabled())
+            return false;
+
         if (target.Effects.Contains("BeagSalsplash") || target.Effects.Contains("SalSplash") || target.Effects.Contains("MorSalSplash") || target.Effects.Contains("ArdSalSplash"))
             return false;
 
