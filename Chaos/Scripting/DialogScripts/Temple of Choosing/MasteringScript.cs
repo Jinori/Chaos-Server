@@ -438,6 +438,9 @@ public class MasteringScript : DialogScriptBase
         var pramh = SpellFactory.Create("pramh");
         var vortex = SpellFactory.Create("vortex");
 
+        source.SpellBook.Remove("beag pramh");
+        source.SpellBook.Remove("quake");
+
         source.SpellBook.TryAddToNextSlot(pramh);
         source.SpellBook.TryAddToNextSlot(vortex);
         
@@ -447,9 +450,9 @@ public class MasteringScript : DialogScriptBase
         if (source.Inventory.Contains("Pet Collar"))
             source.Inventory.Remove("Pet Collar");
         
-        
         if (!source.Legend.TryGetValue("dedicated", out _))
         {
+            source.SpellBook.Remove("revive");
             var resurrect = SpellFactory.Create("resurrect");
             source.SpellBook.TryAddToNextSlot(resurrect);
         }
