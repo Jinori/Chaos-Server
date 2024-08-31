@@ -181,7 +181,7 @@ public class ClassDedicationScript : DialogScriptBase
         var unspentpoints = source.UserStatSheet.UnspentPoints;
         if (unspentpoints > 19)
         {
-            var equals = source.UserStatSheet.UnspentPoints.Equals(19);
+            source.UserStatSheet.UnspentPoints = 19;
         }
         source.Trackers.Enums.Remove<PentagramQuestStage>();
         source.Trackers.Enums.Remove<NightmareQuestStage>();
