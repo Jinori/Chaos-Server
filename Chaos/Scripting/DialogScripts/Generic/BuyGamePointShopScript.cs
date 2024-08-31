@@ -167,17 +167,33 @@ public class BuyGamePointShopScript : DialogScriptBase
     {
         foreach (var item in BuyShopSource.ItemsForSale)
         {
-            if (item.Template.TemplateKey == "ironglove")
-                if (!source.Trackers.Flags.HasFlag(ForagingQuest.Reached3000))
-                    continue;
+            if (Subject.DialogSource.Name == "Pratix")
+            {
+                if (item.Template.TemplateKey == "goodfishingpole")
+                    if (!source.Trackers.Flags.HasFlag(FishingQuest.Reached3000))
+                        continue;
+                
+                if (item.Template.TemplateKey == "greatfishingpole")
+                    if (!source.Trackers.Flags.HasFlag(FishingQuest.Reached15000))
+                        continue;
+                
+                if (item.Template.TemplateKey == "grandfishingpole")
+                    if (!source.Trackers.Flags.HasFlag(FishingQuest.Reached50000))
+                        continue;
+                
+                if (item.Template.TemplateKey == "ironglove")
+                    if (!source.Trackers.Flags.HasFlag(ForagingQuest.Reached3000))
+                        continue;
             
-            if (item.Template.TemplateKey == "mythrilglove")
-                if (!source.Trackers.Flags.HasFlag(ForagingQuest.Reached15000))
-                    continue;
+                if (item.Template.TemplateKey == "mythrilglove")
+                    if (!source.Trackers.Flags.HasFlag(ForagingQuest.Reached15000))
+                        continue;
             
-            if (item.Template.TemplateKey == "hybrasylglove")
-                if (!source.Trackers.Flags.HasFlag(ForagingQuest.Reached50000))
-                    continue;
+                if (item.Template.TemplateKey == "hybrasylglove")
+                    if (!source.Trackers.Flags.HasFlag(ForagingQuest.Reached50000))
+                        continue;
+            }
+
             
             if (BuyShopSource.HasStock(item.Template.TemplateKey))
                 Subject.Items.Add(ItemDetails.BuyWithGp(item));

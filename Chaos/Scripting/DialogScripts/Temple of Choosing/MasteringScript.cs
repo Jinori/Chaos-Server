@@ -72,8 +72,10 @@ public class MasteringScript : DialogScriptBase
                     Subject.Reply(source, "You already wear the Mantle of the Master.");
                 
                 if (!source.Trackers.Enums.HasValue(MainStoryEnums.CompletedPreMasterMainStory))
-                    Subject.Reply(source, "You seek to master the ancient arts. However, the path to mastery is entwined with the threads of the main story quest. Until you have completed your journey through the core challenges that lie ahead, the secrets of mastery will remain beyond your reach. Remember, true wisdom and power come to those who fully embrace their destiny. Return to me once you have fulfilled our primary quest, and I shall guide you further on your path to mastery");
-
+                {
+                    Subject.Reply(source, "Ah, you aspire to wield the ancient powers of mastery. Yet, the path to such power is not freely given. It is a journey intertwined with the very essence of a main story that shapes your fate. Until you have walked the full length of this path, the arcane secrets of mastery shall remain veiled from your sight. Return to me only when you have faced the core trials, and I shall reveal the way to harness the true might that awaits you.");
+                }
+                
                 break;
             }
             

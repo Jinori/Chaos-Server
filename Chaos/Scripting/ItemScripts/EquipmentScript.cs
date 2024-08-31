@@ -179,7 +179,8 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
                     MagicResistance = source.StatSheet.Level >= 40 ? 5 : 0  
                 };
 
-                subject.Modifiers.Add(attributes);
+                MysticAttributes = attributes;
+                subject.Modifiers.Add(MysticAttributes);
             }
             if (Subject.Template.TemplateKey.EqualsI("mysticknife"))
             {
@@ -190,18 +191,8 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
                     SkillDamagePct = 6 + source.StatSheet.Level / 10
                 };
 
-                subject.Modifiers.Add(attributes);
-            }
-            if (Subject.Template.TemplateKey.EqualsI("mysticknife"))
-            {
-                var attributes = new Attributes
-                {
-                    AtkSpeedPct = 7 + (source.StatSheet.Level / 10),
-                    FlatSkillDamage = 6 + (int)(source.StatSheet.Level * 1.3),
-                    SkillDamagePct = 6 + source.StatSheet.Level / 10
-                };
-
-                subject.Modifiers.Add(attributes);
+                MysticAttributes = attributes;
+                subject.Modifiers.Add(MysticAttributes);
             }
             if (Subject.Template.TemplateKey.EqualsI("mysticsword"))
             {
@@ -212,11 +203,27 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
                     SkillDamagePct = source.StatSheet.Level / 10
                 };
 
-                subject.Modifiers.Add(attributes);
+                MysticAttributes = attributes;
+                subject.Modifiers.Add(MysticAttributes);
             }   
         }
         
         source.Equip(template.EquipmentType.Value, Subject);
+    }
+
+    private Attributes? MysticAttributes { get; set; }
+    
+    public override void OnUnEquipped(Aisling aisling)
+    {
+        base.OnUnEquipped(aisling);
+
+        if (!Subject.Template.TemplateKey.StartsWithI("mythic")) 
+            return;
+        
+        if (MysticAttributes != null) 
+            Subject.Modifiers.Subtract(MysticAttributes);
+            
+        MysticAttributes = null;
     }
 
     #region ScriptVars
