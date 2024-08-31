@@ -1,7 +1,12 @@
 ﻿using Chaos.Collections;
+using Chaos.Common.Utilities;
+using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
+using Chaos.Scripting.ReactorTileScripts.MainStoryQuest;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -14,13 +19,14 @@ namespace Chaos.Scripting.MapScripts.CthonicDemise
         public const int UPDATE_INTERVAL_MS = 1;
         public bool BossSpawned;
         private int BossKillCount;
+        
+        private readonly IReactorTileFactory ReactorTileFactory;
 
-        private readonly ISimpleCache SimpleCache;
-
-        public CthonicDemiseScript(MapInstance subject, ISimpleCache simpleCache)
+        public CthonicDemiseScript(MapInstance subject,
+            IReactorTileFactory reactorTileFactory)
             : base(subject)
         {
-            SimpleCache = simpleCache;
+            ReactorTileFactory = reactorTileFactory;
             UpdateTimer = new IntervalTimer(TimeSpan.FromSeconds(UPDATE_INTERVAL_MS));
             BossKillCount = 0;
         }
@@ -31,56 +37,60 @@ namespace Chaos.Scripting.MapScripts.CthonicDemise
 
             if (UpdateTimer!.IntervalElapsed)
             {
-                if (Subject.GetEntities<Monster>().Any(x => x.Template.TemplateKey.Contains("darkmaster")))
+                // Check if any bosses are on the map
+                var bosses = Subject.GetEntities<Monster>().Where(x => x.Template.TemplateKey.Contains("darkmaster"))
+                    .ToList();
+
+                if (bosses.Any())
                 {
                     BossSpawned = true;
                 }
-
-                if (BossSpawned)
+                else if (BossSpawned)
                 {
-                    CheckBossKills();
-                }
-            }
-        }
+                    // No bosses are present and a boss was previously spawned, so increment the kill count
+                    BossSpawned = false;
+                    BossKillCount++;
 
-        private void CheckBossKills()
-        {
-            var bosses = Subject.GetEntities<Monster>().Where(x => x.Template.TemplateKey.Contains("darkmaster")).ToList();
-
-            if (BossKillCount < 2)
-            {
-                // If a boss dies, increase the kill count
-                foreach (var boss in bosses)
-                {
-                    if (!boss.IsAlive)
+                    if (BossKillCount >= 2)
                     {
-                        BossKillCount++;
-                        Subject.RemoveEntity(boss);
-
-                        if (BossKillCount >= 2)
-                        {
-                            TeleportPlayersAndReset();
-                            break;
-                        }
+                        OpenEscapePortal();
                     }
                 }
             }
         }
 
-        private void TeleportPlayersAndReset()
+        private void OpenEscapePortal()
         {
-            var players = Subject.GetEntities<Aisling>().ToList();
-            var mapInstance = SimpleCache.Get<MapInstance>("cr11");
-            var rect = new Rectangle(20, 20, 4, 4);
-            var point = rect.GetRandomPoint();
+            var aislingportal = Subject.GetEntities<Aisling>()
+                .FirstOrDefault(x =>
+                    x.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedDungeon) ||
+                    x.Trackers.Flags.HasFlag(MainstoryFlags.FinishedDungeon));
 
-            foreach (var player in players)
+            if (aislingportal == null) return;
+
+            // Check if there's already an escape portal open
+            if (Subject.GetEntities<ReactorTile>().Any(x => x.Script.Is<CthonicDemiseEscapeScript>()))
+                return;
+
+            var portalSpawn = new Rectangle(aislingportal, 6, 6);
+            var outline = portalSpawn.GetOutline().ToList();
+            Point point;
+
+            do
+                point = outline.PickRandom();
+            while (!Subject.IsWalkable(point, aislingportal.Type));
+
+            var reactortile = ReactorTileFactory.Create("cdescapeportal", Subject, Point.From(point));
+
+            Subject.SimpleAdd(reactortile);
+
+            var aislings = Subject.GetEntities<Aisling>().Where(x =>
+                x.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedDungeon) ||
+                x.Trackers.Flags.HasFlag(MainstoryFlags.FinishedDungeon)).ToList();
+
+            foreach (var aisling in aislings)
             {
-                if (player.Inventory.Contains("Cthonic Bell"))
-                    player.Inventory.RemoveByTemplateKey("cdbell");
-                
-                while (!mapInstance.IsWalkable(point, player.Type))
-                    player.TraverseMap(mapInstance, point);
+                aisling.SendOrangeBarMessage("A portal opens nearby to Cthonic Remains 11 to rest.");
             }
         }
     }

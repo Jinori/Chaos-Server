@@ -85,6 +85,7 @@ public class DarkPriestScript (Dialog subject, ILogger<CrudeLeatherQuestScript> 
                 };
                 
                 source.Trackers.Enums.Set(MasterPriestPath.Dark);
+                source.SpellBook.Remove("zap");
                 var spell = spellFactory.Create("voidjolt");
                 source.SpellBook.TryAddToNextSlot(spell);
                 source.SendOrangeBarMessage("You feel a surge of power, Darkness has consumed your body.");

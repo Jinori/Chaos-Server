@@ -368,6 +368,9 @@ public class MasteringScript : DialogScriptBase
         var thrash = SkillFactory.Create("thrash");
         var charge = SkillFactory.Create("charge");
 
+        source.SkillBook.Remove("Bull Rush");
+        source.SkillBook.Remove("Pulverize");
+
         source.SkillBook.TryAddToNextSlot(thrash);
         source.SkillBook.TryAddToNextSlot(charge);
         
@@ -399,6 +402,9 @@ public class MasteringScript : DialogScriptBase
         var triplekick = SkillFactory.Create("triplekick");
         var roar = SpellFactory.Create("roar");
         var adaptiveskin = SpellFactory.Create("adaptiveskin");
+
+        source.SkillBook.Remove("Triple Kick");
+        source.SpellBook.Remove("Howl");
 
         source.SkillBook.TryAddToNextSlot(triplekick);
         source.SpellBook.TryAddToNextSlot(roar);
@@ -432,6 +438,9 @@ public class MasteringScript : DialogScriptBase
         var pramh = SpellFactory.Create("pramh");
         var vortex = SpellFactory.Create("vortex");
 
+        source.SpellBook.Remove("beag pramh");
+        source.SpellBook.Remove("quake");
+
         source.SpellBook.TryAddToNextSlot(pramh);
         source.SpellBook.TryAddToNextSlot(vortex);
         
@@ -441,9 +450,9 @@ public class MasteringScript : DialogScriptBase
         if (source.Inventory.Contains("Pet Collar"))
             source.Inventory.Remove("Pet Collar");
         
-        
         if (!source.Legend.TryGetValue("dedicated", out _))
         {
+            source.SpellBook.Remove("revive");
             var resurrect = SpellFactory.Create("resurrect");
             source.SpellBook.TryAddToNextSlot(resurrect);
         }
@@ -476,9 +485,10 @@ public class MasteringScript : DialogScriptBase
             source.SpellBook.TryAddToNextSlot(sightoffrailty);
         }
 
+        source.SkillBook.Remove("Rumination");
         source.SpellBook.TryAddToNextSlot(ardcradh);
         source.SpellBook.TryAddToNextSlot(fasspiorad);
-        source.SkillBook.Remove("Rumination");
+        
         
         var itemsToGive = new[] { armor, helm, weapon };
         

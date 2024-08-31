@@ -47,6 +47,9 @@ public sealed class BeagSuainEffect : ContinuousAnimationEffectBase, Hierarchica
     {
         if (target.Script.Is<ThisIsABossScript>())
             return false;
+
+        if (target.IsGodModeEnabled())
+            return false;
         
         if ((target.IsAsgalled() && IntegerRandomizer.RollChance(50))
             || (target.IsEarthenStanced() && IntegerRandomizer.RollChance(30))

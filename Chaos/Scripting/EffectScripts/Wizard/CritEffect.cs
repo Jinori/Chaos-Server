@@ -41,7 +41,7 @@ public sealed class CritEffect : ContinuousAnimationEffectBase
     
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Script.Is<ThisIsABossScript>())
+        if (target.IsGodModeEnabled())
             return false;
         
         if (target.Effects.Contains("Crit"))

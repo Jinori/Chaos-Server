@@ -1,5 +1,8 @@
+using Chaos.Common.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MonsterScripts.Abstractions;
@@ -27,19 +30,43 @@ public class CdHydraBossDeathScript : MonsterScriptBase
     {
         if (!Map.RemoveEntity(Subject))
             return;
-        
-        if (Subject.Template.TemplateKey == "cthonic_hydra1")
+
+        var anyaisling = Subject.MapInstance.GetEntities<Aisling>()
+            .FirstOrDefault(x => x.MapInstance == Subject.MapInstance);
+        if (anyaisling != null)
         {
-            var point = new Point(Subject.X, Subject.Y);
-            var nextHydra = MonsterFactory.Create("cthonic_hydra2", Subject.MapInstance, point);
-            Subject.MapInstance.AddEntity(nextHydra, point);
-        }
+            var rectangle = new Rectangle(anyaisling, 3, 3);
+            Point point2;
+            do
+            {
+                point2 = rectangle.GetRandomPoint();
+            } while (!Subject.MapInstance.IsWalkable(point2, CreatureType.Normal));
             
-        if (Subject.Template.TemplateKey == "cthonic_hydra2")
-        {
-            var point = new Point(Subject.X, Subject.Y);
-            var nextHydra2 = MonsterFactory.Create("cthonic_hydra3", Subject.MapInstance, point);
-            Subject.MapInstance.AddEntity(nextHydra2, point);
+            Point point3;
+            do
+            {
+                point3 = rectangle.GetRandomPoint();
+            } while (!Subject.MapInstance.IsWalkable(point3, CreatureType.Normal));
+
+            if (Subject.Template.TemplateKey == "cthonic_hydra1")
+            {
+                var point = new Point(Subject.X, Subject.Y);
+                var nextHydra = MonsterFactory.Create("cthonic_hydra2", Subject.MapInstance, point);
+                Subject.MapInstance.AddEntity(nextHydra, point);
+                
+                var nextHydra2 = MonsterFactory.Create("cthonic_hydra3", Subject.MapInstance, point2);
+                Subject.MapInstance.AddEntity(nextHydra2, point2);
+            }
+
+            if (Subject.Template.TemplateKey == "cthonic_hydra2")
+            {
+                var point = new Point(Subject.X, Subject.Y);
+                var nextHydra2 = MonsterFactory.Create("cthonic_hydra3", Subject.MapInstance, point);
+                Subject.MapInstance.AddEntity(nextHydra2, point);
+                
+                var nextHydra3 = MonsterFactory.Create("cthonic_hydra4", Subject.MapInstance, point2);
+                Subject.MapInstance.AddEntity(nextHydra3, point2);
+            }
         }
 
         //this code will set the reward target to the person at the top of the aggro list

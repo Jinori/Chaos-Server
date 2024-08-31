@@ -122,6 +122,17 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
         {
             if (member.Inventory.Contains("Cthonic Bell"))
                 member.Inventory.RemoveQuantity("Cthonic Bell", 100);
+
+            member.Trackers.Flags.RemoveFlag(CdDungeonBoss.Jane);
+            member.Trackers.Flags.RemoveFlag(CdDungeonBoss.John);
+            member.Trackers.Flags.RemoveFlag(CdDungeonBoss.Mary);
+            member.Trackers.Flags.RemoveFlag(CdDungeonBoss.Mike);
+            member.Trackers.Flags.RemoveFlag(CdDungeonBoss.Pam);
+            member.Trackers.Flags.RemoveFlag(CdDungeonBoss.Phil);
+            member.Trackers.Flags.RemoveFlag(CdDungeonBoss.William);
+            member.Trackers.Flags.RemoveFlag(CdDungeonBoss.Wanda);
+            member.Trackers.Flags.RemoveFlag(CdDungeonBoss.Roy);
+            member.Trackers.Flags.RemoveFlag(CdDungeonBoss.Ray);
             
             Point point;
             do

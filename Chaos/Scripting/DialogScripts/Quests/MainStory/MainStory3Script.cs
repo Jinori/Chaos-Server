@@ -77,14 +77,14 @@ public class MainStory3Script(
                 break;
             }
 
-            case "startDungeon4":
+            case "startdungeon4":
             {
                 source.Trackers.Enums.Set(MainstoryMasterEnums.StartedDungeon);
                 source.SendOrangeBarMessage("Head to the bottom of the Cthonic Remains and find that Army.");
                 return;
             }
 
-            case "finishedDungeon2":
+            case "finisheddungeon2":
             {
                 source.Trackers.Enums.Set(MainstoryMasterEnums.CompletedDungeon);
                 ExperienceDistributionScript.GiveExp(source, 50000000);
@@ -99,7 +99,7 @@ public class MainStory3Script(
                 return;
             }
 
-            case "finishedCreants4":
+            case "finishedcreants4":
             {
                 source.Trackers.Enums.Set(MainstoryMasterEnums.CompletedCreants);
                 ExperienceDistributionScript.GiveExp(source, 100000000);

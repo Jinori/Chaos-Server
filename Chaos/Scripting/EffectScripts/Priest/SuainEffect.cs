@@ -44,6 +44,9 @@ public sealed class SuainEffect : ContinuousAnimationEffectBase
     {
         if (target.Script.Is<ThisIsABossScript>())
             return false;
+
+        if (target.IsGodModeEnabled())
+            return false;
         
         if (target.Effects.Contains("Suain") || target.Effects.Contains("wolffangfist"))
         {

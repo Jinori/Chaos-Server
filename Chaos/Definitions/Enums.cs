@@ -1676,6 +1676,22 @@ public enum MainstoryMasterEnums
 }
 
 [Flags]
+public enum CdDungeonBoss
+{
+    None = 0,
+    John = 1 << 1,
+    Jane = 1 << 2,
+    Roy = 1 << 3,
+    Ray = 1 << 4,
+    Mike = 1 << 5,
+    Mary = 1 << 6,
+    Phil = 1 << 7,
+    Pam = 1 << 8,
+    William = 1 << 9,
+    Wanda = 1 << 10
+}
+
+[Flags]
 public enum CreantEnums
 {
     StartedMedusa = 1,
@@ -1781,16 +1797,16 @@ public enum MainstoryFlags
 public enum CthonicDemiseBoss
 {
     None,
-    Warrior1 = 1 << 1,
-    Warrior2 = 1 << 2,
-    Priest1 = 1 << 3,
-    Priest2 = 1 << 4,
-    Rogue1 = 1 << 5,
-    Rogue2 = 1 << 6,
-    Wizard1 = 1 << 7,
-    Wizard2 = 1 << 8,
-    Monk1 = 1 << 9,
-    Monk2 = 1 << 10
+    John = 1 << 1,
+    Jane = 1 << 2,
+    Phil = 1 << 3,
+    Pam = 1 << 4,
+    Roy = 1 << 5,
+    Ray = 1 << 6,
+    William = 1 << 7,
+    Wanda = 1 << 8,
+    Mike = 1 << 9,
+    Mary = 1 << 10
 }
 
 public enum SupplyLouresStage
