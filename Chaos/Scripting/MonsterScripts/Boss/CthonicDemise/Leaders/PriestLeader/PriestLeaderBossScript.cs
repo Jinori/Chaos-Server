@@ -17,6 +17,7 @@ public class PriestLeaderBossScript : CompositeMonsterScript
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(CdBossDeathScript)),
+        GetScriptKey(typeof(BossHealAlliesScript)),
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(ThisIsABossScript))
     };

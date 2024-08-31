@@ -36,12 +36,12 @@ public sealed class PriestEnrageSummonScript : MonsterScriptBase
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 
-            for (var i = 0; i <= 3; i++)
+            for (var i = 0; i <= 2; i++)
             {
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
 
-                var mobs = MonsterFactory.Create("crypt_bat5", Subject.MapInstance, point);
+                var mobs = MonsterFactory.Create("CD_darkwarrior", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
         }
@@ -68,7 +68,7 @@ public sealed class PriestEnrageSummonScript : MonsterScriptBase
 
             var attrib = new Attributes
             {
-                Str = 10,
+                Wis = 10,
                 Ac = 15,
                 AtkSpeedPct = 25,
                 Dmg = 10,
@@ -77,6 +77,16 @@ public sealed class PriestEnrageSummonScript : MonsterScriptBase
                 Hit = 20,
                 MagicResistance = 10
             };
+            var rectangle = new Rectangle(Subject, 5, 5);
+
+            for (var i = 0; i <= 2; i++)
+            {
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                    continue;
+
+                var mobs = MonsterFactory.Create("CD_darkmonk", Subject.MapInstance, point);
+                Subject.MapInstance.AddEntity(mobs, point);
+            }
 
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
