@@ -43,7 +43,6 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             { "highkick", new List<string> { "mantiskick" } },
             //Rogue
             { "assault", new List<string> { "blitz", "barrage" } },
-            { "armorpiercing", new List<string> { "birthdaysuit" } },
             { "stab", new List<string> { "gut" } },
             { "pierce", new List<string> { "skewer" } },
         };

@@ -36,19 +36,19 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
         new KeyValuePair<string, decimal>("rambutan", 4),
         new KeyValuePair<string, decimal>("tomato", 15),
         new KeyValuePair<string, decimal>("vegetable", 15),
-        new KeyValuePair<string, decimal>("petunia", 1),
-        new KeyValuePair<string, decimal>("pinkrose", 1),
-        new KeyValuePair<string, decimal>("waterlily", 1),
-        new KeyValuePair<string, decimal>("blossomofbetrayal", 0.2m),
-        new KeyValuePair<string, decimal>("bocanbough", 0.4m),
-        new KeyValuePair<string, decimal>("cactusflower", 0.4m),
-        new KeyValuePair<string, decimal>("dochasbloom", 0.4m),
-        new KeyValuePair<string, decimal>("lilypad", 0.4m),
-        new KeyValuePair<string, decimal>("koboldtail", 0.5m),
-        new KeyValuePair<string, decimal>("kabineblossom", 0.5m),
-        new KeyValuePair<string, decimal>("passionflower", 0.5m),
-        new KeyValuePair<string, decimal>("raineach", 0.5m),
-        new KeyValuePair<string, decimal>("sparkflower", 0.3m)
+        new KeyValuePair<string, decimal>("petunia", 2),
+        new KeyValuePair<string, decimal>("pinkrose", 2),
+        new KeyValuePair<string, decimal>("waterlily", 2),
+        new KeyValuePair<string, decimal>("blossomofbetrayal", 0.3m),
+        new KeyValuePair<string, decimal>("bocanbough", 0.8m),
+        new KeyValuePair<string, decimal>("cactusflower", 0.8m),
+        new KeyValuePair<string, decimal>("dochasbloom", 0.8m),
+        new KeyValuePair<string, decimal>("lilypad", 0.8m),
+        new KeyValuePair<string, decimal>("koboldtail", 1),
+        new KeyValuePair<string, decimal>("kabineblossom", 1),
+        new KeyValuePair<string, decimal>("passionflower", 1),
+        new KeyValuePair<string, decimal>("raineach", 1),
+        new KeyValuePair<string, decimal>("sparkflower", .06m)
     };
 
     private readonly List<string> GloveBreakMessages = new()

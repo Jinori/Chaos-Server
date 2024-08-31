@@ -38,13 +38,16 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
     )
     {
         var statBeforeStarting = attributeType == "HP" ? source.StatSheet.MaximumHp : source.StatSheet.MaximumMp;
-        
+        var totalExpSpent = 0f;
+
         for (var i = 0; i < timesToAscend; i++)
         {
             var formula = (statBeforeStarting + gain * i) * 500;
 
             if (!ExperienceDistributionScript.TryTakeExp(source, formula))
                 break;
+
+            totalExpSpent += formula;
 
             switch (attributeType)
             {
@@ -56,11 +59,11 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
                     };
 
                     source.StatSheet.Add(hp);
-                    
+
                     logger.WithTopics(
-                              Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward)
-                          .WithProperty(Subject)
-                          .LogInformation("{@AislingName} has bought {@Attribute} health", source.Name, hp);
+                            Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward)
+                        .WithProperty(Subject)
+                        .LogInformation("{@AislingName} has bought {@Attribute} health", source.Name, hp);
 
                     break;
                 }
@@ -72,12 +75,12 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
                     };
 
                     source.StatSheet.Add(mp);
-                           
+
                     logger.WithTopics(
-                              Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward)
-                          .WithProperty(Subject)
-                          .LogInformation("{@AislingName} has bought {@Attribute} mana", source.Name, mp);
-                    
+                            Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward)
+                        .WithProperty(Subject)
+                        .LogInformation("{@AislingName} has bought {@Attribute} mana", source.Name, mp);
+
                     break;
                 }
             }
@@ -85,8 +88,9 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
 
         var newBaseValue = statBeforeStarting + timesToAscend * gain;
         source.Client.SendAttributes(StatUpdateType.Full);
-        source.SendOrangeBarMessage($"You've increased to {newBaseValue} base {attributeType.ToLower()} from {statBeforeStarting}.");
+        source.SendOrangeBarMessage($"Your {attributeType.ToLower()} is now {newBaseValue} base from {statBeforeStarting}, spending {totalExpSpent} Exp.");
     }
+
 
     public override void OnDisplaying(Aisling source)
     {

@@ -169,15 +169,15 @@ public class BuyGamePointShopScript : DialogScriptBase
         {
             if (Subject.DialogSource.Name == "Pratix")
             {
-                if (item.Template.TemplateKey == "goodfishingpole")
+                if (item.Template.TemplateKey == "goodFishingPole")
                     if (!source.Trackers.Flags.HasFlag(FishingQuest.Reached3000))
                         continue;
                 
-                if (item.Template.TemplateKey == "greatfishingpole")
+                if (item.Template.TemplateKey == "greatFishingPole")
                     if (!source.Trackers.Flags.HasFlag(FishingQuest.Reached15000))
                         continue;
                 
-                if (item.Template.TemplateKey == "grandfishingpole")
+                if (item.Template.TemplateKey == "grandFishingPole")
                     if (!source.Trackers.Flags.HasFlag(FishingQuest.Reached50000))
                         continue;
                 

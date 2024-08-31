@@ -218,7 +218,7 @@ public class PetCollarScript(
             switch (level80Skills)
             {
                 case Level80PetSkills.ChitinChew:
-                    newMonster.Skills.Add(skillFactory.Create("armorbreak"));
+                    newMonster.Skills.Add(skillFactory.Create("sunder"));
 
                     break;
                 case Level80PetSkills.SnoutStun:

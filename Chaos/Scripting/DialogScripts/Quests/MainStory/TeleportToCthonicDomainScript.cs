@@ -70,7 +70,7 @@ public class TeleportToCthonicDomainScript : DialogScriptBase
             x.Trackers.Enums.HasValue(MainStoryEnums.KilledSummoner));
 
     private bool IsGroupRequiredVitality(Aisling source) =>
-        source.Group != null && source.Group.All(x => x.StatSheet.MaximumHp + x.StatSheet.MaximumMp * 2 >= 30000);
+        source.Group != null && source.Group.All(x => x.StatSheet.MaximumHp + x.StatSheet.MaximumMp * 2 >= 25000);
     private bool IsGroupValid(Aisling source) =>
         source.Group != null && !source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source));
 
@@ -81,7 +81,7 @@ public class TeleportToCthonicDomainScript : DialogScriptBase
         group.All(member =>
             member.WithinLevelRange(source) &&
             member.UserStatSheet.Level > 98 &&
-            (member.UserStatSheet.MaximumHp + member.UserStatSheet.MaximumMp * 2) > 30000);
+            (member.UserStatSheet.MaximumHp + member.UserStatSheet.MaximumMp * 2) > 25000);
 
     private void SendGroupInvalidMessage(Aisling source)
     {
@@ -98,7 +98,7 @@ public class TeleportToCthonicDomainScript : DialogScriptBase
     private void SendLevelRangeInvalidMessage(Aisling source)
     {
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "One of your group members do not meet the requirements.");
-        Subject.Reply(source, "The requirements to face the darkness is 30,000 Vitality and level 99. One of your group members does not meet the requirements.");
+        Subject.Reply(source, "The requirements to face the darkness is 25,000 Vitality and level 99. One of your group members does not meet the requirements.");
     }
 
     private void SendGroupEligibleMessage(Aisling source)
@@ -110,7 +110,7 @@ public class TeleportToCthonicDomainScript : DialogScriptBase
     private void SendGroupVitalityMessage(Aisling source)
     {
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Not all group members are above 30,000 Vitality.");
-        Subject.Reply(source, "Not all of your members are higher than 30,000 Vitality to face the Summoner.");
+        Subject.Reply(source, "Not all of your members are higher than 25,000 Vitality to face the Summoner.");
     }
 
     private void WarpSourceBack(Aisling source)

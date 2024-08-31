@@ -6,6 +6,8 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Services.Factories;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
@@ -13,6 +15,9 @@ namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 public class ClassDedicationScript : DialogScriptBase
 {
     private const int REQUIRED_EXPERIENCE = 60000000;
+
+    private readonly ISkillFactory SkillFactory;
+    private readonly ISpellFactory SpellFactory;
 
     private readonly Dictionary<BaseClass, (int requiredHealth, int requiredMana)> BaseClassRequirements = new()
     {
@@ -33,8 +38,13 @@ public class ClassDedicationScript : DialogScriptBase
     };
     private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
 
-    public ClassDedicationScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry)
-        : base(subject) => ClientRegistry = clientRegistry;
+    public ClassDedicationScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, ISpellFactory spellFactory, ISkillFactory skillFactory)
+        : base(subject)
+    {
+        ClientRegistry = clientRegistry;
+        SpellFactory = spellFactory;
+        SkillFactory = skillFactory;
+    }
 
     private void DedicateUserToClass(Aisling source, BaseClass baseClass, string templateKey)
     {
@@ -50,6 +60,8 @@ public class ClassDedicationScript : DialogScriptBase
                     MarkColor.Cyan,
                     1,
                     GameTime.Now));
+            
+            GiveNewAbilities(source, baseClass);
         }
     }
 
@@ -154,6 +166,71 @@ public class ClassDedicationScript : DialogScriptBase
             DedicateUserToClass(source, mapping.Value, mapping.Key);
     }
 
+    private void GiveNewAbilities(Aisling source, BaseClass baseClass)
+    {
+        if (baseClass == BaseClass.Monk)
+        {
+            var skill = SkillFactory.Create("punch");
+            var skill1 = SkillFactory.Create("kick");
+            var spell = SpellFactory.Create("taunt");
+            source.SkillBook.TryAddToNextSlot(skill);
+            source.SkillBook.TryAddToNextSlot(skill1);
+            source.SpellBook.TryAddToNextSlot(spell);
+        }
+
+        if (baseClass == BaseClass.Warrior)
+        {
+            var skill = SkillFactory.Create("strike");
+            var skill1 = SkillFactory.Create("slash");
+            source.SkillBook.TryAddToNextSlot(skill);
+            source.SkillBook.TryAddToNextSlot(skill1);
+        }
+
+        if (baseClass == BaseClass.Rogue)
+        {
+            var skill = SkillFactory.Create("assault");
+            var skill2 = SkillFactory.Create("stab");
+
+            if (!source.SkillBook.Contains(skill2))
+                source.SkillBook.TryAddToNextSlot(skill2);
+
+            if (!source.SkillBook.Contains(skill))
+                source.SkillBook.TryAddToNextSlot(skill);
+        }
+
+        if (baseClass == BaseClass.Wizard)
+        {
+            var skill = SkillFactory.Create("assail");
+            var spell = SpellFactory.Create("arcanebolt");
+
+            if (!source.SpellBook.Contains(spell))
+                source.SpellBook.TryAddToNextSlot(spell);
+
+            if (!source.SkillBook.Contains(skill))
+                source.SkillBook.TryAddToNextSlot(skill);
+        }
+
+        if (baseClass == BaseClass.Priest)
+        {
+            var skill = SkillFactory.Create("assail");
+            var spell = SpellFactory.Create("beagioc");
+            var spell2 = SpellFactory.Create("beothaich");
+            var spell3 = SpellFactory.Create("spark");
+
+            if (!source.SpellBook.Contains(spell))
+                source.SpellBook.TryAddToNextSlot(spell);
+
+            if (!source.SpellBook.Contains(spell2))
+                source.SpellBook.TryAddToNextSlot(spell2);
+
+            if (!source.SpellBook.Contains(spell3))
+                source.SpellBook.TryAddToNextSlot(spell3);
+
+            if (!source.SkillBook.Contains(skill))
+                source.SkillBook.TryAddToNextSlot(skill);
+        }
+    }
+
     private void SetUserToLevel1Stats(Aisling source, BaseClass baseClass)
     {
         if (source.Bank.Contains("Pet Collar"))
@@ -161,6 +238,9 @@ public class ClassDedicationScript : DialogScriptBase
         
         if (source.Inventory.Contains("Pet Collar")) 
             source.Inventory.RemoveQuantity("Pet Collar", 1);
+
+        if (source.SkillBook.Contains("summonpet"))
+            source.SkillBook.Remove("summonpet");
         
         source.Inventory.RemoveQuantity("strong health potion", 10);
         source.UserStatSheet.SetLevel(1);

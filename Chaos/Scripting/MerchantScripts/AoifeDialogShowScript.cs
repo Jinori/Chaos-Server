@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
@@ -25,7 +26,7 @@ public class AoifeDialogShowScript(Dialog subject) : DialogScriptBase(subject)
                         Subject.Options.Add(option);
                 }
 
-                if (source.UserStatSheet.Level >= 99)
+                if (source.UserStatSheet.Level >= 99 && source.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3))
                 {
                     var option2 = new DialogOption
                     {
