@@ -1,5 +1,6 @@
 using Chaos.Common.Definitions;
 using Chaos.Extensions.Common;
+using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.Templates;
 using Chaos.Models.World;
@@ -165,6 +166,56 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
             }
         }
 
+        if (Subject.Template.TemplateKey.StartsWithI("mythic"))
+        {
+            if (Subject.Template.TemplateKey.EqualsI("mysticclub"))
+            {
+                var attributes = new Attributes
+                {
+                    Ac = -1,
+                    AtkSpeedPct = 20,
+                    FlatSkillDamage = (int)(8 + (source.StatSheet.Level - 3) * 1.4),
+                    SkillDamagePct = (int)(3 + (source.StatSheet.Level - 3) * 0.2), 
+                    MagicResistance = source.StatSheet.Level >= 40 ? 5 : 0  
+                };
+
+                subject.Modifiers.Add(attributes);
+            }
+            if (Subject.Template.TemplateKey.EqualsI("mysticknife"))
+            {
+                var attributes = new Attributes
+                {
+                    AtkSpeedPct = 7 + (source.StatSheet.Level / 10),
+                    FlatSkillDamage = 6 + (int)(source.StatSheet.Level * 1.3),
+                    SkillDamagePct = 6 + source.StatSheet.Level / 10
+                };
+
+                subject.Modifiers.Add(attributes);
+            }
+            if (Subject.Template.TemplateKey.EqualsI("mysticknife"))
+            {
+                var attributes = new Attributes
+                {
+                    AtkSpeedPct = 7 + (source.StatSheet.Level / 10),
+                    FlatSkillDamage = 6 + (int)(source.StatSheet.Level * 1.3),
+                    SkillDamagePct = 6 + source.StatSheet.Level / 10
+                };
+
+                subject.Modifiers.Add(attributes);
+            }
+            if (Subject.Template.TemplateKey.EqualsI("mysticsword"))
+            {
+                var attributes = new Attributes
+                {
+                    AtkSpeedPct = 3 + (source.StatSheet.Level / 10),
+                    FlatSkillDamage = 15 + (int)(source.StatSheet.Level * 1.5),
+                    SkillDamagePct = source.StatSheet.Level / 10
+                };
+
+                subject.Modifiers.Add(attributes);
+            }   
+        }
+        
         source.Equip(template.EquipmentType.Value, Subject);
     }
 

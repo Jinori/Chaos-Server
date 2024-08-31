@@ -198,28 +198,45 @@ public sealed class AislingMapperProfile(
 
         DisplayColor headColor;
 
-        //use overhelm color if it is dyeable or if it is not default
-        if ((overHelm != null) && (overHelm.Template.IsDyeable || (overHelm.Color != DisplayColor.Default)))
-            headColor = overHelm.Color;
-        //use helmet color if it is dyeable or if it is not default
-        else if ((helmet != null) && (helmet.Template.IsDyeable || (helmet.Color != DisplayColor.Default)))
-            headColor = helmet.Color;
-        else
-            headColor = obj.HairColor;
-        
+        // Determine the head color based on ArenaTeam or OverHelm, Helmet, or default to HairColor
         if (hasArenaTeam)
         {
             headColor = value switch
             {
-                ArenaTeam.None  => obj.HairColor,
-                ArenaTeam.Blue  => DisplayColor.NeonBlue,
+                ArenaTeam.None => obj.HairColor,
+                ArenaTeam.Blue => DisplayColor.NeonBlue,
                 ArenaTeam.Green => DisplayColor.NeonGreen,
-                ArenaTeam.Gold  => DisplayColor.Blonde,
-                ArenaTeam.Red   => DisplayColor.NeonRed,
-                _               => obj.HairColor
-            };            
+                ArenaTeam.Gold => DisplayColor.Blonde,
+                ArenaTeam.Red => DisplayColor.NeonRed,
+                _ => obj.HairColor
+            };
+        }
+        else
+        {
+            if ((overHelm != null) && (overHelm.Template.IsDyeable || (overHelm.Color != DisplayColor.Default)))
+                headColor = overHelm.Color;
+            else if ((helmet != null) && (helmet.Template.IsDyeable || (helmet.Color != DisplayColor.Default)))
+                headColor = helmet.Color;
+            else
+                headColor = obj.HairColor;
         }
 
+        // Determine the HeadSprite: if on ArenaTeam, always show hairstyle
+        ushort headSprite;
+        if (hasArenaTeam)
+        {
+            headSprite = (ushort)obj.HairStyle;
+        }
+        else if (overHelm != null && overHelm.ItemSprite.DisplaySprite == 0)
+        {
+            headSprite = (ushort)obj.HairStyle;
+        }
+        else
+        {
+            headSprite = overHelm?.ItemSprite.DisplaySprite
+                         ?? helmet?.ItemSprite.DisplaySprite
+                         ?? (ushort)obj.HairStyle;
+        }
 
         return new DisplayAislingArgs
         {
@@ -229,7 +246,7 @@ public sealed class AislingMapperProfile(
             AccessorySprite1 = acc1?.ItemSprite.DisplaySprite ?? 0,
             AccessorySprite2 = acc2?.ItemSprite.DisplaySprite ?? 0,
             AccessorySprite3 = acc3?.ItemSprite.DisplaySprite ?? 0,
-            ArmorSprite1 = armor?.ItemSprite.DisplaySprite ?? 0, //TODO: figure this out again cuz i deleted it
+            ArmorSprite1 = armor?.ItemSprite.DisplaySprite ?? 0,
             ArmorSprite2 = armor?.ItemSprite.DisplaySprite ?? 0,
             BodyColor = obj.BodyColor,
             BodySprite = obj.BodySprite,
@@ -241,14 +258,15 @@ public sealed class AislingMapperProfile(
             Gender = obj.Gender,
             GroupBoxText = null,
             HeadColor = headColor,
-            HeadSprite = hasArenaTeam ? (ushort)obj.HairStyle : overHelm?.ItemSprite.DisplaySprite
-                         ?? helmet?.ItemSprite.DisplaySprite ?? (ushort)obj.HairStyle,
+            HeadSprite = headSprite,
             Id = obj.Id,
-            IsDead = obj.IsDead,IsHidden = false, //"Hidden" people are unobservable, so this packet wont even be sent
-            IsTransparent = obj.Visibility is VisibilityType.Hidden or VisibilityType.TrueHidden or VisibilityType.GmHidden,
+            IsDead = obj.IsDead,
+            IsHidden = false, // "Hidden" people are unobservable, so this packet won't even be sent
+            IsTransparent =
+                obj.Visibility is VisibilityType.Hidden or VisibilityType.TrueHidden or VisibilityType.GmHidden,
             LanternSize = obj.LanternSize,
             Name = obj.Name,
-            NameTagStyle = NameTagStyle.NeutralHover, //this is a default value
+            NameTagStyle = NameTagStyle.NeutralHover, // this is a default value
             OvercoatColor = overcoat?.Color ?? DisplayColor.Default,
             OvercoatSprite = overcoat?.ItemSprite.DisplaySprite ?? 0,
             X = obj.X,
@@ -259,6 +277,7 @@ public sealed class AislingMapperProfile(
             WeaponSprite = weapon?.ItemSprite.DisplaySprite ?? 0
         };
     }
+
 
     public Aisling Map(OtherProfileArgs obj) => throw new NotImplementedException();
 

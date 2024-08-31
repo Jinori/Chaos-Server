@@ -30,18 +30,26 @@ public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScri
         }
     }
 
-    public int CalculateNewRepairCostForItem(Item item)
+    private int CalculateNewRepairCostForItem(Item item)
     {
         // Skip if item is not damaged
         if ((item.Template.MaxDurability == null)
             || (item.CurrentDurability == null)
             || (item.CurrentDurability.Value == item.Template.MaxDurability.Value))
             return 0;
-        
+
         double sellValue = item.Template.SellValue;
-        var damageProportion =  1 - (double)item.CurrentDurability.Value / item.Template.MaxDurability.Value;
+        var damageProportion = 1 - (double)item.CurrentDurability.Value / item.Template.MaxDurability.Value;
         const double REPAIR_FACTOR = 0.8;
-        return Convert.ToInt32(sellValue * damageProportion * REPAIR_FACTOR);
+        
+        var repairCost = sellValue * damageProportion * REPAIR_FACTOR;
+        
+        if (item.Template.TemplateKey.StartsWith("mythic", StringComparison.OrdinalIgnoreCase))
+        {
+            repairCost *= 10;
+        }
+
+        return Convert.ToInt32(repairCost);
     }
     
     private void OnDisplayingAccepted(Aisling source)
