@@ -28,15 +28,18 @@ public class TeleportToCr11Script : DialogScriptBase
         {
             case "hazel_initial":
             {
-                
-                var option = new DialogOption
+                if (hasStage && stage == MainStoryEnums.CompletedPreMasterMainStory)
                 {
-                    DialogKey = "teleportcr11_initial",
-                    OptionText = "Open Portal"
-                };
+                    var option = new DialogOption
+                    {
+                        DialogKey = "teleportcr11_initial",
+                        OptionText = "Open Portal"
+                    };
 
-                if (!Subject.HasOption(option.OptionText))
-                    Subject.Options.Insert(0, option);
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);  
+                }
+                
 
                 break;
             }
