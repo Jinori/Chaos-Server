@@ -23,7 +23,7 @@ public struct HierarchicalEffectComponent : IConditionalComponent
         // Remove all effects that have a higher rank than the new effect
         var effectsToRemove = target.Effects
             .Where(e => options.EffectNameHierarchy.Contains(e.Name))
-            .Where(e => options.EffectNameHierarchy.IndexOf(e.Name) > thisRank)
+            .Where(e => options.EffectNameHierarchy.IndexOf(e.Name) >= thisRank)
             .ToList();
 
         foreach (var effect in effectsToRemove)

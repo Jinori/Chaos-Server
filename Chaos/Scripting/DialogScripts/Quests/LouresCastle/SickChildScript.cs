@@ -39,7 +39,7 @@ public class SickChildScript : DialogScriptBase
             {
                 if (!hasStage || (stage == SickChildStage.None))
                 {
-                    if (source.UserStatSheet.Level is <= 10 or >= 52)
+                    if (source.UserStatSheet.Level <= 10)
                         return;
 
                     Subject.Reply(source, "skip", "whiterose1-1start");
