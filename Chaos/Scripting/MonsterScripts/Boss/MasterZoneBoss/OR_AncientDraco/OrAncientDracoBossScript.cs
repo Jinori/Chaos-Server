@@ -4,7 +4,7 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.MasterZoneBoss.OR_AncientDraco;
 
-public class OrAncientDraco : CompositeMonsterScript
+public class OrAncientDracoBossScript : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
@@ -22,7 +22,7 @@ public class OrAncientDraco : CompositeMonsterScript
 
     //If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
     /// <inheritdoc />
-    public OrAncientDraco(IScriptProvider scriptProvider, Monster subject)
+    public OrAncientDracoBossScript(IScriptProvider scriptProvider, Monster subject)
     {
         if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript compositeScript)
             throw new InvalidOperationException("Unable to create componentized script");

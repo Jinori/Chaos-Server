@@ -1,8 +1,9 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Boss.CRBosses.SoulCollector;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.CRBosses.SoulCollector;
+namespace Chaos.Scripting.MonsterScripts.Boss.CR_Bosses.SoulCollector;
 
 public class SoulCollectorBossScript : CompositeMonsterScript
 {

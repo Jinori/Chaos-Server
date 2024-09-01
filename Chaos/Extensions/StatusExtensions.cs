@@ -12,7 +12,7 @@ public static class StatusExtensions
     public static bool IsAsgalled(this Creature creature) => creature.Effects.Contains("asgallfaileas");
     public static bool IsCradhLocked(this Creature creature) => creature.Effects.Contains("preventaffliction");
     public static bool IsClawFisted(this Creature creature) => creature.Effects.Contains("clawfist");
-    public static bool IsBeagSuained(this Creature creature) => creature.Effects.Contains("beagsuain");
+    public static bool IsBeagSuained(this Creature creature) => creature.Effects.Contains("beagsuain") || creature.Effects.Contains("earthpunch");
     
     public static bool IsRooted(this Creature creature) => creature.Effects.Contains("root");
     public static bool IsBattleCried(this Creature creature) => creature.Effects.Contains("battlecry");

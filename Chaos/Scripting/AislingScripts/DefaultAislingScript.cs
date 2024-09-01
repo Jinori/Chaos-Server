@@ -246,7 +246,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             {
                 if (!source.Script.Is<ThisIsABossScript>())
                 {
-                    var effect = EffectFactory.Create("Suain");
+                    var effect = EffectFactory.Create("BeagSuain");
                     source.Effects.Apply(Subject, effect);
                 }
             }
