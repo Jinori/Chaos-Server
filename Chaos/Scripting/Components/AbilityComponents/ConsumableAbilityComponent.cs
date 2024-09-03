@@ -11,8 +11,16 @@ public struct ConsumableAbilityComponent : IComponent
     {
         var options = vars.GetOptions<IConsumableComponentOptions>();
 
+        if (context.Source.Trackers.TimedEvents.HasActiveEvent("potiontimer", out var cdtimer))
+        {
+            context.SourceAisling.SendOrangeBarMessage($"You must wait {cdtimer.Remaining.Seconds} seconds before consuming something else.");
+            return;
+        }
+        
         context.SourceAisling?.Inventory.RemoveQuantity(options.ItemName, 1);
-
+        
+        context.SourceAisling?.Trackers.TimedEvents.AddEvent("potiontimer", TimeSpan.FromSeconds(6),true);
+        
         if (options.Message)
             context.SourceAisling?.SendOrangeBarMessage("You consumed a " + options.ItemName + ".");
     }

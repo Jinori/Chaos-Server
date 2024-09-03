@@ -21,16 +21,21 @@ public class SmallHasteEffect : EffectBase, NonOverwritableEffectComponent.INonO
         "Small Haste",
         "Haste",
         "Strong Haste",
+        "Potent Haste",
         "Small Power",
         "Power",
         "Strong Power",
+        "Potent Power",
         "Small Accuracy",
         "Accuracy",
         "Strong Accuracy",
+        "Potent Accuracy",
         "Juggernaut",
         "Strong Juggernaut",
+        "Potent Juggernaut",
+        "Astral",
         "Strong Astral",
-        "Astral"
+        "Potent Astral"
     ];
     public override byte Icon => 12;
     public override string Name => "Small Haste";
@@ -42,12 +47,12 @@ public class SmallHasteEffect : EffectBase, NonOverwritableEffectComponent.INonO
 
         var attributes = new Attributes
         {
-            AtkSpeedPct = 5
+            AtkSpeedPct = 6
         };
 
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed increased.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed increased by 6%.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -56,7 +61,7 @@ public class SmallHasteEffect : EffectBase, NonOverwritableEffectComponent.INonO
     {
         var attributes = new Attributes
         {
-            AtkSpeedPct = 5
+            AtkSpeedPct = 6
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

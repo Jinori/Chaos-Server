@@ -7,15 +7,14 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
-public class HasteEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
+public class potentJuggernautEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(10);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
         AnimationSpeed = 100
     };
-    
     public List<string> ConflictingEffectNames { get; init; } = 
     [
         "Small Haste",
@@ -38,7 +37,7 @@ public class HasteEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
         "Potent Astral"
     ];
     public override byte Icon => 13;
-    public override string Name => "Haste";
+    public override string Name => "Potent Juggernaut";
     protected byte? Sound => 115;
 
     public override void OnApplied()
@@ -47,12 +46,12 @@ public class HasteEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
 
         var attributes = new Attributes
         {
-            AtkSpeedPct = 12
+            MaximumHp = 10000
         };
 
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed increased by 12%.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Maximum Health has increased by 10,000.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -61,12 +60,12 @@ public class HasteEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
     {
         var attributes = new Attributes
         {
-            AtkSpeedPct = 12
+            MaximumHp = 10000
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed has returned to normal.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Maximum Health has returned to normal.");
     }
     
     public override bool ShouldApply(Creature source, Creature target)
