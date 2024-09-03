@@ -161,7 +161,7 @@ public class DefaultDamageFormula : IDamageFormula
             return;
 
         if (skillScript.Subject.Template.IsAssail)
-            damage = Convert.ToInt32(damage * 1.3);
+            damage = Convert.ToInt32(damage * 1.4);
     }
     
     protected virtual void HandleChaosFist(ref int damage, IScript source, Creature attacker)
@@ -173,7 +173,7 @@ public class DefaultDamageFormula : IDamageFormula
             return;
 
         if (skillScript.Subject.Template.IsAssail)
-            damage = Convert.ToInt32(damage * 1.7);
+            damage = Convert.ToInt32(damage * 1.8);
     }
     
     protected virtual void HandleDmgStat(ref int damage, IScript source, Creature attacker)

@@ -20,16 +20,21 @@ public class StrongPowerEffect : EffectBase, NonOverwritableEffectComponent.INon
         "Small Haste",
         "Haste",
         "Strong Haste",
+        "Potent Haste",
         "Small Power",
         "Power",
         "Strong Power",
+        "Potent Power",
         "Small Accuracy",
         "Accuracy",
         "Strong Accuracy",
+        "Potent Accuracy",
         "Juggernaut",
         "Strong Juggernaut",
+        "Potent Juggernaut",
+        "Astral",
         "Strong Astral",
-        "Astral"
+        "Potent Astral"
     ];
     public override byte Icon => 13;
     public override string Name => "Strong Power";
@@ -46,7 +51,7 @@ public class StrongPowerEffect : EffectBase, NonOverwritableEffectComponent.INon
 
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage has increased.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage has increased by 10.");
     }
 
     public override void OnDispelled() => OnTerminated();

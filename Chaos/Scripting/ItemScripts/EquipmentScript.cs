@@ -166,7 +166,7 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
             }
         }
 
-        if (Subject.Template.TemplateKey.StartsWithI("mythic"))
+        if (Subject.Template.TemplateKey.StartsWithI("mystic"))
         {
             if (Subject.Template.TemplateKey.EqualsI("mysticclub"))
             {
