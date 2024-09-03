@@ -101,7 +101,7 @@ public class MasterWerewolfMerchantScript : MerchantScriptBase
         else if (!HasSaidDialog3 && DialogueTimer.IntervalElapsed)
         {
             var aislings = Subject.MapInstance.GetEntities<Aisling>()
-                .Where(x => x.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard)).ToList();
+                .Where(x => x.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard) || x.Trackers.Enums.HasValue(WerewolfOfPiet.RetryWerewolf)).ToList();
             foreach (var aisling in aislings)
             {
                 aisling.Trackers.Enums.Set(WerewolfOfPiet.SpawnedWerewolf2);

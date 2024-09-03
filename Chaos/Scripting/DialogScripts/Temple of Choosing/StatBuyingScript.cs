@@ -133,7 +133,7 @@ public class StatBuyingScript : DialogScriptBase
     {
         update(cost);
         source.UserStatSheet.Add(cost);
-        source.SendOrangeBarMessage($"{attribute} increased by one. 150 Health taken.");
+        source.SendOrangeBarMessage($"{attribute} increased by one.");
         
         Logger.WithTopics(
                   Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward)
@@ -203,7 +203,7 @@ public class StatBuyingScript : DialogScriptBase
         if (source.UserStatSheet.Master)
             return ClassStatBracket.Master;
 
-        if (source.UserStatSheet.Master && (source.UserStatSheet.MaximumHp +  (source.UserStatSheet.MaximumMp * 2) >= 80000))
+        if (source.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster))
             return ClassStatBracket.Grandmaster;
 
         return ClassStatBracket.PreMaster;

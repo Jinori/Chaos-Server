@@ -73,7 +73,7 @@ namespace Chaos.Scripting.MapScripts.PietWerewolf
             {
                 case ScriptState2.Dormant:
                     if (Subject.GetEntities<Aisling>()
-                        .Any(a => a.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard)))
+                        .Any(a => a.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard) || a.Trackers.Enums.HasValue(WerewolfOfPiet.RetryWerewolf)))
                     {
                         State = ScriptState2.DelayedStart;
                     }

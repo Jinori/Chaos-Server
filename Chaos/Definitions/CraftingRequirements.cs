@@ -5366,8 +5366,8 @@ public static class CraftingRequirements
 
                     new Ingredient("pristineheartstone", "Pristine Heartstone", 5)
                 ],
-                Rank = "Advanced",
-                Level = 60,
+                Rank = "Adept",
+                Level = 97,
                 Difficulty = 6
             }
         },

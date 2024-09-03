@@ -48,7 +48,8 @@ public class PietWerewolfScript : DialogScriptBase
             case "appie_initial":
             {
                 if (!source.Trackers.Enums.HasValue(WerewolfOfPiet.KilledWerewolf) && 
-                    !source.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard) && 
+                    !source.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard) &&
+                    !source.Trackers.Enums.HasValue(WerewolfOfPiet.SpawnedWerewolf2) && 
                     !source.Trackers.Enums.HasValue(WerewolfOfPiet.KilledandGotCursed) && 
                     !source.Trackers.Enums.HasValue(WerewolfOfPiet.CollectedBlueFlower))
                     return;
@@ -105,6 +106,7 @@ public class PietWerewolfScript : DialogScriptBase
                 {
                     Subject.Reply(source, "Looks like you took a beating, that werewolf is tough. You have to go back and get that flower.");
                     source.SendOrangeBarMessage("Kill the Werewolf and retrieve the flower.");
+                    source.Trackers.Enums.Set(WerewolfOfPiet.RetryWerewolf);
                     return;
                 }
 

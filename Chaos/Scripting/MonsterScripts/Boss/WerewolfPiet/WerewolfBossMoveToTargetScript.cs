@@ -30,28 +30,36 @@ public sealed class WerewolfBossMoveToTargetScript(Monster subject) : MonsterScr
             Target = null;
             return;
         }
+        
+        var safeSpot = Target.GenerateCardinalPoints().OfType<IPoint>().FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
 
-        if ((distance != 1) && (distance <= 4))
+        if (safeSpot is null)
+        {
+            AggroList.Remove(Target.Id, out _);
+            Target ??= Map.GetEntitiesWithinRange<Aisling>(Subject, 12)
+                .ThatAreVisibleTo(Subject)
+                .Where(
+                    obj => !obj.Equals(Subject)
+                           && obj.IsAlive
+                           && Subject.ApproachTime.TryGetValue(obj, out var time)
+                           && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
+                .ClosestOrDefault(Subject);
+            return;
+        }
+
+        if (distance != 1 && distance <= 4)
+        {
+            var point1 = new Point(Subject.X, Subject.Y);
+            
             Subject.Pathfind(Target);
 
+            if (point1 == Subject)
+            {
+                Subject.TraverseMap(Target.MapInstance, safeSpot);
+            }
+        }
         else if (distance >= 4)
         {
-            var safeSpot = Target.GenerateCardinalPoints().OfType<IPoint>().FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
-
-            if (safeSpot is null)
-            {
-                AggroList.Remove(Target.Id, out _);
-                Target ??= Map.GetEntitiesWithinRange<Aisling>(Subject, 12)
-                              .ThatAreVisibleTo(Subject)
-                              .Where(
-                                  obj => !obj.Equals(Subject)
-                                         && obj.IsAlive
-                                         && Subject.ApproachTime.TryGetValue(obj, out var time)
-                                         && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
-                              .ClosestOrDefault(Subject);
-                return;
-            }
-            
             Subject.TraverseMap(Target.MapInstance, safeSpot);
         }
         else

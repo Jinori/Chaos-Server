@@ -113,7 +113,7 @@ public class ExpStatBuyingScript(Dialog subject) : DialogScriptBase(subject)
         if (source.UserStatSheet.Master)
             return ClassStatBracket.Master;
 
-        if (source.UserStatSheet.Master && (source.UserStatSheet.MaximumHp +  (source.UserStatSheet.MaximumMp * 2) >= 80000))
+        if (source.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster))
             return ClassStatBracket.Grandmaster;
 
         return ClassStatBracket.PreMaster;

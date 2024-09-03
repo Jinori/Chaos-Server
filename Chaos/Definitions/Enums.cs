@@ -1840,9 +1840,10 @@ public enum WerewolfOfPiet
     KilledandGotCursed = 3,
     SpokeToWizard = 4,
     SpawnedWerewolf2 = 5,
-    KilledWerewolf = 6,
-    CollectedBlueFlower = 7,
-    ReceivedCure = 8
+    RetryWerewolf = 6,
+    KilledWerewolf = 7,
+    CollectedBlueFlower = 8,
+    ReceivedCure = 9
 }
 
 [Flags]

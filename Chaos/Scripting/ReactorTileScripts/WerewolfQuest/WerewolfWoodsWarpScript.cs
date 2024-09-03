@@ -38,6 +38,7 @@ public class WerewolfWoodsWarpScript : ConfigurableReactorTileScriptBase
 
         if (!source.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard)
             && !source.Trackers.Enums.HasValue(WerewolfOfPiet.SpawnedWerewolf2)
+            && !source.Trackers.Enums.HasValue(WerewolfOfPiet.RetryWerewolf)
             && !source.Trackers.Enums.HasValue(WerewolfOfPiet.KilledWerewolf)
             && !source.Trackers.Enums.HasValue(WerewolfOfPiet.CollectedBlueFlower)
             && !source.Trackers.Enums.HasValue(WerewolfOfPiet.ReceivedCure))
@@ -48,7 +49,7 @@ public class WerewolfWoodsWarpScript : ConfigurableReactorTileScriptBase
 
         var targetMap = SimpleCache.Get<MapInstance>(Destination.Map);
         
-        if (source.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard))
+        if (source.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard) || source.Trackers.Enums.HasValue(WerewolfOfPiet.RetryWerewolf))
         {
             var point = new Point(aisling.X, aisling.Y);
             var merchant = MerchantFactory.Create("blank_merchant", Subject.MapInstance, point);
