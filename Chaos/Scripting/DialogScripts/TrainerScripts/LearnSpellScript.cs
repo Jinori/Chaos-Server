@@ -148,7 +148,7 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
 
                 if (oldSpell != null)
                 {
-                    source.SpellBook.Remove(oldSpell.Template.Name);
+                    source.SpellBook.RemoveByTemplateKey(oldSpell.Template.TemplateKey);
                     source.SendOrangeBarMessage($"{oldSpell.Template.Name} has been upgraded to {spellToLearn.Template.Name}.");
                 }
             }

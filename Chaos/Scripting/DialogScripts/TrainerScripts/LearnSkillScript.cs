@@ -139,7 +139,7 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
 
                         if (oldSkill != null)
                         {
-                            source.SkillBook.Remove(oldSkill.Template.TemplateKey);
+                            source.SkillBook.Remove(oldSkill.Template.Name);
                             source.SendOrangeBarMessage($"{oldSkill.Template.Name} has been upgraded to {skillToLearn.Template.Name}.");
                         }
                     }

@@ -569,7 +569,7 @@ public class MainStoryScript(
 
             case "mainstory_theselene_initial":
             {
-                if (source.Trackers.Enums.HasValue(MainStoryEnums.CompletedPreMasterMainStory))
+                if (source.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3))
                 {
                     var option = new DialogOption
                     {
