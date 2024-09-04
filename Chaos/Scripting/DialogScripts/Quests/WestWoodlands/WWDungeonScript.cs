@@ -38,8 +38,8 @@ public class WWDungeonScript(
             { (BaseClass.Monk, Gender.Female), ["lightninggarb"] },
             { (BaseClass.Rogue, Gender.Male), ["keaton"] },
             { (BaseClass.Rogue, Gender.Female), ["pebblerose"] },
-            { (BaseClass.Priest, Gender.Male), ["dolman"] },
-            { (BaseClass.Priest, Gender.Female), ["hierophant"] },
+            { (BaseClass.Priest, Gender.Male), ["hierophant"] },
+            { (BaseClass.Priest, Gender.Female), ["dolman"] },
             { (BaseClass.Wizard, Gender.Male), ["mane"] },
             { (BaseClass.Wizard, Gender.Female), ["clymouth"] }
         };
