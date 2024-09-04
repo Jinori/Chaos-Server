@@ -107,7 +107,7 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "skandaragod_buyhealthforallexp":
-                if (source.SavedExpBoxed < source.StatSheet.MaximumHp * 500)
+                if (source.UserStatSheet.TotalExp < source.StatSheet.MaximumHp * 500)
                 {
                     source.SendOrangeBarMessage("You do not have enough experience to buy health.");
                     Subject.Reply(source, "You do not have enough experience to buy vitality. Go increase your knowledge.");
@@ -125,7 +125,7 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
                 break;
 
             case "theselenegod_buymanaforallexp":
-                if (source.SavedExpBoxed < source.StatSheet.MaximumMp * 500)
+                if (source.UserStatSheet.TotalExp < source.StatSheet.MaximumMp * 500)
                 {
                     source.SendOrangeBarMessage("You do not have enough experience to buy mana.");
                     Subject.Reply(source, "Your journey through the veiled paths of experience is yet incomplete, seeker. Wander further into the realm of shadows, gather your tales and trials, then return when you are ready to trade them for the whispers of power.");
@@ -144,7 +144,7 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
                 break;
 
             case "skandaragod_buyhealthonce":
-                if (source.SavedExpBoxed < source.StatSheet.MaximumHp * 500)
+                if (source.UserStatSheet.TotalExp < source.StatSheet.MaximumHp * 500)
                 {
                     source.SendOrangeBarMessage("You do not have enough experience to buy health.");
                     Subject.Reply(source, "You do not have enough experience to buy vitality. Go increase your knowledge.");
@@ -160,7 +160,7 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
                 break;
 
             case "theselenegod_buymanaonce":
-                if (source.SavedExpBoxed < source.StatSheet.MaximumMp * 500)
+                if (source.UserStatSheet.TotalExp < source.StatSheet.MaximumMp * 500)
                 {
                     source.SendOrangeBarMessage("You do not have enough experience to buy mana.");
                     Subject.Reply(source, "Your journey through the veiled paths of experience is yet incomplete, seeker. Wander further into the realm of shadows, gather your tales and trials, then return when you are ready to trade them for the whispers of power.");

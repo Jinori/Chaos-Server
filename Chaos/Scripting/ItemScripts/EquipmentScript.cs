@@ -217,7 +217,7 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
     {
         base.OnUnEquipped(aisling);
 
-        if (!Subject.Template.TemplateKey.StartsWithI("mythic")) 
+        if (!Subject.Template.TemplateKey.StartsWithI("mystic")) 
             return;
         
         if (MysticAttributes != null) 
