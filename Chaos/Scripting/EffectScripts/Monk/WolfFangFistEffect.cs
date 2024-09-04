@@ -28,7 +28,7 @@ public sealed class WolfFangFistEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     public override byte Icon => 118;
     /// <inheritdoc />
-    public override string Name => "wolfFangFist";
+    public override string Name => "wolffangfist";
 
     public override void OnApplied() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A deadly strike puts you to sleep.");
 

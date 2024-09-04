@@ -32,8 +32,8 @@ public class DamageScript : ConfigurableSkillScriptBase,
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
                                          ?
-                                         .Execute<ApplyEffectAbilityComponent>()
-                                         .Execute<DamageAbilityComponent>();
+                                         .Execute<DamageAbilityComponent>()
+                                         .Execute<ApplyEffectAbilityComponent>();
 
     #region ScriptVars
     /// <inheritdoc />
