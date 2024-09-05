@@ -1,3 +1,4 @@
+using System.Reactive.Subjects;
 using Chaos.Models.Data;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
@@ -13,7 +14,7 @@ public struct ConsumableAbilityComponent : IComponent
 
         if (context.Source.Trackers.TimedEvents.HasActiveEvent("potiontimer", out var cdtimer))
         {
-            context.SourceAisling.SendOrangeBarMessage($"You must wait {cdtimer.Remaining.Seconds} seconds before consuming something else.");
+            context.SourceAisling?.SendOrangeBarMessage($"You must wait {cdtimer.Remaining.Seconds} seconds before consuming something else.");
             return;
         }
         

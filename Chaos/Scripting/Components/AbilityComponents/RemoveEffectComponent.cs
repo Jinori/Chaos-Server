@@ -13,27 +13,49 @@ public class RemoveEffectComponent : IComponent
         var options = vars.GetOptions<IRemoveEffectComponentOptions>();
         var targets = vars.GetTargets<Creature>();
 
-        if (options.RemoveAllEffects.HasValue)
+        // If RemoveAllEffects is set to true, remove all effects
+        if (options.RemoveAllEffects == true)
         {
             foreach (var target in targets)
             {
-                foreach (var effect in target.Effects)
+                foreach (var effect in target.Effects.ToList()) // ToList() to avoid modification during iteration
+                {
                     target.Effects.Dispel(effect.Name);
+                }
             }
-            //Now that we removed them all, let's break out
+            // Exit after removing all effects
             return;
         }
-        
-        if (string.IsNullOrEmpty(options.EffectKey))
-            return;
 
-        foreach (var target in targets)
-            target.Effects.Dispel(options.EffectKey);
+        // If NegativeEffect is set to true, remove specific negative effects
+        if (options.NegativeEffect == true)
+        {
+            var negativeEffects = new[] { "Poison", "Blind", "Burn" };
+            foreach (var target in targets)
+            {
+                foreach (var effect in negativeEffects)
+                {
+                    target.Effects.Dispel(effect);
+                }
+            }
+            // Exit after removing negative effects
+            return;
+        }
+
+        // If EffectKey is provided, remove specific effect
+        if (!string.IsNullOrEmpty(options.EffectKey))
+        {
+            foreach (var target in targets)
+            {
+                target.Effects.Dispel(options.EffectKey);
+            }
+        }
     }
 
     public interface IRemoveEffectComponentOptions
     {
         string? EffectKey { get; init; }
         bool? RemoveAllEffects { get; init; }
+        bool? NegativeEffect { get; init; } // Add NegativeEffect option
     }
 }

@@ -38,6 +38,9 @@ public class RemoveEffectScript : ConfigurableSkillScriptBase,
     public int Range { get; init; }
     /// <inheritdoc />
     public bool? RemoveAllEffects { get; init; }
+
+    public bool? NegativeEffect { get; init; }
+
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
     /// <inheritdoc />

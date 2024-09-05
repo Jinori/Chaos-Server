@@ -8,11 +8,12 @@ using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
+using static Chaos.Scripting.Components.AbilityComponents.ConsumableAbilityComponent;
 
 namespace Chaos.Scripting.ItemScripts;
 
 public class ItemTargetMonsterScript(Item subject, IEffectFactory effectFactory) : ConfigurableItemScriptBase(subject),
-                                                                                   ConsumableAbilityComponent.IConsumableComponentOptions,
+                                                                                   IConsumableComponentOptions,
                                                                                    GenericAbilityComponent<Creature>.
                                                                                    IAbilityComponentOptions,
                                                                                    ApplyEffectAbilityComponent.IApplyEffectComponentOptions
@@ -43,13 +44,20 @@ public class ItemTargetMonsterScript(Item subject, IEffectFactory effectFactory)
     public bool ShouldNotBreakHide { get; init; }
     public byte? Sound { get; init; }
 
-    public override void OnUse(Aisling source) =>
+    public override void OnUse(Aisling source)
+    {
+        if (source.UserStatSheet.Level < Subject.Level)
+        {
+            source.SendOrangeBarMessage($"You must be level {Subject.Level} to consume this.");
+            return;
+        }
+        
         new ComponentExecutor(source, source)
             .WithOptions(this)
-            .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-            ?
+            .ExecuteAndCheck<GenericAbilityComponent<Creature>>()?
             .Execute<ConsumableAbilityComponent>()
             .Execute<ApplyEffectAbilityComponent>();
+    }
 
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }

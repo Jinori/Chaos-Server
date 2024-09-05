@@ -1,5 +1,6 @@
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
@@ -12,6 +13,7 @@ using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.FunctionalScripts.ApplyHealing;
 using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
+using NLog.Targets;
 
 namespace Chaos.Scripting.ItemScripts;
 
@@ -42,14 +44,29 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
 
     /// <inheritdoc />
     public override void OnUse(Aisling source)
-        => new ComponentExecutor(source, source).WithOptions(this)
-                                                .ExecuteAndCheck<GenericAbilityComponent<Aisling>>()
-                                                ?.Execute<DamageAbilityComponent>()
-                                                .Execute<HealAbilityComponent>()
-                                                .Execute<ManaDrainAbilityComponent>()
-                                                .Execute<ManaReplenishAbilityComponent>()
-                                                .Execute<ConsumableAbilityComponent>()
+    {
+        if (source.UserStatSheet.Level < Subject.Level && !source.IsGodModeEnabled())
+        {
+            source.SendOrangeBarMessage($"You must be level {Subject.Level} to consume this.");
+            return;
+        }
+
+        if (EffectKey != null && source.Effects.Contains(EffectKey))
+        {
+            source.SendOrangeBarMessage("You already have that effect.");
+            return;
+        }
+        
+        new ComponentExecutor(source, source).WithOptions(this)
+            .ExecuteAndCheck<GenericAbilityComponent<Aisling>>()
+            ?.Execute<ConsumableAbilityComponent>()
+            .Execute<DamageAbilityComponent>()
+            .Execute<HealAbilityComponent>()
+            .Execute<ManaDrainAbilityComponent>()
+            .Execute<ManaReplenishAbilityComponent>()
             .Execute<ApplyEffectAbilityComponent>();
+        
+    }
 
     #region ScriptVars
     /// <inheritdoc />
@@ -149,6 +166,7 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
     public string ItemName { get; init; }
 
     public bool Message { get; init; } = true;
+    public int Level { get; init; }
 
     /// <inheritdoc />
     public TimeSpan? EffectDurationOverride { get; init; }

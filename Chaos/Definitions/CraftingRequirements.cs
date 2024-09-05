@@ -3821,7 +3821,7 @@ public static class CraftingRequirements
             WeaponSmithingRecipes.NagetierDagger,
             new Recipe()
             {
-                Name = "Nagetierdagger",
+                Name = "Nagetier Dagger",
                 TemplateKey = "nagetierdagger",
                 Ingredients =
                 [

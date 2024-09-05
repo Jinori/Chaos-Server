@@ -5,6 +5,7 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using System.Collections.Generic;
+using Chaos.Extensions;
 
 namespace Chaos.Scripting.Components.AbilityComponents
 {
@@ -31,6 +32,9 @@ namespace Chaos.Scripting.Components.AbilityComponents
                     .ToList();
 
                 if (target.StatSheet.CurrentHp < 1)
+                    return;
+
+                if (target.IsGodModeEnabled())
                     return;
 
                 foreach (var point in potentialTargetPoints)

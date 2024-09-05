@@ -142,7 +142,7 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             if (!string.IsNullOrEmpty(spellToLearn.Template.LearningRequirements?.SkillSpellToUpgrade))
             {
                 var oldSpell = source.SpellBook.FirstOrDefault(
-                    s => s.Template.Name.Equals(
+                    s => s.Template.TemplateKey.Equals(
                         spellToLearn.Template.LearningRequirements?.SkillSpellToUpgrade,
                         StringComparison.OrdinalIgnoreCase));
 
