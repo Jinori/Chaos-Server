@@ -118,6 +118,9 @@ public sealed record Dialog : IScripted<IDialogScript>
         source.ActiveDialog.Set(this);
 
         Script.OnDisplaying(source);
+        
+        CheckSkills(source);
+        CheckSpells(source);
 
         //if a different dialog was displayed while this one was being displayed
         if (source.ActiveDialog.Get() != this)
@@ -265,6 +268,379 @@ public sealed record Dialog : IScripted<IDialogScript>
         };
 
         newDialog.Display(source);
+    }
+
+    private void CheckSpells(Aisling source)
+    {
+        if (source.IsGodModeEnabled())
+            return;
+// Check for higher-tier spells and remove lower-tier ones accordingly
+        if (source.SpellBook.ContainsByTemplateKey("athar"))
+        {
+            source.SpellBook.RemoveByTemplateKey("beagathar");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("morathar"))
+        {
+            source.SpellBook.RemoveByTemplateKey("athar");
+            source.SpellBook.RemoveByTemplateKey("beagathar");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("ardathar"))
+        {
+            source.SpellBook.RemoveByTemplateKey("morathar");
+            source.SpellBook.RemoveByTemplateKey("athar");
+            source.SpellBook.RemoveByTemplateKey("beagathar");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("moratharmeall"))
+        {
+            source.SpellBook.RemoveByTemplateKey("atharmeall");
+        }
+        
+        if (source.SpellBook.ContainsByTemplateKey("ardatharmeall"))
+        {
+            source.SpellBook.RemoveByTemplateKey("moratharmeall");
+            source.SpellBook.RemoveByTemplateKey("atharmeall");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("atharlamh"))
+        {
+            source.SpellBook.RemoveByTemplateKey("beagatharlamh");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("moratharlamh"))
+        {
+            source.SpellBook.RemoveByTemplateKey("atharlamh");
+            source.SpellBook.RemoveByTemplateKey("beagatharlamh");
+        }
+        
+        // Check for higher-tier Creag spells and remove lower-tier ones accordingly
+        if (source.SpellBook.ContainsByTemplateKey("creag"))
+        {
+            source.SpellBook.RemoveByTemplateKey("beagcreag");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("morcreag"))
+        {
+            source.SpellBook.RemoveByTemplateKey("creag");
+            source.SpellBook.RemoveByTemplateKey("beagcreag");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("ardcreag"))
+        {
+            source.SpellBook.RemoveByTemplateKey("morcreag");
+            source.SpellBook.RemoveByTemplateKey("creag");
+            source.SpellBook.RemoveByTemplateKey("beagcreag");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("morcreagmeall"))
+        {
+            source.SpellBook.RemoveByTemplateKey("creagmeall");
+        }
+        if (source.SpellBook.ContainsByTemplateKey("ardcreagmeall"))
+        {
+            source.SpellBook.RemoveByTemplateKey("creagmeall");
+            source.SpellBook.RemoveByTemplateKey("morcreagmeall");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("creaglamh"))
+        {
+            source.SpellBook.RemoveByTemplateKey("beagcreaglamh");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("morcreaglamh"))
+        {
+            source.SpellBook.RemoveByTemplateKey("creaglamh");
+            source.SpellBook.RemoveByTemplateKey("beagcreaglamh");
+        }
+
+        // Check for higher-tier Sal spells and remove lower-tier ones accordingly
+        if (source.SpellBook.ContainsByTemplateKey("sal"))
+        {
+            source.SpellBook.RemoveByTemplateKey("beagsal");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("morsal"))
+        {
+            source.SpellBook.RemoveByTemplateKey("sal");
+            source.SpellBook.RemoveByTemplateKey("beagsal");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("ardsal"))
+        {
+            source.SpellBook.RemoveByTemplateKey("morsal");
+            source.SpellBook.RemoveByTemplateKey("sal");
+            source.SpellBook.RemoveByTemplateKey("beagsal");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("morsalmeall"))
+        {
+            source.SpellBook.RemoveByTemplateKey("salmeall");
+        }
+        
+        if (source.SpellBook.ContainsByTemplateKey("ardsalmeall"))
+        {
+            source.SpellBook.RemoveByTemplateKey("salmeall");
+            source.SpellBook.RemoveByTemplateKey("morsalmeall");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("sallamh"))
+        {
+            source.SpellBook.RemoveByTemplateKey("beagsallamh");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("morsallamh"))
+        {
+            source.SpellBook.RemoveByTemplateKey("sallamh");
+            source.SpellBook.RemoveByTemplateKey("beagsallamh");
+        }
+// Check for higher-tier Srad spells and remove lower-tier ones accordingly
+        if (source.SpellBook.ContainsByTemplateKey("srad"))
+        {
+            source.SpellBook.RemoveByTemplateKey("beagsrad");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("morsrad"))
+        {
+            source.SpellBook.RemoveByTemplateKey("srad");
+            source.SpellBook.RemoveByTemplateKey("beagsrad");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("ardsrad"))
+        {
+            source.SpellBook.RemoveByTemplateKey("morsrad");
+            source.SpellBook.RemoveByTemplateKey("srad");
+            source.SpellBook.RemoveByTemplateKey("beagsrad");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("morsradmeall"))
+        {
+            source.SpellBook.RemoveByTemplateKey("sradmeall");
+        }
+        
+        if (source.SpellBook.ContainsByTemplateKey("ardsradmeall"))
+        {
+            source.SpellBook.RemoveByTemplateKey("sradmeall");
+            source.SpellBook.RemoveByTemplateKey("morsradmeall");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("sradlamh"))
+        {
+            source.SpellBook.RemoveByTemplateKey("beagsradlamh");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("morsradlamh"))
+        {
+            source.SpellBook.RemoveByTemplateKey("sradlamh");
+            source.SpellBook.RemoveByTemplateKey("beagsradlamh");
+        }
+
+        // Check for higher-tier Arcane spells and remove lower-tier ones accordingly
+        if (source.SpellBook.ContainsByTemplateKey("arcanemissile"))
+        {
+            source.SpellBook.RemoveByTemplateKey("arcanebolt");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("arcaneblast"))
+        {
+            source.SpellBook.RemoveByTemplateKey("arcanemissile");
+            source.SpellBook.RemoveByTemplateKey("arcanebolt");
+        }
+        
+        if (source.SpellBook.ContainsByTemplateKey("arcaneexplosion"))
+        {
+            source.SpellBook.RemoveByTemplateKey("arcaneblast");
+            source.SpellBook.RemoveByTemplateKey("arcanemissile");
+            source.SpellBook.RemoveByTemplateKey("arcanebolt");
+        }
+
+        // Check for higher-tier Trap spells and remove lower-tier ones accordingly
+        if (source.SpellBook.ContainsByTemplateKey("stilettotrap"))
+        {
+            source.SpellBook.RemoveByTemplateKey("needletrap");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("bolttrap"))
+        {
+            source.SpellBook.RemoveByTemplateKey("needletrap");
+            source.SpellBook.RemoveByTemplateKey("stilettotrap");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("coiledbolttrap"))
+        {
+            source.SpellBook.RemoveByTemplateKey("needletrap");
+            source.SpellBook.RemoveByTemplateKey("stilettotrap");
+            source.SpellBook.RemoveByTemplateKey("bolttrap");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("springtrap"))
+        {
+            source.SpellBook.RemoveByTemplateKey("needletrap");
+            source.SpellBook.RemoveByTemplateKey("stilettotrap");
+            source.SpellBook.RemoveByTemplateKey("bolttrap");
+            source.SpellBook.RemoveByTemplateKey("coiledbolttrap");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("maidentrap"))
+        {
+            source.SpellBook.RemoveByTemplateKey("needletrap");
+            source.SpellBook.RemoveByTemplateKey("stilettotrap");
+            source.SpellBook.RemoveByTemplateKey("bolttrap");
+            source.SpellBook.RemoveByTemplateKey("coiledbolttrap");
+            source.SpellBook.RemoveByTemplateKey("springtrap");
+        }
+        
+        if (source.SpellBook.ContainsByTemplateKey("pitfalltrap"))
+        {
+            source.SpellBook.RemoveByTemplateKey("needletrap");
+            source.SpellBook.RemoveByTemplateKey("stilettotrap");
+            source.SpellBook.RemoveByTemplateKey("bolttrap");
+            source.SpellBook.RemoveByTemplateKey("coiledbolttrap");
+            source.SpellBook.RemoveByTemplateKey("springtrap");
+            source.SpellBook.RemoveByTemplateKey("maidentrap");
+        }
+
+        // Check for higher-tier Priest spells and remove lower-tier ones accordingly
+        if (source.SpellBook.ContainsByTemplateKey("pramh"))
+        {
+            source.SpellBook.RemoveByTemplateKey("beagpramh");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("revive"))
+        {
+            source.SpellBook.RemoveByTemplateKey("beothaich");
+        }
+        
+        if (source.SpellBook.ContainsByTemplateKey("resurrection"))
+        {
+            source.SpellBook.RemoveByTemplateKey("beothaich");
+            source.SpellBook.RemoveByTemplateKey("revive");
+        }
+
+        if (source.SpellBook.ContainsByTemplateKey("warcry"))
+        {
+            source.SpellBook.RemoveByTemplateKey("battlecry");
+        }
+        
+        if (source.SpellBook.ContainsByTemplateKey("howl"))
+        {
+            source.SpellBook.RemoveByTemplateKey("goad");
+        }
+        
+        if (source.SpellBook.ContainsByTemplateKey("roar"))
+        {
+            source.SpellBook.RemoveByTemplateKey("battlecry");
+            source.SpellBook.RemoveByTemplateKey("howl");
+        }
+
+    }
+
+    private void CheckSkills(Aisling source)
+    {
+        if (source.IsGodModeEnabled())
+            return;
+        // Check for higher-tier Warrior skills and remove lower-tier ones
+        if (source.SkillBook.ContainsByTemplateKey("cleave"))
+        {
+            source.SkillBook.RemoveByTemplateKey("scathe");
+        }
+
+        if (source.SkillBook.ContainsByTemplateKey("clobber"))
+        {
+            source.SkillBook.RemoveByTemplateKey("strike");
+        }
+
+        if (source.SkillBook.ContainsByTemplateKey("wallop"))
+        {
+            source.SkillBook.RemoveByTemplateKey("strike");
+            source.SkillBook.RemoveByTemplateKey("clobber");
+        }
+
+        if (source.SkillBook.ContainsByTemplateKey("pulverize"))
+        {
+            source.SkillBook.RemoveByTemplateKey("strike");
+            source.SkillBook.RemoveByTemplateKey("clobber");
+            source.SkillBook.RemoveByTemplateKey("wallop");
+        }
+
+        if (source.SkillBook.ContainsByTemplateKey("thrash"))
+        {
+            source.SkillBook.RemoveByTemplateKey("strike");
+            source.SkillBook.RemoveByTemplateKey("clobber");
+            source.SkillBook.RemoveByTemplateKey("wallop");
+            source.SkillBook.RemoveByTemplateKey("pulverize");
+        }
+
+        if (source.SkillBook.ContainsByTemplateKey("sunder"))
+        {
+            source.SkillBook.RemoveByTemplateKey("slash");
+        }
+
+        if (source.SkillBook.ContainsByTemplateKey("tempestblade"))
+        {
+            source.SkillBook.RemoveByTemplateKey("windblade");
+        }
+
+        if (source.SkillBook.ContainsByTemplateKey("paralyzeforce"))
+        {
+            source.SkillBook.RemoveByTemplateKey("groundstomp");
+        }
+
+        if (source.SkillBook.ContainsByTemplateKey("madsoul"))
+        {
+            source.SkillBook.RemoveByTemplateKey("flurry");
+        }
+
+        if (source.SkillBook.ContainsByTemplateKey("charge"))
+        {
+            source.SkillBook.RemoveByTemplateKey("bullrush");
+        }
+
+        // Check for higher-tier Monk skills and remove lower-tier ones
+        if (source.SkillBook.ContainsByTemplateKey("doublepunch"))
+        {
+            source.SkillBook.RemoveByTemplateKey("punch");
+        }
+
+        if (source.SkillBook.ContainsByTemplateKey("rapidpunch"))
+        {
+            source.SkillBook.RemoveByTemplateKey("punch");
+            source.SkillBook.RemoveByTemplateKey("doublepunch");
+        }
+
+        if (source.SkillBook.ContainsByTemplateKey("roundhousekick"))
+        {
+            source.SkillBook.RemoveByTemplateKey("kick");
+        }
+
+        if (source.SkillBook.ContainsByTemplateKey("mantiskick"))
+        {
+            source.SkillBook.RemoveByTemplateKey("highkick");
+        }
+
+        // Check for higher-tier Rogue skills and remove lower-tier ones
+        if (source.SkillBook.ContainsByTemplateKey("blitz"))
+        {
+            source.SkillBook.RemoveByTemplateKey("assault");
+        }
+
+        if (source.SkillBook.ContainsByTemplateKey("barrage"))
+        {
+            source.SkillBook.RemoveByTemplateKey("assault");
+            source.SkillBook.RemoveByTemplateKey("blitz");
+        }
+
+        if (source.SkillBook.ContainsByTemplateKey("gut"))
+        {
+            source.SkillBook.RemoveByTemplateKey("stab");
+        }
+
+        if (source.SkillBook.ContainsByTemplateKey("skewer"))
+        {
+            source.SkillBook.RemoveByTemplateKey("pierce");
+        }
+
     }
 
     public void ReplyToUnknownInput(Aisling source) => Reply(source, DialogString.UnknownInput);

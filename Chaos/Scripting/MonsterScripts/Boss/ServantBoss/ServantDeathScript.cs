@@ -83,7 +83,7 @@ public class ServantDeathScript : MonsterScriptBase
                     aisling.SendOrangeBarMessage("Thank you for helping others.");
                     aisling.TryGiveGamePoints(25);
                     aisling.TryGiveGold(100000);
-                    ExperienceDistributionScript.GiveExp(aisling, 350000);
+                    ExperienceDistributionScript.GiveExp(aisling, 500000);
                 }
             }
         }

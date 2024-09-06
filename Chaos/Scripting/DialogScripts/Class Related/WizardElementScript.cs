@@ -271,6 +271,9 @@ public class WizardElementScript : DialogScriptBase
                 {
                     if (hasElement && !source.Trackers.Flags.HasFlag(WizardElement.Removed))
                     {
+                        if (source.UserStatSheet.Master)
+                            return;
+                        
                         var option = new DialogOption
                         {
                             DialogKey = "dar_changeelement_initial",

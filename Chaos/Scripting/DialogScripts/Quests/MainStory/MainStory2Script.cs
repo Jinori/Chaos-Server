@@ -128,7 +128,7 @@ public class MainStory2Script(
             case "summoner_initial12":
             {
                 source.Trackers.Enums.Set(MainStoryEnums.SearchForSummoner2);
-                source.SendOrangeBarMessage("Goddess Miraelis's voice echoes in your head... 30,000 Vitality");
+                source.SendOrangeBarMessage("Goddess Miraelis's voice echoes in your head... 25,000 Vitality");
                 return;
             }
 

@@ -35,7 +35,7 @@ public class MasteringScript : DialogScriptBase
 
     private readonly Dictionary<BaseClass, (int requiredHealth, int requiredMana)> MasteringRequirements = new()
     {
-        { BaseClass.Monk, (20000, 10000) },
+        { BaseClass.Monk, (18000, 7500) },
         { BaseClass.Warrior, (16000, 7000) },
         { BaseClass.Rogue, (14000, 8000) },
         { BaseClass.Wizard, (10000, 12000) },
@@ -487,6 +487,10 @@ public class MasteringScript : DialogScriptBase
             source.SpellBook.TryAddToNextSlot(sightoffrailty);
         }
 
+        source.Trackers.Flags.AddFlag(WizardElement.Earth);
+        source.Trackers.Flags.AddFlag(WizardElement.Water);
+        source.Trackers.Flags.AddFlag(WizardElement.Fire);
+        source.Trackers.Flags.AddFlag(WizardElement.Wind);
         source.SkillBook.Remove("Rumination");
         source.SpellBook.TryAddToNextSlot(ardcradh);
         source.SpellBook.TryAddToNextSlot(fasspiorad);

@@ -41,6 +41,8 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             { "doublepunch", new List<string> { "rapidpunch" }},
             { "kick", new List<string> { "roundhousekick" } },
             { "highkick", new List<string> { "mantiskick" } },
+            { "eaglestrike", new List<string> { "phoenixstrike", "dragonstrike" } },
+            { "phoenixstrike", new List<string> { "dragonstrike" } },
             //Rogue
             { "assault", new List<string> { "blitz", "barrage" } },
             { "stab", new List<string> { "gut" } },

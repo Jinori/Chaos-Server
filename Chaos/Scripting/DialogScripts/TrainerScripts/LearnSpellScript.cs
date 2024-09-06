@@ -32,16 +32,17 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             { "beagathar", new List<string> { "athar", "morathar", "ardathar" } },
             { "athar", new List<string> { "morathar", "ardathar" } },
             { "morathar", new List<string> { "ardathar" } },
-            { "atharmeall", new List<string> { "moratharmeall" } },
+            { "atharmeall", new List<string> { "moratharmeall", "ardatharmeall" } },
+            { "moratharmeall", new List<string> { "ardatharmeall" } },
             { "beagatharlamh", new List<string> { "atharlamh", "moratharlamh" } },
             { "atharlamh", new List<string> { "moratharlamh" } },
-            { "moratharmeall", new List<string> { "ardatharmeall" } },
 
             // Wizard - Creag family
             { "beagcreag", new List<string> { "creag", "morcreag", "ardcreag" } },
             { "creag", new List<string> { "morcreag", "ardcreag" } },
             { "morcreag", new List<string> { "ardcreag" } },
-            { "creagmeall", new List<string> { "morcreagmeall" } },
+            { "creagmeall", new List<string> { "morcreagmeall", "ardcreagmeall" } },
+            { "morcreagmeall", new List<string> { "ardcreagmeall" } },
             { "beagcreaglamh", new List<string> { "creaglamh", "morcreaglamh" } },
             { "creaglamh", new List<string> { "morcreaglamh" } },
 
@@ -49,7 +50,8 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             { "beagsal", new List<string> { "sal", "morsal", "ardsal" } },
             { "sal", new List<string> { "morsal", "ardsal" } },
             { "morsal", new List<string> { "ardsal" } },
-            { "salmeall", new List<string> { "morsalmeall" } },
+            { "salmeall", new List<string> { "morsalmeall", "ardsalmeall" } },
+            { "morsalmeall", new List<string> { "ardsalmeall" } },
             { "beagsallamh", new List<string> { "sallamh", "morsallamh" } },
             { "sallamh", new List<string> { "morsallamh" } },
 
@@ -57,30 +59,39 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             { "beagsrad", new List<string> { "srad", "morsrad", "ardsrad" } },
             { "srad", new List<string> { "morsrad", "ardsrad" } },
             { "morsrad", new List<string> { "ardsrad" } },
-            { "sradmeall", new List<string> { "morsradmeall" } },
+            { "sradmeall", new List<string> { "morsradmeall", "ardatharmeall" } },
+            { "morsradmeall", new List<string> { "ardsradmeall" } },
             { "beagsradlamh", new List<string> { "sradlamh", "morsradlamh" } },
             { "sradlamh", new List<string> { "morsradlamh" } },
 
             // Wizard - Arcane family
-            { "arcanebolt", new List<string> { "arcanemissile", "arcaneblast" } },
-            { "arcanemissile", new List<string> { "arcaneblast" } },
+            { "arcanebolt", new List<string> { "arcanemissile", "arcaneblast", "arcaneexplosion" } },
+            { "arcanemissile", new List<string> { "arcaneblast", "arcaneexplosion" } },
+            { "arcaneblast", new List<string> { "arcaneexplosion" } },
 
             // Rogue - Trap family
-            { "needletrap", new List<string> { "stilettotrap", "bolttrap", "coiledbolttrap", "springtrap", "maidentrap" } },
-            { "stilettotrap", new List<string> { "bolttrap", "coiledbolttrap", "springtrap", "maidentrap" } },
-            { "bolttrap", new List<string> { "coiledbolttrap", "springtrap", "maidentrap" } },
-            { "coiledbolttrap", new List<string> { "springtrap", "maidentrap" } },
-            { "springtrap", new List<string> { "maidentrap" } },
+            { "needletrap", new List<string> { "stilettotrap", "bolttrap", "coiledbolttrap", "springtrap", "maidentrap", "pitfalltrap" } },
+            { "stilettotrap", new List<string> { "bolttrap", "coiledbolttrap", "springtrap", "maidentrap", "pitfalltrap" } },
+            { "bolttrap", new List<string> { "coiledbolttrap", "springtrap", "maidentrap", "pitfalltrap" } },
+            { "coiledbolttrap", new List<string> { "springtrap", "maidentrap", "pitfalltrap" } },
+            { "springtrap", new List<string> { "maidentrap", "pitfalltrap" } },
+            { "maidentrap", new List<string> { "pitfalltrap" } },
 
             // Priest
             { "beagpramh", new List<string> { "pramh" } },
             { "beothaich", new List<string> { "revive" } },
+            { "revive", new List<string> {"resurrection"} },
 
             // Warrior
             { "battlecry", new List<string> { "warcry" } },
 
             // Monk
-            { "goad", new List<string> { "howl" } }
+            { "goad", new List<string> { "howl", "roar" } },
+            { "howl", new List<string> { "roar" } },
+            { "miststance", new List<string> { "tidestance" } },
+            { "smokestance", new List<string> { "flamestance" } },
+            { "earthenstance", new List<string> { "rockstance" } },
+            { "thunderstance", new List<string> { "lightningstance" } },
         };
         
         private readonly Dictionary<string, List<string>> PureAbilities = new()

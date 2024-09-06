@@ -27,6 +27,8 @@ public class ShowElementEffect : ContinuousAnimationEffectBase
     public override byte Icon => 19;
     public override string Name => "Show Element";
 
+    private string ElementChant = "None";
+
     public override void OnApplied()
     {
         base.OnApplied();
@@ -34,44 +36,73 @@ public class ShowElementEffect : ContinuousAnimationEffectBase
         if (Subject is Aisling)
             return;
 
-        if (Subject.StatSheet.DefenseElement == Element.Earth)
-            Animation.TargetAnimation = 401;
+        // Check the subject's defense element and set the corresponding animation and chant
+        switch (Subject.StatSheet.DefenseElement)
+        {
+            case Element.Earth:
+                Animation.TargetAnimation = 401;
+                ElementChant = "Earth";
+                break;
 
-        if (Subject.StatSheet.DefenseElement == Element.Water)
-            Animation.TargetAnimation = 402;
+            case Element.Water:
+                Animation.TargetAnimation = 402;
+                ElementChant = "Water";
+                break;
 
-        if (Subject.StatSheet.DefenseElement == Element.Fire)
-            Animation.TargetAnimation = 404;
+            case Element.Fire:
+                Animation.TargetAnimation = 404;
+                ElementChant = "Fire";
+                break;
 
-        if (Subject.StatSheet.DefenseElement == Element.Wind)
-            Animation.TargetAnimation = 403;
+            case Element.Wind:
+                Animation.TargetAnimation = 403;
+                ElementChant = "Wind";
+                break;
 
-        if (Subject.StatSheet.DefenseElement == Element.Darkness)
-            Animation.TargetAnimation = 76;
+            case Element.Darkness:
+                Animation.TargetAnimation = 76;
+                ElementChant = "Dark";
+                break;
 
-        if (Subject.StatSheet.DefenseElement == Element.Holy)
-            Animation.TargetAnimation = 277;
+            case Element.Holy:
+                Animation.TargetAnimation = 277;
+                ElementChant = "Light";
+                break;
 
-        if (Subject.StatSheet.DefenseElement == Element.Metal)
-            Animation.TargetAnimation = 237;
+            case Element.Metal:
+                Animation.TargetAnimation = 237;
+                ElementChant = "Metal";
+                break;
 
-        if (Subject.StatSheet.DefenseElement == Element.None)
-            Animation.TargetAnimation = 363;
+            case Element.Wood:
+                Animation.TargetAnimation = 235;
+                ElementChant = "Wood";
+                break;
 
-        if (Subject.StatSheet.DefenseElement == Element.Wood)
-            Animation.TargetAnimation = 235;
+            case Element.Undead:
+                Animation.TargetAnimation = 233;
+                ElementChant = "Nature";
+                break;
 
-        if (Subject.StatSheet.DefenseElement == Element.Undead)
-            Animation.TargetAnimation = 233;
+            case Element.None:
+                Animation.TargetAnimation = 363;
+                ElementChant = "None";
+                break;
+        }
 
+        // Perform the initial chant and animation
         Subject.Animate(Animation);
+        Subject.Chant(ElementChant);
     }
 
     public override void OnDispelled() => OnTerminated();
 
-    protected override void OnIntervalElapsed() =>
-        //Check if they have moved from the original location
+    protected override void OnIntervalElapsed()
+    {
+        // Repeat the animation and chant at each interval
         Subject.Animate(Animation);
+        Subject.Chant(ElementChant);
+    }
 
     public override bool ShouldApply(Creature source, Creature target)
     {
@@ -80,11 +111,9 @@ public class ShowElementEffect : ContinuousAnimationEffectBase
 
         if (target.Effects.Contains("showelement"))
         {
-            (source as Aisling)?.Client.SendServerMessage(
-                ServerMessageType.OrangeBar1,
-                $"{MessageColor.Silver.ToPrefix()}The target is already exposing its weakness.");
+            target.Effects.Dispel("showelement");
 
-            return false;
+            return true;
         }
 
         return true;
