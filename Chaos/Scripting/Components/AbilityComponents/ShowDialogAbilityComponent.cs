@@ -24,59 +24,10 @@ namespace Chaos.Scripting.Components.AbilityComponents
 
             if (targetAisling == null)
                 return;
-
-            CleanUpSkillsAndSpells(targetAisling);
-
+            
             targetAisling.DialogHistory.Clear();
             var dialog = options.DialogFactory.Create(options.DialogKey, options.DialogSource);
             dialog.Display(targetAisling);
-        }
-
-        private void CleanUpSkillsAndSpells(Aisling targetAisling)
-        {
-            if (targetAisling.UserStatSheet.BaseClass is BaseClass.Monk)
-            {
-                if (targetAisling.SkillBook.ContainsByTemplateKey("kick") && targetAisling.SkillBook.ContainsByTemplateKey("roundhousekick"))
-                    targetAisling.SkillBook.RemoveByTemplateKey("kick");
-                
-                if (targetAisling.SkillBook.ContainsByTemplateKey("highkick") && targetAisling.SkillBook.ContainsByTemplateKey("mantiskick"))
-                    targetAisling.SkillBook.RemoveByTemplateKey("highkick");
-            }
-            
-            if (targetAisling.UserStatSheet.BaseClass is BaseClass.Monk && targetAisling.Trackers.Enums.TryGetValue(out MonkElementForm form))
-            {
-                
-                var elementSkillsAndSpells = new Dictionary<MonkElementForm, (List<string> Skills, List<string> Spells)>
-                {
-                    { MonkElementForm.Water, (["waterpunch", "tsunamikick"], ["miststance"]) },
-                    { MonkElementForm.Earth, (["earthpunch", "seismickick"], ["earthenstance"]) },
-                    { MonkElementForm.Air, (["airpunch", "tempestkick"], ["thunderstance"]) },
-                    { MonkElementForm.Fire, (["firepunch", "dracotailkick"], ["smokestance"]) }
-                };
-
-                foreach (var element in elementSkillsAndSpells)
-                {
-                    if (element.Key != form)
-                    {
-                        // Remove skills of other elements
-                        foreach (var skill in element.Value.Skills)
-                        {
-                            if (targetAisling.SkillBook.ContainsByTemplateKey(skill))
-                            {
-                                targetAisling.SkillBook.RemoveByTemplateKey(skill);
-                            }
-                        }
-                        // Remove spells of other elements
-                        foreach (var spell in element.Value.Spells)
-                        {
-                            if (targetAisling.SpellBook.ContainsByTemplateKey(spell))
-                            {
-                                targetAisling.SpellBook.RemoveByTemplateKey(spell);
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         public interface IShowDialogComponentOptions

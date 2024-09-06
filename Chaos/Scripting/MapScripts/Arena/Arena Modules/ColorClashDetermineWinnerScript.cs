@@ -20,6 +20,7 @@ public sealed class ColorClashDetermineWinnerScript : MapScriptBase
     private readonly Point GreenPoint = new(16, 6);
     private readonly Point RedPoint = new(6, 6);
     private readonly Point BluePoint = new(6, 15);
+    private readonly Point CenterPoint = new(13, 10);
     private readonly IIntervalTimer GameDurationTimer;
     private readonly Dictionary<ArenaTeam, int> TeamScores = new();
     private readonly ISimpleCache SimpleCache;
@@ -107,9 +108,29 @@ public sealed class ColorClashDetermineWinnerScript : MapScriptBase
     private void CalculateScores()
     {
         foreach (var reactorTile in Subject.GetEntities<ReactorTile>())
-            if (reactorTile.Script.Is<ColorClashScript>(out var colorClashScript) && colorClashScript.CurrentTeam.HasValue)
-                TeamScores[colorClashScript.CurrentTeam.Value]++;
+        {
+            if (!reactorTile.Script.Is<ColorClashScript>(out var colorClashScript) ||
+                !colorClashScript.CurrentTeam.HasValue) 
+                continue;
+        
+            var team = colorClashScript.CurrentTeam.Value;
+            IncrementTeamScore(team);
+        }
     }
+
+    private void IncrementTeamScore(ArenaTeam team)
+    {
+        if (TeamScores.TryGetValue(team, out var value))
+        {
+            TeamScores[team] = ++value;
+        }
+        else
+        {
+            TeamScores[team] = 1;
+        }
+    }
+
+
      
     private void HandleWinningTeam(ArenaTeam winningTeam)
     {
@@ -131,9 +152,10 @@ public sealed class ColorClashDetermineWinnerScript : MapScriptBase
 
         foreach (var player in allToPort)
         {
-            player.Trackers.Enums.TryGetValue(out ArenaTeam value);
             var mapInstance = SimpleCache.Get<MapInstance>("arena_underground");
-
+            
+            player.Trackers.Enums.TryGetValue(out ArenaTeam value);
+            
             switch (value)
             {
                 case ArenaTeam.Blue:
@@ -150,7 +172,15 @@ public sealed class ColorClashDetermineWinnerScript : MapScriptBase
                     break;
                 case ArenaTeam.Red:
                     player.TraverseMap(mapInstance, RedPoint);
-
+                    
+                    break;
+                
+                case ArenaTeam.None:
+                    player.TraverseMap(mapInstance, CenterPoint);
+                    break;
+                
+                default:
+                    player.TraverseMap(mapInstance, CenterPoint);
                     break;
             }
         }

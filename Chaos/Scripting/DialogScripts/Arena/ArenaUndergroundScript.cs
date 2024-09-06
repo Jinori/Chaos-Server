@@ -25,10 +25,9 @@ namespace Chaos.Scripting.DialogScripts.Arena;
 
 public class ArenaUndergroundScript : DialogScriptBase
 {
-    //Place Discord Bot Token Here When Live
-    private const string BOT_TOKEN = @"MTA4Mzg2MzMyNDc3MDQzOTM1MA.Gek2EZ.se-vh-fRnr78vAYuub5KUK-aIzrUHEMlEkB75Y";
-    private const ulong CHANNEL_ID = 1136412469762470038;
-    private const ulong ARENA_WIN_CHANNEL_ID = 1136426304300916786;
+    private const string BotToken = @"";
+    private const ulong ChannelId = 1136412469762470038;
+    private const ulong ArenaWinChannelId = 1136426304300916786;
     private readonly Point CenterWarp = new(11, 10);
     private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
     private readonly Point LavaBluePoint = new(8, 23);
@@ -37,8 +36,9 @@ public class ArenaUndergroundScript : DialogScriptBase
     private readonly Point LavaRedPoint = new(8, 5);
     private readonly Point ColorClashBluePoint = new(27, 27);
     private readonly Point ColorClashGoldPoint = new(4, 4);
-    private readonly Point ColorClashGreenPoint = new(26, 6);
+    private readonly Point ColorClashGreenPoint = new(27, 4);
     private readonly Point ColorClashRedPoint = new(4, 27);
+    private readonly Point ColorClashCenter = new(15, 15);
     private readonly ISimpleCache SimpleCache;
     private readonly IShardGenerator ShardGenerator;
     private readonly IMerchantFactory MerchantFactory;
@@ -114,7 +114,7 @@ public class ArenaUndergroundScript : DialogScriptBase
                 break;
             
             case "ophie_startcolorclash":
-                StartColorClash(source);
+                StartColorClash(source, false);
                 break;
             
             case "ophie_starthiddenhavochostnotplayingstart":
@@ -164,159 +164,82 @@ public class ArenaUndergroundScript : DialogScriptBase
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
+        if (!Subject.MenuArgs.TryGet<string>(0, out var playerToPlace) && Subject.Template.TemplateKey.ToLower() != "ophie_initial")
+        {
+            Subject.ReplyToUnknownInput(source);
+            return;
+        }
+        
+        var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
+
+        if (aisling == null || aisling.MapInstance.InstanceId != "arena_underground")
+            return;
+
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "ophie_placeonredconfirm":
-            {
-                if (!Subject.MenuArgs.TryGet<string>(0, out var playerToPlace))
-                {
-                    Subject.ReplyToUnknownInput(source);
-
-                    return;
-                }
-
-                var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
-                
-                if (aisling!.MapInstance.InstanceId != "arena_underground")
-                    return;
-                
-                aisling?.Trackers.Enums.Set(ArenaTeam.Red);
-                var rect = new Rectangle(new Point(11, 17), 4, 3);
-                aisling?.WarpTo(rect.GetRandomPoint());
-                aisling?.SendActiveMessage("You've been placed on the Red team!");
-
+                PlacePlayerOnTeam(aisling, ArenaTeam.Red, new Rectangle(new Point(11, 17), 4, 3), "Red");
                 break;
-            }
+
             case "ophie_placeongreenconfirm":
-            {
-                if (!Subject.MenuArgs.TryGet<string>(0, out var playerToPlace))
-                {
-                    Subject.ReplyToUnknownInput(source);
-
-                    return;
-                }
-
-                var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
-                
-                if (aisling!.MapInstance.InstanceId != "arena_underground")
-                    return;
-                
-                aisling?.Trackers.Enums.Set(ArenaTeam.Green);
-                var rect = new Rectangle(new Point(18, 10), 3, 4);
-                aisling?.WarpTo(rect.GetRandomPoint());
-                aisling?.SendActiveMessage("You've been placed on the Green team!");
-
+                PlacePlayerOnTeam(aisling, ArenaTeam.Green, new Rectangle(new Point(18, 10), 3, 4), "Green");
                 break;
-            }
+
             case "ophie_placeongoldconfirm":
-            {
-                if (!Subject.MenuArgs.TryGet<string>(0, out var playerToPlace))
-                {
-                    Subject.ReplyToUnknownInput(source);
-
-                    return;
-                }
-
-                var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
-                
-                if (aisling!.MapInstance.InstanceId != "arena_underground")
-                    return;
-                
-                aisling?.Trackers.Enums.Set(ArenaTeam.Gold);
-                var rect = new Rectangle(new Point(5, 10), 4, 3);
-                aisling?.WarpTo(rect.GetRandomPoint());
-                aisling?.SendActiveMessage("You've been placed on the Gold team!");
-
+                PlacePlayerOnTeam(aisling, ArenaTeam.Gold, new Rectangle(new Point(5, 10), 4, 3), "Gold");
                 break;
-            }
+
             case "ophie_placeonblueconfirm":
-            {
-                if (!Subject.MenuArgs.TryGet<string>(0, out var playerToPlace))
-                {
-                    Subject.ReplyToUnknownInput(source);
-
-                    return;
-                }
-
-                var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
-
-                if (aisling!.MapInstance.InstanceId != "arena_underground")
-                    return;
-                
-                aisling?.Trackers.Enums.Set(ArenaTeam.Blue);
-                var rect = new Rectangle(new Point(12, 4), 4, 3);
-                aisling?.WarpTo(rect.GetRandomPoint());
-                aisling?.SendActiveMessage("You've been placed on the Blue team!");
-
+                PlacePlayerOnTeam(aisling, ArenaTeam.Blue, new Rectangle(new Point(12, 4), 4, 3), "Blue");
                 break;
-            }
+
             case "ophie_removeteamconfirm":
-            {
-                if (!Subject.MenuArgs.TryGet<string>(0, out var playerToPlace))
-                {
-                    Subject.ReplyToUnknownInput(source);
-
-                    return;
-                }
-
-                var rect = new Rectangle(new Point(11, 10), 3, 4);
-
-                do
-                    CenterWarpPlayer = rect.GetRandomPoint();
-                while (CenterWarp == CenterWarpPlayer);
-
-                var aisling = source.MapInstance.GetEntities<Aisling>().FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
-                
-                if (aisling!.MapInstance.InstanceId != "arena_underground")
-                    return;
-                
-                aisling?.Trackers.Enums.Remove<ArenaTeam>();
-                aisling?.Trackers.Enums.Remove<ArenaSide>();
-                aisling?.WarpTo(CenterWarpPlayer);
-
+                RemovePlayerFromTeam(aisling, new Rectangle(new Point(11, 10), 3, 4));
                 break;
-            }
         }
     }
-    
-    public void HideDialogOptions(Aisling source)
+
+    private static void PlacePlayerOnTeam(Aisling aisling, ArenaTeam team, Rectangle rect, string teamColor)
+    {
+        aisling.Trackers.Enums.Set(team);
+        aisling.WarpTo(rect.GetRandomPoint());
+        aisling.SendActiveMessage($"You've been placed on the {teamColor} team!");
+    }
+
+    private void RemovePlayerFromTeam(Aisling aisling, Rectangle rect)
+    {
+        Point centerWarpPlayer;
+        do
+        {
+            centerWarpPlayer = rect.GetRandomPoint();
+        }
+        while (centerWarpPlayer == CenterWarp);
+
+        aisling.Trackers.Enums.Remove<ArenaTeam>();
+        aisling.Trackers.Enums.Remove<ArenaSide>();
+        aisling.WarpTo(centerWarpPlayer);
+    }
+
+
+    private void HideDialogOptions(Aisling source)
     {
         source.Trackers.Enums.TryGetValue(out ArenaHost stage);
 
-        if ((stage != ArenaHost.Host) && (stage != ArenaHost.MasterHost))
+        if (stage != ArenaHost.Host && stage != ArenaHost.MasterHost)
             RemoveOption(Subject, "Host Options");
     }
     
-    private void SetDefendingTeams(Aisling source, ArenaTeam defendingTeam)
+    private static void SetDefendingTeams(Aisling source, ArenaTeam defendingTeam)
     {
-        if (defendingTeam is ArenaTeam.Gold)
+        foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
         {
-            foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-            {
-                aisling.Trackers.Enums.Remove<ArenaSide>();
-                
-                aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
+            aisling.Trackers.Enums.Remove<ArenaSide>();
+            aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
 
-                if (team is ArenaTeam.Gold)
-                    aisling.Trackers.Enums.Set(ArenaSide.Defender);
-                else
-                    aisling.Trackers.Enums.Set(ArenaSide.Offensive);
-            }
-        }
-        if (defendingTeam is ArenaTeam.Green)
-        {
-            foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
-            {
-                aisling.Trackers.Enums.Remove<ArenaSide>();
-                aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
-
-                if (team is ArenaTeam.Green)
-                    aisling.Trackers.Enums.Set(ArenaSide.Defender);
-                else
-                    aisling.Trackers.Enums.Set(ArenaSide.Offensive);
-            }
+            aisling.Trackers.Enums.Set(team == defendingTeam ? ArenaSide.Defender : ArenaSide.Offensive);
         }
     }
+
 
     private void StartHuntingGrounds(Aisling source)
     {
@@ -366,8 +289,9 @@ public class ArenaUndergroundScript : DialogScriptBase
         Subject.Close(source);
     }
     
-    private void StartColorClash(Aisling source)
+    private void StartColorClash(Aisling source, bool hostPlaying)
     {
+        source.Trackers.Enums.Set(hostPlaying ? ArenaHostPlaying.Yes : ArenaHostPlaying.No);
         var shard = ShardGenerator.CreateShardOfInstance("arena_colorclash");
         shard.Shards.TryAdd(shard.InstanceId, shard);
         var script = shard.Script.As<ColorClashScript>();
@@ -386,7 +310,7 @@ public class ArenaUndergroundScript : DialogScriptBase
                 aisling.Client.SendAttributes(StatUpdateType.Vitality);
                 source.Display();
             }
-
+            
             aisling.Trackers.Enums.TryGetValue(out ArenaTeam team);
 
             switch (team)
@@ -407,24 +331,27 @@ public class ArenaUndergroundScript : DialogScriptBase
                     aisling.TraverseMap(shard, ColorClashRedPoint);
 
                     break;
+                
                 case ArenaTeam.None:
                     aisling.SendActiveMessage("The host didn't give you a team!");
+                    aisling.TraverseMap(shard, ColorClashCenter);
                     break;
                 
                 default:
                     aisling.SendActiveMessage("The host didn't give you a team!");
+                    aisling.TraverseMap(shard, ColorClashCenter);
                     break;
             }
         }
     }
 
-    private void SendMessageToDiscord(string message) =>
+    private static void SendMessageToDiscord(string message) =>
         Task.Run(async () =>
         {
             await using var client = new DiscordSocketClient();
-            await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
+            await client.LoginAsync(TokenType.Bot, BotToken);
             await client.StartAsync();
-            var channel = await client.GetChannelAsync(ARENA_WIN_CHANNEL_ID) as IMessageChannel;
+            var channel = await client.GetChannelAsync(ArenaWinChannelId) as IMessageChannel;
             await channel!.SendMessageAsync(message);
             await client.StopAsync();
         });
@@ -524,20 +451,18 @@ public class ArenaUndergroundScript : DialogScriptBase
             );
     }
 
-    private int CalculateBaseExperience(Aisling aisling)
+    private static int CalculateBaseExperience(Aisling aisling)
     {
-        var tnl = LevelUpFormulae.Default.CalculateTnl(aisling);
-        var thirtyPercent = Convert.ToInt32(.30 * tnl);
+        const int maxLevel = 99;
+        const int maxLevelExperience = 15000000;
 
-        if (aisling.UserStatSheet.Level == 99)
-        {
-            thirtyPercent = 15000000;
-        }
-        
-        return thirtyPercent;
+        return aisling.UserStatSheet.Level == maxLevel 
+            ? maxLevelExperience 
+            : Convert.ToInt32(0.30 * LevelUpFormulae.Default.CalculateTnl(aisling));
     }
+
     
-    private Point GetValidRandomPoint(IRectangle rect)
+    private static Point GetValidRandomPoint(IRectangle rect)
     {
         var randomPoint = rect.GetRandomPoint();
 
@@ -635,34 +560,34 @@ public class ArenaUndergroundScript : DialogScriptBase
         Subject.Close(source);
     }
 
-    private void TeleportParticipants(Aisling source, MapInstance shard, IRectangle bounds)
+    private static void TeleportParticipants(Aisling source, MapInstance shard, IRectangle bounds)
     {
         var teleportPoints = new List<Point>();
 
         foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
         {
-            Point point;
-            bool isInvalidPoint;
-
-            do
-            {
-                point = bounds.GetRandomPoint();
-                isInvalidPoint = shard.IsWall(point) || shard.IsBlockingReactor(point) || IsPointTooCloseToOthers(point, teleportPoints);
-            }
-            while (isInvalidPoint);
-
+            var point = GetValidTeleportPoint(shard, bounds, teleportPoints);
             teleportPoints.Add(point);
             aisling.TraverseMap(shard, point);
         }
     }
 
-    private bool IsPointTooCloseToOthers(Point point, List<Point> points, int minDistance = 1)
+    private static Point GetValidTeleportPoint(MapInstance shard, IRectangle bounds, List<Point> teleportPoints)
     {
-        foreach (var existingPoint in points)
-            if ((Math.Abs(existingPoint.X - point.X) <= minDistance) && (Math.Abs(existingPoint.Y - point.Y) <= minDistance))
-                return true;
+        Point point;
+        do
+        {
+            point = bounds.GetRandomPoint();
+        } 
+        while (shard.IsWall(point) || shard.IsBlockingReactor(point) || IsPointTooCloseToOthers(point, teleportPoints));
 
-        return false;
+        return point;
+    }
+
+
+    private static bool IsPointTooCloseToOthers(Point point, List<Point> points, int minDistance = 1)
+    {
+        return points.Any(existingPoint => (Math.Abs(existingPoint.X - point.X) <= minDistance) && (Math.Abs(existingPoint.Y - point.Y) <= minDistance));
     }
 
     
@@ -685,8 +610,7 @@ public class ArenaUndergroundScript : DialogScriptBase
     {
         Subject.Close(source);
         var worldMap = SimpleCache.Get<WorldMap>("field001");
-
-        //if we cant set the active object, return
+        
         if (!source.ActiveObject.SetIfNull(worldMap))
             return;
 
@@ -706,12 +630,13 @@ public class ArenaUndergroundScript : DialogScriptBase
         source.Client.SendWorldMap(worldMap);
     }
 
-    private void RemoveOption(Dialog subject, string optionName)
+    private static void RemoveOption(Dialog subject, string optionName)
     {
-        if (subject.GetOptionIndex(optionName).HasValue)
+        var optionIndex = subject.GetOptionIndex(optionName);
+    
+        if (optionIndex.HasValue)
         {
-            var s = subject.GetOptionIndex(optionName)!.Value;
-            subject.Options.RemoveAt(s);
+            subject.Options.RemoveAt(optionIndex.Value);
         }
     }
 }

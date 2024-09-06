@@ -6,7 +6,6 @@ using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
-using Chaos.Formulae.Damage;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
@@ -41,6 +40,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IIntervalTimer ClearOrangeBarTimer;
     private readonly IIntervalTimer OneSecondTimer;
+    private readonly IIntervalTimer CleanupSkillsSpellsTimer;
     private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
     private readonly IEffectFactory EffectFactory;
     private readonly ILogger<DefaultAislingScript> Logger;
@@ -150,6 +150,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         ClearOrangeBarTimer = new IntervalTimer(TimeSpan.FromSeconds(WorldOptions.Instance.ClearOrangeBarTimerSecs), false);
+        CleanupSkillsSpellsTimer =
+            new RandomizedIntervalTimer(TimeSpan.FromMinutes(15), 25, RandomizationType.Balanced, false);
         ClientRegistry = clientRegistry;
         EffectFactory = effectFactory;
         MerchantFactory = merchantFactory;
@@ -667,13 +669,161 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.Effects.Terminate("werewolf");
     }
 
-    /// <inheritdoc />
+    private void NotifyPlayer(string keyToRemove, string keyToKeep)
+    {
+        Subject.SendOrangeBarMessage("Ability " + keyToKeep + " removed old ability " + keyToRemove + ".");
+    }
+    
+    void RemoveAndNotifyIfBothExist(string keyToKeep, string keyToRemove)
+    {
+        if (Subject.SpellBook.ContainsByTemplateKey(keyToKeep) && Subject.SpellBook.ContainsByTemplateKey(keyToRemove))
+        {
+            Subject.SpellBook.RemoveByTemplateKey(keyToRemove);
+            NotifyPlayer(keyToRemove, keyToKeep);
+            Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update)
+                .WithProperty(Subject)
+                .LogInformation(
+                    "Aisling {@AislingName}'s ability {keyToKeep} removed an old ability {@keyToRemove}",
+                    Subject.Name,
+                    keyToKeep,
+                    keyToRemove);
+        }
+        else if (Subject.SkillBook.ContainsByTemplateKey(keyToKeep) && Subject.SkillBook.ContainsByTemplateKey(keyToRemove))
+        {
+            Subject.SkillBook.RemoveByTemplateKey(keyToRemove);
+            NotifyPlayer(keyToRemove, keyToKeep);
+            Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update)
+                .WithProperty(Subject)
+                .LogInformation(
+                    "Aisling {@AislingName}'s ability {keyToKeep} removed an old ability {@keyToRemove}",
+                    Subject.Name,
+                    keyToKeep,
+                    keyToRemove);
+        }
+    }
+    
     public override void Update(TimeSpan delta)
     {
         SleepAnimationTimer.Update(delta);
         ClearOrangeBarTimer.Update(delta);
         OneSecondTimer.Update(delta);
-        
+        CleanupSkillsSpellsTimer.Update(delta);
+
+        if (CleanupSkillsSpellsTimer.IntervalElapsed && !Subject.IsDiacht())
+        {
+            RemoveAndNotifyIfBothExist("athar", "beagathar");
+            RemoveAndNotifyIfBothExist("morathar", "athar");
+            RemoveAndNotifyIfBothExist("morathar", "beagathar");
+            RemoveAndNotifyIfBothExist("ardathar", "morathar");
+            RemoveAndNotifyIfBothExist("ardathar", "athar");
+            RemoveAndNotifyIfBothExist("ardathar", "beagathar");
+            RemoveAndNotifyIfBothExist("moratharmeall", "atharmeall");
+            RemoveAndNotifyIfBothExist("ardatharmeall", "moratharmeall");
+            RemoveAndNotifyIfBothExist("ardatharmeall", "atharmeall");
+            RemoveAndNotifyIfBothExist("atharlamh", "beagatharlamh");
+            RemoveAndNotifyIfBothExist("moratharlamh", "atharlamh");
+            RemoveAndNotifyIfBothExist("moratharlamh", "beagatharlamh");
+            RemoveAndNotifyIfBothExist("creag", "beagcreag");
+            RemoveAndNotifyIfBothExist("morcreag", "creag");
+            RemoveAndNotifyIfBothExist("morcreag", "beagcreag");
+            RemoveAndNotifyIfBothExist("ardcreag", "morcreag");
+            RemoveAndNotifyIfBothExist("ardcreag", "creag");
+            RemoveAndNotifyIfBothExist("ardcreag", "beagcreag");
+            RemoveAndNotifyIfBothExist("morcreagmeall", "creagmeall");
+            RemoveAndNotifyIfBothExist("ardcreagmeall", "creagmeall");
+            RemoveAndNotifyIfBothExist("ardcreagmeall", "morcreagmeall");
+            RemoveAndNotifyIfBothExist("creaglamh", "beagcreaglamh");
+            RemoveAndNotifyIfBothExist("morcreaglamh", "creaglamh");
+            RemoveAndNotifyIfBothExist("morcreaglamh", "beagcreaglamh");
+            RemoveAndNotifyIfBothExist("sal", "beagsal");
+            RemoveAndNotifyIfBothExist("morsal", "sal");
+            RemoveAndNotifyIfBothExist("morsal", "beagsal");
+            RemoveAndNotifyIfBothExist("ardsal", "morsal");
+            RemoveAndNotifyIfBothExist("ardsal", "sal");
+            RemoveAndNotifyIfBothExist("ardsal", "beagsal");
+            RemoveAndNotifyIfBothExist("morsalmeall", "salmeall");
+            RemoveAndNotifyIfBothExist("ardsalmeall", "salmeall");
+            RemoveAndNotifyIfBothExist("ardsalmeall", "morsalmeall");
+            RemoveAndNotifyIfBothExist("sallamh", "beagsallamh");
+            RemoveAndNotifyIfBothExist("morsallamh", "sallamh");
+            RemoveAndNotifyIfBothExist("morsallamh", "beagsallamh");
+            RemoveAndNotifyIfBothExist("srad", "beagsrad");
+            RemoveAndNotifyIfBothExist("morsrad", "srad");
+            RemoveAndNotifyIfBothExist("morsrad", "beagsrad");
+            RemoveAndNotifyIfBothExist("ardsrad", "morsrad");
+            RemoveAndNotifyIfBothExist("ardsrad", "srad");
+            RemoveAndNotifyIfBothExist("ardsrad", "beagsrad");
+            RemoveAndNotifyIfBothExist("morsradmeall", "sradmeall");
+            RemoveAndNotifyIfBothExist("ardsradmeall", "sradmeall");
+            RemoveAndNotifyIfBothExist("ardsradmeall", "morsradmeall");
+            RemoveAndNotifyIfBothExist("sradlamh", "beagsradlamh");
+            RemoveAndNotifyIfBothExist("morsradlamh", "sradlamh");
+            RemoveAndNotifyIfBothExist("morsradlamh", "beagsradlamh");
+            RemoveAndNotifyIfBothExist("arcanemissile", "arcanebolt");
+            RemoveAndNotifyIfBothExist("arcaneblast", "arcanemissile");
+            RemoveAndNotifyIfBothExist("arcaneblast", "arcanebolt");
+            RemoveAndNotifyIfBothExist("arcaneexplosion", "arcaneblast");
+            RemoveAndNotifyIfBothExist("arcaneexplosion", "arcanemissile");
+            RemoveAndNotifyIfBothExist("arcaneexplosion", "arcanebolt");
+            RemoveAndNotifyIfBothExist("stilettotrap", "needletrap");
+            RemoveAndNotifyIfBothExist("bolttrap", "needletrap");
+            RemoveAndNotifyIfBothExist("bolttrap", "stilettotrap");
+            RemoveAndNotifyIfBothExist("coiledbolttrap", "needletrap");
+            RemoveAndNotifyIfBothExist("coiledbolttrap", "stilettotrap");
+            RemoveAndNotifyIfBothExist("coiledbolttrap", "bolttrap");
+            RemoveAndNotifyIfBothExist("springtrap", "needletrap");
+            RemoveAndNotifyIfBothExist("springtrap", "stilettotrap");
+            RemoveAndNotifyIfBothExist("springtrap", "bolttrap");
+            RemoveAndNotifyIfBothExist("springtrap", "coiledbolttrap");
+            RemoveAndNotifyIfBothExist("maidentrap", "needletrap");
+            RemoveAndNotifyIfBothExist("maidentrap", "stilettotrap");
+            RemoveAndNotifyIfBothExist("maidentrap", "bolttrap");
+            RemoveAndNotifyIfBothExist("maidentrap", "coiledbolttrap");
+            RemoveAndNotifyIfBothExist("maidentrap", "springtrap");
+            RemoveAndNotifyIfBothExist("pitfalltrap", "needletrap");
+            RemoveAndNotifyIfBothExist("pitfalltrap", "stilettotrap");
+            RemoveAndNotifyIfBothExist("pitfalltrap", "bolttrap");
+            RemoveAndNotifyIfBothExist("pitfalltrap", "coiledbolttrap");
+            RemoveAndNotifyIfBothExist("pitfalltrap", "springtrap");
+            RemoveAndNotifyIfBothExist("pitfalltrap", "maidentrap");
+            RemoveAndNotifyIfBothExist("pramh", "beagpramh");
+            RemoveAndNotifyIfBothExist("revive", "beothaich");
+            RemoveAndNotifyIfBothExist("resurrection", "beothaich");
+            RemoveAndNotifyIfBothExist("resurrection", "revive");
+            RemoveAndNotifyIfBothExist("warcry", "battlecry");
+            RemoveAndNotifyIfBothExist("howl", "goad");
+            RemoveAndNotifyIfBothExist("roar", "battlecry");
+            RemoveAndNotifyIfBothExist("roar", "howl");
+
+            // SkillBook removals with the new methods
+            RemoveAndNotifyIfBothExist("cleave", "scathe");
+            RemoveAndNotifyIfBothExist("clobber", "strike");
+            RemoveAndNotifyIfBothExist("wallop", "strike");
+            RemoveAndNotifyIfBothExist("wallop", "clobber");
+            RemoveAndNotifyIfBothExist("pulverize", "strike");
+            RemoveAndNotifyIfBothExist("pulverize", "clobber");
+            RemoveAndNotifyIfBothExist("pulverize", "wallop");
+            RemoveAndNotifyIfBothExist("thrash", "strike");
+            RemoveAndNotifyIfBothExist("thrash", "clobber");
+            RemoveAndNotifyIfBothExist("thrash", "wallop");
+            RemoveAndNotifyIfBothExist("thrash", "pulverize");
+            RemoveAndNotifyIfBothExist("sunder", "slash");
+            RemoveAndNotifyIfBothExist("tempestblade", "windblade");
+            RemoveAndNotifyIfBothExist("paralyzeforce", "groundstomp");
+            RemoveAndNotifyIfBothExist("madsoul", "flurry");
+            RemoveAndNotifyIfBothExist("charge", "bullrush");
+            RemoveAndNotifyIfBothExist("doublepunch", "punch");
+            RemoveAndNotifyIfBothExist("rapidpunch", "punch");
+            RemoveAndNotifyIfBothExist("rapidpunch", "doublepunch");
+            RemoveAndNotifyIfBothExist("roundhousekick", "kick");
+            RemoveAndNotifyIfBothExist("mantiskick", "highkick");
+            RemoveAndNotifyIfBothExist("blitz", "assault");
+            RemoveAndNotifyIfBothExist("barrage", "assault");
+            RemoveAndNotifyIfBothExist("barrage", "blitz");
+            RemoveAndNotifyIfBothExist("gut", "stab");
+            RemoveAndNotifyIfBothExist("skewer", "pierce");
+        }
+
         if (OneSecondTimer.IntervalElapsed)
             HandleWerewolfEffect();
         

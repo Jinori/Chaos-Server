@@ -1,4 +1,6 @@
+using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 
 namespace Chaos.Extensions;
@@ -38,4 +40,5 @@ public static class StatusExtensions
     public static bool IsHidden(this Creature creature) => creature.Effects.Contains("hide") || creature.Effects.Contains("gmhide") || creature.Effects.Contains("truehide");
     public static bool IsAmnesiad(this Creature creature) => creature.Effects.Contains("amnesia");
     public static bool IsCradhPrevented(this Creature creature) => creature.Effects.Contains("preventrecradh");
+    public static bool IsDiacht(this Aisling aisling) => aisling.UserStatSheet.BaseClass == BaseClass.Diacht;
 }
