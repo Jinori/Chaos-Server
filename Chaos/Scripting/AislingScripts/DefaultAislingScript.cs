@@ -55,6 +55,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "Lava Arena",
         "Lava Arena - Teams",
         "Color Clash - Teams",
+        "Hidden Havoc",
         "Escort - Teams",
         "Trial of Sacrifice",
         "Trial of Combat",

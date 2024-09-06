@@ -528,6 +528,12 @@ public class ArenaUndergroundScript : DialogScriptBase
     {
         var tnl = LevelUpFormulae.Default.CalculateTnl(aisling);
         var thirtyPercent = Convert.ToInt32(.30 * tnl);
+
+        if (aisling.UserStatSheet.Level == 99)
+        {
+            thirtyPercent = 15000000;
+        }
+        
         return thirtyPercent;
     }
     
