@@ -250,12 +250,32 @@ public class ClassDedicationScript : DialogScriptBase
             source.UserStatSheet.SubtractTnl(source.UserStatSheet.ToNextLevel);
 
         source.UserStatSheet.AddTnl(599);
-        source.UserStatSheet.Str = 3;
-        source.UserStatSheet.Int = 3;
-        source.UserStatSheet.Wis = 3;
-        source.UserStatSheet.Con = 3;
-        source.UserStatSheet.Dex = 3;
-        source.UserStatSheet.SetMaxWeight(51);
+        
+        
+        var baseStats = UserStatSheet.NewCharacter;
+        
+        var diff = new Attributes()
+        {
+            Ac = source.StatSheet.Ac - baseStats.Ac,
+            MaximumHp = source.StatSheet.MaximumHp - baseStats.MaximumHp,
+            MaximumMp = source.StatSheet.MaximumMp - baseStats.MaximumMp,
+            Hit = source.StatSheet.Hit - baseStats.Hit,
+            Dmg = source.StatSheet.Dmg - baseStats.Dmg,
+            MagicResistance = source.StatSheet.MagicResistance - baseStats.MagicResistance,
+            AtkSpeedPct = source.StatSheet.AtkSpeedPct - baseStats.AtkSpeedPct,
+            FlatSkillDamage = source.StatSheet.FlatSkillDamage - baseStats.FlatSkillDamage,
+            FlatSpellDamage = source.StatSheet.FlatSpellDamage - baseStats.FlatSpellDamage,
+            SkillDamagePct = source.StatSheet.SkillDamagePct - baseStats.SkillDamagePct,
+            SpellDamagePct = source.StatSheet.SpellDamagePct - baseStats.SpellDamagePct,
+            Str = source.StatSheet.Str - baseStats.Str,
+            Int = source.StatSheet.Int - baseStats.Int,
+            Wis = source.StatSheet.Wis - baseStats.Wis,
+            Con = source.StatSheet.Con - baseStats.Con,
+            Dex = source.StatSheet.Dex - baseStats.Dex
+        };
+        
+        source.UserStatSheet.Subtract(diff);
+        source.UserStatSheet.SetMaxWeight(44);
         source.UserStatSheet.SetBaseClass(baseClass);
 
         var unspentpoints = source.UserStatSheet.UnspentPoints;
@@ -265,14 +285,7 @@ public class ClassDedicationScript : DialogScriptBase
         }
         source.Trackers.Enums.Remove<PentagramQuestStage>();
         source.Trackers.Enums.Remove<NightmareQuestStage>();
-
-        var statBuyCost = new Attributes
-        {
-            MaximumHp = source.UserStatSheet.MaximumHp - 100,
-            MaximumMp = source.UserStatSheet.MaximumMp - 100
-        };
-
-        source.UserStatSheet.Subtract(statBuyCost);
+        
         source.Client.SendAttributes(StatUpdateType.Full);
         source.Refresh(true);
 
