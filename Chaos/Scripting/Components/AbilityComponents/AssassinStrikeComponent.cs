@@ -34,7 +34,7 @@ public struct AssassinStrikeComponent : IComponent
                 if (monster.Script.Is<ThisIsABossScript>())
                     continue;
 
-                // 5% chance to kill the target instantly
+                // 20% chance to kill the target instantly
                 if (IntegerRandomizer.RollChance(20))
                 {
                     damage = 999999999;

@@ -32,7 +32,6 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
                                          ?
-                                         .Execute<ApplyEffectAbilityComponent>()
                                          .Execute<AssassinStrikeComponent>();
 
     #region ScriptVars

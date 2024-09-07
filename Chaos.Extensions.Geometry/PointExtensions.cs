@@ -70,12 +70,16 @@ public static class PointExtensions
     /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     /// </exception>
-    public static Point DirectionalOffset<TPoint>(this TPoint point, Direction direction, int distance = 1) where TPoint: IPoint
+    public static Point DirectionalOffset<TPoint>(this TPoint point, Direction direction, int distance = 1) where TPoint : IPoint
     {
         ArgumentNullException.ThrowIfNull(point);
 
+        // Handle invalid direction by calculating the point behind the target
         if (direction == Direction.Invalid)
-            throw new ArgumentOutOfRangeException(nameof(direction));
+        {
+            // Assuming "behind" the target means reversing the default direction (inverted)
+            return new Point(point.X - distance, point.Y - distance); // Adjust this as per game logic
+        }
 
         // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
         return direction switch
@@ -84,9 +88,10 @@ public static class PointExtensions
             Direction.Right => new Point(point.X + distance, point.Y),
             Direction.Down  => new Point(point.X, point.Y + distance),
             Direction.Left  => new Point(point.X - distance, point.Y),
-            _               => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
+            _               => new Point(point.X, point.Y) // Default case returns the same point (or you can adjust as needed)
         };
     }
+
 
     /// <summary>
     ///     Determines the directional relationship between this <see cref="Chaos.Geometry.Abstractions.IPoint" /> and another
