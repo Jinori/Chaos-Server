@@ -42,7 +42,7 @@ public sealed class AdaptiveSkinEffect : ContinuousAnimationEffectBase
 
     private void UpdateStats()
     {
-        var monstercount = Subject.MapInstance.GetEntities<Creature>().Count(x => x.WithinRange(Subject, 9) && x.IsHostileTo(Subject));
+        var monstercount = Subject.MapInstance.GetEntities<Creature>().Count(x => x.WithinRange(Subject, 8) && x.IsHostileTo(Subject));
 
         if (monstercount != LastMonsterCount)
         {
@@ -56,8 +56,13 @@ public sealed class AdaptiveSkinEffect : ContinuousAnimationEffectBase
                 });
             }
 
+            if (LastMonsterCount > 12)
+            {
+                LastMonsterCount = 12;
+            }
+
             // Calculate the new bonuses
-            AcBonus = monstercount + 2;
+            AcBonus = monstercount + 1;
             MagicResistBonus = monstercount + 10;
             LastMonsterCount = monstercount;
 

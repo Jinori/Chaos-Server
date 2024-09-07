@@ -249,3 +249,7 @@ PATH.txt
 Data/Saved/
 Data/SavedBackups/
 Tests/Reports/CoverageReport/
+Chaos/appsettings.local.json
+Chaos/appsettings.json
+Chaos/PersistentIdUInt64.json
+Chaos/PersistentIdUInt64.json.bak
