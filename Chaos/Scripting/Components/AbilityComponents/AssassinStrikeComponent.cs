@@ -31,13 +31,13 @@ public struct AssassinStrikeComponent : IComponent
 
             if (target is Monster monster)
             {
-                if (monster.Script.Is<ThisIsABossScript>())
-                    continue;
-
-                // 5% chance to kill the target instantly
-                if (IntegerRandomizer.RollChance(20))
+                if (!monster.Script.Is<ThisIsABossScript>())
                 {
-                    damage = 999999999;
+                    // 20% chance to kill the target instantly
+                    if (IntegerRandomizer.RollChance(20))
+                    {
+                        damage = 999999999;
+                    } 
                 }
             }
 
@@ -64,8 +64,13 @@ public struct AssassinStrikeComponent : IComponent
         var finalDamage = baseDamage ?? 0;
 
         // Scale damage based on the target's current health.
-        if (pctHpDamage.HasValue)
+        if (pctHpDamage.HasValue && !target.Script.Is<ThisIsABossScript>())
         {
+            var healthDamage = target.StatSheet.CurrentHp * (pctHpDamage.Value / 100m);
+            finalDamage += Convert.ToInt32(healthDamage);
+        }else if (pctHpDamage.HasValue && target.Script.Is<ThisIsABossScript>())
+        {
+            pctHpDamage = 2;
             var healthDamage = target.StatSheet.CurrentHp * (pctHpDamage.Value / 100m);
             finalDamage += Convert.ToInt32(healthDamage);
         }

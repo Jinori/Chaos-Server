@@ -1,3 +1,4 @@
+using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -29,10 +30,8 @@ public class MysteriousArtifactScript : ReactorTileScriptBase
 
         if (hasStage)
             return;
-        
-        var randomNumber = new Random().Next(1, 101);
 
-        if (randomNumber < 60)
+        if (IntegerRandomizer.RollChance(30))
         {
             Map.RemoveEntity(Subject);
             return;
@@ -43,5 +42,6 @@ public class MysteriousArtifactScript : ReactorTileScriptBase
         aisling.Trackers.Enums.Set(MainStoryEnums.MysteriousArtifactFound);
         dialog.Display(aisling);
         aisling.SendOrangeBarMessage("A mysterious artifact...");
+        Map.RemoveEntity(Subject);
     }
 }
