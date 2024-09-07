@@ -1,3 +1,4 @@
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -75,7 +76,7 @@ public class GuardianDeathScript : MonsterScriptBase
 
             ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
 
-            foreach (var member in Subject.MapInstance.GetEntities<Aisling>().ToList())
+            foreach (var member in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact1) || x.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact2) || x.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact3) || x.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact4)).ToList())
             {
                 if (Subject.Name == "Earth Guardian")
                 {
