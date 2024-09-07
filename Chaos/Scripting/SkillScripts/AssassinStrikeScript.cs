@@ -15,8 +15,7 @@ namespace Chaos.Scripting.SkillScripts;
 
 public class AssassinStrikeScript : ConfigurableSkillScriptBase,
                             GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                            AssassinStrikeComponent.IDamageComponentOptions,
-                            ApplyEffectAbilityComponent.IApplyEffectComponentOptions
+                            AssassinStrikeComponent.IDamageComponentOptions
 {
     /// <inheritdoc />
     public AssassinStrikeScript(Skill subject, IEffectFactory effectFactory)

@@ -84,7 +84,7 @@ public class ExpStatBuyingScript(Dialog subject) : DialogScriptBase(subject)
             _ => 0
         };
 
-        return currentStatValue * 75000;
+        return currentStatValue * 75000 + 2000000;
     }
 
     private bool IsStatCapped(Aisling source, Stats caps, byte optionIndex) =>

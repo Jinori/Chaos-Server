@@ -1,11 +1,13 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Boss;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
 
@@ -64,9 +66,14 @@ public struct DamageAbilityComponent : IComponent
             finalDamage += Convert.ToInt32(
                 MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0) * healthPercentFactor);
         }
-        else
+        else if (!target.Script.Is<ThisIsABossScript>())
         {
             finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0);
+        }    
+        else if (target.Script.Is<ThisIsABossScript>())
+        {
+            pctHpDamage = 2;
+            finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, (decimal)pctHpDamage);
         }
 
         if (!damageStat.HasValue)
