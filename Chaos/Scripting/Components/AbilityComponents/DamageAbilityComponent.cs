@@ -66,14 +66,21 @@ public struct DamageAbilityComponent : IComponent
             finalDamage += Convert.ToInt32(
                 MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0) * healthPercentFactor);
         }
-        else if (!target.Script.Is<ThisIsABossScript>())
+
+        if (pctHpDamage.HasValue)
         {
-            finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0);
-        }    
-        else if (target.Script.Is<ThisIsABossScript>())
-        {
-            pctHpDamage = 2;
-            finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, (decimal)pctHpDamage);
+            if (!target.Script.Is<ThisIsABossScript>())
+            {
+                finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0);
+            }    
+            if (target.Script.Is<ThisIsABossScript>())
+            {
+                if (pctHpDamage > 2)
+                {
+                    pctHpDamage = 2;
+                }
+                finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, (decimal)pctHpDamage!);
+            }
         }
 
         if (!damageStat.HasValue)

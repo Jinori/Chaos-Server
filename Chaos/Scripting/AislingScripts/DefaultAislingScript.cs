@@ -792,8 +792,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("resurrection", "revive");
             RemoveAndNotifyIfBothExist("warcry", "battlecry");
             RemoveAndNotifyIfBothExist("howl", "goad");
-            RemoveAndNotifyIfBothExist("roar", "battlecry");
+            RemoveAndNotifyIfBothExist("roar", "goad");
             RemoveAndNotifyIfBothExist("roar", "howl");
+            RemoveAndNotifyIfBothExist("vortex", "quake");
 
             // SkillBook removals with the new methods
             RemoveAndNotifyIfBothExist("cleave", "scathe");
@@ -815,6 +816,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("doublepunch", "punch");
             RemoveAndNotifyIfBothExist("rapidpunch", "punch");
             RemoveAndNotifyIfBothExist("rapidpunch", "doublepunch");
+            RemoveAndNotifyIfBothExist("triplekick", "doublepunch");
+            RemoveAndNotifyIfBothExist("triplekick", "punch");
+            RemoveAndNotifyIfBothExist("triplekick", "rapidpunch");
+            RemoveAndNotifyIfBothExist("dragonstrike", "eaglestrike");
+            RemoveAndNotifyIfBothExist("dragonstrike", "phoenixstrike");
+            RemoveAndNotifyIfBothExist("phoenixstrike", "eaglestrike");
             RemoveAndNotifyIfBothExist("roundhousekick", "kick");
             RemoveAndNotifyIfBothExist("mantiskick", "highkick");
             RemoveAndNotifyIfBothExist("blitz", "assault");
@@ -823,6 +830,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("gut", "stab");
             RemoveAndNotifyIfBothExist("skewer", "pierce");
             RemoveAndNotifyIfBothExist("midnightslash", "barrage");
+            RemoveAndNotifyIfBothExist("midnightslash", "blitz");
+            RemoveAndNotifyIfBothExist("midnightslash", "assault");
             RemoveAndNotifyIfBothExist("surigumblitz", "throwsurigum");
         }
 
