@@ -822,6 +822,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("barrage", "blitz");
             RemoveAndNotifyIfBothExist("gut", "stab");
             RemoveAndNotifyIfBothExist("skewer", "pierce");
+            RemoveAndNotifyIfBothExist("midnightslash", "barrage");
+            RemoveAndNotifyIfBothExist("surigumblitz", "throwsurigum");
         }
 
         if (OneSecondTimer.IntervalElapsed)

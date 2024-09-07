@@ -17,7 +17,8 @@ namespace Chaos.Scripting.SkillScripts.Rogue
 {
     public class MultiStrikeScript : ConfigurableSkillScriptBase,
                                       GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                                      DamageAbilityComponent.IDamageComponentOptions
+                                      DamageAbilityComponent.IDamageComponentOptions,
+                                      AssassinStrikeComponent.IDamageComponentOptions
     {
         public bool AnimatePoints { get; init; }
         public Animation? Animation { get; init; }
@@ -54,14 +55,13 @@ namespace Chaos.Scripting.SkillScripts.Rogue
         {
             SourceScript = this;
             ApplyDamageScript = ApplyAttackDamageScript.Create();
-            StrikeTimer = new IntervalTimer(TimeSpan.FromMilliseconds(350), false);
+            StrikeTimer = new IntervalTimer(TimeSpan.FromMilliseconds(330), false);
         }
 
         public override void OnUse(ActivationContext context)
         {
             Context = context;
             Targets = context.SourceMap.GetEntitiesWithinRange<Creature>(context.Source, 5)
-                             .Where(creature => creature.IsHostileTo(context.Source))
                              .Where(creature => !IsWallBetween(context.Source, creature))
                              .OrderBy(creature => creature.DistanceFrom(context.Source)).Take(5)
                              .ToList();
@@ -100,9 +100,7 @@ namespace Chaos.Scripting.SkillScripts.Rogue
                         var newDirection = target.DirectionalRelationTo(Context.Source);
                         Context.Source.Turn(newDirection);
 
-                        new ComponentExecutor(Context).WithOptions(this)
-                                                      .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-                                                      ?.Execute<DamageAbilityComponent>();
+                        new ComponentExecutor(Context).WithOptions(this).ExecuteAndCheck<GenericAbilityComponent<Creature>>()?.Execute<AssassinStrikeComponent>();
                     }
                 }
 
@@ -110,9 +108,5 @@ namespace Chaos.Scripting.SkillScripts.Rogue
                     Targets.Remove(target);
             }
         }
-
-        public int SplashChance { get; init; }
-        public int SplashDistance { get; init; }
-        public TargetFilter SplashFilter { get; init; }
     }
 }
