@@ -232,7 +232,7 @@ public class AlchemyScript : DialogScriptBase
         }
 
         source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + recipe.Name);
-
+        
         if (existingMark is null)
             UpdateLegendmark(source, legendMarkCount);
 
@@ -242,14 +242,27 @@ public class AlchemyScript : DialogScriptBase
             var playerRank = GetRankAsInt(existingMark.Text);
 
             if ((playerRank >= 2) && (playerRank - 1 > recipeStatus))
+            {
                 source.SendOrangeBarMessage("You can no longer gain rank experience from this recipe.");
+            }
 
             if ((playerRank >= recipeStatus) && (playerRank <= recipeStatus + 1))
             {
-                UpdateLegendmark(source, legendMarkCount);
-
-                if (playerRank == recipeStatus)
+                if (recipe.TemplateKey != "stronghealthpotionformula"
+                    || recipe.TemplateKey != "strongmanapotionformula"
+                    || recipe.TemplateKey != "strongrejuvenationpotionformula"
+                    || recipe.TemplateKey != "healthpotionformula"
+                    || recipe.TemplateKey != "manapotionformula"
+                    || recipe.TemplateKey != "rejuvenationpotionformula"
+                    || recipe.TemplateKey != "potenthealthpotionformula"
+                    || recipe.TemplateKey != "potentmanapotionformula"
+                    || recipe.TemplateKey != "potentrejuvenationpotionformula")
+                {
                     UpdateLegendmark(source, legendMarkCount);
+
+                    if (playerRank == recipeStatus)
+                        UpdateLegendmark(source, legendMarkCount);
+                }
             }
         }
 

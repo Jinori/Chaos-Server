@@ -123,7 +123,7 @@ public class RogueNightmareChallengeMapScript : MapScriptBase
                 continue;
             
             var monster = MonsterFactory.Create(
-                "nightmare_murauder",
+                "nightmare_marauder",
                 Subject,
                 point);
 

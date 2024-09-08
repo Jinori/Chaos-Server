@@ -18,7 +18,7 @@ public class SellMonsterPartsShopScript : DialogScriptBase
         { "lessermonsterextract", (1, 40) },
         { "basicmonsterextract", (41, 70) },
         { "greatermonsterextract", (71, 96) },
-        { "superiormonsterextract", (97, 120) }, 
+        { "superiormonsterextract", (97, 120) },
         { "primemonsterextract", (120, int.MaxValue) }
     };
 
@@ -35,7 +35,93 @@ public class SellMonsterPartsShopScript : DialogScriptBase
     // Dictionary to store custom sell values for each monster part
     private readonly Dictionary<string, int> MonsterPartSellValueDictionary = new()
     {
-        { "centipedegland", 1 }, // Add other monster parts with their sell values here
+        { "centipedegland", 1 },
+        { "koboldskull", 1 },
+        { "mantiseye", 1 },
+        { "rawhoney", 1 },
+        { "rawwax", 1 },
+        { "vipergland", 1 },
+        { "wolflock", 1 },
+        { "wolfteeth", 1 },
+        { "blackshockerpiece", 1 },
+        { "blueshockerpiece", 1 },
+        { "direwolflock", 1 },
+        { "goldshockerpiece", 1 },
+        { "iceElementalFlame", 1 },
+        { "IceSkeletonSkull", 1 },
+        { "iceSporeSac", 1 },
+        { "losganntail", 1 },
+        { "redshockerpiece", 1 },
+        { "ruidhteartoe", 1 },
+        { "batwing", 1 },
+        { "giantbatwing", 2 },
+        { "kardifur", 1 },
+        { "marauderspine", 2 },
+        { "mimicteeth", 4 },
+        { "scorpionsting", 1 },
+        { "scorpiontail", 1 },
+        { "spidereye", 1 },
+        { "spidersilk", 1 },
+        { "succubushair", 3 },
+        { "whitebatwing", 1 },
+        { "giantantwing", 3 },
+        { "silverwolfmanehair", 3 },
+        { "trentroot", 1 },
+        { "ancientbone", 3 },
+        { "anemoneantenna", 1 },
+        { "beesting", 1 },
+        { "blackcattail", 1 },
+        { "blackwidowsilk", 2 },
+        { "brawlfishscale", 1 },
+        { "crabclaw", 1 },
+        { "crabshell", 1 },
+        { "faeriewing", 3 },
+        { "flesh", 1 },
+        { "fomorianrag", 1 },
+        { "frogleg", 1 },
+        { "frogtongue", 3 },
+        { "GargoyleFiendSkull", 1 },
+        { "GargoyleSkull", 3 },
+        { "GhastSkull", 1 },
+        { "goblinskull", 3 },
+        { "gogsmaw", 2 },
+        { "GoldBeetalicHead", 1 },
+        { "goo", 1 },
+        { "gremlinear", 2 },
+        { "gruesomeflyantenna", 4 },
+        { "gruesomeflywing", 4 },
+        { "hobgoblinskull", 4 },
+        { "krakenflank", 2 },
+        { "krakententacle", 2 },
+        { "leechtail", 1 },
+        { "mummybandage", 2 },
+        { "mushroom", 2 },
+        { "nagetiertalon", 3 },
+        { "polypsac", 1 },
+        { "qualgeisthead", 1 },
+        { "redtentacle", 3 },
+        { "rockcobblerscale", 1 },
+        { "royalwax", 1 },
+        { "satyrhoof", 1 },
+        { "scarletbeetleantennae", 3 },
+        { "sporesac", 2 },
+        { "trentwood", 1 },
+        { "turtleshell", 1 },
+        { "viperegg", 1 },
+        { "viperfang", 1 },
+        { "vipervenom", 1 },
+        { "wispcore", 1 },
+        { "wispflame", 1 },
+        { "wolffur", 1 },
+        { "zombieflesh", 1 },
+        { "bass", 1 },
+        { "lionfish", 2 },
+        { "perch", 3 },
+        { "pike", 3 },
+        { "purplewhopper", 8 },
+        { "rockfish", 2 },
+        { "trout", 1 }
+
     };
 
     public SellMonsterPartsShopScript(
@@ -47,7 +133,8 @@ public class SellMonsterPartsShopScript : DialogScriptBase
     {
         ItemFactory = itemFactory ?? throw new ArgumentNullException(nameof(itemFactory));
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        SellShopSource = (ISellShopSource)subject.DialogSource ?? throw new ArgumentNullException(nameof(subject.DialogSource));
+        SellShopSource = (ISellShopSource)subject.DialogSource ??
+                         throw new ArgumentNullException(nameof(subject.DialogSource));
     }
 
     public override void OnDisplaying(Aisling source)
@@ -156,8 +243,8 @@ public class SellMonsterPartsShopScript : DialogScriptBase
 
     protected virtual void OnDisplayingAmountRequest(Aisling source)
     {
-        if (!TryFetchArgs<byte>(out var slot) 
-            || !source.Inventory.TryGetObject(slot, out var item) 
+        if (!TryFetchArgs<byte>(out var slot)
+            || !source.Inventory.TryGetObject(slot, out var item)
             || item?.Template == null
             || !MonsterPartSellValueDictionary.ContainsKey(item.Template.TemplateKey))
         {
@@ -214,7 +301,7 @@ public class SellMonsterPartsShopScript : DialogScriptBase
     protected virtual void OnDisplayingInitial(Aisling source)
     {
         Subject.Slots = source.Inventory
-            .Where(item => item?.Template != null 
+            .Where(item => item?.Template != null
                            && MonsterPartSellValueDictionary.ContainsKey(item.Template.TemplateKey))
             .Select(item => item.Slot)
             .ToList();
