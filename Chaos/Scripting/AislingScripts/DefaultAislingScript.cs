@@ -649,28 +649,28 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 Subject.SendServerMessage(ServerMessageType.ActiveMessage, "STR increased by one and maximum health increased by twenty five.");
                 break;
             case Stat.DEX:
-                Subject.UserStatSheet.Add(new Attributes()
+                Subject.UserStatSheet.Add(new Attributes
                 {
-                    AtkSpeedPct = 1
+                    AtkSpeedPct = Subject.StatSheet.Level % 3 == 0 ? -1 : 0
                 });
                 Subject.SendServerMessage(ServerMessageType.ActiveMessage, "DEX increased by one and Attack Speed increased by one percent.");
                 break;
             case Stat.INT:
-                Subject.UserStatSheet.Add(new Attributes()
+                Subject.UserStatSheet.Add(new Attributes
                 {
                     MaximumMp = 20
                 });
                 Subject.SendServerMessage(ServerMessageType.ActiveMessage, "INT increased by one and maximum mana increased by twenty.");
                 break;
             case Stat.WIS:
-                Subject.UserStatSheet.Add(new Attributes()
+                Subject.UserStatSheet.Add(new Attributes
                 {
                     MaximumMp = 40
                 });
                 Subject.SendServerMessage(ServerMessageType.ActiveMessage, "WIS increased by one and maximum mana increased by fourty.");
                 break;
             case Stat.CON:
-                Subject.UserStatSheet.Add(new Attributes()
+                Subject.UserStatSheet.Add(new Attributes
                 {
                     MaximumHp = 50
                 });
