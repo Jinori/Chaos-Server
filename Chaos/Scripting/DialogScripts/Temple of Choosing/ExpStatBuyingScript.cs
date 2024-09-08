@@ -4,39 +4,13 @@ using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Utilities;
 
 namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 
 public class ExpStatBuyingScript(Dialog subject) : DialogScriptBase(subject)
 {
-
-    private static void IncreaseAttribute(
-        Aisling source,
-        string attribute,
-        long expCost,
-        Action<Attributes> update
-    )
-    {
-        if (source.UserStatSheet.TotalExp >= expCost)
-        {
-            update(source.UserStatSheet);
-
-            if (!source.UserStatSheet.TrySubtractTotalExp(expCost))
-            {
-                source.SendOrangeBarMessage($"Error trying to take {expCost}.");
-                return;
-            }
-            
-            source.SendOrangeBarMessage($"{attribute} increased by one. {expCost} experience used.");
-            source.Client.SendAttributes(StatUpdateType.Full);
-        }
-        else
-        {
-            source.SendOrangeBarMessage("Not enough experience to increase this stat.");
-            source.Client.SendAttributes(StatUpdateType.Full);
-        }
-    }
-
+    
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
         if (optionIndex is null)
@@ -100,11 +74,11 @@ public class ExpStatBuyingScript(Dialog subject) : DialogScriptBase(subject)
     
     private readonly Dictionary<byte, Action<Aisling, long>> OptionActionMappings = new()
     {
-        { 1, (source, expCost) => IncreaseAttribute(source, "Strength", expCost, attribute => attribute.Str++) },
-        { 2, (source, expCost) => IncreaseAttribute(source, "Intelligence", expCost, attribute => attribute.Int++) },
-        { 3, (source, expCost) => IncreaseAttribute(source, "Wisdom", expCost, attribute => attribute.Wis++) },
-        { 4, (source, expCost) => IncreaseAttribute(source, "Constitution", expCost, attribute => attribute.Con++) },
-        { 5, (source, expCost) => IncreaseAttribute(source, "Dexterity", expCost, attribute => attribute.Dex++) }
+        { 1, (source, expCost) => ComplexActionHelper.BuyStatWithExp(source, Stat.STR, expCost) },
+        { 2, (source, expCost) => ComplexActionHelper.BuyStatWithExp(source, Stat.INT, expCost) },
+        { 3, (source, expCost) => ComplexActionHelper.BuyStatWithExp(source, Stat.WIS, expCost) },
+        { 4, (source, expCost) => ComplexActionHelper.BuyStatWithExp(source, Stat.CON, expCost) },
+        { 5, (source, expCost) => ComplexActionHelper.BuyStatWithExp(source, Stat.DEX, expCost) }
     };
 
     

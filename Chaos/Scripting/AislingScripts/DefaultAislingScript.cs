@@ -30,7 +30,6 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
-using FluentAssertions.Execution;
 
 namespace Chaos.Scripting.AislingScripts;
 
@@ -639,8 +638,45 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     /// <inheritdoc />
     public override void OnStatIncrease(Stat stat)
     {
-        if (stat == Stat.STR)
-            Subject.UserStatSheet.SetMaxWeight(LevelUpFormulae.Default.CalculateMaxWeight(Subject));
+        switch (stat)
+        {
+            case Stat.STR:
+                Subject.UserStatSheet.Add(new Attributes
+                {
+                    MaximumHp = 25
+                });
+                Subject.UserStatSheet.SetMaxWeight(LevelUpFormulae.Default.CalculateMaxWeight(Subject));
+                Subject.SendServerMessage(ServerMessageType.ActiveMessage, "STR increased by one and maximum health increased by twenty five.");
+                break;
+            case Stat.DEX:
+                Subject.UserStatSheet.Add(new Attributes()
+                {
+                    AtkSpeedPct = 1
+                });
+                Subject.SendServerMessage(ServerMessageType.ActiveMessage, "DEX increased by one and Attack Speed increased by one percent.");
+                break;
+            case Stat.INT:
+                Subject.UserStatSheet.Add(new Attributes()
+                {
+                    MaximumMp = 20
+                });
+                Subject.SendServerMessage(ServerMessageType.ActiveMessage, "INT increased by one and maximum mana increased by twenty.");
+                break;
+            case Stat.WIS:
+                Subject.UserStatSheet.Add(new Attributes()
+                {
+                    MaximumMp = 40
+                });
+                Subject.SendServerMessage(ServerMessageType.ActiveMessage, "WIS increased by one and maximum mana increased by fourty.");
+                break;
+            case Stat.CON:
+                Subject.UserStatSheet.Add(new Attributes()
+                {
+                    MaximumHp = 50
+                });
+                Subject.SendServerMessage(ServerMessageType.ActiveMessage, "CON increased by one and maximum health increased by fifty.");
+                break;
+        }
     }
 
     private void HandleWerewolfEffect()

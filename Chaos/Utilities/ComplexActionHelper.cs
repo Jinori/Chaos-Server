@@ -1,3 +1,4 @@
+using Chaos.Common.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Abstractions;
 using Chaos.Models.Panel;
@@ -94,6 +95,31 @@ public static class ComplexActionHelper
         BadInput
     }
 
+    public static void BuyStatWithExp(
+        Aisling source,
+        Stat stat,
+        long expCost
+    )
+    {
+        if (source.UserStatSheet.TrySubtractTotalExp(expCost))
+        {
+            if (!source.UserStatSheet.IncrementStat(stat, true))
+            {
+                source.SendOrangeBarMessage("Something went wrong trying to increase this stat.");
+                return;
+            }
+            
+            source.Script.OnStatIncrease(stat);
+            source.Client.SendAttributes(StatUpdateType.Full);
+        }
+        else
+        {
+            source.SendOrangeBarMessage("Not enough experience to increase this stat.");
+            source.Client.SendAttributes(StatUpdateType.Full);
+        }
+    }
+
+    
     public static BuyItemResult BuyItem(
         Aisling source,
         IBuyShopSource? shop,

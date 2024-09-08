@@ -160,13 +160,12 @@ public sealed record UserStatSheet : StatSheet
 
     public int GivePoints(int amount) => Interlocked.Add(ref _unspentPoints, amount);
 
-    public bool IncrementStat(Stat stat)
+    public bool IncrementStat(Stat stat, bool overrideUnspentStatCheck = false)
     {
-        //if it's 0, do nothing
-        if (_unspentPoints == 0)
+        if (!overrideUnspentStatCheck && _unspentPoints == 0)
             return false;
 
-        if (Interlocked.Decrement(ref _unspentPoints) < 0)
+        if (!overrideUnspentStatCheck && Interlocked.Decrement(ref _unspentPoints) < 0)
         {
             _unspentPoints = 0;
 
@@ -177,27 +176,22 @@ public sealed record UserStatSheet : StatSheet
         {
             case Stat.STR:
                 Interlocked.Increment(ref _str);
-                Interlocked.Add(ref _maximumHp, 25);
 
                 break;
             case Stat.INT:
                 Interlocked.Increment(ref _int);
-                Interlocked.Add(ref _maximumMp, 20);
 
                 break;
             case Stat.WIS:
                 Interlocked.Increment(ref _wis);
-                Interlocked.Add(ref _maximumMp, 40);
 
                 break;
             case Stat.CON:
                 Interlocked.Increment(ref _con);
-                Interlocked.Add(ref _maximumHp, 50);
 
                 break;
             case Stat.DEX:
                 Interlocked.Increment(ref _dex);
-                Interlocked.Add(ref _atkSpeedPct, 1);
 
                 break;
             default:

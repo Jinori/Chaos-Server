@@ -381,7 +381,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
             case "riona_getguided":
             {
                 if (source.UserStatSheet.BaseClass is BaseClass.Monk or BaseClass.Warrior or BaseClass.Wizard
-                                                      or BaseClass.Rogue or BaseClass.Priest or BaseClass.Wizard)
+                                                      or BaseClass.Rogue or BaseClass.Priest)
                 {
                     source.Trackers.Enums.Set(RionaTutorialQuestStage.CompletedGetGuided);
 
@@ -412,7 +412,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
             case "riona_getguidedreturn":
             {
                 if (source.UserStatSheet.BaseClass is BaseClass.Monk or BaseClass.Warrior or BaseClass.Wizard
-                                                      or BaseClass.Rogue or BaseClass.Priest or BaseClass.Wizard)
+                                                      or BaseClass.Rogue or BaseClass.Priest)
                 {
                     source.Trackers.Enums.Set(RionaTutorialQuestStage.CompletedGetGuided);
                     Subject.Reply(source, "Skip", "riona_helpskarn");

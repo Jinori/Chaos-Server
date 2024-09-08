@@ -12,6 +12,7 @@ using Chaos.Cryptography;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Messaging.Abstractions;
+using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Networking.Abstractions;
@@ -1056,24 +1057,6 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
                 if (localClient.Aisling.UserStatSheet.IncrementStat(localArgs.Stat))
                 {
                     localClient.Aisling.Script.OnStatIncrease(localArgs.Stat);
-                    switch (localArgs.Stat)
-                    {
-                        case Stat.STR:
-                            localClient.Aisling.SendServerMessage(ServerMessageType.ActiveMessage, "STR increased by one and maximum health increased by twenty five.");
-                            break;
-                        case Stat.DEX:
-                            localClient.Aisling.SendServerMessage(ServerMessageType.ActiveMessage, "DEX increased by one and Attack Speed increased by one percent.");
-                            break;
-                        case Stat.INT:
-                            localClient.Aisling.SendServerMessage(ServerMessageType.ActiveMessage, "INT increased by one and maximum mana increased by twenty.");
-                            break;
-                        case Stat.WIS:
-                            localClient.Aisling.SendServerMessage(ServerMessageType.ActiveMessage, "WIS increased by one and maximum mana increased by fourty.");
-                            break;
-                        case Stat.CON:
-                            localClient.Aisling.SendServerMessage(ServerMessageType.ActiveMessage, "CON increased by one and maximum health increased by fifty.");
-                            break;
-                    }
                     localClient.SendAttributes(StatUpdateType.Full);
                 }
 
