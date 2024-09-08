@@ -150,7 +150,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         ClearOrangeBarTimer = new IntervalTimer(TimeSpan.FromSeconds(WorldOptions.Instance.ClearOrangeBarTimerSecs), false);
         CleanupSkillsSpellsTimer =
-            new RandomizedIntervalTimer(TimeSpan.FromMinutes(15), 25, RandomizationType.Balanced, false);
+            new RandomizedIntervalTimer(TimeSpan.FromMinutes(1), 25, RandomizationType.Balanced, false);
         ClientRegistry = clientRegistry;
         EffectFactory = effectFactory;
         MerchantFactory = merchantFactory;
@@ -747,6 +747,59 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         if (CleanupSkillsSpellsTimer.IntervalElapsed && !Subject.IsDiacht())
         {
+            if (Subject.UserStatSheet.Level < 99)
+            {
+                // Calculate the target AC based on level
+                var targetAc = 100 - (Subject.UserStatSheet.Level / 3);
+
+                // Calculate the difference in AC (amount to subtract)
+                var acDifference = Subject.UserStatSheet.Ac - targetAc;
+
+                // Calculate the new attack speed percentage: 1% for every 3 Dex minus the initial 3 Dex
+                var newAtkSpeedPct = Math.Max(0, (Subject.UserStatSheet.Dex - 3) / 3);
+
+                // Calculate the attack speed difference (amount to subtract)
+                var atkSpeedPctDifference = Subject.UserStatSheet.AtkSpeedPct - newAtkSpeedPct;
+
+                // Create the attributes object for the new values
+                var newAttributes = new Attributes()
+                {
+                    Ac = acDifference,  // Pass the AC difference to subtract the correct value
+                    AtkSpeedPct = atkSpeedPctDifference  // Pass the attack speed percentage difference
+                };
+
+                // Apply the new stats
+                Subject.UserStatSheet.Subtract(newAttributes);
+            }
+            else if (Subject.UserStatSheet.Level == 99)
+            {
+                // Set target AC for level 99
+                var targetAc = 67;
+
+                // Calculate the difference in AC (amount to subtract)
+                var acDifference = Subject.UserStatSheet.Ac - targetAc;
+
+                // Calculate the new attack speed percentage: 1% for every 3 Dex minus the initial 3 Dex
+                var newAtkSpeedPct = Math.Max(0, (Subject.UserStatSheet.Dex - 3) / 3);
+
+                // Calculate the attack speed difference (amount to subtract)
+                var atkSpeedPctDifference = Subject.UserStatSheet.AtkSpeedPct - newAtkSpeedPct;
+
+                // Create the attributes object for the new values
+                var newAttributes = new Attributes()
+                {
+                    Ac = acDifference,  // Pass the AC difference to subtract the correct value
+                    AtkSpeedPct = atkSpeedPctDifference  // Pass the attack speed percentage difference
+                };
+
+                // Apply the new stats
+                Subject.UserStatSheet.Subtract(newAttributes);
+
+                // Send full attribute update
+                Subject.Client.SendAttributes(StatUpdateType.Full);
+            }
+
+            
             RemoveAndNotifyIfBothExist("athar", "beagathar");
             RemoveAndNotifyIfBothExist("morathar", "athar");
             RemoveAndNotifyIfBothExist("morathar", "beagathar");

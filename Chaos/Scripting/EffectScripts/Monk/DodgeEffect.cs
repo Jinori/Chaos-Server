@@ -16,7 +16,6 @@ public class DodgeEffect : EffectBase
 
     public override void OnApplied()
     {
-        base.OnApplied();
         ArmorClassSaved = GetAcReduction();
 
         var attributesToAdd = new Attributes
@@ -56,6 +55,8 @@ public class DodgeEffect : EffectBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
+        base.Update(delta);
+        
         if (Subject is Aisling aisling && aisling.Equipment.Contains(3))
         {
             aisling.Effects.Dispel("Dodge");

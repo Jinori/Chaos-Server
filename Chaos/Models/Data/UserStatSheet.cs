@@ -191,8 +191,13 @@ public sealed record UserStatSheet : StatSheet
 
                 break;
             case Stat.DEX:
-                Interlocked.Increment(ref _dex);
 
+                Interlocked.Increment(ref _dex); // Increment Dexterity
+                if (_dex % 3 == 0) // Only increase atkSpeedPct for every 3rd DEX point
+                {
+                    Interlocked.Add(ref _atkSpeedPct, 1);
+                }
+                
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(stat), stat, null);
