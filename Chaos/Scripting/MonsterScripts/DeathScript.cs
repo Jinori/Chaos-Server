@@ -55,17 +55,14 @@ namespace Chaos.Scripting.MonsterScripts
         private static Aisling[] GetRewardTargets(Aisling rewardTarget)
         {
             IEnumerable<Aisling> groupOrSingle = rewardTarget.Group != null 
-                ? rewardTarget.Group
+                ? rewardTarget.Group.Members
                 : new[] { rewardTarget };
 
             return groupOrSingle
                 .ThatAreWithinRange(rewardTarget)
                 .ToArray();
         }
-
-
-
-
+        
         private void DistributeLootAndExperience(Aisling rewardTarget, Aisling[]? rewardTargets)
         {
             if (rewardTargets == null || rewardTargets.Length == 0) return;
