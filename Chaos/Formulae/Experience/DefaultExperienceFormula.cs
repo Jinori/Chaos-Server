@@ -24,12 +24,19 @@ public class DefaultExperienceFormula : IExperienceFormula
 
                 var experience = monster.Experience * groupMultiplier * monsterLevelMultiplier;
 
+                // Apply a 5% experience bonus for "Knowledge"
                 if (HasKnowledgeEffect(aislings))
                 {
-                    // Apply a 5% experience bonus
                     experience *= (decimal)1.05;
                 }
 
+                // Apply a 10% experience bonus for "Strong Knowledge"
+                if (HasStrongKnowledgeEffect(aislings))
+                {
+                    experience *= (decimal)1.10;
+                }
+
+                // Apply bonus for mythic completion
                 if (HasCompletedMythic(aislings))
                 {
                     experience *= (decimal)1.05;
@@ -43,7 +50,7 @@ public class DefaultExperienceFormula : IExperienceFormula
 
     private bool HasKnowledgeEffect(Aisling[] aislings)
     {
-        // Check if any of the Aislings have the KnowledgeEffect applied
+        // Check if any of the Aislings have the "Knowledge" effect
         foreach (var aisling in aislings)
         {
             if (aisling.Effects.Contains("Knowledge"))
@@ -53,6 +60,20 @@ public class DefaultExperienceFormula : IExperienceFormula
         }
         return false;
     }
+
+    private bool HasStrongKnowledgeEffect(Aisling[] aislings)
+    {
+        // Check if any of the Aislings have the "Strong Knowledge" effect
+        foreach (var aisling in aislings)
+        {
+            if (aisling.Effects.Contains("Strong Knowledge"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private bool HasCompletedMythic(Aisling[] aislings)
     {

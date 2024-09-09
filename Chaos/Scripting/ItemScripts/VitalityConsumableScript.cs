@@ -45,6 +45,12 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
     /// <inheritdoc />
     public override void OnUse(Aisling source)
     {
+        if (!source.UserStatSheet.Master && Subject.Template.RequiresMaster)
+        {
+            source.SendOrangeBarMessage($"You must be a Master to consume this.");
+            return;
+        }
+        
         if (source.UserStatSheet.Level < Subject.Level && !source.IsGodModeEnabled())
         {
             source.SendOrangeBarMessage($"You must be level {Subject.Level} to consume this.");

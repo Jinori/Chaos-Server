@@ -44,6 +44,8 @@ public sealed class HideEffect : EffectBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
+        base.Update(delta);
+        
         if (HasRecentlyHidden)
         {
             HideTimer.Update(delta);

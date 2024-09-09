@@ -7,7 +7,7 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
-public class StatBoostEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
+public class StrongStatBoostEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     protected Animation? Animation { get; } = new()
@@ -21,7 +21,7 @@ public class StatBoostEffect : EffectBase, NonOverwritableEffectComponent.INonOv
         "Strong Stat Boost"
     ];
     public override byte Icon => 10;
-    public override string Name => "Stat Boost";
+    public override string Name => "Strong Stat Boost";
     protected byte? Sound => 115;
 
     public override void OnApplied()
@@ -30,11 +30,11 @@ public class StatBoostEffect : EffectBase, NonOverwritableEffectComponent.INonOv
 
         var attributes = new Attributes
         {
-            Str = 1,
-            Int = 1,
-            Wis = 1,
-            Con = 1,
-            Dex = 1
+            Str = 3,
+            Int = 3,
+            Wis = 3,
+            Con = 3,
+            Dex = 3
         };
 
         Subject.StatSheet.AddBonus(attributes);

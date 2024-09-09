@@ -150,7 +150,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         ClearOrangeBarTimer = new IntervalTimer(TimeSpan.FromSeconds(WorldOptions.Instance.ClearOrangeBarTimerSecs), false);
         CleanupSkillsSpellsTimer =
-            new RandomizedIntervalTimer(TimeSpan.FromMinutes(1), 25, RandomizationType.Balanced, false);
+            new RandomizedIntervalTimer(TimeSpan.FromMinutes(3), 25, RandomizationType.Balanced, false);
         ClientRegistry = clientRegistry;
         EffectFactory = effectFactory;
         MerchantFactory = merchantFactory;
@@ -651,9 +651,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             case Stat.DEX:
                 Subject.UserStatSheet.Add(new Attributes
                 {
-                    AtkSpeedPct = Subject.StatSheet.Level % 3 == 0 ? -1 : 0
+                    AtkSpeedPct = Subject.StatSheet.Dex % 3 == 0 ? 1 : 0
                 });
-                Subject.SendServerMessage(ServerMessageType.ActiveMessage, "DEX increased by one and Attack Speed increased by one percent.");
+                Subject.SendServerMessage(ServerMessageType.ActiveMessage, "DEX increased by one and Attack Speed increased.");
                 break;
             case Stat.INT:
                 Subject.UserStatSheet.Add(new Attributes

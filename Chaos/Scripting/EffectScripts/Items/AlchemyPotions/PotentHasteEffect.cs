@@ -7,21 +7,37 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
-public class StatBoostEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
+public class PotentHasteEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(20);
     protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
         AnimationSpeed = 100
     };
-    public List<string> ConflictingEffectNames { get; init; } =
+    public List<string> ConflictingEffectNames { get; init; } = 
     [
-        "Stat Boost",
-        "Strong Stat Boost"
+        "Small Haste",
+        "Haste",
+        "Strong Haste",
+        "Potent Haste",
+        "Small Power",
+        "Power",
+        "Strong Power",
+        "Potent Power",
+        "Small Accuracy",
+        "Accuracy",
+        "Strong Accuracy",
+        "Potent Accuracy",
+        "Juggernaut",
+        "Strong Juggernaut",
+        "Potent Juggernaut",
+        "Astral",
+        "Strong Astral",
+        "Potent Astral"
     ];
-    public override byte Icon => 10;
-    public override string Name => "Stat Boost";
+    public override byte Icon => 13;
+    public override string Name => "Potent Haste";
     protected byte? Sound => 115;
 
     public override void OnApplied()
@@ -30,16 +46,12 @@ public class StatBoostEffect : EffectBase, NonOverwritableEffectComponent.INonOv
 
         var attributes = new Attributes
         {
-            Str = 1,
-            Int = 1,
-            Wis = 1,
-            Con = 1,
-            Dex = 1
+            AtkSpeedPct = 24
         };
 
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your stats are temporarily increased.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed increased by 18%.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -48,16 +60,12 @@ public class StatBoostEffect : EffectBase, NonOverwritableEffectComponent.INonOv
     {
         var attributes = new Attributes
         {
-            Str = 1,
-            Int = 1,
-            Wis = 1,
-            Con = 1,
-            Dex = 1
+            AtkSpeedPct = 24
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your stats have been returned to normal.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed has returned to normal.");
     }
     
     public override bool ShouldApply(Creature source, Creature target)
