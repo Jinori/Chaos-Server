@@ -47,12 +47,14 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
         {
             case Aisling aisling:
                 
-                var relation = target.DirectionalRelationTo(source);
+                var relation = source.DirectionalRelationTo(target);
                 
                 if (aisling.UserStatSheet.BaseClass is BaseClass.Monk)
                 {
                     if (relation == target.Direction.Reverse())
+                    {
                         damage = (int)(damage * 1.25);
+                    }
                 }
                 else
                 {
@@ -68,13 +70,13 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
                 
                 ApplyDamageAndTriggerEvents(aisling, damage, source);
                 ApplyDurabilityDamage(aisling, source, script);
-                
                 break;
             case Monster monster:
-                var relation1 = target.DirectionalRelationTo(source);
+                var relation1 = source.DirectionalRelationTo(target);
                                 
                 if (relation1 == target.Direction.Reverse())
                     damage = (int)(damage * 1.5);
+                
                 else if (relation1 != target.Direction)
                     damage = (int)(damage * 1.25);  
                 

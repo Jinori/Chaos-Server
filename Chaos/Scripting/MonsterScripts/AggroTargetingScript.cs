@@ -31,8 +31,30 @@ public class AggroTargetingScript : MonsterScriptBase
         if (aggro == 0)
             return;
 
-        if (source is Aisling { UserStatSheet.BaseClass: BaseClass.Monk }) 
-            AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro * 2);
+        if (source is Aisling aisling)
+        {
+            switch (aisling.UserStatSheet.BaseClass)
+            {
+                case BaseClass.Peasant:
+                    AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro);
+                    break;
+                case BaseClass.Warrior:
+                    AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + (int)(aggro * 1.2));
+                    break;
+                case BaseClass.Rogue:
+                    AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + (int)(aggro * 1.6));
+                    break;
+                case BaseClass.Wizard:
+                    AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + (int)(aggro * 1.8));
+                    break;
+                case BaseClass.Priest:
+                    AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + (int)(aggro * 1.4));
+                    break;
+                case BaseClass.Monk:
+                    AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro * 4);
+                    break;
+            }
+        }        
         else
             AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro);
     }

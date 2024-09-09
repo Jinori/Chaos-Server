@@ -762,7 +762,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 var atkSpeedPctDifference = Subject.UserStatSheet.AtkSpeedPct - newAtkSpeedPct;
 
                 // Create the attributes object for the new values
-                var newAttributes = new Attributes()
+                var newAttributes = new Attributes
                 {
                     Ac = acDifference,  // Pass the AC difference to subtract the correct value
                     AtkSpeedPct = atkSpeedPctDifference  // Pass the attack speed percentage difference

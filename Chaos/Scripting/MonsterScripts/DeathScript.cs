@@ -7,138 +7,134 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Scripting.ReactorTileScripts;
 using Chaos.Services.Servers.Options;
 
-namespace Chaos.Scripting.MonsterScripts;
-
-// ReSharper disable once ClassCanBeSealed.Global
-public class DeathScript : MonsterScriptBase
+namespace Chaos.Scripting.MonsterScripts
 {
-    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
-
-    /// <inheritdoc />
-    public DeathScript(Monster subject)
-        : base(subject)
-        => ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
-
-    /// <inheritdoc />
-    public override void OnDeath()
+    public class DeathScript(Monster subject) : MonsterScriptBase(subject)
     {
-        if (!Map.RemoveEntity(Subject))
-            return;
+        private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
-        //this code will set the reward target to the person at the top of the aggro list
-        //var rewardTarget = Subject.AggroList
-        //                          .OrderByDescending(kvp => kvp.Value)
-        //                          .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
-        //                          .FirstOrDefault(a => a is not null);
+        public override void OnDeath()
+        {
+            if (!Map.RemoveEntity(Subject)) return;
 
-        //get the highest contributor
-        //if there are no contributor, try getting the highest aggro
-        var rewardTarget = Subject.Contribution
-                                  .OrderByDescending(kvp => kvp.Value)
-                                  .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
-                                  .FirstOrDefault(a => a is not null);
+            var rewardTarget = GetHighestContributor() ?? GetLastDamagerFromTrap();
 
-        Aisling[]? rewardTargets = null;
+            var rewardTargets = rewardTarget != null
+                ? GetRewardTargets(rewardTarget)
+                : null;
 
-        if (rewardTarget is null)
+            Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
+
+            if (rewardTarget != null && rewardTarget.Group != null)
+            {
+                DistributeLootAndExperience(rewardTarget, rewardTargets);
+            }
+            else
+            {
+                DropLootAndExperience(rewardTargets);
+            }
+        }
+
+        private Aisling? GetHighestContributor()
+        {
+            return Subject.Contribution
+                .OrderByDescending(kvp => kvp.Value)
+                .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
+                .FirstOrDefault(a => a != null);
+        }
+
+        private Aisling? GetLastDamagerFromTrap()
         {
             var lastDamage = Subject.Trackers.LastDamagedBy;
             var trap = Subject.MapInstance.GetDistinctReactorsAtPoint(Subject)
                 .Where(x => x.Script.Is<TrapScript>() && lastDamage != null && x.WithinRange(lastDamage));
 
-            if (trap.Any() && lastDamage != null)
-            {
-                rewardTarget = lastDamage as Aisling;
-            }
+            return trap.Any() ? lastDamage as Aisling : null;
         }
-        
-        if (rewardTarget != null)
-            rewardTargets = (rewardTarget.Group
-                             ?? (IEnumerable<Aisling>)new[]
-                             {
-                                 rewardTarget
-                             }).ThatAreWithinRange(rewardTarget)
-                               .ToArray();
 
-        Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
-
-        if (rewardTarget?.Group != null)
+        private static Aisling[] GetRewardTargets(Aisling rewardTarget)
         {
-            switch (rewardTarget.Group.LootOption)
+            IEnumerable<Aisling> groupOrSingle = rewardTarget.Group != null 
+                ? rewardTarget.Group.Members 
+                : new[] { rewardTarget };
+
+            return groupOrSingle
+                .ThatAreWithinRange(rewardTarget)
+                .ToArray();
+        }
+
+
+
+
+        private void DistributeLootAndExperience(Aisling rewardTarget, Aisling[]? rewardTargets)
+        {
+            if (rewardTargets == null || rewardTargets.Length == 0) return;
+    
+            switch (rewardTarget.Group?.LootOption)
             {
                 case Group.GroupLootOption.Default:
-                    var droppedGold = Subject.TryDropGold(Subject, Subject.Gold, out var money);
-                    var droppedITems = Subject.TryDrop(Subject, Subject.Items, out var groundItems);
-                    if (rewardTargets is not null)
-                    {
-                        if (WorldOptions.Instance.LootDropsLockToRewardTargetSecs.HasValue)
-                        {
-                            var lockSecs = WorldOptions.Instance.LootDropsLockToRewardTargetSecs.Value;
-
-                            if (droppedGold)
-                                money!.LockToAislings(lockSecs, rewardTargets);
-
-                            if (droppedITems)
-                                foreach (var groundItem in groundItems!)
-                                    groundItem.LockToAislings(lockSecs, rewardTargets);
-                        }
-
-                        ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
-                    }
+                    HandleLootDrop(rewardTargets, lockToTargets: true);
+                    ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
                     break;
+
                 case Group.GroupLootOption.Random:
-                    if (rewardTargets is not null)
-                    {
-                        if (Subject.Items.Count >= 1) 
-                            rewardTarget.Group.DistributeRandomized(Subject.Items);
-                    
-                        if (Subject.Gold >= 1) 
-                            rewardTarget.Group.DistributeEvenGold(Subject.Gold);
-                    
-                        ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);   
-                    }
+                    rewardTarget.Group.DistributeRandomized(Subject.Items);
+                    rewardTarget.Group.DistributeEvenGold(Subject.Gold);
+                    ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
                     break;
+
                 case Group.GroupLootOption.MasterLooter:
-                    var droppedGold1 = Subject.TryDropGold(Subject, Subject.Gold, out var money1);
-                    var droppedITems1 = Subject.TryDrop(Subject, Subject.Items, out var groundItems1);
-                    if (rewardTargets is not null)
-                    {
-                        if (WorldOptions.Instance.LootDropsLockToRewardTargetSecs.HasValue)
-                        {
-                            var lockSecs = WorldOptions.Instance.LootDropsLockToRewardTargetSecs.Value;
-
-                            if (droppedGold1)
-                                money1!.LockToAislings(lockSecs, rewardTarget.Group.Leader);
-
-                            if (droppedITems1)
-                                foreach (var groundItem in groundItems1!)
-                                    groundItem.LockToAislings(lockSecs, rewardTarget.Group.Leader);
-                        }
-
-                        ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
-                    }
+                    HandleLootDrop(rewardTargets, lockToLeader: rewardTarget.Group.Leader);
+                    ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
                     break;
             }
         }
-        else
+
+
+        private void DropLootAndExperience(Aisling[]? rewardTargets)
+        {
+            HandleLootDrop(rewardTargets, lockToTargets: rewardTargets != null);
+            if (rewardTargets != null)
+            {
+                ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
+            }
+        }
+
+        private void HandleLootDrop(Aisling[]? rewardTargets, bool lockToTargets = false, Aisling? lockToLeader = null)
         {
             var droppedGold = Subject.TryDropGold(Subject, Subject.Gold, out var money);
-            var droppedITems = Subject.TryDrop(Subject, Subject.Items, out var groundItems);
-            if (rewardTargets is not null)
+            var droppedItems = Subject.TryDrop(Subject, Subject.Items, out var groundItems);
+
+            if (WorldOptions.Instance.LootDropsLockToRewardTargetSecs.HasValue)
             {
-                if (WorldOptions.Instance.LootDropsLockToRewardTargetSecs.HasValue)
+                var lockSecs = WorldOptions.Instance.LootDropsLockToRewardTargetSecs.Value;
+
+                if (droppedGold && money != null)
                 {
-                    var lockSecs = WorldOptions.Instance.LootDropsLockToRewardTargetSecs.Value;
-
-                    if (droppedGold)
-                        money!.LockToAislings(lockSecs, rewardTargets);
-
-                    if (droppedITems)
-                        foreach (var groundItem in groundItems!)
-                            groundItem.LockToAislings(lockSecs, rewardTargets);
+                    if (lockToLeader != null)
+                    {
+                        money.LockToAislings(lockSecs, lockToLeader);
+                    }
+                    else if (lockToTargets && rewardTargets != null)
+                    {
+                        money.LockToAislings(lockSecs, rewardTargets);
+                    }
                 }
 
-                ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
+                if (droppedItems && groundItems != null)
+                {
+                    foreach (var groundItem in groundItems)
+                    {
+                        if (lockToLeader != null)
+                        {
+                            groundItem.LockToAislings(lockSecs, lockToLeader);
+                        }
+                        else if (lockToTargets && rewardTargets != null)
+                        {
+                            groundItem.LockToAislings(lockSecs, rewardTargets);
+                        }
+                    }
+                }
             }
         }
     }
