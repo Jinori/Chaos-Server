@@ -416,6 +416,21 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongAccuracyPotion);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.StatBoostElixir);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.KnowledgeElixir);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentHealthPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentManaPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentRejuvenationPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentHasteBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentPowerBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentAccuracyPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.InvisibilityPotion);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.PoisonImmunityElixir);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.PotionOfStrength);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.PotionOfConstitution);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.PotionOfDexterity);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.PotionOfIntellect);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.PotionOfWisdom);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongStatBoostElixir);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongKnowledgeElixir);
                 source.Trackers.Flags.AddFlag(CookingRecipes.Popsicle);
 
                 source.Animate(ani);
