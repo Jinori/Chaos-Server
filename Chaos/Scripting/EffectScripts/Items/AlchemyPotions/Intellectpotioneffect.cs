@@ -7,7 +7,7 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
-public class Intelligencepotioneffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
+public class Intellectpotioneffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
     protected Animation Animation { get; } = new()
@@ -19,13 +19,13 @@ public class Intelligencepotioneffect : EffectBase, NonOverwritableEffectCompone
     public List<string> ConflictingEffectNames { get; init; } = 
     [
         "Strength Potion",
-        "Intelligence Potion",
+        "Intellect Potion",
         "Wisdom Potion",
         "Constitution Potion",
         "Dexterity Potion"
     ];
     public override byte Icon => 71;
-    public override string Name => "Intelligence Potion";
+    public override string Name => "Intellect Potion";
     protected byte? Sound => 115;
 
     public override void OnApplied()

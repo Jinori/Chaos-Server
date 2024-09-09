@@ -19,7 +19,7 @@ public class DexterityPotionEffect : EffectBase, NonOverwritableEffectComponent.
     public List<string> ConflictingEffectNames { get; init; } = 
     [
         "Strength Potion",
-        "Intelligence Potion",
+        "Intellect Potion",
         "Wisdom Potion",
         "Constitution Potion",
         "Dexterity Potion"

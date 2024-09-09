@@ -249,14 +249,14 @@ public class AlchemyScript : DialogScriptBase
             if ((playerRank >= recipeStatus) && (playerRank <= recipeStatus + 1))
             {
                 if (recipe.TemplateKey != "stronghealthpotionformula"
-                    || recipe.TemplateKey != "strongmanapotionformula"
-                    || recipe.TemplateKey != "strongrejuvenationpotionformula"
-                    || recipe.TemplateKey != "healthpotionformula"
-                    || recipe.TemplateKey != "manapotionformula"
-                    || recipe.TemplateKey != "rejuvenationpotionformula"
-                    || recipe.TemplateKey != "potenthealthpotionformula"
-                    || recipe.TemplateKey != "potentmanapotionformula"
-                    || recipe.TemplateKey != "potentrejuvenationpotionformula")
+                    && recipe.TemplateKey != "strongmanapotionformula"
+                    && recipe.TemplateKey != "strongrejuvenationpotionformula"
+                    && recipe.TemplateKey != "healthpotionformula"
+                    && recipe.TemplateKey != "manapotionformula"
+                    && recipe.TemplateKey != "rejuvenationpotionformula"
+                    && recipe.TemplateKey != "potenthealthpotionformula"
+                    && recipe.TemplateKey != "potentmanapotionformula"
+                    && recipe.TemplateKey != "potentrejuvenationpotionformula")
                 {
                     UpdateLegendmark(source, legendMarkCount);
 

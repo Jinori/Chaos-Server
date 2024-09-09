@@ -672,6 +672,127 @@ public class RecipeLibraryScript : DialogScriptBase
                             "alchemybook");
 
                         return;
+                    
+                    case "potenthealthpotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 8 Lesser Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "potentmanapotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 8 Lesser Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "potentrejuvenationpotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 8 Lesser Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+                        return;
+                    case "potenthastebrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Spark Flower, 2 Superior Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "potentpowerbrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Cactus Flower, 2 Superior Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "potentaccuracybrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Kabine Blossom, 2 Superior Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "invisibilitypotionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Kobold Tail, 3 Superior Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "poisonimmunityelixirformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Raineach, 1 Superior Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "potionofstrengthformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Cactus Flower, 2 Superior Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "potionofintellectformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Blossom of Betrayal, 2 Superior Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "potionofwisdomformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Lily Pad, 2 Superior Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "potionofconstitutionformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Bocan Bough, 2 Superior Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "potionofdexterityformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Dochas Bloom, 2 Superior Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "strongstatboostelixirformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Losgann Tail, 1 Red Shocker Piece, 1 Ice Skeleton Skull, 3 Superior Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    case "strongknowledgeelixirformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Black Shocker Piece, 1 Ice Elemental Flame, 1 Rock Fish, 3 Superior Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+
+                        return;
+                    
                 }
 
                 break;

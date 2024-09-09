@@ -55,7 +55,7 @@ namespace Chaos.Scripting.MonsterScripts
         private static Aisling[] GetRewardTargets(Aisling rewardTarget)
         {
             IEnumerable<Aisling> groupOrSingle = rewardTarget.Group != null 
-                ? rewardTarget.Group.Members 
+                ? rewardTarget.Group
                 : new[] { rewardTarget };
 
             return groupOrSingle

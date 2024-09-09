@@ -1157,6 +1157,21 @@ public enum AlchemyRecipes : ulong
     StatBoostElixir = 1L << 32,
     KnowledgeElixir = 1L << 33,
     StrongRejuvenationPotion = 1L << 34,
+    PotentHealthPotion = 1L << 35,
+    PotentManaPotion = 1L << 36,
+    PotentRejuvenationPotion = 1L << 37,
+    PotentHasteBrew = 1L << 38,
+    PotentPowerBrew = 1L << 39,
+    PotentAccuracyPotion = 1L << 40,
+    InvisibilityPotion = 1L << 41,
+    PoisonImmunityElixir = 1L << 42,
+    PotionOfStrength = 1L << 43,
+    PotionOfIntellect = 1L << 44,
+    PotionOfWisdom = 1L << 45,
+    PotionOfConstitution = 1L << 46,
+    PotionOfDexterity = 1L << 47,
+    StrongStatBoostElixir = 1L << 48,
+    StrongKnowledgeElixir = 1L << 49
 }
 
 public enum JoinReligionQuest

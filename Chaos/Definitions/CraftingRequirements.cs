@@ -1297,6 +1297,293 @@ public static class CraftingRequirements
                 Difficulty = 5
             }
         },
+        {
+            AlchemyRecipes.PotentHealthPotion,
+            new Recipe()
+            {
+                Name = "Potent Health Potion Formula",
+                TemplateKey = "potenthealthpotionformula",
+                Ingredients =
+                [
+                    new Ingredient("emptybottle", "Empty Bottle", 1),
+                    
+                    new Ingredient("lessermonsterextract", "Lesser Monster Extract", 8)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            AlchemyRecipes.PotentManaPotion,
+            new Recipe()
+            {
+                Name = "Potent Mana Potion Formula",
+                TemplateKey = "potentmanapotionformula",
+                Ingredients =
+                [
+                    new Ingredient("emptybottle", "Empty Bottle", 1),
+                    
+                    new Ingredient("lessermonsterextract", "Lesser Monster Extract", 8)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            AlchemyRecipes.PotentRejuvenationPotion,
+            new Recipe()
+            {
+                Name = "Potent Rejuvenation Potion Formula",
+                TemplateKey = "potentrejuvenationpotionformula",
+                Ingredients =
+                [
+                    new Ingredient("emptybottle", "Empty Bottle", 1),
+                    
+                    new Ingredient("lessermonsterextract", "Lesser Monster Extract", 8)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            AlchemyRecipes.PotentHasteBrew,
+            new Recipe()
+            {
+                Name = "Potent Haste Brew Formula",
+                TemplateKey = "potenthastebrewformula",
+                Ingredients =
+                [
+                    new Ingredient("sparkflower", "Spark Flower", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1),
+
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            AlchemyRecipes.PotentPowerBrew,
+            new Recipe()
+            {
+                Name = "Potent Power Brew Formula",
+                TemplateKey = "potentpowerbrewformula",
+                Ingredients =
+                [
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
+
+                    new Ingredient("cactusflower", "Cactus Flower", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            AlchemyRecipes.PotentAccuracyPotion,
+            new Recipe()
+            {
+                Name = "Potent Accuracy Potion Formula",
+                TemplateKey = "potentaccuracypotionformula",
+                Ingredients =
+                [
+                    new Ingredient("kabineblossom", "Kabine Blossom", 1),
+
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            AlchemyRecipes.InvisibilityPotion,
+            new Recipe()
+            {
+                Name = "Invisibility Potion Formula",
+                TemplateKey = "invisibilitypotionformula",
+                Ingredients =
+                [
+                    new Ingredient("koboldtail", "Kobold Tail", 1),
+
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 3),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            AlchemyRecipes.PoisonImmunityElixir,
+            new Recipe()
+            {
+                Name = "Poison Immunity Elixir Formula",
+                TemplateKey = "poisonimmunityelixirformula",
+                Ingredients =
+                [
+                    new Ingredient("raineach", "Raineach", 1),
+
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            AlchemyRecipes.PotionOfStrength,
+            new Recipe()
+            {
+                Name = "Potion of Strength Formula",
+                TemplateKey = "potionofstrengthformula",
+                Ingredients =
+                [
+                    new Ingredient("cactusflower", "Cactus Flower", 1),
+
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            AlchemyRecipes.PotionOfIntellect,
+            new Recipe()
+            {
+                Name = "Potion of Intellect Formula",
+                TemplateKey = "potionofintellectformula",
+                Ingredients =
+                [
+                    new Ingredient("blossomofbetrayal", "Blossom of Betrayal", 1),
+
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            AlchemyRecipes.PotionOfWisdom,
+            new Recipe()
+            {
+                Name = "Potion of Wisdom Formula",
+                TemplateKey = "potionofwisdomformula",
+                Ingredients =
+                [
+                    new Ingredient("lilypad", "Lily Pad", 1),
+
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            AlchemyRecipes.PotionOfConstitution,
+            new Recipe()
+            {
+                Name = "Potion of Constitution Formula",
+                TemplateKey = "potionofconstitutionformula",
+                Ingredients =
+                [
+                    new Ingredient("bocanbough", "Bocan Bough", 1),
+
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            AlchemyRecipes.PotionOfDexterity,
+            new Recipe()
+            {
+                Name = "Potion of Dexterity Formula",
+                TemplateKey = "potionofdexterityformula",
+                Ingredients =
+                [
+                    new Ingredient("dochasbloom", "Dochas Bloom", 1),
+
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            AlchemyRecipes.StrongStatBoostElixir,
+            new Recipe()
+            {
+                Name = "Strong Stat Boost Elixir Formula",
+                TemplateKey = "strongstatboostelixirformula",
+                Ingredients =
+                [
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 3),
+
+                    new Ingredient("losganntail", "Losgann Tail", 1),
+
+                    new Ingredient("redshockerpiece", "Red Shocker Piece", 1),
+
+                    new Ingredient("iceskeletonskull", "Ice Skeleton Skull", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            AlchemyRecipes.StrongKnowledgeElixir,
+            new Recipe()
+            {
+                Name = "Strong Knowledge Elixir Formula",
+                TemplateKey = "strongknowledgeelixirformula",
+                Ingredients =
+                [
+                    new Ingredient("blackshockerpiece", "Black Shocker Piece", 1),
+                    
+                    new Ingredient("iceelementalflame", "Ice Elemental Flame", 1),
+                    
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
+
+                    new Ingredient("rockfish", "Rock Fish", 1),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
     };
 
     #endregion

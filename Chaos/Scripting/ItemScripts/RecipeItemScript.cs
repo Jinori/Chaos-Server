@@ -2164,6 +2164,130 @@ public class RecipeItemScript : ItemScriptBase
 
                     return;
                 }
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_potenthealthpotion":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.PotentHealthPotion))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.PotentHealthPotion,
+                        "Potent Health Potion",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_potentmanapotion":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.PotentManaPotion))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.PotentManaPotion,
+                        "Potent Mana Potion",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_potentrejuvenationpotion":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.PotentRejuvenationPotion))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.PotentRejuvenationPotion,
+                        "Potent Rejuvenation Potion",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_potenthastebrew":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.PotentHasteBrew))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.PotentHasteBrew,
+                        "Potent Haste Brew",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_potentpowerbrew":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.PotentAccuracyPotion))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.PotentHealthPotion,
+                        "Potent Health Potion",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
 
