@@ -9,7 +9,7 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class potentJuggernautEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(20);
     protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,

@@ -54,6 +54,12 @@ public class PoisonEffect : ContinuousAnimationEffectBase
         if (target.IsGodModeEnabled())
             return false;
         
+        if (target.Effects.Contains("Poison Immunity"))
+        {
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is currently immune to poison.");
+            return true;
+        }
+        
         if (target.Effects.Contains("poison"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has this effect already.");

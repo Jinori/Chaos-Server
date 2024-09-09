@@ -49,7 +49,7 @@ public class AmnesiaEffect : ContinuousAnimationEffectBase
         if (Subject.Effects.Contains("Amnesia"))
             return false;
 
-        monster.AggroList.Clear();
+        monster.ResetAggro();
         return true;
     }
 
@@ -59,6 +59,6 @@ public class AmnesiaEffect : ContinuousAnimationEffectBase
         if (Subject is not Monster monster)
             return;
 
-        monster.AggroList.Clear();
+        monster.ResetAggro();
     }
 }
