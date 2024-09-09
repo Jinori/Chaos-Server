@@ -12,7 +12,7 @@ namespace Chaos.Collections;
 public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
 {
     private readonly IChannelService ChannelService;
-    private readonly List<Aisling> Members;
+    public readonly List<Aisling> Members;
     private readonly AutoReleasingMonitor Sync;
     public string ChannelName { get; }
 
