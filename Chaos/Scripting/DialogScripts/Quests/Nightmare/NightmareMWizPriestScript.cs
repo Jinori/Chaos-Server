@@ -56,7 +56,7 @@ public class NightmareMWizPriestScript : DialogScriptBase
                         
                     case true when (stage == NightmareQuestStage.CompletedNightmareLoss1):
                         Subject.Reply(source, "You may have lost the battle, but you haven't lost the war. Press on and try to forget about it.");
-
+                        source.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareLoss2);
                         return;
                 }
 

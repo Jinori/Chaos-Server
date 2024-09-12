@@ -69,7 +69,7 @@ public class NightmareFWizPriestScript : DialogScriptBase
                         return;
                     case true when (stage == NightmareQuestStage.CompletedNightmareLoss1):
                         Subject.Reply(source, "The challenges you face may be tougher than this one, prepare for the next.", "narve_initial");
-
+                        source.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareLoss2);
                         return;
                 }
 
