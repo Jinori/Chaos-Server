@@ -345,6 +345,12 @@ public class ReligionScriptBase : DialogScriptBase
                 if (aislings != null)
                     foreach (var player in aislings)
                     {
+                        if (!IsDeityMember(player, deity))
+                        {
+                            player.SendOrangeBarMessage("You aren't a member of this deity, you gain nothing.");
+                            continue;
+                        }
+                        
                         player.Animate(PrayerSuccess);
 
                         if (IntegerRandomizer.RollChance(ESSENCE_CHANCE))
@@ -360,8 +366,15 @@ public class ReligionScriptBase : DialogScriptBase
                         UpdateReligionRank(player);
                         var tnl = LevelUpFormulae.Default.CalculateTnl(player);
                         var twentyFivePercent = Convert.ToInt32(.25 * tnl);
-                
-                        ExperienceDistributionScript.GiveExp(player, twentyFivePercent);
+
+                        if (player.UserStatSheet.Level < 99)
+                        {
+                            ExperienceDistributionScript.GiveExp(player, twentyFivePercent);
+                        }
+                        else
+                        {
+                            ExperienceDistributionScript.GiveExp(player, 10000000);
+                        }
                     }
                 
                 goddess?.Say($"Thank you, {source.Name}. You honor me.");
