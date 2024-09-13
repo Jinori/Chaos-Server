@@ -84,7 +84,7 @@ public class DyeClassArmorsScript : DialogScriptBase
         }
 
         var newArmor = ItemFactory.Create($"{location.ToLower()}{item.Template.TemplateKey}");
-        source.Inventory.Remove(item.Template.Name);
+        source.Inventory.RemoveByTemplateKey(item.Template.TemplateKey);
         source.Inventory.RemoveQuantity(armorDyeName, 1);
         source.Inventory.TryAddToNextSlot(newArmor);
         source.SendOrangeBarMessage($"You've successfully dyed your {item.Template.Name}!");
