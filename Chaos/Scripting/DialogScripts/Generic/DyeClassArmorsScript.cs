@@ -52,44 +52,65 @@ public class DyeClassArmorsScript : DialogScriptBase
         if (!TryFetchArgs<byte>(out var slot) || !source.Inventory.TryGetObject(slot, out var item))
         {
             Subject.ReplyToUnknownInput(source);
-
             return;
         }
 
-        var location = source.MapInstance.InstanceId switch
+        // Map town locations to both specific and generic dye names
+        var dyeMapping = new Dictionary<string, (string specificDye, string genericDye)>
         {
-            "mileth_tailor"    => "Mileth",
-            "rucesion_tailor"  => "Rucesion",
-            "suomi_armor_shop" => "Suomi",
-            "piet_storage"     => "Loures",
-            _                  => null
+            { "Mileth", ("Mileth Armor Dye", "Green Armor Dye") },
+            { "Rucesion", ("Rucesion Armor Dye", "Blue Armor Dye") },
+            { "Suomi", ("Suomi Armor Dye", "Apple Armor Dye") },
+            { "Loures", ("Loures Armor Dye", "White Armor Dye") },
         };
 
-        if (location == null)
+        // Identify the current location and get the associated dye names
+        var location = source.MapInstance.InstanceId switch
+        {
+            "mileth_tailor" => "Mileth",
+            "rucesion_tailor" => "Rucesion",
+            "suomi_armor_shop" => "Suomi",
+            "piet_storage" => "Loures",
+            _ => null
+        };
+
+        if (location == null || !dyeMapping.TryGetValue(location, out var value))
         {
             Subject.Close(source);
             source.SendOrangeBarMessage("This location is not supported for armor dye.");
-
             return;
         }
 
-        var armorDyeName = $"{location} Armor Dye";
+        // Get the specific and generic dye names from the mapping
+        var (specificDye, genericDye) = value;
 
-        if (!source.Inventory.HasCount(armorDyeName, 1))
+        // Check for both specific and generic dyes
+        if (!source.Inventory.HasCount(specificDye, 1) && !source.Inventory.HasCount(genericDye, 1))
         {
             Subject.Close(source);
-            source.SendOrangeBarMessage($"You have no {armorDyeName}, come back with it.");
-
+            source.SendOrangeBarMessage($"You have no {specificDye} or {genericDye}, come back with either one.");
             return;
         }
 
+        // Create the dyed version of the item using the location and the item template
         var newArmor = ItemFactory.Create($"{location.ToLower()}{item.Template.TemplateKey}");
         source.Inventory.RemoveByTemplateKey(item.Template.TemplateKey);
-        source.Inventory.RemoveQuantity(armorDyeName, 1);
-        source.Inventory.TryAddToNextSlot(newArmor);
+
+        // Remove the dye from inventory (prioritize specific dye, fallback to generic)
+        if (source.Inventory.HasCount(specificDye, 1))
+        {
+            source.Inventory.RemoveQuantity(specificDye, 1);
+        }
+        else
+        {
+            source.Inventory.RemoveQuantity(genericDye, 1);
+        }
+
+        source.GiveItemOrSendToBank(newArmor);
         source.SendOrangeBarMessage($"You've successfully dyed your {item.Template.Name}!");
         Subject.Close(source);
     }
+
 
     private void OnDisplayingConfirmation(Aisling source)
     {

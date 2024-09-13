@@ -1,6 +1,8 @@
 // ReSharper disable InconsistentNaming
 
 using Chaos.Common.Definitions;
+using Chaos.Definitions;
+using Chaos.Models.World;
 
 namespace Chaos.Models.Data;
 
@@ -160,7 +162,61 @@ public sealed record UserStatSheet : StatSheet
 
     public int GivePoints(int amount) => Interlocked.Add(ref _unspentPoints, amount);
 
-    public bool IncrementStat(Stat stat, bool overrideUnspentStatCheck = false)
+    private static ClassStatBracket GetCurrentStatBracket(Aisling source)
+    {
+        if (source.UserStatSheet.Master)
+            return ClassStatBracket.Master;
+
+        return source.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster) 
+            ? ClassStatBracket.Grandmaster 
+            : ClassStatBracket.PreMaster;
+    }
+    
+    private readonly Dictionary<BaseClass, Dictionary<ClassStatBracket, Attributes>> ClassStatCaps = new()
+    {
+        {
+            BaseClass.Warrior, new Dictionary<ClassStatBracket, Attributes>
+            {
+                { ClassStatBracket.PreMaster, new Attributes { Str = 120, Int = 50, Wis = 50, Con = 80, Dex = 100 } },
+                { ClassStatBracket.Master, new Attributes { Str = 180, Int = 80, Wis = 80, Con = 120, Dex = 150 } },
+                { ClassStatBracket.Grandmaster, new Attributes { Str = 215, Int = 100, Wis = 100, Con = 150, Dex = 180 } }
+            }
+        },
+        {
+            BaseClass.Monk, new Dictionary<ClassStatBracket, Attributes>
+            {
+                { ClassStatBracket.PreMaster, new Attributes { Str = 100, Int = 50, Wis = 50, Con = 120, Dex = 80 } },
+                { ClassStatBracket.Master, new Attributes { Str = 150, Int = 80, Wis = 80, Con = 180, Dex = 120 } },
+                { ClassStatBracket.Grandmaster, new Attributes { Str = 180, Int = 100, Wis = 100, Con = 215, Dex = 150 } }
+            }
+        },
+        {
+            BaseClass.Rogue, new Dictionary<ClassStatBracket, Attributes>
+            {
+                { ClassStatBracket.PreMaster, new Attributes { Str = 100, Int = 50, Wis = 50, Con = 80, Dex = 120 } },
+                { ClassStatBracket.Master, new Attributes { Str = 150, Int = 80, Wis = 80, Con = 120, Dex = 180 } },
+                { ClassStatBracket.Grandmaster, new Attributes { Str = 180, Int = 100, Wis = 100, Con = 150, Dex = 215 } }
+            }
+        },
+        {
+            BaseClass.Wizard, new Dictionary<ClassStatBracket, Attributes>
+            {
+                { ClassStatBracket.PreMaster, new Attributes { Str = 50, Int = 120, Wis = 100, Con = 80, Dex = 50 } },
+                { ClassStatBracket.Master, new Attributes { Str = 80, Int = 180, Wis = 150, Con = 120, Dex = 80 } },
+                { ClassStatBracket.Grandmaster, new Attributes { Str = 100, Int = 215, Wis = 180, Con = 150, Dex = 100 } }
+            }
+        },
+        {
+            BaseClass.Priest, new Dictionary<ClassStatBracket, Attributes>
+            {
+                { ClassStatBracket.PreMaster, new Attributes { Str = 50, Int = 100, Wis = 120, Con = 80, Dex = 50 } },
+                { ClassStatBracket.Master, new Attributes { Str = 80, Int = 150, Wis = 180, Con = 120, Dex = 80 } },
+                { ClassStatBracket.Grandmaster, new Attributes { Str = 100, Int = 180, Wis = 215, Con = 150, Dex = 100 } }
+            }
+        },
+    };
+    
+    public bool IncrementStat(Stat stat, Aisling aisling, bool overrideUnspentStatCheck = false)
     {
         if (!overrideUnspentStatCheck && _unspentPoints == 0)
             return false;
@@ -168,31 +224,34 @@ public sealed record UserStatSheet : StatSheet
         if (!overrideUnspentStatCheck && Interlocked.Decrement(ref _unspentPoints) < 0)
         {
             _unspentPoints = 0;
-
             return false;
+        }
+
+        var currentBracket = GetCurrentStatBracket(aisling);
+        var statCaps = ClassStatCaps[BaseClass][currentBracket];
+
+        if (IsStatCapped(stat, statCaps))
+        {
+            aisling.SendOrangeBarMessage("You've reached the stat cap for this attribute.");
+            return false;   
         }
 
         switch (stat)
         {
             case Stat.STR:
                 Interlocked.Increment(ref _str);
-
                 break;
             case Stat.INT:
                 Interlocked.Increment(ref _int);
-
                 break;
             case Stat.WIS:
                 Interlocked.Increment(ref _wis);
-
                 break;
             case Stat.CON:
                 Interlocked.Increment(ref _con);
-
                 break;
             case Stat.DEX:
                 Interlocked.Increment(ref _dex);
-                
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(stat), stat, null);
@@ -200,6 +259,20 @@ public sealed record UserStatSheet : StatSheet
 
         return true;
     }
+
+    private bool IsStatCapped(Stat stat, Attributes statCaps)
+    {
+        return stat switch
+        {
+            Stat.STR => _str >= statCaps.Str,
+            Stat.INT => _int >= statCaps.Int,
+            Stat.WIS => _wis >= statCaps.Wis,
+            Stat.CON => _con >= statCaps.Con,
+            Stat.DEX => _dex >= statCaps.Dex,
+            _ => throw new ArgumentOutOfRangeException(nameof(stat), stat, null)
+        };
+    }
+
 
     public void SetAdvClass(AdvClass advClass) => _advClass = advClass;
 

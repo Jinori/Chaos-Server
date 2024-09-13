@@ -335,6 +335,15 @@ public class ReligionScriptBase : DialogScriptBase
 
             return;
         }
+        
+        source.Legend.AddOrAccumulate(
+            new LegendMark(
+                $"Last Held Mass for {deity}",
+                $"{deity}Mass",
+                MarkIcon.Heart,
+                MarkColor.White,
+                1,
+                GameTime.Now));
 
         switch (self)
         {
@@ -419,7 +428,7 @@ public class ReligionScriptBase : DialogScriptBase
         }
     }
 
-    public static int CheckCurrentFaith(Aisling source)
+    private static int CheckCurrentFaith(Aisling source)
     {
         var key = CheckDeity(source);
 

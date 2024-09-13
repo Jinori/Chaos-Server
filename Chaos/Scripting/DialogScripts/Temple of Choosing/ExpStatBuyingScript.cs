@@ -82,16 +82,16 @@ public class ExpStatBuyingScript(Dialog subject) : DialogScriptBase(subject)
     };
 
     
-    private ClassStatBracket GetCurrentStatBracket(Aisling source)
+    private static ClassStatBracket GetCurrentStatBracket(Aisling source)
     {
         if (source.UserStatSheet.Master)
             return ClassStatBracket.Master;
 
-        if (source.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster))
-            return ClassStatBracket.Grandmaster;
-
-        return ClassStatBracket.PreMaster;
+        return source.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster) 
+            ? ClassStatBracket.Grandmaster 
+            : ClassStatBracket.PreMaster;
     }
+
 
     private readonly Dictionary<BaseClass, Dictionary<ClassStatBracket, Attributes>> ClassStatCaps = new()
     {

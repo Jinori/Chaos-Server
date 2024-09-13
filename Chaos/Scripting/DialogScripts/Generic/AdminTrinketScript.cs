@@ -190,7 +190,7 @@ public class AdminTrinketScript : DialogScriptBase
             41 => new[] { "arenamonk41", "arenawarrior41", "arenawizard41" },
             71 => new[] { "arenamonk71", "arenawarrior71", "arenawizard71" },
             97 => new[] { "arenamonk97", "arenawarrior97", "arenawizard97" },
-            _ => new[] { "arenamonk41", "arenawarrior41", "arenawizard41" } // Fallback to level 41 if an unsupported level is provided
+            _ => new[] { "arenamonk41", "arenawarrior41", "arenawizard41" }
         };
 
         var random = new Random();

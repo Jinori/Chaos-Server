@@ -34,7 +34,25 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
     {
         aisling.UserStatSheet.AddLevel();
         aisling.SendOrangeBarMessage("You level up!");
-        aisling.UserStatSheet.GivePoints(2);
+
+        var unspentPoints = aisling.UserStatSheet.UnspentPoints;
+
+        // Warn the player if unspent stat points are 19 or higher
+        if (unspentPoints is >= 19 and < 26)
+        {
+            aisling.SendMessage("You have unspent stat points. The cap is 26. Spend them soon!");
+        }
+
+        // Check if the unspent points have reached or exceeded the cap of 26
+        if (unspentPoints >= 26)
+        {
+            aisling.SendMessage("You have reached the maximum amount of unspent stat points.");
+        }
+        else
+        {
+            var pointsToGive = (unspentPoints <= 24) ? 2 : 1;
+            aisling.UserStatSheet.GivePoints(pointsToGive);
+        }
 
         if (aisling.UserStatSheet.Level < WorldOptions.Instance.MaxLevel)
         {
@@ -57,7 +75,7 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
                 var halo = ItemFactory.Create("halo");
 
                 aisling.GiveItemOrSendToBank(halo);
-                
+
                 aisling.SendOrangeBarMessage("You've received a unique Legend Mark and accessory");
             }
         }
@@ -85,26 +103,22 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
             {
                 case 10:
                     SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level10);
-
                     break;
                 case 25:
                     SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level25);
-
                     break;
                 case 40:
                     SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level40);
-
                     break;
                 case 55:
                     SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level55);
-                    
                     break;
                 case 80:
                     SetPetEnumAndMessage(aisling, PetSkillsAvailable.Level85);
-
                     break;
             }
     }
+
 
     private void SetPetEnumAndMessage(Aisling aisling, PetSkillsAvailable tag)
     {

@@ -1,19 +1,17 @@
 using Chaos.Common.Utilities;
+using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
+using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Humanizer;
 
 namespace Chaos.Scripting.MerchantScripts;
 
-public class TheseleneMassScript(
-    Merchant subject,
-    IClientRegistry<IChaosWorldClient> clientRegistry,
-    IItemFactory itemFactory
-)
-    : MerchantScriptBase(subject)
+public class TheseleneMassScript : MerchantScriptBase
 {
     private const int FAITH_REWARD = 25;
     private const int ESSENCE_CHANCE = 10;
@@ -73,8 +71,19 @@ public class TheseleneMassScript(
         "Whispers guide seekers of the unknown, unveiling profound revelations.",
         "In the realm of shadows, wisdom beckons, calling forth those who seek enlightenment."
     ];
+
+    public TheseleneMassScript(Merchant subject,
+        IClientRegistry<IChaosWorldClient> clientRegistry,
+        IItemFactory itemFactory) : base(subject)
+    {
+        ClientRegistry = clientRegistry;
+        ItemFactory = itemFactory;
+        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    }
+
     #endregion MassMessages
 
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
     private IEnumerable<Aisling>? AislingsAtStart { get; set; }
 
     private bool AnnouncedMassBegin { get; set; }
@@ -85,9 +94,9 @@ public class TheseleneMassScript(
     private DateTime? MassAnnouncementTime { get; set; }
     private bool MassCompleted { get; set; }
     private int SermonCount { get; set; }
-    protected IClientRegistry<IChaosWorldClient> ClientRegistry { get; } = clientRegistry;
+    protected IClientRegistry<IChaosWorldClient> ClientRegistry { get; }
 
-    protected IItemFactory ItemFactory { get; } = itemFactory;
+    protected IItemFactory ItemFactory { get; }
 
     protected Animation PrayerSuccess { get; } = new()
     {
@@ -173,13 +182,20 @@ public class TheseleneMassScript(
                 player.Inventory.TryAddToNextSlot(item);
                 player.SendActiveMessage("You received an Essence of Theselene");
             }
-
+            var tnl = LevelUpFormulae.Default.CalculateTnl(player);
+            var twentyFivePercent = Convert.ToInt32(.25 * tnl);
+                
+            ExperienceDistributionScript.GiveExp(player, twentyFivePercent);
             TryAddFaith(player, FAITH_REWARD);
         }
 
         foreach (var latePlayers in aislingsAtEnd.Except(aislingsStillHere))
         {
             latePlayers.SendActiveMessage("You must be present from start to finish to receive full benefits.");
+            var tnl = LevelUpFormulae.Default.CalculateTnl(latePlayers);
+            var twentyFivePercent = Convert.ToInt32(.20 * tnl);
+                
+            ExperienceDistributionScript.GiveExp(latePlayers, twentyFivePercent);
             TryAddFaith(latePlayers, LATE_FAITH_REWARD);
         }
 

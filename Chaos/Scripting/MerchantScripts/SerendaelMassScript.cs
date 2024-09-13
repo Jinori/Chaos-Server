@@ -1,19 +1,17 @@
 using Chaos.Common.Utilities;
+using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
+using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Humanizer;
 
 namespace Chaos.Scripting.MerchantScripts;
 
-public class SerendaelMassScript(
-    Merchant subject,
-    IClientRegistry<IChaosWorldClient> clientRegistry,
-    IItemFactory itemFactory
-)
-    : MerchantScriptBase(subject)
+public class SerendaelMassScript : MerchantScriptBase
 {
     private const int FAITH_REWARD = 25;
     private const int LATE_FAITH_REWARD = 15;
@@ -77,8 +75,18 @@ public class SerendaelMassScript(
         "Find joy in the dance of chance and fortune.",
         "Embrace the unexpected as an opportunity for growth."
     ];
-    #endregion MassMessages
 
+    public SerendaelMassScript(Merchant subject,
+        IClientRegistry<IChaosWorldClient> clientRegistry,
+        IItemFactory itemFactory) : base(subject)
+    {
+        ClientRegistry = clientRegistry;
+        ItemFactory = itemFactory;
+        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    }
+
+    #endregion MassMessages
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
     private IEnumerable<Aisling>? AislingsAtStart { get; set; }
 
     private bool AnnouncedMassBegin { get; set; }
@@ -89,9 +97,9 @@ public class SerendaelMassScript(
     private DateTime? MassAnnouncementTime { get; set; }
     private bool MassCompleted { get; set; }
     private int SermonCount { get; set; }
-    protected IClientRegistry<IChaosWorldClient> ClientRegistry { get; } = clientRegistry;
+    protected IClientRegistry<IChaosWorldClient> ClientRegistry { get; }
 
-    protected IItemFactory ItemFactory { get; } = itemFactory;
+    protected IItemFactory ItemFactory { get; }
 
     protected Animation PrayerSuccess { get; } = new()
     {
@@ -179,12 +187,20 @@ public class SerendaelMassScript(
             }
 
             TryAddFaith(player, FAITH_REWARD);
+            var tnl = LevelUpFormulae.Default.CalculateTnl(player);
+            var twentyFivePercent = Convert.ToInt32(.25 * tnl);
+                
+            ExperienceDistributionScript.GiveExp(player, twentyFivePercent);
         }
 
         foreach (var latePlayers in aislingsAtEnd.Except(aislingsStillHere))
         {
             latePlayers.SendActiveMessage("You must be present from start to finish to receive full benefits.");
             TryAddFaith(latePlayers, LATE_FAITH_REWARD);
+            var tnl = LevelUpFormulae.Default.CalculateTnl(latePlayers);
+            var twentyFivePercent = Convert.ToInt32(.20 * tnl);
+                
+            ExperienceDistributionScript.GiveExp(latePlayers, twentyFivePercent);
         }
 
         Subject.CurrentlyHostingMass = false;

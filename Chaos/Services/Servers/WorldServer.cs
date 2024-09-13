@@ -1054,7 +1054,7 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
         static ValueTask InnerOnRaiseStat(IChaosWorldClient localClient, RaiseStatArgs localArgs)
         {
             if (localClient.Aisling.UserStatSheet.UnspentPoints > 0)
-                if (localClient.Aisling.UserStatSheet.IncrementStat(localArgs.Stat))
+                if (localClient.Aisling.UserStatSheet.IncrementStat(localArgs.Stat, localClient.Aisling))
                 {
                     localClient.Aisling.Script.OnStatIncrease(localArgs.Stat);
                     localClient.SendAttributes(StatUpdateType.Full);

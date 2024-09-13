@@ -103,7 +103,7 @@ public static class ComplexActionHelper
     {
         if (source.UserStatSheet.TrySubtractTotalExp(expCost))
         {
-            if (!source.UserStatSheet.IncrementStat(stat, true))
+            if (!source.UserStatSheet.IncrementStat(stat, source, true))
             {
                 source.SendOrangeBarMessage("Something went wrong trying to increase this stat.");
                 return;
