@@ -17,8 +17,11 @@ public class FasSpioradScript : ConfigurableSpellScriptBase,
 {
     /// <inheritdoc />
     public FasSpioradScript(Spell subject, IEffectFactory effectFactory)
-        : base(subject) =>
+        : base(subject)
+    {
+        Animation!.Priority = 90;
         EffectFactory = effectFactory;
+    }
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context) =>
@@ -46,6 +49,9 @@ public class FasSpioradScript : ConfigurableSpellScriptBase,
     public byte? Sound { get; init; }
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
+
+    public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
+
     /// <inheritdoc />
     public ushort? AnimationSpeed { get; init; }
 

@@ -21,6 +21,9 @@ public class RemoveEffectScript : ConfigurableSkillScriptBase,
     public ushort? AnimationSpeed { get; init; }
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
+
+    public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
+
     /// <inheritdoc />
     public string? EffectKey { get; init; }
 

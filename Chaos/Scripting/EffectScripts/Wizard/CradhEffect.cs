@@ -15,7 +15,8 @@ public class CradhEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
     protected Animation Animation { get; } = new()
     {
         TargetAnimation = 484,
-        AnimationSpeed = 100
+        AnimationSpeed = 100,
+        Priority = 100
     };
     public List<string> ConflictingEffectNames { get; init; } =
     [

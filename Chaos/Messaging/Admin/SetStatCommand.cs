@@ -1,6 +1,7 @@
 using Chaos.Collections.Common;
 using Chaos.Common.Definitions;
 using Chaos.Messaging.Abstractions;
+using Chaos.Models.Data;
 using Chaos.Models.World;
 
 namespace Chaos.Messaging.Admin;
@@ -20,19 +21,44 @@ public class SetStatCommand : ICommand<Aisling>
         switch (stat?.ToLower())
         {
             case "str":
-                source.UserStatSheet.Str = statAmount;
+                var str = new Attributes
+                {
+                    Str = source.UserStatSheet.Str - statAmount
+                };
+                
+                source.UserStatSheet.Add(str);
                 break;
             case "dex":
-                source.UserStatSheet.Dex = statAmount;
+                var dex = new Attributes
+                {
+                    Dex = source.UserStatSheet.Dex - statAmount
+                };
+                
+                source.UserStatSheet.Add(dex);
                 break;
             case "int":
-                source.UserStatSheet.Int = statAmount;
+                var @int = new Attributes
+                {
+                    Int = source.UserStatSheet.Int - statAmount
+                };
+                
+                source.UserStatSheet.Add(@int);
                 break;
             case "wis":
-                source.UserStatSheet.Wis = statAmount;
+                var wis  = new Attributes
+                {
+                    Wis= source.UserStatSheet.Wis - statAmount
+                };
+                
+                source.UserStatSheet.Add(wis);
                 break;
             case "con":
-                source.UserStatSheet.Con = statAmount;
+                var con = new Attributes
+                {
+                   Con = source.UserStatSheet.Con - statAmount
+                };
+                
+                source.UserStatSheet.Add(con);
                 break;
             default:
                 // Invalid stat name.

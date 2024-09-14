@@ -20,7 +20,8 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
-        TargetAnimation = 60
+        TargetAnimation = 60,
+        Priority = 15
     };
     /// <inheritdoc />
     /// <inheritdoc />

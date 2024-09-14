@@ -32,7 +32,7 @@ public class dragonScaleMoveToTargetScript : MonsterScriptBase
     {
         base.Update(delta);
         
-        if (Subject.DistanceFrom(FightSpot) > 0 && !ReachedPoint)
+        if (Subject.ManhattanDistanceFrom(FightSpot) > 0 && !ReachedPoint)
         {
             TimeToGetToSpot.Update(delta);
             WalkTimer.Update(delta);
@@ -44,7 +44,7 @@ public class dragonScaleMoveToTargetScript : MonsterScriptBase
             if (TimeToGetToSpot.IntervalElapsed) 
                 Subject.MapInstance.RemoveEntity(Subject);
 
-            if (Subject.DistanceFrom(FightSpot) <= 1)
+            if (Subject.ManhattanDistanceFrom(FightSpot) <= 1)
             {
                 var rockFish = Subject.MapInstance.GetEntitiesAtPoint<GroundItem>(FightSpot).FirstOrDefault(x => x.Name == "Lion Fish");
 
@@ -71,7 +71,7 @@ public class dragonScaleMoveToTargetScript : MonsterScriptBase
             return;
         
         
-        var distance = Subject.DistanceFrom(Target);
+        var distance = Subject.ManhattanDistanceFrom(Target);
 
         if (distance != 1)
             Subject.Pathfind(Target);

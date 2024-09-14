@@ -39,6 +39,9 @@ public class DevourScript : ConfigurableSkillScriptBase,
     public ushort? AnimationSpeed { get; init; }
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
+
+    public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
+
     /// <inheritdoc />                         
     public decimal DmgHealthPct { get; init; }
 

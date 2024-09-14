@@ -23,13 +23,13 @@ public class LuckTrialDoorScript : MerchantScriptBase
 
         if (Subject.Template.TemplateKey == "doorsuccess")
         {
-            if (source.DistanceFrom(Subject) >= 4)
+            if (source.ManhattanDistanceFrom(Subject) >= 4)
             {
                 source.SendOrangeBarMessage("Move closer to the door to choose it.");
                 return;
             }
 
-            if (source.DistanceFrom(Subject) <= 3)
+            if (source.ManhattanDistanceFrom(Subject) <= 3)
             {
                 if (source.Trackers.Enums.HasValue(LuckTrial.StartedTrial))
                 {
@@ -80,13 +80,13 @@ public class LuckTrialDoorScript : MerchantScriptBase
 
         if (Subject.Template.TemplateKey == "doorfail")
         {
-            if (source.DistanceFrom(Subject) >= 4)
+            if (source.ManhattanDistanceFrom(Subject) >= 4)
             {
                 source.SendOrangeBarMessage("Move closer to the door to choose it.");
                 return;
             }
 
-            if (source.DistanceFrom(Subject) <= 3)
+            if (source.ManhattanDistanceFrom(Subject) <= 3)
             {
                 source.Trackers.Enums.Set(LuckTrial.StartedTrial);
                 source.SendOrangeBarMessage("The door locks and sends you flying.");
@@ -105,13 +105,13 @@ public class LuckTrialDoorScript : MerchantScriptBase
 
         if (Subject.Template.TemplateKey == "trialofluckchest")
         {
-            if (source.DistanceFrom(Subject) >= 4)
+            if (source.ManhattanDistanceFrom(Subject) >= 4)
             {
                 source.SendOrangeBarMessage("Move closer to the chest to open it.");
                 return;
             }
 
-            if (source.DistanceFrom(Subject) <= 3)
+            if (source.ManhattanDistanceFrom(Subject) <= 3)
             {
                 if (source.Trackers.Enums.HasValue(LuckTrial.CompletedTrial))
                 {

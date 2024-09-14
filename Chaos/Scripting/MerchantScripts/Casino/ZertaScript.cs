@@ -47,7 +47,7 @@ public class ZertaScript : MerchantScriptBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
-        if ((Subject.DistanceFrom(CasinoDoorPoint) > 0) && Subject.OnSameMapAs(CasinoDoorPoint) && !AnnouncedWinOrLoss)
+        if ((Subject.ManhattanDistanceFrom(CasinoDoorPoint) > 0) && Subject.OnSameMapAs(CasinoDoorPoint) && !AnnouncedWinOrLoss)
         {
             WalkTimer.Update(delta);
 
@@ -61,7 +61,7 @@ public class ZertaScript : MerchantScriptBase
                 Subject.Pathfind(CasinoDoorPoint, 0, Options);
             }
         }
-        else if ((Subject.DistanceFrom(CasinoPoint) > 0) && Subject.OnSameMapAs(CasinoPoint) && !AnnouncedPutItOnRed)
+        else if ((Subject.ManhattanDistanceFrom(CasinoPoint) > 0) && Subject.OnSameMapAs(CasinoPoint) && !AnnouncedPutItOnRed)
         {
             WalkTimer.Update(delta);
 
@@ -70,7 +70,7 @@ public class ZertaScript : MerchantScriptBase
                 Subject.Pathfind(CasinoPoint, 0, Options);
             }
         }
-        else if ((Subject.DistanceFrom(CasinoPoint) <= 2) && !AnnouncedPutItOnRed)
+        else if ((Subject.ManhattanDistanceFrom(CasinoPoint) <= 2) && !AnnouncedPutItOnRed)
         {
             Subject.Say("Put it all on red!");
             AnnouncedPutItOnRed = true;
@@ -87,21 +87,21 @@ public class ZertaScript : MerchantScriptBase
         }
         else if (AnnouncedWinOrLoss && AnnouncedPutItOnRed)
         {
-            if ((Subject.DistanceFrom(InsideCasinoDoorPoint) > 0) && Subject.OnSameMapAs(InsideCasinoDoorPoint))
+            if ((Subject.ManhattanDistanceFrom(InsideCasinoDoorPoint) > 0) && Subject.OnSameMapAs(InsideCasinoDoorPoint))
             {
                 WalkTimer.Update(delta);
 
                 if (WalkTimer.IntervalElapsed)
                     Subject.Pathfind(InsideCasinoDoorPoint, 0, Options);
             }
-            else if ((Subject.DistanceFrom(HomePoint) > 0) && Subject.OnSameMapAs(HomePoint))
+            else if ((Subject.ManhattanDistanceFrom(HomePoint) > 0) && Subject.OnSameMapAs(HomePoint))
             {
                 WalkTimer.Update(delta);
 
                 if (WalkTimer.IntervalElapsed)
                     Subject.Pathfind(HomePoint, 0, Options);
             }
-            else if ((Subject.DistanceFrom(HomePoint) == 0) && Subject.OnSameMapAs(HomePoint))
+            else if ((Subject.ManhattanDistanceFrom(HomePoint) == 0) && Subject.OnSameMapAs(HomePoint))
             {
                 Subject.Say("*shrugs*");
                 AnnouncedWinOrLoss = false;

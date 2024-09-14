@@ -29,6 +29,9 @@ public class CombatAdvantageScript : ConfigurableSkillScriptBase,
     public ushort? AnimationSpeed { get; init; }
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
+
+    public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
+
     /// <inheritdoc />
     public Stat? DamageStat { get; init; }
     /// <inheritdoc />

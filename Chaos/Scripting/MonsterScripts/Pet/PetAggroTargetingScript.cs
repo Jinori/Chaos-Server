@@ -23,7 +23,7 @@ public sealed class PetAggroTargetingScript(Monster subject) : MonsterScriptBase
     private Monster? FindClosestMonster(Aisling owner) =>
         owner.MapInstance.GetEntitiesWithinRange<Monster>(owner, 9)
              .Where(x => x.IsAlive && !x.Equals(Subject) && !x.Script.Is<PetScript>() && !x.Script.Is<NightmareTeammateScript>() && !x.Script.Is<NightmareWindWallScript>())
-             .MinBy(x => x.DistanceFrom(owner));
+             .MinBy(x => x.ManhattanDistanceFrom(owner));
 
     private Monster? FindGroupAggroTarget(Aisling owner)
     {

@@ -24,6 +24,8 @@ public class ItemTargetMonsterScript(Item subject, IEffectFactory effectFactory)
     /// <inheritdoc />
     public ushort? AnimationSpeed { get; init; }
     public BodyAnimation BodyAnimation { get; init; }
+    public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
+
     /// <inheritdoc />
     public TimeSpan? EffectDurationOverride { get; init; }
     public IEffectFactory EffectFactory { get; init; } = effectFactory;

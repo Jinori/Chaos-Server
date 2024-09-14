@@ -46,7 +46,7 @@ public sealed class AislingDeathTouchScript : MapScriptBase
 
             foreach (var aisling in aislings)
             {
-                var otherAisling = aislings.FirstOrDefault(other => !other.Equals(aisling) && (aisling.DistanceFrom(other) <= 1));
+                var otherAisling = aislings.FirstOrDefault(other => !other.Equals(aisling) && (aisling.ManhattanDistanceFrom(other) <= 1));
 
                 if (otherAisling != null)
                 {

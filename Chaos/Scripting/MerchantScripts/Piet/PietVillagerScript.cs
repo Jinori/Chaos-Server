@@ -608,8 +608,8 @@ public class PietVillagerScript : MerchantScriptBase
     }
 
     private bool ShouldWalkTo(Location destination) =>
-        (Subject.DistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
-    private bool ShouldWalkToSpawnPoint() => Subject.DistanceFrom(Spawnpoint) > 0;
+        (Subject.ManhattanDistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
+    private bool ShouldWalkToSpawnPoint() => Subject.ManhattanDistanceFrom(Spawnpoint) > 0;
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)

@@ -19,7 +19,8 @@ public sealed class BlindEffect : ContinuousAnimationEffectBase
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 75,
-        TargetAnimation = 42
+        TargetAnimation = 391,
+        Priority = 80
     };
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1), false);

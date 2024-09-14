@@ -53,6 +53,8 @@ public class TransferHealthScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
 
+    public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
+
     /// <inheritdoc />
     public ushort? AnimationSpeed { get; init; }
 

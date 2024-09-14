@@ -64,12 +64,12 @@ public class UndineFieldsSouthRoomScript : ReactorTileScriptBase
             var east1 = new Point(17, 0);
             var east2 = new Point(16, 0);
 
-            if (source.DistanceFrom(west1) < 1 || source.DistanceFrom(west2) < 1)
+            if (source.ManhattanDistanceFrom(west1) < 1 || source.ManhattanDistanceFrom(west2) < 1)
             {
                 var dialog = DialogFactory.Create("uf_entrancewest", merchant);
                 dialog.Display(aisling);
             }
-            if (source.DistanceFrom(east1) < 1 || source.DistanceFrom(east2) < 1)
+            if (source.ManhattanDistanceFrom(east1) < 1 || source.ManhattanDistanceFrom(east2) < 1)
             {
                 var dialog = DialogFactory.Create("uf_entranceeast", merchant);
                 dialog.Display(aisling);

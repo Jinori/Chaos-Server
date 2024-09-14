@@ -53,6 +53,9 @@ public class ManaBasedDamageScript : ConfigurableSpellScriptBase,
     public ushort? AnimationSpeed { get; init; }
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
+
+    public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
+
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
     /// <inheritdoc />

@@ -18,7 +18,8 @@ public sealed class SuainEffect : ContinuousAnimationEffectBase
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 500,
-        TargetAnimation = 882
+        TargetAnimation = 882,
+        Priority = 90
     };
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1), false);

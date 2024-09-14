@@ -19,6 +19,8 @@ public class SummonPet : ConfigurableSkillScriptBase, GenericAbilityComponent<Cr
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
 
+    public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
+
     /// <inheritdoc />
     public bool ExcludeSourcePoint { get; init; }
     /// <inheritdoc />

@@ -13,7 +13,7 @@ public class ShrineScript : MerchantScriptBase
 
     public override void OnClicked(Aisling source)
     {
-        if (source.DistanceFrom(Subject) <= 1)
+        if (source.ManhattanDistanceFrom(Subject) <= 1)
         {
             var worshipedDeity = ReligionScriptBase.CheckDeity(source);
 

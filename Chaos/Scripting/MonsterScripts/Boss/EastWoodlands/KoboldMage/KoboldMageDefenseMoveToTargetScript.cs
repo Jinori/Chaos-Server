@@ -22,13 +22,13 @@ public class KoboldMageDefenseMoveToTargetScript : MonsterScriptBase
                 .Any())
             return;
 
-        var distance = Subject.DistanceFrom(Target);
+        var distance = Subject.ManhattanDistanceFrom(Target);
         
         if (Subject.Template.TemplateKey.Contains("EW_koboldMage"))
         {
             if (distance <= 3)
             {
-                var pathtopoint = Subject.SpiralSearch(3).OrderByDescending(point => point.DistanceFrom(Target))
+                var pathtopoint = Subject.SpiralSearch(3).OrderByDescending(point => point.ManhattanDistanceFrom(Target))
                     .FirstOrDefault(point => Subject.MapInstance.IsWalkable(point, Subject.Type));
             
                 Subject.Pathfind(pathtopoint);

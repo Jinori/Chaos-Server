@@ -16,7 +16,7 @@ public class PetMoveToTargetScript : MonsterScriptBase
     {
         base.Update(delta);
 
-        if (Subject.PetOwner?.DistanceFrom(Subject) >= 8)
+        if (Subject.PetOwner?.ManhattanDistanceFrom(Subject) >= 8)
         {
             Target = null;
 
@@ -29,7 +29,7 @@ public class PetMoveToTargetScript : MonsterScriptBase
         if (!Map.GetEntities<Monster>().Any())
             return;
 
-        var distance = Subject.DistanceFrom(Target);
+        var distance = Subject.ManhattanDistanceFrom(Target);
 
         if (distance != 1)
             Subject.Pathfind(Target);

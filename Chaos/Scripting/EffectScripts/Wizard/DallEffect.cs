@@ -19,7 +19,8 @@ public sealed class DallEffect : ContinuousAnimationEffectBase
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 75,
-        TargetAnimation = 391
+        TargetAnimation = 391,
+        Priority = 80
     };
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1), false);

@@ -354,8 +354,14 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                         {
                             MaximumMp = (int)(excessVitality * 0.03)
                         }; // 5% of excess vitality added to MP
-                        attrib.Int += (int)(excessVitality * 0.01); // 1% of excess vitality added to Int
-                        attrib.Str += (int)(excessVitality * 0.01); // 1% of excess vitality added to Str
+
+                        var adjust = new Attributes
+                        {
+                            Str = (int)(excessVitality * 0.01),
+                            Int = (int)(excessVitality * 0.01)
+                        };
+
+                        attrib.Add(adjust);
                         attrib.SkillDamagePct +=
                             (int)(excessVitality * 0.01); // 1% of excess vitality added to Skill Damage
                         attrib.SpellDamagePct +=

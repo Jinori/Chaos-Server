@@ -26,6 +26,8 @@ public class RemoveEffectScript : ConfigurableItemScriptBase,
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
 
+    public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
+
     /// <inheritdoc />
     public string? EffectKey { get; init; }
 

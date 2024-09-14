@@ -36,13 +36,13 @@ public class PetAttackingScript : MonsterScriptBase
     
     public override void Update(TimeSpan delta)
     {
-        if (Subject.PetOwner?.DistanceFrom(Subject) >= 8)
+        if (Subject.PetOwner?.ManhattanDistanceFrom(Subject) >= 8)
         {
             Target = null;
             return;
         }
         
-        if (Target is not { IsAlive: true } || (Subject.DistanceFrom(Target) != 1))
+        if (Target is not { IsAlive: true } || (Subject.ManhattanDistanceFrom(Target) != 1))
             return;
 
         var direction = Target.DirectionalRelationTo(Subject);
@@ -59,7 +59,7 @@ public class PetAttackingScript : MonsterScriptBase
 
         var attacked = false;
 
-        if (Subject.DistanceFrom(Target) >= 1)
+        if (Subject.ManhattanDistanceFrom(Target) >= 1)
             if (ShouldUseSpell)
                 foreach (var spell in Spells)
                     if (IntegerRandomizer.RollChance(10))

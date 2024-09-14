@@ -18,7 +18,8 @@ public class PoisonEffect : ContinuousAnimationEffectBase
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
-        TargetAnimation = 247
+        TargetAnimation = 247,
+        Priority = 70
     };
 
     /// <inheritdoc />

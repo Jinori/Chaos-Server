@@ -15,7 +15,8 @@ public class BeagCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOv
     protected Animation Animation { get; } = new()
     {
         TargetAnimation = 483,
-        AnimationSpeed = 100
+        AnimationSpeed = 100,
+        Priority = 100
     };
     public List<string> ConflictingEffectNames { get; init; } =
     [

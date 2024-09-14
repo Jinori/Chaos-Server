@@ -20,7 +20,8 @@ public sealed class BeagSuainEffect : ContinuousAnimationEffectBase, Hierarchica
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
-        TargetAnimation = 691
+        TargetAnimation = 691,
+        Priority = 90
     };
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1), false);

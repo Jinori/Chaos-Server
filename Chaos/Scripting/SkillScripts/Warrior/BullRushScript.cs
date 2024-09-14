@@ -30,6 +30,9 @@ public class BullRushScript : ConfigurableSkillScriptBase,
     public ushort? AnimationSpeed { get; init; }
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
+
+    public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
+
     /// <inheritdoc />
     public Stat? DamageStat { get; init; }
     /// <inheritdoc />
@@ -88,7 +91,7 @@ public class BullRushScript : ConfigurableSkillScriptBase,
             // If there is a wall at this point, return
             if (context.SourceMap.IsWall(point) || context.SourceMap.IsBlockingReactor(point))
             {
-                var distance = point.DistanceFrom(context.Source);
+                var distance = point.ManhattanDistanceFrom(context.Source);
 
                 if (distance == 1)
                     return;
@@ -101,7 +104,7 @@ public class BullRushScript : ConfigurableSkillScriptBase,
 
             // Get the closest creature to the source at this point
             var entity = context.SourceMap.GetEntitiesAtPoint<Creature>(point)
-                                .OrderBy(creature => creature.DistanceFrom(context.Source))
+                                .OrderBy(creature => creature.ManhattanDistanceFrom(context.Source))
                                 .FirstOrDefault(creature => context.Source.WillCollideWith(creature));
 
             // If there is a creature at this point

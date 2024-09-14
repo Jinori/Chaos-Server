@@ -19,7 +19,7 @@ public sealed class MonkBossMoveToTargetScript(Monster subject) : MonsterScriptB
         if (!Map.GetEntities<Aisling>().Any())
             return;
         
-        var distance = Subject.DistanceFrom(Target);
+        var distance = Subject.ManhattanDistanceFrom(Target);
 
 
         var point = Target.GenerateCardinalPoints().OfType<IPoint>().FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));

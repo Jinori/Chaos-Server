@@ -58,7 +58,7 @@ public class PietWerewolfMerchantScript : MerchantScriptBase
     }
     
     private bool ShouldWalkTo(Location destination) =>
-        (Subject.DistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
+        (Subject.ManhattanDistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
     
     private void AttemptToOpenDoor(IPoint doorPoint)
     {

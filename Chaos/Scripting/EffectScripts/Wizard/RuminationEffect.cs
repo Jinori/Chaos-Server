@@ -17,7 +17,8 @@ public class RuminationEffect : ContinuousAnimationEffectBase
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 20,
-        TargetAnimation = 295
+        TargetAnimation = 295,
+        Priority = 10
     };
 
     /// <inheritdoc />

@@ -22,13 +22,13 @@ public class IntelligenceTrialStoneScript : MerchantScriptBase
     {
         if (Subject.Template.TemplateKey == "intelligence_trial_stone")
         {
-            if (source.DistanceFrom(Subject) >= 3)
+            if (source.ManhattanDistanceFrom(Subject) >= 3)
             {
                 source.SendOrangeBarMessage("Move closer to touch the stone.");
                 return;
             }
 
-            if (source.DistanceFrom(Subject) <= 3)
+            if (source.ManhattanDistanceFrom(Subject) <= 3)
             {
                 if (source.Trackers.Enums.HasValue(IntelligenceTrial.StartedTrial))
                 {

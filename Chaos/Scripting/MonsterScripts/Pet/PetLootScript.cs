@@ -41,7 +41,7 @@ public class PetLootScript : MonsterScriptBase
         if (item is null)
             return;
 
-        var itemDistance = Subject.DistanceFrom(item);
+        var itemDistance = Subject.ManhattanDistanceFrom(item);
 
         switch (itemDistance)
         {

@@ -26,6 +26,7 @@ namespace Chaos.Scripting.SkillScripts.Rogue
         public int? BaseDamage { get; init; }
         public ushort? AnimationSpeed { get; init; }
         public BodyAnimation BodyAnimation { get; init; }
+        public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
         public Stat? DamageStat { get; init; }
         public decimal? DamageStatMultiplier { get; init; }
         public Element? Element { get; init; }
@@ -63,7 +64,7 @@ namespace Chaos.Scripting.SkillScripts.Rogue
             Context = context;
             Targets = context.SourceMap.GetEntitiesWithinRange<Creature>(context.Source, 5)
                              .Where(creature => !IsWallBetween(context.Source, creature))
-                             .OrderBy(creature => creature.DistanceFrom(context.Source)).Take(5)
+                             .OrderBy(creature => creature.ManhattanDistanceFrom(context.Source)).Take(5)
                              .ToList();
         }
         

@@ -499,7 +499,7 @@ public class VillagerScript : MerchantScriptBase
         }
     }
 
-    private bool IsCloseTo(Location point, int distance) => Subject.DistanceFrom(point) <= distance;
+    private bool IsCloseTo(Location point, int distance) => Subject.ManhattanDistanceFrom(point) <= distance;
 
     private static string PickRandom(ICollection<string> phrases) => phrases.PickRandom();
 
@@ -528,10 +528,10 @@ public class VillagerScript : MerchantScriptBase
     }
 
     private bool ShouldWalkTo(Location destination) =>
-        (Subject.DistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
+        (Subject.ManhattanDistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
 
-    private bool ShouldWalkTo(Point destination) => Subject.DistanceFrom(destination) > 0;
-    private bool ShouldWalkToSpawnPoint() => Subject.DistanceFrom(Spawnpoint) > 0;
+    private bool ShouldWalkTo(Point destination) => Subject.ManhattanDistanceFrom(destination) > 0;
+    private bool ShouldWalkToSpawnPoint() => Subject.ManhattanDistanceFrom(Spawnpoint) > 0;
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)

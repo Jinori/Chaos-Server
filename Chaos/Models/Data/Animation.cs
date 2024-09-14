@@ -5,7 +5,7 @@ namespace Chaos.Models.Data;
 public sealed record Animation
 {
     public ushort AnimationSpeed { get; set; }
-    public int DurationMs { get; set; } = 250; //default quarter second
+    public int DurationMs { get; set; } = 333; //default quarter second
     public int? Priority { get; set; }
     public ushort SourceAnimation { get; set; }
     public uint? SourceId { get; set; }

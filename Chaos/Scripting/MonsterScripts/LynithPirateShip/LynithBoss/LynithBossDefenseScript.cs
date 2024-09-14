@@ -59,7 +59,7 @@ public sealed class LynithBossDefenseScript : MonsterScriptBase
 
         if (AvoidBashers.IntervalElapsed)
         {
-            var aislings = Map.GetEntitiesWithinRange<Aisling>(Subject, AggroRange).Where(x => x.DistanceFrom(Subject) <= 1).ToList();
+            var aislings = Map.GetEntitiesWithinRange<Aisling>(Subject, AggroRange).Where(x => x.ManhattanDistanceFrom(Subject) <= 1).ToList();
 
             if (aislings.Count >= 2)
             {

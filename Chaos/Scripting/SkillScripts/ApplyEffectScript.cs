@@ -22,6 +22,9 @@ public class ApplyEffectScript : ConfigurableSkillScriptBase,
     public ushort? AnimationSpeed { get; init; }
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
+
+    public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
+
     /// <inheritdoc />
     public TimeSpan? EffectDurationOverride { get; init; }
     /// <inheritdoc />

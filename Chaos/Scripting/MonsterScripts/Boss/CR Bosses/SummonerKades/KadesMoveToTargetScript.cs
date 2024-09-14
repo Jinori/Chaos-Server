@@ -30,7 +30,7 @@ public class KadesMoveToTargetScript : MonsterScriptBase
                                                 || x.Trackers.Enums.HasValue(SummonerBossFight.FifthStage)))
             return;
 
-        var distance = Subject.DistanceFrom(Target);
+        var distance = Subject.ManhattanDistanceFrom(Target);
 
         if (distance != 1)
             Subject.Pathfind(Target);

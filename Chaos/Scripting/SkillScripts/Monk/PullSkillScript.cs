@@ -52,6 +52,7 @@ public class PullSkillScript : ConfigurableSkillScriptBase,
     public byte? Sound { get; init; }
     public ushort? AnimationSpeed { get; init; }
     public BodyAnimation BodyAnimation { get; init; }
+    public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
     public bool AnimatePoints { get; init; }
     public Animation? Animation { get; init; }
     public int? ManaCost { get; init; }

@@ -22,7 +22,7 @@ public sealed class MythicMantis1MoveToTargetScript : MonsterScriptBase
         if (!Map.GetEntities<Aisling>().Any())
             return;
 
-        var distance = Subject.DistanceFrom(Target);
+        var distance = Subject.ManhattanDistanceFrom(Target);
 
         if ((distance != 1) && (distance <= 4))
             Subject.Pathfind(Target);

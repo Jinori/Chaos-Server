@@ -16,7 +16,7 @@ public class TeammateMoveToTargetScript : MonsterScriptBase
     {
         base.Update(delta);
 
-        if (Subject.PetOwner?.DistanceFrom(Subject) >= 8)
+        if (Subject.PetOwner?.ManhattanDistanceFrom(Subject) >= 8)
         {
             Target = null;
 
@@ -29,13 +29,13 @@ public class TeammateMoveToTargetScript : MonsterScriptBase
         if (!Map.GetEntities<Monster>().Any())
             return;
 
-        var distance = Subject.DistanceFrom(Target);
+        var distance = Subject.ManhattanDistanceFrom(Target);
 
         if (Subject.Template.TemplateKey.Contains("wizard"))
         {
             if (distance <= 2)
             {
-                var pathtopoint = Subject.SpiralSearch(3).OrderByDescending(point => point.DistanceFrom(Target))
+                var pathtopoint = Subject.SpiralSearch(3).OrderByDescending(point => point.ManhattanDistanceFrom(Target))
                     .FirstOrDefault(point => Subject.MapInstance.IsWalkable(point, Subject.Type));
             
                 Subject.Pathfind(pathtopoint);
