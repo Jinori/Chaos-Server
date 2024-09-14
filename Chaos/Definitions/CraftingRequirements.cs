@@ -1311,7 +1311,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 5
+                Difficulty = 6
             }
         },
         {
@@ -1328,7 +1328,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 5
+                Difficulty = 6
             }
         },
         {
@@ -1345,7 +1345,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 5
+                Difficulty = 6
             }
         },
         {
@@ -1364,7 +1364,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 5
+                Difficulty = 6
             }
         },
         {
@@ -1383,7 +1383,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 5
+                Difficulty = 6
             }
         },
         {
@@ -1402,7 +1402,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 5
+                Difficulty = 6
             }
         },
         {
@@ -1421,7 +1421,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 5
+                Difficulty = 6
             }
         },
         {
@@ -1440,7 +1440,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 5
+                Difficulty = 6
             }
         },
         {
@@ -1457,9 +1457,9 @@ public static class CraftingRequirements
 
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
-                Rank = "Advanced",
+                Rank = "Expert",
                 Level = 99,
-                Difficulty = 5
+                Difficulty = 7
             }
         },
         {
@@ -1476,9 +1476,9 @@ public static class CraftingRequirements
 
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
-                Rank = "Advanced",
+                Rank = "Expert",
                 Level = 99,
-                Difficulty = 5
+                Difficulty = 7
             }
         },
         {
@@ -1495,9 +1495,9 @@ public static class CraftingRequirements
 
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
-                Rank = "Advanced",
+                Rank = "Expert",
                 Level = 99,
-                Difficulty = 5
+                Difficulty = 7
             }
         },
         {
@@ -1514,9 +1514,9 @@ public static class CraftingRequirements
 
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
-                Rank = "Advanced",
+                Rank = "Expert",
                 Level = 99,
-                Difficulty = 5
+                Difficulty = 7
             }
         },
         {
@@ -1533,9 +1533,9 @@ public static class CraftingRequirements
 
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
-                Rank = "Advanced",
+                Rank = "Expert",
                 Level = 99,
-                Difficulty = 5
+                Difficulty = 7
             }
         },
         {
@@ -1556,9 +1556,9 @@ public static class CraftingRequirements
 
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
-                Rank = "Advanced",
+                Rank = "Expert",
                 Level = 99,
-                Difficulty = 5
+                Difficulty = 7
             }
         },
         {
@@ -1579,9 +1579,9 @@ public static class CraftingRequirements
 
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
-                Rank = "Advanced",
+                Rank = "Expert",
                 Level = 99,
-                Difficulty = 5
+                Difficulty = 7
             }
         },
     };

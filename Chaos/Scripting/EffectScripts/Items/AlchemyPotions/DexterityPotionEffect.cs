@@ -9,7 +9,7 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class DexterityPotionEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(20);
     protected Animation Animation { get; } = new()
     {
         TargetAnimation = 509,
@@ -34,13 +34,13 @@ public class DexterityPotionEffect : EffectBase, NonOverwritableEffectComponent.
 
         var attributes = new Attributes
         {
-            Wis = 6
+            Dex = 10
         };
 
         Subject.StatSheet.AddBonus(attributes);
         Subject.Animate(Animation);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your dexterity increases by 6.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your dexterity increases by 10.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -49,7 +49,7 @@ public class DexterityPotionEffect : EffectBase, NonOverwritableEffectComponent.
     {
         var attributes = new Attributes
         {
-            Wis = 6
+            Dex = 10
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

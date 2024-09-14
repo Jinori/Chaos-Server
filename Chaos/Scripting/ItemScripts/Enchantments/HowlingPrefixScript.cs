@@ -17,7 +17,7 @@ public sealed class HowlingPrefixScript : ItemScriptBase, IEnchantmentScript
 
         var attributes = new Attributes
         {
-            Ac = 2,
+            Ac = 1,
             SpellDamagePct = 5
         };
 

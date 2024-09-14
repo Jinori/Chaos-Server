@@ -9,7 +9,7 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class ConstitutionPotionEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(20);
     protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 510,
@@ -34,12 +34,12 @@ public class ConstitutionPotionEffect : EffectBase, NonOverwritableEffectCompone
 
         var attributes = new Attributes
         {
-            Con = 6
+            Con = 10
         };
 
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your constitution increases by 6.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your constitution increases by 10.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -48,7 +48,7 @@ public class ConstitutionPotionEffect : EffectBase, NonOverwritableEffectCompone
     {
         var attributes = new Attributes
         {
-            Con = 6
+            Con = 10
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

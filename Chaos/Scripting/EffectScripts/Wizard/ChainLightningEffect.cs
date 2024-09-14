@@ -75,7 +75,7 @@ namespace Chaos.Scripting.EffectScripts.Wizard
             if (HitTargetIds.Count >= MAX_BOUNCES)
                 return false;
 
-            if (target.IsFriendlyTo(source))
+            if (!target.IsHostileTo(source))
                 return false;
 
             if (target.Effects.Contains("ChainLightning"))

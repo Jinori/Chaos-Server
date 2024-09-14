@@ -9,7 +9,7 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class Intellectpotioneffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(20);
     protected Animation Animation { get; } = new()
     {
         TargetAnimation = 504,
@@ -34,13 +34,13 @@ public class Intellectpotioneffect : EffectBase, NonOverwritableEffectComponent.
 
         var attributes = new Attributes
         {
-            Int = 6
+            Int = 10
         };
 
         Subject.StatSheet.AddBonus(attributes);
         Subject.Animate(Animation);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your intelligence increases by 6.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your intellect increases by 10.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -49,12 +49,12 @@ public class Intellectpotioneffect : EffectBase, NonOverwritableEffectComponent.
     {
         var attributes = new Attributes
         {
-            Int = 6
+            Int = 10
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your intelligence potion wore off!");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your intellect potion wore off!");
     }
     
     public override bool ShouldApply(Creature source, Creature target)

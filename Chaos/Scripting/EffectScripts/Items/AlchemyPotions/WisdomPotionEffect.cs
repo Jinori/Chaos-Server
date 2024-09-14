@@ -9,7 +9,7 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class WisdomPotionEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(20);
     protected Animation Animation { get; } = new()
     {
         TargetAnimation = 509,
@@ -34,13 +34,13 @@ public class WisdomPotionEffect : EffectBase, NonOverwritableEffectComponent.INo
 
         var attributes = new Attributes
         {
-            Wis = 6
+            Wis = 10
         };
 
         Subject.Animate(Animation);
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your wisdom increases by 6.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your wisdom increases by 10.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -49,7 +49,7 @@ public class WisdomPotionEffect : EffectBase, NonOverwritableEffectComponent.INo
     {
         var attributes = new Attributes
         {
-            Wis = 6
+            Wis = 10
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
