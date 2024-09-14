@@ -78,7 +78,7 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
         {
             aisling.Trackers.Enums.Set(ClassStatBracket.PreMaster);
 
-            if (aisling.Trackers.Counters.TryGetValue("deathcounter", out var deathcount) && deathcount < 1)
+            if (!aisling.Trackers.Counters.TryGetValue("deathcounter", out var deathcount) || deathcount < 1)
             {
                 aisling.Legend.AddOrAccumulate(new LegendMark(
                     "Denied death to the 99th Insight",

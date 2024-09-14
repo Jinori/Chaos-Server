@@ -100,6 +100,14 @@ public class LightPriestScript (Dialog subject, ILogger<CrudeLeatherQuestScript>
                 };
                 
                 source.Trackers.Enums.Set(MasterPriestPath.Light);
+                source.Legend.AddUnique(
+                    new LegendMark(
+                        "Walked the path of Light Priest",
+                        "lightpriest",
+                        MarkIcon.Priest,
+                        MarkColor.Pink,
+                        1,
+                        GameTime.Now));
                 var spell = spellFactory.Create("auraofblessing");
                 source.SpellBook.TryAddToNextSlot(spell);
                 source.SendOrangeBarMessage("You feel a burst of energy, Light fills your body.");

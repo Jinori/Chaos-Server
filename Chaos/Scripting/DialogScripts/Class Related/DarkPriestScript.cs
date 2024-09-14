@@ -99,6 +99,14 @@ public class DarkPriestScript (Dialog subject, ILogger<CrudeLeatherQuestScript> 
                 };
                 
                 source.Trackers.Enums.Set(MasterPriestPath.Dark);
+                source.Legend.AddUnique(
+                    new LegendMark(
+                        "Walked the path of Dark Priest",
+                        "darkpriest",
+                        MarkIcon.Priest,
+                        MarkColor.DarkPurple,
+                        1,
+                        GameTime.Now));
                 source.SpellBook.Remove("zap");
                 var spell = spellFactory.Create("voidjolt");
                 source.SpellBook.TryAddToNextSlot(spell);

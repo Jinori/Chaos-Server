@@ -1,11 +1,11 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.CthonicDemise.Leaders;
+using Chaos.Scripting.MonsterScripts.Boss.CthonicDemise.Hydras;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.CthonicDemise.Hydras;
+namespace Chaos.Scripting.MonsterScripts.Boss.CthonicDemise.Drake;
 
-public class CdHydraBossScript : CompositeMonsterScript
+public class CdDrakeBossScript : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
@@ -16,14 +16,14 @@ public class CdHydraBossScript : CompositeMonsterScript
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
-        GetScriptKey(typeof(CdHydraBossDeathScript)),
+        GetScriptKey(typeof(DeathScript)),
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(ThisIsABossScript))
     };
 
     //If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
     /// <inheritdoc />
-    public CdHydraBossScript(IScriptProvider scriptProvider, Monster subject)
+    public CdDrakeBossScript(IScriptProvider scriptProvider, Monster subject)
     {
         if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript compositeScript)
             throw new InvalidOperationException("Unable to create componentized script");
