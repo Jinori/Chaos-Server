@@ -3,21 +3,30 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
+using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.SkillScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.SkillScripts.Monk;
 
 public class PullSkillScript : ConfigurableSkillScriptBase,
                              GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                             PullAggroComponent.IAddAggroComponentOptions
+                             DamageAbilityComponent.IDamageComponentOptions,
+                             PullAggroComponent.IAddAggroComponentOptions,
+                             ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 
 {
     /// <inheritdoc />
-    public PullSkillScript(Skill subject)
+    public PullSkillScript(Skill subject, IEffectFactory effectFactory)
         : base(subject)
     {
+        EffectFactory = effectFactory;
+        ApplyDamageScript = ApplyAttackDamageScript.Create();
+        SourceScript = this;
     }
 
     public override void OnUse(ActivationContext context) =>
@@ -25,7 +34,9 @@ public class PullSkillScript : ConfigurableSkillScriptBase,
             .WithOptions(this)
             .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
             ?
-            .Execute<PullAggroComponent>();
+            .Execute<DamageAbilityComponent>()
+            .Execute<PullAggroComponent>()
+            .Execute<ApplyEffectAbilityComponent>();
 
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
@@ -46,4 +57,18 @@ public class PullSkillScript : ConfigurableSkillScriptBase,
     public int? ManaCost { get; init; }
     public decimal PctManaCost { get; init; }
     public bool ShouldNotBreakHide { get; init; }
+    public TimeSpan? EffectDurationOverride { get; init; }
+    public IEffectFactory EffectFactory { get; init; }
+    public string? EffectKey { get; init; }
+    public int? EffectApplyChance { get; init; }
+    public IApplyDamageScript ApplyDamageScript { get; init; }
+    public int? BaseDamage { get; init; }
+    public Stat? DamageStat { get; init; }
+    public decimal? DamageStatMultiplier { get; init; }
+    public Element? Element { get; init; }
+    public bool? MoreDmgLowTargetHp { get; init; }
+    public decimal? PctHpDamage { get; init; }
+    public IScript SourceScript { get; init; }
+    public bool? SurroundingTargets { get; init; }
+    public decimal? DamageMultiplierPerTarget { get; init; }
 }

@@ -1,11 +1,13 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
+using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.DialogScripts.Quests.MilethQuest;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Class_Related;
 
@@ -51,6 +53,18 @@ public class DarkPriestScript (Dialog subject, ILogger<CrudeLeatherQuestScript> 
 
                 if (hasStage && stage == MasterPriestPath.Dark)
                 {
+                    if (!source.Legend.TryGetValue("darkpriest", out _))
+                    {
+                        source.Legend.AddUnique(
+                            new LegendMark(
+                                "Walked the path of Dark Priest",
+                                "darkpriest",
+                                MarkIcon.Priest,
+                                MarkColor.DarkPurple,
+                                1,
+                                GameTime.Now));
+                    }
+                    
                     var option1 = new DialogOption
                     {
                         DialogKey = "generic_forgetspell_initial",

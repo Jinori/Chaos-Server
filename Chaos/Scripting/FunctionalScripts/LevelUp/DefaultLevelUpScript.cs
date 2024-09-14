@@ -19,6 +19,7 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
 
     /// <inheritdoc />
     public static string Key { get; } = GetScriptKey(typeof(DefaultLevelUpScript));
+
     private readonly IItemFactory ItemFactory;
 
     public DefaultLevelUpScript(IItemFactory itemFactory)
@@ -60,26 +61,6 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
             aisling.UserStatSheet.AddTnl(newTnl);
         }
 
-        if (aisling.UserStatSheet.Level == WorldOptions.Instance.MaxLevel)
-        {
-            if (aisling.Trackers.Counters.TryGetValue("deathcounter", out var deathcount) && deathcount < 1)
-            {
-                aisling.Legend.AddOrAccumulate(new LegendMark(
-                    "Denied death to the 99th Insight",
-                    "notdying",
-                    MarkIcon.Victory,
-                    MarkColor.Green,
-                    1,
-                    GameTime.Now));
-
-                var halo = ItemFactory.Create("halo");
-
-                aisling.GiveItemOrSendToBank(halo);
-
-                aisling.SendOrangeBarMessage("You've received a unique Legend Mark and accessory");
-            }
-        }
-
         var levelUpAttribs = LevelUpFormula.CalculateAttributesIncrease(aisling);
 
         var ani = new Animation
@@ -96,6 +77,23 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
         if (aisling.StatSheet.Level == 99)
         {
             aisling.Trackers.Enums.Set(ClassStatBracket.PreMaster);
+
+            if (aisling.Trackers.Counters.TryGetValue("deathcounter", out var deathcount) && deathcount < 1)
+            {
+                aisling.Legend.AddOrAccumulate(new LegendMark(
+                    "Denied death to the 99th Insight",
+                    "notdying",
+                    MarkIcon.Victory,
+                    MarkColor.Green,
+                    1,
+                    GameTime.Now));
+
+                var halo = ItemFactory.Create("halo");
+
+                aisling.GiveItemOrSendToBank(halo);
+
+                aisling.SendOrangeBarMessage("You've received a unique Legend Mark and accessory");
+            }
         }
 
         if (aisling.UserStatSheet.BaseClass is BaseClass.Priest)
