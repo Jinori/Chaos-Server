@@ -210,7 +210,8 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
         {
             var randomMember = Members.PickRandom();
             randomMember.GiveItemOrSendToBank(item);
-            randomMember.SendOrangeBarMessage($"You randomly received {item.DisplayName} from group loot.");
+            foreach (var member in Members)
+                member.SendServerMessage(ServerMessageType.GroupChat, $"{randomMember.Name} received {item.DisplayName} from loot.");
         }
     }
 

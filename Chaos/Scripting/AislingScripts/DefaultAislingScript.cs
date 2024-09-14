@@ -585,30 +585,66 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 ServerMessageType.OrangeBar1,
                 $"{Subject.Name} was killed at {Subject.MapInstance.Name} by {source?.Name ?? "The Guardians"}.");
 
+
         var itemsToBreak = Subject.Equipment.Where(
             x => !x.Template.AccountBound
                  && (x.Template.EquipmentType != EquipmentType.Accessory)
                  && (x.Template.EquipmentType != EquipmentType.OverArmor)
-                 && (x.Template.EquipmentType != EquipmentType.OverHelmet));
+                 && (x.Template.EquipmentType != EquipmentType.OverHelmet)).ToList();
+        
+        var mithrilDiceCount = Subject.Inventory.Count(item => item.Template.TemplateKey == "mithrildice");
+
 
         foreach (var item in itemsToBreak)
+        {
+            // Random chance for item to break (50% chance in this case)
             if (IntegerRandomizer.RollChance(2))
             {
-                Logger.WithTopics(
-                          Topics.Entities.Aisling,
-                          Topics.Entities.Item,
-                          Topics.Actions.Death,
-                          Topics.Actions.Penalty)
-                      .WithProperty(Subject)
-                      .WithProperty(item)
-                      .LogInformation("{@AislingName} has lost {@ItemName} to death", Subject.Name, item.DisplayName);
+                if (mithrilDiceCount > 0)
+                {
+                    // Notify player that Mithril Dice saved their item
+                    Logger.WithTopics(
+                            Topics.Entities.Aisling,
+                            Topics.Entities.Item,
+                            Topics.Actions.Death,
+                            Topics.Actions.Penalty)
+                        .WithProperty(Subject)
+                        .WithProperty(item)
+                        .LogInformation("{@AislingName}'s {@ItemName} was saved by Mithril Dice", Subject.Name,
+                            item.DisplayName);
 
-                Subject.Client.SendServerMessage(
-                    ServerMessageType.OrangeBar1,
-                    $"{item.DisplayName} has been consumed by death.");
+                    Subject.Client.SendServerMessage(
+                        ServerMessageType.GroupChat,
+                        $"Dice has saved your {item.DisplayName} from being consumed.");
 
-                Subject.Equipment.TryGetRemove(item.Slot, out _);
+                    // Consume one Mithril Dice (remove one from inventory)
+                    Subject.Inventory.RemoveQuantityByTemplateKey("mithrildice", 1);
+
+                    // Decrease the available Mithril Dice count
+                    mithrilDiceCount--;
+                }
+                else
+                {
+                    // Log and notify the player that they lost an item
+                    Logger.WithTopics(
+                            Topics.Entities.Aisling,
+                            Topics.Entities.Item,
+                            Topics.Actions.Death,
+                            Topics.Actions.Penalty)
+                        .WithProperty(Subject)
+                        .WithProperty(item)
+                        .LogInformation("{@AislingName} has lost {@ItemName} to death", Subject.Name, item.DisplayName);
+
+                    Subject.Client.SendServerMessage(
+                        ServerMessageType.GroupChat,
+                        $"{item.DisplayName} has been consumed by death.");
+
+                    // Remove the item from the player's equipment
+                    Subject.Equipment.TryGetRemove(item.Slot, out _);
+                }
             }
+        }
+
 
         var tenPercent = MathEx.GetPercentOf<int>((int)Subject.UserStatSheet.TotalExp, 10);
 
