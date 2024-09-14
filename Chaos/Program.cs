@@ -98,7 +98,7 @@ static void AddConfiguration(WebApplicationBuilder builder)
            .AddJsonFile("appsettings.logging.json", false, true)
            #if DEBUG
            .AddJsonFile("appsettings.local.json", false, true);
-           #else
+    #else
            .AddJsonFile("appsettings.prod.json", false, true);
     #endif
 

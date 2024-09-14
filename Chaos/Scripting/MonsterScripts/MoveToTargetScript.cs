@@ -22,7 +22,7 @@ public class MoveToTargetScript : MonsterScriptBase
                 .Any())
             return;
 
-        var distance = Subject.DistanceFrom(Target);
+        var distance = Subject.ManhattanDistanceFrom(Target);
 
         if (distance != 1)
             Subject.Pathfind(Target);

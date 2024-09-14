@@ -16,7 +16,7 @@ public class AttackingScript : MonsterScriptBase
     public override void Update(TimeSpan delta)
     {
         
-        if (Target is not { IsAlive: true } || (Subject.DistanceFrom(Target) != 1))
+        if (Target is not { IsAlive: true } || (Subject.ManhattanDistanceFrom(Target) != 1))
             return;
 
         var direction = Target.DirectionalRelationTo(Subject);
