@@ -173,7 +173,7 @@ public sealed class DoltooScript : MerchantScriptBase
             {
                     var merchantPoint = new Point(Subject.X, Subject.Y);
                     var doorpoint = new Point(0, 11);
-                    var rectDoor = new Rectangle(0, 9, 2, 2);
+                    var rectDoor = new Rectangle(0, 10, 3, 3);
                     var rectBrig = new Rectangle(0, 9, 7, 6);
 
                     if (!rectBrig.Contains(merchantPoint))
@@ -197,18 +197,21 @@ public sealed class DoltooScript : MerchantScriptBase
                     {
                         Subject.MapInstance.RemoveEntity(Subject);
                         
-                        var players = Subject.MapInstance.GetEntities<Aisling>().Where(x => x.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart));
+                        var players = Subject.MapInstance.GetEntities<Aisling>().Where(x => x.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart) || x.Trackers.Flags.HasFlag(ShipAttackFlags.FinishedDoltoo));
                         
                         foreach (var player in players)
                         {
-                            if (player.Trackers.Flags.HasFlag(HelpSable.FinishedDoltoo))
+                            if (player.Trackers.Flags.HasFlag(ShipAttackFlags.FinishedDoltoo))
                             {
                                 player.SendOrangeBarMessage("Thank you for helping others.");
                                 player.TryGiveGamePoints(25);
                                 ExperienceDistributionScript.GiveExp(player, 10000000);
                             }
+                            else
+                            {
+                                player.Trackers.Enums.Set(HelpSable.CompletedEscort);    
+                            }
                             
-                            player.Trackers.Enums.Set(HelpSable.CompletedEscort);
                             player.SendOrangeBarMessage("Doltoo quickly escapes the ship and you follow.");
 
                             var point2 = new Point(44, 16);

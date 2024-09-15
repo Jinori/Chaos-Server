@@ -327,6 +327,17 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(EnchantingRecipes.SerendaelAddiction);
                 source.Trackers.Flags.AddFlag(EnchantingRecipes.SkandaraPierce);
                 source.Trackers.Flags.AddFlag(EnchantingRecipes.ZephyraGust);
+                source.Trackers.Flags.AddFlag(EnchantingRecipes.IgnatarDominance);
+                source.Trackers.Flags.AddFlag(EnchantingRecipes.GeolithTestimony);
+                source.Trackers.Flags.AddFlag(EnchantingRecipes.MiraelisBrace);
+                source.Trackers.Flags.AddFlag(EnchantingRecipes.AquaedonCommitment);
+                source.Trackers.Flags.AddFlag(EnchantingRecipes.SerendaelSuccess);
+                source.Trackers.Flags.AddFlag(EnchantingRecipes.TheseleneSorrow);
+                source.Trackers.Flags.AddFlag(EnchantingRecipes.SkandaraOffense);
+                source.Trackers.Flags.AddFlag(EnchantingRecipes.ZephyraPower);
+                source.Trackers.Flags.AddFlag(EnchantingRecipes.IgnatarDeficit);
+                source.Trackers.Flags.AddFlag(EnchantingRecipes.GeolithBarrier);
+                source.Trackers.Flags.AddFlag(EnchantingRecipes.MiraelisRoots);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeBerylRing);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeRubyRing);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeSapphireRing);
@@ -3322,6 +3333,291 @@ public class RecipeItemScript : ItemScriptBase
                         ani,
                         EnchantingRecipes.ZephyraGust,
                         "Zephyra's Gust",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_ignatardominance":
+            {
+                if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarDominance))
+                {
+                    if (craft != Crafts.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
+                    EnchantingRecipeLearn(
+                        source,
+                        ani,
+                        EnchantingRecipes.IgnatarDominance,
+                        "Ignatar's Dominance",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_geolithtestimony":
+            {
+                if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.GeolithTestimony))
+                {
+                    if (craft != Crafts.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
+                    EnchantingRecipeLearn(
+                        source,
+                        ani,
+                        EnchantingRecipes.GeolithTestimony,
+                        "Geolith's Testimony",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_miraelisbrace":
+            {
+                if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.MiraelisBrace))
+                {
+                    if (craft != Crafts.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
+                    EnchantingRecipeLearn(
+                        source,
+                        ani,
+                        EnchantingRecipes.MiraelisBrace,
+                        "Miraelis' Brace",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_aquaedoncommitment":
+            {
+                if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.AquaedonCommitment))
+                {
+                    if (craft != Crafts.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
+                    EnchantingRecipeLearn(
+                        source,
+                        ani,
+                        EnchantingRecipes.AquaedonCommitment,
+                        "Aquaedon's Commitment",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_serendaelsuccess":
+            {
+                if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SerendaelSuccess))
+                {
+                    if (craft != Crafts.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
+                    EnchantingRecipeLearn(
+                        source,
+                        ani,
+                        EnchantingRecipes.SerendaelSuccess,
+                        "Serendael's Success",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_theselenesorrow":
+            {
+                if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.TheseleneSorrow))
+                {
+                    if (craft != Crafts.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
+                    EnchantingRecipeLearn(
+                        source,
+                        ani,
+                        EnchantingRecipes.TheseleneSorrow,
+                        "Theselene's Sorrow",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_skandaraoffense":
+            {
+                if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SkandaraOffense))
+                {
+                    if (craft != Crafts.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
+                    EnchantingRecipeLearn(
+                        source,
+                        ani,
+                        EnchantingRecipes.SkandaraOffense,
+                        "Skandara's Offense",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_zephyrapower":
+            {
+                if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.ZephyraPower))
+                {
+                    if (craft != Crafts.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
+                    EnchantingRecipeLearn(
+                        source,
+                        ani,
+                        EnchantingRecipes.ZephyraPower,
+                        "Zephyra's Power",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_ignatardeficit":
+            {
+                if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarDeficit))
+                {
+                    if (craft != Crafts.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
+                    EnchantingRecipeLearn(
+                        source,
+                        ani,
+                        EnchantingRecipes.IgnatarDeficit,
+                        "Ignatar's Deficit",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_geolithbarrier":
+            {
+                if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.GeolithBarrier))
+                {
+                    if (craft != Crafts.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
+                    EnchantingRecipeLearn(
+                        source,
+                        ani,
+                        EnchantingRecipes.GeolithBarrier,
+                        "Geolith's Barrier",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_miraelisroots":
+            {
+                if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.MiraelisRoots))
+                {
+                    if (craft != Crafts.Enchanting)
+                    {
+                        source.SendOrangeBarMessage("You must be an Enchanter to learn this recipe.");
+
+                        return;
+                    }
+
+                    EnchantingRecipeLearn(
+                        source,
+                        ani,
+                        EnchantingRecipes.MiraelisRoots,
+                        "Miraelis' Roots",
                         $"{Subject.Template.TemplateKey}");
 
                     return;

@@ -140,7 +140,7 @@ public class HelpDoltooScript : DialogScriptBase
                 break;
             }
 
-            case "helpdoltoo_return2":
+            case "helpdoltoo_return3":
             { 
                 var group = GetNearbyGroupMembers(source);
 
@@ -159,6 +159,13 @@ public class HelpDoltooScript : DialogScriptBase
                 if (!IsGroupEligible(source))
                 {
                     SendGroupEligibleMessage(source);
+                    return;
+                }
+                
+                if (!IsGroupValid(source))
+                {
+                    Subject.Reply(source, "Not all of your group members are here.");
+                    source.SendOrangeBarMessage("Not all of your group members are here.");
                     return;
                 }
 
@@ -198,6 +205,7 @@ public class HelpDoltooScript : DialogScriptBase
             x.Trackers.Enums.HasValue(HelpSable.FinishedCaptain)
             || x.Trackers.Enums.HasValue(HelpSable.EscortingDoltooFailed)
             || x.Trackers.Enums.HasValue(HelpSable.StartedDoltoo)
+            || x.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart)
             || x.Trackers.Flags.HasFlag(ShipAttackFlags.FinishedDoltoo));
     private bool IsGroupValid(Aisling source) =>
         source.Group != null && !source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source));

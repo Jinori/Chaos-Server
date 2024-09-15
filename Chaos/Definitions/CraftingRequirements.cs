@@ -668,6 +668,182 @@ public static class CraftingRequirements
                 Modification = item => item.AddScript<HazyPrefixScript>()
             }
         },
+        {
+            EnchantingRecipes.IgnatarDominance,
+            new Recipe()
+            {
+                Name = "Ignatar's Dominance",
+                TemplateKey = "ignatardominance",
+                Ingredients =
+                [
+                    new Ingredient("essenceofignatar", "Essence of Ignatar", 10)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6,
+                Modification = item => item.AddScript<FuryPrefixScript>()
+            }
+        },
+        {
+            EnchantingRecipes.GeolithTestimony,
+            new Recipe()
+            {
+                Name = "Geolith's Testimony",
+                TemplateKey = "geolithtestimony",
+                Ingredients =
+                [
+                    new Ingredient("essenceofgeolith", "Essence of Geolith", 10)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6,
+                Modification = item => item.AddScript<SturdyPrefixScript>()
+            }
+        },
+        {
+            EnchantingRecipes.MiraelisBrace,
+            new Recipe()
+            {
+                Name = "Miraelis' Brace",
+                TemplateKey = "miraelisbrace",
+                Ingredients =
+                [
+                    new Ingredient("essenceofmiraelis", "Essence of Miraelis", 10)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6,
+                Modification = item => item.AddScript<ResilientPrefixScript>()
+            }
+        },
+        {
+            EnchantingRecipes.AquaedonCommitment,
+            new Recipe()
+            {
+                Name = "Aquaedon's Commitment",
+                TemplateKey = "aquaedoncommitment",
+                Ingredients =
+                [
+                    new Ingredient("essenceofaquaedon", "Essence of Aquaedon", 10)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6,
+                Modification = item => item.AddScript<SpiritedPrefixScript>()
+            }
+        },
+        {
+            EnchantingRecipes.SerendaelSuccess,
+            new Recipe()
+            {
+                Name = "Serendael's Success",
+                TemplateKey = "serendaelsuccess",
+                Ingredients =
+                [
+                    new Ingredient("essenceofserendael", "Essence of Serendael", 10)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6,
+                Modification = item => item.AddScript<PristinePrefixScript>()
+            }
+        },
+        {
+            EnchantingRecipes.TheseleneSorrow,
+            new Recipe()
+            {
+                Name = "Theselene's Sorrow",
+                TemplateKey = "theselenesorrow",
+                Ingredients =
+                [
+                    new Ingredient("essenceoftheselene", "Essence of Theselene", 10)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6,
+                Modification = item => item.AddScript<ShadedPrefixScript>()
+            }
+        },
+        {
+            EnchantingRecipes.SkandaraOffense,
+            new Recipe()
+            {
+                Name = "Skandara's Offense",
+                TemplateKey = "skandaraoffense",
+                Ingredients =
+                [
+                    new Ingredient("essenceofskandara", "Essence of Skandara", 15)
+                ],
+                Rank = "Expert",
+                Level = 99,
+                Difficulty = 7,
+                Modification = item => item.AddScript<SinisterPrefixScript>()
+            }
+        },
+        {
+            EnchantingRecipes.ZephyraPower,
+            new Recipe()
+            {
+                Name = "Zephyra's Power",
+                TemplateKey = "zephyrapower",
+                Ingredients =
+                [
+                    new Ingredient("essenceofzephyra", "Essence of Zephyra", 15)
+                ],
+                Rank = "Expert",
+                Level = 99,
+                Difficulty = 7,
+                Modification = item => item.AddScript<GleamingPrefixScript>()
+            }
+        },
+        {
+            EnchantingRecipes.IgnatarDeficit,
+            new Recipe()
+            {
+                Name = "Ignatar's Deficit",
+                TemplateKey = "ignatardeficit",
+                Ingredients =
+                [
+                    new Ingredient("essenceofignatar", "Essence of Ignatar", 15)
+                ],
+                Rank = "Expert",
+                Level = 99,
+                Difficulty = 7,
+                Modification = item => item.AddScript<InfernalPrefixScript>()
+            }
+        },
+        {
+            EnchantingRecipes.GeolithBarrier,
+            new Recipe()
+            {
+                Name = "Geolith's Barrier",
+                TemplateKey = "geolithbarrier",
+                Ingredients =
+                [
+                    new Ingredient("essenceofgeolith", "Essence of Geolith", 15)
+                ],
+                Rank = "Expert",
+                Level = 99,
+                Difficulty = 7,
+                Modification = item => item.AddScript<PrimalPrefixScript>()
+            }
+        },
+        {
+            EnchantingRecipes.MiraelisRoots,
+            new Recipe()
+            {
+                Name = "Miraelis' Roots",
+                TemplateKey = "miraelisroots",
+                Ingredients =
+                [
+                    new Ingredient("essenceofmiraelis", "Essence of Miraelis", 15)
+                ],
+                Rank = "Expert",
+                Level = 99,
+                Difficulty = 7,
+                Modification = item => item.AddScript<ThickPrefixScript>()
+            }
+        },
     };
 
     #endregion

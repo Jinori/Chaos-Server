@@ -1020,7 +1020,18 @@ public enum EnchantingRecipes : ulong
     AquaedonResolve = 1L << 37,
     SerendaelAddiction = 1L << 38,
     SkandaraPierce = 1L << 39,
-    ZephyraGust = 1L << 40
+    ZephyraGust = 1L << 40,
+    IgnatarDominance = 1L << 41,
+    GeolithTestimony = 1L << 42,
+    MiraelisBrace = 1L << 43,
+    AquaedonCommitment = 1L << 44,
+    SerendaelSuccess = 1L << 45,
+    TheseleneSorrow = 1L << 46,
+    SkandaraOffense = 1L << 47,
+    ZephyraPower = 1L << 48,
+    IgnatarDeficit = 1L << 49,
+    GeolithBarrier = 1L << 50,
+    MiraelisRoots = 1L << 51
 }
 
 [Flags]
