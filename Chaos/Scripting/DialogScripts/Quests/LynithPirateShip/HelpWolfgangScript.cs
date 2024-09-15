@@ -147,7 +147,7 @@ public class HelpWolfgangScript : DialogScriptBase
                     return;
                 }
 
-                source.Inventory.RemoveQuantity("M Pirate Shirt", 1);
+                source.Inventory.RemoveQuantity("M Pirate Garb", 1);
                 source.Trackers.Enums.Set(HelpSable.FinishedCaptain);
                 source.TryGiveGamePoints(10);
                 ExperienceDistributionScript.GiveExp(source, 1500000);

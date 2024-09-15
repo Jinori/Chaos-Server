@@ -115,7 +115,7 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
 
     private void TeleportGroupToCthonicDemise(Aisling source, List<Aisling> group)
     {
-        var rectangle = new Rectangle(35, 59, 3, 3);
+        var rectangle = new Rectangle(98, 194, 3, 3);
         var mapInstance = SimpleCache.Get<MapInstance>("cthonic_demise");
 
         foreach (var member in group)

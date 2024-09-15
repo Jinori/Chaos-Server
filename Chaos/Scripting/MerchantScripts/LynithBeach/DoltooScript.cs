@@ -3,13 +3,18 @@ using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 using Chaos.Services.Storage;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
+using NLog;
 
 namespace Chaos.Scripting.MerchantScripts.LynithBeach;
 
@@ -18,10 +23,12 @@ public sealed class DoltooScript : MerchantScriptBase
     private readonly IIntervalTimer WalkTimer;
     private readonly IIntervalTimer AnimationTimer;
     private readonly IIntervalTimer SayingsTimer;
+    private readonly IIntervalTimer SayingsTimer2;
     private CheckpointState State;
     private readonly Random Random = new();
     private Aisling? AislingToFollow;
     private readonly ISimpleCache SimpleCache;
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     private readonly Dictionary<int, List<string>> CheckpointSayings = new()
     {
@@ -64,6 +71,8 @@ public sealed class DoltooScript : MerchantScriptBase
         WalkTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
         AnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
         SayingsTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(30), 40, RandomizationType.Balanced, false);
+        SayingsTimer2 = new RandomizedIntervalTimer(TimeSpan.FromSeconds(5), 10, RandomizationType.Balanced, false);
+        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
     private void DisplayRandomSaying()
@@ -81,17 +90,18 @@ public sealed class DoltooScript : MerchantScriptBase
         AnimationTimer.Update(delta);
         WalkTimer.Update(delta);
         SayingsTimer.Update(delta);
+        SayingsTimer2.Update(delta);
 
         switch (State)
         {
             case CheckpointState.Idle:
             {
                 var aislingOnQuest = Subject.MapInstance.GetEntities<Aisling>()
-                    .Any(x => x.Trackers.Enums.HasValue(HelpSable.StartedDoltoo));
+                    .Any(x => x.Trackers.Enums.HasValue(HelpSable.StartedDoltoo) || x.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart));
 
                 if (aislingOnQuest)
                 {
-                    var players = Subject.MapInstance.GetEntities<Aisling>().Where(x => x.Trackers.Enums.HasValue(HelpSable.StartedDoltoo));
+                    var players = Subject.MapInstance.GetEntities<Aisling>().Where(x => x.Trackers.Enums.HasValue(HelpSable.StartedDoltoo) || x.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart));
                         
                     foreach (var player in players)
                     {
@@ -123,7 +133,7 @@ public sealed class DoltooScript : MerchantScriptBase
                 }
                 
                 var merchantPoint = new Point(Subject.X, Subject.Y);
-                var rectBrig = new Rectangle(0, 9, 6, 5);
+                var rectBrig = new Rectangle(1, 10, 6, 5);
                 if (rectBrig.Contains(merchantPoint))
                 {
                     State = CheckpointState.ExitingMap;
@@ -162,7 +172,8 @@ public sealed class DoltooScript : MerchantScriptBase
             case CheckpointState.ExitingMap:
             {
                     var merchantPoint = new Point(Subject.X, Subject.Y);
-                    var doorpoint = new Point(1, 11);
+                    var doorpoint = new Point(0, 11);
+                    var rectDoor = new Rectangle(0, 9, 2, 2);
                     var rectBrig = new Rectangle(0, 9, 7, 6);
 
                     if (!rectBrig.Contains(merchantPoint))
@@ -170,16 +181,19 @@ public sealed class DoltooScript : MerchantScriptBase
                         State = CheckpointState.FollowingPlayer;
                         return;
                     }
-                    
-                    Subject.Say("Oh, there's the door, I know my way out!");
 
+                    if (SayingsTimer2.IntervalElapsed)
+                    {
+                        Subject.Say("Oh, there's the door, I know my way out!");
+                        SayingsTimer.Reset();
+                    }
+                    
                     if (WalkTimer.IntervalElapsed)
                     { 
-                        var point = new Point(1, 11);
-                        Subject.Pathfind(point);   
+                        Subject.Pathfind(doorpoint);   
                     }
-
-                    if (merchantPoint.WithinRange(doorpoint, 0))
+                    
+                    if (rectDoor.Contains(merchantPoint))
                     {
                         Subject.MapInstance.RemoveEntity(Subject);
                         
@@ -187,6 +201,13 @@ public sealed class DoltooScript : MerchantScriptBase
                         
                         foreach (var player in players)
                         {
+                            if (player.Trackers.Flags.HasFlag(HelpSable.FinishedDoltoo))
+                            {
+                                player.SendOrangeBarMessage("Thank you for helping others.");
+                                player.TryGiveGamePoints(25);
+                                ExperienceDistributionScript.GiveExp(player, 10000000);
+                            }
+                            
                             player.Trackers.Enums.Set(HelpSable.CompletedEscort);
                             player.SendOrangeBarMessage("Doltoo quickly escapes the ship and you follow.");
 

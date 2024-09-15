@@ -1631,7 +1631,8 @@ public enum HelpSable
 public enum ShipAttackFlags
 {
     None, 
-    CompletedShipAttack = 1
+    CompletedShipAttack = 1,
+    FinishedDoltoo = 2,
 }
 
 [Flags]

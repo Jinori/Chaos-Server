@@ -924,13 +924,17 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             // SkillBook removals with the new methods
             RemoveAndNotifyIfBothExist("cleave", "scathe");
             RemoveAndNotifyIfBothExist("clobber", "strike");
+            RemoveAndNotifyIfBothExist("flank", "clobber");
+            RemoveAndNotifyIfBothExist("wallop", "flank");
             RemoveAndNotifyIfBothExist("wallop", "strike");
             RemoveAndNotifyIfBothExist("wallop", "clobber");
             RemoveAndNotifyIfBothExist("pulverize", "strike");
             RemoveAndNotifyIfBothExist("pulverize", "clobber");
+            RemoveAndNotifyIfBothExist("pulverize", "flank");
             RemoveAndNotifyIfBothExist("pulverize", "wallop");
             RemoveAndNotifyIfBothExist("thrash", "strike");
             RemoveAndNotifyIfBothExist("thrash", "clobber");
+            RemoveAndNotifyIfBothExist("thrash", "flank");
             RemoveAndNotifyIfBothExist("thrash", "wallop");
             RemoveAndNotifyIfBothExist("thrash", "pulverize");
             RemoveAndNotifyIfBothExist("sunder", "slash");
@@ -949,15 +953,18 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("phoenixstrike", "eaglestrike");
             RemoveAndNotifyIfBothExist("roundhousekick", "kick");
             RemoveAndNotifyIfBothExist("mantiskick", "highkick");
+            RemoveAndNotifyIfBothExist("throwsurigum", "assault");
             RemoveAndNotifyIfBothExist("blitz", "assault");
+            RemoveAndNotifyIfBothExist("blitz", "throwsurigum");
             RemoveAndNotifyIfBothExist("barrage", "assault");
             RemoveAndNotifyIfBothExist("barrage", "blitz");
+            RemoveAndNotifyIfBothExist("barrage", "throwsurigum");
             RemoveAndNotifyIfBothExist("gut", "stab");
             RemoveAndNotifyIfBothExist("skewer", "pierce");
             RemoveAndNotifyIfBothExist("midnightslash", "barrage");
+            RemoveAndNotifyIfBothExist("midnightslash", "throwsurigum");
             RemoveAndNotifyIfBothExist("midnightslash", "blitz");
             RemoveAndNotifyIfBothExist("midnightslash", "assault");
-            RemoveAndNotifyIfBothExist("surigumblitz", "throwsurigum");
         }
 
         if (OneSecondTimer.IntervalElapsed)

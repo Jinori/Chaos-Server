@@ -28,8 +28,8 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
         {
             //Warrior
             { "scathe", new List<string> { "cleave" } },
-            { "strike", new List<string> { "clobber", "wallop", "pulverize", "thrash" } },
-            { "clobber", new List<string> { "wallop", "pulverize", "thrash" } },
+            { "strike", new List<string> { "clobber", "flank", "wallop", "pulverize", "thrash" } },
+            { "clobber", new List<string> { "flank", "wallop", "pulverize", "thrash" } },
             { "wallop", new List<string> { "pulverize", "thrash" } },
             { "slash", new List<string> { "sunder" } },
             { "windblade", new List<string> { "tempestblade" } },
