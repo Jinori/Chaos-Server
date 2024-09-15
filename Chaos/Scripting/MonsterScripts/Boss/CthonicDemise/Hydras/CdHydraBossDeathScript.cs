@@ -48,7 +48,7 @@ public class CdHydraBossDeathScript : MonsterScriptBase
                 point3 = rectangle.GetRandomPoint();
             } while (!Subject.MapInstance.IsWalkable(point3, CreatureType.Normal));
 
-            if (Subject.Template.TemplateKey == "cthonic_hydra1")
+            if (Subject.Template.TemplateKey == "cthonic_hydra")
             {
                 var point = new Point(Subject.X, Subject.Y);
                 var nextHydra = MonsterFactory.Create("cthonic_hydra2", Subject.MapInstance, point);
