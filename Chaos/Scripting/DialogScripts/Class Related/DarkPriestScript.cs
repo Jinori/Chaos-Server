@@ -53,18 +53,6 @@ public class DarkPriestScript (Dialog subject, ILogger<CrudeLeatherQuestScript> 
 
                 if (hasStage && stage == MasterPriestPath.Dark)
                 {
-                    if (!source.Legend.TryGetValue("darkpriest", out _))
-                    {
-                        source.Legend.AddUnique(
-                            new LegendMark(
-                                "Walked the path of Dark Priest",
-                                "darkpriest",
-                                MarkIcon.Priest,
-                                MarkColor.DarkPurple,
-                                1,
-                                GameTime.Now));
-                    }
-                    
                     var option1 = new DialogOption
                     {
                         DialogKey = "generic_forgetspell_initial",

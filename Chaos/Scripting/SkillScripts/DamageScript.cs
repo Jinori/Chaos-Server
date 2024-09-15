@@ -25,6 +25,9 @@ public class DamageScript : ConfigurableSkillScriptBase,
         EffectFactory = effectFactory;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
+        
+        if (Subject.Template.IsAssail)
+            ScaleBodyAnimationSpeedByAttackSpeed = true;
     }
 
     /// <inheritdoc />

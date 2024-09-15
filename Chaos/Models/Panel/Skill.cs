@@ -4,6 +4,7 @@ using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.Templates;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
+using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.SkillScripts.Abstractions;
 
 namespace Chaos.Models.Panel;
