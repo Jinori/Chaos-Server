@@ -443,6 +443,40 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongStatBoostElixir);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongKnowledgeElixir);
                 source.Trackers.Flags.AddFlag(CookingRecipes.Popsicle);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteBerylRing);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteRubyRing);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteSapphireRing);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteEmeraldRing);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteHeartstoneRing);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumBerylRing);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumRubyRing);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumSapphireRing);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumEmeraldRing);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumHeartstoneRing);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteBerylEarrings);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteRubyEarrings);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteSapphireEarrings);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteEmeraldEarrings);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteHeartstoneEarrings);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumBerylEarrings);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumRubyEarrings);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumSapphireEarrings);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumEmeraldEarrings);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumHeartstoneEarrings);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteEarthNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteFireNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteSeaNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteWindNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteLightNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteDarkNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumEarthNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumFireNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumSeaNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumWindNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumLightNecklace);
+                source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumDarkNecklace);
+                
+                
 
                 source.Animate(ani);
                 source.SendOrangeBarMessage("You've learned all recipes.");
@@ -3954,6 +3988,223 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
+            
+            case "recipe_advancedcrimsoniterings":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdvancedCrimsoniteRings))
+                {
+                    if (craft != Crafts.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.AdvancedCrimsoniteRings,
+                        "Advanced Crimsonite Rings",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteBerylRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteRubyRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteSapphireRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteEmeraldRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteHeartstoneRing);
+                }
+
+                break;
+            }
+            
+            case "recipe_advancedazuriumrings":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdvancedAzuriumRings))
+                {
+                    if (craft != Crafts.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.AdvancedAzuriumRings,
+                        "Advanced Azurium Rings",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumBerylRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumRubyRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumSapphireRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumEmeraldRing);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumHeartstoneRing);
+                }
+
+                break;
+            }
+            
+            case "recipe_advancedcrimsoniteearrings":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdvancedCrimsoniteEarrings))
+                {
+                    if (craft != Crafts.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.AdvancedCrimsoniteEarrings,
+                        "Advanced Crimsonite Earrings",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteBerylEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteRubyEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteSapphireEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteEmeraldEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteHeartstoneEarrings);
+                }
+
+                break;
+            }
+            
+            case "recipe_advancedazuriumearrings":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdvancedAzuriumEarrings))
+                {
+                    if (craft != Crafts.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.AdvancedAzuriumEarrings,
+                        "Advanced Azurium Earrings",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumBerylEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumRubyEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumSapphireEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumEmeraldEarrings);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumHeartstoneEarrings);
+                }
+
+                break;
+            }
+            
+            case "recipe_advancedcrimsonitenecklaces":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdvancedCrimsoniteNecklaces))
+                {
+                    if (craft != Crafts.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.AdvancedCrimsoniteNecklaces,
+                        "Advanced Crimsonite Necklaces",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteEarthNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteFireNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteSeaNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteWindNecklace);
+                }
+
+                break;
+            }
+            
+            case "recipe_advancedazuriumnecklaces":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdvancedAzuriumNecklaces))
+                {
+                    if (craft != Crafts.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.AdvancedAzuriumNecklaces,
+                        "Advanced Azurium Necklaces",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumEarthNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumFireNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumSeaNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumWindNecklace);
+                }
+
+                break;
+            }
+            
+            case "recipe_expertcrimsonitenecklaces":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ExpertCrimsoniteNecklaces))
+                {
+                    if (craft != Crafts.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.ExpertCrimsoniteNecklaces,
+                        "Expert Crimsonite Necklaces",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteLightNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteDarkNecklace);
+                }
+
+                break;
+            }
+            
+            case "recipe_expertazuriumnecklaces":
+            {
+                if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ExpertAzuriumNecklaces))
+                {
+                    if (craft != Crafts.Jewelcrafting)
+                    {
+                        source.SendOrangeBarMessage("You must be a Jeweler to learn this recipe.");
+
+                        return;
+                    }
+
+                    JewelcraftingRecipeLearn(
+                        source,
+                        ani,
+                        JewelcraftingCategories.ExpertAzuriumNecklaces,
+                        "Expert Azurium Necklaces",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumLightNecklace);
+                    source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumDarkNecklace);
+                }
+
+                break;
+            }
+            
             #endregion
         }
     }

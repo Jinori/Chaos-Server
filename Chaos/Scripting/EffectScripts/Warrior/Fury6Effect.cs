@@ -21,6 +21,15 @@ public class Fury6Effect : EffectBase
     public override void OnApplied()
     {
         base.OnApplied();
+        AislingSubject?.Effects.Terminate("Fury5");
+        AislingSubject?.StatSheet.SubtractHp(256000);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bFury 6 builds up inside you.");
+        AislingSubject?.Animate(Animation);
+    }
+    
+    public override void OnReApplied()
+    {
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bFury 6 builds up inside you.");
         AislingSubject?.Animate(Animation);
     }
@@ -45,10 +54,6 @@ public class Fury6Effect : EffectBase
 
             return false;
         }
-        
-        source.Effects.Terminate("Fury5");
-        AislingSubject?.StatSheet.SubtractHp(256000);
-        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
         return true;
     }
 }

@@ -2824,6 +2824,490 @@ public static class CraftingRequirements
         },
     };
 
+    public static Dictionary<JewelcraftingRecipes2, Recipe> JewelcraftingRequirements2 { get; } = new()
+    {
+        {
+            JewelcraftingRecipes2.CrimsoniteBerylRing,
+            new Recipe()
+            {
+                Name = "Crimsonite Beryl Ring",
+                TemplateKey = "crimsoniteberylring",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.CrimsoniteRubyRing,
+            new Recipe()
+            {
+                Name = "Crimsonite Ruby Ring",
+                TemplateKey = "crimsoniterubyring",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.CrimsoniteSapphireRing,
+            new Recipe()
+            {
+                Name = "Crimsonite Sapphire Ring",
+                TemplateKey = "crimsonitesapphirering",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.CrimsoniteEmeraldRing,
+            new Recipe()
+            {
+                Name = "Crimsonite Emerald Ring",
+                TemplateKey = "crimsoniteemeraldring",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.CrimsoniteHeartstoneRing,
+            new Recipe()
+            {
+                Name = "Crimsonite Heartstone Ring",
+                TemplateKey = "crimsoniteheartstonering",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+               {
+            JewelcraftingRecipes2.AzuriumBerylRing,
+            new Recipe()
+            {
+                Name = "Azurium Beryl Ring",
+                TemplateKey = "azuriumberylring",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.AzuriumRubyRing,
+            new Recipe()
+            {
+                Name = "Azurium Ruby Ring",
+                TemplateKey = "azuriumrubyring",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.AzuriumSapphireRing,
+            new Recipe()
+            {
+                Name = "Azurium Sapphire Ring",
+                TemplateKey = "azuriumsapphirering",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.AzuriumEmeraldRing,
+            new Recipe()
+            {
+                Name = "Azurium Emerald Ring",
+                TemplateKey = "azuriumemeraldring",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.AzuriumHeartstoneRing,
+            new Recipe()
+            {
+                Name = "Azurium Heartstone Ring",
+                TemplateKey = "azuriumheartstonering",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.CrimsoniteBerylEarrings,
+            new Recipe()
+            {
+                Name = "Crimsonite Beryl Earrings",
+                TemplateKey = "crimsoniteberylearrings",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.CrimsoniteRubyEarrings,
+            new Recipe()
+            {
+                Name = "Crimsonite Ruby Earrings",
+                TemplateKey = "crimsoniterubyearrings",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.CrimsoniteSapphireEarrings,
+            new Recipe()
+            {
+                Name = "Crimsonite Sapphire Earrings",
+                TemplateKey = "crimsonitesapphireearrings",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.CrimsoniteEmeraldEarrings,
+            new Recipe()
+            {
+                Name = "Crimsonite Emerald Earrings",
+                TemplateKey = "crimsoniteemeraldearrings",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.CrimsoniteHeartstoneEarrings,
+            new Recipe()
+            {
+                Name = "Crimsonite Heartstone Earrings",
+                TemplateKey = "crimsoniteheartstoneearrings",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+              {
+            JewelcraftingRecipes2.AzuriumBerylEarrings,
+            new Recipe()
+            {
+                Name = "Azurium Beryl Earrings",
+                TemplateKey = "azuriumberylearrings",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.AzuriumRubyEarrings,
+            new Recipe()
+            {
+                Name = "Azurium Ruby Earrings",
+                TemplateKey = "azuriumrubyearrings",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.AzuriumSapphireEarrings,
+            new Recipe()
+            {
+                Name = "Azurium Sapphire Earrings",
+                TemplateKey = "azuriumsapphireearrings",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.AzuriumEmeraldEarrings,
+            new Recipe()
+            {
+                Name = "Azurium Emerald Earrings",
+                TemplateKey = "azuriumemeraldearrings",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.AzuriumHeartstoneEarrings,
+            new Recipe()
+            {
+                Name = "Azurium Heartstone Earrings",
+                TemplateKey = "azuriumheartstoneearrings",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.CrimsoniteEarthNecklace,
+            new Recipe()
+            {
+                Name = "Crimsonite Earth Necklace",
+                TemplateKey = "crimsoniteearthnecklace",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.CrimsoniteFireNecklace,
+            new Recipe()
+            {
+                Name = "Crimsonite Fire Necklace",
+                TemplateKey = "crimsonitefirenecklace",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.CrimsoniteSeaNecklace,
+            new Recipe()
+            {
+                Name = "Crimsonite Sea Necklace",
+                TemplateKey = "crimsoniteseanecklace",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.CrimsoniteWindNecklace,
+            new Recipe()
+            {
+                Name = "Crimsonite Wind Necklace",
+                TemplateKey = "crimsonitewindnecklace",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.CrimsoniteLightNecklace,
+            new Recipe()
+            {
+                Name = "Crimsonite Light Necklace",
+                TemplateKey = "crimsonitelightnecklace",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Expert",
+                Level = 99,
+                Difficulty = 8,
+            }
+        },
+        {
+            JewelcraftingRecipes2.CrimsoniteDarkNecklace,
+            new Recipe()
+            {
+                Name = "Crimsonite Dark Necklace",
+                TemplateKey = "crimsonitedarknecklace",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Expert",
+                Level = 99,
+                Difficulty = 8,
+            }
+        },
+              {
+            JewelcraftingRecipes2.AzuriumEarthNecklace,
+            new Recipe()
+            {
+                Name = "Azurium Earth Necklace",
+                TemplateKey = "azuriumearthnecklace",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.AzuriumFireNecklace,
+            new Recipe()
+            {
+                Name = "Azurium Fire Necklace",
+                TemplateKey = "azuriumfirenecklace",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.AzuriumSeaNecklace,
+            new Recipe()
+            {
+                Name = "Azurium Sea Necklace",
+                TemplateKey = "azuriumseanecklace",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.AzuriumWindNecklace,
+            new Recipe()
+            {
+                Name = "Azurium Wind Necklace",
+                TemplateKey = "azuriumwindnecklace",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7,
+            }
+        },
+        {
+            JewelcraftingRecipes2.AzuriumLightNecklace,
+            new Recipe()
+            {
+                Name = "Azurium Light Necklace",
+                TemplateKey = "azuriumlightnecklace",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Expert",
+                Level = 99,
+                Difficulty = 8,
+            }
+        },
+        {
+            JewelcraftingRecipes2.AzuriumDarkNecklace,
+            new Recipe()
+            {
+                Name = "Azurium Dark Necklace",
+                TemplateKey = "azuriumdarknecklace",
+                Ingredients =
+                [
+                    new Ingredient("apple", "Apple", 1),
+                ],
+                Rank = "Expert",
+                Level = 99,
+                Difficulty = 8,
+            }
+        },
+    };
+
 
     #endregion
 
