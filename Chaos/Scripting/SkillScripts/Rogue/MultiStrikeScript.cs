@@ -63,7 +63,7 @@ namespace Chaos.Scripting.SkillScripts.Rogue
         {
             Context = context;
             Targets = context.SourceMap.GetEntitiesWithinRange<Creature>(context.Source, 5)
-                             .Where(creature => !IsWallBetween(context.Source, creature))
+                             .Where(creature => !IsWallBetween(context.Source, creature) && creature.IsHostileTo(context.Source))
                              .OrderBy(creature => creature.ManhattanDistanceFrom(context.Source)).Take(5)
                              .ToList();
         }

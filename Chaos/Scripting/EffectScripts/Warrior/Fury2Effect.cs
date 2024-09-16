@@ -23,8 +23,6 @@ public class Fury2Effect : EffectBase
     public override void OnApplied()
     {
         base.OnApplied();
-        AislingSubject?.StatSheet.SubtractHp(16000);
-        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bFury 2 builds up inside you.");
         AislingSubject?.Animate(Animation);
     }
@@ -46,6 +44,8 @@ public class Fury2Effect : EffectBase
         }
         
         source.Effects.Terminate("Fury1");
+        AislingSubject?.StatSheet.SubtractHp(16000);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
         
         return true;
     }

@@ -37,7 +37,7 @@ public class MainStoryScript(
 
             case "mysteriousartifact_yes":
             {
-                if (hasStage && stage == MainStoryEnums.MysteriousArtifactFound)
+                if (hasStage && stage == MainStoryEnums.ReceivedMA)
                 {
                     var mysteriousartifact = itemFactory.Create("mysteriousartifact");
                     source.GiveItemOrSendToBank(mysteriousartifact);

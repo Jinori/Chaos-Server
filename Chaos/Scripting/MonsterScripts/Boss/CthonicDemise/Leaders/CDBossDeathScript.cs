@@ -153,13 +153,12 @@ public class CdBossDeathScript : MonsterScriptBase
                         }
 
                     if (Subject.Template.TemplateKey == "darkmasterray")
-                        if (target.UserStatSheet.BaseClass == BaseClass.Warrior &&
+                        if (target.UserStatSheet.BaseClass == BaseClass.Rogue &&
                             !target.Trackers.Flags.HasFlag(bossFlag))
                         {
-                            target.SkillBook.Remove("Throw Surigum");
                             var skill = SkillFactory.Create("surigumblitz");
                             target.SkillBook.TryAddToNextSlot(skill);
-                            target.SendOrangeBarMessage("You've learned a new ability that replaced Throw Surigum!");
+                            target.SendOrangeBarMessage("You've learned a new ability.");
                         }
 
                     if (Subject.Template.TemplateKey == "darkmastermike")

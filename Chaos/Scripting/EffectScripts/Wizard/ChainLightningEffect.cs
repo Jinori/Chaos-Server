@@ -93,7 +93,10 @@ namespace Chaos.Scripting.EffectScripts.Wizard
             HitTargetIds.Add(target.Id);
     
             // Base damage calculation
-            var baseDamage = SourceOfEffect.StatSheet.Int * 24 + 800;
+            var baseDamage = SourceOfEffect.StatSheet.EffectiveInt * 36 + 1400;
+            
+            var addedFromPct = baseDamage * (source.StatSheet.EffectiveSpellDamagePct / 100m);
+            baseDamage += Convert.ToInt32(source.StatSheet.EffectiveFlatSpellDamage + addedFromPct);
 
             // Calculate reduction based on the number of hits
             var numberOfHits = HitTargetIds.Count;

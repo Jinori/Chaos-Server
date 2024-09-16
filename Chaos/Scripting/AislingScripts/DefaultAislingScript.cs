@@ -35,7 +35,11 @@ namespace Chaos.Scripting.AislingScripts;
 
 public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHealComponentOptions
 {
-    private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase) { "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort", "arena_hidden_havoc"};
+    private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort", "arena_hidden_havoc"
+    };
+
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IIntervalTimer ClearOrangeBarTimer;
     private readonly IIntervalTimer OneSecondTimer;
@@ -44,6 +48,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private readonly IEffectFactory EffectFactory;
     private readonly ILogger<DefaultAislingScript> Logger;
     private readonly IStore<MailBox> MailStore;
+
     private readonly List<string> MapsToNotPunishDeathOn =
     [
         "Mr. Hopps's Home",
@@ -82,20 +87,28 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private readonly ISimpleCache SimpleCache;
     private readonly IIntervalTimer SleepAnimationTimer;
     private readonly IItemFactory ItemFactory;
-    public IApplyDamageScript ApplyDamageScript { get; init; } 
+    public IApplyDamageScript ApplyDamageScript { get; init; }
+
     /// <inheritdoc />
     public IApplyHealScript ApplyHealScript { get; init; }
+
     /// <inheritdoc />
     public int? BaseHeal { get; init; }
+
     /// <inheritdoc />
     public Stat? HealStat { get; init; }
+
     /// <inheritdoc />
     public decimal? HealStatMultiplier { get; init; }
+
     /// <inheritdoc />
     public decimal? PctHpHeal { get; init; }
+
     private SocialStatus PreAfkSocialStatus { get; set; }
+
     /// <inheritdoc />
     public IScript SourceScript { get; init; }
+
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     private Animation LightningStanceStrike { get; } = new()
@@ -103,24 +116,25 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         AnimationSpeed = 100,
         TargetAnimation = 698
     };
-    
+
     private Animation FlameHit { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 870
     };
-    
+
     private Animation MistHeal { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 646
     };
-    
+
     private Animation TideHeal { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 849
     };
+
     protected virtual RelationshipBehavior RelationshipBehavior { get; }
     protected virtual RestrictionBehavior RestrictionBehavior { get; }
     protected virtual VisibilityBehavior VisibilityBehavior { get; }
@@ -148,7 +162,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         RelationshipBehavior = new RelationshipBehavior();
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
-        ClearOrangeBarTimer = new IntervalTimer(TimeSpan.FromSeconds(WorldOptions.Instance.ClearOrangeBarTimerSecs), false);
+        ClearOrangeBarTimer =
+            new IntervalTimer(TimeSpan.FromSeconds(WorldOptions.Instance.ClearOrangeBarTimerSecs), false);
         CleanupSkillsSpellsTimer =
             new RandomizedIntervalTimer(TimeSpan.FromMinutes(3), 25, RandomizationType.Balanced, false);
         ClientRegistry = clientRegistry;
@@ -330,7 +345,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 source.Effects.Apply(Subject, effect);
             }
         }
-        
+
         if (Subject.IsFlameStanced() && IntegerRandomizer.RollChance(15))
         {
             if (!source.Script.Is<ThisIsABossScript>())
@@ -338,14 +353,15 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 var effect = EffectFactory.Create("Blind");
                 source.Effects.Apply(Subject, effect);
             }
-            
+
             var points = AoeShape.AllAround.ResolvePoints(Subject);
 
             var targets =
-                Subject.MapInstance.GetEntitiesAtPoints<Creature>(points.Cast<IPoint>()).WithFilter(Subject, TargetFilter.HostileOnly).ToList();
+                Subject.MapInstance.GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
+                    .WithFilter(Subject, TargetFilter.HostileOnly).ToList();
 
             var flamedamage = (int)(Subject.StatSheet.EffectiveMaximumHp * .04);
-        
+
             foreach (var target in targets)
             {
                 ApplyDamageScript.ApplyDamage(
@@ -353,7 +369,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     target,
                     this,
                     flamedamage);
-                
+
                 target.ShowHealth();
                 target.Animate(FlameHit, Subject.Id);
             }
@@ -471,7 +487,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.Client.SendAttributes(StatUpdateType.Vitality);
             Subject.SendOrangeBarMessage("You are knocked out. Be more careful.");
             Subject.TraverseMap(mapInstance, pointS);
-            
+
             Subject.Refresh(true);
             return;
         }
@@ -510,7 +526,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 if (monster.Name.Contains(Subject.Name))
                     monster.MapInstance.RemoveEntity(monster);
         }
-        
+
         if (source?.MapInstance.Name.Equals("Nightmare") == true)
         {
             var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
@@ -528,7 +544,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 { (BaseClass.Wizard, Gender.Male), ["cthonicmagusrobes", "cthonicmaguscaputium"] },
                 { (BaseClass.Wizard, Gender.Female), ["morrigumaguspellison", "magushairband"] }
             };
-            
+
             Subject.TraverseMap(mapInstance, pointS);
             Subject.IsDead = false;
             Subject.StatSheet.AddHp(1);
@@ -543,7 +559,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     MarkColor.White,
                     1,
                     GameTime.Now));
-            
+
             var gearKey = (Subject.UserStatSheet.BaseClass, Subject.Gender);
 
             if (nightmaregearDictionary.TryGetValue(gearKey, out var nightmaregear))
@@ -561,7 +577,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                         Subject.GiveItemOrSendToBank(gearItem);
                     }
             }
-            
+
             Subject.Refresh(true);
 
             return;
@@ -591,7 +607,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                  && (x.Template.EquipmentType != EquipmentType.Accessory)
                  && (x.Template.EquipmentType != EquipmentType.OverArmor)
                  && (x.Template.EquipmentType != EquipmentType.OverHelmet)).ToList();
-        
+
         var mithrilDiceCount = Subject.Inventory.Count(item => item.Template.TemplateKey == "mithrildice");
 
 
@@ -651,16 +667,17 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         if (ExperienceDistributionScript.TryTakeExp(Subject, tenPercent))
         {
             Logger.WithTopics(
-                      Topics.Entities.Aisling,
-                      Topics.Actions.Death,
-                      Topics.Actions.Penalty,
-                      Topics.Entities.Experience)
-                  .WithProperty(Subject)
-                  .LogInformation("{@AislingName} has lost {@ExperienceAmount} experience to death", Subject.Name, tenPercent);
+                    Topics.Entities.Aisling,
+                    Topics.Actions.Death,
+                    Topics.Actions.Penalty,
+                    Topics.Entities.Experience)
+                .WithProperty(Subject)
+                .LogInformation("{@AislingName} has lost {@ExperienceAmount} experience to death", Subject.Name,
+                    tenPercent);
 
             Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You have lost {tenPercent} experience.");
         }
-        
+
         Subject.Trackers.Counters.AddOrIncrement("deathcounter", 1);
         Subject.Legend.AddOrAccumulate(new LegendMark(
             "Fell in battle",
@@ -682,35 +699,40 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     MaximumHp = 25
                 });
                 Subject.UserStatSheet.SetMaxWeight(LevelUpFormulae.Default.CalculateMaxWeight(Subject));
-                Subject.SendServerMessage(ServerMessageType.ActiveMessage, "STR increased by one and maximum health increased by twenty five.");
+                Subject.SendServerMessage(ServerMessageType.ActiveMessage,
+                    "STR increased by one and maximum health increased by twenty five.");
                 break;
             case Stat.DEX:
                 Subject.UserStatSheet.Add(new Attributes
                 {
                     AtkSpeedPct = Subject.StatSheet.Dex % 3 == 0 ? 1 : 0
                 });
-                Subject.SendServerMessage(ServerMessageType.ActiveMessage, "DEX increased by one and Attack Speed increased.");
+                Subject.SendServerMessage(ServerMessageType.ActiveMessage,
+                    "DEX increased by one and Attack Speed increased.");
                 break;
             case Stat.INT:
                 Subject.UserStatSheet.Add(new Attributes
                 {
                     MaximumMp = 20
                 });
-                Subject.SendServerMessage(ServerMessageType.ActiveMessage, "INT increased by one and maximum mana increased by twenty.");
+                Subject.SendServerMessage(ServerMessageType.ActiveMessage,
+                    "INT increased by one and maximum mana increased by twenty.");
                 break;
             case Stat.WIS:
                 Subject.UserStatSheet.Add(new Attributes
                 {
                     MaximumMp = 40
                 });
-                Subject.SendServerMessage(ServerMessageType.ActiveMessage, "WIS increased by one and maximum mana increased by fourty.");
+                Subject.SendServerMessage(ServerMessageType.ActiveMessage,
+                    "WIS increased by one and maximum mana increased by fourty.");
                 break;
             case Stat.CON:
                 Subject.UserStatSheet.Add(new Attributes
                 {
                     MaximumHp = 50
                 });
-                Subject.SendServerMessage(ServerMessageType.ActiveMessage, "CON increased by one and maximum health increased by fifty.");
+                Subject.SendServerMessage(ServerMessageType.ActiveMessage,
+                    "CON increased by one and maximum health increased by fifty.");
                 break;
         }
     }
@@ -724,8 +746,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             return;
 
         var lightlevel = Subject.MapInstance.CurrentLightLevel;
-        
-        if (lightlevel == LightLevel.Darkest_A && !Subject.Effects.Contains("werewolf") && Subject.MapInstance.AutoDayNightCycle.Equals(true))
+
+        if (lightlevel == LightLevel.Darkest_A && !Subject.Effects.Contains("werewolf") &&
+            Subject.MapInstance.AutoDayNightCycle.Equals(true))
         {
             if (Subject.Effects.Contains("mount"))
             {
@@ -734,10 +757,11 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
                 return;
             }
-            
+
             var effect = EffectFactory.Create("werewolf");
             Subject.Effects.Apply(Subject, effect);
-        } else if (lightlevel != LightLevel.Darkest_A && Subject.Effects.Contains("werewolf"))
+        }
+        else if (lightlevel != LightLevel.Darkest_A && Subject.Effects.Contains("werewolf"))
             Subject.Effects.Terminate("werewolf");
     }
 
@@ -745,7 +769,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     {
         Subject.SendOrangeBarMessage("Ability " + keyToKeep + " removed old ability " + keyToRemove + ".");
     }
-    
+
     void RemoveAndNotifyIfBothExist(string keyToKeep, string keyToRemove)
     {
         if (Subject.SpellBook.ContainsByTemplateKey(keyToKeep) && Subject.SpellBook.ContainsByTemplateKey(keyToRemove))
@@ -760,7 +784,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     keyToKeep,
                     keyToRemove);
         }
-        else if (Subject.SkillBook.ContainsByTemplateKey(keyToKeep) && Subject.SkillBook.ContainsByTemplateKey(keyToRemove))
+        else if (Subject.SkillBook.ContainsByTemplateKey(keyToKeep) &&
+                 Subject.SkillBook.ContainsByTemplateKey(keyToRemove))
         {
             Subject.SkillBook.RemoveByTemplateKey(keyToRemove);
             NotifyPlayer(keyToRemove, keyToKeep);
@@ -773,7 +798,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     keyToRemove);
         }
     }
-    
+
     public override void Update(TimeSpan delta)
     {
         SleepAnimationTimer.Update(delta);
@@ -800,8 +825,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 // Create the attributes object for the new values
                 var newAttributes = new Attributes
                 {
-                    Ac = acDifference,  // Pass the AC difference to subtract the correct value
-                    AtkSpeedPct = atkSpeedPctDifference  // Pass the attack speed percentage difference
+                    Ac = acDifference, // Pass the AC difference to subtract the correct value
+                    AtkSpeedPct = atkSpeedPctDifference // Pass the attack speed percentage difference
                 };
 
                 // Apply the new stats
@@ -824,8 +849,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 // Create the attributes object for the new values
                 var newAttributes = new Attributes()
                 {
-                    Ac = acDifference,  // Pass the AC difference to subtract the correct value
-                    AtkSpeedPct = atkSpeedPctDifference  // Pass the attack speed percentage difference
+                    Ac = acDifference, // Pass the AC difference to subtract the correct value
+                    AtkSpeedPct = atkSpeedPctDifference // Pass the attack speed percentage difference
                 };
 
                 // Apply the new stats
@@ -835,7 +860,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 Subject.Client.SendAttributes(StatUpdateType.Full);
             }
 
-            
+
             RemoveAndNotifyIfBothExist("athar", "beagathar");
             RemoveAndNotifyIfBothExist("morathar", "athar");
             RemoveAndNotifyIfBothExist("morathar", "beagathar");
@@ -922,6 +947,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("vortex", "quake");
 
             // SkillBook removals with the new methods
+            RemoveAndNotifyIfBothExist("charge", "bullrush");
             RemoveAndNotifyIfBothExist("cleave", "scathe");
             RemoveAndNotifyIfBothExist("clobber", "strike");
             RemoveAndNotifyIfBothExist("flank", "clobber");
@@ -969,16 +995,16 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         if (OneSecondTimer.IntervalElapsed)
             HandleWerewolfEffect();
-        
+
         if (SleepAnimationTimer.IntervalElapsed)
         {
             var lastManualAction = Subject.Trackers.LastManualAction;
 
             var isAfk = !lastManualAction.HasValue
                         || (DateTime.UtcNow.Subtract(lastManualAction.Value)
-                                    .TotalMinutes
+                                .TotalMinutes
                             > WorldOptions.Instance.SleepAnimationTimerMins);
-            
+
             if (isAfk)
             {
                 if (Subject.IsAlive)
@@ -986,7 +1012,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
                 if (Subject.UserStatSheet.BaseClass is BaseClass.Priest)
                 {
-                    var pets = Subject.MapInstance.GetEntities<Monster>().Where(x => x.Script.Is<PetScript>() && x.Name.Contains(Subject.Name));
+                    var pets = Subject.MapInstance.GetEntities<Monster>()
+                        .Where(x => x.Script.Is<PetScript>() && x.Name.Contains(Subject.Name));
                     foreach (var pet in pets)
                         pet.MapInstance.RemoveEntity(pet);
                 }
@@ -995,7 +1022,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 {
                     Subject.Effects.Dispel("mount");
                 }
-                
+
                 //set player to daydreaming if they are currently set to awake
                 if (Subject.Options.SocialStatus != SocialStatus.DayDreaming)
                 {
@@ -1017,9 +1044,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             //and the last message was sent after the last clear
             //and the time since the last message is greater than the clear timer
             var shouldClear = lastOrangeBarMessage.HasValue
-                              && (lastOrangeBarMessage > (Subject.Trackers.LastOrangeBarMessageClear ?? DateTime.MinValue))
+                              && (lastOrangeBarMessage >
+                                  (Subject.Trackers.LastOrangeBarMessageClear ?? DateTime.MinValue))
                               && (now.Subtract(lastOrangeBarMessage.Value)
-                                     .TotalSeconds
+                                      .TotalSeconds
                                   > WorldOptions.Instance.ClearOrangeBarTimerSecs);
 
             if (shouldClear)

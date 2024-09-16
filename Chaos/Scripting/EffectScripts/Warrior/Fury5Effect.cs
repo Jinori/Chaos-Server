@@ -22,8 +22,6 @@ public class Fury5Effect : EffectBase
     public override void OnApplied()
     {
         base.OnApplied();
-        AislingSubject?.StatSheet.SubtractHp(128000);
-        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bFury 5 builds up inside you.");
         AislingSubject?.Animate(Animation);
     }
@@ -45,6 +43,8 @@ public class Fury5Effect : EffectBase
         }
         
         source.Effects.Terminate("Fury4");
+        AislingSubject?.StatSheet.SubtractHp(128000);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
         return true;
     }
 }

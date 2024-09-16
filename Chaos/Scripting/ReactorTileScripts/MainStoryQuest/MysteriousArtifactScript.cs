@@ -39,7 +39,8 @@ public class MysteriousArtifactScript : ReactorTileScriptBase
         
         var artifact = ItemFactory.Create("mysteriousartifact");
         var dialog = DialogFactory.Create("mysteriousartifact_initial", artifact);
-        aisling.Trackers.Enums.Set(MainStoryEnums.MysteriousArtifactFound);
+        aisling.GiveItemOrSendToBank(artifact);
+        source.Trackers.Enums.Set(MainStoryEnums.ReceivedMA);
         dialog.Display(aisling);
         aisling.SendOrangeBarMessage("A mysterious artifact...");
         Map.RemoveEntity(Subject);

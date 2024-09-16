@@ -55,7 +55,8 @@ public class SummonerMerchantScript : MerchantScriptBase
     private void HandleIdleState()
     {
         if (Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject)
-            .Any(x => x.Trackers.Enums.HasValue(MainStoryEnums.Entered3rdFloor) || x.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3)))
+            .Any(x => x.Trackers.Enums.HasValue(MainStoryEnums.Entered3rdFloor) || x.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3)
+            && !x.IsGodModeEnabled()))
             Subject.SummonerState = SummonerState.SeenByAislingWithEnum;
 
         ActionTimer.Reset();
