@@ -1,6 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
@@ -51,6 +52,23 @@ public class JewelcraftingScript : DialogScriptBase
         ItemFactory = itemFactory;
         DialogFactory = dialogFactory;
     }
+    
+    private CraftingRequirements.Recipe? FindRecipeByName(string recipeName)
+    {
+        // First, check in JewelcraftingRequirements
+        var recipe = CraftingRequirements.JewelcraftingRequirements.Values
+            .FirstOrDefault(r => r.Name.EqualsI(recipeName));
+
+        // If not found, check in JewelcraftingRequirements2
+        if (recipe is null)
+        {
+            recipe = CraftingRequirements.JewelcraftingRequirements2.Values
+                .FirstOrDefault(r => r.Name.EqualsI(recipeName));
+        }
+
+        return recipe;
+    }
+    
 
     // Calculates the success rate of crafting an item
     private double CalculateSuccessRate(
@@ -171,37 +189,33 @@ public class JewelcraftingScript : DialogScriptBase
         if (!TryFetchArgs<string>(out var selectedRecipeName))
         {
             Subject.ReplyToUnknownInput(source);
-
             return;
         }
 
-        var recipe =
-            CraftingRequirements.JewelcraftingRequirements.Values.FirstOrDefault(recipe1 => recipe1.Name.EqualsI(selectedRecipeName));
+        var recipe = FindRecipeByName(selectedRecipeName);
 
         if (recipe is null)
         {
             Subject.Reply(source, "Notify a GM that this recipe is missing.");
-
             return;
         }
 
         var hasAllIngredients = true;
 
-        foreach (var reagant in recipe.Ingredients)
-            if (!source.Inventory.HasCount(reagant.DisplayName, reagant.Amount))
+        foreach (var reagent in recipe.Ingredients)
+        {
+            if (!source.Inventory.HasCount(reagent.DisplayName, reagent.Amount))
             {
                 hasAllIngredients = false;
-
-                source.SendOrangeBarMessage($"You are missing ({reagant.Amount}) of {reagant.DisplayName}.");
+                source.SendOrangeBarMessage($"You are missing ({reagent.Amount}) of {reagent.DisplayName}.");
             }
+        }
 
         if (!hasAllIngredients)
         {
             Subject.Close(source);
-
             return;
         }
-
         var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
         var legendMarkCount = existingMark?.Count ?? 0;
 
@@ -293,27 +307,21 @@ public class JewelcraftingScript : DialogScriptBase
         if (!TryFetchArgs<string>(out var selectedRecipeName))
         {
             Subject.ReplyToUnknownInput(source);
-
             return;
         }
 
-        var recipe =
-            CraftingRequirements.JewelcraftingRequirements.Values.FirstOrDefault(recipe1 => recipe1.Name.EqualsI(selectedRecipeName));
+        var recipe = FindRecipeByName(selectedRecipeName);
 
         if (recipe is null)
         {
             Subject.Reply(source, "Notify a GM that this recipe is missing.");
-
             return;
         }
 
-        // If the player meets the requirement, create a list of ingredient names and amounts
-        var ingredientList = new List<string>();
+        var ingredientList = recipe.Ingredients
+            .Select(reagent => $"({reagent.Amount}) {reagent.DisplayName}")
+            .ToList();
 
-        foreach (var regeant in recipe.Ingredients)
-            ingredientList.Add($"({regeant.Amount}) {regeant.DisplayName}");
-
-        // Join the ingredient list into a single string and inject it into the confirmation message
         var ingredients = string.Join(" and ", ingredientList);
         Subject.InjectTextParameters(recipe.Name, ingredients);
     }
@@ -321,39 +329,76 @@ public class JewelcraftingScript : DialogScriptBase
     //ShowItems in a Shop Window to the player
     private void OnDisplayingShowItems(Aisling source)
     {
-        if (source.IsAdmin)
-            foreach (var recipe in CraftingRequirements.JewelcraftingRequirements)
-            {
-                var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
-                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-            }
-        else
+        var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
+
+        if (existingMark == null)
         {
-            var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
+            UpdateLegendmark(source, 0);
+        }
 
-            if (existingMark == null)
-                UpdateLegendmark(source, 0);
+        if (existingMark != null)
+        {
+            var playerRank = GetRankAsInt(existingMark.Text);
 
-            if (existingMark != null)
+            if (source.Trackers.Flags.TryGetFlag(out JewelcraftingRecipes recipes))
             {
-                var playerRank = GetRankAsInt(existingMark.Text);
+                // Show items from JewelcraftingRequirements
+                foreach (var recipe in CraftingRequirements.JewelcraftingRequirements)
+                {
+                    if (source.IsGodModeEnabled() && recipes.HasFlag(recipe.Key))
+                    {
+                        var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
 
-                if (source.Trackers.Flags.TryGetFlag(out JewelcraftingRecipes recipes))
-                    foreach (var recipe in CraftingRequirements.JewelcraftingRequirements)
-                        if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
+                        if (source.UserStatSheet.Level >= item.Level)
                         {
-                            var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
-
-                            if (source.UserStatSheet.Level >= item.Level)
-                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                            Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
-            }
+                    }
+                    
+                    if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
+                    {
+                        var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
 
-            if (Subject.Items.Count == 0)
-                Subject.Reply(
-                    source,
-                    "You do not have any recipes to craft. Check your recipe book (F1 Menu) to see your recipes and their requirements.",
-                    "jewelcrafting_initial");
+                        if (source.UserStatSheet.Level >= item.Level)
+                        {
+                            Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
+                    }
+                }
+            }
+            
+
+            if (source.Trackers.Flags.TryGetFlag(out JewelcraftingRecipes2 recipes2))
+            {
+                // Show items from JewelcraftingRequirements2
+                foreach (var recipe2 in CraftingRequirements.JewelcraftingRequirements2)
+                {
+                    if (source.IsGodModeEnabled() && recipes2.HasFlag(recipe2.Key))
+                    {
+                        var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+
+                        if (source.UserStatSheet.Level >= item.Level)
+                        {
+                            Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
+                    }
+                    
+                    if (recipes2.HasFlag(recipe2.Key) && (playerRank >= GetStatusAsInt(recipe2.Value.Rank)))
+                    {
+                        var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+
+                        if (source.UserStatSheet.Level >= item.Level)
+                        {
+                            Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
+                    }
+                }
+            }
+        }
+
+        if (Subject.Items.Count == 0)
+        {
+            Subject.Reply(source, "You do not have any recipes to craft. Check your recipe book (F1 Menu) to see your recipes and their requirements.", "jewelcrafting_initial");
         }
     }
 

@@ -1050,6 +1050,14 @@ public enum JewelcraftingCategories : ulong
     InitiateEarrings = 1L << 10,
     ArtisanEarrings = 1L << 11,
     AdeptEarrings = 1L << 12,
+    AdvancedCrimsoniteRings = 1L << 13,
+    AdvancedAzuriumRings = 1L << 14,
+    AdvancedCrimsoniteEarrings = 1L << 15,
+    AdvancedAzuriumEarrings = 1L << 16,
+    AdvancedCrimsoniteNecklaces = 1L << 17,
+    AdvancedAzuriumNecklaces = 1L << 18,
+    ExpertCrimsoniteNecklaces = 1L << 19,
+    ExpertAzuriumNecklaces = 1L << 20
 }
 
 [Flags]
@@ -1118,6 +1126,44 @@ public enum JewelcraftingRecipes : ulong
     SeaNecklace = 1L << 60,
     WindNecklace = 1L << 61,
     EarthNecklace = 1L << 62
+}
+
+[Flags]
+public enum JewelcraftingRecipes2 : ulong
+{
+    None = 0,
+    CrimsoniteBerylRing = 1L << 1,
+    CrimsoniteRubyRing = 1L << 2,
+    CrimsoniteSapphireRing = 1L << 3,
+    CrimsoniteEmeraldRing = 1L << 4,
+    CrimsoniteHeartstoneRing = 1L << 5,
+    AzuriumBerylRing = 1L << 6,
+    AzuriumRubyRing = 1L << 7,
+    AzuriumSapphireRing = 1L << 8,
+    AzuriumEmeraldRing = 1L << 9,
+    AzuriumHeartstoneRing = 1L << 10,
+    CrimsoniteBerylEarrings = 1L << 11,
+    CrimsoniteRubyEarrings = 1L << 12,
+    CrimsoniteSapphireEarrings = 1L << 13,
+    CrimsoniteEmeraldEarrings = 1L << 14,
+    CrimsoniteHeartstoneEarrings = 1L << 15,
+    AzuriumBerylEarrings = 1L << 16,
+    AzuriumRubyEarrings = 1L << 17,
+    AzuriumSapphireEarrings = 1L << 18,
+    AzuriumEmeraldEarrings = 1L << 19,
+    AzuriumHeartstoneEarrings = 1L << 20,
+    CrimsoniteEarthNecklace = 1L << 21,
+    CrimsoniteFireNecklace = 1L << 22,
+    CrimsoniteSeaNecklace = 1L << 23,
+    CrimsoniteWindNecklace = 1L << 24,
+    CrimsoniteLightNecklace = 1L << 25,
+    CrimsoniteDarkNecklace = 1L << 26,
+    AzuriumEarthNecklace = 1L << 27,
+    AzuriumFireNecklace = 1L << 28,
+    AzuriumSeaNecklace = 1L << 29,
+    AzuriumWindNecklace = 1L << 30,
+    AzuriumLightNecklace = 1L << 31,
+    AzuriumDarkNecklace = 1L << 32
 }
 
 [Flags]
