@@ -44,7 +44,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private readonly Animation TypingDeathAnimation = new()
     {
         AnimationSpeed = 100,
-        TargetAnimation = 187,
+        TargetAnimation = 218,
         Priority = 80,
     };
     
@@ -60,7 +60,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                      .GetEntitiesWithinRange<Monster>(source, 13)
                      .Where(x => x.TypingWord.EqualsI(message)))
         {
-            Subject.Animate(TypingDeathAnimation.GetPointAnimation(creature));
+            var point = new Point(creature.X, creature.Y);
+            creature.MapInstance.ShowAnimation(TypingDeathAnimation.GetPointAnimation(point));
             ApplyDamageScript.ApplyDamage(Subject, creature, this, 999999);
         }
     }

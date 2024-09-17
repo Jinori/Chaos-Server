@@ -38,7 +38,6 @@ public class TypingMonsterScript : MonsterScriptBase
 
     public override void OnDeath()
     {
-        Subject.MapInstance.ShowAnimation(TypingDeathAnimation.GetPointAnimation(Subject));
         Subject.MapInstance.RemoveEntity(Subject);
     }
 }
