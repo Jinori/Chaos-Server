@@ -4,6 +4,7 @@ using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Geometry.Abstractions;
@@ -39,6 +40,31 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     {
         "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort", "arena_hidden_havoc"
     };
+    
+    private readonly Animation TypingDeathAnimation = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 187,
+        Priority = 80,
+    };
+    
+    public override void OnPublicMessage(Creature source, string message)
+    {
+        base.OnPublicMessage(source, message);
+
+        if (source.MapInstance.InstanceId == "arena_typing" && source is not Aisling)
+            return;
+        
+        // Iterate over creatures within the specified range (13) and check if the typed message matches their TypingWord
+        foreach (var creature in Subject.MapInstance
+                     .GetEntitiesWithinRange<Monster>(source, 13)
+                     .Where(x => x.TypingWord.EqualsI(message)))
+        {
+            Subject.Animate(TypingDeathAnimation.GetPointAnimation(creature));
+            ApplyDamageScript.ApplyDamage(Subject, creature, this, 999999);
+        }
+    }
+
 
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IIntervalTimer ClearOrangeBarTimer;

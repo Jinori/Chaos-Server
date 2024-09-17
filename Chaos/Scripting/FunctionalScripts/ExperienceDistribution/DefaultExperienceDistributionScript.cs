@@ -27,7 +27,7 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
     /// <inheritdoc />
     public static IExperienceDistributionScript Create() => FunctionalScriptRegistry.Instance.Get<IExperienceDistributionScript>(Key);
 
-    private const double EXPERIENCE_MULTIPLIER = 2.0; // Default is 1.0, can be lowered or raised as needed
+    private const double EXPERIENCE_MULTIPLIER = 1.0; // Default is 1.0, can be lowered or raised as needed
 
     /// <inheritdoc />
     public virtual void DistributeExperience(Creature killedCreature, params Aisling[] aislings)
@@ -107,8 +107,7 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
             return false;
         }
 
-        //amount = (long)(amount * EXPERIENCE_MULTIPLIER); //Change back from exp
-        amount *= 1; //Change back from exp
+        amount = (long)(amount * EXPERIENCE_MULTIPLIER);
         
         if (aisling.UserStatSheet.TotalExp < amount)
             return false;

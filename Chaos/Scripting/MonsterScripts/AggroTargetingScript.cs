@@ -53,6 +53,12 @@ public class AggroTargetingScript : MonsterScriptBase
                 case BaseClass.Monk:
                     AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro * 4);
                     break;
+                case BaseClass.Diacht:
+                    AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro);
+                    break;
+                default:
+                    AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro);
+                    break;
             }
         }        
         else

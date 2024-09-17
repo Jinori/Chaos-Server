@@ -39,6 +39,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
     public abstract ILogger Logger { get; }
     public IIntervalTimer RegenTimer { get; }
 
+    public string TypingWord { get; set; }
     /// <inheritdoc />
     public abstract ICreatureScript Script { get; }
 
