@@ -31,6 +31,7 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
+using FluentAssertions.Execution;
 
 namespace Chaos.Scripting.AislingScripts;
 
@@ -52,17 +53,17 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     {
         base.OnPublicMessage(source, message);
 
-        if (source.MapInstance.InstanceId == "arena_typing" && source is not Aisling)
-            return;
-        
-        // Iterate over creatures within the specified range (13) and check if the typed message matches their TypingWord
-        foreach (var creature in Subject.MapInstance
-                     .GetEntitiesWithinRange<Monster>(source, 13)
-                     .Where(x => x.TypingWord.EqualsI(message)))
+        if (source.MapInstance.InstanceId == "arena_typing" && source is Aisling)
         {
-            var point = new Point(creature.X, creature.Y);
-            creature.MapInstance.ShowAnimation(TypingDeathAnimation.GetPointAnimation(point));
-            ApplyDamageScript.ApplyDamage(Subject, creature, this, 999999);
+            // Iterate over creatures within the specified range (13) and check if the typed message matches their TypingWord
+            foreach (var creature in Subject.MapInstance
+                         .GetEntitiesWithinRange<Monster>(source, 13)
+                         .Where(x => x.TypingWord.EqualsI(message)))
+            {
+                var point = new Point(creature.X, creature.Y);
+                creature.MapInstance.ShowAnimation(TypingDeathAnimation.GetPointAnimation(point));
+                ApplyDamageScript.ApplyDamage(Subject, creature, this, 999999);
+            }   
         }
     }
 
