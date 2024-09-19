@@ -159,74 +159,76 @@ public class SellMonsterPartsShopScript : DialogScriptBase
         }
     }
 
-    protected virtual void OnDisplayingAccepted(Aisling source)
+  protected virtual void OnDisplayingAccepted(Aisling source)
+{
+    if (!TryFetchArgs<byte, int>(out var slot, out var amount)
+        || (amount <= 0)
+        || !source.Inventory.TryGetObject(slot, out var item)
+        || item?.Template == null
+        || !MonsterPartSellValueDictionary.ContainsKey(item.Template.TemplateKey))
     {
-        if (!TryFetchArgs<byte, int>(out var slot, out var amount)
-            || (amount <= 0)
-            || !source.Inventory.TryGetObject(slot, out var item)
-            || item?.Template == null
-            || !MonsterPartSellValueDictionary.ContainsKey(item.Template.TemplateKey))
-        {
-            Subject.ReplyToUnknownInput(source);
-            return;
-        }
-
-        var total = source.Inventory.CountOf(item.DisplayName);
-
-        if (total < amount)
-        {
-            Subject.Reply(source, $"You don't have enough {item.DisplayName}(s) to sell",
-                "generic_sellmonsterpartsshop_initial");
-            return;
-        }
-
-        // Get the custom sell value from the dictionary
-        var sellValue = MonsterPartSellValueDictionary.ContainsKey(item.Template.TemplateKey)
-            ? MonsterPartSellValueDictionary[item.Template.TemplateKey] * amount
-            : item.Template.SellValue * amount; // Fallback to template value if not found
-
-        // Get the appropriate Monster Extract type based on the item's level
-        var extractTypeKey = GetMonsterExtractType(item.Template.Level);
-        var extractTypeName = MonsterExtractDisplayNameMapping.ContainsKey(extractTypeKey)
-            ? MonsterExtractDisplayNameMapping[extractTypeKey]
-            : extractTypeKey; // Fallback to the key if name is not found
-
-        if (string.IsNullOrEmpty(extractTypeKey))
-        {
-            Subject.Reply(source, "No appropriate Monster Extract found for this item.",
-                "generic_sellmonsterpartsshop_initial");
-            return;
-        }
-
-        // Give the appropriate number of Monster Extracts, creating multiple stacks if needed
-        int remainingExtracts = sellValue;
-        int stackSize = 1000;
-
-        while (remainingExtracts > 0)
-        {
-            int extractsToGive = Math.Min(remainingExtracts, stackSize);
-            var extracts = ItemFactory.Create(extractTypeKey);
-            extracts.Count = extractsToGive;
-
-            source.GiveItemOrSendToBank(extracts);
-
-            remainingExtracts -= extractsToGive;
-        }
-
-        Logger.LogDebug(
-            "{@Player} sold {ItemCount} {@Item} to {@Merchant} for {TokenAmount} Monster Extracts",
-            source,
-            amount,
-            item,
-            Subject.DialogSource,
-            sellValue);
-
-        // Remove the specified quantity of items from the inventory
-        source.Inventory.RemoveQuantityByTemplateKey(item.Template.TemplateKey, amount);
-
-        Subject.Reply(source, $"You sold {amount} {item.DisplayName}(s) for {sellValue} {extractTypeName}(s)",
-            "generic_sellmonsterpartsshop_initial");
+        Subject.ReplyToUnknownInput(source);
+        return;
     }
+
+    var total = source.Inventory.CountOf(item.DisplayName);
+
+    if (total < amount)
+    {
+        Subject.Reply(source, $"You don't have enough {item.DisplayName}(s) to sell",
+            "generic_sellmonsterpartsshop_initial");
+        return;
+    }
+
+    // Get the custom sell value from the dictionary
+    var sellValue = MonsterPartSellValueDictionary.ContainsKey(item.Template.TemplateKey)
+        ? MonsterPartSellValueDictionary[item.Template.TemplateKey] * amount
+        : item.Template.SellValue * amount; // Fallback to template value if not found
+
+    // Get the appropriate Monster Extract type based on the item's level
+    var extractTypeKey = GetMonsterExtractType(item.Template.Level);
+    var extractTypeName = MonsterExtractDisplayNameMapping.ContainsKey(extractTypeKey)
+        ? MonsterExtractDisplayNameMapping[extractTypeKey]
+        : extractTypeKey; // Fallback to the key if name is not found
+
+    if (string.IsNullOrEmpty(extractTypeKey))
+    {
+        Subject.Reply(source, "No appropriate Monster Extract found for this item.",
+            "generic_sellmonsterpartsshop_initial");
+        return;
+    }
+
+    // Handle the selling of the items and give the player the appropriate Monster Extracts
+    int remainingExtracts = sellValue;
+    int stackSize = 100;  // Assuming 1000 is the maximum stack size for Monster Extracts
+
+    while (remainingExtracts > 0)
+    {
+        int extractsToGive = Math.Min(remainingExtracts, stackSize);
+        var extracts = ItemFactory.Create(extractTypeKey);
+        extracts.Count = extractsToGive;
+
+        // Try to add the item to the player's inventory or send to bank if the inventory is full
+        source.GiveItemOrSendToBank(extracts);
+
+        remainingExtracts -= extractsToGive;
+    }
+
+    Logger.LogDebug(
+        "{@Player} sold {ItemCount} {@Item} to {@Merchant} for {TokenAmount} Monster Extracts",
+        source,
+        amount,
+        item,
+        Subject.DialogSource,
+        sellValue);
+
+    // Remove the specified quantity of items from the inventory
+    source.Inventory.RemoveQuantityByTemplateKey(item.Template.TemplateKey, amount);
+
+    Subject.Reply(source, $"You sold {amount} {item.DisplayName}(s) for {sellValue} {extractTypeName}(s)",
+        "generic_sellmonsterpartsshop_initial");
+}
+
 
     private string GetMonsterExtractType(int itemLevel)
     {
