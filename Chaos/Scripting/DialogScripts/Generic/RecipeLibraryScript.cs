@@ -718,6 +718,22 @@ public class RecipeLibraryScript : DialogScriptBase
                             $"{FauxItem.Template.Name
                             } requires 1 Kabine Blossom, 2 Superior Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
+                        return;
+                        
+                    case "potentjuggernautbrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Blossom of Betrayal, 3 Superior Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
+                        return;
+                        
+                    case "potentastralbrewformula":
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Passion Flower, 3 Superior Monster Extract and 1 Empty Bottle.",
+                            "alchemybook");
 
                         return;
                     case "invisibilitypotionformula":

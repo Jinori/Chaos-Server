@@ -7,8 +7,8 @@ namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.HorseBoss.Horse1;
 
 public sealed class HorseBoss1EnrageScript : MonsterScriptBase
 {
-    private static float HPRegenInterval = 8f;
-    private static float HPMultiplier = 0.03f;
+    private static float HPRegenInterval = 30f;
+    private static float HPMultiplier = 0.005f;
     private readonly IMonsterFactory MonsterFactory;
     private bool Bonus30Applied;
     private bool Bonus50Applied;
@@ -37,6 +37,9 @@ public sealed class HorseBoss1EnrageScript : MonsterScriptBase
                 var hpToRegen = Subject.StatSheet.MaximumHp * HPMultiplier;
 
                 var newHP = (int)MathF.Min(Subject.StatSheet.CurrentHp + hpToRegen, Subject.StatSheet.MaximumHp);
+                
+                if (Subject.Effects.Contains("poison") || Subject.Effects.Contains("miasma"))
+                    return;
 
                 Subject.StatSheet.SetHp(newHP);
                 Subject.ShowHealth();
@@ -54,8 +57,8 @@ public sealed class HorseBoss1EnrageScript : MonsterScriptBase
             //Give Bonuses
             var attrib = new Attributes { AtkSpeedPct = 10 };
             Subject.StatSheet.AddBonus(attrib);
-            HPRegenInterval = 12f;
-            HPMultiplier = 0.01f;
+            HPRegenInterval = 28f;
+            HPMultiplier = 0.005f;
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
         }
@@ -72,8 +75,8 @@ public sealed class HorseBoss1EnrageScript : MonsterScriptBase
                 SpellDamagePct = 5
             };
 
-            HPRegenInterval = 8f;
-            HPMultiplier = 0.02f;
+            HPRegenInterval = 25f;
+            HPMultiplier = 0.008f;
 
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
@@ -94,8 +97,8 @@ public sealed class HorseBoss1EnrageScript : MonsterScriptBase
                 SpellDamagePct = 5
             };
 
-            HPRegenInterval = 6f;
-            HPMultiplier = 0.03f;
+            HPRegenInterval = 20f;
+            HPMultiplier = 0.01f;
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }

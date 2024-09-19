@@ -27,6 +27,11 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
             tenPercent = 715000;
         }
 
+        if (source.StatSheet.Level >= 99)
+        {
+            tenPercent = 10000000;
+        }
+
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "nico_initial":

@@ -10,7 +10,9 @@ namespace Chaos.Scripting.ItemScripts;
 public class RecipeItemScript : ItemScriptBase
 {
     public RecipeItemScript(Item subject)
-        : base(subject) { }
+        : base(subject)
+    {
+    }
 
     public static void AlchemyRecipeLearn(
         Aisling source,
@@ -95,6 +97,7 @@ public class RecipeItemScript : ItemScriptBase
         switch (Subject.Template.TemplateKey.ToLower())
         {
             #region All Mounts
+
             case "recipe_allmounts":
             {
                 source.Trackers.Flags.AddFlag(AvailableMounts.Ant);
@@ -117,8 +120,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
+
             #endregion
-            
+
             #region All Recipes
 
             case "recipe_allcrafts":
@@ -432,6 +436,8 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentRejuvenationPotion);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentHasteBrew);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentPowerBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentJuggernautBrew);
+                source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentAstralBrew);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentAccuracyPotion);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.InvisibilityPotion);
                 source.Trackers.Flags.AddFlag(AlchemyRecipes.PoisonImmunityElixir);
@@ -475,8 +481,8 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumWindNecklace);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumLightNecklace);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumDarkNecklace);
-                
-                
+
+
 
                 source.Animate(ani);
                 source.SendOrangeBarMessage("You've learned all recipes.");
@@ -488,6 +494,7 @@ public class RecipeItemScript : ItemScriptBase
             #endregion
 
             #region Cooking Recipes
+
             case "recipe_dinnerplate":
             {
                 if (!source.Trackers.Flags.HasFlag(CookingRecipes.DinnerPlate))
@@ -668,9 +675,11 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
+
             #endregion
 
             #region Armor Smithing Recipes
+
             case "recipe_beginnerarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BeginnerArmors))
@@ -707,7 +716,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_basicarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicArmors))
@@ -1101,7 +1110,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_adeptbelts":
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.AdeptBelts))
@@ -1134,9 +1143,11 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
+
             #endregion
 
             #region Weapon Smithing Recipes
+
             case "recipe_basicswords":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicSwords))
@@ -1786,9 +1797,11 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
+
             #endregion
 
             #region Alchemy Recipes
+
             case "recipe_hemloch":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.Hemloch))
@@ -2224,6 +2237,30 @@ public class RecipeItemScript : ItemScriptBase
 
                     return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_potentvitalitybook":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyCategories.PotentVitalityBrew))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
+                        return;
+                    }
+
+                    source.Inventory.RemoveQuantityByTemplateKey(Subject.Template.TemplateKey, 1);
+                    source.Trackers.Flags.AddFlag(AlchemyCategories.PotentVitalityBrew);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentJuggernautBrew);
+                    source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentAstralBrew);
+
+                    return;
+                }
+
                 source.SendOrangeBarMessage("You already know this recipe.");
 
                 return;
@@ -2353,9 +2390,240 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
+            case "recipe_potentaccuracypotion":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.PotentAccuracyPotion))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.PotentAccuracyPotion,
+                        "Potent Accuracy Potion",
+                        $"{Subject.Template.TemplateKey}");
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+                return;
+            }
+
+            case "recipe_invisibilitypotion":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.InvisibilityPotion))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.InvisibilityPotion,
+                        "Invisibility Potion",
+                        $"{Subject.Template.TemplateKey}");
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+                return;
+            }
+
+            case "recipe_poisonimmunityelixir":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.PoisonImmunityElixir))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.PoisonImmunityElixir,
+                        "Poison Immunity Elixir",
+                        $"{Subject.Template.TemplateKey}");
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+                return;
+            }
+
+            case "recipe_potionofstrength":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.PotionOfStrength))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.PotionOfStrength,
+                        "Potion of Strength",
+                        $"{Subject.Template.TemplateKey}");
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+                return;
+            }
+
+            case "recipe_potionofintellect":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.PotionOfIntellect))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.PotionOfIntellect,
+                        "Potion of Intellect",
+                        $"{Subject.Template.TemplateKey}");
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+                return;
+            }
+
+            case "recipe_potionofwisdom":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.PotionOfWisdom))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.PotionOfWisdom,
+                        "Potion of Wisdom",
+                        $"{Subject.Template.TemplateKey}");
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+                return;
+            }
+
+            case "recipe_potionofconstitution":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.PotionOfConstitution))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.PotionOfConstitution,
+                        "Potion of Constitution",
+                        $"{Subject.Template.TemplateKey}");
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+                return;
+            }
+
+            case "recipe_potionofdexterity":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.PotionOfDexterity))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.PotionOfDexterity,
+                        "Potion of Dexterity",
+                        $"{Subject.Template.TemplateKey}");
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+                return;
+            }
+
+            case "recipe_strongstatboostelixir":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.StrongStatBoostElixir))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.StrongStatBoostElixir,
+                        "Strong Stat Boost Elixir",
+                        $"{Subject.Template.TemplateKey}");
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+                return;
+            }
+
+            case "recipe_strongknowledgeelixir":
+            {
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.StrongKnowledgeElixir))
+                {
+                    if (craft != Crafts.Alchemy)
+                    {
+                        source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+                        return;
+                    }
+
+                    AlchemyRecipeLearn(
+                        source,
+                        ani,
+                        AlchemyRecipes.StrongKnowledgeElixir,
+                        "Strong Knowledge Elixir",
+                        $"{Subject.Template.TemplateKey}");
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+                return;
+            }
+
             #endregion
 
             #region Enchanting Recipes
+
             case "recipe_ignatarenvy":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarEnvy))
@@ -3376,7 +3644,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_ignatardominance":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarDominance))
@@ -3402,7 +3670,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_geolithtestimony":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.GeolithTestimony))
@@ -3428,7 +3696,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_miraelisbrace":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.MiraelisBrace))
@@ -3454,7 +3722,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_aquaedoncommitment":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.AquaedonCommitment))
@@ -3480,7 +3748,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_serendaelsuccess":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SerendaelSuccess))
@@ -3506,7 +3774,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_theselenesorrow":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.TheseleneSorrow))
@@ -3532,7 +3800,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_skandaraoffense":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.SkandaraOffense))
@@ -3558,7 +3826,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_zephyrapower":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.ZephyraPower))
@@ -3584,7 +3852,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_ignatardeficit":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarDeficit))
@@ -3610,7 +3878,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_geolithbarrier":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.GeolithBarrier))
@@ -3661,9 +3929,11 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
+
             #endregion
 
             #region Jewelcrafting Recipes
+
             case "recipe_basicrings":
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.BasicRings))
@@ -3988,7 +4258,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            
+
             case "recipe_advancedcrimsoniterings":
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdvancedCrimsoniteRings))
@@ -4016,7 +4286,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            
+
             case "recipe_advancedazuriumrings":
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdvancedAzuriumRings))
@@ -4044,7 +4314,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            
+
             case "recipe_advancedcrimsoniteearrings":
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdvancedCrimsoniteEarrings))
@@ -4072,7 +4342,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            
+
             case "recipe_advancedazuriumearrings":
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdvancedAzuriumEarrings))
@@ -4100,7 +4370,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            
+
             case "recipe_advancedcrimsonitenecklaces":
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdvancedCrimsoniteNecklaces))
@@ -4127,7 +4397,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            
+
             case "recipe_advancedazuriumnecklaces":
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.AdvancedAzuriumNecklaces))
@@ -4154,7 +4424,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            
+
             case "recipe_expertcrimsonitenecklaces":
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ExpertCrimsoniteNecklaces))
@@ -4179,7 +4449,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            
+
             case "recipe_expertazuriumnecklaces":
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.ExpertAzuriumNecklaces))
@@ -4204,7 +4474,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-            
+
             #endregion
         }
     }

@@ -26,6 +26,11 @@ public class WWKillQuestScript(Dialog subject, ILogger<WWKillQuestScript> logger
         {
             tenPercent = 320000;
         }
+        
+        if (source.StatSheet.Level >= 99)
+        {
+            tenPercent = 10000000;
+        }
 
         switch (Subject.Template.TemplateKey.ToLower())
         {

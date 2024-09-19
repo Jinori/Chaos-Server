@@ -7,7 +7,7 @@ namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.HorseBoss.Horse3;
 
 public sealed class HorseBoss3EnrageScript : MonsterScriptBase
 {
-    private static float HPRegenInterval = 15f;
+    private static float HPRegenInterval = 20f;
     private static float HPMultiplier = 0.01f;
     private readonly IMonsterFactory MonsterFactory;
     private bool Bonus30Applied;
@@ -38,6 +38,9 @@ public sealed class HorseBoss3EnrageScript : MonsterScriptBase
 
                 var newHP = (int)MathF.Min(Subject.StatSheet.CurrentHp + hpToRegen, Subject.StatSheet.MaximumHp);
 
+                if (Subject.Effects.Contains("poison") || Subject.Effects.Contains("miasma"))
+                    return;
+                
                 Subject.StatSheet.SetHp(newHP);
                 Subject.ShowHealth();
 
@@ -54,8 +57,8 @@ public sealed class HorseBoss3EnrageScript : MonsterScriptBase
             //Give Bonuses
             var attrib = new Attributes { AtkSpeedPct = 40 };
             Subject.StatSheet.AddBonus(attrib);
-            HPRegenInterval = 10f;
-            HPMultiplier = 0.02f;
+            HPRegenInterval = 18f;
+            HPMultiplier = 0.01f;
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
         }
@@ -72,8 +75,8 @@ public sealed class HorseBoss3EnrageScript : MonsterScriptBase
                 SpellDamagePct = 10
             };
 
-            HPRegenInterval = 9f;
-            HPMultiplier = 0.03f;
+            HPRegenInterval = 15f;
+            HPMultiplier = 0.015f;
 
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
@@ -95,8 +98,8 @@ public sealed class HorseBoss3EnrageScript : MonsterScriptBase
                 SpellDamagePct = 20
             };
 
-            HPRegenInterval = 8f;
-            HPMultiplier = 0.04f;
+            HPRegenInterval = 14f;
+            HPMultiplier = 0.02f;
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }

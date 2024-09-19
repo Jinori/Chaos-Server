@@ -7,8 +7,8 @@ namespace Chaos.Scripting.MonsterScripts.Boss.MythicBosses.HorseBoss.Horse2;
 
 public sealed class HorseBoss2EnrageScript : MonsterScriptBase
 {
-    private static float HPRegenInterval = 15f;
-    private static float HPMultiplier = 0.01f;
+    private static float HPRegenInterval = 25f;
+    private static float HPMultiplier = 0.008f;
     private readonly IMonsterFactory MonsterFactory;
     private bool Bonus30Applied;
     private bool Bonus50Applied;
@@ -38,6 +38,9 @@ public sealed class HorseBoss2EnrageScript : MonsterScriptBase
 
                 var newHP = (int)MathF.Min(Subject.StatSheet.CurrentHp + hpToRegen, Subject.StatSheet.MaximumHp);
 
+                if (Subject.Effects.Contains("poison") || Subject.Effects.Contains("miasma"))
+                    return;
+                
                 Subject.StatSheet.SetHp(newHP);
                 Subject.ShowHealth();
 
@@ -54,8 +57,8 @@ public sealed class HorseBoss2EnrageScript : MonsterScriptBase
             //Give Bonuses
             var attrib = new Attributes { AtkSpeedPct = 35 };
             Subject.StatSheet.AddBonus(attrib);
-            HPRegenInterval = 9f;
-            HPMultiplier = 0.01f;
+            HPRegenInterval = 23f;
+            HPMultiplier = 0.008f;
             Subject.Animate(UpgradeAnimation);
             //Spawn Monsters
         }
@@ -72,8 +75,8 @@ public sealed class HorseBoss2EnrageScript : MonsterScriptBase
                 SpellDamagePct = 10
             };
 
-            HPRegenInterval = 8f;
-            HPMultiplier = 0.02f;
+            HPRegenInterval = 23f;
+            HPMultiplier = 0.008f;
 
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
@@ -87,7 +90,7 @@ public sealed class HorseBoss2EnrageScript : MonsterScriptBase
             {
                 Int = 5,
                 Str = 10,
-                Ac = -15,
+                Ac = -10,
                 AtkSpeedPct = 15,
                 Hit = 20,
                 MagicResistance = 10,
@@ -95,8 +98,8 @@ public sealed class HorseBoss2EnrageScript : MonsterScriptBase
                 SpellDamagePct = 10
             };
 
-            HPRegenInterval = 7f;
-            HPMultiplier = 0.3f;
+            HPRegenInterval = 20f;
+            HPMultiplier = 0.01f;
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }

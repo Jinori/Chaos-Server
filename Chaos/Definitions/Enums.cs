@@ -1174,6 +1174,7 @@ public enum AlchemyCategories
     InitiateAlchemyBook = 2,
     AttackTonics = 3,
     StrongVitalityBrew = 4,
+    PotentVitalityBrew = 5,
 }
 
 [Flags]
@@ -1228,7 +1229,9 @@ public enum AlchemyRecipes : ulong
     PotionOfConstitution = 1L << 46,
     PotionOfDexterity = 1L << 47,
     StrongStatBoostElixir = 1L << 48,
-    StrongKnowledgeElixir = 1L << 49
+    StrongKnowledgeElixir = 1L << 49,
+    PotentJuggernautBrew = 1L << 50,
+    PotentAstralBrew = 1L << 51
 }
 
 public enum JoinReligionQuest

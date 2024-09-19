@@ -19,7 +19,8 @@ public class MetalRefiningScript : CraftingBaseScript
     protected override double SuccessRateMax => 90;
 
     private readonly string[] MetalTemplateKeys =
-        ["rawBronze", "tarnishedBronzeBar", "rawIron", "tarnishedIronBar", "rawMythril", "tarnishedMythrilBar", "rawHybrasyl", "tarnishedHybrasylBar"
+        ["rawbronze", "tarnishedbronzebar", "rawiron", "tarnishedironbar", "rawmythril", "tarnishedmythrilbar", "rawhybrasyl", "tarnishedhybrasylbar", "rawcrimsonite", "rawazurium", "tarnishedcrimsonitebar",
+            "tarnishedazuriumbar"
     ];
 
     protected override Dictionary<string, string> UpgradeMappings { get; } = new(StringComparer.OrdinalIgnoreCase)
@@ -31,7 +32,11 @@ public class MetalRefiningScript : CraftingBaseScript
         { "rawmythril", "tarnishedmythrilbar" },
         { "tarnishedmythrilbar", "polishedmythrilbar" },
         { "rawhybrasyl", "tarnishedhybrasylbar" },
-        { "tarnishedhybrasylbar", "polishedhybrasylbar" }
+        { "tarnishedhybrasylbar", "polishedhybrasylbar" },
+        { "rawcrimsonite", "tarnishedcrimsonitebar" },
+        { "rawazurium", "tarnishedazuriumbar" },
+        { "tarnishedazuriumbar", "polishedazuriumbar" },
+        { "tarnishedcrimsonitebar", "polishedcrimsonitebar" }
     };
     
     protected override Dictionary<string, string> DowngradeMappings { get; } = new(StringComparer.OrdinalIgnoreCase)
@@ -43,7 +48,11 @@ public class MetalRefiningScript : CraftingBaseScript
         { "rawmythril", "ruinedmythril" },
         { "tarnishedmythrilbar", "ruinedmythril" },
         { "rawhybrasyl", "ruinedhybrasyl" },
-        { "tarnishedhybrasylbar", "ruinedhybrasyl" }
+        { "tarnishedhybrasylbar", "ruinedhybrasyl" },
+        { "rawcrimsonite", "ruinedcrimsonite" },
+        { "tarnishedcrimsonitebar", "ruinedcrimsonite" },
+        { "rawazurium", "ruinedazurium" },
+        { "tarnishedazuriumbar", "ruinedazurium" }
     };
 
     

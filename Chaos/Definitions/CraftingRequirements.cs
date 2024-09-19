@@ -1582,6 +1582,44 @@ public static class CraftingRequirements
             }
         },
         {
+            AlchemyRecipes.PotentJuggernautBrew,
+            new Recipe()
+            {
+                Name = "Potent Juggernaut Brew Formula",
+                TemplateKey = "potentjuggernautbrewformula",
+                Ingredients =
+                [
+                    new Ingredient("blossomofbetrayal", "blossomofbetrayal", 1),
+
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 3),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            AlchemyRecipes.PotentAstralBrew,
+            new Recipe()
+            {
+                Name = "Potent Astral Brew Formula",
+                TemplateKey = "potentastralbrewformula",
+                Ingredients =
+                [
+                    new Ingredient("passionflower", "Passion Flower", 1),
+
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 3),
+
+                    new Ingredient("emptybottle", "Empty Bottle", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
             AlchemyRecipes.InvisibilityPotion,
             new Recipe()
             {
@@ -2834,7 +2872,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteberylring",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 3),
+                    new Ingredient("pristineberyl", "Pristine Beryl", 5),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -2849,7 +2888,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniterubyring",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 3),
+                    new Ingredient("pristineruby", "Pristine Ruby", 5),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -2864,7 +2904,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsonitesapphirering",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 3),
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 5),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -2879,7 +2920,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteemeraldring",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 3),
+                    new Ingredient("pristineemerald", "Pristine Emerald", 5),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -2894,14 +2936,16 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteheartstonering",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 3),
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 5),
                 ],
                 Rank = "Advanced",
                 Level = 99,
                 Difficulty = 7,
             }
         },
-               {
+
+        {
             JewelcraftingRecipes2.AzuriumBerylRing,
             new Recipe()
             {
@@ -2909,7 +2953,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumberylring",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 3),
+                    new Ingredient("pristineberyl", "Pristine Beryl", 5),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -2924,7 +2969,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumrubyring",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 3),
+                    new Ingredient("pristineruby", "Pristine Ruby", 5),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -2939,7 +2985,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumsapphirering",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 3),
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 5),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -2954,7 +3001,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumemeraldring",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 3),
+                    new Ingredient("pristineemerald", "Pristine Emerald", 5),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -2969,13 +3017,15 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumheartstonering",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 3),
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 5),
                 ],
                 Rank = "Advanced",
                 Level = 99,
                 Difficulty = 7,
             }
         },
+
         {
             JewelcraftingRecipes2.CrimsoniteBerylEarrings,
             new Recipe()
@@ -2984,7 +3034,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteberylearrings",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 4),
+                    new Ingredient("finishedberyl", "Finished Beryl", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -2999,7 +3050,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniterubyearrings",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 4),
+                    new Ingredient("finishedruby", "Finished Ruby", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3014,7 +3066,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsonitesapphireearrings",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 4),
+                    new Ingredient("finishedsapphire", "Finished Sapphire", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3029,7 +3082,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteemeraldearrings",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 4),
+                    new Ingredient("finishedemerald", "Finished Emerald", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3044,14 +3098,16 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteheartstoneearrings",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 4),
+                    new Ingredient("finishedheartstone", "Finished Heartstone", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
                 Difficulty = 7,
             }
         },
-              {
+
+        {
             JewelcraftingRecipes2.AzuriumBerylEarrings,
             new Recipe()
             {
@@ -3059,7 +3115,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumberylearrings",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 4),
+                    new Ingredient("finishedberyl", "Finished Beryl", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3074,7 +3131,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumrubyearrings",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 4),
+                    new Ingredient("finishedruby", "Finished Ruby", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3089,7 +3147,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumsapphireearrings",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 4),
+                    new Ingredient("finishedsapphire", "Finished Sapphire", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3104,7 +3163,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumemeraldearrings",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 4),
+                    new Ingredient("finishedemerald", "Finished Emerald", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3119,13 +3179,15 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumheartstoneearrings",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 4),
+                    new Ingredient("finishedheartstone", "Finished Heartstone", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
                 Difficulty = 7,
             }
         },
+
         {
             JewelcraftingRecipes2.CrimsoniteEarthNecklace,
             new Recipe()
@@ -3134,7 +3196,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteearthnecklace",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 5),
+                    new Ingredient("finishedberyl", "Finished Beryl", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3149,7 +3212,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsonitefirenecklace",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 5),
+                    new Ingredient("finishedruby", "Finished Ruby", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3164,7 +3228,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteseanecklace",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 5),
+                    new Ingredient("finishedsapphire", "Finished Sapphire", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3179,7 +3244,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsonitewindnecklace",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 5),
+                    new Ingredient("finishedemerald", "Finished Emerald", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3194,7 +3260,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsonitelightnecklace",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 20),
+                    new Ingredient("radiantpearl", "Radiant Pearl", 1),
                 ],
                 Rank = "Expert",
                 Level = 99,
@@ -3209,14 +3276,16 @@ public static class CraftingRequirements
                 TemplateKey = "crimsonitedarknecklace",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 20),
+                    new Ingredient("eclipsepearl", "Eclipse Pearl", 1),
                 ],
                 Rank = "Expert",
                 Level = 99,
                 Difficulty = 8,
             }
         },
-              {
+
+        {
             JewelcraftingRecipes2.AzuriumEarthNecklace,
             new Recipe()
             {
@@ -3224,7 +3293,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumearthnecklace",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 5),
+                    new Ingredient("finishedberyl", "Finished Beryl", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3239,7 +3309,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumfirenecklace",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 5),
+                    new Ingredient("finishedruby", "Finished Ruby", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3254,7 +3325,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumseanecklace",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 5),
+                    new Ingredient("finishedsapphire", "Finished Sapphire", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3269,7 +3341,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumwindnecklace",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 5),
+                    new Ingredient("finishedemerald", "Finished Emerald", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3284,7 +3357,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumlightnecklace",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 20),
+                    new Ingredient("radiantpearl", "Radiant Pearl", 1),
                 ],
                 Rank = "Expert",
                 Level = 99,
@@ -3299,13 +3373,15 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumdarknecklace",
                 Ingredients =
                 [
-                    new Ingredient("apple", "Apple", 1),
+                    new Ingredient("polishedazurium", "Polished Azurium", 20),
+                    new Ingredient("eclipsepearl", "Eclipse Pearl", 1),
                 ],
                 Rank = "Expert",
                 Level = 99,
                 Difficulty = 8,
             }
         },
+
     };
 
 
@@ -3563,7 +3639,7 @@ public static class CraftingRequirements
                 TemplateKey = "chainmace",
                 Ingredients =
                 [
-                    new Ingredient("polishedIron", "Polished Iron Bar", 3),
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 3),
 
                     new Ingredient("coal", "Coal", 3)
                 ],
@@ -3648,7 +3724,7 @@ public static class CraftingRequirements
                 TemplateKey = "maguszeus",
                 Ingredients =
                 [
-                    new Ingredient("polishedIron", "Polished Iron Bar", 3),
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 3),
 
                     new Ingredient("coal", "Coal", 2)
                 ],
@@ -3665,7 +3741,7 @@ public static class CraftingRequirements
                 TemplateKey = "holykronos",
                 Ingredients =
                 [
-                    new Ingredient("polishedIron", "Polished Iron Bar", 3),
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 3),
 
                     new Ingredient("coal", "Coal", 2)
                 ],
@@ -3767,7 +3843,7 @@ public static class CraftingRequirements
                 TemplateKey = "sundagger",
                 Ingredients =
                 [
-                    new Ingredient("polishedIron", "Polished Iron Bar", 3),
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 3),
 
                     new Ingredient("coal", "Coal", 2)
                 ],
@@ -3852,7 +3928,7 @@ public static class CraftingRequirements
                 TemplateKey = "eagletalon",
                 Ingredients =
                 [
-                    new Ingredient("polishedIron", "Polished Iron Bar", 2),
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 2),
 
                     new Ingredient("coal", "Coal", 1)
                 ],
@@ -3869,7 +3945,7 @@ public static class CraftingRequirements
                 TemplateKey = "phoenixclaw",
                 Ingredients =
                 [
-                    new Ingredient("polishedMythril", "Polished Mythril Bar", 2),
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 2),
 
                     new Ingredient("coal", "Coal", 1)
                 ],
@@ -3954,7 +4030,7 @@ public static class CraftingRequirements
                 TemplateKey = "mythrilshield",
                 Ingredients =
                 [
-                    new Ingredient("polishedMythril", "Polished Mythril Bar", 2),
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 2),
 
                     new Ingredient("coal", "Coal", 2)
                 ],
@@ -4108,7 +4184,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("bramble", "Bramble", 1),
 
-                    new Ingredient("polishedIron", "Polished Iron Bar", 1),
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
 
                     new Ingredient("coal", "Coal", 3)
                 ],
@@ -4127,7 +4203,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("Longsword", "Longsword", 1),
 
-                    new Ingredient("polishedIron", "Polished Iron Bar", 1),
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 1),
 
                     new Ingredient("coal", "Coal", 3)
                 ],
@@ -4469,7 +4545,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("maguszeus", "Magus Zeus", 1),
 
-                    new Ingredient("polishedIron", "Polished Iron Bar", 2),
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 2),
 
                     new Ingredient("coal", "Coal", 1)
                 ],
@@ -4488,7 +4564,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("holykronos", "Holy Kronos", 1),
 
-                    new Ingredient("polishedIron", "Polished Iron Bar", 2),
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 2),
 
                     new Ingredient("coal", "Coal", 1)
                 ],
@@ -4507,7 +4583,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("magusdiana", "Magus Diana", 1),
 
-                    new Ingredient("polishedMythril", "Polished Mythril Bar", 3),
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 3),
 
                     new Ingredient("coal", "Coal", 2)
                 ],
@@ -4526,7 +4602,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("holydiana", "Holy Diana", 1),
 
-                    new Ingredient("polishedMythril", "Polished Mythril Bar", 3),
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 3),
 
                     new Ingredient("coal", "Coal", 2)
                 ],
@@ -4562,7 +4638,7 @@ public static class CraftingRequirements
                 TemplateKey = "oakstaff",
                 Ingredients =
                 [
-                    new Ingredient("stonecross", "Stone Cross", 1),
+                    new Ingredient("oakstaff", "Oak Staff", 1),
 
                     new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 5),
 
@@ -4581,7 +4657,7 @@ public static class CraftingRequirements
                 TemplateKey = "staffofwisdom",
                 Ingredients =
                 [
-                    new Ingredient("stonecross", "Stone Cross", 1),
+                    new Ingredient("staffofwisdom", "Staff of Wisdom", 1),
 
                     new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 5),
 
@@ -4602,7 +4678,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("snowdagger", "Snow Dagger", 1),
 
-                    new Ingredient("rawBronze", "Raw Bronze", 1),
+                    new Ingredient("rawbronze", "Raw Bronze", 1),
 
                     new Ingredient("coal", "Coal", 1)
                 ],
@@ -4621,7 +4697,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("centerdagger", "Center Dagger", 1),
 
-                    new Ingredient("rawBronze", "Raw Bronze", 1),
+                    new Ingredient("rawbronze", "Raw Bronze", 1),
 
                     new Ingredient("coal", "Coal", 1)
                 ],
@@ -4640,7 +4716,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("blossomdagger", "Blossom Dagger", 1),
 
-                    new Ingredient("polishedBronze", "Polished Bronze Bar", 2),
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
 
                     new Ingredient("coal", "Coal", 1)
                 ],
@@ -4659,7 +4735,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("curveddagger", "Curved Dagger", 1),
 
-                    new Ingredient("polishedBronze", "Polished Bronze Bar", 3),
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 3),
 
                     new Ingredient("coal", "Coal", 1)
                 ],
@@ -4678,7 +4754,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("moondagger", "Moon Dagger", 1),
 
-                    new Ingredient("polishedBronze", "Polished Bronze Bar", 3),
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 3),
 
                     new Ingredient("coal", "Coal", 2)
                 ],
@@ -4792,7 +4868,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("dullclaw", "Dull Claw", 1),
 
-                    new Ingredient("rawBronze", "Raw Bronze", 1),
+                    new Ingredient("rawbronze", "Raw Bronze", 1),
 
                     new Ingredient("coal", "Coal", 1)
                 ],
@@ -4811,7 +4887,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("wolfclaw", "Wolf Claw", 1),
 
-                    new Ingredient("polishedBronze", "Polished Bronze Bar", 2),
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
 
                     new Ingredient("coal", "Coal", 1)
                 ],
@@ -4828,9 +4904,9 @@ public static class CraftingRequirements
                 TemplateKey = "eagletalon",
                 Ingredients =
                 [
-                    new Ingredient("Eagletalon", "Eagle Talon", 1),
+                    new Ingredient("eagletalon", "Eagle Talon", 1),
 
-                    new Ingredient("polishedIron", "Polished Iron Bar", 2),
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 2),
 
                     new Ingredient("coal", "Coal", 1)
                 ],
@@ -4849,7 +4925,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("stonefist", "Stone Fist", 1),
 
-                    new Ingredient("polishedIron", "Polished Iron Bar", 3),
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 3),
 
                     new Ingredient("coal", "Coal", 2)
                 ],
@@ -4868,7 +4944,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("phoenixclaw", "Phoenix Claw", 1),
 
-                    new Ingredient("polishedMythril", "Polished Mythril Bar", 2),
+                    new Ingredient("polishedmythrilbar", "Polished Mythril Bar", 2),
 
                     new Ingredient("coal", "Coal", 1)
                 ],
@@ -4887,7 +4963,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("Nunchaku", "Nunchaku", 1),
 
-                    new Ingredient("polishedHybrasyl", "Polished Hy-brasyl Bar", 5),
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 5),
 
                     new Ingredient("coal", "Coal", 4)
                 ],
@@ -4906,7 +4982,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("woodenshield", "Wooden Shield", 1),
 
-                    new Ingredient("rawBronze", "Raw Bronze", 1),
+                    new Ingredient("rawbronze", "Raw Bronze", 1),
 
                     new Ingredient("coal", "Coal", 1)
                 ],
@@ -4925,7 +5001,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("leathershield", "Leather Shield", 1),
 
-                    new Ingredient("polishedBronze", "Polished Bronze Bar", 2),
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 2),
 
                     new Ingredient("coal", "Coal", 1)
                 ],
@@ -4944,7 +5020,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("bronzeshield", "Bronze Shield", 1),
 
-                    new Ingredient("polishedBronze", "Polished Bronze Bar", 3),
+                    new Ingredient("polishedbronzebar", "Polished Bronze Bar", 3),
 
                     new Ingredient("coal", "Coal", 2)
                 ],
@@ -4963,7 +5039,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("gravelshield", "Gravel Shield", 1),
 
-                    new Ingredient("polishedIron", "Polished Iron Bar", 2),
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 2),
 
                     new Ingredient("coal", "Coal", 1)
                 ],
@@ -4982,7 +5058,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("ironshield", "Iron Shield", 1),
 
-                    new Ingredient("polishedIron", "Polished Iron Bar", 3),
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 3),
 
                     new Ingredient("coal", "Coal", 2)
                 ],
@@ -5001,7 +5077,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("lightshield", "Light Shield", 1),
 
-                    new Ingredient("polishedIron", "Polished Iron Bar", 3),
+                    new Ingredient("polishedironbar", "Polished Iron Bar", 3),
 
                     new Ingredient("coal", "Coal", 2)
                 ],
