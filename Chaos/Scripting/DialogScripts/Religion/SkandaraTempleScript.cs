@@ -39,11 +39,7 @@ public class SkandaraTempleScript : ReligionScriptBase
                 break;
             case "skandara_temple_createscroll":
                 CreateTempleScroll(source, GODNAME);
-
-                break;
-            case "skandara_temple_transferfaithaccepted":
-                TransferFaith(source, GODNAME);
-
+                
                 break;
             
             case "skandara_temple_holdmass":

@@ -41,10 +41,6 @@ public class MiraelisTempleScript : ReligionScriptBase
                 CreateTempleScroll(source, GODNAME);
 
                 break;
-            case "miraelis_temple_transferfaithaccepted":
-                TransferFaith(source, GODNAME);
-
-                break;
             
             case "miraelis_temple_holdmass":
                 if (source.Trackers.TimedEvents.HasActiveEvent("Mass", out var timedEvent))

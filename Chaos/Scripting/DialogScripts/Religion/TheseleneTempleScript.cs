@@ -41,10 +41,6 @@ public class TheseleneTempleScript : ReligionScriptBase
                 CreateTempleScroll(source, GODNAME);
 
                 break;
-            case "theselene_temple_transferfaithaccepted":
-                TransferFaith(source, GODNAME);
-
-                break;
             
             case "theselene_temple_holdmass":
                 if (source.Trackers.TimedEvents.HasActiveEvent("Mass", out var timedEvent))

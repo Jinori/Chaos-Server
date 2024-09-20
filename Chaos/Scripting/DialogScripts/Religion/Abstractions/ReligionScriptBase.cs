@@ -34,7 +34,6 @@ public class ReligionScriptBase : DialogScriptBase
     private const string SERENDAEL_LEGEND_KEY = "Serendael";
     private const string SKANDARA_LEGEND_KEY = "Skandara";
     private const int TEMPLE_SCROLL_FAITH_COST = 1;
-    private const int AMOUNT_TO_TRANSFER_FAITH = 5;
     private const int FAITH_REWARD = 25;
     private const int LATE_FAITH_REWARD = 25;
     private const int ESSENCE_CHANCE = 10;
@@ -42,12 +41,12 @@ public class ReligionScriptBase : DialogScriptBase
     private static readonly Dictionary<Rank, List<string>> RoleOptions = new()
     {
         { Rank.None, new List<string> { "Join the Temple", "The Gods" } },
-        { Rank.Worshipper, new List<string> { "Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith" } },
-        { Rank.Acolyte, new List<string> { "Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith" } },
-        { Rank.Emissary, new List<string> { "Pray", "Transfer Faith", "A Path Home", "The Gods", "Leave Faith" } },
-        { Rank.Seer, new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith" } },
-        { Rank.Favor, new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith" } },
-        { Rank.Champion, new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "The Gods", "Leave Faith" } }
+        { Rank.Worshipper, new List<string> { "Pray", "A Path Home", "The Gods", "Leave Faith" } },
+        { Rank.Acolyte, new List<string> { "Pray", "A Path Home", "The Gods", "Leave Faith" } },
+        { Rank.Emissary, new List<string> { "Pray", "A Path Home", "The Gods", "Leave Faith" } },
+        { Rank.Seer, new List<string> { "Pray", "A Path Home", "Hold Mass", "The Gods", "Leave Faith" } },
+        { Rank.Favor, new List<string> { "Pray", "A Path Home", "Hold Mass", "The Gods", "Leave Faith" } },
+        { Rank.Champion, new List<string> { "Pray", "A Path Home", "Hold Mass", "The Gods", "Leave Faith" } }
     };
 
 
@@ -359,6 +358,12 @@ public class ReligionScriptBase : DialogScriptBase
                             player.SendOrangeBarMessage("You aren't a member of this deity, you gain nothing.");
                             continue;
                         }
+
+                        if (player.Trackers.TimedEvents.HasActiveEvent($"attendedmass{deity}", out _))
+                        {
+                            player.SendOrangeBarMessage("You've attended mass too recently.");
+                            continue;
+                        }
                         
                         player.Animate(PrayerSuccess);
 
@@ -373,6 +378,7 @@ public class ReligionScriptBase : DialogScriptBase
 
                         TryAddFaith(player, FAITH_REWARD);
                         UpdateReligionRank(player);
+                        player.Trackers.TimedEvents.AddEvent($"attendedmass{deity}", TimeSpan.FromHours(24), true);
                         var tnl = LevelUpFormulae.Default.CalculateTnl(player);
                         var twentyFivePercent = Convert.ToInt32(.25 * tnl);
 
@@ -580,7 +586,7 @@ public class ReligionScriptBase : DialogScriptBase
 
         var rank = GetPlayerRank(source);
 
-        var allOptions = new List<string> { "Pray", "Transfer Faith", "A Path Home", "Hold Mass", "Join the Temple", "Leave Faith", "The Gods" };
+        var allOptions = new List<string> { "Pray", "A Path Home", "Hold Mass", "Join the Temple", "Leave Faith", "The Gods" };
 
         if (RoleOptions.TryGetValue(rank, out var allowedOptions))
         {
@@ -740,43 +746,6 @@ public class ReligionScriptBase : DialogScriptBase
         source.SendActiveMessage($"{deity} is requesting (3) Essence of {deity}.");
     }
 
-    public void TransferFaith(Aisling source, string deity)
-    {
-        if (!TryFetchArgs<string>(out var name) || string.IsNullOrEmpty(name))
-        {
-            Subject.ReplyToUnknownInput(source);
-
-            return;
-        }
-
-        var target = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(name))?.Aisling;
-
-        if (target is null)
-        {
-            Subject.Reply(source, $"{name} is not online", $"{deity}_temple_initial");
-
-            return;
-        }
-
-        if (CheckCurrentFaith(source) <= AMOUNT_TO_TRANSFER_FAITH)
-        {
-            Subject.Reply(source, "Your faith is too low to transfer yours to another.", $"{deity}_temple_initial");
-
-            return;
-        }
-
-        if (!TryTransferFaith(source, target))
-        {
-            Subject.Reply(source, "Your faith may be too low or there was an issue.", $"{deity}_temple_initial");
-
-            return;
-        }
-
-        source.SendActiveMessage($"You bestow your faith upon {target.Name}. May {deity} bless you both.");
-        target.SendActiveMessage($"{source.Name} has bestowed faith of {deity} upon you!");
-        target.Animate(PrayerSuccess);
-    }
-
     public static bool TryAddFaith(Aisling source, int amount)
     {
         var key = CheckDeity(source);
@@ -799,27 +768,6 @@ public class ReligionScriptBase : DialogScriptBase
             if (amount < faith.Count)
             {
                 source.Legend.RemoveCount(key, amount, out _);
-
-                return true;
-            }
-
-        return false;
-    }
-
-    public bool TryTransferFaith(Aisling source, Aisling target)
-    {
-        var sourceKey = CheckDeity(source);
-        var targetKey = CheckDeity(target);
-
-        if (sourceKey is not null
-            && targetKey is not null
-            && (sourceKey == targetKey)
-            && source.Legend.TryGetValue(sourceKey, out var faith)
-            && target.Legend.TryGetValue(targetKey, out var targetFaith))
-            if (AMOUNT_TO_TRANSFER_FAITH < faith.Count)
-            {
-                faith.Count -= AMOUNT_TO_TRANSFER_FAITH;
-                targetFaith.Count += AMOUNT_TO_TRANSFER_FAITH;
 
                 return true;
             }

@@ -40,6 +40,12 @@ public class TerminusTutorialScript : DialogScriptBase
                 {
                     if (source.IsAlive)
                         return;
+                    
+                    if (source.MapInstance.Template.TemplateKey != "19903")
+                    {
+                        Subject.Reply(source, "You are already in the After Life.");
+                        return;
+                    }
 
                     var option = new DialogOption
                     {
