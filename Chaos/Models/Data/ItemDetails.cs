@@ -26,13 +26,6 @@ public sealed class ItemDetails
         Price = item.Template.BuyCost
     };
     
-    public static ItemDetails BuyWithBp(Item item, int price) => new()
-    {
-        Item = item,
-        Price = price
-    };
-
-    
     public static ItemDetails BuyWithTokens(Item item) => new()
     {
         Item = item,

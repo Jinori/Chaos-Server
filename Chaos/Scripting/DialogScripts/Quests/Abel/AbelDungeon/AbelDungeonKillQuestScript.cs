@@ -274,10 +274,10 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
 
                 if (hasStage && stage == AbelDungeonKillQuestStage.DungeonBoss)
                 {
-                    if (!source.Trackers.Counters.TryGetValue("dungeonbosscounter", out var dwarfboss) || dwarfboss < 1)
+                    if (!source.Trackers.Counters.TryGetValue("dungeonbosscounter", out var dwarfboss) || dwarfboss < 10)
                     {
                         Subject.Reply(source,
-                            "The Dwarf Captain runs the army, he needs to be kicked down a notch. Go slay him.",
+                            "The Dwarf Captain runs the army, he needs to be kicked down a notch. Go slay him 3 times.",
                             "nico_initial");
                         return;
                     }
@@ -372,7 +372,7 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                             return;
                     }
                             Subject.Reply(source,
-                                "The Dwarf Captain runs the dwarf army, with him in power, they may try getting out of the dungeon, it's important we keep him down there. Please slay him.",
+                                "The Dwarf Captain runs the dwarf army, with him in power, they may try getting out of the dungeon, it's important we keep him down there. Slay him 3 times.",
                                 "Close");
                             source.Trackers.Enums.Set(AbelDungeonKillQuestStage.DungeonBoss);
                 }

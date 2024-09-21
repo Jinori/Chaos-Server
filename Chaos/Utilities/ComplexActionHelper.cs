@@ -34,15 +34,6 @@ public static class ComplexActionHelper
         BadInput,
         NotEnoughStock
     }
-    
-    public enum BuyBugPointItemResult
-    {
-        Success,
-        CantCarry,
-        NotEnoughGamePoints,
-        BadInput,
-        NotEnoughStock
-    }
 
     public enum DepositGoldResult
     {
@@ -225,58 +216,6 @@ public static class ComplexActionHelper
 
         return BuyGamePointItemResult.Success;
     }
-    
-    public static BuyBugPointItemResult BuyBugReportPointItem(
-        Aisling source,
-        IBuyShopSource? shop,
-        Item fauxItem,
-        IItemFactory itemFactory,
-        ICloningService<Item> itemCloner,
-        int amount,
-        int costPerItem
-    )
-    {
-        ArgumentNullException.ThrowIfNull(source);
-        ArgumentNullException.ThrowIfNull(fauxItem);
-        ArgumentNullException.ThrowIfNull(itemFactory);
-        ArgumentNullException.ThrowIfNull(itemCloner);
-
-        if (amount < 1)
-            return BuyBugPointItemResult.BadInput;
-
-        if (costPerItem < 0)
-            return BuyBugPointItemResult.BadInput;
-
-        // Fail fast
-        if ((shop != null) && (shop.GetStock(fauxItem.Template.TemplateKey) < amount))
-            return BuyBugPointItemResult.NotEnoughStock;
-
-        if (!source.CanCarry((fauxItem, amount)))
-            return BuyBugPointItemResult.CantCarry;
-
-        var totalCost = costPerItem * amount;
-
-        // Check if the player has enough bug points
-        if (!source.Trackers.Counters.TryGetValue("bugreportpoints", out var currentBugPoints) || currentBugPoints < totalCost)
-        {
-            return BuyBugPointItemResult.NotEnoughGamePoints; // Use the same enum for insufficient funds
-        }
-
-        if ((shop != null) && !shop.TryDecrementStock(fauxItem.Template.TemplateKey, amount))
-            return BuyBugPointItemResult.NotEnoughStock;
-
-        // Deduct bug points instead of game points
-        source.Trackers.Counters.Set("bugreportpoints", currentBugPoints - totalCost);
-
-        var stackedItem = itemFactory.Create(fauxItem.Template.TemplateKey, fauxItem.ScriptKeys);
-        stackedItem.Count = amount;
-
-        foreach (var item in stackedItem.FixStacks(itemCloner))
-            source.Inventory.TryAddToNextSlot(item);
-
-        return BuyBugPointItemResult.Success;
-    }
-
 
     public static DepositGoldResult DepositGold(Aisling source, int amount)
     {
