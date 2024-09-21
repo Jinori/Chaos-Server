@@ -29,7 +29,7 @@ public class MythicZombieScript : DialogScriptBase
     {
         var hasMain = source.Trackers.Enums.TryGetValue(out MythicQuestMain main);
         var hasZombie = source.Trackers.Enums.TryGetValue(out MythicZombie zombie);
-        var hasGargoyle = source.Trackers.Enums.TryGetValue(out MythicGargoyle frog);
+        var hasGargoyle = source.Trackers.Enums.TryGetValue(out MythicGargoyle gargoyle);
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var twentyPercent = MathEx.GetPercentOf<int>(tnl, 20);
         var fiftyPercent = MathEx.GetPercentOf<int>(tnl, 50);
@@ -232,7 +232,7 @@ public class MythicZombieScript : DialogScriptBase
             case "zombie_ally":
             {
                 if (hasGargoyle
-                    && (hasGargoyle == frog is MythicGargoyle.AlliedGargoyle or MythicGargoyle.BossGargoyleStarted or MythicGargoyle.BossGargoyleStarted))
+                    && (hasGargoyle == gargoyle is MythicGargoyle.AlliedGargoyle or MythicGargoyle.BossGargoyleStarted or MythicGargoyle.BossGargoyleDefeated))
                 {
                     Subject.Reply(source, "Thiss is not good. You went behind our baaacksss and helped them scummy Gargoylesss! I don't like you anymore! Leave my sightsss.");
                     source.Trackers.Enums.Set(MythicZombie.EnemyZombieAllied);
@@ -292,8 +292,15 @@ public class MythicZombieScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicZombie.BossZombieDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5) &&
+                    !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
+                {
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
+                }
+                else
+                {
+                    source.SendOrangeBarMessage("Tell a GM you found a bug.");
+                }
             }
 
                 break;

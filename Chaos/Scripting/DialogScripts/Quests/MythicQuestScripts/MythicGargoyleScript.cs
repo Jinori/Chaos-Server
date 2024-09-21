@@ -360,8 +360,15 @@ public class MythicGargoyleScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicGargoyle.BossGargoyleDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5))
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5) &&
+                    !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
+                {
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
+                }
+                else
+                {
+                    source.SendOrangeBarMessage("Tell a GM you found a bug.");
+                }
             }
 
                 break;
