@@ -23,7 +23,6 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
                                         HealAbilityComponent.IHealComponentOptions,
                                         ManaDrainAbilityComponent.IManaDrainComponentOptions,
                                         ManaReplenishAbilityComponent.IManaReplenishComponentOptions,
-                                        ConsumableAbilityComponent.IConsumableComponentOptions,
                                         ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 
 {
@@ -63,10 +62,22 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
             return;
         }
         
+        if (source.Trackers.TimedEvents.HasActiveEvent("potiontimer", out var cdtimer))
+        {
+            source.SendOrangeBarMessage($"You must wait {cdtimer.Remaining.Seconds} seconds before consuming something else.");
+            return;
+        }
+        
+        source.Inventory.RemoveQuantity(ItemName, 1);
+        
+        source.Trackers.TimedEvents.AddEvent("potiontimer", TimeSpan.FromSeconds(6),true);
+        
+        if (Message)
+            source.SendOrangeBarMessage("You consumed a " + ItemName + ".");
+        
         new ComponentExecutor(source, source).WithOptions(this)
             .ExecuteAndCheck<GenericAbilityComponent<Aisling>>()
-            ?.Execute<ConsumableAbilityComponent>()
-            .Execute<DamageAbilityComponent>()
+            ?.Execute<DamageAbilityComponent>()
             .Execute<HealAbilityComponent>()
             .Execute<ManaDrainAbilityComponent>()
             .Execute<ManaReplenishAbilityComponent>()
