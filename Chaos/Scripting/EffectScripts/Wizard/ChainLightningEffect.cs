@@ -116,7 +116,7 @@ namespace Chaos.Scripting.EffectScripts.Wizard
             // Find nearby targets for the next bounce
             var nearbyTargets = target.MapInstance.GetEntitiesWithinRange<Creature>(target, 2)
                 .OrderBy(t => t.ManhattanDistanceFrom(target))
-                .Where(t => !HitTargetIds.Contains(t.Id) && ShouldApply(SourceOfEffect, t))
+                .Where(t => !HitTargetIds.Contains(t.Id) && ShouldApply(SourceOfEffect, t) && !t.MapInstance.IsWall(t))
                 .ToList();
 
             if (nearbyTargets.Any())

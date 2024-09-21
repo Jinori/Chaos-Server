@@ -66,7 +66,7 @@ public class VortexEffect : ContinuousAnimationEffectBase
         foreach (var target in targets)
         {
             ApplyDamageScript.ApplyDamage(
-                Subject,
+                SourceOfEffect,
                 target,
                 this,
                 (SourceOfEffect.StatSheet.Level + SourceOfEffect.StatSheet.EffectiveInt) * 24 + 500,
