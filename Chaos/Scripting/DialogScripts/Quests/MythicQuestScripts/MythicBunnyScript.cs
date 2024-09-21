@@ -131,7 +131,7 @@ public class MythicBunnyScript : DialogScriptBase
                     source,
                     "You have our paws-tounding gratitude. Don't let the horses get your goat, though - they're quick and nimble, and they can kick like mules. But we believe in you, and we know you'll do us proud. May the bunny luck be with you!");
 
-                source.SendOrangeBarMessage("Kill 15 Purple Horses for Big Bunny");
+                source.SendOrangeBarMessage("Kill 15 Eerie Horses for Big Bunny");
                 source.Trackers.Enums.Set(MythicBunny.LowerBunny);
 
                 return;
