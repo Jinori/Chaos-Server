@@ -1,3 +1,5 @@
+using System.Reactive.Subjects;
+using Chaos.Collections;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Panel;
@@ -29,6 +31,15 @@ public class RestrictionBehavior
 
                 return false;
             }
+            
+            case Aisling { IsAdmin: true } aisling when aisling.Effects.Contains("follow"):
+            {
+                // Terminate the follow effect if God Mode is enabled
+                aisling.Effects.Terminate("follow");
+                aisling.SendOrangeBarMessage("Follow effect has been terminated because you moved.");
+            }
+                break;
+            
             case Monster monster when monster.IsSuained()
                                       || monster.IsBlind
                                       || monster.IsPramhed()
@@ -38,7 +49,7 @@ public class RestrictionBehavior
                 return false;
             }
         }
-
+        
         return MapsGhostsCanMoveOn.Contains(creature.MapInstance.Name) || creature.IsAlive;
     }
 

@@ -231,7 +231,7 @@ public class RecipeLibraryScript : DialogScriptBase
             {
                 // Checking if the Alchemy recipe is available or not.
                 if (source.Trackers.Flags.TryGetFlag(out JewelcraftingRecipes recipes))
-                    // Iterating through the Alchemy recipe requirements.
+                {
                     foreach (var recipe in CraftingRequirements.JewelcraftingRequirements)
                         // Checking if the recipe is available or not.
                         if (recipes.HasFlag(recipe.Key))
@@ -241,6 +241,21 @@ public class RecipeLibraryScript : DialogScriptBase
                             // Adding the recipe to the subject's dialog window.
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
+                }
+                
+                // Checking if the Alchemy recipe is available or not.
+                if (source.Trackers.Flags.TryGetFlag(out JewelcraftingRecipes2 recipes2))
+                {
+                    foreach (var recipe2 in CraftingRequirements.JewelcraftingRequirements2)
+                        // Checking if the recipe is available or not.
+                        if (recipes2.HasFlag(recipe2.Key))
+                        {
+                            // Creating a faux item for the recipe.
+                            var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+                            // Adding the recipe to the subject's dialog window.
+                            Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
+                }
 
                 break;
             }
@@ -1801,6 +1816,358 @@ public class RecipeLibraryScript : DialogScriptBase
                             source,
                             $"{FauxItem.Template.Name
                             } requires 1 Polished Hy-Brasyl Bar and 3 Pristine Emerald.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "crimsoniteberylring":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 3 Polished Crimsonite Bar and 5 Pristine Beryl.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "crimsoniterubyring":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 3 Polished Crimsonite Bar and 5 Pristine Ruby.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "crimsonitesapphirering":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 3 Polished Crimsonite Bar and 5 Pristine Sapphire.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "crimsoniteemeraldring":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 3 Polished Crimsonite Bar and 5 Pristine Emerald.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "crimsoniteheartstonering":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 3 Polished Crimsonite Bar and 5 Pristine Heartstone.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                        case "azuriumberylring":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 3 Polished Azurium Bar and 5 Pristine Beryl.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "azuriumrubyring":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 3 Polished Azurium Bar and 5 Pristine Ruby.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "azuriumsapphirering":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 3 Polished Azurium Bar and 5 Pristine Sapphire.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "azuriumemeraldring":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 3 Polished Azurium Bar and 5 Pristine Emerald.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "azuriumheartstonering":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 3 Polished Azurium Bar and 5 Pristine Heartstone.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                        case "crimsoniteberylearrings":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 4 Polished Crimsonite Bar and 4 Pristine Beryl.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "crimsoniterubyearrings":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 4 Polished Crimsonite Bar and 4 Pristine Ruby.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "crimsonitesapphireearrings":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 4 Polished Crimsonite Bar and 4 Pristine Sapphire.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "crimsoniteemeraldearrings":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 4 Polished Crimsonite Bar and 4 Pristine Emerald.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "crimsoniteheartstoneearrings":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 4 Polished Crimsonite Bar and 4 Pristine Heartstone.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                        case "azuriumberylearrings":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 4 Polished Azurium Bar and 4 Pristine Beryl.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "azuriumrubyearrings":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 4 Polished Azurium Bar and 4 Pristine Ruby.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "azuriumsapphireearrings":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 4 Polished Azurium Bar and 4 Pristine Sapphire.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "azuriumemeraldearrings":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 4 Polished Azurium Bar and 4 Pristine Emerald.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "azuriumheartstoneearrings":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 4 Polished Azurium Bar and 4 Pristine Heartstone.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "crimsoniteearthnecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 5 Polished Crimsonite Bar and 4 Pristine Beryl.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "crimsonitefirenecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 5 Polished Crimsonite Bar and 4 Pristine Ruby.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "crimsoniteseanecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 5 Polished Crimsonite Bar and 4 Pristine Sapphire.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "crimsonitewindnecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 5 Polished Crimsonite Bar and 4 Pristine Emerald.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "crimsonitelightnecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 20 Polished Crimsonite Bar and 1 Radiant Pearl.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "crimsonitedarknecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 20 Polished Crimsonite Bar and 1 Eclipse Pearl.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                            case "azuriumearthnecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 5 Polished Azurium Bar and 4 Pristine Beryl.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "azuriumfirenecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 5 Polished Azurium Bar and 4 Pristine Ruby.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "azuriumseanecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 5 Polished Azurium Bar and 4 Pristine Sapphire.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "azuriumwindnecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 5 Polished Azurium Bar and 4 Pristine Emerald.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "azuriumlightnecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 20 Polished Azurium Bar and 1 Radiant Pearl.",
+                            "jewelcraftingbook");
+
+                        return;
+                    }
+                    
+                    case "azuriumdarknecklace":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 20 Polished Azurium Bar and 1 Eclipse Pearl.",
                             "jewelcraftingbook");
 
                         return;

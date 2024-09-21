@@ -2872,7 +2872,7 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteberylring",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 3),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 3),
                     new Ingredient("pristineberyl", "Pristine Beryl", 5),
                 ],
                 Rank = "Advanced",
@@ -2888,7 +2888,7 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniterubyring",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 3),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 3),
                     new Ingredient("pristineruby", "Pristine Ruby", 5),
                 ],
                 Rank = "Advanced",
@@ -2904,7 +2904,7 @@ public static class CraftingRequirements
                 TemplateKey = "crimsonitesapphirering",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 3),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 3),
                     new Ingredient("pristinesapphire", "Pristine Sapphire", 5),
                 ],
                 Rank = "Advanced",
@@ -2920,7 +2920,7 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteemeraldring",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 3),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 3),
                     new Ingredient("pristineemerald", "Pristine Emerald", 5),
                 ],
                 Rank = "Advanced",
@@ -2936,7 +2936,7 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteheartstonering",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 3),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 3),
                     new Ingredient("pristineheartstone", "Pristine Heartstone", 5),
                 ],
                 Rank = "Advanced",
@@ -2953,7 +2953,7 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumberylring",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 3),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 3),
                     new Ingredient("pristineberyl", "Pristine Beryl", 5),
                 ],
                 Rank = "Advanced",
@@ -2969,7 +2969,7 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumrubyring",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 3),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 3),
                     new Ingredient("pristineruby", "Pristine Ruby", 5),
                 ],
                 Rank = "Advanced",
@@ -2985,7 +2985,7 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumsapphirering",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 3),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 3),
                     new Ingredient("pristinesapphire", "Pristine Sapphire", 5),
                 ],
                 Rank = "Advanced",
@@ -3001,7 +3001,7 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumemeraldring",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 3),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 3),
                     new Ingredient("pristineemerald", "Pristine Emerald", 5),
                 ],
                 Rank = "Advanced",
@@ -3017,7 +3017,7 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumheartstonering",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 3),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 3),
                     new Ingredient("pristineheartstone", "Pristine Heartstone", 5),
                 ],
                 Rank = "Advanced",
@@ -3034,8 +3034,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteberylearrings",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 4),
-                    new Ingredient("finishedberyl", "Finished Beryl", 4),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 4),
+                    new Ingredient("pristineberyl", "Pristine Beryl", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3050,8 +3050,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniterubyearrings",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 4),
-                    new Ingredient("finishedruby", "Finished Ruby", 4),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 4),
+                    new Ingredient("pristineruby", "Pristine Ruby", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3066,8 +3066,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsonitesapphireearrings",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 4),
-                    new Ingredient("finishedsapphire", "Finished Sapphire", 4),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 4),
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3082,8 +3082,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteemeraldearrings",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 4),
-                    new Ingredient("finishedemerald", "Finished Emerald", 4),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 4),
+                    new Ingredient("pristineemerald", "Pristine Emerald", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3098,8 +3098,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteheartstoneearrings",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 4),
-                    new Ingredient("finishedheartstone", "Finished Heartstone", 4),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 4),
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3115,8 +3115,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumberylearrings",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 4),
-                    new Ingredient("finishedberyl", "Finished Beryl", 4),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 4),
+                    new Ingredient("pristineberyl", "Pristine Beryl", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3131,8 +3131,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumrubyearrings",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 4),
-                    new Ingredient("finishedruby", "Finished Ruby", 4),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 4),
+                    new Ingredient("pristineruby", "Pristine Ruby", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3147,8 +3147,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumsapphireearrings",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 4),
-                    new Ingredient("finishedsapphire", "Finished Sapphire", 4),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 4),
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3163,8 +3163,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumemeraldearrings",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 4),
-                    new Ingredient("finishedemerald", "Finished Emerald", 4),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 4),
+                    new Ingredient("pristineemerald", "Pristine Emerald", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3179,8 +3179,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumheartstoneearrings",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 4),
-                    new Ingredient("finishedheartstone", "Finished Heartstone", 4),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 4),
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3196,8 +3196,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteearthnecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 5),
-                    new Ingredient("finishedberyl", "Finished Beryl", 4),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 5),
+                    new Ingredient("pristineberyl", "Pristine Beryl", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3212,8 +3212,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsonitefirenecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 5),
-                    new Ingredient("finishedruby", "Finished Ruby", 4),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 5),
+                    new Ingredient("pristineruby", "Pristine Ruby", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3228,8 +3228,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsoniteseanecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 5),
-                    new Ingredient("finishedsapphire", "Finished Sapphire", 4),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 5),
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3244,8 +3244,8 @@ public static class CraftingRequirements
                 TemplateKey = "crimsonitewindnecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 5),
-                    new Ingredient("finishedemerald", "Finished Emerald", 4),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 5),
+                    new Ingredient("pristineemerald", "Pristine Emerald", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3260,7 +3260,7 @@ public static class CraftingRequirements
                 TemplateKey = "crimsonitelightnecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 20),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 20),
                     new Ingredient("radiantpearl", "Radiant Pearl", 1),
                 ],
                 Rank = "Expert",
@@ -3276,7 +3276,7 @@ public static class CraftingRequirements
                 TemplateKey = "crimsonitedarknecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedcrimsonite", "Polished Crimsonite", 20),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 20),
                     new Ingredient("eclipsepearl", "Eclipse Pearl", 1),
                 ],
                 Rank = "Expert",
@@ -3293,8 +3293,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumearthnecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 5),
-                    new Ingredient("finishedberyl", "Finished Beryl", 4),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 5),
+                    new Ingredient("pristineberyl", "Pristine Beryl", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3309,8 +3309,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumfirenecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 5),
-                    new Ingredient("finishedruby", "Finished Ruby", 4),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 5),
+                    new Ingredient("pristineruby", "Pristine Ruby", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3325,8 +3325,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumseanecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 5),
-                    new Ingredient("finishedsapphire", "Finished Sapphire", 4),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 5),
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3341,8 +3341,8 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumwindnecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 5),
-                    new Ingredient("finishedemerald", "Finished Emerald", 4),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 5),
+                    new Ingredient("pristineemerald", "Pristine Emerald", 4),
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -3357,7 +3357,7 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumlightnecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 20),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 20),
                     new Ingredient("radiantpearl", "Radiant Pearl", 1),
                 ],
                 Rank = "Expert",
@@ -3373,7 +3373,7 @@ public static class CraftingRequirements
                 TemplateKey = "azuriumdarknecklace",
                 Ingredients =
                 [
-                    new Ingredient("polishedazurium", "Polished Azurium", 20),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 20),
                     new Ingredient("eclipsepearl", "Eclipse Pearl", 1),
                 ],
                 Rank = "Expert",
