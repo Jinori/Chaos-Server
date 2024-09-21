@@ -31,7 +31,7 @@ public struct AssassinStrikeComponent : IComponent
 
             if (target is Monster monster)
             {
-                if (monster.Script.Is<ThisIsABossScript>())
+                if (target.Name.Contains("Dummy") || monster.Script.Is<ThisIsABossScript>())
                     continue;
 
                 // 20% chance to kill the target instantly

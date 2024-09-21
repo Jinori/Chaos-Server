@@ -91,6 +91,9 @@ namespace Chaos.Scripting.MapScripts.CthonicDemise
             foreach (var aisling in aislings)
             {
                 aisling.SendOrangeBarMessage("A portal opens nearby to Cthonic Remains 11 to rest.");
+                
+                if (!aisling.Trackers.Flags.HasFlag(CdDungeonBoss.CompletedDungeonOnce))
+                    aisling.Trackers.Flags.AddFlag(CdDungeonBoss.CompletedDungeonOnce);
             }
         }
     }

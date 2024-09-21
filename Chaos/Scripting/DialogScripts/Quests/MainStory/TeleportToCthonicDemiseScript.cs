@@ -21,6 +21,36 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
+        if (source.IsGodModeEnabled())
+        {
+            var rectangle = new Rectangle(98, 194, 3, 3);
+            var mapInstance = SimpleCache.Get<MapInstance>("cthonic_demise");
+
+                source.Trackers.Flags.RemoveFlag(CdDungeonBoss.Jane);
+                source.Trackers.Flags.RemoveFlag(CdDungeonBoss.John);
+                source.Trackers.Flags.RemoveFlag(CdDungeonBoss.Mary);
+                source.Trackers.Flags.RemoveFlag(CdDungeonBoss.Mike);
+                source.Trackers.Flags.RemoveFlag(CdDungeonBoss.Pam);
+                source.Trackers.Flags.RemoveFlag(CdDungeonBoss.Phil);
+                source.Trackers.Flags.RemoveFlag(CdDungeonBoss.William);
+                source.Trackers.Flags.RemoveFlag(CdDungeonBoss.Wanda);
+                source.Trackers.Flags.RemoveFlag(CdDungeonBoss.Roy);
+                source.Trackers.Flags.RemoveFlag(CdDungeonBoss.Ray);
+            
+                Point point;
+                do
+                {
+                    point = rectangle.GetRandomPoint();
+                }
+                while (!mapInstance.IsWalkable(point, source.Type));
+            
+                var dialog = source.ActiveDialog.Get();
+                dialog?.Close(source);
+                Subject.Close(source);
+                source.TraverseMap(mapInstance, point);
+                return;
+        }
+        
         if (!IsGroupValid(source))
         {
             SendGroupInvalidMessage(source);
@@ -120,9 +150,6 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
 
         foreach (var member in group)
         {
-            if (member.Inventory.Contains("Cthonic Bell"))
-                member.Inventory.RemoveQuantity("Cthonic Bell", 100);
-
             member.Trackers.Flags.RemoveFlag(CdDungeonBoss.Jane);
             member.Trackers.Flags.RemoveFlag(CdDungeonBoss.John);
             member.Trackers.Flags.RemoveFlag(CdDungeonBoss.Mary);
@@ -144,7 +171,14 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
             var dialog = member.ActiveDialog.Get();
             dialog?.Close(member);
             Subject.Close(source);
-            member.Trackers.TimedEvents.AddEvent("cthonic_demise", TimeSpan.FromHours(4), true);
+
+            if (!member.IsGodModeEnabled())
+            {
+                if (member.Inventory.Contains("Cthonic Bell"))
+                    member.Inventory.RemoveQuantity("Cthonic Bell", 100);
+                
+                member.Trackers.TimedEvents.AddEvent("cthonic_demise", TimeSpan.FromHours(4), true);   
+            }
             member.TraverseMap(mapInstance, point);
         }
     }

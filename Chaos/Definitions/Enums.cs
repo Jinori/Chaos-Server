@@ -1764,7 +1764,8 @@ public enum CdDungeonBoss
     Phil = 1 << 7,
     Pam = 1 << 8,
     William = 1 << 9,
-    Wanda = 1 << 10
+    Wanda = 1 << 10,
+    CompletedDungeonOnce = 1 << 11
 }
 
 [Flags]
