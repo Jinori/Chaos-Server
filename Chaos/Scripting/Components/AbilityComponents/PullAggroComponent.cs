@@ -47,6 +47,9 @@ public class PullAggroComponent : IComponent
         {
             var pointsAroundSource = source.GenerateCardinalPoints().Concat(source.GenerateIntercardinalPoints()).ToList();
 
+            if (target.StatSheet.CurrentHp < 1)
+                return;
+            
             if (target.Name.Contains("Dummy") || target.Script.Is<ThisIsABossScript>())
             {
                 var player = source as Aisling;

@@ -1,4 +1,5 @@
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -26,6 +27,14 @@ public class TpToCthonicDemiseScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
+        if (source.IsGodModeEnabled())
+        {
+            var point1 = new Point (source.X, source.Y);
+            var blankmerchant1 = MerchantFactory.Create("blank_merchant", Subject.MapInstance, point1);
+            var dialog1 = DialogFactory.Create("cthonicdemise_entrance", blankmerchant1);
+            dialog1.Display(aisling);
+        }
+
         if (aisling.Trackers.TimedEvents.HasActiveEvent("cthonicdemise", out _))
         {
             aisling.SendOrangeBarMessage("You have faced the army too recently, give yourself time to rest.");
@@ -33,7 +42,7 @@ public class TpToCthonicDemiseScript : ReactorTileScriptBase
             source.WarpTo(point2);
         }
         
-        if (aisling.Trackers.Flags.HasFlag(MainstoryFlags.FinishedDungeon))
+        if (aisling.Trackers.Flags.HasFlag(MainstoryFlags.FinishedDungeon) && !aisling.IsGodModeEnabled())
         {
             aisling.SendOrangeBarMessage("The army is gone, nothing for you there.");
             var point2 = source.DirectionalOffset(source.Direction.Reverse());
