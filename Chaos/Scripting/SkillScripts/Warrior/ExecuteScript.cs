@@ -38,6 +38,9 @@ public class ExecuteScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public decimal DmgHealthPct { get; init; }
 
+    public bool StopOnWalls { get; init; }
+    public bool StopOnFirstHit { get; init; }
+
     /// <inheritdoc />
     public bool ExcludeSourcePoint { get; init; }
     /// <inheritdoc />

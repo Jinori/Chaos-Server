@@ -118,7 +118,7 @@ namespace Chaos.Scripting.Components.AbilityComponents
             AppendPropertyIfNotNullOrEmpty(sb, "Gender", item.Template.Gender.ToString());
             AppendPropertyIfNotNullOrEmpty(sb, "Class", item.Template.Class.ToString());
             AppendPropertyIfNotZero(sb, "Weight", item.Template.Weight);
-            AppendPropertyIfNotZero(sb, "AC", item.Template.Modifiers?.Ac ?? 0);
+            AppendPropertyIfNotZero(sb, "AC", item.Modifiers.Ac);
             AppendPropertyIfNotZero(sb, "Buy Cost", item.Template.BuyCost);
             AppendPropertyIfNotZero(sb, "Sell Value", item.Template.SellValue);
             AppendPropertyIfNotZero(sb, "Max Stack", item.Template.MaxStacks);

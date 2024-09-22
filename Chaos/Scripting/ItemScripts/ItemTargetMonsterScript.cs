@@ -32,6 +32,8 @@ public class ItemTargetMonsterScript(Item subject, IEffectFactory effectFactory)
     public string? EffectKey { get; init; }
     public int? EffectApplyChance { get; init; }
 
+    public bool StopOnWalls { get; init; }
+    public bool StopOnFirstHit { get; init; }
     public bool ExcludeSourcePoint { get; init; }
     public TargetFilter Filter { get; init; }
     public string ItemName { get; init; } = null!;

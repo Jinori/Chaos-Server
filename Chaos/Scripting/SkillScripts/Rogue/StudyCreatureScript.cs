@@ -25,6 +25,9 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, GenericAbilityCo
 
     public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
 
+    public bool StopOnWalls { get; init; }
+    public bool StopOnFirstHit { get; init; }
+
     /// <inheritdoc />
     public bool ExcludeSourcePoint { get; init; }
     /// <inheritdoc />

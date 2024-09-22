@@ -128,6 +128,9 @@ namespace Chaos.Scripting.ReactorTileScripts
         }
 
         #region ScriptVars
+
+        public bool StopOnWalls { get; init; }
+        public bool StopOnFirstHit { get; init; }
         public bool ExcludeSourcePoint { get; init; }
         public int? DurationSecs { get; init; }
         public int? MaxTriggers { get; init; }

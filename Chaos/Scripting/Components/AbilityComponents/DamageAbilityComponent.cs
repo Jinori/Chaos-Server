@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Extensions;
 using Chaos.Models.Data;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
@@ -21,7 +22,7 @@ public struct DamageAbilityComponent : IComponent
 
         bool surroundingTargets = options.SurroundingTargets ?? false;
         int numberOfTargets = surroundingTargets ? targets.Count() : 1;
-
+        
         foreach (var target in targets)
         {
             var damage = CalculateDamage(
@@ -46,7 +47,7 @@ public struct DamageAbilityComponent : IComponent
             }
         }
     }
-
+    
     private int CalculateDamage(
         Creature source,
         Creature target,
@@ -59,7 +60,7 @@ public struct DamageAbilityComponent : IComponent
         bool? moreDmgLowTargetHp = null)
     {
         var finalDamage = baseDamage ?? 0;
-
+        
         if (moreDmgLowTargetHp == true)
         {
             var healthPercentFactor = 1 + (1 - target.StatSheet.HealthPercent / 100m);
@@ -100,7 +101,7 @@ public struct DamageAbilityComponent : IComponent
         }
 
         ApplyFuryEffects(source, ref finalDamage);
-
+        
         return finalDamage;
     }
 

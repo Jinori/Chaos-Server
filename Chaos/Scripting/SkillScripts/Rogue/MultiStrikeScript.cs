@@ -30,6 +30,8 @@ namespace Chaos.Scripting.SkillScripts.Rogue
         public Stat? DamageStat { get; init; }
         public decimal? DamageStatMultiplier { get; init; }
         public Element? Element { get; init; }
+        public bool StopOnWalls { get; init; }
+        public bool StopOnFirstHit { get; init; }
         public bool ExcludeSourcePoint { get; init; }
         public TargetFilter Filter { get; init; }
         public int? ManaCost { get; init; }

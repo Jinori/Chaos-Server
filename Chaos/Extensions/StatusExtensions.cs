@@ -1,3 +1,4 @@
+using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.World;
@@ -8,6 +9,26 @@ namespace Chaos.Extensions;
 public static class StatusExtensions
 {
 
+    public static bool IsPureRogueMaster(this Aisling aisling) => aisling.Legend.ContainsKey("rogueClass") &&
+                                                            !aisling.Legend.ContainsKey("dedicated") &&
+                                                            aisling.UserStatSheet.Master;
+    
+    public static bool IsPurePriestMaster(this Aisling aisling) => aisling.Legend.ContainsKey("priestClass") &&
+                                                            !aisling.Legend.ContainsKey("dedicated") &&
+                                                            aisling.UserStatSheet.Master;
+    
+    public static bool IsPureMonkMaster(this Aisling aisling) => aisling.Legend.ContainsKey("monkClass") &&
+                                                            !aisling.Legend.ContainsKey("dedicated") &&
+                                                            aisling.UserStatSheet.Master;
+    
+    public static bool IsPureWarriorMaster(this Aisling aisling) => aisling.Legend.ContainsKey("warriorClass") &&
+                                                                 !aisling.Legend.ContainsKey("dedicated") &&
+                                                                 aisling.UserStatSheet.Master;
+    
+    public static bool IsPureWizardMaster(this Aisling aisling) => aisling.Legend.ContainsKey("wizardClass") &&
+                                                                 !aisling.Legend.ContainsKey("dedicated") &&
+                                                                 aisling.UserStatSheet.Master;
+    
     public static bool IsGodModeEnabled(this Creature creature) => creature.Trackers.Enums.HasValue(GodMode.Yes);
     public static bool IsPramhed(this Creature creature) => creature.Effects.Contains("beagpramh") || creature.Effects.Contains("pramh");
     public static bool IsSuained(this Creature creature) => creature.Effects.Contains("suain") || creature.Effects.Contains("wolffangfist");

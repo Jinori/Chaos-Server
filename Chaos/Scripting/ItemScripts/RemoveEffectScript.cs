@@ -31,6 +31,9 @@ public class RemoveEffectScript : ConfigurableItemScriptBase,
     /// <inheritdoc />
     public string? EffectKey { get; init; }
 
+    public bool StopOnWalls { get; init; }
+    public bool StopOnFirstHit { get; init; }
+
     /// <inheritdoc />
     public bool ExcludeSourcePoint { get; init; }
 
@@ -84,7 +87,7 @@ public class RemoveEffectScript : ConfigurableItemScriptBase,
         new ComponentExecutor(source, source).WithOptions(this)
             .ExecuteAndCheck<GenericAbilityComponent<Aisling>>()!
             .Execute<ConsumableAbilityComponent>()
-            ?.Execute<RemoveEffectComponent>();
+            .Execute<RemoveEffectComponent>();
     }
 
     public int SplashChance { get; init; }

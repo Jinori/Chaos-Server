@@ -13,17 +13,22 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.SkillScripts;
 
-public class AssassinStrikeScript : ConfigurableSkillScriptBase,
+public class ThrowWeaponScript : ConfigurableSkillScriptBase,
                             GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                            AssassinStrikeComponent.IDamageComponentOptions
+                            DamageAbilityComponent.IDamageComponentOptions,
+                            ApplyEffectAbilityComponent.IApplyEffectComponentOptions,
+                            ThrowWeaponComponent.IThrowWeaponComponentOptions
 {
     /// <inheritdoc />
-    public AssassinStrikeScript(Skill subject, IEffectFactory effectFactory)
+    public ThrowWeaponScript(Skill subject, IEffectFactory effectFactory)
         : base(subject)
     {
         EffectFactory = effectFactory;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
+        
+        if (Subject.Template.IsAssail)
+            ScaleBodyAnimationSpeedByAttackSpeed = true;
     }
 
     /// <inheritdoc />
@@ -31,7 +36,9 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
                                          ?
-                                         .Execute<AssassinStrikeComponent>();
+                                         .Execute<DamageAbilityComponent>()
+                                         .Execute<ThrowWeaponComponent>()
+                                         .Execute<ApplyEffectAbilityComponent>();
 
     #region ScriptVars
     /// <inheritdoc />
@@ -78,6 +85,8 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public int? BaseDamage { get; init; }
     /// <inheritdoc />
+    public bool? MoreDmgLowTargetHp { get; init; }
+    /// <inheritdoc />
     public Stat? DamageStat { get; init; }
 
     /// <inheritdoc />
@@ -86,12 +95,13 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public Element? Element { get; init; }
 
-    public bool? MoreDmgHighTargetHp { get; init; }
-
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }
 
     public IScript SourceScript { get; init; }
+    public bool? SurroundingTargets { get; init; }
+    public decimal? DamageMultiplierPerTarget { get; init; }
+
     /// <inheritdoc />
     public int? ManaCost { get; init; }
 
@@ -100,9 +110,14 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
+    #endregion
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
     public TimeSpan? EffectDurationOverride { get; init; }
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
     public int? EffectApplyChance { get; init; }
-    #endregion
+    public int DistanceToThrow { get; init; }
 }

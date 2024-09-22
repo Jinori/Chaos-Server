@@ -4,6 +4,7 @@ using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Geometry.Abstractions.Definitions;
+using Chaos.Geometry.EqualityComparers;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
@@ -32,10 +33,21 @@ public struct GetTargetsAbilityComponent<TEntity> : IConditionalComponent where 
                                       options.ExcludeSourcePoint)
                                   .ToListCast<IPoint>();
 
+        if (options.StopOnWalls)
+            targetPoints = targetPoints.FilterByLineOfSight(context.TargetPoint, context.TargetMap).ToList();
+        
         var targetEntities = map.GetEntitiesAtPoints<TEntity>(targetPoints)
                                 .WithFilter(context.Source, options.Filter)
                                 .ToList();
-
+        
+        if (options.StopOnFirstHit)
+            targetEntities = targetEntities.Where(x =>
+            {
+                var points = context.TargetPoint.RayTraceTo<IPoint>(x).Skip(1).SkipLast(1);
+                return points.All(point => !targetEntities.Any(e => PointEqualityComparer.Instance.Equals(e, point)));
+            }).ToList();
+        
+        
         if (options.SingleTarget && (targetEntities.Count > 1))
         {
             if (context.TargetCreature is TEntity entity && targetEntities.Contains(entity))
@@ -44,7 +56,7 @@ public struct GetTargetsAbilityComponent<TEntity> : IConditionalComponent where 
                 targetEntities =
                 [
                     targetEntities.OrderBy(e => e.Creation)
-                                  .First()
+                        .First()
                 ];
         }
 
@@ -56,6 +68,8 @@ public struct GetTargetsAbilityComponent<TEntity> : IConditionalComponent where 
 
     public interface IGetTargetsComponentOptions
     {
+        bool StopOnWalls { get; init; }
+        bool StopOnFirstHit { get; init; }
         bool ExcludeSourcePoint { get; init; }
         TargetFilter Filter { get; init; }
         bool MustHaveTargets { get; init; }

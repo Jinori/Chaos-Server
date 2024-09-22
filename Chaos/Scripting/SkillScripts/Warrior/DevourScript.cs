@@ -47,6 +47,9 @@ public class DevourScript : ConfigurableSkillScriptBase,
 
     public decimal HealPercentMissingHealth { get; init; }
 
+    public bool StopOnWalls { get; init; }
+    public bool StopOnFirstHit { get; init; }
+
     /// <inheritdoc />
     public bool ExcludeSourcePoint { get; init; }
     /// <inheritdoc />

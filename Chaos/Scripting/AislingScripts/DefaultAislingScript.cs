@@ -773,6 +773,42 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         Subject.SendOrangeBarMessage("Ability " + keyToKeep + " removed old ability " + keyToRemove + ".");
     }
 
+    private static void RemoveOldMonkFormSkillsSpells(Aisling aisling)
+    {
+        if (aisling.UserStatSheet.BaseClass is not BaseClass.Monk) 
+            return;
+
+        if (!aisling.Trackers.Enums.TryGetValue(out MonkElementForm currentForm)) 
+            return;
+
+        var elementSkillsAndSpells = new Dictionary<MonkElementForm, (List<string> Skills, List<string> Spells)>
+        {
+            { MonkElementForm.Water, (["waterpunch", "tsunamikick", "hydrosiphon"], ["miststance", "tidestance"]) },
+            { MonkElementForm.Earth, (["earthpunch", "seismickick", "seismicslam"], ["earthenstance", "rockstance"]) },
+            { MonkElementForm.Air, (["airpunch", "tempestkick", "cyclonetwist"], ["thunderstance", "lightningstance"]) },
+            { MonkElementForm.Fire, (["firepunch", "dracotailkick", "moltenstrike"], ["smokestance", "flamestance"]) }
+        };
+
+        foreach (var element in elementSkillsAndSpells.Where(element => element.Key != currentForm))
+        {
+            RemoveSkillsAndSpells(aisling, element.Value.Skills, element.Value.Spells);
+        }
+    }
+
+    private static void RemoveSkillsAndSpells(Aisling aisling, List<string> skills, List<string> spells)
+    {
+        foreach (var skill in skills.Where(skill => aisling.SkillBook.ContainsByTemplateKey(skill)))
+        {
+            aisling.SkillBook.RemoveByTemplateKey(skill);
+        }
+
+        foreach (var spell in spells.Where(spell => aisling.SpellBook.ContainsByTemplateKey(spell)))
+        {
+            aisling.SpellBook.RemoveByTemplateKey(spell);
+        }
+    }
+
+    
     void RemoveAndNotifyIfBothExist(string keyToKeep, string keyToRemove)
     {
         if (Subject.SpellBook.ContainsByTemplateKey(keyToKeep) && Subject.SpellBook.ContainsByTemplateKey(keyToRemove))
@@ -864,6 +900,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             }
 
 
+            RemoveOldMonkFormSkillsSpells(Subject);
             RemoveAndNotifyIfBothExist("athar", "beagathar");
             RemoveAndNotifyIfBothExist("morathar", "athar");
             RemoveAndNotifyIfBothExist("morathar", "beagathar");
@@ -948,6 +985,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("roar", "goad");
             RemoveAndNotifyIfBothExist("roar", "howl");
             RemoveAndNotifyIfBothExist("vortex", "quake");
+            RemoveAndNotifyIfBothExist("rockstance", "earthenstance");
+            RemoveAndNotifyIfBothExist("thunderstance", "lightningstance");
+            RemoveAndNotifyIfBothExist("miststance", "tidestance");
+            RemoveAndNotifyIfBothExist("smokestance", "earthenstance");
 
             // SkillBook removals with the new methods
             RemoveAndNotifyIfBothExist("charge", "bullrush");

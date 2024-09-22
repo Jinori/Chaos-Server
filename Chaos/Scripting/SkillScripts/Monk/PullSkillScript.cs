@@ -43,6 +43,8 @@ public class PullSkillScript : ConfigurableSkillScriptBase,
     public TargetFilter SplashFilter { get; init; }
     public int? AggroAmount { get; init; }
     public Stat? AggroMultiplier { get; init; }
+    public bool StopOnWalls { get; init; }
+    public bool StopOnFirstHit { get; init; }
     public bool ExcludeSourcePoint { get; init; }
     public TargetFilter Filter { get; init; }
     public bool MustHaveTargets { get; init; }

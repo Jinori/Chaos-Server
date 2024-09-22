@@ -1,4 +1,5 @@
 using Chaos.Definitions;
+using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
@@ -8,10 +9,17 @@ namespace Chaos.Scripting.EffectScripts.HideEffects;
 
 public sealed class HideEffect : EffectBase
 {
-    /// <inheritdoc />
+    /// <inheritdoc />\
+    
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(2);
     private readonly IIntervalTimer HideTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
     private bool HasRecentlyHidden = true;
+
+    private Animation HideAnimation = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 994
+    };
     
     /// <inheritdoc />
     public override byte Icon => 8;
@@ -23,6 +31,7 @@ public sealed class HideEffect : EffectBase
     {
         Subject.Trackers.Counters.Set("HideSec", 0);
         Subject.SetVisibility(VisibilityType.Hidden);
+        Subject.MapInstance.ShowAnimation(HideAnimation.GetPointAnimation(Subject));
     }
 
     /// <inheritdoc />

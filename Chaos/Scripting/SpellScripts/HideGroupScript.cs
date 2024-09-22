@@ -20,6 +20,8 @@ public class HideGroupScript : ConfigurableSpellScriptBase,
         EffectFactory = effectFactory;
     }
 
+    public bool StopOnWalls { get; init; }
+    public bool StopOnFirstHit { get; init; }
     public bool ExcludeSourcePoint { get; init; }
     public TargetFilter Filter { get; init; }
     public int SplashChance { get; init; }

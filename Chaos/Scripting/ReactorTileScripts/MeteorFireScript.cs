@@ -144,6 +144,8 @@ namespace Chaos.Scripting.ReactorTileScripts
         public byte? Sound { get; init; }
         public bool AnimatePoints { get; init; }
         public bool MustHaveTargets { get; init; } = true;
+        public bool StopOnWalls { get; init; }
+        public bool StopOnFirstHit { get; init; }
         public bool ExcludeSourcePoint { get; init; }
         public int? BaseDamage { get; init; }
         public bool? MoreDmgLowTargetHp { get; init; }
