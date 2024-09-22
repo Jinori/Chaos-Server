@@ -37,7 +37,7 @@ public struct AssassinStrikeComponent : IComponent
                 // 20% chance to kill the target instantly
                 if (IntegerRandomizer.RollChance(20))
                 {
-                    damage = 999999999;
+                    damage = target.StatSheet.CurrentHp;
                 }
             }
 
