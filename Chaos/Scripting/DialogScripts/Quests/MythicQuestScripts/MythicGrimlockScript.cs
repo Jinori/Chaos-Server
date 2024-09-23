@@ -159,7 +159,8 @@ public class MythicGrimlockScript : DialogScriptBase
 
             case "grimlock_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("MythicGrimlock1", out var koboldworker) || (koboldworker < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicGrimlock1", out var koboldworker) ||
+                    (koboldworker < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough Kobold Workers");
 
@@ -288,7 +289,8 @@ public class MythicGrimlockScript : DialogScriptBase
             {
                 if (hasKobold
                     && (hasKobold
-                        == kobold is MythicKobold.AlliedKobold or MythicKobold.BossKoboldStarted or MythicKobold.BossKoboldDefeated))
+                        == kobold is MythicKobold.AlliedKobold or MythicKobold.BossKoboldStarted
+                            or MythicKobold.BossKoboldDefeated))
                 {
                     Subject.Reply(
                         source,
@@ -368,11 +370,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 {
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
                 }
-                else
-                {
-                    source.SendOrangeBarMessage("Tell a GM you found a bug.");
-                }
-                    
+
             }
 
                 break;

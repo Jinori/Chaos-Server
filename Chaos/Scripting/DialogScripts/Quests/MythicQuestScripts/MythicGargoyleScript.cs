@@ -365,10 +365,6 @@ public class MythicGargoyleScript : DialogScriptBase
                 {
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
                 }
-                else
-                {
-                    source.SendOrangeBarMessage("Tell a GM you found a bug.");
-                }
             }
 
                 break;

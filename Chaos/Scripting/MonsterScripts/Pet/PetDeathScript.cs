@@ -11,7 +11,11 @@ public sealed class PetDeathScript : MonsterScriptBase
 
     public override void OnDeath()
     {
-        Subject.PetOwner?.Trackers.TimedEvents.AddEvent("PetDeath", TimeSpan.FromMinutes(5), true);
+        if (Subject.PetOwner != null && !Subject.PetOwner.Trackers.TimedEvents.HasActiveEvent("PetDeath", out var petDeath))
+        {
+            Subject.PetOwner?.Trackers.TimedEvents.AddEvent("PetDeath", TimeSpan.FromMinutes(5), true);
+        }
+        
         Subject.PetOwner = null;
         Map.RemoveEntity(Subject);
     }

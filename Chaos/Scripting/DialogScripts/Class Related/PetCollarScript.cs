@@ -67,7 +67,7 @@ public class PetCollarScript(
         foreach (var pet in pets)
         {
             pet.MapInstance.RemoveEntity(pet);
-            source.Trackers.TimedEvents.AddEvent("PetDeath", TimeSpan.FromMinutes(5), true);
+            source.Trackers.TimedEvents.AddEvent("PetReturn", TimeSpan.FromMinutes(5), true);
         }
     }
 
@@ -84,13 +84,19 @@ public class PetCollarScript(
         if (source.Group is { Count: > 2 })
         {
             source.SendOrangeBarMessage("You cannot summon a pet with more than two group members.");
-            source.Trackers.TimedEvents.AddEvent("PetDeath", TimeSpan.FromMinutes(5), true);
+            source.Trackers.TimedEvents.AddEvent("PetReturn", TimeSpan.FromMinutes(5), true);
             return;
         }
         
         if (source.Trackers.TimedEvents.HasActiveEvent("PetDeath", out var timedEvent))
         {
-            source.SendActiveMessage($"Your pet recently came home. Please wait {timedEvent.Remaining.ToReadableString()}.");
+            source.SendActiveMessage($"Your pet was killed recently. Please wait {timedEvent.Remaining.ToReadableString()}.");
+            return;
+        }
+        
+        if (source.Trackers.TimedEvents.HasActiveEvent("PetReturn", out var timedEvent2))
+        {
+            source.SendActiveMessage($"Your pet recently came home. Please wait {timedEvent2.Remaining.ToReadableString()}.");
             return;
         }
         
