@@ -27,6 +27,7 @@ using Chaos.Scripting.FunctionalScripts.ApplyHealing;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MonsterScripts.Boss;
 using Chaos.Scripting.MonsterScripts.Pet;
+using Chaos.Scripting.ReactorTileScripts.Jobs;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -1067,14 +1068,28 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     Subject.Effects.Dispel("mount");
                 }
 
-                //set player to daydreaming if they are currently set to awake
-                if (Subject.Options.SocialStatus != SocialStatus.DayDreaming)
+                var trap = Subject.MapInstance.GetDistinctReactorsAtPoint(Subject)
+                    .Where(x => x.Script.Is<ForagingSpotScript>() || x.Script.Is<FishingSpotScript>());
+
+                if (trap.Any())
                 {
-                    PreAfkSocialStatus = Subject.Options.SocialStatus;
-                    Subject.Options.SocialStatus = SocialStatus.DayDreaming;
+                    if (Subject.Options.SocialStatus != SocialStatus.Gathering)
+                    {
+                        PreAfkSocialStatus = Subject.Options.SocialStatus;
+                        Subject.Options.SocialStatus = SocialStatus.Gathering;
+                    }
+                }
+                else
+                {
+                    //set player to daydreaming if they are currently set to awake
+                    if (Subject.Options.SocialStatus != SocialStatus.DayDreaming)
+                    {
+                        PreAfkSocialStatus = Subject.Options.SocialStatus;
+                        Subject.Options.SocialStatus = SocialStatus.DayDreaming;
+                    }   
                 }
             }
-            else if (Subject.Options.SocialStatus == SocialStatus.DayDreaming)
+            else if (Subject.Options.SocialStatus is SocialStatus.DayDreaming or SocialStatus.Gathering)
                 Subject.Options.SocialStatus = PreAfkSocialStatus;
         }
 

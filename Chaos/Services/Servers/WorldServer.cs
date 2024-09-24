@@ -1479,6 +1479,11 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
                 return default;
             }
 
+            if (targetAisling.Options.SocialStatus == SocialStatus.Gathering)
+                localClient.SendServerMessage(
+                    ServerMessageType.Whisper,
+                    $"{MessageColor.SpanishGray.ToPrefix()}{targetAisling.Name} is gathering and may not respond");
+            
             if (targetAisling.Options.SocialStatus == SocialStatus.DayDreaming)
                 localClient.SendServerMessage(
                     ServerMessageType.Whisper,
