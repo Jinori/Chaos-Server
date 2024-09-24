@@ -20,6 +20,9 @@ public class RemoveEffectComponent : IComponent
             {
                 foreach (var effect in target.Effects.ToList()) // ToList() to avoid modification during iteration
                 {
+                    if (effect.Name == "Invulnerability")
+                        continue;
+                    
                     target.Effects.Dispel(effect.Name);
                 }
             }

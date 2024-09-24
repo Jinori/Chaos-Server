@@ -40,7 +40,7 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
     {
         WalkTimer.Update(delta);
 
-        if (Subject.MapInstance.Script.Is<CRDomainMapScript>() && Subject.StatSheet.CurrentHp <= 1508320)
+        if (Subject.MapInstance.Script.Is<CrDomainMapScript>() && Subject.StatSheet.CurrentHp <= 1508320)
         {
             HitFirstHp = true;
         }

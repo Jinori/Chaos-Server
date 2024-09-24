@@ -24,7 +24,7 @@ public class WizardLeaderDefenseMoveToTargetScript : MonsterScriptBase
 
         var distance = Subject.ManhattanDistanceFrom(Target);
         
-        if (Subject.Template.TemplateKey.Contains("darkmasterpam") || Subject.Template.TemplateKey.Contains("darkmasterphil"))
+        if (Subject.Template.TemplateKey.Contains("darkmasterwanda") || Subject.Template.TemplateKey.Contains("darkmasterwilliam"))
         {
             if (distance <= 5)
             {

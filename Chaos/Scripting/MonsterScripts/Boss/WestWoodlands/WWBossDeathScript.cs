@@ -83,17 +83,17 @@ public class WWBossDeathScript : MonsterScriptBase
                     }
                     break;
                 case Group.GroupLootOption.Random:
-                    if (rewardTargets is not null)
-                    {
-                        if (Subject.Items.Count >= 1) 
-                            rewardTarget.Group.DistributeRandomized(Subject.Items);
-                    
-                        if (Subject.Gold >= 1) 
-                            rewardTarget.Group.DistributeEvenGold(Subject.Gold);
-                    
-                        ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);   
-                    }
+                    // Ensure only members on the same map as the Subject (monster) receive loot
+                    rewardTarget.Group.DistributeRandomized(Subject.Items, Subject);
+    
+                    // Ensure only members on the same map as the Subject receive gold
+                    rewardTarget.Group.DistributeEvenGold(Subject.Gold, Subject);
+    
+                    // Distribute experience only to members on the same map as the monster
+                    if (rewardTargets != null)
+                        ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
                     break;
+
                 case Group.GroupLootOption.MasterLooter:
                     var droppedGold1 = Subject.TryDropGold(Subject, Subject.Gold, out var money1);
                     var droppedITems1 = Subject.TryDrop(Subject, Subject.Items, out var groundItems1);

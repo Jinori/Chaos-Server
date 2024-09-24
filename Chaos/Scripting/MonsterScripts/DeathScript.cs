@@ -75,8 +75,13 @@ namespace Chaos.Scripting.MonsterScripts
                     break;
 
                 case Group.GroupLootOption.Random:
-                    rewardTarget.Group.DistributeRandomized(Subject.Items);
-                    rewardTarget.Group.DistributeEvenGold(Subject.Gold);
+                    // Ensure only members on the same map as the Subject (monster) receive loot
+                    rewardTarget.Group.DistributeRandomized(Subject.Items, Subject);
+    
+                    // Ensure only members on the same map as the Subject receive gold
+                    rewardTarget.Group.DistributeEvenGold(Subject.Gold, Subject);
+    
+                    // Distribute experience only to members on the same map as the monster
                     ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
                     break;
 

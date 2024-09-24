@@ -47,7 +47,7 @@ public sealed class AdaptiveSkinEffect : ContinuousAnimationEffectBase
         if (monstercount != LastMonsterCount)
         {
             // Remove the previous bonuses
-            if (LastMonsterCount > 0)
+            if (LastMonsterCount >= 0)
             {
                 Subject.StatSheet.SubtractBonus(new Attributes
                 {
@@ -60,11 +60,11 @@ public sealed class AdaptiveSkinEffect : ContinuousAnimationEffectBase
             {
                 LastMonsterCount = 12;
             }
-
-            // Calculate the new bonuses
-            AcBonus = monstercount + 1;
-            MagicResistBonus = monstercount + 10;
-            LastMonsterCount = monstercount;
+            
+                // Calculate the new bonuses
+                AcBonus = monstercount + 1;
+                MagicResistBonus = monstercount + 10;
+                LastMonsterCount = monstercount;
 
             // Apply the new bonuses
             Subject.StatSheet.AddBonus(new Attributes
@@ -80,7 +80,7 @@ public sealed class AdaptiveSkinEffect : ContinuousAnimationEffectBase
     public override void OnTerminated()
     {
         // Remove the current bonuses
-        if (LastMonsterCount > 0)
+        if (LastMonsterCount >= 0)
         {
             Subject.StatSheet.SubtractBonus(new Attributes
             {

@@ -1,15 +1,10 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
-using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.EffectScripts.Priest;
 using Chaos.Scripting.MapScripts.Abstractions;
-using Chaos.Scripting.MerchantScripts.Mainstory.Summoner;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -17,7 +12,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
 {
-    public class CRDomainMapScript : MapScriptBase
+    public class CrDomainMapScript : MapScriptBase
     {
         private readonly ISimpleCache SimpleCache;
         private readonly IMerchantFactory MerchantFactory;
@@ -26,7 +21,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.CR11
         private readonly IIntervalTimer UpdateTimer;
         public const int UPDATE_INTERVAL_MS = 500;
 
-        public CRDomainMapScript(MapInstance subject, IMerchantFactory merchantFactory, ISimpleCache simpleCache)
+        public CrDomainMapScript(MapInstance subject, IMerchantFactory merchantFactory, ISimpleCache simpleCache)
             : base(subject)
         {
             MerchantFactory = merchantFactory;
