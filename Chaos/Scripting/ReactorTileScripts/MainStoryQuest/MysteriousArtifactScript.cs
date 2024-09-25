@@ -36,13 +36,16 @@ public class MysteriousArtifactScript : ReactorTileScriptBase
             Map.RemoveEntity(Subject);
             return;
         }
-        
-        var artifact = ItemFactory.Create("mysteriousartifact");
-        var dialog = DialogFactory.Create("mysteriousartifact_initial", artifact);
-        aisling.GiveItemOrSendToBank(artifact);
-        source.Trackers.Enums.Set(MainStoryEnums.ReceivedMA);
-        dialog.Display(aisling);
-        aisling.SendOrangeBarMessage("A mysterious artifact...");
-        Map.RemoveEntity(Subject);
+
+        if (!hasStage)
+        {
+            var artifact = ItemFactory.Create("mysteriousartifact");
+            var dialog = DialogFactory.Create("mysteriousartifact_initial", artifact);
+            aisling.GiveItemOrSendToBank(artifact);
+            source.Trackers.Enums.Set(MainStoryEnums.ReceivedMA);
+            dialog.Display(aisling);
+            aisling.SendOrangeBarMessage("A mysterious artifact...");
+            Map.RemoveEntity(Subject);
+        }
     }
 }
