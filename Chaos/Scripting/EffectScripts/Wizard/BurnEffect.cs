@@ -79,7 +79,7 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
     {
         var damagePerTick = EstimateDamage();
 
-        if (Subject.IsGodModeEnabled())
+        if (Subject.IsGodModeEnabled() || Subject.Effects.Contains("invulnerability"))
             return;
         
         if (Subject.StatSheet.CurrentHp <= damagePerTick)

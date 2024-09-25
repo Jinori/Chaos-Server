@@ -43,7 +43,7 @@ public class MorCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
         Subject.Animate(Animation.GetPointAnimation(Subject));
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've been cursed by cradh! AC and MR lowered!");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've been cursed by mor cradh! AC and MR lowered!");
     }
 
     public override void OnDispelled() => OnTerminated();

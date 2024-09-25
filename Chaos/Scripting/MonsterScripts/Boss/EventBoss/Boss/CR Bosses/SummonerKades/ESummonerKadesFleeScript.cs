@@ -19,6 +19,7 @@ public sealed class ESummonerKadesFleeScript : MonsterScriptBase
     private bool HitThirdHp;
     private bool HitFourthHp;
     private bool HitFifthHp;
+    private bool BossVulnerable;
 
     /// <inheritdoc />
     public ESummonerKadesFleeScript(Monster subject, IMonsterFactory monsterFactory, IEffectFactory effectFactory)
@@ -34,50 +35,54 @@ public sealed class ESummonerKadesFleeScript : MonsterScriptBase
     {
         WalkTimer.Update(delta);
 
-        if (!Subject.MapInstance.GetEntities<Monster>().Any(x => x.Template.TemplateKey.Contains("guardian")))
+        var guardiansPresent = Subject.MapInstance.GetEntities<Monster>()
+            .Any(x => x.Template.TemplateKey.Contains("guardian"));
+
+        if (!BossVulnerable && !guardiansPresent)
         {
-            // Reset invulnerability when monsters are killed
+            // Reset invulnerability when all guardian monsters are killed
             MakeBossVulnerable();
         }
-        
-        // Check if boss reaches specific HP thresholds and trigger corresponding phases
+    
+        // Check if the boss reaches specific HP thresholds and trigger corresponding phases
         if (Subject.StatSheet.CurrentHp <= 1508320 && !HitFirstHp)
         {
             HitFirstHp = true;
             TriggerStage("terra_guardian", "You will see my true power.");
         }
-        else if (Subject.StatSheet.CurrentHp <= 1131240 && !HitSecondHp)
+        else if (Subject.StatSheet.CurrentHp <= 1131240 && !HitSecondHp && BossVulnerable)
         {
             HitSecondHp = true;
             TriggerStage("terra_guardian", "Destroy them all.");
         }
-        else if (Subject.StatSheet.CurrentHp <= 754160 && !HitThirdHp)
+        else if (Subject.StatSheet.CurrentHp <= 754160 && !HitThirdHp && BossVulnerable)
         {
             HitThirdHp = true;
             TriggerStage("gale_guardian", "Slice them to pieces.");
         }
-        else if (Subject.StatSheet.CurrentHp <= 377080 && !HitFourthHp)
+        else if (Subject.StatSheet.CurrentHp <= 377080 && !HitFourthHp && BossVulnerable)
         {
             HitFourthHp = true;
             TriggerStage("tide_guardian", "Drown them all.");
         }
-        else if (Subject.StatSheet.CurrentHp <= 94270 && !HitFifthHp)
+        else if (Subject.StatSheet.CurrentHp <= 94270 && !HitFifthHp && BossVulnerable)
         {
             HitFifthHp = true;
             TriggerStage("ignis_guardian", "Handle this minions!");
         }
-        else if (Subject.StatSheet.CurrentHp <= 188540)
+        else if (Subject.StatSheet.CurrentHp <= 300000 && HitFifthHp)
         {
             TriggerFinalStage(delta);
         }
     }
 
+
 // Trigger a stage with specified guardian type and message
     private void TriggerStage(string guardianType, string message)
     {
         Subject.Say(message);
-        MakeBossInvulnerable();
         SpawnMonsters(guardianType);
+        MakeBossInvulnerable();
     }
 
 // Make boss invulnerable
@@ -85,12 +90,14 @@ public sealed class ESummonerKadesFleeScript : MonsterScriptBase
     {
         var invulnerability = EffectFactory.Create("Invulnerability");
         Subject.Effects.Apply(Subject, invulnerability);
+        BossVulnerable = false;
     }
 
 // Make boss vulnerable
     private void MakeBossVulnerable()
     {
         Subject.Effects.Terminate("Invulnerability");
+        BossVulnerable = true;
     }
 
 // Spawn a pair of monsters for the stage
@@ -123,7 +130,7 @@ public sealed class ESummonerKadesFleeScript : MonsterScriptBase
             SpawnMonsters("tide_guardian");
         }
 
-        if (Subject.StatSheet.CurrentHp < 75000)
+        if (Subject.StatSheet.CurrentHp < 200000)
         {
             // Get the first available guardian monster
             var guardian = Subject.MapInstance.GetEntities<Monster>()

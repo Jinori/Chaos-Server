@@ -46,7 +46,7 @@ public class DefaultDamageFormula : IDamageFormula
         Element? elementOverride = null)
     {
 
-        if (target.IsGodModeEnabled())
+        if (target.IsGodModeEnabled() || target.Effects.Contains("invulnerability"))
             return 0;
 
         ApplySkillSpellModifier(ref damage, script, source);

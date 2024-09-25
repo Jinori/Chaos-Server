@@ -91,7 +91,7 @@ namespace Chaos.Scripting.EffectScripts.Wizard
         {
             SourceOfEffect = source;
 
-            if (target.IsFriendlyTo(source) || target.IsGodModeEnabled())
+            if (target.IsFriendlyTo(source) || target.IsGodModeEnabled() || target.Effects.Contains("invulnerability"))
                 return false;
 
             var splashEffects = new[] { "BeagSalsplash", "SalSplash", "MorSalSplash", "ArdSalSplash" };

@@ -62,7 +62,7 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
         if (!Filter.IsValidTarget(Owner, source))
             return;
 
-        if (source.IsGodModeEnabled())
+        if (source.IsGodModeEnabled() || source.Effects.Contains("invulnerability"))
             return;
         
         var executed = new ComponentExecutor(Owner, source).WithOptions(this)
