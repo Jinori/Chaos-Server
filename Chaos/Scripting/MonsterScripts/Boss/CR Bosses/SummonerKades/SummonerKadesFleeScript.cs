@@ -6,6 +6,7 @@ using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.MainStoryLine.CR11;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -16,6 +17,7 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
 {
     private readonly IMonsterFactory MonsterFactory;
     private readonly IReactorTileFactory ReactorTileFactory;
+    private readonly IEffectFactory EffectFactory;
     private bool PortalOpened;
     private readonly IIntervalTimer WalkTimer;
     private Point PortalPoint;
@@ -28,11 +30,12 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
 
     /// <inheritdoc />
     public SummonerKadesFleeScript(Monster subject, IMonsterFactory monsterFactory,
-        IReactorTileFactory reactorTileFactory)
+        IReactorTileFactory reactorTileFactory, IEffectFactory effectFactory)
         : base(subject)
     {
         MonsterFactory = monsterFactory;
         ReactorTileFactory = reactorTileFactory;
+        EffectFactory = effectFactory;
         WalkTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
     }
 
@@ -47,7 +50,8 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
 
         if (HitFirstHp)
         {
-            Subject.StatSheet.SetHp(1508320);
+            var invulnerability = EffectFactory.Create("invulnerability");
+            Subject.Effects.Apply(Subject, invulnerability);
 
             if (!WalkTimer.IntervalElapsed)
                 return;
@@ -88,7 +92,8 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
 
         if (HitSecondHp)
         {
-            Subject.StatSheet.SetHp(1131240);
+            var invulnerability = EffectFactory.Create("invulnerability");
+            Subject.Effects.Apply(Subject, invulnerability);
 
             if (!WalkTimer.IntervalElapsed)
                 return;
@@ -134,7 +139,8 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
 
         if (HitThirdHp)
         {
-            Subject.StatSheet.SetHp(754160);
+            var invulnerability = EffectFactory.Create("invulnerability");
+            Subject.Effects.Apply(Subject, invulnerability);
 
             if (!WalkTimer.IntervalElapsed)
                 return;
@@ -183,7 +189,8 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
 
         if (HitFourthHp)
         {
-            Subject.StatSheet.SetHp(377080);
+            var invulnerability = EffectFactory.Create("invulnerability");
+            Subject.Effects.Apply(Subject, invulnerability);
 
             if (!WalkTimer.IntervalElapsed)
                 return;
@@ -231,7 +238,8 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
 
         if (HitFifthHp)
         {
-            Subject.StatSheet.SetHp(94270);
+            var invulnerability = EffectFactory.Create("invulnerability");
+            Subject.Effects.Apply(Subject, invulnerability);
 
             if (!WalkTimer.IntervalElapsed)
                 return;
