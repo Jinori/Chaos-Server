@@ -26,33 +26,32 @@ public sealed class MagicResistanceComponent : IComponent
 
         foreach (var target in targets.ToList())
         {
-            // Calculate effective magic resistance, capped at 70%
+            // Step 1: Calculate the difference between base magic resistance and user's hit
             var baseMagicResistance = target.StatSheet.EffectiveMagicResistance;
-            var maxMagicResistance = 70;
-            var effectiveMagicResistance = Math.Min(baseMagicResistance, maxMagicResistance);
+            var adjustedHit = baseMagicResistance - userHit;
 
-            // Calculate chance to hit based on magic resistance and additional hit chance
-            var rawChanceToHit = 100 - effectiveMagicResistance;
+            // Step 2: Calculate the raw chance to hit after applying adjusted hit value
+            var rawChanceToHit = 100 - adjustedHit;
 
-            // Adjust raw chance based on user's hit ability
-            if (userHit > 0)
+            // Step 3: Apply minimum hit chance threshold of 20%
+            if (rawChanceToHit < 20)
             {
-                rawChanceToHit += userHit;
-            }
-            else
-            {
-                rawChanceToHit = 100; // No hit ability, so 100% chance to hit
+                rawChanceToHit = 20;
             }
 
-            // Calculate final chance to hit, clamped between 0 and 100
+            // Step 4: Clamp the chance to hit between 0 and 100
             var finalChanceToHit = Math.Clamp(rawChanceToHit, 0, 100);
 
+            // Step 5: Determine whether the spell hits or misses
             if (!IntegerRandomizer.RollChance(finalChanceToHit))
             {
+                // If miss, remove the target and play miss animation
                 targets.Remove(target);
                 target.Animate(MissAnimation);
             }
         }
+
+        // Update the target list with valid hits
         vars.SetTargets(targets);
     }
 
