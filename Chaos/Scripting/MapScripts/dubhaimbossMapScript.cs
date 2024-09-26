@@ -10,9 +10,9 @@ namespace Chaos.Scripting.MapScripts;
 public class DubhaimbossMapScript(MapInstance subject, IMonsterFactory monsterFactory) : MapScriptBase(subject)
 {
     private readonly IIntervalTimer? UpdateTimer = new IntervalTimer(TimeSpan.FromSeconds(UPDATE_INTERVAL_MS));
-    private readonly IIntervalTimer? BossTimer = new IntervalTimer(TimeSpan.FromHours(BOSS_TIMER));
+    private readonly IIntervalTimer? BossTimer = new IntervalTimer(TimeSpan.FromMinutes(BOSS_TIMER));
     public const int UPDATE_INTERVAL_MS = 1;
-    public const int BOSS_TIMER = 1;
+    public const int BOSS_TIMER = 30;
 
     public override void Update(TimeSpan delta)
     {
@@ -31,7 +31,7 @@ public class DubhaimbossMapScript(MapInstance subject, IMonsterFactory monsterFa
             return;
         
         // Check if there are 4 or more aislings
-        if (aislingCount < 4) return;
+        if (aislingCount < 3) return;
 
         if (point1 != null)
         {
