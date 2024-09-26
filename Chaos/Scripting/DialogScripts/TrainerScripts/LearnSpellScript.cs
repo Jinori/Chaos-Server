@@ -79,7 +79,7 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
 
             // Priest
             { "beagpramh", new List<string> { "pramh" } },
-            { "beothaich", new List<string> { "revive" } },
+            { "beothaich", new List<string> { "revive", "resurrection"} },
             { "revive", new List<string> {"resurrection"} },
 
             // Warrior

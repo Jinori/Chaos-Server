@@ -37,14 +37,14 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             {"flurry", new List<string> {"madsoul"} },
             {"bullrush", new List<string> {"charge"} },
             //Monk
-            { "punch", new List<string> { "doublepunch", "rapidpunch" } },
-            { "doublepunch", new List<string> { "rapidpunch" }},
+            { "punch", new List<string> { "doublepunch", "rapidpunch", "triplekick" } },
+            { "doublepunch", new List<string> { "rapidpunch", "triplekick" }},
             { "kick", new List<string> { "roundhousekick" } },
             { "highkick", new List<string> { "mantiskick" } },
             { "eaglestrike", new List<string> { "phoenixstrike", "dragonstrike" } },
             { "phoenixstrike", new List<string> { "dragonstrike" } },
             //Rogue
-            { "assault", new List<string> { "blitz", "barrage" } },
+            { "assault", new List<string> { "throwsurigum", "blitz", "barrage" } },
             { "stab", new List<string> { "gut" } },
             { "pierce", new List<string> { "skewer" } },
         };
