@@ -42,6 +42,9 @@ public sealed class EdragonScaleBossEnrageScript : MonsterScriptBase
         
         if (SpellCastTimer.IntervalElapsed)
         {
+            if (Subject.Effects.TryGetEffect("Invulnerability", out _))
+                return;
+            
             var roll = IntegerRandomizer.RollSingle(100);
             
             switch (roll)

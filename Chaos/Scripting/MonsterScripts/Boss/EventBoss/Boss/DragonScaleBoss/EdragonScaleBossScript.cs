@@ -10,13 +10,13 @@ public class EdragonScaleBossScript : CompositeMonsterScript
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
-        GetScriptKey(typeof(MoveToTargetScript)),
+        GetScriptKey(typeof(EdragonScaleMoveToTargetScript)),
         GetScriptKey(typeof(EdragonScaleBossEnrageScript)),
-        GetScriptKey(typeof(AggroTargetingScript)),
+        GetScriptKey(typeof(EDragonScaleAggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),
-        GetScriptKey(typeof(WanderingScript)),
+        GetScriptKey(typeof(EDragonScaleWanderingScript)),
         GetScriptKey(typeof(ArenaDeathScript)),
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(ThisIsABossScript))

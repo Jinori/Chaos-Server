@@ -18,7 +18,6 @@ public sealed class ESummonerKadesFleeScript : MonsterScriptBase
     private bool HitSecondHp;
     private bool HitThirdHp;
     private bool HitFourthHp;
-    private bool HitFifthHp;
     private bool BossVulnerable;
 
     /// <inheritdoc />
@@ -53,24 +52,19 @@ public sealed class ESummonerKadesFleeScript : MonsterScriptBase
         else if (Subject.StatSheet.CurrentHp <= 1131240 && !HitSecondHp && BossVulnerable)
         {
             HitSecondHp = true;
-            TriggerStage("terra_guardian", "Destroy them all.");
+            TriggerStage("gale_guardian", "Slice them to pieces.");
         }
         else if (Subject.StatSheet.CurrentHp <= 754160 && !HitThirdHp && BossVulnerable)
         {
             HitThirdHp = true;
-            TriggerStage("gale_guardian", "Slice them to pieces.");
+            TriggerStage("tide_guardian", "Drown them all.");
         }
         else if (Subject.StatSheet.CurrentHp <= 377080 && !HitFourthHp && BossVulnerable)
         {
             HitFourthHp = true;
-            TriggerStage("tide_guardian", "Drown them all.");
-        }
-        else if (Subject.StatSheet.CurrentHp <= 94270 && !HitFifthHp && BossVulnerable)
-        {
-            HitFifthHp = true;
             TriggerStage("ignis_guardian", "Handle this minions!");
         }
-        else if (Subject.StatSheet.CurrentHp <= 300000 && HitFifthHp)
+        else if (Subject.StatSheet.CurrentHp <= 300000 && HitFourthHp)
         {
             TriggerFinalStage(delta);
         }
@@ -130,7 +124,7 @@ public sealed class ESummonerKadesFleeScript : MonsterScriptBase
             SpawnMonsters("tide_guardian");
         }
 
-        if (Subject.StatSheet.CurrentHp < 200000)
+        if (Subject.StatSheet.CurrentHp < 200000 && BossVulnerable)
         {
             // Get the first available guardian monster
             var guardian = Subject.MapInstance.GetEntities<Monster>()
