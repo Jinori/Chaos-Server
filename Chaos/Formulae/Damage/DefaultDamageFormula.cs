@@ -138,7 +138,7 @@ public class DefaultDamageFormula : IDamageFormula
             damage = (int)(damage * 0.70);
         }
 
-        if (defender.Effects.Contains("blessing"))
+        if (defender.IsBlessed())
         {
             damage = (int)(damage * 0.65);
         }
