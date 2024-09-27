@@ -20,7 +20,7 @@ public class SummonerKadesBossScript : CompositeMonsterScript
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(ThisIsABossScript)),
-        GetScriptKey(typeof(DeathScript)),
+        GetScriptKey(typeof(KadesDeathScript)),
     };
 
     /// <inheritdoc />

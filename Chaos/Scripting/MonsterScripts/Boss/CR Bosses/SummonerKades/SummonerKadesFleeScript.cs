@@ -50,8 +50,11 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
 
         if (HitFirstHp)
         {
-            var invulnerability = EffectFactory.Create("invulnerability");
-            Subject.Effects.Apply(Subject, invulnerability);
+            if (!Subject.Effects.Contains("invulnerability"))
+            {
+                var invulnerability = EffectFactory.Create("invulnerability");
+                Subject.Effects.Apply(Subject, invulnerability);
+            }
 
             if (!WalkTimer.IntervalElapsed)
                 return;
@@ -92,8 +95,11 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
 
         if (HitSecondHp)
         {
-            var invulnerability = EffectFactory.Create("invulnerability");
-            Subject.Effects.Apply(Subject, invulnerability);
+            if (!Subject.Effects.Contains("invulnerability"))
+            {
+                var invulnerability = EffectFactory.Create("invulnerability");
+                Subject.Effects.Apply(Subject, invulnerability);
+            }
 
             if (!WalkTimer.IntervalElapsed)
                 return;
@@ -139,8 +145,11 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
 
         if (HitThirdHp)
         {
-            var invulnerability = EffectFactory.Create("invulnerability");
-            Subject.Effects.Apply(Subject, invulnerability);
+            if (!Subject.Effects.Contains("invulnerability"))
+            {
+                var invulnerability = EffectFactory.Create("invulnerability");
+                Subject.Effects.Apply(Subject, invulnerability);
+            }
 
             if (!WalkTimer.IntervalElapsed)
                 return;
@@ -189,8 +198,11 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
 
         if (HitFourthHp)
         {
-            var invulnerability = EffectFactory.Create("invulnerability");
-            Subject.Effects.Apply(Subject, invulnerability);
+            if (!Subject.Effects.Contains("invulnerability"))
+            {
+                var invulnerability = EffectFactory.Create("invulnerability");
+                Subject.Effects.Apply(Subject, invulnerability);
+            }
 
             if (!WalkTimer.IntervalElapsed)
                 return;
@@ -238,8 +250,11 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
 
         if (HitFifthHp)
         {
-            var invulnerability = EffectFactory.Create("invulnerability");
-            Subject.Effects.Apply(Subject, invulnerability);
+            if (!Subject.Effects.Contains("invulnerability"))
+            {
+                var invulnerability = EffectFactory.Create("invulnerability");
+                Subject.Effects.Apply(Subject, invulnerability);
+            }
 
             if (!WalkTimer.IntervalElapsed)
                 return;
