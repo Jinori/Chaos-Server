@@ -78,12 +78,19 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             { "maidentrap", new List<string> { "pitfalltrap" } },
 
             // Priest
+            { "beannaich", new List<string> { "morbeannaich" } },
+            { "fasdeireas", new List<string> { "morfasdeireas" } },
             { "beagpramh", new List<string> { "pramh" } },
-            { "beothaich", new List<string> { "revive", "resurrection"} },
-            { "revive", new List<string> {"resurrection"} },
+            { "beothaich", new List<string> { "revive", "resurrect"} },
+            { "revive", new List<string> {"resurrect"} },
+            { "quake", new List<string> {"vortex"} },
+            { "zap", new List<string> {"voidjolt"} },
 
             // Warrior
             { "battlecry", new List<string> { "warcry" } },
+            { "wrath", new List<string> { "whirlwind", "inferno" } },
+            { "whirlwind", new List<string> { "inferno" } },
+            { "berserk", new List<string> { "fury" } },
 
             // Monk
             { "goad", new List<string> { "howl", "roar" } },

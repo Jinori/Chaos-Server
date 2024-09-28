@@ -27,11 +27,15 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
         private readonly Dictionary<string, List<string>> SkillUpgrades = new()
         {
             //Warrior
-            { "scathe", new List<string> { "cleave" } },
-            { "strike", new List<string> { "clobber", "flank", "wallop", "pulverize", "thrash" } },
-            { "clobber", new List<string> { "flank", "wallop", "pulverize", "thrash" } },
-            { "wallop", new List<string> { "pulverize", "thrash" } },
+            { "scathe", new List<string> { "cleave", "devour" } },
+            { "cleave", new List<string> { "devour" } },
+            { "strike", new List<string> { "clobber", "flank", "wallop", "pulverize", "thrash", "slaughter" } },
+            { "clobber", new List<string> { "flank", "wallop", "pulverize", "thrash", "slaughter" } },
+            { "wallop", new List<string> { "pulverize", "thrash", "slaughter" } },
+            { "pulverize", new List<string> { "thrash", "slaughter" } },
+            { "thrash", new List<string> { "slaughter" } },
             { "slash", new List<string> { "sunder" } },
+            { "execute", new List<string> { "annihilate" } },
             { "windblade", new List<string> { "tempestblade" } },
             {"groundstomp", new List<string> { "paralyzeforce"} },
             {"flurry", new List<string> {"madsoul"} },
@@ -43,8 +47,13 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             { "highkick", new List<string> { "mantiskick" } },
             { "eaglestrike", new List<string> { "phoenixstrike", "dragonstrike" } },
             { "phoenixstrike", new List<string> { "dragonstrike" } },
+            { "clawfist", new List<string> { "chaosfist" } },
             //Rogue
-            { "assault", new List<string> { "throwsurigum", "blitz", "barrage" } },
+            { "assault", new List<string> { "throwsurigum", "blitz", "barrage", "midnightslash" } },
+            { "throwsurigum", new List<string> { "blitz", "barrage", "midnightslash" } },
+            { "blitz", new List<string> { "barrage", "midnightslash" } },
+            { "barrage", new List<string> { "midnightslash" } },
+            { "throwsmokebomb", new List<string> { "smokescreen" } },
             { "stab", new List<string> { "gut" } },
             { "pierce", new List<string> { "skewer" } },
         };

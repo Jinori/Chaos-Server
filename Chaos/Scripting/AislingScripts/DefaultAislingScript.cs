@@ -990,10 +990,16 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("thunderstance", "lightningstance");
             RemoveAndNotifyIfBothExist("miststance", "tidestance");
             RemoveAndNotifyIfBothExist("smokestance", "earthenstance");
+            RemoveAndNotifyIfBothExist("whirlwind", "wrath");
+            RemoveAndNotifyIfBothExist("inferno", "wrath");
+            RemoveAndNotifyIfBothExist("inferno", "whirlwind");
+            RemoveAndNotifyIfBothExist("fury", "berserk");
 
             // SkillBook removals with the new methods
             RemoveAndNotifyIfBothExist("charge", "bullrush");
             RemoveAndNotifyIfBothExist("cleave", "scathe");
+            RemoveAndNotifyIfBothExist("devour", "scathe");
+            RemoveAndNotifyIfBothExist("devour", "cleave");
             RemoveAndNotifyIfBothExist("clobber", "strike");
             RemoveAndNotifyIfBothExist("flank", "clobber");
             RemoveAndNotifyIfBothExist("wallop", "flank");
@@ -1008,6 +1014,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("thrash", "flank");
             RemoveAndNotifyIfBothExist("thrash", "wallop");
             RemoveAndNotifyIfBothExist("thrash", "pulverize");
+            RemoveAndNotifyIfBothExist("slaughter", "strike");
+            RemoveAndNotifyIfBothExist("slaughter", "clobber");
+            RemoveAndNotifyIfBothExist("slaughter", "flank");
+            RemoveAndNotifyIfBothExist("slaughter", "wallop");
+            RemoveAndNotifyIfBothExist("slaughter", "pulverize");
+            RemoveAndNotifyIfBothExist("slaughter", "thrash");
             RemoveAndNotifyIfBothExist("sunder", "slash");
             RemoveAndNotifyIfBothExist("tempestblade", "windblade");
             RemoveAndNotifyIfBothExist("paralyzeforce", "groundstomp");

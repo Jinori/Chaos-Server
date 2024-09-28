@@ -1,5 +1,7 @@
+using System.Reactive.Subjects;
 using Chaos.Common.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
 using Chaos.Models.Data;
@@ -45,7 +47,7 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
         }
 
         // Check if the unspent points have reached or exceeded the cap of 26
-        if (unspentPoints >= 26)
+        if (unspentPoints >= 26 && !aisling.IsGodModeEnabled())
         {
             aisling.SendMessage("You have reached the maximum amount of unspent stat points.");
         }
