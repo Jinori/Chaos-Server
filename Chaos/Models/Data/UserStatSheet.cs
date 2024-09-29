@@ -218,15 +218,6 @@ public sealed record UserStatSheet : StatSheet
     
     public bool IncrementStat(Stat stat, Aisling aisling, bool overrideUnspentStatCheck = false)
     {
-        if (!overrideUnspentStatCheck && _unspentPoints == 0)
-            return false;
-
-        if (!overrideUnspentStatCheck && Interlocked.Decrement(ref _unspentPoints) < 0)
-        {
-            _unspentPoints = 0;
-            return false;
-        }
-
         var currentBracket = GetCurrentStatBracket(aisling);
         var statCaps = ClassStatCaps[BaseClass][currentBracket];
 
@@ -234,6 +225,15 @@ public sealed record UserStatSheet : StatSheet
         {
             aisling.SendOrangeBarMessage("You've reached the stat cap for this attribute.");
             return false;   
+        }
+        
+        if (!overrideUnspentStatCheck && _unspentPoints == 0)
+            return false;
+
+        if (!overrideUnspentStatCheck && Interlocked.Decrement(ref _unspentPoints) < 0)
+        {
+            _unspentPoints = 0;
+            return false;
         }
 
         switch (stat)

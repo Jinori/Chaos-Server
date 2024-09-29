@@ -35,8 +35,8 @@ public class MasteringScript : DialogScriptBase
 
     private readonly Dictionary<BaseClass, (int requiredHealth, int requiredMana)> MasteringRequirements = new()
     {
-        { BaseClass.Monk, (18000, 7500) },
-        { BaseClass.Warrior, (16000, 7000) },
+        { BaseClass.Monk, (16000, 7000) },
+        { BaseClass.Warrior, (15000, 7500) },
         { BaseClass.Rogue, (14000, 8000) },
         { BaseClass.Wizard, (10000, 12000) },
         { BaseClass.Priest, (9500, 13000) }

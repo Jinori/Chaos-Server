@@ -723,8 +723,8 @@ public class MainStoryScript(
                 // Dictionary containing the appropriate armor for each class and gender
                 var pentagearDictionary = new Dictionary<(BaseClass, Gender), string[]>
                 {
-                    { (BaseClass.Warrior, Gender.Male), ["hybrasylarmor"] },
-                    { (BaseClass.Warrior, Gender.Female), ["hybrasylplate"] },
+                    { (BaseClass.Warrior, Gender.Male), ["hybrasylplate"] },
+                    { (BaseClass.Warrior, Gender.Female), ["hybrasylarmor"] },
                     { (BaseClass.Monk, Gender.Male), ["mountaingarb"] },
                     { (BaseClass.Monk, Gender.Female), ["seagarb"] },
                     { (BaseClass.Rogue, Gender.Male), ["bardocle"] },

@@ -10,6 +10,7 @@ public class EExiledDracoBossScript : CompositeMonsterScript
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(BossMoveToTargetScript)),
         GetScriptKey(typeof(ExiledDracoEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
