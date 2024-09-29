@@ -14,6 +14,7 @@ public class EWindGuardianBossScript : CompositeMonsterScript
         GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(EWindGuardianBossEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),

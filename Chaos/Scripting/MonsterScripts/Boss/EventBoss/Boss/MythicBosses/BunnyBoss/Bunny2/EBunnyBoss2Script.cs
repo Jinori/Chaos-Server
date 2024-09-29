@@ -11,6 +11,7 @@ public class EBunnyBoss2Script : CompositeMonsterScript
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(BossMoveToTargetScript)),
         GetScriptKey(typeof(BossDefenseScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(EBunnyBoss2EnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),

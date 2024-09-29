@@ -12,6 +12,7 @@ public class EServantBossScript : CompositeMonsterScript
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(EServantDefenseScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(EServantBossRegenScript)),
         GetScriptKey(typeof(EServantBossEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),

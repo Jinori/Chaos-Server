@@ -15,6 +15,7 @@ public class ELynithMonsterBossScript : CompositeMonsterScript
         GetScriptKey(typeof(ELynithMonsterCastScript)),
         GetScriptKey(typeof(ELynithBossEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),

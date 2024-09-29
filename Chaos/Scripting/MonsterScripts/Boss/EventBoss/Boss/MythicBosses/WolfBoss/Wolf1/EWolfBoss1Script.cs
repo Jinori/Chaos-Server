@@ -12,6 +12,7 @@ public class EWolfBoss1Script : CompositeMonsterScript
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(BossMoveToTargetScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(EWolfBoss1EnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),

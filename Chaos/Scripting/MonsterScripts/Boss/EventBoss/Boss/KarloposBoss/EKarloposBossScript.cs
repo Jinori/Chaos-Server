@@ -14,6 +14,7 @@ public class EKarloposBossScript : CompositeMonsterScript
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(EKarloposBossEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),

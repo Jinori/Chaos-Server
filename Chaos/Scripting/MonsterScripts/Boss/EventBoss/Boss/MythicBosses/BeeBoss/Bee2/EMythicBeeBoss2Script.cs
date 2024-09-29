@@ -13,6 +13,7 @@ public class EMythicBeeBoss2Script : CompositeMonsterScript
         GetScriptKey(typeof(EBeeBoss2EnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(MoveToTargetScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),

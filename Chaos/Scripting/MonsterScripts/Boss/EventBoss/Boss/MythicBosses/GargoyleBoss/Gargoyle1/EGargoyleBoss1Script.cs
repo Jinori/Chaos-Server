@@ -12,6 +12,7 @@ public class EGargoyleBoss1Script : CompositeMonsterScript
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(EGargoyle1BossThrowHazardousScript)),
         GetScriptKey(typeof(MoveToTargetScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(EGargoyle1BossRegenScript)),
         GetScriptKey(typeof(AggroTargetingScript)),

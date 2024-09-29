@@ -14,6 +14,7 @@ public class ESeriousBonesBossScript : CompositeMonsterScript
         GetScriptKey(typeof(ESeriousBonesBossDefenseScript)),
         GetScriptKey(typeof(ESeriousBonesEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),

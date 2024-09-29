@@ -13,6 +13,7 @@ public class ECarnunBossScript : CompositeMonsterScript
         GetScriptKey(typeof(ECarnunBossDefenseScript)),
         GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),

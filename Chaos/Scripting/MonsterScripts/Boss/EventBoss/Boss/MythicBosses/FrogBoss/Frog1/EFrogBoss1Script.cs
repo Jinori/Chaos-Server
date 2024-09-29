@@ -12,6 +12,7 @@ public class EFrogBoss1Script : CompositeMonsterScript
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(BossMoveToTargetScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),

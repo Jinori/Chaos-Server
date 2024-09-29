@@ -15,6 +15,7 @@ public class ECdHydraBossScript : CompositeMonsterScript
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(HydraArenaDeathScript)),
         GetScriptKey(typeof(DisplayNameScript)),

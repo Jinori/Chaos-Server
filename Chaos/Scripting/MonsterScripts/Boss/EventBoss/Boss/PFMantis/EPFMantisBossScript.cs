@@ -12,6 +12,7 @@ public class EPFMantisBossScript : CompositeMonsterScript
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(EPFMantisBossMoveToTargetScript)),
         GetScriptKey(typeof(EPFMantisBossEnrageScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),

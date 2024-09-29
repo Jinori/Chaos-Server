@@ -13,6 +13,7 @@ public class EPriestLeaderBossScript : CompositeMonsterScript
         GetScriptKey(typeof(EPriestLeaderDefenseMoveToTargetScript)),
         GetScriptKey(typeof(EPriestEnrageSummonScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),

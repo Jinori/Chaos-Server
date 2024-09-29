@@ -13,6 +13,7 @@ public class EWerewolfBossScript : CompositeMonsterScript
         GetScriptKey(typeof(EWerewolfBossMoveToTargetScript)),
         GetScriptKey(typeof(EWerewolfDefenseScript)),
         GetScriptKey(typeof(EWerewolfBossEnrageScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),

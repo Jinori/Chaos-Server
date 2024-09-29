@@ -12,6 +12,7 @@ public class EHorseBoss1Script : CompositeMonsterScript
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(EHorseBoss1EnrageScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(ContributionScript)),

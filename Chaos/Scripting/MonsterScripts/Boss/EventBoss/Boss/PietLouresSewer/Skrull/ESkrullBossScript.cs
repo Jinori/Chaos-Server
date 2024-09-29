@@ -12,6 +12,7 @@ public class ESkrullBossScript : CompositeMonsterScript
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(ESkrullBossThrowHazardousScript)),
         GetScriptKey(typeof(ESkrullBossMoveToTargetScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(ESkrullBossRegenScript)),
         GetScriptKey(typeof(AggroTargetingScript)),

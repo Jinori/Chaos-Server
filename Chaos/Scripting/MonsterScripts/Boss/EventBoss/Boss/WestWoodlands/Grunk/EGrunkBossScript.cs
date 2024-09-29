@@ -13,6 +13,7 @@ public class EGrunkBossScript : CompositeMonsterScript
         GetScriptKey(typeof(EGrunkEnrageScript)),
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(MoveToTargetScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),

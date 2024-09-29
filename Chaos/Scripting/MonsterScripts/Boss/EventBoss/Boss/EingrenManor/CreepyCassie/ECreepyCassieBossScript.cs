@@ -13,6 +13,7 @@ public class ECreepyCassieBossScript : CompositeMonsterScript
         GetScriptKey(typeof(BossMoveToTargetScript)),
         GetScriptKey(typeof(ECreepyCassieEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),

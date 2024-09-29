@@ -13,6 +13,7 @@ public class EFunnyBonesBossScript : CompositeMonsterScript
         GetScriptKey(typeof(BossMoveToTargetScript)),
         GetScriptKey(typeof(EFunnyBonesEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),

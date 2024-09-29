@@ -12,6 +12,7 @@ public class EMythicMantisBoss3Script : CompositeMonsterScript
         GetScriptKey(typeof(EMythicMantis3MoveToTargetScript)),
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),

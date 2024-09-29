@@ -15,6 +15,7 @@ public class EWizardLeaderBossScript : CompositeMonsterScript
         GetScriptKey(typeof(EWizardLeaderDefenseMoveToTargetScript)),
         GetScriptKey(typeof(EPriestEnrageSummonScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),

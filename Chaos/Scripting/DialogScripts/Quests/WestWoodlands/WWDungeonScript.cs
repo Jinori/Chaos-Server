@@ -107,13 +107,13 @@ public class WWDungeonScript(
 
             case "wwdungeon_start2":
             {
-                if (source.Group == null)
+                if (source.Group == null && !source.IsGodModeEnabled())
                 {
                     Subject.Reply(source, "You best bring a group into the Lost Woods.");
                     return;
                 }
 
-                if (source.Group != null)
+                if (source.Group != null && !source.IsGodModeEnabled())
                 {
                     var group = source.Group.ThatAreWithinRange(source);
 

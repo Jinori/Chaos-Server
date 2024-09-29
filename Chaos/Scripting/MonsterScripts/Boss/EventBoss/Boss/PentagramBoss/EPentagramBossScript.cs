@@ -13,6 +13,7 @@ public class EPentagramBossScript : CompositeMonsterScript
         GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(EPentaDefenseScript)),
         GetScriptKey(typeof(EPentagramBossRegenScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(EPentagramBossEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),

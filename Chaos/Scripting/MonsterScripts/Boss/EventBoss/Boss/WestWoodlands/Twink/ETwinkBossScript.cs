@@ -12,6 +12,7 @@ public class ETwinkBossScript : CompositeMonsterScript
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(BossMoveToTargetScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(ETwinkBossEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),

@@ -10,6 +10,7 @@ public class ForsakenWizardScript : CompositeMonsterScript
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(BossRegenScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(BossEnrageScript)),
         GetScriptKey(typeof(ForsakenWizardDefenseMoveToTargetScript)),
         GetScriptKey(typeof(AggroTargetingScript)),

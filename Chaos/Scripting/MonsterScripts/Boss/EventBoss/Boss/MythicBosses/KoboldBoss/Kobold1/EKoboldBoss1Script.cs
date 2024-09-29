@@ -11,6 +11,7 @@ public class EKoboldBoss1Script : CompositeMonsterScript
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(MoveToTargetScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(EKoboldBoss1EnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),

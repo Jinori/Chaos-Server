@@ -1,4 +1,6 @@
+using System.Text.RegularExpressions;
 using Chaos.Collections.Common;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Messaging.Abstractions;
 using Chaos.Models.World;
@@ -21,14 +23,30 @@ public class GroupInviteCommand(IClientRegistry<IChaosWorldClient> clientRegistr
 
         var targetClient = ClientRegistry.FirstOrDefault(c => c.Aisling.Name.EqualsI(targetName));
 
-        if ((targetClient == null) || (source.IsAdmin != targetClient.Aisling.IsAdmin))
+        if (targetClient == null)
         {
-            source.SendOrangeBarMessage($"{targetName} can not be found");
-
+            source.SendOrangeBarMessage($"{targetName} cannot be found.");
             return default;
         }
 
-        GroupService.Invite(source, targetClient.Aisling);
+        var targetAisling = targetClient.Aisling;
+
+        // Admin in god mode cannot be invited
+        if (!source.IsAdmin && targetAisling.IsGodModeEnabled())
+        {
+            source.SendOrangeBarMessage($"{targetName} cannot be found.");
+            return default;
+        }
+
+        // If the inviter is an admin, they can group without asking for confirmation
+        if (source.IsAdmin)
+        {
+            GroupService.Invite(targetAisling, source);
+            return default;
+        }
+
+        // Otherwise, invite normally
+        GroupService.Invite(source, targetAisling);
 
         return default;
     }

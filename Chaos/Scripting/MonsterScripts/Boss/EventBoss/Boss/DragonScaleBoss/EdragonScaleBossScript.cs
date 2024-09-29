@@ -13,6 +13,7 @@ public class EdragonScaleBossScript : CompositeMonsterScript
         GetScriptKey(typeof(EdragonScaleMoveToTargetScript)),
         GetScriptKey(typeof(EdragonScaleBossEnrageScript)),
         GetScriptKey(typeof(EDragonScaleAggroTargetingScript)),
+        GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),
