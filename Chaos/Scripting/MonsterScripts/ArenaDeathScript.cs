@@ -1,5 +1,6 @@
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
@@ -28,7 +29,7 @@ public class ArenaDeathScript : MonsterScriptBase
         
         Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
 
-        var playersOnArenaMap = Map.GetEntities<Aisling>().Where(x => !x.Trackers.Enums.HasValue(ArenaHost.Host)).ToList();
+        var playersOnArenaMap = Map.GetEntities<Aisling>().Where(x => !x.IsGodModeEnabled()).ToList();
         
         foreach (var item in Subject.Items)
         {

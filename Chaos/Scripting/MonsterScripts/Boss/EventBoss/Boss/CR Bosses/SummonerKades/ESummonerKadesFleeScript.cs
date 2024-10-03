@@ -42,6 +42,12 @@ public sealed class ESummonerKadesFleeScript : MonsterScriptBase
             // Reset invulnerability when all guardian monsters are killed
             MakeBossVulnerable();
         }
+        
+        if (!BossVulnerable && guardiansPresent)
+        {
+            // Make boss Invulnerable when Guardians are present.
+            MakeBossInvulnerable();
+        }
     
         // Check if the boss reaches specific HP thresholds and trigger corresponding phases
         if (Subject.StatSheet.CurrentHp <= 1508320 && !HitFirstHp)
@@ -76,7 +82,6 @@ public sealed class ESummonerKadesFleeScript : MonsterScriptBase
     {
         Subject.Say(message);
         SpawnMonsters(guardianType);
-        MakeBossInvulnerable();
     }
 
 // Make boss invulnerable

@@ -55,6 +55,10 @@ public class BullRushScript : ConfigurableSkillScriptBase,
     public bool MustHaveTargets { get; init; }
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }
+
+    public decimal? PctOfHealthMultiplier { get; init; }
+    public decimal? PctOfHealth { get; init; }
+
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
     /// <inheritdoc />
@@ -72,6 +76,8 @@ public class BullRushScript : ConfigurableSkillScriptBase,
 
     public bool? SurroundingTargets { get; init; }
     public decimal? DamageMultiplierPerTarget { get; init; }
+    public decimal? PctOfMana { get; init; }
+    public decimal? PctOfManaMultiplier { get; init; }
 
     /// <inheritdoc />
     public BullRushScript(Skill subject)

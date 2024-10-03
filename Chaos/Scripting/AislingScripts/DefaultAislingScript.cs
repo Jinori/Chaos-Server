@@ -431,6 +431,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     if (person.IsDead)
                         continue;
 
+                    if (person.MapInstance.InstanceId != Subject.MapInstance.InstanceId)
+                        continue;
+
                     person.Animate(MistHeal, person.Id);
 
                     ApplyHealScript.ApplyHeal(

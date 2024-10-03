@@ -20,7 +20,7 @@ public sealed class ArenaHostComponent : IComponent
 
         foreach (var target in targets.ToList())
         {
-            if (target.MapInstance.Template.TemplateKey != "arena_underground")
+            if (target.MapInstance.Template.TemplateKey != "26001")
                 return; 
             
             switch (options.ArenaTeamColor)

@@ -136,11 +136,16 @@ public sealed class CascadingDamageTile2Script : ConfigurableReactorTileScriptBa
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }
 
+    public decimal? PctOfHealthMultiplier { get; init; }
+    public decimal? PctOfHealth { get; init; }
+
     /// <inheritdoc />
     public IScript SourceScript { get; init; }
 
     public bool? SurroundingTargets { get; init; }
     public decimal? DamageMultiplierPerTarget { get; init; }
+    public decimal? PctOfMana { get; init; }
+    public decimal? PctOfManaMultiplier { get; init; }
 
     /// <inheritdoc />
     public byte? Sound { get; init; }

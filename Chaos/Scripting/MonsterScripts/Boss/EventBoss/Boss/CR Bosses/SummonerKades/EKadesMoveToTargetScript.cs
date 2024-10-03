@@ -22,7 +22,7 @@ public class EKadesMoveToTargetScript : MonsterScriptBase
                 .Any())
             return;
         
-        if (Subject.Effects.Contains("Invulnerable"))
+        if (Subject.Effects.Contains("invulnerability"))
             return;
 
         var distance = Subject.ManhattanDistanceFrom(Target);

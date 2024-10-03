@@ -31,7 +31,7 @@ public class BlessingEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
         "motivate",
     ];
     
-    public override byte Icon => 0;
+    public override byte Icon => 10;
     public override string Name => "blessing";
 
     protected byte? Sound => 122;

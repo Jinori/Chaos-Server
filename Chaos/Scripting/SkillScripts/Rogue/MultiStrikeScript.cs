@@ -38,6 +38,8 @@ namespace Chaos.Scripting.SkillScripts.Rogue
         public bool? MoreDmgLowTargetHp { get; init; }
         public bool MustHaveTargets { get; init; }
         public decimal? PctHpDamage { get; init; }
+        public decimal? PctOfHealthMultiplier { get; init; }
+        public decimal? PctOfHealth { get; init; }
         public decimal PctManaCost { get; init; }
         public int Range { get; init; }
         public AoeShape Shape { get; init; }
@@ -47,6 +49,8 @@ namespace Chaos.Scripting.SkillScripts.Rogue
         public IScript SourceScript { get; init; }
         public bool? SurroundingTargets { get; init; }
         public decimal? DamageMultiplierPerTarget { get; init; }
+        public decimal? PctOfMana { get; init; }
+        public decimal? PctOfManaMultiplier { get; init; }
         private IIntervalTimer StrikeTimer { get; }
 
         private List<Creature>? Targets { get; set; }

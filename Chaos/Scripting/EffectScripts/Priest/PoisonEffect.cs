@@ -44,8 +44,11 @@ public class PoisonEffect : ContinuousAnimationEffectBase
         if (Subject.StatSheet.CurrentHp <= damage)
             return;
 
-        if (Subject.Effects.Contains("invulnerability"))
+        if (Subject.IsGodModeEnabled() || Subject.Effects.Contains("invulnerability"))
+        {
+            Subject.Effects.Terminate("poison");
             return;
+        }
 
         if (Subject.StatSheet.TrySubtractHp(damage))
             AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);

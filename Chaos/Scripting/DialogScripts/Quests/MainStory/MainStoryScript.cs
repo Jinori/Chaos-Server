@@ -22,31 +22,15 @@ public class MainStoryScript(
     IDialogFactory dialogFactory)
     : DialogScriptBase(subject)
 {
-    private readonly ISimpleCache SimpleCache = simpleCache;
-
     private IExperienceDistributionScript ExperienceDistributionScript { get; } =
         DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplaying(Aisling source)
     {
-        var hasStage = source.Trackers.Enums.TryGetValue(out MainStoryEnums stage);
-
         switch (Subject.Template.TemplateKey.ToLower())
         {
             #region MysteriousArtifact
-
-            case "mysteriousartifact_yes":
-            {
-                if (hasStage && stage == MainStoryEnums.ReceivedMA || stage == MainStoryEnums.MysteriousArtifactFound)
-                {
-                    var mysteriousartifact = itemFactory.Create("mysteriousartifact");
-                    source.GiveItemOrSendToBank(mysteriousartifact);
-                    source.Trackers.Enums.Set(MainStoryEnums.ReceivedMA);
-                }
-
-                break;
-            }
-
+            
             case "mysteriousartifact_initial1":
             {
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.ReceivedMA))
@@ -151,7 +135,7 @@ public class MainStoryScript(
                 };
 
                 Subject.Close(source);
-                var godsrealm = SimpleCache.Get<MapInstance>("godsrealm");
+                var godsrealm = simpleCache.Get<MapInstance>("godsrealm");
                 var newPoint = new Point(16, 16);
 
                 source.TraverseMap(godsrealm, newPoint);
@@ -162,7 +146,7 @@ public class MainStoryScript(
             case "mainstory_miraelis_leaverealm":
                 const Direction DIRECTION = Direction.Down;
             {
-                var leaverealm = SimpleCache.Get<MapInstance>("mileth_inn");
+                var leaverealm = simpleCache.Get<MapInstance>("mileth_inn");
                 var newPoint = new Point(5, 8);
 
                 source.TraverseMap(leaverealm, newPoint);
@@ -297,7 +281,7 @@ public class MainStoryScript(
 
                 source.Trackers.Enums.Set(CombatTrial.StartedTrial);
                 source.Trackers.Enums.Set(MainStoryEnums.StartedFirstTrial);
-                var mapinstance = SimpleCache.Get<MapInstance>("trialofcombat");
+                var mapinstance = simpleCache.Get<MapInstance>("trialofcombat");
                 var point = new Point(15, 15);
                 source.TraverseMap(mapinstance, point);
 
@@ -320,7 +304,7 @@ public class MainStoryScript(
                 Subject.Close(source);
 
                 source.Trackers.Enums.Set(CombatTrial.StartedTrial);
-                var mapinstance = SimpleCache.Get<MapInstance>("trialofcombat");
+                var mapinstance = simpleCache.Get<MapInstance>("trialofcombat");
                 var point = new Point(15, 15);
                 source.TraverseMap(mapinstance, point);
                 return;
@@ -488,7 +472,7 @@ public class MainStoryScript(
 
                 source.Trackers.Enums.Set(LuckTrial.StartedTrial);
                 source.Trackers.Enums.Set(MainStoryEnums.StartedSecondTrial);
-                var mapinstance = SimpleCache.Get<MapInstance>("trialofluck");
+                var mapinstance = simpleCache.Get<MapInstance>("trialofluck");
                 var point = new Point(8, 71);
                 source.TraverseMap(mapinstance, point);
 
@@ -511,7 +495,7 @@ public class MainStoryScript(
                 Subject.Close(source);
                 source.Trackers.Enums.Set(LuckTrial.StartedTrial);
                 source.Trackers.Enums.Set(MainStoryEnums.StartedSecondTrial);
-                var mapinstance = SimpleCache.Get<MapInstance>("trialofluck");
+                var mapinstance = simpleCache.Get<MapInstance>("trialofluck");
                 var point = new Point(8, 71);
                 source.TraverseMap(mapinstance, point);
                 return;
@@ -643,7 +627,7 @@ public class MainStoryScript(
 
                 source.Trackers.Enums.Set(IntelligenceTrial.StartedTrial);
                 source.Trackers.Enums.Set(MainStoryEnums.StartedThirdTrial);
-                var mapinstance = SimpleCache.Get<MapInstance>("trialofintelligence");
+                var mapinstance = simpleCache.Get<MapInstance>("trialofintelligence");
                 var point = new Point(10, 27);
                 source.TraverseMap(mapinstance, point);
 
@@ -666,7 +650,7 @@ public class MainStoryScript(
                 Subject.Close(source);
                 source.Trackers.Enums.Set(IntelligenceTrial.StartedTrial);
                 source.Trackers.Enums.Set(MainStoryEnums.StartedThirdTrial);
-                var mapinstance = SimpleCache.Get<MapInstance>("trialofintelligence");
+                var mapinstance = simpleCache.Get<MapInstance>("trialofintelligence");
                 var point = new Point(10, 27);
                 source.TraverseMap(mapinstance, point);
                 return;
@@ -840,7 +824,7 @@ public class MainStoryScript(
 
                 source.Trackers.Enums.Set(SacrificeTrial.StartedTrial);
                 source.Trackers.Enums.Set(MainStoryEnums.StartedFourthTrial);
-                var mapinstance = SimpleCache.Get<MapInstance>("trialofsacrifice");
+                var mapinstance = simpleCache.Get<MapInstance>("trialofsacrifice");
                 var point = new Point(13, 13);
                 source.TraverseMap(mapinstance, point);
 
@@ -863,7 +847,7 @@ public class MainStoryScript(
                 Subject.Close(source);
                 source.Trackers.Enums.Set(SacrificeTrial.StartedTrial);
                 source.Trackers.Enums.Set(MainStoryEnums.StartedFourthTrial);
-                var mapinstance = SimpleCache.Get<MapInstance>("trialofsacrifice");
+                var mapinstance = simpleCache.Get<MapInstance>("trialofsacrifice");
                 var point = new Point(13, 13);
                 source.TraverseMap(mapinstance, point);
                 return;

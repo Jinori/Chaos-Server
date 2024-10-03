@@ -56,9 +56,13 @@ public class ThrowDamageScript : ConfigurableSpellScriptBase,
     public Element? Element { get; init; }
     public bool? MoreDmgLowTargetHp { get; init; }
     public decimal? PctHpDamage { get; init; }
+    public decimal? PctOfHealthMultiplier { get; init; }
+    public decimal? PctOfHealth { get; init; }
     public IScript SourceScript { get; init; }
     public bool? SurroundingTargets { get; init; }
     public decimal? DamageMultiplierPerTarget { get; init; }
+    public decimal? PctOfMana { get; init; }
+    public decimal? PctOfManaMultiplier { get; init; }
     public bool CascadeOnlyFromEntities { get; init; }
     public IDictionary<string, IScriptVars> CascadeScriptVars { get; init; }
     public IReactorTileFactory ReactorTileFactory { get; init; }

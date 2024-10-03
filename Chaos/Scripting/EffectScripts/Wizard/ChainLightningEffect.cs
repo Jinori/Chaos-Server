@@ -92,8 +92,10 @@ namespace Chaos.Scripting.EffectScripts.Wizard
             // Add the target's ID to the HitTargets set
             HitTargetIds.Add(target.Id);
     
+            var manaBonus = Convert.ToInt32(SourceOfEffect.StatSheet.EffectiveMaximumMp * 0.04m);
+            
             // Base damage calculation
-            var baseDamage = SourceOfEffect.StatSheet.EffectiveInt * 36 + 1400;
+            var baseDamage = SourceOfEffect.StatSheet.EffectiveInt * 32 + 1000 + manaBonus;
             
             var addedFromPct = baseDamage * (source.StatSheet.EffectiveSpellDamagePct / 100m);
             baseDamage += Convert.ToInt32(source.StatSheet.EffectiveFlatSpellDamage + addedFromPct);

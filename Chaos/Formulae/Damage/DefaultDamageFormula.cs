@@ -115,9 +115,6 @@ public class DefaultDamageFormula : IDamageFormula
 
     protected virtual void HandleAite(ref int damage, Creature defender)
     {
-        if (!defender.Effects.Any(x => x.Name.EndsWithI("aite") || !defender.IsBlessed()))
-            return;
-
         if (defender.IsBeagAited())
         {
             damage = (int)(damage * 0.92);

@@ -152,6 +152,9 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }
 
+    public decimal? PctOfHealthMultiplier { get; init; }
+    public decimal? PctOfHealth { get; init; }
+
     /// <inheritdoc />
     public IApplyHealScript ApplyHealScript { get; init; }
 
@@ -170,6 +173,8 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
     public IScript SourceScript { get; init; }
     public bool? SurroundingTargets { get; init; }
     public decimal? DamageMultiplierPerTarget { get; init; }
+    public decimal? PctOfMana { get; init; }
+    public decimal? PctOfManaMultiplier { get; init; }
 
     /// <inheritdoc />
     public int? ManaDrain { get; init; }

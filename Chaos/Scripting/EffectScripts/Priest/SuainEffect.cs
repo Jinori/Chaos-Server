@@ -13,7 +13,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 public sealed class SuainEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(15);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(12);
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {

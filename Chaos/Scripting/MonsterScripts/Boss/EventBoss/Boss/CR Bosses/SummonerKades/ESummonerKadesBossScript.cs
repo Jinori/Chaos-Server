@@ -20,7 +20,6 @@ public class ESummonerKadesBossScript : CompositeMonsterScript
         GetScriptKey(typeof(EKadesAttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(DisplayNameScript)),
-        GetScriptKey(typeof(BossDefenseScript)),
         GetScriptKey(typeof(ThisIsABossScript)),
         GetScriptKey(typeof(ArenaDeathScript)),
     };

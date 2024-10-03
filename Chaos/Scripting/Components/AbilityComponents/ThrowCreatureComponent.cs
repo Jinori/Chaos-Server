@@ -39,14 +39,15 @@ namespace Chaos.Scripting.Components.AbilityComponents
 
                 foreach (var point in potentialTargetPoints)
                 {
+                    if (!target.IsHostileTo(context.Source))
+                        continue;
+
+                    if (context.SourceMap.IsWall(point))
+                        break;
+
+                    
                     if (context.SourceMap.IsWalkable(point, CreatureType.Aisling, false))
                     {
-                        if (!target.IsHostileTo(context.Source))
-                            continue;
-
-                        if (context.SourceMap.IsWall(point))
-                            continue;
-
                         // Warp the target to the point and add it to the set of thrown targets
                         target.WarpTo(point);
                         break;

@@ -165,9 +165,13 @@ If this reactor was created through a script, you must specify the owner in the 
     public Stat? DamageStat { get; init; }
     public decimal? DamageStatMultiplier { get; init; }
     public decimal? PctHpDamage { get; init; }
+    public decimal? PctOfHealthMultiplier { get; init; }
+    public decimal? PctOfHealth { get; init; }
     public IScript SourceScript { get; init; }
     public bool? SurroundingTargets { get; init; }
     public decimal? DamageMultiplierPerTarget { get; init; }
+    public decimal? PctOfMana { get; init; }
+    public decimal? PctOfManaMultiplier { get; init; }
     public Element? Element { get; init; }
     public int? DurationSecs { get; init; }
     public int? MaxTriggers { get; init; }
