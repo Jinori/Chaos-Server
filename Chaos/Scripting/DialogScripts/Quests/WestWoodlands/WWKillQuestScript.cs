@@ -276,10 +276,10 @@ public class WWKillQuestScript(Dialog subject, ILogger<WWKillQuestScript> logger
 
                 if (hasStage && stage == WestWoodlandsKillQuestStage.WWTwink)
                 {
-                    if (!source.Trackers.Counters.TryGetValue("wwbosscounter", out int twink) || twink < 3)
+                    if (!source.Trackers.Counters.TryGetValue("wwbosscounter", out int twink) || twink < 1)
                     {
                         Subject.Reply(source,
-                            "Is the Twink giving you troubles? He isn't weak, good luck! Kill him three times!",
+                            "Is the Twink giving you troubles? He isn't weak, good luck!",
                             "maxwell_initial");
                         return;
                     }

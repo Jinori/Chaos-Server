@@ -330,10 +330,10 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                 
                 if (hasStage && stage == PietSewerKillQuestStage.SewerMiniSkrull)
                 {
-                    if (!source.Trackers.Counters.TryGetValue("sewerminiskrullcounter", out var miniskrull) || miniskrull < 5)
+                    if (!source.Trackers.Counters.TryGetValue("sewerminiskrullcounter", out var miniskrull) || miniskrull < 1)
                     {
                         Subject.Reply(source,
-                            "The Mini Skrulls don't like intruders, I'm surprised you made it back alive. We need to get rid of 5 of those Mini Skrulls.",
+                            "The Mini Skrulls don't like intruders, I'm surprised you made it back alive. We need to get rid of 1 of those Mini Skrulls.",
                             "waldyr_initial");
                         return;
                     }
@@ -361,10 +361,10 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                 
                 if (hasStage && stage == PietSewerKillQuestStage.SewerSkrull)
                 {
-                    if (!source.Trackers.Counters.TryGetValue("sewerskrullcounter", out var skrull) || skrull < 3)
+                    if (!source.Trackers.Counters.TryGetValue("sewerskrullcounter", out var skrull) || skrull < 1)
                     {
                         Subject.Reply(source,
-                            "The big Skrull at the bottom is terrifying, I have to escape everytime he is there. He sure has made himself a home. Can you defeat him three times?",
+                            "The big Skrull at the bottom is terrifying, I have to escape everytime he is there. He sure has made himself a home. Can you defeat him?",
                             "waldyr_initial");
                         return;
                     }
