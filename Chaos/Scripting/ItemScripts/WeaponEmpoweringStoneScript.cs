@@ -1,15 +1,8 @@
-using Chaos.Collections;
-using Chaos.Common.Utilities;
-using Chaos.Definitions;
 using Chaos.Extensions.Common;
-using Chaos.Extensions.Geometry;
-using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
-using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
-using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts;
 
@@ -43,7 +36,7 @@ public class WeaponEmpoweringStoneScript : ItemScriptBase
 
         // Check if any item in the dictionary is in the player's inventory
         var matchingItem = source.Inventory.FirstOrDefault(item => 
-            itemDictionary.Contains(item.Template.TemplateKey));
+            itemDictionary.ContainsI(item.Template.TemplateKey));
 
         if (matchingItem == null)
         {

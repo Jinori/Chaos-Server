@@ -1,18 +1,8 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
-using Chaos.Definitions;
-using Chaos.Extensions.Common;
-using Chaos.Models.Data;
-using Chaos.Models.Legend;
+﻿using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
-using Chaos.NLog.Logging.Definitions;
-using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.FunctionalScripts.Abstractions;
-using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
-using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Crafting.Refining;
 
@@ -34,7 +24,7 @@ public class WeaponEmpoweringStoneDialogScript : DialogScriptBase
         var ani = new Animation
     {
         TargetAnimation = 7,
-        AnimationSpeed = 1,
+        AnimationSpeed = 200,
         Priority = 1,
     };
         // Define the dictionary mapping master weapons to their enchanted versions
@@ -49,7 +39,7 @@ public class WeaponEmpoweringStoneDialogScript : DialogScriptBase
 
         // Search the player's inventory for a matching master weapon
         var masterWeapon = source.Inventory.FirstOrDefault(item =>
-            weaponEmpowering.ContainsKey(item.Template.TemplateKey));
+            weaponEmpowering.ContainsKey(item.Template.TemplateKey.ToLower()));
 
         if (masterWeapon == null)
         {
@@ -59,13 +49,13 @@ public class WeaponEmpoweringStoneDialogScript : DialogScriptBase
         }
 
         // Get the corresponding enchanted weapon template key from the dictionary
-        var empoweredWeaponTemplateKey = weaponEmpowering[masterWeapon.Template.TemplateKey];
+        var empoweredWeaponTemplateKey = weaponEmpowering[masterWeapon.Template.TemplateKey.ToLower()];
 
         // Remove the old master weapon from the player's inventory
-        source.Inventory.Remove(masterWeapon.Template.TemplateKey);
-
+        source.Inventory.RemoveByTemplateKey(masterWeapon.Template.TemplateKey.ToLower());
+        source.Inventory.Remove("Empowering Stone");
         // Create the new enchanted weapon
-        var empowerWeapon = ItemFactory.Create(empoweredWeaponTemplateKey);
+        var empowerWeapon = ItemFactory.Create(empoweredWeaponTemplateKey.ToLower());
         
         // Give the player the enchanted weapon
         source.GiveItemOrSendToBank(empowerWeapon);
