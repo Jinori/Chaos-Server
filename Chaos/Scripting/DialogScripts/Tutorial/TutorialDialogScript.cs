@@ -111,6 +111,7 @@ public class TutorialDialogScript : DialogScriptBase
                 if (!hasStage)
                 {
                     source.Trackers.Enums.Set(TutorialQuestStage.GaveArmor);
+                    source.Trackers.Enums.Set(ClassStatBracket.PreMaster);
                     
                     var armor = source.Gender == Gender.Female ? ItemFactory.Create("blouse") : ItemFactory.Create("shirt");
 
@@ -355,6 +356,7 @@ public class TutorialDialogScript : DialogScriptBase
                         ExperienceDistributionScript.GiveExp(source, 2000);
 
                         source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                        source.Trackers.Enums.Set(ClassStatBracket.PreMaster);
                         point = new Point(5, 8);
                         mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
                         source.TraverseMap(mapInstance, point);
@@ -373,6 +375,7 @@ public class TutorialDialogScript : DialogScriptBase
                         source.SpellBook.Remove("srad tut");
                         
                         source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                        source.Trackers.Enums.Set(ClassStatBracket.PreMaster);
                         point = new Point(5, 8);
                         mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
                         source.TraverseMap(mapInstance, point);
@@ -390,6 +393,7 @@ public class TutorialDialogScript : DialogScriptBase
                         source.SpellBook.Remove("srad tut");
 
                         source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                        source.Trackers.Enums.Set(ClassStatBracket.PreMaster);
                         point = new Point(5, 8);
                         mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
                         source.TraverseMap(mapInstance, point);
@@ -404,6 +408,7 @@ public class TutorialDialogScript : DialogScriptBase
                         source.SpellBook.Remove("srad tut");
 
                         source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                        source.Trackers.Enums.Set(ClassStatBracket.PreMaster);
                         point = new Point(5, 8);
                         mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
                         source.TraverseMap(mapInstance, point);
@@ -418,6 +423,7 @@ public class TutorialDialogScript : DialogScriptBase
                         source.SpellBook.Remove("srad tut");
 
                         source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                        source.Trackers.Enums.Set(ClassStatBracket.PreMaster);
                         point = new Point(5, 8);
                         mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
                         source.TraverseMap(mapInstance, point);
@@ -437,6 +443,7 @@ public class TutorialDialogScript : DialogScriptBase
                 ExperienceDistributionScript.GiveExp(source, 2000);
                 source.SpellBook.Remove("srad tut");
                 source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
+                source.Trackers.Enums.Set(ClassStatBracket.PreMaster);
                 point = new Point(5, 8);
                 mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
                 source.TraverseMap(mapInstance, point);

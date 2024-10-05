@@ -3,6 +3,7 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -28,6 +29,7 @@ public class CascadingDamageScript : ConfigurableSpellScriptBase,
         SourceScript = this;
         ReactorTileFactory = reactorTileFactory;
         CascadeScriptVars ??= Subject.Template.ScriptVars;
+        PanelEntityBase = subject;
     }
 
     /// <inheritdoc />
@@ -126,4 +128,6 @@ public class CascadingDamageScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     #endregion
+
+    public PanelEntityBase PanelEntityBase { get; init; }
 }

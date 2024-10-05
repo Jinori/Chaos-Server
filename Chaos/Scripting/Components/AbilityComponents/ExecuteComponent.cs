@@ -85,7 +85,6 @@ public class ExecuteComponent : IComponent
     {
         IApplyDamageScript ApplyDamageScript { get; init; }
         IApplyHealScript ApplyHealScript { get; init; }
-        int? CooldownReduction { get; init; }
         decimal DmgHealthPct { get; init; }
         decimal HealAmountIfExecuted { get; init; }
         int? KillTargetAtHealthPct { get; init; }

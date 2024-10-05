@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
@@ -18,7 +19,10 @@ public class ToggleEffectScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public ToggleEffectScript(Spell subject, IEffectFactory effectFactory)
         : base(subject)
-        => EffectFactory = effectFactory;
+    {
+        PanelEntityBase = subject;
+        EffectFactory = effectFactory;
+    }
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
@@ -91,4 +95,5 @@ public class ToggleEffectScript : ConfigurableSpellScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
+    public PanelEntityBase PanelEntityBase { get; init; }
 }

@@ -3,6 +3,7 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -30,6 +31,7 @@ public class ThrowDamageScript : ConfigurableSpellScriptBase,
         ReactorTileFactory = reactorTileFactory;
         EffectFactory = effectFactory;
         CascadeScriptVars ??= Subject.Template.ScriptVars;
+        PanelEntityBase = subject;
     }
 
     public bool StopOnWalls { get; init; }
@@ -81,4 +83,5 @@ public class ThrowDamageScript : ConfigurableSpellScriptBase,
             .Execute<CascadingComponent<CascadingDamageTileScript>>()
             .Execute<ApplyEffectAbilityComponent>();
 
+    public PanelEntityBase PanelEntityBase { get; init; }
 }  

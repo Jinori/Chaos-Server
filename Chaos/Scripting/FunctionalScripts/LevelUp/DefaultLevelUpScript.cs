@@ -78,8 +78,6 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
 
         if (aisling.StatSheet.Level == 99)
         {
-            aisling.Trackers.Enums.Set(ClassStatBracket.PreMaster);
-
             if (!aisling.Trackers.Counters.TryGetValue("deathcounter", out var deathcount) || deathcount < 1)
             {
                 aisling.Legend.AddOrAccumulate(new LegendMark(

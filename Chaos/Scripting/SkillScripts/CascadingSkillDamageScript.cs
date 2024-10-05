@@ -3,6 +3,7 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -26,6 +27,7 @@ public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
     {
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
+        PanelEntityBase = subject;
         ReactorTileFactory = reactorTileFactory;
         CascadeScriptVars ??= Subject.Template.ScriptVars;
     }
@@ -115,4 +117,5 @@ public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
+    public PanelEntityBase PanelEntityBase { get; init; }
 }

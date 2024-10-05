@@ -17,4 +17,10 @@ public record AttributesSchema : StatsSchema
     public int MaximumMp { get; set; }
     public int SkillDamagePct { get; set; }
     public int SpellDamagePct { get; set; }
+    
+    public int CooldownReductionPct { get; set; }
+    public int HealthBonusPct { get; set; }
+    
+    public int CooldownReductionMs { get; set; }
+    public int HealthBonus { get; set; }
 }

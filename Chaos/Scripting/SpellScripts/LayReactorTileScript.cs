@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -11,10 +12,10 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.SpellScripts;
 
-public class LayReactorTileScript(Spell subject, IReactorTileFactory reactorTileFactory) : ConfigurableSpellScriptBase(subject),
+public class LayReactorTileScript : ConfigurableSpellScriptBase,
                                                                                            SpellComponent<MapEntity>.ISpellComponentOptions,
                                                                                            LayReactorAbilityComponent.ILayReactorComponentOptions
-{
+{ 
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
         => new ComponentExecutor(context).WithOptions(this)
@@ -70,7 +71,7 @@ public class LayReactorTileScript(Spell subject, IReactorTileFactory reactorTile
     public IScript? SourceScript { get; init; }
 
     /// <inheritdoc />
-    public IReactorTileFactory ReactorTileFactory { get; init; } = reactorTileFactory;
+    public IReactorTileFactory ReactorTileFactory { get; init; }
 
     /// <inheritdoc />
     public int? ManaCost { get; init; }
@@ -84,4 +85,15 @@ public class LayReactorTileScript(Spell subject, IReactorTileFactory reactorTile
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
+
+    /// <inheritdoc />
+    public PanelEntityBase PanelEntityBase { get; init; }
+
+    // Constructor where we set PanelEntityBase
+    public LayReactorTileScript(Spell subject, IReactorTileFactory reactorTileFactory) : base(subject)
+    {
+        PanelEntityBase = subject; // Set PanelEntityBase to the spell entity
+        ReactorTileFactory = reactorTileFactory;
+        SourceScript = this; // Optional, set the source script
+    }
 }

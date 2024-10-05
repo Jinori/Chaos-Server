@@ -1126,7 +1126,7 @@ public static class CraftingRequirements
                     new Ingredient("sparkflower", "Spark Flower", 1),
 
                     new Ingredient("emptybottle", "Empty Bottle", 1),
-                    
+
                     new Ingredient("basicmonsterextract", "Basic Monster Extract", 1),
                 ],
                 Rank = "Initiate",
@@ -1163,7 +1163,7 @@ public static class CraftingRequirements
                     new Ingredient("kabineblossom", "Kabine Blossom", 1),
 
                     new Ingredient("emptybottle", "Empty Bottle", 1),
-                    
+
                     new Ingredient("basicmonsterextract", "Basic Monster Extract", 1),
                 ],
                 Rank = "Initiate",
@@ -1180,7 +1180,7 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("BlossomofBetrayal", "Blossom of Betrayal", 1),
-                    
+
                     new Ingredient("greatermonsterextract", "Greater Monster Extract", 1),
 
                     new Ingredient("emptybottle", "Empty Bottle", 1)
@@ -1237,7 +1237,7 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("waterlily", "Water Lily", 1),
-                    
+
                     new Ingredient("greatermonsterextract", "Greater Monster Extract", 1),
 
                     new Ingredient("emptybottle", "Empty Bottle", 1)
@@ -1294,7 +1294,7 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("bocanbough", "Bocan Bough", 2),
-                    
+
                     new Ingredient("greatermonsterextract", "Greater Monster Extract", 1),
 
                     new Ingredient("emptybottle", "Empty Bottle", 1)
@@ -1313,7 +1313,7 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("blossomofbetrayal", "Blossom of Betrayal", 1),
-                    
+
                     new Ingredient("greatermonsterextract", "Greater Monster Extract", 1),
 
                     new Ingredient("Empty Bottle", "Empty Bottle", 1)
@@ -1332,7 +1332,7 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("emptybottle", "Empty Bottle", 1),
-                    
+
                     new Ingredient("lessermonsterextract", "Lesser Monster Extract", 5)
                 ],
                 Rank = "Adept",
@@ -1366,7 +1366,7 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("emptybottle", "Empty Bottle", 1),
-                    
+
                     new Ingredient("lessermonsterextract", "Lesser Monster Extract", 5),
                 ],
                 Rank = "Adept",
@@ -1482,7 +1482,7 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("emptybottle", "Empty Bottle", 1),
-                    
+
                     new Ingredient("lessermonsterextract", "Lesser Monster Extract", 8)
                 ],
                 Rank = "Advanced",
@@ -1499,7 +1499,7 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("emptybottle", "Empty Bottle", 1),
-                    
+
                     new Ingredient("lessermonsterextract", "Lesser Monster Extract", 8)
                 ],
                 Rank = "Advanced",
@@ -1516,7 +1516,7 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("emptybottle", "Empty Bottle", 1),
-                    
+
                     new Ingredient("lessermonsterextract", "Lesser Monster Extract", 8)
                 ],
                 Rank = "Advanced",
@@ -1784,9 +1784,9 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("blackshockerpiece", "Black Shocker Piece", 1),
-                    
+
                     new Ingredient("iceelementalflame", "Ice Elemental Flame", 1),
-                    
+
                     new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
 
                     new Ingredient("rockfish", "Rock Fish", 1),
@@ -5123,10 +5123,86 @@ public static class CraftingRequirements
                 Level = 77,
                 Difficulty = 4
             }
+        },
+        {
+            WeaponSmithingRecipes.HybrasylShield,
+            new Recipe()
+            {
+                Name = "Hy-brasyl Shield",
+                TemplateKey = "hybrasylshield",
+                Ingredients =
+                [
+                    new Ingredient("hybrasylshield", "Hy-brasyl Shield", 1),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 4),
+
+                    new Ingredient("coal", "Coal", 3)
+                ],
+                Rank = "Artisan",
+                Level = 77,
+                Difficulty = 4
+            }
+        },
+        {
+            WeaponSmithingRecipes.HybrasylShield,
+            new Recipe()
+            {
+                Name = "Hy-brasyl Shield",
+                TemplateKey = "hybrasylshield",
+                Ingredients =
+                [
+                    new Ingredient("hybrasylshield", "Hy-brasyl Shield", 1),
+
+                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 4),
+
+                    new Ingredient("coal", "Coal", 3)
+                ],
+                Rank = "Artisan",
+                Level = 77,
+                Difficulty = 4
+            }
         }
     };
 
-    #endregion
+    public static Dictionary<WeaponSmithingRecipes2, Recipe> WeaponSmithingCraftRequirements2 { get; } = new()
+    {
+        {
+            WeaponSmithingRecipes2.EnchantStone,
+            new Recipe()
+            {
+                Name = "Enchanting Stone",
+                TemplateKey = "enchantingstone",
+                Ingredients =
+                [
+                    new Ingredient("strangestone", "Strange Stone", 1),
+
+                    new Ingredient("radiantpearl", "Radiant Pearl", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+        {
+            WeaponSmithingRecipes2.EmpowerStone,
+            new Recipe()
+            {
+                Name = "Empowering Stone",
+                TemplateKey = "empoweringstone",
+                Ingredients =
+                [
+                    new Ingredient("strangestone", "Strange Stone", 1),
+
+                    new Ingredient("eclipsepearl", "Eclipse Pearl", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+};
+
+#endregion
 
     #region Armor Smithing
 

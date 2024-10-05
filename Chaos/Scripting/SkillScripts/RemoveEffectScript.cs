@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
@@ -58,7 +59,10 @@ public class RemoveEffectScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public RemoveEffectScript(Skill subject)
-        : base(subject) { }
+        : base(subject)
+    {
+        PanelEntityBase = subject;
+    }
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context) => new ComponentExecutor(context).WithOptions(this)
@@ -68,4 +72,5 @@ public class RemoveEffectScript : ConfigurableSkillScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
+    public PanelEntityBase PanelEntityBase { get; init; }
 }

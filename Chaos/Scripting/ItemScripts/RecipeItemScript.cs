@@ -291,6 +291,8 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.LightShield);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.MythrilShield);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.HybrasylShield);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.EmpowerStone);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.EnchantStone);
                 source.Trackers.Flags.AddFlag(EnchantingRecipes.IgnatarEnvy);
                 source.Trackers.Flags.AddFlag(EnchantingRecipes.GeolithGratitude);
                 source.Trackers.Flags.AddFlag(EnchantingRecipes.MiraelisSerenity);
@@ -1789,6 +1791,61 @@ public class RecipeItemScript : ItemScriptBase
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.HybrasylShield);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_empowerstone":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.EmpowerStone))
+                {
+                    if (craft != Crafts.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithingCategories.EmpowerStone,
+                        "Empower Stone",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.EmpowerStone);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            
+            case "recipe_enchantstone":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.EnchantStone))
+                {
+                    if (craft != Crafts.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithingCategories.EnchantStone,
+                        "Enchant Stone",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.EnchantStone);
 
                     return;
                 }

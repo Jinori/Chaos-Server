@@ -3,6 +3,7 @@ using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -60,6 +61,7 @@ namespace Chaos.Scripting.SkillScripts.Rogue
         public MultiStrikeScript(Skill subject)
             : base(subject)
         {
+            PanelEntityBase = subject;
             SourceScript = this;
             ApplyDamageScript = ApplyAttackDamageScript.Create();
             StrikeTimer = new IntervalTimer(TimeSpan.FromMilliseconds(330), false);
@@ -115,5 +117,7 @@ namespace Chaos.Scripting.SkillScripts.Rogue
                     Targets.Remove(target);
             }
         }
+
+        public PanelEntityBase PanelEntityBase { get; init; }
     }
 }

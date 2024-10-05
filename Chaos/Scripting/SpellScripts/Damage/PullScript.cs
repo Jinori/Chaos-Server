@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -23,6 +24,7 @@ public class PullScript : ConfigurableSpellScriptBase,
         : base(subject)
     {
         SourceScript = this;
+        PanelEntityBase = subject;
     }
 
     /// <inheritdoc />
@@ -59,4 +61,6 @@ public class PullScript : ConfigurableSpellScriptBase,
     public Stat? AggroMultiplier { get; init; }
     public IScript SourceScript { get; init; }
     #endregion
+
+    public PanelEntityBase PanelEntityBase { get; init; }
 }

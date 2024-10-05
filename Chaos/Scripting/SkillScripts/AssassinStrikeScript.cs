@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -22,6 +23,7 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
         : base(subject)
     {
         EffectFactory = effectFactory;
+        PanelEntityBase = subject;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
     }
@@ -105,4 +107,6 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
     public string? EffectKey { get; init; }
     public int? EffectApplyChance { get; init; }
     #endregion
+
+    public PanelEntityBase PanelEntityBase { get; init; }
 }

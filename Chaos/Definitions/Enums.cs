@@ -911,7 +911,9 @@ public enum WeaponSmithingCategories
     AdeptClaws = 1 << 20,
     BasicShields = 1 << 21,
     InitiateShields = 1 << 22,
-    ArtisanShields = 1 << 23
+    ArtisanShields = 1 << 23,
+    EmpowerStone = 1 << 24,
+    EnchantStone = 1 << 25
 }
 
 [Flags]
@@ -975,6 +977,16 @@ public enum WeaponSmithingRecipes : ulong
     MythrilShield = 1L << 55,
     HybrasylShield = 1L << 56
 }
+
+[Flags]
+public enum WeaponSmithingRecipes2 : ulong
+{
+    None = 0,
+    EmpowerStone = 1 << 1,
+    EnchantStone = 1 << 2
+}
+
+
 #endregion
 
 [Flags]
@@ -1942,44 +1954,44 @@ public enum AttackedWerewolf
 public enum FishingQuest
 {
     None = 0,
-    Reached250 = 1,
-    Reached500 = 3,
-    Reached800 = 5,
-    Reached1500 = 7,
-    Reached3000 = 9,
-    Reached5000 = 11,
-    Reached7500 = 13,
-    Reached10000 = 15,
-    Reached12500 = 17,
-    Reached15000 = 19,
-    Reached20000 = 21,
-    Reached25000 = 23,
-    Reached30000 = 25,
-    Reached40000 = 27,
-    Reached50000 = 29,
-    CompletedFishing = 31
+    Reached250 = 1 << 1,
+    Reached500 = 1 << 2,
+    Reached800 = 1 << 3,
+    Reached1500 = 1 << 4,
+    Reached3000 = 1 << 5,
+    Reached5000 = 1 << 6,
+    Reached7500 = 1 << 7,
+    Reached10000 = 1 << 8,
+    Reached12500 = 1 << 9,
+    Reached15000 = 1 << 10,
+    Reached20000 = 1 << 11,
+    Reached25000 = 1 << 12,
+    Reached30000 = 1 << 13,
+    Reached40000 = 1 << 14,
+    Reached50000 = 1 << 15,
+    CompletedFishing = 1 << 16
 }
 
 [Flags]
 public enum ForagingQuest
 {
     None = 0,
-    Reached250 = 1,
-    Reached500 = 3,
-    Reached800 = 5,
-    Reached1500 = 7,
-    Reached3000 = 9,
-    Reached5000 = 11,
-    Reached7500 = 13,
-    Reached10000 = 15,
-    Reached12500 = 17,
-    Reached15000 = 19,
-    Reached20000 = 21,
-    Reached25000 = 23,
-    Reached30000 = 25,
-    Reached40000 = 27,
-    Reached50000 = 29,
-    CompletedForaging = 31
+    Reached250 = 1 << 1,
+    Reached500 = 1 << 2,
+    Reached800 = 1 << 3,
+    Reached1500 = 1 << 4,
+    Reached3000 = 1 << 5,
+    Reached5000 = 1 << 6,
+    Reached7500 = 1 << 7,
+    Reached10000 = 1 << 8,
+    Reached12500 = 1 << 9,
+    Reached15000 = 1 << 10,
+    Reached20000 = 1 << 11,
+    Reached25000 = 1 << 12,
+    Reached30000 = 1 << 13,
+    Reached40000 = 1 << 14,
+    Reached50000 = 1 << 15,
+    CompletedForaging = 1 << 16
 }
 
 public enum MasterPriestPath

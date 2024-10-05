@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -25,6 +26,7 @@ public class DamageScript : ConfigurableSkillScriptBase,
         EffectFactory = effectFactory;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
+        PanelEntityBase = subject;
         
         if (Subject.Template.IsAssail)
             ScaleBodyAnimationSpeedByAttackSpeed = true;
@@ -122,4 +124,5 @@ public class DamageScript : ConfigurableSkillScriptBase,
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
     public int? EffectApplyChance { get; init; }
+    public PanelEntityBase PanelEntityBase { get; init; }
 }

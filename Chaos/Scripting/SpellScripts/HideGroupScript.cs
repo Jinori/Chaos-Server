@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
@@ -18,6 +19,7 @@ public class HideGroupScript : ConfigurableSpellScriptBase,
     public HideGroupScript(Spell subject, IEffectFactory effectFactory) : base(subject)
     {
         EffectFactory = effectFactory;
+        PanelEntityBase = subject;
     }
 
     public bool StopOnWalls { get; init; }
@@ -52,4 +54,6 @@ public class HideGroupScript : ConfigurableSpellScriptBase,
             .ExecuteAndCheck<SpellComponent<Creature>>()
             ?
             .Execute<GroupHideEffectAbilityComponent>();
+
+    public PanelEntityBase PanelEntityBase { get; init; }
 }

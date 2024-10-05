@@ -2819,6 +2819,26 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
+                    case "enchantstone":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Strange Stone and 1 Radiant Pearl. Cannot be upgraded.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "empowerstone":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 1 Strange Stone and 1 Eclipse Pearl. Cannot be upgraded.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
                     default:
                     {
                         // Handle cases where the provided recipe key doesn't match any known recipe

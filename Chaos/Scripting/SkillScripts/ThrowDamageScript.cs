@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -26,6 +27,7 @@ public class ThrowDamageScript : ConfigurableSkillScriptBase,
         EffectFactory = effectFactory;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
+        PanelEntityBase = subject;
     }
 
     /// <inheritdoc />
@@ -120,4 +122,5 @@ public class ThrowDamageScript : ConfigurableSkillScriptBase,
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
     public int? EffectApplyChance { get; init; }
+    public PanelEntityBase PanelEntityBase { get; init; }
 }

@@ -214,6 +214,15 @@ public sealed record UserStatSheet : StatSheet
                 { ClassStatBracket.Grandmaster, new Attributes { Str = 100, Int = 180, Wis = 215, Con = 150, Dex = 100 } }
             }
         },
+        
+        {
+            BaseClass.Peasant, new Dictionary<ClassStatBracket, Attributes>
+            {
+                { ClassStatBracket.PreMaster, new Attributes { Str = 20, Int = 20, Wis = 20, Con = 20, Dex = 20 } },
+                { ClassStatBracket.Master, new Attributes { Str = 20, Int = 20, Wis = 20, Con = 20, Dex = 20 } },
+                { ClassStatBracket.Grandmaster, new Attributes { Str = 20, Int = 20, Wis = 20, Con = 20, Dex = 20 } }
+            }
+        },
     };
     
     public bool IncrementStat(Stat stat, Aisling aisling, bool overrideUnspentStatCheck = false)

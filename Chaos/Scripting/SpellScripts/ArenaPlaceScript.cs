@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
@@ -54,7 +55,10 @@ public class ArenaPlaceScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public ArenaPlaceScript(Spell subject)
-        : base(subject) { }
+        : base(subject)
+    {
+        PanelEntityBase = subject;
+    }
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context) =>
@@ -67,4 +71,5 @@ public class ArenaPlaceScript : ConfigurableSpellScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
+    public PanelEntityBase PanelEntityBase { get; init; }
 }

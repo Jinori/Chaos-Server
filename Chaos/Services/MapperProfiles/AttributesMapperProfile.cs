@@ -28,7 +28,11 @@ public sealed class AttributesMapperProfile : IMapperProfile<Attributes, Attribu
             FlatSkillDamage = obj.FlatSkillDamage,
             FlatSpellDamage = obj.FlatSpellDamage,
             SkillDamagePct = obj.SkillDamagePct,
-            SpellDamagePct = obj.SpellDamagePct
+            SpellDamagePct = obj.SpellDamagePct,
+            CooldownReductionPct = obj.CooldownReductionPct,
+            HealthBonusPct = obj.HealthBonusPct,
+            CooldownReductionMs = obj.CooldownReductionMs,
+            HealthBonus = obj.HealthBonus
         };
 
     public AttributesSchema Map(Attributes obj)
@@ -49,7 +53,11 @@ public sealed class AttributesMapperProfile : IMapperProfile<Attributes, Attribu
             FlatSkillDamage = obj.FlatSkillDamage,
             FlatSpellDamage = obj.FlatSkillDamage,
             SkillDamagePct = obj.SkillDamagePct,
-            SpellDamagePct = obj.SpellDamagePct
+            SpellDamagePct = obj.SpellDamagePct,
+            CooldownReductionPct = obj.CooldownReductionPct,
+            HealthBonusPct = obj.HealthBonusPct,
+            CooldownReductionMs = obj.CooldownReductionMs,
+            HealthBonus = obj.HealthBonus
         };
 
     /// <inheritdoc />
@@ -82,6 +90,10 @@ public sealed class AttributesMapperProfile : IMapperProfile<Attributes, Attribu
             FlatSpellDamage = obj.FlatSpellDamage,
             SkillDamagePct = obj.SkillDamagePct,
             SpellDamagePct = obj.SpellDamagePct,
+            CooldownReductionPct = obj.CooldownReductionPct,
+            HealthBonusPct = obj.HealthBonusPct,
+            CooldownReductionMs = obj.CooldownReductionMs,
+            HealthBonus = obj.HealthBonus,
             Ac = obj.Ac,
             Dmg = obj.Dmg,
             Hit = obj.Hit,
@@ -107,6 +119,10 @@ public sealed class AttributesMapperProfile : IMapperProfile<Attributes, Attribu
             FlatSpellDamage = obj.FlatSpellDamage,
             SkillDamagePct = obj.SkillDamagePct,
             SpellDamagePct = obj.SpellDamagePct,
+            CooldownReductionPct = obj.CooldownReductionPct,
+            HealthBonusPct = obj.HealthBonusPct,
+            CooldownReductionMs = obj.CooldownReductionMs,
+            HealthBonus = obj.HealthBonus,
             AbilityLevel = obj.AbilityLevel,
             Ac = obj.Ac,
             Con = obj.Con,
@@ -131,7 +147,11 @@ public sealed class AttributesMapperProfile : IMapperProfile<Attributes, Attribu
             FlatSkillDamage = obj.FlatSkillDamage,
             FlatSpellDamage = obj.FlatSpellDamage,
             SkillDamagePct = obj.SkillDamagePct,
-            SpellDamagePct = obj.SpellDamagePct,
+            SpellDamagePct = obj.SpellDamagePct, 
+            CooldownReductionPct = obj.CooldownReductionPct,
+            HealthBonusPct = obj.HealthBonusPct,
+            CooldownReductionMs = obj.CooldownReductionMs,
+            HealthBonus = obj.HealthBonus,
             Ac = obj.Ac,
             Dmg = obj.Dmg,
             Hit = obj.Hit,
@@ -166,6 +186,10 @@ public sealed class AttributesMapperProfile : IMapperProfile<Attributes, Attribu
             FlatSpellDamage = obj.FlatSpellDamage,
             SkillDamagePct = obj.SkillDamagePct,
             SpellDamagePct = obj.SpellDamagePct,
+            CooldownReductionPct = obj.CooldownReductionPct,
+            HealthBonusPct = obj.HealthBonusPct,
+            CooldownReductionMs = obj.CooldownReductionMs,
+            HealthBonus = obj.HealthBonus,
             AbilityLevel = obj.AbilityLevel,
             Ac = obj.Ac,
             AdvClass = obj.AdvClass,

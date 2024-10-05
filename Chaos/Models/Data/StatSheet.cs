@@ -126,6 +126,30 @@ public record StatSheet : Attributes
         get => _spellDamagePctMod;
         init => _spellDamagePctMod = value;
     }
+    
+    public int CooldownReductionPctMod
+    {
+        get => _cooldownReductionPctMod;
+        init => _cooldownReductionPctMod = value;
+    }
+    
+    public int CooldownReductionMsMod
+    {
+        get => _cooldownReductionMsMod;
+        init => _cooldownReductionMsMod = value;
+    }
+
+    public int HealthBonusPctMod
+    {
+        get => _healthBonusPctMod;
+        init => _healthBonusPctMod = value;
+    }
+    
+    public int HealthBonusMod
+    {
+        get => _healthBonusMod;
+        init => _healthBonusMod = value;
+    }
 
     public int StrMod
     {
@@ -166,6 +190,14 @@ public record StatSheet : Attributes
     public int EffectiveSkillDamagePct => SkillDamagePct + SkillDamagePctMod;
 
     public int EffectiveSpellDamagePct => SpellDamagePct + SpellDamagePctMod;
+    
+    public int EffectiveCooldownReductionPct => CooldownReductionPct + CooldownReductionPctMod;
+
+    public int EffectiveHealthBonusPct => HealthBonusPct + HealthBonusMod;
+    
+    public int EffectiveCooldownReductionMs => CooldownReductionMs + CooldownReductionMsMod;
+
+    public int EffectiveHealthBonus => HealthBonus + HealthBonusMod;
 
     public byte EffectiveStr => (byte)Math.Clamp(Str + StrMod, byte.MinValue, byte.MaxValue);
 
@@ -210,6 +242,10 @@ public record StatSheet : Attributes
         Interlocked.Add(ref _flatSpellDamageMod, other.FlatSpellDamage);
         Interlocked.Add(ref _skillDamagePctMod, other.SkillDamagePct);
         Interlocked.Add(ref _spellDamagePctMod, other.SpellDamagePct);
+        Interlocked.Add(ref _cooldownReductionPctMod, other.CooldownReductionPct);
+        Interlocked.Add(ref _healthBonusPctMod, other.HealthBonusPct);
+        Interlocked.Add(ref _cooldownReductionMsMod, other.CooldownReductionMs);
+        Interlocked.Add(ref _healthBonusMod, other.HealthBonus);
     }
 
     public void AddHealthPct(int pct) => InterlockedEx.SetValue(ref _currentHp, () => (int)Math.Clamp(EffectiveMaximumHp * (pct + HealthPercent) / 100m, 0, EffectiveMaximumHp));
@@ -294,6 +330,10 @@ public record StatSheet : Attributes
         Interlocked.Add(ref _flatSpellDamageMod, -other.FlatSpellDamage);
         Interlocked.Add(ref _skillDamagePctMod, -other.SkillDamagePct);
         Interlocked.Add(ref _spellDamagePctMod, -other.SpellDamagePct);
+        Interlocked.Add(ref _cooldownReductionPctMod, -other.CooldownReductionPct);
+        Interlocked.Add(ref _healthBonusPctMod, -other.HealthBonusPct);
+        Interlocked.Add(ref _cooldownReductionMsMod, -other.CooldownReductionMs);
+        Interlocked.Add(ref _healthBonusMod, -other.HealthBonus);
     }
 
     public void SubtractHealthPct(decimal pct)
@@ -405,5 +445,9 @@ public record StatSheet : Attributes
     protected int _flatSkillDamageMod;
     protected int _spellDamagePctMod;
     protected int _skillDamagePctMod;
+    protected int _cooldownReductionPctMod;
+    protected int _healthBonusPctMod;
+    protected int _cooldownReductionMsMod;
+    protected int _healthBonusMod;
     #endregion
 }

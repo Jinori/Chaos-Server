@@ -18,6 +18,7 @@ public class SpellComponent<TEntity> : IConditionalComponent where TEntity: MapE
             .ExecuteAndCheck<SplashComponent<TEntity>>()
             ?
             .Execute<MagicResistanceComponent>()
+            .Execute<CooldownComponent>()
             .Execute<BodyAnimationAbilityComponent>()
             .Execute<AnimationAbilityComponent>()
             .Execute<SoundAbilityComponent>()
@@ -30,5 +31,6 @@ public class SpellComponent<TEntity> : IConditionalComponent where TEntity: MapE
                                               BodyAnimationAbilityComponent.IBodyAnimationComponentOptions,
                                               AnimationAbilityComponent.IAnimationComponentOptions,
                                               ManaCostAbilityComponent.IManaCostComponentOptions,
+                                                CooldownComponent.ICooldownComponentOptions,
                                               BreaksHideAbilityComponent.IBreaksHideComponentOptions { }
 }

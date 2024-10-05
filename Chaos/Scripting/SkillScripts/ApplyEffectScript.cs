@@ -2,6 +2,7 @@
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
@@ -60,8 +61,11 @@ public class ApplyEffectScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public ApplyEffectScript(Skill subject, IEffectFactory effectFactory)
-        : base(subject) =>
+        : base(subject)
+    {
         EffectFactory = effectFactory;
+        PanelEntityBase = subject;
+    }
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context) =>
@@ -70,4 +74,5 @@ public class ApplyEffectScript : ConfigurableSkillScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
+    public PanelEntityBase PanelEntityBase { get; init; }
 }

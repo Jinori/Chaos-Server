@@ -15,12 +15,14 @@ public struct GenericAbilityComponent<TEntity> : IConditionalComponent where TEn
                                                ?.Execute<BodyAnimationAbilityComponent>()
                                                .Execute<AnimationAbilityComponent>()
                                                .Execute<SoundAbilityComponent>()
+                                               .Execute<CooldownComponent>()
            != null;
 
     public interface IAbilityComponentOptions : GetTargetsAbilityComponent<TEntity>.IGetTargetsComponentOptions,
                                                 SoundAbilityComponent.ISoundComponentOptions,
                                                 BodyAnimationAbilityComponent.IBodyAnimationComponentOptions,
                                                 AnimationAbilityComponent.IAnimationComponentOptions,
+                                                CooldownComponent.ICooldownComponentOptions,
                                                 ManaCostAbilityComponent.IManaCostComponentOptions,
                                                 BreaksHideAbilityComponent.IBreaksHideComponentOptions { }
 }

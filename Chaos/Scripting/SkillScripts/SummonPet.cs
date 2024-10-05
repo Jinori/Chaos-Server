@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.SkillScripts.Abstractions;
@@ -47,7 +48,10 @@ public class SummonPet : ConfigurableSkillScriptBase, GenericAbilityComponent<Cr
 
     /// <inheritdoc />
     public SummonPet(Skill subject)
-        : base(subject) { }
+        : base(subject)
+    {
+        PanelEntityBase = subject;
+    }
 
     
     /// <inheritdoc />
@@ -56,4 +60,5 @@ public class SummonPet : ConfigurableSkillScriptBase, GenericAbilityComponent<Cr
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
+    public PanelEntityBase PanelEntityBase { get; init; }
 }

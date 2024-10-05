@@ -7,6 +7,7 @@ using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
+using Chaos.Scripting.ReactorTileScripts;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Scripting.SkillScripts.Abstractions;
 using Chaos.Scripting.SpellScripts.Abstractions;
@@ -107,7 +108,6 @@ public class DefaultDamageFormula : IDamageFormula
                     if (sourceScript is not null && sourceScript is not IReactorTileScript)
                         ApplySkillSpellModifier(ref damage, sourceScript, attacker);
                 }
-
                 break;
             }
         }

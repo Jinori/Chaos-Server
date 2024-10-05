@@ -89,6 +89,22 @@ public class WeaponSmithingCraftScript : DialogScriptBase
         // Ensure the success rate does not exceed the maximum allowed value
         return Math.Min(successRate, SUCCESSRATEMAX);
     }
+    
+    private CraftingRequirements.Recipe? FindRecipeByName(string recipeName)
+    {
+        // First, check in JewelcraftingRequirements
+        var recipe = CraftingRequirements.WeaponSmithingCraftRequirements.Values
+            .FirstOrDefault(r => r.Name.EqualsI(recipeName));
+
+        // If not found, check in JewelcraftingRequirements2
+        if (recipe is null)
+        {
+            recipe = CraftingRequirements.WeaponSmithingCraftRequirements2.Values
+                .FirstOrDefault(r => r.Name.EqualsI(recipeName));
+        }
+
+        return recipe;
+    }
 
     private double GetMultiplier(int totalTimesCrafted) =>
         totalTimesCrafted switch
@@ -180,14 +196,11 @@ public class WeaponSmithingCraftScript : DialogScriptBase
             return;
         }
 
-        var recipe =
-            CraftingRequirements.WeaponSmithingCraftRequirements.Values.FirstOrDefault(recipe1 =>
-                recipe1.Name.EqualsI(selectedRecipeName));
+        var recipe = FindRecipeByName(selectedRecipeName);
 
         if (recipe is null)
         {
             Subject.Reply(source, "Notify a GM that this recipe is missing.");
-
             return;
         }
 
@@ -297,9 +310,7 @@ public class WeaponSmithingCraftScript : DialogScriptBase
             return;
         }
 
-        var recipe =
-            CraftingRequirements.WeaponSmithingCraftRequirements.Values.FirstOrDefault(recipe1 =>
-                recipe1.Name.EqualsI(selectedRecipeName));
+        var recipe = FindRecipeByName(selectedRecipeName);
 
         if (recipe is null)
         {
