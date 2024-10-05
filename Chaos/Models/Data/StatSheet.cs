@@ -193,7 +193,7 @@ public record StatSheet : Attributes
     
     public int EffectiveCooldownReductionPct => CooldownReductionPct + CooldownReductionPctMod;
 
-    public int EffectiveHealthBonusPct => HealthBonusPct + HealthBonusMod;
+    public int EffectiveHealthBonusPct => HealthBonusPct + HealthBonusPctMod;
     
     public int EffectiveCooldownReductionMs => CooldownReductionMs + CooldownReductionMsMod;
 

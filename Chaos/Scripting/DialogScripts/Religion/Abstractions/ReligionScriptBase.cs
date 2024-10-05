@@ -378,7 +378,7 @@ public class ReligionScriptBase : DialogScriptBase
 
                         TryAddFaith(player, FAITH_REWARD);
                         UpdateReligionRank(player);
-                        player.Trackers.TimedEvents.AddEvent($"attendedmass{deity}", TimeSpan.FromHours(24), true);
+                        player.Trackers.TimedEvents.AddEvent($"attendedmass{deity}", TimeSpan.FromHours(20), true);
                         var tnl = LevelUpFormulae.Default.CalculateTnl(player);
                         var twentyFivePercent = Convert.ToInt32(.25 * tnl);
 
@@ -420,7 +420,14 @@ public class ReligionScriptBase : DialogScriptBase
                     var tnl = LevelUpFormulae.Default.CalculateTnl(player);
                     var twentyFivePercent = Convert.ToInt32(.25 * tnl);
                 
-                    ExperienceDistributionScript.GiveExp(player, twentyFivePercent);
+                    if (player.UserStatSheet.Level < 99)
+                    {
+                        ExperienceDistributionScript.GiveExp(player, twentyFivePercent);
+                    }
+                    else
+                    {
+                        ExperienceDistributionScript.GiveExp(player, 10000000);
+                    }
                 }
 
                 foreach (var latePlayers in aislingsAtEnd!.Except(aislingsStillHere))
@@ -595,6 +602,11 @@ public class ReligionScriptBase : DialogScriptBase
             {
                 RemoveOption(subject, option);
             }
+        }
+
+        if (Subject.DialogSource.EntityType == EntityType.Item)
+        {
+            RemoveOption(subject, "Hold Mass");
         }
 
         if (rank == Rank.None)
