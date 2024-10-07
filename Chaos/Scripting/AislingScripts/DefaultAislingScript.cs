@@ -1005,6 +1005,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("devour", "cleave");
             RemoveAndNotifyIfBothExist("clobber", "strike");
             RemoveAndNotifyIfBothExist("flank", "clobber");
+            RemoveAndNotifyIfBothExist("flank", "strike");
             RemoveAndNotifyIfBothExist("wallop", "flank");
             RemoveAndNotifyIfBothExist("wallop", "strike");
             RemoveAndNotifyIfBothExist("wallop", "clobber");
@@ -1039,6 +1040,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("phoenixstrike", "eaglestrike");
             RemoveAndNotifyIfBothExist("roundhousekick", "kick");
             RemoveAndNotifyIfBothExist("mantiskick", "highkick");
+            RemoveAndNotifyIfBothExist("smokescreen", "throwsmokebomb");
             RemoveAndNotifyIfBothExist("throwsurigum", "assault");
             RemoveAndNotifyIfBothExist("blitz", "assault");
             RemoveAndNotifyIfBothExist("blitz", "throwsurigum");

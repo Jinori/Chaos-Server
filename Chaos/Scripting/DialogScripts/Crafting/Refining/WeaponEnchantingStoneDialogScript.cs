@@ -63,6 +63,6 @@ public class WeaponEnchantingStoneDialogScript : DialogScriptBase
         source.Animate(ani);
 
         // Send a message to the player
-        source.SendOrangeBarMessage($"Your {masterWeapon.Template.Name} has been enchanted into a {enchantedWeapon.Template.Name}!");
+        source.SendOrangeBarMessage($"Your weapon has been enchanted into a {enchantedWeapon.Template.Name}!");
     }
 }

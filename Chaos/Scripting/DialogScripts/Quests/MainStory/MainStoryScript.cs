@@ -27,6 +27,15 @@ public class MainStoryScript(
 
     public override void OnDisplaying(Aisling source)
     {
+        var masterWeapon = new Dictionary<string, List<string>>
+        {
+            { "kalkuri", new List<string> { "enchantedkalkuri", "empoweredkalkuri" } },
+            { "holyhybrasylgnarl", new List<string> { "enchantedholygnarl", "empoweredholygnarl" } },
+            { "hybrasylazoth", new List<string> { "enchantedhybrasylazoth", "empoweredhybrasylazoth" } },
+            { "magusorb", new List<string> { "enchantedmagusorb", "empoweredmagusorb" } },
+            { "hybrasylescalon", new List<string> { "enchantedescalon", "empoweredescalon" } }
+        };
+        
         switch (Subject.Template.TemplateKey.ToLower())
         {
             #region MysteriousArtifact
@@ -773,6 +782,43 @@ public class MainStoryScript(
 
             case "mainstory_skandara_initial":
             {
+                if (source.Trackers.Flags.HasFlag(MainstoryFlags.FinishedDungeon))
+                {
+                    bool hasEnchantedOrEmpoweredWeapon = false;
+
+                    foreach (var weapon in masterWeapon)
+                    {
+                        var enchantedOrEmpoweredVersions = weapon.Value; // List of enchanted and empowered versions
+
+                        // Check if the player's inventory contains either the enchanted or empowered version of the weapon
+                        foreach (var version in enchantedOrEmpoweredVersions)
+                        {
+                            if (source.Inventory.ContainsByTemplateKey(version))
+                            {
+                                hasEnchantedOrEmpoweredWeapon = true;
+                                break; // Exit inner loop once a match is found
+                            }
+                        }
+
+                        if (hasEnchantedOrEmpoweredWeapon)
+                            break; // Exit outer loop once a match is found
+                    }
+
+                    // If the player doesn't have any enchanted or empowered weapons, return
+                    if (!hasEnchantedOrEmpoweredWeapon)
+                        return;
+
+                    // If the player has an enchanted or empowered weapon, add the dialog option
+                    var option = new DialogOption
+                    {
+                        DialogKey = "mainstory_skandara_restoreweapon",
+                        OptionText = "Restore Master Weapon"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+                
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedThirdTrial))
                 {
                     Subject.Reply(source, "Skip", "mainstory_skandara_starttrial1");
@@ -896,8 +942,32 @@ public class MainStoryScript(
             case "mainstory_skandara_return4":
             {
                 source.SendOrangeBarMessage("Speak to Goddess Miraelis about the True Elemental Artifact.");
-            }
                 break;
+            }
+                
+            case "mainstory_skandara_restoreweapon3":
+            {
+                foreach (var (baseWeapon, enchantedOrEmpoweredVersions) in masterWeapon)
+                {
+                    // Check if the player has either the enchanted or empowered version
+                    foreach (var version in enchantedOrEmpoweredVersions)
+                    {
+                        if (source.Inventory.ContainsByTemplateKey(version))
+                        {
+                            // Remove the enchanted or empowered version
+                            source.Inventory.RemoveByTemplateKey(version);
+
+                            var newWeapon = itemFactory.Create(baseWeapon);
+
+                            // Give the base version of the master weapon
+                            source.GiveItemOrSendToBank(newWeapon);
+                            source.SendOrangeBarMessage($"Skandara replaces your weapon with a {newWeapon.DisplayName}.");
+                            return; // Exit after replacing the weapon
+                        }
+                    }
+                }
+                break;
+            }
 
             #endregion
         }

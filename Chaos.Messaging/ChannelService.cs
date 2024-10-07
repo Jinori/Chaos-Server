@@ -58,15 +58,6 @@ public sealed class ChannelService : IChannelService
         if (!IsChannel(channelName))
             throw new InvalidOperationException($"{channelName} is not a valid channel name");
 
-        //if not bypassing validation, and the channel name is reserved
-        //say the channel doesnt exist
-        if (!bypassValidation && Options.ReservedChannelNames.Any(channelName.EqualsI))
-        {
-            subscriber.SendMessage($"Channel {channelName} not found");
-
-            return false;
-        }
-
         if (!Channels.TryGetValue(channelName, out var channelDetails))
         {
             subscriber.SendMessage($"Channel {channelName} not found");
