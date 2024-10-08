@@ -199,7 +199,7 @@ public class ClassDedicationScript : DialogScriptBase
 
         if (baseClass == BaseClass.Wizard)
         {
-            var skill = SkillFactory.Create("assail");
+            var skill = SkillFactory.Create("energybolt");
             var spell = SpellFactory.Create("arcanebolt");
 
             if (!source.SpellBook.Contains(spell))
@@ -211,7 +211,7 @@ public class ClassDedicationScript : DialogScriptBase
 
         if (baseClass == BaseClass.Priest)
         {
-            var skill = SkillFactory.Create("assail");
+            var skill = SkillFactory.Create("blessedbolt");
             var spell = SpellFactory.Create("beagioc");
             var spell2 = SpellFactory.Create("beothaich");
             var spell3 = SpellFactory.Create("spark");

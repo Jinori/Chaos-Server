@@ -782,6 +782,50 @@ public class MainStoryScript(
 
             case "mainstory_skandara_initial":
             {
+                if (source.UserStatSheet.Master)
+                {
+                    bool hasMasterWeapon = false;
+
+                    foreach (var (baseWeapon, masterWeapons) in masterWeapon)
+                    {
+                        // Check for the base weapon first
+                        if (source.Inventory.ContainsByTemplateKey(baseWeapon) || source.Bank.Contains(baseWeapon))
+                        {
+                            hasMasterWeapon = true;
+                            break;
+                        }
+
+                        // Then check for enchanted or empowered versions
+                        foreach (var version in masterWeapons)
+                        {
+                            if (source.Inventory.ContainsByTemplateKey(version) || source.Bank.Contains(version))
+                            {
+                                hasMasterWeapon = true;
+                                break;
+                            }
+                        }
+
+                        // Exit loop if a weapon is found
+                        if (hasMasterWeapon)
+                            break;
+                    }
+                    
+                    if (!hasMasterWeapon)
+                    {
+                        var option = new DialogOption
+                        {
+                            DialogKey = "mainstory_skandara_replaceweapon",
+                            OptionText = "Replace Master Weapon"
+                        };
+
+                        if (!Subject.HasOption(option.OptionText))
+                            Subject.Options.Insert(0, option);
+
+                        return;
+                    }
+                }
+
+                
                 if (source.Trackers.Flags.HasFlag(MainstoryFlags.FinishedDungeon))
                 {
                     bool hasEnchantedOrEmpoweredWeapon = false;
@@ -966,6 +1010,61 @@ public class MainStoryScript(
                         }
                     }
                 }
+                break;
+            }
+
+            case "mainstory_skandara_replaceweapon3":
+            {
+                if (!source.Inventory.HasCountByTemplateKey("strangestone", 2))
+                {
+                    Subject.Reply(source, "You are missing the two Strange Stones.");
+                    return;
+                }
+
+                if (!source.Inventory.HasCountByTemplateKey("polishedcrimsonitebar", 5))
+                {
+                    Subject.Reply(source, "You are missing the five Polished Crimsonite Bars.");
+                    return;
+                }
+                
+                if (!source.Inventory.HasCountByTemplateKey("polishedcrimsonitebar", 5))
+                {
+                    Subject.Reply(source, "You are missing the five Polished Azurium Bars.");
+                    return;
+                }
+
+                if (!source.TryTakeGold(1000000))
+                {
+                    Subject.Reply(source, "You don't have the 1,000,000 Gold required.");
+                    return;
+                }
+
+                source.Inventory.RemoveQuantityByTemplateKey("strangestone", 2);
+                source.Inventory.RemoveQuantityByTemplateKey("polishedcrimsonitebar", 5);
+                source.Inventory.RemoveQuantityByTemplateKey("polishedazuriumbar", 5);
+                
+                var weaponDictionary = new Dictionary<BaseClass, string[]>
+                {
+                    { BaseClass.Warrior, ["hybrasylescalon"] },
+                    { BaseClass.Monk, ["kalkuri"] },
+                    { BaseClass.Rogue, ["hybrasylazoth"] },
+                    { BaseClass.Priest, ["holyhybrasylgnarl"] },
+                    { BaseClass.Wizard, ["magusorb"] }
+                };
+
+                var gearKey = source.UserStatSheet.BaseClass;
+                if (weaponDictionary.TryGetValue(gearKey, out var weapon))
+                {
+                    foreach (var weaponKey in weapon)
+                    {
+                        var gearItem = itemFactory.Create(weaponKey);
+                        source.GiveItemOrSendToBank(gearItem);
+                        source.SendOrangeBarMessage($"Skandara hands you {gearItem.DisplayName}.");
+                    }
+                }
+                
+                Subject.Reply(source, "I hope you take good care of this one. But if you need another, you can always come back.");
+
                 break;
             }
 

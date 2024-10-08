@@ -66,7 +66,7 @@ public class WizardDedicateScript : DialogScriptBase
                     GameTime.Now));
 
             source.Trackers.Flags.AddFlag(QuestFlag1.ChosenClass);
-            var skill = SkillFactory.Create("assail");
+            var skill = SkillFactory.Create("energybolt");
             var spell = SpellFactory.Create("arcanebolt");
 
             if (!source.SpellBook.Contains(spell))

@@ -68,7 +68,7 @@ public class PriestDedicateScript : DialogScriptBase
                     GameTime.Now));
 
             source.Trackers.Flags.AddFlag(QuestFlag1.ChosenClass);
-            var skill = SkillFactory.Create("assail");
+            var skill = SkillFactory.Create("blessedbolt");
             var spell = SpellFactory.Create("beagioc");
             var spell2 = SpellFactory.Create("beothaich");
             var spell3 = SpellFactory.Create("spark");
