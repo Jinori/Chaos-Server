@@ -54,10 +54,7 @@ public class InspectScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public InspectScript(Skill subject)
-        : base(subject)
-    {
-        PanelEntityBase = subject;
-    }
+        : base(subject) { }
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context) =>
@@ -70,5 +67,4 @@ public class InspectScript : ConfigurableSkillScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

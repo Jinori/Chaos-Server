@@ -64,7 +64,6 @@ public class ApplyEffectScript : ConfigurableSkillScriptBase,
         : base(subject)
     {
         EffectFactory = effectFactory;
-        PanelEntityBase = subject;
     }
 
     /// <inheritdoc />
@@ -74,5 +73,4 @@ public class ApplyEffectScript : ConfigurableSkillScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

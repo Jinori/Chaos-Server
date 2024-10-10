@@ -28,7 +28,6 @@ public class PullSkillScript : ConfigurableSkillScriptBase,
         EffectFactory = effectFactory;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
-        PanelEntityBase = subject;
     }
 
     public override void OnUse(ActivationContext context) =>
@@ -80,5 +79,4 @@ public class PullSkillScript : ConfigurableSkillScriptBase,
     public decimal? DamageMultiplierPerTarget { get; init; }
     public decimal? PctOfMana { get; init; }
     public decimal? PctOfManaMultiplier { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

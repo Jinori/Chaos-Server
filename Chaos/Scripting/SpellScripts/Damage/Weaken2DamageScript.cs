@@ -53,10 +53,7 @@ public class Weaken2DamageScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public Weaken2DamageScript(Spell subject)
-        : base(subject)
-    {
-        PanelEntityBase = subject;
-    }
+        : base(subject) { }
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context) =>
@@ -69,5 +66,4 @@ public class Weaken2DamageScript : ConfigurableSpellScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

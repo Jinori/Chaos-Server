@@ -29,7 +29,6 @@ public class SacrificeBossCascadingDamageScript : ConfigurableSpellScriptBase,
         SourceScript = this;
         ReactorTileFactory = reactorTileFactory;
         CascadeScriptVars ??= Subject.Template.ScriptVars;
-        PanelEntityBase = subject;
     }
 
     /// <inheritdoc />
@@ -127,6 +126,4 @@ public class SacrificeBossCascadingDamageScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     #endregion
-
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

@@ -24,6 +24,7 @@ public class SpellComponent<TEntity> : IConditionalComponent where TEntity: MapE
             .Execute<SoundAbilityComponent>()
         != null;
 
+    // ReSharper disable once PossibleInterfaceMemberAmbiguity
     public interface ISpellComponentOptions : GetTargetsAbilityComponent<TEntity>.IGetTargetsComponentOptions,
                                                 SplashComponent<TEntity>.ISplashComponentOptions,
                                               MagicResistanceComponent.IMagicResistanceComponentOptions,
@@ -31,6 +32,5 @@ public class SpellComponent<TEntity> : IConditionalComponent where TEntity: MapE
                                               BodyAnimationAbilityComponent.IBodyAnimationComponentOptions,
                                               AnimationAbilityComponent.IAnimationComponentOptions,
                                               ManaCostAbilityComponent.IManaCostComponentOptions,
-                                                CooldownComponent.ICooldownComponentOptions,
                                               BreaksHideAbilityComponent.IBreaksHideComponentOptions { }
 }

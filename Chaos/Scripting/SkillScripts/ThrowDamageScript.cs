@@ -27,7 +27,6 @@ public class ThrowDamageScript : ConfigurableSkillScriptBase,
         EffectFactory = effectFactory;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
-        PanelEntityBase = subject;
     }
 
     /// <inheritdoc />
@@ -122,5 +121,4 @@ public class ThrowDamageScript : ConfigurableSkillScriptBase,
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
     public int? EffectApplyChance { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

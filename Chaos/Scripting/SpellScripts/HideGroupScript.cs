@@ -19,7 +19,6 @@ public class HideGroupScript : ConfigurableSpellScriptBase,
     public HideGroupScript(Spell subject, IEffectFactory effectFactory) : base(subject)
     {
         EffectFactory = effectFactory;
-        PanelEntityBase = subject;
     }
 
     public bool StopOnWalls { get; init; }
@@ -54,6 +53,4 @@ public class HideGroupScript : ConfigurableSpellScriptBase,
             .ExecuteAndCheck<SpellComponent<Creature>>()
             ?
             .Execute<GroupHideEffectAbilityComponent>();
-
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

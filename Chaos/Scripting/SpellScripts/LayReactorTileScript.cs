@@ -86,13 +86,9 @@ public class LayReactorTileScript : ConfigurableSpellScriptBase,
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
 
-    /// <inheritdoc />
-    public PanelEntityBase PanelEntityBase { get; init; }
-
     // Constructor where we set PanelEntityBase
     public LayReactorTileScript(Spell subject, IReactorTileFactory reactorTileFactory) : base(subject)
     {
-        PanelEntityBase = subject; // Set PanelEntityBase to the spell entity
         ReactorTileFactory = reactorTileFactory;
         SourceScript = this; // Optional, set the source script
     }

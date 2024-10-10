@@ -23,7 +23,6 @@ public class ManaBasedDamageScript : ConfigurableSpellScriptBase,
     {
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
-        PanelEntityBase = subject;
     }
 
     /// <inheritdoc />
@@ -93,5 +92,4 @@ public class ManaBasedDamageScript : ConfigurableSpellScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

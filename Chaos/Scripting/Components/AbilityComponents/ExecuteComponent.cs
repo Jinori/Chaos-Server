@@ -24,6 +24,8 @@ public class ExecuteComponent : IComponent
     public void Execute(ActivationContext context, ComponentVars vars)
     {
         var options = vars.GetOptions<IExecuteComponentOptions>();
+        var subject = vars.GetSubject<PanelEntityBase>();
+        var script = (options.SourceScript as SubjectiveScriptBase<PanelEntityBase>)!;
         var targets = vars.GetTargets<Creature>();
         var hasKilled = false;
 
@@ -78,7 +80,7 @@ public class ExecuteComponent : IComponent
             }
 
         if (hasKilled)
-            options.PanelEntityBase.Elapsed = options.PanelEntityBase.Cooldown / 2;
+            subject.SetTemporaryCooldown(subject.Cooldown!.Value / 2); 
     }
 
     public interface IExecuteComponentOptions
@@ -88,7 +90,6 @@ public class ExecuteComponent : IComponent
         decimal DmgHealthPct { get; init; }
         decimal HealAmountIfExecuted { get; init; }
         int? KillTargetAtHealthPct { get; init; }
-        PanelEntityBase PanelEntityBase { get; init; }
         IScript SourceScript { get; init; }
     }
 }

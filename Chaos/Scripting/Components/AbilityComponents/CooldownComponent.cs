@@ -7,15 +7,12 @@ namespace Chaos.Scripting.Components.AbilityComponents;
 
 public class CooldownComponent : IComponent
 {
-    // Dictionary to store the original cooldown values of each entity
-    private static readonly Dictionary<PanelEntityBase, TimeSpan> OriginalCooldowns = new();
-
     /// <inheritdoc />
     public void Execute(ActivationContext context, ComponentVars vars)
     {
-        var options = vars.GetOptions<ICooldownComponentOptions>();
+        var subject = vars.GetSubject<PanelEntityBase>();
         
-        if (context.SourceAisling != null && !context.SourceAisling.SpellBook.ContainsByTemplateKey(options.PanelEntityBase.Template.TemplateKey))
+        if (context.SourceAisling != null && !context.SourceAisling.SpellBook.ContainsByTemplateKey(subject.Template.TemplateKey))
             return;
         
         // Get the player's cooldown reduction percentage (assuming it comes in as an integer like 10 for 10%)
@@ -29,29 +26,13 @@ public class CooldownComponent : IComponent
         var flatCooldown = cooldownReduction;
 
         // Ensure that PanelEntityBase and its cooldown value are valid
-        if (options?.PanelEntityBase != null && options.PanelEntityBase.Cooldown.HasValue)
+        if (subject.Cooldown.HasValue)
         {
-            // Check if the original cooldown is already stored
-            if (!OriginalCooldowns.TryGetValue(options.PanelEntityBase, out var originalCooldown))
-            {
-                // If not, store the current cooldown as the original value
-                originalCooldown = options.PanelEntityBase.Cooldown.Value;
-                OriginalCooldowns[options.PanelEntityBase] = originalCooldown;
-            }
-
             // Apply the cooldown reduction to the original cooldown value
-            var reducedCooldownMs = originalCooldown.TotalMilliseconds * (1 - reductionPct) - flatCooldown;
+            var reducedCooldownSecs = (subject.Cooldown.Value.Seconds - flatCooldown) * (1 - reductionPct);
 
             // Set the new reduced cooldown (in milliseconds) for the ability
-            options.PanelEntityBase.Cooldown = TimeSpan.FromMilliseconds(reducedCooldownMs);
-
-            // Reset the elapsed time for the cooldown
-            options.PanelEntityBase.Elapsed = TimeSpan.Zero; // Assuming you want to reset the elapsed timer after applying the cooldown
+            subject.SetTemporaryCooldown(TimeSpan.FromSeconds(reducedCooldownSecs));
         }
-    }
-
-    public interface ICooldownComponentOptions
-    {
-        PanelEntityBase PanelEntityBase { get; init; }
     }
 }

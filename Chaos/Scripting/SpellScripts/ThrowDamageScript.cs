@@ -31,7 +31,6 @@ public class ThrowDamageScript : ConfigurableSpellScriptBase,
         ReactorTileFactory = reactorTileFactory;
         EffectFactory = effectFactory;
         CascadeScriptVars ??= Subject.Template.ScriptVars;
-        PanelEntityBase = subject;
     }
 
     public bool StopOnWalls { get; init; }
@@ -82,6 +81,4 @@ public class ThrowDamageScript : ConfigurableSpellScriptBase,
             .Execute<DamageAbilityComponent>()
             .Execute<CascadingComponent<CascadingDamageTileScript>>()
             .Execute<ApplyEffectAbilityComponent>();
-
-    public PanelEntityBase PanelEntityBase { get; init; }
 }  

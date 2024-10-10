@@ -71,7 +71,6 @@ public class HealthBasedDamageScript : ConfigurableSkillScriptBase,
     {
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
-        PanelEntityBase = subject;
     }
 
     /// <inheritdoc />
@@ -85,5 +84,4 @@ public class HealthBasedDamageScript : ConfigurableSkillScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

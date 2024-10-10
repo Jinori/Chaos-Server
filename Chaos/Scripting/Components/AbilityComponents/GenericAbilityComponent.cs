@@ -22,7 +22,6 @@ public struct GenericAbilityComponent<TEntity> : IConditionalComponent where TEn
                                                 SoundAbilityComponent.ISoundComponentOptions,
                                                 BodyAnimationAbilityComponent.IBodyAnimationComponentOptions,
                                                 AnimationAbilityComponent.IAnimationComponentOptions,
-                                                CooldownComponent.ICooldownComponentOptions,
                                                 ManaCostAbilityComponent.IManaCostComponentOptions,
                                                 BreaksHideAbilityComponent.IBreaksHideComponentOptions { }
 }

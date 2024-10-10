@@ -20,7 +20,6 @@ public class ToggleEffectScript : ConfigurableSpellScriptBase,
     public ToggleEffectScript(Spell subject, IEffectFactory effectFactory)
         : base(subject)
     {
-        PanelEntityBase = subject;
         EffectFactory = effectFactory;
     }
 
@@ -95,5 +94,4 @@ public class ToggleEffectScript : ConfigurableSpellScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

@@ -52,10 +52,7 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, GenericAbilityCo
 
     /// <inheritdoc />
     public StudyCreatureScript(Skill subject)
-        : base(subject)
-    {
-        PanelEntityBase = subject;
-    }
+        : base(subject) { }
 
     private string GetElementColor(Element element) =>
         element switch
@@ -119,5 +116,4 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, GenericAbilityCo
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

@@ -2424,7 +2424,7 @@ public class RecipeItemScript : ItemScriptBase
             }
             case "recipe_potentpowerbrew":
             {
-                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.PotentAccuracyPotion))
+                if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.PotentPowerBrew))
                 {
                     if (craft != Crafts.Alchemy)
                     {
@@ -2436,7 +2436,7 @@ public class RecipeItemScript : ItemScriptBase
                     AlchemyRecipeLearn(
                         source,
                         ani,
-                        AlchemyRecipes.PotentHealthPotion,
+                        AlchemyRecipes.PotentPowerBrew,
                         "Potent Health Potion",
                         $"{Subject.Template.TemplateKey}");
 

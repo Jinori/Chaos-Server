@@ -23,7 +23,6 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
         : base(subject)
     {
         EffectFactory = effectFactory;
-        PanelEntityBase = subject;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
     }
@@ -107,6 +106,5 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
     public string? EffectKey { get; init; }
     public int? EffectApplyChance { get; init; }
     #endregion
-
-    public PanelEntityBase PanelEntityBase { get; init; }
+    
 }

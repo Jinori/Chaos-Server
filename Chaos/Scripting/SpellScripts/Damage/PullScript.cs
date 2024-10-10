@@ -24,7 +24,6 @@ public class PullScript : ConfigurableSpellScriptBase,
         : base(subject)
     {
         SourceScript = this;
-        PanelEntityBase = subject;
     }
 
     /// <inheritdoc />
@@ -61,6 +60,5 @@ public class PullScript : ConfigurableSpellScriptBase,
     public Stat? AggroMultiplier { get; init; }
     public IScript SourceScript { get; init; }
     #endregion
-
-    public PanelEntityBase PanelEntityBase { get; init; }
+    
 }

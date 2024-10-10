@@ -27,7 +27,6 @@ public class CascadingEffectScript : ConfigurableSpellScriptBase,
         ReactorTileFactory = reactorTileFactory;
         EffectFactory = effectFactory;
         CascadeScriptVars ??= Subject.Template.ScriptVars;
-        PanelEntityBase = subject;
     }
 
     /// <inheritdoc />
@@ -105,6 +104,4 @@ public class CascadingEffectScript : ConfigurableSpellScriptBase,
     public string? EffectKey { get; init; }
     /// <inheritdoc />
     public int? EffectApplyChance { get; init; }
-
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

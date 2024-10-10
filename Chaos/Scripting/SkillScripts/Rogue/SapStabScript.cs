@@ -92,7 +92,6 @@ public class SapStabScript : ConfigurableSkillScriptBase,
     public SapStabScript(Skill subject)
         : base(subject)
     {
-        PanelEntityBase = subject;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
     }
@@ -108,5 +107,4 @@ public class SapStabScript : ConfigurableSkillScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

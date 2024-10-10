@@ -21,7 +21,6 @@ public class TransferHealthScript : ConfigurableSkillScriptBase,
     {
         ApplyHealScript = FunctionalScripts.ApplyHealing.ApplyHealScript.Create();
         SourceScript = this;
-        PanelEntityBase = subject;
     }
 
     /// <inheritdoc />
@@ -84,6 +83,5 @@ public class TransferHealthScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     #endregion
-
-    public PanelEntityBase PanelEntityBase { get; init; }
+    
 }

@@ -67,5 +67,4 @@ public class ItemTargetMonsterScript(Item subject, IEffectFactory effectFactory)
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

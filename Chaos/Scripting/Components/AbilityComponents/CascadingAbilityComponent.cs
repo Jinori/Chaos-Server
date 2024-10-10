@@ -38,7 +38,8 @@ public class CascadingComponent<TTileScript> : IComponent where TTileScript: ICa
                     scriptKey
                 },
                 options.CascadeScriptVars,
-                context.Source);
+                context.Source,
+                options.SourceScript);
 
             context.TargetMap.SimpleAdd(tile);
         }
@@ -49,5 +50,7 @@ public class CascadingComponent<TTileScript> : IComponent where TTileScript: ICa
         bool CascadeOnlyFromEntities { get; init; }
         IDictionary<string, IScriptVars> CascadeScriptVars { get; init; }
         IReactorTileFactory ReactorTileFactory { get; init; }
+        
+        public IScript SourceScript { get; init; }
     }
 }

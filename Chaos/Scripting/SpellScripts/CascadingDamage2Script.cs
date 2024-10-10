@@ -29,7 +29,6 @@ public class CascadingDamage2Script : ConfigurableSpellScriptBase,
         SourceScript = this;
         ReactorTileFactory = reactorTileFactory;
         CascadeScriptVars ??= Subject.Template.ScriptVars;
-        PanelEntityBase = subject;
     }
 
     /// <inheritdoc />
@@ -127,6 +126,5 @@ public class CascadingDamage2Script : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     #endregion
-
-    public PanelEntityBase PanelEntityBase { get; init; }
+    
 }

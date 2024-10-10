@@ -29,7 +29,6 @@ public class CritCascadingDamageScript : ConfigurableSpellScriptBase,
         SourceScript = this;
         ReactorTileFactory = reactorTileFactory;
         CascadeScriptVars ??= Subject.Template.ScriptVars;
-        PanelEntityBase = subject;
     }
 
     /// <inheritdoc />
@@ -110,5 +109,4 @@ public class CritCascadingDamageScript : ConfigurableSpellScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

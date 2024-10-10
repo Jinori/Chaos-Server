@@ -58,8 +58,6 @@ public class DevourScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
     /// <inheritdoc />
-    public PanelEntityBase PanelEntityBase { get; init; }
-    /// <inheritdoc />
     public decimal PctManaCost { get; init; }
     /// <inheritdoc />
     public int Range { get; init; }
@@ -78,7 +76,6 @@ public class DevourScript : ConfigurableSkillScriptBase,
     public DevourScript(Skill subject)
         : base(subject)
     {
-        PanelEntityBase = subject;
         ApplyHealScript = ApplyNonAlertingHealScript.Create();
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;

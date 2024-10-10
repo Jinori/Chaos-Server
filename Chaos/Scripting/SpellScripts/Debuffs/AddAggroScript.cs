@@ -57,11 +57,7 @@ public class AddAggroScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public AddAggroScript(Spell subject)
-        : base(subject)
-    {
-        PanelEntityBase = subject;
-    }
-
+        : base(subject) { }
     public override void OnUse(SpellContext context) =>
         new ComponentExecutor(context)
             .WithOptions(this)
@@ -72,5 +68,4 @@ public class AddAggroScript : ConfigurableSpellScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

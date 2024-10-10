@@ -61,7 +61,6 @@ namespace Chaos.Scripting.SkillScripts.Rogue
         public MultiStrikeScript(Skill subject)
             : base(subject)
         {
-            PanelEntityBase = subject;
             SourceScript = this;
             ApplyDamageScript = ApplyAttackDamageScript.Create();
             StrikeTimer = new IntervalTimer(TimeSpan.FromMilliseconds(330), false);
@@ -117,7 +116,5 @@ namespace Chaos.Scripting.SkillScripts.Rogue
                     Targets.Remove(target);
             }
         }
-
-        public PanelEntityBase PanelEntityBase { get; init; }
     }
 }

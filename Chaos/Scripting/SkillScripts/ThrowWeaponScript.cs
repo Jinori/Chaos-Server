@@ -27,7 +27,6 @@ public class ThrowWeaponScript : ConfigurableSkillScriptBase,
         EffectFactory = effectFactory;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
-        PanelEntityBase = subject;
         
         if (Subject.Template.IsAssail)
             ScaleBodyAnimationSpeedByAttackSpeed = true;
@@ -127,5 +126,4 @@ public class ThrowWeaponScript : ConfigurableSkillScriptBase,
     public string? EffectKey { get; init; }
     public int? EffectApplyChance { get; init; }
     public int DistanceToThrow { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

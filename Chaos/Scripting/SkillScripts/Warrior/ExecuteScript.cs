@@ -49,12 +49,13 @@ public class ExecuteScript : ConfigurableSkillScriptBase,
     public decimal HealAmountIfExecuted { get; init; }
     /// <inheritdoc />
     public int? KillTargetAtHealthPct { get; init; }
+
+    public PanelEntityBase PanelEntityBase { get; init; }
+
     /// <inheritdoc />
     public int? ManaCost { get; init; }
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
-    /// <inheritdoc />
-    public PanelEntityBase PanelEntityBase { get; init; }
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
     /// <inheritdoc />
@@ -74,7 +75,6 @@ public class ExecuteScript : ConfigurableSkillScriptBase,
     public ExecuteScript(Skill subject)
         : base(subject)
     {
-        PanelEntityBase = subject;
         ApplyHealScript = ApplyNonAlertingHealScript.Create();
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;

@@ -48,10 +48,7 @@ public class SummonPet : ConfigurableSkillScriptBase, GenericAbilityComponent<Cr
 
     /// <inheritdoc />
     public SummonPet(Skill subject)
-        : base(subject)
-    {
-        PanelEntityBase = subject;
-    }
+        : base(subject) { }
 
     
     /// <inheritdoc />
@@ -60,5 +57,4 @@ public class SummonPet : ConfigurableSkillScriptBase, GenericAbilityComponent<Cr
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

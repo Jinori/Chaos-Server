@@ -61,7 +61,6 @@ public class ReviveScript : ConfigurableSpellScriptBase,
     public ReviveScript(Spell subject)
         : base(subject)
     {
-        PanelEntityBase = subject;
         SourceScript = this;
     }
         
@@ -77,5 +76,4 @@ public class ReviveScript : ConfigurableSpellScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }

@@ -61,10 +61,7 @@ public class RemoveEffect3Script : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public RemoveEffect3Script(Spell subject)
-        : base(subject)
-    {
-        PanelEntityBase = subject;
-    }
+        : base(subject) { }
 
     /// <inheritdoc />
     /// <inheritdoc />
@@ -77,5 +74,4 @@ public class RemoveEffect3Script : ConfigurableSpellScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
-    public PanelEntityBase PanelEntityBase { get; init; }
 }
