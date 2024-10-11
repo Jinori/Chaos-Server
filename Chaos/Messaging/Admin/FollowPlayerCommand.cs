@@ -1,4 +1,7 @@
 using Chaos.Collections.Common;
+using Chaos.Common.Definitions;
+using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Messaging.Abstractions;
 using Chaos.Models.World;
@@ -28,6 +31,10 @@ public class FollowPlayerCommand(IClientRegistry<IChaosWorldClient> clientRegist
             return default;
         }
 
+        adminSource.StatSheet.SetHealthPct(100);
+        adminSource.Client.SendAttributes(StatUpdateType.Vitality);
+        adminSource.SendOrangeBarMessage("Godmode enabled.");
+        adminSource.Trackers.Enums.Set(GodMode.Yes);
         // Cast the follow effect on the admin (source), which will follow the target player
         CastFollowEffect(adminSource, targetPlayer);
 

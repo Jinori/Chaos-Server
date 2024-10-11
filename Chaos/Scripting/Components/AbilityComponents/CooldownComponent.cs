@@ -1,5 +1,6 @@
 using Chaos.Models.Data;
 using Chaos.Models.Panel.Abstractions;
+using Chaos.Models.World;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 
@@ -14,11 +15,14 @@ public class CooldownComponent : IComponent
         
         if (context.SourceAisling != null && !context.SourceAisling.SpellBook.ContainsByTemplateKey(subject.Template.TemplateKey))
             return;
-        
-        // Get the player's cooldown reduction percentage (assuming it comes in as an integer like 10 for 10%)
-        var cooldownReductionPct = context.SourceAisling?.StatSheet.EffectiveCooldownReductionPct ?? 0;
 
-        var cooldownReduction = context.SourceAisling?.StatSheet.EffectiveCooldownReductionMs ?? 0;
+        var aisling = context.SourceAisling;
+        if (aisling == null)
+            return;
+        // Get the player's cooldown reduction percentage (assuming it comes in as an integer like 10 for 10%)
+        var cooldownReductionPct = aisling?.StatSheet.EffectiveCooldownReductionPct ?? 0;
+
+        var cooldownReduction = aisling?.StatSheet.EffectiveCooldownReductionMs ?? 0;
 
         // Convert cooldownReductionPct to a percentage (divide by 100)
         var reductionPct = cooldownReductionPct / 100.0;
@@ -29,7 +33,7 @@ public class CooldownComponent : IComponent
         if (subject.Cooldown.HasValue)
         {
             // Apply the cooldown reduction to the original cooldown value
-            var reducedCooldownSecs = (subject.Cooldown.Value.Seconds - flatCooldown) * (1 - reductionPct);
+            var reducedCooldownSecs = (subject.Cooldown.Value.TotalSeconds - flatCooldown) * (1 - reductionPct);
 
             // Set the new reduced cooldown (in milliseconds) for the ability
             subject.SetTemporaryCooldown(TimeSpan.FromSeconds(reducedCooldownSecs));

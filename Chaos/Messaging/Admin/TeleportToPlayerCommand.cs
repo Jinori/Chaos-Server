@@ -28,6 +28,9 @@ public class TeleportToPlayerCommand(IClientRegistry<IChaosWorldClient> clientRe
 
             return default;
         }
+        
+        if (source.Effects.TryGetEffect("follow", out var _))
+            source.Effects.Dispel("follow");
 
         source.TraverseMap(player.MapInstance, player, true);
 
