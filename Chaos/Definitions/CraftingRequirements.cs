@@ -5123,44 +5123,6 @@ public static class CraftingRequirements
                 Level = 77,
                 Difficulty = 4
             }
-        },
-        {
-            WeaponSmithingRecipes.HybrasylShield,
-            new Recipe()
-            {
-                Name = "Hy-brasyl Shield",
-                TemplateKey = "hybrasylshield",
-                Ingredients =
-                [
-                    new Ingredient("hybrasylshield", "Hy-brasyl Shield", 1),
-
-                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 4),
-
-                    new Ingredient("coal", "Coal", 3)
-                ],
-                Rank = "Artisan",
-                Level = 77,
-                Difficulty = 4
-            }
-        },
-        {
-            WeaponSmithingRecipes.HybrasylShield,
-            new Recipe()
-            {
-                Name = "Hy-brasyl Shield",
-                TemplateKey = "hybrasylshield",
-                Ingredients =
-                [
-                    new Ingredient("hybrasylshield", "Hy-brasyl Shield", 1),
-
-                    new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 4),
-
-                    new Ingredient("coal", "Coal", 3)
-                ],
-                Rank = "Artisan",
-                Level = 77,
-                Difficulty = 4
-            }
         }
     };
 
