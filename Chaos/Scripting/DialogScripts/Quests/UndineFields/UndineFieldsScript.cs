@@ -113,7 +113,7 @@ public class UndineFieldsScript : DialogScriptBase
                     
                     source.Legend.AddOrAccumulate(
                         new LegendMark(
-                            "Challenged the Carnun in his arena and declared Victory.",
+                            "Challenged the Carnun and declared Victory.",
                             "carnunwon",
                             MarkIcon.Victory,
                             MarkColor.Blue,

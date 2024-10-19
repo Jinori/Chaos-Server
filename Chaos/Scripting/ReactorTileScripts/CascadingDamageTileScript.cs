@@ -49,7 +49,7 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
     {
         var stage = vars.GetStage() + 1;
 
-        if (stage >= Stages)
+        if (stage > Stages)
         {
             Subject.MapInstance.RemoveEntity(Subject);
 

@@ -147,15 +147,15 @@ public class RestrictionBehavior
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.IsSuained() && (spell.Template.Name == "ao suain"):
+            case not null when creature.IsSuained() && (spell.Template.Name == "ao suain"):
             {
                 return true;
             }
-            case Aisling aisling when aisling.IsSuained() && (spell.Template.Name == "Cure Ailments"):
+            case not null when creature.IsSuained() && (spell.Template.Name == "Cure Ailments"):
             {
                 return true;
             }
-            case Aisling aisling when aisling.IsPramhed() && (spell.Template.Name == "dinarcoli"):
+            case not null when creature.IsPramhed() && (spell.Template.Name == "dinarcoli"):
             {
                 return true;
             }
@@ -169,8 +169,7 @@ public class RestrictionBehavior
                 return false;
             }
             case Monster monster when monster.IsSuained()
-                                      || monster.IsPramhed()
-                                      || monster.IsBeagSuained():
+                                      || monster.IsPramhed():
             {
                 return false;
             }

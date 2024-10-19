@@ -178,6 +178,19 @@ public class RecipeLibraryScript : DialogScriptBase
 
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
+                
+                if (source.Trackers.Flags.TryGetFlag(out CraftedArmors2 recipes2))
+                {
+                    foreach (var recipe2 in CraftingRequirements.ArmorSmithingArmorRequirements2)
+                        // Checking if the recipe is available or not.
+                        if (recipes2.HasFlag(recipe2.Key))
+                        {
+                            // Creating a faux item for the recipe.
+                            var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+                            // Adding the recipe to the subject's dialog window.
+                            Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
+                }
 
                 if (source.Trackers.Flags.TryGetFlag(out ArmorsmithingRecipes gearRecipes))
                     foreach (var recipe in CraftingRequirements.ArmorSmithingGearRequirements)
@@ -194,14 +207,33 @@ public class RecipeLibraryScript : DialogScriptBase
             #region Weaponsmithing Book
             case "weaponsmithingbook":
             {
+                // Checking if the Alchemy recipe is available or not.
                 if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes recipes))
-                    foreach (var recipe in CraftingRequirements.WeaponSmithingUpgradeRequirements)
+                {
+                    foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
+                        // Checking if the recipe is available or not.
                         if (recipes.HasFlag(recipe.Key))
                         {
+                            // Creating a faux item for the recipe.
                             var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+                            // Adding the recipe to the subject's dialog window.
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
-
+                }
+                
+                // Checking if the Alchemy recipe is available or not.
+                if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes2 recipes2))
+                {
+                    foreach (var recipe2 in CraftingRequirements.WeaponSmithingCraftRequirements2)
+                        // Checking if the recipe is available or not.
+                        if (recipes2.HasFlag(recipe2.Key))
+                        {
+                            // Creating a faux item for the recipe.
+                            var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+                            // Adding the recipe to the subject's dialog window.
+                            Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
+                }
                 break;
             }
             #endregion
@@ -2819,7 +2851,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    case "enchantstone":
+                    case "enchantingstone":
                     {
                         Subject.Reply(
                             source,
@@ -2829,7 +2861,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    case "empowerstone":
+                    case "empoweringstone":
                     {
                         Subject.Reply(
                             source,
@@ -3421,6 +3453,17 @@ public class RecipeLibraryScript : DialogScriptBase
                             source,
                             $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
                             } requires 5 Exquisite Silk.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    
+                    case "refiningkit":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires new silk and stuff.",
                             "armorsmithingbook");
 
                         return;

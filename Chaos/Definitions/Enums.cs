@@ -33,7 +33,7 @@ public enum MonkElementForm
     Water,
     Earth = 1,
     Air = 2,
-    Fire = 3,
+    Fire = 3
 }
 
 public enum ReligionPrayer
@@ -101,7 +101,7 @@ public enum Hobbies
     None = 0,
     Fishing = 1,
     Cooking = 1 << 2,
-    Foraging = 1 << 3,
+    Foraging = 1 << 3
 }
 
 public enum Religion
@@ -149,7 +149,7 @@ public enum ManorNecklaceStage
     SawNecklace = 2,
     ReturningNecklace = 3,
     ReturnedNecklace = 4,
-    KeptNecklace = 5,
+    KeptNecklace = 5
 }
 
 public enum ManorLouegieStage
@@ -191,7 +191,7 @@ public enum ALittleBitofThatStage
     StartedCherry = 3,
     StartedGrapes = 4,
     StartedMold = 5,
-    StartedBaguette = 6,
+    StartedBaguette = 6
 }
 
 public enum RionaTutorialQuestStage
@@ -220,7 +220,7 @@ public enum RionaTutorialQuestFlags
     None = 0,
     SpareAStick = 1,
     Skarn = 1 << 1,
-    Crafting = 1 << 2,
+    Crafting = 1 << 2
 }
 
 public enum PFQuestStage
@@ -232,7 +232,7 @@ public enum PFQuestStage
     WolfManesTurnedIn = 4,
     KilledGiantMantis = 6,
     CompletedPFQuest = 7,
-    TurnedInTristar = 8,
+    TurnedInTristar = 8
 }
 
 public enum CryptSlayerStage
@@ -275,7 +275,7 @@ public enum MythicBunny
     AlliedBunny = 7,
     EnemyBunnyAllied = 8,
     BossBunnyStarted = 9,
-    BossBunnyDefeated = 10,
+    BossBunnyDefeated = 10
 }
 
 public enum MythicHorse
@@ -290,7 +290,7 @@ public enum MythicHorse
     AlliedHorse = 7,
     EnemyHorseAllied = 8,
     BossHorseStarted = 9,
-    BossHorseDefeated = 10,
+    BossHorseDefeated = 10
 }
 
 public enum MythicGargoyle
@@ -305,7 +305,7 @@ public enum MythicGargoyle
     AlliedGargoyle = 7,
     EnemyGargoyleAllied = 8,
     BossGargoyleStarted = 9,
-    BossGargoyleDefeated = 10,
+    BossGargoyleDefeated = 10
 }
 
 public enum MythicZombie
@@ -320,7 +320,7 @@ public enum MythicZombie
     AlliedZombie = 7,
     EnemyZombieAllied = 8,
     BossZombieStarted = 9,
-    BossZombieDefeated = 10,
+    BossZombieDefeated = 10
 }
 
 public enum MythicFrog
@@ -335,7 +335,7 @@ public enum MythicFrog
     AlliedFrog = 7,
     EnemyFrogAllied = 8,
     BossFrogStarted = 9,
-    BossFrogDefeated = 10,
+    BossFrogDefeated = 10
 }
 
 public enum MythicWolf
@@ -350,7 +350,7 @@ public enum MythicWolf
     AlliedWolf = 7,
     EnemyWolfAllied = 8,
     BossWolfStarted = 9,
-    BossWolfDefeated = 10,
+    BossWolfDefeated = 10
 }
 
 public enum MythicMantis
@@ -365,7 +365,7 @@ public enum MythicMantis
     MantisAllied = 7,
     EnemyAllied = 8,
     BossMantisStarted = 9,
-    BossMantisDefeated = 10,
+    BossMantisDefeated = 10
 }
 
 public enum MythicBee
@@ -380,7 +380,7 @@ public enum MythicBee
     AlliedBee = 7,
     EnemyBeeAllied = 8,
     BossBeeStarted = 9,
-    BossBeeDefeated = 10,
+    BossBeeDefeated = 10
 }
 
 public enum MythicKobold
@@ -395,7 +395,7 @@ public enum MythicKobold
     AlliedKobold = 7,
     EnemyKoboldAllied = 8,
     BossKoboldStarted = 9,
-    BossKoboldDefeated = 10,
+    BossKoboldDefeated = 10
 }
 
 public enum MythicGrimlock
@@ -410,7 +410,7 @@ public enum MythicGrimlock
     AlliedGrimlock = 7,
     EnemyGrimlockAllied = 8,
     BossGrimlockStarted = 9,
-    BossGrimlockDefeated = 10,
+    BossGrimlockDefeated = 10
 }
 #endregion
 
@@ -418,7 +418,7 @@ public enum WolfProblemStage
 {
     None = 0,
     Start = 1,
-    Complete = 2,
+    Complete = 2
 }
 
 public enum SickChildStage
@@ -433,7 +433,7 @@ public enum SickChildStage
     BlackRose = 7,
     BlackRoseTurn = 8,
     SickChildComplete = 9,
-    SickChildKilled = 10,
+    SickChildKilled = 10
 }
 
 public enum CrHorror
@@ -504,7 +504,7 @@ public enum CookFoodStage
 public enum CookFoodProgression
 {
     None = 0,
-    NotenoughIngredients = 1,
+    NotenoughIngredients = 1
 }
 
 public enum MeatsStage
@@ -579,7 +579,7 @@ public enum FruitsStage3
     grape = 4,
     greengrapes = 5,
     strawberry = 6,
-    tangerines = 7,
+    tangerines = 7
 }
 
 public enum VegetableStage
@@ -658,7 +658,7 @@ public enum CookingRecipes
     Soup = 1 << 6,
     SteakMeal = 1 << 7,
     SweetBuns = 1 << 8,
-    Popsicle = 1 << 9,
+    Popsicle = 1 << 9
 }
 #endregion
 
@@ -714,7 +714,7 @@ public enum AvailableMounts
     Dunan = 1 << 3,
     Kelberoth = 1 << 4,
     Bee = 1 << 5,
-    Ant = 1 << 6,
+    Ant = 1 << 6
 }
 
 [Flags]
@@ -724,7 +724,7 @@ public enum AvailableCloaks
     Red = 1 << 2,
     Blue = 1 << 3,
     Black = 1 << 4,
-    Purple = 1 << 5,
+    Purple = 1 << 5
 }
 
 public enum CurrentMount
@@ -734,7 +734,7 @@ public enum CurrentMount
     Dunan = 3,
     Kelberoth = 4,
     Bee = 5,
-    Ant = 6,
+    Ant = 6
 }
 
 public enum CurrentCloak
@@ -743,7 +743,7 @@ public enum CurrentCloak
     Red = 2,
     Blue = 3,
     Black = 4,
-    Purple = 5,
+    Purple = 5
 }
 
 #region Armor Smithing
@@ -764,7 +764,7 @@ public enum ArmorSmithCategories
     InitiateArmors = 1 << 11,
     ArtisanArmors = 1 << 12,
     AdeptArmors = 1 << 13,
-    AdvancedArmors = 1 << 14,
+    RefiningKit = 1 << 14
 }
 
 [Flags]
@@ -882,6 +882,13 @@ public enum CraftedArmors : ulong
     RefinedPhoenixMail = 1L << 49,
     RefinedHybrasylArmor = 1L << 50
 }
+
+[Flags]
+public enum CraftedArmors2 : ulong
+{
+    None = 0,
+    RefiningKit = 1L
+}
 #endregion
 
 #region Blacksmithing
@@ -985,8 +992,6 @@ public enum WeaponSmithingRecipes2 : ulong
     EmpowerStone = 1 << 1,
     EnchantStone = 1 << 2
 }
-
-
 #endregion
 
 [Flags]
@@ -1186,7 +1191,7 @@ public enum AlchemyCategories
     InitiateAlchemyBook = 2,
     AttackTonics = 3,
     StrongVitalityBrew = 4,
-    PotentVitalityBrew = 5,
+    PotentVitalityBrew = 5
 }
 
 [Flags]
@@ -1282,7 +1287,7 @@ public enum SummonChosenPet
     Ducklings = 5,
     Cat = 6,
     Smoldy = 7,
-    Penguin = 8,
+    Penguin = 8
 }
 
 [Flags]
@@ -1295,7 +1300,7 @@ public enum PetSkillsAvailable
     Level55 = 1 << 3,
     Level70 = 1 << 4,
     Level85 = 1 << 5,
-    Level99 = 1 << 6,
+    Level99 = 1 << 6
 }
 
 public enum Level10PetSkills
@@ -1311,7 +1316,7 @@ public enum Level25PetSkills
     None,
     PawStrike = 1,
     Enrage = 1 << 1,
-    WindStrike = 1 << 2,
+    WindStrike = 1 << 2
 }
 
 public enum Level40PetSkills
@@ -1319,7 +1324,7 @@ public enum Level40PetSkills
     None,
     Blitz = 1,
     Slobber = 1 << 1,
-    DoubleLick = 1 << 2,
+    DoubleLick = 1 << 2
 }
 
 public enum Level55PetSkills
@@ -1327,16 +1332,15 @@ public enum Level55PetSkills
     None,
     Frenzy = 1,
     Spit = 1 << 1,
-    Evade = 1 << 2,
+    Evade = 1 << 2
 }
-
 
 public enum Level80PetSkills
 {
     None,
     ChitinChew = 1,
     SnoutStun = 1 << 1,
-    EssenceLeechLick = 1 << 2,
+    EssenceLeechLick = 1 << 2
 }
 
 [Flags]
@@ -1348,7 +1352,7 @@ public enum PetSkillsChosen
     Level40 = 1 << 2,
     Level55 = 1 << 3,
     Level80 = 1 << 4,
-    Level99 = 1 << 5,
+    Level99 = 1 << 5
 }
 
 public enum ArenaHost
@@ -1393,8 +1397,9 @@ public enum PentagramQuestStage
     CreatedPentagram = 7,
     BossSpawning = 8,
     BossSpawned = 9,
-    DefeatedBoss = 10,
+    DefeatedBoss = 10
 }
+
 public enum NightmareQuestStage
 {
     None,
@@ -1409,9 +1414,8 @@ public enum NightmareQuestStage
     CompletedNightmareWin1 = 9,
     CompletedNightmareWin2 = 10,
     CompletedNightmareLoss1 = 11,
-    CompletedNightmareLoss2 = 12,
+    CompletedNightmareLoss2 = 12
 }
-
 
 public enum ClassStatBracket
 {
@@ -1465,7 +1469,7 @@ public enum WestWoodlandsKillQuestStage
     WWShrieker = 4,
     WWWisp = 5,
     WWFaerie = 6,
-    WWTwink = 7,
+    WWTwink = 7
 }
 
 public enum WestWoodlandsDungeonQuestStage
@@ -1527,7 +1531,7 @@ public enum DubhaimCastleKillQuestStage
     DubhaimGargoyle2 = 6,
     DubhaimGargoyle3 = 7,
     DubhaimGargoyleFiend1 = 8,
-    DubhaimGargoyleFiend2 = 9,
+    DubhaimGargoyleFiend2 = 9
 }
 
 [Flags]
@@ -1537,7 +1541,7 @@ public enum ReconPoints
     Reconpoint1 = 1,
     Reconpoint2 = 1 << 1,
     Reconpoint3 = 1 << 2,
-    Reconpoint4 = 1 << 3, 
+    Reconpoint4 = 1 << 3,
     Reconpoint5 = 1 << 4,
     Reconpoint6 = 1 << 5,
     Reconpoint7 = 1 << 6
@@ -1551,8 +1555,9 @@ public enum EasterEggs
     UnlockedChest = 1 << 2,
     CrackInWall = 1 << 3,
     DepressedStatue = 1 << 4,
-    GraveSite = 1 << 5,
+    GraveSite = 1 << 5
 }
+
 [Flags]
 public enum SavedChild
 {
@@ -1563,50 +1568,51 @@ public enum SavedChild
 public enum CrudeLeather
 {
     None,
-    StartedQuest = 1,
+    StartedQuest = 1
 }
 
 public enum GraveSite
 {
-    None, 
+    None,
     StartedQuest = 1,
     ReadTheHeadstone = 2,
-    CompletedQuest = 3,
+    CompletedQuest = 3
 }
 
 public enum PurpleWhopper
 {
     None,
-    StartedQuest = 1,
+    StartedQuest = 1
 }
 
 public enum PietWood
 {
     None,
-    StartedQuest = 1,
+    StartedQuest = 1
 }
 
 public enum PrettyFlower
 {
     None,
-    StartedQuest = 1,
+    StartedQuest = 1
 }
 
 public enum BertilPotion
 {
     None,
-    StartedQuest = 1,
+    StartedQuest = 1
 }
+
 public enum SharpestBlade
 {
     None,
-    StartedQuest = 1,
+    StartedQuest = 1
 }
 
 public enum FishOil
 {
     None = 0,
-    StartedQuest = 1,
+    StartedQuest = 1
 }
 
 public enum DecoratingInn
@@ -1654,13 +1660,14 @@ public enum HungryViveka
     StartedCherryPie = 1,
     CompletedCherryPie = 2
 }
+
 public enum UndineFieldDungeon
 {
     None,
     StartedDungeon = 1,
     EnteredArena = 2,
     StartedCarnun = 3,
-    KilledCarnun = 4,
+    KilledCarnun = 4
 }
 
 public enum PirateShip
@@ -1702,21 +1709,21 @@ public enum HelpSable
 [Flags]
 public enum ShipAttackFlags
 {
-    None, 
+    None,
     CompletedShipAttack = 1,
-    FinishedDoltoo = 2,
+    FinishedDoltoo = 2
 }
 
 [Flags]
 public enum UndineFieldDungeonFlag
 {
     None,
-    CompletedUF = 1,
+    CompletedUF = 1
 }
 
 public enum MainStoryEnums
 {
-    None, 
+    None,
     MysteriousArtifactFound = 1,
     ReceivedMA = 2,
     SpokeToZephyr = 3,
@@ -1749,7 +1756,7 @@ public enum MainStoryEnums
     SpawnedCreants = 30,
     StartedSummonerFight = 31,
     KilledSummoner = 32,
-    CompletedPreMasterMainStory = 33,
+    CompletedPreMasterMainStory = 33
 }
 
 public enum MainstoryMasterEnums
@@ -1760,7 +1767,7 @@ public enum MainstoryMasterEnums
     CompletedDungeon = 3,
     StartedCreants = 4,
     KilledCreants = 5,
-    CompletedCreants = 6,
+    CompletedCreants = 6
 }
 
 [Flags]
@@ -1796,6 +1803,7 @@ public enum CreantEnums
     KilledSham = 11,
     CompletedSham = 12
 }
+
 public enum SummonerBossFight
 {
     None,
@@ -1862,7 +1870,7 @@ public enum LuckTrial
 
 public enum IntelligenceTrial
 {
-    None, 
+    None,
     StartedTrial = 1,
     CompletedTrial = 2,
     CompletedTrial2 = 3
@@ -1918,12 +1926,12 @@ public enum ExpTimerStage
 {
     None,
     Tracking = 1,
-    Stopped = 2,
+    Stopped = 2
 }
 
 public enum WerewolfOfPiet
 {
-    None = 0, 
+    None = 0,
     StartedQuest = 1,
     FollowedMerchant = 2,
     KilledandGotCursed = 3,
@@ -1940,14 +1948,14 @@ public enum LanternSizes
 {
     None = 0,
     SmallLantern = 1,
-    LargeLantern = 2,
+    LargeLantern = 2
 }
 
 public enum AttackedWerewolf
 {
     None = 0,
     Yes = 1,
-    No = 2,
+    No = 2
 }
 
 [Flags]
@@ -1999,4 +2007,12 @@ public enum MasterPriestPath
     None = 0,
     Dark = 1,
     Light = 2
+}
+
+[Flags]
+public enum SenaanFlagsHalloweenEvent
+{
+    None = 0,
+    CompletedYear1 = 1 << 1,
+    CompletedYear2 = 1 << 2
 }

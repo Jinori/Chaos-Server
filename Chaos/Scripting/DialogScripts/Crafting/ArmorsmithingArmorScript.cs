@@ -1,6 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
@@ -165,6 +166,22 @@ public class ArmorsmithingArmorScript : DialogScriptBase
             }
         }
     }
+    
+    private CraftingRequirements.Recipe? FindRecipeByName(string recipeName)
+    {
+        // First, check in JewelcraftingRequirements
+        var recipe = CraftingRequirements.ArmorSmithingArmorRequirements.Values
+            .FirstOrDefault(r => r.Name.EqualsI(recipeName));
+
+        // If not found, check in JewelcraftingRequirements2
+        if (recipe is null)
+        {
+            recipe = CraftingRequirements.ArmorSmithingArmorRequirements2.Values
+                .FirstOrDefault(r => r.Name.EqualsI(recipeName));
+        }
+
+        return recipe;
+    }
 
     private void OnDisplayingAccepted(Aisling source)
     {
@@ -175,9 +192,8 @@ public class ArmorsmithingArmorScript : DialogScriptBase
             return;
         }
 
-        var recipe =
-            CraftingRequirements.ArmorSmithingArmorRequirements.Values.FirstOrDefault(recipe1 => recipe1.Name.EqualsI(selectedRecipeName));
-
+        var recipe = FindRecipeByName(selectedRecipeName);
+        
         if (recipe is null)
         {
             Subject.Reply(source, "Notify a GM that this recipe is missing.");
@@ -271,14 +287,27 @@ public class ArmorsmithingArmorScript : DialogScriptBase
         }
         else
         {
-            var replacePattern = recipe.TemplateKey.Replace("pattern", "");
-            var addRefined = "refined" + replacePattern;
+            // Check if the template key contains "pattern"
+            if (recipe.TemplateKey.Contains("pattern".ToLower()))
+            {
+                var replacePattern = recipe.TemplateKey.Replace("pattern", "");
+                var addRefined = "refined" + replacePattern;
 
-            var newCraft = ItemFactory.Create(addRefined);
+                var newCraft = ItemFactory.Create(addRefined);
 
-            source.GiveItemOrSendToBank(newCraft);
+                source.GiveItemOrSendToBank(newCraft);
 
-            Subject.InjectTextParameters(newCraft.DisplayName);
+                Subject.InjectTextParameters(newCraft.DisplayName);
+            }
+            else
+            {
+                // If "pattern" is not in the TemplateKey, don't add "refined"
+                var newCraft = ItemFactory.Create(recipe.TemplateKey);
+
+                source.GiveItemOrSendToBank(newCraft);
+
+                Subject.InjectTextParameters(newCraft.DisplayName);
+            }
         }
 
         source.Animate(SuccessAnimation);
@@ -294,9 +323,8 @@ public class ArmorsmithingArmorScript : DialogScriptBase
             return;
         }
 
-        var recipe =
-            CraftingRequirements.ArmorSmithingArmorRequirements.Values.FirstOrDefault(recipe1 => recipe1.Name.EqualsI(selectedRecipeName));
-
+        var recipe = FindRecipeByName(selectedRecipeName);
+        
         if (recipe is null)
         {
             Subject.Reply(source, "Notify a GM that this recipe is missing.");
@@ -318,12 +346,19 @@ public class ArmorsmithingArmorScript : DialogScriptBase
     //ShowItems in a Shop Window to the player
     private void OnDisplayingShowItems(Aisling source)
     {
-        if (source.IsAdmin)
+        if (source.IsGodModeEnabled())
+        {
             foreach (var recipe in CraftingRequirements.ArmorSmithingArmorRequirements)
             {
                 var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
             }
+            foreach (var recipe2 in CraftingRequirements.ArmorSmithingArmorRequirements2)
+            {
+                var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+            }
+        }
         else
         {
             var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
@@ -335,15 +370,87 @@ public class ArmorsmithingArmorScript : DialogScriptBase
             {
                 var playerRank = GetRankAsInt(existingMark.Text);
 
-                if (source.Trackers.Flags.TryGetFlag(out CraftedArmors recipes))
-                    foreach (var recipe in CraftingRequirements.ArmorSmithingArmorRequirements)
-                        if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
-                        {
-                            var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+                  if (source.Trackers.Flags.TryGetFlag(out ArmorsmithingRecipes recipes))
+                  {
+                      // Show items from WeaponsmithingCraftRequirements
+                      foreach (var recipe in CraftingRequirements.ArmorSmithingArmorRequirements)
+                      {
+                          if (source.IsGodModeEnabled() && recipes.HasFlag(recipe.Key))
+                          {
+                              var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
 
-                            if (source.UserStatSheet.Level >= item.Level)
-                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                        }
+                              if (source.UserStatSheet.Level >= item.Level)
+                              {
+                                  Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                              }
+                          }
+                    
+                          if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
+                          {
+                              var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+
+                              if (source.UserStatSheet.Level >= item.Level)
+                              {
+                                  Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                              }
+                          }
+                      }
+                  }
+                  
+                  if (source.Trackers.Flags.TryGetFlag(out CraftedArmors recipes2))
+                  {
+                      // Show items from WeaponsmithingCraftRequirements
+                      foreach (var recipe2 in CraftingRequirements.ArmorSmithingArmorRequirements2)
+                      {
+                          if (source.IsGodModeEnabled() && recipes2.HasFlag(recipe2.Key))
+                          {
+                              var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+
+                              if (source.UserStatSheet.Level >= item.Level)
+                              {
+                                  Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                              }
+                          }
+                    
+                          if (recipes.HasFlag(recipe2.Key) && (playerRank >= GetStatusAsInt(recipe2.Value.Rank)))
+                          {
+                              var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+
+                              if (source.UserStatSheet.Level >= item.Level)
+                              {
+                                  Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                              }
+                          }
+                      }
+                  }
+            
+
+                  if (source.Trackers.Flags.TryGetFlag(out CraftedArmors2 recipes3))
+                  {
+                      // Show items from WeaponsmithingCraftRequirements
+                      foreach (var recipe3 in CraftingRequirements.ArmorSmithingArmorRequirements2)
+                      {
+                          if (source.IsGodModeEnabled() && recipes3.HasFlag(recipe3.Key))
+                          {
+                              var item = ItemFactory.CreateFaux(recipe3.Value.TemplateKey);
+
+                              if (source.UserStatSheet.Level >= item.Level)
+                              {
+                                  Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                              }
+                          }
+                    
+                          if (recipes3.HasFlag(recipe3.Key) && (playerRank >= GetStatusAsInt(recipe3.Value.Rank)))
+                          {
+                              var item = ItemFactory.CreateFaux(recipe3.Value.TemplateKey);
+
+                              if (source.UserStatSheet.Level >= item.Level)
+                              {
+                                  Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                              }
+                          }
+                      }
+                  }
             }
 
             if (Subject.Items.Count == 0)

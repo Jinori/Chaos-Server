@@ -187,6 +187,7 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherTunic);
                 source.Trackers.Flags.AddFlag(CraftedArmors.RefinedEarthBodice);
                 source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherBliaut);
+                source.Trackers.Flags.AddFlag(CraftedArmors2.RefiningKit);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherSapphireGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherRubyGauntlet);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LeatherEmeraldGauntlet);
@@ -862,13 +863,13 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            case "recipe_advancedarmors":
+            case "recipe_refiningkit":
             {
-                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.AdvancedArmors))
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.RefiningKit))
                 {
                     if (craft != Crafts.Armorsmithing)
                     {
-                        source.SendOrangeBarMessage("Not implemented yet.");
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
 
                         return;
                     }
@@ -876,9 +877,11 @@ public class RecipeItemScript : ItemScriptBase
                     ArmorSmithRecipeLearn(
                         source,
                         ani,
-                        ArmorSmithCategories.AdvancedArmors,
+                        ArmorSmithCategories.RefiningKit,
                         "Advanced Armors",
                         $"{Subject.Template.TemplateKey}");
+                    
+                    source.Trackers.Flags.AddFlag(CraftedArmors2.RefiningKit);
 
                     return;
                 }

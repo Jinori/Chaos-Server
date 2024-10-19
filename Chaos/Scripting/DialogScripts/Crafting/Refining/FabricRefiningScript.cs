@@ -16,7 +16,7 @@ public class FabricRefiningScript(Dialog subject, IItemFactory itemFactory, IDia
     protected override double SuccessRateMax => 90;
 
     private readonly string[] FabricTemplateKeys =
-        ["linen", "finelinen", "cotton", "finecotton", "wool", "finewool", "silk", "finesilk"];
+        ["linen", "finelinen", "cotton", "finecotton", "wool", "finewool", "silk", "finesilk", "hemp", "finehemp", "exquisitehemp"];
 
     protected override Dictionary<string, string> UpgradeMappings { get; } = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -27,7 +27,9 @@ public class FabricRefiningScript(Dialog subject, IItemFactory itemFactory, IDia
         {"wool", "finewool"},
         {"finewool", "exquisitewool"},
         {"silk", "finesilk"},
-        {"finesilk", "exquisitesilk"}
+        {"finesilk", "exquisitesilk"},
+        { "hemp", "finehemp"},
+        { "finehemp", "exquisitehemp"},
     };
     
     protected override Dictionary<string, string> DowngradeMappings { get; } = new(StringComparer.OrdinalIgnoreCase)
@@ -39,7 +41,9 @@ public class FabricRefiningScript(Dialog subject, IItemFactory itemFactory, IDia
         {"wool", "tornwool"},
         {"finewool", "tornwool"},
         {"silk", "tornsilk"},
-        {"finesilk", "tornsilk"}
+        {"finesilk", "tornsilk"},
+        {"hemp", "tornhemp"},
+        {"finehemp", "tornhemp"},
     };
 
     public override void OnDisplaying(Aisling source)

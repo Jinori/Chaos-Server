@@ -14,7 +14,7 @@ public sealed class DefaultRegenFormula : IRegenFormula
         if (creature.StatSheet.HealthPercent == 100)
             return 0;
 
-        if (creature.Effects.Contains("Poison"))
+        if (creature.Effects.Contains("Poison") || creature.Effects.Contains("miasma"))
             return 0;
         
         if (creature.IsInnerFired())

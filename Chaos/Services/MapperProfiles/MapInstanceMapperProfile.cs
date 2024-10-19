@@ -50,6 +50,7 @@ public sealed class MapInstanceMapperProfile(
     public MapInstance Map(MapInstanceSchema obj)
     {
         var template = SimpleCache.Get<MapTemplate>(obj.TemplateKey);
+        template.ScriptKeys.Add("globalDefaultMap");
 
         var mapInstance = new MapInstance(
             template,

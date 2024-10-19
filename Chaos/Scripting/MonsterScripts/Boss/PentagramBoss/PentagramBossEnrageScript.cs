@@ -1,5 +1,6 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
@@ -12,14 +13,14 @@ namespace Chaos.Scripting.MonsterScripts.Boss.PentagramBoss;
 
 public sealed class PentagramBossEnrageScript : MonsterScriptBase
 {
-    private bool Bonus30Applied;
-    private bool Bonus50Applied;
-    private bool Bonus75Applied;
     private readonly IIntervalTimer SpellCastTimer;
     private readonly ISpellFactory SpellFactory;
     private readonly Spell SpellToCast;
     private readonly Spell SpellToCast1;
     private readonly Spell SpellToCast2;
+    private bool Bonus30Applied;
+    private bool Bonus50Applied;
+    private bool Bonus75Applied;
 
     private Animation UpgradeAnimation { get; } = new()
     {
@@ -35,7 +36,12 @@ public sealed class PentagramBossEnrageScript : MonsterScriptBase
         SpellToCast = SpellFactory.Create("darkcone");
         SpellToCast1 = SpellFactory.Create("shadowflare");
         SpellToCast2 = SpellFactory.Create("morcradh");
-        SpellCastTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(10), 20, RandomizationType.Balanced, false);
+
+        SpellCastTimer = new RandomizedIntervalTimer(
+            TimeSpan.FromSeconds(10),
+            20,
+            RandomizationType.Balanced,
+            false);
     }
 
     public override void Update(TimeSpan delta)
@@ -45,7 +51,7 @@ public sealed class PentagramBossEnrageScript : MonsterScriptBase
         if (SpellCastTimer.IntervalElapsed)
         {
             var roll = IntegerRandomizer.RollSingle(100);
-            
+
             switch (roll)
             {
                 case < 40:
@@ -61,11 +67,14 @@ public sealed class PentagramBossEnrageScript : MonsterScriptBase
                 case < 101:
                     Subject.Say("You're not going to win this fight!");
 
-                    foreach (var target in Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 10))
+                    foreach (var target in Subject.MapInstance
+                                                  .GetEntitiesWithinRange<Aisling>(Subject, 10)
+                                                  .ThatAreObservedBy(Subject)
+                                                  .ThatAreVisibleTo(Subject))
                     {
                         if (target.IsDead)
                             continue;
-                        
+
                         Subject.TryUseSpell(SpellToCast2, target.Id);
                         Subject.TryUseSpell(SpellToCast, target.Id);
                     }
@@ -77,10 +86,15 @@ public sealed class PentagramBossEnrageScript : MonsterScriptBase
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 25 };
+            var attrib = new Attributes
+            {
+                AtkSpeedPct = 25
+            };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
         }
 

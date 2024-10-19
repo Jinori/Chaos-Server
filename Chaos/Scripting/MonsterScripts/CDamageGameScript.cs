@@ -5,7 +5,7 @@ using Chaos.Scripting.MonsterScripts.Boss;
 
 namespace Chaos.Scripting.MonsterScripts;
 
-public class CompositeDamageGameScript : CompositeMonsterScript
+public class CDamageGameScript : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys =
     [
@@ -14,7 +14,7 @@ public class CompositeDamageGameScript : CompositeMonsterScript
     ];
 
     /// <inheritdoc />
-    public CompositeDamageGameScript(IScriptProvider scriptProvider, Monster subject)
+    public CDamageGameScript(IScriptProvider scriptProvider, Monster subject)
     {
         if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript compositeScript)
             throw new InvalidOperationException("Unable to create componentized script");

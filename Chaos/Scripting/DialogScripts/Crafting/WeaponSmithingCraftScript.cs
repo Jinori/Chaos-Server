@@ -1,6 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
@@ -92,11 +93,11 @@ public class WeaponSmithingCraftScript : DialogScriptBase
     
     private CraftingRequirements.Recipe? FindRecipeByName(string recipeName)
     {
-        // First, check in JewelcraftingRequirements
+        // First, check in WeaponsmithingRequirements
         var recipe = CraftingRequirements.WeaponSmithingCraftRequirements.Values
             .FirstOrDefault(r => r.Name.EqualsI(recipeName));
 
-        // If not found, check in JewelcraftingRequirements2
+        // If not found, check in WeaponsmithingRequirements2
         if (recipe is null)
         {
             recipe = CraftingRequirements.WeaponSmithingCraftRequirements2.Values
@@ -333,12 +334,20 @@ public class WeaponSmithingCraftScript : DialogScriptBase
     //ShowItems in a Shop Window to the player
     private void OnDisplayingShowItems(Aisling source)
     {
-        if (source.IsAdmin)
+        if (source.IsGodModeEnabled())
+        {
             foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
             {
                 var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
             }
+            
+            foreach (var recipe2 in CraftingRequirements.WeaponSmithingCraftRequirements2)
+            {
+                var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+            }
+        }
         else
         {
             var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
@@ -350,15 +359,60 @@ public class WeaponSmithingCraftScript : DialogScriptBase
             {
                 var playerRank = GetRankAsInt(existingMark.Text);
 
-                if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes recipes))
-                    foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
-                        if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
-                        {
-                            var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+                 if (source.Trackers.Flags.TryGetFlag(out JewelcraftingRecipes recipes))
+                 {
+                     // Show items from WeaponsmithingCraftRequirements
+                     foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
+                     {
+                         if (source.IsGodModeEnabled() && recipes.HasFlag(recipe.Key))
+                         {
+                             var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
 
-                            if (source.UserStatSheet.Level >= item.Level)
-                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                        }
+                             if (source.UserStatSheet.Level >= item.Level)
+                             {
+                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                             }
+                         }
+                    
+                         if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
+                         {
+                             var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+
+                             if (source.UserStatSheet.Level >= item.Level)
+                             {
+                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                             }
+                         }
+                     }
+                 }
+            
+
+                 if (source.Trackers.Flags.TryGetFlag(out JewelcraftingRecipes2 recipes2))
+                 {
+                     // Show items from WeaponsmithingCraftRequirements
+                     foreach (var recipe2 in CraftingRequirements.WeaponSmithingCraftRequirements2)
+                     {
+                         if (source.IsGodModeEnabled() && recipes2.HasFlag(recipe2.Key))
+                         {
+                             var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+
+                             if (source.UserStatSheet.Level >= item.Level)
+                             {
+                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                             }
+                         }
+                    
+                         if (recipes2.HasFlag(recipe2.Key) && (playerRank >= GetStatusAsInt(recipe2.Value.Rank)))
+                         {
+                             var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+
+                             if (source.UserStatSheet.Level >= item.Level)
+                             {
+                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                             }
+                         }
+                     }
+                 }
             }
 
             if (Subject.Items.Count == 0)
