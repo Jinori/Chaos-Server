@@ -24,7 +24,6 @@ public class CountDeathScript(Monster subject) : MonsterScriptBase(subject)
             case Group.GroupLootOption.Default:
                 HandleLootDrop(rewardTargets, true);
                 ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
-                HandleMapLootAndExperience();
 
                 break;
 
@@ -37,14 +36,12 @@ public class CountDeathScript(Monster subject) : MonsterScriptBase(subject)
 
                 // Distribute experience only to members on the same map as the monster
                 ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
-                HandleMapLootAndExperience();
 
                 break;
 
             case Group.GroupLootOption.MasterLooter:
                 HandleLootDrop(rewardTargets, lockToLeader: rewardTarget.Group.Leader);
                 ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
-                HandleMapLootAndExperience();
 
                 break;
         }
@@ -56,8 +53,6 @@ public class CountDeathScript(Monster subject) : MonsterScriptBase(subject)
 
         if (rewardTargets != null)
             ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
-
-        HandleMapLootAndExperience();
     }
 
     private Aisling? GetHighestContributor()
@@ -135,6 +130,9 @@ public class CountDeathScript(Monster subject) : MonsterScriptBase(subject)
             aisling.SendOrangeBarMessage($"You received {experienceToGive} experience from {Subject.Name}");
         }
 
+        Subject.Items.Clear();
+        Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
+        
         // Now randomly assign loot from the regenerated loot table
         foreach (var item in Subject.Items)
         {
@@ -159,5 +157,7 @@ public class CountDeathScript(Monster subject) : MonsterScriptBase(subject)
             DistributeLootAndExperience(rewardTarget, rewardTargets);
         else
             DropLootAndExperience(rewardTargets);
+
+        HandleMapLootAndExperience();
     }
 }
