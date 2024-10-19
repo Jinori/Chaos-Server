@@ -17,6 +17,7 @@ namespace Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistributionScript> logger)
     : ScriptBase, IExperienceDistributionScript
 {
+    private const double EXPERIENCE_MULTIPLIER = 2.0; // Default is 1.0, can be lowered or raised as needed
     public IExperienceFormula ExperienceFormula { get; set; } = ExperienceFormulae.Default;
     public ILevelUpScript LevelUpScript { get; set; } = DefaultLevelUpScript.Create();
     public ILogger<DefaultExperienceDistributionScript> Logger { get; set; } = logger;
@@ -26,8 +27,6 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
 
     /// <inheritdoc />
     public static IExperienceDistributionScript Create() => FunctionalScriptRegistry.Instance.Get<IExperienceDistributionScript>(Key);
-
-    private const double EXPERIENCE_MULTIPLIER = 1.0; // Default is 1.0, can be lowered or raised as needed
 
     /// <inheritdoc />
     public virtual void DistributeExperience(Creature killedCreature, params Aisling[] aislings)
@@ -59,7 +58,7 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
             amount = uint.MaxValue - aisling.UserStatSheet.TotalExp;
 
         amount = (long)(amount * EXPERIENCE_MULTIPLIER);
-        
+
         if (amount <= 0)
             return;
 
@@ -74,8 +73,7 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
             {
                 aisling.UserStatSheet.AddTotalExp(amount);
                 amount = 0;
-            }
-            else
+            } else
             {
                 var expToGive = Math.Min(amount, aisling.UserStatSheet.ToNextLevel);
                 aisling.UserStatSheet.AddTotalExp(expToGive);
@@ -107,8 +105,8 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
             return false;
         }
 
-        amount = (long)(amount * EXPERIENCE_MULTIPLIER);
-        
+        amount = amount;
+
         if (aisling.UserStatSheet.TotalExp < amount)
             return false;
 
