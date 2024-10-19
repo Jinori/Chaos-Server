@@ -83,13 +83,13 @@ public sealed class CountessEnrageScript : MonsterScriptBase
 
     private void RegenerateFromDolls()
     {
-        var amountBats = Subject.MapInstance
-                                .GetEntities<Monster>()
-                                .Count(x => x.Name == "Macabre Doll");
+        var amountdolls = Subject.MapInstance
+                                 .GetEntities<Monster>()
+                                 .Count(x => x.Name == "Macabre Doll");
 
-        if (amountBats > 0)
+        if (amountdolls > 0)
         {
-            var healamt = amountBats * 0.004;
+            var healamt = amountdolls * 0.004;
             var amountToHeal = Subject.StatSheet.EffectiveMaximumHp * healamt;
 
             var newHp = Subject.StatSheet.CurrentHp + amountToHeal;
@@ -123,6 +123,13 @@ public sealed class CountessEnrageScript : MonsterScriptBase
 
             if (random < 50)
             {
+                var dollCount = Subject.MapInstance
+                                       .GetEntities<Aisling>()
+                                       .Count(x => x.Name == "Macabre Doll");
+
+                if (dollCount > 4)
+                    return;
+
                 Subject.Say("Dolls! Come play...");
 
                 var rectangle = new Rectangle(Subject, 12, 12);

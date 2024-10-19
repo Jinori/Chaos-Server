@@ -146,6 +146,13 @@ public sealed class CountEnrageScript : MonsterScriptBase
 
             if (random < 50)
             {
+                var batCount = Subject.MapInstance
+                                      .GetEntities<Aisling>()
+                                      .Count(x => x.Name == "Macabre Bat");
+
+                if (batCount > 5)
+                    return;
+
                 Subject.Say("There can never be enough bats!");
 
                 var rectangle = new Rectangle(Subject, 12, 12);

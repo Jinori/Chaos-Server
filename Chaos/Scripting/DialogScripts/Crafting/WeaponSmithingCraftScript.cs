@@ -64,8 +64,7 @@ public class WeaponSmithingCraftScript : DialogScriptBase
         int timesCraftedThisItem,
         double baseSuccessRate,
         int recipeRank,
-        int difficulty
-    )
+        int difficulty)
     {
         var rankDifficultyReduction = recipeRank switch
         {
@@ -84,40 +83,35 @@ public class WeaponSmithingCraftScript : DialogScriptBase
         var multiplier = GetMultiplier(totalTimesCrafted);
 
         // Calculate the success rate with all the factors
-        var successRate = (baseSuccessRate - rankDifficultyReduction - difficulty + timesCraftedThisItem / 5.0)
-                          * multiplier;
+        var successRate = (baseSuccessRate - rankDifficultyReduction - difficulty + timesCraftedThisItem / 5.0) * multiplier;
 
         // Ensure the success rate does not exceed the maximum allowed value
         return Math.Min(successRate, SUCCESSRATEMAX);
     }
-    
+
     private CraftingRequirements.Recipe? FindRecipeByName(string recipeName)
     {
         // First, check in WeaponsmithingRequirements
-        var recipe = CraftingRequirements.WeaponSmithingCraftRequirements.Values
-            .FirstOrDefault(r => r.Name.EqualsI(recipeName));
+        var recipe = CraftingRequirements.WeaponSmithingCraftRequirements.Values.FirstOrDefault(r => r.Name.EqualsI(recipeName));
 
         // If not found, check in WeaponsmithingRequirements2
         if (recipe is null)
-        {
-            recipe = CraftingRequirements.WeaponSmithingCraftRequirements2.Values
-                .FirstOrDefault(r => r.Name.EqualsI(recipeName));
-        }
+            recipe = CraftingRequirements.WeaponSmithingCraftRequirements2.Values.FirstOrDefault(r => r.Name.EqualsI(recipeName));
 
         return recipe;
     }
 
-    private double GetMultiplier(int totalTimesCrafted) =>
-        totalTimesCrafted switch
+    private double GetMultiplier(int totalTimesCrafted)
+        => totalTimesCrafted switch
         {
-            <= 25 => 1.0,
-            <= 75 => 1.05,
-            <= 150 => 1.1,
-            <= 300 => 1.15,
-            <= 500 => 1.2,
+            <= 25   => 1.0,
+            <= 75   => 1.05,
+            <= 150  => 1.1,
+            <= 300  => 1.15,
+            <= 500  => 1.2,
             <= 1000 => 1.25,
             <= 1500 => 1.3,
-            _ => 1.35
+            _       => 1.35
         };
 
     // Converts the rank string to an integer value
@@ -125,14 +119,30 @@ public class WeaponSmithingCraftScript : DialogScriptBase
     {
         var rankMappings = new Dictionary<string, int>
         {
-            { RANK_EIGHT_TITLE, 8 },
-            { RANK_SEVEN_TITLE, 7 },
-            { RANK_SIX_TITLE, 6 },
-            { RANK_FIVE_TITLE, 5 },
-            { RANK_FOUR_TITLE, 4 },
-            { RANK_THREE_TITLE, 3 },
-            { RANK_TWO_TITLE, 2 },
-            { RANK_ONE_TITLE, 1 }
+            {
+                RANK_EIGHT_TITLE, 8
+            },
+            {
+                RANK_SEVEN_TITLE, 7
+            },
+            {
+                RANK_SIX_TITLE, 6
+            },
+            {
+                RANK_FIVE_TITLE, 5
+            },
+            {
+                RANK_FOUR_TITLE, 4
+            },
+            {
+                RANK_THREE_TITLE, 3
+            },
+            {
+                RANK_TWO_TITLE, 2
+            },
+            {
+                RANK_ONE_TITLE, 1
+            }
         };
 
         if (rankMappings.TryGetValue(rank, out var i))
@@ -146,14 +156,30 @@ public class WeaponSmithingCraftScript : DialogScriptBase
     {
         var statusMappings = new Dictionary<string, int>
         {
-            { "Beginner", 1 },
-            { "Basic", 2 },
-            { "Initiate", 3 },
-            { "Artisan", 4 },
-            { "Adept", 5 },
-            { "Advanced", 6 },
-            { "Expert", 7 },
-            { "Master", 8 }
+            {
+                "Beginner", 1
+            },
+            {
+                "Basic", 2
+            },
+            {
+                "Initiate", 3
+            },
+            {
+                "Artisan", 4
+            },
+            {
+                "Adept", 5
+            },
+            {
+                "Advanced", 6
+            },
+            {
+                "Expert", 7
+            },
+            {
+                "Master", 8
+            }
         };
 
         if (statusMappings.TryGetValue(status, out var i))
@@ -202,6 +228,7 @@ public class WeaponSmithingCraftScript : DialogScriptBase
         if (recipe is null)
         {
             Subject.Reply(source, "Notify a GM that this recipe is missing.");
+
             return;
         }
 
@@ -225,12 +252,11 @@ public class WeaponSmithingCraftScript : DialogScriptBase
         var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
         var legendMarkCount = existingMark?.Count ?? 0;
 
-        var timesCraftedThisItem =
-            source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + recipe.Name, out var value) ? value : 0;
+        var timesCraftedThisItem = source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + recipe.Name, out var value) ? value : 0;
 
         foreach (var removeRegant in recipe.Ingredients)
             source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
-        
+
         if (!IntegerRandomizer.RollChance(
                 (int)CalculateSuccessRate(
                     legendMarkCount,
@@ -246,8 +272,10 @@ public class WeaponSmithingCraftScript : DialogScriptBase
             dialog.InjectTextParameters(recipe.Name);
             dialog.Display(source);
             source.Animate(FailAnimation);
+
             //Give item counter exp even if failure
             source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + recipe.Name);
+
             return;
         }
 
@@ -261,10 +289,10 @@ public class WeaponSmithingCraftScript : DialogScriptBase
             var recipeStatus = GetStatusAsInt(recipe.Rank);
             var playerRank = GetRankAsInt(existingMark.Text);
 
-            if ((playerRank >= 2) && (playerRank - 1 > recipeStatus))
+            if ((playerRank >= 2) && ((playerRank - 1) > recipeStatus))
                 source.SendOrangeBarMessage("You can no longer gain rank experience from this recipe.");
 
-            if ((playerRank >= recipeStatus) && (playerRank <= recipeStatus + 1))
+            if ((playerRank >= recipeStatus) && (playerRank <= (recipeStatus + 1)))
             {
                 UpdateLegendmark(source, legendMarkCount);
 
@@ -279,17 +307,16 @@ public class WeaponSmithingCraftScript : DialogScriptBase
 
             var newCraft = roll switch
             {
-                < 10 => ItemFactory.Create("grand" + recipe.TemplateKey),
-                < 40 => ItemFactory.Create("great" + recipe.TemplateKey),
+                < 10  => ItemFactory.Create("grand" + recipe.TemplateKey),
+                < 40  => ItemFactory.Create("great" + recipe.TemplateKey),
                 < 100 => ItemFactory.Create("good" + recipe.TemplateKey),
-                _ => ItemFactory.Create(recipe.TemplateKey)
+                _     => ItemFactory.Create(recipe.TemplateKey)
             };
 
             source.GiveItemOrSendToBank(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);
-        }
-        else
+        } else
         {
             var newCraft = ItemFactory.Create(recipe.TemplateKey);
 
@@ -341,14 +368,13 @@ public class WeaponSmithingCraftScript : DialogScriptBase
                 var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
             }
-            
+
             foreach (var recipe2 in CraftingRequirements.WeaponSmithingCraftRequirements2)
             {
                 var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
             }
-        }
-        else
+        } else
         {
             var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
 
@@ -359,60 +385,49 @@ public class WeaponSmithingCraftScript : DialogScriptBase
             {
                 var playerRank = GetRankAsInt(existingMark.Text);
 
-                 if (source.Trackers.Flags.TryGetFlag(out JewelcraftingRecipes recipes))
-                 {
-                     // Show items from WeaponsmithingCraftRequirements
-                     foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
-                     {
-                         if (source.IsGodModeEnabled() && recipes.HasFlag(recipe.Key))
-                         {
-                             var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+                if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes recipes))
 
-                             if (source.UserStatSheet.Level >= item.Level)
-                             {
-                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                             }
-                         }
-                    
-                         if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
-                         {
-                             var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+                    // Show items from WeaponsmithingCraftRequirements
+                    foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
+                    {
+                        if (source.IsGodModeEnabled() && recipes.HasFlag(recipe.Key))
+                        {
+                            var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
 
-                             if (source.UserStatSheet.Level >= item.Level)
-                             {
-                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                             }
-                         }
-                     }
-                 }
-            
+                            if (source.UserStatSheet.Level >= item.Level)
+                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
 
-                 if (source.Trackers.Flags.TryGetFlag(out JewelcraftingRecipes2 recipes2))
-                 {
-                     // Show items from WeaponsmithingCraftRequirements
-                     foreach (var recipe2 in CraftingRequirements.WeaponSmithingCraftRequirements2)
-                     {
-                         if (source.IsGodModeEnabled() && recipes2.HasFlag(recipe2.Key))
-                         {
-                             var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+                        if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
+                        {
+                            var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
 
-                             if (source.UserStatSheet.Level >= item.Level)
-                             {
-                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                             }
-                         }
-                    
-                         if (recipes2.HasFlag(recipe2.Key) && (playerRank >= GetStatusAsInt(recipe2.Value.Rank)))
-                         {
-                             var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+                            if (source.UserStatSheet.Level >= item.Level)
+                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
+                    }
 
-                             if (source.UserStatSheet.Level >= item.Level)
-                             {
-                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                             }
-                         }
-                     }
-                 }
+                if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes2 recipes2))
+
+                    // Show items from WeaponsmithingCraftRequirements
+                    foreach (var recipe2 in CraftingRequirements.WeaponSmithingCraftRequirements2)
+                    {
+                        if (source.IsGodModeEnabled() && recipes2.HasFlag(recipe2.Key))
+                        {
+                            var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+
+                            if (source.UserStatSheet.Level >= item.Level)
+                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
+
+                        if (recipes2.HasFlag(recipe2.Key) && (playerRank >= GetStatusAsInt(recipe2.Value.Rank)))
+                        {
+                            var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+
+                            if (source.UserStatSheet.Level >= item.Level)
+                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
+                    }
             }
 
             if (Subject.Items.Count == 0)
@@ -438,13 +453,24 @@ public class WeaponSmithingCraftScript : DialogScriptBase
         {
             var rankThresholds = new[]
             {
-                25, 75, 150, 300, 500, 1000, 1500
+                25,
+                75,
+                150,
+                300,
+                500,
+                1000,
+                1500
             };
 
             var rankTitles = new[]
             {
-                RANK_TWO_TITLE, RANK_THREE_TITLE, RANK_FOUR_TITLE, RANK_FIVE_TITLE, RANK_SIX_TITLE,
-                RANK_SEVEN_TITLE, RANK_EIGHT_TITLE
+                RANK_TWO_TITLE,
+                RANK_THREE_TITLE,
+                RANK_FOUR_TITLE,
+                RANK_FIVE_TITLE,
+                RANK_SIX_TITLE,
+                RANK_SEVEN_TITLE,
+                RANK_EIGHT_TITLE
             };
 
             var currentRankIndex = Array.IndexOf(rankTitles, existingMark.Text);
@@ -452,16 +478,13 @@ public class WeaponSmithingCraftScript : DialogScriptBase
             existingMark.Count++;
 
             for (var i = currentRankIndex + 1; i < rankThresholds.Length; i++)
-            {
                 if (legendMarkCount >= rankThresholds[i])
                 {
                     var newTitle = rankTitles[i];
 
                     // Remove the previous title of the rank
                     if (source.Titles.Contains(existingMark.Text))
-                    {
                         source.Titles.Remove(existingMark.Text);
-                    }
 
                     // Add the new title
                     source.Titles.Add(newTitle);
@@ -473,6 +496,7 @@ public class WeaponSmithingCraftScript : DialogScriptBase
                     if (source.Titles.Any())
                     {
                         var firstTitle = source.Titles.First();
+
                         if (firstTitle != newTitle)
                         {
                             source.Titles.Remove(newTitle);
@@ -485,7 +509,6 @@ public class WeaponSmithingCraftScript : DialogScriptBase
 
                     break;
                 }
-            }
         }
     }
 }
