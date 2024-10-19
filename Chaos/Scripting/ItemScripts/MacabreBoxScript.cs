@@ -9,10 +9,10 @@ namespace Chaos.Scripting.ItemScripts;
 public class MacabreBoxScript : ItemScriptBase
 {
     // Define a random number generator
-    private static readonly Random RANDOM = new();
+    private static readonly Random Random = new();
 
     // List of items with their corresponding drop chances
-    private readonly Dictionary<string, double> ItemChances = new()
+    private readonly Dictionary<string, double> _itemChances = new()
     {
         {
             "macabrehexedhat", 0.01
@@ -145,47 +145,39 @@ public class MacabreBoxScript : ItemScriptBase
         }
     };
 
-    private readonly IItemFactory ItemFactory;
-    protected EquipmentType EquipmentType { get; init; }
+    private readonly IItemFactory _itemFactory;
 
     public MacabreBoxScript(Item subject, IItemFactory itemFactory)
         : base(subject)
-        => ItemFactory = itemFactory;
+        => _itemFactory = itemFactory;
 
     public override void OnUse(Aisling source)
     {
+        source.Inventory.RemoveQuantity(Subject.Slot, 1);
+        
         // Total sum of all item chances
-        double totalChance = 0;
-
-        foreach (var itemChance in ItemChances.Values)
-            totalChance += itemChance;
+        var totalChance = _itemChances.Values.Sum();
 
         // Roll a random number between 0 and totalChance
-        var roll = RANDOM.NextDouble() * totalChance;
+        var roll = Random.NextDouble() * totalChance;
 
         // Determine which item the player receives based on the roll
-        string selectedItem = null!;
         double cumulativeChance = 0;
 
-        foreach (var entry in ItemChances)
+        foreach (var entry in _itemChances)
         {
             cumulativeChance += entry.Value;
 
             if (roll <= cumulativeChance)
             {
-                selectedItem = entry.Key;
-
+                // Give the selected item to the player
+                var item = _itemFactory.Create(entry.Key);
+                source.GiveItemOrSendToBank(item);
+                
+                // Send a message to the player
+                source.SendOrangeBarMessage($"You received {item.DisplayName} from the box!");
                 break;
             }
         }
-
-        source.Inventory.RemoveQuantityByTemplateKey("macabrebox", 1);
-
-        // Give the selected item to the player
-        var item = ItemFactory.Create(selectedItem);
-        source.GiveItemOrSendToBank(item);
-
-        // Send a message to the player
-        source.SendOrangeBarMessage($"You received {item.DisplayName} from the box!");
     }
 }
