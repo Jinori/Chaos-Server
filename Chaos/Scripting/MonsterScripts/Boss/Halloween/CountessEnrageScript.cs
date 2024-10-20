@@ -47,7 +47,7 @@ public sealed class CountessEnrageScript : MonsterScriptBase
         RegenerateTimer = new IntervalTimer(TimeSpan.FromSeconds(6), false);
 
         RandomAbilityTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(180),
+            TimeSpan.FromSeconds(45),
             20,
             RandomizationType.Balanced,
             false);
@@ -74,11 +74,23 @@ public sealed class CountessEnrageScript : MonsterScriptBase
         var pickedAisling = randomAisling.PickRandom();
 
         if (random < 33)
+        { 
             Subject.TryUseSpell(SpellToCast, pickedAisling.Id);
-        else if (random < 66)
+            return;
+        }
+        
+        if (random < 66)
+        {
             Subject.TryUseSpell(SpellToCast2, pickedAisling.Id);
-        else
+            return;
+        }
+        
+        if (random < 100)
+        {
             Subject.TryUseSpell(SpellToCast3, pickedAisling.Id);
+
+            return;
+        }
     }
 
     private void RegenerateFromDolls()
@@ -89,7 +101,7 @@ public sealed class CountessEnrageScript : MonsterScriptBase
 
         if (amountdolls > 0)
         {
-            var healamt = amountdolls * 0.004;
+            var healamt = amountdolls * 0.002;
             var amountToHeal = Subject.StatSheet.EffectiveMaximumHp * healamt;
 
             var newHp = Subject.StatSheet.CurrentHp + amountToHeal;
@@ -124,7 +136,7 @@ public sealed class CountessEnrageScript : MonsterScriptBase
             if (random < 50)
             {
                 var dollCount = Subject.MapInstance
-                                       .GetEntities<Aisling>()
+                                       .GetEntities<Monster>()
                                        .Count(x => x.Name == "Macabre Doll");
 
                 if (dollCount > 4)
@@ -143,6 +155,8 @@ public sealed class CountessEnrageScript : MonsterScriptBase
 
                     if (mobs != null) // Ensure mobs is not null
                         Subject.MapInstance.AddEntity(mobs, point);
+
+                    return;
                 }
             }
 

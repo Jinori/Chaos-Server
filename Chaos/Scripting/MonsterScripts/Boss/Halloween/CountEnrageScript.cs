@@ -49,7 +49,7 @@ public sealed class CountEnrageScript : MonsterScriptBase
         InvulnerableTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
 
         RandomAbilityTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(180),
+            TimeSpan.FromSeconds(45),
             20,
             RandomizationType.Balanced,
             false);
@@ -76,13 +76,27 @@ public sealed class CountEnrageScript : MonsterScriptBase
         var pickedAisling = randomAisling.PickRandom();
 
         if (random < 33)
+        {
             Subject.TryUseSpell(SpellToCast, pickedAisling.Id);
 
+            return;
+        }
+
         if (random < 66)
-            Subject.TryUseSpell(SpellToCast2, pickedAisling.Id);
+        {
+            foreach (var player in randomAisling)
+            {
+                Subject.TryUseSpell(SpellToCast, player.Id);
+
+                return;
+            }   
+        }
 
         if (random < 101)
+        {
             Subject.TryUseSpell(SpellToCast3, pickedAisling.Id);
+            return;
+        }
     }
 
     private void RegenerateFromBats()
@@ -93,7 +107,7 @@ public sealed class CountEnrageScript : MonsterScriptBase
 
         if (amountBats > 0)
         {
-            var healamt = amountBats * 0.004;
+            var healamt = amountBats * 0.002;
             var amountToHeal = Subject.StatSheet.EffectiveMaximumHp * healamt;
 
             var newHp = Subject.StatSheet.CurrentHp + amountToHeal;
@@ -147,7 +161,7 @@ public sealed class CountEnrageScript : MonsterScriptBase
             if (random < 50)
             {
                 var batCount = Subject.MapInstance
-                                      .GetEntities<Aisling>()
+                                      .GetEntities<Monster>()
                                       .Count(x => x.Name == "Macabre Bat");
 
                 if (batCount > 5)
@@ -164,6 +178,8 @@ public sealed class CountEnrageScript : MonsterScriptBase
 
                     var mobs = MonsterFactory.Create("count_bat", Subject.MapInstance, point);
                     Subject.MapInstance.AddEntity(mobs, point);
+
+                    return;
                 }
             }
 
