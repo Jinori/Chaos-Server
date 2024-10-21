@@ -17,8 +17,8 @@ public class RecipeLibraryScript : DialogScriptBase
     private Item? FauxItem => ItemDetails?.Item;
 
     public RecipeLibraryScript(Dialog subject, IItemFactory itemFactory)
-        : base(subject) =>
-        ItemFactory = itemFactory;
+        : base(subject)
+        => ItemFactory = itemFactory;
 
     public override void OnDisplaying(Aisling source)
     {
@@ -149,13 +149,16 @@ public class RecipeLibraryScript : DialogScriptBase
             {
                 // Checking if the Alchemy recipe is available or not.
                 if (source.Trackers.Flags.TryGetFlag(out AlchemyRecipes recipes))
+
                     // Iterating through the Alchemy recipe requirements.
                     foreach (var recipe in CraftingRequirements.AlchemyRequirements)
+
                         // Checking if the recipe is available or not.
                         if (recipes.HasFlag(recipe.Key))
                         {
                             // Creating a faux item for the recipe.
                             var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+
                             // Adding the recipe to the subject's dialog window.
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
@@ -178,19 +181,19 @@ public class RecipeLibraryScript : DialogScriptBase
 
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
-                
+
                 if (source.Trackers.Flags.TryGetFlag(out CraftedArmors2 recipes2))
-                {
                     foreach (var recipe2 in CraftingRequirements.ArmorSmithingArmorRequirements2)
+
                         // Checking if the recipe is available or not.
                         if (recipes2.HasFlag(recipe2.Key))
                         {
                             // Creating a faux item for the recipe.
                             var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+
                             // Adding the recipe to the subject's dialog window.
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
-                }
 
                 if (source.Trackers.Flags.TryGetFlag(out ArmorsmithingRecipes gearRecipes))
                     foreach (var recipe in CraftingRequirements.ArmorSmithingGearRequirements)
@@ -209,31 +212,32 @@ public class RecipeLibraryScript : DialogScriptBase
             {
                 // Checking if the Alchemy recipe is available or not.
                 if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes recipes))
-                {
                     foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
+
                         // Checking if the recipe is available or not.
                         if (recipes.HasFlag(recipe.Key))
                         {
                             // Creating a faux item for the recipe.
                             var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+
                             // Adding the recipe to the subject's dialog window.
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
-                }
-                
+
                 // Checking if the Alchemy recipe is available or not.
                 if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes2 recipes2))
-                {
                     foreach (var recipe2 in CraftingRequirements.WeaponSmithingCraftRequirements2)
+
                         // Checking if the recipe is available or not.
                         if (recipes2.HasFlag(recipe2.Key))
                         {
                             // Creating a faux item for the recipe.
                             var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+
                             // Adding the recipe to the subject's dialog window.
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
-                }
+
                 break;
             }
             #endregion
@@ -243,13 +247,16 @@ public class RecipeLibraryScript : DialogScriptBase
             {
                 // Checking if the Alchemy recipe is available or not.
                 if (source.Trackers.Flags.TryGetFlag(out EnchantingRecipes recipes))
+
                     // Iterating through the Alchemy recipe requirements.
                     foreach (var recipe in CraftingRequirements.EnchantingRequirements)
+
                         // Checking if the recipe is available or not.
                         if (recipes.HasFlag(recipe.Key))
                         {
                             // Creating a faux item for the recipe.
                             var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+
                             // Adding the recipe to the subject's dialog window.
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
@@ -263,31 +270,31 @@ public class RecipeLibraryScript : DialogScriptBase
             {
                 // Checking if the Alchemy recipe is available or not.
                 if (source.Trackers.Flags.TryGetFlag(out JewelcraftingRecipes recipes))
-                {
                     foreach (var recipe in CraftingRequirements.JewelcraftingRequirements)
+
                         // Checking if the recipe is available or not.
                         if (recipes.HasFlag(recipe.Key))
                         {
                             // Creating a faux item for the recipe.
                             var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+
                             // Adding the recipe to the subject's dialog window.
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
-                }
-                
+
                 // Checking if the Alchemy recipe is available or not.
                 if (source.Trackers.Flags.TryGetFlag(out JewelcraftingRecipes2 recipes2))
-                {
                     foreach (var recipe2 in CraftingRequirements.JewelcraftingRequirements2)
+
                         // Checking if the recipe is available or not.
                         if (recipes2.HasFlag(recipe2.Key))
                         {
                             // Creating a faux item for the recipe.
                             var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+
                             // Adding the recipe to the subject's dialog window.
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
-                }
 
                 break;
             }
@@ -311,8 +318,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         return;
                     }
 
-                    ItemDetails =
-                        Subject.Items.FirstOrDefault(details => details.Item.DisplayName.EqualsI(itemName));
+                    ItemDetails = Subject.Items.FirstOrDefault(details => details.Item.DisplayName.EqualsI(itemName));
 
                     if (ItemDetails == null)
                     {
@@ -432,8 +438,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         return;
                     }
 
-                    ItemDetails =
-                        Subject.Items.FirstOrDefault(details => details.Item.DisplayName.EqualsI(itemName));
+                    ItemDetails = Subject.Items.FirstOrDefault(details => details.Item.DisplayName.EqualsI(itemName));
 
                     if (ItemDetails == null)
                     {
@@ -719,7 +724,7 @@ public class RecipeLibraryScript : DialogScriptBase
                             "alchemybook");
 
                         return;
-                    
+
                     case "potenthealthpotionformula":
                         Subject.Reply(
                             source,
@@ -742,6 +747,7 @@ public class RecipeLibraryScript : DialogScriptBase
                             $"{FauxItem.Template.Name
                             } requires 8 Lesser Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
+
                         return;
                     case "potenthastebrewformula":
                         Subject.Reply(
@@ -765,16 +771,18 @@ public class RecipeLibraryScript : DialogScriptBase
                             $"{FauxItem.Template.Name
                             } requires 1 Kabine Blossom, 2 Superior Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
+
                         return;
-                        
+
                     case "potentjuggernautbrewformula":
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
                             } requires 1 Blossom of Betrayal, 3 Superior Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
+
                         return;
-                        
+
                     case "potentastralbrewformula":
                         Subject.Reply(
                             source,
@@ -855,7 +863,6 @@ public class RecipeLibraryScript : DialogScriptBase
                             "alchemybook");
 
                         return;
-                    
                 }
 
                 break;
@@ -874,8 +881,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         return;
                     }
 
-                    ItemDetails =
-                        Subject.Items.FirstOrDefault(details => details.Item.DisplayName.EqualsI(itemName));
+                    ItemDetails = Subject.Items.FirstOrDefault(details => details.Item.DisplayName.EqualsI(itemName));
 
                     if (ItemDetails == null)
                     {
@@ -889,361 +895,241 @@ public class RecipeLibraryScript : DialogScriptBase
                 {
                     case "aquaedoncalming":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 3 Essence of Aquaedon.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 3 Essence of Aquaedon.", "enchantingbook");
 
                         return;
                     }
                     case "aquaedonclarity":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Aquaedon.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 1 Essence of Aquaedon.", "enchantingbook");
 
                         return;
                     }
                     case "aquaedonresolve":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 10 Essence of Aquaedon.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 10 Essence of Aquaedon.", "enchantingbook");
 
                         return;
                     }
                     case "aquaedonwill":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 7 Essence of Aquaedon.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 7 Essence of Aquaedon.", "enchantingbook");
 
                         return;
                     }
                     case "aquaedonwisdom":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Aquaedon.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 5 Essence of Aquaedon.", "enchantingbook");
 
                         return;
                     }
                     case "ignatardestruction":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 7 Essence of Ignatar.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 7 Essence of Ignatar.", "enchantingbook");
 
                         return;
                     }
                     case "ignatarenvy":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Ignatar.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 1 Essence of Ignatar.", "enchantingbook");
 
                         return;
                     }
                     case "ignatargrief":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Ignatar.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 1 Essence of Ignatar.", "enchantingbook");
 
                         return;
                     }
                     case "ignatarjealousy":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Ignatar.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 5 Essence of Ignatar.", "enchantingbook");
 
                         return;
                     }
                     case "ignatarregret":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 3 Essence of Ignatar.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 3 Essence of Ignatar.", "enchantingbook");
 
                         return;
                     }
                     case "geolithconstitution":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Geolith.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 5 Essence of Geolith.", "enchantingbook");
 
                         return;
                     }
                     case "geolithfortitude":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 7 Essence of Geolith.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 7 Essence of Geolith.", "enchantingbook");
 
                         return;
                     }
                     case "geolithgratitude":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Geolith.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 1 Essence of Geolith.", "enchantingbook");
 
                         return;
                     }
                     case "geolithobsession":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Geolith.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 5 Essence of Geolith.", "enchantingbook");
 
                         return;
                     }
                     case "geolithpride":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 3 Essence of Geolith.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 3 Essence of Geolith.", "enchantingbook");
 
                         return;
                     }
                     case "miraelisblessing":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 3 Essence of Miraelis.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 3 Essence of Miraelis.", "enchantingbook");
 
                         return;
                     }
                     case "miraelisharmony":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Miraelis.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 5 Essence of Miraelis.", "enchantingbook");
 
                         return;
                     }
                     case "miraelisintellect":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Miraelis.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 5 Essence of Miraelis.", "enchantingbook");
 
                         return;
                     }
                     case "miraelisnurturing":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 7 Essence of Miraelis.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 7 Essence of Miraelis.", "enchantingbook");
 
                         return;
                     }
                     case "miraelisserenity":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Miraelis.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 1 Essence of Miraelis.", "enchantingbook");
 
                         return;
                     }
                     case "serendaeladdiction":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 10 Essence of Serendael.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 10 Essence of Serendael.", "enchantingbook");
 
                         return;
                     }
                     case "serendaelchance":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Serendael.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 5 Essence of Serendael.", "enchantingbook");
 
                         return;
                     }
                     case "serendaelluck":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Serendael.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 1 Essence of Serendael.", "enchantingbook");
 
                         return;
                     }
                     case "serendaelmagic":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 3 Essence of Serendael.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 3 Essence of Serendael.", "enchantingbook");
 
                         return;
                     }
                     case "serendaelroll":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 7 Essence of Serendael.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 7 Essence of Serendael.", "enchantingbook");
 
                         return;
                     }
                     case "skandaradrive":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 7 Essence of Skandara.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 7 Essence of Skandara.", "enchantingbook");
 
                         return;
                     }
                     case "skandaramight":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Skandara.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 1 Essence of Skandara.", "enchantingbook");
 
                         return;
                     }
                     case "skandarapierce":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 10 Essence of Skandara.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 10 Essence of Skandara.", "enchantingbook");
 
                         return;
                     }
                     case "skandarastrength":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Skandara.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 5 Essence of Skandara.", "enchantingbook");
 
                         return;
                     }
                     case "skandaratriumph":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 3 Essence of Skandara.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 3 Essence of Skandara.", "enchantingbook");
 
                         return;
                     }
                     case "theselenebalance":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 7 Essence of Theselene.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 7 Essence of Theselene.", "enchantingbook");
 
                         return;
                     }
                     case "theselenedexterity":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Theselene.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 5 Essence of Theselene.", "enchantingbook");
 
                         return;
                     }
                     case "theseleneelusion":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Theselene.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 1 Essence of Theselene.", "enchantingbook");
 
                         return;
                     }
                     case "theselenerisk":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 10 Essence of Theselene.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 10 Essence of Theselene.", "enchantingbook");
 
                         return;
                     }
                     case "theseleneshadow":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 3 Essence of Theselene.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 3 Essence of Theselene.", "enchantingbook");
 
                         return;
                     }
                     case "zephyragust":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 10 Essence of Zephyra.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 10 Essence of Zephyra.", "enchantingbook");
 
                         return;
                     }
                     case "zephyramist":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 3 Essence of Zephyra.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 3 Essence of Zephyra.", "enchantingbook");
 
                         return;
                     }
                     case "zephyraspirit":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Essence of Zephyra.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 1 Essence of Zephyra.", "enchantingbook");
 
                         return;
                     }
                     case "zephyrawind":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 5 Essence of Zephyra.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 5 Essence of Zephyra.", "enchantingbook");
 
                         return;
                     }
                     case "zephyravortex":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 7 Essence of Zephyra.",
-                            "enchantingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 7 Essence of Zephyra.", "enchantingbook");
 
                         return;
                     }
@@ -1265,8 +1151,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         return;
                     }
 
-                    ItemDetails =
-                        Subject.Items.FirstOrDefault(details => details.Item.DisplayName.EqualsI(itemName));
+                    ItemDetails = Subject.Items.FirstOrDefault(details => details.Item.DisplayName.EqualsI(itemName));
 
                     if (ItemDetails == null)
                     {
@@ -1671,37 +1556,25 @@ public class RecipeLibraryScript : DialogScriptBase
                     }
                     case "seanecklace":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Raw Bronze and 1 Raw Sapphire.",
-                            "jewelcraftingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 1 Raw Bronze and 1 Raw Sapphire.", "jewelcraftingbook");
 
                         return;
                     }
                     case "earthnecklace":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Raw Bronze and 1 Raw Beryl.",
-                            "jewelcraftingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 1 Raw Bronze and 1 Raw Beryl.", "jewelcraftingbook");
 
                         return;
                     }
                     case "firenecklace":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Raw Bronze and 1 Raw Ruby.",
-                            "jewelcraftingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 1 Raw Bronze and 1 Raw Ruby.", "jewelcraftingbook");
 
                         return;
                     }
                     case "windnecklace":
                     {
-                        Subject.Reply(
-                            source,
-                            $"{FauxItem.Template.Name} requires 1 Raw Bronze and 1 Raw Emerald.",
-                            "jewelcraftingbook");
+                        Subject.Reply(source, $"{FauxItem.Template.Name} requires 1 Raw Bronze and 1 Raw Emerald.", "jewelcraftingbook");
 
                         return;
                     }
@@ -1852,7 +1725,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "crimsoniteberylring":
                     {
                         Subject.Reply(
@@ -1863,7 +1736,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "crimsoniterubyring":
                     {
                         Subject.Reply(
@@ -1874,7 +1747,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "crimsonitesapphirering":
                     {
                         Subject.Reply(
@@ -1885,7 +1758,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "crimsoniteemeraldring":
                     {
                         Subject.Reply(
@@ -1896,7 +1769,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "crimsoniteheartstonering":
                     {
                         Subject.Reply(
@@ -1907,8 +1780,8 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
-                        case "azuriumberylring":
+
+                    case "azuriumberylring":
                     {
                         Subject.Reply(
                             source,
@@ -1918,7 +1791,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "azuriumrubyring":
                     {
                         Subject.Reply(
@@ -1929,7 +1802,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "azuriumsapphirering":
                     {
                         Subject.Reply(
@@ -1940,7 +1813,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "azuriumemeraldring":
                     {
                         Subject.Reply(
@@ -1951,7 +1824,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "azuriumheartstonering":
                     {
                         Subject.Reply(
@@ -1962,8 +1835,8 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
-                        case "crimsoniteberylearrings":
+
+                    case "crimsoniteberylearrings":
                     {
                         Subject.Reply(
                             source,
@@ -1973,7 +1846,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "crimsoniterubyearrings":
                     {
                         Subject.Reply(
@@ -1984,7 +1857,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "crimsonitesapphireearrings":
                     {
                         Subject.Reply(
@@ -1995,7 +1868,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "crimsoniteemeraldearrings":
                     {
                         Subject.Reply(
@@ -2006,7 +1879,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "crimsoniteheartstoneearrings":
                     {
                         Subject.Reply(
@@ -2017,8 +1890,8 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
-                        case "azuriumberylearrings":
+
+                    case "azuriumberylearrings":
                     {
                         Subject.Reply(
                             source,
@@ -2028,7 +1901,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "azuriumrubyearrings":
                     {
                         Subject.Reply(
@@ -2039,7 +1912,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "azuriumsapphireearrings":
                     {
                         Subject.Reply(
@@ -2050,7 +1923,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "azuriumemeraldearrings":
                     {
                         Subject.Reply(
@@ -2061,7 +1934,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "azuriumheartstoneearrings":
                     {
                         Subject.Reply(
@@ -2072,7 +1945,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "crimsoniteearthnecklace":
                     {
                         Subject.Reply(
@@ -2083,7 +1956,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "crimsonitefirenecklace":
                     {
                         Subject.Reply(
@@ -2094,7 +1967,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "crimsoniteseanecklace":
                     {
                         Subject.Reply(
@@ -2105,7 +1978,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "crimsonitewindnecklace":
                     {
                         Subject.Reply(
@@ -2116,7 +1989,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "crimsonitelightnecklace":
                     {
                         Subject.Reply(
@@ -2127,7 +2000,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "crimsonitedarknecklace":
                     {
                         Subject.Reply(
@@ -2138,8 +2011,8 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
-                            case "azuriumearthnecklace":
+
+                    case "azuriumearthnecklace":
                     {
                         Subject.Reply(
                             source,
@@ -2149,7 +2022,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "azuriumfirenecklace":
                     {
                         Subject.Reply(
@@ -2160,7 +2033,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "azuriumseanecklace":
                     {
                         Subject.Reply(
@@ -2171,7 +2044,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "azuriumwindnecklace":
                     {
                         Subject.Reply(
@@ -2182,7 +2055,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "azuriumlightnecklace":
                     {
                         Subject.Reply(
@@ -2193,7 +2066,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "azuriumdarknecklace":
                     {
                         Subject.Reply(
@@ -2222,8 +2095,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         return;
                     }
 
-                    ItemDetails =
-                        Subject.Items.FirstOrDefault(details => details.Item.DisplayName.EqualsI(itemName));
+                    ItemDetails = Subject.Items.FirstOrDefault(details => details.Item.DisplayName.EqualsI(itemName));
 
                     if (ItemDetails == null)
                     {
@@ -2730,7 +2602,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                        case "stonefist":
+                    case "stonefist":
                     {
                         Subject.Reply(
                             source,
@@ -2874,10 +2746,7 @@ public class RecipeLibraryScript : DialogScriptBase
                     default:
                     {
                         // Handle cases where the provided recipe key doesn't match any known recipe
-                        Subject.Reply(
-                            source,
-                            "Recipe not found, please notify a gm.",
-                            "weaponsmithingbook");
+                        Subject.Reply(source, "Recipe not found, please notify a gm.", "weaponsmithingbook");
 
                         return;
                     }
@@ -2898,8 +2767,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         return;
                     }
 
-                    ItemDetails =
-                        Subject.Items.FirstOrDefault(details => details.Item.DisplayName.EqualsI(itemName));
+                    ItemDetails = Subject.Items.FirstOrDefault(details => details.Item.DisplayName.EqualsI(itemName));
 
                     if (ItemDetails == null)
                     {
@@ -3457,13 +3325,13 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "refiningkit":
                     {
                         Subject.Reply(
                             source,
                             $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
-                            } requires new silk and stuff.",
+                            } requires 25 Exquisite Hemp and 1 Strange Stone.",
                             "armorsmithingbook");
 
                         return;
@@ -3511,7 +3379,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "leatherberylgauntlet":
                     {
                         Subject.Reply(
@@ -3522,7 +3390,6 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
 
                     case "bronzesapphiregauntlet":
                     {
@@ -3567,7 +3434,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "bronzeberylgauntlet":
                     {
                         Subject.Reply(
@@ -3578,7 +3445,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "ironsapphiregauntlet":
                     {
                         Subject.Reply(
@@ -3622,7 +3489,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "ironberylgauntlet":
                     {
                         Subject.Reply(
@@ -3677,7 +3544,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "mythrilberylgauntlet":
                     {
                         Subject.Reply(
@@ -3732,7 +3599,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "hybrasylberylgauntlet":
                     {
                         Subject.Reply(
@@ -3793,7 +3660,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "firebronzebelt":
                     {
                         Subject.Reply(
@@ -3804,7 +3671,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "seabronzebelt":
                     {
                         Subject.Reply(
@@ -3815,7 +3682,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "earthbronzebelt":
                     {
                         Subject.Reply(
@@ -3826,7 +3693,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "windbronzebelt":
                     {
                         Subject.Reply(
@@ -3837,7 +3704,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "darkbronzebelt":
                     {
                         Subject.Reply(
@@ -3848,7 +3715,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "lightbronzebelt":
                     {
                         Subject.Reply(
@@ -3859,7 +3726,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "fireironbelt":
                     {
                         Subject.Reply(
@@ -3870,7 +3737,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "seaironbelt":
                     {
                         Subject.Reply(
@@ -3881,7 +3748,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "earthironbelt":
                     {
                         Subject.Reply(
@@ -3892,7 +3759,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "windironbelt":
                     {
                         Subject.Reply(
@@ -3903,7 +3770,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "darkironbelt":
                     {
                         Subject.Reply(
@@ -3914,7 +3781,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "lightironbelt":
                     {
                         Subject.Reply(
@@ -3925,7 +3792,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "firemythrilbraidbelt":
                     {
                         Subject.Reply(
@@ -3936,7 +3803,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "seamythrilbraidbelt":
                     {
                         Subject.Reply(
@@ -3947,7 +3814,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "earthmythrilbraidbelt":
                     {
                         Subject.Reply(
@@ -3958,7 +3825,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "windmythrilbraidbelt":
                     {
                         Subject.Reply(
@@ -3969,7 +3836,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "darkmythrilbraidbelt":
                     {
                         Subject.Reply(
@@ -3980,7 +3847,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "lightmythrilbraidbelt":
                     {
                         Subject.Reply(
@@ -3991,7 +3858,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "firehybrasylbraidbelt":
                     {
                         Subject.Reply(
@@ -4002,7 +3869,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "seahybrasylbraidbelt":
                     {
                         Subject.Reply(
@@ -4013,7 +3880,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "earthhybrasylbraidbelt":
                     {
                         Subject.Reply(
@@ -4024,7 +3891,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "windhybrasylbraidbelt":
                     {
                         Subject.Reply(
@@ -4035,7 +3902,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "darkhybrasylbraidbelt":
                     {
                         Subject.Reply(
@@ -4046,7 +3913,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "lighthybrasylbraidbelt":
                     {
                         Subject.Reply(
@@ -4057,7 +3924,7 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
+
                     case "leathergauntlet":
                     {
                         Subject.Reply(
@@ -4068,7 +3935,6 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
-                    
                 }
 
                 break;

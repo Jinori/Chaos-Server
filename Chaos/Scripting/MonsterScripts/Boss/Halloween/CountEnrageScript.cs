@@ -55,8 +55,8 @@ public sealed class CountEnrageScript : MonsterScriptBase
             false);
 
         SpellTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(10),
-            50,
+            TimeSpan.FromSeconds(6),
+            20,
             RandomizationType.Balanced,
             false);
     }
@@ -67,7 +67,7 @@ public sealed class CountEnrageScript : MonsterScriptBase
 
         var randomAisling = Subject.MapInstance
                                    .GetEntities<Aisling>()
-                                   .Where(x => x.IsAlive && !x.IsGodModeEnabled())
+                                   .Where(x => x.MapInstance.IsWithinMap(Subject))
                                    .ToList();
 
         if (randomAisling.Count == 0)
@@ -75,14 +75,14 @@ public sealed class CountEnrageScript : MonsterScriptBase
 
         var pickedAisling = randomAisling.PickRandom();
 
-        if (random < 33)
+        if (random < 20)
         {
             Subject.TryUseSpell(SpellToCast, pickedAisling.Id);
 
             return;
         }
 
-        if (random < 66)
+        if (random < 70)
             foreach (var player in randomAisling)
             {
                 Subject.TryUseSpell(SpellToCast2, player.Id);

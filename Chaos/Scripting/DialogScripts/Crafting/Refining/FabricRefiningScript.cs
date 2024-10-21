@@ -16,7 +16,7 @@ public class FabricRefiningScript(Dialog subject, IItemFactory itemFactory, IDia
     protected override double SuccessRateMax => 90;
 
     private readonly string[] FabricTemplateKeys =
-        ["linen", "finelinen", "cotton", "finecotton", "wool", "finewool", "silk", "finesilk", "hemp", "finehemp", "exquisitehemp"];
+        ["linen", "finelinen", "cotton", "finecotton", "wool", "finewool", "silk", "finesilk", "hemp", "finehemp"];
 
     protected override Dictionary<string, string> UpgradeMappings { get; } = new(StringComparer.OrdinalIgnoreCase)
     {

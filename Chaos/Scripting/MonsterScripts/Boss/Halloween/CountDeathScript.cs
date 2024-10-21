@@ -110,10 +110,7 @@ public class CountDeathScript(Monster subject) : MonsterScriptBase(subject)
             return;
 
         foreach (var aisling in playersOnEventMap)
-        {
             ExperienceDistributionScript.GiveExp(aisling, Subject.Experience);
-            aisling.SendOrangeBarMessage($"You received {Subject.Experience} experience from {Subject.Name}");
-        }
 
         Subject.Items.Clear();
         Subject.Items.AddRange(Subject.LootTable.GenerateLoot());

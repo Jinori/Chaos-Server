@@ -53,8 +53,8 @@ public sealed class CountessEnrageScript : MonsterScriptBase
             false);
 
         SpellTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(10),
-            50,
+            TimeSpan.FromSeconds(6),
+            20,
             RandomizationType.Balanced,
             false);
     }
@@ -65,7 +65,7 @@ public sealed class CountessEnrageScript : MonsterScriptBase
 
         var randomAisling = Subject.MapInstance
                                    .GetEntities<Aisling>()
-                                   .Where(x => x.IsAlive && !x.IsGodModeEnabled())
+                                   .Where(x => x.MapInstance.IsWithinMap(Subject))
                                    .ToList();
 
         if (randomAisling.Count == 0)
@@ -88,9 +88,7 @@ public sealed class CountessEnrageScript : MonsterScriptBase
         }
 
         if (random < 100)
-        {
             Subject.TryUseSpell(SpellToCast3, pickedAisling.Id);
-        }
     }
 
     private void RegenerateFromDolls()

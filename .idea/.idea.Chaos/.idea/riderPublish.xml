@@ -4,6 +4,7 @@
     <option name="locations">
       <list>
         <option value="$PROJECT_DIR$/Chaos/bin/Publish" />
+        <option value="$PROJECT_DIR$/Chaos/bin/Release/net8.0/win-x64/publish" />
       </list>
     </option>
   </component>
