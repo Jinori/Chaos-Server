@@ -83,20 +83,15 @@ public sealed class CountEnrageScript : MonsterScriptBase
         }
 
         if (random < 66)
-        {
             foreach (var player in randomAisling)
             {
-                Subject.TryUseSpell(SpellToCast, player.Id);
+                Subject.TryUseSpell(SpellToCast2, player.Id);
 
                 return;
-            }   
-        }
+            }
 
         if (random < 101)
-        {
             Subject.TryUseSpell(SpellToCast3, pickedAisling.Id);
-            return;
-        }
     }
 
     private void RegenerateFromBats()

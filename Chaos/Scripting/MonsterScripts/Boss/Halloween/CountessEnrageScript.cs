@@ -74,22 +74,22 @@ public sealed class CountessEnrageScript : MonsterScriptBase
         var pickedAisling = randomAisling.PickRandom();
 
         if (random < 33)
-        { 
+        {
             Subject.TryUseSpell(SpellToCast, pickedAisling.Id);
+
             return;
         }
-        
+
         if (random < 66)
         {
             Subject.TryUseSpell(SpellToCast2, pickedAisling.Id);
+
             return;
         }
-        
+
         if (random < 100)
         {
             Subject.TryUseSpell(SpellToCast3, pickedAisling.Id);
-
-            return;
         }
     }
 
@@ -152,9 +152,7 @@ public sealed class CountessEnrageScript : MonsterScriptBase
                         continue;
 
                     var mobs = MonsterFactory.Create("countess_doll", Subject.MapInstance, point);
-
-                    if (mobs != null) // Ensure mobs is not null
-                        Subject.MapInstance.AddEntity(mobs, point);
+                    Subject.MapInstance.AddEntity(mobs, point);
 
                     return;
                 }

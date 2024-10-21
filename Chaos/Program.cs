@@ -33,6 +33,7 @@ using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Extensions.Logging;
 using AppContext = Chaos.AppContext;
+using Attributes = Chaos.Models.Data.Attributes;
 
 var encodingProvider = CodePagesEncodingProvider.Instance;
 Encoding.RegisterProvider(encodingProvider);
@@ -456,5 +457,30 @@ static void RegisterStructuredLoggingTransformations()
                                  Subject = obj.Subject,
                                  Message = obj.Message,
                                  Creation = obj.CreationDate
+                             });
+
+                         builder.RegisterObjectTransformation<Attributes>(
+                             obj => new
+                             {
+                                 MaximumHp = obj.MaximumHp,
+                                 MaximumMp = obj.MaximumMp,
+                                 Ac = obj.Ac,
+                                 Str = obj.Str,
+                                 Con = obj.Con,
+                                 Int = obj.Int,
+                                 Wis = obj.Wis,
+                                 Dex = obj.Dex,
+                                 SpellDmgPct = obj.SpellDamagePct,
+                                 SkillDmgPct = obj.SkillDamagePct,
+                                 FlatSpellDamage = obj.FlatSpellDamage,
+                                 FlatSkillDamage = obj.FlatSkillDamage,
+                                 AtkSpeedPct = obj.AtkSpeedPct,
+                                 MagicResist = obj.MagicResistance,
+                                 Hit = obj.Hit,
+                                 Dmg = obj.Dmg,
+                                 CooldownReductionPct = obj.CooldownReductionPct,
+                                 CooldownReductionMs = obj.CooldownReductionMs,
+                                 HealBonus = obj.HealthBonus,
+                                 HealBonusPct = obj.HealthBonusPct
                              });
                      });

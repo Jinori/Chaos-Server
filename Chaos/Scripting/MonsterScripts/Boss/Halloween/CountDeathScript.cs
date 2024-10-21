@@ -23,7 +23,6 @@ public class CountDeathScript(Monster subject) : MonsterScriptBase(subject)
         {
             case Group.GroupLootOption.Default:
                 HandleLootDrop(rewardTargets, true);
-                ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
 
                 break;
 
@@ -34,26 +33,16 @@ public class CountDeathScript(Monster subject) : MonsterScriptBase(subject)
                 // Ensure only members on the same map as the Subject receive gold
                 rewardTarget.Group.DistributeEvenGold(Subject.Gold, Subject);
 
-                // Distribute experience only to members on the same map as the monster
-                ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
-
                 break;
 
             case Group.GroupLootOption.MasterLooter:
                 HandleLootDrop(rewardTargets, lockToLeader: rewardTarget.Group.Leader);
-                ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
 
                 break;
         }
     }
 
-    private void DropLootAndExperience(Aisling[]? rewardTargets)
-    {
-        HandleLootDrop(rewardTargets, rewardTargets != null);
-
-        if (rewardTargets != null)
-            ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
-    }
+    private void DropLootAndExperience(Aisling[]? rewardTargets) => HandleLootDrop(rewardTargets, rewardTargets != null);
 
     private Aisling? GetHighestContributor()
         => Subject.Contribution
@@ -120,19 +109,15 @@ public class CountDeathScript(Monster subject) : MonsterScriptBase(subject)
         if (!playersOnEventMap.Any())
             return;
 
-        // Calculate experience to give to each player (25% of full)
-        var experienceToGive = Convert.ToInt32(Subject.Experience * 0.25);
-
         foreach (var aisling in playersOnEventMap)
         {
-            // Distribute 25% of the Subject's experience to all players
-            ExperienceDistributionScript.GiveExp(aisling, experienceToGive);
-            aisling.SendOrangeBarMessage($"You received {experienceToGive} experience from {Subject.Name}");
+            ExperienceDistributionScript.GiveExp(aisling, Subject.Experience);
+            aisling.SendOrangeBarMessage($"You received {Subject.Experience} experience from {Subject.Name}");
         }
 
         Subject.Items.Clear();
         Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
-        
+
         // Now randomly assign loot from the regenerated loot table
         foreach (var item in Subject.Items)
         {
