@@ -71,16 +71,16 @@ public struct HealAbilityComponent : IComponent
             return finalHeal;
         }
 
-        if (source.StatSheet.EffectiveHealthBonusPct > 0)
+        if (source.StatSheet.EffectiveHealBonusPct > 0)
         {
-            var healthbonuspct = source.StatSheet.EffectiveHealthBonusPct / 100m;
-            var healthbonus = finalHeal * healthbonuspct;
-            finalHeal += (int)healthbonus;
+            var healbonuspct = source.StatSheet.EffectiveHealBonusPct / 100m;
+            var healbonus = finalHeal * healbonuspct;
+            finalHeal += (int)healbonus;
         }
 
-        if (source.StatSheet.EffectiveHealthBonus > 0)
+        if (source.StatSheet.EffectiveHealBonus > 0)
         {
-            finalHeal += source.StatSheet.EffectiveHealthBonus;
+            finalHeal += source.StatSheet.EffectiveHealBonus;
         }
 
         finalHeal += Convert.ToInt32(source.StatSheet.GetEffectiveStat(healStat.Value) * healStatMultiplier.Value);

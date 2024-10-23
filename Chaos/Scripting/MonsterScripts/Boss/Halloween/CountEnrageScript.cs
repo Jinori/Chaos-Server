@@ -2,7 +2,6 @@ using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
-using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
@@ -25,12 +24,6 @@ public sealed class CountEnrageScript : MonsterScriptBase
     private readonly Spell SpellToCast2;
     private readonly Spell SpellToCast3;
 
-    private Animation UpgradeAnimation { get; } = new()
-    {
-        AnimationSpeed = 100,
-        TargetAnimation = 189
-    };
-
     /// <inheritdoc />
     public CountEnrageScript(
         Monster subject,
@@ -49,13 +42,13 @@ public sealed class CountEnrageScript : MonsterScriptBase
         InvulnerableTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
 
         RandomAbilityTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(45),
+            TimeSpan.FromSeconds(80),
             20,
             RandomizationType.Balanced,
             false);
 
         SpellTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(6),
+            TimeSpan.FromSeconds(8),
             20,
             RandomizationType.Balanced,
             false);
@@ -83,12 +76,12 @@ public sealed class CountEnrageScript : MonsterScriptBase
         }
 
         if (random < 70)
+        {
             foreach (var player in randomAisling)
-            {
                 Subject.TryUseSpell(SpellToCast2, player.Id);
 
-                return;
-            }
+            return;
+        }
 
         if (random < 101)
             Subject.TryUseSpell(SpellToCast3, pickedAisling.Id);
@@ -159,23 +152,23 @@ public sealed class CountEnrageScript : MonsterScriptBase
                                       .GetEntities<Monster>()
                                       .Count(x => x.Name == "Macabre Bat");
 
-                if (batCount > 5)
+                if (batCount > 2)
                     return;
 
                 Subject.Say("There can never be enough bats!");
 
                 var rectangle = new Rectangle(Subject, 12, 12);
 
-                for (var i = 0; i <= 7; i++)
-                {
-                    if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
-                        continue;
+                var mobsSpawned = batCount;
 
-                    var mobs = MonsterFactory.Create("count_bat", Subject.MapInstance, point);
-                    Subject.MapInstance.AddEntity(mobs, point);
-
-                    return;
-                }
+                // Continue spawning until 5 mobs are spawned
+                while (mobsSpawned < 5)
+                    if (rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                    {
+                        var mob = MonsterFactory.Create("count_bat", Subject.MapInstance, point);
+                        Subject.MapInstance.AddEntity(mob, point);
+                        mobsSpawned++; // Increment count when a mob is successfully spawned
+                    }
             }
 
             if (random < 101)

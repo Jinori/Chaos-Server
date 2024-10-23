@@ -139,16 +139,16 @@ public record StatSheet : Attributes
         init => _cooldownReductionMsMod = value;
     }
 
-    public int HealthBonusPctMod
+    public int HealBonusPctMod
     {
-        get => _healthBonusPctMod;
-        init => _healthBonusPctMod = value;
+        get => _healBonusPctMod;
+        init => _healBonusPctMod = value;
     }
     
-    public int HealthBonusMod
+    public int HealBonusMod
     {
-        get => _healthBonusMod;
-        init => _healthBonusMod = value;
+        get => _healBonusMod;
+        init => _healBonusMod = value;
     }
 
     public int StrMod
@@ -193,11 +193,11 @@ public record StatSheet : Attributes
     
     public int EffectiveCooldownReductionPct => CooldownReductionPct + CooldownReductionPctMod;
 
-    public int EffectiveHealthBonusPct => HealthBonusPct + HealthBonusPctMod;
+    public int EffectiveHealBonusPct => HealBonusPct + HealBonusPctMod;
     
     public int EffectiveCooldownReductionMs => CooldownReductionMs + CooldownReductionMsMod;
 
-    public int EffectiveHealthBonus => HealthBonus + HealthBonusMod;
+    public int EffectiveHealBonus => HealBonus + HealBonusMod;
 
     public byte EffectiveStr => (byte)Math.Clamp(Str + StrMod, byte.MinValue, byte.MaxValue);
 
@@ -243,9 +243,9 @@ public record StatSheet : Attributes
         Interlocked.Add(ref _skillDamagePctMod, other.SkillDamagePct);
         Interlocked.Add(ref _spellDamagePctMod, other.SpellDamagePct);
         Interlocked.Add(ref _cooldownReductionPctMod, other.CooldownReductionPct);
-        Interlocked.Add(ref _healthBonusPctMod, other.HealthBonusPct);
+        Interlocked.Add(ref _healBonusPctMod, other.HealBonusPct);
         Interlocked.Add(ref _cooldownReductionMsMod, other.CooldownReductionMs);
-        Interlocked.Add(ref _healthBonusMod, other.HealthBonus);
+        Interlocked.Add(ref _healBonusMod, other.HealBonus);
     }
 
     public void AddHealthPct(int pct) => InterlockedEx.SetValue(ref _currentHp, () => (int)Math.Clamp(EffectiveMaximumHp * (pct + HealthPercent) / 100m, 0, EffectiveMaximumHp));
@@ -331,9 +331,9 @@ public record StatSheet : Attributes
         Interlocked.Add(ref _skillDamagePctMod, -other.SkillDamagePct);
         Interlocked.Add(ref _spellDamagePctMod, -other.SpellDamagePct);
         Interlocked.Add(ref _cooldownReductionPctMod, -other.CooldownReductionPct);
-        Interlocked.Add(ref _healthBonusPctMod, -other.HealthBonusPct);
+        Interlocked.Add(ref _healBonusPctMod, -other.HealBonusPct);
         Interlocked.Add(ref _cooldownReductionMsMod, -other.CooldownReductionMs);
-        Interlocked.Add(ref _healthBonusMod, -other.HealthBonus);
+        Interlocked.Add(ref _healBonusMod, -other.HealBonus);
     }
 
     public void SubtractHealthPct(decimal pct)
@@ -446,8 +446,8 @@ public record StatSheet : Attributes
     protected int _spellDamagePctMod;
     protected int _skillDamagePctMod;
     protected int _cooldownReductionPctMod;
-    protected int _healthBonusPctMod;
+    protected int _healBonusPctMod;
     protected int _cooldownReductionMsMod;
-    protected int _healthBonusMod;
+    protected int _healBonusMod;
     #endregion
 }

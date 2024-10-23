@@ -2,7 +2,6 @@ using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
-using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
@@ -24,12 +23,6 @@ public sealed class CountessEnrageScript : MonsterScriptBase
     private readonly Spell SpellToCast2;
     private readonly Spell SpellToCast3;
 
-    private Animation UpgradeAnimation { get; } = new()
-    {
-        AnimationSpeed = 100,
-        TargetAnimation = 189
-    };
-
     /// <inheritdoc />
     public CountessEnrageScript(
         Monster subject,
@@ -47,13 +40,13 @@ public sealed class CountessEnrageScript : MonsterScriptBase
         RegenerateTimer = new IntervalTimer(TimeSpan.FromSeconds(6), false);
 
         RandomAbilityTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(45),
+            TimeSpan.FromSeconds(80),
             20,
             RandomizationType.Balanced,
             false);
 
         SpellTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(6),
+            TimeSpan.FromSeconds(8),
             20,
             RandomizationType.Balanced,
             false);
@@ -137,23 +130,23 @@ public sealed class CountessEnrageScript : MonsterScriptBase
                                        .GetEntities<Monster>()
                                        .Count(x => x.Name == "Macabre Doll");
 
-                if (dollCount > 4)
+                if (dollCount > 2)
                     return;
 
                 Subject.Say("Dolls! Come play...");
 
                 var rectangle = new Rectangle(Subject, 12, 12);
 
-                for (var i = 0; i <= 5; i++)
-                {
-                    if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
-                        continue;
+                var mobsSpawned = dollCount;
 
-                    var mobs = MonsterFactory.Create("countess_doll", Subject.MapInstance, point);
-                    Subject.MapInstance.AddEntity(mobs, point);
-
-                    return;
-                }
+                // Continue spawning until 5 mobs are spawned
+                while (mobsSpawned < 5)
+                    if (rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                    {
+                        var mob = MonsterFactory.Create("countess_doll", Subject.MapInstance, point);
+                        Subject.MapInstance.AddEntity(mob, point);
+                        mobsSpawned++; // Increment count when a mob is successfully spawned
+                    }
             }
 
             if (random < 100)

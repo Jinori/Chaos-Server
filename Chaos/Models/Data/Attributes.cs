@@ -16,9 +16,9 @@ public record Attributes : Stats
     protected int _skillDamagePct;
     protected int _spellDamagePct;
     protected int _cooldownReductionPct;
-    protected int _healthBonusPct;
+    protected int _healBonusPct;
     protected int _cooldownReductionMs;
-    protected int _healthBonus;
+    protected int _healBonus;
 
     public int Ac
     {
@@ -92,10 +92,10 @@ public record Attributes : Stats
         init => _cooldownReductionPct = value;
     }
     
-    public int HealthBonusPct
+    public int HealBonusPct
     {
-        get => _healthBonusPct;
-        init => _healthBonusPct = value;
+        get => _healBonusPct;
+        init => _healBonusPct = value;
     }
     
     public int CooldownReductionMs
@@ -104,10 +104,10 @@ public record Attributes : Stats
         init => _cooldownReductionMs = value;
     }
     
-    public int HealthBonus
+    public int HealBonus
     {
-        get => _healthBonus;
-        init => _healthBonus = value;
+        get => _healBonus;
+        init => _healBonus = value;
     }
     public virtual void Add(Attributes other)
     {
@@ -128,9 +128,9 @@ public record Attributes : Stats
         Interlocked.Add(ref _flatSkillDamage, other.FlatSkillDamage);
         Interlocked.Add(ref _flatSpellDamage, other.FlatSpellDamage);
         Interlocked.Add(ref _cooldownReductionPct, other.CooldownReductionPct);
-        Interlocked.Add(ref _healthBonusPct, other.HealthBonusPct);
+        Interlocked.Add(ref _healBonusPct, other.HealBonusPct);
         Interlocked.Add(ref _cooldownReductionMs, other.CooldownReductionMs);
-        Interlocked.Add(ref _healthBonus, other.HealthBonus);
+        Interlocked.Add(ref _healBonus, other.HealBonus);
     }
 
     public virtual void Subtract(Attributes other)
@@ -152,8 +152,8 @@ public record Attributes : Stats
         Interlocked.Add(ref _flatSkillDamage, -other.FlatSkillDamage);
         Interlocked.Add(ref _flatSpellDamage, -other.FlatSpellDamage);
         Interlocked.Add(ref _cooldownReductionPct, other.CooldownReductionPct);
-        Interlocked.Add(ref _healthBonusPct, other.HealthBonusPct);
+        Interlocked.Add(ref _healBonusPct, other.HealBonusPct);
         Interlocked.Add(ref _cooldownReductionMs, other.CooldownReductionMs);
-        Interlocked.Add(ref _healthBonus, other.HealthBonus);
+        Interlocked.Add(ref _healBonus, other.HealBonus);
     }
 }

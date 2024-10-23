@@ -480,7 +480,7 @@ static void RegisterStructuredLoggingTransformations()
                                  Dmg = obj.Dmg,
                                  CooldownReductionPct = obj.CooldownReductionPct,
                                  CooldownReductionMs = obj.CooldownReductionMs,
-                                 HealBonus = obj.HealthBonus,
-                                 HealBonusPct = obj.HealthBonusPct
+                                 HealBonus = obj.HealBonus,
+                                 HealBonusPct = obj.HealBonusPct
                              });
                      });
