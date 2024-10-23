@@ -169,6 +169,8 @@ public sealed class CountEnrageScript : MonsterScriptBase
                         Subject.MapInstance.AddEntity(mob, point);
                         mobsSpawned++; // Increment count when a mob is successfully spawned
                     }
+
+                return;
             }
 
             if (random < 101)

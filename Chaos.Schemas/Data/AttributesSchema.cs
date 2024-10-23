@@ -8,19 +8,19 @@ public record AttributesSchema : StatsSchema
 {
     public int Ac { get; set; }
     public int AtkSpeedPct { get; set; }
+
+    public int CooldownReduction { get; set; }
+
+    public int CooldownReductionPct { get; set; }
     public int Dmg { get; set; }
     public int FlatSkillDamage { get; set; }
     public int FlatSpellDamage { get; set; }
+    public int HealBonus { get; set; }
+    public int HealBonusPct { get; set; }
     public int Hit { get; set; }
     public int MagicResistance { get; set; }
     public int MaximumHp { get; set; }
     public int MaximumMp { get; set; }
     public int SkillDamagePct { get; set; }
     public int SpellDamagePct { get; set; }
-    
-    public int CooldownReductionPct { get; set; }
-    public int HealBonusPct { get; set; }
-    
-    public int CooldownReductionMs { get; set; }
-    public int HealBonus { get; set; }
 }

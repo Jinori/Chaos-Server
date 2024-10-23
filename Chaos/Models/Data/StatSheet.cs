@@ -31,6 +31,18 @@ public record StatSheet : Attributes
         init => _conMod = value;
     }
 
+    public int CooldownReductionMod
+    {
+        get => _cooldownReductionMod;
+        init => _cooldownReductionMod = value;
+    }
+
+    public int CooldownReductionPctMod
+    {
+        get => _cooldownReductionPctMod;
+        init => _cooldownReductionPctMod = value;
+    }
+
     public int CurrentHp
     {
         get => _currentHp;
@@ -71,6 +83,18 @@ public record StatSheet : Attributes
     {
         get => _flatSpellDamageMod;
         init => _flatSpellDamageMod = value;
+    }
+
+    public int HealBonusMod
+    {
+        get => _healBonusMod;
+        init => _healBonusMod = value;
+    }
+
+    public int HealBonusPctMod
+    {
+        get => _healBonusPctMod;
+        init => _healBonusPctMod = value;
     }
 
     public int HitMod
@@ -114,7 +138,7 @@ public record StatSheet : Attributes
         get => _offenseElement;
         init => _offenseElement = value;
     }
-    
+
     public int SkillDamagePctMod
     {
         get => _skillDamagePctMod;
@@ -125,30 +149,6 @@ public record StatSheet : Attributes
     {
         get => _spellDamagePctMod;
         init => _spellDamagePctMod = value;
-    }
-    
-    public int CooldownReductionPctMod
-    {
-        get => _cooldownReductionPctMod;
-        init => _cooldownReductionPctMod = value;
-    }
-    
-    public int CooldownReductionMsMod
-    {
-        get => _cooldownReductionMsMod;
-        init => _cooldownReductionMsMod = value;
-    }
-
-    public int HealBonusPctMod
-    {
-        get => _healBonusPctMod;
-        init => _healBonusPctMod = value;
-    }
-    
-    public int HealBonusMod
-    {
-        get => _healBonusMod;
-        init => _healBonusMod = value;
     }
 
     public int StrMod
@@ -169,6 +169,10 @@ public record StatSheet : Attributes
 
     public byte EffectiveCon => (byte)Math.Clamp(Con + ConMod, byte.MinValue, byte.MaxValue);
 
+    public int EffectiveCooldownReduction => CooldownReduction + CooldownReductionMod;
+
+    public int EffectiveCooldownReductionPct => CooldownReductionPct + CooldownReductionPctMod;
+
     public byte EffectiveDex => (byte)Math.Clamp(Dex + DexMod, byte.MinValue, byte.MaxValue);
 
     public byte EffectiveDmg => (byte)Math.Clamp(Dmg + DmgMod, byte.MinValue, byte.MaxValue);
@@ -176,6 +180,10 @@ public record StatSheet : Attributes
     public int EffectiveFlatSkillDamage => FlatSkillDamage + FlatSkillDamageMod;
 
     public int EffectiveFlatSpellDamage => FlatSpellDamage + FlatSpellDamageMod;
+
+    public int EffectiveHealBonus => HealBonus + HealBonusMod;
+
+    public int EffectiveHealBonusPct => HealBonusPct + HealBonusPctMod;
 
     public byte EffectiveHit => (byte)Math.Clamp(Hit + HitMod, byte.MinValue, byte.MaxValue);
 
@@ -190,14 +198,6 @@ public record StatSheet : Attributes
     public int EffectiveSkillDamagePct => SkillDamagePct + SkillDamagePctMod;
 
     public int EffectiveSpellDamagePct => SpellDamagePct + SpellDamagePctMod;
-    
-    public int EffectiveCooldownReductionPct => CooldownReductionPct + CooldownReductionPctMod;
-
-    public int EffectiveHealBonusPct => HealBonusPct + HealBonusPctMod;
-    
-    public int EffectiveCooldownReductionMs => CooldownReductionMs + CooldownReductionMsMod;
-
-    public int EffectiveHealBonus => HealBonus + HealBonusMod;
 
     public byte EffectiveStr => (byte)Math.Clamp(Str + StrMod, byte.MinValue, byte.MaxValue);
 
@@ -244,18 +244,24 @@ public record StatSheet : Attributes
         Interlocked.Add(ref _spellDamagePctMod, other.SpellDamagePct);
         Interlocked.Add(ref _cooldownReductionPctMod, other.CooldownReductionPct);
         Interlocked.Add(ref _healBonusPctMod, other.HealBonusPct);
-        Interlocked.Add(ref _cooldownReductionMsMod, other.CooldownReductionMs);
+        Interlocked.Add(ref _cooldownReductionMod, other.CooldownReduction);
         Interlocked.Add(ref _healBonusMod, other.HealBonus);
     }
 
-    public void AddHealthPct(int pct) => InterlockedEx.SetValue(ref _currentHp, () => (int)Math.Clamp(EffectiveMaximumHp * (pct + HealthPercent) / 100m, 0, EffectiveMaximumHp));
+    public void AddHealthPct(int pct)
+        => InterlockedEx.SetValue(
+            ref _currentHp,
+            () => (int)Math.Clamp(EffectiveMaximumHp * (pct + HealthPercent) / 100m, 0, EffectiveMaximumHp));
 
     public void AddHp(int amount)
         => InterlockedEx.SetValue(ref _currentHp, () => (int)Math.Clamp(_currentHp + amount, 0, EffectiveMaximumHp));
 
     public void AddLevel(int amount = 1) => Interlocked.Add(ref _level, amount);
 
-    public void AddManaPct(int pct) => InterlockedEx.SetValue(ref _currentMp, () => (int)Math.Clamp(EffectiveMaximumMp * (pct + ManaPercent) / 100m, 0, EffectiveMaximumMp));
+    public void AddManaPct(int pct)
+        => InterlockedEx.SetValue(
+            ref _currentMp,
+            () => (int)Math.Clamp(EffectiveMaximumMp * (pct + ManaPercent) / 100m, 0, EffectiveMaximumMp));
 
     public void AddMp(int amount)
         => InterlockedEx.SetValue(ref _currentMp, () => (int)Math.Clamp(_currentMp + amount, 0, EffectiveMaximumMp));
@@ -332,7 +338,7 @@ public record StatSheet : Attributes
         Interlocked.Add(ref _spellDamagePctMod, -other.SpellDamagePct);
         Interlocked.Add(ref _cooldownReductionPctMod, -other.CooldownReductionPct);
         Interlocked.Add(ref _healBonusPctMod, -other.HealBonusPct);
-        Interlocked.Add(ref _cooldownReductionMsMod, -other.CooldownReductionMs);
+        Interlocked.Add(ref _cooldownReductionMod, -other.CooldownReduction);
         Interlocked.Add(ref _healBonusMod, -other.HealBonus);
     }
 
@@ -447,7 +453,7 @@ public record StatSheet : Attributes
     protected int _skillDamagePctMod;
     protected int _cooldownReductionPctMod;
     protected int _healBonusPctMod;
-    protected int _cooldownReductionMsMod;
+    protected int _cooldownReductionMod;
     protected int _healBonusMod;
     #endregion
 }

@@ -6,19 +6,19 @@ public record Attributes : Stats
 {
     protected int _ac;
     protected int _atkSpeedPct;
+    protected int _cooldownReduction;
+    protected int _cooldownReductionPct;
     protected int _dmg;
     protected int _flatSkillDamage;
     protected int _flatSpellDamage;
+    protected int _healBonus;
+    protected int _healBonusPct;
     protected int _hit;
     protected int _magicResistance;
     protected int _maximumHp;
     protected int _maximumMp;
     protected int _skillDamagePct;
     protected int _spellDamagePct;
-    protected int _cooldownReductionPct;
-    protected int _healBonusPct;
-    protected int _cooldownReductionMs;
-    protected int _healBonus;
 
     public int Ac
     {
@@ -30,6 +30,18 @@ public record Attributes : Stats
     {
         get => _atkSpeedPct;
         init => _atkSpeedPct = value;
+    }
+
+    public int CooldownReduction
+    {
+        get => _cooldownReduction;
+        init => _cooldownReduction = value;
+    }
+
+    public int CooldownReductionPct
+    {
+        get => _cooldownReductionPct;
+        init => _cooldownReductionPct = value;
     }
 
     public int Dmg
@@ -48,6 +60,18 @@ public record Attributes : Stats
     {
         get => _flatSpellDamage;
         set => _flatSpellDamage = value;
+    }
+
+    public int HealBonus
+    {
+        get => _healBonus;
+        init => _healBonus = value;
+    }
+
+    public int HealBonusPct
+    {
+        get => _healBonusPct;
+        init => _healBonusPct = value;
     }
 
     public int Hit
@@ -86,29 +110,6 @@ public record Attributes : Stats
         set => _spellDamagePct = value;
     }
 
-    public int CooldownReductionPct
-    {
-        get => _cooldownReductionPct;
-        init => _cooldownReductionPct = value;
-    }
-    
-    public int HealBonusPct
-    {
-        get => _healBonusPct;
-        init => _healBonusPct = value;
-    }
-    
-    public int CooldownReductionMs
-    {
-        get => _cooldownReductionMs;
-        init => _cooldownReductionMs = value;
-    }
-    
-    public int HealBonus
-    {
-        get => _healBonus;
-        init => _healBonus = value;
-    }
     public virtual void Add(Attributes other)
     {
         Interlocked.Add(ref _ac, other.Ac);
@@ -129,7 +130,7 @@ public record Attributes : Stats
         Interlocked.Add(ref _flatSpellDamage, other.FlatSpellDamage);
         Interlocked.Add(ref _cooldownReductionPct, other.CooldownReductionPct);
         Interlocked.Add(ref _healBonusPct, other.HealBonusPct);
-        Interlocked.Add(ref _cooldownReductionMs, other.CooldownReductionMs);
+        Interlocked.Add(ref _cooldownReduction, other.CooldownReduction);
         Interlocked.Add(ref _healBonus, other.HealBonus);
     }
 
@@ -153,7 +154,7 @@ public record Attributes : Stats
         Interlocked.Add(ref _flatSpellDamage, -other.FlatSpellDamage);
         Interlocked.Add(ref _cooldownReductionPct, other.CooldownReductionPct);
         Interlocked.Add(ref _healBonusPct, other.HealBonusPct);
-        Interlocked.Add(ref _cooldownReductionMs, other.CooldownReductionMs);
+        Interlocked.Add(ref _cooldownReduction, other.CooldownReduction);
         Interlocked.Add(ref _healBonus, other.HealBonus);
     }
 }

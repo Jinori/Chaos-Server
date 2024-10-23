@@ -147,6 +147,8 @@ public sealed class CountessEnrageScript : MonsterScriptBase
                         Subject.MapInstance.AddEntity(mob, point);
                         mobsSpawned++; // Increment count when a mob is successfully spawned
                     }
+
+                return;
             }
 
             if (random < 100)

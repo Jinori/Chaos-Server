@@ -103,8 +103,7 @@ static void AddConfiguration(WebApplicationBuilder builder)
            .AddJsonFile("appsettings.prod.json", false, true);
     #endif
 
-
-var useSeq = builder.Configuration.GetValue<bool>(ConfigKeys.Logging.UseSeq);
+    var useSeq = builder.Configuration.GetValue<bool>(ConfigKeys.Logging.UseSeq);
 
     if (useSeq)
         builder.Configuration.AddJsonFile("appsettings.seq.json", false, true);
@@ -479,7 +478,7 @@ static void RegisterStructuredLoggingTransformations()
                                  Hit = obj.Hit,
                                  Dmg = obj.Dmg,
                                  CooldownReductionPct = obj.CooldownReductionPct,
-                                 CooldownReductionMs = obj.CooldownReductionMs,
+                                 CooldownReduction = obj.CooldownReduction,
                                  HealBonus = obj.HealBonus,
                                  HealBonusPct = obj.HealBonusPct
                              });
