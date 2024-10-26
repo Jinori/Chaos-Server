@@ -42,6 +42,9 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
         if (aisling.Trackers.Enums.TryGetValue(out GainExp gainExpOption) && (gainExpOption == GainExp.No))
             return;
 
+        if (aisling.IsDead)
+            return;
+
         if (amount < 0)
         {
             var stackTrace = new StackTrace(true).ToString();

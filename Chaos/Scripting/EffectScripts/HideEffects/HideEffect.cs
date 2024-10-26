@@ -9,9 +9,6 @@ namespace Chaos.Scripting.EffectScripts.HideEffects;
 
 public sealed class HideEffect : EffectBase
 {
-    /// <inheritdoc />\
-    
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(2);
     private readonly IIntervalTimer HideTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
     private bool HasRecentlyHidden = true;
 
@@ -20,9 +17,15 @@ public sealed class HideEffect : EffectBase
         AnimationSpeed = 100,
         TargetAnimation = 994
     };
-    
+
+    /// <inheritdoc />
+    /// \
+
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(2);
+
     /// <inheritdoc />
     public override byte Icon => 8;
+
     /// <inheritdoc />
     public override string Name => "Hide";
 
@@ -46,6 +49,9 @@ public sealed class HideEffect : EffectBase
             return false;
         }
 
+        if (Subject.Effects.Contains("mount"))
+            Subject.Effects.Terminate("mount");
+
         return base.ShouldApply(source, target);
     }
 
@@ -53,7 +59,7 @@ public sealed class HideEffect : EffectBase
     public override void Update(TimeSpan delta)
     {
         base.Update(delta);
-        
+
         if (HasRecentlyHidden)
         {
             HideTimer.Update(delta);
@@ -64,9 +70,9 @@ public sealed class HideEffect : EffectBase
 
                 if (Subject.Trackers.Counters.CounterGreaterThanOrEqualTo("HideSec", 5))
                     HasRecentlyHidden = false;
-            }   
+            }
         }
-        
+
         base.Update(delta);
     }
 }

@@ -36,6 +36,9 @@ public class CooldownComponent : IComponent
             // Apply the cooldown reduction to the original cooldown value
             var reducedCooldownSecs = (subject.Cooldown.Value.TotalSeconds - flatCooldown) * (1 - reductionPct);
 
+            if (reducedCooldownSecs < 0)
+                reducedCooldownSecs = 0;
+
             // Set the new reduced cooldown (in milliseconds) for the ability
             subject.SetTemporaryCooldown(TimeSpan.FromSeconds(reducedCooldownSecs));
         }
