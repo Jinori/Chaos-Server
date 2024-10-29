@@ -10,93 +10,104 @@ using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.EffectScripts.Wizard
+namespace Chaos.Scripting.EffectScripts.Wizard;
+
+public class MorSalSplashEffect : ContinuousAnimationEffectBase
 {
-    public class MorSalSplashEffect : ContinuousAnimationEffectBase
+    /// <inheritdoc />
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(8);
+
+    private Creature SourceOfEffect { get; set; } = null!;
+
+    /// <inheritdoc />
+    protected override Animation Animation { get; } = new()
     {
-        /// <inheritdoc />
-        protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(8);
+        AnimationSpeed = 100,
+        TargetAnimation = 234
+    };
 
-        private Creature SourceOfEffect { get; set; } = null!;
+    /// <inheritdoc />
+    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(20000), false);
 
-        /// <inheritdoc />
-        protected override Animation Animation { get; } = new()
+    protected IApplyDamageScript ApplyDamageScript { get; }
+
+    protected Animation CreatureAnimation { get; } = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 58
+    };
+
+    /// <inheritdoc />
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
+
+    /// <inheritdoc />
+    public override byte Icon => 38;
+
+    /// <inheritdoc />
+    public override string Name => "MorSalSplash";
+
+    public MorSalSplashEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
+
+    public override void OnApplied()
+        => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Powerful water surrounds you.");
+
+    /// <inheritdoc />
+    protected override void OnIntervalElapsed()
+    {
+        if (Subject.MapInstance != SourceOfEffect.MapInstance)
         {
-            AnimationSpeed = 100,
-            TargetAnimation = 234
-        };
+            Subject.Effects.Terminate("MorSalSplash");
 
-        /// <inheritdoc />
-        protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(20000), false);
-
-        protected IApplyDamageScript ApplyDamageScript { get; }
-
-        protected Animation CreatureAnimation { get; } = new()
-        {
-            AnimationSpeed = 100,
-            TargetAnimation = 58
-        };
-
-        /// <inheritdoc />
-        protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
-
-        /// <inheritdoc />
-        public override byte Icon => 38;
-
-        /// <inheritdoc />
-        public override string Name => "MorSalSplash";
-
-        public MorSalSplashEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
-
-        public override void OnApplied() =>
-            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Powerful water surrounds you.");
-
-        /// <inheritdoc />
-        protected override void OnIntervalElapsed()
-        {
-            // Animate the subject of the effect
-            Subject.Animate(Animation);
-
-            // Get the points around the subject where the effect is applied
-            var points = AoeShape.AllAround.ResolvePoints(Subject);
-
-            // Retrieve and filter targets at those points
-            var targets = Subject.MapInstance.GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
-                .WithFilter(SourceOfEffect, TargetFilter.HostileOnly)
-                .Where(x => !Subject.Equals(x) && !x.MapInstance.IsWall(x))
-                .ToList();
-
-            // Apply damage to each valid target
-            foreach (var target in targets)
-            {
-                ApplyDamageScript.ApplyDamage(
-                    SourceOfEffect,
-                    target,
-                    this,
-                    (SourceOfEffect.StatSheet.Level + SourceOfEffect.StatSheet.EffectiveInt) * 5 + 100,
-                    Element.Water
-                );
-
-                // Show target health status and animate the effect
-                target.ShowHealth();
-                target.Animate(CreatureAnimation);
-            }
+            return;
         }
 
-        public override void OnTerminated() =>
-            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Splash has worn off.");
+        // Animate the subject of the effect
+        Subject.Animate(Animation);
 
-        /// <inheritdoc />
-        public override bool ShouldApply(Creature source, Creature target)
+        // Get the points around the subject where the effect is applied
+        var points = AoeShape.AllAround.ResolvePoints(Subject);
+
+        // Retrieve and filter targets at those points
+        var targets = Subject.MapInstance
+                             .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
+                             .WithFilter(SourceOfEffect, TargetFilter.HostileOnly)
+                             .Where(x => !Subject.Equals(x) && !x.MapInstance.IsWall(x))
+                             .ToList();
+
+        // Apply damage to each valid target
+        foreach (var target in targets)
         {
-            SourceOfEffect = source;
+            ApplyDamageScript.ApplyDamage(
+                SourceOfEffect,
+                target,
+                this,
+                (SourceOfEffect.StatSheet.Level + SourceOfEffect.StatSheet.EffectiveInt) * 5 + 100,
+                Element.Water);
 
-            if (target.IsFriendlyTo(source) || target.IsGodModeEnabled() || target.Effects.Contains("invulnerability"))
-                return false;
-
-            var splashEffects = new[] { "BeagSalsplash", "SalSplash", "MorSalSplash", "ArdSalSplash" };
-
-            return !splashEffects.Any(target.Effects.Contains);
+            // Show target health status and animate the effect
+            target.ShowHealth();
+            target.Animate(CreatureAnimation);
         }
+    }
+
+    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Splash has worn off.");
+
+    /// <inheritdoc />
+    public override bool ShouldApply(Creature source, Creature target)
+    {
+        SourceOfEffect = source;
+
+        if (target.IsFriendlyTo(source) || target.IsGodModeEnabled() || target.Effects.Contains("invulnerability"))
+            return false;
+
+        var splashEffects = new[]
+        {
+            "BeagSalSplash",
+            "SalSplash",
+            "MorSalSplash",
+            "ArdSalSplash"
+        };
+
+        return !splashEffects.Any(target.Effects.Contains);
     }
 }

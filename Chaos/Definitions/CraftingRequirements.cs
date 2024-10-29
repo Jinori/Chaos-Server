@@ -3830,7 +3830,7 @@ public static class CraftingRequirements
                 TemplateKey = "hybrasylbattleaxe",
                 Ingredients =
                 [
-                    new Ingredient("Talgoniteaxe", "Talgonite Axe", 1),
+                    new Ingredient("hybrasylbattleaxe", "Hy-brasyl Battle Axe", 1),
                     new Ingredient("polishedhybrasylbar", "Polished Hy-brasyl Bar", 5),
                     new Ingredient("coal", "Coal", 5)
                 ],

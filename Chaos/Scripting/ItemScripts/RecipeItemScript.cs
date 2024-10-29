@@ -294,6 +294,29 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.HybrasylShield);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.EmpowerStone);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.EnchantStone);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.ForestEscalon);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.MoonEscalon);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.ShadowEscalon);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.RubySaber);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.SapphireSaber);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.EmeraldSaber);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.StaffofAquaedon);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.StaffofZephyra);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.StaffofGeolith);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.StaffofIgnatar);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.StaffofTheselene);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.StaffofMiraelis);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.RubyTonfa);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.SapphireTonfa);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.EmeraldTonfa);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.ChainWhip);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.Kris);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.ScurvyDagger);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.TalgoniteShield);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.CursedShield);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.CaptainShield);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.CathonicShield);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.PolishingStone);
                 source.Trackers.Flags.AddFlag(EnchantingRecipes.IgnatarEnvy);
                 source.Trackers.Flags.AddFlag(EnchantingRecipes.GeolithGratitude);
                 source.Trackers.Flags.AddFlag(EnchantingRecipes.MiraelisSerenity);
@@ -1382,6 +1405,35 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
+            case "recipe_advancedweapons":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdvancedWeapons))
+                {
+                    if (craft != Crafts.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithingCategories.AdvancedWeapons,
+                        "Advanced Weapons",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.RubySaber);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.SapphireSaber);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.EmeraldSaber);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
             case "recipe_basicstaves":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicStaves))
@@ -1487,6 +1539,38 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.StoneCross);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.OakStaff);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.StaffOfWisdom);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_advancedstaves":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdvancedStaves))
+                {
+                    if (craft != Crafts.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithingCategories.AdvancedStaves,
+                        "Advanced Staves",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.StaffofZephyra);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.StaffofAquaedon);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.StaffofMiraelis);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.StaffofIgnatar);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.StaffofTheselene);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.StaffofGeolith);
 
                     return;
                 }
@@ -1607,6 +1691,35 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
+            case "recipe_advanceddaggers":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdvancedDaggers))
+                {
+                    if (craft != Crafts.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithingCategories.AdvancedDaggers,
+                        "Advanced Daggers",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.Kris);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.ScurvyDagger);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.ChainWhip);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
             case "recipe_basicclaws":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicClaws))
@@ -1717,6 +1830,35 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
+            case "recipe_advancedclaws":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdvancedClaws))
+                {
+                    if (craft != Crafts.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithingCategories.AdvancedClaws,
+                        "Advanced Claws",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.RubyTonfa);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.SapphireTonfa);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.EmeraldTonfa);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
             case "recipe_basicshields":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicShields))
@@ -1802,6 +1944,62 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
+            case "recipe_adeptshields":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdeptShields))
+                {
+                    if (craft != Crafts.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithingCategories.AdeptShields,
+                        "Adept Shields",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.TalgoniteShield);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_advancedshields":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdvancedShields))
+                {
+                    if (craft != Crafts.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithingCategories.AdvancedShields,
+                        "Advanced Shields",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.CathonicShield);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.CaptainShield);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.CursedShield);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
             case "recipe_empowerstone":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.EmpowerStone))
@@ -1849,6 +2047,33 @@ public class RecipeItemScript : ItemScriptBase
                         $"{Subject.Template.TemplateKey}");
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.EnchantStone);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_polishingstone":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.PolishingStone))
+                {
+                    if (craft != Crafts.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithingCategories.PolishingStone,
+                        "Polishing Stone",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.PolishingStone);
 
                     return;
                 }

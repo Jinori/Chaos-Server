@@ -8,10 +8,8 @@ using Chaos.Networking.Abstractions;
 namespace Chaos.Messaging.Admin;
 
 [Command("displaychar", helpText: "<targetName>")]
-
 public class DisplayCharInfoCommand : ICommand<Aisling>
 {
-
     private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
 
     public DisplayCharInfoCommand(IClientRegistry<IChaosWorldClient> clientRegistry) => ClientRegistry = clientRegistry;
@@ -21,15 +19,17 @@ public class DisplayCharInfoCommand : ICommand<Aisling>
         if (args.TryGetNext<string>(out var targetName))
         {
             var target = ClientRegistry.Select(client => client.Aisling)
-                .FirstOrDefault(aisling => aisling.Name.EqualsI(targetName));
+                                       .FirstOrDefault(aisling => aisling.Name.EqualsI(targetName));
 
             if (target == null)
             {
                 source.SendOrangeBarMessage($"{targetName} is not online.");
+
                 return default;
             }
 
-            source.Client.SendServerMessage(ServerMessageType.ScrollWindow,
+            source.Client.SendServerMessage(
+                ServerMessageType.ScrollWindow,
                 "Name: "
                 + target.Name
                 + "\nLevel: "
@@ -38,30 +38,11 @@ public class DisplayCharInfoCommand : ICommand<Aisling>
                 + target.UserStatSheet.ToNextLevel
                 + "\nTotal XP Boxed: "
                 + target.UserStatSheet.TotalExp
-                + "\nGeared Hp: "
-                + target.UserStatSheet.EffectiveMaximumHp
-                + "\nGeared Mp: "
-                + target.UserStatSheet.EffectiveMaximumMp
+                + "\n -Base Stats-\n"
                 + "\nBase Hp: "
                 + target.UserStatSheet.MaximumHp
                 + "\nBase Mp: "
                 + target.UserStatSheet.MaximumMp
-                + "\nAC: "
-                + target.UserStatSheet.Ac
-                + "\nGold: "
-                + target.Gold
-                + "\nGold Banked: "
-                + target.Bank.Gold
-                + "\nGeared Stats: "
-                + target.UserStatSheet.EffectiveStr
-                + "/"
-                + target.UserStatSheet.EffectiveInt
-                + "/"
-                + target.UserStatSheet.EffectiveWis
-                + "/"
-                + target.UserStatSheet.EffectiveCon
-                + "/"
-                + target.UserStatSheet.EffectiveDex
                 + "\nBase Stats: "
                 + target.UserStatSheet.Str
                 + "/"
@@ -76,14 +57,39 @@ public class DisplayCharInfoCommand : ICommand<Aisling>
                 + target.UserStatSheet.Hit
                 + "\nBase Dmg: "
                 + target.UserStatSheet.Dmg
+                + "\nBase MR: "
+                + target.UserStatSheet.MagicResistance
+                + "\nAC: "
+                + target.UserStatSheet.Ac
+                + "\nGold: "
+                + target.Gold
+                + "\nGold Banked: "
+                + target.Bank.Gold
+                + "\n -Geared Stats-\n"
+                + "\nGeared Hp: "
+                + target.UserStatSheet.EffectiveMaximumHp
+                + "\nGeared Mp: "
+                + target.UserStatSheet.EffectiveMaximumMp
+                + "\nGeared Stats: "
+                + target.UserStatSheet.EffectiveStr
+                + "/"
+                + target.UserStatSheet.EffectiveInt
+                + "/"
+                + target.UserStatSheet.EffectiveWis
+                + "/"
+                + target.UserStatSheet.EffectiveCon
+                + "/"
+                + target.UserStatSheet.EffectiveDex
                 + "\nGeared Hit: "
                 + target.UserStatSheet.EffectiveHit
                 + "\nGeared Dmg: "
                 + target.UserStatSheet.EffectiveDmg
-                + "\nBase MR: "
-                + target.UserStatSheet.MagicResistance
                 + "\nGeared MR: "
-                + target.UserStatSheet.EffectiveMagicResistance);
+                + target.UserStatSheet.EffectiveMagicResistance
+                + "\nEffective AC: "
+                + target.UserStatSheet.EffectiveAc
+                + "\nEffective Atk Speed: "
+                + target.UserStatSheet.EffectiveAttackSpeedPct);
 
             return default;
         }

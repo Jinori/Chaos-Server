@@ -19,7 +19,9 @@ public class QuakeEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(20);
+
     private Creature SourceOfEffect { get; set; } = null!;
+
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
@@ -29,6 +31,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
 
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(20000), false);
+
     protected IApplyDamageScript ApplyDamageScript { get; }
 
     protected Animation CreatureAnimation { get; } = new()
@@ -36,33 +39,55 @@ public class QuakeEffect : ContinuousAnimationEffectBase
         AnimationSpeed = 100,
         TargetAnimation = 55
     };
+
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
 
     /// <inheritdoc />
     public override byte Icon => 98;
+
     /// <inheritdoc />
     public override string Name => "Quake";
 
     public QuakeEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
-    public override void OnApplied() =>
-        AislingSubject?.Client.SendServerMessage(
-            ServerMessageType.OrangeBar1,
-            "A quake has started around you.");
+    public override void OnApplied()
+        => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A quake has started around you.");
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
+        if (AislingSubject == null)
+        {
+            Subject.Effects.Terminate("quake");
+
+            return;
+        }
+
+        if (Subject.MapInstance != SourceOfEffect.MapInstance)
+        {
+            Subject.Effects.Terminate("quake");
+
+            return;
+        }
+
         var points = AoeShape.AllAround.ResolvePoints(Subject);
 
-        var targets =
-            Subject.MapInstance.GetEntitiesAtPoints<Creature>(points.Cast<IPoint>()).WithFilter(Subject, TargetFilter.HostileOnly).ToList();
+        var targets = Subject.MapInstance
+                             .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
+                             .WithFilter(Subject, TargetFilter.HostileOnly)
+                             .ToList();
 
-        if ((AislingSubject?.Group == null && AislingSubject?.Name != SourceOfEffect.Name && !Subject.Script.Is<PetScript>() && !Subject.Script.Is<NightmareTeammateScript>())
-            || AislingSubject?.Group != null && !AislingSubject.Group.Contains(SourceOfEffect) && !Subject.Script.Is<PetScript>() && !Subject.Script.Is<NightmareTeammateScript>())
+        if (((AislingSubject?.Group == null)
+             && (AislingSubject?.Name != SourceOfEffect.Name)
+             && !Subject.Script.Is<PetScript>()
+             && !Subject.Script.Is<NightmareTeammateScript>())
+            || ((AislingSubject?.Group != null)
+                && !AislingSubject.Group.Contains(SourceOfEffect)
+                && !Subject.Script.Is<PetScript>()
+                && !Subject.Script.Is<NightmareTeammateScript>()))
             Subject.Effects.Terminate("Quake");
-        
+
         foreach (var target in targets)
         {
             ApplyDamageScript.ApplyDamage(
@@ -77,20 +102,18 @@ public class QuakeEffect : ContinuousAnimationEffectBase
         }
     }
 
-    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(
-        ServerMessageType.OrangeBar1,
-        "Quake has worn off.");
+    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Quake has worn off.");
 
     /// <inheritdoc />
     public override bool ShouldApply(Creature source, Creature target)
     {
         SourceOfEffect = source;
-        
+
         if (!target.IsFriendlyTo(source))
         {
             if (target.Name.Contains("Teammate") || target.Script.Is<PetScript>())
                 return true;
-            
+
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is not an ally.");
 
             return false;
