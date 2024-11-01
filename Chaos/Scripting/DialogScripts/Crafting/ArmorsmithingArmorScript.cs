@@ -384,12 +384,6 @@ public class ArmorsmithingArmorScript : DialogScriptBase
                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
             }
 
-            foreach (var recipe3 in CraftingRequirements.ArmorSmithingGearRequirements)
-            {
-                var item = ItemFactory.CreateFaux(recipe3.Value.TemplateKey);
-                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-            }
-
             foreach (var recipe2 in CraftingRequirements.ArmorSmithingArmorRequirements2)
             {
                 var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);

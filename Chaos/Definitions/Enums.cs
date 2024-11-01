@@ -928,7 +928,7 @@ public enum WeaponSmithingCategories : ulong
     AdvancedClaws = 1L << 30,
     AdvancedShields = 1L << 31,
     PolishingStone = 1L << 32,
-    AdeptShields = 1L << 33,
+    AdeptShields = 1L << 33
 }
 
 [Flags]
@@ -1004,7 +1004,7 @@ public enum WeaponSmithingRecipes2 : ulong
     ShadowEscalon = 1L << 5,
     RubySaber = 1L << 6,
     SapphireSaber = 1L << 7,
-    EmeraldSaber = 1L << 8,
+    BerylSaber = 1L << 8,
     StaffofZephyra = 1L << 9,
     StaffofAquaedon = 1L << 10,
     StaffofMiraelis = 1L << 11,
@@ -1021,7 +1021,7 @@ public enum WeaponSmithingRecipes2 : ulong
     CursedShield = 1L << 22,
     CathonicShield = 1L << 23,
     CaptainShield = 1L << 24,
-    PolishingStone = 1L << 25,
+    PolishingStone = 1L << 25
 }
 #endregion
 

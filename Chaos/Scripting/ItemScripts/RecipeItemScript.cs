@@ -1,4 +1,3 @@
-
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
@@ -10,17 +9,14 @@ namespace Chaos.Scripting.ItemScripts;
 public class RecipeItemScript : ItemScriptBase
 {
     public RecipeItemScript(Item subject)
-        : base(subject)
-    {
-    }
+        : base(subject) { }
 
     public static void AlchemyRecipeLearn(
         Aisling source,
         Animation ani,
         AlchemyRecipes recipe,
         string serverMessage,
-        string templatekey
-    )
+        string templatekey)
     {
         source.Animate(ani);
         source.Trackers.Flags.AddFlag(recipe);
@@ -33,8 +29,7 @@ public class RecipeItemScript : ItemScriptBase
         Animation ani,
         ArmorSmithCategories recipe,
         string serverMessage,
-        string templatekey
-    )
+        string templatekey)
     {
         source.Animate(ani);
         source.Trackers.Flags.AddFlag(recipe);
@@ -47,8 +42,7 @@ public class RecipeItemScript : ItemScriptBase
         Animation ani,
         CookingRecipes recipe,
         string serverMessage,
-        string templatekey
-    )
+        string templatekey)
     {
         source.Animate(ani);
         source.Trackers.Flags.AddFlag(recipe);
@@ -61,8 +55,7 @@ public class RecipeItemScript : ItemScriptBase
         Animation ani,
         EnchantingRecipes recipe,
         string serverMessage,
-        string templatekey
-    )
+        string templatekey)
     {
         source.Animate(ani);
         source.Trackers.Flags.AddFlag(recipe);
@@ -75,8 +68,7 @@ public class RecipeItemScript : ItemScriptBase
         Animation ani,
         JewelcraftingCategories recipe,
         string serverMessage,
-        string templatekey
-    )
+        string templatekey)
     {
         source.Animate(ani);
         source.Trackers.Flags.AddFlag(recipe);
@@ -97,7 +89,6 @@ public class RecipeItemScript : ItemScriptBase
         switch (Subject.Template.TemplateKey.ToLower())
         {
             #region All Mounts
-
             case "recipe_allmounts":
             {
                 source.Trackers.Flags.AddFlag(AvailableMounts.Ant);
@@ -120,11 +111,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-
             #endregion
 
             #region All Recipes
-
             case "recipe_allcrafts":
             {
                 source.Trackers.Flags.AddFlag(CookingRecipes.DinnerPlate);
@@ -299,7 +288,7 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.ShadowEscalon);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.RubySaber);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.SapphireSaber);
-                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.EmeraldSaber);
+                source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.BerylSaber);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.StaffofAquaedon);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.StaffofZephyra);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.StaffofGeolith);
@@ -508,19 +497,15 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumLightNecklace);
                 source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumDarkNecklace);
 
-
-
                 source.Animate(ani);
                 source.SendOrangeBarMessage("You've learned all recipes.");
                 source.Inventory.RemoveQuantityByTemplateKey("recipe_allcrafts", 1);
 
                 return;
             }
-
             #endregion
 
             #region Cooking Recipes
-
             case "recipe_dinnerplate":
             {
                 if (!source.Trackers.Flags.HasFlag(CookingRecipes.DinnerPlate))
@@ -701,11 +686,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-
             #endregion
 
             #region Armor Smithing Recipes
-
             case "recipe_beginnerarmors":
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BeginnerArmors))
@@ -844,6 +827,7 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedPhoenixMail);
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedWindGarb);
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedIpletMail);
+
                     return;
                 }
 
@@ -879,6 +863,7 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedHybrasylArmor);
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedMountainGarb);
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedHybrasylPlate);
+
                     return;
                 }
 
@@ -903,7 +888,7 @@ public class RecipeItemScript : ItemScriptBase
                         ArmorSmithCategories.RefiningKit,
                         "Advanced Armors",
                         $"{Subject.Template.TemplateKey}");
-                    
+
                     source.Trackers.Flags.AddFlag(CraftedArmors2.RefiningKit);
 
                     return;
@@ -1171,11 +1156,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-
             #endregion
 
             #region Weapon Smithing Recipes
-
             case "recipe_basicswords":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicSwords))
@@ -1425,7 +1408,7 @@ public class RecipeItemScript : ItemScriptBase
 
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.RubySaber);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.SapphireSaber);
-                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.EmeraldSaber);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.BerylSaber);
 
                     return;
                 }
@@ -2027,7 +2010,7 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-            
+
             case "recipe_enchantstone":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.EnchantStone))
@@ -2082,11 +2065,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-
             #endregion
 
             #region Alchemy Recipes
-
             case "recipe_hemloch":
             {
                 if (!source.Trackers.Flags.HasFlag(AlchemyRecipes.Hemloch))
@@ -2682,6 +2663,7 @@ public class RecipeItemScript : ItemScriptBase
                     if (craft != Crafts.Alchemy)
                     {
                         source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
                         return;
                     }
 
@@ -2691,10 +2673,12 @@ public class RecipeItemScript : ItemScriptBase
                         AlchemyRecipes.PotentAccuracyPotion,
                         "Potent Accuracy Potion",
                         $"{Subject.Template.TemplateKey}");
+
                     return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
+
                 return;
             }
 
@@ -2705,6 +2689,7 @@ public class RecipeItemScript : ItemScriptBase
                     if (craft != Crafts.Alchemy)
                     {
                         source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
                         return;
                     }
 
@@ -2714,10 +2699,12 @@ public class RecipeItemScript : ItemScriptBase
                         AlchemyRecipes.InvisibilityPotion,
                         "Invisibility Potion",
                         $"{Subject.Template.TemplateKey}");
+
                     return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
+
                 return;
             }
 
@@ -2728,6 +2715,7 @@ public class RecipeItemScript : ItemScriptBase
                     if (craft != Crafts.Alchemy)
                     {
                         source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
                         return;
                     }
 
@@ -2737,10 +2725,12 @@ public class RecipeItemScript : ItemScriptBase
                         AlchemyRecipes.PoisonImmunityElixir,
                         "Poison Immunity Elixir",
                         $"{Subject.Template.TemplateKey}");
+
                     return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
+
                 return;
             }
 
@@ -2751,6 +2741,7 @@ public class RecipeItemScript : ItemScriptBase
                     if (craft != Crafts.Alchemy)
                     {
                         source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
                         return;
                     }
 
@@ -2760,10 +2751,12 @@ public class RecipeItemScript : ItemScriptBase
                         AlchemyRecipes.PotionOfStrength,
                         "Potion of Strength",
                         $"{Subject.Template.TemplateKey}");
+
                     return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
+
                 return;
             }
 
@@ -2774,6 +2767,7 @@ public class RecipeItemScript : ItemScriptBase
                     if (craft != Crafts.Alchemy)
                     {
                         source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
                         return;
                     }
 
@@ -2783,10 +2777,12 @@ public class RecipeItemScript : ItemScriptBase
                         AlchemyRecipes.PotionOfIntellect,
                         "Potion of Intellect",
                         $"{Subject.Template.TemplateKey}");
+
                     return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
+
                 return;
             }
 
@@ -2797,6 +2793,7 @@ public class RecipeItemScript : ItemScriptBase
                     if (craft != Crafts.Alchemy)
                     {
                         source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
                         return;
                     }
 
@@ -2806,10 +2803,12 @@ public class RecipeItemScript : ItemScriptBase
                         AlchemyRecipes.PotionOfWisdom,
                         "Potion of Wisdom",
                         $"{Subject.Template.TemplateKey}");
+
                     return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
+
                 return;
             }
 
@@ -2820,6 +2819,7 @@ public class RecipeItemScript : ItemScriptBase
                     if (craft != Crafts.Alchemy)
                     {
                         source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
                         return;
                     }
 
@@ -2829,10 +2829,12 @@ public class RecipeItemScript : ItemScriptBase
                         AlchemyRecipes.PotionOfConstitution,
                         "Potion of Constitution",
                         $"{Subject.Template.TemplateKey}");
+
                     return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
+
                 return;
             }
 
@@ -2843,6 +2845,7 @@ public class RecipeItemScript : ItemScriptBase
                     if (craft != Crafts.Alchemy)
                     {
                         source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
                         return;
                     }
 
@@ -2852,10 +2855,12 @@ public class RecipeItemScript : ItemScriptBase
                         AlchemyRecipes.PotionOfDexterity,
                         "Potion of Dexterity",
                         $"{Subject.Template.TemplateKey}");
+
                     return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
+
                 return;
             }
 
@@ -2866,6 +2871,7 @@ public class RecipeItemScript : ItemScriptBase
                     if (craft != Crafts.Alchemy)
                     {
                         source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
                         return;
                     }
 
@@ -2875,10 +2881,12 @@ public class RecipeItemScript : ItemScriptBase
                         AlchemyRecipes.StrongStatBoostElixir,
                         "Strong Stat Boost Elixir",
                         $"{Subject.Template.TemplateKey}");
+
                     return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
+
                 return;
             }
 
@@ -2889,6 +2897,7 @@ public class RecipeItemScript : ItemScriptBase
                     if (craft != Crafts.Alchemy)
                     {
                         source.SendOrangeBarMessage("You must be an Alchemist to learn this recipe.");
+
                         return;
                     }
 
@@ -2898,17 +2907,17 @@ public class RecipeItemScript : ItemScriptBase
                         AlchemyRecipes.StrongKnowledgeElixir,
                         "Strong Knowledge Elixir",
                         $"{Subject.Template.TemplateKey}");
+
                     return;
                 }
 
                 source.SendOrangeBarMessage("You already know this recipe.");
+
                 return;
             }
-
             #endregion
 
             #region Enchanting Recipes
-
             case "recipe_ignatarenvy":
             {
                 if (!source.Trackers.Flags.HasFlag(EnchantingRecipes.IgnatarEnvy))
@@ -4214,11 +4223,9 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
-
             #endregion
 
             #region Jewelcrafting Recipes
-
             case "recipe_basicrings":
             {
                 if (!source.Trackers.Flags.HasFlag(JewelcraftingCategories.BasicRings))
@@ -4759,7 +4766,6 @@ public class RecipeItemScript : ItemScriptBase
 
                 break;
             }
-
             #endregion
         }
     }
@@ -4769,8 +4775,7 @@ public class RecipeItemScript : ItemScriptBase
         Animation ani,
         WeaponSmithingCategories category,
         string serverMessage,
-        string templatekey
-    )
+        string templatekey)
     {
         source.Animate(ani);
         source.Trackers.Flags.AddFlag(category);

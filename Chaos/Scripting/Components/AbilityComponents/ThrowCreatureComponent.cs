@@ -1,64 +1,67 @@
 using Chaos.Common.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
-using System.Collections.Generic;
-using Chaos.Extensions;
+using Chaos.Scripting.MonsterScripts.Boss;
 
-namespace Chaos.Scripting.Components.AbilityComponents
+namespace Chaos.Scripting.Components.AbilityComponents;
+
+public struct ThrowCreatureComponent : IComponent
 {
-    public struct ThrowCreatureComponent : IComponent
+    /// <inheritdoc />
+    public void Execute(ActivationContext context, ComponentVars vars)
     {
-        /// <inheritdoc />
-        public void Execute(ActivationContext context, ComponentVars vars)
+        var options = vars.GetOptions<IDamageComponentOptions>();
+        var targets = vars.GetTargets<Creature>();
+
+        var throwDirection = context.Source.Direction;
+        var throwRange = options.ThrowRange ?? 1; // Default to 1 if not specified
+
+        foreach (var target in targets)
         {
-            var options = vars.GetOptions<IDamageComponentOptions>();
-            var targets = vars.GetTargets<Creature>();
+            // Calculate the target point based on the throw direction and range relative to the target's position
+            var targetCurrentPoint = Point.From(target);
+            var targetThrowPoint = targetCurrentPoint.DirectionalOffset(throwDirection, throwRange);
 
-            var throwDirection = context.Source.Direction;
-            var throwRange = options.ThrowRange ?? 1; // Default to 1 if not specified
+            var potentialTargetPoints = targetThrowPoint.GenerateCardinalPoints()
+                                                        .WithConsistentDirectionBias(throwDirection)
+                                                        .SkipLast(1)
+                                                        .Prepend(targetThrowPoint)
+                                                        .ToList();
 
-            foreach (var target in targets)
+            if (target.Script.Is<ThisIsABossScript>())
+                continue;
+
+            if (target.StatSheet.CurrentHp < 1)
+                continue;
+
+            if (target.IsGodModeEnabled())
+                continue;
+
+            foreach (var point in potentialTargetPoints)
             {
-                // Calculate the target point based on the throw direction and range relative to the target's position
-                var targetCurrentPoint = Point.From(target);
-                var targetThrowPoint = targetCurrentPoint.DirectionalOffset(throwDirection, throwRange);
-                var potentialTargetPoints = targetThrowPoint.GenerateCardinalPoints()
-                    .WithConsistentDirectionBias(throwDirection)
-                    .SkipLast(1)
-                    .Prepend(targetThrowPoint)
-                    .ToList();
+                if (!target.IsHostileTo(context.Source))
+                    continue;
 
-                if (target.StatSheet.CurrentHp < 1)
-                    return;
+                if (context.SourceMap.IsWall(point))
+                    break;
 
-                if (target.IsGodModeEnabled())
-                    return;
-
-                foreach (var point in potentialTargetPoints)
+                if (context.SourceMap.IsWalkable(point, CreatureType.Aisling, false))
                 {
-                    if (!target.IsHostileTo(context.Source))
-                        continue;
+                    // Warp the target to the point and add it to the set of thrown targets
+                    target.WarpTo(point);
 
-                    if (context.SourceMap.IsWall(point))
-                        break;
-
-                    
-                    if (context.SourceMap.IsWalkable(point, CreatureType.Aisling, false))
-                    {
-                        // Warp the target to the point and add it to the set of thrown targets
-                        target.WarpTo(point);
-                        break;
-                    }
+                    break;
                 }
             }
         }
+    }
 
-        public interface IDamageComponentOptions
-        {
-            int? ThrowRange { get; init; }
-        }
+    public interface IDamageComponentOptions
+    {
+        int? ThrowRange { get; init; }
     }
 }

@@ -4400,6 +4400,262 @@ public static class CraftingRequirements
                 Level = 99,
                 Difficulty = 7
             }
+        },
+        {
+            WeaponSmithingRecipes2.PolishingStone, new Recipe
+            {
+                Name = "Polishing Stone",
+                TemplateKey = "polishingstone",
+                Ingredients =
+                [
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 2),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 2),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 10)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 2
+            }
+        },
+        {
+            WeaponSmithingRecipes2.EmeraldTonfa, new Recipe
+            {
+                Name = "Emerald Tonfa",
+                TemplateKey = "emeraldtonfa",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("pristineemerald", "Pristine Emerald", 25)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+        {
+            WeaponSmithingRecipes2.RubyTonfa, new Recipe
+            {
+                Name = "Ruby Tonfa",
+                TemplateKey = "rubytonfa",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("pristineruby", "Pristine Ruby", 25)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+        {
+            WeaponSmithingRecipes2.SapphireTonfa, new Recipe
+            {
+                Name = "Ruby Tonfa",
+                TemplateKey = "rubytonfa",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 25)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+        {
+            WeaponSmithingRecipes2.StaffofAquaedon, new Recipe
+            {
+                Name = "Staff of Aquaedon",
+                TemplateKey = "staffofaquaedon",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("essenceofaquaedon", "Essence of Aquaedon", 20)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+        {
+            WeaponSmithingRecipes2.StaffofMiraelis, new Recipe
+            {
+                Name = "Staff of Miraelis",
+                TemplateKey = "staffofmiraelis",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("essenceofmiraelis", "Essence of Miraelis", 20)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+        {
+            WeaponSmithingRecipes2.StaffofZephyra, new Recipe
+            {
+                Name = "Staff of Zephyra",
+                TemplateKey = "staffofzephyra",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("essenceofzephyra", "Essence of Zephyra", 20)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+        {
+            WeaponSmithingRecipes2.ChainWhip, new Recipe
+            {
+                Name = "Chain Whip",
+                TemplateKey = "chainwhip",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("eclipsepearl", "Eclipse Pearl", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+        {
+            WeaponSmithingRecipes2.Kris, new Recipe
+            {
+                Name = "Kris",
+                TemplateKey = "kris",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("radiantpearl", "Radiant Pearl", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+        {
+            WeaponSmithingRecipes2.ScurvyDagger, new Recipe
+            {
+                Name = "Scurvy Dagger",
+                TemplateKey = "scurvydagger",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 15)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+        {
+            WeaponSmithingRecipes2.RubySaber, new Recipe
+            {
+                Name = "Ruby Saber",
+                TemplateKey = "rubysaber",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("pristineruby", "Pristine Ruby", 25)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+        {
+            WeaponSmithingRecipes2.SapphireSaber, new Recipe
+            {
+                Name = "Sapphire Saber",
+                TemplateKey = "sapphiresaber",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 25)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+        {
+            WeaponSmithingRecipes2.BerylSaber, new Recipe
+            {
+                Name = "Beryl Saber",
+                TemplateKey = "berylsaber",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("pristineberyl", "Pristine Beryl", 25)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+        {
+            WeaponSmithingRecipes2.ForestEscalon, new Recipe
+            {
+                Name = "Forest Escalon",
+                TemplateKey = "forestescalon",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 15)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+        {
+            WeaponSmithingRecipes2.ShadowEscalon, new Recipe
+            {
+                Name = "Shadow Escalon",
+                TemplateKey = "shadowescalon",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("essenceoftheselene", "Essence of Theselene", 25)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
+        },
+        {
+            WeaponSmithingRecipes2.MoonEscalon, new Recipe
+            {
+                Name = "Moon Escalon",
+                TemplateKey = "moonescalon",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("eclipsepearl", "Eclipse Pearl", 1)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 7
+            }
         }
     };
     #endregion
