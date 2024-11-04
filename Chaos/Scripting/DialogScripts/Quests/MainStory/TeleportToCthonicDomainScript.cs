@@ -154,8 +154,6 @@ public class TeleportToCthonicDomainScript : DialogScriptBase
                 member.Trackers.Enums.Remove<SummonerBossFight>();
             }
 
-            member.Inventory.Remove("Cthonic Bell");
-
             var dialog = member.ActiveDialog.Get();
             dialog?.Close(member);
             member.TraverseMap(mapInstance, point);

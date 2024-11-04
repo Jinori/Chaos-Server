@@ -212,6 +212,7 @@ public class RecipeLibraryScript : DialogScriptBase
             {
                 // Checking if the Alchemy recipe is available or not.
                 if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes recipes))
+                {
                     foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
 
                         // Checking if the recipe is available or not.
@@ -224,8 +225,22 @@ public class RecipeLibraryScript : DialogScriptBase
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
 
+                    foreach (var recipe in CraftingRequirements.WeaponSmithingUpgradeRequirements)
+
+                        // Checking if the recipe is available or not.
+                        if (recipes.HasFlag(recipe.Key))
+                        {
+                            // Creating a faux item for the recipe.
+                            var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+
+                            // Adding the recipe to the subject's dialog window.
+                            Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
+                }
+
                 // Checking if the Alchemy recipe is available or not.
                 if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes2 recipes2))
+                {
                     foreach (var recipe2 in CraftingRequirements.WeaponSmithingCraftRequirements2)
 
                         // Checking if the recipe is available or not.
@@ -237,6 +252,19 @@ public class RecipeLibraryScript : DialogScriptBase
                             // Adding the recipe to the subject's dialog window.
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
+
+                    foreach (var recipe2 in CraftingRequirements.WeaponSmithingUpgradeRequirements2)
+
+                        // Checking if the recipe is available or not.
+                        if (recipes2.HasFlag(recipe2.Key))
+                        {
+                            // Creating a faux item for the recipe.
+                            var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+
+                            // Adding the recipe to the subject's dialog window.
+                            Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
+                }
 
                 break;
             }
@@ -2251,6 +2279,39 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
+                    case "forestescalon":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 15 Superior Monster Extract.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "shadowescalon":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 25 Essence of Theselene.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "moonescalon":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 1 Eclipse Pearl.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
                     case "hatchet":
                     {
                         Subject.Reply(
@@ -2361,6 +2422,39 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
+                    case "rubysaber":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 25 Pristine Ruby.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "sapphiresaber":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 25 Pristine Sapphire.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "berylsaber":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 25 Pristine Beryl.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
                     case "magusares":
                     {
                         Subject.Reply(
@@ -2456,6 +2550,72 @@ public class RecipeLibraryScript : DialogScriptBase
                             $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
                             } cannot be crafted.\nUpgrading {FauxItem.Template.Name
                             } requires 1 Staff of Wisdom, 5 Polished Hy-brasyl Bar, and 4 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "staffofaquaedon":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 20 Essence of Aquaedon.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "staffofmiraelis":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 20 Essence of Miraelis.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "staffofzephyra":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 20 Essence of Zephyra.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "staffofignatar":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 20 Essence of Ignatar.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "staffofgeolith":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 20 Essence of Geolith.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "staffoftheselene":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 20 Essence of Theselene.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
                             "weaponsmithingbook");
 
                         return;
@@ -2569,6 +2729,39 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
+                    case "chainwhip":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 1 Eclipse Pearl.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "kris":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 1 Radiant Pearl.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "scurvydagger":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 15 Superior Monster Extract.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
                     case "dullclaw":
                     {
                         Subject.Reply(
@@ -2631,6 +2824,39 @@ public class RecipeLibraryScript : DialogScriptBase
                             $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
                             } cannot be crafted.\nUpgrading {FauxItem.Template.Name
                             } requires 1 Nunchaku, 5 Polished Hy-brasyl Bar, and 4 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "sapphiretonfa":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 25 Pristine Sapphire.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "rubytonfa":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 25 Pristine Ruby.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "emeraldtonfa":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } requires 10 Polished Crimsonite Bar, 10 Polished Azurium Bar, and 25 Pristine Emerald.\nUpgrading {FauxItem.Template.Name
+                            } can only be upgraded by a Polishing Stone.",
                             "weaponsmithingbook");
 
                         return;
@@ -2723,6 +2949,50 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
+                    case "talgoniteshield":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Talgonite Shield, 5 Polished Azurium Bar, and 4 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "captainsshield":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Captain's Shield, 10 Polished Azurium Bar, and 5 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "cursedshield":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Cursed Shield, 10 Polished Crimsonite Bar, and 5 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "cathonicshield":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
+                            } requires 1 Cathonic Shield, 10 Polished Crimsonite Bar, and 5 Coal.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
                     case "enchantingstone":
                     {
                         Subject.Reply(
@@ -2739,6 +3009,16 @@ public class RecipeLibraryScript : DialogScriptBase
                             source,
                             $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
                             } requires 1 Strange Stone and 1 Eclipse Pearl. Cannot be upgraded.",
+                            "weaponsmithingbook");
+
+                        return;
+                    }
+                    case "polishingstone":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 2 Polished Crimsonite Bar, 2 Polished Azurium Bar, and 10 Exquisite Hemp. Cannot be upgraded.",
                             "weaponsmithingbook");
 
                         return;

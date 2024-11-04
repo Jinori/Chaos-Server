@@ -1274,6 +1274,35 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
+            case "recipe_advancedswords":
+            {
+                if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdvancedSwords))
+                {
+                    if (craft != Crafts.Weaponsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    WeaponSmithRecipeLearn(
+                        source,
+                        ani,
+                        WeaponSmithingCategories.AdvancedSwords,
+                        "Advanced Swords",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.ForestEscalon);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.MoonEscalon);
+                    source.Trackers.Flags.AddFlag(WeaponSmithingRecipes2.ShadowEscalon);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
             case "recipe_basicweapons":
             {
                 if (!source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicWeapons))

@@ -532,13 +532,13 @@ public static class CraftingRequirements
                 TemplateKey = "knowledgeelixirformula",
                 Ingredients =
                 [
-                    new Ingredient("ancientbone", "Ancient Bone", 1),
+                    new Ingredient("greatermonsterextract", "Greater Monster Extract", 1),
                     new Ingredient("lionfish", "Lion Fish", 1),
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
                 Rank = "Adept",
                 Level = 97,
-                Difficulty = 5
+                Difficulty = 1
             }
         },
         {
@@ -811,7 +811,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Expert",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 2
             }
         }
     };
@@ -4369,6 +4369,74 @@ public static class CraftingRequirements
         }
     };
 
+    public static Dictionary<WeaponSmithingRecipes2, Recipe> WeaponSmithingUpgradeRequirements2 { get; } = new()
+    {
+        {
+            WeaponSmithingRecipes2.TalgoniteShield, new Recipe
+            {
+                Name = "Talgonite Shield",
+                TemplateKey = "talgoniteshield",
+                Ingredients =
+                [
+                    new Ingredient("talgoniteshield", "Talgonite Shield", 1),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 5),
+                    new Ingredient("coal", "Coal", 4)
+                ],
+                Rank = "Adept",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            WeaponSmithingRecipes2.CaptainShield, new Recipe
+            {
+                Name = "Captain's Shield",
+                TemplateKey = "captainsshield",
+                Ingredients =
+                [
+                    new Ingredient("captainsshield", "Captain's Shield", 1),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("coal", "Coal", 5)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            WeaponSmithingRecipes2.CursedShield, new Recipe
+            {
+                Name = "Cursed Shield",
+                TemplateKey = "cursedshield",
+                Ingredients =
+                [
+                    new Ingredient("cursedshield", "Cursed Shield", 1),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("coal", "Coal", 5)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        },
+        {
+            WeaponSmithingRecipes2.CathonicShield, new Recipe
+            {
+                Name = "Cathonic Shield",
+                TemplateKey = "cathonicshield",
+                Ingredients =
+                [
+                    new Ingredient("cathonicshield", "Cathonic Shield", 1),
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("coal", "Coal", 5)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 5
+            }
+        }
+    };
+
     public static Dictionary<WeaponSmithingRecipes2, Recipe> WeaponSmithingCraftRequirements2 { get; } = new()
     {
         {
@@ -4383,7 +4451,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         },
         {
@@ -4398,7 +4466,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         },
         {
@@ -4430,7 +4498,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         },
         {
@@ -4446,7 +4514,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         },
         {
@@ -4462,7 +4530,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         },
         {
@@ -4478,7 +4546,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         },
         {
@@ -4494,7 +4562,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         },
         {
@@ -4510,7 +4578,55 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
+            }
+        },
+        {
+            WeaponSmithingRecipes2.StaffofIgnatar, new Recipe
+            {
+                Name = "Staff of Ignatar",
+                TemplateKey = "staffofignatar",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("essenceofignatar", "Essence of Ignatar", 20)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            WeaponSmithingRecipes2.StaffofGeolith, new Recipe
+            {
+                Name = "Staff of Geolith",
+                TemplateKey = "staffofgeolith",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("essenceofgeolith", "Essence of Geolith", 20)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            WeaponSmithingRecipes2.StaffofTheselene, new Recipe
+            {
+                Name = "Staff of Theselene",
+                TemplateKey = "staffoftheselene",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 10),
+                    new Ingredient("essenceoftheselene", "Essence of Theselene", 20)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
             }
         },
         {
@@ -4526,7 +4642,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         },
         {
@@ -4542,7 +4658,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         },
         {
@@ -4558,7 +4674,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         },
         {
@@ -4574,7 +4690,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         },
         {
@@ -4590,7 +4706,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         },
         {
@@ -4606,7 +4722,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         },
         {
@@ -4622,7 +4738,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         },
         {
@@ -4638,7 +4754,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         },
         {
@@ -4654,7 +4770,7 @@ public static class CraftingRequirements
                 ],
                 Rank = "Advanced",
                 Level = 99,
-                Difficulty = 7
+                Difficulty = 6
             }
         }
     };

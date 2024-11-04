@@ -31,10 +31,27 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
     /// <inheritdoc />
     public virtual void DistributeExperience(Creature killedCreature, params Aisling[] aislings)
     {
-        var exp = ExperienceFormula.Calculate(killedCreature, aislings);
+        var baseExp = ExperienceFormula.Calculate(killedCreature, aislings);
+        var totalBonus = 1m; // Start with 1 (no bonus)
 
+        // Apply a 5% experience bonus for "Knowledge"
+        if (HasKnowledgeEffect(aislings))
+            totalBonus += 0.05m;
+
+        // Apply a 10% experience bonus for "Strong Knowledge"
+        if (HasStrongKnowledgeEffect(aislings))
+            totalBonus += 0.10m;
+
+        // Apply an additional 5% bonus for mythic completion
+        if (HasCompletedMythic(aislings))
+            totalBonus += 0.05m;
+
+        // Calculate the final experience with bonuses applied
+        var finalExp = baseExp * totalBonus;
+
+        // Distribute the experience to each Aisling
         foreach (var aisling in aislings)
-            GiveExp(aisling, exp);
+            GiveExp(aisling, (long)finalExp);
     }
 
     public virtual void GiveExp(Aisling aisling, long amount)
@@ -123,5 +140,34 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
         aisling.Client.SendAttributes(StatUpdateType.ExpGold);
 
         return true;
+    }
+
+    private bool HasCompletedMythic(Aisling[] aislings)
+    {
+        foreach (var aisling in aislings)
+            if (aisling.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
+                return true;
+
+        return false;
+    }
+
+    private bool HasKnowledgeEffect(Aisling[] aislings)
+    {
+        // Check if any of the Aislings have the "Knowledge" effect
+        foreach (var aisling in aislings)
+            if (aisling.Effects.Contains("Knowledge"))
+                return true;
+
+        return false;
+    }
+
+    private bool HasStrongKnowledgeEffect(Aisling[] aislings)
+    {
+        // Check if any of the Aislings have the "Strong Knowledge" effect
+        foreach (var aisling in aislings)
+            if (aisling.Effects.Contains("Strong Knowledge"))
+                return true;
+
+        return false;
     }
 }

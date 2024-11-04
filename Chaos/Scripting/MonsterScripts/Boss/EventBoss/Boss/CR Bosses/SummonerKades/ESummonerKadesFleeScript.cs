@@ -22,11 +22,7 @@ public sealed class ESummonerKadesFleeScript : MonsterScriptBase
     private bool HitThirdHp;
 
     /// <inheritdoc />
-    public ESummonerKadesFleeScript(
-        Monster subject,
-        IMonsterFactory monsterFactory,
-        IEffectFactory effectFactory,
-        IIntervalTimer invulnerableTimer)
+    public ESummonerKadesFleeScript(Monster subject, IMonsterFactory monsterFactory, IEffectFactory effectFactory)
         : base(subject)
     {
         MonsterFactory = monsterFactory;
@@ -131,7 +127,7 @@ public sealed class ESummonerKadesFleeScript : MonsterScriptBase
                 // Reset invulnerability when all guardian monsters are killed
                 MakeBossVulnerable();
 
-            if (!BossVulnerable && guardiansPresent)
+            if (BossVulnerable && guardiansPresent)
 
                 // Make boss Invulnerable when Guardians are present.
                 MakeBossInvulnerable();
