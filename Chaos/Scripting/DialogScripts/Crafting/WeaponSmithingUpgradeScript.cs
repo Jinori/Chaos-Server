@@ -400,9 +400,11 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
                 var playerRank = GetRankAsInt(existingMark.Text);
 
                 if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes recipes))
-                {
+
+                    // Show items from WeaponsmithingCraftRequirements
                     foreach (var recipe in CraftingRequirements.WeaponSmithingUpgradeRequirements)
-                        if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
+                    {
+                        if (source.IsGodModeEnabled() && recipes.HasFlag(recipe.Key))
                         {
                             var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
 
@@ -410,15 +412,34 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
 
+                        if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
+                        {
+                            var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+
+                            if (source.UserStatSheet.Level >= item.Level)
+                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
+                    }
+                
+                if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes2 recipes2))
                     foreach (var recipe2 in CraftingRequirements.WeaponSmithingUpgradeRequirements2)
-                        if (recipes.HasFlag(recipe2.Key) && (playerRank >= GetStatusAsInt(recipe2.Value.Rank)))
+                    {
+                        if (source.IsGodModeEnabled() && recipes2.HasFlag(recipe2.Key))
                         {
                             var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
 
                             if (source.UserStatSheet.Level >= item.Level)
                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
-                }
+
+                        if (recipes2.HasFlag(recipe2.Key) && (playerRank >= GetStatusAsInt(recipe2.Value.Rank)))
+                        {
+                            var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+
+                            if (source.UserStatSheet.Level >= item.Level)
+                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
+                    }
             }
 
             if (Subject.Items.Count == 0)
