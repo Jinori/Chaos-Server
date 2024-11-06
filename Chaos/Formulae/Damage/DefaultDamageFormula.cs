@@ -86,7 +86,12 @@ public class DefaultDamageFormula : IDamageFormula
         {
             case ISkillScript:
             {
+                if (source is not SubjectiveScriptBase<Skill> skillScript)
+                    return;
+                
                 var addedFromPct = damage * (attacker.StatSheet.EffectiveSkillDamagePct / 100m);
+                     if (skillScript.Subject.Template.IsAssail)
+                         addedFromPct = 0;
                 damage += Convert.ToInt32(attacker.StatSheet.EffectiveFlatSkillDamage + addedFromPct);
 
                 break;
@@ -147,7 +152,7 @@ public class DefaultDamageFormula : IDamageFormula
         if (attacker is not Aisling aisling || !aisling.Equipment.TryGetObject((byte)EquipmentSlot.Weapon, out var obj))
             return;
 
-        damage += obj.Modifiers.Dmg;
+        damage += obj.Modifiers.FlatSkillDamage;
     }
 
     protected virtual int GetDefenderAc(Creature defender)
