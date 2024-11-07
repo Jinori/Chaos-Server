@@ -1,4 +1,3 @@
-using AutoMapper.Execution;
 using Chaos.Common.Definitions;
 using Chaos.Common.Synchronization;
 using Chaos.Common.Utilities;
@@ -13,9 +12,19 @@ namespace Chaos.Collections;
 
 public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
 {
+    public enum GroupLootOption
+    {
+        Default,
+        Random = 1,
+        NeedBeforeGreed = 2,
+        MasterLooter = 3
+    }
+
     private readonly IChannelService ChannelService;
     public readonly List<Aisling> Members;
     private readonly AutoReleasingMonitor Sync;
+
+    public GroupLootOption LootOption { get; set; } = GroupLootOption.Default;
     public string ChannelName { get; }
 
     public Aisling Leader
@@ -29,16 +38,6 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
     }
 
     public int Count => Members.Count;
-    
-    public GroupLootOption LootOption { get; set; } = GroupLootOption.Default;
-
-    public enum GroupLootOption
-    {
-        Default,
-        Random = 1,
-        NeedBeforeGreed = 2,
-        MasterLooter = 3
-    }
 
     public Group(Aisling sender, Aisling receiver, IChannelService channelService)
     {
@@ -136,6 +135,66 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
         Members.Clear();
     }
 
+    public void DistributeEvenGold(int gold, Monster monster)
+    {
+        if ((Members.Count == 0) || (gold <= 1))
+            return;
+
+        // Filter group members who are on the same map as the monster
+        var eligibleMembers = Members.Where(member => member.MapInstance == monster.MapInstance)
+                                     .ToList();
+
+        // If there are no eligible members, skip the gold distribution
+        if (eligibleMembers.Count == 0)
+            return;
+
+        // Calculate gold per eligible member
+        var amountPerMember = gold / eligibleMembers.Count;
+
+        // Distribute gold evenly among eligible members
+        foreach (var member in eligibleMembers)
+        {
+            member.GiveGoldOrSendToBank(amountPerMember);
+            member.SendOrangeBarMessage($"Your split of the group gold is {amountPerMember}.");
+        }
+    }
+
+    public void DistributeRandomized(IEnumerable<Item> lootItems, Monster monster)
+    {
+        if (Members.Count == 0)
+            return;
+
+        // Iterate through each loot item
+        foreach (var item in lootItems)
+        {
+            // Filter group members to ensure they are on the same map as the monster
+            var eligibleMembers = Members.Where(member => member.MapInstance == monster.MapInstance)
+                                         .ToList();
+
+            // If no eligible members, skip the loot distribution
+            if (eligibleMembers.Count == 0)
+                continue;
+
+            // Pick a random eligible member to receive the loot
+            var randomMember = eligibleMembers.PickRandom();
+
+            var adminOnMap = randomMember.MapInstance
+                                         .GetEntities<Aisling>()
+                                         .Where(x => x.IsGodModeEnabled())
+                                         .ToList();
+
+            // Give the item to the random member or send it to their bank
+            randomMember.GiveItemOrSendToBank(item);
+
+            // Notify all group members about the loot distribution
+            foreach (var member in Members)
+                member.SendServerMessage(ServerMessageType.GroupChat, $"{randomMember.Name} received {item.DisplayName} from loot.");
+
+            foreach (var admin in adminOnMap)
+                admin.SendOrangeBarMessage($"{randomMember.Name} received {item.DisplayName}.");
+        }
+    }
+
     public void Kick(Aisling aisling)
     {
         using var @lock = Sync.Enter();
@@ -203,60 +262,6 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
         return true;
     }
 
-    public void DistributeRandomized(IEnumerable<Item> lootItems, Monster monster)
-    {
-        if (Members.Count == 0)
-            return;
-
-        // Iterate through each loot item
-        foreach (var item in lootItems)
-        {
-            // Filter group members to ensure they are on the same map as the monster
-            var eligibleMembers = Members.Where(member => member.MapInstance == monster.MapInstance).ToList();
-
-            // If no eligible members, skip the loot distribution
-            if (eligibleMembers.Count == 0)
-                continue;
-
-            // Pick a random eligible member to receive the loot
-            var randomMember = eligibleMembers.PickRandom();
-
-            // Give the item to the random member or send it to their bank
-            randomMember.GiveItemOrSendToBank(item);
-
-            // Notify all group members about the loot distribution
-            foreach (var member in Members)
-            {
-                member.SendServerMessage(ServerMessageType.GroupChat, $"{randomMember.Name} received {item.DisplayName} from loot.");
-            }
-        }
-    }
-
-
-    public void DistributeEvenGold(int gold, Monster monster)
-    {
-        if ((Members.Count == 0) || (gold <= 1))
-            return;
-
-        // Filter group members who are on the same map as the monster
-        var eligibleMembers = Members.Where(member => member.MapInstance == monster.MapInstance).ToList();
-
-        // If there are no eligible members, skip the gold distribution
-        if (eligibleMembers.Count == 0)
-            return;
-
-        // Calculate gold per eligible member
-        var amountPerMember = gold / eligibleMembers.Count;
-
-        // Distribute gold evenly among eligible members
-        foreach (var member in eligibleMembers)
-        {
-            member.GiveGoldOrSendToBank(amountPerMember);
-            member.SendOrangeBarMessage($"Your split of the group gold is {amountPerMember}.");
-        }
-    }
-
-    
     public override string ToString()
     {
         using var @lock = Sync.Enter();

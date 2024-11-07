@@ -4520,8 +4520,8 @@ public static class CraftingRequirements
         {
             WeaponSmithingRecipes2.SapphireTonfa, new Recipe
             {
-                Name = "Ruby Tonfa",
-                TemplateKey = "rubytonfa",
+                Name = "Sapphire Tonfa",
+                TemplateKey = "sapphiretonfa",
                 Ingredients =
                 [
                     new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 10),

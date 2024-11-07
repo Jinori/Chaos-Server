@@ -11,40 +11,50 @@ public class WeaponEmpoweringStoneDialogScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
     private readonly ILogger<WeaponEnchantingStoneDialogScript> Logger;
 
-    public WeaponEmpoweringStoneDialogScript(Dialog subject, IItemFactory itemFactory,
-        ILogger<WeaponEnchantingStoneDialogScript> logger)
+    public WeaponEmpoweringStoneDialogScript(Dialog subject, IItemFactory itemFactory, ILogger<WeaponEnchantingStoneDialogScript> logger)
         : base(subject)
     {
         ItemFactory = itemFactory;
         Logger = logger;
     }
-    
+
     public override void OnDisplaying(Aisling source)
-    { 
-        var ani = new Animation
     {
-        TargetAnimation = 7,
-        AnimationSpeed = 200,
-        Priority = 1,
-    };
+        var ani = new Animation
+        {
+            TargetAnimation = 7,
+            AnimationSpeed = 200,
+            Priority = 1
+        };
+
         // Define the dictionary mapping master weapons to their enchanted versions
         var weaponEmpowering = new Dictionary<string, string>
         {
-            { "kalkuri", "empoweredkalkuri" },
-            { "holyhybrasylgnarl", "empoweredholygnarl" },
-            { "hybrasylazoth", "empoweredhybrasylazoth" },
-            { "magusorb", "empoweredmagusorb" },
-            { "hybrasylescalon", "empoweredescalon" },
+            {
+                "kalkuri", "empoweredkalkuri"
+            },
+            {
+                "holyhybrasylgnarl", "empoweredholygnarl"
+            },
+            {
+                "hybrasylazoth", "empoweredhybrasylazoth"
+            },
+            {
+                "magusorb", "empoweredmagusorb"
+            },
+            {
+                "hybrasylescalon", "empoweredhybrasylescalon"
+            }
         };
 
         // Search the player's inventory for a matching master weapon
-        var masterWeapon = source.Inventory.FirstOrDefault(item =>
-            weaponEmpowering.ContainsKey(item.Template.TemplateKey.ToLower()));
+        var masterWeapon = source.Inventory.FirstOrDefault(item => weaponEmpowering.ContainsKey(item.Template.TemplateKey.ToLower()));
 
         if (masterWeapon == null)
         {
             // Send a message if the player doesn't have a master weapon
             source.SendOrangeBarMessage("You do not have a master weapon that can be empowered.");
+
             return;
         }
 
@@ -54,9 +64,10 @@ public class WeaponEmpoweringStoneDialogScript : DialogScriptBase
         // Remove the old master weapon from the player's inventory
         source.Inventory.RemoveByTemplateKey(masterWeapon.Template.TemplateKey.ToLower());
         source.Inventory.Remove("Empowering Stone");
+
         // Create the new enchanted weapon
         var empowerWeapon = ItemFactory.Create(empoweredWeaponTemplateKey.ToLower());
-        
+
         // Give the player the enchanted weapon
         source.GiveItemOrSendToBank(empowerWeapon);
         source.Animate(ani);

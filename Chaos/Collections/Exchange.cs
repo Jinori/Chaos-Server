@@ -98,19 +98,14 @@ public sealed class Exchange
 
             return;
         }
-        
+
         if (!aisling.IsAdmin && item.Template.NoTrade)
         {
             aisling.SendActiveMessage($"{item.DisplayName} is no-trade");
 
             return;
         }
-        if (item.Template.NoTrade)
-        {
-            aisling.SendActiveMessage($"{item.DisplayName} is no-trade");
 
-            return;
-        }
         if (item.Template.Stackable)
             aisling.Client.SendExchangeRequestAmount(item.Slot);
         else
@@ -157,6 +152,7 @@ public sealed class Exchange
         if (!aisling.IsAdmin && item.Template.AccountBound)
         {
             aisling.SendActiveMessage($"{item.DisplayName} is bound to you.");
+
             return;
         }
 
@@ -167,13 +163,6 @@ public sealed class Exchange
             return;
         }
 
-        if (item.Template.NoTrade)
-        {
-            aisling.SendActiveMessage($"{item.DisplayName} is no-trade");
-
-            return;
-        }
-        
         if (!aisling.Inventory.HasCount(item.DisplayName, amount))
         {
             aisling.SendActiveMessage($"You don't have {item.DisplayName.ToQuantity(amount)}");
